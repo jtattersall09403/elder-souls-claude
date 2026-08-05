@@ -35,13 +35,13 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-05 22:52:27Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-05 22:53:32Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
 <div class="grid">
-  <div class="card"><div class="n">62</div><div class="l">Reference items</div></div>
-  <div class="card"><div class="n">272</div><div class="l">Subsystems judged</div></div>
+  <div class="card"><div class="n">63</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">276</div><div class="l">Subsystems judged</div></div>
   <div class="card"><div class="n">0</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n ok">0</div><div class="l">Open gaps</div></div>
@@ -53,7 +53,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <h2>Corpus coverage by area</h2>
 <table><tr><th>Area</th><th>Domain</th><th>Items</th><th></th></tr>
 <tr><td><code>AI</code></td><td>Enemy behaviour</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
-<tr><td><code>CMB</code></td><td>Souls combat</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
+<tr><td><code>CMB</code></td><td>Souls combat</td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
 <tr><td><code>DLG</code></td><td>Dialogue &amp; journal</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 <tr><td><code>LOR</code></td><td>Lore &amp; canon</td><td>5</td><td style="width:40%"><div class="bar"><i style="width:60%"></i></div></td></tr>
 <tr><td><code>MTH</code></td><td>Measurement</td><td>4</td><td style="width:40%"><div class="bar"><i style="width:48%"></i></div></td></tr>
@@ -79,6 +79,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>RI-CMB05</code></td><td>Poise, stagger, hyperarmour, and the critical windows (backstab, parry, riposte)</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.poise combat.stagger combat.hyperarmour combat.criticals combat.parry combat.trade</code></td></tr>
 <tr><td><code>RI-CMB06</code></td><td>Lock-on — acquisition, camera behaviour, directional roll semantics, and soft-lock steering</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.lockon combat.camera combat.player.movement combat.player.tracking combat.input.direction</code></td></tr>
 <tr><td><code>RI-CMB07</code></td><td>The combat trace — machine-readable format and a 59-second hand-authored exemplar fight</td><td>trace</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.trace combat.pacing combat.player.dodge combat.player.stamina combat.player.attack combat.enemy.punishwindows combat.telemetry combat.determinism</code></td></tr>
+<tr><td><code>RI-CMB08</code></td><td>Healing — the Hist-sap Flask, drink commitment frames, heal curve, and refill on rest</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.player.heal combat.resource.charges combat.animation.commitment progression.restsite.refill combat.encounter.pacing</code></td></tr>
 <tr><td><code>RI-DLG01</code></td><td>The topic list as a graph — filter stack, first-match-wins, and settlement topic webs</td><td>graph</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td><span class="ok">yes</span></td><td><code>dialogue.topics.graph dialogue.topics.discovery dialogue.topics.filtering dialogue.greeting.variation dialogue.combat.lockout quests.discovery.hooks</code></td></tr>
 <tr><td><code>RI-DLG02</code></td><td>Unique dialogue words per settlement — the headline density metric</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td>&mdash;</td><td><code>dialogue.density.wordcount dialogue.topics.filtering world.settlement.anatomy</code></td></tr>
 <tr><td><code>RI-DLG03</code></td><td>Greetings and rumours — disposition banding and the diegetic quest-discovery mechanism</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td><span class="ok">yes</span></td><td><code>dialogue.rumour.distribution dialogue.greeting.variation dialogue.disposition.model dialogue.topics.truth quests.discovery.hooks world.persistence.state</code></td></tr>

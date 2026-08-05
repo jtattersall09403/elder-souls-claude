@@ -38,19 +38,26 @@ corpus, and that is why this item can void a wave on its own.
 | R8 | **Resolution-invariant (sim)** | run at 1920×1080 and 640×360 | sim fields identical; only pixels differ |
 | R9 | **Save round-trip** | `saveState()` at frame 600, reload, run 600 more | tail matches the uninterrupted run's tail |
 
-### B. Observed reference trace — the stub, which satisfies R1–R3
+### B. Observed reference trace — the stub, which satisfies R1–R4
 
-Produced on this machine, twice, in separate processes:
+Produced on this machine, in separate processes (R1/R2), then re-run with a different
+batch size (R3) and a different seed (R4):
 
 ```
 $ node tools/harness/trace.mjs --scenario cmb-duel-infantry --entry tools/harness/stub/index.html
-[harness] body_sha256=28dafdfacdab1a41d6436b9e3887c569efad8c6ddd5782ceaf27c71826bd049c
+[harness] body_sha256=a2c1e6f5f8e52d5f07ebffe9985197dbba97bfbb9906f6e630f4d8cefc14f47f
 $ node tools/harness/trace.mjs --scenario cmb-duel-infantry --entry tools/harness/stub/index.html
-[harness] body_sha256=28dafdfacdab1a41d6436b9e3887c569efad8c6ddd5782ceaf27c71826bd049c
+[harness] body_sha256=a2c1e6f5f8e52d5f07ebffe9985197dbba97bfbb9906f6e630f4d8cefc14f47f
+$ node tools/harness/run-headless.mjs --scenario cmb-duel-infantry --chunk 60 ...   # R3
+  manifest.trace.body_sha256 = a2c1e6f5f8e52d5f07ebffe9985197dbba97bfbb9906f6e630f4d8cefc14f47f
+$ node tools/harness/trace.mjs --scenario cmb-spacing-hold --seed 1337 ...          # R4
+[harness] body_sha256=e9664d68ceee6331f359…
+$ node tools/harness/trace.mjs --scenario cmb-spacing-hold --seed 4242 ...
+[harness] body_sha256=e6105818b02d17b39a98…                                          differs, as required
 ```
 
-3600 frames, 0 frame discontinuities, `integrity.fail_closed: false`. This is the shape of
-a passing result. The stub is a test fixture, not the game — it is cited here only to show
+3600 frames, 0 frame discontinuities, `integrity.fail_closed: false`, and the 60-frame
+batching produces the identical hash. This is the shape of a passing result. The stub is a test fixture, not the game — it is cited here only to show
 that the bar is achievable in a browser, in this environment, with this tooling.
 
 ### C. The banned constructs (D1–D7 of `HARNESS.md` §8)
