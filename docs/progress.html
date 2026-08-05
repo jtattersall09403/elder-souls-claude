@@ -35,13 +35,13 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-05 22:56:10Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-05 23:20:41Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
 <div class="grid">
-  <div class="card"><div class="n">64</div><div class="l">Reference items</div></div>
-  <div class="card"><div class="n">278</div><div class="l">Subsystems judged</div></div>
+  <div class="card"><div class="n">71</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">297</div><div class="l">Subsystems judged</div></div>
   <div class="card"><div class="n">0</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n ok">0</div><div class="l">Open gaps</div></div>
@@ -53,6 +53,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <h2>Corpus coverage by area</h2>
 <table><tr><th>Area</th><th>Domain</th><th>Items</th><th></th></tr>
 <tr><td><code>AI</code></td><td>Enemy behaviour</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
+<tr><td><code>CAM</code></td><td></td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 <tr><td><code>CMB</code></td><td>Souls combat</td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
 <tr><td><code>DLG</code></td><td>Dialogue &amp; journal</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 <tr><td><code>LOR</code></td><td>Lore &amp; canon</td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
@@ -72,6 +73,13 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>RI-AI05</code></td><td>Enemy roster archetypes — ten roles, and the stat bands that define them</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.difficulty.lethality combat.poise.enemy combat.enemy.statemachine combat.encounter.grouping progression.souls.economy world.region.gating</code></td></tr>
 <tr><td><code>RI-AI06</code></td><td>Boss design — phases, rhythm, arena, and the fog-gate loop</td><td>structure</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.boss.phases combat.boss.arena combat.enemy.telegraph combat.enemy.punish combat.death.worldreset combat.camera.behaviour</code></td></tr>
 <tr><td><code>RI-AI07</code></td><td>Encounter composition — placement, sightlines, density, and the bonfire loop</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.encounter.placement combat.encounter.grouping world.density.handplacement progression.bonfire.placement combat.death.worldreset world.npc.population</code></td></tr>
+<tr><td><code>RI-CAM01</code></td><td>The third-person rig — pivot, shoulder offset, spring arm, and collision pull-in</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.camera.behaviour</code></td></tr>
+<tr><td><code>RI-CAM02</code></td><td>Free-camera control and camera-relative movement — deadzone, pitch clamp, turn rate, and auto-recentre</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.player.movement world.traversal.locomotion platform.input.pipeline combat.camera.behaviour</code></td></tr>
+<tr><td><code>RI-CAM03</code></td><td>Lock-on framing — the containment law, distance- and size-dependent pitch, switch latency, and the reticle</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.lockon.target combat.lockon.switch combat.camera.behaviour ui.hud.combat</code></td></tr>
+<tr><td><code>RI-CAM04</code></td><td>Locked movement, directional roll clips, and the player-side tracking cutoff</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.dodge.directional combat.attack.tracking combat.player.movement combat.attack.commitment</code></td></tr>
+<tr><td><code>RI-CAM05</code></td><td>The camera outside the fight — exploration, dialogue, menus, resting, interiors, and the first-person ban</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.camera.behaviour ui.dialogue.presentation ui.menu.inventory progression.bonfire.function world.dungeon.design world.interior.named</code></td></tr>
+<tr><td><code>RI-CAM06</code></td><td>Camera feel — fixed-step coupling, zero inertia, no head-bob, no FOV punch, hitstop, shake, death and fog-gate</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.camera.behaviour combat.feedback.hitstop combat.boss.arena combat.death.corpserun platform.determinism.harness</code></td></tr>
+<tr><td><code>RI-CAM07</code></td><td>Third-person character presentation — what the always-behind camera specifically demands of the player's body</td><td>number</td><td><span class="tag modern-fidelity">modern-fidelity</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>render.fidelity.character render.fidelity.animation render.art.silhouette render.process.bifurcation</code></td></tr>
 <tr><td><code>RI-CMB01</code></td><td>Roll and dodge — i-frame windows, equip-load tiers, and the fat-roll threshold</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.player.dodge combat.player.equipload combat.player.movement combat.invulnerability combat.input.buffer</code></td></tr>
 <tr><td><code>RI-CMB02</code></td><td>Attack frame data by weapon class — startup, active, recovery, and the commitment rule</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.player.attack combat.weapons.frames combat.animation.rootmotion combat.animation.commitment combat.input.buffer combat.player.tracking</code></td></tr>
 <tr><td><code>RI-CMB03</code></td><td>Stamina economy — costs, regeneration, blocking, and guard break</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.player.stamina combat.player.block combat.player.sprint combat.guardbreak combat.resource.pacing</code></td></tr>
