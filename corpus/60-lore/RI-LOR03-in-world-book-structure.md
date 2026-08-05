@@ -112,12 +112,12 @@ registry entry. Three of them participate in tracked contradictions.
 > is the only thing in nineteen years of this province that frightened me.
 >
 > Now. Where I differ from every author who has written on this before me — and I include Serjo
-> Fals-Rethan, whose *Meditations on the Trees of Argonia* is three hundred pages of a man agreeing
+> Fals Rethan, whose *Meditations on the Trees of Argonia* is three hundred pages of a man agreeing
 > with himself — is on the question of what returns.
 >
 > The natives say the soul goes back into the tree when the body fails, and waits, and is given out
 > again to a new egg. They will tell you this as calmly as a farmer tells you where he keeps his seed
-> corn. Fals-Rethan takes them at their word and builds a cathedral on it. I say: count.
+> corn. Fals Rethan takes them at their word and builds a cathedral on it. I say: count.
 >
 > If a soul returned entire, it would return knowing. That is what a soul is; a thing that knows it is
 > itself. And a returned soul would carry the whole account of its former life into the new body, and

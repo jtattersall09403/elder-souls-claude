@@ -38,39 +38,46 @@
 
   "reference_items": [
     {
-      "id": "RI-CMB03",
-      "path": "corpus/10-combat/RI-CMB03-roll-iframes.md",
+      "id": "RI-CMB01",
+      "path": "corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md",
       "side": "souls",
       "kind": "number",
-      "native_scale": "invulnerable frames at 60Hz; target 13 +/-1 at light load; fail below 11 or above 16",
-      "native_score": 7,
-      "native_max": 13,
-      "native_verdict": "Loses outright",
+      "native_scale": "0-100 weighted (M1 census 20, M2 i-frame probe 35, M3 root motion 20, M4 uncancellability+buffer 15, M5 threshold cliff 10); >=90 parity, 70-89 gap named, <70 we lose",
+      "native_score": 35,
+      "native_max": 100,
+      "native_verdict": "we lose",
       "score_0_10": 3,
       "measured": "full",
       "checks": [
         {
           "id": "M1",
           "result": "fail",
-          "value": 7,
-          "threshold": "12-14",
+          "value": "1 tier",
+          "threshold": "all 4 equip-load tiers exact to the frame",
           "hard_fail": false,
           "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json"],
-          "note": "Median over 120 rolls; range 6-8, so it is stable and simply short."
+          "note": "Only one roll animation exists; equip load changes nothing observable."
         },
         {
           "id": "M2",
           "result": "fail",
-          "value": 0,
-          "threshold": ">= 1 damage-nulled frame at roll frame 4",
+          "value": 7,
+          "threshold": "13 frames, boundaries exact, zero holes and zero leaks",
           "hard_fail": false,
           "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json"],
-          "note": "Window opens at frame 9, i.e. after most enemy active frames have already resolved."
+          "note": "Median 7 invulnerable frames over 120 rolls, window opening at frame 9 instead of 4."
+        },
+        {
+          "id": "M4",
+          "result": "pass",
+          "value": 8,
+          "threshold": "no cancel, no queue, buffer exactly 8 f",
+          "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"]
         }
       ],
       "hard_fails": [],
       "how_we_lose_hits": [
-        "i-frames derived from animation clip length rather than an explicit declared window"
+        "i-frames derived from animation clip length rather than an explicit declared frame window"
       ],
       "evidence": [
         "corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json",
@@ -78,23 +85,22 @@
       ]
     },
     {
-      "id": "RI-CMB05",
-      "path": "corpus/10-combat/RI-CMB05-roll-recovery.md",
+      "id": "RI-CMB02",
+      "path": "corpus/10-combat/RI-CMB02-attack-frame-data.md",
       "side": "souls",
-      "kind": "trace",
-      "native_scale": "0-6 (three checks x 0/1/2)",
-      "native_score": 4,
-      "native_max": 6,
-      "native_verdict": "Below bar — named remedy required",
+      "kind": "number",
+      "native_scale": "0-100 weighted per check; only the input-buffer and commitment checks are in this piece's scope",
+      "native_score": "partial: buffer check passed, commitment check passed, frame-data checks not in scope",
+      "native_max": null,
+      "native_verdict": "partially measured — attack frame data belongs to the attack piece",
       "score_0_10": 5,
-      "measured": "full",
+      "measured": "partial",
       "checks": [
-        { "id": "M1", "result": "pass", "value": 11, "threshold": ">= 10 recovery frames", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] },
-        { "id": "M2", "result": "marginal", "value": 0.42, "threshold": "stamina cost >= 0.45 of a light swing", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] },
-        { "id": "M3", "result": "fail", "value": "unbounded", "threshold": "roll spam must exhaust stamina within 5 consecutive rolls", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] }
+        { "id": "M4-buffer", "result": "pass", "value": 8, "threshold": "buffer exactly 8 f", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] },
+        { "id": "M-commit", "result": "pass", "value": 0, "threshold": "yaw_rate_dps = 0 during active/recovery", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] }
       ],
       "hard_fails": [],
-      "how_we_lose_hits": ["roll is free enough to be the dominant strategy"],
+      "how_we_lose_hits": [],
       "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"]
     }
   ],

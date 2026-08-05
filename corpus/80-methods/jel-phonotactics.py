@@ -306,9 +306,14 @@ def classify(name, lex):
         return "empty"
     if "'" in n:
         return "khajiit"
-    # Lexicon material is tested BEFORE the hyphenated-English shape, because a Jel
-    # compound (Ixt-Shaneekh) also matches that pattern and must not be judged by
-    # the Tamrielic-name grammar.
+    # A Tamrielic Argonian name is identified by its FIRST element being an attested
+    # 3sg verb — that is the actual signal, and it must be tested before the Jel
+    # affix heuristic, or 'Answers-Late' gets annexed as an- + swers.
+    head = n.split("-")[0]
+    if "-" in n and head in lex["tamrielic_name_grammar"]["verbs"]:
+        return "argonian-tamrielic"
+    # Lexicon material is then tested before the generic hyphenated-English shape,
+    # because a Jel compound (Ixt-Shaneekh) also matches that pattern.
     if jel_lexical(n, lex):
         return "jel"
     if ENGLISH_HYPHEN.match(n):
