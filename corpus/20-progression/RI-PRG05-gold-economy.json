@@ -1,0 +1,155 @@
+{
+ "id": "RI-PRG05",
+ "total_income": 98000,
+ "total_sinks_if_buying_everything": 215000,
+ "affordability_ratio": 0.456,
+ "sell_multiplier_band": [
+  0.2,
+  0.6
+ ],
+ "buy_price_formula": "mult = clamp(1.55 - 0.006*Disposition - 0.0035*Mercantile - 0.004*Personality, 0.80, 1.60)",
+ "sell_price_formula": "mult = clamp(0.22 + 0.0025*Disposition + 0.0022*Mercantile + 0.0018*Personality, 0.20, 0.60)",
+ "regions": [
+  {
+   "region": "R1",
+   "caches": 900,
+   "quests": 1200,
+   "sellable": 1400,
+   "region_income": 3500,
+   "merchant_gold_pool": 2400
+  },
+  {
+   "region": "R2",
+   "caches": 1800,
+   "quests": 2600,
+   "sellable": 2900,
+   "region_income": 7300,
+   "merchant_gold_pool": 4200
+  },
+  {
+   "region": "R3",
+   "caches": 3000,
+   "quests": 4500,
+   "sellable": 5000,
+   "region_income": 12500,
+   "merchant_gold_pool": 6800
+  },
+  {
+   "region": "R4",
+   "caches": 4200,
+   "quests": 7000,
+   "sellable": 7800,
+   "region_income": 19000,
+   "merchant_gold_pool": 9500
+  },
+  {
+   "region": "R5",
+   "caches": 5500,
+   "quests": 9500,
+   "sellable": 10500,
+   "region_income": 25500,
+   "merchant_gold_pool": 12000
+  },
+  {
+   "region": "R6",
+   "caches": 6800,
+   "quests": 11000,
+   "sellable": 12400,
+   "region_income": 30200,
+   "merchant_gold_pool": 15000
+  }
+ ],
+ "sinks": [
+  {
+   "sink": "smith labour, 2 weapons to +10",
+   "gold": 28800
+  },
+  {
+   "sink": "smith labour, 3rd weapon to +7",
+   "gold": 6300
+  },
+  {
+   "sink": "repair (lifetime, ~140 services)",
+   "gold": 16800
+  },
+  {
+   "sink": "ammunition (lifetime)",
+   "gold": 9400
+  },
+  {
+   "sink": "potions & cures purchased",
+   "gold": 12500
+  },
+  {
+   "sink": "skill training (~46 points bought)",
+   "gold": 21600
+  },
+  {
+   "sink": "lodging & fatigue rest",
+   "gold": 3200
+  },
+  {
+   "sink": "in-fiction transport fares",
+   "gold": 5800
+  },
+  {
+   "sink": "bribes & disposition gifts",
+   "gold": 7400
+  },
+  {
+   "sink": "faction dues & fines",
+   "gold": 4900
+  },
+  {
+   "sink": "spell & recipe purchases",
+   "gold": 13800
+  },
+  {
+   "sink": "armour sets (2 additional)",
+   "gold": 18500
+  },
+  {
+   "sink": "stilt-house deed",
+   "gold": 12000
+  },
+  {
+   "sink": "land grant (terminal sink)",
+   "gold": 30000
+  },
+  {
+   "sink": "guild-hall endowment (terminal sink)",
+   "gold": 24000
+  }
+ ],
+ "prices": {
+  "arrow_iron": 3,
+  "arrow_barbed": 12,
+  "arrow_glass": 40,
+  "bolt_steel": 5,
+  "potion_minor_heal": 25,
+  "potion_heal": 60,
+  "potion_greater_heal": 150,
+  "potion_cure_disease": 90,
+  "potion_antidote": 35,
+  "repair_light_weapon": 45,
+  "repair_heavy_weapon": 110,
+  "repair_armour_piece": 70,
+  "repair_kit_field": 95,
+  "lodging_common_bed": 10,
+  "lodging_private_room": 40,
+  "fare_short_hop": 12,
+  "fare_regional": 45,
+  "fare_cross_map": 90,
+  "training_per_point_formula": "12 * current_skill_level, capped at trainer's own skill",
+  "bribe_formula": "45 + 9 * (disposition points required)",
+  "lockpick": 18,
+  "probe": 22,
+  "alchemy_reagent_common": 8,
+  "alchemy_reagent_rare": 140,
+  "spell_tier1": 220,
+  "spell_tier2": 900,
+  "spell_tier3": 3400,
+  "stilt_house_deed": 12000,
+  "land_grant": 30000
+ }
+}

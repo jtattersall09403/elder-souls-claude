@@ -1,0 +1,984 @@
+{
+ "id": "RI-PRG01",
+ "formula": "cost(n) = round(0.015*n^3 + 2.00*n^2 + 55*n + 300)",
+ "formula_note": "n is the level being PURCHASED (going from n-1 to n). Level 1 is free. Single curve, no piecewise band.",
+ "min_level": 1,
+ "max_level": 140,
+ "softcap_note": "No cap on level. Cost cubic-dominant from n~35 onward.",
+ "reference_formula_ds": "levels 2-12: 0.0068n^3-0.06n^2+17.1n+639 ; levels 13+: 0.02n^3+3.06n^2+105.6n-895",
+ "levels": [
+  {
+   "level": 2,
+   "cost": 418,
+   "cumulative": 418,
+   "ds_reference_cost": 673,
+   "ds_reference_cumulative": 673
+  },
+  {
+   "level": 3,
+   "cost": 483,
+   "cumulative": 901,
+   "ds_reference_cost": 690,
+   "ds_reference_cumulative": 1363
+  },
+  {
+   "level": 4,
+   "cost": 553,
+   "cumulative": 1454,
+   "ds_reference_cost": 707,
+   "ds_reference_cumulative": 2070
+  },
+  {
+   "level": 5,
+   "cost": 627,
+   "cumulative": 2081,
+   "ds_reference_cost": 724,
+   "ds_reference_cumulative": 2794
+  },
+  {
+   "level": 6,
+   "cost": 705,
+   "cumulative": 2786,
+   "ds_reference_cost": 741,
+   "ds_reference_cumulative": 3535
+  },
+  {
+   "level": 7,
+   "cost": 788,
+   "cumulative": 3574,
+   "ds_reference_cost": 758,
+   "ds_reference_cumulative": 4293
+  },
+  {
+   "level": 8,
+   "cost": 876,
+   "cumulative": 4450,
+   "ds_reference_cost": 775,
+   "ds_reference_cumulative": 5068
+  },
+  {
+   "level": 9,
+   "cost": 968,
+   "cumulative": 5418,
+   "ds_reference_cost": 793,
+   "ds_reference_cumulative": 5861
+  },
+  {
+   "level": 10,
+   "cost": 1065,
+   "cumulative": 6483,
+   "ds_reference_cost": 811,
+   "ds_reference_cumulative": 6672
+  },
+  {
+   "level": 11,
+   "cost": 1167,
+   "cumulative": 7650,
+   "ds_reference_cost": 829,
+   "ds_reference_cumulative": 7501
+  },
+  {
+   "level": 12,
+   "cost": 1274,
+   "cumulative": 8924,
+   "ds_reference_cost": 847,
+   "ds_reference_cumulative": 8348
+  },
+  {
+   "level": 13,
+   "cost": 1386,
+   "cumulative": 10310,
+   "ds_reference_cost": 1039,
+   "ds_reference_cumulative": 9387
+  },
+  {
+   "level": 14,
+   "cost": 1503,
+   "cumulative": 11813,
+   "ds_reference_cost": 1238,
+   "ds_reference_cumulative": 10625
+  },
+  {
+   "level": 15,
+   "cost": 1626,
+   "cumulative": 13439,
+   "ds_reference_cost": 1445,
+   "ds_reference_cumulative": 12070
+  },
+  {
+   "level": 16,
+   "cost": 1753,
+   "cumulative": 15192,
+   "ds_reference_cost": 1660,
+   "ds_reference_cumulative": 13730
+  },
+  {
+   "level": 17,
+   "cost": 1887,
+   "cumulative": 17079,
+   "ds_reference_cost": 1883,
+   "ds_reference_cumulative": 15613
+  },
+  {
+   "level": 18,
+   "cost": 2025,
+   "cumulative": 19104,
+   "ds_reference_cost": 2114,
+   "ds_reference_cumulative": 17727
+  },
+  {
+   "level": 19,
+   "cost": 2170,
+   "cumulative": 21274,
+   "ds_reference_cost": 2353,
+   "ds_reference_cumulative": 20080
+  },
+  {
+   "level": 20,
+   "cost": 2320,
+   "cumulative": 23594,
+   "ds_reference_cost": 2601,
+   "ds_reference_cumulative": 22681
+  },
+  {
+   "level": 21,
+   "cost": 2476,
+   "cumulative": 26070,
+   "ds_reference_cost": 2857,
+   "ds_reference_cumulative": 25538
+  },
+  {
+   "level": 22,
+   "cost": 2638,
+   "cumulative": 28708,
+   "ds_reference_cost": 3122,
+   "ds_reference_cumulative": 28660
+  },
+  {
+   "level": 23,
+   "cost": 2806,
+   "cumulative": 31514,
+   "ds_reference_cost": 3396,
+   "ds_reference_cumulative": 32056
+  },
+  {
+   "level": 24,
+   "cost": 2979,
+   "cumulative": 34493,
+   "ds_reference_cost": 3678,
+   "ds_reference_cumulative": 35734
+  },
+  {
+   "level": 25,
+   "cost": 3159,
+   "cumulative": 37652,
+   "ds_reference_cost": 3970,
+   "ds_reference_cumulative": 39704
+  },
+  {
+   "level": 26,
+   "cost": 3346,
+   "cumulative": 40998,
+   "ds_reference_cost": 4271,
+   "ds_reference_cumulative": 43975
+  },
+  {
+   "level": 27,
+   "cost": 3538,
+   "cumulative": 44536,
+   "ds_reference_cost": 4581,
+   "ds_reference_cumulative": 48556
+  },
+  {
+   "level": 28,
+   "cost": 3737,
+   "cumulative": 48273,
+   "ds_reference_cost": 4900,
+   "ds_reference_cumulative": 53456
+  },
+  {
+   "level": 29,
+   "cost": 3943,
+   "cumulative": 52216,
+   "ds_reference_cost": 5229,
+   "ds_reference_cumulative": 58685
+  },
+  {
+   "level": 30,
+   "cost": 4155,
+   "cumulative": 56371,
+   "ds_reference_cost": 5567,
+   "ds_reference_cumulative": 64252
+  },
+  {
+   "level": 31,
+   "cost": 4374,
+   "cumulative": 60745,
+   "ds_reference_cost": 5915,
+   "ds_reference_cumulative": 70167
+  },
+  {
+   "level": 32,
+   "cost": 4600,
+   "cumulative": 65345,
+   "ds_reference_cost": 6273,
+   "ds_reference_cumulative": 76440
+  },
+  {
+   "level": 33,
+   "cost": 4832,
+   "cumulative": 70177,
+   "ds_reference_cost": 6641,
+   "ds_reference_cumulative": 83081
+  },
+  {
+   "level": 34,
+   "cost": 5072,
+   "cumulative": 75249,
+   "ds_reference_cost": 7019,
+   "ds_reference_cumulative": 90100
+  },
+  {
+   "level": 35,
+   "cost": 5318,
+   "cumulative": 80567,
+   "ds_reference_cost": 7407,
+   "ds_reference_cumulative": 97507
+  },
+  {
+   "level": 36,
+   "cost": 5572,
+   "cumulative": 86139,
+   "ds_reference_cost": 7805,
+   "ds_reference_cumulative": 105312
+  },
+  {
+   "level": 37,
+   "cost": 5833,
+   "cumulative": 91972,
+   "ds_reference_cost": 8214,
+   "ds_reference_cumulative": 113526
+  },
+  {
+   "level": 38,
+   "cost": 6101,
+   "cumulative": 98073,
+   "ds_reference_cost": 8634,
+   "ds_reference_cumulative": 122160
+  },
+  {
+   "level": 39,
+   "cost": 6377,
+   "cumulative": 104450,
+   "ds_reference_cost": 9064,
+   "ds_reference_cumulative": 131224
+  },
+  {
+   "level": 40,
+   "cost": 6660,
+   "cumulative": 111110,
+   "ds_reference_cost": 9505,
+   "ds_reference_cumulative": 140729
+  },
+  {
+   "level": 41,
+   "cost": 6951,
+   "cumulative": 118061,
+   "ds_reference_cost": 9957,
+   "ds_reference_cumulative": 150686
+  },
+  {
+   "level": 42,
+   "cost": 7249,
+   "cumulative": 125310,
+   "ds_reference_cost": 10420,
+   "ds_reference_cumulative": 161106
+  },
+  {
+   "level": 43,
+   "cost": 7556,
+   "cumulative": 132866,
+   "ds_reference_cost": 10894,
+   "ds_reference_cumulative": 172000
+  },
+  {
+   "level": 44,
+   "cost": 7870,
+   "cumulative": 140736,
+   "ds_reference_cost": 11379,
+   "ds_reference_cumulative": 183379
+  },
+  {
+   "level": 45,
+   "cost": 8192,
+   "cumulative": 148928,
+   "ds_reference_cost": 11876,
+   "ds_reference_cumulative": 195255
+  },
+  {
+   "level": 46,
+   "cost": 8522,
+   "cumulative": 157450,
+   "ds_reference_cost": 12384,
+   "ds_reference_cumulative": 207639
+  },
+  {
+   "level": 47,
+   "cost": 8860,
+   "cumulative": 166310,
+   "ds_reference_cost": 12904,
+   "ds_reference_cumulative": 220543
+  },
+  {
+   "level": 48,
+   "cost": 9207,
+   "cumulative": 175517,
+   "ds_reference_cost": 13436,
+   "ds_reference_cumulative": 233979
+  },
+  {
+   "level": 49,
+   "cost": 9562,
+   "cumulative": 185079,
+   "ds_reference_cost": 13979,
+   "ds_reference_cumulative": 247958
+  },
+  {
+   "level": 50,
+   "cost": 9925,
+   "cumulative": 195004,
+   "ds_reference_cost": 14535,
+   "ds_reference_cumulative": 262493
+  },
+  {
+   "level": 51,
+   "cost": 10297,
+   "cumulative": 205301,
+   "ds_reference_cost": 15103,
+   "ds_reference_cumulative": 277596
+  },
+  {
+   "level": 52,
+   "cost": 10677,
+   "cumulative": 215978,
+   "ds_reference_cost": 15683,
+   "ds_reference_cumulative": 293279
+  },
+  {
+   "level": 53,
+   "cost": 11066,
+   "cumulative": 227044,
+   "ds_reference_cost": 16275,
+   "ds_reference_cumulative": 309554
+  },
+  {
+   "level": 54,
+   "cost": 11464,
+   "cumulative": 238508,
+   "ds_reference_cost": 16880,
+   "ds_reference_cumulative": 326434
+  },
+  {
+   "level": 55,
+   "cost": 11871,
+   "cumulative": 250379,
+   "ds_reference_cost": 17497,
+   "ds_reference_cumulative": 343931
+  },
+  {
+   "level": 56,
+   "cost": 12286,
+   "cumulative": 262665,
+   "ds_reference_cost": 18127,
+   "ds_reference_cumulative": 362058
+  },
+  {
+   "level": 57,
+   "cost": 12711,
+   "cumulative": 275376,
+   "ds_reference_cost": 18770,
+   "ds_reference_cumulative": 380828
+  },
+  {
+   "level": 58,
+   "cost": 13145,
+   "cumulative": 288521,
+   "ds_reference_cost": 19426,
+   "ds_reference_cumulative": 400254
+  },
+  {
+   "level": 59,
+   "cost": 13588,
+   "cumulative": 302109,
+   "ds_reference_cost": 20095,
+   "ds_reference_cumulative": 420349
+  },
+  {
+   "level": 60,
+   "cost": 14040,
+   "cumulative": 316149,
+   "ds_reference_cost": 20777,
+   "ds_reference_cumulative": 441126
+  },
+  {
+   "level": 61,
+   "cost": 14502,
+   "cumulative": 330651,
+   "ds_reference_cost": 21472,
+   "ds_reference_cumulative": 462598
+  },
+  {
+   "level": 62,
+   "cost": 14973,
+   "cumulative": 345624,
+   "ds_reference_cost": 22181,
+   "ds_reference_cumulative": 484779
+  },
+  {
+   "level": 63,
+   "cost": 15454,
+   "cumulative": 361078,
+   "ds_reference_cost": 22904,
+   "ds_reference_cumulative": 507683
+  },
+  {
+   "level": 64,
+   "cost": 15944,
+   "cumulative": 377022,
+   "ds_reference_cost": 23640,
+   "ds_reference_cumulative": 531323
+  },
+  {
+   "level": 65,
+   "cost": 16444,
+   "cumulative": 393466,
+   "ds_reference_cost": 24390,
+   "ds_reference_cumulative": 555713
+  },
+  {
+   "level": 66,
+   "cost": 16954,
+   "cumulative": 410420,
+   "ds_reference_cost": 25154,
+   "ds_reference_cumulative": 580867
+  },
+  {
+   "level": 67,
+   "cost": 17474,
+   "cumulative": 427894,
+   "ds_reference_cost": 25932,
+   "ds_reference_cumulative": 606799
+  },
+  {
+   "level": 68,
+   "cost": 18004,
+   "cumulative": 445898,
+   "ds_reference_cost": 26724,
+   "ds_reference_cumulative": 633523
+  },
+  {
+   "level": 69,
+   "cost": 18545,
+   "cumulative": 464443,
+   "ds_reference_cost": 27530,
+   "ds_reference_cumulative": 661053
+  },
+  {
+   "level": 70,
+   "cost": 19095,
+   "cumulative": 483538,
+   "ds_reference_cost": 28351,
+   "ds_reference_cumulative": 689404
+  },
+  {
+   "level": 71,
+   "cost": 19656,
+   "cumulative": 503194,
+   "ds_reference_cost": 29186,
+   "ds_reference_cumulative": 718590
+  },
+  {
+   "level": 72,
+   "cost": 20227,
+   "cumulative": 523421,
+   "ds_reference_cost": 30036,
+   "ds_reference_cumulative": 748626
+  },
+  {
+   "level": 73,
+   "cost": 20808,
+   "cumulative": 544229,
+   "ds_reference_cost": 30901,
+   "ds_reference_cumulative": 779527
+  },
+  {
+   "level": 74,
+   "cost": 21400,
+   "cumulative": 565629,
+   "ds_reference_cost": 31780,
+   "ds_reference_cumulative": 811307
+  },
+  {
+   "level": 75,
+   "cost": 22003,
+   "cumulative": 587632,
+   "ds_reference_cost": 32675,
+   "ds_reference_cumulative": 843982
+  },
+  {
+   "level": 76,
+   "cost": 22617,
+   "cumulative": 610249,
+   "ds_reference_cost": 33585,
+   "ds_reference_cumulative": 877567
+  },
+  {
+   "level": 77,
+   "cost": 23241,
+   "cumulative": 633490,
+   "ds_reference_cost": 34510,
+   "ds_reference_cumulative": 912077
+  },
+  {
+   "level": 78,
+   "cost": 23876,
+   "cumulative": 657366,
+   "ds_reference_cost": 35450,
+   "ds_reference_cumulative": 947527
+  },
+  {
+   "level": 79,
+   "cost": 24523,
+   "cumulative": 681889,
+   "ds_reference_cost": 36406,
+   "ds_reference_cumulative": 983933
+  },
+  {
+   "level": 80,
+   "cost": 25180,
+   "cumulative": 707069,
+   "ds_reference_cost": 37377,
+   "ds_reference_cumulative": 1021310
+  },
+  {
+   "level": 81,
+   "cost": 25849,
+   "cumulative": 732918,
+   "ds_reference_cost": 38364,
+   "ds_reference_cumulative": 1059674
+  },
+  {
+   "level": 82,
+   "cost": 26529,
+   "cumulative": 759447,
+   "ds_reference_cost": 39367,
+   "ds_reference_cumulative": 1099041
+  },
+  {
+   "level": 83,
+   "cost": 27220,
+   "cumulative": 786667,
+   "ds_reference_cost": 40386,
+   "ds_reference_cumulative": 1139427
+  },
+  {
+   "level": 84,
+   "cost": 27923,
+   "cumulative": 814590,
+   "ds_reference_cost": 41421,
+   "ds_reference_cumulative": 1180848
+  },
+  {
+   "level": 85,
+   "cost": 28637,
+   "cumulative": 843227,
+   "ds_reference_cost": 42472,
+   "ds_reference_cumulative": 1223320
+  },
+  {
+   "level": 86,
+   "cost": 29363,
+   "cumulative": 872590,
+   "ds_reference_cost": 43539,
+   "ds_reference_cumulative": 1266859
+  },
+  {
+   "level": 87,
+   "cost": 30101,
+   "cumulative": 902691,
+   "ds_reference_cost": 44623,
+   "ds_reference_cumulative": 1311482
+  },
+  {
+   "level": 88,
+   "cost": 30850,
+   "cumulative": 933541,
+   "ds_reference_cost": 45724,
+   "ds_reference_cumulative": 1357206
+  },
+  {
+   "level": 89,
+   "cost": 31612,
+   "cumulative": 965153,
+   "ds_reference_cost": 46841,
+   "ds_reference_cumulative": 1404047
+  },
+  {
+   "level": 90,
+   "cost": 32385,
+   "cumulative": 997538,
+   "ds_reference_cost": 47975,
+   "ds_reference_cumulative": 1452022
+  },
+  {
+   "level": 91,
+   "cost": 33171,
+   "cumulative": 1030709,
+   "ds_reference_cost": 49126,
+   "ds_reference_cumulative": 1501148
+  },
+  {
+   "level": 92,
+   "cost": 33968,
+   "cumulative": 1064677,
+   "ds_reference_cost": 50294,
+   "ds_reference_cumulative": 1551442
+  },
+  {
+   "level": 93,
+   "cost": 34778,
+   "cumulative": 1099455,
+   "ds_reference_cost": 51479,
+   "ds_reference_cumulative": 1602921
+  },
+  {
+   "level": 94,
+   "cost": 35601,
+   "cumulative": 1135056,
+   "ds_reference_cost": 52681,
+   "ds_reference_cumulative": 1655602
+  },
+  {
+   "level": 95,
+   "cost": 36436,
+   "cumulative": 1171492,
+   "ds_reference_cost": 53901,
+   "ds_reference_cumulative": 1709503
+  },
+  {
+   "level": 96,
+   "cost": 37283,
+   "cumulative": 1208775,
+   "ds_reference_cost": 55138,
+   "ds_reference_cumulative": 1764641
+  },
+  {
+   "level": 97,
+   "cost": 38143,
+   "cumulative": 1246918,
+   "ds_reference_cost": 56393,
+   "ds_reference_cumulative": 1821034
+  },
+  {
+   "level": 98,
+   "cost": 39016,
+   "cumulative": 1285934,
+   "ds_reference_cost": 57666,
+   "ds_reference_cumulative": 1878700
+  },
+  {
+   "level": 99,
+   "cost": 39901,
+   "cumulative": 1325835,
+   "ds_reference_cost": 58956,
+   "ds_reference_cumulative": 1937656
+  },
+  {
+   "level": 100,
+   "cost": 40800,
+   "cumulative": 1366635,
+   "ds_reference_cost": 60265,
+   "ds_reference_cumulative": 1997921
+  },
+  {
+   "level": 101,
+   "cost": 41712,
+   "cumulative": 1408347,
+   "ds_reference_cost": 61592,
+   "ds_reference_cumulative": 2059513
+  },
+  {
+   "level": 102,
+   "cost": 42636,
+   "cumulative": 1450983,
+   "ds_reference_cost": 62937,
+   "ds_reference_cumulative": 2122450
+  },
+  {
+   "level": 103,
+   "cost": 43574,
+   "cumulative": 1494557,
+   "ds_reference_cost": 64300,
+   "ds_reference_cumulative": 2186750
+  },
+  {
+   "level": 104,
+   "cost": 44525,
+   "cumulative": 1539082,
+   "ds_reference_cost": 65682,
+   "ds_reference_cumulative": 2252432
+  },
+  {
+   "level": 105,
+   "cost": 45489,
+   "cumulative": 1584571,
+   "ds_reference_cost": 67082,
+   "ds_reference_cumulative": 2319514
+  },
+  {
+   "level": 106,
+   "cost": 46467,
+   "cumulative": 1631038,
+   "ds_reference_cost": 68501,
+   "ds_reference_cumulative": 2388015
+  },
+  {
+   "level": 107,
+   "cost": 47459,
+   "cumulative": 1678497,
+   "ds_reference_cost": 69939,
+   "ds_reference_cumulative": 2457954
+  },
+  {
+   "level": 108,
+   "cost": 48464,
+   "cumulative": 1726961,
+   "ds_reference_cost": 71396,
+   "ds_reference_cumulative": 2529350
+  },
+  {
+   "level": 109,
+   "cost": 49482,
+   "cumulative": 1776443,
+   "ds_reference_cost": 72872,
+   "ds_reference_cumulative": 2602222
+  },
+  {
+   "level": 110,
+   "cost": 50515,
+   "cumulative": 1826958,
+   "ds_reference_cost": 74367,
+   "ds_reference_cumulative": 2676589
+  },
+  {
+   "level": 111,
+   "cost": 51561,
+   "cumulative": 1878519,
+   "ds_reference_cost": 75881,
+   "ds_reference_cumulative": 2752470
+  },
+  {
+   "level": 112,
+   "cost": 52622,
+   "cumulative": 1931141,
+   "ds_reference_cost": 77415,
+   "ds_reference_cumulative": 2829885
+  },
+  {
+   "level": 113,
+   "cost": 53696,
+   "cumulative": 1984837,
+   "ds_reference_cost": 78969,
+   "ds_reference_cumulative": 2908854
+  },
+  {
+   "level": 114,
+   "cost": 54785,
+   "cumulative": 2039622,
+   "ds_reference_cost": 80542,
+   "ds_reference_cumulative": 2989396
+  },
+  {
+   "level": 115,
+   "cost": 55888,
+   "cumulative": 2095510,
+   "ds_reference_cost": 82135,
+   "ds_reference_cumulative": 3071531
+  },
+  {
+   "level": 116,
+   "cost": 57005,
+   "cumulative": 2152515,
+   "ds_reference_cost": 83748,
+   "ds_reference_cumulative": 3155279
+  },
+  {
+   "level": 117,
+   "cost": 58137,
+   "cumulative": 2210652,
+   "ds_reference_cost": 85381,
+   "ds_reference_cumulative": 3240660
+  },
+  {
+   "level": 118,
+   "cost": 59283,
+   "cumulative": 2269935,
+   "ds_reference_cost": 87034,
+   "ds_reference_cumulative": 3327694
+  },
+  {
+   "level": 119,
+   "cost": 60444,
+   "cumulative": 2330379,
+   "ds_reference_cost": 88707,
+   "ds_reference_cumulative": 3416401
+  },
+  {
+   "level": 120,
+   "cost": 61620,
+   "cumulative": 2391999,
+   "ds_reference_cost": 90401,
+   "ds_reference_cumulative": 3506802
+  },
+  {
+   "level": 121,
+   "cost": 62810,
+   "cumulative": 2454809,
+   "ds_reference_cost": 92115,
+   "ds_reference_cumulative": 3598917
+  },
+  {
+   "level": 122,
+   "cost": 64016,
+   "cumulative": 2518825,
+   "ds_reference_cost": 93850,
+   "ds_reference_cumulative": 3692767
+  },
+  {
+   "level": 123,
+   "cost": 65236,
+   "cumulative": 2584061,
+   "ds_reference_cost": 95606,
+   "ds_reference_cumulative": 3788373
+  },
+  {
+   "level": 124,
+   "cost": 66471,
+   "cumulative": 2650532,
+   "ds_reference_cost": 97382,
+   "ds_reference_cumulative": 3885755
+  },
+  {
+   "level": 125,
+   "cost": 67722,
+   "cumulative": 2718254,
+   "ds_reference_cost": 99180,
+   "ds_reference_cumulative": 3984935
+  },
+  {
+   "level": 126,
+   "cost": 68988,
+   "cumulative": 2787242,
+   "ds_reference_cost": 100999,
+   "ds_reference_cumulative": 4085934
+  },
+  {
+   "level": 127,
+   "cost": 70269,
+   "cumulative": 2857511,
+   "ds_reference_cost": 102839,
+   "ds_reference_cumulative": 4188773
+  },
+  {
+   "level": 128,
+   "cost": 71565,
+   "cumulative": 2929076,
+   "ds_reference_cost": 104700,
+   "ds_reference_cumulative": 4293473
+  },
+  {
+   "level": 129,
+   "cost": 72877,
+   "cumulative": 3001953,
+   "ds_reference_cost": 106583,
+   "ds_reference_cumulative": 4400056
+  },
+  {
+   "level": 130,
+   "cost": 74205,
+   "cumulative": 3076158,
+   "ds_reference_cost": 108487,
+   "ds_reference_cumulative": 4508543
+  },
+  {
+   "level": 131,
+   "cost": 75548,
+   "cumulative": 3151706,
+   "ds_reference_cost": 110413,
+   "ds_reference_cumulative": 4618956
+  },
+  {
+   "level": 132,
+   "cost": 76908,
+   "cumulative": 3228614,
+   "ds_reference_cost": 112361,
+   "ds_reference_cumulative": 4731317
+  },
+  {
+   "level": 133,
+   "cost": 78283,
+   "cumulative": 3306897,
+   "ds_reference_cost": 114331,
+   "ds_reference_cumulative": 4845648
+  },
+  {
+   "level": 134,
+   "cost": 79674,
+   "cumulative": 3386571,
+   "ds_reference_cost": 116323,
+   "ds_reference_cumulative": 4961971
+  },
+  {
+   "level": 135,
+   "cost": 81081,
+   "cumulative": 3467652,
+   "ds_reference_cost": 118337,
+   "ds_reference_cumulative": 5080308
+  },
+  {
+   "level": 136,
+   "cost": 82504,
+   "cumulative": 3550156,
+   "ds_reference_cost": 120373,
+   "ds_reference_cumulative": 5200681
+  },
+  {
+   "level": 137,
+   "cost": 83943,
+   "cumulative": 3634099,
+   "ds_reference_cost": 122432,
+   "ds_reference_cumulative": 5323113
+  },
+  {
+   "level": 138,
+   "cost": 85399,
+   "cumulative": 3719498,
+   "ds_reference_cost": 124514,
+   "ds_reference_cumulative": 5447627
+  },
+  {
+   "level": 139,
+   "cost": 86871,
+   "cumulative": 3806369,
+   "ds_reference_cost": 126618,
+   "ds_reference_cumulative": 5574245
+  },
+  {
+   "level": 140,
+   "cost": 88360,
+   "cumulative": 3894729,
+   "ds_reference_cost": 128745,
+   "ds_reference_cumulative": 5702990
+  }
+ ]
+}
