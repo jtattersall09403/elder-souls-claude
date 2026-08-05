@@ -4,10 +4,17 @@
   "private": true,
   "type": "module",
   "description": "Measurement harness for the Elder Souls corpus. See corpus/80-methods/HARNESS.md.",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "smoke": "node harness/smoke.mjs",
-    "all": "node run-all.mjs"
+    "all": "node run-all.mjs",
+    "index": "node corpus-index.mjs",
+    "index:check": "node corpus-index.mjs --check",
+    "ledger": "node gap-ledger.mjs",
+    "verdicts": "node verdict-validate.mjs --all",
+    "doctrine": "node corpus-index.mjs && node gap-ledger.mjs && node verdict-validate.mjs --all"
   },
   "dependencies": {
     "pngjs": "^7.0.0",

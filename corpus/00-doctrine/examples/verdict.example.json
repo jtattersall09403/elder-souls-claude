@@ -133,14 +133,14 @@
     {
       "path": "corpus/00-doctrine/examples/artifacts/combat-dodge-core/blind-A.jsonl",
       "kind": "blind-pack",
-      "produced_by": "node tools/harness/blind-pack.mjs --item RI-CMB03 --assign-seed 7731",
+      "produced_by": "node tools/harness/blind-pack.mjs --item RI-CMB01 --assign-seed 7731",
       "seed": 7731,
       "source": "blind-pack"
     },
     {
       "path": "corpus/00-doctrine/examples/artifacts/combat-dodge-core/blind-B.jsonl",
       "kind": "blind-pack",
-      "produced_by": "node tools/harness/blind-pack.mjs --item RI-CMB03 --assign-seed 7731",
+      "produced_by": "node tools/harness/blind-pack.mjs --item RI-CMB01 --assign-seed 7731",
       "seed": 7731,
       "source": "blind-pack"
     }
@@ -148,7 +148,7 @@
 
   "blind_comparisons": [
     {
-      "ref_item": "RI-CMB03",
+      "ref_item": "RI-CMB01",
       "status": "done",
       "question": "Which per-frame damage-nulled series belongs to a roll a player could use reactively against a committed swing?",
       "pack_artifacts": [
@@ -197,7 +197,7 @@
   "biggest_gap": {
     "gap_id": "GAP-W1-combat-dodge-iframe-window",
     "subsystem_path": "combat.dodge.iframes",
-    "what": "The roll grants a median of 7 invulnerable frames, opening at roll frame 9; RI-CMB03 requires 13 +/-1 opening by frame 4. Measured over 120 scripted rolls at light load.",
+    "what": "The roll grants a median of 7 invulnerable frames, opening at roll frame 9; RI-CMB01 requires 13 +/-1 opening by frame 4. Measured over 120 scripted rolls at light load.",
     "why_it_matters": "A player who reads the windup correctly and rolls on time still takes the hit, so the fight never teaches its own timing.",
     "evidence": [
       "corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json",
@@ -208,7 +208,7 @@
       "action": "Stop deriving invulnerability from the animation clip. Add an explicit i-frame window to the roll state: open at roll frame 4, close at frame 16 (13 frames inclusive) at light load, driven by the roll state machine and exposed in the trace as `invuln:true` so it is measurable.",
       "targets": ["game/src/combat/dodge.ts", "game/src/combat/state/roll.ts", "game/src/combat/trace.ts"],
       "acceptance": "tools/harness/iframe-sweep.mjs over 120 rolls reports median 13 +/-1 invulnerable frames with first invulnerable frame index 4 +/-1, and zero damage events inside the window.",
-      "ref_item": "RI-CMB03",
+      "ref_item": "RI-CMB01",
       "estimated_size": "S"
     }
   },

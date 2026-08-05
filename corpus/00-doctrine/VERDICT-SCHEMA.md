@@ -149,7 +149,8 @@ Rules for the aggregator, so verdicts and page never disagree:
 
 See `corpus/00-doctrine/examples/verdict.example.json` for a complete, schema-valid
 verdict (a FAIL on `combat.dodge.iframes` with an AR-1 pass, one blind comparison the
-reference won, and one buildable gap). Abridged:
+reference won, and one buildable gap — it validates clean with
+`node tools/verdict-validate.mjs corpus/00-doctrine/examples/verdict.example.json`). Abridged:
 
 ```jsonc
 {
@@ -162,12 +163,13 @@ reference won, and one buildable gap). Abridged:
               "conflict_of_interest": false },
   "bifurcation": { "axis": "not-visual", "declared_before_citation": true },
   "reference_items": [{
-    "id": "RI-CMB03", "path": "corpus/10-combat/RI-CMB03-roll-iframes.md",
+    "id": "RI-CMB01", "path": "corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md",
     "side": "souls", "kind": "number",
-    "native_scale": "frames of invulnerability, target 13 (+/-1) at light load",
-    "native_score": 7, "native_max": 13, "native_verdict": "Loses outright",
+    "native_scale": "0-100 weighted (M1..M5); >=90 parity, 70-89 gap named, <70 we lose",
+    "native_score": 35, "native_max": 100, "native_verdict": "we lose",
     "score_0_10": 3, "measured": "full",
-    "checks": [{ "id": "M1", "result": "fail", "value": 7, "threshold": "12-14",
+    "checks": [{ "id": "M2", "result": "fail", "value": 7,
+                 "threshold": "13 frames, boundaries exact",
                  "hard_fail": false,
                  "evidence": ["corpus/90-verdicts/w1/artifacts/combat-dodge-core/roll-iframe-sweep.json"] }],
     "hard_fails": [],
@@ -189,15 +191,15 @@ reference won, and one buildable gap). Abridged:
   "biggest_gap": {
     "gap_id": "GAP-W1-combat-dodge-iframe-window",
     "subsystem_path": "combat.dodge.iframes",
-    "what": "Roll grants 7 invulnerable frames measured across 120 scripted rolls; RI-CMB03 requires 13 +/-1.",
+    "what": "Roll grants 7 invulnerable frames measured across 120 scripted rolls; RI-CMB01 requires 13, opening at frame 4.",
     "why_it_matters": "Players who dodge on the correct read still get hit, so the fight teaches nothing.",
     "evidence": ["corpus/90-verdicts/w1/artifacts/combat-dodge-core/roll-iframe-sweep.json"],
     "severity": "blocking",
     "remedy": {
       "action": "Replace the animation-length-derived invulnerability with an explicit i-frame window opened at roll frame 4 and closed at frame 16, driven by the roll state machine rather than the clip.",
       "targets": ["game/src/combat/dodge.ts", "game/src/combat/state/roll.ts"],
-      "acceptance": "iframe-sweep reports 13 +/-1 invulnerable frames over 120 rolls at light load, and 0 damage events inside the window.",
-      "ref_item": "RI-CMB03", "estimated_size": "S"
+      "acceptance": "iframe-sweep reports 13 invulnerable frames over 120 rolls at light load, first invulnerable frame index 4, and 0 damage events inside the window.",
+      "ref_item": "RI-CMB01", "estimated_size": "S"
     }
   },
   "corpus_extended": [],
