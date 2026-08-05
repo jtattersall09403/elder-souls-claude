@@ -1,0 +1,731 @@
+{
+ "schema": "es-combat-scenario/1",
+ "fps": 60,
+ "duration_frames": 3600,
+ "seed": 0,
+ "arena": {
+  "kind": "flat_disc",
+  "radius_m": 18.0,
+  "obstacles": []
+ },
+ "player": {
+  "build": "straight_sword_1h + marsh-oak medium shield",
+  "hp_max": 620,
+  "stam_max": 120,
+  "equip_load_pct": 28.4,
+  "roll_tier": "LIGHT",
+  "armour_poise": 18,
+  "estus_charges": 5,
+  "estus_heal": 248,
+  "shield_stability": 0.62,
+  "shield_absorption": 0.94,
+  "start_pos": [
+   0,
+   0,
+   -3.4
+  ],
+  "start_yaw_deg": 0.0,
+  "moveset": {
+   "R1": {
+    "anim": "ss_r1_h",
+    "startup": 12,
+    "active": 5,
+    "total": 37,
+    "stam": 20,
+    "dmg": 118,
+    "pd": 22
+   },
+   "R2": {
+    "anim": "ss_r2_h",
+    "startup": 25,
+    "active": 6,
+    "total": 61,
+    "stam": 34,
+    "dmg": 196,
+    "pd": 40,
+    "ha": [
+     16,
+     31
+    ]
+   },
+   "ROLL": {
+    "anim": "roll_light",
+    "total": 26,
+    "ifr": [
+     3,
+     15
+    ],
+    "stam": 22
+   },
+   "ESTUS": {
+    "anim": "estus_drink",
+    "total": 65,
+    "heal_span": [
+     22,
+     52
+    ],
+    "stam": 0,
+    "heal": 248
+   },
+   "BS": {
+    "anim": "crit_backstab",
+    "total": 62,
+    "dmg": 320,
+    "stam": 24,
+    "invuln": [
+     8,
+     54
+    ]
+   }
+  }
+ },
+ "enemy": {
+  "id": "hist_marked_champion",
+  "archetype": "ELITE",
+  "hp_max": 2876,
+  "poise_health": 28,
+  "start_pos": [
+   0,
+   0,
+   0
+  ],
+  "start_yaw_deg": 180.0,
+  "moveset": {
+   "A1": {
+    "anim": "e_overhead_chop",
+    "windup": 34,
+    "actives": [
+     [
+      34,
+      5
+     ]
+    ],
+    "total": 77,
+    "dmg": 128,
+    "pd": 32
+   },
+   "A2": {
+    "anim": "e_two_hit_combo",
+    "windup": 26,
+    "actives": [
+     [
+      26,
+      4
+     ],
+     [
+      48,
+      4
+     ]
+    ],
+    "total": 98,
+    "dmg": 96,
+    "pd": 20
+   },
+   "A3": {
+    "anim": "e_thrust_lunge",
+    "windup": 40,
+    "actives": [
+     [
+      40,
+      6
+     ]
+    ],
+    "total": 80,
+    "dmg": 145,
+    "pd": 36
+   },
+   "A4": {
+    "anim": "e_shield_bash",
+    "windup": 22,
+    "actives": [
+     [
+      22,
+      4
+     ]
+    ],
+    "total": 60,
+    "dmg": 55,
+    "pd": 44
+   },
+   "A5": {
+    "anim": "e_great_slam",
+    "windup": 70,
+    "actives": [
+     [
+      70,
+      8
+     ]
+    ],
+    "total": 156,
+    "dmg": 235,
+    "pd": 64
+   }
+  },
+  "scripted_actions": [
+   {
+    "f": 132,
+    "move": "A1"
+   },
+   {
+    "f": 300,
+    "move": "A2"
+   },
+   {
+    "f": 470,
+    "move": "A4"
+   },
+   {
+    "f": 590,
+    "move": "A3"
+   },
+   {
+    "f": 790,
+    "move": "A1"
+   },
+   {
+    "f": 990,
+    "move": "A2"
+   },
+   {
+    "f": 1190,
+    "move": "A1"
+   },
+   {
+    "f": 1400,
+    "move": "A4"
+   },
+   {
+    "f": 1520,
+    "move": "A3"
+   },
+   {
+    "f": 1720,
+    "move": "A2"
+   },
+   {
+    "f": 1920,
+    "move": "A1"
+   },
+   {
+    "f": 2100,
+    "move": "A3"
+   },
+   {
+    "f": 2300,
+    "move": "A4"
+   },
+   {
+    "f": 2470,
+    "move": "A2"
+   },
+   {
+    "f": 2650,
+    "move": "A1"
+   },
+   {
+    "f": 2860,
+    "move": "A5"
+   },
+   {
+    "f": 3130,
+    "move": "A2"
+   },
+   {
+    "f": 3410,
+    "move": "A1"
+   }
+  ],
+  "between_actions": "REPOSITION: strafe right at 1.4 m/s holding 3.2 m range, face player"
+ },
+ "player_inputs": [
+  {
+   "f": 10,
+   "btn": "LOCK_TOGGLE",
+   "stick": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "f": 16,
+   "btn": "SPRINT_HOLD",
+   "hold_until": 74,
+   "stick": [
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "f": 160,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 186,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 223,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 240,
+   "btn": "MOVE",
+   "hold_until": 284,
+   "stick": [
+    0.0,
+    -1.0
+   ]
+  },
+  {
+   "f": 316,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 342,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 368,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 478,
+   "btn": "GUARD_DOWN_EDGE",
+   "hold_until": 520,
+   "stick": [
+    0.0,
+    0.0
+   ],
+   "note": "hold guard"
+  },
+  {
+   "f": 499,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 623,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 650,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 730,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "whiff"
+  },
+  {
+   "f": 818,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 844,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 881,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 918,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 955,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 1010,
+   "btn": "GUARD_DOWN_EDGE",
+   "hold_until": 1042,
+   "stick": [
+    0.0,
+    0.0
+   ],
+   "note": "hold guard"
+  },
+  {
+   "f": 1080,
+   "btn": "MOVE",
+   "hold_until": 1140,
+   "stick": [
+    0.0,
+    -1.0
+   ]
+  },
+  {
+   "f": 1130,
+   "btn": "DODGE",
+   "stick": [
+    -1.0,
+    0.0
+   ],
+   "tag": "reposition"
+  },
+  {
+   "f": 1246,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 1290,
+   "btn": "HEAL",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "heal"
+  },
+  {
+   "f": 1408,
+   "btn": "GUARD_DOWN_EDGE",
+   "hold_until": 1450,
+   "stick": [
+    0.0,
+    0.0
+   ],
+   "note": "hold guard"
+  },
+  {
+   "f": 1429,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 1555,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 1581,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 1738,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 1764,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 1790,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 1980,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 2134,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 2160,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "crit"
+  },
+  {
+   "f": 2230,
+   "btn": "MOVE",
+   "hold_until": 2270,
+   "stick": [
+    0.0,
+    -1.0
+   ]
+  },
+  {
+   "f": 2308,
+   "btn": "GUARD_DOWN_EDGE",
+   "hold_until": 2350,
+   "stick": [
+    0.0,
+    0.0
+   ],
+   "note": "hold guard"
+  },
+  {
+   "f": 2329,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 2420,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "whiff"
+  },
+  {
+   "f": 2488,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 2514,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 2540,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 2600,
+   "btn": "DODGE",
+   "stick": [
+    -1.0,
+    0.0
+   ],
+   "tag": "reposition"
+  },
+  {
+   "f": 2740,
+   "btn": "ATTACK_HEAVY",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 2802,
+   "btn": "MOVE",
+   "hold_until": 2842,
+   "stick": [
+    0.0,
+    -1.0
+   ]
+  },
+  {
+   "f": 2924,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 2952,
+   "btn": "HEAL",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "heal"
+  },
+  {
+   "f": 3070,
+   "btn": "SPRINT_HOLD",
+   "hold_until": 3110,
+   "stick": [
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "f": 3149,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 3205,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 3280,
+   "btn": "MOVE",
+   "hold_until": 3314,
+   "stick": [
+    0.0,
+    -1.0
+   ]
+  },
+  {
+   "f": 3438,
+   "btn": "DODGE",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "dodge"
+  },
+  {
+   "f": 3464,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 3501,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  },
+  {
+   "f": 3538,
+   "btn": "ATTACK_LIGHT",
+   "stick": [
+    0.0,
+    1.0
+   ],
+   "tag": "punish"
+  }
+ ]
+}

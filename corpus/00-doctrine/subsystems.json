@@ -49,7 +49,6 @@
     "combat.damage_formula": "combat.damage.model",
     "combat.weapons.frames": "combat.frames.timing",
     "movement.speed": "world.traversal.locomotion",
-
     "progression.attributes": "progression.level.attributes",
     "progression.level_cost": "progression.level.curve",
     "progression.skills": "progression.skill.usegrowth",
@@ -72,7 +71,6 @@
     "progression.fatigue": "progression.fatigue.social",
     "progression.souls_yield": "progression.souls.economy",
     "progression.pace": "progression.level.curve",
-
     "quests.stages": "quests.structure.stages",
     "quests.branching": "quests.structure.branching",
     "quests.deceit": "quests.structure.deceit",
@@ -98,7 +96,6 @@
     "quests.schema": "quests.data.schema",
     "quests.side": "quests.side.texture",
     "data.quests": "quests.data.schema",
-
     "dialogue.topics": "dialogue.topics.graph",
     "dialogue.discovery": "dialogue.topics.discovery",
     "dialogue.filter": "dialogue.topics.filtering",
@@ -114,7 +111,6 @@
     "npc.services": "dialogue.service.merchant",
     "npc.population": "world.npc.population",
     "quest.hubs": "quests.discovery.hooks",
-
     "world.scale": "world.map.scale",
     "world.travel": "world.traversal.transport",
     "world.transport": "world.traversal.transport",
@@ -141,7 +137,6 @@
     "world.reactivity": "world.persistence.state",
     "world.region_gating": "world.region.gating",
     "visual.process.blindtest": "render.process.bifurcation",
-
     "lore.canon": "lore.canon.registry",
     "lore.era": "lore.canon.history",
     "lore.history": "lore.canon.history",
@@ -153,7 +148,6 @@
     "books.length": "lore.book.structure",
     "books.taxonomy": "lore.book.structure",
     "ui.readables": "ui.menu.books",
-
     "visual.renderer": "render.fidelity.materials",
     "visual.renderer.lighting": "render.fidelity.lighting",
     "visual.renderer.shadows": "render.fidelity.shadows",
@@ -181,212 +175,1445 @@
     "visual.process.declaration": "render.process.bifurcation",
     "visual.process.judgement": "render.process.bifurcation",
     "visual.process.contamination": "render.process.bifurcation",
-    "visual.process.measurement": "render.process.measurement"
+    "visual.process.measurement": "render.process.measurement",
+    "combat.camera": "combat.camera.behaviour",
+    "combat.criticals": "combat.block.parry",
+    "combat.parry": "combat.block.parry",
+    "combat.poise": "combat.poise.player",
+    "combat.hyperarmour": "combat.poise.player",
+    "combat.trade": "combat.poise.player",
+    "combat.stagger": "combat.poise.enemy",
+    "combat.lockon": "combat.lockon.target",
+    "combat.input.direction": "combat.dodge.directional",
+    "combat.difficulty-gating": "combat.difficulty.lethality",
+    "dialogue.journal": "journal.entry.voice",
+    "quests.tracking": "journal.navigation.nomarkers",
+    "quests.structure": "quests.structure.stages",
+    "npc.reaction": "dialogue.disposition.model",
+    "economy.smithing": "progression.equipment.upgrade",
+    "progression.upgrade": "progression.equipment.upgrade",
+    "progression.materials": "progression.equipment.upgrade",
+    "ui.hud": "ui.hud.combat",
+    "visual.art-direction": "render.art.palette",
+    "visual.artdirection.mood": "render.art.mood",
+    "world.audio": "audio.ambience.region",
+    "world.biomes": "world.region.identity",
+    "world.regions": "world.region.identity",
+    "world.fauna": "world.strangeness.fauna",
+    "world.flora": "world.strangeness.flora",
+    "world.strangeness": "world.strangeness.budget",
+    "world.wayfinding": "world.wayfinding.directions",
+    "world.systems": "coherence.systems.composition",
+    "world.loot_placement": "world.loot.placement",
+    "world.weather": "world.weather.systems",
+    "creatures.names": "lore.naming.conventions",
+    "items.names": "lore.naming.conventions",
+    "npc.names": "lore.naming.conventions",
+    "lore.names": "lore.naming.conventions",
+    "world.placenames": "lore.naming.conventions",
+    "lore.language": "lore.naming.conventions",
+    "dialogue.directions": "journal.entry.directions",
+    "dialogue.voice": "dialogue.voice.register",
+    "quest.journal": "journal.entry.voice",
+    "world.navigation": "world.wayfinding.directions",
+    "world.signage": "world.wayfinding.directions",
+    "engine.loop": "platform.determinism.harness",
+    "engine.harness": "platform.determinism.harness",
+    "engine.build": "platform.load.streaming",
+    "engine.state": "platform.save.persistence",
+    "engine.input": "platform.input.pipeline",
+    "engine.camera": "combat.camera.behaviour",
+    "visual.animation.rootmotion": "combat.attack.commitment",
+    "visual.animation.blending": "render.fidelity.animation",
+    "visual.animation.smoothness": "render.fidelity.animation",
+    "visual.animation.ik": "render.fidelity.animation",
+    "visual.animation.attachment": "render.fidelity.animation",
+    "visual.character.model": "render.fidelity.character",
+    "visual.character.materials": "render.fidelity.character",
+    "visual.character.silhouette": "render.art.silhouette",
+    "visual.creature.readability": "render.art.creature"
   },
   "subsystems": [
-    { "path": "combat.frames.timing", "title": "Startup / active / recovery frame counts per attack", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.frames.cancel", "title": "What may cancel what, and when (roll-cancel, no free animation cancels)", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.dodge.iframes", "title": "Roll invulnerability window measured in frames at 60Hz", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.dodge.directional", "title": "Directional roll semantics under lock-on, including backstep", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.dodge.recovery", "title": "Post-roll recovery and roll-spam punishment", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.stamina.costs", "title": "Stamina cost table per action", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.stamina.regen", "title": "Regen rate and post-spend regen delay", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.stamina.block", "title": "Guard stamina drain, guard break, stability", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.stamina.exhaustion", "title": "Zero-stamina state and its punish window", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.hitbox.sweep", "title": "Weapon hit volumes swept along the arc across the active window", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.hitbox.hurtbox", "title": "Hurtboxes bound to and moving with animated bones", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.hitbox.resolution", "title": "Deterministic geometric hit resolution — NO to-hit roll (seam S1)", "arb": "split", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.damage.model", "title": "Damage formula, defences, absorption", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.damage.scaling", "title": "How stats and skills scale damage (seam S3: scaling, never to-hit)", "arb": "split", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.poise.player", "title": "Player poise / hyperarmour and stagger-out", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.poise.enemy", "title": "Enemy poise breaking, stagger, critical-hit opening", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.block.guard", "title": "Blocking, chip damage, guard angle", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.block.parry", "title": "Parry window, riposte, backstab", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.attack.moveset", "title": "Per-weapon-class moveset shape (R1/R2 chains, running, rolling)", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.attack.commitment", "title": "Root-motion-authoritative committed attacks; no instant turn during a swing", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.attack.charge", "title": "Charged heavy attacks and their risk/reward", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.attack.tracking", "title": "How much an attack may turn during startup, and not at all after", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.dodge.equipload", "title": "Equip load changing roll type, distance, and recovery", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.player.movement", "title": "In-fight locomotion: run, strafe, backstep, and their speeds", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.weapon.identity", "title": "Weapon classes feel categorically different to hold and swing", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.lockon.target", "title": "Hard target lock acquisition, range, break conditions", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.lockon.switch", "title": "Target switching between multiple hostiles", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.camera.behaviour", "title": "Combat camera framing, collision, and lock-on pivot", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.enemy.perception", "title": "Sight cone, LOS, alert ladder, cost-of-entry aggro", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.enemy.statemachine", "title": "Enemy AI states and legal transitions", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.enemy.movement", "title": "Approach, spacing bands, strafing, gap closing", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.enemy.telegraph", "title": "Readable windups; no untelegraphed instant attacks", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.enemy.punish", "title": "Punish windows both ways: enemy recovery, player heal-read", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.enemy.leash", "title": "De-aggro, leash return, world reset, no invulnerable walk-home", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.encounter.grouping", "title": "Multi-enemy token arbitration; no gang-pile, no frozen queue", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.encounter.placement", "title": "Hand-placed encounter composition and ambush legibility", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.boss.phases", "title": "Boss phase transitions and moveset expansion", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.boss.arena", "title": "Boss arena shape, fog gate, retry loop", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.heal.charges", "title": "Estus-equivalent: finite charges, animation commitment, refill at rest", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.status.buildup", "title": "In-fight status meters and procs (seam S11 Souls half)", "arb": "split", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.magic.casting", "title": "Spellcasting inside the fight: cast frames, commitment, resource", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.death.corpserun", "title": "Souls dropped on death, recoverable at the death spot, lost on second death", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.death.worldreset", "title": "Rest/death resets ordinary enemies; named actors never respawn (seam S5)", "arb": "split", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.input.buffer", "title": "Input buffering window and queue semantics", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.input.latency", "title": "Press-to-first-active-frame latency", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.feedback.hitstop", "title": "Hitstop, impact vfx/sfx, damage legibility", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.difficulty.lethality", "title": "Regions gated by lethality; NO level-scaling to the player (seam S9)", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-    { "path": "combat.pause.policy", "title": "World does not pause during combat; inventory is not a safe haven (seam S14)", "arb": "souls", "area": "10-combat", "critic": "critic.combat" },
-
-    { "path": "progression.level.curve", "title": "Soul cost per level, single soft-cap curve, bonfire level-up (seam S2)", "arb": "split", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.level.attributes", "title": "Breadth of the stat sheet: attributes shaping build identity beyond weapon class", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.skill.usegrowth", "title": "Skills improve by use (seam S3)", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.skill.gating", "title": "Skills gate access and utility, never to-hit", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.build.identity", "title": "Two different builds play observably differently out of the fight, not only in it", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.souls.economy", "title": "Souls level you and ONLY level you (seam S15)", "arb": "neutral", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.gold.economy", "title": "Gold is the only currency: merchants, bribes, training, travel, repairs", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.merchant.barter", "title": "Merchant gold pools, barter, disposition-affected prices", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.bonfire.function", "title": "What resting does and does not do (checkpoint + level-up, never teleport)", "arb": "split", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.bonfire.placement", "title": "Spacing and siting of rest points relative to danger", "arb": "souls", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.equipment.upgrade", "title": "Weapon upgrade paths and materials", "arb": "souls", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.equipment.encumbrance", "title": "Load / equip burden and its movement consequences", "arb": "split", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.inventory.model", "title": "Inventory breadth, item weight, containers, repair", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.affliction.economy", "title": "Named diseases, curses, in-world causes and cures (seam S11 Morrowind half)", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.fatigue.social", "title": "Morrowind Fatigue survives out-of-fight, affecting disposition/persuasion (seam S4)", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.skill.social", "title": "Social skills (speechcraft, mercantile) and what they buy you", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.training.trainers", "title": "Trainers: who, what skills, what limits, paid in gold", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-    { "path": "progression.crafting.alchemy", "title": "Ingredients, alchemy, and the crafting loop", "arb": "morrowind", "area": "20-progression", "critic": "critic.progression" },
-
-    { "path": "quests.structure.stages", "title": "Multi-stage quests with real intermediate state", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.structure.branching", "title": "Branch points that survive to different endings, not cosmetic choice", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.structure.deceit", "title": "Quest-givers who lie, omit, or use the player", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.resolution.noncombat", "title": "Quests resolvable by talk, bribe, sneak, theft, or lore knowledge", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.resolution.exclusive", "title": "Mutually exclusive resolutions that permanently close doors", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.faction.joining", "title": "How you join, and that joining means something", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.faction.rankgating", "title": "Rank requirements on skills AND attributes", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.faction.escalation", "title": "Errands escalate to politics escalate to power over the faction", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.faction.rivalry", "title": "Faction rivalry locks: advancing here costs you there", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.faction.expulsion", "title": "Expulsion, disgrace, and the path back", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.mainline.prophecy", "title": "Main quest shape: prophecy, doubt, and earned legitimacy", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.giver.characterisation", "title": "Quest-givers are people with agendas, not dispensers", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.reward.shape", "title": "Rewards are specific, named, sometimes worse than promised", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.failure.severed", "title": "Killable quest NPCs; thread-of-prophecy-severed instead of game over (seam S10)", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.discovery.hooks", "title": "Quests found through rumour and overheard talk, not a quest board", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.state.persistence", "title": "Quest/faction/world flags survive death untouched (seam S6)", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.data.schema", "title": "The quest data schema itself: stages, conditions, flags, journal binding", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.density.count", "title": "How many quests exist per faction, settlement, and region", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.lore.hooks", "title": "Quests that hang off books, rumours, and canon rather than a giver", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.mainline.acts", "title": "Act structure of the main quest and its turning points", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.mainline.antagonist", "title": "The antagonist: presence, motive, and how the world speaks of them", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-    { "path": "quests.side.texture", "title": "Side-quest texture: small, strange, local, non-heroic", "arb": "morrowind", "area": "30-quests", "critic": "critic.quests" },
-
-    { "path": "dialogue.topics.graph", "title": "Topic-list dialogue with a real graph behind it", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.topics.discovery", "title": "Keyword discovery: topics unlock by being told about them", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.topics.filtering", "title": "Same topic, different answer by faction/race/rank/disposition/place", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.disposition.model", "title": "Disposition as a real number with real consequences", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.persuasion.mechanics", "title": "Admire / intimidate / taunt / bribe and their risks", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.rumour.distribution", "title": "Rumours differ per town and per class, and point at real content", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.voice.register", "title": "Prose quality and register: does it read like Morrowind or like filler", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.npc.identity", "title": "An NPC reads as a specific person with a specific position", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.greeting.variation", "title": "Greetings vary by state, place, and standing", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.service.merchant", "title": "Barter, training, repair, transport conducted through dialogue", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.combat.lockout", "title": "Topic lists locked during COMBAT; enemies shout, not converse (seam S13)", "arb": "souls", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.lore.vector", "title": "NPC dialogue, not item descriptions, is the primary lore vector (AR-2)", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.density.wordcount", "title": "Volume of authored dialogue per NPC, settlement, and region", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-    { "path": "dialogue.topics.truth", "title": "NPCs may be wrong or lying inside a topic answer, discoverably", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.dialogue" },
-
-    { "path": "journal.entry.voice", "title": "First-person-authored journal prose written by the character", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.journal" },
-    { "path": "journal.entry.numbering", "title": "Numbered, dated, append-only entries with stable indices", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.journal" },
-    { "path": "journal.entry.directions", "title": "Directions carried in prose: landmarks, distances, named people (seam S8)", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.journal" },
-    { "path": "journal.navigation.nomarkers", "title": "No compass markers, no objective arrows, anywhere", "arb": "morrowind", "area": "40-dialogue", "critic": "critic.journal" },
-
-    { "path": "world.region.identity", "title": "Each region is instantly identifiable from one screenshot", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.region.transition", "title": "Borders between regions read as a change, not a texture swap", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.region.gating", "title": "Region access gated by lethality and knowledge, not by level checks", "arb": "souls", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.map.scale", "title": "Absolute world size and the time it takes to cross", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.map.legibility", "title": "Navigable by landmark and memory; the map is a drawing, not a GPS", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.density.handplacement", "title": "Hand-placed density: things per 100m that reward walking", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.settlement.anatomy", "title": "What a settlement contains and how it is laid out", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.interior.named", "title": "Named interiors with owners, contents, and reasons to exist", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.interior.continuity", "title": "Interiors match their exteriors in size, orientation, and light", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.traversal.time", "title": "Traversal time budgets between named places", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.traversal.transport", "title": "In-fiction transport network only; no warp-to-pin (seam S7)", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.wayfinding.directions", "title": "Getting there from prose directions actually works", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.strangeness.flora", "title": "Alien plant life that is not a European forest", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.strangeness.fauna", "title": "Alien animals and their behaviour in the world", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.strangeness.architecture", "title": "Buildings that could not be anywhere else", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.hazard.environment", "title": "Swamp, blight, drowning, disease vectors as world hazards", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.water.marsh", "title": "Black Marsh specifically: water, tide, mud, depth, and its cost to cross", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.loot.placement", "title": "Hand-placed, named, weird loot; no procedural drop tables (seam S12)", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.npc.population", "title": "Who lives here, in what numbers, doing what", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.persistence.state", "title": "Dropped, moved, and taken things stay that way", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.traversal.roads", "title": "Roads, boardwalks and paths as the readable skeleton of the map", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.traversal.locomotion", "title": "Player movement speeds out of the fight, which set every traversal budget", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.terrain.form", "title": "Terrain shape, elevation, and how it channels movement", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.time.daynight", "title": "Time of day, its length, and what actually changes with it", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.property.ownership", "title": "Owned things, theft, witnesses, and consequence", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.locks.security", "title": "Locks, security ratings, picking, and the alternatives to picking", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-    { "path": "world.faction.presence", "title": "Which factions hold which places, visibly, on the ground", "arb": "morrowind", "area": "50-world", "critic": "critic.world" },
-
-    { "path": "lore.canon.registry", "title": "The canon-facts registry itself, including the `disputed` flag", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.canon.argonian", "title": "Argonian culture, Hist, naming, biology, outsider perception", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.canon.geography", "title": "Black Marsh geography and place-names against canon", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.canon.history", "title": "Deep-time history and its visible residue", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.book.structure", "title": "In-world books: length, form, authorial voice", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.book.unreliability", "title": "Sources contradict each other on purpose and are traceable to a bias", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.naming.conventions", "title": "Names of people, places, and things obey a consistent phonology", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.religion.hist", "title": "The Hist as an actual force in the world, not decoration", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.canon.factions", "title": "Who holds power, in canon: factions, politics, and their era", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-    { "path": "lore.canon.prophecy", "title": "Prophecy as a lore object: its text, its readers, and their disagreement", "arb": "morrowind", "area": "60-lore", "critic": "critic.lore" },
-
-    { "path": "render.fidelity.lighting", "title": "Direct/indirect lighting quality vs modern references", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.shadows", "title": "Shadow resolution, contact hardening, acne/peter-panning", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.materials", "title": "PBR material response, roughness variation, no plastic look", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.atmosphere", "title": "Fog, haze, aerial perspective, volumetrics", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.vegetation", "title": "Plant density, variation, wind response, LOD transitions", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.water", "title": "Water surface, refraction, shoreline, and underwater", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.character", "title": "Character and creature mesh/texture quality up close", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.animation", "title": "Animation quality: weight, blending, foot contact", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.postprocess", "title": "Tonemapping, exposure, AA, bloom discipline", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.streaming", "title": "Draw distance, LOD popping, load-in visibility", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.ao", "title": "Ambient occlusion: contact darkening and grounding", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.ibl", "title": "Image-based / sky lighting and indirect response", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.sky", "title": "Sky model, sun/moon, cloud, and its coupling to scene light", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.fidelity.vfx", "title": "Particle and effect quality: fire, spray, spell, blood, dust", "arb": "modern-fidelity", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.process.bifurcation", "title": "The judging process itself: axis declared, references not crossed (ARBITRATION §4)", "arb": "neutral", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.process.measurement", "title": "How a visual number is taken: capture protocol, poses, repeatability", "arb": "neutral", "area": "70-visual", "critic": "critic.fidelity" },
-    { "path": "render.art.palette", "title": "Colour identity per region against Morrowind's palette discipline", "arb": "art-direction", "area": "70-visual", "critic": "critic.artdirection" },
-    { "path": "render.art.silhouette", "title": "Readable, strange silhouettes for creatures and buildings", "arb": "art-direction", "area": "70-visual", "critic": "critic.artdirection" },
-    { "path": "render.art.architecture", "title": "A coherent invented architectural language", "arb": "art-direction", "area": "70-visual", "critic": "critic.artdirection" },
-    { "path": "render.art.creature", "title": "Creature design that is not a generic bestiary", "arb": "art-direction", "area": "70-visual", "critic": "critic.artdirection" },
-    { "path": "render.art.composition", "title": "Vista framing and landmark placement in the frame", "arb": "art-direction", "area": "70-visual", "critic": "critic.artdirection" },
-    { "path": "render.art.weirdness", "title": "The dream-logic strangeness budget per screen", "arb": "art-direction", "area": "70-visual", "critic": "critic.artdirection" },
-    { "path": "render.art.flora", "title": "Plant design language: shapes that could not be a European forest", "arb": "art-direction", "area": "70-visual", "critic": "critic.artdirection" },
-    { "path": "render.art.materials", "title": "Material identity as an art choice: chitin, resin, wet wood, bone", "arb": "art-direction", "area": "70-visual", "critic": "critic.artdirection" },
-
-    { "path": "audio.combat.impact", "title": "Hit, block, parry, and death sound design", "arb": "souls", "area": "70-visual", "critic": "critic.audio" },
-    { "path": "audio.ambience.region", "title": "Region ambience that identifies a place with eyes closed", "arb": "morrowind", "area": "70-visual", "critic": "critic.audio" },
-    { "path": "audio.music.policy", "title": "Where music plays and where silence is correct", "arb": "souls", "area": "70-visual", "critic": "critic.audio" },
-    { "path": "audio.voice.policy", "title": "Voiced greetings vs written dialogue; consistency of the choice", "arb": "morrowind", "area": "70-visual", "critic": "critic.audio" },
-
-    { "path": "ui.hud.combat", "title": "Health/stamina/charges HUD legibility under pressure", "arb": "souls", "area": "70-visual", "critic": "critic.ui" },
-    { "path": "ui.hud.minimalism", "title": "No compass, no markers, no quest arrows on screen (AR-2)", "arb": "morrowind", "area": "70-visual", "critic": "critic.ui" },
-    { "path": "ui.menu.inventory", "title": "Inventory screen structure and information density", "arb": "morrowind", "area": "70-visual", "critic": "critic.ui" },
-    { "path": "ui.menu.journal", "title": "Journal presentation, topic index, quest filtering", "arb": "morrowind", "area": "70-visual", "critic": "critic.ui" },
-    { "path": "ui.dialogue.presentation", "title": "Dialogue window: topic list, hyperlinked keywords, portrait, prose", "arb": "morrowind", "area": "70-visual", "critic": "critic.ui" },
-    { "path": "ui.style.diegesis", "title": "UI art belongs to the world rather than to a UI kit", "arb": "art-direction", "area": "70-visual", "critic": "critic.ui" },
-    { "path": "ui.menu.levelup", "title": "The level-up screen: what it shows, what it costs, where it lives", "arb": "split", "area": "70-visual", "critic": "critic.ui" },
-    { "path": "ui.menu.books", "title": "Reading a book in-game: presentation, pagination, legibility", "arb": "morrowind", "area": "70-visual", "critic": "critic.ui" },
-
-    { "path": "platform.perf.framerate", "title": "Frame time budget and stability in a real browser", "arb": "neutral", "area": "80-methods", "critic": "critic.platform" },
-    { "path": "platform.perf.memory", "title": "Heap and GPU memory ceilings, leak-free over a session", "arb": "neutral", "area": "80-methods", "critic": "critic.platform" },
-    { "path": "platform.load.streaming", "title": "Initial load time and in-session streaming hitches", "arb": "neutral", "area": "80-methods", "critic": "critic.platform" },
-    { "path": "platform.input.pipeline", "title": "Browser input path: pointer lock, key repeat, dropped inputs", "arb": "neutral", "area": "80-methods", "critic": "critic.platform" },
-    { "path": "platform.save.persistence", "title": "Save/load fidelity of world, quest, and faction state", "arb": "morrowind", "area": "80-methods", "critic": "critic.platform" },
-    { "path": "platform.determinism.harness", "title": "Seeded, fixed-step headless runs that a critic can reproduce", "arb": "neutral", "area": "80-methods", "critic": "critic.platform" },
-
-    { "path": "coherence.tone.crossregion", "title": "Tone and register hold across region borders", "arb": "morrowind", "area": "00-doctrine", "critic": "critic.coherence" },
-    { "path": "coherence.faction.crossref", "title": "Factions know about and react to each other", "arb": "morrowind", "area": "00-doctrine", "critic": "critic.coherence" },
-    { "path": "coherence.lore.consistency", "title": "Lore contradictions are flagged `disputed` or they are bugs", "arb": "morrowind", "area": "00-doctrine", "critic": "critic.coherence" },
-    { "path": "coherence.difficulty.continuity", "title": "No lethality cliffs or troughs at region borders", "arb": "souls", "area": "00-doctrine", "critic": "critic.coherence" },
-    { "path": "coherence.systems.composition", "title": "Systems still compose: disposition affects prices affects quests affects access", "arb": "neutral", "area": "00-doctrine", "critic": "critic.coherence" },
-    { "path": "coherence.naming.consistency", "title": "One thing has one name everywhere it is mentioned", "arb": "morrowind", "area": "00-doctrine", "critic": "critic.coherence" },
-    { "path": "coherence.economy.balance", "title": "Gold in equals gold out across the whole game, not per piece", "arb": "morrowind", "area": "00-doctrine", "critic": "critic.coherence" },
-    { "path": "coherence.progression.pacing", "title": "The whole-run curve of power, danger, and revelation", "arb": "neutral", "area": "00-doctrine", "critic": "critic.coherence" }
-  ]
+    {
+      "path": "combat.frames.timing",
+      "title": "Startup / active / recovery frame counts per attack",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.frames.cancel",
+      "title": "What may cancel what, and when (roll-cancel, no free animation cancels)",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.dodge.iframes",
+      "title": "Roll invulnerability window measured in frames at 60Hz",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.dodge.directional",
+      "title": "Directional roll semantics under lock-on, including backstep",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.dodge.recovery",
+      "title": "Post-roll recovery and roll-spam punishment",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.stamina.costs",
+      "title": "Stamina cost table per action",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.stamina.regen",
+      "title": "Regen rate and post-spend regen delay",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.stamina.block",
+      "title": "Guard stamina drain, guard break, stability",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.stamina.exhaustion",
+      "title": "Zero-stamina state and its punish window",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.hitbox.sweep",
+      "title": "Weapon hit volumes swept along the arc across the active window",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.hitbox.hurtbox",
+      "title": "Hurtboxes bound to and moving with animated bones",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.hitbox.resolution",
+      "title": "Deterministic geometric hit resolution — NO to-hit roll (seam S1)",
+      "arb": "split",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.damage.model",
+      "title": "Damage formula, defences, absorption",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.damage.scaling",
+      "title": "How stats and skills scale damage (seam S3: scaling, never to-hit)",
+      "arb": "split",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.poise.player",
+      "title": "Player poise / hyperarmour and stagger-out",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.poise.enemy",
+      "title": "Enemy poise breaking, stagger, critical-hit opening",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.block.guard",
+      "title": "Blocking, chip damage, guard angle",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.block.parry",
+      "title": "Parry window, riposte, backstab",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.attack.moveset",
+      "title": "Per-weapon-class moveset shape (R1/R2 chains, running, rolling)",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.attack.commitment",
+      "title": "Root-motion-authoritative committed attacks; no instant turn during a swing",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.attack.charge",
+      "title": "Charged heavy attacks and their risk/reward",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.attack.tracking",
+      "title": "How much an attack may turn during startup, and not at all after",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.dodge.equipload",
+      "title": "Equip load changing roll type, distance, and recovery",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.player.movement",
+      "title": "In-fight locomotion: run, strafe, backstep, and their speeds",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.weapon.identity",
+      "title": "Weapon classes feel categorically different to hold and swing",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.lockon.target",
+      "title": "Hard target lock acquisition, range, break conditions",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.lockon.switch",
+      "title": "Target switching between multiple hostiles",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.camera.behaviour",
+      "title": "Combat camera framing, collision, and lock-on pivot",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.enemy.perception",
+      "title": "Sight cone, LOS, alert ladder, cost-of-entry aggro",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.enemy.statemachine",
+      "title": "Enemy AI states and legal transitions",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.enemy.movement",
+      "title": "Approach, spacing bands, strafing, gap closing",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.enemy.telegraph",
+      "title": "Readable windups; no untelegraphed instant attacks",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.enemy.punish",
+      "title": "Punish windows both ways: enemy recovery, player heal-read",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.enemy.leash",
+      "title": "De-aggro, leash return, world reset, no invulnerable walk-home",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.encounter.grouping",
+      "title": "Multi-enemy token arbitration; no gang-pile, no frozen queue",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.encounter.placement",
+      "title": "Hand-placed encounter composition and ambush legibility",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.boss.phases",
+      "title": "Boss phase transitions and moveset expansion",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.boss.arena",
+      "title": "Boss arena shape, fog gate, retry loop",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.heal.charges",
+      "title": "Estus-equivalent: finite charges, animation commitment, refill at rest",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.status.buildup",
+      "title": "In-fight status meters and procs (seam S11 Souls half)",
+      "arb": "split",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.magic.casting",
+      "title": "Spellcasting inside the fight: cast frames, commitment, resource",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.death.corpserun",
+      "title": "Souls dropped on death, recoverable at the death spot, lost on second death",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.death.worldreset",
+      "title": "Rest/death resets ordinary enemies; named actors never respawn (seam S5)",
+      "arb": "split",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.input.buffer",
+      "title": "Input buffering window and queue semantics",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.input.latency",
+      "title": "Press-to-first-active-frame latency",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.feedback.hitstop",
+      "title": "Hitstop, impact vfx/sfx, damage legibility",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.difficulty.lethality",
+      "title": "Regions gated by lethality; NO level-scaling to the player (seam S9)",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "combat.pause.policy",
+      "title": "World does not pause during combat; inventory is not a safe haven (seam S14)",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat"
+    },
+    {
+      "path": "progression.level.curve",
+      "title": "Soul cost per level, single soft-cap curve, bonfire level-up (seam S2)",
+      "arb": "split",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.level.attributes",
+      "title": "Breadth of the stat sheet: attributes shaping build identity beyond weapon class",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.skill.usegrowth",
+      "title": "Skills improve by use (seam S3)",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.skill.gating",
+      "title": "Skills gate access and utility, never to-hit",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.build.identity",
+      "title": "Two different builds play observably differently out of the fight, not only in it",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.souls.economy",
+      "title": "Souls level you and ONLY level you (seam S15)",
+      "arb": "neutral",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.gold.economy",
+      "title": "Gold is the only currency: merchants, bribes, training, travel, repairs",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.merchant.barter",
+      "title": "Merchant gold pools, barter, disposition-affected prices",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.bonfire.function",
+      "title": "What resting does and does not do (checkpoint + level-up, never teleport)",
+      "arb": "split",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.bonfire.placement",
+      "title": "Spacing and siting of rest points relative to danger",
+      "arb": "souls",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.equipment.upgrade",
+      "title": "Weapon upgrade paths and materials",
+      "arb": "souls",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.equipment.encumbrance",
+      "title": "Load / equip burden and its movement consequences",
+      "arb": "split",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.inventory.model",
+      "title": "Inventory breadth, item weight, containers, repair",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.affliction.economy",
+      "title": "Named diseases, curses, in-world causes and cures (seam S11 Morrowind half)",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.fatigue.social",
+      "title": "Morrowind Fatigue survives out-of-fight, affecting disposition/persuasion (seam S4)",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.skill.social",
+      "title": "Social skills (speechcraft, mercantile) and what they buy you",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.training.trainers",
+      "title": "Trainers: who, what skills, what limits, paid in gold",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "progression.crafting.alchemy",
+      "title": "Ingredients, alchemy, and the crafting loop",
+      "arb": "morrowind",
+      "area": "20-progression",
+      "critic": "critic.progression"
+    },
+    {
+      "path": "quests.structure.stages",
+      "title": "Multi-stage quests with real intermediate state",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.structure.branching",
+      "title": "Branch points that survive to different endings, not cosmetic choice",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.structure.deceit",
+      "title": "Quest-givers who lie, omit, or use the player",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.resolution.noncombat",
+      "title": "Quests resolvable by talk, bribe, sneak, theft, or lore knowledge",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.resolution.exclusive",
+      "title": "Mutually exclusive resolutions that permanently close doors",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.faction.joining",
+      "title": "How you join, and that joining means something",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.faction.rankgating",
+      "title": "Rank requirements on skills AND attributes",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.faction.escalation",
+      "title": "Errands escalate to politics escalate to power over the faction",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.faction.rivalry",
+      "title": "Faction rivalry locks: advancing here costs you there",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.faction.expulsion",
+      "title": "Expulsion, disgrace, and the path back",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.mainline.prophecy",
+      "title": "Main quest shape: prophecy, doubt, and earned legitimacy",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.giver.characterisation",
+      "title": "Quest-givers are people with agendas, not dispensers",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.reward.shape",
+      "title": "Rewards are specific, named, sometimes worse than promised",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.failure.severed",
+      "title": "Killable quest NPCs; thread-of-prophecy-severed instead of game over (seam S10)",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.discovery.hooks",
+      "title": "Quests found through rumour and overheard talk, not a quest board",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.state.persistence",
+      "title": "Quest/faction/world flags survive death untouched (seam S6)",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.data.schema",
+      "title": "The quest data schema itself: stages, conditions, flags, journal binding",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.density.count",
+      "title": "How many quests exist per faction, settlement, and region",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.lore.hooks",
+      "title": "Quests that hang off books, rumours, and canon rather than a giver",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.mainline.acts",
+      "title": "Act structure of the main quest and its turning points",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.mainline.antagonist",
+      "title": "The antagonist: presence, motive, and how the world speaks of them",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "quests.side.texture",
+      "title": "Side-quest texture: small, strange, local, non-heroic",
+      "arb": "morrowind",
+      "area": "30-quests",
+      "critic": "critic.quests"
+    },
+    {
+      "path": "dialogue.topics.graph",
+      "title": "Topic-list dialogue with a real graph behind it",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.topics.discovery",
+      "title": "Keyword discovery: topics unlock by being told about them",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.topics.filtering",
+      "title": "Same topic, different answer by faction/race/rank/disposition/place",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.disposition.model",
+      "title": "Disposition as a real number with real consequences",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.persuasion.mechanics",
+      "title": "Admire / intimidate / taunt / bribe and their risks",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.rumour.distribution",
+      "title": "Rumours differ per town and per class, and point at real content",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.voice.register",
+      "title": "Prose quality and register: does it read like Morrowind or like filler",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.npc.identity",
+      "title": "An NPC reads as a specific person with a specific position",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.greeting.variation",
+      "title": "Greetings vary by state, place, and standing",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.service.merchant",
+      "title": "Barter, training, repair, transport conducted through dialogue",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.combat.lockout",
+      "title": "Topic lists locked during COMBAT; enemies shout, not converse (seam S13)",
+      "arb": "souls",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.lore.vector",
+      "title": "NPC dialogue, not item descriptions, is the primary lore vector (AR-2)",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.density.wordcount",
+      "title": "Volume of authored dialogue per NPC, settlement, and region",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "dialogue.topics.truth",
+      "title": "NPCs may be wrong or lying inside a topic answer, discoverably",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.dialogue"
+    },
+    {
+      "path": "journal.entry.voice",
+      "title": "First-person-authored journal prose written by the character",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.journal"
+    },
+    {
+      "path": "journal.entry.numbering",
+      "title": "Numbered, dated, append-only entries with stable indices",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.journal"
+    },
+    {
+      "path": "journal.entry.directions",
+      "title": "Directions carried in prose: landmarks, distances, named people (seam S8)",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.journal"
+    },
+    {
+      "path": "journal.navigation.nomarkers",
+      "title": "No compass markers, no objective arrows, anywhere",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.journal"
+    },
+    {
+      "path": "world.region.identity",
+      "title": "Each region is instantly identifiable from one screenshot",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.region.transition",
+      "title": "Borders between regions read as a change, not a texture swap",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.region.gating",
+      "title": "Region access gated by lethality and knowledge, not by level checks",
+      "arb": "souls",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.map.scale",
+      "title": "Absolute world size and the time it takes to cross",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.map.legibility",
+      "title": "Navigable by landmark and memory; the map is a drawing, not a GPS",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.density.handplacement",
+      "title": "Hand-placed density: things per 100m that reward walking",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.settlement.anatomy",
+      "title": "What a settlement contains and how it is laid out",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.interior.named",
+      "title": "Named interiors with owners, contents, and reasons to exist",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.interior.continuity",
+      "title": "Interiors match their exteriors in size, orientation, and light",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.traversal.time",
+      "title": "Traversal time budgets between named places",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.traversal.transport",
+      "title": "In-fiction transport network only; no warp-to-pin (seam S7)",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.wayfinding.directions",
+      "title": "Getting there from prose directions actually works",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.strangeness.flora",
+      "title": "Alien plant life that is not a European forest",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.strangeness.fauna",
+      "title": "Alien animals and their behaviour in the world",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.strangeness.architecture",
+      "title": "Buildings that could not be anywhere else",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.strangeness.budget",
+      "title": "Overall strangeness budget: how alien the world reads per hour of play",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.hazard.environment",
+      "title": "Swamp, blight, drowning, disease vectors as world hazards",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.water.marsh",
+      "title": "Black Marsh specifically: water, tide, mud, depth, and its cost to cross",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.weather.systems",
+      "title": "Weather: rain, storm, mist, and what it changes in play",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.loot.placement",
+      "title": "Hand-placed, named, weird loot; no procedural drop tables (seam S12)",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.npc.population",
+      "title": "Who lives here, in what numbers, doing what",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.persistence.state",
+      "title": "Dropped, moved, and taken things stay that way",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.traversal.roads",
+      "title": "Roads, boardwalks and paths as the readable skeleton of the map",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.traversal.locomotion",
+      "title": "Player movement speeds out of the fight, which set every traversal budget",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.terrain.form",
+      "title": "Terrain shape, elevation, and how it channels movement",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.time.daynight",
+      "title": "Time of day, its length, and what actually changes with it",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.property.ownership",
+      "title": "Owned things, theft, witnesses, and consequence",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.locks.security",
+      "title": "Locks, security ratings, picking, and the alternatives to picking",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.faction.presence",
+      "title": "Which factions hold which places, visibly, on the ground",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "lore.canon.registry",
+      "title": "The canon-facts registry itself, including the `disputed` flag",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.canon.argonian",
+      "title": "Argonian culture, Hist, naming, biology, outsider perception",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.canon.geography",
+      "title": "Black Marsh geography and place-names against canon",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.canon.history",
+      "title": "Deep-time history and its visible residue",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.book.structure",
+      "title": "In-world books: length, form, authorial voice",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.book.unreliability",
+      "title": "Sources contradict each other on purpose and are traceable to a bias",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.naming.conventions",
+      "title": "Names of people, places, and things obey a consistent phonology",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.religion.hist",
+      "title": "The Hist as an actual force in the world, not decoration",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.canon.factions",
+      "title": "Who holds power, in canon: factions, politics, and their era",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "lore.canon.prophecy",
+      "title": "Prophecy as a lore object: its text, its readers, and their disagreement",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore"
+    },
+    {
+      "path": "render.fidelity.lighting",
+      "title": "Direct/indirect lighting quality vs modern references",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.shadows",
+      "title": "Shadow resolution, contact hardening, acne/peter-panning",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.materials",
+      "title": "PBR material response, roughness variation, no plastic look",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.atmosphere",
+      "title": "Fog, haze, aerial perspective, volumetrics",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.vegetation",
+      "title": "Plant density, variation, wind response, LOD transitions",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.water",
+      "title": "Water surface, refraction, shoreline, and underwater",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.character",
+      "title": "Character and creature mesh/texture quality up close",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.animation",
+      "title": "Animation quality: weight, blending, foot contact",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.postprocess",
+      "title": "Tonemapping, exposure, AA, bloom discipline",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.streaming",
+      "title": "Draw distance, LOD popping, load-in visibility",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.ao",
+      "title": "Ambient occlusion: contact darkening and grounding",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.ibl",
+      "title": "Image-based / sky lighting and indirect response",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.sky",
+      "title": "Sky model, sun/moon, cloud, and its coupling to scene light",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.fidelity.vfx",
+      "title": "Particle and effect quality: fire, spray, spell, blood, dust",
+      "arb": "modern-fidelity",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.process.bifurcation",
+      "title": "The judging process itself: axis declared, references not crossed (ARBITRATION §4)",
+      "arb": "neutral",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.process.measurement",
+      "title": "How a visual number is taken: capture protocol, poses, repeatability",
+      "arb": "neutral",
+      "area": "70-visual",
+      "critic": "critic.fidelity"
+    },
+    {
+      "path": "render.art.palette",
+      "title": "Colour identity per region against Morrowind's palette discipline",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "render.art.silhouette",
+      "title": "Readable, strange silhouettes for creatures and buildings",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "render.art.architecture",
+      "title": "A coherent invented architectural language",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "render.art.creature",
+      "title": "Creature design that is not a generic bestiary",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "render.art.composition",
+      "title": "Vista framing and landmark placement in the frame",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "render.art.weirdness",
+      "title": "The dream-logic strangeness budget per screen",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "render.art.mood",
+      "title": "Mood and atmosphere as an art choice: oppression, damp, quiet menace",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "render.art.flora",
+      "title": "Plant design language: shapes that could not be a European forest",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "render.art.materials",
+      "title": "Material identity as an art choice: chitin, resin, wet wood, bone",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.artdirection"
+    },
+    {
+      "path": "audio.combat.impact",
+      "title": "Hit, block, parry, and death sound design",
+      "arb": "souls",
+      "area": "70-visual",
+      "critic": "critic.audio"
+    },
+    {
+      "path": "audio.ambience.region",
+      "title": "Region ambience that identifies a place with eyes closed",
+      "arb": "morrowind",
+      "area": "70-visual",
+      "critic": "critic.audio"
+    },
+    {
+      "path": "audio.music.policy",
+      "title": "Where music plays and where silence is correct",
+      "arb": "souls",
+      "area": "70-visual",
+      "critic": "critic.audio"
+    },
+    {
+      "path": "audio.voice.policy",
+      "title": "Voiced greetings vs written dialogue; consistency of the choice",
+      "arb": "morrowind",
+      "area": "70-visual",
+      "critic": "critic.audio"
+    },
+    {
+      "path": "ui.hud.combat",
+      "title": "Health/stamina/charges HUD legibility under pressure",
+      "arb": "souls",
+      "area": "70-visual",
+      "critic": "critic.ui"
+    },
+    {
+      "path": "ui.hud.minimalism",
+      "title": "No compass, no markers, no quest arrows on screen (AR-2)",
+      "arb": "morrowind",
+      "area": "70-visual",
+      "critic": "critic.ui"
+    },
+    {
+      "path": "ui.menu.inventory",
+      "title": "Inventory screen structure and information density",
+      "arb": "morrowind",
+      "area": "70-visual",
+      "critic": "critic.ui"
+    },
+    {
+      "path": "ui.menu.journal",
+      "title": "Journal presentation, topic index, quest filtering",
+      "arb": "morrowind",
+      "area": "70-visual",
+      "critic": "critic.ui"
+    },
+    {
+      "path": "ui.dialogue.presentation",
+      "title": "Dialogue window: topic list, hyperlinked keywords, portrait, prose",
+      "arb": "morrowind",
+      "area": "70-visual",
+      "critic": "critic.ui"
+    },
+    {
+      "path": "ui.style.diegesis",
+      "title": "UI art belongs to the world rather than to a UI kit",
+      "arb": "art-direction",
+      "area": "70-visual",
+      "critic": "critic.ui"
+    },
+    {
+      "path": "ui.menu.levelup",
+      "title": "The level-up screen: what it shows, what it costs, where it lives",
+      "arb": "split",
+      "area": "70-visual",
+      "critic": "critic.ui"
+    },
+    {
+      "path": "ui.menu.books",
+      "title": "Reading a book in-game: presentation, pagination, legibility",
+      "arb": "morrowind",
+      "area": "70-visual",
+      "critic": "critic.ui"
+    },
+    {
+      "path": "platform.perf.framerate",
+      "title": "Frame time budget and stability in a real browser",
+      "arb": "neutral",
+      "area": "80-methods",
+      "critic": "critic.platform"
+    },
+    {
+      "path": "platform.perf.memory",
+      "title": "Heap and GPU memory ceilings, leak-free over a session",
+      "arb": "neutral",
+      "area": "80-methods",
+      "critic": "critic.platform"
+    },
+    {
+      "path": "platform.load.streaming",
+      "title": "Initial load time and in-session streaming hitches",
+      "arb": "neutral",
+      "area": "80-methods",
+      "critic": "critic.platform"
+    },
+    {
+      "path": "platform.input.pipeline",
+      "title": "Browser input path: pointer lock, key repeat, dropped inputs",
+      "arb": "neutral",
+      "area": "80-methods",
+      "critic": "critic.platform"
+    },
+    {
+      "path": "platform.save.persistence",
+      "title": "Save/load fidelity of world, quest, and faction state",
+      "arb": "morrowind",
+      "area": "80-methods",
+      "critic": "critic.platform"
+    },
+    {
+      "path": "platform.determinism.harness",
+      "title": "Seeded, fixed-step headless runs that a critic can reproduce",
+      "arb": "neutral",
+      "area": "80-methods",
+      "critic": "critic.platform"
+    },
+    {
+      "path": "coherence.tone.crossregion",
+      "title": "Tone and register hold across region borders",
+      "arb": "morrowind",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C1 (tone and register) + traversal T1/T2"
+    },
+    {
+      "path": "coherence.faction.crossref",
+      "title": "Factions know about and react to each other",
+      "arb": "morrowind",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C2 (factions acknowledge each other) + traversal T3"
+    },
+    {
+      "path": "coherence.lore.consistency",
+      "title": "Lore contradictions are flagged `disputed` or they are bugs",
+      "arb": "morrowind",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C3 (lore consistency) + traversal T5"
+    },
+    {
+      "path": "coherence.difficulty.continuity",
+      "title": "No lethality cliffs or troughs at region borders",
+      "arb": "souls",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C4 (difficulty continuity) + traversal T7"
+    },
+    {
+      "path": "coherence.systems.composition",
+      "title": "Systems still compose: disposition affects prices affects quests affects access",
+      "arb": "neutral",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C5 (systems still compose) + traversal T6"
+    },
+    {
+      "path": "coherence.naming.consistency",
+      "title": "One thing has one name everywhere it is mentioned",
+      "arb": "morrowind",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C1.5 / C5.5 + traversal T5"
+    },
+    {
+      "path": "coherence.economy.balance",
+      "title": "Gold in equals gold out across the whole game, not per piece",
+      "arb": "morrowind",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C5.3 + traversal T1/T4"
+    },
+    {
+      "path": "coherence.progression.pacing",
+      "title": "The whole-run curve of power, danger, and revelation",
+      "arb": "neutral",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C4.2 + traversal T1/T7"
+    }
+  ],
+  "judged_by_doctrine_note": "Some subsystem paths are judged by a doctrine document rather than by a reference item. They are NOT corpus holes: the named document carries the bar, the method, and the evidence requirement. Everything else must have an RI."
 }

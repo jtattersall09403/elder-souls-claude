@@ -227,7 +227,9 @@ for (const it of items) {
 }
 const unresolved = problems.filter((p) => /is not a canonical subsystem path/.test(p.message));
 
-const holes = subsystems.filter((s) => byPath.get(s.path).length === 0);
+// A path judged by a doctrine document (e.g. the coherence checklist) is NOT a hole.
+const doctrineJudged = subsystems.filter((s) => byPath.get(s.path).length === 0 && s.judged_by_doctrine);
+const holes = subsystems.filter((s) => byPath.get(s.path).length === 0 && !s.judged_by_doctrine);
 const covered = subsystems.length - holes.length;
 const roots = [...new Set(subsystems.map((s) => s.path.split('.')[0]))];
 
@@ -272,16 +274,18 @@ L.push('## 1. Coverage at a glance');
 L.push('');
 L.push(`- Canonical subsystem paths: **${subsystems.length}**`);
 L.push(`- Reference items found: **${items.length}** across ${new Set(items.map((i) => i.area)).size || 0} area(s)`);
-L.push(`- Subsystems with at least one judging item: **${covered}** (${pct(covered, subsystems.length)}%)`);
+L.push(`- Subsystems with at least one judging reference item: **${subsystems.length - holes.length - doctrineJudged.length}**`);
+L.push(`- Subsystems judged by a doctrine document instead: **${doctrineJudged.length}** (see §3b)`);
 L.push(`- **Corpus holes (no judging item): ${holes.length}** (${pct(holes.length, subsystems.length)}%)`);
 L.push(`- Front-matter problems: ${problems.filter((p) => p.level === 'error').length} error(s), ${problems.filter((p) => p.level === 'warn').length} warning(s)`);
 L.push('');
-L.push('| Root | Paths | Judged | Holes |');
-L.push('|---|---:|---:|---:|');
+L.push('| Root | Paths | Judged by RI | Judged by doctrine | Holes |');
+L.push('|---|---:|---:|---:|---:|');
 for (const r of roots) {
   const inRoot = subsystems.filter((s) => s.path.split('.')[0] === r);
   const judged = inRoot.filter((s) => byPath.get(s.path).length > 0).length;
-  L.push(`| \`${r}.*\` | ${inRoot.length} | ${judged} | ${inRoot.length - judged} |`);
+  const doc = inRoot.filter((s) => byPath.get(s.path).length === 0 && s.judged_by_doctrine).length;
+  L.push(`| \`${r}.*\` | ${inRoot.length} | ${judged} | ${doc} | ${inRoot.length - judged - doc} |`);
 }
 L.push('');
 L.push('---');
@@ -305,8 +309,9 @@ for (const r of roots) {
     const its = byPath.get(s.path);
     const judging = its.length
       ? its.map((i) => `[${i.id}](${'../../' + i.path})`).join('<br>')
-      : '**— HOLE —**';
-    const method = its.length ? its.map((i) => i.method).join('<br>') : '_none_';
+      : (s.judged_by_doctrine ? '_doctrine_' : '**— HOLE —**');
+    const method = its.length ? its.map((i) => i.method).join('<br>')
+      : (s.judged_by_doctrine ? s.judged_by_doctrine : '_none_');
     L.push(`| \`${s.path}\` | ${s.title} | ${s.arb} | ${judging} | \`${s.critic}\` | ${method} |`);
   }
   L.push('');
@@ -331,6 +336,18 @@ if (holes.length === 0) {
   for (const s of holes) {
     L.push(`| \`${s.path}\` | ${s.title} | ${s.arb} | \`corpus/${s.area}/\` | \`${s.critic}\` |`);
   }
+}
+L.push('');
+L.push('### 3b. Paths judged by doctrine rather than by a reference item');
+L.push('');
+L.push('These are **not** holes. The named doctrine document carries the bar, the method,');
+L.push('and the evidence requirement for the path. Everything not listed here needs an RI.');
+L.push('');
+if (doctrineJudged.length === 0) L.push('_None._');
+else {
+  L.push('| Subsystem path | Judged by |');
+  L.push('|---|---|');
+  for (const s of doctrineJudged) L.push(`| \`${s.path}\` | ${s.judged_by_doctrine} |`);
 }
 L.push('');
 L.push('---');
