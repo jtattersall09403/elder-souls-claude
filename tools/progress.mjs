@@ -70,7 +70,8 @@ for (const cand of ['corpus/90-verdicts/GAP-LEDGER.json', 'corpus/90-verdicts/ga
 }
 
 // game data stats
-const dataFiles = walk(P('game', 'src', 'data')).filter(f => extname(f) === '.json');
+// Content layout is mandated by corpus/80-methods/HARNESS.md §5: game/data/**
+const dataFiles = walk(P('game', 'data')).filter(f => extname(f) === '.json');
 let dataStats = { files: dataFiles.length, quests: 0, npcs: 0, topics: 0, books: 0, dialogueWords: 0, settlements: 0 };
 for (const f of dataFiles) {
   let j; try { j = JSON.parse(readFileSync(f, 'utf8')); } catch { continue; }
@@ -86,7 +87,7 @@ for (const f of dataFiles) {
   if (/dialog|topic|journal|book/i.test(b) && words) dataStats.dialogueWords += words.length;
 }
 
-const srcFiles = walk(P('game', 'src')).filter(f => ['.js', '.mjs', '.ts'].includes(extname(f)));
+const srcFiles = walk(P('game')).filter(f => ['.js', '.mjs', '.ts'].includes(extname(f)));
 let loc = 0;
 for (const f of srcFiles) { try { loc += readFileSync(f, 'utf8').split('\n').length; } catch { } }
 

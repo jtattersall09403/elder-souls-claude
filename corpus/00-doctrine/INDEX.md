@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-05T22:52:26Z
+Generated: 2026-08-05T22:54:23Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -26,11 +26,11 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 ## 1. Coverage at a glance
 
 - Canonical subsystem paths: **200**
-- Reference items found: **62** across 8 area(s)
+- Reference items found: **63** across 8 area(s)
 - Subsystems with at least one judging reference item: **159**
 - Subsystems judged by a doctrine document instead: **7** (see §3b)
 - **Corpus holes (no judging item): 34** (17%)
-- Front-matter problems: 13 error(s), 0 warning(s)
+- Front-matter problems: 17 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -80,7 +80,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `combat.block.guard` | Blocking, chip damage, guard angle | souls | [RI-CMB03](../../corpus/10-combat/RI-CMB03-stamina-economy.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb03-stamina.mjs |
 | `combat.block.parry` | Parry window, riposte, backstab | souls | [RI-CMB05](../../corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) | `critic.combat` | in-item M1–M8 (8 checks); corpus/80-methods/m-cmb05-poise.mjs |
 | `combat.attack.moveset` | Per-weapon-class moveset shape (R1/R2 chains, running, rolling) | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI04](../../corpus/10-combat/RI-AI04-attack-strings-and-delays.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M10 (10 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs |
-| `combat.attack.commitment` | Root-motion-authoritative committed attacks; no instant turn during a swing | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-AI04](../../corpus/10-combat/RI-AI04-attack-strings-and-delays.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M10 (10 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs |
+| `combat.attack.commitment` | Root-motion-authoritative committed attacks; no instant turn during a swing | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-AI04](../../corpus/10-combat/RI-AI04-attack-strings-and-delays.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-CMB08](../../corpus/10-combat/RI-CMB08-healing-flask.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M10 (10 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item M1–M8 (8 checks); corpus/80-methods/m-cmb08-estus.mjs<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs |
 | `combat.attack.charge` | Charged heavy attacks and their risk/reward | souls | **— HOLE —** | `critic.combat` | _none_ |
 | `combat.attack.tracking` | How much an attack may turn during startup, and not at all after | souls | [RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-CMB06](../../corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) | `critic.combat` | in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item M1–M8 (8 checks); corpus/80-methods/m-cmb06-lockon.mjs |
 | `combat.dodge.equipload` | Equip load changing roll type, distance, and recovery | souls | [RI-CMB01](../../corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb01-roll-iframes.mjs |
@@ -403,7 +403,7 @@ migration aid, not a second vocabulary.
 | `books.content` | `lore.book.structure` | RI-LOR01 (corpus/60-lore/RI-LOR01-canon-dossier.md), RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md), RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `books.length` | `lore.book.structure` | RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
 | `books.taxonomy` | `lore.book.structure` | RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
-| `combat.animation.commitment` | `combat.attack.commitment` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md) |
+| `combat.animation.commitment` | `combat.attack.commitment` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md), RI-CMB08 (corpus/10-combat/RI-CMB08-healing-flask.md) |
 | `combat.animation.rootmotion` | `combat.attack.commitment` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md) |
 | `combat.camera` | `combat.camera.behaviour` | RI-CMB06 (corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) |
 | `combat.criticals` | `combat.block.parry` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
@@ -615,6 +615,10 @@ the item, or append the path to `subsystems.json`, then regenerate.
 
 | File | Problem |
 |---|---|
+| `corpus/10-combat/RI-CMB08-healing-flask.md` | judges: "combat.player.heal" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/10-combat/RI-CMB08-healing-flask.md` | judges: "combat.resource.charges" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/10-combat/RI-CMB08-healing-flask.md` | judges: "progression.restsite.refill" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/10-combat/RI-CMB08-healing-flask.md` | judges: "combat.encounter.pacing" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.npc-schedules" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ecology" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ambient-events" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
@@ -649,6 +653,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | RI-CMB05 | Poise, stagger, hyperarmour, and the critical windows (backstab, parry, riposte) | 10-combat | number | souls | constructed | medium | yes | `combat.poise.player` `combat.poise.enemy` `combat.block.parry` | [corpus/10-combat/RI-CMB05-poise-stagger-criticals.md](../../corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
 | RI-CMB06 | Lock-on — acquisition, camera behaviour, directional roll semantics, and soft-lock steering | 10-combat | number | souls | constructed | medium | yes | `combat.lockon.target` `combat.camera.behaviour` `combat.player.movement` `combat.attack.tracking` `combat.dodge.directional` | [corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md](../../corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) |
 | RI-CMB07 | The combat trace — machine-readable format and a 59-second hand-authored exemplar fight | 10-combat | trace | souls | constructed | high | yes | `platform.determinism.harness` `combat.encounter.grouping` `combat.dodge.directional` `combat.stamina.costs` `combat.attack.moveset` `combat.enemy.punish` `combat.hitbox.resolution` | [corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
+| RI-CMB08 | Healing — the Hist-sap Flask, drink commitment frames, heal curve, and refill on rest | 10-combat | number | souls | constructed | medium | yes | `combat.attack.commitment` | [corpus/10-combat/RI-CMB08-healing-flask.md](../../corpus/10-combat/RI-CMB08-healing-flask.md) |
 | RI-PRG01 | The soul cost curve — souls-to-next-level, L1 to L140 | 20-progression | number | souls | constructed | high | no | `progression.level.curve` `ui.menu.levelup` `progression.souls.economy` | [corpus/20-progression/RI-PRG01-soul-cost-curve.md](../../corpus/20-progression/RI-PRG01-soul-cost-curve.md) |
 | RI-PRG02 | The stat sheet — ten attributes, soft caps, and scaling grades | 20-progression | number | neutral | constructed | high | no | `progression.level.attributes` `ui.menu.levelup` `combat.damage.scaling` `combat.damage.model` | [corpus/20-progression/RI-PRG02-stat-sheet.md](../../corpus/20-progression/RI-PRG02-stat-sheet.md) |
 | RI-PRG03 | Skills that improve by use — the 19 skills, their rates, and their gates | 20-progression | number | morrowind | constructed | high | no | `progression.skill.usegrowth` `combat.damage.scaling` `world.locks.security` `progression.crafting.alchemy` `dialogue.persuasion.mechanics` `progression.merchant.barter` | [corpus/20-progression/RI-PRG03-skills-by-use.md](../../corpus/20-progression/RI-PRG03-skills-by-use.md) |
@@ -704,6 +709,10 @@ the item, or append the path to `subsystems.json`, then regenerate.
 
 | Level | File | Problem |
 |---|---|---|
+| ERROR | `corpus/10-combat/RI-CMB08-healing-flask.md` | judges: "combat.player.heal" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/10-combat/RI-CMB08-healing-flask.md` | judges: "combat.resource.charges" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/10-combat/RI-CMB08-healing-flask.md` | judges: "progression.restsite.refill" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/10-combat/RI-CMB08-healing-flask.md` | judges: "combat.encounter.pacing" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.npc-schedules" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ecology" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ambient-events" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |

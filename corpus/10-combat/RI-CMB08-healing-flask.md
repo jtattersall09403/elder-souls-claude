@@ -83,7 +83,7 @@ with every weapon, one- or two-handed, shield up or down.
 | Turn rate during frames 1–52 | ≤ **90 °/s** |
 | Lock-on | retained; camera unaffected |
 | Poise / hyperarmour during the drink | **none** — the player has their normal poise pool and no hyperarmour window |
-| Stamina regeneration during the drink | normal (RI-CMB03 §A); drinking is not a spend, so the 42-frame delay is not re-armed |
+| Stamina regeneration during the drink | the 42-frame delay **is** re-armed on frame 1, as for any action; regeneration then proceeds normally at 0.75/frame for the rest of the drink |
 | If interrupted on frames 1–21 | stagger per RI-CMB05 §B; **charge lost, 0 HP restored** |
 | If interrupted on frames 22–52 | stagger; **charge lost, HP restored so far is kept** |
 | If interrupted on frames 53–65 | stagger; heal was already complete |

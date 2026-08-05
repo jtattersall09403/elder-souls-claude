@@ -12,7 +12,7 @@ blind_pair: yes
 ## The bar
 
 An attack in this game is a **contract the player signs**. On the frame the button goes
-down, the outcome of the next 22 to 126 frames is decided: the character will wind up,
+down, the outcome of the next 21 to 126 frames is decided: the character will wind up,
 the weapon will become dangerous for a handful of frames, and then the character will stand
 there, exposed, until the animation lets go of them. Nothing the player does in between
 changes it. That is the whole design: because attacking costs you your defence for a known
@@ -37,10 +37,10 @@ All values at fixed 60 Hz. Frame indices 1-based, inclusive. `first_active = sta
 |---|---|---|---|---|---|---|---|---|---|---|
 | Dagger | 6 | **7** | 3 | 12 | **21** | 12 | 8 | 0.72 | 1.05 | 0.15 |
 | Straight sword | 12 | **13** | 5 | 20 | **37** | 20 | 22 | 1.00 | 1.95 | 0.35 |
-| Spear (thrust) | 13 | **14** | 4 | 22 | **39** | 18 | 18 | 1.00 | 3.10 | 0.55 |
-| Axe | 14 | **15** | 6 | 24 | **44** | 24 | 28 | 1.15 | 1.80 | 0.30 |
-| Halberd | 18 | **19** | 7 | 28 | **53** | 28 | 34 | 1.25 | 2.85 | 0.45 |
-| Greatsword | 21 | **22** | 8 | 33 | **62** | 32 | 42 | 1.45 | 2.60 | 0.85 |
+| Spear (thrust) | 14 | **15** | 4 | 22 | **40** | 18 | 18 | 1.00 | 3.10 | 0.55 |
+| Axe | 16 | **17** | 6 | 24 | **46** | 24 | 28 | 1.15 | 1.80 | 0.30 |
+| Halberd | 19 | **20** | 7 | 28 | **54** | 28 | 34 | 1.25 | 2.85 | 0.45 |
+| Greatsword | 22 | **23** | 8 | 33 | **63** | 32 | 42 | 1.45 | 2.60 | 0.85 |
 | Ultra greatsword | 29 | **30** | 10 | 44 | **83** | 42 | 58 | 1.75 | 2.95 | 1.40 |
 
 `Ps` for the straight sword is **13**, which is the value RI-AI03 §A cites as the reference
@@ -52,12 +52,16 @@ changing this cell invalidates every `P_safe` figure in the AI items.
 | Class | Startup | **Ps** | Active | Recovery | **Total** | Stamina | Poise dmg | Motion value | **Hyperarmour window** | Root Δz (m) |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Dagger | 14 | 15 | 3 | 22 | **39** | 20 | 14 | 1.05 | *none* | 0.20 |
-| Straight sword | 25 | **26** | 6 | 30 | **61** | 34 | 40 | 1.55 | f16–f31 | 0.60 |
-| Spear | 25 | 26 | 5 | 32 | **62** | 30 | 34 | 1.60 | f17–f30 | 1.10 |
-| Axe | 29 | 30 | 7 | 36 | **72** | 40 | 48 | 1.80 | f20–f36 | 0.50 |
-| Halberd | 33 | 34 | 8 | 42 | **83** | 44 | 56 | 1.90 | f23–f41 | 0.70 |
-| Greatsword | 39 | 40 | 10 | 48 | **97** | 50 | 70 | 2.10 | f26–f49 | 1.25 |
-| Ultra greatsword | 51 | 52 | 12 | 62 | **125** | 62 | 92 | 2.60 | f34–f63 | 1.90 |
+| Straight sword | 25 | **26** | 6 | 30 | **61** | 34 | 40 | 1.55 | f15–f31 | 0.60 |
+| Spear | 27 | 28 | 5 | 32 | **64** | 30 | 34 | 1.60 | f17–f32 | 1.10 |
+| Axe | 30 | 31 | 7 | 36 | **73** | 40 | 48 | 1.80 | f18–f37 | 0.50 |
+| Halberd | 34 | 35 | 8 | 42 | **84** | 44 | 56 | 1.90 | f21–f42 | 0.70 |
+| Greatsword | 40 | 41 | 10 | 48 | **98** | 50 | 70 | 2.10 | f24–f50 | 1.25 |
+| Ultra greatsword | 52 | 53 | 12 | 62 | **126** | 62 | 92 | 2.60 | f32–f64 | 1.90 |
+
+Hyperarmour windows are **derived**, not authored:
+`HA window = [ ceil(0.60 × startup) , startup + active ]`. They are listed rather than left
+implicit because RI-CMB05 §C consumes them, and both files must move together.
 
 `Ps` for the straight sword R2 is **26**, matching RI-AI03's reference heavy startup.
 Hyperarmour semantics are owned by RI-CMB05; the windows are listed here because they are
@@ -67,7 +71,7 @@ frame data.
 
 | Modifier | Startup | Active | Recovery | Stamina | Motion value | Poise dmg | Notes |
 |---|---|---|---|---|---|---|---|
-| Two-handed | ×1.00 | ×1.00 | ×1.00 | ×1.15 | ×1.15 | ×1.30 | Different clip, same frame counts. Enables hyperarmour on Greatsword and Axe R1. |
+| Two-handed | ×1.00 | ×1.00 | ×1.00 | ×1.15 | ×1.15 | ×1.30 | Different clip, same frame counts. Enables R1 hyperarmour on Axe (f10–f22), Greatsword (f14–f30) and Ultra greatsword (f18–f39), by the same derivation. |
 | R1 chain, hit 2 | ×0.78 | ×1.00 | ×1.05 | ×1.00 | ×0.95 | ×1.00 | Rounded to nearest frame. |
 | R1 chain, hit 3 | ×0.78 | ×1.00 | ×1.35 | ×1.00 | ×0.90 | ×1.00 | Chain terminates here for all classes except dagger (4). |
 | Charged R2 (held) | +1…+30 f charge | ×1.00 | ×1.00 | ×1.00 | ×1.00→×1.30 | ×1.00→×1.50 | Charge frames inserted between startup and active; linear ramp. |
@@ -121,10 +125,12 @@ Additional binding rules:
 
 | Quantity | Requirement | Rationale |
 |---|---|---|
-| `recovery / startup` | ≥ 1.4 for every class and both attack types | Attacks must cost more after than before, or spam dominates |
+| `recovery / startup`, light attacks | ≥ **1.40** for every class | Lights pay on the back end, or spam dominates |
+| `recovery / startup`, heavy attacks | ≥ **1.15** for every class | Heavies already pay on the front end in startup; demanding 1.4 there would make them unusable rather than committal |
+| Startup delta, light vs heavy of the same class | ≥ **8 f** | R2 must be a visibly different decision, not a slightly slower R1 |
 | `active / total` | ≤ 0.16 for every row | A swing is dangerous briefly; a long active window is a hitbox, not an attack |
 | Startup spread across the 7 classes, R1 | ≥ 23 f (dagger 6 → UGS 29) | Weapon class must be legible from timing alone |
-| Startup delta between adjacent classes | ≥ 2 f | Adjacent classes must be distinguishable |
+| Startup delta between adjacent classes, R1 and R2 separately | ≥ **2 f** | Adjacent classes must be distinguishable by timing alone. Verified: R1 startups 6/12/14/16/19/22/29 → deltas 6,2,2,3,3,7; R2 startups 14/25/27/30/34/40/52 → deltas 11,2,3,4,6,12 |
 | Minimum startup, any player attack | ≥ 6 f (100 ms) | Below this the attack is unreactable and un-trade-able |
 | Maximum `Ps` for the intended punish weapon | ≤ 15 f | RI-AI03's absolute `P_safe` floor is 15 f; a weapon with `Ps > 15` cannot punish the tightest legal window |
 

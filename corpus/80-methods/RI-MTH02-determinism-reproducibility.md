@@ -57,8 +57,10 @@ $ node tools/harness/trace.mjs --scenario cmb-spacing-hold --seed 4242 ...
 ```
 
 3600 frames, 0 frame discontinuities, `integrity.fail_closed: false`, and the 60-frame
-batching produces the identical hash. This is the shape of a passing result. The stub is a test fixture, not the game — it is cited here only to show
-that the bar is achievable in a browser, in this environment, with this tooling.
+batching produces the identical hash. This is the shape of a passing result.
+
+The stub is a test fixture, not the game — it is cited here only to show that the bar is
+achievable in a browser, in this environment, with this tooling.
 
 ### C. The banned constructs (D1–D7 of `HARNESS.md` §8)
 

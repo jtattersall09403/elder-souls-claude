@@ -85,12 +85,12 @@ normal poise pool for a **weapon-class hyperarmour pool**:
 | Class | HA pool, 1-handed | HA pool, 2-handed | Window (from RI-CMB02 §B) |
 |---|---|---|---|
 | Dagger | — | — | none, ever |
-| Straight sword | 22 | 29 | R2 f16–f31 |
-| Spear | 20 | 26 | R2 f17–f30 |
-| Axe | 30 | 39 | R2 f20–f36; **R1 f9–f19 when 2-handed only** |
-| Halberd | 36 | 47 | R2 f23–f41 |
-| Greatsword | 46 | 60 | R2 f26–f49; **R1 f13–f26 when 2-handed only** |
-| Ultra greatsword | 62 | 81 | R2 f34–f63; **R1 f18–f34 when 2-handed only** |
+| Straight sword | 22 | 29 | R2 f15–f31 |
+| Spear | 20 | 26 | R2 f17–f32 |
+| Axe | 30 | 39 | R2 f18–f37; **R1 f10–f22 when 2-handed only** |
+| Halberd | 36 | 47 | R2 f21–f42 |
+| Greatsword | 46 | 60 | R2 f24–f50; **R1 f14–f30 when 2-handed only** |
+| Ultra greatsword | 62 | 81 | R2 f32–f64; **R1 f18–f39 when 2-handed only** |
 
 Rules:
 
