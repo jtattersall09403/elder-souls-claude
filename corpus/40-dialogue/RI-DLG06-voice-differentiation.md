@@ -3,7 +3,7 @@ id: RI-DLG06
 title: Dialogue voice differentiation — measurable style fingerprints per speaker archetype
 kind: number
 side: morrowind
-judges: [dialogue.voice, dialogue.writing, npc.character, lore.register]
+judges: [dialogue.voice.register, dialogue.npc.identity]
 provenance: community-data
 confidence: high
 blind_pair: yes

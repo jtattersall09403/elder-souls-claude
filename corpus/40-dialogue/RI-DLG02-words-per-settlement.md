@@ -3,7 +3,7 @@ id: RI-DLG02
 title: Unique dialogue words per settlement — the headline density metric
 kind: number
 side: morrowind
-judges: [dialogue.density, dialogue.settlement, world.settlement, content.volume]
+judges: [dialogue.density.wordcount, dialogue.topics.filtering, world.settlement.anatomy]
 provenance: community-data
 confidence: high
 blind_pair: no

@@ -3,7 +3,7 @@ id: RI-DLG01
 title: The topic list as a graph — filter stack, first-match-wins, and settlement topic webs
 kind: graph
 side: morrowind
-judges: [dialogue.topics, dialogue.filter, dialogue.greeting, dialogue.discovery, quests.discovery]
+judges: [dialogue.topics.graph, dialogue.topics.discovery, dialogue.topics.filtering, dialogue.greeting.variation, dialogue.combat.lockout, quests.discovery.hooks]
 provenance: community-data
 confidence: medium
 blind_pair: yes
@@ -37,6 +37,14 @@ inside the fight — enemies shout, they do not converse).
 
 **Response record** (`INFO`): belongs to exactly one topic, and carries
 `(filter predicate stack, response text, result script)`.
+
+**Combat lockout (ARBITRATION seam S13 — Souls-authoritative).** `Topic` and `Greeting` are
+**unavailable while `COMBAT` is active**. The entire topic graph is a peacetime structure.
+Hostile actors emit `Voice` records only — shouts, taunts, alarm calls — which are *not*
+nodes in this graph, have no `AddTopic` edges, and never open a dialogue window. There is no
+"talk him down mid-swing" affordance, no dialogue-triggered fight pause, and no persuasion
+UI reachable from a combat state (RI-DLG04 §How we lose repeats this). De-escalation happens
+*before* the first frame of hostile intent or *after* de-aggro — never during.
 
 **Filter predicate stack** — the conjunction that must fully pass. Morrowind's fields, in
 the order the Construction Set exposes them:
@@ -259,7 +267,25 @@ the topic*.
 authored order, if `filter[j] ⊇ filter[i]` (every constraint in i is present and equal or
 weaker in j) then j is unreachable. Emit the list. Required output: empty.
 
-**Step 5 — Blind topology pairing** (`blind_pair: yes`). Render our graph and the Balmora
+**Step 5 — Combat lockout conformance (seam S13).** Three checks, all required:
+```
+a) Static:  every dialogue record is typed. Assert  count(type == 'voice' AND edges > 0) == 0
+            and  count(type IN ('topic','greeting') AND speaker_can_be_hostile AND
+                       reachable_while_state=='COMBAT') == 0.
+b) Runtime: node tools/corpus/probe-combat-dialogue.mjs
+            — enter COMBAT with a hostile actor, then fire every dialogue-open input
+              (interact key, topic hotkey, persuasion action) for 300 frames.
+            Required: zero dialogue windows opened, zero topic lists returned,
+              zero frames where world simulation is paused by a dialogue call.
+c) Trace:   grep the combat trace for any `AddTopic`, `ModDisposition` or `Journal`
+            call originating from a `voice` record.  Required: none.
+```
+Any hit is an **AR-1 Souls-leakage fail** under ARBITRATION §3 and fails the piece
+regardless of score. Conversely, a *named quest actor* who is not hostile must remain fully
+conversable while a fight is happening elsewhere in the cell — the lockout is per-actor
+combat state, not a global mode.
+
+**Step 6 — Blind topology pairing** (`blind_pair: yes`). Render our graph and the Balmora
 reference graph in §B as two unlabeled Graphviz PNGs at identical layout settings with all
 node *labels replaced by `T1…Tn`*. Show a judge both and ask the exact question in RI-DLG07
 §Protocol, adapted: *"One of these two dialogue graphs comes from a game widely regarded as
@@ -274,6 +300,7 @@ below" column is the hard floor.
 - **12/13 or better, no hard-floor breach** → PASS.
 - **Any hard-floor breach** → FAIL regardless of total.
 - **Any orphan, or any unreachable INFO** → FAIL, automatic, no score.
+- **Any combat-lockout breach (step 5)** → FAIL, automatic, filed as AR-1 Souls leakage.
 - **`menu_quest_fraction` > 0.30** → FAIL and file it as an AR-2 Morrowind-leakage
   violation under ARBITRATION §3: a quest offered in a greeting is an objective marker
   wearing a hat.

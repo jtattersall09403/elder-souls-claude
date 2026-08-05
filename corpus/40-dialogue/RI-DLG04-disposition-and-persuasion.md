@@ -3,7 +3,7 @@ id: RI-DLG04
 title: Disposition and persuasion — derived disposition, Admire/Intimidate/Taunt/Bribe formulas, gating thresholds
 kind: number
 side: morrowind
-judges: [dialogue.disposition, dialogue.persuasion, dialogue.filter, economy.gold, progression.skills, npc.reaction]
+judges: [dialogue.disposition.model, dialogue.persuasion.mechanics, dialogue.topics.filtering, dialogue.service.merchant, progression.gold.economy, progression.skill.usegrowth]
 provenance: community-data
 confidence: high
 blind_pair: no

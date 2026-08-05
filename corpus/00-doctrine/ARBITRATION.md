@@ -68,6 +68,8 @@ Builders MUST NOT re-litigate; critics MUST enforce.
 | S13 | Dialogue during combat | **SOULS.** Enemies shout, they do not converse. Topic lists are locked while `COMBAT` is active. |
 | S14 | Menus/pause | **SOULS.** Inventory does not pause the world during combat. Outside combat, Morrowind-style leisure is fine. |
 | S15 | Souls as currency | **NEITHER, by decree.** Souls level you and ONLY level you. **Gold is the only currency.** Merchants, bribes, training, travel, and repairs all cost gold. Souls cannot buy an item, ever. |
+| S16 | Dungeon architecture | **SPLIT, by census.** Two kinds coexist and neither may crowd out the other. **8 Souls-loop dungeons**: interconnected, multi-strata, shortcut-unlocking, HEARTH-anchored, with a closed/open path ratio ≥1.5 — these are the set-piece descents and they obey Souls level design. **82 Morrowind caves**: flat-ish, hand-furnished, discovered by walking, often holding one secret, one story, or one corpse — these are the texture of the world and they obey Morrowind. A Souls-loop dungeon that is merely a long cave fails; a cave inflated into a shortcut puzzle fails equally. Ruling introduced by RI-WLD07, wave 0. |
+| S17 | Where the hour comes from | **MORROWIND.** The world takes an hour to cross because it contains an hour of *distance and incident*, never because locomotion is slow. Walk speed is a Souls-side property (2.0 m/s, tuned for combat spacing) and may not be lowered to inflate traversal time. If the crossing is too short, the world grows; the player never slows down. Ruling introduced by RI-WLD01 M3, wave 0. |
 
 ## 3. How critics enforce this
 

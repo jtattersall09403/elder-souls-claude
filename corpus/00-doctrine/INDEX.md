@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-05T22:49:36Z
+Generated: 2026-08-05T22:52:26Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -26,18 +26,18 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 ## 1. Coverage at a glance
 
 - Canonical subsystem paths: **200**
-- Reference items found: **58** across 8 area(s)
-- Subsystems with at least one judging reference item: **158**
+- Reference items found: **62** across 8 area(s)
+- Subsystems with at least one judging reference item: **159**
 - Subsystems judged by a doctrine document instead: **7** (see §3b)
-- **Corpus holes (no judging item): 35** (18%)
-- Front-matter problems: 0 error(s), 0 warning(s)
+- **Corpus holes (no judging item): 34** (17%)
+- Front-matter problems: 13 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
 | `combat.*` | 48 | 38 | 0 | 10 |
 | `progression.*` | 18 | 15 | 0 | 3 |
 | `quests.*` | 22 | 19 | 0 | 3 |
-| `dialogue.*` | 14 | 13 | 0 | 1 |
+| `dialogue.*` | 14 | 14 | 0 | 0 |
 | `journal.*` | 4 | 4 | 0 | 0 |
 | `world.*` | 31 | 26 | 0 | 5 |
 | `lore.*` | 10 | 7 | 0 | 3 |
@@ -123,7 +123,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `progression.gold.economy` | Gold is the only currency: merchants, bribes, training, travel, repairs | morrowind | [RI-PRG05](../../corpus/20-progression/RI-PRG05-gold-economy.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.progression` | in-item procedure (kind: number)<br>in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
 | `progression.merchant.barter` | Merchant gold pools, barter, disposition-affected prices | morrowind | [RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md)<br>[RI-PRG05](../../corpus/20-progression/RI-PRG05-gold-economy.md) | `critic.progression` | in-item procedure (kind: number)<br>in-item procedure (kind: number) |
 | `progression.bonfire.function` | What resting does and does not do (checkpoint + level-up, never teleport) | split | [RI-PRG04](../../corpus/20-progression/RI-PRG04-hearth-and-death.md) | `critic.progression` | in-item procedure (kind: structure) |
-| `progression.bonfire.placement` | Spacing and siting of rest points relative to danger | souls | [RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.progression` | in-item M1–M10 (10 checks)<br>in-item M33–M39 (7 checks) |
+| `progression.bonfire.placement` | Spacing and siting of rest points relative to danger | souls | [RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md)<br>[RI-LOR05](../../corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) | `critic.progression` | in-item M1–M10 (10 checks)<br>in-item M33–M39 (7 checks)<br>in-item procedure (kind: text) |
 | `progression.equipment.upgrade` | Weapon upgrade paths and materials | souls | [RI-PRG08](../../corpus/20-progression/RI-PRG08-upgrade-path.md) | `critic.progression` | in-item procedure (kind: number) |
 | `progression.equipment.encumbrance` | Load / equip burden and its movement consequences | split | [RI-PRG07](../../corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) | `critic.progression` | in-item procedure (kind: number) |
 | `progression.inventory.model` | Inventory breadth, item weight, containers, repair | morrowind | [RI-QST08](../../corpus/30-quests/RI-QST08-reward-design.md) | `critic.progression` | in-item procedure (kind: number) |
@@ -147,11 +147,11 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `quests.faction.escalation` | Errands escalate to politics escalate to power over the faction | morrowind | [RI-QST01](../../corpus/30-quests/RI-QST01-faction-escalation-shape.md)<br>[RI-QST02](../../corpus/30-quests/RI-QST02-deceit-patterns.md)<br>[RI-QST06](../../corpus/30-quests/RI-QST06-main-quest-architecture.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: structure)<br>in-item procedure (kind: structure)<br>in-item procedure (kind: text) |
 | `quests.faction.rivalry` | Faction rivalry locks: advancing here costs you there | morrowind | [RI-QST03](../../corpus/30-quests/RI-QST03-faction-gating.md) | `critic.quests` | in-item procedure (kind: structure) |
 | `quests.faction.expulsion` | Expulsion, disgrace, and the path back | morrowind | **— HOLE —** | `critic.quests` | _none_ |
-| `quests.mainline.prophecy` | Main quest shape: prophecy, doubt, and earned legitimacy | morrowind | [RI-QST06](../../corpus/30-quests/RI-QST06-main-quest-architecture.md)<br>[RI-LOR01](../../corpus/60-lore/RI-LOR01-canon-dossier.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: text); corpus/80-methods/canon-check.py<br>in-item procedure (kind: text) |
+| `quests.mainline.prophecy` | Main quest shape: prophecy, doubt, and earned legitimacy | morrowind | [RI-QST06](../../corpus/30-quests/RI-QST06-main-quest-architecture.md)<br>[RI-LOR01](../../corpus/60-lore/RI-LOR01-canon-dossier.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md)<br>[RI-LOR05](../../corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: text); corpus/80-methods/canon-check.py<br>in-item procedure (kind: text)<br>in-item procedure (kind: text) |
 | `quests.giver.characterisation` | Quest-givers are people with agendas, not dispensers | morrowind | [RI-QST02](../../corpus/30-quests/RI-QST02-deceit-patterns.md) | `critic.quests` | in-item procedure (kind: structure) |
 | `quests.reward.shape` | Rewards are specific, named, sometimes worse than promised | morrowind | [RI-QST08](../../corpus/30-quests/RI-QST08-reward-design.md) | `critic.quests` | in-item procedure (kind: number) |
 | `quests.failure.severed` | Killable quest NPCs; thread-of-prophecy-severed instead of game over (seam S10) | morrowind | [RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md) | `critic.quests` | in-item procedure (kind: structure) |
-| `quests.discovery.hooks` | Quests found through rumour and overheard talk, not a quest board | morrowind | [RI-QST07](../../corpus/30-quests/RI-QST07-side-quest-texture.md)<br>[RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md) | `critic.quests` | in-item procedure (kind: number)<br>in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item M12–M16 (5 checks) |
+| `quests.discovery.hooks` | Quests found through rumour and overheard talk, not a quest board | morrowind | [RI-QST07](../../corpus/30-quests/RI-QST07-side-quest-texture.md)<br>[RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md) | `critic.quests` | in-item procedure (kind: number)<br>in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/corpus/probe-combat-dialogue.mjs<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item M12–M16 (5 checks) |
 | `quests.state.persistence` | Quest/faction/world flags survive death untouched (seam S6) | morrowind | **— HOLE —** | `critic.quests` | _none_ |
 | `quests.data.schema` | The quest data schema itself: stages, conditions, flags, journal binding | morrowind | [RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md)<br>[RI-QST05](../../corpus/30-quests/RI-QST05-non-combat-resolution.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: number) |
 | `quests.density.count` | How many quests exist per faction, settlement, and region | morrowind | [RI-QST01](../../corpus/30-quests/RI-QST01-faction-escalation-shape.md)<br>[RI-QST07](../../corpus/30-quests/RI-QST07-side-quest-texture.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: number) |
@@ -164,28 +164,28 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
-| `dialogue.topics.graph` | Topic-list dialogue with a real graph behind it | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs |
-| `dialogue.topics.discovery` | Keyword discovery: topics unlock by being told about them | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs |
-| `dialogue.topics.filtering` | Same topic, different answer by faction/race/rank/disposition/place | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-DLG02](../../corpus/40-dialogue/RI-DLG02-words-per-settlement.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs<br>in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs, tools/corpus/dump-npcs.mjs<br>in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
+| `dialogue.topics.graph` | Topic-list dialogue with a real graph behind it | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/corpus/probe-combat-dialogue.mjs |
+| `dialogue.topics.discovery` | Keyword discovery: topics unlock by being told about them | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/corpus/probe-combat-dialogue.mjs |
+| `dialogue.topics.filtering` | Same topic, different answer by faction/race/rank/disposition/place | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-DLG02](../../corpus/40-dialogue/RI-DLG02-words-per-settlement.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/corpus/probe-combat-dialogue.mjs<br>in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs, tools/corpus/dump-npcs.mjs<br>in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
 | `dialogue.disposition.model` | Disposition as a real number with real consequences | morrowind | [RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
 | `dialogue.persuasion.mechanics` | Admire / intimidate / taunt / bribe and their risks | morrowind | [RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md)<br>[RI-QST05](../../corpus/30-quests/RI-QST05-non-combat-resolution.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: number)<br>in-item procedure (kind: number)<br>in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
-| `dialogue.rumour.distribution` | Rumours differ per town and per class, and point at real content | morrowind | [RI-QST07](../../corpus/30-quests/RI-QST07-side-quest-texture.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) | `critic.dialogue` | in-item procedure (kind: number)<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: text) |
-| `dialogue.voice.register` | Prose quality and register: does it read like Morrowind or like filler | morrowind | [RI-DLG06](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md)<br>[RI-LOR04](../../corpus/60-lore/RI-LOR04-naming-and-language.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: structure); corpus/80-methods/jel-phonotactics.py<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
-| `dialogue.npc.identity` | An NPC reads as a specific person with a specific position | morrowind | [RI-DLG06](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs |
-| `dialogue.greeting.variation` | Greetings vary by state, place, and standing | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs |
-| `dialogue.service.merchant` | Barter, training, repair, transport conducted through dialogue | morrowind | [RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md) | `critic.dialogue` | in-item M12–M16 (5 checks) |
-| `dialogue.combat.lockout` | Topic lists locked during COMBAT; enemies shout, not converse (seam S13) | souls | **— HOLE —** | `critic.dialogue` | _none_ |
-| `dialogue.lore.vector` | NPC dialogue, not item descriptions, is the primary lore vector (AR-2) | morrowind | [RI-LOR01](../../corpus/60-lore/RI-LOR01-canon-dossier.md)<br>[RI-LOR03](../../corpus/60-lore/RI-LOR03-in-world-book-structure.md) | `critic.dialogue` | in-item procedure (kind: text); corpus/80-methods/canon-check.py<br>in-item procedure (kind: text); corpus/80-methods/book-stats.py |
+| `dialogue.rumour.distribution` | Rumours differ per town and per class, and point at real content | morrowind | [RI-QST07](../../corpus/30-quests/RI-QST07-side-quest-texture.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-DLG07](../../corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) | `critic.dialogue` | in-item procedure (kind: number)<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: text) |
+| `dialogue.voice.register` | Prose quality and register: does it read like Morrowind or like filler | morrowind | [RI-DLG06](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md)<br>[RI-DLG07](../../corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md)<br>[RI-LOR04](../../corpus/60-lore/RI-LOR04-naming-and-language.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: structure); corpus/80-methods/jel-phonotactics.py<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
+| `dialogue.npc.identity` | An NPC reads as a specific person with a specific position | morrowind | [RI-DLG06](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md)<br>[RI-DLG07](../../corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: text) |
+| `dialogue.greeting.variation` | Greetings vary by state, place, and standing | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-DLG07](../../corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/corpus/probe-combat-dialogue.mjs<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: text) |
+| `dialogue.service.merchant` | Barter, training, repair, transport conducted through dialogue | morrowind | [RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md)<br>[RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs<br>in-item M12–M16 (5 checks) |
+| `dialogue.combat.lockout` | Topic lists locked during COMBAT; enemies shout, not converse (seam S13) | souls | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/corpus/probe-combat-dialogue.mjs |
+| `dialogue.lore.vector` | NPC dialogue, not item descriptions, is the primary lore vector (AR-2) | morrowind | [RI-LOR01](../../corpus/60-lore/RI-LOR01-canon-dossier.md)<br>[RI-LOR03](../../corpus/60-lore/RI-LOR03-in-world-book-structure.md)<br>[RI-LOR05](../../corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) | `critic.dialogue` | in-item procedure (kind: text); corpus/80-methods/canon-check.py<br>in-item procedure (kind: text); corpus/80-methods/book-stats.py<br>in-item procedure (kind: text) |
 | `dialogue.density.wordcount` | Volume of authored dialogue per NPC, settlement, and region | morrowind | [RI-DLG02](../../corpus/40-dialogue/RI-DLG02-words-per-settlement.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs, tools/corpus/dump-npcs.mjs |
-| `dialogue.topics.truth` | NPCs may be wrong or lying inside a topic answer, discoverably | morrowind | [RI-QST02](../../corpus/30-quests/RI-QST02-deceit-patterns.md) | `critic.dialogue` | in-item procedure (kind: structure) |
+| `dialogue.topics.truth` | NPCs may be wrong or lying inside a topic answer, discoverably | morrowind | [RI-QST02](../../corpus/30-quests/RI-QST02-deceit-patterns.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) | `critic.dialogue` | in-item procedure (kind: structure)<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs |
 
 ### `journal.*`
 
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
-| `journal.entry.voice` | First-person-authored journal prose written by the character | morrowind | [RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md)<br>[RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.journal` | in-item procedure (kind: text); tools/corpus/dump-journal.mjs<br>in-item M27–M32 (6 checks) |
-| `journal.entry.numbering` | Numbered, dated, append-only entries with stable indices | morrowind | [RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md) | `critic.journal` | in-item procedure (kind: structure) |
-| `journal.entry.directions` | Directions carried in prose: landmarks, distances, named people (seam S8) | morrowind | [RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.journal` | in-item M27–M32 (6 checks) |
+| `journal.entry.voice` | First-person-authored journal prose written by the character | morrowind | [RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md)<br>[RI-DLG07](../../corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md)<br>[RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.journal` | in-item procedure (kind: text); tools/corpus/dump-journal.mjs<br>in-item procedure (kind: text)<br>in-item M27–M32 (6 checks) |
+| `journal.entry.numbering` | Numbered, dated, append-only entries with stable indices | morrowind | [RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md)<br>[RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md) | `critic.journal` | in-item procedure (kind: structure)<br>in-item procedure (kind: text); tools/corpus/dump-journal.mjs |
+| `journal.entry.directions` | Directions carried in prose: landmarks, distances, named people (seam S8) | morrowind | [RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md)<br>[RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.journal` | in-item procedure (kind: text); tools/corpus/dump-journal.mjs<br>in-item M27–M32 (6 checks) |
 | `journal.navigation.nomarkers` | No compass markers, no objective arrows, anywhere | morrowind | [RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md) | `critic.journal` | in-item procedure (kind: text); tools/corpus/dump-journal.mjs |
 
 ### `world.*`
@@ -203,7 +203,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `world.interior.continuity` | Interiors match their exteriors in size, orientation, and light | morrowind | **— HOLE —** | `critic.world` | _none_ |
 | `world.dungeon.design` | Dungeon and interior layout: loops, shortcuts, unlocks, and dead ends | souls | [RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.world` | in-item M33–M39 (7 checks) |
 | `world.traversal.time` | Traversal time budgets between named places | morrowind | [RI-PRG07](../../corpus/20-progression/RI-PRG07-equip-load-encumbrance.md)<br>[RI-WLD01](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) | `critic.world` | in-item procedure (kind: number)<br>in-item M1–M5 (5 checks); corpus/80-methods/M-WLD-walkprobe.md |
-| `world.traversal.transport` | In-fiction transport network only; no warp-to-pin (seam S7) | morrowind | [RI-PRG05](../../corpus/20-progression/RI-PRG05-gold-economy.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) | `critic.world` | in-item procedure (kind: number)<br>in-item procedure (kind: text) |
+| `world.traversal.transport` | In-fiction transport network only; no warp-to-pin (seam S7) | morrowind | [RI-PRG05](../../corpus/20-progression/RI-PRG05-gold-economy.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md)<br>[RI-LOR05](../../corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) | `critic.world` | in-item procedure (kind: number)<br>in-item procedure (kind: text)<br>in-item procedure (kind: text) |
 | `world.wayfinding.directions` | Getting there from prose directions actually works | morrowind | [RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md)<br>[RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.world` | in-item procedure (kind: text); tools/corpus/dump-journal.mjs<br>in-item M27–M32 (6 checks) |
 | `world.strangeness.flora` | Alien plant life that is not a European forest | morrowind | [RI-WLD04](../../corpus/50-world/RI-WLD04-region-identity.md)<br>[RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md) | `critic.world` | in-item M17–M21 (5 checks)<br>in-item M22–M26 (5 checks) |
 | `world.strangeness.fauna` | Alien animals and their behaviour in the world | morrowind | [RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md) | `critic.world` | in-item M22–M26 (5 checks) |
@@ -211,7 +211,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `world.strangeness.budget` | Overall strangeness budget: how alien the world reads per hour of play | morrowind | [RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md) | `critic.world` | in-item M22–M26 (5 checks) |
 | `world.hazard.environment` | Swamp, blight, drowning, disease vectors as world hazards | morrowind | **— HOLE —** | `critic.world` | _none_ |
 | `world.water.marsh` | Black Marsh specifically: water, tide, mud, depth, and its cost to cross | morrowind | **— HOLE —** | `critic.world` | _none_ |
-| `world.weather.systems` | Weather: rain, storm, mist, and what it changes in play | morrowind | [RI-WLD04](../../corpus/50-world/RI-WLD04-region-identity.md) | `critic.world` | in-item M17–M21 (5 checks) |
+| `world.weather.systems` | Weather: rain, storm, mist, and what it changes in play | morrowind | [RI-WLD04](../../corpus/50-world/RI-WLD04-region-identity.md)<br>[RI-WLD08](../../corpus/50-world/RI-WLD08-the-living-world.md) | `critic.world` | in-item M17–M21 (5 checks)<br>in-item M40–M46 (7 checks) |
 | `world.loot.placement` | Hand-placed, named, weird loot; no procedural drop tables (seam S12) | morrowind | [RI-PRG08](../../corpus/20-progression/RI-PRG08-upgrade-path.md)<br>[RI-QST08](../../corpus/30-quests/RI-QST08-reward-design.md) | `critic.world` | in-item procedure (kind: number)<br>in-item procedure (kind: number) |
 | `world.npc.population` | Who lives here, in what numbers, doing what | morrowind | [RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md) | `critic.world` | in-item M1–M10 (10 checks)<br>in-item M12–M16 (5 checks) |
 | `world.persistence.state` | Dropped, moved, and taken things stay that way | morrowind | [RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) | `critic.world` | in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs |
@@ -219,7 +219,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `world.traversal.locomotion` | Player movement speeds out of the fight, which set every traversal budget | morrowind | [RI-WLD01](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) | `critic.world` | in-item M1–M5 (5 checks); corpus/80-methods/M-WLD-walkprobe.md |
 | `world.terrain.form` | Terrain shape, elevation, and how it channels movement | morrowind | [RI-WLD01](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md)<br>[RI-WLD04](../../corpus/50-world/RI-WLD04-region-identity.md)<br>[RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.world` | in-item M1–M5 (5 checks); corpus/80-methods/M-WLD-walkprobe.md<br>in-item M17–M21 (5 checks)<br>in-item M33–M39 (7 checks) |
 | `world.verticality.layout` | Vertical level design: what you can see, climb, fall from, and drop into | souls | [RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.world` | in-item M33–M39 (7 checks) |
-| `world.time.daynight` | Time of day, its length, and what actually changes with it | morrowind | [RI-PRG04](../../corpus/20-progression/RI-PRG04-hearth-and-death.md) | `critic.world` | in-item procedure (kind: structure) |
+| `world.time.daynight` | Time of day, its length, and what actually changes with it | morrowind | [RI-PRG04](../../corpus/20-progression/RI-PRG04-hearth-and-death.md)<br>[RI-WLD08](../../corpus/50-world/RI-WLD08-the-living-world.md) | `critic.world` | in-item procedure (kind: structure)<br>in-item M40–M46 (7 checks) |
 | `world.property.ownership` | Owned things, theft, witnesses, and consequence | morrowind | [RI-QST08](../../corpus/30-quests/RI-QST08-reward-design.md) | `critic.world` | in-item procedure (kind: number) |
 | `world.locks.security` | Locks, security ratings, picking, and the alternatives to picking | morrowind | [RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md) | `critic.world` | in-item procedure (kind: number) |
 | `world.faction.presence` | Which factions hold which places, visibly, on the ground | morrowind | [RI-QST03](../../corpus/30-quests/RI-QST03-faction-gating.md) | `critic.world` | in-item procedure (kind: structure) |
@@ -282,7 +282,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
-| `ui.hud.combat` | Health/stamina/charges HUD legibility under pressure | souls | [RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md)<br>[RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.ui` | in-item procedure (kind: text); tools/corpus/dump-journal.mjs<br>in-item M27–M32 (6 checks) |
+| `ui.hud.combat` | Health/stamina/charges HUD legibility under pressure | souls | [RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.ui` | in-item M27–M32 (6 checks) |
 | `ui.hud.minimalism` | No compass, no markers, no quest arrows on screen (AR-2) | morrowind | **— HOLE —** | `critic.ui` | _none_ |
 | `ui.menu.inventory` | Inventory screen structure and information density | morrowind | **— HOLE —** | `critic.ui` | _none_ |
 | `ui.menu.journal` | Journal presentation, topic index, quest filtering | morrowind | **— HOLE —** | `critic.ui` | _none_ |
@@ -319,8 +319,8 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
-| `process.critic.discipline` | The critic process itself: evidence, blindness, anti-softness (CRITIC-DOCTRINE.md) | neutral | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.coherence` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
-| `process.verdict.format` | The verdict format and its validation (VERDICT-SCHEMA.md) | neutral | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.coherence` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
+| `process.critic.discipline` | The critic process itself: evidence, blindness, anti-softness (CRITIC-DOCTRINE.md) | neutral | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md)<br>[RI-MTH04](../../corpus/80-methods/RI-MTH04-measurement-integrity.md) | `critic.coherence` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs<br>in-item M1–M8 (8 checks) |
+| `process.verdict.format` | The verdict format and its validation (VERDICT-SCHEMA.md) | neutral | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md)<br>[RI-MTH04](../../corpus/80-methods/RI-MTH04-measurement-integrity.md) | `critic.coherence` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs<br>in-item M1–M8 (8 checks) |
 
 ---
 
@@ -330,7 +330,7 @@ Subsystem paths with **no** reference item judging them. Per CORPUS-CONTRACT §4
 builder must not start on one of these. Per §5, a critic that needs one writes the
 item rather than guessing, then regenerates this index.
 
-**35 of 200 paths are holes.**
+**34 of 200 paths are holes.**
 
 | Subsystem path | What it means | Arb | Expected area | Critic |
 |---|---|---|---|---|
@@ -350,7 +350,6 @@ item rather than guessing, then regenerates this index.
 | `quests.resolution.exclusive` | Mutually exclusive resolutions that permanently close doors | morrowind | `corpus/30-quests/` | `critic.quests` |
 | `quests.faction.expulsion` | Expulsion, disgrace, and the path back | morrowind | `corpus/30-quests/` | `critic.quests` |
 | `quests.state.persistence` | Quest/faction/world flags survive death untouched (seam S6) | morrowind | `corpus/30-quests/` | `critic.quests` |
-| `dialogue.combat.lockout` | Topic lists locked during COMBAT; enemies shout, not converse (seam S13) | souls | `corpus/40-dialogue/` | `critic.dialogue` |
 | `world.region.transition` | Borders between regions read as a change, not a texture swap | morrowind | `corpus/50-world/` | `critic.world` |
 | `world.interior.continuity` | Interiors match their exteriors in size, orientation, and light | morrowind | `corpus/50-world/` | `critic.world` |
 | `world.strangeness.architecture` | Buildings that could not be anywhere else | morrowind | `corpus/50-world/` | `critic.world` |
@@ -397,7 +396,7 @@ front-matter should be corrected to the canonical spelling when the item is next
 touched. **New reference items must use canonical paths only** — aliases are a
 migration aid, not a second vocabulary.
 
-**226 legacy spellings in use.**
+**206 legacy spellings in use.**
 
 | Legacy path | Canonical path | Used by |
 |---|---|---|
@@ -442,28 +441,17 @@ migration aid, not a second vocabulary.
 | `combat.trace` | `platform.determinism.harness` | RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | `combat.trade` | `combat.poise.player` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
 | `combat.weapons.frames` | `combat.frames.timing` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md) |
-| `content.volume` | `dialogue.density.wordcount` | RI-DLG02 (corpus/40-dialogue/RI-DLG02-words-per-settlement.md) |
 | `creatures.names` | `lore.naming.conventions` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `data.quests` | `quests.data.schema` | RI-QST04 (corpus/30-quests/RI-QST04-quest-anatomy-schema.md) |
-| `dialogue.claims` | `dialogue.lore.vector` | RI-LOR01 (corpus/60-lore/RI-LOR01-canon-dossier.md), RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
-| `dialogue.density` | `dialogue.density.wordcount` | RI-DLG02 (corpus/40-dialogue/RI-DLG02-words-per-settlement.md) |
+| `dialogue.claims` | `dialogue.lore.vector` | RI-LOR01 (corpus/60-lore/RI-LOR01-canon-dossier.md), RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md), RI-LOR05 (corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) |
 | `dialogue.directions` | `journal.entry.directions` | RI-WLD06 (corpus/50-world/RI-WLD06-navigation-without-markers.md) |
-| `dialogue.discovery` | `dialogue.topics.discovery` | RI-DLG01 (corpus/40-dialogue/RI-DLG01-topic-graph.md) |
-| `dialogue.disposition` | `dialogue.disposition.model` | RI-DLG03 (corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md), RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
-| `dialogue.filter` | `dialogue.topics.filtering` | RI-DLG01 (corpus/40-dialogue/RI-DLG01-topic-graph.md), RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
-| `dialogue.greeting` | `dialogue.greeting.variation` | RI-DLG01 (corpus/40-dialogue/RI-DLG01-topic-graph.md), RI-DLG03 (corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
-| `dialogue.journal` | `journal.entry.voice` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md) |
-| `dialogue.persuasion` | `dialogue.persuasion.mechanics` | RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md), RI-QST05 (corpus/30-quests/RI-QST05-non-combat-resolution.md), RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
+| `dialogue.persuasion` | `dialogue.persuasion.mechanics` | RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md), RI-QST05 (corpus/30-quests/RI-QST05-non-combat-resolution.md) |
 | `dialogue.prose` | `dialogue.voice.register` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
-| `dialogue.rumour` | `dialogue.rumour.distribution` | RI-DLG03 (corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
 | `dialogue.rumours` | `dialogue.rumour.distribution` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md), RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
-| `dialogue.settlement` | `dialogue.topics.filtering` | RI-DLG02 (corpus/40-dialogue/RI-DLG02-words-per-settlement.md) |
-| `dialogue.topics` | `dialogue.topics.graph` | RI-DLG01 (corpus/40-dialogue/RI-DLG01-topic-graph.md) |
-| `dialogue.voice` | `dialogue.voice.register` | RI-DLG06 (corpus/40-dialogue/RI-DLG06-voice-differentiation.md), RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
-| `dialogue.writing` | `dialogue.voice.register` | RI-DLG06 (corpus/40-dialogue/RI-DLG06-voice-differentiation.md) |
+| `dialogue.voice` | `dialogue.voice.register` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `economy.barter` | `progression.merchant.barter` | RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md), RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md) |
 | `economy.carrying` | `progression.equipment.encumbrance` | RI-PRG07 (corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) |
-| `economy.gold` | `progression.gold.economy` | RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md), RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
+| `economy.gold` | `progression.gold.economy` | RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md) |
 | `economy.loot` | `world.loot.placement` | RI-QST08 (corpus/30-quests/RI-QST08-reward-design.md) |
 | `economy.merchants` | `progression.merchant.barter` | RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md) |
 | `economy.smithing` | `progression.equipment.upgrade` | RI-PRG08 (corpus/20-progression/RI-PRG08-upgrade-path.md) |
@@ -488,17 +476,12 @@ migration aid, not a second vocabulary.
 | `lore.names` | `lore.naming.conventions` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `lore.politics` | `lore.canon.factions` | RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
 | `lore.prophecy` | `lore.canon.prophecy` | RI-QST06 (corpus/30-quests/RI-QST06-main-quest-architecture.md) |
-| `lore.register` | `dialogue.voice.register` | RI-DLG06 (corpus/40-dialogue/RI-DLG06-voice-differentiation.md) |
 | `movement.speed` | `world.traversal.locomotion` | RI-WLD01 (corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) |
-| `npc.character` | `dialogue.npc.identity` | RI-DLG06 (corpus/40-dialogue/RI-DLG06-voice-differentiation.md) |
 | `npc.names` | `lore.naming.conventions` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `npc.population` | `world.npc.population` | RI-WLD03 (corpus/50-world/RI-WLD03-settlement-anatomy.md) |
-| `npc.reaction` | `dialogue.disposition.model` | RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
 | `npc.services` | `dialogue.service.merchant` | RI-WLD03 (corpus/50-world/RI-WLD03-settlement-anatomy.md) |
-| `process.critic` | `process.critic.discipline` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
-| `process.verdict` | `process.verdict.format` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | `progression.attributes` | `progression.level.attributes` | RI-PRG02 (corpus/20-progression/RI-PRG02-stat-sheet.md) |
-| `progression.bonfires` | `progression.bonfire.placement` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
+| `progression.bonfires` | `progression.bonfire.placement` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md), RI-LOR05 (corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) |
 | `progression.checkpoint` | `progression.bonfire.function` | RI-PRG04 (corpus/20-progression/RI-PRG04-hearth-and-death.md) |
 | `progression.death` | `combat.death.corpserun` | RI-PRG04 (corpus/20-progression/RI-PRG04-hearth-and-death.md) |
 | `progression.equip_load` | `progression.equipment.encumbrance` | RI-PRG07 (corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) |
@@ -511,7 +494,7 @@ migration aid, not a second vocabulary.
 | `progression.materials` | `progression.equipment.upgrade` | RI-PRG08 (corpus/20-progression/RI-PRG08-upgrade-path.md) |
 | `progression.pace` | `progression.level.curve` | RI-PRG06 (corpus/20-progression/RI-PRG06-souls-yield-and-pace.md) |
 | `progression.scaling` | `combat.damage.scaling` | RI-PRG02 (corpus/20-progression/RI-PRG02-stat-sheet.md), RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md) |
-| `progression.skills` | `progression.skill.usegrowth` | RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md), RI-QST03 (corpus/30-quests/RI-QST03-faction-gating.md), RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
+| `progression.skills` | `progression.skill.usegrowth` | RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md), RI-QST03 (corpus/30-quests/RI-QST03-faction-gating.md) |
 | `progression.skills.social` | `progression.skill.social` | RI-QST05 (corpus/30-quests/RI-QST05-non-combat-resolution.md) |
 | `progression.souls_yield` | `progression.souls.economy` | RI-PRG06 (corpus/20-progression/RI-PRG06-souls-yield-and-pace.md) |
 | `progression.training` | `progression.training.trainers` | RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md) |
@@ -521,7 +504,7 @@ migration aid, not a second vocabulary.
 | `quests.branching` | `quests.structure.branching` | RI-QST02 (corpus/30-quests/RI-QST02-deceit-patterns.md), RI-QST04 (corpus/30-quests/RI-QST04-quest-anatomy-schema.md) |
 | `quests.deceit` | `quests.structure.deceit` | RI-QST02 (corpus/30-quests/RI-QST02-deceit-patterns.md) |
 | `quests.density` | `quests.density.count` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md) |
-| `quests.discovery` | `quests.discovery.hooks` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md), RI-DLG01 (corpus/40-dialogue/RI-DLG01-topic-graph.md), RI-DLG03 (corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
+| `quests.discovery` | `quests.discovery.hooks` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md) |
 | `quests.escalation` | `quests.faction.escalation` | RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
 | `quests.faction.counts` | `quests.density.count` | RI-QST01 (corpus/30-quests/RI-QST01-faction-escalation-shape.md) |
 | `quests.faction.exclusivity` | `quests.faction.rivalry` | RI-QST03 (corpus/30-quests/RI-QST03-faction-gating.md) |
@@ -533,7 +516,7 @@ migration aid, not a second vocabulary.
 | `quests.giver` | `quests.giver.characterisation` | RI-QST02 (corpus/30-quests/RI-QST02-deceit-patterns.md) |
 | `quests.journal` | `journal.entry.numbering` | RI-QST04 (corpus/30-quests/RI-QST04-quest-anatomy-schema.md) |
 | `quests.lorehooks` | `quests.lore.hooks` | RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
-| `quests.main` | `quests.mainline.prophecy` | RI-QST06 (corpus/30-quests/RI-QST06-main-quest-architecture.md), RI-LOR01 (corpus/60-lore/RI-LOR01-canon-dossier.md), RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
+| `quests.main` | `quests.mainline.prophecy` | RI-QST06 (corpus/30-quests/RI-QST06-main-quest-architecture.md), RI-LOR01 (corpus/60-lore/RI-LOR01-canon-dossier.md), RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md), RI-LOR05 (corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) |
 | `quests.main.acts` | `quests.mainline.acts` | RI-QST06 (corpus/30-quests/RI-QST06-main-quest-architecture.md) |
 | `quests.main.antagonist` | `quests.mainline.antagonist` | RI-QST06 (corpus/30-quests/RI-QST06-main-quest-architecture.md) |
 | `quests.resolution.methods` | `quests.resolution.noncombat` | RI-QST05 (corpus/30-quests/RI-QST05-non-combat-resolution.md) |
@@ -542,9 +525,8 @@ migration aid, not a second vocabulary.
 | `quests.schema` | `quests.data.schema` | RI-QST04 (corpus/30-quests/RI-QST04-quest-anatomy-schema.md), RI-QST05 (corpus/30-quests/RI-QST05-non-combat-resolution.md) |
 | `quests.side` | `quests.side.texture` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md) |
 | `quests.stages` | `quests.structure.stages` | RI-QST04 (corpus/30-quests/RI-QST04-quest-anatomy-schema.md) |
-| `quests.structure` | `quests.structure.stages` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md), RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
-| `quests.tracking` | `journal.navigation.nomarkers` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md) |
-| `ui.hud` | `ui.hud.combat` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md), RI-WLD06 (corpus/50-world/RI-WLD06-navigation-without-markers.md) |
+| `quests.structure` | `quests.structure.stages` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
+| `ui.hud` | `ui.hud.combat` | RI-WLD06 (corpus/50-world/RI-WLD06-navigation-without-markers.md) |
 | `ui.readables` | `ui.menu.books` | RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
 | `visual.animation.attachment` | `render.fidelity.animation` | RI-VIS08 (corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
 | `visual.animation.blending` | `render.fidelity.animation` | RI-VIS08 (corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
@@ -605,13 +587,11 @@ migration aid, not a second vocabulary.
 | `world.placenames` | `lore.naming.conventions` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `world.poi` | `world.density.handplacement` | RI-WLD02 (corpus/50-world/RI-WLD02-density-per-minute.md) |
 | `world.property` | `world.property.ownership` | RI-QST08 (corpus/30-quests/RI-QST08-reward-design.md) |
-| `world.reactivity` | `world.persistence.state` | RI-DLG03 (corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
 | `world.region_gating` | `world.region.gating` | RI-PRG06 (corpus/20-progression/RI-PRG06-souls-yield-and-pace.md) |
 | `world.regions` | `world.region.identity` | RI-WLD04 (corpus/50-world/RI-WLD04-region-identity.md) |
 | `world.respawn` | `combat.death.worldreset` | RI-PRG04 (corpus/20-progression/RI-PRG04-hearth-and-death.md) |
 | `world.roads` | `world.traversal.roads` | RI-WLD01 (corpus/50-world/RI-WLD01-scale-and-traversal-budget.md), RI-WLD06 (corpus/50-world/RI-WLD06-navigation-without-markers.md) |
 | `world.scale` | `world.map.scale` | RI-WLD01 (corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) |
-| `world.settlement` | `world.settlement.anatomy` | RI-DLG02 (corpus/40-dialogue/RI-DLG02-words-per-settlement.md) |
 | `world.settlement.content` | `world.settlement.anatomy` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md) |
 | `world.settlements` | `world.settlement.anatomy` | RI-WLD03 (corpus/50-world/RI-WLD03-settlement-anatomy.md), RI-LOR01 (corpus/60-lore/RI-LOR01-canon-dossier.md), RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md), RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `world.sightlines` | `world.map.legibility` | RI-WLD02 (corpus/50-world/RI-WLD02-density-per-minute.md), RI-WLD06 (corpus/50-world/RI-WLD06-navigation-without-markers.md) |
@@ -620,13 +600,12 @@ migration aid, not a second vocabulary.
 | `world.strangeness` | `world.strangeness.budget` | RI-WLD05 (corpus/50-world/RI-WLD05-strangeness-bar.md) |
 | `world.systems` | `coherence.systems.composition` | RI-WLD05 (corpus/50-world/RI-WLD05-strangeness-bar.md) |
 | `world.terrain` | `world.terrain.form` | RI-WLD01 (corpus/50-world/RI-WLD01-scale-and-traversal-budget.md), RI-WLD04 (corpus/50-world/RI-WLD04-region-identity.md), RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
-| `world.time` | `world.time.daynight` | RI-PRG04 (corpus/20-progression/RI-PRG04-hearth-and-death.md) |
+| `world.time` | `world.time.daynight` | RI-PRG04 (corpus/20-progression/RI-PRG04-hearth-and-death.md), RI-WLD08 (corpus/50-world/RI-WLD08-the-living-world.md) |
 | `world.transport` | `world.traversal.transport` | RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md) |
-| `world.travel` | `world.traversal.transport` | RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
+| `world.travel` | `world.traversal.transport` | RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md), RI-LOR05 (corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) |
 | `world.traversal` | `world.traversal.time` | RI-PRG07 (corpus/20-progression/RI-PRG07-equip-load-encumbrance.md), RI-WLD01 (corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) |
 | `world.verticality` | `world.verticality.layout` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
-| `world.wayfinding` | `world.wayfinding.directions` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md) |
-| `world.weather` | `world.weather.systems` | RI-WLD04 (corpus/50-world/RI-WLD04-region-identity.md) |
+| `world.weather` | `world.weather.systems` | RI-WLD04 (corpus/50-world/RI-WLD04-region-identity.md), RI-WLD08 (corpus/50-world/RI-WLD08-the-living-world.md) |
 
 ### 4b. Unresolved `judges:` targets
 
@@ -634,7 +613,21 @@ Paths claimed by an item that are neither canonical nor aliased. An unresolved p
 means a critic would be judging something no builder was ever told to address. Fix
 the item, or append the path to `subsystems.json`, then regenerate.
 
-_None._
+| File | Problem |
+|---|---|
+| `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.npc-schedules" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ecology" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ambient-events" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "npc.behaviour" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "audio.ambient" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "lore.religion" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "lore.metaphysics" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "progression.souls" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "progression.levelling" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "progression.estus" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "combat.death" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "combat.respawn" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "ui.terminology" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 
 ---
 
@@ -672,12 +665,13 @@ _None._
 | RI-QST06 | Main quest architecture — the five-act template and the backpath | 30-quests | structure | morrowind | canonical-recall | medium | yes | `quests.mainline.prophecy` `quests.mainline.acts` `quests.mainline.antagonist` `quests.faction.escalation` `lore.canon.prophecy` | [corpus/30-quests/RI-QST06-main-quest-architecture.md](../../corpus/30-quests/RI-QST06-main-quest-architecture.md) |
 | RI-QST07 | Side quest texture — type distribution, density, and the quests you have to overhear | 30-quests | number | morrowind | derived | low | no | `quests.side.texture` `quests.discovery.hooks` `quests.density.count` `world.settlement.anatomy` `dialogue.rumour.distribution` | [corpus/30-quests/RI-QST07-side-quest-texture.md](../../corpus/30-quests/RI-QST07-side-quest-texture.md) |
 | RI-QST08 | Reward design — the unique-named fraction and non-item rewards | 30-quests | number | morrowind | community-data | medium | yes | `quests.reward.shape` `world.loot.placement` `progression.inventory.model` `world.property.ownership` | [corpus/30-quests/RI-QST08-reward-design.md](../../corpus/30-quests/RI-QST08-reward-design.md) |
-| RI-DLG01 | The topic list as a graph — filter stack, first-match-wins, and settlement topic webs | 40-dialogue | graph | morrowind | community-data | medium | yes | `dialogue.topics.graph` `dialogue.topics.filtering` `dialogue.greeting.variation` `dialogue.topics.discovery` `quests.discovery.hooks` | [corpus/40-dialogue/RI-DLG01-topic-graph.md](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) |
+| RI-DLG01 | The topic list as a graph — filter stack, first-match-wins, and settlement topic webs | 40-dialogue | graph | morrowind | community-data | medium | yes | `dialogue.topics.graph` `dialogue.topics.discovery` `dialogue.topics.filtering` `dialogue.greeting.variation` `dialogue.combat.lockout` `quests.discovery.hooks` | [corpus/40-dialogue/RI-DLG01-topic-graph.md](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) |
 | RI-DLG02 | Unique dialogue words per settlement — the headline density metric | 40-dialogue | number | morrowind | community-data | high | no | `dialogue.density.wordcount` `dialogue.topics.filtering` `world.settlement.anatomy` | [corpus/40-dialogue/RI-DLG02-words-per-settlement.md](../../corpus/40-dialogue/RI-DLG02-words-per-settlement.md) |
-| RI-DLG03 | Greetings and rumours — disposition banding and the diegetic quest-discovery mechanism | 40-dialogue | text | morrowind | community-data | high | yes | `dialogue.greeting.variation` `dialogue.rumour.distribution` `dialogue.disposition.model` `quests.discovery.hooks` `world.persistence.state` | [corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
-| RI-DLG04 | Disposition and persuasion — derived disposition, Admire/Intimidate/Taunt/Bribe formulas, gating thresholds | 40-dialogue | number | morrowind | community-data | high | no | `dialogue.disposition.model` `dialogue.persuasion.mechanics` `dialogue.topics.filtering` `progression.gold.economy` `progression.skill.usegrowth` | [corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
-| RI-DLG05 | The journal — schema, voice, exemplar entries, and the no-marker rule | 40-dialogue | text | morrowind | constructed | high | yes | `journal.entry.voice` `journal.navigation.nomarkers` `quests.structure.stages` `ui.hud.combat` `world.wayfinding.directions` | [corpus/40-dialogue/RI-DLG05-journal.md](../../corpus/40-dialogue/RI-DLG05-journal.md) |
+| RI-DLG03 | Greetings and rumours — disposition banding and the diegetic quest-discovery mechanism | 40-dialogue | text | morrowind | community-data | high | yes | `dialogue.rumour.distribution` `dialogue.greeting.variation` `dialogue.disposition.model` `dialogue.topics.truth` `quests.discovery.hooks` `world.persistence.state` | [corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
+| RI-DLG04 | Disposition and persuasion — derived disposition, Admire/Intimidate/Taunt/Bribe formulas, gating thresholds | 40-dialogue | number | morrowind | community-data | high | no | `dialogue.disposition.model` `dialogue.persuasion.mechanics` `dialogue.topics.filtering` `dialogue.service.merchant` `progression.gold.economy` `progression.skill.usegrowth` | [corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
+| RI-DLG05 | The journal — schema, voice, exemplar entries, and the no-marker rule | 40-dialogue | text | morrowind | constructed | high | yes | `journal.entry.voice` `journal.entry.numbering` `journal.entry.directions` `journal.navigation.nomarkers` `quests.structure.stages` `world.wayfinding.directions` | [corpus/40-dialogue/RI-DLG05-journal.md](../../corpus/40-dialogue/RI-DLG05-journal.md) |
 | RI-DLG06 | Dialogue voice differentiation — measurable style fingerprints per speaker archetype | 40-dialogue | number | morrowind | community-data | high | yes | `dialogue.voice.register` `dialogue.npc.identity` | [corpus/40-dialogue/RI-DLG06-voice-differentiation.md](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md) |
+| RI-DLG07 | Blind comparison pack — unattributed dialogue and journal excerpts for A/B judging | 40-dialogue | text | morrowind | community-data | high | yes | `dialogue.voice.register` `dialogue.npc.identity` `dialogue.rumour.distribution` `dialogue.greeting.variation` `journal.entry.voice` | [corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md](../../corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md) |
 | RI-WLD01 | World scale, coordinate system and the one-hour traversal budget | 50-world | number | morrowind | constructed | high | no | `world.map.scale` `world.terrain.form` `world.traversal.roads` `world.density.handplacement` `world.traversal.time` `world.traversal.locomotion` | [corpus/50-world/RI-WLD01-scale-and-traversal-budget.md](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) |
 | RI-WLD02 | Density per minute of travel — the headline world metric | 50-world | number | morrowind | constructed | high | no | `world.density.handplacement` `combat.encounter.placement` `world.map.legibility` | [corpus/50-world/RI-WLD02-density-per-minute.md](../../corpus/50-world/RI-WLD02-density-per-minute.md) |
 | RI-WLD03 | Settlement anatomy — what makes a Morrowind town, and the per-settlement allocation | 50-world | structure | morrowind | constructed | high | yes | `world.settlement.anatomy` `world.interior.named` `render.art.architecture` `world.npc.population` `dialogue.service.merchant` `quests.discovery.hooks` | [corpus/50-world/RI-WLD03-settlement-anatomy.md](../../corpus/50-world/RI-WLD03-settlement-anatomy.md) |
@@ -685,10 +679,12 @@ _None._
 | RI-WLD05 | The strangeness bar — thirty things that exist nowhere else | 50-world | structure | morrowind | constructed | high | yes | `world.strangeness.budget` `world.strangeness.flora` `world.strangeness.fauna` `render.art.architecture` `render.art.palette` `coherence.systems.composition` | [corpus/50-world/RI-WLD05-strangeness-bar.md](../../corpus/50-world/RI-WLD05-strangeness-bar.md) |
 | RI-WLD06 | Navigation without markers — landmarks, signposts and prose directions | 50-world | structure | morrowind | constructed | high | yes | `world.wayfinding.directions` `world.map.legibility` `world.traversal.roads` `journal.entry.voice` `journal.entry.directions` `ui.hud.combat` | [corpus/50-world/RI-WLD06-navigation-without-markers.md](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) |
 | RI-WLD07 | Verticality, interiors, and the Souls-loop / Morrowind-cave seam | 50-world | structure | neutral | constructed | high | no | `world.interior.named` `world.dungeon.design` `world.verticality.layout` `world.terrain.form` `combat.encounter.placement` `progression.bonfire.placement` | [corpus/50-world/RI-WLD07-verticality-and-interiors.md](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
+| RI-WLD08 | The living world — schedules, ecology, ambient events, weather and time | 50-world | number | morrowind | constructed | high | yes | `world.weather.systems` `world.time.daynight` | [corpus/50-world/RI-WLD08-the-living-world.md](../../corpus/50-world/RI-WLD08-the-living-world.md) |
 | RI-LOR01 | Black Marsh and Argonian canon dossier — what we may not contradict, and where we must invent | 60-lore | text | morrowind | canonical-recall | medium | no | `lore.canon.registry` `lore.religion.hist` `lore.canon.factions` `lore.canon.history` `world.settlement.anatomy` `quests.mainline.prophecy` `quests.faction.joining` `dialogue.lore.vector` `lore.book.structure` | [corpus/60-lore/RI-LOR01-canon-dossier.md](../../corpus/60-lore/RI-LOR01-canon-dossier.md) |
 | RI-LOR02 | Era selection and the political brief — Black Marsh, 3E 427 | 60-lore | text | morrowind | constructed | high | no | `lore.canon.history` `lore.canon.factions` `quests.mainline.prophecy` `quests.faction.joining` `quests.faction.escalation` `dialogue.rumour.distribution` `world.settlement.anatomy` `world.traversal.transport` | [corpus/60-lore/RI-LOR02-era-and-political-brief.md](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
 | RI-LOR03 | The structure of an Elder Scrolls in-world book — length stats, taxonomy, and six full exemplars | 60-lore | text | morrowind | canonical-recall | medium | yes | `lore.book.structure` `lore.canon.registry` `dialogue.lore.vector` `quests.lore.hooks` `ui.menu.books` | [corpus/60-lore/RI-LOR03-in-world-book-structure.md](../../corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
 | RI-LOR04 | Naming and language — Jel phonology, the lexicon, and the naming conventions of every culture in the marsh | 60-lore | structure | morrowind | constructed | high | no | `lore.naming.conventions` `world.settlement.anatomy` `dialogue.voice.register` `lore.book.structure` | [corpus/60-lore/RI-LOR04-naming-and-language.md](../../corpus/60-lore/RI-LOR04-naming-and-language.md) |
+| RI-LOR05 | Religion and metaphysics — the Hist, Sithis, the colonial gods, and a diegetic account of souls-as-levelling | 60-lore | text | neutral | constructed | high | no | `progression.bonfire.placement` `world.traversal.transport` `quests.mainline.prophecy` `dialogue.lore.vector` | [corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md](../../corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md) |
 | RI-VIS01 | The bifurcation protocol — art direction and fidelity are judged separately, never together | 70-visual | structure | neutral | constructed | high | no | `render.process.bifurcation` `render.art.palette` `render.fidelity.materials` | [corpus/70-visual/RI-VIS01-bifurcation-protocol.md](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md) |
 | RI-VIS02 | Fidelity reference set — current-generation shots we are measured against | 70-visual | image | modern-fidelity | derived | medium | yes | `render.fidelity.lighting` `render.fidelity.materials` `render.fidelity.atmosphere` `render.fidelity.water` `render.fidelity.vegetation` `render.fidelity.sky` `render.fidelity.streaming` | [corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md](../../corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md) |
 | RI-VIS03 | Fidelity as measurable quantities — the image-metric battery | 70-visual | number | modern-fidelity | constructed | high | no | `render.fidelity.lighting` `render.fidelity.materials` `render.fidelity.postprocess` `render.fidelity.shadows` `render.fidelity.atmosphere` `render.fidelity.sky` `render.fidelity.streaming` `render.process.measurement` | [corpus/70-visual/RI-VIS03-fidelity-image-metrics.md](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md) |
@@ -700,12 +696,27 @@ _None._
 | RI-MTH01 | The harness API surface — what a critic can and cannot measure | 80-methods | structure | neutral | constructed | high | no | `platform.determinism.harness` `platform.input.pipeline` `platform.save.persistence` `combat.camera.behaviour` `platform.load.streaming` | [corpus/80-methods/RI-MTH01-harness-api-surface.md](../../corpus/80-methods/RI-MTH01-harness-api-surface.md) |
 | RI-MTH02 | Determinism and reproducibility as a judged property | 80-methods | trace | neutral | constructed | high | no | `platform.determinism.harness` `platform.save.persistence` | [corpus/80-methods/RI-MTH02-determinism-reproducibility.md](../../corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
 | RI-MTH03 | The blind-comparison protocol | 80-methods | structure | neutral | constructed | high | no | `process.critic.discipline` `process.verdict.format` `render.fidelity.materials` `render.art.palette` `dialogue.voice.register` `quests.structure.stages` `combat.feedback.hitstop` | [corpus/80-methods/RI-MTH03-blind-comparison-protocol.md](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
+| RI-MTH04 | Measurement integrity — proving the critic actually ran the thing | 80-methods | structure | neutral | constructed | high | no | `process.critic.discipline` `process.verdict.format` | [corpus/80-methods/RI-MTH04-measurement-integrity.md](../../corpus/80-methods/RI-MTH04-measurement-integrity.md) |
 
 ---
 
 ## 6. Front-matter and contract problems
 
-_None. Every reference item parses and declares canonical paths._
+| Level | File | Problem |
+|---|---|---|
+| ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.npc-schedules" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ecology" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ambient-events" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "npc.behaviour" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "audio.ambient" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "lore.religion" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "lore.metaphysics" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "progression.souls" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "progression.levelling" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "progression.estus" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "combat.death" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "combat.respawn" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md` | judges: "ui.terminology" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 
 ---
 

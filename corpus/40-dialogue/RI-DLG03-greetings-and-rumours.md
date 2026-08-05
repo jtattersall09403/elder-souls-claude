@@ -3,7 +3,7 @@ id: RI-DLG03
 title: Greetings and rumours — disposition banding and the diegetic quest-discovery mechanism
 kind: text
 side: morrowind
-judges: [dialogue.greeting, dialogue.rumour, dialogue.disposition, quests.discovery, world.reactivity]
+judges: [dialogue.rumour.distribution, dialogue.greeting.variation, dialogue.disposition.model, dialogue.topics.truth, quests.discovery.hooks, world.persistence.state]
 provenance: community-data
 confidence: high
 blind_pair: yes

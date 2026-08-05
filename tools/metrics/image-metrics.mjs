@@ -17,6 +17,9 @@ OPTIONS
   --out <path>    Output JSON (default: <dir>/image-metrics.json)
   --sky-rows <f>  Fraction of image height treated as sky for the gradient metric (default 0.4)
   --edge-thresh   Sobel magnitude threshold on 0..1 luminance (default 0.08)
+  --compare <p>   Second PNG (or directory) to pixel-diff against --in, via pixelmatch.
+                  Use for RI-MTH01 M7 (same camera pose twice must be identical) and for
+                  cross-wave regression. Adds a "diff" block; writes <out>-diff.png.
   --json          Print the full result on stdout
   --help          This message
 
@@ -373,6 +376,42 @@ for (const f of files) {
   catch (e) { log(`FAILED ${f}: ${e.message}`); results.push({ file: path.basename(f), path: f, error: e.message }); }
 }
 
+// ---------------------------------------------------------------- optional pixel diff
+let diffs = null;
+if (args.compare) {
+  const cmpPath = path.resolve(String(args.compare));
+  if (!fs.existsSync(cmpPath)) die(EXIT.MISSING_GAME, `--compare target not found: ${cmpPath}`);
+  let pixelmatch;
+  try { pixelmatch = (await import('pixelmatch')).default; }
+  catch (e) { die(EXIT.INTERNAL, "cannot import 'pixelmatch'. Run `npm install` in tools/.", { cause: e.message }); }
+  const cmpIsDir = fs.statSync(cmpPath).isDirectory();
+  diffs = [];
+  for (const f of files) {
+    const other = cmpIsDir ? path.join(cmpPath, path.basename(f)) : cmpPath;
+    if (!fs.existsSync(other)) { diffs.push({ file: path.basename(f), error: 'no counterpart at ' + other }); continue; }
+    try {
+      const a = PNG.sync.read(fs.readFileSync(f)), b = PNG.sync.read(fs.readFileSync(other));
+      if (a.width !== b.width || a.height !== b.height) {
+        diffs.push({ file: path.basename(f), error: `size mismatch ${a.width}x${a.height} vs ${b.width}x${b.height}` });
+        continue;
+      }
+      const outPng = new PNG({ width: a.width, height: a.height });
+      const n = pixelmatch(a.data, b.data, outPng.data, a.width, a.height, { threshold: 0.1 });
+      const diffFile = f.replace(/\.png$/i, '-diff.png');
+      if (n > 0) fs.writeFileSync(diffFile, PNG.sync.write(outPng));
+      diffs.push({
+        file: path.basename(f), against: other,
+        differing_pixels: n,
+        differing_frac: +(n / (a.width * a.height)).toFixed(7),
+        identical: n === 0,
+        sha_equal: sha256(fs.readFileSync(f)) === sha256(fs.readFileSync(other)),
+        diff_image: n > 0 ? diffFile : null,
+      });
+      log(`diff ${path.basename(f)}: ${n} px differing`);
+    } catch (e) { diffs.push({ file: path.basename(f), error: e.message }); }
+  }
+}
+
 const out = {
   schema: 'elder-souls/image-metrics@1',
   computed_at: new Date().toISOString(),
@@ -380,6 +419,7 @@ const out = {
   params: { sky_rows: SKY_ROWS, edge_threshold: EDGE_T },
   images: results,
   aggregate: aggregate(results),
+  ...(diffs ? { diff: diffs } : {}),
 };
 
 function aggregate(rs) {

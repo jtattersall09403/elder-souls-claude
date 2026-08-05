@@ -3,7 +3,7 @@ id: RI-DLG05
 title: The journal — schema, voice, exemplar entries, and the no-marker rule
 kind: text
 side: morrowind
-judges: [dialogue.journal, quests.tracking, quests.structure, ui.hud, world.wayfinding]
+judges: [journal.entry.voice, journal.entry.numbering, journal.entry.directions, journal.navigation.nomarkers, quests.structure.stages, world.wayfinding.directions]
 provenance: constructed
 confidence: high
 blind_pair: yes

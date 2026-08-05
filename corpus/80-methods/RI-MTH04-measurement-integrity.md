@@ -3,7 +3,7 @@ id: RI-MTH04
 title: Measurement integrity — proving the critic actually ran the thing
 kind: structure
 side: neutral
-judges: [process.critic, process.verdict, process.evidence]
+judges: [process.critic.discipline, process.verdict.format]
 provenance: constructed
 confidence: high
 blind_pair: no

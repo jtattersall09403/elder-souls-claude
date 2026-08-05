@@ -79,7 +79,7 @@ area is smaller and our regions are more differentiated. Total POI density = **7
 | ⇒ POIs per minute of road walking (120 m/min) | **2.05** ✅ (target ≥1.4) |
 | Off-road POIs | 477 over 14.5 km² = 33/km² |
 | Mean off-road POI spacing | √(1/33) km ≈ **174 m** ≈ 87 s of blind cross-country walking |
-| Wilderness Tier A+B (460 named − 220 in settlements) | 240 over ~13 km² non-settlement land = **18.5/km²** ✅ (target ≥18) |
+| Wilderness Tier A+B (460 named − 160 settlement interiors − ~20 in-settlement Tier B) | 280 over ~13 km² non-settlement land = **21.5/km²** ✅ (target ≥18) |
 | Hostile groups on roads (1 per 150 m) | ~227 groups, 1–4 each ⇒ ~450 wilderness enemies |
 | Dungeon enemies (90 wilderness interiors × ~9) | ~810 |
 
@@ -103,25 +103,31 @@ area is smaller and our regions are more differentiated. Total POI density = **7
 
 ### 5. Per-region POI allocation (sums to the world targets)
 
-| Region | Land km² | Tier A | Tier B | Tier C | Difficulty tier |
-|---|---|---|---|---|---|
-| Blackwood | 2.07 | 14 | 30 | 88 | 2 |
-| The Stone Forest | 1.80 | 30 | 26 | 78 | 3 |
-| Valus Ridge | 1.71 | 12 | 25 | 60 | 4 |
-| Eastern Rootlands | 1.44 | 14 | 22 | 62 | 2 |
-| The Deep Marshes | 1.26 | 10 | 18 | 48 | 5 |
-| Western Rootlands | 1.17 | 46 | 28 | 82 | 1 |
-| Thornmarsh | 1.08 | 14 | 14 | 40 | 4 |
-| The Salt Hills | 0.94 | 34 | 16 | 46 | 3 |
-| The Clay Moor | 0.81 | 10 | 12 | 32 | 4 |
-| Stone Wastes | 0.81 | 12 | 8 | 28 | 5 |
-| Crimson Coast | 0.63 | 17 | 6 | 20 | 4 |
-| Marauder's Coast | 0.49 | 8 | 4 | 10 | 2 |
-| The Hive | 0.31 | 4 | 1 | 6 | 2 |
-| **Total** | **14.52** | **225** | **210** | **600** | |
+Tier A is split into settlement interiors (from the RI-WLD03 template, for every named and minor
+settlement lying in that region) and wilderness interiors (caves, tombs, xanmeer chambers, loop-dungeons).
 
-(Tier A here counts wilderness + settlement interiors within each region; 225 + the 25 interiors in
-minor settlements not assigned above = 250.)
+| Region | Land km² | A: settlement | A: wilderness | **Tier A** | Tier B | Tier C | Difficulty tier |
+|---|---|---|---|---|---|---|---|
+| Western Rootlands | 1.17 | 39 | 6 | **45** | 28 | 82 | 1 |
+| The Stone Forest | 1.80 | 32 | 11 | **43** | 26 | 78 | 3 |
+| Blackwood | 2.07 | 21 | 12 | **33** | 30 | 88 | 2 |
+| The Salt Hills | 0.94 | 18 | 6 | **24** | 16 | 46 | 3 |
+| Thornmarsh | 1.08 | 10 | 7 | **17** | 14 | 40 | 4 |
+| Stone Wastes | 0.81 | 10 | 6 | **16** | 8 | 28 | 5 |
+| Crimson Coast | 0.63 | 12 | 4 | **16** | 6 | 20 | 4 |
+| The Deep Marshes | 1.26 | 6 | 8 | **14** | 18 | 48 | 5 |
+| Eastern Rootlands | 1.44 | 3 | 8 | **11** | 22 | 62 | 2 |
+| The Clay Moor | 0.81 | 6 | 5 | **11** | 12 | 32 | 4 |
+| Valus Ridge | 1.71 | 0 | 10 | **10** | 25 | 60 | 4 |
+| Marauder's Coast | 0.49 | 3 | 4 | **7** | 4 | 10 | 2 |
+| The Hive | 0.31 | 0 | 3 | **3** | 1 | 6 | 2 |
+| **Total** | **14.52** | **160** | **90** | **250** | **210** | **600** | |
+
+Settlement-interior allocation: Helstrom 26 (Stone Forest); Lilmoth 18 + Blackrose 12 (Western
+Rootlands); Stormhold 18 (Salt Hills); Gideon 12 (Blackwood); Archon 12 (Crimson Coast); Thorn 7
+(Thornmarsh); Soulrest 7 (Stone Wastes); plus the 16 minor settlements at 3 each — 3 in Blackwood,
+3 in Western Rootlands, 2 each in the Stone Forest / Deep Marshes / Clay Moor, and 1 each in
+Thornmarsh, Marauder's Coast, Stone Wastes and Eastern Rootlands.
 
 ## Comparison method
 

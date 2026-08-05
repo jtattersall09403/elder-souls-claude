@@ -3,7 +3,7 @@ id: RI-MTH03
 title: The blind-comparison protocol
 kind: structure
 side: neutral
-judges: [process.critic, process.verdict, visual.fidelity, visual.artdirection, dialogue.prose, quests.structure, combat.feel]
+judges: [process.critic.discipline, process.verdict.format, visual.fidelity, visual.artdirection, dialogue.prose, quests.structure, combat.feel]
 provenance: constructed
 confidence: high
 blind_pair: no
