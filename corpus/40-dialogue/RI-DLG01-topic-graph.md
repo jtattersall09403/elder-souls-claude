@@ -333,6 +333,14 @@ every quest hanging directly off a greeting. That is a menu.
   unreachable-INFO lint returns hundreds of hits.
 - **Convergence 0.** A pure tree. Every fact has exactly one route in, so missing one
   conversation permanently locks content instead of routing round it.
+- **Dialogue survives into the fight.** An enemy who can be opened as a topic list mid-swing,
+  a persuasion button on a hostile actor, or a `Voice` shout that quietly calls `AddTopic`.
+  Seam S13 is Souls-authoritative and this is an AR-1 fail — but it is a *tempting* failure,
+  because "talk the boss down" is a good idea in a game that is not this one. It belongs
+  before aggro or after de-aggro, never inside.
+- **Over-correcting the lockout.** Making dialogue globally unavailable whenever *anything*
+  in the cell is fighting, so a shopkeeper goes mute because a rat is loose two rooms away.
+  The lockout is per-actor combat state.
 - **Depth achieved by padding.** Six hops where hops 2–5 are "yes?", "go on", "tell me
   more". A judge reading the path text will see it instantly; step 3 must print the path's
   response text, not just its length.
