@@ -3,7 +3,7 @@ id: RI-AI02
 title: Telegraph doctrine — minimum windup, silhouette, and tracking cutoff
 kind: number
 side: souls
-judges: [combat.enemy.attacks, combat.enemy.animation, combat.enemy.tracking, combat.readability]
+judges: [combat.enemy.telegraph, combat.attack.commitment, combat.attack.moveset, combat.hitbox.sweep, combat.frames.timing]
 provenance: constructed
 confidence: high
 blind_pair: yes

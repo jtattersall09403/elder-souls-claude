@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HARNESS STUB — NOT THE GAME</title>
+<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<!--
+  ============================================================================
+  HARNESS STUB — TEST FIXTURE ONLY. THIS IS NOT THE GAME.
+  ============================================================================
+  Purpose: a reference implementation of window.__HARNESS (corpus/80-methods/HARNESS.md §3)
+  small enough to read in one sitting, used to prove the tools in tools/ actually work
+  before the real game exists. The real game lives at game/index.html and is built by
+  another wave. Do not build gameplay in here. Do copy the shape of __HARNESS out of it.
+  ============================================================================
+-->
+<canvas id="view" width="1920" height="1080"></canvas>
+<script>
+(() => {
+'use strict';
+const HZ = 60, DT_MS = 1000 / 60;
+
+// ---- seeded RNG. The ONLY source of randomness. Math.random is banned. -------------
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+Math.random = () => { throw new Error('Math.random() is banned in simulation (HARNESS.md §8)'); };
+
+const MOVES = {
+  light: { startup: 12, active: 4, recovery: 16, stam: 18, dmg: 90, poise: 12, reach: 2.3 },
+  heavy: { startup: 26, active: 6, recovery: 30, stam: 34, dmg: 180, poise: 28, reach: 2.6 },
+};
+const ROLL = { startup: 3, iframes: [4, 17], recovery: 26, stam: 22 };
+
+const sim = {
+  frame: 0, seed: 1337, rng: null, rngDraws: 0,
+  timeOfDay: 12, weather: 'clear', stateName: 'default',
+  buttons: new Set(), move: [0, 0], look: [0, 0], pressedThisFrame: [],
+  script: [], scriptIdx: 0,
+  player: null, enemies: [], events: [], nextEid: 0,
+  trace: null, camera: { mode: 'gameplay', pos: [0, 2.2, -5], look: [0, 1.2, 0], fov: 60, lockOn: null },
+};
+
+function freshPlayer() {
+  return {
+    pos: [0, 0, 0], vel: [0, 0, 0], yaw: 0, state: 'IDLE', anim: 'idle', animFrame: 0, animLen: 1,
+    phase: 'none', move: null, hp: 500, hpMax: 500, stamina: 110, staminaMax: 110,
+    regenBlockUntil: 0, poise: 30, poiseMax: 30, iframe: false, iframeKind: null,
+    grounded: true, estus: 5, lockOn: null, hitboxes: [],
+  };
+}
+
+function reset(opts = {}) {
+  sim.frame = 0;
+  sim.seed = Number.isFinite(opts.seed) ? opts.seed : sim.seed;
+  sim.rng = mulberry32(sim.seed); sim.rngDraws = 0;
+  sim.buttons = new Set(); sim.move = [0, 0]; sim.look = [0, 0];
+  sim.script = []; sim.scriptIdx = 0;
+  sim.player = freshPlayer(); sim.enemies = []; sim.events = []; sim.nextEid = 0;
+  if (opts.state) sim.stateName = opts.state;
+  return { ok: true, frame: 0, seed: sim.seed };
+}
+function rnd() { sim.rngDraws++; return sim.rng(); }
+
+function spawn(id, x, z, opts = {}) {
+  const eid = opts.as || `${id}_${String(sim.nextEid++).padStart(2, '0')}`;
+  const passive = /dummy/.test(id);
+  sim.enemies.push({
+    eid, archetype: passive ? 'DUMMY' : 'INFANTRY', tier: 'trash', passive,
+    state: 'IDLE', stateEnteredF: sim.frame, prevState: null,
+    anim: 'idle', animFrame: 0, animLen: 1, phase: 'none', hitActive: false, hitboxes: [],
+    pos: [x, 0, z], yaw: 180, yawRate: 0, speed: 0,
+    target: null, alert: 0, alertState: 'IDLE', token: false,
+    hp: 412, hpMax: 412, poise: 22, poiseMax: 22, stagger: false,
+    anchor: [x, 0, z], reach: 2.4, strafeDir: 1, strafeUntil: 0, cooldownUntil: 0,
+  });
+  ev('spawn', { eid, id, pos: [x, 0, z] });
+  return eid;
+}
+function ev(type, data) { sim.events.push(Object.assign({ f: sim.frame, type }, data)); }
+function dist2(a, b) { const dx = a[0] - b[0], dz = a[2] - b[2]; return Math.hypot(dx, dz); }
+
+// ---- input -------------------------------------------------------------------------
+function applyScript() {
+  sim.pressedThisFrame = [];
+  while (sim.scriptIdx < sim.script.length && sim.script[sim.scriptIdx].f === sim.frame) {
+    const e = sim.script[sim.scriptIdx++];
+    if (e.move) sim.move = e.move;
+    if (e.look) sim.look = e.look;
+    for (const b of e.press || []) { if (!sim.buttons.has(b)) sim.pressedThisFrame.push(b); sim.buttons.add(b); }
+    for (const b of e.release || []) sim.buttons.delete(b);
+  }
+}
+
+// ---- player sim --------------------------------------------------------------------
+function stepPlayer() {
+  const p = sim.player;
+  p.hitboxes = []; p.iframe = false; p.iframeKind = null;
+  const press = sim.pressedThisFrame;
+
+  if (p.state === 'ATTACK') {
+    const m = MOVES[p.move];
+    p.animFrame++;
+    if (p.animFrame <= m.startup) p.phase = 'windup';
+    else if (p.animFrame <= m.startup + m.active) {
+      p.phase = 'active';
+      p.hitboxes = [{ id: `wpn_${p.move}`, owner: 'player', kind: 'capsule',
+        a: [p.pos[0], 1.1, p.pos[2]], b: [p.pos[0], 1.1, p.pos[2] + m.reach], r: 0.22,
+        activeF: p.animFrame - m.startup, dmg: { phys: m.dmg }, poiseDmg: m.poise, hits: [] }];
+      for (const e of sim.enemies) {
+        if (e.hp <= 0) continue;
+        if (dist2(p.pos, e.pos) <= m.reach + 0.6 && !e.__hitBy?.includes(p.move + p.animStamp)) {
+          (e.__hitBy = e.__hitBy || []).push(p.move + p.animStamp);
+          e.hp -= m.dmg; e.poise -= m.poise;
+          p.hitboxes[0].hits.push(e.eid);
+          ev('hit', { attacker: 'player', victim: e.eid, dmg: m.dmg, poiseDmg: m.poise, hitbox: p.hitboxes[0].id });
+          if (e.poise <= 0) { e.state = 'STAGGER'; e.stateEnteredF = sim.frame; e.poise = e.poiseMax; ev('stagger', { eid: e.eid }); }
+          if (e.hp <= 0) { e.state = 'DEAD'; ev('death', { eid: e.eid }); }
+        }
+      }
+    } else if (p.animFrame <= m.startup + m.active + m.recovery) p.phase = 'recovery';
+    else { p.state = 'IDLE'; p.phase = 'none'; p.anim = 'idle'; p.animFrame = 0; p.move = null; for (const e of sim.enemies) e.__hitBy = []; }
+  } else if (p.state === 'ROLL') {
+    p.animFrame++;
+    if (p.animFrame >= ROLL.iframes[0] && p.animFrame <= ROLL.iframes[1]) { p.iframe = true; p.iframeKind = 'roll'; }
+    p.phase = p.animFrame <= ROLL.iframes[1] ? 'active' : 'recovery';
+    const d = 0.13;
+    p.pos[0] += (sim.move[0] || 0) * d; p.pos[2] += (sim.move[1] || 0) * d || (sim.move[0] ? 0 : -d);
+    if (p.animFrame > ROLL.recovery) { p.state = 'IDLE'; p.phase = 'none'; p.anim = 'idle'; p.animFrame = 0; }
+  } else {
+    if (press.includes('roll') && p.stamina >= ROLL.stam) {
+      p.state = 'ROLL'; p.anim = 'roll_f'; p.animFrame = 0; p.phase = 'startup';
+      p.stamina -= ROLL.stam; p.regenBlockUntil = sim.frame + 42;
+      ev('stamina_spend', { amount: ROLL.stam, reason: 'roll' }); ev('roll_start', {});
+    } else if ((press.includes('light') || press.includes('heavy'))) {
+      const which = press.includes('heavy') ? 'heavy' : 'light';
+      if (p.stamina >= MOVES[which].stam) {
+        p.state = 'ATTACK'; p.move = which; p.anim = `atk_${which}`; p.animFrame = 0;
+        p.animLen = MOVES[which].startup + MOVES[which].active + MOVES[which].recovery;
+        p.animStamp = sim.frame; p.phase = 'windup';
+        p.stamina -= MOVES[which].stam; p.regenBlockUntil = sim.frame + 48;
+        ev('stamina_spend', { amount: MOVES[which].stam, reason: which });
+        ev('attack_start', { move: which });
+        for (const e of sim.enemies) e.__hitBy = [];
+      }
+    } else if (press.includes('use_item') && p.estus > 0) {
+      p.state = 'HEAL'; p.anim = 'heal'; p.animFrame = 0; p.estus--; p.healUntil = sim.frame + 66;
+      ev('heal', { estusLeft: p.estus });
+    } else if (sim.buttons.has('block')) { p.state = 'BLOCK'; p.anim = 'block'; }
+    else {
+      const mv = sim.move, sp = sim.buttons.has('sprint') ? 0.11 : 0.055;
+      if (mv[0] || mv[1]) {
+        p.pos[0] += mv[0] * sp; p.pos[2] += mv[1] * sp;
+        p.state = sim.buttons.has('sprint') ? 'SPRINT' : 'MOVE';
+        p.anim = sim.buttons.has('sprint') ? 'run_f' : 'walk_f';
+        if (sim.buttons.has('sprint')) { p.stamina -= 0.25; p.regenBlockUntil = sim.frame + 30; }
+      } else { p.state = 'IDLE'; p.anim = 'idle'; }
+      p.animFrame++;
+    }
+  }
+  if (p.state === 'HEAL') { p.animFrame++; if (sim.frame >= p.healUntil) { p.state = 'IDLE'; p.anim = 'idle'; p.hp = Math.min(p.hpMax, p.hp + 250); } }
+  if (sim.frame >= p.regenBlockUntil) p.stamina = Math.min(p.staminaMax, p.stamina + 0.75);
+  p.stamina = Math.max(0, Math.min(p.staminaMax, p.stamina));
+}
+
+// ---- enemy sim ---------------------------------------------------------------------
+function stepEnemies() {
+  const p = sim.player;
+  for (const e of sim.enemies) {
+    if (e.hp <= 0) { e.state = 'DEAD'; e.speed = 0; e.phase = 'none'; e.hitActive = false; continue; }
+    const d = dist2(e.pos, p.pos), R = e.reach;
+    const prev = e.state;
+    if (e.passive) { e.alert = 0; e.state = 'IDLE'; e.speed = 0; continue; }
+    if (e.alertState !== 'AGGRO') {
+      e.alert = Math.min(100, e.alert + (d < 16 ? 50 / HZ : 0));
+      if (e.alert >= 50 && e.alertState === 'IDLE') { e.alertState = 'SUSPICIOUS'; e.state = 'SUSPICIOUS'; }
+      if (e.alert >= 100) { e.alertState = 'AGGRO'; e.state = 'APPROACH'; }
+    } else {
+      switch (e.state) {
+        case 'STAGGER':
+          if (sim.frame - e.stateEnteredF > 24) { e.state = 'CIRCLE'; e.stateEnteredF = sim.frame; }
+          break;
+        case 'APPROACH': {
+          const step = Math.min(0.06, Math.max(0, (d - 2.2 * R) * 0.05));
+          moveToward(e, p.pos, step);
+          if (d <= 2.2 * R) { e.state = 'CIRCLE'; e.stateEnteredF = sim.frame; e.strafeUntil = sim.frame + 48 + Math.floor(rnd() * 48); }
+          break;
+        }
+        case 'CIRCLE': {
+          strafe(e, p.pos, 0.045);
+          if (sim.frame > e.strafeUntil) { e.strafeDir *= rnd() > 0.5 ? -1 : 1; e.strafeUntil = sim.frame + 48 + Math.floor(rnd() * 48); }
+          if (d > 2.4 * R) { e.state = 'APPROACH'; e.stateEnteredF = sim.frame; }
+          else if (sim.frame > e.cooldownUntil && sim.frame - e.stateEnteredF > 24) { e.state = 'FEINT_STEP'; e.stateEnteredF = sim.frame; }
+          break;
+        }
+        case 'FEINT_STEP': {
+          moveToward(e, p.pos, 0.07);
+          if (d <= 0.85 * R) { e.state = 'COMMIT'; e.stateEnteredF = sim.frame; e.animFrame = 0; e.anim = 'atk_r1'; e.animLen = 52; }
+          else if (sim.frame - e.stateEnteredF > 36) { e.state = 'CIRCLE'; e.stateEnteredF = sim.frame; e.cooldownUntil = sim.frame + 36; }
+          break;
+        }
+        case 'COMMIT': {
+          e.animFrame++; e.speed = 0; e.yawRate = 0;
+          if (e.animFrame <= 22) { e.phase = 'windup'; e.hitActive = false; e.hitboxes = []; }
+          else if (e.animFrame <= 27) {
+            e.phase = 'active'; e.hitActive = true;
+            e.hitboxes = [{ id: 'e_r1', owner: e.eid, kind: 'capsule',
+              a: [e.pos[0], 1.1, e.pos[2]], b: [p.pos[0], 1.1, p.pos[2]], r: 0.25,
+              activeF: e.animFrame - 22, dmg: { phys: 65 }, poiseDmg: 20, hits: [] }];
+            if (d < R && !p.iframe && !e.__landed) {
+              e.__landed = true;
+              if (p.state === 'BLOCK') { p.stamina = Math.max(0, p.stamina - 30); p.regenBlockUntil = sim.frame + 48; ev('block', { attacker: e.eid, victim: 'player' }); }
+              else { p.hp -= 65; e.hitboxes[0].hits.push('player'); ev('hit', { attacker: e.eid, victim: 'player', dmg: 65, poiseDmg: 20 }); }
+            } else if (p.iframe) ev('iframe_dodge', { attacker: e.eid, activeF: e.animFrame - 22 });
+          } else {
+            e.phase = 'recovery'; e.hitActive = false; e.hitboxes = [];
+            if (e.animFrame > 52) { e.state = 'RECOVER'; e.stateEnteredF = sim.frame; e.__landed = false; }
+          }
+          break;
+        }
+        case 'RECOVER':
+          e.phase = 'none'; e.anim = 'idle'; e.animFrame = 0;
+          if (sim.frame - e.stateEnteredF > 14) { e.state = 'CIRCLE'; e.stateEnteredF = sim.frame; e.cooldownUntil = sim.frame + 24; }
+          break;
+        default: e.state = 'APPROACH'; e.stateEnteredF = sim.frame;
+      }
+    }
+    if (prev !== e.state) { e.prevState = prev; e.stateEnteredF = sim.frame; ev('enemy_state', { eid: e.eid, from: prev, to: e.state }); }
+  }
+}
+function moveToward(e, tgt, sp) {
+  const dx = tgt[0] - e.pos[0], dz = tgt[2] - e.pos[2], L = Math.hypot(dx, dz) || 1;
+  e.pos[0] += dx / L * sp; e.pos[2] += dz / L * sp; e.speed = sp * HZ;
+  const ny = Math.atan2(dx, dz) * 180 / Math.PI;
+  e.yawRate = Math.abs(ny - e.yaw) * HZ; e.yaw = ny;
+}
+function strafe(e, tgt, sp) {
+  const dx = tgt[0] - e.pos[0], dz = tgt[2] - e.pos[2], L = Math.hypot(dx, dz) || 1;
+  e.pos[0] += (-dz / L) * sp * e.strafeDir; e.pos[2] += (dx / L) * sp * e.strafeDir;
+  e.speed = sp * HZ;
+  const ny = Math.atan2(dx, dz) * 180 / Math.PI;
+  e.yawRate = Math.abs(ny - e.yaw) * HZ; e.yaw = ny;
+}
+
+// ---- one fixed simulation step -----------------------------------------------------
+function stepOnce() {
+  sim.events = [];
+  applyScript();
+  stepPlayer();
+  stepEnemies();
+  sim.frame++;
+  if (sim.trace) sim.trace.records.push(makeRecord());
+}
+
+function makeRecord() {
+  const p = sim.player;
+  return {
+    f: sim.frame, t_ms: +(sim.frame * DT_MS).toFixed(3),
+    input: { move: sim.move.slice(), look: sim.look.slice(), held: [...sim.buttons].sort(), pressed: sim.pressedThisFrame.slice() },
+    player: {
+      pos: p.pos.map((v) => +v.toFixed(4)), yaw_deg: +p.yaw.toFixed(2), state: p.state,
+      anim: p.anim, anim_frame: p.animFrame, anim_len: p.animLen, phase: p.phase,
+      stamina: +p.stamina.toFixed(3), stamina_max: p.staminaMax,
+      stamina_regen_blocked: sim.frame < p.regenBlockUntil,
+      hp: p.hp, hp_max: p.hpMax, poise_cur: p.poise, poise_max: p.poiseMax,
+      iframe: p.iframe, iframe_kind: p.iframeKind, grounded: p.grounded,
+      hitboxes: p.hitboxes, estus: p.estus, locked_on: p.lockOn,
+    },
+    enemies: sim.enemies.map((e) => ({
+      eid: e.eid, archetype: e.archetype, tier: e.tier, state: e.state,
+      state_entered_f: e.stateEnteredF, prev_state: e.prevState,
+      anim: e.anim, anim_frame: e.animFrame, anim_len: e.animLen, phase: e.phase,
+      hit_active: e.hitActive, hitboxes: e.hitboxes,
+      pos: e.pos.map((v) => +v.toFixed(4)), yaw_deg: +e.yaw.toFixed(2),
+      yaw_rate_dps: +e.yawRate.toFixed(2), speed_mps: +e.speed.toFixed(3),
+      target: e.alertState === 'AGGRO' ? 'player' : null,
+      dist_m: +dist2(e.pos, sim.player.pos).toFixed(4),
+      los: true, in_sight_cone: true, alert: Math.round(e.alert), alert_state: e.alertState,
+      attack_token: e.state === 'COMMIT' || e.state === 'FEINT_STEP',
+      hp: e.hp, hp_max: e.hpMax, poise_cur: e.poise, poise_max: e.poiseMax,
+      stagger: e.state === 'STAGGER', spawn_anchor: e.anchor,
+      leash_dist_m: +dist2(e.pos, e.anchor).toFixed(3),
+    })),
+    events: sim.events.slice(),
+    rng: { draws: sim.rngDraws },
+  };
+}
+
+// ---- rendering (deliberately simple; the real game renders with Three.js) -----------
+const cv = document.getElementById('view');
+function render() {
+  const g = cv.getContext('2d'), W = cv.width, H = cv.height;
+  const day = Math.max(0, Math.sin((sim.timeOfDay / 24) * Math.PI * 2 - Math.PI / 2) * 0.5 + 0.5);
+  const sky = g.createLinearGradient(0, 0, 0, H * 0.62);
+  const storm = sim.weather === 'storm' ? 0.45 : 1;
+  sky.addColorStop(0, rgb(40 * day * storm + 6, 70 * day * storm + 8, 120 * day * storm + 16));
+  sky.addColorStop(1, rgb(170 * day * storm + 10, 180 * day * storm + 12, 150 * day * storm + 14));
+  g.fillStyle = sky; g.fillRect(0, 0, W, H * 0.62);
+  g.fillStyle = rgb(30 * day + 8, 44 * day + 10, 26 * day + 8); g.fillRect(0, H * 0.62, W, H * 0.38);
+  const r2 = mulberry32(99);
+  for (let i = 0; i < 900; i++) {
+    const x = r2() * W, y = H * 0.62 + r2() * H * 0.38, s = 4 + r2() * 26;
+    g.fillStyle = rgb((36 + r2() * 40) * day + 8, (60 + r2() * 50) * day + 10, (30 + r2() * 30) * day + 8);
+    g.fillRect(x, y, s, s * 0.6);
+  }
+  const px = W / 2 + sim.player.pos[0] * 30, py = H * 0.72 - sim.player.pos[2] * 12;
+  g.fillStyle = '#d8cfae'; g.fillRect(px - 14, py - 60, 28, 60);
+  for (const e of sim.enemies) {
+    const ex = W / 2 + e.pos[0] * 30, ey = H * 0.72 - e.pos[2] * 12;
+    g.fillStyle = e.hp <= 0 ? '#503030' : (e.phase === 'active' ? '#ff5533' : '#7a4b2a');
+    g.fillRect(ex - 14, ey - 66, 28, 66);
+  }
+}
+function rgb(r, gg, b) { return `rgb(${Math.round(Math.max(0, Math.min(255, r)))},${Math.round(Math.max(0, Math.min(255, gg)))},${Math.round(Math.max(0, Math.min(255, b)))})`; }
+
+// ---- the API -----------------------------------------------------------------------
+reset({ seed: 1337 });
+window.__HARNESS = {
+  version: 1,
+  build: { name: 'harness-stub', note: 'TEST FIXTURE — NOT THE GAME' },
+  async ready() { return true; },
+  getBuildInfo() {
+    return { name: 'harness-stub', version: '0.0.0-stub', commit: null, builtAt: null,
+      harnessVersion: 1, fixedStepHz: HZ, dataRoot: null, isStub: true };
+  },
+  setSeed(n) { sim.seed = n >>> 0; sim.rng = mulberry32(sim.seed); sim.rngDraws = 0; return sim.seed; },
+  getSeed() { return sim.seed; },
+  reset(o) { return reset(o); },
+  loadState(s) { return reset({ state: typeof s === 'string' ? s : (s && s.state) || 'default', seed: sim.seed }); },
+  saveState() { return JSON.parse(JSON.stringify({ frame: sim.frame, seed: sim.seed, player: sim.player, enemies: sim.enemies })); },
+  setMode(m) { return m; },
+  stepFrames(n) { const k = Math.max(0, n | 0); for (let i = 0; i < k; i++) stepOnce(); render(); return { frame: sim.frame, t_ms: +(sim.frame * DT_MS).toFixed(3) }; },
+  getFrame() { return sim.frame; },
+  queueInputs(script) {
+    if (!Array.isArray(script)) throw new Error('queueInputs expects an array');
+    sim.script = script.slice().sort((a, b) => a.f - b.f); sim.scriptIdx = 0;
+    while (sim.scriptIdx < sim.script.length && sim.script[sim.scriptIdx].f < sim.frame) sim.scriptIdx++;
+    return sim.script.length;
+  },
+  clearInputs() { sim.script = []; sim.scriptIdx = 0; sim.buttons.clear(); sim.move = [0, 0]; return true; },
+  snapshot() { return makeRecord(); },
+  traceStart() { sim.trace = { records: [], startedAtFrame: sim.frame }; return 'trace-' + sim.frame; },
+  traceDrain() { if (!sim.trace) return []; const r = sim.trace.records; sim.trace.records = []; return r; },
+  traceStop() { const r = sim.trace ? sim.trace.records : []; sim.trace = null; return r; },
+  teleport(x, z, o) { sim.player.pos = [x, (o && o.y) || 0, z]; return true; },
+  spawn(id, x, z, o) { return spawn(id, x, z, o); },
+  despawn(eid) { sim.enemies = sim.enemies.filter((e) => e.eid !== eid); return true; },
+  aggro(eid) { const e = sim.enemies.find((x) => x.eid === eid); if (!e) throw new Error('no such entity ' + eid); e.alert = 100; e.alertState = 'AGGRO'; e.state = 'APPROACH'; return true; },
+  lockOn(eid) { sim.player.lockOn = eid; sim.camera.lockOn = eid; return true; },
+  setTimeOfDay(h) { sim.timeOfDay = Number(h); render(); return sim.timeOfDay; },
+  setWeather(w) { sim.weather = String(w); render(); return sim.weather; },
+  camera(pose) { Object.assign(sim.camera, pose || {}); render(); return sim.camera; },
+  listAnchors() { return ['arena_flat']; },
+  listEntities() { return sim.enemies.map((e) => ({ eid: e.eid, archetype: e.archetype, pos: e.pos, hp: e.hp })); },
+  getWorldStats() { return { regions: 1, settlements: 0, pois: 0, interiors: 0, npcs: sim.enemies.length, areaKm2: 0.01, note: 'stub' }; },
+  getQuestState() { return { active: [], completed: [], journal: [], flags: {}, note: 'stub' }; },
+  getPlayerStats() { return JSON.parse(JSON.stringify(sim.player)); },
+  async screenshot() { render(); return cv.toDataURL('image/png'); },
+  renderFrame() { render(); return true; },
+};
+render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,749 @@
+{
+  "scale": {
+    "source_image": "corpus/50-world/black-marsh-map-source.jpg",
+    "source_px": [
+      2048,
+      1536
+    ],
+    "land_bbox_px": [
+      515,
+      60,
+      1750,
+      1500
+    ],
+    "metres_per_source_pixel": 3.5,
+    "ocean_margin_m": 250.0,
+    "world_bounds_m": {
+      "x": [
+        0,
+        4822
+      ],
+      "z": [
+        0,
+        5540
+      ]
+    },
+    "land_bbox_m": {
+      "x": [
+        250.0,
+        4572
+      ],
+      "z": [
+        250.0,
+        5290
+      ]
+    },
+    "axes": "X = metres east, Z = metres south, Y = metres above sea level. Origin at world NW corner.",
+    "px_to_world": "X = (px_x - 515) * 3.50 + 250 ; Z = (px_y - 60) * 3.50 + 250",
+    "walkable_land_km2": 14.5,
+    "world_bbox_km2": 26.7,
+    "speeds_mps": {
+      "walk": 2.0,
+      "jog": 3.2,
+      "sprint": 5.0,
+      "swim": 1.1,
+      "tide_wade": 1.3
+    },
+    "timescale": 20,
+    "real_minutes_per_game_day": 72,
+    "trunk_road_network_m": 25331
+  },
+  "settlements": {
+    "Stormhold": {
+      "px": [
+        1064,
+        206
+      ],
+      "x": 2171.5,
+      "z": 761.0,
+      "tier": "city",
+      "region": "The Salt Hills",
+      "nearest_neighbour": "Thorn",
+      "nn_road_m": 2229,
+      "nn_walk_min": 18.6,
+      "nn_jog_min": 11.6
+    },
+    "Thorn": {
+      "px": [
+        1535,
+        234
+      ],
+      "x": 3820.0,
+      "z": 859.0,
+      "tier": "village",
+      "region": "Thornmarsh",
+      "nearest_neighbour": "Stormhold",
+      "nn_road_m": 2229,
+      "nn_walk_min": 18.6,
+      "nn_jog_min": 11.6
+    },
+    "Gideon": {
+      "px": [
+        569,
+        821
+      ],
+      "x": 439.0,
+      "z": 2913.5,
+      "tier": "town",
+      "region": "Blackwood",
+      "nearest_neighbour": "Helstrom",
+      "nn_road_m": 2378,
+      "nn_walk_min": 19.8,
+      "nn_jog_min": 12.4
+    },
+    "Helstrom": {
+      "px": [
+        1090,
+        781
+      ],
+      "x": 2262.5,
+      "z": 2773.5,
+      "tier": "capital",
+      "region": "The Stone Forest",
+      "nearest_neighbour": "Gideon",
+      "nn_road_m": 2378,
+      "nn_walk_min": 19.8,
+      "nn_jog_min": 12.4
+    },
+    "Archon": {
+      "px": [
+        1525,
+        1081
+      ],
+      "x": 3785.0,
+      "z": 3823.5,
+      "tier": "town",
+      "region": "Crimson Coast",
+      "nearest_neighbour": "Lilmoth",
+      "nn_road_m": 2523,
+      "nn_walk_min": 21.0,
+      "nn_jog_min": 13.1
+    },
+    "Blackrose": {
+      "px": [
+        988,
+        1260
+      ],
+      "x": 1905.5,
+      "z": 4450.0,
+      "tier": "town",
+      "region": "Western Rootlands",
+      "nearest_neighbour": "Lilmoth",
+      "nn_road_m": 1503,
+      "nn_walk_min": 12.5,
+      "nn_jog_min": 7.8
+    },
+    "Soulrest": {
+      "px": [
+        618,
+        1382
+      ],
+      "x": 610.5,
+      "z": 4877.0,
+      "tier": "village",
+      "region": "Stone Wastes",
+      "nearest_neighbour": "Blackrose",
+      "nn_road_m": 1841,
+      "nn_walk_min": 15.3,
+      "nn_jog_min": 9.6
+    },
+    "Lilmoth": {
+      "px": [
+        1234,
+        1425
+      ],
+      "x": 2766.5,
+      "z": 5027.5,
+      "tier": "city",
+      "region": "Western Rootlands",
+      "nearest_neighbour": "Blackrose",
+      "nn_road_m": 1503,
+      "nn_walk_min": 12.5,
+      "nn_jog_min": 7.8
+    }
+  },
+  "minor_settlements": {
+    "Ixtaxh-Tzil": {
+      "x": 2988.6,
+      "z": 929.8,
+      "on_leg": [
+        "Stormhold",
+        "Thorn"
+      ]
+    },
+    "Nine-Mud": {
+      "x": 2293.3,
+      "z": 1461.3,
+      "on_leg": [
+        "Stormhold",
+        "Helstrom"
+      ]
+    },
+    "The Weeping Ford": {
+      "x": 2129.5,
+      "z": 2206.5,
+      "on_leg": [
+        "Stormhold",
+        "Helstrom"
+      ]
+    },
+    "Xal-Ithix": {
+      "x": 2938.0,
+      "z": 3347.5,
+      "on_leg": [
+        "Helstrom",
+        "Archon"
+      ]
+    },
+    "Kiln Camp": {
+      "x": 3489.8,
+      "z": 3534.9,
+      "on_leg": [
+        "Helstrom",
+        "Archon"
+      ]
+    },
+    "Sunken Barrow": {
+      "x": 2224.0,
+      "z": 3550.5,
+      "on_leg": [
+        "Helstrom",
+        "Blackrose"
+      ]
+    },
+    "Mudwater Landing": {
+      "x": 1909.0,
+      "z": 4121.0,
+      "on_leg": [
+        "Helstrom",
+        "Blackrose"
+      ]
+    },
+    "Rootway Post": {
+      "x": 1617.4,
+      "z": 2732.8,
+      "on_leg": [
+        "Helstrom",
+        "Gideon"
+      ]
+    },
+    "Tenmarch Bridge": {
+      "x": 990.6,
+      "z": 2931.3,
+      "on_leg": [
+        "Helstrom",
+        "Gideon"
+      ]
+    },
+    "Hollow-Reeds": {
+      "x": 544.0,
+      "z": 3652.0,
+      "on_leg": [
+        "Gideon",
+        "Soulrest"
+      ]
+    },
+    "Bone Ladder": {
+      "x": 637.4,
+      "z": 4380.0,
+      "on_leg": [
+        "Gideon",
+        "Soulrest"
+      ]
+    },
+    "Salt-Egg Camp": {
+      "x": 1163.5,
+      "z": 4625.0,
+      "on_leg": [
+        "Soulrest",
+        "Blackrose"
+      ]
+    },
+    "Stilt-Row": {
+      "x": 2274.7,
+      "z": 4830.1,
+      "on_leg": [
+        "Blackrose",
+        "Lilmoth"
+      ]
+    },
+    "Clayfast": {
+      "x": 3718.5,
+      "z": 2787.5,
+      "on_leg": [
+        "Archon",
+        "Thorn"
+      ]
+    },
+    "The Red Wells": {
+      "x": 3909.5,
+      "z": 1749.5,
+      "on_leg": [
+        "Archon",
+        "Thorn"
+      ]
+    },
+    "Tideway Shrine": {
+      "x": 3207.0,
+      "z": 4367.4,
+      "on_leg": [
+        "Lilmoth",
+        "Archon"
+      ]
+    }
+  },
+  "landmarks": {
+    "The Xanmeer of Ix-Thakla": {
+      "px": [
+        1052,
+        395
+      ],
+      "x": 2129.5,
+      "z": 1422.5
+    },
+    "The Counting Obelisk": {
+      "px": [
+        1250,
+        437
+      ],
+      "x": 2822.5,
+      "z": 1569.5
+    },
+    "Wayshrine of the Ninth Root": {
+      "px": [
+        1177,
+        500
+      ],
+      "x": 2567.0,
+      "z": 1790.0
+    },
+    "The Drowned Xanmeer": {
+      "px": [
+        1437,
+        805
+      ],
+      "x": 3477.0,
+      "z": 2857.5
+    },
+    "Xanmeer of Sunken Teeth": {
+      "px": [
+        1142,
+        1180
+      ],
+      "x": 2444.5,
+      "z": 4170.0
+    },
+    "Ceyatatar-Zel (Ayleid vault)": {
+      "px": [
+        853,
+        819
+      ],
+      "x": 1433.0,
+      "z": 2906.5
+    },
+    "The Leaning Stone": {
+      "px": [
+        825,
+        1295
+      ],
+      "x": 1335.0,
+      "z": 4572.5
+    },
+    "The Border Falls": {
+      "px": [
+        1230,
+        110
+      ],
+      "x": 2752.5,
+      "z": 425.0
+    },
+    "The Glassed Crater": {
+      "px": [
+        655,
+        1395
+      ],
+      "x": 740.0,
+      "z": 4922.5
+    },
+    "Bloodmarl Isle": {
+      "px": [
+        1735,
+        790
+      ],
+      "x": 4520.0,
+      "z": 2805.0
+    }
+  },
+  "regions_centroid": {
+    "Valus Ridge": {
+      "px": [
+        789,
+        611
+      ],
+      "x": 1209.0,
+      "z": 2178.5
+    },
+    "Blackwood": {
+      "px": [
+        763,
+        985
+      ],
+      "x": 1118.0,
+      "z": 3487.5
+    },
+    "The Hive": {
+      "px": [
+        797,
+        1055
+      ],
+      "x": 1237.0,
+      "z": 3732.5
+    },
+    "Marauder's Coast": {
+      "px": [
+        558,
+        1270
+      ],
+      "x": 400.5,
+      "z": 4485.0
+    },
+    "Stone Wastes": {
+      "px": [
+        676,
+        1387
+      ],
+      "x": 813.5,
+      "z": 4894.5
+    },
+    "Western Rootlands": {
+      "px": [
+        937,
+        1336
+      ],
+      "x": 1727.0,
+      "z": 4716.0
+    },
+    "Eastern Rootlands": {
+      "px": [
+        1367,
+        1273
+      ],
+      "x": 3232.0,
+      "z": 4495.5
+    },
+    "The Deep Marshes": {
+      "px": [
+        1336,
+        1050
+      ],
+      "x": 3123.5,
+      "z": 3715.0
+    },
+    "The Stone Forest": {
+      "px": [
+        1229,
+        632
+      ],
+      "x": 2749.0,
+      "z": 2252.0
+    },
+    "The Clay Moor": {
+      "px": [
+        1513,
+        563
+      ],
+      "x": 3743.0,
+      "z": 2010.5
+    },
+    "Crimson Coast": {
+      "px": [
+        1647,
+        756
+      ],
+      "x": 4212.0,
+      "z": 2686.0
+    },
+    "Thornmarsh": {
+      "px": [
+        1450,
+        300
+      ],
+      "x": 3522.5,
+      "z": 1090.0
+    },
+    "The Salt Hills": {
+      "px": [
+        1010,
+        190
+      ],
+      "x": 1982.5,
+      "z": 705.0
+    }
+  },
+  "roads": [
+    {
+      "from": "Stormhold",
+      "to": "Thorn",
+      "straight_m": 1651,
+      "sinuosity": 1.35,
+      "path_m": 2229,
+      "walk_min": 18.6,
+      "jog_min": 11.6,
+      "class": "causeway"
+    },
+    {
+      "from": "Stormhold",
+      "to": "Helstrom",
+      "straight_m": 2015,
+      "sinuosity": 1.45,
+      "path_m": 2921,
+      "walk_min": 24.3,
+      "jog_min": 15.2,
+      "class": "river road"
+    },
+    {
+      "from": "Helstrom",
+      "to": "Archon",
+      "straight_m": 1849,
+      "sinuosity": 1.4,
+      "path_m": 2589,
+      "walk_min": 21.6,
+      "jog_min": 13.5,
+      "class": "stone road"
+    },
+    {
+      "from": "Helstrom",
+      "to": "Blackrose",
+      "straight_m": 1714,
+      "sinuosity": 1.45,
+      "path_m": 2485,
+      "walk_min": 20.7,
+      "jog_min": 12.9,
+      "class": "marsh trail"
+    },
+    {
+      "from": "Helstrom",
+      "to": "Gideon",
+      "straight_m": 1829,
+      "sinuosity": 1.3,
+      "path_m": 2378,
+      "walk_min": 19.8,
+      "jog_min": 12.4,
+      "class": "Imperial road"
+    },
+    {
+      "from": "Gideon",
+      "to": "Soulrest",
+      "straight_m": 1971,
+      "sinuosity": 1.3,
+      "path_m": 2562,
+      "walk_min": 21.4,
+      "jog_min": 13.3,
+      "class": "coast road"
+    },
+    {
+      "from": "Soulrest",
+      "to": "Blackrose",
+      "straight_m": 1364,
+      "sinuosity": 1.35,
+      "path_m": 1841,
+      "walk_min": 15.3,
+      "jog_min": 9.6,
+      "class": "rootland track"
+    },
+    {
+      "from": "Blackrose",
+      "to": "Lilmoth",
+      "straight_m": 1037,
+      "sinuosity": 1.45,
+      "path_m": 1503,
+      "walk_min": 12.5,
+      "jog_min": 7.8,
+      "class": "stilt causeway"
+    },
+    {
+      "from": "Archon",
+      "to": "Thorn",
+      "straight_m": 2965,
+      "sinuosity": 1.45,
+      "path_m": 4299,
+      "walk_min": 35.8,
+      "jog_min": 22.4,
+      "class": "Clay Moor track"
+    },
+    {
+      "from": "Lilmoth",
+      "to": "Archon",
+      "straight_m": 1577,
+      "sinuosity": 1.6,
+      "path_m": 2523,
+      "walk_min": 21.0,
+      "jog_min": 13.1,
+      "class": "tideway (tide-gated)"
+    }
+  ],
+  "pairwise_road_walk_min": {
+    "Stormhold": {
+      "Stormhold": 0.0,
+      "Thorn": 18.6,
+      "Gideon": 44.2,
+      "Helstrom": 24.3,
+      "Archon": 45.9,
+      "Blackrose": 45.1,
+      "Soulrest": 60.4,
+      "Lilmoth": 57.6
+    },
+    "Thorn": {
+      "Stormhold": 18.6,
+      "Thorn": 0.0,
+      "Gideon": 62.7,
+      "Helstrom": 42.9,
+      "Archon": 35.8,
+      "Blackrose": 63.6,
+      "Soulrest": 79.0,
+      "Lilmoth": 56.9
+    },
+    "Gideon": {
+      "Stormhold": 44.2,
+      "Thorn": 62.7,
+      "Gideon": 0.0,
+      "Helstrom": 19.8,
+      "Archon": 41.4,
+      "Blackrose": 36.7,
+      "Soulrest": 21.4,
+      "Lilmoth": 49.2
+    },
+    "Helstrom": {
+      "Stormhold": 24.3,
+      "Thorn": 42.9,
+      "Gideon": 19.8,
+      "Helstrom": 0.0,
+      "Archon": 21.6,
+      "Blackrose": 20.7,
+      "Soulrest": 36.1,
+      "Lilmoth": 33.2
+    },
+    "Archon": {
+      "Stormhold": 45.9,
+      "Thorn": 35.8,
+      "Gideon": 41.4,
+      "Helstrom": 21.6,
+      "Archon": 0.0,
+      "Blackrose": 33.6,
+      "Soulrest": 48.9,
+      "Lilmoth": 21.0
+    },
+    "Blackrose": {
+      "Stormhold": 45.1,
+      "Thorn": 63.6,
+      "Gideon": 36.7,
+      "Helstrom": 20.7,
+      "Archon": 33.6,
+      "Blackrose": 0.0,
+      "Soulrest": 15.3,
+      "Lilmoth": 12.5
+    },
+    "Soulrest": {
+      "Stormhold": 60.4,
+      "Thorn": 79.0,
+      "Gideon": 21.4,
+      "Helstrom": 36.1,
+      "Archon": 48.9,
+      "Blackrose": 15.3,
+      "Soulrest": 0.0,
+      "Lilmoth": 27.9
+    },
+    "Lilmoth": {
+      "Stormhold": 57.6,
+      "Thorn": 56.9,
+      "Gideon": 49.2,
+      "Helstrom": 33.2,
+      "Archon": 21.0,
+      "Blackrose": 12.5,
+      "Soulrest": 27.9,
+      "Lilmoth": 0.0
+    }
+  },
+  "pairwise_road_metres": {
+    "Stormhold": {
+      "Stormhold": 0,
+      "Thorn": 2229,
+      "Gideon": 5299,
+      "Helstrom": 2921,
+      "Archon": 5510,
+      "Blackrose": 5407,
+      "Soulrest": 7247,
+      "Lilmoth": 6910
+    },
+    "Thorn": {
+      "Stormhold": 2229,
+      "Thorn": 0,
+      "Gideon": 7528,
+      "Helstrom": 5151,
+      "Archon": 4299,
+      "Blackrose": 7636,
+      "Soulrest": 9477,
+      "Lilmoth": 6822
+    },
+    "Gideon": {
+      "Stormhold": 5299,
+      "Thorn": 7528,
+      "Gideon": 0,
+      "Helstrom": 2378,
+      "Archon": 4967,
+      "Blackrose": 4403,
+      "Soulrest": 2562,
+      "Lilmoth": 5906
+    },
+    "Helstrom": {
+      "Stormhold": 2921,
+      "Thorn": 5151,
+      "Gideon": 2378,
+      "Helstrom": 0,
+      "Archon": 2589,
+      "Blackrose": 2485,
+      "Soulrest": 4326,
+      "Lilmoth": 3989
+    },
+    "Archon": {
+      "Stormhold": 5510,
+      "Thorn": 4299,
+      "Gideon": 4967,
+      "Helstrom": 2589,
+      "Archon": 0,
+      "Blackrose": 4026,
+      "Soulrest": 5867,
+      "Lilmoth": 2523
+    },
+    "Blackrose": {
+      "Stormhold": 5407,
+      "Thorn": 7636,
+      "Gideon": 4403,
+      "Helstrom": 2485,
+      "Archon": 4026,
+      "Blackrose": 0,
+      "Soulrest": 1841,
+      "Lilmoth": 1503
+    },
+    "Soulrest": {
+      "Stormhold": 7247,
+      "Thorn": 9477,
+      "Gideon": 2562,
+      "Helstrom": 4326,
+      "Archon": 5867,
+      "Blackrose": 1841,
+      "Soulrest": 0,
+      "Lilmoth": 3344
+    },
+    "Lilmoth": {
+      "Stormhold": 6910,
+      "Thorn": 6822,
+      "Gideon": 5906,
+      "Helstrom": 3989,
+      "Archon": 2523,
+      "Blackrose": 1503,
+      "Soulrest": 3344,
+      "Lilmoth": 0
+    }
+  }
+}

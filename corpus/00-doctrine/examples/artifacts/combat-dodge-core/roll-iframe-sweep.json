@@ -1,0 +1,13 @@
+{
+  "_note": "EXAMPLE ARTIFACT — illustrative shape only, not a real measurement.",
+  "harness": "tools/harness/iframe-sweep.mjs",
+  "seed": 41,
+  "rolls": 120,
+  "load": "light",
+  "hz": 60,
+  "per_roll_summary": { "first_invuln_frame": { "median": 9, "min": 8, "max": 10 },
+                        "last_invuln_frame":  { "median": 15, "min": 14, "max": 16 },
+                        "window_frames":      { "median": 7, "min": 6, "max": 8 } },
+  "reference": { "item": "RI-CMB03", "window_frames": 13, "first_invuln_frame": 4, "tolerance": 1 },
+  "result": "FAIL"
+}

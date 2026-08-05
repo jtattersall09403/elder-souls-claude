@@ -1,0 +1,33 @@
+{
+  "id": "cmb-stamina-drain",
+  "title": "Mash light attack for 20s against a passive target dummy, then idle 20s. Measures stamina floor, spend and regen delay.",
+  "judges": ["combat.stamina", "combat.attack.frames"],
+  "seed": 909,
+  "state": "arena_flat",
+  "world": { "timeOfDay": 12.0, "weather": "clear" },
+  "warmupFrames": 30,
+  "frames": 2400,
+  "setup": [
+    { "op": "teleport", "x": 0, "z": 0 },
+    { "op": "spawn", "id": "dummy_passive", "x": 0, "z": 2.2, "as": "e0" }
+  ],
+  "inputs": [
+    { "f": 0, "tap": "light" }, { "f": 12, "tap": "light" }, { "f": 24, "tap": "light" },
+    { "f": 36, "tap": "light" }, { "f": 48, "tap": "light" }, { "f": 60, "tap": "light" },
+    { "f": 72, "tap": "light" }, { "f": 84, "tap": "light" }, { "f": 96, "tap": "light" },
+    { "f": 108, "tap": "light" }, { "f": 120, "tap": "light" }, { "f": 132, "tap": "light" },
+    { "f": 144, "tap": "light" }, { "f": 156, "tap": "light" }, { "f": 168, "tap": "light" },
+    { "f": 180, "tap": "light" }, { "f": 192, "tap": "light" }, { "f": 204, "tap": "light" },
+    { "f": 216, "tap": "light" }, { "f": 228, "tap": "light" }, { "f": 240, "tap": "light" },
+    { "f": 300, "tap": "light" }, { "f": 360, "tap": "light" }, { "f": 420, "tap": "light" },
+    { "f": 480, "tap": "light" }, { "f": 540, "tap": "light" }, { "f": 600, "tap": "light" },
+    { "f": 660, "tap": "roll", "hold": 3 }, { "f": 700, "tap": "roll", "hold": 3 },
+    { "f": 740, "tap": "roll", "hold": 3 }, { "f": 780, "tap": "roll", "hold": 3 },
+    { "f": 820, "tap": "roll", "hold": 3 }, { "f": 860, "tap": "roll", "hold": 3 },
+    { "f": 900, "tap": "roll", "hold": 3 }, { "f": 940, "tap": "roll", "hold": 3 },
+    { "f": 1000, "hold": ["sprint"], "until": 1400 },
+    { "f": 1000, "move": [0, 1] },
+    { "f": 1400, "move": [0, 0] }
+  ],
+  "trace": { "shape": "frame", "enemies": true, "hitboxes": true, "events": true }
+}

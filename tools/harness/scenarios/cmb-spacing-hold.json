@@ -1,0 +1,17 @@
+{
+  "id": "cmb-spacing-hold",
+  "title": "RI-AI01 M3: aggro one enemy, then hold position and never attack for 60s.",
+  "judges": ["combat.enemy.statemachine", "combat.enemy.movement", "combat.enemy.perception"],
+  "seed": 4242,
+  "state": "arena_flat",
+  "world": { "timeOfDay": 12.0, "weather": "clear" },
+  "warmupFrames": 30,
+  "frames": 3600,
+  "setup": [
+    { "op": "teleport", "x": 0, "z": 0 },
+    { "op": "spawn", "id": "inf_trash", "x": 0, "z": 10, "as": "e0" },
+    { "op": "aggro", "target": "e0" }
+  ],
+  "inputs": [],
+  "trace": { "shape": "frame", "enemies": true, "hitboxes": true, "events": true }
+}

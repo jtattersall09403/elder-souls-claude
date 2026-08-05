@@ -16,6 +16,17 @@
    "quests": 1200,
    "sellable": 1400,
    "region_income": 3500,
+   "necessary_spend": 2920,
+   "necessary_breakdown": {
+    "smith": 320,
+    "repair": 900,
+    "ammo": 450,
+    "potions": 700,
+    "lodging": 250,
+    "fares": 300
+   },
+   "region_margin": 580,
+   "running_balance": 580,
    "merchant_gold_pool": 2400
   },
   {
@@ -24,6 +35,17 @@
    "quests": 2600,
    "sellable": 2900,
    "region_income": 7300,
+   "necessary_spend": 4920,
+   "necessary_breakdown": {
+    "smith": 320,
+    "repair": 1600,
+    "ammo": 850,
+    "potions": 1250,
+    "lodging": 350,
+    "fares": 550
+   },
+   "region_margin": 2380,
+   "running_balance": 2960,
    "merchant_gold_pool": 4200
   },
   {
@@ -32,6 +54,17 @@
    "quests": 4500,
    "sellable": 5000,
    "region_income": 12500,
+   "necessary_spend": 9560,
+   "necessary_breakdown": {
+    "smith": 2460,
+    "repair": 2400,
+    "ammo": 1400,
+    "potions": 1900,
+    "lodging": 500,
+    "fares": 900
+   },
+   "region_margin": 2940,
+   "running_balance": 5900,
    "merchant_gold_pool": 6800
   },
   {
@@ -40,6 +73,17 @@
    "quests": 7000,
    "sellable": 7800,
    "region_income": 19000,
+   "necessary_spend": 13100,
+   "necessary_breakdown": {
+    "smith": 3800,
+    "repair": 3200,
+    "ammo": 1800,
+    "potions": 2500,
+    "lodging": 600,
+    "fares": 1200
+   },
+   "region_margin": 5900,
+   "running_balance": 11800,
    "merchant_gold_pool": 9500
   },
   {
@@ -48,6 +92,17 @@
    "quests": 9500,
    "sellable": 10500,
    "region_income": 25500,
+   "necessary_spend": 14300,
+   "necessary_breakdown": {
+    "smith": 3000,
+    "repair": 4000,
+    "ammo": 2200,
+    "potions": 3000,
+    "lodging": 700,
+    "fares": 1400
+   },
+   "region_margin": 11200,
+   "running_balance": 23000,
    "merchant_gold_pool": 12000
   },
   {
@@ -56,69 +111,18 @@
    "quests": 11000,
    "sellable": 12400,
    "region_income": 30200,
+   "necessary_spend": 17300,
+   "necessary_breakdown": {
+    "smith": 4500,
+    "repair": 4700,
+    "ammo": 2700,
+    "potions": 3150,
+    "lodging": 800,
+    "fares": 1450
+   },
+   "region_margin": 12900,
+   "running_balance": 35900,
    "merchant_gold_pool": 15000
-  }
- ],
- "sinks": [
-  {
-   "sink": "smith labour, 2 weapons to +10",
-   "gold": 28800
-  },
-  {
-   "sink": "smith labour, 3rd weapon to +7",
-   "gold": 6300
-  },
-  {
-   "sink": "repair (lifetime, ~140 services)",
-   "gold": 16800
-  },
-  {
-   "sink": "ammunition (lifetime)",
-   "gold": 9400
-  },
-  {
-   "sink": "potions & cures purchased",
-   "gold": 12500
-  },
-  {
-   "sink": "skill training (~46 points bought)",
-   "gold": 21600
-  },
-  {
-   "sink": "lodging & fatigue rest",
-   "gold": 3200
-  },
-  {
-   "sink": "in-fiction transport fares",
-   "gold": 5800
-  },
-  {
-   "sink": "bribes & disposition gifts",
-   "gold": 7400
-  },
-  {
-   "sink": "faction dues & fines",
-   "gold": 4900
-  },
-  {
-   "sink": "spell & recipe purchases",
-   "gold": 13800
-  },
-  {
-   "sink": "armour sets (2 additional)",
-   "gold": 18500
-  },
-  {
-   "sink": "stilt-house deed",
-   "gold": 12000
-  },
-  {
-   "sink": "land grant (terminal sink)",
-   "gold": 30000
-  },
-  {
-   "sink": "guild-hall endowment (terminal sink)",
-   "gold": 24000
   }
  ],
  "prices": {
@@ -151,5 +155,81 @@
   "spell_tier3": 3400,
   "stilt_house_deed": 12000,
   "land_grant": 30000
- }
+ },
+ "total_necessary_sinks": 62100,
+ "total_discretionary_sinks": 152900,
+ "leftover_after_necessary": 35900,
+ "affordability_ratio_overall": 0.456,
+ "affordability_ratio_discretionary": 0.235,
+ "merchant_pool_total": 49900,
+ "merchant_pool_regen": "+25% of cap per in-game day (48 real minutes), never above cap",
+ "flip_invariant": "max sell mult (0.60) < min buy mult (0.80) => reselling a purchased item always loses 25%+",
+ "sinks_necessary": [
+  {
+   "sink": "smith",
+   "gold": 14400
+  },
+  {
+   "sink": "repair",
+   "gold": 16800
+  },
+  {
+   "sink": "ammo",
+   "gold": 9400
+  },
+  {
+   "sink": "potions",
+   "gold": 12500
+  },
+  {
+   "sink": "lodging",
+   "gold": 3200
+  },
+  {
+   "sink": "fares",
+   "gold": 5800
+  }
+ ],
+ "sinks_discretionary": [
+  {
+   "sink": "smith labour, 2nd weapon to +10",
+   "gold": 14400
+  },
+  {
+   "sink": "smith labour, 3rd weapon to +7",
+   "gold": 6300
+  },
+  {
+   "sink": "skill training (~46 points bought)",
+   "gold": 21600
+  },
+  {
+   "sink": "bribes & disposition gifts",
+   "gold": 7400
+  },
+  {
+   "sink": "faction dues & fines",
+   "gold": 4900
+  },
+  {
+   "sink": "spell & recipe purchases",
+   "gold": 13800
+  },
+  {
+   "sink": "armour sets (2 additional)",
+   "gold": 18500
+  },
+  {
+   "sink": "stilt-house deed",
+   "gold": 12000
+  },
+  {
+   "sink": "land grant (terminal sink)",
+   "gold": 30000
+  },
+  {
+   "sink": "guild-hall endowment (terminal sink)",
+   "gold": 24000
+  }
+ ]
 }

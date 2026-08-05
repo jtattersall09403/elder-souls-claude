@@ -1,0 +1,46 @@
+{
+  "schema": "elder-souls/harness-smoke@1",
+  "at": "2026-08-05T22:38:33.055Z",
+  "node": "v22.22.2",
+  "platform": "linux 6.18.5-fc-v18 x64",
+  "cpus": 4,
+  "playwright_browsers_path": "/opt/pw-browsers",
+  "checks": [
+    {
+      "name": "playwright imports",
+      "ok": true,
+      "detail": "v1.56.1"
+    },
+    {
+      "name": "chromium launches",
+      "ok": true,
+      "detail": "141.0.7390.37"
+    },
+    {
+      "name": "webgl context",
+      "ok": true,
+      "detail": "WebGL 2.0 (OpenGL ES 3.0 Chromium) | ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "name": "pngjs decodes screenshot",
+      "ok": true,
+      "detail": "1 unique colours"
+    },
+    {
+      "name": "screenshot is not blank",
+      "ok": false,
+      "detail": "1 unique colours"
+    },
+    {
+      "name": "requestAnimationFrame runs",
+      "ok": true,
+      "detail": "14 -> 21"
+    }
+  ],
+  "ok": false,
+  "webgl": {
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "webgl2": true
+  }
+}

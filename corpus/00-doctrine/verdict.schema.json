@@ -1,0 +1,402 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://elder-souls.local/schema/verdict-1.json",
+  "title": "Elder Souls critic verdict",
+  "description": "One verdict = one piece, one wave, one critic run. Emitted to corpus/90-verdicts/<wave>/<piece_id>.json. See corpus/00-doctrine/VERDICT-SCHEMA.md and CRITIC-DOCTRINE.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "piece_id", "subsystem_paths", "wave", "critic",
+    "bifurcation", "reference_items", "artifacts", "arbitration",
+    "score", "status", "biggest_gap", "corpus_extended", "self_audit"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+
+    "piece_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[-.][a-z0-9]+)*$",
+      "description": "Stable slug for the built piece, e.g. 'combat-dodge-core'. Unique within a wave."
+    },
+    "piece_title": { "type": "string" },
+    "subsystem_paths": {
+      "type": "array", "minItems": 1,
+      "items": { "type": "string", "pattern": "^[a-z]+(\\.[a-z0-9_]+)+$" },
+      "description": "Canonical paths from corpus/00-doctrine/subsystems.json. Must all exist there."
+    },
+    "wave": { "type": "integer", "minimum": 0, "description": "Wave number. Monotonic; used as the time axis for aggregation." },
+
+    "critic": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run_id", "started_at", "finished_at", "conflict_of_interest"],
+      "properties": {
+        "run_id": { "type": "string", "description": "Unique per critic invocation, e.g. 'crit-w2-combat-dodge-a7f3'." },
+        "role": { "type": "string", "description": "Critic role from subsystems.json `critics`, e.g. 'critic.combat'." },
+        "model": { "type": "string" },
+        "started_at": { "type": "string", "format": "date-time" },
+        "finished_at": { "type": "string", "format": "date-time" },
+        "conflict_of_interest": {
+          "type": "boolean",
+          "description": "true if this agent wrote/edited/merged any of the judged work. If true, status MUST be RECUSED."
+        },
+        "saw_builder_notes_before_blind": {
+          "type": "boolean", "default": false,
+          "description": "Honesty flag. true taints the blind results; aggregator downgrades to PROVISIONAL."
+        }
+      }
+    },
+
+    "build": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "commit_sha": { "type": "string" },
+        "branch": { "type": "string" },
+        "harness_commands": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["command"],
+            "properties": {
+              "command": { "type": "string" },
+              "cwd": { "type": "string" },
+              "seed": { "type": ["string", "integer"] },
+              "exit_code": { "type": "integer" },
+              "duration_s": { "type": "number" },
+              "stdout_artifact": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "bifurcation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["axis", "declared_before_citation"],
+      "description": "ARBITRATION.md §4. Declared BEFORE citing any visual reference.",
+      "properties": {
+        "axis": { "enum": ["fidelity", "art-direction", "both-separately", "not-visual"] },
+        "declared_before_citation": { "type": "boolean" },
+        "fidelity_refs": { "type": "array", "items": { "type": "string" } },
+        "art_refs": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" }
+      }
+    },
+
+    "reference_items": {
+      "type": "array", "minItems": 1,
+      "description": "One entry per reference item the critic was assigned. Missing an assigned item is a VOID condition.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "path", "side", "kind", "native_scale", "native_score", "score_0_10", "evidence", "measured"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^RI-[A-Z]+[0-9]+$" },
+          "path": { "type": "string", "description": "Repo-relative path to the RI markdown file." },
+          "side": { "enum": ["souls", "morrowind", "modern-fidelity", "neutral"] },
+          "kind": { "enum": ["number", "structure", "trace", "image", "text", "graph"] },
+          "native_scale": { "type": "string", "description": "The item's own scale as stated in its ## Scoring section, e.g. '0-18 (M1-M9 x 0/1/2)'." },
+          "native_score": { "type": ["number", "string"], "description": "Score on the item's own scale." },
+          "native_max": { "type": ["number", "null"] },
+          "native_verdict": { "type": "string", "description": "The item's own verdict band label, e.g. 'Below bar — named remedy required'." },
+          "score_0_10": { "type": "number", "minimum": 0, "maximum": 10, "description": "Mapped to the shared ladder per SCORING.md." },
+          "justification": { "type": "string", "description": "REQUIRED when score_0_10 >= 7; must name the artifact proving it. Unjustified >=7 is clamped to 6 by the aggregator." },
+          "measured": { "enum": ["full", "partial", "unmeasurable"], "description": "'unmeasurable' forces score_0_10 = 0 (fail-closed)." },
+          "checks": {
+            "type": "array",
+            "description": "Per-check results from the item's ## Comparison method (M1, M2, ...).",
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["id", "result"],
+              "properties": {
+                "id": { "type": "string" },
+                "result": { "enum": ["pass", "marginal", "fail", "unmeasurable"] },
+                "value": { "type": ["number", "string", "boolean", "null"] },
+                "threshold": { "type": ["number", "string", "null"] },
+                "hard_fail": { "type": "boolean", "default": false },
+                "evidence": { "type": "array", "items": { "type": "string" } },
+                "note": { "type": "string" }
+              }
+            }
+          },
+          "hard_fails": { "type": "array", "items": { "type": "string" }, "description": "Ids of triggered hard fails from the item's ## Scoring. Any entry forces status FAIL." },
+          "how_we_lose_hits": { "type": "array", "items": { "type": "string" }, "description": "Which predicted failure modes from the item's ## How we lose were observed." },
+          "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Artifact paths. Must all appear in `artifacts`." },
+          "provenance_correction": { "type": "string", "description": "Set if the item mislabels its provenance (CORPUS-CONTRACT §3 requires failing the item and filing a correction)." }
+        }
+      }
+    },
+
+    "artifacts": {
+      "type": "array", "minItems": 1,
+      "description": "Every file this verdict cites. An empty array makes the verdict VOID.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "kind", "produced_by"],
+        "properties": {
+          "path": { "type": "string", "description": "Repo-relative, normally corpus/90-verdicts/<wave>/artifacts/<piece_id>/..." },
+          "kind": { "enum": ["screenshot", "trace", "report", "text-excerpt", "graph", "video", "log", "perf", "blind-pack", "negative-evidence"] },
+          "produced_by": { "type": "string", "description": "Exact command or procedure that produced it." },
+          "seed": { "type": ["string", "integer", "null"] },
+          "resolution": { "type": "string", "description": "Screenshots: e.g. '1920x1080'." },
+          "camera_pose": { "type": "string", "description": "Screenshots: position, look-at, fov, time-of-day. Required for visual artifacts." },
+          "duration_s": { "type": "number" },
+          "sha256": { "type": "string" },
+          "source": { "enum": ["ours", "reference", "blind-pack", "mixed"], "default": "ours" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+
+    "blind_comparisons": {
+      "type": "array",
+      "description": "One entry per reference item with blind_pair: yes. CORPUS-CONTRACT §6 + CRITIC-DOCTRINE §5.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["ref_item", "status"],
+        "properties": {
+          "ref_item": { "type": "string" },
+          "status": { "enum": ["done", "not_possible"] },
+          "not_possible_reason": { "type": "string" },
+          "question": { "type": "string", "description": "The discriminating question, written BEFORE looking." },
+          "pack_artifacts": { "type": "array", "items": { "type": "string" } },
+          "assignment_seed": { "type": ["string", "integer"], "description": "How A/B was assigned, so the shuffle is auditable." },
+          "blind_pick": { "enum": ["A", "B", "tie", "none"] },
+          "blind_rationale": { "type": "string" },
+          "reveal": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "A": { "enum": ["ours", "reference"] },
+              "B": { "enum": ["ours", "reference"] }
+            }
+          },
+          "picked": { "enum": ["ours", "reference", "tie", "none"], "description": "Derived: which side the blind pick landed on. Aggregated project-wide." },
+          "rerun_triggered": { "type": "boolean", "default": false, "description": "MUST be true when picked == 'ours' (CRITIC-DOCTRINE §2.5)." },
+          "rerun": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "harsher_lens": { "type": "string", "description": "What was sharpened: zoom, duration, extra discriminator." },
+              "additional_measurement": { "type": "string" },
+              "artifacts": { "type": "array", "items": { "type": "string" } },
+              "result": { "enum": ["reference-wins-on-review", "ours-still-wins", "inconclusive"] },
+              "item_capped_at_8": { "type": "boolean", "default": false },
+              "extension_filed": { "type": "string", "description": "RI id of the sharper-discriminator extension, if ours still won." }
+            }
+          }
+        }
+      }
+    },
+
+    "arbitration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ar1", "ar2"],
+      "properties": {
+        "ar1": { "$ref": "#/$defs/arCheck" },
+        "ar2": { "$ref": "#/$defs/arCheck" }
+      }
+    },
+
+    "score": {
+      "type": "object", "additionalProperties": false,
+      "required": ["overall_0_10", "pass_threshold", "aggregation"],
+      "properties": {
+        "overall_0_10": { "type": "number", "minimum": 0, "maximum": 10 },
+        "pass_threshold": { "type": "number", "minimum": 0, "maximum": 10, "default": 6 },
+        "aggregation": { "enum": ["min", "mean", "weighted-mean"], "description": "How per-item scores combined. Default 'mean'; use 'min' when items are gates." },
+        "weights": { "type": "object", "additionalProperties": { "type": "number" } },
+        "band_label": { "type": "string", "description": "The SCORING.md band name for overall_0_10." },
+        "confidence": { "enum": ["high", "medium", "low"] }
+      }
+    },
+
+    "status": {
+      "enum": ["PASS", "FAIL", "VOID", "PROVISIONAL", "RECUSED"],
+      "description": "PASS requires: ar1 pass, ar2 pass, zero hard_fails, every assigned item measured or fail-closed at 0, overall >= pass_threshold, and a buildable remedy. VOID = no artifacts / source-only claims / bifurcation violation / no gap named."
+    },
+    "status_reasons": { "type": "array", "items": { "type": "string" }, "description": "Machine-readable reason codes, e.g. 'ar1_fail', 'hard_fail:RI-AI01/M7', 'no_artifacts', 'blind_pick_ours_not_rerun'." },
+
+    "biggest_gap": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gap_id", "subsystem_path", "what", "why_it_matters", "evidence", "remedy"],
+      "description": "EXACTLY ONE. A verdict without this is VOID (ARBITRATION.md §3).",
+      "properties": {
+        "gap_id": { "type": "string", "pattern": "^GAP-W[0-9]+-[a-z0-9-]+$", "description": "e.g. GAP-W2-combat-dodge-iframe-window." },
+        "subsystem_path": { "type": "string" },
+        "what": { "type": "string", "description": "Observed deficiency stated as a measured difference from the bar." },
+        "why_it_matters": { "type": "string", "description": "Player-facing consequence, one sentence." },
+        "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "severity": { "enum": ["blocking", "major", "minor"] },
+        "remedy": {
+          "type": "object", "additionalProperties": false,
+          "required": ["action", "acceptance"],
+          "properties": {
+            "action": { "type": "string", "description": "Concrete and buildable: what to change, where, and how." },
+            "targets": { "type": "array", "items": { "type": "string" }, "description": "Files, subsystems, or data paths to touch." },
+            "acceptance": { "type": "string", "description": "The measurable condition that closes this gap, expressed as a number or observable behaviour a later critic can re-measure." },
+            "ref_item": { "type": "string", "description": "RI id whose method defines the acceptance measurement." },
+            "estimated_size": { "enum": ["S", "M", "L"] }
+          }
+        }
+      }
+    },
+
+    "secondary_observations": {
+      "type": "array",
+      "description": "NOT fed to the next builder as work. Kept so nothing is lost.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["what"],
+        "properties": {
+          "what": { "type": "string" },
+          "evidence": { "type": "array", "items": { "type": "string" } },
+          "subsystem_path": { "type": "string" }
+        }
+      }
+    },
+
+    "gap_closure": {
+      "type": "array",
+      "description": "Re-measurement of gaps from earlier waves on these subsystem paths. A gap may only be closed by a critic, never by the agent that built the fix.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["gap_id", "status", "evidence"],
+        "properties": {
+          "gap_id": { "type": "string" },
+          "status": { "enum": ["closed", "open", "partially-closed", "superseded", "invalid"] },
+          "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "measured_value": { "type": ["number", "string", "null"] },
+          "acceptance_restated": { "type": "string" },
+          "closed_by_builder_of_fix": { "type": "boolean", "default": false, "description": "If true the closure is INVALID and the aggregator rejects it." },
+          "note": { "type": "string" }
+        }
+      }
+    },
+
+    "corpus_extended": {
+      "type": "array",
+      "description": "New or corrected reference items this critic wrote (CORPUS-CONTRACT §5). Empty array is legal but notable.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "path", "reason"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "area": { "type": "string" },
+          "judges": { "type": "array", "items": { "type": "string" } },
+          "reason": { "enum": ["corpus_hole", "method_gap", "harness_gap", "sharper_discriminator", "provenance_correction"] },
+          "note": { "type": "string" },
+          "index_regenerated": { "type": "boolean", "default": false }
+        }
+      }
+    },
+
+    "method_deviations": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["ref_item", "deviation", "why"],
+        "properties": {
+          "ref_item": { "type": "string" },
+          "deviation": { "type": "string" },
+          "why": { "type": "string" },
+          "affects_scores": { "type": "boolean", "default": true }
+        }
+      }
+    },
+
+    "arbitration_questions": {
+      "type": "array",
+      "description": "Genuine collisions ARBITRATION.md does not resolve. The critic does NOT invent a ruling.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["question", "souls_side", "morrowind_side"],
+        "properties": {
+          "question": { "type": "string" },
+          "souls_side": { "type": "string" },
+          "morrowind_side": { "type": "string" },
+          "proposed_seam_id": { "type": "string" }
+        }
+      }
+    },
+
+    "source_reads": {
+      "type": "array",
+      "description": "CRITIC-DOCTRINE §1.1. Every source file opened, with its permitted purpose. Any purpose outside the three permitted ones voids the verdict.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "purpose"],
+        "properties": {
+          "path": { "type": "string" },
+          "purpose": { "enum": ["locate-harness", "quote-written-content", "diagnose-after-demonstrating"] },
+          "note": { "type": "string" }
+        }
+      }
+    },
+
+    "self_audit": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "judged_output_not_source", "ran_every_assigned_method", "blind_done_where_required",
+        "named_exactly_one_gap", "remedy_is_buildable", "no_banned_reasoning_used",
+        "escalation_ladder_used_if_gap_seemed_small"
+      ],
+      "properties": {
+        "judged_output_not_source": { "type": "boolean" },
+        "ran_every_assigned_method": { "type": "boolean" },
+        "blind_done_where_required": { "type": "boolean" },
+        "named_exactly_one_gap": { "type": "boolean" },
+        "remedy_is_buildable": { "type": "boolean" },
+        "no_banned_reasoning_used": { "type": "boolean" },
+        "escalation_ladder_used_if_gap_seemed_small": { "type": "boolean" },
+        "self_audit_note": { "type": "string", "description": "REQUIRED if any of the above is false." }
+      }
+    },
+
+    "notes": { "type": "string", "description": "Free prose. Never a substitute for a structured field." }
+  },
+
+  "$defs": {
+    "arCheck": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "checks"],
+      "properties": {
+        "status": { "enum": ["pass", "fail", "not_applicable"] },
+        "not_applicable_reason": { "type": "string" },
+        "checks": {
+          "type": "array",
+          "description": "Per-probe results using the ids in CRITIC-DOCTRINE §4.1 (A1-A10) / §4.2 (B1-B11).",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "result"],
+            "properties": {
+              "id": { "type": "string" },
+              "result": { "enum": ["pass", "fail", "not_run", "not_applicable"] },
+              "observed": { "type": "string" },
+              "evidence": { "type": "array", "items": { "type": "string" } },
+              "not_run_reason": { "type": "string" }
+            }
+          }
+        },
+        "evidence": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "PASS" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "arbitration": {
+            "properties": {
+              "ar1": { "properties": { "status": { "enum": ["pass", "not_applicable"] } } },
+              "ar2": { "properties": { "status": { "enum": ["pass", "not_applicable"] } } }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "critic": { "properties": { "conflict_of_interest": { "const": true } }, "required": ["conflict_of_interest"] } }, "required": ["critic"] },
+      "then": { "properties": { "status": { "const": "RECUSED" } } }
+    }
+  ]
+}

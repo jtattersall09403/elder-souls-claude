@@ -1,0 +1,813 @@
+{
+  "_note": "Load-bearing settlement placement + content targets. Coordinates are authoritative: builders place from this file. See RI-WLD01 and RI-WLD03.",
+  "coordinate_system": "X = metres east, Z = metres south, Y = metres above sea level. Origin at world NW corner.",
+  "px_to_world": "X = (px_x - 515) * 3.50 + 250 ; Z = (px_y - 60) * 3.50 + 250",
+  "tier_template": {
+    "capital": {
+      "buildings": 40,
+      "named_interiors": 26,
+      "enterable_pct": 65,
+      "named_npcs": 45,
+      "scheduled_npc_pct": 75,
+      "shops": 7,
+      "taverns": 3,
+      "temple_shrine": 2,
+      "guild_halls": 4,
+      "trainers": 5,
+      "quest_givers": 9,
+      "rumour_variants": 14,
+      "bonfire": 1,
+      "road_gates": 4,
+      "unique_architecture_kit": "required",
+      "souls_loop_dungeon_attached": 1
+    },
+    "city": {
+      "buildings": 28,
+      "named_interiors": 18,
+      "enterable_pct": 64,
+      "named_npcs": 30,
+      "scheduled_npc_pct": 72,
+      "shops": 5,
+      "taverns": 2,
+      "temple_shrine": 1,
+      "guild_halls": 3,
+      "trainers": 3,
+      "quest_givers": 7,
+      "rumour_variants": 11,
+      "bonfire": 1,
+      "road_gates": 3,
+      "unique_architecture_kit": "required",
+      "souls_loop_dungeon_attached": 1
+    },
+    "town": {
+      "buildings": 18,
+      "named_interiors": 12,
+      "enterable_pct": 67,
+      "named_npcs": 20,
+      "scheduled_npc_pct": 70,
+      "shops": 3,
+      "taverns": 1,
+      "temple_shrine": 1,
+      "guild_halls": 2,
+      "trainers": 2,
+      "quest_givers": 5,
+      "rumour_variants": 8,
+      "bonfire": 1,
+      "road_gates": 2,
+      "unique_architecture_kit": "required",
+      "souls_loop_dungeon_attached": 1
+    },
+    "village": {
+      "buildings": 10,
+      "named_interiors": 7,
+      "enterable_pct": 70,
+      "named_npcs": 12,
+      "scheduled_npc_pct": 70,
+      "shops": 2,
+      "taverns": 1,
+      "temple_shrine": 1,
+      "guild_halls": 0,
+      "trainers": 1,
+      "quest_givers": 3,
+      "rumour_variants": 6,
+      "bonfire": 1,
+      "road_gates": 2,
+      "unique_architecture_kit": "shared+2 unique props",
+      "souls_loop_dungeon_attached": 0
+    },
+    "minor": {
+      "buildings": 5,
+      "named_interiors": 3,
+      "enterable_pct": 60,
+      "named_npcs": 5,
+      "scheduled_npc_pct": 60,
+      "shops": 1,
+      "taverns": 0,
+      "temple_shrine": 1,
+      "guild_halls": 0,
+      "trainers": 0,
+      "quest_givers": 1,
+      "rumour_variants": 3,
+      "bonfire": 0.7,
+      "road_gates": 2,
+      "unique_architecture_kit": "shared",
+      "souls_loop_dungeon_attached": 0
+    }
+  },
+  "settlements": {
+    "Stormhold": {
+      "x": 2171.5,
+      "z": 761.0,
+      "source_px": [
+        1064,
+        206
+      ],
+      "tier": "city",
+      "region": "The Salt Hills",
+      "identity": "The border garrison. The most 'normal'-looking place in Argonia, which makes it the strangest by contrast. Industry: the border - customs, the Legion, and the ugly living memory of Dunmer slave-raids coming down the passes. Tension: the Legion is under-funded and outnumbered eight to one by the people it polices, and everyone has done the arithmetic. Layout tells you: Imperial grid inside the walls, Argonian sprawl leaning against the OUTSIDE of them - two towns sharing one wall from opposite sides.",
+      "nearest_neighbour": "Thorn",
+      "nn_road_m": 2229,
+      "nn_walk_min": 18.6,
+      "nn_jog_min": 11.6,
+      "targets": {
+        "buildings": 28,
+        "named_interiors": 18,
+        "enterable_pct": 64,
+        "named_npcs": 30,
+        "scheduled_npc_pct": 72,
+        "shops": 5,
+        "taverns": 2,
+        "temple_shrine": 1,
+        "guild_halls": 3,
+        "trainers": 3,
+        "quest_givers": 7,
+        "rumour_variants": 11,
+        "bonfire": 1,
+        "road_gates": 3,
+        "unique_architecture_kit": "required",
+        "souls_loop_dungeon_attached": 1
+      }
+    },
+    "Thorn": {
+      "x": 3820.0,
+      "z": 859.0,
+      "source_px": [
+        1535,
+        234
+      ],
+      "tier": "village",
+      "region": "Thornmarsh",
+      "identity": "A kingdom that shrank. Thorn's 'king' is an old Argonian holding court in a rotted hall with eleven subjects and a genuine, legally-valid Imperial charter. Industry: the needle-forest - thornwood cut for Dunmer bows and Imperial spears. Tension: Morrowind is one day's walk north and remembers what it used to take from here. Layout tells you: the hall is at the centre and everything else is a lean-to against it - this was built for a court that no longer exists.",
+      "nearest_neighbour": "Stormhold",
+      "nn_road_m": 2229,
+      "nn_walk_min": 18.6,
+      "nn_jog_min": 11.6,
+      "targets": {
+        "buildings": 10,
+        "named_interiors": 7,
+        "enterable_pct": 70,
+        "named_npcs": 12,
+        "scheduled_npc_pct": 70,
+        "shops": 2,
+        "taverns": 1,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 1,
+        "quest_givers": 3,
+        "rumour_variants": 6,
+        "bonfire": 1,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared+2 unique props",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Gideon": {
+      "x": 439.0,
+      "z": 2913.5,
+      "source_px": [
+        569,
+        821
+      ],
+      "tier": "town",
+      "region": "Blackwood",
+      "identity": "The control group. The most Imperial place in Argonia: timber, tilled fields, a proper inn, a chapel, a market cross. It looks like Cyrodiil, and that is the point - it is the one screenshot in this game that COULD be another game, placed deliberately so the other twelve regions can be measured against it. Industry: timber, grain, road tolls. Tension: an Imperial county in all but name, worked by Argonians who are not paid. Layout tells you: a square with a cross in it - somebody imported a plan.",
+      "nearest_neighbour": "Helstrom",
+      "nn_road_m": 2378,
+      "nn_walk_min": 19.8,
+      "nn_jog_min": 12.4,
+      "targets": {
+        "buildings": 18,
+        "named_interiors": 12,
+        "enterable_pct": 67,
+        "named_npcs": 20,
+        "scheduled_npc_pct": 70,
+        "shops": 3,
+        "taverns": 1,
+        "temple_shrine": 1,
+        "guild_halls": 2,
+        "trainers": 2,
+        "quest_givers": 5,
+        "rumour_variants": 8,
+        "bonfire": 1,
+        "road_gates": 2,
+        "unique_architecture_kit": "required",
+        "souls_loop_dungeon_attached": 1
+      }
+    },
+    "Helstrom": {
+      "x": 2262.5,
+      "z": 2773.5,
+      "source_px": [
+        1090,
+        781
+      ],
+      "tier": "capital",
+      "region": "The Stone Forest",
+      "identity": "The throne that was never Imperial. Helstrom is grown into and around the greatest Hist in Argonia; the 'palace' is a hollowed bole and there is no chair in it, only a root you kneel at. Industry: it is the hub of the root-network, so every road and every travel route ends here. Tension: Hist-speakers vs. nationalists vs. a small Imperial legation everyone tolerates and nobody obeys. Layout tells you: the streets are root-radial, all leading inward to the tree - whoever runs this town, it is not a person.",
+      "nearest_neighbour": "Gideon",
+      "nn_road_m": 2378,
+      "nn_walk_min": 19.8,
+      "nn_jog_min": 12.4,
+      "targets": {
+        "buildings": 40,
+        "named_interiors": 26,
+        "enterable_pct": 65,
+        "named_npcs": 45,
+        "scheduled_npc_pct": 75,
+        "shops": 7,
+        "taverns": 3,
+        "temple_shrine": 2,
+        "guild_halls": 4,
+        "trainers": 5,
+        "quest_givers": 9,
+        "rumour_variants": 14,
+        "bonfire": 1,
+        "road_gates": 4,
+        "unique_architecture_kit": "required",
+        "souls_loop_dungeon_attached": 1
+      }
+    },
+    "Archon": {
+      "x": 3785.0,
+      "z": 3823.5,
+      "source_px": [
+        1525,
+        1081
+      ],
+      "tier": "town",
+      "region": "Crimson Coast",
+      "identity": "The dye town. The crimson tide-lichen is harvested, boiled and sold to the Empire as imperial purple, and everything and everyone here is stained. Industry: clay and dye. Tension: the dye is killing the harvesters and the guild denies it, in writing, repeatedly. Layout tells you: the vats are at the centre and the housing is downwind - somebody ranked the vats above the people.",
+      "nearest_neighbour": "Lilmoth",
+      "nn_road_m": 2523,
+      "nn_walk_min": 21.0,
+      "nn_jog_min": 13.1,
+      "targets": {
+        "buildings": 18,
+        "named_interiors": 12,
+        "enterable_pct": 67,
+        "named_npcs": 20,
+        "scheduled_npc_pct": 70,
+        "shops": 3,
+        "taverns": 1,
+        "temple_shrine": 1,
+        "guild_halls": 2,
+        "trainers": 2,
+        "quest_givers": 5,
+        "rumour_variants": 8,
+        "bonfire": 1,
+        "road_gates": 2,
+        "unique_architecture_kit": "required",
+        "souls_loop_dungeon_attached": 1
+      }
+    },
+    "Blackrose": {
+      "x": 1905.5,
+      "z": 4450.0,
+      "source_px": [
+        988,
+        1260
+      ],
+      "tier": "town",
+      "region": "Western Rootlands",
+      "identity": "A town that exists to feed and guard a prison. The Imperial-built Blackrose Prison squats over it and the town is its outbuildings. Industry: incarceration. Tension: half the townsfolk are ex-guards and half are inmates' families, and the warden is not who the Empire thinks he is. Layout tells you: there is no square - only corridors between compound walls. Every street is a checkpoint.",
+      "nearest_neighbour": "Lilmoth",
+      "nn_road_m": 1503,
+      "nn_walk_min": 12.5,
+      "nn_jog_min": 7.8,
+      "targets": {
+        "buildings": 18,
+        "named_interiors": 12,
+        "enterable_pct": 67,
+        "named_npcs": 20,
+        "scheduled_npc_pct": 70,
+        "shops": 3,
+        "taverns": 1,
+        "temple_shrine": 1,
+        "guild_halls": 2,
+        "trainers": 2,
+        "quest_givers": 5,
+        "rumour_variants": 8,
+        "bonfire": 1,
+        "road_gates": 2,
+        "unique_architecture_kit": "required",
+        "souls_loop_dungeon_attached": 1
+      }
+    },
+    "Soulrest": {
+      "x": 610.5,
+      "z": 4877.0,
+      "source_px": [
+        618,
+        1382
+      ],
+      "tier": "village",
+      "region": "Stone Wastes",
+      "identity": "A dying village around a dying Hist. It was a port; the bay silted; now it mines salt and old bones out of the Wastes. Industry: salt, bone, scavenging. Tension: the villagers are openly debating whether to burn their Hist before it dies on its own, which is the single most blasphemous conversation in Argonia and they are having it in the street. Layout tells you: every house faces the tree and the tree is grey.",
+      "nearest_neighbour": "Blackrose",
+      "nn_road_m": 1841,
+      "nn_walk_min": 15.3,
+      "nn_jog_min": 9.6,
+      "targets": {
+        "buildings": 10,
+        "named_interiors": 7,
+        "enterable_pct": 70,
+        "named_npcs": 12,
+        "scheduled_npc_pct": 70,
+        "shops": 2,
+        "taverns": 1,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 1,
+        "quest_givers": 3,
+        "rumour_variants": 6,
+        "bonfire": 1,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared+2 unique props",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Lilmoth": {
+      "x": 2766.5,
+      "z": 5027.5,
+      "source_px": [
+        1234,
+        1425
+      ],
+      "tier": "city",
+      "region": "Western Rootlands",
+      "identity": "The great rotting port. Two cities stacked: Imperial colonial stone sunk to its first-floor windows, and an Argonian stilt-slum built on top of the drowned storeys. Industry: shipping, smuggling, moon-sugar transhipment, the egg black market. Tension: the city loses a hand's width a year and the Imperial families will not say so. Layout tells you: the rich live LOW in wet stone because status is masonry, and the poor live DRY above them - the whole social order is upside down and visible from the harbour.",
+      "nearest_neighbour": "Blackrose",
+      "nn_road_m": 1503,
+      "nn_walk_min": 12.5,
+      "nn_jog_min": 7.8,
+      "targets": {
+        "buildings": 28,
+        "named_interiors": 18,
+        "enterable_pct": 64,
+        "named_npcs": 30,
+        "scheduled_npc_pct": 72,
+        "shops": 5,
+        "taverns": 2,
+        "temple_shrine": 1,
+        "guild_halls": 3,
+        "trainers": 3,
+        "quest_givers": 7,
+        "rumour_variants": 11,
+        "bonfire": 1,
+        "road_gates": 3,
+        "unique_architecture_kit": "required",
+        "souls_loop_dungeon_attached": 1
+      }
+    }
+  },
+  "minor_settlements": {
+    "Ixtaxh-Tzil": {
+      "x": 2988.6,
+      "z": 929.8,
+      "on_leg": [
+        "Stormhold",
+        "Thorn"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Nine-Mud": {
+      "x": 2293.3,
+      "z": 1461.3,
+      "on_leg": [
+        "Stormhold",
+        "Helstrom"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "The Weeping Ford": {
+      "x": 2129.5,
+      "z": 2206.5,
+      "on_leg": [
+        "Stormhold",
+        "Helstrom"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Xal-Ithix": {
+      "x": 2938.0,
+      "z": 3347.5,
+      "on_leg": [
+        "Helstrom",
+        "Archon"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Kiln Camp": {
+      "x": 3489.8,
+      "z": 3534.9,
+      "on_leg": [
+        "Helstrom",
+        "Archon"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Sunken Barrow": {
+      "x": 2224.0,
+      "z": 3550.5,
+      "on_leg": [
+        "Helstrom",
+        "Blackrose"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Mudwater Landing": {
+      "x": 1909.0,
+      "z": 4121.0,
+      "on_leg": [
+        "Helstrom",
+        "Blackrose"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Rootway Post": {
+      "x": 1617.4,
+      "z": 2732.8,
+      "on_leg": [
+        "Helstrom",
+        "Gideon"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Tenmarch Bridge": {
+      "x": 990.6,
+      "z": 2931.3,
+      "on_leg": [
+        "Helstrom",
+        "Gideon"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Hollow-Reeds": {
+      "x": 544.0,
+      "z": 3652.0,
+      "on_leg": [
+        "Gideon",
+        "Soulrest"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Bone Ladder": {
+      "x": 637.4,
+      "z": 4380.0,
+      "on_leg": [
+        "Gideon",
+        "Soulrest"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Salt-Egg Camp": {
+      "x": 1163.5,
+      "z": 4625.0,
+      "on_leg": [
+        "Soulrest",
+        "Blackrose"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Stilt-Row": {
+      "x": 2274.7,
+      "z": 4830.1,
+      "on_leg": [
+        "Blackrose",
+        "Lilmoth"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Clayfast": {
+      "x": 3718.5,
+      "z": 2787.5,
+      "on_leg": [
+        "Archon",
+        "Thorn"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "The Red Wells": {
+      "x": 3909.5,
+      "z": 1749.5,
+      "on_leg": [
+        "Archon",
+        "Thorn"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    },
+    "Tideway Shrine": {
+      "x": 3207.0,
+      "z": 4367.4,
+      "on_leg": [
+        "Lilmoth",
+        "Archon"
+      ],
+      "tier": "minor",
+      "targets": {
+        "buildings": 5,
+        "named_interiors": 3,
+        "enterable_pct": 60,
+        "named_npcs": 5,
+        "scheduled_npc_pct": 60,
+        "shops": 1,
+        "taverns": 0,
+        "temple_shrine": 1,
+        "guild_halls": 0,
+        "trainers": 0,
+        "quest_givers": 1,
+        "rumour_variants": 3,
+        "bonfire": 0.7,
+        "road_gates": 2,
+        "unique_architecture_kit": "shared",
+        "souls_loop_dungeon_attached": 0
+      }
+    }
+  },
+  "world_totals_from_template": {
+    "_note": "Sums over 8 named + 16 minor settlements. Percentages are per-settlement rates, not summable.",
+    "**settlement_buildings**": 250,
+    "**settlement_named_interiors**": 160,
+    "**settlement_named_npcs**": 269,
+    "shops": 46,
+    "taverns": 12,
+    "temples_shrines": 25,
+    "guild_halls": 16,
+    "trainers": 19,
+    "quest_givers": 60,
+    "rumour_variants": 120,
+    "settlement_bonfires": 19,
+    "road_gates": 52,
+    "souls_loop_dungeons_attached_to_settlements": 6
+  }
+}

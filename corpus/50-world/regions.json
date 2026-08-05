@@ -1,0 +1,449 @@
+{
+  "_note": "Region identity briefs. Bounds are axis-aligned approximations derived from the map source image; region borders on the map are irregular and the AABB is a containment hint, not a boundary.",
+  "metres_per_source_pixel": 3.5,
+  "regions": {
+    "The Salt Hills": {
+      "aabb_px": [
+        860,
+        60,
+        1300,
+        340
+      ],
+      "aabb_m": {
+        "x": [
+          1457.5,
+          2997.5
+        ],
+        "z": [
+          250.0,
+          1230.0
+        ]
+      },
+      "area_km2": 0.94,
+      "difficulty_tier": 3,
+      "provenance": "corpus-added",
+      "palette_hex": [
+        "#7D8B5C",
+        "#9A968C",
+        "#C6D2DA"
+      ],
+      "flora": "hill grass, salt-cedar, gorse; the only place with open sky over dry ground",
+      "fauna": "guar herds, hill-wamasu, Dunmer slaver-raiders coming down the passes",
+      "architecture": "Imperial cut stone: milestones, watchtowers on every third hill, a legion fort",
+      "ambient_audio": "legion horn on the hour; guar-bells; wind with no insect layer under it",
+      "weather": "cold rain; snow visible on unreachable peaks",
+      "hazard": "slaver ambush on the pass roads; exposure on the ridge at night",
+      "only_here": "Imperial road-milestones with distances carved in Cyrodilic - the only place in Argonia where anyone measured anything",
+      "settlements": "Stormhold"
+    },
+    "Thornmarsh": {
+      "aabb_px": [
+        1300,
+        90,
+        1700,
+        470
+      ],
+      "aabb_m": {
+        "x": [
+          2997.5,
+          4397.5
+        ],
+        "z": [
+          355.0,
+          1685.0
+        ]
+      },
+      "area_km2": 1.08,
+      "difficulty_tier": 4,
+      "provenance": "canonical-recall",
+      "palette_hex": [
+        "#241E1C",
+        "#8B8577",
+        "#46583F"
+      ],
+      "flora": "black needle-thorn thickets 6 m tall, impenetrable except on cut paths",
+      "fauna": "hackwings nesting in thorn, feral guar, thorn-spiders",
+      "architecture": "Thorn village: thatch of black thorn over a rotted Argonian great-hall",
+      "ambient_audio": "thorn-clatter like dice in a cup; NO birdsong inside the thicket",
+      "weather": "grey ash carried south from Morrowind, dusting every surface",
+      "hazard": "no sightlines - the thicket is a maze and the cut paths are re-cut weekly",
+      "only_here": "an ash-dusted thorn labyrinth navigated by knife-marks cut into stems",
+      "settlements": "Thorn"
+    },
+    "Valus Ridge": {
+      "aabb_px": [
+        560,
+        320,
+        930,
+        800
+      ],
+      "aabb_m": {
+        "x": [
+          407.5,
+          1702.5
+        ],
+        "z": [
+          1160.0,
+          2840.0
+        ]
+      },
+      "area_km2": 1.71,
+      "difficulty_tier": 4,
+      "provenance": "canonical-recall",
+      "palette_hex": [
+        "#B9B2A0",
+        "#4E6B3C",
+        "#8FA6B4"
+      ],
+      "flora": "stunted thorn-pine, hanging moss curtains, cliff-lichen",
+      "fauna": "hackwing eyries, wamasu, mountain chitin-hounds",
+      "architecture": "Ayleid watchtowers and Imperial border cairns; nothing lived in",
+      "ambient_audio": "wind through rock flutes (a real audible chord); rockfall; hackwing screams",
+      "weather": "cold rain, cloud BELOW the player on high paths",
+      "hazard": "falls; hackwings that stagger you off ledges (Souls-style plunge deaths)",
+      "only_here": "the rock flutes - wind-holed limestone spires that hum a fixed chord audible from 400 m and usable as a compass",
+      "settlements": null
+    },
+    "The Stone Forest": {
+      "aabb_px": [
+        1010,
+        440,
+        1420,
+        800
+      ],
+      "aabb_m": {
+        "x": [
+          1982.5,
+          3417.5
+        ],
+        "z": [
+          1580.0,
+          2840.0
+        ]
+      },
+      "area_km2": 1.8,
+      "difficulty_tier": 3,
+      "provenance": "derived-from-map",
+      "palette_hex": [
+        "#7C8794",
+        "#B8712C",
+        "#3D5A3A"
+      ],
+      "flora": "living trees standing among petrified ones; stone-bark indistinguishable until touched",
+      "fauna": "wamasu herds, stone-shelled beetles, Hist-tenders",
+      "architecture": "xanmeer ziggurats; Helstrom grown into the greatest Hist in Argonia",
+      "ambient_audio": "stone tick as boles cool; wind through petrified trunks; a low choral hum from the Hist",
+      "weather": "clear high light; sudden dry thunder with no rain",
+      "hazard": "moderate; wamasu pair-lightning",
+      "only_here": "a forest half turned to stone, where you cannot tell which trees are alive until you put a hand on one",
+      "settlements": "Helstrom"
+    },
+    "The Clay Moor": {
+      "aabb_px": [
+        1380,
+        450,
+        1670,
+        660
+      ],
+      "aabb_m": {
+        "x": [
+          3277.5,
+          4292.5
+        ],
+        "z": [
+          1615.0,
+          2350.0
+        ]
+      },
+      "area_km2": 0.81,
+      "difficulty_tier": 4,
+      "provenance": "derived-from-map",
+      "palette_hex": [
+        "#9C5B3C",
+        "#C39A5C",
+        "#C8BFA8"
+      ],
+      "flora": "sparse scrub on fired red clay; no standing water",
+      "fauna": "naga (hostile culture with settlements), clay-crawlers",
+      "architecture": "naga kiln-cities: domes fired in place, the kiln still burning beneath the floor",
+      "ambient_audio": "kiln roar; untranslated naga speech; wind over open ground",
+      "weather": "dry; dust-devils; heat shimmer",
+      "hazard": "naga territory - the only hostile CULTURE, with patrols, sentries and reprisal",
+      "only_here": "buildings that were fired like pots, with the kiln still lit underneath them",
+      "settlements": null
+    },
+    "Crimson Coast": {
+      "aabb_px": [
+        1550,
+        600,
+        1770,
+        920
+      ],
+      "aabb_m": {
+        "x": [
+          3872.5,
+          4642.5
+        ],
+        "z": [
+          2140.0,
+          3260.0
+        ]
+      },
+      "area_km2": 0.63,
+      "difficulty_tier": 4,
+      "provenance": "derived-from-map",
+      "palette_hex": [
+        "#8E2B33",
+        "#232021",
+        "#6C7A80"
+      ],
+      "flora": "crimson tide-lichen covering every surface to the high-water mark",
+      "fauna": "dye-worms, red cormorants, lichen-blind beggars",
+      "architecture": "Archon's kiln-fired clay domes; open dye-vats on the strand",
+      "ambient_audio": "the lichen's thin scream when trodden; surf; vat-bubble",
+      "weather": "sea-squalls off the Padomaic",
+      "hazard": "dye-fume sickness (named disease, curable); slick lichen on rock",
+      "only_here": "a coastline that is red because it is alive, and screams thinly under your boots",
+      "settlements": "Archon"
+    },
+    "Blackwood": {
+      "aabb_px": [
+        545,
+        800,
+        960,
+        1200
+      ],
+      "aabb_m": {
+        "x": [
+          355.0,
+          1807.5
+        ],
+        "z": [
+          2840.0,
+          4240.0
+        ]
+      },
+      "area_km2": 2.07,
+      "difficulty_tier": 2,
+      "provenance": "canonical-recall",
+      "palette_hex": [
+        "#1F2E1C",
+        "#4A3423",
+        "#C9A54B"
+      ],
+      "flora": "buttressed hardwood, strangler vine, luminous fungus shelves",
+      "fauna": "chitin hounds (eyeless pack predators), tusk-lurkers, bandits",
+      "architecture": "Ayleid white-stone drowned to the second storey; Imperial logging camps; Gideon",
+      "ambient_audio": "canopy drip; a solid wall of insect noise; distant axe-strokes",
+      "weather": "heavy rain; light arrives only in shafts",
+      "hazard": "sightline under 20 m - ambush country",
+      "only_here": "welkynd-lit Ayleid ruins swallowed by living wood: white stone with roots through it, glowing blue in green dark",
+      "settlements": "Gideon"
+    },
+    "The Hive": {
+      "aabb_px": [
+        730,
+        1000,
+        880,
+        1120
+      ],
+      "aabb_m": {
+        "x": [
+          1002.5,
+          1527.5
+        ],
+        "z": [
+          3540.0,
+          3960.0
+        ]
+      },
+      "area_km2": 0.31,
+      "difficulty_tier": 2,
+      "provenance": "derived-from-map",
+      "palette_hex": [
+        "#D6C77A",
+        "#9A6B2F",
+        "#E6E2D0"
+      ],
+      "flora": "none - the ground is comb",
+      "fauna": "hive drones the size of dogs; one queen",
+      "architecture": "the hive IS the architecture: waxen towers, comb-cliffs, sphincter doors",
+      "ambient_audio": "a single sustained insect chord that shifts pitch with distance to the queen",
+      "weather": "none - it is always warm and still; rain does not fall inside the hive's air",
+      "hazard": "the floor is comb and gives way; falls into sealed cells",
+      "only_here": "a region with no weather and no plants, whose floor is edible and load-bearing only sometimes",
+      "settlements": null
+    },
+    "The Deep Marshes": {
+      "aabb_px": [
+        1150,
+        900,
+        1470,
+        1180
+      ],
+      "aabb_m": {
+        "x": [
+          2472.5,
+          3592.5
+        ],
+        "z": [
+          3190.0,
+          4170.0
+        ]
+      },
+      "area_km2": 1.26,
+      "difficulty_tier": 5,
+      "provenance": "canonical-recall",
+      "palette_hex": [
+        "#16191A",
+        "#3B5A3A",
+        "#4A3A55"
+      ],
+      "flora": "corpse-lily, drowned trees, black standing water",
+      "fauna": "voriplasm (living mud), naga raiders, unnamed things",
+      "architecture": "nothing stands - only drowned xanmeers breaking surface like teeth",
+      "ambient_audio": "NO birds. A low intestinal gurgle. A sound like breathing that is not yours",
+      "weather": "green fever-fog carrying a named disease",
+      "hazard": "THE GROUND IS AN ANIMAL - voriplasm swallows and digests; instant-death sinks",
+      "only_here": "mud that moves toward you",
+      "settlements": null
+    },
+    "Marauder's Coast": {
+      "aabb_px": [
+        520,
+        1150,
+        700,
+        1350
+      ],
+      "aabb_m": {
+        "x": [
+          267.5,
+          897.5
+        ],
+        "z": [
+          4065.0,
+          4765.0
+        ]
+      },
+      "area_km2": 0.49,
+      "difficulty_tier": 2,
+      "provenance": "derived-from-map",
+      "palette_hex": [
+        "#8E8A7E",
+        "#2C3A2E",
+        "#5E7C88"
+      ],
+      "flora": "mangrove, salt-grass, barnacle-shelf",
+      "fauna": "mire-crabs (cart-sized, used as pack animals), gulls, drowned-things at night",
+      "architecture": "bone-scaffold towers of lashed leviathan ribs; ship hulls beached hull-up and lived in",
+      "ambient_audio": "surf; rope creak; gull-cry; one bell buoy audible from 600 m",
+      "weather": "sea-fog banks rolling in on a ~6 minute cycle",
+      "hazard": "the tide - flats flood and strand you",
+      "only_here": "whole ships walked up the shore and inhabited hull-up, chimneys punched through the keel",
+      "settlements": null
+    },
+    "Western Rootlands": {
+      "aabb_px": [
+        790,
+        1200,
+        1150,
+        1470
+      ],
+      "aabb_m": {
+        "x": [
+          1212.5,
+          2472.5
+        ],
+        "z": [
+          4240.0,
+          5185.0
+        ]
+      },
+      "area_km2": 1.17,
+      "difficulty_tier": 1,
+      "provenance": "derived-from-map",
+      "palette_hex": [
+        "#6E8A4E",
+        "#6B5638",
+        "#A8B7A6"
+      ],
+      "flora": "reed, paddy-fern, and root-arches 8 m high over the road",
+      "fauna": "mudcrabs, egg-tender herds, hackwings",
+      "architecture": "root-arch villages and nest-mounds; Blackrose's prison walls; Lilmoth's stilt slum",
+      "ambient_audio": "frog chorus; reed rustle; a distant hide-drum on a 90-second beat",
+      "weather": "warm rain; dawn mist",
+      "hazard": "low - mudcrabs, thieves, the occasional slaver press-gang",
+      "only_here": "the road IS a Hist root - you walk on living wood that flexes underfoot and the arches are its branches",
+      "settlements": "Lilmoth, Blackrose"
+    },
+    "Eastern Rootlands": {
+      "aabb_px": [
+        1170,
+        1100,
+        1600,
+        1420
+      ],
+      "aabb_m": {
+        "x": [
+          2542.5,
+          4047.5
+        ],
+        "z": [
+          3890.0,
+          5010.0
+        ]
+      },
+      "area_km2": 1.44,
+      "difficulty_tier": 2,
+      "provenance": "derived-from-map",
+      "palette_hex": [
+        "#4F7A5E",
+        "#2A211A",
+        "#B7C4C0"
+      ],
+      "flora": "floating meadow, air-plants, tannin-black channels",
+      "fauna": "swamp-jelly canopies, wamasu, tide-fishers",
+      "architecture": "stilt-row villages on platforms that rise and fall with the tide",
+      "ambient_audio": "water slapping stilts; a low jelly-hum; oars",
+      "weather": "humid; night bioluminescence turns the water into a second sky",
+      "hazard": "tide-gated paths; drowning; you can be cut off for 6 real minutes",
+      "only_here": "translucent bell-organisms drifting metres above the water, glowing at night, throwing moving light down onto it",
+      "settlements": null
+    },
+    "Stone Wastes": {
+      "aabb_px": [
+        555,
+        1280,
+        830,
+        1490
+      ],
+      "aabb_m": {
+        "x": [
+          390.0,
+          1352.5
+        ],
+        "z": [
+          4520.0,
+          5255.0
+        ]
+      },
+      "area_km2": 0.81,
+      "difficulty_tier": 5,
+      "provenance": "derived-from-map",
+      "palette_hex": [
+        "#DCD2B8",
+        "#8C5A3A",
+        "#EDEDE6"
+      ],
+      "flora": "almost none: salt-crust and glass-thorn",
+      "fauna": "salt-worms, bone-pickers, the last dying Hist",
+      "architecture": "Soulrest: whale-bone frames and salt-block walls, bleached white",
+      "ambient_audio": "near-silence broken by the tick of cooling stone; then the salt-storm roar",
+      "weather": "salt-storms (ash-storm analogue): visibility to 15 m, chip damage over time",
+      "hazard": "no water; salt-storm strips health; the storm hides everything including enemies",
+      "only_here": "crater-fields - perfectly circular pits of glassed salt, and no one will say what made them",
+      "settlements": "Soulrest"
+    }
+  },
+  "total_land_km2": 14.52
+}

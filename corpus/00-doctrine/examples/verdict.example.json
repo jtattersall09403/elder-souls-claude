@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "piece_id": "combat-dodge-core",
+  "piece_title": "Roll: i-frames, direction, recovery",
+  "subsystem_paths": ["combat.dodge.iframes", "combat.dodge.directional", "combat.dodge.recovery"],
+  "wave": 1,
+
+  "critic": {
+    "run_id": "crit-w1-dodge-3f9a",
+    "role": "critic.combat",
+    "model": "example",
+    "started_at": "2026-08-05T09:00:00Z",
+    "finished_at": "2026-08-05T10:12:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": false
+  },
+
+  "build": {
+    "commit_sha": "0000000000000000000000000000000000000000",
+    "branch": "wave-1/combat-dodge",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/iframe-sweep.mjs --seed 41 --rolls 120 --load light",
+        "cwd": ".",
+        "seed": 41,
+        "exit_code": 0,
+        "duration_s": 44.2,
+        "stdout_artifact": "corpus/00-doctrine/examples/artifacts/combat-dodge-core/harness-stdout.log"
+      }
+    ]
+  },
+
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Piece is timing-only. No visual reference item cited; no screenshot scored."
+  },
+
+  "reference_items": [
+    {
+      "id": "RI-CMB03",
+      "path": "corpus/10-combat/RI-CMB03-roll-iframes.md",
+      "side": "souls",
+      "kind": "number",
+      "native_scale": "invulnerable frames at 60Hz; target 13 +/-1 at light load; fail below 11 or above 16",
+      "native_score": 7,
+      "native_max": 13,
+      "native_verdict": "Loses outright",
+      "score_0_10": 3,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "M1",
+          "result": "fail",
+          "value": 7,
+          "threshold": "12-14",
+          "hard_fail": false,
+          "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json"],
+          "note": "Median over 120 rolls; range 6-8, so it is stable and simply short."
+        },
+        {
+          "id": "M2",
+          "result": "fail",
+          "value": 0,
+          "threshold": ">= 1 damage-nulled frame at roll frame 4",
+          "hard_fail": false,
+          "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json"],
+          "note": "Window opens at frame 9, i.e. after most enemy active frames have already resolved."
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "i-frames derived from animation clip length rather than an explicit declared window"
+      ],
+      "evidence": [
+        "corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json",
+        "corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"
+      ]
+    },
+    {
+      "id": "RI-CMB05",
+      "path": "corpus/10-combat/RI-CMB05-roll-recovery.md",
+      "side": "souls",
+      "kind": "trace",
+      "native_scale": "0-6 (three checks x 0/1/2)",
+      "native_score": 4,
+      "native_max": 6,
+      "native_verdict": "Below bar — named remedy required",
+      "score_0_10": 5,
+      "measured": "full",
+      "checks": [
+        { "id": "M1", "result": "pass", "value": 11, "threshold": ">= 10 recovery frames", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] },
+        { "id": "M2", "result": "marginal", "value": 0.42, "threshold": "stamina cost >= 0.45 of a light swing", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] },
+        { "id": "M3", "result": "fail", "value": "unbounded", "threshold": "roll spam must exhaust stamina within 5 consecutive rolls", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": ["roll is free enough to be the dominant strategy"],
+      "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"]
+    }
+  ],
+
+  "artifacts": [
+    {
+      "path": "corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/iframe-sweep.mjs --seed 41 --rolls 120 --load light",
+      "seed": 41,
+      "duration_s": 44.2,
+      "source": "ours",
+      "note": "Per-roll first/last damage-nulled frame indices and the derived median window."
+    },
+    {
+      "path": "corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl",
+      "kind": "trace",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario dodge-recovery --seed 41 --frames 3600",
+      "seed": 41,
+      "duration_s": 60,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/00-doctrine/examples/artifacts/combat-dodge-core/harness-stdout.log",
+      "kind": "log",
+      "produced_by": "node tools/harness/iframe-sweep.mjs --seed 41 --rolls 120 --load light",
+      "seed": 41,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/00-doctrine/examples/artifacts/combat-dodge-core/blind-A.jsonl",
+      "kind": "blind-pack",
+      "produced_by": "node tools/harness/blind-pack.mjs --item RI-CMB03 --assign-seed 7731",
+      "seed": 7731,
+      "source": "blind-pack"
+    },
+    {
+      "path": "corpus/00-doctrine/examples/artifacts/combat-dodge-core/blind-B.jsonl",
+      "kind": "blind-pack",
+      "produced_by": "node tools/harness/blind-pack.mjs --item RI-CMB03 --assign-seed 7731",
+      "seed": 7731,
+      "source": "blind-pack"
+    }
+  ],
+
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-CMB03",
+      "status": "done",
+      "question": "Which per-frame damage-nulled series belongs to a roll a player could use reactively against a committed swing?",
+      "pack_artifacts": [
+        "corpus/00-doctrine/examples/artifacts/combat-dodge-core/blind-A.jsonl",
+        "corpus/00-doctrine/examples/artifacts/combat-dodge-core/blind-B.jsonl"
+      ],
+      "assignment_seed": 7731,
+      "blind_pick": "B",
+      "blind_rationale": "B opens its invulnerable window 4 frames after input and holds it for 13 frames, so a roll started on the windup still covers the active frames. A opens at frame 9 and closes at 15, which only covers late-active frames and would be beaten by any early-active attack.",
+      "reveal": { "A": "ours", "B": "reference" },
+      "picked": "reference",
+      "rerun_triggered": false
+    }
+  ],
+
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        { "id": "A1", "result": "pass", "observed": "50/50 overlapping swings produced a damage event; zero rng_calls in hit-resolution frames.", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] },
+        { "id": "A2", "result": "pass", "observed": "damage stdev 0.0 over 50 identical hits.", "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"] },
+        { "id": "A5", "result": "pass", "observed": "Roll input at recovery frames 2/5/10 did not truncate the attack's remaining recovery frames." },
+        { "id": "A7", "result": "pass", "observed": "yaw_rate_dps = 0 on all active/recovery frames." }
+      ]
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "not_applicable_reason": "Piece exposes no world, dialogue, economy, or HUD surface; probes B1-B11 have nothing to run against in this build slice.",
+      "checks": [
+        { "id": "B1", "result": "not_applicable", "observed": "HUD not present in the harness scene." }
+      ]
+    }
+  },
+
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 6,
+    "aggregation": "mean",
+    "band_label": "Recognisable but wrong",
+    "confidence": "high"
+  },
+
+  "status": "FAIL",
+  "status_reasons": ["below_threshold"],
+
+  "biggest_gap": {
+    "gap_id": "GAP-W1-combat-dodge-iframe-window",
+    "subsystem_path": "combat.dodge.iframes",
+    "what": "The roll grants a median of 7 invulnerable frames, opening at roll frame 9; RI-CMB03 requires 13 +/-1 opening by frame 4. Measured over 120 scripted rolls at light load.",
+    "why_it_matters": "A player who reads the windup correctly and rolls on time still takes the hit, so the fight never teaches its own timing.",
+    "evidence": [
+      "corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-iframe-sweep.json",
+      "corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "Stop deriving invulnerability from the animation clip. Add an explicit i-frame window to the roll state: open at roll frame 4, close at frame 16 (13 frames inclusive) at light load, driven by the roll state machine and exposed in the trace as `invuln:true` so it is measurable.",
+      "targets": ["game/src/combat/dodge.ts", "game/src/combat/state/roll.ts", "game/src/combat/trace.ts"],
+      "acceptance": "tools/harness/iframe-sweep.mjs over 120 rolls reports median 13 +/-1 invulnerable frames with first invulnerable frame index 4 +/-1, and zero damage events inside the window.",
+      "ref_item": "RI-CMB03",
+      "estimated_size": "S"
+    }
+  },
+
+  "secondary_observations": [
+    {
+      "what": "Roll stamina cost is 0.42 of a light swing, below the 0.45 floor, so roll-spam is never punished within 5 rolls.",
+      "evidence": ["corpus/00-doctrine/examples/artifacts/combat-dodge-core/roll-trace.jsonl"],
+      "subsystem_path": "combat.dodge.recovery"
+    }
+  ],
+
+  "gap_closure": [],
+
+  "corpus_extended": [],
+
+  "method_deviations": [],
+
+  "arbitration_questions": [],
+
+  "source_reads": [
+    { "path": "game/src/combat/trace.ts", "purpose": "locate-harness", "note": "Needed the trace field names to compute the i-frame window." },
+    { "path": "game/src/combat/state/roll.ts", "purpose": "diagnose-after-demonstrating", "note": "Read only after the sweep demonstrated the 7-frame window, to make the remedy name a real file." }
+  ],
+
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": true,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true
+  },
+
+  "notes": "EXAMPLE VERDICT. Illustrative only: the reference items, harness scripts, and game files named here may not exist yet. Real verdicts live in corpus/90-verdicts/<wave>/<piece_id>.json with artifacts under corpus/90-verdicts/<wave>/artifacts/<piece_id>/."
+}
