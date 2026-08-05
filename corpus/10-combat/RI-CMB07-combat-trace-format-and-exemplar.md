@@ -206,10 +206,10 @@ tighter.
 | # | Statistic | Exemplar | Mode-B band |
 |---|---|---|---|
 | 1 | Fight duration | 59.17 s | 35 – 110 s |
-| 2 | **Attack animations started / min** | **24.3** | 14 – 34 |
+| 2 | **Attack animations started / min** | **24.34** | 14 – 34 |
 | 3 | Hits landed | 22 | — |
 | 4 | Whiff rate (attacks that hit nothing) | 0.083 | 0.03 – 0.25 |
-| 5 | **Rolls / min** | **16.2** | 8 – 26 |
+| 5 | **Rolls / min** | **16.23** | 8 – 26 |
 | 6 | Dodge rolls (within 20 f of an enemy hitbox) | 14 of 16 | ≥ 0.70 of all rolls |
 | 7 | **Roll timing Δ, mean** (i-frame-window start − enemy hitbox activation frame) | **−4.36 f** | −8.0 – −1.0 |
 | 8 | Roll timing Δ, standard deviation | **1.54 f** | ≤ 4.0 |
