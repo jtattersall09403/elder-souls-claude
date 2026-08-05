@@ -192,7 +192,7 @@ function stepEnemies() {
         case 'APPROACH': {
           const step = Math.min(0.06, Math.max(0, (d - 2.2 * R) * 0.05));
           moveToward(e, p.pos, step);
-          if (d <= 2.2 * R) { e.state = 'CIRCLE'; e.stateEnteredF = sim.frame; e.strafeUntil = sim.frame + 48 + Math.floor(rnd() * 48); }
+          if (d <= 2.2 * R + 0.1) { e.state = 'CIRCLE'; e.stateEnteredF = sim.frame; e.strafeUntil = sim.frame + 48 + Math.floor(rnd() * 48); }
           break;
         }
         case 'CIRCLE': {
