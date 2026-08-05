@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "kind": "bar-critique",
+  "id": "BAR-CRITIQUE-01",
+  "critic": "bar-critic",
+  "wave": 0,
+  "date": "2026-08-05",
+  "corpus_state_read": {
+    "reference_items": 64,
+    "areas_present": ["00-doctrine", "10-combat", "20-progression", "30-quests", "40-dialogue", "50-world", "60-lore", "70-visual", "80-methods", "90-verdicts"],
+    "areas_absent_on_disk": ["15-camera", "85-platform", "86-ui", "87-audio"],
+    "subsystem_paths": 200,
+    "holes_reported_by_tool": 34,
+    "frontmatter_errors_reported_by_tool": 19,
+    "note": "No RI-CAM*, RI-PLT*, RI-UIX* or RI-AUD* file exists anywhere in the tree at time of reading. Gaps naming those areas describe the repository as read, not work in flight."
+  },
+  "verdict": "INSUFFICIENT",
+  "biggest_thing_the_bar_cannot_see": {
+    "title": "The only agent that plays the game is constitutionally forbidden from having an opinion about it",
+    "argument": "COHERENCE-AGENT.md §2 commissions the only whole-game playthrough in the process (T1, ~96 minutes) and §1 forbids that agent from judging quality, re-scoring, or opening a gap. Per-piece critics never play; CRITIC-DOCTRINE §1.1 forbids them from judging anything they did not measure; and every assigned instrument terminates inside a 60-second trace, a 10-minute probe, a static dump, a fixed-pose screenshot, or a simulation. The longest play window anywhere is RI-WLD01's 58-minute walk probe, which runs with combat disabled. Both reference games are remembered as sequences of composed, timed, located events; the corpus can verify every ingredient of such an event and cannot verify that the event ever occurs. A build can score at or above the bar on all 64 items and be competent, correct and dead, and no instrument, verdict field, or agent with standing exists to notice.",
+    "proposal": {
+      "area": "corpus/95-experience/",
+      "new_doctrine": "corpus/00-doctrine/PLAYTHROUGH-CRITIC.md — mirror of COHERENCE-AGENT.md with the inverted remit: judges QUALITY, never COHERENCE; plays the whole game; scores; its verdicts enter the gap ledger.",
+      "new_subsystem_root": "experience.*",
+      "new_paths": ["experience.opening.hook", "experience.session.shape", "experience.memory.moments", "experience.novelty.curve", "experience.ending.landing", "experience.difficulty.arc", "experience.permissiveness"],
+      "first_items": ["RI-EXP01", "RI-EXP02", "RI-EXP03", "RI-EXP04", "RI-EXP05"]
+    }
+  },
+  "gaps": [
+    {
+      "rank": 1,
+      "title": "No instrument judges the game as a played experience over time",
+      "area": "95-experience",
+      "proposed_id": "RI-EXP01 / RI-EXP02 / RI-EXP03 / RI-EXP04 / RI-EXP05",
+      "kind": "structure|text",
+      "why": "Every item measures a static or short-window property of a part. Nothing measures the first hour, the shape of a session, whether anything memorable happened, whether novelty keeps arriving after hour two, or whether either ending lands. A build that passes everything can be a hollow, joyless, competent thing and the corpus has no way to record it.",
+      "comparison_method": "RI-EXP01: seeded naive 60-minute session, beat log, compute T-choice, T-found, T-death, V-taught (distinct verbs exercised twice), N-odd (authored unexplained events), N-persons. RI-EXP02: agent plays 3x90min producing only a raw event log; log discarded from context; fresh agent given only screenshots + route log writes recallable events and marks each authored/arose; count anecdotes ('I did X and then Y happened' with a proper noun and a consequence); blind-compare our anecdote set against a constructed 20-item Morrowind/Souls set. RI-EXP03: annotate 3 sessions against a six-beat template; measure beats_present, intention_changes, transit fraction, menu fraction, unfinished_thread_at_stop. RI-EXP04: 12-hour instrumented playthrough logging every FIRST encounter with a distinct archetype, architecture vocabulary, strangeness element, enemy question, systemic rule or faction; bin by hour; compute first_time_events_per_hour and decay exponent. RI-EXP05: complete both main-quest routes; export final journal, world flags and 10 NPC reactions each; blind-present the final conversation against a reference ending.",
+      "threshold": "EXP01: T-choice<=12min, T-found<=15min, T-death<=25min, V-taught>=6, N-odd>=2, N-persons>=4; hard fail if no death, no discovery, or the player is told what they are before minute 45. EXP02: anecdotes_per_hour>=4, arose_fraction>=0.25, >=3 anecdotes no design doc predicted; hard fail <1.5/hour. EXP03: >=5 of 6 beats in >=2 of 3 sessions, transit<=0.30, menus<=0.08, unfinished thread at every stop. EXP04: >=1 first-time event per 40 min sustained through hour 10; hour1:hour10 decay no steeper than 3:1; hard fail on any 90-minute window after hour 2 with zero first-time events. EXP05: both endings reachable, >=20 min of visibly changed post-ending world state or an in-fiction refusal, antagonist's case survives; hard fail if the endings differ only in a flag or the game refutes the antagonist."
+    },
+    {
+      "rank": 2,
+      "title": "The Arbitration Rule is policed against leakage but never against sterility — no bar requires the fight and the world to touch",
+      "area": "00-doctrine + 95-experience",
+      "proposed_id": "AR-3 (ARBITRATION amendment) + RI-CMP01",
+      "kind": "structure",
+      "why": "AR-1 and AR-2 both fire on crossing. Eighteen seam rulings plus RI-PRG07's automatic-fail Burden clamp and RI-PRG03's automatic-fail skill-purity rule systematically decouple the halves. A build can pass every leakage check and be two products stapled together: eighteen hours of RPG investment that changes nothing in the ten seconds that matter, and a fight whose outcome changes nothing in the world. The best moments in both reference games are membrane crossings.",
+      "comparison_method": "RI-CMP01: an NxN matrix over declared systems (combat, stamina, poise, equip-load, skills, attributes, disposition, faction rank, gold, alchemy, magic, stealth, crime, weather, tide, time-of-day, terrain); each cell marked directed/emergent/none with the mechanism named. Every non-'none' cell must be demonstrated IN PLAY in a trace or transcript, never from a data file (CRITIC-DOCTRINE §1.2 evidence rule).",
+      "threshold": ">=35% of pairs non-none; >=8 cells that cross the fight boundary in either direction, each demonstrated without violating AR-1 or AR-2; hard fail below 4 crossing cells."
+    },
+    {
+      "rank": 3,
+      "title": "Anti-exploit monoculture — no bar defends the player's right to break the game",
+      "area": "95-experience",
+      "proposed_id": "RI-EXP06",
+      "kind": "structure",
+      "why": "Ten-plus automatic fails all point one way: PRG03 Cost Gate, PRG05 flip invariant + farming ceiling + un-buyables, PRG06 non-farmable bosses, PRG08 no respawn-farmable materials/no respec/no reclaim/exact-84 budget, PRG01 no respec + no attribute training, DLG04 non-retryable persuasion, PRG04 unforgiving bloodstain, AI05 anti-farm ratio, WLD07 bonfire scarcity. Nothing points the other way. Morrowind is a cult classic substantially because it can be broken; a sealed system with no give in it is a specific and likely way to lose the texture the brief asks for.",
+      "comparison_method": "A register of sanctioned breakages: combinations the design knows are exploitable, deliberately does not close, and prices in fiction. For each entry, a scripted probe must SUCCEED in performing the breakage — asserted as working, exactly as every other item asserts a mechanic works.",
+      "threshold": ">=12 register entries; >=4 systemic (arising from two systems meeting, not one lenient number); >=2 producing permanent unrecoverable world state; hard fail on zero entries or on every entry being a single tuned number. Cross-rule: no new anti-exploit hard fail may be added in 20-progression without naming a register entry it leaves open."
+    },
+    {
+      "rank": 4,
+      "title": "Magic does not exist in the taxonomy — no spellmaking, no enchanting, no utility magic, no arbitration ruling",
+      "area": "new corpus/25-magic/ (or 20-progression) + 00-doctrine",
+      "proposed_id": "ARBITRATION S19 + RI-MAG01 + RI-MAG02 + RI-MAG03",
+      "kind": "number|structure",
+      "why": "subsystems.json contains exactly one magic path (combat.magic.casting) and it is a hole. There is no path for spellmaking, enchanting, magicka, or out-of-fight utility magic, and no seam ruling mentions magic at all. Four items already depend on it: RI-WLD05 lists 'levitation and slowfall as normal, expected traversal — systemic' in its own Morrowind reference set; RI-PRG03 gates which spells can be equipped; RI-PRG05 prices spells; RI-CMB08 warns that alchemy leakage will arrive via quest and economy work. 'Morrowind in almost every system' without spellmaking is Morrowind with its most distinctive system amputated, and it is also the main engine of gap 3's permissiveness and gap 2's composition.",
+      "comparison_method": "S19: propose SPLIT — Souls owns casting inside the fight (cast frames, animation commitment, a resource bar, no instant escape, no menu swap); Morrowind owns magic entirely outside it (spellmaking with a cost formula, enchanting, utility effects that change traversal and quest resolution). RI-MAG01: effect catalogue + spellmaking cost formula in magnitude x duration x area x range; assert the UI can produce a spell no designer authored. RI-MAG02: frame data per school + commitment probe + AR-1 checks (no cast-cancel, no i-frames on cast). RI-MAG03: enchanting scarcity and its crossing into RI-PRG08's material budget, priced in gold per S15.",
+      "threshold": "RI-MAG01: >=40 effects; >=12 with a use outside the fight that changes traversal or quest resolution; hard fail if every effect is damage/heal or if spellmaking is absent. RI-MAG02: same automatic-fail set as RI-CMB02 applied to casts. RI-MAG03: enchant materials never purchasable, never respawn-farmable."
+    },
+    {
+      "rank": 5,
+      "title": "Nothing judges impact — the combat is specified to measure like Souls, not to feel like it",
+      "area": "10-combat + 87-audio",
+      "proposed_id": "RI-CMB09 + RI-AUD01",
+      "kind": "number",
+      "why": "Fifteen combat items and no bar for hitstop, hit reaction, weapon weight, camera shake, impact VFX, or any combat audio. The path combat.feedback.hitstop is mapped in INDEX.md to RI-MTH03, a blind-comparison PROTOCOL — not a bar. Three of four audio paths are holes and the fourth is judged by a world item. A build can trace identically to Dark Souls and feel like swinging a pool noodle, and the corpus has no defence. It also silently undermines RI-AI02's telegraph doctrine, whose only protection is RI-VIS08's 40-pixel readability check in another area.",
+      "comparison_method": "RI-CMB09: per-weapon-class table of hitstop_frames (attacker and target), hit_reaction_clip, reaction_displacement_m, camera_shake amplitude and decay, vfx_id, sfx_id, sfx_onset_offset_frames, plus four differentiated cases (normal, blocked, hyperarmour, critical/riposte). From the combat trace plus a new 'feedback' stream: assert simulation-frame advancement pauses/slows for exactly the declared frames on every damage event; assert target root displacement non-zero and monotone in weapon class; assert sfx onset within +/-1 frame of hit_active; assert the four cases are pairwise distinguishable over the feature vector. Blind pack: two muted-and-unmuted 3-second captures of the same swing, judge asked which one landed. RI-AUD01: distinct layers for swing/hit-flesh/hit-armour/block/parry/guard-break/stagger/death per weapon material class.",
+      "threshold": "Hitstop present on 100% of damage events, 2-10 frames, monotone in weapon class; four distinguishable bundles; zero damage events with no audio; parry identifiable with the screen off. Hard fail: hitstop in seconds not frames; hitstop applied in the render loop (voids RI-MTH02); hitstop absent; one shared hit sound."
+    },
+    {
+      "rank": 6,
+      "title": "The camera has one subsystem path and no reference item against an eighteen-clause seam ruling",
+      "area": "15-camera",
+      "proposed_id": "RI-CAM01",
+      "kind": "number",
+      "why": "Seam S18 was added by explicit user direction and enumerates spring-arm collision and pull-in, lock-on framing, soft-lock steering, camera-relative movement, target-switch flick, vertical clamp, auto-recentre-on-sprint, fixed-height pivot, and third-person everywhere including dialogue and menus. The taxonomy answers with combat.camera.behaviour, judged by RI-CMB06's M5 (15 of 100 weight, three clauses), one RI-AI06 arena clause, and RI-MTH01's harness pose call. A spring arm that clips through mangrove roots and boardwalk railings makes the game unpleasant in 90 seconds and no item would record it.",
+      "comparison_method": "Rig table (pivot height, arm length, FOV, pitch clamp, yaw rate, recentre delay, collision probe radius, pull-in curve, occlusion fade). Scripted traversal through the three worst geometries in the world (mangrove root cluster, interior doorway <=1.2 m, boardwalk with railing) recording per-frame arm_length, player_occluded, camera_penetrations, plus a combat pass measuring whether the player's own recovery animation is legible.",
+      "threshold": "Zero frames with the player mesh occluded for >6 consecutive frames; zero geometry penetrations; bounded arm-length derivative (no pops); player's own recovery animation legible in >=95% of combat frames (the S18 stated rationale)."
+    },
+    {
+      "rank": 7,
+      "title": "Nobody audits the corpus — it has the exact incoherence it exists to prevent in the game",
+      "area": "80-methods + 00-doctrine",
+      "proposed_id": "RI-MTH05 + constants.json + CORPUS-COHERENCE-AGENT.md",
+      "kind": "structure",
+      "why": "64 items written by parallel agents, and only front-matter paths are validated. Found by reading, without tooling: (1) two definitions of 'a minute of travel' 70% apart — RI-AI07 defines the traversal minute at 3.4 m/s / 204 m while ARBITRATION S17 and RI-WLD01 pin walk speed at 2.0 m/s and RI-WLD02 computes at 120 m/min; (2) the enemy budget is over-committed — RI-PRG06 fixes 576 hand-placed enemies for the whole game and every soul value depends on it, while RI-WLD07 requires 8 loop dungeons at 25-60 each (200-480), leaving as few as 96 for 82 caves, 160 settlement interiors and 14.5 km2 of overworld, against RI-WLD02 D9's 0.7-1.2 hostile groups per minute of wilderness road walking on a network whose longest path is 79 minutes; (3) the aggregate authoring budget (RI-DLG02 per-settlement word floors x 24 settlements, RI-LOR03's >=40 books at median >=500 words, RI-QST01's >=24 quests per line, RI-QST07's >=5.5xN side quests) has never been summed, guaranteeing that counts are met by the duplication a dozen items individually warn against.",
+      "comparison_method": "corpus/00-doctrine/constants.json: a shared-constants registry (walk/jog/sprint speed, world dimensions, crossing time, enemy count, POI count, settlement counts, gold total, souls total, material count, day length, rest-point count) with exactly one owning item each. RI-MTH05: a script that greps every RI for numeric literals matching registry keys and fails on divergence, plus an aggregate budget sheet summing every count threshold into totals for enemies, locations, interiors, NPCs, quests, words and unique assets, cross-checked against settlements.json / regions.json / world-scale.json.",
+      "threshold": "Zero divergences from the registry; every aggregate total carries a named owner and a stated feasibility argument; hard fail on any constant holding two values in two items."
+    },
+    {
+      "rank": 8,
+      "title": "Stealth, crime and justice have no subsystem paths at all, and three items depend on them",
+      "area": "new stealth.* and crime.* roots",
+      "proposed_id": "RI-STL01 + RI-CRM01",
+      "kind": "structure|number",
+      "why": "grep of subsystems.json for sneak/stealth/crime/bounty/witness/pickpocket returns zero. Yet RI-QST05 makes sneak and steal two of five load-bearing verbs and hard-fails if any verb has zero quests; RI-CMB05 specifies a backstab sector that presupposes an unaware state only a detection model can produce; world.property.ownership (theft, witnesses, consequence) is judged by RI-QST08, an item about quest reward design; world.locks.security is judged by RI-PRG03, an item about skill growth. RI-QST05 names its own likeliest failure as 'sneak has no detection model, security has no lock model, so every alternative degrades into a dialogue box' — and the corpus makes that certain.",
+      "comparison_method": "RI-STL01: per-NPC sight cone, light-level response, sound radius per movement mode, awareness ladder (unaware/suspicious/searching/alerted/hostile) with dwell times; scripted approach probes at 8 angles x 4 light levels x 3 movement speeds dumping awareness state per frame. RI-CRM01: offence table (theft, trespass, assault, murder) x witness class x faction, with bounty in gold (S15), guard response, and the exits (pay, flee, fight, faction favour).",
+      "threshold": "STL01: monotone learnable relationship between light/sound/distance and detection; >=3 awareness states readable from the NPC's animation alone; backstab reachable only from unaware; hard fail if detection is a distance check. CRM01: every offence has >=2 exits; a witness-free crime produces no bounty; hard fail on a global omniscient bounty."
+    },
+    {
+      "rank": 9,
+      "title": "The player's verb list is smaller than the corpus assumes",
+      "area": "10-combat",
+      "proposed_id": "RI-CMB10 + RI-CMB11",
+      "kind": "structure|number",
+      "why": "No bar and no path for player ranged combat (RI-PRG05 prices arrows as a recurring gold sink; RI-AI05 populates the world with ranged enemies the player cannot answer in kind), kick/guard-break (RI-AI05 requires the TURTLE archetype to ship with its answer already in the player's kit), charged heavy attacks (a hole), two-handing, jump and plunging attacks, fall damage, in-combat item use beyond the flask, and weapon swapping. The roster is specified as a set of questions; several questions have no answer in the player's kit, so the roster degenerates to 'walk up and R1' from the side nobody is watching.",
+      "comparison_method": "RI-CMB10: complete verb list with frame data per verb per weapon class, plus an explicit ANSWER MATRIX — each RI-AI05 archetype x the player verb that answers it x the region at which that verb is first available. RI-CMB11: hand a critic three unlabelled 20-second traces from three weapon classes and have it describe three different fighting styles.",
+      "threshold": "CMB10: every archetype has >=1 answer available before its first appearance; >=9 distinct verbs; a ranged option exists; hard fail on any archetype whose only answer is 'out-range it', or on a verb priced in the economy with no mechanic behind it. CMB11: three traces produce three distinguishable descriptions from a blind judge."
+    },
+    {
+      "rank": 10,
+      "title": "Character creation, race and birthsign: no path, no item, and two items depend on them",
+      "area": "new character.* root",
+      "proposed_id": "RI-CHR01",
+      "kind": "structure",
+      "why": "RI-DLG01 states the player begins with 'exactly nine topics, granted at character creation'. RI-DLG04's disposition formula is built on a race-relations matrix and names 'the Argonian-in-Black-Marsh premise of our setting pays nothing' as a failure. RI-PRG02's reason for existing is its six-distinct-characters axis, and progression.build.identity is a hole. In a game set in Black Marsh, what you are is the premise; without a creation system it is a cosmetic dropdown.",
+      "comparison_method": "Origin table (>=6 origins with attribute/skill deltas, per-faction and per-race-pair disposition modifiers, one unique starting topic, one permanently closed door) plus a birthsign-equivalent table (>=12, each a real mechanical identity, >=4 with a drawback). Run the first 20 minutes from three origins at the same seed and diff the transcript: dialogue offered, prices quoted, greetings received, doors open.",
+      "threshold": ">=25% of the first-20-minute transcript differs by origin; >=3 origin-exclusive topics; hard fail if origin affects only starting stats."
+    },
+    {
+      "rank": 11,
+      "title": "No opacity budget — every bar pushes toward legibility, none protects mystery",
+      "area": "50-world",
+      "proposed_id": "RI-WLD09",
+      "kind": "structure",
+      "why": "RI-WLD06 requires >=3 landmarks from every gate, 100% signposted junctions, >=9/10 journal destinations reachable; RI-DLG05 requires >=7/10 direction tests and calls unnavigable poetry 'exactly as bad as a coordinate'; RI-QST04 hard-fails any quest missing directions. All correct — markerlessness must be paid for. But there is no counter-bar requiring that some things are NOT explained, not signposted, and findable only by accident or attention. A world where every destination is reachable from prose is a marker system implemented in text; AR-2 would not fire, and the feeling would be gone anyway.",
+      "comparison_method": "A register of deliberately opaque content: >=15 things that exist and are not signposted, not journal-directed and not offered — findable only by exploration, an overheard line, a book, or someone the player had no reason to talk to. Includes >=3 locations reachable only by an unobvious route, >=2 quests whose solution needs knowledge the journal never records, >=5 places the world never mentions. A fresh agent with no design access plays 6 hours; its discovery log is diffed against the register; each entry is separately verified absent from every journal entry and signpost.",
+      "threshold": ">=15 entries; >=60% of the register undiscovered by a 6-hour first-time player; >=1 quest solvable only via a book. Hard fail on zero content outside the signposted set, or on register entries that are merely hidden rather than unexplained. Cross-rule: RI-WLD06 M29 is scored only over quest destinations and may not be extended to the world's total location set."
+    },
+    {
+      "rank": 12,
+      "title": "Tone is checked for consistency and never for existence",
+      "area": "40-dialogue",
+      "proposed_id": "RI-DLG08",
+      "kind": "number",
+      "why": "coherence.tone.crossregion asks whether registers are consistent; RI-DLG06 asks whether archetypes are differentiated; RI-LOR03 requires books bad on purpose; RI-VIS07 asks whether a frame could be Skyrim. Nothing asks what this game's tone IS, whether it has one, or whether it is ever funny, cruel, bathetic or indifferent. A build can be uniformly, competently earnest — every archetype separable, every register consistent — and tonally dead. Morrowind's texture is that a world-ending prophecy and a lost ring are delivered in the same flat voice and the game does not care whether you are enjoying yourself.",
+      "comparison_method": "A tone rubric with six registers (deadpan, portentous, petty, cruel, absurd, bureaucratic) and 18 Morrowind exemplar lines, three per register. Sample 60 random dialogue entries and 20 journal entries; a blind judge assigns each to a register or 'none'; compute distribution entropy. Separately compute the INDIFFERENCE RATIO (fraction of authored NPC content that never references the player, their deeds or their titles) and the BATHOS COUNT (quests where the stakes stated by the giver and the stakes revealed by the world differ by >=2 tiers in either direction).",
+      "threshold": ">=5 of 6 registers present at >=5% each; entropy >=2.0 bits; indifference ratio 0.45-0.75; bathos count >=6. Hard fail: any single register above 60%."
+    },
+    {
+      "rank": 13,
+      "title": "The platform budget is a hole while 'good for a browser game' is a banned defence",
+      "area": "85-platform",
+      "proposed_id": "RI-PLT01",
+      "kind": "number",
+      "why": "platform.perf.framerate and platform.perf.memory are both holes. CRITIC-DOCTRINE §2.4.3 makes 'good for a browser game / good for Three.js / reasonable given scope' void-triggering, with the caveat that platform limits are judged only where a platform.* item sets the budget — and none does. RI-VIS04 explicitly forbids trading features for frame time and points at a corpus area that does not exist. The predictable outcome is a build chasing twelve image metrics at 22 fps, which also makes RI-CMB01's frame-exact roll unmeasurable in a real browser.",
+      "comparison_method": "Per-scenario budget table (fen exterior, settlement interior, boss arena, six-enemy encounter) x target hardware class, in ms per frame split CPU-sim / CPU-render / GPU, plus heap and GPU-memory ceilings and a 60-minute leak slope. Real browser run, frame-time series, percentiles, long-task census.",
+      "threshold": "p50 <= 16.7 ms and p99 <= 33 ms in all four scenarios; zero frames > 100 ms outside declared load boundaries; heap slope <= 2 MB/min over 60 minutes. Hard fail: simulation frame rate coupled to render rate (voids RI-MTH02 and every combat item). Amend CRITIC-DOCTRINE §2.4.3 to cite RI-PLT01."
+    }
+  ],
+  "wrong_bars": [
+    {
+      "id": "W1",
+      "item": "RI-WLD05",
+      "check": "M24 — >=22 of 30 strangeness elements encounterable in the first 30 minutes",
+      "problem": "Mandates that 73% of the world's novelty vocabulary is available in half an hour. Neither reference game does this and both would fail it. A build that satisfies M24 has a flat surprise curve: every subsequent hour is recombination. The intent (guard against hero-asset-only strangeness) is right; the instrument is fixed to the opening instead of to the run.",
+      "change": "Replace the threshold with a distribution requirement: <=12 of 30 encounterable in the first 30 minutes, >=26 of 30 encountered by hour 10, and no 90-minute window after hour 2 with zero first-time elements. Keep M23's >=6-instances rule. Delegate the curve to RI-EXP04 and have RI-WLD05 cite it.",
+      "severity": "major"
+    },
+    {
+      "id": "W2",
+      "item": "RI-WLD02",
+      "check": "D1 TTNIT median <=45 s, D2 p90 <=90 s, D13 longest nothing-stretch <=150 s",
+      "problem": "Makes sustained emptiness illegal everywhere. Vvardenfell is not uniformly dense; Molag Amur, the deep Ashlands and Sheogorad are long, hostile and empty, and that emptiness produces scale, dread and the relief of arrival. A 150 s global cap forbids the Deep Marshes from being the Deep Marshes, and the cheapest way to satisfy a p90 is the POI-sprinkling M7 exists to catch.",
+      "change": "Make the density contract per region, not global. Add a negative-space requirement as a peer of D1: >=12% of road-network kilometres with TTNIT > 3 minutes, and >=2 regions with median TTNIT > 2 minutes. Retain D1/D2 as settled-region thresholds and reword the score-0 clause.",
+      "severity": "major"
+    },
+    {
+      "id": "W3",
+      "item": "RI-DLG07",
+      "check": "ours_win_rate >= 0.25 required for PASS; < 0.15 = FAIL",
+      "problem": "Directly contradicts CORPUS-CONTRACT §6 and CRITIC-DOCTRINE §2.5, which treat a blind pick landing on ours as evidence of a defective instrument requiring a harsher re-run. DLG07 makes that outcome a pass condition, and the pack is self-administered.",
+      "change": "Score indistinguishability, not victory. Replace ours_win_rate with: tie_rate in band, judge_cannot_name_a_consistent_tell = true, and professional_bet_accuracy <= 0.65 over >=12 pairs. Keep every automatic fail. Add: ours_win_rate > 0.5 voids the run and the pack is rebuilt by a different agent.",
+      "severity": "major"
+    },
+    {
+      "id": "W4",
+      "item": "RI-AI07 vs ARBITRATION S17 / RI-WLD01 / RI-WLD02",
+      "check": "Traversal minute defined at 3.4 m/s (204 m) vs walk speed pinned at 2.0 m/s (120 m/min)",
+      "problem": "Two authoritative definitions of the same unit, 70% apart. Every density, beat-structure, runback and sightline number in RI-AI07 is stated in units the world is not built in, and a critic gets a different answer depending on which item it read last.",
+      "change": "One owner. RI-AI07 amends to the 2.0 m/s / 120 m traversal minute and restates §D's bands (2.8 enemies per 204 m becomes ~1.65 per 120 m — same physical density, correct label), or declares TM_souls as a distinct named unit that every consumer must name explicitly. Register the constant in constants.json.",
+      "severity": "blocking"
+    },
+    {
+      "id": "W5",
+      "item": "RI-MTH03 / INDEX.md",
+      "check": "combat.feedback.hitstop judged by RI-MTH03 (a blind-comparison protocol)",
+      "problem": "A protocol document is listed as the bar for combat impact. Worse than a hole: a hole stops a builder per CORPUS-CONTRACT §4; a false mapping tells the builder to proceed and tells the critic it has a bar. RI-MTH03 also claims visual.fidelity, visual.artdirection, dialogue.prose and quests.structure.",
+      "change": "Remove combat.feel from RI-MTH03's judges list so the path reverts to an honest hole until RI-CMB09 exists. Audit the other judges lists for the same pattern.",
+      "severity": "major"
+    },
+    {
+      "id": "W6",
+      "item": "RI-QST05",
+      "check": "PACIFIST-ALL >= 30% hard fail",
+      "problem": "With no stealth or crime subsystem paths, no reference items and therefore no builder assignment, speechcraft is the only buildable route to 30% — which the item itself names as its top failure mode. A threshold whose only reachable satisfaction is its own named failure is gameable by construction.",
+      "change": "Keep the threshold; promote VERB-SPREAD <= 40% from a band condition to a hard fail; and make RI-QST05 formally depend on RI-STL01 and RI-CRM01, declaring that if those systems are absent PACIFIST-ALL is unmeasurable and scores 0 per CRITIC-DOCTRINE §7.3.",
+      "severity": "major"
+    },
+    {
+      "id": "W7",
+      "item": "SCORING.md §1.2 / §3 and every item's ## Scoring section",
+      "check": "Cross-area score scales are not comparable while pass_threshold 6.0 is applied across them",
+      "problem": "10-combat uses weighted sums where 70/100 is 'remediable'; 20-progression uses min-over-axes where any axis below 6 fails; 70-visual uses min(ART, FIDELITY) with caps; 30-quests uses bands; 50-world uses 0-10 with WE-LOSE clauses. A '6' means five different things, and SCORING §3 lets the critic pick mean/min/weighted-mean per piece.",
+      "change": "Make the native-to-ladder mapping mandatory and tabulated per item: every ## Scoring section must state, in a fixed row, which native score maps to ladder 4, 6 and 8. Otherwise the shared ladder is an unauditable translation and the aggregate progress number is noise.",
+      "severity": "moderate"
+    },
+    {
+      "id": "W8",
+      "item": "RI-AI05",
+      "check": "Hard fail: any trash enemy requiring > 20 light attacks to kill",
+      "problem": "No fixture pinned — weapon, upgrade level (+0 vs +10 is 1.92x per RI-PRG08), character level, or skill grade. Measured with a +10 weapon at level 60, everything passes.",
+      "change": "Pin the measurement to a named fixture: wave-standard-build, +0 weapon, region-entry level from RI-PRG06 §5, stated in the check.",
+      "severity": "minor"
+    },
+    {
+      "id": "W9",
+      "item": "RI-PRG07",
+      "check": "Burden clamped to exactly 1.00 inside COMBAT, as an automatic AR-1 fail",
+      "problem": "Correct under the Arbitration Rule as written, and not to be overturned. But it is the corpus's clearest instance of a rule that forbids composition, stated with the strongest instrument available, and it is the template other items will copy. It guarantees the player's most Morrowind-shaped decision — what am I carrying — is irrelevant to the fight.",
+      "change": "No change to the ruling. Add the counterweight: AR-3 and RI-CMP01 must exist alongside it, so that 'the seam is impermeable here' is a local decision measured against a global requirement that it be permeable somewhere.",
+      "severity": "moderate"
+    }
+  ],
+  "thin_spots": [
+    {
+      "pillar": "The original main quest",
+      "resting_on": "RI-QST06 alone (2,765 words) for quests.mainline.prophecy / .acts / .antagonist; LOR01/02/05/06 touch prophecy for canon only",
+      "contrast": "combat has 15 items across 48 paths",
+      "note": "The single most-requested creative deliverable in the brief has one item, no dedicated blind pack, and no bar at all for its endings.",
+      "remedy": "Split RI-QST06 into architecture / antagonist / endings; add RI-EXP05."
+    },
+    {
+      "pillar": "Index integrity — 19 front-matter errors mean items judge nothing",
+      "resting_on": "corpus-index.mjs, not enforced in CI",
+      "contrast": "RI-CMB08 (healing, 3,155 words) declares 4 judges paths and ALL FOUR are unresolvable, so combat.heal.charges and combat.death.corpserun are judged by RI-PRG04 only and RI-CMB08 is invisible to the hand-off. RI-WLD08 (the living world — the corpus's best liveness instrument) has 5 of 7 paths dead, so world.npc.population is not judged by the item about NPC schedules and ecology. RI-LOR05 has 8 dead paths; RI-LOR06 has 2.",
+      "note": "The stated hole count of 34 is understated and today's critic hand-off lists are wrong.",
+      "remedy": "Fix front matter before any wave starts; make `node tools/corpus-index.mjs --check` a blocking CI gate, as the INDEX header already requests and nothing enforces."
+    },
+    {
+      "pillar": "Whole systems judged by an item about something else",
+      "resting_on": "world.persistence.state -> RI-DLG03 (greetings and rumours); world.property.ownership -> RI-QST08 (reward design); world.locks.security -> RI-PRG03 (skills by use); ui.hud.combat -> RI-WLD06 (navigation without markers); progression.inventory.model -> RI-QST08; progression.crafting.alchemy -> RI-PRG03 (one axis); coherence.systems.composition -> RI-WLD05 (the strangeness bar, checks M22-M26)",
+      "note": "Each is a system whose bar was written to measure a different system.",
+      "remedy": "Either write the owning item or mark the path a hole. A borrowed judge is a false pass."
+    },
+    {
+      "pillar": "Audio",
+      "resting_on": "4 paths total, 3 of them holes; the 4th (audio.ambience.region) judged by RI-WLD04, a world item",
+      "note": "RI-WLD04 calls region ambience 'the single cheapest way to double region legibility', and RI-WLD06 makes four audible landmarks (rock flutes, the Hive's chord, the bell buoy, the Deep Marshes' silence) load-bearing for navigation. The item that would judge them does not exist.",
+      "remedy": "RI-AUD01 (combat), RI-AUD02 (ambience and audible landmarks), RI-AUD03 (music and silence policy), RI-AUD04 (voice policy)."
+    },
+    {
+      "pillar": "UI",
+      "resting_on": "4 of 8 paths are holes, including ui.hud.minimalism — the enforcement point for AR-2 / seam S8",
+      "note": "The most-cited arbitration rule in the corpus has no item judging the surface it applies to.",
+      "remedy": "RI-UIX01 (HUD minimalism and the no-marker pixel audit), RI-UIX02 (inventory), RI-UIX03 (journal), RI-UIX04 (dialogue presentation)."
+    },
+    {
+      "pillar": "Lore of the setting itself",
+      "resting_on": "lore.canon.argonian is a HOLE; so are lore.canon.geography and lore.book.unreliability",
+      "note": "In a game set in Black Marsh, nothing judges whether the Argonians are written well. RI-LOR03 and RI-LOR06 both depend on book unreliability, which no item judges.",
+      "remedy": "RI-LOR07 (Argonian culture as written, with a blind read-and-attribute test), RI-LOR08 (geography against canon), and give lore.book.unreliability to RI-LOR03/06 explicitly or write RI-LOR09."
+    },
+    {
+      "pillar": "Player-side combat agency",
+      "resting_on": "Of ten combat holes, seven are player-side: frames.cancel, dodge.recovery, stamina.exhaustion, attack.charge, weapon.identity, lockon.switch, input.latency",
+      "note": "The enemy is specified to seven items' depth; the player's own kit has gaps. This is the inverse of where a Souls-like usually fails and suggests the AI author was thorough while the player-side author ran out of items.",
+      "remedy": "RI-CMB10 and RI-CMB11 (gap 9), plus dedicated items for cancel rules, roll recovery and stamina exhaustion."
+    }
+  ],
+  "gate_conditions": [
+    {"id": "G1", "condition": "corpus/95-experience/ exists with a critic.experience role, a PLAYTHROUGH-CRITIC.md doctrine granting scoring authority over quality across the whole game, and at least RI-EXP01, RI-EXP02 and RI-EXP04 written to CORPUS-CONTRACT §2 with executable comparison methods. An experience.* root exists in subsystems.json."},
+    {"id": "G2", "condition": "ARBITRATION.md §3 carries AR-3 (seam sterility) and RI-CMP01 (cross-system payoff matrix) exists with a numeric floor on boundary-crossing interactions."},
+    {"id": "G3", "condition": "RI-EXP06 (permissiveness budget) exists with >=12 registered sanctioned breakages asserted to work; no new anti-exploit hard fail may be added in 20-progression without naming a register entry it leaves open."},
+    {"id": "G4", "condition": "Magic exists in the corpus: ARBITRATION S19, RI-MAG01 and RI-MAG02 at minimum; magic.* paths exist and combat.magic.casting is no longer a hole."},
+    {"id": "G5", "condition": "RI-CMB09 (impact/hitstop/feedback) and RI-AUD01 (combat audio) exist, and combat.feedback.hitstop no longer lists RI-MTH03 as its judge."},
+    {"id": "G6", "condition": "A camera.* root with >=6 paths exists and RI-CAM01 covers the seam S18 clause list with thresholds measured in the game's three worst geometries, including the own-body-legibility check."},
+    {"id": "G7", "condition": "corpus/00-doctrine/constants.json exists with one owner per shared constant; RI-MTH05 exists; the traversal-minute contradiction (W4) is resolved by amendment; the 576-enemy budget contradiction is reconciled in one item with explicit arithmetic; an aggregate content-budget sheet exists with a stated feasibility argument."},
+    {"id": "G8", "condition": "stealth.* and crime.* roots exist with RI-STL01 and RI-CRM01; RI-QST05 is amended per W6."},
+    {"id": "G9", "condition": "RI-CMB10 (player moveset contract with the archetype answer matrix) and RI-CMB11 (weapon identity) exist; combat.attack.charge and combat.weapon.identity are no longer holes; the arrows priced in RI-PRG05 have a mechanic."},
+    {"id": "G10", "condition": "character.* exists with RI-CHR01; progression.build.identity is no longer a hole."},
+    {"id": "G11", "condition": "RI-WLD09 (opacity budget) and RI-DLG08 (tonal range and indifference ratio) exist."},
+    {"id": "G12", "condition": "RI-PLT01 (frame and memory budget) exists and CRITIC-DOCTRINE §2.4.3 cites it, making the fidelity/performance trade judgeable rather than banned."},
+    {"id": "G13", "condition": "Wrong bars W1, W2, W3, W4, W5, W6, W7 and W8 are amended as specified. W9 is satisfied by G2."},
+    {"id": "G14", "condition": "node tools/corpus-index.mjs reports 0 front-matter errors and --check is a blocking CI gate; every remaining hole is either filled or explicitly accepted in writing by the dimension owner with a reason."},
+    {"id": "G15", "condition": "Every stated user requirement maps to >=1 reference item. Currently mapping to ZERO: magic/spellmaking/enchanting; character creation and race; stealth; crime and justice; player ranged combat; hit impact and combat audio; the camera beyond three lock-on clauses; the endings; the first hour; the shape of a session; whether it is fun."}
+  ],
+  "what_the_corpus_does_well": [
+    "Every item carries a ## How we lose section written pessimistically in advance; sixteen of them list more than ten specific failure modes. This is the corpus's strongest single property and most of it will hold.",
+    "CRITIC-DOCTRINE §1.1 (no judging from source), §1.2 (evidence table), §2.4 (banned reasoning) and RI-MTH04 (measurement integrity) together make fabricated verdicts mechanically detectable. This is unusually good process design.",
+    "RI-VIS01's bifurcation protocol and the cardinal-sin rule correctly prevent the single most likely visual failure (low fidelity defended as art direction).",
+    "RI-LOR06's asymmetry — a world with zero contradictions scores 2 at best — is exactly the right instrument for a property that is otherwise indistinguishable from a bug.",
+    "RI-CMB07 is the closest thing in the corpus to the instrument gap 1 asks for: it judges the shape of a fight rather than its components. The proposal in gap 1 is RI-CMB07 applied to a session instead of to sixty seconds."
+  ]
+}
