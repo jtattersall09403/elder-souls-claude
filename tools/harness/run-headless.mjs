@@ -48,12 +48,12 @@ if (wantsHelp(args)) usage(USAGE);
 const scenario = loadScenario(args.scenario || 'smoke');
 const seed = args.seed !== undefined ? Number(args.seed) : scenario.seed;
 const frames = args.frames !== undefined ? Number(args.frames) : scenario.frames;
-const runDir = newRunDir(scenario.id, seed, args.out);
-
 log(`scenario=${scenario.id} seed=${seed} frames=${frames}`);
-log(`run dir: ${path.relative(process.cwd(), runDir.dir) || runDir.dir}`);
 
 const handle = await launchGame(args);
+// Created only once the game actually loaded, so a missing game leaves no empty run dirs.
+const runDir = newRunDir(scenario.id, seed, args.out);
+log(`run dir: ${path.relative(process.cwd(), runDir.dir) || runDir.dir}`);
 let manifest;
 try {
   manifest = await runScenario(handle, scenario, {

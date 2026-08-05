@@ -75,10 +75,9 @@ if (args.inputs) {
 
 const seed = args.seed !== undefined ? Number(args.seed) : scenario.seed;
 const frames = args.frames !== undefined ? Number(args.frames) : scenario.frames;
-const runDir = newRunDir(scenario.id, seed, args.out);
-
 log(`tracing scenario=${scenario.id} seed=${seed} frames=${frames} inputs=${scenario.inputs.length}`);
 const handle = await launchGame(args);
+const runDir = newRunDir(scenario.id, seed, args.out);
 let manifest;
 try {
   manifest = await runScenario(handle, scenario, { runDir, seed, frames, trace: true });

@@ -61,9 +61,13 @@ check('chromium launches', true, browser.version());
 const page = await browser.newPage({ viewport: { width: 640, height: 360 } });
 await page.setContent(`
   <body style="margin:0;background:#101820">
-    <canvas id="c" width="640" height="360"></canvas>
+    <canvas id="c" width="640" height="360" style="display:block"></canvas>
+    <div style="position:fixed;top:20px;left:20px;font:600 28px sans-serif;color:#ffcc33">HARNESS SMOKE</div>
+    <div style="position:fixed;top:70px;left:20px;width:300px;height:120px;background:linear-gradient(90deg,#204060,#a0d8c0)"></div>
     <script>
-      const gl = document.getElementById('c').getContext('webgl2') || document.getElementById('c').getContext('webgl');
+      const cv = document.getElementById('c');
+      const opts = { preserveDrawingBuffer: true, antialias: false };
+      const gl = cv.getContext('webgl2', opts) || cv.getContext('webgl', opts);
       window.__GL = null;
       if (gl) {
         const d = gl.getExtension('WEBGL_debug_renderer_info');
