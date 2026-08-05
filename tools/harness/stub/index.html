@@ -44,7 +44,7 @@ const sim = {
   frame: 0, seed: 1337, rng: null, rngDraws: 0,
   timeOfDay: 12, weather: 'clear', stateName: 'default',
   buttons: new Set(), move: [0, 0], look: [0, 0], pressedThisFrame: [],
-  script: [], scriptIdx: 0,
+  script: [], scriptIdx: 0, scriptBase: 0,
   player: null, enemies: [], events: [], nextEid: 0,
   trace: null, camera: { mode: 'gameplay', pos: [0, 2.2, -5], look: [0, 1.2, 0], fov: 60, lockOn: null },
 };
@@ -63,7 +63,7 @@ function reset(opts = {}) {
   sim.seed = Number.isFinite(opts.seed) ? opts.seed : sim.seed;
   sim.rng = mulberry32(sim.seed); sim.rngDraws = 0;
   sim.buttons = new Set(); sim.move = [0, 0]; sim.look = [0, 0];
-  sim.script = []; sim.scriptIdx = 0;
+  sim.script = []; sim.scriptIdx = 0; sim.scriptBase = 0;
   sim.player = freshPlayer(); sim.enemies = []; sim.events = []; sim.nextEid = 0;
   if (opts.state) sim.stateName = opts.state;
   return { ok: true, frame: 0, seed: sim.seed };
@@ -91,7 +91,8 @@ function dist2(a, b) { const dx = a[0] - b[0], dz = a[2] - b[2]; return Math.hyp
 // ---- input -------------------------------------------------------------------------
 function applyScript() {
   sim.pressedThisFrame = [];
-  while (sim.scriptIdx < sim.script.length && sim.script[sim.scriptIdx].f === sim.frame) {
+  // Input-script frames are RELATIVE to the frame at which queueInputs() was called.
+  while (sim.scriptIdx < sim.script.length && sim.script[sim.scriptIdx].f + sim.scriptBase === sim.frame) {
     const e = sim.script[sim.scriptIdx++];
     if (e.move) sim.move = e.move;
     if (e.look) sim.look = e.look;
@@ -342,10 +343,10 @@ window.__HARNESS = {
   queueInputs(script) {
     if (!Array.isArray(script)) throw new Error('queueInputs expects an array');
     sim.script = script.slice().sort((a, b) => a.f - b.f); sim.scriptIdx = 0;
-    while (sim.scriptIdx < sim.script.length && sim.script[sim.scriptIdx].f < sim.frame) sim.scriptIdx++;
+    sim.scriptBase = sim.frame;
     return sim.script.length;
   },
-  clearInputs() { sim.script = []; sim.scriptIdx = 0; sim.buttons.clear(); sim.move = [0, 0]; return true; },
+  clearInputs() { sim.script = []; sim.scriptIdx = 0; sim.scriptBase = sim.frame; sim.buttons.clear(); sim.move = [0, 0]; return true; },
   snapshot() { return makeRecord(); },
   traceStart() { sim.trace = { records: [], startedAtFrame: sim.frame }; return 'trace-' + sim.frame; },
   traceDrain() { if (!sim.trace) return []; const r = sim.trace.records; sim.trace.records = []; return r; },

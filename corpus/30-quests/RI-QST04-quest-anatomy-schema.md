@@ -94,7 +94,8 @@ a builder copies. (Names are ours; no Morrowind content is reused.)
     { "index": 20, "state": "active", "text": "The warehouse is not abandoned. A family of six is living on the dry floor, and they say they have been there two years.", "records_belief": false },
     { "index": 25, "state": "active", "text": "Deel-Wassa says the ledger is her mother's, and that the Factors' claim on this warehouse was settled and paid. She offered to show me the settlement mark.", "records_belief": false },
     { "index": 40, "state": "branch",  "text": "The settlement mark is real. Teeba-Ei's own hand is on it. She did not send me to recover a ledger; she sent me to remove the only copy of a debt she has already been paid for.", "records_belief": false },
-    { "index": 90, "state": "success", "text": "I brought Teeba-Ei the ledger. She counted the pages before she paid me, and did not ask what I had seen.", "records_belief": false },
+    { "index": 90, "state": "success", "text": "The warehouse is empty and the ledger is in Teeba-Ei's hands. She counted the pages before she paid me, and did not ask how I had emptied the place.", "records_belief": false },
+    { "index": 91, "state": "success", "text": "I took the ledger out of the warehouse without waking anyone. Teeba-Ei paid in full. The family keep their roof for as long as the debt lets them, which I now know is not long.", "records_belief": false },
     { "index": 92, "state": "success", "text": "I told Deel-Wassa what the ledger was for. She has sent the settlement mark to the Xanmeer court, and Teeba-Ei knows it was me.", "records_belief": false },
     { "index": 94, "state": "success", "text": "I copied the settlement mark, gave Teeba-Ei the ledger, and kept the copy. Neither of them knows the other is holding half a truth. I am not sure how long that lasts.", "records_belief": false },
     { "index": 96, "state": "success", "text": "I told Teeba-Ei I would not do it. She did not argue. She simply stopped speaking to me as though I were a Factor.", "records_belief": false },
@@ -106,7 +107,7 @@ a builder copies. (Names are ours; no Morrowind content is reused.)
       "id": "br_arrival",
       "at_journal_index": 20,
       "condition": "Player enters the warehouse and encounters the family: fight, talk, or withdraw",
-      "leads_to": ["res_burn", "rev_deel", "fail_flood"],
+      "leads_to": ["res_burn", "rev_family", "fail_flood"],
       "irreversible": false
     },
     {
@@ -131,7 +132,7 @@ a builder copies. (Names are ours; no Morrowind content is reused.)
       "id": "res_deliver",
       "method": "steal",
       "violence_required": false,
-      "journal_index": 90,
+      "journal_index": 91,
       "outcome": "The ledger is delivered without bloodshed. The family keeps the warehouse but loses the settlement mark and, eventually, the warehouse.",
       "requires": { "skills": { "security": 25 } },
       "requires_knowing": []
@@ -255,19 +256,22 @@ jq -s -r '.[] | . as $q
   | select($dupes > 0) | "\($q.id): resolutions share a success journal index"' \
   game/src/data/quests/*.json
 
-# 3. Referential integrity — every id referenced actually exists.
+# 3. Referential integrity — every branch target must be a declared resolution,
+#    failure state, sibling branch, or reveal. (Note the explicit `as $tgt` binding:
+#    `index(.)` after a pipe rebinds `.` to the array and silently always passes.)
 jq -s -r '.[] | . as $q
-  | ([$q.resolutions[].id, $q.failure_states[].id] | unique) as $targets
-  | ($q.branches // [])[] | .leads_to[]
-  | select(($targets | index(.)) == null and (. | startswith("br_") | not))
-  | "\($q.id): branch points at unknown target \(.)"' game/src/data/quests/*.json
+  | ([$q.resolutions[].id] + [$q.failure_states[].id]
+     + [($q.branches // [])[].id] + [($q.deceit.revealed_by // [])[].id] | unique) as $t
+  | ($q.branches // [])[] | . as $b | $b.leads_to[] as $tgt
+  | select(($t | index($tgt)) == null)
+  | "\($q.id): branch \($b.id) points at unknown target \($tgt)"' game/src/data/quests/*.json
 
 # 4. requires_knowing must reference a declared reveal.
 jq -s -r '.[] | . as $q
   | ([($q.deceit.revealed_by // [])[].id]) as $revs
-  | $q.resolutions[] | (.requires_knowing // [])[]
-  | select(($revs | index(.)) == null)
-  | "\($q.id): resolution requires unknown reveal \(.)"' game/src/data/quests/*.json
+  | $q.resolutions[] | . as $r | (.requires_knowing // [])[] as $k
+  | select(($revs | index($k)) == null)
+  | "\($q.id):\($r.id) requires unknown reveal \($k)"' game/src/data/quests/*.json
 
 # 5. Journal index discipline (bands from section B).
 jq -s -r '.[] | . as $q | $q.journal[]

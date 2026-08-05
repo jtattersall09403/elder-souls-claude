@@ -1,0 +1,19 @@
+{
+  "topics": [
+    { "topic": "greeting", "root": true, "npc": "npc_veeza", "settlement": "Xul-Ha",
+      "text": "You walk on root-bridges like a dry-lander. Speak, and speak plainly, and the Hist may forgive your noise." ,
+      "links": ["hist_sap", "little_kingdom"] },
+    { "topic": "hist_sap", "npc": "npc_veeza", "settlement": "Xul-Ha",
+      "text": "The sap is not drink and it is not medicine. It is memory. Drink it and you remember what the tree remembers, which is mostly drowning.",
+      "links": ["the_weeping_root"] },
+    { "topic": "little_kingdom", "npc": "npc_marsh_tender", "settlement": "Xul-Ha",
+      "text": "Xul-Ha keeps its own laws. Blackwood men call us a little kingdom and laugh; they laugh less after the wet season.",
+      "links": ["blackwood_men"], "condition": "disposition>30" },
+    { "topic": "the_weeping_root", "npc": "npc_veeza", "settlement": "Xul-Ha",
+      "text": "Go north past the stilt-granary until the water tastes of iron. The Weeping Root is there and it does not like company." },
+    { "topic": "blackwood_men", "npc": "npc_kessh", "settlement": "Sunken Hall of Vakka",
+      "text": "Mercenaries out of Blackwood. They pay in Septims and lies. I took both, once." },
+    { "topic": "orphan_rumour", "npc": "npc_kessh", "settlement": "Sunken Hall of Vakka",
+      "text": "Nobody speaks of the drowned hall. Nobody who came back, anyway." }
+  ]
+}

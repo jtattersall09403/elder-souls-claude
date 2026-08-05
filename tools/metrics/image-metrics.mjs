@@ -86,12 +86,30 @@ function entropyBits(hist) {
   for (const c of hist) if (c > 0) { const p = c / n; e -= p * Math.log2(p); }
   return e;
 }
-/** percentile over a Float32Array without a full sort of the original */
-function pct(arr, q) {
-  const s = Float32Array.from(arr).sort();
-  const i = Math.min(s.length - 1, Math.max(0, Math.round((s.length - 1) * q)));
-  return s[i];
+// Percentiles / moments over big planes are computed from a 16-bit histogram rather than a
+// sort: exact to 1/65535, and O(n) instead of O(n log n) on 2M-pixel images.
+const HB = 65536;
+function planeHist(arr) {
+  const h = new Uint32Array(HB);
+  for (let i = 0; i < arr.length; i++) {
+    let v = arr[i]; if (!(v >= 0)) v = 0; else if (v > 1) v = 1;
+    h[(v * (HB - 1)) | 0]++;
+  }
+  return h;
 }
+function histPct(h, n, q) {
+  let target = Math.max(0, Math.min(n - 1, Math.round((n - 1) * q))), acc = 0;
+  for (let i = 0; i < HB; i++) { acc += h[i]; if (acc > target) return i / (HB - 1); }
+  return 1;
+}
+function histMoments(h, n) {
+  let s = 0, s2 = 0;
+  for (let i = 0; i < HB; i++) { if (!h[i]) continue; const v = i / (HB - 1); s += v * h[i]; s2 += v * v * h[i]; }
+  const m = s / n;
+  return { mean: m, stdev: Math.sqrt(Math.max(0, s2 / n - m * m)) };
+}
+function histCountBelow(h, t) { let c = 0; const lim = Math.min(HB - 1, Math.round(t * (HB - 1))); for (let i = 0; i <= lim; i++) c += h[i]; return c; }
+function histCountAbove(h, t) { let c = 0; const lim = Math.max(0, Math.round(t * (HB - 1))); for (let i = lim; i < HB; i++) c += h[i]; return c; }
 
 // ---------------------------------------------------------------- FFT
 function fft(re, im, inverse = false) {
@@ -195,16 +213,21 @@ function radialSpectrum(Y, w, h, N = 256) {
 }
 
 // ---------------------------------------------------------------- metrics
-function tiles(Y, w, h, T, fn) {
-  const out = [];
+/** Per-tile mean and stdev in one O(n) pass — no intermediate arrays per tile. */
+function tileStats(Y, w, h, T) {
+  const means = [], sds = [];
   for (let ty = 0; ty + T <= h; ty += T) {
     for (let tx = 0; tx + T <= w; tx += T) {
-      const v = [];
-      for (let y = 0; y < T; y++) for (let x = 0; x < T; x++) v.push(Y[(ty + y) * w + tx + x]);
-      out.push(fn(v, tx, ty));
+      let s = 0, s2 = 0;
+      for (let y = 0; y < T; y++) {
+        const base = (ty + y) * w + tx;
+        for (let x = 0; x < T; x++) { const v = Y[base + x]; s += v; s2 += v * v; }
+      }
+      const n = T * T, m = s / n;
+      means.push(m); sds.push(Math.sqrt(Math.max(0, s2 / n - m * m)));
     }
   }
-  return out;
+  return { means, sds };
 }
 
 function sobel(Y, w, h) {
@@ -215,7 +238,7 @@ function sobel(Y, w, h) {
       const i = y * w + x;
       const gx = -Y[i - w - 1] - 2 * Y[i - 1] - Y[i + w - 1] + Y[i - w + 1] + 2 * Y[i + 1] + Y[i + w + 1];
       const gy = -Y[i - w - 1] - 2 * Y[i - w] - Y[i - w + 1] + Y[i + w - 1] + 2 * Y[i + w] + Y[i + w + 1];
-      const m = Math.hypot(gx, gy) / 4;
+      const m = Math.sqrt(gx * gx + gy * gy) / 4;
       mag[i] = m; sum += m;
     }
   }
@@ -230,20 +253,21 @@ function analyse(file) {
 
   // --- luminance / dynamic range
   const hist = histogram(Y, 64);
-  const yMean = mean(Array.from(Y)), ySd = stdev(Array.from(Y));
-  const p005 = pct(Y, 0.005), p995 = pct(Y, 0.995);
-  const linLo = Math.max(pct(Ylin, 0.005), 1e-5), linHi = Math.max(pct(Ylin, 0.995), 1e-5);
-  const clippedBlack = Array.from(Y).filter((v) => v <= 0.004).length / N;
-  const clippedWhite = Array.from(Y).filter((v) => v >= 0.996).length / N;
+  const hY = planeHist(Y), hLin = planeHist(Ylin), hS = planeHist(S), hC = planeHist(C);
+  const { mean: yMean, stdev: ySd } = histMoments(hY, N);
+  const p005 = histPct(hY, N, 0.005), p995 = histPct(hY, N, 0.995);
+  const linLo = Math.max(histPct(hLin, N, 0.005), 1e-5), linHi = Math.max(histPct(hLin, N, 0.995), 1e-5);
+  const clippedBlack = histCountBelow(hY, 0.004) / N;
+  const clippedWhite = histCountAbove(hY, 0.996) / N;
 
   // --- local contrast
   const T = 16;
-  const tileSd = tiles(Y, w, h, T, (v) => stdev(v));
-  const tileMean = tiles(Y, w, h, T, (v) => mean(v));
+  const { means: tileMean, sds: tileSd } = tileStats(Y, w, h, T);
 
   // --- edges
   const { mag, meanMag } = sobel(Y, w, h);
-  const above = (t) => { let c = 0; for (let i = 0; i < mag.length; i++) if (mag[i] > t) c++; return c / N; };
+  const hMag = planeHist(mag);
+  const above = (t) => histCountAbove(hMag, t) / N;
 
   // --- flat shading / banding
   const flatTiles = tileSd.filter((s) => s < 0.004).length / (tileSd.length || 1);
@@ -280,7 +304,6 @@ function analyse(file) {
   const smoothResidual = Math.sqrt(d2sum / Math.max(1, rowMeans.length - 2));
   const distinctLevels = new Set(rowMeans.map((v) => Math.round(v * 255))).size;
 
-  const satArr = Array.from(S);
   return {
     file: path.basename(file),
     path: file,
@@ -288,7 +311,7 @@ function analyse(file) {
     width: w, height: h, bytes: buf.length,
     luminance: {
       mean: +yMean.toFixed(5), stdev: +ySd.toFixed(5),
-      p005: +p005.toFixed(5), p50: +pct(Y, 0.5).toFixed(5), p995: +p995.toFixed(5),
+      p005: +p005.toFixed(5), p50: +histPct(hY, N, 0.5).toFixed(5), p995: +p995.toFixed(5),
       histogram_entropy_bits: +entropyBits(hist).toFixed(4),
       histogram_64: hist,
       clipped_black_frac: +clippedBlack.toFixed(5),
@@ -308,12 +331,12 @@ function analyse(file) {
       tiles: tileSd.length,
     },
     saturation: {
-      mean: +mean(satArr).toFixed(5),
-      p50: +quantile(satArr, 0.5).toFixed(5),
-      p95: +quantile(satArr, 0.95).toFixed(5),
-      grey_frac: +(satArr.filter((v) => v < 0.05).length / N).toFixed(5),
-      oversat_frac: +(satArr.filter((v) => v > 0.85).length / N).toFixed(5),
-      mean_chroma: +mean(Array.from(C)).toFixed(5),
+      mean: +histMoments(hS, N).mean.toFixed(5),
+      p50: +histPct(hS, N, 0.5).toFixed(5),
+      p95: +histPct(hS, N, 0.95).toFixed(5),
+      grey_frac: +(histCountBelow(hS, 0.05) / N).toFixed(5),
+      oversat_frac: +(histCountAbove(hS, 0.85) / N).toFixed(5),
+      mean_chroma: +histMoments(hC, N).mean.toFixed(5),
     },
     edge_density: {
       threshold: EDGE_T,
@@ -321,7 +344,7 @@ function analyse(file) {
       frac_above_0_04: +above(0.04).toFixed(5),
       frac_above_0_16: +above(0.16).toFixed(5),
       mean_gradient: +meanMag.toFixed(5),
-      p95_gradient: +quantile(Array.from(mag), 0.95).toFixed(5),
+      p95_gradient: +histPct(hMag, N, 0.95).toFixed(5),
     },
     fft: radialSpectrum(Y, w, h, 256),
     flat_shading: {

@@ -1,0 +1,149 @@
+{
+  "schema": "elder-souls/run-all@1",
+  "run_id": "all-20260805T224257Z",
+  "at": "2026-08-05T22:43:17.167Z",
+  "mode": "stub-selftest",
+  "entry": "/home/user/elder-souls-claude/tools/harness/stub/index.html",
+  "report_dir": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z",
+  "node": "v22.22.2",
+  "git": {
+    "commit": "ed531460d5196f0b0a44641b3227090c4af32fc3",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "data": null,
+  "summary": {
+    "total": 8,
+    "ok": 7,
+    "failed": 0,
+    "skipped": 1
+  },
+  "corpus_holes": [
+    {
+      "step": "content-stats",
+      "reason": "missing prerequisite: game/data"
+    }
+  ],
+  "steps": [
+    {
+      "name": "env-smoke",
+      "script": "tools/harness/smoke.mjs",
+      "argv": [
+        "--out",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/harness-smoke.json"
+      ],
+      "status": "ok",
+      "exit_code": 0,
+      "ms": 828,
+      "stdout_tail": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/harness-smoke.json",
+      "stderr_head": "[harness] PASS playwright imports — v1.56.1\n[harness] PASS chromium launches — 141.0.7390.37\n[harness] PASS webgl context — WebGL 2.0 (OpenGL ES 3.0 Chromium) | ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\n[harness] PASS pngjs decodes screenshot — 577 unique colours\n[harness] PASS screenshot is not blank — 577 unique colours\n[harness] PASS requestAnimationFrame runs — 13 -> 21\n",
+      "artifact": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/harness-smoke.json"
+    },
+    {
+      "name": "content-stats",
+      "status": "skipped",
+      "reason": "missing prerequisite: game/data",
+      "script": "/home/user/elder-souls-claude/tools/analysis/content-stats.mjs"
+    },
+    {
+      "name": "scenario:smoke",
+      "script": "tools/harness/run-headless.mjs",
+      "argv": [
+        "--scenario",
+        "smoke",
+        "--out",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-smoke",
+        "--entry",
+        "/home/user/elder-souls-claude/tools/harness/stub/index.html"
+      ],
+      "status": "ok",
+      "exit_code": 0,
+      "ms": 1120,
+      "stdout_tail": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-smoke",
+      "stderr_head": "[harness] scenario=smoke seed=1337 frames=120\n[harness] run dir: reports/runs/all-20260805T224257Z/scenario-smoke\n[harness]   120/120 frames\n[harness] run 20260805T224258Z-smoke-s1337-bc1640: 120 frames traced -> /home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-smoke\n",
+      "artifact": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-smoke"
+    },
+    {
+      "name": "trace-stats:smoke",
+      "script": "tools/harness/trace-stats.mjs",
+      "argv": [
+        "--in",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-smoke/trace.jsonl",
+        "--out",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-smoke/trace-stats.json"
+      ],
+      "status": "ok",
+      "exit_code": 0,
+      "ms": 78,
+      "stdout_tail": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-smoke/trace-stats.json",
+      "stderr_head": "[harness] frames=120 (2.0s)  attacks/min=0  committed=0.0%  stamina floor=110  rolls=0  punish=0/0\n",
+      "artifact": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-smoke/trace-stats.json"
+    },
+    {
+      "name": "scenario:cmb-stamina-drain",
+      "script": "tools/harness/run-headless.mjs",
+      "argv": [
+        "--scenario",
+        "cmb-stamina-drain",
+        "--out",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain",
+        "--entry",
+        "/home/user/elder-souls-claude/tools/harness/stub/index.html"
+      ],
+      "status": "ok",
+      "exit_code": 0,
+      "ms": 2685,
+      "stdout_tail": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain",
+      "stderr_head": "[harness] scenario=cmb-stamina-drain seed=909 frames=2400\n[harness] run dir: reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain\n[harness]   1200/2400 frames\n[harness]   2400/2400 frames\n[harness] run 20260805T224300Z-cmb-stamina-drain-s909-0cc7d4: 2400 frames traced -> /home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain\n",
+      "artifact": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain"
+    },
+    {
+      "name": "trace-stats:cmb-stamina-drain",
+      "script": "tools/harness/trace-stats.mjs",
+      "argv": [
+        "--in",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain/trace.jsonl",
+        "--out",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain/trace-stats.json"
+      ],
+      "status": "ok",
+      "exit_code": 0,
+      "ms": 122,
+      "stdout_tail": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain/trace-stats.json",
+      "stderr_head": "[harness] frames=2400 (40.0s)  attacks/min=16.5  committed=20.8%  stamina floor=0  rolls=5  punish=0/0\n",
+      "artifact": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/scenario-cmb-stamina-drain/trace-stats.json"
+    },
+    {
+      "name": "shots",
+      "script": "tools/harness/shoot.mjs",
+      "argv": [
+        "--out",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/shots",
+        "--entry",
+        "/home/user/elder-souls-claude/tools/harness/stub/index.html"
+      ],
+      "status": "ok",
+      "exit_code": 0,
+      "ms": 6217,
+      "stdout_tail": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/shots",
+      "stderr_head": "[harness] shooting 12 viewpoint(s) at 1920x1080 -> /home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/shots\n[harness]   VP01-vista-wide -> VP01-vista-wide.png (50 KiB)\n[harness]   VP02-sky-only -> VP02-sky-only.png (50 KiB)\n[harness]   VP03-canopy-interior -> VP03-canopy-interior.png (50 KiB)\n[harness]   VP04-settlement-street -> VP04-settlement-street.png (49 KiB)\n[harness]   VP05-interior-firelit -> VP05-interior-firelit.png (39 KiB)\n[harness]   VP06-water-surface -> VP06-water-surface.png (49 KiB)\n[harness]   VP07-character-closeup -> VP07-character-closeup.png (50 KiB)\n[harness]   VP08-material-closeup -> VP08-material-closeup.png (50 KiB)\n[harness]   VP09-night-clear -> VP09-night-clear.png (22 KiB)\n[harness]   VP10-storm -> VP10-storm.png (48 KiB)\n[harness]   VP11-dungeon-dark -> VP11-dungeon-dark.png (50 KiB)\n[harness]   VP12-combat-framing -> VP12-combat-framing.png (50 KiB)\n",
+      "artifact": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/shots"
+    },
+    {
+      "name": "image-metrics",
+      "script": "tools/metrics/image-metrics.mjs",
+      "argv": [
+        "--in",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/shots",
+        "--out",
+        "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/image-metrics.json"
+      ],
+      "status": "ok",
+      "exit_code": 0,
+      "ms": 8551,
+      "stdout_tail": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/image-metrics.json",
+      "stderr_head": "[harness] analysed VP01-vista-wide.png\n[harness] analysed VP02-sky-only.png\n[harness] analysed VP03-canopy-interior.png\n[harness] analysed VP04-settlement-street.png\n[harness] analysed VP05-interior-firelit.png\n[harness] analysed VP06-water-surface.png\n[harness] analysed VP07-character-closeup.png\n[harness] analysed VP08-material-closeup.png\n[harness] analysed VP09-night-clear.png\n[harness] analysed VP10-storm.png\n[harness] analysed VP11-dungeon-dark.png\n[harness] analysed VP12-combat-framing.png\n",
+      "artifact": "/home/user/elder-souls-claude/reports/runs/all-20260805T224257Z/image-metrics.json"
+    }
+  ]
+}

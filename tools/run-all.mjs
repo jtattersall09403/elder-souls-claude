@@ -121,6 +121,8 @@ const report = {
   at: new Date().toISOString(),
   mode: useStub ? 'stub-selftest' : 'game',
   entry: entry || path.join(GAME_DIR, 'index.html'),
+  game_present: fs.existsSync(entry || path.join(GAME_DIR, 'index.html')),
+  data_present: fs.existsSync(DATA_DIR),
   report_dir: reportDir,
   node: process.version,
   git: gitInfo(),

@@ -137,12 +137,12 @@ jq -s 'map(select((.resolutions|length) > 1)) as $m
    game/src/data/quests/*.json
 
 # Non-violent routes must not be systematically poorer.
-jq -s '[.[] | . as $q
-        | $q.resolutions[] | {v: .violence_required, id: .id,
-            uniques: ([$q.rewards[] | select(.unique_named)
-                       | select(((.on_resolution // ["*"]) | index(.id)) != null
-                             or (.on_resolution == null))] | length)}]
-       | group_by(.v) | map({violent: .[0].v, mean_uniques: ((map(.uniques)|add)/length)})' \
+jq -s '[.[] | . as $q | $q.resolutions[] | . as $r
+        | {v: $r.violence_required,
+           uniques: ([$q.rewards[] | select(.unique_named)
+                      | select(((.on_resolution // [$r.id]) | index($r.id)) != null)] | length)}]
+       | group_by(.v)
+       | map({violent: .[0].v, n: length, mean_uniques: ((map(.uniques)|add)/length)})' \
    game/src/data/quests/*.json
 
 # LEVEL SCALING — must return nothing.

@@ -149,16 +149,17 @@ against `corpus/30-quests/quest.schema.json`.
       game/src/data/quests/*.json
    ```
    Fail if `> 4` or if a faction is absent from the output entirely.
-6. **Rival contradiction count:**
+6. **Rival contradiction count** — quests whose reputation consequences reach outside their own faction:
    ```
-   jq -s 'map(select(.category=="faction"))|group_by(.faction)[]
-          | {faction:.[0].faction,
+   jq -s 'map(select(.category=="faction")) | group_by(.faction)[]
+          | .[0].faction as $f
+          | {faction: $f, total: length,
              rival_touching: (map(select(
-                 (.consequences.faction_reputation // {})
-                 | to_entries | map(.key) | any(. != $f))) | length)}' \
-      --arg f "" game/src/data/quests/*.json
+                 ((.consequences.faction_reputation // {}) | keys
+                  | map(select(. != $f)) | length) > 0)) | length)}' \
+      game/src/data/quests/*.json
    ```
-   (Practically: count quests whose `faction_reputation` object has ≥ 2 keys.) Fail if < 3 per line.
+   Fail if `rival_touching < 3` for any line; target ≥ 6.
 7. **Blind test:** hand a critic the 26 quest titles + `task_kind` + `stakes` of one of our lines with
    the faction name and all proper nouns redacted, alongside the same extraction for a real Morrowind
    line. The critic assigns each quest to a rank band and names the corruption-reveal quest, for both,

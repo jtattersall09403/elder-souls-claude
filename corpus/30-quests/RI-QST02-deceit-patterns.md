@@ -255,12 +255,10 @@ Run against `game/src/data/quests/*.json` after schema validation (see RI-QST04)
    Then assert for each that no `failure_states[].id` equals the refuse resolution's id.
 6. **D5 — faction contradiction graph:** emit edges and look for 2-cycles.
    ```
-   jq -s -r 'map(select(.faction != null))
-          | map({from: .faction,
-                 to: [(.consequences.faction_reputation // {}) | to_entries[]
-                      | select(.value < 0) | .key]})
-          | map(.from as $f | .to[] | select(. != $f) | "\($f) -> \(.)")
-          | add | sort | unique[]' game/src/data/quests/*.json
+   jq -s -r '[ .[] | select(.faction != null) | . as $q | $q.faction as $f
+               | (($q.consequences.faction_reputation // {}) | to_entries[])
+               | select(.value < 0 and .key != $f)
+               | "\($f) -> \(.key)" ] | sort | unique[]' game/src/data/quests/*.json
    ```
    Manually (or with a two-line script) confirm ≥ 2 pairs appear in both directions.
 7. **D10 — journal voice:** an entry whose text opens with an imperative is an objective marker in prose

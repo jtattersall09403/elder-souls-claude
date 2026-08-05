@@ -189,10 +189,13 @@ const activeWindows = [];
   }
   for (const w of open.values()) activeWindows.push(w);
 }
+/** Nearest enemy active window within ±maxDelta frames; null if the roll was not near one. */
+const NEAR_F = 120;
 const nearestActive = (f) => {
   let best = null;
   for (const w of activeWindows) {
     const d = w.start - f;
+    if (Math.abs(d) > NEAR_F) continue;
     if (best === null || Math.abs(d) < Math.abs(best.delta)) best = { delta: d, window: w };
   }
   return best;
@@ -200,7 +203,12 @@ const nearestActive = (f) => {
 const rolls = rollRuns.map((r) => {
   const na = nearestActive(r.start);
   const ifr = iframeRuns.find((w) => w.start >= r.start && w.start <= r.end);
-  const overlap = ifr && na ? Math.max(0, Math.min(ifr.end, na.window.end) - Math.max(ifr.start, na.window.start) + 1) : 0;
+  // overlap against ANY active window, not just the nearest one
+  let overlap = 0;
+  if (ifr) for (const w of activeWindows) {
+    overlap = Math.max(overlap, Math.min(ifr.end, w.end) - Math.max(ifr.start, w.start) + 1);
+  }
+  overlap = Math.max(0, overlap);
   return {
     start_f: r.start, len: r.len,
     iframe_start_offset: ifr ? ifr.start - r.start : null,

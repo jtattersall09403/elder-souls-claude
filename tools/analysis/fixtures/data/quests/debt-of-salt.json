@@ -1,0 +1,17 @@
+{
+  "id": "q_debt_of_salt",
+  "title": "A Debt of Salt",
+  "giver": "npc_kessh",
+  "giverLies": true,
+  "stages": [
+    { "id": 10, "journal": "Kessh the Debt-Bound says a Blackwood factor in Xul-Ha holds a writ against him. He wants it burned. He did not say why the writ is written on skin." },
+    { "id": 20, "journal": "The factor, Veeza-Ei, tells a different story: Kessh sold two families into Blackwood service and the writ is the only record of it." },
+    { "id": 30, "next": ["burn", "return", "expose"], "journal": "I must decide what to do with the writ." }
+  ],
+  "outcomes": [
+    { "id": "burn", "method": "steal", "requiresCombat": false, "text": "Steal the writ and burn it. Kessh pays. The two families stay lost." },
+    { "id": "return", "method": "persuade", "requiresCombat": false, "text": "Persuade Veeza-Ei to copy the writ and return the original. Both sides half-satisfied." },
+    { "id": "expose", "method": "kill", "requiresCombat": true, "text": "Kill Kessh in the Sunken Hall and take the writ from his corpse." }
+  ],
+  "mutuallyExclusive": true
+}

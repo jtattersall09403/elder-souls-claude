@@ -138,9 +138,9 @@ with Act I ≤ 3.5 and Act V ≥ 9.
 # i.e. none of them may list another Act IV quest as a prerequisite.
 jq -s -r 'map(select(.category=="main" and .act==4)) as $iv
        | ($iv|map(.id)) as $ids
-       | $iv[] | . as $q | (.opens_by.prerequisite_quests // [])[]
-       | select($ids | index(.))
-       | "\($q.id): Act IV quest is sequenced behind \(.) — act is a corridor, not a campaign"' \
+       | $iv[] | . as $q | (.opens_by.prerequisite_quests // [])[] as $p
+       | select($ids | index($p))
+       | "\($q.id): Act IV quest is sequenced behind \($p) — act is a corridor, not a campaign"' \
    game/src/data/quests/*.json
 ```
 Must return empty.

@@ -1,0 +1,224 @@
+{
+  "schema_version": "1.0.0",
+  "generated_for": "RI-LOR04",
+  "note": "Jel phonotactic rules + root lexicon. 'provenance' on each root: community-data = gloss reported by a community wiki summary (2nd-hand, see RI-LOR01 provenance); inferred = our decomposition of a canon proper noun; constructed = our invention. NEVER present 'constructed' roots as canon Jel.",
+
+  "phonology": {
+    "consonant_units": ["b","ch","d","g","h","j","k","kh","l","m","n","p","r","s","sh","t","th","ts","tl","v","w","x","z"],
+    "consonant_notes": {
+      "x": "voiceless velar fricative /x/, never /ks/ — the signature sound of Jel",
+      "j": "/dʒ/ as in 'Jel'",
+      "th": "/θ/",
+      "kh": "aspirated /kʰ/, only word-initial or medial",
+      "ts": "affricate, valid as onset and coda",
+      "tl": "lateral affricate, onset only"
+    },
+    "vowels_short": ["a","e","i","o","u"],
+    "vowels_long": ["aa","ee","oo"],
+    "diphthongs": ["ai","ei","ua","ia"],
+    "syllable_template": "(C)(C)V(V)(C)(C)",
+    "onset_clusters": ["xl","xn","xt","tsl","sk","sl","sn","st","sw","kw","shl","shn","thl"],
+    "coda_single": ["x","k","kh","th","sh","s","l","r","n","m","j","t","ts","z"],
+    "coda_clusters": ["xt","kt","st","lk","lm","lth","nth"],
+    "max_syllables_per_element": 4,
+    "stress": "penultimate syllable of each element; in a hyphenated compound, primary stress falls on the final element",
+    "forbidden": {
+      "characters": ["'", "`", "’", "q", "y", "f"],
+      "note_on_apostrophe": "APOSTROPHES ARE FORBIDDEN IN JEL. They belong to Khajiit (J'zhirr, Ra'dashi) and rarely Redguard. An apostrophe in an Argonian proper noun is an automatic validator failure and is the single most common way a fantasy language reads as random typing.",
+      "note_on_f_q_y": "Jel has no /f/, no /q/, and no consonantal /j/ spelled y. 'y' is not used at all.",
+      "clusters": ["br","cr","dr","fr","gr","pr","tr","bl","cl","fl","gl","pl","spr","str","scr","thr","shr","chr","phr","wr","kn","gn","ps","pn"],
+      "doubled_consonants": true,
+      "note_on_doubles": "No geminate spellings (nn, ll, tt, ss, kk, mm, rr). 'thth' is permitted medially only, as in Thitithil."
+    },
+    "attested_exceptions": ["kaoc", "naga", "hist", "jel", "lukiul", "argonian", "argonia"],
+    "attested_exceptions_note": "Canon or loaned forms that predate our rules and are exempt from phonotactic validation. They are exceptions BECAUSE they are attested; nothing new may be coined on their pattern. 'kaoc' is the only Jel item containing 'c'."
+  },
+
+  "morphology": {
+    "prefixes": [
+      {"form": "an-",  "gloss": "we / our / the collective of", "provenance": "inferred", "from": "An-Xileel"},
+      {"form": "ku-",  "gloss": "needed, owed, proper", "provenance": "community-data", "from": "ku-vastei"},
+      {"form": "ix-",  "gloss": "opened, cut, exposed", "provenance": "inferred", "from": "Ixtaxh"},
+      {"form": "xan-", "gloss": "stone", "provenance": "inferred", "from": "xanmeer"},
+      {"form": "wux-", "gloss": "water, standing water", "provenance": "constructed"},
+      {"form": "tsa-", "gloss": "small, young, newly-hatched", "provenance": "constructed"},
+      {"form": "nu-",  "gloss": "not, un-, refused", "provenance": "constructed"},
+      {"form": "raj-", "gloss": "great, elder, of long standing", "provenance": "community-data", "from": "raj-beeko"},
+      {"form": "deek-","gloss": "near, close, of this water", "provenance": "community-data", "from": "deek-beeko"}
+    ],
+    "suffixes": [
+      {"form": "-meer",  "gloss": "built place, nest, stacked thing", "provenance": "inferred"},
+      {"form": "-eel",   "gloss": "collective of persons", "provenance": "inferred", "from": "An-Xileel"},
+      {"form": "-eeko",  "gloss": "one bound to (kin-term)", "provenance": "community-data", "from": "beeko"},
+      {"form": "-lith",  "gloss": "one who does, one who passes on", "provenance": "community-data", "from": "deelith"},
+      {"form": "-tei",   "gloss": "change, becoming", "provenance": "community-data", "from": "vastei"},
+      {"form": "-xh",    "gloss": "exact, finished, sacred", "provenance": "inferred", "from": "Ixtaxh"},
+      {"form": "-kha",   "gloss": "place of", "provenance": "constructed"},
+      {"form": "-ei",    "gloss": "one, a single, an individual", "provenance": "constructed"},
+      {"form": "-uj",    "gloss": "diminutive / affectionate", "provenance": "constructed"}
+    ],
+    "reduplication": {
+      "rule": "Partial reduplication of a root marks repetition, intensity, or plurality of the OBJECT, not the actor.",
+      "example": "thith (egg) -> thitithil (eggs, a clutch, egg-after-egg)",
+      "provenance": "inferred",
+      "from": "Ixtaxh-Thitithil-Meht"
+    },
+    "compounding": {
+      "order": "modifier-first: A-B means 'B of/for/made-of A'",
+      "max_elements": 3,
+      "hyphenation": "Hyphenate when 2+ elements and any element is 2+ syllables (Ixtaxh-Thitithil-Meht). Fuse when both elements are monosyllabic (xanmeer, wuxal).",
+      "provenance": "inferred"
+    }
+  },
+
+  "roots": [
+    {"root": "jel",     "gloss": "the root-tongue; speech that is owed", "provenance": "community-data"},
+    {"root": "hist",    "gloss": "the tree (loanword into Tamrielic; Argonians more often say the tree's own name)", "provenance": "community-data"},
+    {"root": "xul",     "gloss": "root, that which goes down", "provenance": "inferred", "confidence": "medium"},
+    {"root": "xan",     "gloss": "stone", "provenance": "inferred"},
+    {"root": "meer",    "gloss": "nest, built place, stacked thing", "provenance": "inferred"},
+    {"root": "thith",   "gloss": "egg", "provenance": "inferred"},
+    {"root": "beeko",   "gloss": "friend, one bound to you by water", "provenance": "community-data"},
+    {"root": "deelith", "gloss": "teacher, one who passes wisdom", "provenance": "community-data"},
+    {"root": "vastei",  "gloss": "change; ku-vastei = the change that is owed", "provenance": "community-data"},
+    {"root": "lukiul",  "gloss": "salted one; an Argonian assimilated to foreign ways", "provenance": "community-data"},
+    {"root": "kaoc",    "gloss": "curse, expletive", "provenance": "community-data", "note": "The only attested Jel item containing 'c'. Preserved as canon; not generative."},
+    {"root": "haj",     "gloss": "hidden, hides", "provenance": "community-data", "corroboration": "haj mota = 'hidden shell', the canon turtle-beast"},
+    {"root": "mota",    "gloss": "shell, plate, carapace", "provenance": "inferred", "corroboration": "haj mota"},
+    {"root": "naga",    "gloss": "the serpent-form of our people", "provenance": "community-data"},
+    {"root": "xeech",   "gloss": "seed", "provenance": "inferred"},
+    {"root": "wuxal",   "gloss": "deep water, the drowned country", "provenance": "inferred"},
+    {"root": "ojel",    "gloss": "tongue, the organ; by extension a manner of speaking", "provenance": "inferred"},
+    {"root": "uxith",   "gloss": "old, long-standing, kept", "provenance": "community-data"},
+    {"root": "wux",     "gloss": "water that stands", "provenance": "constructed"},
+    {"root": "jul",     "gloss": "to stand, to rise from lying down", "provenance": "constructed"},
+    {"root": "vakh",    "gloss": "true, rightly, actually so", "provenance": "constructed"},
+    {"root": "teekh",   "gloss": "tithe, debt owed downward; the residue of a death", "provenance": "constructed", "load_bearing": "souls-as-currency, RI-LOR05"},
+    {"root": "shuja",   "gloss": "blister, swelling, a knot under the skin", "provenance": "constructed"},
+    {"root": "ixtu",    "gloss": "an opened thing; a wound kept from closing", "provenance": "constructed", "load_bearing": "bonfire analogue, RI-LOR05"},
+    {"root": "eixa",    "gloss": "pattern, the shape a thing is held in", "provenance": "constructed", "load_bearing": "levelling, RI-LOR05"},
+    {"root": "vei",     "gloss": "blood; also sap. Jel does not distinguish them.", "provenance": "constructed", "note": "Deliberate: the language encodes CF-002."},
+    {"root": "neekh",   "gloss": "count, number, tally", "provenance": "constructed"},
+    {"root": "shaneekh","gloss": "the long counting; a tally kept across generations", "provenance": "constructed"},
+    {"root": "tsleek",  "gloss": "quiet, gone silent, no longer answering", "provenance": "constructed"},
+    {"root": "muul",    "gloss": "mud, silt, the soft floor", "provenance": "constructed"},
+    {"root": "kesh",    "gloss": "salt; by extension, foreignness", "provenance": "constructed"},
+    {"root": "vaska",   "gloss": "gourd, stoppered vessel", "provenance": "constructed"},
+    {"root": "shu",     "gloss": "sour, fermented, kept too long", "provenance": "constructed"},
+    {"root": "vosh",    "gloss": "rot, the good kind of rot that feeds", "provenance": "constructed"},
+    {"root": "tlaka",   "gloss": "hunger, want, the empty season", "provenance": "constructed"},
+    {"root": "skei",    "gloss": "knife, cutting edge", "provenance": "constructed"},
+    {"root": "nux",     "gloss": "night, dark water, water you cannot see into", "provenance": "constructed"},
+    {"root": "zuka",    "gloss": "laughter, and specifically laughter at someone", "provenance": "constructed"},
+    {"root": "maat",    "gloss": "egg-bearer, mother, the one who chose the pool", "provenance": "constructed"},
+    {"root": "tuk",     "gloss": "bone", "provenance": "constructed"},
+    {"root": "shal",    "gloss": "scale, skin, the outside of a person", "provenance": "constructed"},
+    {"root": "keth",    "gloss": "fire, the dry burning; a rare and foreign thing", "provenance": "constructed"},
+    {"root": "omu",     "gloss": "sleep, dream, what the tree sends", "provenance": "constructed"},
+    {"root": "xaal",    "gloss": "long, far, more than a season away", "provenance": "constructed"},
+    {"root": "tsith",   "gloss": "thorn, spine, the defended thing", "provenance": "constructed"},
+    {"root": "kaal",    "gloss": "to kneel, to put the hand down into", "provenance": "constructed"},
+    {"root": "jix",     "gloss": "swift, sudden, over before seen", "provenance": "constructed"},
+    {"root": "gul",     "gloss": "throat, voice, the place a name comes from", "provenance": "constructed"},
+    {"root": "shaa",    "gloss": "slow, patient, of the long kind", "provenance": "constructed"},
+    {"root": "shekh",   "gloss": "beak, point, the spearing part", "provenance": "constructed"},
+    {"root": "tuj",     "gloss": "small, lesser, not yet counted", "provenance": "constructed"},
+    {"root": "nekh",    "gloss": "hand, the taking part", "provenance": "constructed"},
+    {"root": "vokh",    "gloss": "to carry, to bear a weight across water", "provenance": "constructed"},
+    {"root": "seil",    "gloss": "net, woven thing, a trap that waits", "provenance": "constructed"},
+    {"root": "hulm",    "gloss": "a hollow, a place where water gathers and does not leave", "provenance": "constructed"},
+    {"root": "thek",    "gloss": "to answer, to speak back", "provenance": "constructed"},
+    {"root": "zash",    "gloss": "fever, heat under the scale", "provenance": "constructed"},
+    {"root": "ixt",     "gloss": "cut, the act of opening", "provenance": "constructed"},
+    {"root": "meht",    "gloss": "breaker, one that opens by force", "provenance": "inferred", "from": "Ixtaxh-Thitithil-Meht ('Exact Egg-Cracker')"}
+  ],
+
+  "coined_terms": [
+    {"jel": "xul-teekh",   "tamrielic": "root-tithe; sap-debt", "meaning": "The soul-residue a killer carries. The game's souls currency.", "provenance": "constructed"},
+    {"jel": "ixtu-xul",    "tamrielic": "sapwell; the opened root", "meaning": "A Hist root deliberately cut and kept open. Bonfire analogue.", "provenance": "constructed"},
+    {"jel": "xul-vaska",   "tamrielic": "tithe-gourd", "meaning": "Stoppered gourd of sapwell sap. Estus analogue.", "provenance": "constructed"},
+    {"jel": "teekh-shuja", "tamrielic": "sap-blister; the bloom", "meaning": "The grey fungal knot that grows where you dropped your tithe. Bloodstain analogue.", "provenance": "constructed"},
+    {"jel": "vastei-eixa", "tamrielic": "re-cutting the pattern", "meaning": "Levelling up at a sapwell.", "provenance": "constructed"},
+    {"jel": "teekh-kaoc",  "tamrielic": "sap-taint; the tithe-curse", "meaning": "What a non-Argonian accrues by using sapwells. Rests on CF-006.", "provenance": "constructed"},
+    {"jel": "xul-hesh",    "tamrielic": "root-theft", "meaning": "Soul-trapping into gems. The great Argonian obscenity.", "provenance": "constructed"},
+    {"jel": "an-tsleek",   "tamrielic": "the quiet ones / the gone-silent", "meaning": "Trees or wells that have stopped answering.", "provenance": "constructed"},
+    {"jel": "xul-aneekh",  "tamrielic": "the Deep-Kin", "meaning": "Interior isolationist consensus out of Helstrom. Faction.", "provenance": "constructed"},
+    {"jel": "ixtu-vakh",   "tamrielic": "the Sap-Cutters", "meaning": "Heretics who cut wells for profit. Faction.", "provenance": "constructed"}
+  ],
+
+  "worked_examples": {
+    "places": [
+      {"name": "Ixt-Shaneekh", "gloss": "Cut-Of-The-Long-Counting", "type": "xanmeer"},
+      {"name": "Wuxal-Muulkha", "gloss": "Deep-Water Place-Of-Silt", "type": "drowned village"},
+      {"name": "Xanmeer-Tsleek", "gloss": "The Stone-Nest That Stopped Answering", "type": "ruin"},
+      {"name": "Hulm-Vosh", "gloss": "The Hollow Where It Rots Well", "type": "hatching pool"},
+      {"name": "Tsa-Thitithil", "gloss": "Little Clutch", "type": "hamlet"},
+      {"name": "Nux-Seilkha", "gloss": "Place Of Nets In Dark Water", "type": "fishing stilt-town"},
+      {"name": "Raj-Ixtu", "gloss": "The Elder Wound", "type": "great sapwell"},
+      {"name": "Keshvokh", "gloss": "Salt-Carry", "type": "Dres landing on the Crimson Coast"},
+      {"name": "Tuk-Xaal", "gloss": "Long Bones", "type": "causeway of vertebrae-shaped stones"},
+      {"name": "Omu-Meer", "gloss": "Dream-Nest", "type": "rootkeeper's hut cluster"}
+    ],
+    "creatures": [
+      {"name": "haj mota", "gloss": "hidden shell", "note": "CANON creature; included to show the system reproduces it"},
+      {"name": "shekh-jul", "gloss": "the standing beak", "note": "heron-analogue ambusher"},
+      {"name": "muul-shuja", "gloss": "silt-blister", "note": "voriplasm-analogue"},
+      {"name": "xul-ei", "gloss": "root-one", "note": "a dead thing the roots regrew wrong"},
+      {"name": "zash-seil", "gloss": "fever-net", "note": "fly swarm"},
+      {"name": "tsith-vokh", "gloss": "thorn-bearer", "note": "spined pack beast"}
+    ],
+    "people_jel": ["Xul-Neekh", "Vakh-Ojel", "Tsa-Beeko", "Raj-Deelith", "Haj-Gulei", "Muul-Maat"],
+    "people_tamrielic": [
+      "Counts-The-Wet-Days", "Wades-Backwards", "Tastes-Iron", "Keeps-No-Ledger",
+      "Refuses-Rain", "Splits-Her-Own-Nets", "Buries-Too-Deep", "Answers-Late",
+      "Weighs-The-Silence", "Sings-To-Nets", "Holds-His-Breath-Longer", "Forgot-Her-Rope"
+    ]
+  },
+
+  "tamrielic_name_grammar": {
+    "template": "[Verb-3sg]-[optional Determiner|Possessive]-[Noun (+Noun)]",
+    "word_count": {"min": 2, "max": 4, "modal": 3},
+    "verbs": ["Hides","Lifts","Counts","Tastes","Wades","Walks","Swims","Sings","Waits","Keeps","Bites","Breaks","Drowns","Digs","Carries","Calls","Watches","Listens","Sleeps","Follows","Finds","Loses","Mends","Cuts","Pulls","Splits","Sits","Stands","Turns","Weighs","Salts","Buries","Burns","Feeds","Drinks","Speaks","Refuses","Forgets","Remembers","Answers","Holds","Sells","Counts","Paints","Ties"],
+    "determiners": ["The","His","Her","Their","Many","No","Nine","Three","Too","Own","Late"],
+    "nouns": ["Rain","Reeds","Mud","Eggs","Bones","Water","Roots","Nets","Ropes","Teeth","Stones","Debts","Names","Doors","Ledgers","Knives","Tides","Flies","Salt","Coin","Silence","Fever","Boats","Ash","Shells","Feathers","Wet Days","Iron","Nails","Paper","Breath","Shallows","Poles","Baskets","Clay"],
+    "gender_marking": "His/Her in the determiner slot marks gender (canon: Lifts-Her-Tail, Hides-His-Eyes). Absence marks nothing.",
+    "register_rule": "A Tamrielic Argonian name should read as something an adult once said ABOUT a hatchling, or as the thing that person is known for doing badly. It is never a title earned in battle.",
+    "blocklist_nouns": ["Doom","Destiny","Fate","Shadow","Death","Blood","Darkness","Vengeance","Glory","Legend","Souls","Dragon","Void","Chaos","Eternity","Wrath","Storm","Thunder","Flame"],
+    "blocklist_note": "Any hyphenated Argonian name containing a blocklist noun is an automatic fail. 'Slays-The-Shadow-Lord' is the exact failure this list exists to catch. Exception: a registered in-fiction epithet deliberately mocking the register.",
+    "blocklist_forms": ["-Of-", "-er-Of-", "Bringer", "Bearer", "Slayer", "Doombringer", "Lord", "King", "Master"]
+  },
+
+  "other_cultures": {
+    "imperial": {
+      "structure": "praenomen + nomen; officers and scholars add a cognomen or a post ('formerly Quartermaster of the Ninth Cohort')",
+      "male_endings": ["-us","-ius","-o","-anus","-inus"],
+      "female_endings": ["-a","-ia","-illa","-ina"],
+      "nomen_endings": ["-ellus","-andus","-entus","-ianus","-orus","-ellius","-atus"],
+      "examples": ["Sergius Verrent","Casimir Bellandus","Marcia Ottellus","Falco Drusius","Vitellia Corvo","Ancus Adrastus","Prefect Lucia Menandra"],
+      "forbidden": ["apostrophes","hyphens","non-Latinate clusters"]
+    },
+    "dunmer": {
+      "structure": "given name + family/House name; honorific Serjo (noble) or Sera (polite) precedes",
+      "given_patterns": "CVC(C)V(C); endings -as, -is, -en, -yn, -el, -ur, -oth, -am, -yr",
+      "examples": ["Andrel Vorin","Ivrys Dram","Fals Rethan","Neloth Sarethi","Dalyn Uvirith","Serjo Ravel Sedran"],
+      "houses_present_in_black_marsh": ["Dres (slavers, dominant)","Hlaalu (trade, opportunistic)","Telvanni (individual mages, soul-gem trade — see xul-hesh)"],
+      "forbidden": ["apostrophes","hyphenated compounds","English-word names"]
+    },
+    "khajiit": {
+      "structure": "honorific prefix + name; the prefix encodes standing",
+      "prefixes": ["J'","S'","Ra'","Ri'","Dro'","Ma'","Ahn"],
+      "suffixes": ["-iit","-ir","-dar","-zhi","-ja","-eem","-ssa"],
+      "examples": ["J'zhirr","Ra'dashi","S'kamma","Dro'shanji","Ma'reem","Ahnadar"],
+      "apostrophe_rule": "Khajiit are the ONLY culture in our world permitted apostrophes (rare Redguard 'at-' constructions excepted). This is what makes the apostrophe meaningful rather than decorative.",
+      "speech_note": "Khajiit traders refer to themselves in the third person; this is a speech convention, not a naming one."
+    },
+    "kothringi": {
+      "status": "constructed — canon gives the people (CF-047) but no name corpus",
+      "structure": "single given name, two syllables, soft onsets, Nedic-flavoured",
+      "endings": ["-an","-eth","-ir","-a","-en"],
+      "examples": ["Serrin","Halveth","Mereth","Ardan","Iselen","Tavir","Neshen"],
+      "distinguishing_rule": "Must not read as Breton (no -ien, -ard, -aud) and must not read as Nord (no -gar, -olf, -ulf). Silver-toned, plain, slightly archaic.",
+      "note": "Found only on graves, ruins, ship registers, and one impossible living person (CF-049)."
+    }
+  }
+}

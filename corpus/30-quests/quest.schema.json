@@ -148,7 +148,7 @@
           "leads_to": {
             "type": "array",
             "minItems": 2,
-            "items": { "type": "string", "description": "resolution id, failure_state id, or another branch id" }
+            "items": { "type": "string", "description": "id of a resolution, a failure_state, a sibling branch, or a deceit.revealed_by entry. Every target must resolve within this file." }
           },
           "irreversible": { "type": "boolean", "default": false }
         }
@@ -337,7 +337,12 @@
 
   "allOf": [
     {
-      "if": { "properties": { "giver": { "properties": { "honest": { "const": false } } }, "required": ["giver"] } },
+      "if": {
+        "required": ["giver"],
+        "properties": {
+          "giver": { "required": ["honest"], "properties": { "honest": { "const": false } } }
+        }
+      },
       "then": { "required": ["deceit"], "properties": { "deceit": { "type": "object" } } }
     },
     {

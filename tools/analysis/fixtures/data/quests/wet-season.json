@@ -1,0 +1,12 @@
+{
+  "id": "q_wet_season",
+  "title": "The Wet Season",
+  "giver": "npc_marsh_tender",
+  "stages": [
+    { "id": 10, "journal": "Marsh-Tender Oleeth wants the sluice gates at the stilt-granary cleared before the flood." },
+    { "id": 20, "terminal": true, "journal": "The gates are clear. Oleeth gave me a jar of something that moves." }
+  ],
+  "outcomes": [
+    { "id": "done", "method": "labour", "requiresCombat": false, "text": "Clear the sluice by hand." }
+  ]
+}
