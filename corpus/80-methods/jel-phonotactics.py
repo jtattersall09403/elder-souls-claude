@@ -283,6 +283,8 @@ def jel_lexical(name, lex):
         prefixes = {p["form"].rstrip("-") for p in lex["morphology"]["prefixes"]}
         suffixes = {s["form"].lstrip("-") for s in lex["morphology"]["suffixes"]}
         for e in els:
+            if e in prefixes or e in suffixes:            # affix standing as an element
+                return True
             if any(p and e.startswith(p) and len(e) > len(p) + 1 for p in prefixes):
                 return True
             if any(s and e.endswith(s) and len(e) > len(s) + 1 for s in suffixes):
