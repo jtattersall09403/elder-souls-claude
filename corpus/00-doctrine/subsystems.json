@@ -231,7 +231,15 @@
     "visual.character.model": "render.fidelity.character",
     "visual.character.materials": "render.fidelity.character",
     "visual.character.silhouette": "render.art.silhouette",
-    "visual.creature.readability": "render.art.creature"
+    "visual.creature.readability": "render.art.creature",
+    "world.dungeons": "world.dungeon.design",
+    "world.verticality": "world.verticality.layout",
+    "combat.level-design": "combat.encounter.placement",
+    "progression.bonfires": "progression.bonfire.placement",
+    "engine.rng": "platform.determinism.harness",
+    "engine.physics": "platform.determinism.harness",
+    "engine.animation": "platform.determinism.harness",
+    "engine.ai": "platform.determinism.harness"
   },
   "subsystems": [
     {
@@ -1040,6 +1048,13 @@
       "critic": "critic.world"
     },
     {
+      "path": "world.dungeon.design",
+      "title": "Dungeon and interior layout: loops, shortcuts, unlocks, and dead ends",
+      "arb": "souls",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
       "path": "world.traversal.time",
       "title": "Traversal time budgets between named places",
       "arb": "morrowind",
@@ -1148,6 +1163,13 @@
       "path": "world.terrain.form",
       "title": "Terrain shape, elevation, and how it channels movement",
       "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world"
+    },
+    {
+      "path": "world.verticality.layout",
+      "title": "Vertical level design: what you can see, climb, fall from, and drop into",
+      "arb": "souls",
       "area": "50-world",
       "critic": "critic.world"
     },

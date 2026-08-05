@@ -35,13 +35,13 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-05 22:46:07Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-05 22:48:27Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
 <div class="grid">
-  <div class="card"><div class="n">48</div><div class="l">Reference items</div></div>
-  <div class="card"><div class="n">205</div><div class="l">Subsystems judged</div></div>
+  <div class="card"><div class="n">55</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">242</div><div class="l">Subsystems judged</div></div>
   <div class="card"><div class="n">0</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n ok">0</div><div class="l">Open gaps</div></div>
@@ -53,13 +53,14 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <h2>Corpus coverage by area</h2>
 <table><tr><th>Area</th><th>Domain</th><th>Items</th><th></th></tr>
 <tr><td><code>AI</code></td><td>Enemy behaviour</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
-<tr><td><code>CMB</code></td><td>Souls combat</td><td>5</td><td style="width:40%"><div class="bar"><i style="width:60%"></i></div></td></tr>
+<tr><td><code>CMB</code></td><td>Souls combat</td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
 <tr><td><code>DLG</code></td><td>Dialogue &amp; journal</td><td>5</td><td style="width:40%"><div class="bar"><i style="width:60%"></i></div></td></tr>
-<tr><td><code>LOR</code></td><td>Lore &amp; canon</td><td>3</td><td style="width:40%"><div class="bar"><i style="width:36%"></i></div></td></tr>
+<tr><td><code>LOR</code></td><td>Lore &amp; canon</td><td>4</td><td style="width:40%"><div class="bar"><i style="width:48%"></i></div></td></tr>
+<tr><td><code>MTH</code></td><td>Measurement</td><td>2</td><td style="width:40%"><div class="bar"><i style="width:24%"></i></div></td></tr>
 <tr><td><code>PRG</code></td><td>Progression &amp; economy</td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
 <tr><td><code>QST</code></td><td>Quests &amp; factions</td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
-<tr><td><code>VIS</code></td><td>Visual</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
-<tr><td><code>WLD</code></td><td>World design</td><td>5</td><td style="width:40%"><div class="bar"><i style="width:60%"></i></div></td></tr>
+<tr><td><code>VIS</code></td><td>Visual</td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
+<tr><td><code>WLD</code></td><td>World design</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 </table>
 
 <h2>Reference items &mdash; the bars we must clear</h2>
@@ -76,6 +77,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>RI-CMB03</code></td><td>Stamina economy — costs, regeneration, blocking, and guard break</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.player.stamina combat.player.block combat.player.sprint combat.guardbreak combat.resource.pacing</code></td></tr>
 <tr><td><code>RI-CMB04</code></td><td>Hitboxes and hurtboxes — swept capsules, bone attachment, and the no-dice rule</td><td>structure</td><td><span class="tag souls">souls</span></td><td>constructed</td><td>&mdash;</td><td><code>combat.hit.geometry combat.hit.sweep combat.hurtbox combat.damage.resolution combat.determinism combat.frame.order</code></td></tr>
 <tr><td><code>RI-CMB05</code></td><td>Poise, stagger, hyperarmour, and the critical windows (backstab, parry, riposte)</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.poise combat.stagger combat.hyperarmour combat.criticals combat.parry combat.trade</code></td></tr>
+<tr><td><code>RI-CMB06</code></td><td>Lock-on — acquisition, camera behaviour, directional roll semantics, and soft-lock steering</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.lockon combat.camera combat.player.movement combat.player.tracking combat.input.direction</code></td></tr>
 <tr><td><code>RI-DLG01</code></td><td>The topic list as a graph — filter stack, first-match-wins, and settlement topic webs</td><td>graph</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td><span class="ok">yes</span></td><td><code>dialogue.topics dialogue.filter dialogue.greeting dialogue.discovery quests.discovery</code></td></tr>
 <tr><td><code>RI-DLG02</code></td><td>Unique dialogue words per settlement — the headline density metric</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td>&mdash;</td><td><code>dialogue.density dialogue.settlement world.settlement content.volume</code></td></tr>
 <tr><td><code>RI-DLG03</code></td><td>Greetings and rumours — disposition banding and the diegetic quest-discovery mechanism</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td><span class="ok">yes</span></td><td><code>dialogue.greeting dialogue.rumour dialogue.disposition quests.discovery world.reactivity</code></td></tr>
@@ -84,6 +86,9 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>RI-LOR01</code></td><td>Black Marsh and Argonian canon dossier — what we may not contradict, and where we must invent</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>canonical-recall</td><td>&mdash;</td><td><code>lore.canon lore.hist lore.factions lore.history world.settlements quests.main quests.factions dialogue.claims books.content</code></td></tr>
 <tr><td><code>RI-LOR02</code></td><td>Era selection and the political brief — Black Marsh, 3E 427</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>lore.era lore.factions lore.politics quests.main quests.factions quests.escalation dialogue.rumours world.settlements world.travel</code></td></tr>
 <tr><td><code>RI-LOR03</code></td><td>The structure of an Elder Scrolls in-world book — length stats, taxonomy, and six full exemplars</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>canonical-recall</td><td><span class="ok">yes</span></td><td><code>books.content books.length books.taxonomy lore.canon dialogue.claims quests.lorehooks ui.readables</code></td></tr>
+<tr><td><code>RI-LOR04</code></td><td>Naming and language — Jel phonology, the lexicon, and the naming conventions of every culture in the marsh</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>lore.language lore.names world.placenames world.settlements npc.names items.names creatures.names dialogue.voice books.content</code></td></tr>
+<tr><td><code>RI-MTH01</code></td><td>The harness API surface — what a critic can and cannot measure</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>engine.harness engine.loop engine.input engine.state engine.camera engine.build</code></td></tr>
+<tr><td><code>RI-MTH02</code></td><td>Determinism and reproducibility as a judged property</td><td>trace</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>engine.loop engine.rng engine.physics engine.animation engine.ai engine.state</code></td></tr>
 <tr><td><code>RI-PRG01</code></td><td>The soul cost curve — souls-to-next-level, L1 to L140</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td>&mdash;</td><td><code>progression.level_cost progression.levelup_ui economy.souls</code></td></tr>
 <tr><td><code>RI-PRG02</code></td><td>The stat sheet — ten attributes, soft caps, and scaling grades</td><td>number</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>progression.attributes progression.levelup_ui progression.scaling combat.damage_formula</code></td></tr>
 <tr><td><code>RI-PRG03</code></td><td>Skills that improve by use — the 19 skills, their rates, and their gates</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>progression.skills progression.scaling world.locks world.alchemy dialogue.persuasion economy.barter</code></td></tr>
@@ -107,11 +112,14 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>RI-VIS05</code></td><td>Art direction — the Morrowind visual language and its Black Marsh transposition</td><td>image</td><td><span class="tag morrowind">morrowind</span></td><td>canonical-recall</td><td><span class="ok">yes</span></td><td><code>visual.artdirection.palette visual.artdirection.silhouette visual.artdirection.architecture visual.artdirection.flora visual.artdirection.creature visual.artdirection.composition visual.artdirection.materials visual.artdirection.ui</code></td></tr>
 <tr><td><code>RI-VIS06</code></td><td>The blind comparison protocol — two protocols, one per side of the bifurcation</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>visual.process.blindtest visual.process.judgement visual.artdirection visual.renderer</code></td></tr>
 <tr><td><code>RI-VIS07</code></td><td>The &quot;could this be Skyrim?&quot; test — the art-direction failure detector</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>visual.artdirection.mood visual.artdirection.silhouette visual.artdirection.palette visual.artdirection.architecture visual.artdirection.flora visual.artdirection.creature</code></td></tr>
+<tr><td><code>RI-VIS08</code></td><td>Character, creature and animation fidelity — model quality, silhouette readability, and the tells of bad Three.js character work</td><td>number</td><td><span class="tag modern-fidelity">modern-fidelity</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>visual.character.model visual.character.materials visual.character.silhouette visual.animation.smoothness visual.animation.blending visual.animation.rootmotion visual.animation.ik visual.animation.attachment visual.creature.readability</code></td></tr>
 <tr><td><code>RI-WLD01</code></td><td>World scale, coordinate system and the one-hour traversal budget</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>world.scale world.terrain world.roads world.placement world.traversal movement.speed</code></td></tr>
 <tr><td><code>RI-WLD02</code></td><td>Density per minute of travel — the headline world metric</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>world.density world.placement world.poi world.encounters world.sightlines</code></td></tr>
 <tr><td><code>RI-WLD03</code></td><td>Settlement anatomy — what makes a Morrowind town, and the per-settlement allocation</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>world.settlements world.interiors world.architecture npc.population npc.services quest.hubs</code></td></tr>
 <tr><td><code>RI-WLD04</code></td><td>Region identity and biome differentiation — the unlabeled screenshot test</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>world.regions world.biomes world.terrain world.flora world.audio world.weather combat.difficulty-gating</code></td></tr>
 <tr><td><code>RI-WLD05</code></td><td>The strangeness bar — thirty things that exist nowhere else</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>world.strangeness world.flora world.fauna world.architecture visual.art-direction world.systems</code></td></tr>
+<tr><td><code>RI-WLD06</code></td><td>Navigation without markers — landmarks, signposts and prose directions</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>world.navigation world.sightlines world.roads world.signage quest.journal dialogue.directions ui.hud</code></td></tr>
+<tr><td><code>RI-WLD07</code></td><td>Verticality, interiors, and the Souls-loop / Morrowind-cave seam</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>world.interiors world.dungeons world.verticality world.terrain combat.level-design progression.bonfires</code></td></tr>
 </table>
 
 <h2>Verdicts</h2>

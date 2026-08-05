@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-05T22:48:22Z
+Generated: 2026-08-05T22:48:35Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -25,12 +25,12 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 
 ## 1. Coverage at a glance
 
-- Canonical subsystem paths: **196**
+- Canonical subsystem paths: **198**
 - Reference items found: **55** across 8 area(s)
-- Subsystems with at least one judging reference item: **152**
+- Subsystems with at least one judging reference item: **154**
 - Subsystems judged by a doctrine document instead: **7** (see §3b)
 - **Corpus holes (no judging item): 37** (19%)
-- Front-matter problems: 8 error(s), 0 warning(s)
+- Front-matter problems: 0 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -39,7 +39,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 | `quests.*` | 22 | 19 | 0 | 3 |
 | `dialogue.*` | 14 | 12 | 0 | 2 |
 | `journal.*` | 4 | 4 | 0 | 0 |
-| `world.*` | 29 | 24 | 0 | 5 |
+| `world.*` | 31 | 26 | 0 | 5 |
 | `lore.*` | 10 | 7 | 0 | 3 |
 | `render.*` | 25 | 24 | 0 | 1 |
 | `audio.*` | 4 | 1 | 0 | 3 |
@@ -95,7 +95,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `combat.enemy.punish` | Punish windows both ways: enemy recovery, player heal-read | souls | [RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md) | `critic.combat` | in-item M1–M8 (8 checks)<br>in-item M1–M11 (11 checks) |
 | `combat.enemy.leash` | De-aggro, leash return, world reset, no invulnerable walk-home | souls | [RI-AI01](../../corpus/10-combat/RI-AI01-aggro-approach-spacing.md) | `critic.combat` | in-item M1–M9 (9 checks) |
 | `combat.encounter.grouping` | Multi-enemy token arbitration; no gang-pile, no frozen queue | souls | [RI-AI01](../../corpus/10-combat/RI-AI01-aggro-approach-spacing.md)<br>[RI-AI05](../../corpus/10-combat/RI-AI05-roster-archetypes.md)<br>[RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md) | `critic.combat` | in-item M1–M9 (9 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M10 (10 checks) |
-| `combat.encounter.placement` | Hand-placed encounter composition and ambush legibility | souls | [RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-PRG06](../../corpus/20-progression/RI-PRG06-souls-yield-and-pace.md)<br>[RI-WLD02](../../corpus/50-world/RI-WLD02-density-per-minute.md) | `critic.combat` | in-item M1–M10 (10 checks)<br>in-item procedure (kind: number); corpus/80-methods/sim-souls-yield.md<br>in-item M6–M11 (6 checks) |
+| `combat.encounter.placement` | Hand-placed encounter composition and ambush legibility | souls | [RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-PRG06](../../corpus/20-progression/RI-PRG06-souls-yield-and-pace.md)<br>[RI-WLD02](../../corpus/50-world/RI-WLD02-density-per-minute.md)<br>[RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.combat` | in-item M1–M10 (10 checks)<br>in-item procedure (kind: number); corpus/80-methods/sim-souls-yield.md<br>in-item M6–M11 (6 checks)<br>in-item M33–M39 (7 checks) |
 | `combat.boss.phases` | Boss phase transitions and moveset expansion | souls | [RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md) | `critic.combat` | in-item M1–M11 (11 checks) |
 | `combat.boss.arena` | Boss arena shape, fog gate, retry loop | souls | [RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md) | `critic.combat` | in-item M1–M11 (11 checks) |
 | `combat.heal.charges` | Estus-equivalent: finite charges, animation commitment, refill at rest | souls | [RI-PRG04](../../corpus/20-progression/RI-PRG04-hearth-and-death.md) | `critic.combat` | in-item procedure (kind: structure) |
@@ -122,7 +122,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `progression.gold.economy` | Gold is the only currency: merchants, bribes, training, travel, repairs | morrowind | [RI-PRG05](../../corpus/20-progression/RI-PRG05-gold-economy.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.progression` | in-item procedure (kind: number)<br>in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
 | `progression.merchant.barter` | Merchant gold pools, barter, disposition-affected prices | morrowind | [RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md)<br>[RI-PRG05](../../corpus/20-progression/RI-PRG05-gold-economy.md) | `critic.progression` | in-item procedure (kind: number)<br>in-item procedure (kind: number) |
 | `progression.bonfire.function` | What resting does and does not do (checkpoint + level-up, never teleport) | split | [RI-PRG04](../../corpus/20-progression/RI-PRG04-hearth-and-death.md) | `critic.progression` | in-item procedure (kind: structure) |
-| `progression.bonfire.placement` | Spacing and siting of rest points relative to danger | souls | [RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md) | `critic.progression` | in-item M1–M10 (10 checks) |
+| `progression.bonfire.placement` | Spacing and siting of rest points relative to danger | souls | [RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.progression` | in-item M1–M10 (10 checks)<br>in-item M33–M39 (7 checks) |
 | `progression.equipment.upgrade` | Weapon upgrade paths and materials | souls | [RI-PRG08](../../corpus/20-progression/RI-PRG08-upgrade-path.md) | `critic.progression` | in-item procedure (kind: number) |
 | `progression.equipment.encumbrance` | Load / equip burden and its movement consequences | split | [RI-PRG07](../../corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) | `critic.progression` | in-item procedure (kind: number) |
 | `progression.inventory.model` | Inventory breadth, item weight, containers, repair | morrowind | [RI-QST08](../../corpus/30-quests/RI-QST08-reward-design.md) | `critic.progression` | in-item procedure (kind: number) |
@@ -200,6 +200,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `world.settlement.anatomy` | What a settlement contains and how it is laid out | morrowind | [RI-QST07](../../corpus/30-quests/RI-QST07-side-quest-texture.md)<br>[RI-DLG02](../../corpus/40-dialogue/RI-DLG02-words-per-settlement.md)<br>[RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md)<br>[RI-LOR01](../../corpus/60-lore/RI-LOR01-canon-dossier.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md)<br>[RI-LOR04](../../corpus/60-lore/RI-LOR04-naming-and-language.md) | `critic.world` | in-item procedure (kind: number)<br>in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs, tools/corpus/dump-npcs.mjs<br>in-item M12–M16 (5 checks)<br>in-item procedure (kind: text); corpus/80-methods/canon-check.py<br>in-item procedure (kind: text)<br>in-item procedure (kind: structure); corpus/80-methods/jel-phonotactics.py |
 | `world.interior.named` | Named interiors with owners, contents, and reasons to exist | morrowind | [RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md)<br>[RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.world` | in-item M12–M16 (5 checks)<br>in-item M33–M39 (7 checks) |
 | `world.interior.continuity` | Interiors match their exteriors in size, orientation, and light | morrowind | **— HOLE —** | `critic.world` | _none_ |
+| `world.dungeon.design` | Dungeon and interior layout: loops, shortcuts, unlocks, and dead ends | souls | [RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.world` | in-item M33–M39 (7 checks) |
 | `world.traversal.time` | Traversal time budgets between named places | morrowind | [RI-PRG07](../../corpus/20-progression/RI-PRG07-equip-load-encumbrance.md)<br>[RI-WLD01](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) | `critic.world` | in-item procedure (kind: number)<br>in-item M1–M5 (5 checks); corpus/80-methods/M-WLD-walkprobe.md |
 | `world.traversal.transport` | In-fiction transport network only; no warp-to-pin (seam S7) | morrowind | [RI-PRG05](../../corpus/20-progression/RI-PRG05-gold-economy.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) | `critic.world` | in-item procedure (kind: number)<br>in-item procedure (kind: text) |
 | `world.wayfinding.directions` | Getting there from prose directions actually works | morrowind | [RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md)<br>[RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.world` | in-item procedure (kind: text); tools/corpus/dump-journal.mjs<br>in-item M27–M32 (6 checks) |
@@ -216,6 +217,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `world.traversal.roads` | Roads, boardwalks and paths as the readable skeleton of the map | morrowind | [RI-WLD01](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md)<br>[RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) | `critic.world` | in-item M1–M5 (5 checks); corpus/80-methods/M-WLD-walkprobe.md<br>in-item M27–M32 (6 checks) |
 | `world.traversal.locomotion` | Player movement speeds out of the fight, which set every traversal budget | morrowind | [RI-WLD01](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) | `critic.world` | in-item M1–M5 (5 checks); corpus/80-methods/M-WLD-walkprobe.md |
 | `world.terrain.form` | Terrain shape, elevation, and how it channels movement | morrowind | [RI-WLD01](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md)<br>[RI-WLD04](../../corpus/50-world/RI-WLD04-region-identity.md)<br>[RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.world` | in-item M1–M5 (5 checks); corpus/80-methods/M-WLD-walkprobe.md<br>in-item M17–M21 (5 checks)<br>in-item M33–M39 (7 checks) |
+| `world.verticality.layout` | Vertical level design: what you can see, climb, fall from, and drop into | souls | [RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.world` | in-item M33–M39 (7 checks) |
 | `world.time.daynight` | Time of day, its length, and what actually changes with it | morrowind | [RI-PRG04](../../corpus/20-progression/RI-PRG04-hearth-and-death.md) | `critic.world` | in-item procedure (kind: structure) |
 | `world.property.ownership` | Owned things, theft, witnesses, and consequence | morrowind | [RI-QST08](../../corpus/30-quests/RI-QST08-reward-design.md) | `critic.world` | in-item procedure (kind: number) |
 | `world.locks.security` | Locks, security ratings, picking, and the alternatives to picking | morrowind | [RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md) | `critic.world` | in-item procedure (kind: number) |
@@ -320,7 +322,7 @@ Subsystem paths with **no** reference item judging them. Per CORPUS-CONTRACT §4
 builder must not start on one of these. Per §5, a critic that needs one writes the
 item rather than guessing, then regenerates this index.
 
-**37 of 196 paths are holes.**
+**37 of 198 paths are holes.**
 
 | Subsystem path | What it means | Arb | Expected area | Critic |
 |---|---|---|---|---|
@@ -389,7 +391,7 @@ front-matter should be corrected to the canonical spelling when the item is next
 touched. **New reference items must use canonical paths only** — aliases are a
 migration aid, not a second vocabulary.
 
-**206 legacy spellings in use.**
+**214 legacy spellings in use.**
 
 | Legacy path | Canonical path | Used by |
 |---|---|---|
@@ -414,6 +416,7 @@ migration aid, not a second vocabulary.
 | `combat.hyperarmour` | `combat.poise.player` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
 | `combat.input.direction` | `combat.dodge.directional` | RI-CMB06 (corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) |
 | `combat.invulnerability` | `combat.dodge.iframes` | RI-CMB01 (corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md) |
+| `combat.level-design` | `combat.encounter.placement` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
 | `combat.lockon` | `combat.lockon.target` | RI-CMB06 (corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) |
 | `combat.parry` | `combat.block.parry` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
 | `combat.player.attack` | `combat.attack.moveset` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md) |
@@ -452,11 +455,15 @@ migration aid, not a second vocabulary.
 | `economy.merchants` | `progression.merchant.barter` | RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md) |
 | `economy.smithing` | `progression.equipment.upgrade` | RI-PRG08 (corpus/20-progression/RI-PRG08-upgrade-path.md) |
 | `economy.souls` | `progression.souls.economy` | RI-PRG01 (corpus/20-progression/RI-PRG01-soul-cost-curve.md) |
+| `engine.ai` | `platform.determinism.harness` | RI-MTH02 (corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
+| `engine.animation` | `platform.determinism.harness` | RI-MTH02 (corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
 | `engine.build` | `platform.load.streaming` | RI-MTH01 (corpus/80-methods/RI-MTH01-harness-api-surface.md) |
 | `engine.camera` | `combat.camera.behaviour` | RI-MTH01 (corpus/80-methods/RI-MTH01-harness-api-surface.md) |
 | `engine.harness` | `platform.determinism.harness` | RI-MTH01 (corpus/80-methods/RI-MTH01-harness-api-surface.md) |
 | `engine.input` | `platform.input.pipeline` | RI-MTH01 (corpus/80-methods/RI-MTH01-harness-api-surface.md) |
 | `engine.loop` | `platform.determinism.harness` | RI-MTH01 (corpus/80-methods/RI-MTH01-harness-api-surface.md), RI-MTH02 (corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
+| `engine.physics` | `platform.determinism.harness` | RI-MTH02 (corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
+| `engine.rng` | `platform.determinism.harness` | RI-MTH02 (corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
 | `engine.state` | `platform.save.persistence` | RI-MTH01 (corpus/80-methods/RI-MTH01-harness-api-surface.md), RI-MTH02 (corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
 | `items.names` | `lore.naming.conventions` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `lore.canon` | `lore.canon.registry` | RI-LOR01 (corpus/60-lore/RI-LOR01-canon-dossier.md), RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
@@ -474,6 +481,7 @@ migration aid, not a second vocabulary.
 | `npc.reaction` | `dialogue.disposition.model` | RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
 | `npc.services` | `dialogue.service.merchant` | RI-WLD03 (corpus/50-world/RI-WLD03-settlement-anatomy.md) |
 | `progression.attributes` | `progression.level.attributes` | RI-PRG02 (corpus/20-progression/RI-PRG02-stat-sheet.md) |
+| `progression.bonfires` | `progression.bonfire.placement` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
 | `progression.checkpoint` | `progression.bonfire.function` | RI-PRG04 (corpus/20-progression/RI-PRG04-hearth-and-death.md) |
 | `progression.death` | `combat.death.corpserun` | RI-PRG04 (corpus/20-progression/RI-PRG04-hearth-and-death.md) |
 | `progression.equip_load` | `progression.equipment.encumbrance` | RI-PRG07 (corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) |
@@ -566,6 +574,7 @@ migration aid, not a second vocabulary.
 | `world.audio` | `audio.ambience.region` | RI-WLD04 (corpus/50-world/RI-WLD04-region-identity.md) |
 | `world.biomes` | `world.region.identity` | RI-WLD04 (corpus/50-world/RI-WLD04-region-identity.md) |
 | `world.density` | `world.density.handplacement` | RI-WLD02 (corpus/50-world/RI-WLD02-density-per-minute.md) |
+| `world.dungeons` | `world.dungeon.design` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
 | `world.encounters` | `combat.encounter.placement` | RI-WLD02 (corpus/50-world/RI-WLD02-density-per-minute.md) |
 | `world.factions` | `world.faction.presence` | RI-QST03 (corpus/30-quests/RI-QST03-faction-gating.md) |
 | `world.fauna` | `world.strangeness.fauna` | RI-WLD05 (corpus/50-world/RI-WLD05-strangeness-bar.md) |
@@ -597,6 +606,7 @@ migration aid, not a second vocabulary.
 | `world.transport` | `world.traversal.transport` | RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md) |
 | `world.travel` | `world.traversal.transport` | RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
 | `world.traversal` | `world.traversal.time` | RI-PRG07 (corpus/20-progression/RI-PRG07-equip-load-encumbrance.md), RI-WLD01 (corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) |
+| `world.verticality` | `world.verticality.layout` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
 | `world.wayfinding` | `world.wayfinding.directions` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md) |
 | `world.weather` | `world.weather.systems` | RI-WLD04 (corpus/50-world/RI-WLD04-region-identity.md) |
 
@@ -606,16 +616,7 @@ Paths claimed by an item that are neither canonical nor aliased. An unresolved p
 means a critic would be judging something no builder was ever told to address. Fix
 the item, or append the path to `subsystems.json`, then regenerate.
 
-| File | Problem |
-|---|---|
-| `corpus/50-world/RI-WLD07-verticality-and-interiors.md` | judges: "world.dungeons" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| `corpus/50-world/RI-WLD07-verticality-and-interiors.md` | judges: "world.verticality" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| `corpus/50-world/RI-WLD07-verticality-and-interiors.md` | judges: "combat.level-design" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| `corpus/50-world/RI-WLD07-verticality-and-interiors.md` | judges: "progression.bonfires" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` | judges: "engine.rng" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` | judges: "engine.physics" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` | judges: "engine.animation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` | judges: "engine.ai" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+_None._
 
 ---
 
@@ -663,7 +664,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | RI-WLD04 | Region identity and biome differentiation — the unlabeled screenshot test | 50-world | structure | morrowind | constructed | high | yes | `world.region.identity` `world.terrain.form` `world.strangeness.flora` `audio.ambience.region` `world.weather.systems` `combat.difficulty.lethality` | [corpus/50-world/RI-WLD04-region-identity.md](../../corpus/50-world/RI-WLD04-region-identity.md) |
 | RI-WLD05 | The strangeness bar — thirty things that exist nowhere else | 50-world | structure | morrowind | constructed | high | yes | `world.strangeness.budget` `world.strangeness.flora` `world.strangeness.fauna` `render.art.architecture` `render.art.palette` `coherence.systems.composition` | [corpus/50-world/RI-WLD05-strangeness-bar.md](../../corpus/50-world/RI-WLD05-strangeness-bar.md) |
 | RI-WLD06 | Navigation without markers — landmarks, signposts and prose directions | 50-world | structure | morrowind | constructed | high | yes | `world.wayfinding.directions` `world.map.legibility` `world.traversal.roads` `journal.entry.voice` `journal.entry.directions` `ui.hud.combat` | [corpus/50-world/RI-WLD06-navigation-without-markers.md](../../corpus/50-world/RI-WLD06-navigation-without-markers.md) |
-| RI-WLD07 | Verticality, interiors, and the Souls-loop / Morrowind-cave seam | 50-world | structure | neutral | constructed | high | no | `world.interior.named` `world.terrain.form` | [corpus/50-world/RI-WLD07-verticality-and-interiors.md](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
+| RI-WLD07 | Verticality, interiors, and the Souls-loop / Morrowind-cave seam | 50-world | structure | neutral | constructed | high | no | `world.interior.named` `world.dungeon.design` `world.verticality.layout` `world.terrain.form` `combat.encounter.placement` `progression.bonfire.placement` | [corpus/50-world/RI-WLD07-verticality-and-interiors.md](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
 | RI-LOR01 | Black Marsh and Argonian canon dossier — what we may not contradict, and where we must invent | 60-lore | text | morrowind | canonical-recall | medium | no | `lore.canon.registry` `lore.religion.hist` `lore.canon.factions` `lore.canon.history` `world.settlement.anatomy` `quests.mainline.prophecy` `quests.faction.joining` `dialogue.lore.vector` `lore.book.structure` | [corpus/60-lore/RI-LOR01-canon-dossier.md](../../corpus/60-lore/RI-LOR01-canon-dossier.md) |
 | RI-LOR02 | Era selection and the political brief — Black Marsh, 3E 427 | 60-lore | text | morrowind | constructed | high | no | `lore.canon.history` `lore.canon.factions` `quests.mainline.prophecy` `quests.faction.joining` `quests.faction.escalation` `dialogue.rumour.distribution` `world.settlement.anatomy` `world.traversal.transport` | [corpus/60-lore/RI-LOR02-era-and-political-brief.md](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
 | RI-LOR03 | The structure of an Elder Scrolls in-world book — length stats, taxonomy, and six full exemplars | 60-lore | text | morrowind | canonical-recall | medium | yes | `lore.book.structure` `lore.canon.registry` `dialogue.lore.vector` `quests.lore.hooks` `ui.menu.books` | [corpus/60-lore/RI-LOR03-in-world-book-structure.md](../../corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
@@ -683,16 +684,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 
 ## 6. Front-matter and contract problems
 
-| Level | File | Problem |
-|---|---|---|
-| ERROR | `corpus/50-world/RI-WLD07-verticality-and-interiors.md` | judges: "world.dungeons" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| ERROR | `corpus/50-world/RI-WLD07-verticality-and-interiors.md` | judges: "world.verticality" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| ERROR | `corpus/50-world/RI-WLD07-verticality-and-interiors.md` | judges: "combat.level-design" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| ERROR | `corpus/50-world/RI-WLD07-verticality-and-interiors.md` | judges: "progression.bonfires" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| ERROR | `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` | judges: "engine.rng" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| ERROR | `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` | judges: "engine.physics" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| ERROR | `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` | judges: "engine.animation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
-| ERROR | `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` | judges: "engine.ai" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+_None. Every reference item parses and declares canonical paths._
 
 ---
 
