@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-05T22:48:35Z
+Generated: 2026-08-05T22:49:36Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -25,19 +25,19 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 
 ## 1. Coverage at a glance
 
-- Canonical subsystem paths: **198**
-- Reference items found: **55** across 8 area(s)
-- Subsystems with at least one judging reference item: **154**
+- Canonical subsystem paths: **200**
+- Reference items found: **58** across 8 area(s)
+- Subsystems with at least one judging reference item: **158**
 - Subsystems judged by a doctrine document instead: **7** (see §3b)
-- **Corpus holes (no judging item): 37** (19%)
+- **Corpus holes (no judging item): 35** (18%)
 - Front-matter problems: 0 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
-| `combat.*` | 48 | 37 | 0 | 11 |
+| `combat.*` | 48 | 38 | 0 | 10 |
 | `progression.*` | 18 | 15 | 0 | 3 |
 | `quests.*` | 22 | 19 | 0 | 3 |
-| `dialogue.*` | 14 | 12 | 0 | 2 |
+| `dialogue.*` | 14 | 13 | 0 | 1 |
 | `journal.*` | 4 | 4 | 0 | 0 |
 | `world.*` | 31 | 26 | 0 | 5 |
 | `lore.*` | 10 | 7 | 0 | 3 |
@@ -46,6 +46,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 | `ui.*` | 8 | 4 | 0 | 4 |
 | `platform.*` | 6 | 4 | 0 | 2 |
 | `coherence.*` | 8 | 1 | 7 | 0 |
+| `process.*` | 2 | 2 | 0 | 0 |
 
 ---
 
@@ -63,22 +64,22 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `combat.frames.timing` | Startup / active / recovery frame counts per attack | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs |
 | `combat.frames.cancel` | What may cancel what, and when (roll-cancel, no free animation cancels) | souls | **— HOLE —** | `critic.combat` | _none_ |
 | `combat.dodge.iframes` | Roll invulnerability window measured in frames at 60Hz | souls | [RI-CMB01](../../corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb01-roll-iframes.mjs |
-| `combat.dodge.directional` | Directional roll semantics under lock-on, including backstep | souls | [RI-CMB01](../../corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md)<br>[RI-CMB06](../../corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md)<br>[RI-PRG07](../../corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb01-roll-iframes.mjs<br>in-item M1–M8 (8 checks); corpus/80-methods/m-cmb06-lockon.mjs<br>in-item procedure (kind: number) |
+| `combat.dodge.directional` | Directional roll semantics under lock-on, including backstep | souls | [RI-CMB01](../../corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md)<br>[RI-CMB06](../../corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md)<br>[RI-PRG07](../../corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb01-roll-iframes.mjs<br>in-item M1–M8 (8 checks); corpus/80-methods/m-cmb06-lockon.mjs<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs<br>in-item procedure (kind: number) |
 | `combat.dodge.recovery` | Post-roll recovery and roll-spam punishment | souls | **— HOLE —** | `critic.combat` | _none_ |
-| `combat.stamina.costs` | Stamina cost table per action | souls | [RI-CMB03](../../corpus/10-combat/RI-CMB03-stamina-economy.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb03-stamina.mjs |
+| `combat.stamina.costs` | Stamina cost table per action | souls | [RI-CMB03](../../corpus/10-combat/RI-CMB03-stamina-economy.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb03-stamina.mjs<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs |
 | `combat.stamina.regen` | Regen rate and post-spend regen delay | souls | [RI-CMB03](../../corpus/10-combat/RI-CMB03-stamina-economy.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb03-stamina.mjs |
 | `combat.stamina.block` | Guard stamina drain, guard break, stability | souls | [RI-CMB03](../../corpus/10-combat/RI-CMB03-stamina-economy.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb03-stamina.mjs |
 | `combat.stamina.exhaustion` | Zero-stamina state and its punish window | souls | **— HOLE —** | `critic.combat` | _none_ |
 | `combat.hitbox.sweep` | Weapon hit volumes swept along the arc across the active window | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs |
 | `combat.hitbox.hurtbox` | Hurtboxes bound to and moving with animated bones | souls | [RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs |
-| `combat.hitbox.resolution` | Deterministic geometric hit resolution — NO to-hit roll (seam S1) | split | [RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs |
+| `combat.hitbox.resolution` | Deterministic geometric hit resolution — NO to-hit roll (seam S1) | split | [RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs |
 | `combat.damage.model` | Damage formula, defences, absorption | souls | [RI-PRG02](../../corpus/20-progression/RI-PRG02-stat-sheet.md)<br>[RI-PRG08](../../corpus/20-progression/RI-PRG08-upgrade-path.md) | `critic.combat` | in-item procedure (kind: number)<br>in-item procedure (kind: number) |
 | `combat.damage.scaling` | How stats and skills scale damage (seam S3: scaling, never to-hit) | split | [RI-PRG02](../../corpus/20-progression/RI-PRG02-stat-sheet.md)<br>[RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md) | `critic.combat` | in-item procedure (kind: number)<br>in-item procedure (kind: number) |
 | `combat.poise.player` | Player poise / hyperarmour and stagger-out | souls | [RI-CMB05](../../corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) | `critic.combat` | in-item M1–M8 (8 checks); corpus/80-methods/m-cmb05-poise.mjs |
 | `combat.poise.enemy` | Enemy poise breaking, stagger, critical-hit opening | souls | [RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-AI05](../../corpus/10-combat/RI-AI05-roster-archetypes.md)<br>[RI-CMB05](../../corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) | `critic.combat` | in-item M1–M8 (8 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M8 (8 checks); corpus/80-methods/m-cmb05-poise.mjs |
 | `combat.block.guard` | Blocking, chip damage, guard angle | souls | [RI-CMB03](../../corpus/10-combat/RI-CMB03-stamina-economy.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb03-stamina.mjs |
 | `combat.block.parry` | Parry window, riposte, backstab | souls | [RI-CMB05](../../corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) | `critic.combat` | in-item M1–M8 (8 checks); corpus/80-methods/m-cmb05-poise.mjs |
-| `combat.attack.moveset` | Per-weapon-class moveset shape (R1/R2 chains, running, rolling) | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI04](../../corpus/10-combat/RI-AI04-attack-strings-and-delays.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M10 (10 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs |
+| `combat.attack.moveset` | Per-weapon-class moveset shape (R1/R2 chains, running, rolling) | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI04](../../corpus/10-combat/RI-AI04-attack-strings-and-delays.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M10 (10 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs |
 | `combat.attack.commitment` | Root-motion-authoritative committed attacks; no instant turn during a swing | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-AI04](../../corpus/10-combat/RI-AI04-attack-strings-and-delays.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M10 (10 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs |
 | `combat.attack.charge` | Charged heavy attacks and their risk/reward | souls | **— HOLE —** | `critic.combat` | _none_ |
 | `combat.attack.tracking` | How much an attack may turn during startup, and not at all after | souls | [RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-CMB06](../../corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) | `critic.combat` | in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item M1–M8 (8 checks); corpus/80-methods/m-cmb06-lockon.mjs |
@@ -92,9 +93,9 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `combat.enemy.statemachine` | Enemy AI states and legal transitions | souls | [RI-AI01](../../corpus/10-combat/RI-AI01-aggro-approach-spacing.md)<br>[RI-AI04](../../corpus/10-combat/RI-AI04-attack-strings-and-delays.md)<br>[RI-AI05](../../corpus/10-combat/RI-AI05-roster-archetypes.md) | `critic.combat` | in-item M1–M9 (9 checks)<br>in-item M1–M10 (10 checks)<br>in-item M1–M8 (8 checks) |
 | `combat.enemy.movement` | Approach, spacing bands, strafing, gap closing | souls | [RI-AI01](../../corpus/10-combat/RI-AI01-aggro-approach-spacing.md) | `critic.combat` | in-item M1–M9 (9 checks) |
 | `combat.enemy.telegraph` | Readable windups; no untelegraphed instant attacks | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI04](../../corpus/10-combat/RI-AI04-attack-strings-and-delays.md)<br>[RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M10 (10 checks)<br>in-item M1–M11 (11 checks) |
-| `combat.enemy.punish` | Punish windows both ways: enemy recovery, player heal-read | souls | [RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md) | `critic.combat` | in-item M1–M8 (8 checks)<br>in-item M1–M11 (11 checks) |
+| `combat.enemy.punish` | Punish windows both ways: enemy recovery, player heal-read | souls | [RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) | `critic.combat` | in-item M1–M8 (8 checks)<br>in-item M1–M11 (11 checks)<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs |
 | `combat.enemy.leash` | De-aggro, leash return, world reset, no invulnerable walk-home | souls | [RI-AI01](../../corpus/10-combat/RI-AI01-aggro-approach-spacing.md) | `critic.combat` | in-item M1–M9 (9 checks) |
-| `combat.encounter.grouping` | Multi-enemy token arbitration; no gang-pile, no frozen queue | souls | [RI-AI01](../../corpus/10-combat/RI-AI01-aggro-approach-spacing.md)<br>[RI-AI05](../../corpus/10-combat/RI-AI05-roster-archetypes.md)<br>[RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md) | `critic.combat` | in-item M1–M9 (9 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M10 (10 checks) |
+| `combat.encounter.grouping` | Multi-enemy token arbitration; no gang-pile, no frozen queue | souls | [RI-AI01](../../corpus/10-combat/RI-AI01-aggro-approach-spacing.md)<br>[RI-AI05](../../corpus/10-combat/RI-AI05-roster-archetypes.md)<br>[RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) | `critic.combat` | in-item M1–M9 (9 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M10 (10 checks)<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs |
 | `combat.encounter.placement` | Hand-placed encounter composition and ambush legibility | souls | [RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-PRG06](../../corpus/20-progression/RI-PRG06-souls-yield-and-pace.md)<br>[RI-WLD02](../../corpus/50-world/RI-WLD02-density-per-minute.md)<br>[RI-WLD07](../../corpus/50-world/RI-WLD07-verticality-and-interiors.md) | `critic.combat` | in-item M1–M10 (10 checks)<br>in-item procedure (kind: number); corpus/80-methods/sim-souls-yield.md<br>in-item M6–M11 (6 checks)<br>in-item M33–M39 (7 checks) |
 | `combat.boss.phases` | Boss phase transitions and moveset expansion | souls | [RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md) | `critic.combat` | in-item M1–M11 (11 checks) |
 | `combat.boss.arena` | Boss arena shape, fog gate, retry loop | souls | [RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md) | `critic.combat` | in-item M1–M11 (11 checks) |
@@ -105,7 +106,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `combat.death.worldreset` | Rest/death resets ordinary enemies; named actors never respawn (seam S5) | split | [RI-AI06](../../corpus/10-combat/RI-AI06-boss-design.md)<br>[RI-AI07](../../corpus/10-combat/RI-AI07-encounter-composition.md)<br>[RI-PRG04](../../corpus/20-progression/RI-PRG04-hearth-and-death.md) | `critic.combat` | in-item M1–M11 (11 checks)<br>in-item M1–M10 (10 checks)<br>in-item procedure (kind: structure) |
 | `combat.input.buffer` | Input buffering window and queue semantics | souls | [RI-CMB01](../../corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb01-roll-iframes.mjs<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs |
 | `combat.input.latency` | Press-to-first-active-frame latency | souls | **— HOLE —** | `critic.combat` | _none_ |
-| `combat.feedback.hitstop` | Hitstop, impact vfx/sfx, damage legibility | souls | **— HOLE —** | `critic.combat` | _none_ |
+| `combat.feedback.hitstop` | Hitstop, impact vfx/sfx, damage legibility | souls | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.combat` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
 | `combat.difficulty.lethality` | Regions gated by lethality; NO level-scaling to the player (seam S9) | souls | [RI-AI05](../../corpus/10-combat/RI-AI05-roster-archetypes.md)<br>[RI-WLD04](../../corpus/50-world/RI-WLD04-region-identity.md) | `critic.combat` | in-item M1–M8 (8 checks)<br>in-item M17–M21 (5 checks) |
 | `combat.pause.policy` | World does not pause during combat; inventory is not a safe haven (seam S14) | souls | **— HOLE —** | `critic.combat` | _none_ |
 
@@ -136,7 +137,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
-| `quests.structure.stages` | Multi-stage quests with real intermediate state | morrowind | [RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md)<br>[RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: text); tools/corpus/dump-journal.mjs |
+| `quests.structure.stages` | Multi-stage quests with real intermediate state | morrowind | [RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md)<br>[RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: text); tools/corpus/dump-journal.mjs<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
 | `quests.structure.branching` | Branch points that survive to different endings, not cosmetic choice | morrowind | [RI-QST02](../../corpus/30-quests/RI-QST02-deceit-patterns.md)<br>[RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: structure) |
 | `quests.structure.deceit` | Quest-givers who lie, omit, or use the player | morrowind | [RI-QST02](../../corpus/30-quests/RI-QST02-deceit-patterns.md) | `critic.quests` | in-item procedure (kind: structure) |
 | `quests.resolution.noncombat` | Quests resolvable by talk, bribe, sneak, theft, or lore knowledge | morrowind | [RI-QST05](../../corpus/30-quests/RI-QST05-non-combat-resolution.md) | `critic.quests` | in-item procedure (kind: number) |
@@ -169,8 +170,8 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `dialogue.disposition.model` | Disposition as a real number with real consequences | morrowind | [RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
 | `dialogue.persuasion.mechanics` | Admire / intimidate / taunt / bribe and their risks | morrowind | [RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md)<br>[RI-QST05](../../corpus/30-quests/RI-QST05-non-combat-resolution.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: number)<br>in-item procedure (kind: number)<br>in-item procedure (kind: number); tools/corpus/disposition-oracle.mjs, tools/corpus/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
 | `dialogue.rumour.distribution` | Rumours differ per town and per class, and point at real content | morrowind | [RI-QST07](../../corpus/30-quests/RI-QST07-side-quest-texture.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) | `critic.dialogue` | in-item procedure (kind: number)<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: text) |
-| `dialogue.voice.register` | Prose quality and register: does it read like Morrowind or like filler | morrowind | [RI-LOR04](../../corpus/60-lore/RI-LOR04-naming-and-language.md) | `critic.dialogue` | in-item procedure (kind: structure); corpus/80-methods/jel-phonotactics.py |
-| `dialogue.npc.identity` | An NPC reads as a specific person with a specific position | morrowind | **— HOLE —** | `critic.dialogue` | _none_ |
+| `dialogue.voice.register` | Prose quality and register: does it read like Morrowind or like filler | morrowind | [RI-DLG06](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md)<br>[RI-LOR04](../../corpus/60-lore/RI-LOR04-naming-and-language.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: structure); corpus/80-methods/jel-phonotactics.py<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
+| `dialogue.npc.identity` | An NPC reads as a specific person with a specific position | morrowind | [RI-DLG06](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs |
 | `dialogue.greeting.variation` | Greetings vary by state, place, and standing | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs |
 | `dialogue.service.merchant` | Barter, training, repair, transport conducted through dialogue | morrowind | [RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md) | `critic.dialogue` | in-item M12–M16 (5 checks) |
 | `dialogue.combat.lockout` | Topic lists locked during COMBAT; enemies shout, not converse (seam S13) | souls | **— HOLE —** | `critic.dialogue` | _none_ |
@@ -244,7 +245,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 |---|---|---|---|---|---|
 | `render.fidelity.lighting` | Direct/indirect lighting quality vs modern references | modern-fidelity | [RI-VIS02](../../corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md)<br>[RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md) | `critic.fidelity` | in-item procedure (kind: image)<br>in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs |
 | `render.fidelity.shadows` | Shadow resolution, contact hardening, acne/peter-panning | modern-fidelity | [RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md)<br>[RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md) | `critic.fidelity` | in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs<br>in-item procedure (kind: structure) |
-| `render.fidelity.materials` | PBR material response, roughness variation, no plastic look | modern-fidelity | [RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS02](../../corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md)<br>[RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md)<br>[RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md) | `critic.fidelity` | in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: image)<br>in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs<br>in-item procedure (kind: structure)<br>in-item procedure (kind: structure) |
+| `render.fidelity.materials` | PBR material response, roughness variation, no plastic look | modern-fidelity | [RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS02](../../corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md)<br>[RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md)<br>[RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.fidelity` | in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: image)<br>in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs<br>in-item procedure (kind: structure)<br>in-item procedure (kind: structure)<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
 | `render.fidelity.atmosphere` | Fog, haze, aerial perspective, volumetrics | modern-fidelity | [RI-VIS02](../../corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md)<br>[RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md)<br>[RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md) | `critic.fidelity` | in-item procedure (kind: image)<br>in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs<br>in-item procedure (kind: structure) |
 | `render.fidelity.vegetation` | Plant density, variation, wind response, LOD transitions | modern-fidelity | [RI-VIS02](../../corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md)<br>[RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md) | `critic.fidelity` | in-item procedure (kind: image)<br>in-item procedure (kind: structure) |
 | `render.fidelity.water` | Water surface, refraction, shoreline, and underwater | modern-fidelity | [RI-VIS02](../../corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md)<br>[RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md) | `critic.fidelity` | in-item procedure (kind: image)<br>in-item procedure (kind: structure) |
@@ -258,7 +259,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `render.fidelity.vfx` | Particle and effect quality: fire, spray, spell, blood, dust | modern-fidelity | [RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md) | `critic.fidelity` | in-item procedure (kind: structure) |
 | `render.process.bifurcation` | The judging process itself: axis declared, references not crossed (ARBITRATION §4) | neutral | [RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md) | `critic.fidelity` | in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: structure) |
 | `render.process.measurement` | How a visual number is taken: capture protocol, poses, repeatability | neutral | [RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md) | `critic.fidelity` | in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs |
-| `render.art.palette` | Colour identity per region against Morrowind's palette discipline | art-direction | [RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md)<br>[RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md) | `critic.artdirection` | in-item M22–M26 (5 checks)<br>in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: structure)<br>in-item procedure (kind: text) |
+| `render.art.palette` | Colour identity per region against Morrowind's palette discipline | art-direction | [RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md)<br>[RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.artdirection` | in-item M22–M26 (5 checks)<br>in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: structure)<br>in-item procedure (kind: text)<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
 | `render.art.silhouette` | Readable, strange silhouettes for creatures and buildings | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) | `critic.artdirection` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs |
 | `render.art.architecture` | A coherent invented architectural language | art-direction | [RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md)<br>[RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md) | `critic.artdirection` | in-item M12–M16 (5 checks)<br>in-item M22–M26 (5 checks)<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: text) |
 | `render.art.creature` | Creature design that is not a generic bestiary | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) | `critic.artdirection` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs |
@@ -299,7 +300,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `platform.load.streaming` | Initial load time and in-session streaming hitches | neutral | [RI-MTH01](../../corpus/80-methods/RI-MTH01-harness-api-surface.md) | `critic.platform` | in-item M1–M7 (7 checks); tools/harness/smoke.mjs, tools/harness/run-headless.mjs, tools/lib/browser.mjs |
 | `platform.input.pipeline` | Browser input path: pointer lock, key repeat, dropped inputs | neutral | [RI-MTH01](../../corpus/80-methods/RI-MTH01-harness-api-surface.md) | `critic.platform` | in-item M1–M7 (7 checks); tools/harness/smoke.mjs, tools/harness/run-headless.mjs, tools/lib/browser.mjs |
 | `platform.save.persistence` | Save/load fidelity of world, quest, and faction state | morrowind | [RI-MTH01](../../corpus/80-methods/RI-MTH01-harness-api-surface.md)<br>[RI-MTH02](../../corpus/80-methods/RI-MTH02-determinism-reproducibility.md) | `critic.platform` | in-item M1–M7 (7 checks); tools/harness/smoke.mjs, tools/harness/run-headless.mjs, tools/lib/browser.mjs<br>in-item M1–M8 (8 checks); tools/harness/trace.mjs |
-| `platform.determinism.harness` | Seeded, fixed-step headless runs that a critic can reproduce | neutral | [RI-MTH01](../../corpus/80-methods/RI-MTH01-harness-api-surface.md)<br>[RI-MTH02](../../corpus/80-methods/RI-MTH02-determinism-reproducibility.md) | `critic.platform` | in-item M1–M7 (7 checks); tools/harness/smoke.mjs, tools/harness/run-headless.mjs, tools/lib/browser.mjs<br>in-item M1–M8 (8 checks); tools/harness/trace.mjs |
+| `platform.determinism.harness` | Seeded, fixed-step headless runs that a critic can reproduce | neutral | [RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md)<br>[RI-MTH01](../../corpus/80-methods/RI-MTH01-harness-api-surface.md)<br>[RI-MTH02](../../corpus/80-methods/RI-MTH02-determinism-reproducibility.md) | `critic.platform` | in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs<br>in-item M1–M7 (7 checks); tools/harness/smoke.mjs, tools/harness/run-headless.mjs, tools/lib/browser.mjs<br>in-item M1–M8 (8 checks); tools/harness/trace.mjs |
 
 ### `coherence.*`
 
@@ -314,6 +315,13 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `coherence.economy.balance` | Gold in equals gold out across the whole game, not per piece | morrowind | _doctrine_ | `critic.coherence` | COHERENCE-AGENT.md §3 C5.3 + traversal T1/T4 |
 | `coherence.progression.pacing` | The whole-run curve of power, danger, and revelation | neutral | _doctrine_ | `critic.coherence` | COHERENCE-AGENT.md §3 C4.2 + traversal T1/T7 |
 
+### `process.*`
+
+| Game subsystem path | What it means | Arb | Judging items | Critic | Method |
+|---|---|---|---|---|---|
+| `process.critic.discipline` | The critic process itself: evidence, blindness, anti-softness (CRITIC-DOCTRINE.md) | neutral | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.coherence` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
+| `process.verdict.format` | The verdict format and its validation (VERDICT-SCHEMA.md) | neutral | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.coherence` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
+
 ---
 
 ## 3. Corpus holes
@@ -322,7 +330,7 @@ Subsystem paths with **no** reference item judging them. Per CORPUS-CONTRACT §4
 builder must not start on one of these. Per §5, a critic that needs one writes the
 item rather than guessing, then regenerates this index.
 
-**37 of 198 paths are holes.**
+**35 of 200 paths are holes.**
 
 | Subsystem path | What it means | Arb | Expected area | Critic |
 |---|---|---|---|---|
@@ -335,7 +343,6 @@ item rather than guessing, then regenerates this index.
 | `combat.status.buildup` | In-fight status meters and procs (seam S11 Souls half) | split | `corpus/10-combat/` | `critic.combat` |
 | `combat.magic.casting` | Spellcasting inside the fight: cast frames, commitment, resource | souls | `corpus/10-combat/` | `critic.combat` |
 | `combat.input.latency` | Press-to-first-active-frame latency | souls | `corpus/10-combat/` | `critic.combat` |
-| `combat.feedback.hitstop` | Hitstop, impact vfx/sfx, damage legibility | souls | `corpus/10-combat/` | `critic.combat` |
 | `combat.pause.policy` | World does not pause during combat; inventory is not a safe haven (seam S14) | souls | `corpus/10-combat/` | `critic.combat` |
 | `progression.skill.gating` | Skills gate access and utility, never to-hit | morrowind | `corpus/20-progression/` | `critic.progression` |
 | `progression.build.identity` | Two different builds play observably differently out of the fight, not only in it | morrowind | `corpus/20-progression/` | `critic.progression` |
@@ -343,7 +350,6 @@ item rather than guessing, then regenerates this index.
 | `quests.resolution.exclusive` | Mutually exclusive resolutions that permanently close doors | morrowind | `corpus/30-quests/` | `critic.quests` |
 | `quests.faction.expulsion` | Expulsion, disgrace, and the path back | morrowind | `corpus/30-quests/` | `critic.quests` |
 | `quests.state.persistence` | Quest/faction/world flags survive death untouched (seam S6) | morrowind | `corpus/30-quests/` | `critic.quests` |
-| `dialogue.npc.identity` | An NPC reads as a specific person with a specific position | morrowind | `corpus/40-dialogue/` | `critic.dialogue` |
 | `dialogue.combat.lockout` | Topic lists locked during COMBAT; enemies shout, not converse (seam S13) | souls | `corpus/40-dialogue/` | `critic.dialogue` |
 | `world.region.transition` | Borders between regions read as a change, not a texture swap | morrowind | `corpus/50-world/` | `critic.world` |
 | `world.interior.continuity` | Interiors match their exteriors in size, orientation, and light | morrowind | `corpus/50-world/` | `critic.world` |
@@ -391,7 +397,7 @@ front-matter should be corrected to the canonical spelling when the item is next
 touched. **New reference items must use canonical paths only** — aliases are a
 migration aid, not a second vocabulary.
 
-**214 legacy spellings in use.**
+**226 legacy spellings in use.**
 
 | Legacy path | Canonical path | Used by |
 |---|---|---|
@@ -404,10 +410,12 @@ migration aid, not a second vocabulary.
 | `combat.criticals` | `combat.block.parry` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
 | `combat.damage.resolution` | `combat.hitbox.resolution` | RI-CMB04 (corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) |
 | `combat.damage_formula` | `combat.damage.model` | RI-PRG02 (corpus/20-progression/RI-PRG02-stat-sheet.md), RI-PRG08 (corpus/20-progression/RI-PRG08-upgrade-path.md) |
-| `combat.determinism` | `combat.hitbox.resolution` | RI-CMB04 (corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) |
+| `combat.determinism` | `combat.hitbox.resolution` | RI-CMB04 (corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md), RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | `combat.difficulty-gating` | `combat.difficulty.lethality` | RI-WLD04 (corpus/50-world/RI-WLD04-region-identity.md) |
 | `combat.dodge` | `combat.dodge.directional` | RI-PRG07 (corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) |
+| `combat.enemy.punishwindows` | `combat.enemy.punish` | RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | `combat.enemy_roster` | `combat.encounter.placement` | RI-PRG06 (corpus/20-progression/RI-PRG06-souls-yield-and-pace.md) |
+| `combat.feel` | `combat.feedback.hitstop` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | `combat.frame.order` | `combat.frames.timing` | RI-CMB04 (corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) |
 | `combat.guardbreak` | `combat.stamina.block` | RI-CMB03 (corpus/10-combat/RI-CMB03-stamina-economy.md) |
 | `combat.hit.geometry` | `combat.hitbox.sweep` | RI-CMB04 (corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) |
@@ -418,17 +426,20 @@ migration aid, not a second vocabulary.
 | `combat.invulnerability` | `combat.dodge.iframes` | RI-CMB01 (corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md) |
 | `combat.level-design` | `combat.encounter.placement` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
 | `combat.lockon` | `combat.lockon.target` | RI-CMB06 (corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) |
+| `combat.pacing` | `combat.encounter.grouping` | RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | `combat.parry` | `combat.block.parry` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
-| `combat.player.attack` | `combat.attack.moveset` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md) |
+| `combat.player.attack` | `combat.attack.moveset` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md), RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | `combat.player.block` | `combat.block.guard` | RI-CMB03 (corpus/10-combat/RI-CMB03-stamina-economy.md) |
-| `combat.player.dodge` | `combat.dodge.directional` | RI-CMB01 (corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md) |
+| `combat.player.dodge` | `combat.dodge.directional` | RI-CMB01 (corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md), RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | `combat.player.equipload` | `combat.dodge.equipload` | RI-CMB01 (corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md) |
 | `combat.player.sprint` | `combat.stamina.costs` | RI-CMB03 (corpus/10-combat/RI-CMB03-stamina-economy.md) |
-| `combat.player.stamina` | `combat.stamina.costs` | RI-CMB03 (corpus/10-combat/RI-CMB03-stamina-economy.md) |
+| `combat.player.stamina` | `combat.stamina.costs` | RI-CMB03 (corpus/10-combat/RI-CMB03-stamina-economy.md), RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | `combat.player.tracking` | `combat.attack.tracking` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md), RI-CMB06 (corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) |
 | `combat.poise` | `combat.poise.player` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
 | `combat.resource.pacing` | `combat.stamina.regen` | RI-CMB03 (corpus/10-combat/RI-CMB03-stamina-economy.md) |
 | `combat.stagger` | `combat.poise.enemy` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
+| `combat.telemetry` | `platform.determinism.harness` | RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
+| `combat.trace` | `platform.determinism.harness` | RI-CMB07 (corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | `combat.trade` | `combat.poise.player` | RI-CMB05 (corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
 | `combat.weapons.frames` | `combat.frames.timing` | RI-CMB02 (corpus/10-combat/RI-CMB02-attack-frame-data.md) |
 | `content.volume` | `dialogue.density.wordcount` | RI-DLG02 (corpus/40-dialogue/RI-DLG02-words-per-settlement.md) |
@@ -443,11 +454,13 @@ migration aid, not a second vocabulary.
 | `dialogue.greeting` | `dialogue.greeting.variation` | RI-DLG01 (corpus/40-dialogue/RI-DLG01-topic-graph.md), RI-DLG03 (corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
 | `dialogue.journal` | `journal.entry.voice` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md) |
 | `dialogue.persuasion` | `dialogue.persuasion.mechanics` | RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md), RI-QST05 (corpus/30-quests/RI-QST05-non-combat-resolution.md), RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
+| `dialogue.prose` | `dialogue.voice.register` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | `dialogue.rumour` | `dialogue.rumour.distribution` | RI-DLG03 (corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
 | `dialogue.rumours` | `dialogue.rumour.distribution` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md), RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
 | `dialogue.settlement` | `dialogue.topics.filtering` | RI-DLG02 (corpus/40-dialogue/RI-DLG02-words-per-settlement.md) |
 | `dialogue.topics` | `dialogue.topics.graph` | RI-DLG01 (corpus/40-dialogue/RI-DLG01-topic-graph.md) |
-| `dialogue.voice` | `dialogue.voice.register` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
+| `dialogue.voice` | `dialogue.voice.register` | RI-DLG06 (corpus/40-dialogue/RI-DLG06-voice-differentiation.md), RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
+| `dialogue.writing` | `dialogue.voice.register` | RI-DLG06 (corpus/40-dialogue/RI-DLG06-voice-differentiation.md) |
 | `economy.barter` | `progression.merchant.barter` | RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md), RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md) |
 | `economy.carrying` | `progression.equipment.encumbrance` | RI-PRG07 (corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) |
 | `economy.gold` | `progression.gold.economy` | RI-PRG05 (corpus/20-progression/RI-PRG05-gold-economy.md), RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
@@ -475,11 +488,15 @@ migration aid, not a second vocabulary.
 | `lore.names` | `lore.naming.conventions` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `lore.politics` | `lore.canon.factions` | RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
 | `lore.prophecy` | `lore.canon.prophecy` | RI-QST06 (corpus/30-quests/RI-QST06-main-quest-architecture.md) |
+| `lore.register` | `dialogue.voice.register` | RI-DLG06 (corpus/40-dialogue/RI-DLG06-voice-differentiation.md) |
 | `movement.speed` | `world.traversal.locomotion` | RI-WLD01 (corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) |
+| `npc.character` | `dialogue.npc.identity` | RI-DLG06 (corpus/40-dialogue/RI-DLG06-voice-differentiation.md) |
 | `npc.names` | `lore.naming.conventions` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
 | `npc.population` | `world.npc.population` | RI-WLD03 (corpus/50-world/RI-WLD03-settlement-anatomy.md) |
 | `npc.reaction` | `dialogue.disposition.model` | RI-DLG04 (corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
 | `npc.services` | `dialogue.service.merchant` | RI-WLD03 (corpus/50-world/RI-WLD03-settlement-anatomy.md) |
+| `process.critic` | `process.critic.discipline` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
+| `process.verdict` | `process.verdict.format` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | `progression.attributes` | `progression.level.attributes` | RI-PRG02 (corpus/20-progression/RI-PRG02-stat-sheet.md) |
 | `progression.bonfires` | `progression.bonfire.placement` | RI-WLD07 (corpus/50-world/RI-WLD07-verticality-and-interiors.md) |
 | `progression.checkpoint` | `progression.bonfire.function` | RI-PRG04 (corpus/20-progression/RI-PRG04-hearth-and-death.md) |
@@ -525,7 +542,7 @@ migration aid, not a second vocabulary.
 | `quests.schema` | `quests.data.schema` | RI-QST04 (corpus/30-quests/RI-QST04-quest-anatomy-schema.md), RI-QST05 (corpus/30-quests/RI-QST05-non-combat-resolution.md) |
 | `quests.side` | `quests.side.texture` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md) |
 | `quests.stages` | `quests.structure.stages` | RI-QST04 (corpus/30-quests/RI-QST04-quest-anatomy-schema.md) |
-| `quests.structure` | `quests.structure.stages` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md) |
+| `quests.structure` | `quests.structure.stages` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md), RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | `quests.tracking` | `journal.navigation.nomarkers` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md) |
 | `ui.hud` | `ui.hud.combat` | RI-DLG05 (corpus/40-dialogue/RI-DLG05-journal.md), RI-WLD06 (corpus/50-world/RI-WLD06-navigation-without-markers.md) |
 | `ui.readables` | `ui.menu.books` | RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
@@ -535,7 +552,7 @@ migration aid, not a second vocabulary.
 | `visual.animation.rootmotion` | `combat.attack.commitment` | RI-VIS08 (corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
 | `visual.animation.smoothness` | `render.fidelity.animation` | RI-VIS08 (corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
 | `visual.art-direction` | `render.art.palette` | RI-WLD05 (corpus/50-world/RI-WLD05-strangeness-bar.md) |
-| `visual.artdirection` | `render.art.palette` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md), RI-VIS06 (corpus/70-visual/RI-VIS06-blind-comparison-protocol.md) |
+| `visual.artdirection` | `render.art.palette` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md), RI-VIS06 (corpus/70-visual/RI-VIS06-blind-comparison-protocol.md), RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | `visual.artdirection.architecture` | `render.art.architecture` | RI-VIS05 (corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md), RI-VIS07 (corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md) |
 | `visual.artdirection.composition` | `render.art.composition` | RI-VIS05 (corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md) |
 | `visual.artdirection.creature` | `render.art.creature` | RI-VIS05 (corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md), RI-VIS07 (corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md) |
@@ -549,6 +566,7 @@ migration aid, not a second vocabulary.
 | `visual.character.model` | `render.fidelity.character` | RI-VIS08 (corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
 | `visual.character.silhouette` | `render.art.silhouette` | RI-VIS08 (corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
 | `visual.creature.readability` | `render.art.creature` | RI-VIS08 (corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
+| `visual.fidelity` | `render.fidelity.materials` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | `visual.process.blindtest` | `render.process.bifurcation` | RI-VIS06 (corpus/70-visual/RI-VIS06-blind-comparison-protocol.md) |
 | `visual.process.contamination` | `render.process.bifurcation` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md) |
 | `visual.process.declaration` | `render.process.bifurcation` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md) |
@@ -637,6 +655,7 @@ _None._
 | RI-CMB04 | Hitboxes and hurtboxes — swept capsules, bone attachment, and the no-dice rule | 10-combat | structure | souls | constructed | high | no | `combat.hitbox.sweep` `combat.hitbox.hurtbox` `combat.hitbox.resolution` `combat.frames.timing` | [corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) |
 | RI-CMB05 | Poise, stagger, hyperarmour, and the critical windows (backstab, parry, riposte) | 10-combat | number | souls | constructed | medium | yes | `combat.poise.player` `combat.poise.enemy` `combat.block.parry` | [corpus/10-combat/RI-CMB05-poise-stagger-criticals.md](../../corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) |
 | RI-CMB06 | Lock-on — acquisition, camera behaviour, directional roll semantics, and soft-lock steering | 10-combat | number | souls | constructed | medium | yes | `combat.lockon.target` `combat.camera.behaviour` `combat.player.movement` `combat.attack.tracking` `combat.dodge.directional` | [corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md](../../corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md) |
+| RI-CMB07 | The combat trace — machine-readable format and a 59-second hand-authored exemplar fight | 10-combat | trace | souls | constructed | high | yes | `platform.determinism.harness` `combat.encounter.grouping` `combat.dodge.directional` `combat.stamina.costs` `combat.attack.moveset` `combat.enemy.punish` `combat.hitbox.resolution` | [corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) |
 | RI-PRG01 | The soul cost curve — souls-to-next-level, L1 to L140 | 20-progression | number | souls | constructed | high | no | `progression.level.curve` `ui.menu.levelup` `progression.souls.economy` | [corpus/20-progression/RI-PRG01-soul-cost-curve.md](../../corpus/20-progression/RI-PRG01-soul-cost-curve.md) |
 | RI-PRG02 | The stat sheet — ten attributes, soft caps, and scaling grades | 20-progression | number | neutral | constructed | high | no | `progression.level.attributes` `ui.menu.levelup` `combat.damage.scaling` `combat.damage.model` | [corpus/20-progression/RI-PRG02-stat-sheet.md](../../corpus/20-progression/RI-PRG02-stat-sheet.md) |
 | RI-PRG03 | Skills that improve by use — the 19 skills, their rates, and their gates | 20-progression | number | morrowind | constructed | high | no | `progression.skill.usegrowth` `combat.damage.scaling` `world.locks.security` `progression.crafting.alchemy` `dialogue.persuasion.mechanics` `progression.merchant.barter` | [corpus/20-progression/RI-PRG03-skills-by-use.md](../../corpus/20-progression/RI-PRG03-skills-by-use.md) |
@@ -658,6 +677,7 @@ _None._
 | RI-DLG03 | Greetings and rumours — disposition banding and the diegetic quest-discovery mechanism | 40-dialogue | text | morrowind | community-data | high | yes | `dialogue.greeting.variation` `dialogue.rumour.distribution` `dialogue.disposition.model` `quests.discovery.hooks` `world.persistence.state` | [corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md) |
 | RI-DLG04 | Disposition and persuasion — derived disposition, Admire/Intimidate/Taunt/Bribe formulas, gating thresholds | 40-dialogue | number | morrowind | community-data | high | no | `dialogue.disposition.model` `dialogue.persuasion.mechanics` `dialogue.topics.filtering` `progression.gold.economy` `progression.skill.usegrowth` | [corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) |
 | RI-DLG05 | The journal — schema, voice, exemplar entries, and the no-marker rule | 40-dialogue | text | morrowind | constructed | high | yes | `journal.entry.voice` `journal.navigation.nomarkers` `quests.structure.stages` `ui.hud.combat` `world.wayfinding.directions` | [corpus/40-dialogue/RI-DLG05-journal.md](../../corpus/40-dialogue/RI-DLG05-journal.md) |
+| RI-DLG06 | Dialogue voice differentiation — measurable style fingerprints per speaker archetype | 40-dialogue | number | morrowind | community-data | high | yes | `dialogue.voice.register` `dialogue.npc.identity` | [corpus/40-dialogue/RI-DLG06-voice-differentiation.md](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md) |
 | RI-WLD01 | World scale, coordinate system and the one-hour traversal budget | 50-world | number | morrowind | constructed | high | no | `world.map.scale` `world.terrain.form` `world.traversal.roads` `world.density.handplacement` `world.traversal.time` `world.traversal.locomotion` | [corpus/50-world/RI-WLD01-scale-and-traversal-budget.md](../../corpus/50-world/RI-WLD01-scale-and-traversal-budget.md) |
 | RI-WLD02 | Density per minute of travel — the headline world metric | 50-world | number | morrowind | constructed | high | no | `world.density.handplacement` `combat.encounter.placement` `world.map.legibility` | [corpus/50-world/RI-WLD02-density-per-minute.md](../../corpus/50-world/RI-WLD02-density-per-minute.md) |
 | RI-WLD03 | Settlement anatomy — what makes a Morrowind town, and the per-settlement allocation | 50-world | structure | morrowind | constructed | high | yes | `world.settlement.anatomy` `world.interior.named` `render.art.architecture` `world.npc.population` `dialogue.service.merchant` `quests.discovery.hooks` | [corpus/50-world/RI-WLD03-settlement-anatomy.md](../../corpus/50-world/RI-WLD03-settlement-anatomy.md) |
@@ -679,6 +699,7 @@ _None._
 | RI-VIS08 | Character, creature and animation fidelity — model quality, silhouette readability, and the tells of bad Three.js character work | 70-visual | number | modern-fidelity | constructed | high | yes | `render.fidelity.character` `render.art.silhouette` `render.fidelity.animation` `combat.attack.commitment` `render.art.creature` | [corpus/70-visual/RI-VIS08-character-animation-fidelity.md](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
 | RI-MTH01 | The harness API surface — what a critic can and cannot measure | 80-methods | structure | neutral | constructed | high | no | `platform.determinism.harness` `platform.input.pipeline` `platform.save.persistence` `combat.camera.behaviour` `platform.load.streaming` | [corpus/80-methods/RI-MTH01-harness-api-surface.md](../../corpus/80-methods/RI-MTH01-harness-api-surface.md) |
 | RI-MTH02 | Determinism and reproducibility as a judged property | 80-methods | trace | neutral | constructed | high | no | `platform.determinism.harness` `platform.save.persistence` | [corpus/80-methods/RI-MTH02-determinism-reproducibility.md](../../corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
+| RI-MTH03 | The blind-comparison protocol | 80-methods | structure | neutral | constructed | high | no | `process.critic.discipline` `process.verdict.format` `render.fidelity.materials` `render.art.palette` `dialogue.voice.register` `quests.structure.stages` `combat.feedback.hitstop` | [corpus/80-methods/RI-MTH03-blind-comparison-protocol.md](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 
 ---
 

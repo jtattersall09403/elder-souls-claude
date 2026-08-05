@@ -92,9 +92,9 @@ Reference shield set:
 | Marsh-oak medium (the exemplar build) | **0.62** | **0.94** | 5.5 | **48.6** | **7.7** |
 | Naga tower shield | 0.78 | 1.00 | 13.0 | 28.2 | 0.0 |
 
-**Worked example from the RI-CMB07 exemplar trace, frame 1016.** The player has 31.5
+**Worked example from the RI-CMB07 exemplar trace, frame 1016.** The player has 11.1
 stamina after an over-greedy four-hit punish. The enemy's `A2` first swing (96 damage)
-lands on a raised guard. `stamina_cost = 96 × (1 − 0.62) = 36.48`. `31.5 − 36.48 < 0`, so:
+lands on a raised guard. `stamina_cost = 96 × (1 − 0.62) = 36.48`. `11.1 − 36.48 < 0`, so:
 stamina clamps to 0, `chip = 96 × 0.06 = 5.76 → 6`, and `GUARD_BREAK` fires. This single
 frame is why the item exists.
 
@@ -127,10 +127,10 @@ critic diffs against. They are consequences of §A–§D, not independent knobs.
 | Statistic | Exemplar value | Acceptance band |
 |---|---|---|
 | Stamina minimum over the fight | **0.0** (0.0% of max) | ≤ 15% of max at least once |
-| Frames at exactly 0 stamina | **43** | ≥ 10 and ≤ 300 |
-| % of frames below 25% of max | **5.07%** | 3% – 20% |
-| % of frames above 90% of max | **27.9%** | 12% – 45% |
-| Mean stamina | **83.2 / 120 (69.3%)** | 55% – 80% |
+| Frames at exactly 0 stamina | **44** | ≥ 10 and ≤ 300 |
+| % of frames below 25% of max | **5.10%** | 3% – 20% |
+| % of frames above 90% of max | **25.4%** | 12% – 45% |
+| Mean stamina | **81.0 / 120 (67.5%)** | 55% – 80% |
 | Guard breaks suffered | **1** | ≥ 0; > 3 in 60 s means stability is mis-tuned |
 | Inputs dropped for insufficient stamina | ≥ 1 | **> 0 is mandatory** — a fight where the bar never denies you has no economy |
 

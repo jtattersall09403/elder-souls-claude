@@ -239,7 +239,19 @@
     "engine.rng": "platform.determinism.harness",
     "engine.physics": "platform.determinism.harness",
     "engine.animation": "platform.determinism.harness",
-    "engine.ai": "platform.determinism.harness"
+    "engine.ai": "platform.determinism.harness",
+    "dialogue.writing": "dialogue.voice.register",
+    "lore.register": "dialogue.voice.register",
+    "npc.character": "dialogue.npc.identity",
+    "combat.enemy.punishwindows": "combat.enemy.punish",
+    "combat.feel": "combat.feedback.hitstop",
+    "combat.pacing": "combat.encounter.grouping",
+    "combat.telemetry": "platform.determinism.harness",
+    "combat.trace": "platform.determinism.harness",
+    "dialogue.prose": "dialogue.voice.register",
+    "process.critic": "process.critic.discipline",
+    "process.verdict": "process.verdict.format",
+    "visual.fidelity": "render.fidelity.materials"
   },
   "subsystems": [
     {
@@ -1635,6 +1647,22 @@
       "area": "00-doctrine",
       "critic": "critic.coherence",
       "judged_by_doctrine": "COHERENCE-AGENT.md §3 C4.2 + traversal T1/T7"
+    },
+    {
+      "path": "process.critic.discipline",
+      "title": "The critic process itself: evidence, blindness, anti-softness (CRITIC-DOCTRINE.md)",
+      "arb": "neutral",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "CRITIC-DOCTRINE.md §1-§8 + SCORING.md §4 anti-inflation audit"
+    },
+    {
+      "path": "process.verdict.format",
+      "title": "The verdict format and its validation (VERDICT-SCHEMA.md)",
+      "arb": "neutral",
+      "area": "00-doctrine",
+      "critic": "critic.coherence",
+      "judged_by_doctrine": "VERDICT-SCHEMA.md §3 + tools/verdict-validate.mjs"
     }
   ],
   "judged_by_doctrine_note": "Some subsystem paths are judged by a doctrine document rather than by a reference item. They are NOT corpus holes: the named document carries the bar, the method, and the evidence requirement. Everything else must have an RI."

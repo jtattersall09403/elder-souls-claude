@@ -135,6 +135,20 @@ it does not know, and may rely on:
 - **Regression detection**: any `reference_items[].checks[].result` moving
   `pass → fail` between waves on the same `(piece_id, ref_item, check id)`.
 
+**Field mapping for a renderer** (the progress page in `tools/progress.mjs` / `docs/`):
+
+| Wants | Read from a verdict | Read from `GAP-LEDGER.json` |
+|---|---|---|
+| subsystem | `subsystem_paths[]` (array — a piece may own several) | `gaps[].subsystem_path` |
+| status | `status` (+ `status_reasons[]`) | `gaps[].status` |
+| gap text | `biggest_gap.what` | `gaps[].what` |
+| remedy | `biggest_gap.remedy.action` | `gaps[].remedy_action` (flat mirror) |
+| acceptance | `biggest_gap.remedy.acceptance` | `gaps[].remedy_acceptance` (flat mirror) |
+| score | `score.overall_0_10` + `score.band_label` | — |
+
+`GAP-LEDGER.json` is not a verdict: it has `gaps[]` and no `piece_id`. A verdict scanner
+must skip it (and `COHERENCE.json`, which has `kind: "coherence"`).
+
 Rules for the aggregator, so verdicts and page never disagree:
 - Clamp `score_0_10 ≥ 7` with no `justification` to `6`, and emit
   `unjustified_high_score`.

@@ -82,6 +82,10 @@ for (const v of verdicts) {
     what: g.what,
     why_it_matters: g.why_it_matters,
     remedy: g.remedy,
+    // Flat mirrors of the remedy, so a renderer (docs/progress.html) can show the ledger
+    // without reaching into a nested object. Canonical values live in `remedy`.
+    remedy_action: (g.remedy && g.remedy.action) || null,
+    remedy_acceptance: acceptance || null,
     evidence: g.evidence || [],
     status: 'open',
     assigned_to_wave: (Number(v.wave) || 0) + 1,
