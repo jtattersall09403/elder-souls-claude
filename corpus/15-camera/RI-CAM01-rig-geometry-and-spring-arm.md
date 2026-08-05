@@ -114,6 +114,29 @@ order and exhaustively:
 6. `camera.clip_through` stays `false` on every frame.
 7. On stepping away, push-out waits the 6-frame dwell, then returns at 0.050 m/frame.
 
+### C.1 Player occlusion by world geometry (BAR-CRITIQUE-01 Rank 6)
+
+Distinct from the fade in §C, which is a *deliberate* removal at minimum arm. This measures
+the player's body being hidden by a **wall, root, railing or doorframe between the camera and
+the character** while the arm is at a normal length — the failure the fade exists to prevent
+and which a fade-only implementation still suffers whenever the obstruction is thin enough
+that the sphere cast misses it.
+
+```
+player_occluded[f] = 1 if the character's visible pixel count in the ID buffer is
+                     < 0.35 x its unoccluded pixel count at the same pose, else 0
+                     (evaluated with the fade opacity forced to 1.0)
+```
+
+| Quantity | Bar |
+|---|---|
+| Longest run of consecutive `player_occluded` frames | **≤ 6** |
+| `mean(player_occluded)` over any scripted traversal | ≤ **0.03** |
+| Same, over any combat scenario | ≤ **0.01** |
+
+A run longer than 6 frames (0.1 s) is a fail: it is long enough to hide a roll's first
+i-frame window and therefore long enough to kill the player for a reason they cannot see.
+
 ### D. Clipping — the definition that is actually testable
 
 `camera.clip_through` is `true` on a frame iff **any** of the four near-plane corner points
@@ -156,10 +179,12 @@ drive the look with `queueInputs([{f:0,"look":[dy,dp]}])` in ≤ 2 °/frame incr
 - **FAIL** if the pitch-dependent arm scale deviates from §A by > 2%.
 - **FAIL** if the shoulder offset is 0 (a centred camera is not a Souls camera).
 
-**M2 — Arm-length distribution over a scripted walk (the headline number).** Load
-`cam-walk-cistern` (a scripted 5 400-frame route through the tightest authored interior in
-the build: doorway, spiral stair, 2.6 m corridor, pillar hall, ledge, low arch) and
-`cam-walk-mire` (an exterior route through mangrove roots and a stilt-village underside).
+**M2 — Arm-length distribution over a scripted walk (the headline number).** The routes are
+**the three worst geometries in the build**, named rather than sampled, per BAR-CRITIQUE-01
+Rank 6: `cam-walk-cistern` (a 5 400-frame interior route: doorway ≤ 1.2 m clear, spiral
+stair, 2.6 m corridor, pillar hall, ledge, low arch), `cam-walk-mangrove` (a mangrove root
+cluster — the geometry that is 70% of this world), and `cam-walk-boardwalk` (a stilt-village
+boardwalk **with railings**, the thin-geometry case a sphere cast most often misses).
 - Emit `arm_len_m` per frame. Report the full histogram at 0.10 m bins plus
   `p05 / p25 / p50 / p95 / min / max`.
 - **FAIL** if `min < 0.90 m` (the floor is not being honoured).
@@ -168,7 +193,15 @@ the build: doorway, spiral stair, 2.6 m corridor, pillar hall, ledge, low arch) 
 - Report `fraction(arm_len < 1.60 m)`. RI-CAM05 §D sets the pass band for interiors; this
   item only requires the number be produced.
 
-**M3 — Zero clipping (hard gate).** Over both M2 routes plus `cam-walk-boss-arena`:
+**M2b — Player occlusion (§C.1).** Over the same three routes plus `cmb-duel-infantry` and
+`cmb-duel-in-corridor`, with the fade opacity forced to 1.0 via the harness, capture the ID
+buffer every frame (or every 4th frame, recording the sampling rate in `method_deviations`).
+- **FAIL** if any run of consecutive `player_occluded` frames exceeds **6**.
+- **FAIL** if `mean(player_occluded)` exceeds 0.03 on a traversal route or 0.01 in combat.
+- Report the worst route and the world position at which the longest run occurred, so the
+  remedy is an edit to a specific piece of geometry rather than a wish.
+
+**M3 — Zero clipping (hard gate).** Over all three M2 routes plus `cam-walk-boss-arena`:
 - **FAIL** if `Σ camera.clip_through > 0`.
 - Independently re-derive the boolean: for 60 evenly spaced frames per route, `renderFrame()`
   and `screenshot()`, and check that no shot's mean luminance is < 2/255 with < 0.5% pixel
@@ -215,8 +248,9 @@ and once as 90×`stepFrames(60)`.
 | Check | Weight | Pass condition |
 |---|---|---|
 | M1 static rig census | 15 | Every §A value within tolerance, shoulder offset non-zero |
-| M2 arm-length distribution | 10 | Histogram produced; floor and ceiling honoured |
-| M3 zero clipping | **30** | `Σ clip_through == 0` on all three routes |
+| M2 arm-length distribution | 5 | Histogram produced on all three worst routes; floor and ceiling honoured |
+| M2b player occlusion | 10 | No run > 6 frames; means within band |
+| M3 zero clipping | **25** | `Σ clip_through == 0` on all four routes |
 | M4 pull-in / push-out law | **20** | Rates, dwell, and ≥ 8:1 asymmetry |
 | M5 back-into-wall | 15 | No auto-yaw, no pitch drift, no FOV change, fade + shadow correct |
 | M6 collision layers | 5 | Actors never push the arm |
@@ -229,6 +263,7 @@ Score = sum of passed weights, 0–100.
 - **< 70** — **we lose.**
 - **Automatic fail regardless of score:**
   - any frame with `clip_through == true`;
+  - any run of `player_occluded` longer than 6 consecutive frames (§C.1);
   - the camera yaw or pitch changing without look input as a *result of collision*
     (auto-wall-recovery / auto-corner-escape);
   - a symmetric or push-out-faster-than-pull-in spring;

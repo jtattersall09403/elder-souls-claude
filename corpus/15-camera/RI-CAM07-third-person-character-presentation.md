@@ -104,6 +104,7 @@ Dcam(a, b)   = || q(a) - q(b) ||2  /  character_screen_height_ndc
 | C5 | **Guard state is readable from behind** | `Dcam(block_idle, idle) ≥ 0.25`, and the shield/weapon must occupy ≥ 3% of the character's projected area in `block_idle` |
 | C6 | **Stagger is unmistakable** | `Dcam(hitstun frame 4, idle) ≥ 0.45` — the most important single read in the game |
 | C7 | **No occlusion of the read by the camera's own offset** | none of the C1–C6 discriminating joints may be occluded by the character's own body in > 20% of the frames of the compared phase, from the ID buffer |
+| C8 | **Recovery legibility in live combat** (BAR-CRITIQUE-01 Rank 6) | over a real `cmb-duel-*` trace of ≥ 3600 frames, the fraction of frames in `phase == recovery` on which the player's discriminating joints are **visible and above the `Dcam` threshold from the live camera** must be ≥ **0.95**. This is the S18 premise stated as a number: the ruling exists because "you read your own recovery frames off your own animation", and a build where you can do that 80% of the time has not satisfied it. Frames lost to RI-CAM01 §C.1 occlusion, to the §C fade, or to the player anchor leaving the frame (RI-CAM03 §E) all count against it. |
 
 **Rationale for the thresholds:** 0.28 is calibrated against RI-AI02 §D's 0.35 in
 rotation-space, reduced because projection loses depth and because the camera sees the
@@ -175,6 +176,9 @@ every roll clip, `block_idle`, `hitstun`, and `idle`:
    `camera` block offline — record which path was used in `method_deviations`).
 3. Compute `Dcam` for every pair in §C.
 - **FAIL** on any pair below its threshold. Report the full matrix.
+- Then run **C8** over a live `cmb-duel-infantry` and `cmb-duel-in-corridor` trace of
+  ≥ 3600 frames each. **FAIL** if the recovery-legibility fraction is < 0.95 in either. The
+  corridor run is the one that fails; running only the arena duel is not running the method.
 - Independently, produce a contact-sheet artifact: the compared frames side by side at
   1920×1080, so a human can confirm the metric is measuring what it claims.
 
@@ -228,6 +232,7 @@ absence, not excused).
     or a Morrowind screenshot appearing in Set 1** — RI-VIS01 CC-1/CC-3, voids the verdict;
   - any `Dcam` phase pair in C1, C2 or C6 below threshold — the player cannot read their own
     state, which is the premise seam S18 rests on;
+  - C8 recovery legibility below **0.95** in any combat scenario — same reason, measured live;
   - geometry inside the near plane at the minimum arm length;
   - the character's cast shadow disappearing with the fade;
   - the player character being a capsule with a mesh parented to it (detected via RI-VIS08

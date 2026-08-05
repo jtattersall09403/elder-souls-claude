@@ -178,6 +178,22 @@ Method script: **`corpus/80-methods/m-cam05-world-camera.mjs`**. Requires the `c
 channel, `listPerspectiveModes()`, and scripted UI entry (`uiOpen(id)` / `uiClose()`) — see
 §Provenance.
 
+**M0 — AR-3 (seam sterility), mandatory and reported first.** ARBITRATION §3 AR-3 requires
+every critic to name at least one interaction this piece carries across the Souls/Morrowind
+seam, or declare `seam_sterile: true` with a justification. **This piece is the seam's
+physical substrate and may not be declared sterile.** The crossing interactions it carries,
+each of which M1–M7 measures:
+
+| # | Crossing interaction | Measured by |
+|---|---|---|
+| 1 | The **same rig** frames a boss fight and a Morrowind topic list. One camera is why the fight and the world are one product rather than two builds sharing a save file. | M1 (bit-identical properties), M2 (dialogue keeps the rig) |
+| 2 | **Interior architecture is set by a combat requirement.** §D's 2.60 m / 3.20 m minimum exists because the Souls camera needs it, and it binds the Morrowind-side world builder's hand-placed interiors (`world.interior.named`, `world.dungeon.design`). | M4 |
+| 3 | **The HEARTH is a Souls checkpoint and a Morrowind place at once**, and §E requires it be filmed as the latter — the ordinary camera, no cutscene — so resting reads as sitting down somewhere rather than as a menu. | M6 |
+| 4 | **A dialogue that cannot cut** means an NPC is a body standing in a place you can be attacked in, not a portrait. The frozen camera is what keeps S13's "topic lists locked during COMBAT" a *consequence* rather than a mode switch. | M2, M3's S14 probe |
+
+A critic must record these in `ar3` and must **not** write `seam_sterile: true` for this
+piece. If they cannot demonstrate any of the four from artifacts, that is the finding.
+
 **M1 — Combat/exploration identity.** Run `cmb-duel-infantry` and `wld-walk-lilmoth`.
 Extract `fov_deg`, pivot height, shoulder offset, `desired_arm_len` per frame; match frames
 by pitch bucket.
@@ -245,6 +261,7 @@ screenshots.
 
 | Check | Weight | Pass condition |
 |---|---|---|
+| M0 AR-3 seam sterility | 0 (gate) | Reported, with artifacts, and **not** declared sterile |
 | M1 combat/exploration identity | 10 | Four properties bit-identical; blind sort at chance |
 | M2 dialogue freeze | **25** | Accommodation bounded, no drift, no cut, player visible |
 | M3 menu freeze | 10 | No world-camera motion; S14 pause check passes |
@@ -264,7 +281,8 @@ Score = sum of passed weights, 0–100.
   - any frame with `clip_through == true` in any interior;
   - the world camera moving while a menu is open;
   - a combat interior under the §D architecture minimums (the world builder's failure, but
-    this item's fail — a camera that only works in wide rooms is not a camera).
+    this item's fail — a camera that only works in wide rooms is not a camera);
+  - a verdict on this piece declaring `seam_sterile: true` (M0).
 
 **Blind pair:** ten unlabelled 1920×1080 shots (HUD off) — five taken during a fight, five
 during exploration, matched for time of day and weather. Discriminating question, written
