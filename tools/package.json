@@ -1,0 +1,17 @@
+{
+  "name": "elder-souls-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Measurement harness for the Elder Souls corpus. See corpus/80-methods/HARNESS.md.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "smoke": "node harness/smoke.mjs",
+    "all": "node run-all.mjs"
+  },
+  "dependencies": {
+    "pngjs": "^7.0.0",
+    "pixelmatch": "^6.0.0",
+    "playwright": "1.56.1"
+  }
+}
