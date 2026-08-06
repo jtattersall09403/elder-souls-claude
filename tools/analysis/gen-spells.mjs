@@ -28,8 +28,14 @@ const classById = Object.fromEntries(classesDoc.classes.map((c) => [c.id, c]));
 // The skill-requirement ladder, indexed by tier (RI-PRG03 §6 via RI-MAG02 §D).
 const REQ_FOR_TIER = { 1: 0, 2: 25, 3: 45, 4: 65, 5: 85 };
 
-/** RI-PRG05 §4: 29 merchants, 49,900 g of pool. The mean float is the shelf ceiling. */
-const MERCHANT_MEAN_FLOAT_G = Math.round(49900 / 29);
+/**
+ * The shelf ceiling. RI-PRG05 §4 gives R2 a 4,200 g merchant pool across 4 merchants — a float
+ * of 1,050 g each — and R2 is where the spellwrights are. A merchant cannot hold stock dearer
+ * than their own float, so 1,050 g is what a spell shop can have on it. Dearer spells are real
+ * and castable; they are commissioned (RI-MAG03 §A) or hand-placed (S12), which is also what
+ * Morrowind does with its top spells.
+ */
+const MERCHANT_MEAN_FLOAT_G = Math.round(4200 / 4);
 
 /**
  * A spell's tier is `max(band(focus_base), max effect.min_tier)`.
@@ -179,7 +185,7 @@ for (const s of SHELF) {
     gold_price: gold,
     commission_price: commissionPrice(base, s.id, t.tier),
     // SHELF RULE: a spell is stocked iff a merchant could afford to hold it — RI-PRG05 §4's
-    // 29 merchants share a 49,900 g pool, a mean float of 1,721 g. Dearer spells exist and are
+    // R2 float is 1,050 g per merchant and R2 is where the spellwrights are. Dearer spells exist and are
     // real; they are commissioned at a spellwright (RI-MAG03 §A) or hand-placed (S12), which is
     // also what Morrowind does with its top spells. See `amendment_requested` below for why the
     // corpus's own "60 purchasable" figure cannot be taken literally.
@@ -253,9 +259,10 @@ const out = {
   },
   shelf_rule: {
     ceiling_g: MERCHANT_MEAN_FLOAT_G,
-    derivation: "RI-PRG05 §4: 29 merchants share a 49,900 g pool ⇒ mean float 1,721 g. A merchant cannot hold stock worth more than they can pay for, so 1,721 g is the shelf ceiling. Spells above it are commissioned (RI-MAG03 §A, 1.6× + 150 g) or hand-placed (S12).",
+    derivation: "RI-PRG05 §4: R2 holds a 4,200 g merchant pool across 4 merchants ⇒ a float of 1,050 g each, and R2 is where the spellwrights are. A merchant cannot hold stock dearer than their own float. Spells above the ceiling are commissioned (RI-MAG03 §A, 1.6× + 150 g) or hand-placed (S12).",
     measured_shelf_total_g: shelfGold,
     ri_mag03_m8_target_g: 28000,
+    ri_mag03_m8_line_note: 'The magic LINE is the shelf plus the enchanting services; tools/analysis/magic-audit.mjs computes the service half as one representative 40-point commission at each of the 7 paid enchanters (8,324 g).',
     ri_mag03_m8_band_g: [23800, 32200],
     ri_mag03_m8_result: shelfGold >= 23800 && shelfGold <= 32200 ? 'PASS' : 'FAIL',
   },

@@ -15,9 +15,12 @@ export const REPORTS_DIR = path.join(REPO_ROOT, 'reports');
 export const RUNS_DIR = path.join(REPORTS_DIR, 'runs');
 
 /** Trace schema version. Bump only via an amendment to HARNESS.md. */
-export const TRACE_SCHEMA = 'elder-souls/trace@1';
+// Bumped @1 -> @2 by wave-1 piece W1-14 (seam S19), per HARNESS.md §10 and RI-MAG01's
+// harness-amendment list. The change is strictly ADDITIVE: every @1 field is still emitted with
+// the same meaning, and a reader written for @1 sees @2 as @1 plus fields it does not know.
+export const TRACE_SCHEMA = 'elder-souls/trace@2';
 /** Minimum window.__HARNESS.version this toolchain accepts. */
-export const HARNESS_API_VERSION = 1;
+export const HARNESS_API_VERSION = 2;
 
 /** Parse `--key value`, `--key=value`, `--flag`, and positional args. */
 export function parseArgs(argv = process.argv.slice(2)) {

@@ -1,0 +1,18 @@
+{
+  "id": "stl-cone-8m",
+  "title": "RI-STL01 method 2 — one civilian facing the player at 8 m, crouched in the dark. The five worked rows, in the running game.",
+  "seed": 991,
+  "state": "default",
+  "world": { "timeOfDay": 1.5, "weather": "clear" },
+  "warmupFrames": 10,
+  "frames": 2400,
+  "setup": [
+    { "op": "setStealthState", "patch": { "sneak": 45, "load": "light", "surface": "mud", "inCover": true, "zone": "probe-room", "race": "saxhleel" } },
+    { "op": "setCrimeContext", "context": "crouched_public" },
+    { "op": "spawnCivilian", "civ": { "eid": "civ0", "group": "civilian", "race": "saxhleel", "R": 16, "pos": [0, 0, 8], "yaw": 180 } }
+  ],
+  "inputs": [
+    { "f": 0, "tap": "crouch" }
+  ],
+  "trace": { "shape": "frame", "enemies": true, "hitboxes": false, "events": true }
+}

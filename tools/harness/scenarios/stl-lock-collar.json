@@ -1,0 +1,16 @@
+{
+  "id": "stl-lock-collar",
+  "title": "RI-STL02 method 3 — a tier-3 ward-collar at Security 40, driven by `interact` in the running game. The RNG counter must not move.",
+  "seed": 4711,
+  "state": "default",
+  "world": { "timeOfDay": 2.0, "weather": "clear" },
+  "warmupFrames": 10,
+  "frames": 900,
+  "setup": [
+    { "op": "setStealthState", "patch": { "security": 70, "agility": 40, "picks": 12, "zone": "probe-room" } },
+    { "op": "setCrimeContext", "context": "lockpicking" },
+    { "op": "lockBegin", "lock": "__FIRST_TIER3__" }
+  ],
+  "inputs": [],
+  "trace": { "shape": "frame", "enemies": false, "hitboxes": false, "events": true }
+}

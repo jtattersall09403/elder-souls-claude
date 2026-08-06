@@ -34,6 +34,7 @@ import { canonicalise } from './core/canonical.js';
 // W1-07 — character creation. The engine owns the census SCENE (it is a place in the world,
 // with people in it); game/src/character/** owns the arithmetic and is pure.
 import { Census, renderWrit } from './character/census.js';
+import { StealthCrime, DET as STL_DET, THF as STL_THF, PP as STL_PP, JUS as STL_JUS, SAN as STL_SAN, WIT as STL_WIT, LockAttempt as STL_LockAttempt, lockGate as STL_lockGate, lockTolerance as STL_lockTolerance } from './sim/stealth/system.js';
 import { composeCharacter, signatureOf } from './character/sheet.js';
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
@@ -1128,14 +1129,20 @@ export class Engine {
       if (r.frame > 1) r.maxDelta = Math.max(r.maxDelta, d);
       p.pos[0] = x; p.pos[2] = z;
       p.pos[1] = this.field ? this.field.heightAt(x, z) : p.pos[1];
+      // The vehicle carries the CONTROLLER, not the mirrored copy — `combat-bridge.mirror()`
+      // overwrites `sim.player.pos` from the body at the top of every step, so a ride written
+      // only to `sim.player` would be undone one frame later and the barge would leave without
+      // you. Same lesson as the water retraction.
+      const rb = this.combat && this.combat.player;
+      if (rb) { rb.pos[0] = p.pos[0]; rb.pos[1] = p.pos[1]; rb.pos[2] = p.pos[2]; }
       this._prevX = x; this._prevZ = z;
       this.loop.stepOnce();
       this._afterStep();
       // The clock advances with the ride: `game_min` of world time over `frames` of real time.
       const hrs = r.svc.game_min / 60 / r.frames;
-      const total = this.sim.env.timeOfDay + hrs;
-      this.sim.env.dayCount += Math.floor(total / 24);
-      this.sim.env.timeOfDay = ((total % 24) + 24) % 24;
+      const tod = this.sim.env.timeOfDay + hrs;
+      this.sim.env.dayCount += Math.floor(tod / 24);
+      this.sim.env.timeOfDay = ((tod % 24) + 24) % 24;
     }
     const done = r.frame >= r.frames;
     let arrival = null;
@@ -1143,6 +1150,8 @@ export class Engine {
       const dest = T.stations.find((q) => q.id === r.svc.to);
       p.pos[0] = dest.arrive_at[0]; p.pos[2] = dest.arrive_at[1];
       p.pos[1] = this.field ? this.field.heightAt(p.pos[0], p.pos[2]) : p.pos[1];
+      const ab = this.combat && this.combat.player;
+      if (ab) { ab.pos[0] = p.pos[0]; ab.pos[1] = p.pos[1]; ab.pos[2] = p.pos[2]; }
       this._prevX = p.pos[0]; this._prevZ = p.pos[2];
       arrival = { station: dest.id, at: [p.pos[0], p.pos[2]], marker: dest.arrive_at,
         offset_m: +Math.hypot(p.pos[0] - dest.arrive_at[0], p.pos[2] - dest.arrive_at[1]).toFixed(3),
@@ -2142,6 +2151,241 @@ export class Engine {
       },
     };
   }
+
+  // ================= W1-15 — stealth, theft, crime and justice ===============================
+  // Thin: every one of these delegates to game/src/sim/stealth/** or game/src/sim/crime/**,
+  // which are the same modules tools/harness/stl-probe.mjs drives headless. There is no second
+  // implementation here for the two to disagree about.
+
+  getStealthState() {
+    const st = this.sim.stealth, p = st.p;
+    return {
+      ...st.traceBlock(),
+      terms: {
+        L: p.L, gamma: st.d.detection.visibility.light_exponent,
+        M: st.d.detection.visibility.motion_M[p.motion],
+        S: Math.max(st.d.detection.visibility.sneak_S.floor, 1 - 0.006 * p.sneak),
+        E: st.d.detection.visibility.equip_E[p.load],
+        A: p.inCover ? st.d.detection.visibility.cover_A.in_cover : st.d.detection.visibility.cover_A.default,
+      },
+      sneak: p.sneak, security: p.security, agility: p.agility, load: p.load, race: p.race,
+      gold: p.gold, picks: p.picks, standings: { ...p.standings },
+      crouch_refused: p.crouchRefusedReason,
+      hud_elements: 0,
+    };
+  }
+
+  setStealthState(patch) {
+    const p = this.sim.stealth.p;
+    const allow = ['sneak', 'security', 'agility', 'mercantile', 'speechcraft', 'load', 'race', 'surface', 'inCover', 'zone', 'carryingTorch', 'gold', 'picks', 'crouched', 'jurisdiction', 'settlement'];
+    for (const k of Object.keys(patch)) {
+      if (!allow.includes(k)) throw new Error(`setStealthState: unknown field ${JSON.stringify(k)}; allowed: ${allow.join(', ')}`);
+      p[k] = patch[k];
+    }
+    return this.getStealthState();
+  }
+
+  spawnCivilian(spec) {
+    const st = this.sim.stealth;
+    const c = {
+      eid: spec.eid || `civ${st.civilians.length}`,
+      group: spec.group || 'civilian',
+      race: spec.race || 'saxhleel',
+      R: spec.R === undefined ? st.d.detection.perception_inherited_from_RI_AI01.sight_radius_R_m.CIVILIAN : spec.R,
+      pos: spec.pos ? spec.pos.slice() : [0, 0, 0],
+      yaw: spec.yaw === undefined ? 0 : spec.yaw,
+      suspicion: 0, civ_state: 'CALM', alive: true,
+    };
+    st.civilians.push(c);
+    return { eid: c.eid, civ_state: c.civ_state, R: c.R };
+  }
+
+  visibilityAt(q) {
+    const d = this.sim.stealth.d.detection;
+    const raw = STL_DET.visibilityRaw(d, q);
+    return { V: STL_DET.visibility(d, q), raw, clamped: raw !== STL_DET.visibility(d, q), gamma: d.visibility.light_exponent };
+  }
+
+  soundRadiusFor(q) { return STL_DET.soundRadius(this.sim.stealth.d.detection, q); }
+
+  isStealthOpener(q) {
+    const st = this.sim.stealth;
+    return { opener: STL_DET.isStealthOpener(st.d.detection, { targetAlertState: q.targetAlertState, bearingDeg: q.bearingDeg, sneak: q.sneak === undefined ? st.p.sneak : q.sneak }), gate: st.d.detection.sneak_state.opener_sneak_requirement, routes_to: 'RI-CMB05 backstab, unmodified' };
+  }
+
+  _zoneById(id) {
+    for (const k of Object.keys(this.data.property || {})) {
+      const z = this.data.property[k].zones.find((x) => x.id === id);
+      if (z) return z;
+    }
+    throw new Error(`no property zone ${JSON.stringify(id)}`);
+  }
+
+  listOwnedObjects(zoneId) {
+    return this._zoneById(zoneId).contents.map((c) => ({ instance: c.instance, name: c.name, owner: c.owner, owner_scope: c.owner_scope, value_g: c.value_g, unique: c.unique, stolen_from: c.stolen_from }));
+  }
+
+  listPropertyZones(settlement) {
+    const src = settlement ? [this.data.property[settlement]] : Object.values(this.data.property || {});
+    return src.filter(Boolean).flatMap((p) => p.zones.map((z) => ({ id: z.id, settlement: z.settlement, class: z.class, owner: z.owner, owner_name: z.owner_name, objects: z.contents.length, locks: z.locks.length })));
+  }
+
+  takeObject(instance, opts) {
+    const st = this.sim.stealth;
+    let obj = null, zone = null;
+    for (const k of Object.keys(this.data.property || {})) {
+      for (const z of this.data.property[k].zones) { const c = z.contents.find((x) => x.instance === instance); if (c) { obj = c; zone = z; } }
+    }
+    if (!obj) throw new Error(`no placed object ${JSON.stringify(instance)}`);
+    const observers = opts.observedBy || st.civilians.filter((c) => c.alive && c.civ_state !== 'CALM').map((c) => c.eid);
+    const res = STL_THF.take(st.d.theft, obj, { observed: observers.length > 0, observedBy: observers, factionRanks: st.p.standings, livesHere: false });
+    if (res.stolen_from) obj.stolen_from = res.stolen_from;
+    if (res.crime) {
+      const c = st.crime.commit(res.crime, { frame: this.sim.frame, value_g: obj.value_g, settlement: zone.settlement, jurisdiction: st.p.jurisdiction || 'imperial' });
+      res.crime_ref = c.id;
+      res.quote_g = c.quote;
+    }
+    return res;
+  }
+
+  lockBegin(lockId) {
+    const st = this.sim.stealth;
+    let rec = null;
+    for (const k of Object.keys(this.data.property || {})) for (const z of this.data.property[k].zones) { const l = z.locks.find((x) => x.id === lockId); if (l) rec = l; }
+    if (!rec) throw new Error(`no lock ${JSON.stringify(lockId)}`);
+    st.p.lockAttempt = new STL_LockAttempt(st.d.locks, rec, { security: st.p.security, agility: st.p.agility, picks: st.p.picks, startFrame: this.sim.frame });
+    return st.p.lockAttempt.block();
+  }
+
+  lockPress() {
+    const a = this.sim.stealth.p.lockAttempt;
+    if (!a) throw new Error('lockPress: no lock interaction is open');
+    return a.press();
+  }
+
+  lockGateFor(tier) { return STL_lockGate(this.sim.stealth.d.locks, tier, { security: this.sim.stealth.p.security, agility: this.sim.stealth.p.agility }); }
+  lockToleranceFor(tier, security) { return STL_lockTolerance(this.sim.stealth.d.locks, tier, security); }
+
+  pickpocketBegin(q) {
+    const st = this.sim.stealth;
+    st.p.pickpocket = new STL_PP.PickpocketAttempt(st.d.theft, {
+      targetCivState: q.targetCivState || 'CALM', crouched: st.p.crouched, dist: q.dist === undefined ? 1.0 : q.dist,
+      bearingDeg: q.bearingDeg === undefined ? 180 : q.bearingDeg, moving: !!q.moving, sneak: st.p.sneak,
+      ownerId: q.ownerId || 'npc:unknown', targetEid: q.targetEid || null,
+    });
+    return { need_f: st.p.pickpocket.needFrames, T_s: STL_PP.holdSeconds(st.d.theft, st.p.sneak) };
+  }
+
+  trespassCheck(zoneId, opts) {
+    const z = this._zoneById(zoneId);
+    return { zone: z.id, ...STL_THF.trespass(this.sim.stealth.d.theft, { class: z.class, faction: z.faction }, { factionRanks: this.sim.stealth.p.standings, ...opts }) };
+  }
+
+  fenceQuote(fenceId, item) {
+    const st = this.sim.stealth;
+    const f = this.data.crime.fences.fences.find((x) => x.id === fenceId);
+    if (!f) throw new Error(`no fence ${JSON.stringify(fenceId)}`);
+    const buyer = { id: f.id, settlement: f.settlement, faction: f.faction, is_fence: true };
+    const world = { npcById: () => null, dispositionBetween: () => 0 };
+    const will = STL_THF.willBuy(st.d.theft, buyer, item, world);
+    if (!will.buys) return { buys: false, ...will };
+    return { buys: true, ...STL_THF.fencePrice(st.d.theft, { greed: f.greed }, item, STL_THF.mercantileTerm(st.p.mercantile)) };
+  }
+
+  getCrimeState() {
+    const st = this.sim.stealth;
+    return {
+      ...st.crime.toJSON(),
+      zones: st.zones.toJSON(),
+      standings: { ...st.p.standings },
+      gold: st.p.gold,
+      thresholds: this.getGuardBand({}).thresholds,
+    };
+  }
+
+  commitCrime(crimeKey, opts) {
+    return this.sim.stealth.crime.commit(crimeKey, { frame: this.sim.frame, ...opts });
+  }
+
+  reportRoute(q) { return STL_WIT.reportRoute(this.sim.stealth.d.justice, {}, q); }
+
+  landReport(i, kind) {
+    const st = this.sim.stealth;
+    const w = st.crime.witnesses[i];
+    if (!w) throw new Error(`no witness at index ${i}`);
+    return st.crime.land(w, this.sim.frame, kind || 'unlawful');
+  }
+
+  killWitness(i, opts) {
+    const st = this.sim.stealth;
+    const w = st.crime.witnesses[i];
+    if (!w) throw new Error(`no witness at index ${i}`);
+    return st.crime.killWitness(w, this.sim.frame, { observed: !!opts.observed, victimNamed: !!opts.victimNamed, victimIsOfficial: !!opts.victimIsOfficial, settlement: opts.settlement || null });
+  }
+
+  getGuardBand(opts) {
+    const st = this.sim.stealth;
+    const race = opts.race || st.p.race;
+    const standing = opts.standing || STL_SAN.standingKey(st.p.standings);
+    const th = STL_JUS.thresholds(st.d.races, st.d.sanction, st.d.justice, { race, standing, authority: opts.authority || 'imperial_authority' });
+    const bounty = opts.bounty === undefined ? st.crime.bounty.imperial : opts.bounty;
+    return { race, standing, bounty, thresholds: th, ...STL_JUS.guardBand(st.d.justice, bounty, th, opts) };
+  }
+
+  arrestTopics(opts) {
+    const st = this.sim.stealth;
+    return STL_JUS.arrestTopics(st.d.justice, {
+      bounty: opts.bounty === undefined ? st.crime.bounty.imperial : opts.bounty,
+      gold: opts.gold === undefined ? st.p.gold : opts.gold,
+      factionRank: opts.factionRank || 0, factionHasStanding: !!opts.factionHasStanding,
+      factionInvocationsLeft: opts.factionInvocationsLeft === undefined ? 3 : opts.factionInvocationsLeft,
+      speechcraft: opts.speechcraft === undefined ? st.p.speechcraft : opts.speechcraft,
+      guardDisposition: opts.guardDisposition === undefined ? 50 : opts.guardDisposition,
+    });
+  }
+
+  answerArrest(answer, opts) {
+    const st = this.sim.stealth;
+    const bounty = opts.bounty === undefined ? st.crime.bounty.imperial : opts.bounty;
+    const out = STL_JUS.answerArrest(st.d.justice, st.crime, answer, {
+      bounty, gold: opts.gold === undefined ? st.p.gold : opts.gold, frame: this.sim.frame,
+      skills: opts.skills || { athletics: st.p.sneak, acrobatics: 20, mercantile: st.p.mercantile, speechcraft: st.p.speechcraft, marksman: 20, survival: 20, sneak: st.p.sneak, security: st.p.security },
+      jurisdiction: opts.jurisdiction || 'imperial', settlement: opts.settlement || null,
+      persuadeSucceeded: !!opts.persuadeSucceeded, stolenItems: opts.stolenItems || [],
+    });
+    if (out.ok && answer === 'pay') st.p.gold -= bounty;
+    if (out.ok && answer === 'serve') { st.p.sneak += out.gained.sneak || 0; st.p.security += out.gained.security || 0; }
+    return out;
+  }
+
+  jailLedger(bounty, skills) {
+    const st = this.sim.stealth;
+    return STL_JUS.serve(st.d.justice, bounty, skills || { athletics: 42, acrobatics: 31, mercantile: 55, speechcraft: 61, marksman: 28, survival: 37, sneak: st.p.sneak, security: st.p.security });
+  }
+
+  stealthPlayerDeath(opts) {
+    const st = this.sim.stealth;
+    const before = JSON.stringify(st.crime.toJSON());
+    const out = st.crime.onPlayerDeath(this.sim.frame, { killedByGuardDuringArrest: !!opts.killedByGuardDuringArrest });
+    return { ...out, crime_state_unchanged: JSON.stringify(st.crime.toJSON()) === before, bounty_after: st.crime.bounty.imperial };
+  }
+
+  getSanctionState() {
+    const st = this.sim.stealth;
+    return {
+      coverage: STL_SAN.coverageMatrix(st.d.sanction),
+      standings: { ...st.p.standings },
+      standing_key: STL_SAN.standingKey(st.p.standings),
+      warbrood_shift: STL_SAN.warbroodDispositionShift(st.d.sanction, st.p.standings),
+      deep_kin_regard: STL_SAN.deepKinRegard(st.d.justice, st.crime.bounty.imperial),
+      writs: st.crime.writs, favours_owed: st.crime.favoursOwed, hunters: st.crime.hunters,
+      faction_consequences: STL_SAN.factionConsequences(st.d.justice, { imperialBounty: st.crime.bounty.imperial, deathFlagsInSettlement: 0, theftFromLedger: false, killedLegionSoldier: false }),
+    };
+  }
+
+  resolveKilling(q) { return STL_SAN.resolveKilling(this.sim.stealth.d.sanction, q); }
+  canJoinFaction(id, rank) { return STL_SAN.canJoin(this.sim.stealth.d.sanction, this.sim.stealth.p.standings, id, rank); }
+  warbroodShift() { return STL_SAN.warbroodDispositionShift(this.sim.stealth.d.sanction, this.sim.stealth.p.standings); }
 
   getQuestState() {
     const q = this.sim.quest;

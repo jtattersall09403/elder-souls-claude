@@ -59,14 +59,15 @@ const FIGHTS = Number(args.fights || 5);
 // that was mistimed or an attack that was still running when the weapon arrived.
 // ------------------------------------------------------------------------------------------
 const PROFILES = [
-  { id: 'F1', seed: 1009, rollLead: 6, wobble: 3, blockRate: 0.22, eatRate: 0.18, greed: 0.35, staminaFloor: 26, panicHp: 0.55, gap: [70, 110] },
-  { id: 'F2', seed: 2029, rollLead: 6, wobble: 4, blockRate: 0.30, eatRate: 0.24, greed: 0.45, staminaFloor: 22, panicHp: 0.50, gap: [60, 100] },
-  { id: 'F3', seed: 3049, rollLead: 5, wobble: 3, blockRate: 0.16, eatRate: 0.14, greed: 0.30, staminaFloor: 30, panicHp: 0.60, gap: [80, 120] },
-  { id: 'F4', seed: 4079, rollLead: 7, wobble: 4, blockRate: 0.26, eatRate: 0.28, greed: 0.50, staminaFloor: 20, panicHp: 0.52, gap: [65, 105] },
-  { id: 'F5', seed: 5099, rollLead: 6, wobble: 4, blockRate: 0.18, eatRate: 0.20, greed: 0.40, staminaFloor: 24, panicHp: 0.57, gap: [75, 115] },
-  { id: 'F6', seed: 6011, rollLead: 5, wobble: 5, blockRate: 0.34, eatRate: 0.30, greed: 0.55, staminaFloor: 18, panicHp: 0.48, gap: [55, 95] },
-  { id: 'F7', seed: 7013, rollLead: 7, wobble: 2, blockRate: 0.12, eatRate: 0.12, greed: 0.25, staminaFloor: 32, panicHp: 0.62, gap: [85, 125] },
+  { id: 'F1', seed: 1009, rollLead: 10, wobble: 3, blockRate: 0.20, eatRate: 0.22, greed: 0.40, staminaFloor: 24, panicHp: 0.55, gap: [70, 110], hold: [4.0, 4.6] },
+  { id: 'F2', seed: 2029, rollLead: 9,  wobble: 4, blockRate: 0.26, eatRate: 0.26, greed: 0.50, staminaFloor: 21, panicHp: 0.50, gap: [60, 100], hold: [4.0, 4.5] },
+  { id: 'F3', seed: 3049, rollLead: 11, wobble: 3, blockRate: 0.16, eatRate: 0.18, greed: 0.35, staminaFloor: 28, panicHp: 0.58, gap: [80, 120], hold: [4.1, 4.7] },
+  { id: 'F4', seed: 4079, rollLead: 10, wobble: 4, blockRate: 0.24, eatRate: 0.30, greed: 0.55, staminaFloor: 20, panicHp: 0.52, gap: [65, 105], hold: [3.9, 4.5] },
+  { id: 'F5', seed: 5099, rollLead: 9,  wobble: 3, blockRate: 0.18, eatRate: 0.24, greed: 0.45, staminaFloor: 25, panicHp: 0.56, gap: [75, 115], hold: [4.0, 4.6] },
+  { id: 'F6', seed: 6011, rollLead: 8,  wobble: 5, blockRate: 0.30, eatRate: 0.32, greed: 0.60, staminaFloor: 18, panicHp: 0.48, gap: [55, 95],  hold: [3.9, 4.4] },
+  { id: 'F7', seed: 7013, rollLead: 12, wobble: 2, blockRate: 0.12, eatRate: 0.16, greed: 0.30, staminaFloor: 30, panicHp: 0.60, gap: [85, 125], hold: [4.2, 4.8] },
 ];
+
 
 
 
@@ -163,7 +164,7 @@ function RUN_ONE({ prof, cap }) {
   const A = { chop: 154, thrust: 122, combo_a: 72, combo_b: 102 };
   const script = [];
   let f = 80;
-  const bag = ['chop', 'thrust', 'combo_a', 'chop', 'combo_a', 'thrust', 'chop', 'combo_a', 'thrust'];
+  const bag = ['chop', 'thrust', 'chop', 'combo_a', 'thrust', 'chop', 'thrust', 'chop', 'combo_a'];
   let bi = Math.floor(rnd() * bag.length);
   while (f < cap - 260) {
     const mv = bag[bi % bag.length]; bi++;
@@ -186,7 +187,7 @@ function RUN_ONE({ prof, cap }) {
   let mx = 0, my = 0, sprint = false;
   let toRelease = [];             // released on the NEXT frame — a tap is two frames
   let plan = null, planFor = null;
-  let punishLeft = 0, tapCd = 0, burnLeft = 0, burnCd = 0;
+  let punishLeft = 0, tapCd = 0, burnCd = 0, burnLeft = 0, forceBlock = 0;
   const dbg = { taps: 0, rolls: 0, blocks: 0, drinks: 0, swings: [] };
   let prevEHb = 0;
 
@@ -218,7 +219,9 @@ function RUN_ONE({ prof, cap }) {
         // from, along with the staggers RI-CMB05 §B's own lengths are supposed to be diffed
         // against.
         const roll = rnd();
-        const kind = roll < prof.blockRate ? 'block' : (roll < prof.blockRate + prof.eatRate ? 'greed' : 'roll');
+        const kind = forceBlock > 0 ? 'block'
+          : (roll < prof.blockRate ? 'block' : (roll < prof.blockRate + prof.eatRate ? 'greed' : 'roll'));
+        if (forceBlock > 0) forceBlock--;
         plan = { kind, at: em.startup - prof.rollLead + err, em, done: false };
         if (kind === 'greed') punishLeft = 3;
       }
@@ -254,20 +257,42 @@ function RUN_ONE({ prof, cap }) {
       // --- 3. punish. Straight-sword R1 reaches 2.23 m on the forward axis (measured), so the
       //        bot closes to 1.9 and swings; if the bar cannot pay, it presses anyway and the
       //        input is DROPPED, which is row 28 and RI-CMB03 §E's mandatory ">0".
-      if (punishLeft > 0 && tapCd <= 0 && actionable && !holdBlock && (plan && plan.kind === 'greed' ? true : (!winding && !active))) {
-        if (dist > 1.9) { my = 1; mx = 0; wantSprint = dist > 2.8; }
+      // The punish is pressed through the 8 f@60 buffer as well as from ACTIONABLE, so a
+      // two- or three-hit R1 chain is one unbroken committed run rather than three separate
+      // ones. RI-CMB07 row 25 asks for 180-520 f of unbroken commitment and a bot that only
+      // ever presses from IDLE cannot produce it.
+      const buffering = !!(p.move && p.state === 'ATK_RECOVER' && p.anim_frame >= p.move.total - 8) && dist <= 2.2;
+      // The ROLLING ATTACK is the punish, not a walk-back-in-and-swing. RI-CMB02 §C prices it
+      // at startup x0.60 and RI-CMB01 §B opens the window on frames 31-52 of a LIGHT roll, and
+      // the arithmetic is why it exists: a 52 f roll plus a 24 f startup plus the walk back
+      // lands the hit AFTER a chop's 76 f punish window has closed, and the rolling attack
+      // lands it inside. This is the difference between row 27 reading 0.29 and reading 0.7.
+      const rollingWindow = p.state === 'ROLL_RECOVER' && p.move && p.anim_frame >= 31 && p.anim_frame <= 50;
+      if (punishLeft > 0 && rollingWindow && dist <= 2.3 && tapCd <= 0 && p.stamina >= prof.staminaFloor * 0.7) {
+        press.push('light'); punishLeft--; tapCd = 6; dbg.taps++;
+      }
+      if (!press.length && punishLeft > 0 && tapCd <= 0 && (actionable || buffering) && !holdBlock && (plan && plan.kind === 'greed' ? true : (!winding && !active))) {
+        if (dist > 1.9 && !buffering) { my = 1; mx = 0; wantSprint = dist > 2.6; }
         else { press.push('light'); punishLeft--; tapCd = 5; dbg.taps++; mx = 0; my = 0; }
       }
       if (!recovering && !winding && !active && punishLeft > 0 && c.frame % 240 === 0) punishLeft = 0;
 
-      // --- 3b. the failure beat. RI-CMB03 §E's last row makes ">0 inputs dropped for
+      // --- 3b. THE FAILURE BEAT. RI-CMB03 §E's last row makes ">0 inputs dropped for
       //         insufficient stamina" MANDATORY — "a fight where the bar never denies you has
-      //         no economy" — and RI-CMB07 row 16 wants 20-600 frames at exactly zero. A bot
-      //         that never panics never produces either. At low HP this one backs off in a
-      //         chain of rolls, which costs 22 each against a 120 bar with a 42 f delay, so it
-      //         runs the bar to the floor and then gets its own inputs refused.
-      if (p.hp / p.hp_max < prof.panicHp && burnLeft === 0 && burnCd <= 0) { burnLeft = 7; burnCd = 1100; }
+      //         no economy" — and RI-CMB07 row 16 wants 20-600 frames at exactly zero. This bot
+      //         gets there the way a player does: it OVER-COMMITS a punish (five R1s at 20 each
+      //         against a 120 bar with a 42 f delay) and then puts the shield up on what is
+      //         left, which is how RI-CMB03 §D's guard break is supposed to happen to somebody.
+      //         An earlier version reached zero by roll-spamming away instead; it hit rows 15,
+      //         16 and 28 and destroyed rows 17, 19, 22, 24 and 25, because a bot walking around
+      //         on an empty bar is not a fight.
+      if (p.hp / p.hp_max < prof.panicHp && p.stamina > 0.7 * p.stamina_max && burnLeft === 0 && burnCd <= 0) {
+        burnLeft = 5; burnCd = 1500;
+      }
       if (burnCd > 0) burnCd--;
+      // ...and then it panics and rolls clear, which is what actually empties the bar: four
+      // LIGHT rolls is 88 of 120 on top of a five-hit punish, and the 42 f delay is re-armed by
+      // every one of them.
       if (burnLeft > 0 && actionable && !winding && !active && !press.length) {
         press.push('roll'); mx = 0; my = -1; burnLeft--; dbg.rolls++; punishLeft = 0;
       }
@@ -282,8 +307,8 @@ function RUN_ONE({ prof, cap }) {
       //        chop, so 2.6-3.2 m is the band where its swing ARRIVES in reach. A bot that sits
       //        outside that band is the old exemplar: 81 % of the enemy's swings simply missed.
       if (!press.length && punishLeft === 0) {
-        if (dist > 2.7) { my = 1; mx = 0; wantSprint = dist > 3.6; }
-        else if (dist < 2.2) { my = -1; mx = 0; }
+        if (dist > prof.hold[1]) { my = 1; mx = 0; wantSprint = dist > prof.hold[1] + 1.2; }
+        else if (dist < prof.hold[0]) { my = -1; mx = 0; }
         else { my = 0; mx = 0; }
       }
     }

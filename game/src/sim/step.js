@@ -47,6 +47,15 @@ export function stepOnce(sim, input, combat, bus) {
     // so it reads the same positions the trace reports on this frame, and BEFORE the camera so
     // an aggro latch on frame N is visible in frame N's record.
     if (sim.character && sim.encounterData) stepEncounters(sim, combat, bus, sim.encounterData);
+    // W1-15: stealth and crime. AFTER the fight and after physics, so V, the sound radius and
+    // every civilian's suspicion are computed from the same positions the trace reports on this
+    // frame; BEFORE the camera, so a CHALLENGE latched on frame N appears in frame N's record.
+    //
+    // It is NOT gated on combat state, and that is the whole of ARBITRATION §1 as amended:
+    // "crime, witnesses, bounty and faction standing all keep accruing mid-fight. The world does
+    // not pause because you drew a weapon." A `if (!inCombat)` here would be the single
+    // optimisation RI-CRM01 names as an automatic 0 on its mid-fight-accrual axis.
+    if (sim.stealth) { sim.stealth._frame = sim.frame; sim.stealth.step(sim, input, bus); }
     // The scripted navmesh-spine traversal (RI-CAM01 M2, RI-CAM05 M4/M5) writes the controller
     // in the same slot world collision does — after physics, before the camera — so the pivot
     // reads a post-physics position exactly as RI-CAM01 §A requires, and the vertical spring

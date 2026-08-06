@@ -1,0 +1,43 @@
+{
+  "schema": "elder-souls/magic-traversal-routes@1",
+  "id": "magic-traversal-routes",
+  "corpus_item": "RI-MAG04 Q10 (>= 6 map routes reachable only-or-most-easily by levitate/slowfall), discharging RI-MAG02 §F5",
+  "declared_state": {
+    "measured": "The declared geometry of each route: the walked path length, the flown path length, the vertical gain, the Focus the ascent costs at RI-MAG02 §F2's 1.5/metre, and the non-magic alternative.",
+    "not_measured": "RI-MAG04 M4's LIVE two-pass check (run the route with and without the effect, assert it completes with and is >= 2x the path length without) needs the exterior collision mesh those coordinates sit on, which is W1-01..W1-05's. Until that lands M4 is unmeasurable HERE and scores 0, fail-closed. Declared, not claimed.",
+    "owner_of_the_gap": "W1-14 declares it; W1-01/W1-05 own the geometry."
+  },
+  "rule": "Every route has a non-magic alternative. A route reachable ONLY by levitation is a lockout and fails RI-MAG04 Q8's principle even though it is not a quest.",
+  "routes": [
+    { "id": "rt_xanmeer_upper_shelf", "region": "the_stone_forest", "what": "The shelf above the Helstrom xanmeer plaza, whose stair fell in generations ago.",
+      "vertical_gain_m": 12, "flown_path_m": 14, "walked_path_m": 410, "ratio": 29.3,
+      "ascent_focus": 18, "effects": ["levitate", "slowfall"],
+      "non_magic_alternative": "The service ladder inside the west buttress, intact and free, at 410 m of stair — and a hackwing flock over the plaza that has to be cleared first." },
+    { "id": "rt_bar_head_drop", "region": "thornmarsh", "what": "The bar head at the Saltgirl wreck: nine metres of drop to the water, then nine metres of water.",
+      "vertical_gain_m": 0, "flown_path_m": 18, "walked_path_m": 260, "ratio": 14.4,
+      "ascent_focus": 0, "effects": ["slowfall", "breathe_water"],
+      "non_magic_alternative": "The spring tide takes four metres off the bar for eleven minutes; or the long way round the spit." },
+    { "id": "rt_kiln_roof", "region": "the_stone_wastes", "what": "The kiln roofs above the Stone Wastes potteries, where the flue caps are.",
+      "vertical_gain_m": 9, "flown_path_m": 11, "walked_path_m": 190, "ratio": 17.3,
+      "ascent_focus": 13.5, "effects": ["levitate"],
+      "non_magic_alternative": "The kiln stair on the north side, which is inside the heat cycle and needs resist_element or the nine-on-four-off timing." },
+    { "id": "rt_canopy_gap_burn_scar", "region": "blackwood", "what": "Up through the burn-scar gap in the canopy and over the top of Blackwood.",
+      "vertical_gain_m": 34, "flown_path_m": 40, "walked_path_m": 0, "ratio": null,
+      "ascent_focus": 51, "effects": ["levitate"],
+      "non_magic_alternative": "None by foot — and that is the point: above the canopy is the HACKWING LAYER, an R5 flock on a fixed aggro timer, and by RI-MAG02 §F3 an AIRBORNE caster cannot fight. This route exists to be survivable exactly once, not to be a shortcut.",
+      "note": "MB-1: a sanctioned sequence break. It kills you and your sap-debt stays where you dropped it. That is the cost and it is sufficient." },
+    { "id": "rt_sunken_causeway", "region": "the_salt_hills", "what": "The old causeway to the Salt Hills, under a metre of standing water since the water came up.",
+      "vertical_gain_m": 0, "flown_path_m": 480, "walked_path_m": 1900, "ratio": 3.96,
+      "ascent_focus": 0, "effects": ["buoyancy", "slowfall"],
+      "non_magic_alternative": "The barge, sixty gold and two hours; or low spring tide, when it is ankle-deep for forty minutes." },
+    { "id": "rt_stormhold_archive_drum", "region": "the_clay_moor", "what": "Down into the drum void beneath the Stormhold archive floor.",
+      "vertical_gain_m": 0, "flown_path_m": 7, "walked_path_m": 0, "ratio": null,
+      "ascent_focus": 0, "effects": ["slowfall"],
+      "non_magic_alternative": "The maintenance hatch in the undercroft, which is locked at tier 3 and can be opened with Security 45, a key from the night warden, or open_lock." },
+    { "id": "rt_deep_marsh_root_bridge", "region": "the_deep_marshes", "what": "The broken root-bridge over the deep channel east of the hollow.",
+      "vertical_gain_m": 6, "flown_path_m": 22, "walked_path_m": 640, "ratio": 29.1,
+      "ascent_focus": 9, "effects": ["levitate", "slowfall"],
+      "non_magic_alternative": "The ford three hundred and twenty metres upstream, which is chest-deep and therefore denies sprint and roll (S25) and is where the slitherfangs are." }
+  ],
+  "census": { "routes": 7, "target": 6, "with_a_non_magic_alternative": 6, "sanctioned_sequence_break": 1 }
+}

@@ -98,6 +98,12 @@ export class StealthCrime {
     p.motion = spd < 0.05 ? 'still' : p.crouched ? 'crouch_move' : spd > 3.5 ? 'sprint' : 'walk';
 
     // 3. light at the chest node, then V.
+    //
+    // Outdoors (no zone), the ambient is the SKY's — RI-STL01 §3's table read against the
+    // simulation's own clock and weather, so walking a road at 03:00 in the rain is genuinely
+    // darker than walking it at noon and the stealth model and the renderer are looking at the
+    // same world. Indoors, the zone's authored ambient stands and the sky does not reach in.
+    if (!p.zone) this.light.defaultAmbient = skyAmbient(sim.env);
     const pos = sim.player ? sim.player.pos : [0, 0, 0];
     p.L = this.light.withTorch(this.light.sample(pos[0], pos[1] + 1.35, pos[2], p.zone), p.carryingTorch);
     p.V = DET.visibility(this.d.detection, { L: p.L, motion: p.motion, sneak: p.sneak, load: p.load, inCover: p.inCover });
@@ -270,6 +276,23 @@ export class StealthCrime {
 // The `crouch` and `interact` bits, resolved once.
 const CROUCH_BIT = Math.log2(BIT.crouch);
 const INTERACT_BIT = Math.log2(BIT.interact);
+
+/**
+ * The outdoor ambient, off RI-STL01 §3's table. Piecewise and deterministic; no clock, no RNG.
+ *   midday sun 1.00 · overcast day 0.75 · night clear 0.22 · night overcast 0.09
+ * Dawn and dusk interpolate across the hour bands so the transition is a ramp a player can
+ * plan around rather than a step they get caught by.
+ */
+export function skyAmbient(env) {
+  const h = env ? env.timeOfDay : 12;
+  const overcast = env && (env.weather === 'overcast' || env.weather === 'storm' || env.weather === 'rain');
+  const day = overcast ? 0.75 : 1.00;
+  const night = overcast ? 0.09 : 0.22;
+  if (h >= 8 && h < 17) return day;
+  if (h >= 21 || h < 4) return night;
+  if (h >= 4 && h < 8) return night + (day - night) * ((h - 4) / 4);      // dawn
+  return day + (night - day) * ((h - 17) / 4);                            // dusk, 17:00-21:00
+}
 
 function nearestAggroDist(sim) {
   let best = null;

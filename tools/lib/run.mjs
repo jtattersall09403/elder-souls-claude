@@ -29,6 +29,15 @@ export const SETUP_OPS = {
   censusBegin: (h, o) => h.h('censusBegin', o.opts || {}),
   censusEnter: (h) => h.h('censusEnter'),
   censusAnswer: (h, o) => h.h('censusAnswer', o.value),
+  // W1-15 — stealth, theft, crime and justice.
+  setStealthState: (h, o) => h.h('setStealthState', o.patch || o),
+  setCrimeContext: (h, o) => h.h('setCrimeContext', o.context || o.value),
+  spawnCivilian: (h, o) => h.h('spawnCivilian', o.civ || o),
+  addLightSource: (h, o) => h.h('addLightSource', o.light || o),
+  setBounty: (h, o) => h.h('setBounty', o.jurisdiction || 'imperial', o.n, o.settlement),
+  setFactionStandings: (h, o) => h.h('setFactionStandings', o.standings || o),
+  lockBegin: (h, o) => h.h('lockBegin', o.lock || o.id),
+  pickpocketBegin: (h, o) => h.h('pickpocketBegin', o.q || o),
 };
 
 export function newRunDir(scenarioId, seed, outArg) {

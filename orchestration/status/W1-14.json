@@ -13,7 +13,15 @@
   "outputs_written": [
     "game/data/magic/effects.json",
     "game/data/magic/cast-classes.json",
-    "game/src/sim/magic/cost.js"
+    "game/data/magic/cast-clips.json",
+    "game/data/magic/spells.json",
+    "game/data/magic/enchanting.json",
+    "game/src/sim/magic/cost.js",
+    "game/src/sim/magic/system.js",
+    "game/src/sim/magic/moves.js",
+    "tools/analysis/gen-spells.mjs",
+    "tools/harness/mag-probe.mjs",
+    "game/data/combat/movesets/spell-*.json (70)"
   ],
   "findings": [
     "RI-MAG01: cast classes CANTRIP/LIGHT/HEAVY/GREAT/RITUAL with startup/active/recovery 14-3-20, 24-4-28, 36-6-40, 52-8-60, 150-12-48 (f@60). Ps={15,25,37,53}. Stamina 10/16/24/34/0. Focus mult 0.50/1.00/2.10/4.40/1.00.",
@@ -25,8 +33,13 @@
     "RI-MAG02 F: levitate bounded by 4 mechanisms: drift 1.4m/s (< walk 2.0), climb 0.8m/s + 1.5 Focus per metre net altitude, AIRBORNE defenceless (any damage ends it), diegetic canopy/ceiling. NO prohibition flags anywhere (grep no_levitat|maxAltitude|ceilingClamp must be 0 hits).",
     "RI-MAG02 G: mark/recall/intervention_root/intervention_imperial are RITUAL class; recall magnitude computed = distance/100m; aborts on damage/COMBAT/movement with Focus refund.",
     "VERIFIED: game/src/sim/magic/cost.js reproduces every published RI-MAG02 figure exactly - nuke/balanced 73/25=2.92, weak 11, spark-dart focus_base 7, levitate 8/25/66, slowfall 3, focusMax curve 30/46/62/94/103/112/124, gold 219/872/3414 vs published 220/900/3400.",
-    "Engine integration plan: cast is a MOVE of kind 'cast' in the existing combat move table, so RI-CMB02 commitment machinery handles it. actor.js hitboxActive requires m.hitbox so a cast never makes a weapon hitbox; m.iframes undefined so casting can never grant i-frames. Dodge-cancel needs a kind==='cast' branch in player.js _inputDuringCommitment."
+    "Engine integration plan: cast is a MOVE of kind 'cast' in the existing combat move table, so RI-CMB02 commitment machinery handles it. actor.js hitboxActive requires m.hitbox so a cast never makes a weapon hitbox; m.iframes undefined so casting can never grant i-frames. Dodge-cancel needs a kind==='cast' branch in player.js _inputDuringCommitment.",
+    "mag-probe.mjs: 19/19 live checks PASS. Cast census exact to the frame for all 5 classes; dual cost frame 1; Focus monotonic over 4200 frames; only roll cancels and only after hard_until; zero i-frames; median residual aim error measured; 201 casts one damage value; ballistics within tolerance; levitation 1.5 Focus/m measured; all three RITUAL aborts refund.",
+    "GOTCHA for successors: InputPipeline.queueInputs event frames are RELATIVE to the frame queueInputs was called on (scriptBase). Using H.getFrame()+1 silently schedules the input at 2*frame+1 and it never fires. Cost ~40 min.",
+    "CORPUS DEFECT FOUND: RI-MAG02 \u00a7G's recall table (M=5/15/30/40 -> 6/26/57/77) does not reproduce from RI-MAG02 \u00a7D's own formula, which gives 6/22/53/77. Two of four rows disagree with the item's own arithmetic. Build follows the formula (M2 requires it) and reports the discrepancy.",
+    "CORPUS DEFECT FOUND: RI-MAG02's requested magic line '~28,000 g across 60 purchasable spells (tier mix 26/18/10/5/1)' is arithmetically impossible: cheapest legal 26/18/10/5/1 shelf = 69,246 g. AM-W1-14-01 filed in spells.json. Resolved by an affordability shelf rule (RI-PRG05 mean merchant float 1,721 g) which lands at 29,944 g -- inside RI-MAG03 M8's band.",
+    "The frame record is stamped after sim.frame++, so a 42 f@60 regen delay reads as 41 blocked records for a cast AND for a weapon swing. Probe asserts cast == swing rather than == 42."
   ],
-  "next_step": "generate game/data/magic/spells.json (60 spells, tier mix 26/18/10/5/1, ~28000g) via tools/analysis generator",
+  "next_step": "static analyser (magic-audit.mjs) for RI-MAG02 M1/M2/M3, then quest data for RI-MAG04, then vfx.json",
   "notes_for_successor": ""
 }

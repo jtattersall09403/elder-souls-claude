@@ -57,6 +57,21 @@ export const EVENT_TYPES = new Set([
   'cast_start', 'cast_release', 'cast_interrupt', 'focus_spend', 'effect_apply', 'effect_expire',
   // and the world-facing consequences the Morrowind half needs
   'spell_hit', 'levitate_begin', 'levitate_end', 'soul_trapped', 'soul_trap_refused',
+  // ---- W1-15 / AMENDMENT AM-W1-15-02 — stealth, theft, crime and justice ------------------
+  // HARNESS.md §5 declares the vocabulary "a closed vocabulary, EXTENSIBLE BY AMENDMENT", and
+  // four reference items name these events by string in their Comparison methods:
+  //   RI-STL01: detect, challenge, search_start, search_end, zone_alert, light_snuffed, distraction
+  //   RI-STL02: theft, pickpocket, lock_attempt, lock_open, pick_break, trespass_enter, fence_sale
+  //   RI-CRM01: crime, witness, report, bounty_change, arrest, jail_serve, corpse_found, bloodprice
+  //   RI-CRM02: writ
+  // Without them the events are unemittable and every one of those methods is unmeasurable.
+  // `crouch`, `crouch_refused`, `civ_state` and `death_flag` are this piece's own additions and
+  // are named here rather than folded into a neighbour's meaning.
+  'detect', 'challenge', 'search_start', 'search_end', 'zone_alert', 'light_snuffed', 'distraction',
+  'crouch', 'crouch_refused', 'civ_state',
+  'theft', 'pickpocket', 'lock_attempt', 'lock_ward_set', 'lock_open', 'pick_break', 'trespass_enter', 'fence_sale',
+  'crime', 'witness', 'report', 'bounty_change', 'arrest', 'jail_serve', 'corpse_found', 'bloodprice', 'death_flag',
+  'writ',
 ]);
 
 const POOL_SIZE = 128;

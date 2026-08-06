@@ -537,3 +537,39 @@ or the data layout:
 4. Note in the amendment which existing artifacts are invalidated.
 
 Superseded rules are struck through, not deleted, so old verdicts remain interpretable.
+
+### Amendments applied
+
+**AM-W1-14 — wave 1, piece W1-14 (magic, seam S19). `version` 1 → 2, `elder-souls/trace@1` → `@2`.**
+Requested verbatim by `RI-MAG01`'s provenance note. Every change is an **addition**; nothing is
+removed or given new semantics, so a reader written for `@1` sees `@2` as `@1` plus fields it
+does not know about, and no existing artifact is invalidated.
+
+1. **§4 button set — one new verb, `spell_cycle`** (bound to `KeyR`). The action set is now 16.
+   Casting itself reuses `light` and `heavy` with a catalyst equipped, which is the Souls
+   mapping and needs no verb at all; `spell_cycle` rotates among already-attuned spells and is
+   free (0 stamina, 0 Focus, cancellable). It exists so that nobody builds a spell wheel, which
+   would be a menu that pauses the fight and would kill seam S14.
+2. **§5 frame record, `player`** — adds `focus`, `focus_max`, `focus_locked`, `attuned[]`,
+   `cast: {spell, class, phase, anim_frame, tc_frame, aim_latched, focus_spent, stamina_spent,
+   released}`, `effects_active[]`, `levitating`, `airborne`, `altitude_m`.
+3. **§5 hitbox record** — `kind` gains `"projectile"` and `"volume"`; spell records additionally
+   carry `spell`, `speed_mps`, `turn_rate_dps`, `travel_f`, `ticks_every_f`, `decal_spawn_f`,
+   `decal_r`. A weapon record is byte-identical to what W1-09 emitted.
+4. **§5 event vocabulary** — adds `cast_start`, `cast_release`, `cast_interrupt`, `focus_spend`,
+   `effect_apply`, `effect_expire`, plus `spell_hit`, `levitate_begin`, `levitate_end`,
+   `soul_trapped`, `soul_trap_refused`, and `SPELL_CYCLE` in the RI-CMB07 UPPER_SNAKE stream.
+5. **§3 API** — adds `setAttuned`, `setCatalyst`, `setWillpower`, `setMagicSkills`,
+   `getMagicState`, `magicEventsDrain`, `hearthRest`, `getMagicData`, `spellCost`, `setGold`,
+   `getGold`, `quoteSpell`, `makeSpell`, `learnSpell`, `enchantQuote`, `trapSoul`, `getXulHesh`,
+   `recallQuote`, `setLevitating`, `damagePlayer`; and extends `getPlayerStats()` with
+   `focus`, `focus_max`, `focus_locked`, `attuned`, `effects_active`, `levitating`, `altitude_m`.
+6. **§7 data layout** — adds `game/data/magic/{effects,spells,cast-classes,cast-clips,enchanting,vfx,traversal-routes}.json`
+   and `game/data/combat/movesets/spell-<id>.json` (one per spell), so §7 rule 4's
+   declared-vs-observed discipline covers spells exactly as it covers weapons.
+7. **Save** — adds a `magic` group to `game/data/save-manifest.json` and to the save blob.
+   `magic.custom_spells` is the load-bearing entry: `RI-MAG03` M1 requires a spell the player
+   commissioned to appear in `saveState()`.
+
+`tools/lib/cli.mjs` (`TRACE_SCHEMA`, `HARNESS_API_VERSION`) was updated in the same change.
+**Artifacts invalidated: none.**

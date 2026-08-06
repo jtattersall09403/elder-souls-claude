@@ -98,7 +98,16 @@ export function makeRecord(sim, input, bus, opts, perf) {
       levitating: !!p.levitating,
       airborne: !!p.airborne,
       altitude_m: p.altitudeM === undefined ? 0 : r3(p.altitudeM),
+      // ---- W1-15 — RI-STL01's requested `player.stealth` block, verbatim in shape ----------
+      // {"crouched":bool,"light":0.06,"V":0.157,"sound_r_m":2.4,"surface":"mud","in_cover":true}
+      // Without it no RI-STL01 method is a measurement. Emitted every frame, because
+      // DARK-COVERAGE and the five worked rows are both read off frame series.
+      stealth: sim.stealth ? sim.stealth.traceBlock() : null,
     },
+    // The civilian channel RI-STL01's Comparison method asks for. Civilians are NOT enemies and
+    // do not appear in `enemies[]`; a shopkeeper in an enemy state machine is the item's
+    // named collapse mode.
+    civilians: sim.stealth ? sim.stealth.civTraceBlock() : [],
     // The `camera` channel. Every field below is named by a method in RI-CAM01..07; the
     // items say in as many words that without it "every check scores 0, fail-closed".
     camera: {

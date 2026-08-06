@@ -117,7 +117,10 @@ if (!STATIC_ONLY) {
   try {
     await h.h('setSeed', 1337);
     await h.h('loadState', 'default');
-    live = await h.page.evaluate(async () => {
+    // `getRoutes()` reports `points` as a COUNT, not the polyline, so the leg to be walked is read
+    // from the shipped road file here and handed in.
+    const gateLeg = roads.legs.find((l) => l.id === 'blackrose-lilmoth');
+    live = await h.page.evaluate(async ({ legPoints }) => {
       const H = window.__HARNESS;
       const out = { verbs: Object.keys(H).filter((k) => /travel|board|station|fare/i.test(k)).sort() };
       // ---- M4 step 1: nothing is purchasable at frame 0 -------------------------------------
@@ -125,11 +128,12 @@ if (!STATIC_ONLY) {
       out.frame0 = { legs_walked: s0.legs_walked, purchasable: s0.purchasable.length, refused: s0.refused };
       out.frame0_refusal_sample = H.travelQuote(H.getTravelNetwork().services[0].id).refusal;
       // ---- M4 step 3: 85% of a leg is not enough; 100% is ------------------------------------
-      const roads = H.getRoutes();
-      const leg = roads.legs.find((l) => l.id === 'blackrose-lilmoth');
+      // Purse first: `purchasable` is gated on gold as well as on the walk, and a broke player
+      // proves nothing about the traversal gate.
+      H.setWorldKnowledge({ gold: 500 });
       const walkTo = (frac) => {
-        const n = Math.floor(leg.points.length * frac);
-        for (let i = 0; i < n; i++) { H.teleport(leg.points[i][0], leg.points[i][1]); H.stepFrames(1); }
+        const n = Math.floor(legPoints.length * frac);
+        for (let i = 0; i < n; i++) { H.teleport(legPoints[i][0], legPoints[i][1]); H.stepFrames(1); }
       };
       walkTo(0.85);
       const at85 = H.getTravelState();
@@ -138,7 +142,6 @@ if (!STATIC_ONLY) {
       const at100 = H.getTravelState();
       out.at_100pct = { legs_walked: at100.legs_walked, progress: at100.leg_progress_m['blackrose-lilmoth'], purchasable: at100.purchasable.length };
       // ---- M6: one ride, with gold and a clock ----------------------------------------------
-      H.setWorldKnowledge({ gold: 500 });
       const svc = H.getTravelNetwork().services.find((s) => s.requires_walked === 'blackrose-lilmoth');
       const before = { gold: H.getTravelState().gold, pos: H.getPlayerStats().pos.slice(), tod: H.getWorldStats().timeOfDay };
       const ride = H.boardTravel(svc.id);
@@ -148,7 +151,7 @@ if (!STATIC_ONLY) {
         arrival: ride.arrival, done: ride.done };
       out.after = H.getTravelState().rides_taken;
       return out;
-    });
+    }, { legPoints: gateLeg.points.map((p) => [p[0], p[1]]) });
   } catch (e) { live = { error: String(e && e.stack) }; }
   finally { await h.close(); }
 
@@ -156,7 +159,7 @@ if (!STATIC_ONLY) {
     check('B13-HARNESS-VERBS', live.verbs.length >= 5, `__HARNESS exposes ${live.verbs.length} travel verbs: ${live.verbs.join(', ')}`);
     check('M4-GATE-CLOSED-AT-FRAME-0', live.frame0.purchasable === 0 && live.frame0.refused === services.length,
       `at frame 0: ${live.frame0.purchasable} purchasable, ${live.frame0.refused} refused, legs_walked ${JSON.stringify(live.frame0.legs_walked)} — "${live.frame0_refusal_sample}"`);
-    check('M4-GATE-IS-A-TRAVERSAL-TEST', live.at_85pct.purchasable === 0 && live.at_100pct.purchasable > 0,
+    check('M4-GATE-IS-A-TRAVERSAL-TEST', live.at_85pct.legs_walked.length === 0 && live.at_100pct.legs_walked.includes('blackrose-lilmoth') && live.at_85pct.purchasable === 0 && live.at_100pct.purchasable > 0,
       `85% of blackrose-lilmoth walked (${live.at_85pct.progress} m): ${live.at_85pct.purchasable} purchasable. 100% (${live.at_100pct.progress} m): ${live.at_100pct.purchasable} purchasable. `
       + 'The gate is metres of the leg covered in distinct 25 m bins, so it cannot be set by a teleport or a settlement-visited flag');
     check('M6-RIDE-IS-A-JOURNEY', live.ride.done && live.ride.gold_after < live.ride.gold_before && live.ride.max_frame_delta_m < 25 && live.ride.frames >= 480,

@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 282,
+  "file_count": 285,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -44,8 +44,8 @@
       "path": "combat/clips.json",
       "schema": "elder-souls/clips@1",
       "id": null,
-      "bytes": 75941,
-      "sha256": "780ee2ae8f072389"
+      "bytes": 75971,
+      "sha256": "4d73e93e4236e310"
     },
     {
       "path": "combat/enemies/beast_slitherfang.json",
@@ -1448,8 +1448,22 @@
       "path": "magic/spells.json",
       "schema": "elder-souls/magic-spells@1",
       "id": "magic-spells",
-      "bytes": 71857,
-      "sha256": "86c8e2ea6cadb638"
+      "bytes": 72128,
+      "sha256": "5412b88529f62319"
+    },
+    {
+      "path": "magic/traversal-routes.json",
+      "schema": "elder-souls/magic-traversal-routes@1",
+      "id": "magic-traversal-routes",
+      "bytes": 4641,
+      "sha256": "fe5d9e5bf1f2be3a"
+    },
+    {
+      "path": "magic/vfx.json",
+      "schema": "elder-souls/magic-vfx@1",
+      "id": "magic-vfx",
+      "bytes": 7559,
+      "sha256": "050eacfe7525a01f"
     },
     {
       "path": "npcs/thorn.json",
@@ -1538,6 +1552,13 @@
       "id": "skills",
       "bytes": 5673,
       "sha256": "fef05242d2cece6d"
+    },
+    {
+      "path": "quests/magic-utility.json",
+      "schema": "elder-souls/quests@1",
+      "id": "magic-utility-quests",
+      "bytes": 75833,
+      "sha256": "a6ecc8d8ffaf2ebd"
     },
     {
       "path": "quests/the-boards.json",

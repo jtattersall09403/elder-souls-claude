@@ -53,23 +53,33 @@ try {
     // ---- sustained-band sites: a point whose whole 30 m neighbourhood holds the same band ----
     // A teleport into a 3 m puddle and a 4 m walk out of it measures the puddle's EDGE. The band
     // ladder is only measurable where the band lasts longer than the sample.
-    const sites = {};
+    const CAND = {};
     for (let x = 120; x < 4700; x += 12) {
       for (let z = 120; z < 5400; z += 12) {
         const w = H.getWaterAt(x, z);
-        if (sites[w.band]) continue;
+        if ((CAND[w.band] || []).length >= 12) continue;
         let same = true;
-        for (const [ox, oz] of [[12, 0], [-12, 0], [0, 12], [0, -12], [9, 9], [-9, -9], [9, -9], [-9, 9]]) {
+        for (const [ox, oz] of [[14, 0], [-14, 0], [0, 14], [0, -14], [10, 10], [-10, -10], [10, -10], [-10, 10]]) {
           if (H.getWaterAt(x + ox, z + oz).band !== w.band) { same = false; break; }
         }
-        if (same) sites[w.band] = [x, z, w.depth_m, w.substrate];
+        if (same) (CAND[w.band] = CAND[w.band] || []).push([x, z, w.depth_m, w.substrate]);
       }
     }
+    // The band multiplier is a step function of the band, so a sample that STARTS in W2 and ENDS
+    // in W3 measures neither. Candidates are tried until one holds its band across the whole
+    // 8 s sample; a band with no such site anywhere in the province is reported as not-found
+    // rather than measured on a site that drifts.
+    const sites = {};
     const water = [];
-    for (const b of ['W0', 'W1', 'W2', 'W3', 'W4', 'W5']) if (sites[b]) water.push(run(sites[b][0], sites[b][1]));
+    for (const b of ['W0', 'W1', 'W2', 'W3', 'W4', 'W5']) {
+      for (const c of (CAND[b] || [])) {
+        const r = run(c[0], c[1]);
+        if (r.band === b && r.band_end === b) { water.push(r); sites[b] = c; break; }
+      }
+    }
 
     // ---- burden, out of a fight -----------------------------------------------------------
-    const dry = sites.W0;
+    const dry = sites.W0 || (CAND.W0 && CAND.W0[0]);
     const burden = [];
     for (const b of [0, 0.30, 0.59, 0.601, 0.84, 0.851, 0.99, 1.001, 1.20]) burden.push(run(dry[0], dry[1], { burden: b }));
 

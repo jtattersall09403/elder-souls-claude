@@ -26,93 +26,156 @@
       "pattern": "^Q-[A-Z]{2,6}-[0-9]{2,3}$",
       "description": "Stable quest id, e.g. Q-HIST-04, Q-MAIN-11, Q-SIDE-063."
     },
-    "title": { "type": "string", "minLength": 3 },
-
+    "title": {
+      "type": "string",
+      "minLength": 3
+    },
     "category": {
-      "enum": ["main", "faction", "side", "hidden"],
+      "enum": [
+        "main",
+        "faction",
+        "side",
+        "hidden"
+      ],
       "description": "hidden = never offered by a giver; must be discovered from world state, a book, or overheard dialogue."
     },
-
     "faction": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Faction id this quest belongs to, or null for main/side."
     },
-
     "act": {
-      "type": ["integer", "null"],
+      "type": [
+        "integer",
+        "null"
+      ],
       "minimum": 1,
       "maximum": 5,
       "description": "Main-quest act number (see RI-QST06). Null for non-main quests."
     },
-
     "rank_gate": {
-      "type": ["object", "null"],
+      "type": [
+        "object",
+        "null"
+      ],
       "additionalProperties": false,
-      "required": ["faction", "min_rank"],
+      "required": [
+        "faction",
+        "min_rank"
+      ],
       "properties": {
-        "faction": { "type": "string" },
-        "min_rank": { "type": "integer", "minimum": 0, "maximum": 7 },
-        "min_reputation": { "type": "integer", "minimum": 0 }
+        "faction": {
+          "type": "string"
+        },
+        "min_rank": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "min_reputation": {
+          "type": "integer",
+          "minimum": 0
+        }
       },
-      "description": "Rank the player must already hold to be offered this quest. Never a character-level gate — see RI-QST03."
+      "description": "Rank the player must already hold to be offered this quest. Never a character-level gate \u2014 see RI-QST03."
     },
-
     "discovery": {
-      "enum": ["given", "overheard", "found", "environmental", "consequence"],
+      "enum": [
+        "given",
+        "overheard",
+        "found",
+        "environmental",
+        "consequence"
+      ],
       "description": "given = a giver offers it via a topic. overheard = surfaced only by a rumour/topic on an unrelated NPC. found = a book, note, corpse, or ledger. environmental = the world state itself is the prompt. consequence = opened by the outcome of another quest."
     },
-
     "giver": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["npc_id", "location"],
+      "required": [
+        "npc_id",
+        "location"
+      ],
       "properties": {
-        "npc_id": { "type": "string" },
-        "location": { "type": "string" },
-        "disposition_min": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "npc_id": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "disposition_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
         "honest": {
           "type": "boolean",
           "description": "false when the giver's stated objective differs from their actual objective. If false, `deceit` MUST be present."
         }
       }
     },
-
     "opens_by": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["topic"],
+      "required": [
+        "topic"
+      ],
       "properties": {
-        "topic": { "type": "string", "description": "The dialogue topic keyword that opens this quest. No quest is opened by a map marker." },
-        "prerequisite_topics": { "type": "array", "items": { "type": "string" } },
-        "prerequisite_quests": { "type": "array", "items": { "type": "string" } },
+        "topic": {
+          "type": "string",
+          "description": "The dialogue topic keyword that opens this quest. No quest is opened by a map marker."
+        },
+        "prerequisite_topics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prerequisite_quests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "overheard_from": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "NPC ids whose rumour text seeds the topic. Required when discovery == overheard."
         }
       }
     },
-
     "task_kind": {
       "enum": [
-        "errand", "delivery", "escort", "retrieval", "theft", "investigation",
-        "extermination", "dirty_work", "politics", "rival_conflict",
-        "succession", "pilgrimage", "moral_dilemma", "weird"
+        "errand",
+        "delivery",
+        "escort",
+        "retrieval",
+        "theft",
+        "investigation",
+        "extermination",
+        "dirty_work",
+        "politics",
+        "rival_conflict",
+        "succession",
+        "pilgrimage",
+        "moral_dilemma",
+        "weird"
       ]
     },
-
     "stakes": {
       "type": "integer",
       "minimum": 1,
       "maximum": 10,
       "description": "Personal stake for the player character. 1 = a stranger's errand. 10 = the player's own standing, life, or the world."
     },
-
     "directions": {
       "type": "string",
       "description": "Prose wayfinding as spoken by the giver. Must be sufficient to reach the target without a marker. Landmarks, directions, distances in walking terms."
     },
-
     "journal": {
       "type": "array",
       "minItems": 2,
@@ -120,11 +183,29 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["index", "text", "state"],
+        "required": [
+          "index",
+          "text",
+          "state"
+        ],
         "properties": {
-          "index": { "type": "integer", "minimum": 1, "maximum": 100 },
-          "text": { "type": "string", "minLength": 20 },
-          "state": { "enum": ["active", "branch", "success", "failure"] },
+          "index": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "text": {
+            "type": "string",
+            "minLength": 20
+          },
+          "state": {
+            "enum": [
+              "active",
+              "branch",
+              "success",
+              "failure"
+            ]
+          },
           "records_belief": {
             "type": "boolean",
             "default": false,
@@ -133,28 +214,44 @@
         }
       }
     },
-
     "branches": {
       "type": "array",
       "description": "Points where player choice or discovered information forks the quest. A quest with zero branches is a chore.",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "at_journal_index", "condition", "leads_to"],
+        "required": [
+          "id",
+          "at_journal_index",
+          "condition",
+          "leads_to"
+        ],
         "properties": {
-          "id": { "type": "string" },
-          "at_journal_index": { "type": "integer" },
-          "condition": { "type": "string", "description": "Human-readable predicate: what the player learns, chooses, or fails." },
+          "id": {
+            "type": "string"
+          },
+          "at_journal_index": {
+            "type": "integer"
+          },
+          "condition": {
+            "type": "string",
+            "description": "Human-readable predicate: what the player learns, chooses, or fails."
+          },
           "leads_to": {
             "type": "array",
             "minItems": 2,
-            "items": { "type": "string", "description": "id of a resolution, a failure_state, a sibling branch, or a deceit.revealed_by entry. Every target must resolve within this file." }
+            "items": {
+              "type": "string",
+              "description": "id of a resolution, a failure_state, a sibling branch, or a deceit.revealed_by entry. Every target must resolve within this file."
+            }
           },
-          "irreversible": { "type": "boolean", "default": false }
+          "irreversible": {
+            "type": "boolean",
+            "default": false
+          }
         }
       }
     },
-
     "resolutions": {
       "type": "array",
       "minItems": 1,
@@ -162,34 +259,91 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "method", "violence_required", "journal_index", "outcome"],
+        "required": [
+          "id",
+          "method",
+          "violence_required",
+          "journal_index",
+          "outcome"
+        ],
         "properties": {
-          "id": { "type": "string" },
+          "id": {
+            "type": "string"
+          },
           "method": {
             "enum": [
-              "combat", "persuade", "intimidate", "bribe", "sneak", "steal",
-              "lore_knowledge", "trade", "alchemy", "magic_utility",
-              "refuse", "betray", "confess", "wait"
+              "combat",
+              "persuade",
+              "intimidate",
+              "bribe",
+              "sneak",
+              "steal",
+              "lore_knowledge",
+              "trade",
+              "alchemy",
+              "magic_utility",
+              "refuse",
+              "betray",
+              "confess",
+              "wait"
             ]
           },
           "requires": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "skills": { "type": "object", "additionalProperties": { "type": "integer" } },
-              "attributes": { "type": "object", "additionalProperties": { "type": "integer" } },
-              "items": { "type": "array", "items": { "type": "string" } },
+              "skills": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "integer"
+                }
+              },
+              "attributes": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "integer"
+                }
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "knowledge": {
                 "type": "array",
-                "items": { "type": "string" },
+                "items": {
+                  "type": "string"
+                },
                 "description": "Topic ids or book ids the player must have actually read/heard. Lore as a key."
               },
-              "disposition": { "type": "integer", "minimum": 0, "maximum": 100 },
-              "gold": { "type": "integer", "minimum": 0 },
+              "disposition": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "gold": {
+                "type": "integer",
+                "minimum": 0
+              },
               "faction_rank": {
                 "type": "object",
                 "additionalProperties": false,
-                "properties": { "faction": { "type": "string" }, "min_rank": { "type": "integer" } }
+                "properties": {
+                  "faction": {
+                    "type": "string"
+                  },
+                  "min_rank": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "spell_effects": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Effect ids from corpus/25-magic/data/effects.json that this resolution requires the player to be able to cast or trigger (spell, scroll or enchanted item). ADDED wave 1 by W1-14 at RI-MAG04 \u00a7D's explicit request: without it Q3 (EFFECT-SPREAD), Q4 (NO-SKELETON-KEY), Q5 (SCHOOL-SPREAD), Q9 (TRAVERSAL-QUESTS) and Q12 (KNOWLEDGE-MAGIC) are all unmeasurable and RI-MAG04 fails closed. The change is purely additive - `requires` is additionalProperties:false, so every existing quest file still validates unchanged."
               }
             }
           },
@@ -197,36 +351,67 @@
             "type": "boolean",
             "description": "true if reaching this resolution requires killing at least one living NPC or creature. Drives the non-combat resolution metric (RI-QST05)."
           },
-          "journal_index": { "type": "integer" },
-          "outcome": { "type": "string", "minLength": 10, "description": "What actually happens in the world." },
+          "journal_index": {
+            "type": "integer"
+          },
+          "outcome": {
+            "type": "string",
+            "minLength": 10,
+            "description": "What actually happens in the world."
+          },
           "morally_better": {
-            "type": ["boolean", "null"],
+            "type": [
+              "boolean",
+              "null"
+            ],
             "default": null,
             "description": "null when the quest genuinely does not adjudicate. Overuse of true/false is a design smell."
           },
-          "exclusive_with": { "type": "array", "items": { "type": "string" } },
+          "exclusive_with": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "requires_knowing": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Deceit-truth ids (from deceit.revealed_by) that must have been discovered for this resolution to be available at all. This is the mechanism by which talking to the target before killing them opens a door."
           }
         }
       }
     },
-
     "failure_states": {
       "type": "array",
       "description": "Ways the quest ends without resolution. An empty array is legal only when `can_fail` is explicitly false, and that must be rare.",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "cause", "journal_index", "recoverable", "consequence"],
+        "required": [
+          "id",
+          "cause",
+          "journal_index",
+          "recoverable",
+          "consequence"
+        ],
         "properties": {
-          "id": { "type": "string" },
-          "cause": { "type": "string" },
-          "journal_index": { "type": "integer" },
-          "recoverable": { "type": "boolean" },
-          "consequence": { "type": "string" },
+          "id": {
+            "type": "string"
+          },
+          "cause": {
+            "type": "string"
+          },
+          "journal_index": {
+            "type": "integer"
+          },
+          "recoverable": {
+            "type": "boolean"
+          },
+          "consequence": {
+            "type": "string"
+          },
           "silent": {
             "type": "boolean",
             "default": false,
@@ -235,34 +420,85 @@
         }
       }
     },
-
-    "can_fail": { "type": "boolean", "default": true },
-
+    "can_fail": {
+      "type": "boolean",
+      "default": true
+    },
     "deceit": {
-      "type": ["object", "null"],
+      "type": [
+        "object",
+        "null"
+      ],
       "additionalProperties": false,
-      "required": ["patterns", "stated_objective", "actual_objective", "revealed_by"],
+      "required": [
+        "patterns",
+        "stated_objective",
+        "actual_objective",
+        "revealed_by"
+      ],
       "properties": {
         "patterns": {
           "type": "array",
           "minItems": 1,
-          "items": { "enum": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12"] },
+          "items": {
+            "enum": [
+              "D1",
+              "D2",
+              "D3",
+              "D4",
+              "D5",
+              "D6",
+              "D7",
+              "D8",
+              "D9",
+              "D10",
+              "D11",
+              "D12"
+            ]
+          },
           "description": "Deceit pattern ids from RI-QST02."
         },
-        "stated_objective": { "type": "string" },
-        "actual_objective": { "type": "string" },
-        "truth": { "type": "string" },
+        "stated_objective": {
+          "type": "string"
+        },
+        "actual_objective": {
+          "type": "string"
+        },
+        "truth": {
+          "type": "string"
+        },
         "revealed_by": {
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["id", "channel", "source", "before_point_of_no_return"],
+            "required": [
+              "id",
+              "channel",
+              "source",
+              "before_point_of_no_return"
+            ],
             "properties": {
-              "id": { "type": "string" },
-              "channel": { "enum": ["talk_to_target", "rival_npc", "book", "letter", "ledger", "environment", "eavesdrop", "later_quest", "corpse"] },
-              "source": { "type": "string" },
+              "id": {
+                "type": "string"
+              },
+              "channel": {
+                "enum": [
+                  "talk_to_target",
+                  "rival_npc",
+                  "book",
+                  "letter",
+                  "ledger",
+                  "environment",
+                  "eavesdrop",
+                  "later_quest",
+                  "corpse"
+                ]
+              },
+              "source": {
+                "type": "string"
+              },
               "before_point_of_no_return": {
                 "type": "boolean",
                 "description": "true if this reveal is reachable while the player can still act on it. At least one reveal per deceitful quest MUST be true."
@@ -277,81 +513,175 @@
         }
       }
     },
-
     "consequences": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "faction_reputation": {
           "type": "object",
-          "additionalProperties": { "type": "integer" },
+          "additionalProperties": {
+            "type": "integer"
+          },
           "description": "Signed reputation delta per faction id. Deltas for OTHER factions are how questlines contradict each other."
         },
-        "npc_disposition": { "type": "object", "additionalProperties": { "type": "integer" } },
-        "unlocks": { "type": "array", "items": { "type": "string" } },
+        "npc_disposition": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "unlocks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "locks": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Quest or faction ids permanently closed by completing this quest."
         },
-        "world_flags": { "type": "array", "items": { "type": "string" } },
-        "kills_npc": { "type": "array", "items": { "type": "string" } }
+        "world_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kills_npc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
-
-    "mutually_exclusive_with": { "type": "array", "items": { "type": "string" } },
-
+    "mutually_exclusive_with": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "kill_required_npcs": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "NPCs/creatures that MUST die on every path. Empty array = quest is zero-kill completable. This array is the ground truth for the RI-QST05 ratio."
     },
-
     "rewards": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["type", "unique_named"],
+        "required": [
+          "type",
+          "unique_named"
+        ],
         "properties": {
-          "type": { "enum": ["item", "gold", "access", "information", "property", "training", "faction_rank", "service", "ally"] },
+          "type": {
+            "enum": [
+              "item",
+              "gold",
+              "access",
+              "information",
+              "property",
+              "training",
+              "faction_rank",
+              "service",
+              "ally"
+            ]
+          },
           "unique_named": {
             "type": "boolean",
             "description": "true only for a one-of-a-kind item, location, or standing that exists nowhere else in the game and is named in fiction."
           },
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "amount": { "type": "integer" },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          },
           "on_resolution": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Resolution ids that grant this reward. Omitted = all resolutions."
           }
         }
       }
     },
-
-    "notes": { "type": "string" }
+    "notes": {
+      "type": "string"
+    }
   },
-
   "allOf": [
     {
       "if": {
-        "required": ["giver"],
+        "required": [
+          "giver"
+        ],
         "properties": {
-          "giver": { "required": ["honest"], "properties": { "honest": { "const": false } } }
+          "giver": {
+            "required": [
+              "honest"
+            ],
+            "properties": {
+              "honest": {
+                "const": false
+              }
+            }
+          }
         }
       },
-      "then": { "required": ["deceit"], "properties": { "deceit": { "type": "object" } } }
+      "then": {
+        "required": [
+          "deceit"
+        ],
+        "properties": {
+          "deceit": {
+            "type": "object"
+          }
+        }
+      }
     },
     {
-      "if": { "properties": { "discovery": { "const": "overheard" } } },
-      "then": { "properties": { "opens_by": { "required": ["overheard_from"] } } }
+      "if": {
+        "properties": {
+          "discovery": {
+            "const": "overheard"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "opens_by": {
+            "required": [
+              "overheard_from"
+            ]
+          }
+        }
+      }
     },
     {
-      "if": { "properties": { "category": { "const": "main" } } },
-      "then": { "required": ["act"] }
+      "if": {
+        "properties": {
+          "category": {
+            "const": "main"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "act"
+        ]
+      }
     }
   ]
 }

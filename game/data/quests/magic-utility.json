@@ -1,0 +1,2634 @@
+{
+ "schema": "elder-souls/quests@1",
+ "id": "magic-utility-quests",
+ "corpus_item": "RI-MAG04 §A (the census Q1-Q12), §C (the eight solution shapes)",
+ "element_schema": "corpus/30-quests/quest.schema.json",
+ "note": "Each element of `quests` validates against corpus/30-quests/quest.schema.json. The wrapper exists because that schema is `additionalProperties: false` and HARNESS §7 rule 5 requires a `schema` field on every game/data file; putting the schema id on the container rather than amending someone else's schema for a housekeeping field is the smaller change.",
+ "generated_by": "tools/analysis/gen-magic-quests.mjs",
+ "quests": [
+  {
+   "id": "mag_the_warded_ledger",
+   "title": "The Warded Ledger",
+   "category": "faction",
+   "faction": "the_dockhands",
+   "discovery": "overheard",
+   "giver": {
+    "npc_id": "harbourmistress-tesh",
+    "location": "lilmoth-customs",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the ledger"
+   },
+   "task_kind": "theft",
+   "stakes": 5,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Tesh says the ledger that would prove the gem-running is behind a warded door in the customs loft. She says it as if the door were weather.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "The ward comes apart like a knot and the hinge pins come off with it. The ledger is where she said, and the last four pages are in a different hand.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The undercustomer takes four hundred and turns his back for the length of a cigarette.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "The collar-ward gives on the third pin. Nobody hears it.",
+     "state": "complete"
+    },
+    {
+     "index": 70,
+     "text": "The undercustomer is not paid enough to die for a loft. He does anyway.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_warded_ledger__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "warding": 45,
+       "sorcery": 25
+      },
+      "spell_effects": [
+       "open_lock",
+       "shatter"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "The ward comes apart like a knot and the hinge pins come off with it. The ledger is where she said, and the last four pages are in a different hand.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_warded_ledger__bribe",
+     "method": "bribe",
+     "requires": {
+      "gold": 400,
+      "disposition": 45
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "The undercustomer takes four hundred and turns his back for the length of a cigarette.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_warded_ledger__steal",
+     "method": "steal",
+     "requires": {
+      "skills": {
+       "security": 55
+      }
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "The collar-ward gives on the third pin. Nobody hears it.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_warded_ledger__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 70,
+     "outcome": "The undercustomer is not paid enough to die for a loft. He does anyway.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_warded_ledger__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 225
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "harbourmistress-tesh": 8
+    },
+    "faction_reputation": {
+     "the_dockhands": 5
+    }
+   },
+   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_seized_hull",
+   "title": "The Seized Hull",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "shipwright-oleen",
+    "location": "lilmoth-yard",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the seized hull"
+   },
+   "task_kind": "retrieval",
+   "stakes": 4,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Oleen wants her tools back off a hull the customs house has chained shut. She will not say why she is not asking the customs house.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "Stormhold iron rots green when you ask it to. The chain came apart in my hands and left a stain on the deck that is still there.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The customs clerk decides, out loud, that the seal was never properly lodged.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "The padlock is older than the seal on it.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_seized_hull__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "sorcery": 45
+      },
+      "spell_effects": [
+       "corrode"
+      ],
+      "knowledge": [
+       "chain_iron_from_stormhold"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "Stormhold iron rots green when you ask it to. The chain came apart in my hands and left a stain on the deck that is still there.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_seized_hull__persuade",
+     "method": "persuade",
+     "requires": {
+      "disposition": 60
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "The customs clerk decides, out loud, that the seal was never properly lodged.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_seized_hull__steal",
+     "method": "steal",
+     "requires": {
+      "skills": {
+       "security": 40
+      }
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "The padlock is older than the seal on it.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_seized_hull__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 180
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "shipwright-oleen": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_barred_window",
+   "title": "The Barred Window",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "fence-ashul",
+    "location": "gideon-lowmarket",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the barred window"
+   },
+   "task_kind": "theft",
+   "stakes": 3,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Ashul wants a reliquary out of a shrine-house that has no door on the street side and a guard on the other.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "Twenty-five metres of reach and a barred window are the same thing as an open door. The guard never turned round.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "I went in through the guard. The reliquary is worth less now that it is known to be missing, and the shrine-house has a body in it.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_barred_window__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "sorcery": 45
+      },
+      "spell_effects": [
+       "telekinesis"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "Twenty-five metres of reach and a barred window are the same thing as an open door. The guard never turned round.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_barred_window__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 50,
+     "outcome": "I went in through the guard. The reliquary is worth less now that it is known to be missing, and the shrine-house has a body in it.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_barred_window__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 135
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "fence-ashul": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+  },
+  {
+   "id": "mag_the_drowned_wreck",
+   "title": "The Drowned Wreck",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "widow-ineel",
+    "location": "thornmarsh-stilts",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the drowned wreck"
+   },
+   "task_kind": "retrieval",
+   "stakes": 4,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Ineel says her husband went down with the Saltgirl and that the ship is nine metres under at the bar mouth. She wants the log, not the man.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "Off the bar head is a nine-metre drop and then nine metres of water. I went down both of them slowly and came up with the log. It says he turned the ship around.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The spring tide takes four metres off the bar for eleven minutes. I did not need a spell; I needed a table.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "A Naga diver goes down for me and asks for nothing, which is worse.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_drowned_wreck__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "warding": 0
+      },
+      "spell_effects": [
+       "slowfall",
+       "breathe_water"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "Off the bar head is a nine-metre drop and then nine metres of water. I went down both of them slowly and came up with the log. It says he turned the ship around.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_drowned_wreck__wait",
+     "method": "wait",
+     "requires": {
+      "knowledge": [
+       "thornmarsh_tide_table"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "The spring tide takes four metres off the bar for eleven minutes. I did not need a spell; I needed a table.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_drowned_wreck__persuade",
+     "method": "persuade",
+     "requires": {
+      "disposition": 55
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "A Naga diver goes down for me and asks for nothing, which is worse.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_drowned_wreck__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 180
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "widow-ineel": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_xanmeer_shelf",
+   "title": "The Xanmeer Shelf",
+   "category": "main",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "rootkeeper-jeen",
+    "location": "helstrom-undertemple",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the upper shelf"
+   },
+   "task_kind": "investigation",
+   "stakes": 8,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Jeen says the answer is on the shelf above the plaza and that the stair to it fell in before her grandmother was born.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "Twelve metres of climb cost me eighteen of sap and most of an afternoon. The carving on the shelf is not in Jel and it is not in Cyrodiilic.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The hackwings over the plaza have to be cleared before the west buttress can be climbed at all. It takes most of a day and there are a lot of them.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_xanmeer_shelf__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "warding": 65
+      },
+      "spell_effects": [
+       "levitate",
+       "slowfall"
+      ],
+      "knowledge": [
+       "xanmeer_shelf_is_reachable"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "Twelve metres of climb cost me eighteen of sap and most of an afternoon. The carving on the shelf is not in Jel and it is not in Cyrodiilic.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_xanmeer_shelf__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 50,
+     "outcome": "The hackwings over the plaza have to be cleared before the west buttress can be climbed at all. It takes most of a day and there are a lot of them.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_xanmeer_shelf__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "information",
+     "unique_named": false,
+     "amount": 360
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "rootkeeper-jeen": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+  },
+  {
+   "id": "mag_the_sunken_causeway",
+   "title": "The Sunken Causeway",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "warden-eshi",
+    "location": "thornmarsh-hall",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the causeway"
+   },
+   "task_kind": "errand",
+   "stakes": 3,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Eshi mentions that nobody has walked the old causeway to Salt Hills since the water came up over it.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I walked the causeway on top of the water it is under. It is still a road; it is simply a road below a road.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The barge takes sixty gold and two hours and lands you at the far end anyway.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "At low spring the causeway is ankle-deep for forty minutes.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_sunken_causeway__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "warding": 25
+      },
+      "spell_effects": [
+       "buoyancy",
+       "slowfall"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I walked the causeway on top of the water it is under. It is still a road; it is simply a road below a road.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_sunken_causeway__trade",
+     "method": "trade",
+     "requires": {
+      "gold": 60
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "The barge takes sixty gold and two hours and lands you at the far end anyway.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_sunken_causeway__wait",
+     "method": "wait",
+     "requires": {
+      "knowledge": [
+       "thornmarsh_tide_table"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "At low spring the causeway is ankle-deep for forty minutes.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_sunken_causeway__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 135
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "warden-eshi": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_deep_kin_conclave",
+   "title": "The Deep-Kin Conclave",
+   "category": "faction",
+   "faction": "deep_kin",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "xul-aneekh-speaker",
+    "location": "deep-marshes-hollow",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the conclave"
+   },
+   "task_kind": "politics",
+   "stakes": 7,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "The conclave admits no foreigner and no one whose name is not spoken by someone inside. I am both.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I wore a face that was not mine for three minutes and heard what they decided. I have not been able to stop thinking about whose face it was.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "Rank four walks in through the front of the hollow.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "Speaking a name you were given inside is the whole of the door.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_deep_kin_conclave__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 65
+      },
+      "spell_effects": [
+       "false_face"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I wore a face that was not mine for three minutes and heard what they decided. I have not been able to stop thinking about whose face it was.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_deep_kin_conclave__persuade",
+     "method": "persuade",
+     "requires": {
+      "faction_rank": {
+       "faction": "deep_kin",
+       "min_rank": 4
+      }
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "Rank four walks in through the front of the hollow.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_deep_kin_conclave__lore_knowledge",
+     "method": "lore_knowledge",
+     "requires": {
+      "knowledge": [
+       "the_name_teel_ashaan"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "Speaking a name you were given inside is the whole of the door.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_deep_kin_conclave__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "information",
+     "unique_named": false,
+     "amount": 315
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "xul-aneekh-speaker": 8
+    },
+    "faction_reputation": {
+     "deep_kin": 5
+    }
+   },
+   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_counting_house",
+   "title": "The Counting House",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "fence-ashul",
+    "location": "gideon-lowmarket",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the counting house"
+   },
+   "task_kind": "theft",
+   "stakes": 5,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Two clerks, one lamp, and a strongbox that is only open between the eighth and ninth bell.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "The water-film held until I touched the box. It was enough; I was already past them.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The lamp has a blind side and the clerks are not looking for one.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "One clerk is cheaper than the other and knows it.",
+     "state": "complete"
+    },
+    {
+     "index": 70,
+     "text": "Two clerks. It is not difficult and it is not quiet.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_counting_house__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 45
+      },
+      "spell_effects": [
+       "invisibility"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "The water-film held until I touched the box. It was enough; I was already past them.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_counting_house__sneak",
+     "method": "sneak",
+     "requires": {
+      "skills": {
+       "sneak": 60
+      }
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "The lamp has a blind side and the clerks are not looking for one.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_counting_house__bribe",
+     "method": "bribe",
+     "requires": {
+      "gold": 700
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "One clerk is cheaper than the other and knows it.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_counting_house__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 70,
+     "outcome": "Two clerks. It is not difficult and it is not quiet.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_counting_house__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 225
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "fence-ashul": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_quiet_floor",
+   "title": "The Quiet Floor",
+   "category": "side",
+   "discovery": "overheard",
+   "giver": {
+    "npc_id": "scribe-hulen",
+    "location": "stormhold-archive",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the quiet floor"
+   },
+   "task_kind": "investigation",
+   "stakes": 4,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Hulen wants to know who has been in the archive at night. The floor above the archive is boards over a drum of empty air.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I crossed the drum floor without it saying anything about me, and watched the archivist do the same on his own.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "Along the joists, one foot at a time, is slow and silent.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "The night warden tells me who signs in, which is the same answer with less floor.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_quiet_floor__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 0
+      },
+      "spell_effects": [
+       "muffle"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I crossed the drum floor without it saying anything about me, and watched the archivist do the same on his own.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_quiet_floor__sneak",
+     "method": "sneak",
+     "requires": {
+      "skills": {
+       "sneak": 50
+      }
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "Along the joists, one foot at a time, is slow and silent.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_quiet_floor__persuade",
+     "method": "persuade",
+     "requires": {
+      "disposition": 70
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "The night warden tells me who signs in, which is the same answer with less floor.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_quiet_floor__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 180
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "scribe-hulen": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_witness",
+   "title": "The Witness",
+   "category": "faction",
+   "faction": "the_imperial_assize",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "assizer-corvo",
+    "location": "gideon-court",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the witness"
+   },
+   "task_kind": "moral_dilemma",
+   "stakes": 6,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "The woman saw it. She will not say so, and Corvo will not say why she will not.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "She told me everything in a warm room and I have thought about that room since. What she said was true. That is not the same as it being mine to have.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "Two hundred and twenty-five gold and she testifies, and she is afraid the whole time.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "I found what she is afraid of and dealt with it. She testified without being asked.",
+     "state": "complete"
+    },
+    {
+     "index": 70,
+     "text": "She testified. She will not look at me in the street.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_witness__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 0
+      },
+      "spell_effects": [
+       "charm"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "She told me everything in a warm room and I have thought about that room since. What she said was true. That is not the same as it being mine to have.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_witness__bribe",
+     "method": "bribe",
+     "requires": {
+      "gold": 225,
+      "disposition": 40
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "Two hundred and twenty-five gold and she testifies, and she is afraid the whole time.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_witness__lore_knowledge",
+     "method": "lore_knowledge",
+     "requires": {
+      "knowledge": [
+       "the_thing_she_is_afraid_of"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "I found what she is afraid of and dealt with it. She testified without being asked.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_witness__intimidate",
+     "method": "intimidate",
+     "requires": {
+      "attributes": {
+       "strength": 45
+      }
+     },
+     "violence_required": false,
+     "journal_index": 70,
+     "outcome": "She testified. She will not look at me in the street.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_witness__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 270
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "assizer-corvo": 8
+    },
+    "faction_reputation": {
+     "the_imperial_assize": 5
+    }
+   },
+   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_stilt_house_dog",
+   "title": "The Stilt-House Guard",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "herbwife-ossa",
+    "location": "thornmarsh-stilts",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the guar in the yard"
+   },
+   "task_kind": "errand",
+   "stakes": 2,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Ossa cannot get to her own drying racks. The guar in the yard is not hers and will not move.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I asked the guar to be still and it was still, and Ossa got her racks back without anything dying in her yard.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "A bundle of saltrice moves a guar further than a spell does.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "The guar is dead. Ossa has her racks and does not thank me.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_stilt_house_dog__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "root_speech": 25
+      },
+      "spell_effects": [
+       "calm_beast"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I asked the guar to be still and it was still, and Ossa got her racks back without anything dying in her yard.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_stilt_house_dog__trade",
+     "method": "trade",
+     "requires": {
+      "items": [
+       "saltrice_bundle"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "A bundle of saltrice moves a guar further than a spell does.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_stilt_house_dog__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 60,
+     "outcome": "The guar is dead. Ossa has her racks and does not thank me.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_stilt_house_dog__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 90
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "herbwife-ossa": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_two_brothers",
+   "title": "The Two Brothers",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "innkeeper-veth",
+    "location": "blackrose-inn",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the two brothers"
+   },
+   "task_kind": "rival_conflict",
+   "stakes": 6,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Veth wants the older brother out of her inn and the younger one to stop paying for him to be in it.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I put enough fear in him to walk. He walked. He is somewhere, and I do not know where, and that is now a thing about me.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The older brother is dead in the common room and the younger one saw it.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_two_brothers__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 25
+      },
+      "spell_effects": [
+       "demoralise"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I put enough fear in him to walk. He walked. He is somewhere, and I do not know where, and that is now a thing about me.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_two_brothers__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 50,
+     "outcome": "The older brother is dead in the common room and the younger one saw it.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_two_brothers__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 270
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "innkeeper-veth": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+  },
+  {
+   "id": "mag_who_paid_him",
+   "title": "Who Paid Him",
+   "category": "main",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "assizer-corvo",
+    "location": "gideon-court",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the dead runner"
+   },
+   "task_kind": "investigation",
+   "stakes": 8,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "The runner is dead in an alley with a full purse, which means he was not killed for the purse.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I asked him and he answered, in the flat way they answer. He named a house. He did not name a person, because he never saw one.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The house sends someone to stop me asking. What he carries answers the question, and I had to take it off him.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_who_paid_him__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "root_speech": 45
+      },
+      "spell_effects": [
+       "speak_to_the_dead"
+      ],
+      "knowledge": [
+       "the_runners_name"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I asked him and he answered, in the flat way they answer. He named a house. He did not name a person, because he never saw one.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_who_paid_him__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 50,
+     "outcome": "The house sends someone to stop me asking. What he carries answers the question, and I had to take it off him.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_who_paid_him__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "information",
+     "unique_named": false,
+     "amount": 360
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "assizer-corvo": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+  },
+  {
+   "id": "mag_the_lost_key",
+   "title": "The Lost Key",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "shipwright-oleen",
+    "location": "lilmoth-yard",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the lost key"
+   },
+   "task_kind": "retrieval",
+   "stakes": 3,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "The key to the yard store went into the mud somewhere between the slip and the gate, some time in the last three years.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "It is four metres from the gate, under sixty centimetres of yard, and it has been there long enough to be part of the yard.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "A new lock is ninety gold and takes an hour.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "The old yardman remembers the day it went and roughly where he was standing.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_lost_key__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 25
+      },
+      "spell_effects": [
+       "detect_key"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "It is four metres from the gate, under sixty centimetres of yard, and it has been there long enough to be part of the yard.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_lost_key__trade",
+     "method": "trade",
+     "requires": {
+      "gold": 90
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "A new lock is ninety gold and takes an hour.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_lost_key__persuade",
+     "method": "persuade",
+     "requires": {
+      "disposition": 50
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "The old yardman remembers the day it went and roughly where he was standing.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_lost_key__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 135
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "shipwright-oleen": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_hollow_count",
+   "title": "The Hollow Count",
+   "category": "faction",
+   "faction": "the_rootkeepers",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "rootkeeper-jeen",
+    "location": "helstrom-undertemple",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the hollow count"
+   },
+   "task_kind": "investigation",
+   "stakes": 6,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Jeen wants to know how many are living in the hollow under the east root. Nobody who goes in comes back saying a number.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "Eleven warm smudges, and one of them is very large and has not moved in a long time. I did not go in.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "You can count them from the lip if you are patient and low.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "I counted them by killing them, which is a count Jeen did not want.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_hollow_count__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 25
+      },
+      "spell_effects": [
+       "detect_life"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "Eleven warm smudges, and one of them is very large and has not moved in a long time. I did not go in.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_hollow_count__sneak",
+     "method": "sneak",
+     "requires": {
+      "skills": {
+       "sneak": 65
+      }
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "You can count them from the lip if you are patient and low.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_hollow_count__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 60,
+     "outcome": "I counted them by killing them, which is a count Jeen did not want.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_hollow_count__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 270
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "rootkeeper-jeen": 8
+    },
+    "faction_reputation": {
+     "the_rootkeepers": 5
+    }
+   },
+   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_kiln_flues",
+   "title": "The Kiln Flues",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "potter-mek",
+    "location": "stone-wastes-kiln",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the flues"
+   },
+   "task_kind": "retrieval",
+   "stakes": 5,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Mek dropped a whole firing into the flue and the flue is hot on a cycle nobody has written down.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "Thick skin and eleven seconds. My eyebrows are a separate problem.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The cycle is nine minutes on and four off, and everyone in the Stone Wastes knows it except me.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "A Naga walks in and out of the flue for a hundred and fifty gold and calls it easy money.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_kiln_flues__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "root_speech": 0
+      },
+      "spell_effects": [
+       "resist_element"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "Thick skin and eleven seconds. My eyebrows are a separate problem.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_kiln_flues__wait",
+     "method": "wait",
+     "requires": {
+      "knowledge": [
+       "the_kiln_cycle"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "The cycle is nine minutes on and four off, and everyone in the Stone Wastes knows it except me.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_kiln_flues__bribe",
+     "method": "bribe",
+     "requires": {
+      "gold": 150
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "A Naga walks in and out of the flue for a hundred and fifty gold and calls it easy money.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_kiln_flues__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 225
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "potter-mek": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_rot_house",
+   "title": "The Rot House",
+   "category": "side",
+   "discovery": "overheard",
+   "giver": {
+    "npc_id": "herbwife-ossa",
+    "location": "thornmarsh-stilts",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the rot house"
+   },
+   "task_kind": "errand",
+   "stakes": 5,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "The house at the end of the walk has had swamp-rot in it for two seasons and the family are still in it.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I cleaned the blood of three people and burned the reed mats. The rot came out of the mats, which nobody had thought to say.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The temple sells the cure at eighty a head and does not ask about the mats.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "The family can be talked into leaving the house, which cures them and ends the house.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_rot_house__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "root_speech": 0
+      },
+      "spell_effects": [
+       "cure_disease",
+       "resist_disease"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I cleaned the blood of three people and burned the reed mats. The rot came out of the mats, which nobody had thought to say.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_rot_house__trade",
+     "method": "trade",
+     "requires": {
+      "gold": 240
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "The temple sells the cure at eighty a head and does not ask about the mats.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_rot_house__persuade",
+     "method": "persuade",
+     "requires": {
+      "disposition": 60
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "The family can be talked into leaving the house, which cures them and ends the house.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_rot_house__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 225
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "herbwife-ossa": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_burning_bank",
+   "title": "The Burning Bank",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "warden-eshi",
+    "location": "thornmarsh-hall",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the voriplasm"
+   },
+   "task_kind": "weird",
+   "stakes": 4,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Something clear and slow has come up the bank and is on the path, and Eshi says it is not an animal and not a plant.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "Burning resin takes voriplasm off a bank the way salt takes a slug. The path is a path again and the bank is black.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "It goes back down at the turn of the tide, four hours later, and comes back the next day.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "Two barrows of salt from the pans, spread thin. It will not cross it again.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_burning_bank__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "sorcery": 0
+      },
+      "spell_effects": [
+       "fire_damage"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "Burning resin takes voriplasm off a bank the way salt takes a slug. The path is a path again and the bank is black.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_burning_bank__wait",
+     "method": "wait",
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "It goes back down at the turn of the tide, four hours later, and comes back the next day.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_burning_bank__lore_knowledge",
+     "method": "lore_knowledge",
+     "requires": {
+      "knowledge": [
+       "voriplasm_hates_salt"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "Two barrows of salt from the pans, spread thin. It will not cross it again.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_burning_bank__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 180
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "warden-eshi": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_ninety_seconds",
+   "title": "Ninety Seconds",
+   "category": "main",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "rootkeeper-jeen",
+    "location": "deep-marshes-hollow",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the naming"
+   },
+   "task_kind": "politics",
+   "stakes": 9,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "The naming takes ninety seconds from the first word and cannot be undone once it is finished.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I took the speaker's voice and the ninety seconds ran out with nothing in them. The congregation stood there and then went home.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The speaker is dead and the naming stopped, and now there is a dead speaker.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "I told the congregation what it would cost them. Eleven of them left and it needed twelve.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_ninety_seconds__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 45
+      },
+      "spell_effects": [
+       "silence"
+      ],
+      "knowledge": [
+       "the_naming_needs_a_voice"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I took the speaker's voice and the ninety seconds ran out with nothing in them. The congregation stood there and then went home.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_ninety_seconds__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 50,
+     "outcome": "The speaker is dead and the naming stopped, and now there is a dead speaker.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_ninety_seconds__persuade",
+     "method": "persuade",
+     "requires": {
+      "disposition": 65,
+      "knowledge": [
+       "what_the_naming_costs"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "I told the congregation what it would cost them. Eleven of them left and it needed twelve.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_ninety_seconds__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "information",
+     "unique_named": false,
+     "amount": 405
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "rootkeeper-jeen": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+  },
+  {
+   "id": "mag_the_far_exit",
+   "title": "The Far Exit",
+   "category": "faction",
+   "faction": "the_dockhands",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "harbourmistress-tesh",
+    "location": "lilmoth-customs",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the far exit"
+   },
+   "task_kind": "retrieval",
+   "stakes": 6,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "What Tesh wants is in a room with four of them in it, and she does not want four bodies in a room she has to explain.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I stilled the room, walked through it, and went out of the far door, which opens onto nine metres of nothing and then the wharf. They were still standing when I left and I did not take anything else.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "Four of them, one lamp, and a long way to the far door.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "Four bodies in a room Tesh has to explain.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_far_exit__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "veiling": 65
+      },
+      "spell_effects": [
+       "paralyse",
+       "slowfall"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I stilled the room, walked through it, and went out of the far door, which opens onto nine metres of nothing and then the wharf. They were still standing when I left and I did not take anything else.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_far_exit__sneak",
+     "method": "sneak",
+     "requires": {
+      "skills": {
+       "sneak": 70
+      }
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "Four of them, one lamp, and a long way to the far door.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_far_exit__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 60,
+     "outcome": "Four bodies in a room Tesh has to explain.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_far_exit__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 270
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "harbourmistress-tesh": 8
+    },
+    "faction_reputation": {
+     "the_dockhands": 5
+    }
+   },
+   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_door_that_stays_shut",
+   "title": "The Door That Stays Shut",
+   "category": "side",
+   "discovery": "overheard",
+   "giver": {
+    "npc_id": "innkeeper-veth",
+    "location": "blackrose-inn",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the cellar door"
+   },
+   "task_kind": "escort",
+   "stakes": 5,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Veth needs the cellar door to stay shut for one night with something on the other side of it.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I sealed the door harder than it was built and sat against it. Whatever it was stopped trying at about the fourth bell.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "Forty gold of iron bar and a carpenter who is awake at that hour.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "I opened the door instead. It is dealt with and Veth has a new cellar door to buy.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_door_that_stays_shut__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "warding": 0
+      },
+      "spell_effects": [
+       "lock_lock"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I sealed the door harder than it was built and sat against it. Whatever it was stopped trying at about the fourth bell.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_door_that_stays_shut__trade",
+     "method": "trade",
+     "requires": {
+      "gold": 40
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "Forty gold of iron bar and a carpenter who is awake at that hour.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_door_that_stays_shut__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 60,
+     "outcome": "I opened the door instead. It is dealt with and Veth has a new cellar door to buy.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_door_that_stays_shut__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 225
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "innkeeper-veth": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_broken_heirloom",
+   "title": "The Broken Heirloom",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "widow-ineel",
+    "location": "thornmarsh-stilts",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the heirloom"
+   },
+   "task_kind": "moral_dilemma",
+   "stakes": 4,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "It came apart in my hands and the family will not talk to a stranger holding it in pieces.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I put it back together well enough that only I know. That is a thing I now know about myself.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The family found out how it broke. It ended badly and the heirloom is still in pieces.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_broken_heirloom__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "root_speech": 25
+      },
+      "spell_effects": [
+       "mend_item"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I put it back together well enough that only I know. That is a thing I now know about myself.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_broken_heirloom__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 50,
+     "outcome": "The family found out how it broke. It ended badly and the heirloom is still in pieces.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_broken_heirloom__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 180
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "widow-ineel": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+  },
+  {
+   "id": "mag_the_stilled_man",
+   "title": "The Stilled Man",
+   "category": "side",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "herbwife-ossa",
+    "location": "thornmarsh-stilts",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the stilled man"
+   },
+   "task_kind": "errand",
+   "stakes": 5,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "A hunter came back from the deep marsh standing up and has not moved since. He is warm and he is looking at us.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I loosened the joint and he fell down and swore at me for four minutes without stopping. He remembers all of it.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "The temple has a draught for it and charges eighty.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "It wears off in nine days. He remembers those too.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_stilled_man__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "root_speech": 25
+      },
+      "spell_effects": [
+       "cure_paralysis"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I loosened the joint and he fell down and swore at me for four minutes without stopping. He remembers all of it.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_stilled_man__trade",
+     "method": "trade",
+     "requires": {
+      "gold": 80
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "The temple has a draught for it and charges eighty.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_stilled_man__wait",
+     "method": "wait",
+     "violence_required": false,
+     "journal_index": 60,
+     "outcome": "It wears off in nine days. He remembers those too.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_stilled_man__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "gold",
+     "unique_named": false,
+     "amount": 225
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "herbwife-ossa": 8
+    }
+   },
+   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  },
+  {
+   "id": "mag_the_hollowed_scribe",
+   "title": "The Hollowed Scribe",
+   "category": "faction",
+   "faction": "the_rootkeepers",
+   "discovery": "given",
+   "giver": {
+    "npc_id": "scribe-hulen",
+    "location": "stormhold-archive",
+    "honest": true
+   },
+   "opens_by": {
+    "topic": "the hollowed scribe"
+   },
+   "task_kind": "investigation",
+   "stakes": 7,
+   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "journal": [
+    {
+     "index": 10,
+     "text": "Hulen's assistant can still write and can no longer read. Something took the part of him that knew what the marks meant.",
+     "state": "active"
+    },
+    {
+     "index": 30,
+     "text": "There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.",
+     "state": "active"
+    },
+    {
+     "index": 40,
+     "text": "I put back what was taken. He read the first line aloud and then would not read the second.",
+     "state": "complete"
+    },
+    {
+     "index": 50,
+     "text": "Breaking the gem gives it back on its own, and breaks something else.",
+     "state": "complete"
+    },
+    {
+     "index": 60,
+     "text": "I killed the thing that took it. He got it back and it was not clean.",
+     "state": "complete"
+    }
+   ],
+   "resolutions": [
+    {
+     "id": "mag_the_hollowed_scribe__magic",
+     "method": "magic_utility",
+     "requires": {
+      "skills": {
+       "root_speech": 25
+      },
+      "spell_effects": [
+       "restore_attribute"
+      ],
+      "knowledge": [
+       "what_took_the_scribe"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 40,
+     "outcome": "I put back what was taken. He read the first line aloud and then would not read the second.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_hollowed_scribe__lore_knowledge",
+     "method": "lore_knowledge",
+     "requires": {
+      "knowledge": [
+       "what_took_the_scribe",
+       "the_gem_that_holds_him"
+      ]
+     },
+     "violence_required": false,
+     "journal_index": 50,
+     "outcome": "Breaking the gem gives it back on its own, and breaks something else.",
+     "morally_better": null
+    },
+    {
+     "id": "mag_the_hollowed_scribe__combat",
+     "method": "combat",
+     "violence_required": true,
+     "journal_index": 60,
+     "outcome": "I killed the thing that took it. He got it back and it was not clean.",
+     "morally_better": null
+    }
+   ],
+   "can_fail": true,
+   "failure_states": [
+    {
+     "id": "mag_the_hollowed_scribe__too_late",
+     "cause": "The situation resolves itself, badly, without you.",
+     "journal_index": 95,
+     "recoverable": false,
+     "consequence": "The giver stops raising the topic. Nobody explains why."
+    }
+   ],
+   "deceit": null,
+   "kill_required_npcs": [],
+   "rewards": [
+    {
+     "type": "information",
+     "unique_named": false,
+     "amount": 315
+    }
+   ],
+   "consequences": {
+    "npc_disposition": {
+     "scribe-hulen": 8
+    },
+    "faction_reputation": {
+     "the_rootkeepers": 5
+    }
+   },
+   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+  }
+ ]
+}

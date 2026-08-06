@@ -448,6 +448,79 @@ export function installHarness(engine, bootPromise) {
       return { hp: b.hp, magic: engine.magic.report(engine.sim.frame) };
     },
 
+    // ================= W1-15 — stealth, theft, crime and justice ==============================
+    // The extensions RI-STL01, RI-STL02, RI-CRM01 and RI-CRM02 name in their Comparison
+    // methods. Each item says in as many words that without them its checks are unmeasurable
+    // and score 0 fail-closed, so they are present with the documented signatures.
+
+    /** RI-STL01: getLightAt(x,y,z) -> L. The instrument that makes DARK-COVERAGE checkable. */
+    getLightAt(x, y, z, zone) { return engine.sim.stealth.light.sample(Number(x), Number(y), Number(z), zone); },
+    /** The whole per-frame stealth state, including the terms of V rather than just V. */
+    getStealthState() { return engine.getStealthState(); },
+    /** Set the stealth-side character terms a scenario needs (sneak, load, race, surface, cover). */
+    setStealthState(patch) { return engine.setStealthState(patch || {}); },
+    /** RI-STL01 §2/§4: the pure functions, so method 1's 100k sweep can be run against the
+     *  SHIPPING code rather than a copy of it. These do not read or write world state. */
+    visibilityAt(q) { return engine.visibilityAt(q || {}); },
+    soundRadiusFor(q) { return engine.soundRadiusFor(q || {}); },
+    /** RI-STL01 §6: what you are DOING, not where you are. Closed vocabulary; unknown throws. */
+    setCrimeContext(name) { return engine.sim.stealth.setContext(String(name)); },
+    /** Place a civilian with the CALM/WATCHING/CHALLENGE/ALARM machine — never an enemy. */
+    spawnCivilian(spec) { return engine.spawnCivilian(spec || {}); },
+    listCivilians() { return engine.sim.stealth.civTraceBlock(); },
+    /** RI-STL01 §3: light sources, and the 60%+ that can be put out. */
+    addLightSource(spec) { return engine.sim.stealth.light.addSource(spec); },
+    setZoneAmbient(zone, keyOrValue) { engine.sim.stealth.light.setZoneAmbient(String(zone), keyOrValue); return engine.sim.stealth.light.ambientByZone.get(String(zone)); },
+    snuffLight(id, seconds) { return engine.sim.stealth.light.snuff(String(id), engine.sim.frame, Math.round((seconds === undefined ? 120 : seconds) * 60)); },
+    darkCoverage(bounds, zone, threshold) { return engine.sim.stealth.light.darkCoverage(bounds, zone, threshold === undefined ? 0.10 : threshold); },
+    /** RI-STL01 §8: the seam. Returns a BOOLEAN and nothing else. */
+    isStealthOpener(q) { return engine.isStealthOpener(q || {}); },
+    /** RI-STL01 §4: the four discrete sound events, including the distraction throw. */
+    emitStealthSound(id) { engine.sim.stealth.emitSound(engine.sim, engine.sim.frame, String(id), engine.bus); return true; },
+
+    /** RI-STL02: listOwnedObjects(interiorId) -> [{instance, owner, owner_scope, value_g}] */
+    listOwnedObjects(zoneId) { return engine.listOwnedObjects(String(zoneId)); },
+    listPropertyZones(settlement) { return engine.listPropertyZones(settlement); },
+    takeObject(instance, opts) { return engine.takeObject(String(instance), opts || {}); },
+    /** RI-STL02 §3: the ward-collar. `interact` is the press; there is no new button. */
+    lockBegin(lockId) { return engine.lockBegin(String(lockId)); },
+    lockState() { return engine.sim.stealth.p.lockAttempt ? engine.sim.stealth.p.lockAttempt.block() : null; },
+    lockPress() { return engine.lockPress(); },
+    lockGate(tier) { return engine.lockGateFor(Number(tier)); },
+    lockTolerance(tier, security) { return engine.lockToleranceFor(Number(tier), Number(security)); },
+    /** RI-STL02 §5 / seam S21: the geometry is deterministic; the notice check is the die. */
+    pickpocketBegin(q) { return engine.pickpocketBegin(q || {}); },
+    pickpocketState() { const a = engine.sim.stealth.p.pickpocket; return a ? { held_f: a.heldFrames, need_f: a.needFrames, complete: a.complete } : null; },
+    /** RI-STL02 §4: trespass is not a crime and generates no bounty. */
+    trespassCheck(zoneId, opts) { return engine.trespassCheck(String(zoneId), opts || {}); },
+    /** RI-STL02 §6: the fence economy, and the refusal that names the owner. */
+    fenceQuote(fenceId, item) { return engine.fenceQuote(String(fenceId), item || {}); },
+
+    /** RI-CRM01: the whole crime ledger. */
+    getCrimeState() { return engine.getCrimeState(); },
+    setBounty(jurisdiction, n, settlement) { return engine.sim.stealth.crime.setBounty(String(jurisdiction), Number(n), settlement); },
+    /** A crime does NOT create a bounty here. It creates a crime record and its witnesses. */
+    commitCrime(crimeKey, opts) { return engine.commitCrime(String(crimeKey), opts || {}); },
+    addWitness(crimeRef, spec) { return engine.sim.stealth.crime.witness(Number(crimeRef), { frame: engine.sim.frame, ...spec }); },
+    reportRoute(q) { return engine.reportRoute(q || {}); },
+    landReport(witnessIndex, kind) { return engine.landReport(Number(witnessIndex), kind); },
+    killWitness(witnessIndex, opts) { return engine.killWitness(Number(witnessIndex), opts || {}); },
+    discoverCorpse(eid) { return engine.sim.stealth.crime.discoverCorpse(String(eid), engine.sim.frame); },
+    /** RI-CRM01 §4/§5/§6: the ladder, the three answers, the ledger. */
+    getGuardBand(opts) { return engine.getGuardBand(opts || {}); },
+    arrestTopics(opts) { return engine.arrestTopics(opts || {}); },
+    answerArrest(answer, opts) { return engine.answerArrest(String(answer), opts || {}); },
+    jailLedger(bounty, skills) { return engine.jailLedger(Number(bounty), skills); },
+    /** RI-CRM01 §9: S6. Bounty is world state and death does not launder it. */
+    playerDeath(opts) { return engine.stealthPlayerDeath(opts || {}); },
+
+    /** RI-CRM02: writs, jurisdictional legality, interception, and the AR-3 numbers. */
+    getSanctionState() { return engine.getSanctionState(); },
+    setFactionStandings(patch) { Object.assign(engine.sim.stealth.p.standings, patch || {}); return { ...engine.sim.stealth.p.standings }; },
+    resolveKilling(q) { return engine.resolveKilling(q || {}); },
+    canJoinFaction(factionId, rank) { return engine.canJoinFaction(String(factionId), Number(rank)); },
+    warbroodShift() { return engine.warbroodShift(); },
+
     // ---- honest gaps ------------------------------------------------------------------------
     /**
      * Every capability a critic might reach for that this piece does NOT implement, with

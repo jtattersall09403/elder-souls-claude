@@ -30,20 +30,21 @@
   "effects_referenced": 55,
   "effects_in_catalogue": 55,
   "effects_unreferenced": [],
-  "purchasable": 55,
-  "shelf_gold_total": 29944,
+  "purchasable": 46,
+  "shelf_gold_total": 18936,
   "all_spells_gold_total": 100623
  },
  "shelf_rule": {
-  "ceiling_g": 1721,
-  "derivation": "RI-PRG05 §4: 29 merchants share a 49,900 g pool ⇒ mean float 1,721 g. A merchant cannot hold stock worth more than they can pay for, so 1,721 g is the shelf ceiling. Spells above it are commissioned (RI-MAG03 §A, 1.6× + 150 g) or hand-placed (S12).",
-  "measured_shelf_total_g": 29944,
+  "ceiling_g": 1050,
+  "derivation": "RI-PRG05 §4: R2 holds a 4,200 g merchant pool across 4 merchants ⇒ a float of 1,050 g each, and R2 is where the spellwrights are. A merchant cannot hold stock dearer than their own float. Spells above the ceiling are commissioned (RI-MAG03 §A, 1.6× + 150 g) or hand-placed (S12).",
+  "measured_shelf_total_g": 18936,
   "ri_mag03_m8_target_g": 28000,
+  "ri_mag03_m8_line_note": "The magic LINE is the shelf plus the enchanting services; tools/analysis/magic-audit.mjs computes the service half as one representative 40-point commission at each of the 7 paid enchanters (8,324 g).",
   "ri_mag03_m8_band_g": [
    23800,
    32200
   ],
-  "ri_mag03_m8_result": "PASS"
+  "ri_mag03_m8_result": "FAIL"
  },
  "amendment_requested": {
   "id": "AM-W1-14-01",
@@ -52,7 +53,7 @@
   "claim": "RI-MAG02 asks RI-PRG05 to pin the magic line at '≈28,000 g across 60 purchasable spells (tier mix 26/18/10/5/1)'. The total and the mix are arithmetically incompatible under RI-MAG02 §D's own gold formula.",
   "arithmetic": "round(3.9 × focus_base^1.75) at each band's CHEAPEST legal focus_base — 1, 13, 31, 66, 121 — gives 4 / 347 / 1,588 / 5,960 / 17,216 g. The cheapest possible 26/18/10/5/1 shelf is therefore 26×4 + 18×347 + 10×1,588 + 5×5,960 + 1×17,216 = 69,246 g, which is 2.47× the 28,000 target. At RI-PRG05 §2's published band prices (220 / 900 / 3,400) plus RI-MAG02's own derived tier-4 8,350 and tier-5 22,200 it is 119,870 g — 78% of RI-PRG05's entire 152,900 g discretionary menu. No choice of magnitudes closes the gap, because the floor is set by the band boundaries, not by the authoring.",
   "requested": "Strike the tier mix from the clause and keep the 28,000 g total. The mix that actually satisfies the total is bottom-heavy, which is also the correct game design: a shop stocks cantrips and journeyman spells, and the powerful spells are commissioned or found.",
-  "resolution_shipped": "The shelf is defined by affordability rather than by tier (see `shelf_rule`), which lands at 29944 g against the 28,000 g target. All 70 spells ship and are castable; the dear ones are commissioned or hand-placed.",
+  "resolution_shipped": "The shelf is defined by affordability rather than by tier (see `shelf_rule`), which lands at 18936 g against the 28,000 g target. All 70 spells ship and are castable; the dear ones are commissioned or hand-placed.",
   "honesty_note": "Filed rather than silently satisfied, and filed narrowly. Two prior amendments in this project were rejected as unearned; this one is a closed-form arithmetic contradiction that a reader can check in one line of node."
  },
  "cost_model": {
@@ -289,7 +290,7 @@
    "stamina": 16,
    "gold_price": 1090,
    "commission_price": 1894,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "projectile",
     "radius_m": 0.22,
@@ -663,7 +664,7 @@
    "stamina": 16,
    "gold_price": 1168,
    "commission_price": 2019,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "projectile",
     "radius_m": 0.22,
@@ -1945,7 +1946,7 @@
    "stamina": 16,
    "gold_price": 1168,
    "commission_price": 2019,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "none"
    },
@@ -2048,7 +2049,7 @@
    "stamina": 16,
    "gold_price": 1413,
    "commission_price": 2411,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "projectile",
     "radius_m": 0.22,
@@ -2506,7 +2507,7 @@
    "stamina": 16,
    "gold_price": 1090,
    "commission_price": 1894,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "none"
    },
@@ -3002,7 +3003,7 @@
    "stamina": 16,
    "gold_price": 1247,
    "commission_price": 2145,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "none"
    },
@@ -3051,7 +3052,7 @@
    "stamina": 16,
    "gold_price": 1329,
    "commission_price": 2276,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "none"
    },
@@ -3198,7 +3199,7 @@
    "stamina": 16,
    "gold_price": 1413,
    "commission_price": 2411,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "projectile",
     "radius_m": 0.22,
@@ -3504,7 +3505,7 @@
    "stamina": 16,
    "gold_price": 1090,
    "commission_price": 1894,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "projectile",
     "radius_m": 0.22,
