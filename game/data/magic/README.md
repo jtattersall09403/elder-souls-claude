@@ -71,3 +71,56 @@ node tools/analysis/gen-spells.mjs --check
 - **`game/data/progression/birthsigns.json` declares a Focus-absorption power** ("The Dry Well"),
   which RI-MAG01 §A makes an automatic fail. It is **not implemented** here and the conflict is
   filed as its own failing check in `magic-audit.mjs`. It needs a ruling, not a builder.
+
+---
+
+## Round 2 (W1-14-r2) — what changed and why
+
+The wave-1 verdict scored this piece **2.7 / 10** against a gate of 7.0, and named one gap:
+`GAP-W1-magic-effects-no-behaviour` — **one generic applicator behind 55 labels**. Of 55
+declared effects, 5 functioned; 16 resolved as HP damage equal to their own magnitude and 33
+were a row in `effects_active` that nothing read. `magic-audit` returned 10 of 11 throughout,
+because every instrument in the area was static.
+
+### The fix, in the order it had to happen
+
+1. **The instrument first.** `tools/harness/mag-census.mjs` implements `RI-MAG06` M1–M6: for
+   each of the 55 effects it finds a carrier, casts it, reads the consuming system §B names
+   **before and after against a control**, and classifies the row. It does not trust the build's
+   own `effect_apply` self-report — that is recorded beside the measurement as
+   `declared_consumer` so the two can disagree in public.
+2. **`game/src/sim/magic/apply.js`** — one handler per effect, checked for completeness at boot.
+   A catalogue entry with no handler throws rather than falling through to a damage number.
+3. **`combat-bridge.js`** — the accumulator is closed over `DAMAGE_EFFECTS`, a frozen five-element
+   set exported from `apply.js`, so the bridge and the registry cannot drift.
+4. **The consuming systems that did not exist** were built where they belong, not in the magic
+   system: a mitigation multiplier at the one site `resolve.js` computes damage; an S11 buildup
+   meter with integer thresholds; equip-load and roll-class writes; the five Veiling terms inside
+   the stealth step's own `V` and `sound_r_m`; a lock / trap / breakable / item register
+   (`wards.json`) written through to the already-manifested `sim.world.doors_unlocked` and
+   `shortcuts_opened`; and a real levitation locomotion mode.
+
+### Measured at HEAD
+
+| | Round 1 | Round 2 |
+|---|---|---|
+| `EFFECT-FUNCTION` | 5 / 55 | **55 / 55** |
+| `HP_DAMAGE_ONLY` | 16 | **0** |
+| `UNREAD_TIMER` | 33 | **0** |
+| Levitation `pos[1]` at 6 m of altitude | 0.000 | **6.12** |
+| Levitation drift | 4.96 m/s (state `SPRINT`) | **1.388 m/s** vs a 1.4 cap and a 3.173 m/s walk |
+| `light`/`heavy`/`block`/`roll`/`parry` while airborne | executed | **all five dropped**, `iframe` false throughout |
+| RI-MAG04 M6 | 0 | **10 / 10** played through |
+| RI-MAG04 M7 (AR-3) | 0 / 7 | **7 / 7** demonstrated |
+| Magic line | 19,808 g (−29%) | **29,800 g** (+6.4%, inside the ±10% band) |
+| VFX draw-call series | 8 / 8 / 8 / 8 | **18 / 23 / 20 / 20** with 3 systems and a residue decal |
+
+### Two things to know before changing anything here
+
+* **`_emit(frame, kind, fields)` spreads `fields`.** A field literally called `kind` overwrites
+  the event's type. The buildup meter emitted `{kind: 'fire'}` instead of
+  `{kind: 'status_buildup'}` and was invisible to every consumer while working perfectly.
+* **`SimState.reset()` replaces `sim.quest` wholesale.** Anything holding a reference to it
+  across a `loadState()` — the `QuestEngine` and its `Journal` did — keeps writing into a
+  detached object. `Engine._rebindQuestRuntime()` exists for that and is called from
+  `applyNamedState`.

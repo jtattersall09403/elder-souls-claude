@@ -1902,6 +1902,37 @@ export class Engine {
       if (pose.lockOn !== undefined && pose.lockOn !== true) this.lockOn(pose.lockOn);
       return this.cameraState();
     }
+    // A CLOSED KEY VOCABULARY. Verdict W1-01 round 2: "`__HARNESS.camera({yaw,pitch,arm})` is
+    // silently accepted and freezes the camera instead of throwing. A harness that silently
+    // accepts a bad call corrupts every verdict that uses it." It did exactly that: `yaw`, `pitch`
+    // and `arm` are not keys this method has, so every one of them was ignored, `pos`/`look`/`fov`
+    // all fell back to `cur`, and the override was installed anyway — pinning the rig at wherever
+    // it happened to be and returning a plausible-looking `cameraState()`. HARNESS.md R7: every
+    // method either does the thing or throws.
+    const KEYS = ['pos', 'look', 'fov', 'mode', 'lockOn'];
+    // `camera({})` is a READ. Several probes use it that way, and under the old code it installed
+    // an override at the current pose — i.e. asking the camera where it was froze it there.
+    if (Object.keys(pose).length === 0) return this.cameraState();
+    const unknown = Object.keys(pose).filter((k) => !KEYS.includes(k));
+    if (unknown.length) {
+      throw new Error(
+        `camera({${unknown.join(', ')}}): unknown pose key(s). This method takes exactly `
+        + `[${KEYS.join(', ')}] — a world-space eye position, a world-space look target, a vertical `
+        + 'FOV in degrees, a camera mode from listCameraModes(), and the lock-on target. It does '
+        + 'NOT take yaw, pitch or arm: the rig solves those from RI-CAM01 §C and there is no API '
+        + 'that overrides them. Silently ignoring them froze the camera at its current pose and '
+        + 'returned a plausible cameraState(), which is worse than refusing.');
+    }
+    for (const k of ['pos', 'look']) {
+      if (pose[k] === undefined) continue;
+      const v = pose[k];
+      if (!Array.isArray(v) || v.length !== 3 || v.some((n) => !Number.isFinite(Number(n)))) {
+        throw new Error(`camera({${k}}): expected [x, y, z] of three finite numbers, got ${JSON.stringify(v)}`);
+      }
+    }
+    if (pose.fov !== undefined && (!Number.isFinite(Number(pose.fov)) || Number(pose.fov) <= 0 || Number(pose.fov) >= 180)) {
+      throw new Error(`camera({fov: ${JSON.stringify(pose.fov)}}): expected a vertical FOV in (0, 180) degrees`);
+    }
     const cur = c.override || { pos: [c.pos[0], c.pos[1], c.pos[2]], look: [c.pivot[0], c.pivot[1], c.pivot[2]], fov: c.fov };
     c.override = {
       pos: pose.pos ? [Number(pose.pos[0]), Number(pose.pos[1]), Number(pose.pos[2])] : cur.pos,

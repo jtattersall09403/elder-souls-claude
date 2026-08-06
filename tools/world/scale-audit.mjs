@@ -226,12 +226,75 @@ check('M2-ROAD-ABOVE-WATER', rw.ok,
 
 // The road's own geometry, which is what produced the drowned leg: a deck 85 m below the hill it
 // crosses is a trench, and a trench fills.
-const worstCut = Math.max(...roads.legs.map((l) => l.max_cut_m ?? 0));
-const worstFill = Math.max(...roads.legs.map((l) => l.max_fill_m ?? 0));
-check('M2-ROAD-CUT-AND-FILL', worstCut <= 3.5 && worstFill <= 20,
-  `deepest cutting ${worstCut.toFixed(1)} m (pass <= 3.5), tallest embankment/deck ${worstFill.toFixed(1)} m (pass <= 20); `
-  + `${roads.legs.reduce((a, l) => a + (l.deck_spans || []).length, 0)} emitted deck spans totalling `
-  + `${roads.legs.reduce((a, l) => a + (l.deck_span_m || 0), 0)} m`);
+// ROUND 3, and the change is a SPLIT, not a relaxation. Verdict W1-01 r2: "the instrument's
+// sampling rate decides its own result. `scale-audit.mjs` reports 3.0 m ... it samples at the
+// road's 12 m points. At 3 m the same terrain gives 3.62 m." So the cut is re-measured HERE, from
+// the terrain, sub-sampled at 3 m along every leg and across the full carriageway — not read out
+// of the number `build-roads.mjs` wrote about itself.
+//
+// And the fill is split in two, because one number cannot judge both. An EARTH EMBANKMENT is what
+// the old check was about — a berm that dams a channel, throws a 70-degree shoulder and is what
+// 17.52 m of fill actually was in round 2. A DECK SPAN is a structure the player walks across,
+// with air or water under it: `field.onDeckAt` returns it, `province._spans` builds the slab, the
+// parapets and the piers, and `field.clampToDeck` is its railing. Height costs nothing on a
+// bridge, so the bridge is reported with its own count and its own bar and the embankment keeps
+// the old one.
+function cutFillSampled() {
+  let cut = 0, fillEarth = 0, fillDeck = 0, atCut = null, atFill = null, deckM = 0;
+  for (const leg of roads.legs) {
+    if (leg.tide_gated) continue;
+    const p = leg.points, hwm = leg.half_width_m;
+    for (let i = 1; i < p.length; i++) {
+      const ax = p[i - 1][0], az = p[i - 1][1], ay = p[i - 1][2];
+      const bx = p[i][0], bz = p[i][1], by = p[i][2];
+      const dx = bx - ax, dz = bz - az, L = Math.hypot(dx, dz) || 1;
+      const n = Math.max(1, Math.ceil(L / 3));
+      for (let k = 0; k <= n; k++) {
+        const t = k / n;
+        const cx = ax + dx * t, cz = az + dz * t, cy = ay + (by - ay) * t;
+        const onDeck = !!field.onDeckAt(cx, cz);
+        for (const off of [-1, -0.5, 0, 0.5, 1]) {
+          const x = cx + (-dz / L) * off * hwm, z = cz + (dx / L) * off * hwm;
+          const g = field.bareHeightAt(x, z);
+          if (cy < g && g - cy > cut) { cut = g - cy; atCut = [+x.toFixed(1), +z.toFixed(1), leg.id]; }
+          if (cy > g) {
+            const f = cy - g;
+            if (onDeck) { if (f > fillDeck) fillDeck = f; }
+            else if (f > fillEarth) { fillEarth = f; atFill = [+x.toFixed(1), +z.toFixed(1), leg.id]; }
+          }
+        }
+        if (onDeck) deckM += L / n;
+      }
+    }
+  }
+  return { cut, fillEarth, fillDeck, atCut, atFill, deckM };
+}
+const cf = cutFillSampled();
+check('M2-ROAD-CUT-AND-FILL', cf.cut <= 3.5 && cf.fillEarth <= 20,
+  `sub-sampled at 3 m along and across every non-tideway leg: deepest cutting ${cf.cut.toFixed(2)} m `
+  + `(pass <= 3.5)${cf.atCut ? ` at ${cf.atCut[0]},${cf.atCut[1]} on ${cf.atCut[2]}` : ''}; `
+  + `tallest EARTH embankment ${cf.fillEarth.toFixed(2)} m (pass <= 20)${cf.atFill ? ` on ${cf.atFill[2]}` : ''}; `
+  + `tallest DECK SPAN ${cf.fillDeck.toFixed(2)} m over ${cf.deckM.toFixed(0)} m of structure, which is a bridge and not a bank`);
+
+// RI-MTH07 CONSUMPTION. A declared deck span that nothing in the running world reads is a JSON
+// label on an earth berm, which is exactly what round 2 measured. This asserts the world reads it:
+// at the midpoint of every declared span, `field.onDeckAt` must return a deck, the ground under it
+// must be the natural ground and not the deck, and there must be real clearance between them.
+{
+  const spans = roads.legs.flatMap((l) => (l.deck_spans || []).map((sp) => ({ ...sp, leg: l })));
+  let consumed = 0, worstClear = Infinity, unread = [];
+  for (const sp of spans) {
+    const mid = sp.from_i + Math.floor((sp.to_i - sp.from_i) / 2);
+    const [x, z] = sp.leg.points[mid];
+    const d = field.onDeckAt(x, z);
+    if (d && d.clearance_m > 0.5) { consumed++; worstClear = Math.min(worstClear, d.clearance_m); }
+    else unread.push(`${sp.leg.id}@${sp.from_m}m`);
+  }
+  check('M2b-DECK-SPANS-ARE-STRUCTURES', spans.length > 0 && unread.length === 0,
+    `${consumed}/${spans.length} declared deck_spans are read by field.onDeckAt() in the running world `
+    + `(minimum clearance under a deck ${Number.isFinite(worstClear) ? worstClear.toFixed(2) : 'n/a'} m)`
+    + (unread.length ? `; NOT read: ${unread.slice(0, 4).join(', ')}` : ''));
+}
 
 // ---- the tideway inversion (RI-TRV01 / RI-WLD10 M54) -----------------------------------------------
 const tideway = roads.legs.find((l) => l.tide_gated);

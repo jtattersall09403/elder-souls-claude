@@ -1,0 +1,16 @@
+{
+  "task_id": "W1-10-r2-critic",
+  "role": "critic",
+  "piece": "W1-10 weapon movesets",
+  "round": 2,
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-10-r2.json",
+    "corpus/90-verdicts/wave1/W1-10-r2.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ARBITRATION S22/S26/CONSUMPTION, SCORING S0, WEAPON-CRITIC charter, W1-10 r1 verdict",
+  "notes_for_successor": "Round 1 was 0/10: movesets unreachable from running game. Round 2 claims full remediation. Must build INDEPENDENT tools for equipped_ok, CFS_live, reach. Do not trust tools/weapons/verify-frames.mjs or tools/harness/wpn-census-live.mjs (builder-authored)."
+}
