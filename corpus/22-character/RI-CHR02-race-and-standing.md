@@ -49,13 +49,20 @@ named skills to their listed value if currently lower (RI-PRG03 base is 5).
 | 1 | **Saxhleel** (Argonian, marsh-form) | 0 | +2 | +3 | +1 | 0 | 0 | +1 | +4 | 0 | +1 | Sneak 20, Security 15, Survival 20, Athletics 15, Root-Speech 10 | **Amphibious** — unlimited water breathing; no swim stamina drain; stand and act in deep water. **Root-listener** — sapwell rests cost 0 taint and yield one Hist line per new well. | Disease **immune** (CF-046 basis). Poison **75%**. |
 | 2 | **Naga** (Argonian, naga-form) | +4 | +3 | +2 | +1 | +2 | 0 | 0 | 0 | −2 | +2 | Claw & Fang 25, Athletics 20, Survival 15, Sneak 10, Marksman 10 | **Amphibious** (as Saxhleel). **Shed** — once per HEARTH rest, break out of grapple/paralysis/bind and gain 3 s of poise immunity. | Disease **immune**. Poison **75%**. Frost **−25% (vulnerable)**. |
 | 3 | **Dunmer** | +2 | 0 | +2 | +2 | 0 | +1 | +2 | 0 | 0 | +3 | Blades 20, Marksman 15, Sorcery 15, Athletics 10, Veiling 10 | **Ancestor Guardian** — once per rest, summon a spirit that fights for 30 s. | Fire **75%**. |
-| 4 | **Imperial** | +1 | +1 | +1 | +1 | +1 | +1 | +1 | 0 | +4 | 0 | Speechcraft 25, Mercantile 20, Blades 15, Shieldcraft 15, Warding 10 | **Star of the West** — absorb 30 stamina from a target, out of combat only (an intimidation tool, not a fight tool). **Voice of the Empire** — once per day, one Admire attempt cannot fail. | — |
+| 4 | **Imperial** | +1 | +1 | +1 | +1 | +1 | +1 | +1 | 0 | **+5** | 0 | Speechcraft 25, Mercantile 20, Blades 15, Shieldcraft 15, Warding 10 | **Star of the West** — absorb 30 stamina from a target, out of combat only (an intimidation tool, not a fight tool). **Voice of the Empire** — once per day, one Admire attempt cannot fail. | — |
 | 5 | **Nord** | +4 | +4 | 0 | 0 | +3 | 0 | 0 | 0 | −1 | +2 | Greatweapons 25, Axes & Maces 20, Shieldcraft 15, Survival 10, Athletics 10 | **Thunder Fist** — once per rest, 60 shock damage on the next connecting hit. **Woad** — 30 s of +20 poise, once per rest. | Frost **90%**. Shock **50%**. |
 | 6 | **Breton** | −1 | 0 | 0 | +1 | 0 | +4 | +4 | +1 | +2 | +1 | Sorcery 20, Warding 20, Veiling 15, Alchemy 15, Speechcraft 10 | **Dragon Skin** — 40 points of magic shield, once per rest. | Magic **50%** (all schools, including our own spells). |
 | 7 | **Redguard** | +3 | +4 | +3 | +2 | +2 | −1 | −2 | 0 | 0 | +1 | Blades 25, Axes & Maces 15, Athletics 20, Acrobatics 10, Marksman 10 | **Adrenaline Rush** — once per rest, 30 s of doubled stamina regen. | Disease **75%**. Poison **75%**. |
 | 8 | **Khajiit** | 0 | 0 | +5 | +3 | 0 | 0 | +1 | 0 | 0 | +3 | Sneak 25, Acrobatics 20, Security 20, Claw & Fang 15, Marksman 10 | **Night Eye** — toggleable, no cost, permanent. **Land on Your Feet** — fall-damage-free height ×2. | — |
 | 9 | **Orsimer** | +5 | +5 | 0 | −1 | +4 | +1 | 0 | 0 | −3 | +1 | Axes & Maces 25, Greatweapons 20, Shieldcraft 20, Survival 10, Athletics 5 | **Berserk** — once per rest, 30 s of +30% melee damage and −30% damage resistance. | Magic **25%**. |
 | 10 | **Bosmer** | −1 | 0 | +5 | +2 | 0 | 0 | +1 | 0 | 0 | +5 | Marksman 25, Sneak 20, Acrobatics 15, Alchemy 15, Survival 10 | **Beast Tongue** — once per rest, calm one beast-archetype enemy for 60 s (a real S13 non-lethal exit against the roster's animals, which have no parley). | Disease **50%**. Poison **50%**. |
+
+> **AMENDED wave 1 (`W1-07`, `AMENDMENT-W1-07-01.md`) — one cell.** The Imperial row as
+> originally written summed to **11**, not 12, and therefore failed this item's own method-1
+> assertion `sum(attribute_deltas) == 12` and RI-CHR01 §2's 112-point invariant. `PER +4` is
+> corrected to **`PER +5`**. All nine other rows were recomputed and are unchanged at 12. No
+> threshold, matrix cell, skill, ability or resistance anywhere in this item was touched. The
+> reasoning for choosing this cell rather than HIST or LCK is in the amendment file.
 
 **Altmer are not playable and the reason is stated rather than shrugged:** this item's value
 is the reaction matrix in §3, and a race earns a row there only if enough NPCs in 3E 427

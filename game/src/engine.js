@@ -235,7 +235,8 @@ export class Engine {
     // W1-09: the fight is rebuilt from the named state's loadout. The combat bodies are the
     // authority and sim.player is a view (sim/combat-bridge.js); rebuilding here rather than
     // patching a live system is what makes loadState() reproducible.
-    this._buildCombat(patch.loadout || {});
+    this._loadout = Object.assign({}, patch.loadout || {});
+    this._buildCombat(this._loadout);
     for (const s of patch.spawn || []) this.spawn(s.id, s.x, s.z, { as: s.as });
     // Put the player on the ground of whatever cell the state names.
     sim.player.pos[1] = this.groundAt(sim.player.pos[0], sim.player.pos[2]);

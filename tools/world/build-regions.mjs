@@ -221,6 +221,57 @@ const R = {
 };
 R['clay-moor'].fog.colour = '#C9A87C';
 
+
+/**
+ * What the region is made of, as geometry the renderer instances. This is RI-WLD04's "palette
+ * without material" warning answered in data: the ground albedo, the silhouette of the dominant
+ * plant, its height and its density are per-region and separately measurable, so two regions
+ * cannot be distinguished only by a fog colour.
+ *   canopy  the dominant tall silhouette: cone | sphere | spire | dome | column | arch | none
+ *   under   the ground layer: blade | frond | shelf | crust | comb | none
+ */
+const PROPS = {
+  'salt-hills':        { canopy: { shape: 'cone',   h: 5.5,  r: 1.5, colour: '#4E5C33', trunk: '#54503E', per100m2: 0.06 },
+                         under: { shape: 'blade',  h: 0.6,  colour: '#8B9660', per100m2: 3.4 },
+                         rock:  { colour: '#9A968C', per100m2: 0.30, scale: 1.6 } },
+  thornmarsh:          { canopy: { shape: 'spire',  h: 6.2,  r: 1.1, colour: '#241E1C', trunk: '#2A241F', per100m2: 1.10 },
+                         under: { shape: 'blade',  h: 0.9,  colour: '#46583F', per100m2: 2.2 },
+                         rock:  { colour: '#8B8577', per100m2: 0.06, scale: 0.9 } },
+  'valus-ridge':       { canopy: { shape: 'spire',  h: 9.0,  r: 1.3, colour: '#4E6B3C', trunk: '#6E6A5A', per100m2: 0.10 },
+                         under: { shape: 'frond',  h: 0.5,  colour: '#7C8A6A', per100m2: 1.2 },
+                         rock:  { colour: '#B9B2A0', per100m2: 1.40, scale: 3.4 } },
+  'stone-forest':      { canopy: { shape: 'column', h: 12.0, r: 1.7, colour: '#7C8794', trunk: '#78828E', per100m2: 0.55 },
+                         under: { shape: 'shelf',  h: 0.5,  colour: '#3D5A3A', per100m2: 1.1 },
+                         rock:  { colour: '#8E96A0', per100m2: 0.55, scale: 2.0 } },
+  'clay-moor':         { canopy: { shape: 'dome',   h: 4.0,  r: 3.2, colour: '#9C5B3C', trunk: '#7C4630', per100m2: 0.05 },
+                         under: { shape: 'blade',  h: 0.4,  colour: '#C39A5C', per100m2: 0.7 },
+                         rock:  { colour: '#C8BFA8', per100m2: 0.22, scale: 1.2 } },
+  'crimson-coast':     { canopy: { shape: 'none',   h: 0,    r: 0,   colour: '#8E2B33', trunk: '#232021', per100m2: 0 },
+                         under: { shape: 'crust',  h: 0.25, colour: '#8E2B33', per100m2: 5.5 },
+                         rock:  { colour: '#232021', per100m2: 1.10, scale: 2.4 } },
+  blackwood:           { canopy: { shape: 'sphere', h: 16.0, r: 5.0, colour: '#1F2E1C', trunk: '#4A3423', per100m2: 1.55 },
+                         under: { shape: 'frond',  h: 1.2,  colour: '#2A4023', per100m2: 4.0 },
+                         rock:  { colour: '#C9A54B', per100m2: 0.10, scale: 0.9 } },
+  hive:                { canopy: { shape: 'dome',   h: 7.0,  r: 3.6, colour: '#D6C77A', trunk: '#9A6B2F', per100m2: 0.55 },
+                         under: { shape: 'comb',   h: 0.3,  colour: '#E6E2D0', per100m2: 2.4 },
+                         rock:  { colour: '#9A6B2F', per100m2: 0.14, scale: 1.1 } },
+  'deep-marshes':      { canopy: { shape: 'spire',  h: 11.0, r: 0.7, colour: '#16191A', trunk: '#16191A', per100m2: 0.85 },
+                         under: { shape: 'blade',  h: 1.5,  colour: '#3B5A3A', per100m2: 3.0 },
+                         rock:  { colour: '#4A3A55', per100m2: 0.10, scale: 1.4 } },
+  'marauders-coast':   { canopy: { shape: 'arch',   h: 3.4,  r: 2.2, colour: '#2C3A2E', trunk: '#5E4A3A', per100m2: 0.34 },
+                         under: { shape: 'blade',  h: 0.7,  colour: '#8E8A7E', per100m2: 2.0 },
+                         rock:  { colour: '#5E7C88', per100m2: 0.45, scale: 1.3 } },
+  'western-rootlands': { canopy: { shape: 'arch',   h: 8.0,  r: 4.5, colour: '#6B5638', trunk: '#6B5638', per100m2: 0.42 },
+                         under: { shape: 'blade',  h: 1.1,  colour: '#6E8A4E', per100m2: 4.6 },
+                         rock:  { colour: '#A8B7A6', per100m2: 0.05, scale: 0.8 } },
+  'eastern-rootlands': { canopy: { shape: 'sphere', h: 5.0,  r: 2.6, colour: '#4F7A5E', trunk: '#2A211A', per100m2: 0.36 },
+                         under: { shape: 'frond',  h: 0.8,  colour: '#5E8A6E', per100m2: 3.6 },
+                         rock:  { colour: '#B7C4C0', per100m2: 0.05, scale: 0.8 } },
+  'stone-wastes':      { canopy: { shape: 'spire',  h: 2.6,  r: 0.5, colour: '#8C5A3A', trunk: '#8C5A3A', per100m2: 0.16 },
+                         under: { shape: 'crust',  h: 0.2,  colour: '#EDEDE6', per100m2: 1.0 },
+                         rock:  { colour: '#DCD2B8', per100m2: 0.90, scale: 2.2 } },
+};
+
 /** RI-WLD10 §8 verbatim — the table the S24 census scores. */
 const WATER = {
   'clay-moor':         { wci: 0.00, class: 'arid',             deepest_band: 'W0', tidal: false, sea: null,       k: null, substrates: ['FIRM'] },
@@ -267,6 +318,7 @@ for (const [name, c] of Object.entries(corpusRegions.regions)) {
     fog: a.fog,
     sky: a.sky,
     terrain: a.terrain,
+    props: PROPS[id],
     water: WATER[id],
     flora: a.flora,
     fauna: a.fauna,

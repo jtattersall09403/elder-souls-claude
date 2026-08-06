@@ -111,6 +111,9 @@ export function installHarness(engine, bootPromise) {
     /** Seam S23's crossing: RI-PRG07 sets the number, RI-CMB01 decides what it does in a fight. */
     setEquipLoad(pct) { return engine.setEquipLoad(pct); },
 
+    /** Re-equip and rebuild the move table in place. The 14-row frame census needs it. */
+    setLoadout(patch) { return engine.setLoadout(patch || {}); },
+
     /** RI-CMB07 M1 Mode-A: the enemy executes scripted actions on the exact frames given. */
     queueEnemyScript(eid, script) { return engine.queueEnemyScript(eid, script); },
 
