@@ -35,8 +35,10 @@ const BUDGET_SIG = Number(process.env.W110_BUDGET_SIG || CLASSES.deviation_budge
 // Approximate roster-wide standard deviations of the five numeric fingerprint dimensions a
 // weapon delta can move. Used only to make budgets comparable across dimensions; the real
 // z-normalisation is recomputed from the shipped data by tools/weapons/measure.mjs.
-let FP_SD = { f: 14, reach: 0.72, arc: 82, root: 0.34, hitstop: 4.2 };
-try { FP_SD = { ...FP_SD, ...readJson('game/data/weapons/fp-sd.json').sd }; } catch { /* first run */ }
+// PINNED in classes.json, never read back from this tool's own output: a generator that reads
+// its previous run is a feedback loop, and this one had a 2-cycle that made `--check` report
+// drift forever. fp-sd.json is still WRITTEN below, as a report.
+const FP_SD = { f: 14, reach: 0.72, arc: 82, root: 0.34, hitstop: 4.2, ...(CLASSES.fingerprint_sd || {}) };
 function budgetiseRaw(w) {
   const d = { ...(w.d || {}) };
   for (const k of ['f', 'reach', 'arc', 'root', 'hitstop']) d[k] = d[k] || 0;

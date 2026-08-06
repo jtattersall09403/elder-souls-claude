@@ -839,6 +839,15 @@ export class Engine {
       if (mult < 1) { p.pos[0] = px + dx * mult; p.pos[2] = pz + dz * mult; }
     }
     p.pos[1] = this.field.heightAt(p.pos[0], p.pos[2]);
+    // The retraction has to land on the CONTROLLER, not only on the mirrored copy the trace and
+    // the renderer read. `combat-bridge.mirror()` copies `combat.player.pos` into
+    // `sim.player.pos` at the top of every step, so a retraction written only to `sim.player`
+    // was overwritten one frame later and the body raced on at full speed. What survived was a
+    // constant POSITIONAL LAG of v(1-mult)/mult and a steady-state speed of exactly v — which is
+    // why verdict W1-01 measured 1.9988 m/s in W2 standing water and scored RI-WLD10's whole
+    // locomotion ladder inert. Writing the body closes it: the band multiplier is now a speed.
+    const b = this.combat && this.combat.player;
+    if (b) { b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2]; }
     this._prevX = p.pos[0]; this._prevZ = p.pos[2];
   }
 

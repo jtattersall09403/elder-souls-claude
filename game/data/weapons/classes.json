@@ -784,5 +784,13 @@
   "delta_scale_note": "Global magnitude on every per-weapon numeric delta in roster.json. roster.json authors the DIRECTION and the RANK of each weapon's deviation; this scalar sets how far. Tuned against RI-WPN03 \u00a7D.2's two-sided band (W_med in [0.35,1.00], W_min>=0.20) and SEP = B_min/W_max >= 1.4 \u2014 see reports/W1-10-MEASUREMENTS.md \u00a7sweep for the sweep that chose it.",
   "lineage_arc_scale": 0.35,
   "deviation_budget": 0.36,
-  "deviation_budget_signature": 0.48
+  "deviation_budget_signature": 0.48,
+  "fingerprint_sd": {
+    "f": 13.534,
+    "reach": 0.715,
+    "arc": 83.049,
+    "root": 0.347,
+    "hitstop": 3.877
+  },
+  "fingerprint_sd_note": "PINNED. The standard deviations of the five numeric fingerprint dimensions across the shipped 87-weapon roster, measured once and frozen here so that build-movesets.mjs is a PURE FUNCTION of its inputs. An earlier version read them back from the previous build's output, which made the generator a feedback loop with a 2-cycle: six weapon files alternated between two states on successive runs and `--check` reported drift forever. game/data/weapons/fp-sd.json is still written on every build as a REPORT, so if the roster changes enough for these to be wrong it is visible in a diff."
 }
