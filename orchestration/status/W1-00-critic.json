@@ -1,0 +1,14 @@
+{
+  "task_id": "W1-00-critic",
+  "brief": "critic for wave-1 piece W1-00 (harness, determinism, persistence)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-00.json",
+    "corpus/90-verdicts/wave1/W1-00.md"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read CRITIC-DOCTRINE.md, SCORING.md, VERDICT-SCHEMA.md, ARBITRATION.md, then the 10 reference items",
+  "notes_for_successor": "Must RUN the harness, not read source. Artifacts go under corpus/90-verdicts/wave1/artifacts/W1-00/."
+}
