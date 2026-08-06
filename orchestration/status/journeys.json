@@ -23,7 +23,8 @@
     "corpus/88-journeys/RI-JRN03-desktop-controls.md",
     "corpus/88-journeys/RI-JRN02-the-first-hour-as-interaction.md",
     "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
-    "corpus/88-journeys/RI-JRN07-a-quest-without-markers.md"
+    "corpus/88-journeys/RI-JRN07-a-quest-without-markers.md",
+    "corpus/88-journeys/RI-JRN08-returning-after-a-week.md"
   ],
   "findings": [
     "RI-JRN01 exists and is the shape template: front-matter (id,title,kind,side,judges,provenance,confidence,blind_pair) + blockquote division-of-labour note + 6 mandatory sections. It cites corpus/88-journeys/paths-requested.json which DOES NOT EXIST YET -> I must create it.",
@@ -45,6 +46,6 @@
     "RI-PLT01 ruling: Tier-S (software-valid, scoreable in this container) = draw calls, triangles, programs, materials, state changes, texture/geometry MB, skinned meshes, shadow lights, bytes-allocated-per-sim-step, GC counts+attribution, sim CPU time in calibrated sim_units (render disabled, +/-25% error bar), sim/render decoupling, frame-rate independence, trace determinism. Tier-H (needs real GPU + attested manifest) = fps, p50/p99/p99.9 frame time, worst-frame-in-combat<=33ms, >100ms frames, GC pause DURATION, overdraw/fill, GPU memory, shader compile stalls, compositor, thermals, input-to-photon. Tier-S weight 64 / Tier-H 36; unmeasurable Tier-H stays in denominator (rule T2) so a container-only run caps at 64 -> ladder 5.",
     "Harness amendments now referenced across items: A-JRN1 real-input mode; A-JRN2 gamepad shim at navigator.getGamepads seam; A-JRN3 save/load instrumentation; A-JRN4 viewport/orientation/safe-area; A-JRN5 per-frame perf stats; A-JRN6 getInputState/input_dropped; A-JRN7 trace event vocabulary extension; A-JRN8 getWorldStats extension; A-JRN9 forced GC + heap usage; A-JRN11 setRenderRate/stallMainThread; A-JRN12 CDP keyboard layout. (A-JRN10 reserved for wall-clock advance / RI-JRN08.)"
   ],
-  "next_step": "write RI-JRN08 (returning after a week)",
+  "next_step": "write RI-PLT02 (memory/assets) then RI-PLT03 (load/hitches) then JOURNEY-CRITIC-FLEET.md + paths-requested.json",
   "notes_for_successor": ""
 }

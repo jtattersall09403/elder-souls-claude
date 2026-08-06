@@ -115,21 +115,23 @@ resolve to the same place, has shipped one spell twice.
 ### 3. The five gates
 
 Every gate applies to **all four spells**. Refusal is diegetic (a line, a failed gesture), spends no
-magicka, and writes a `spell_refused` trace event with a `reason`.
+Focus, and writes a `spell_refused` trace event with a `reason`. This is the **placement predicate**
+that `RI-MAG02`'s effect records defer to by name.
 
 | # | Gate | Exact condition |
 |---|---|---|
-| **G1** | **Known places only** | Recall requires an existing Mark. An Intervention resolves over **discovered** shrines/posts only; with none discovered it **fizzles** and says so. There is no spell that reaches a place you have not been. |
-| **G2** | **Above ground** | The caster must be in an exterior cell **and** have unobstructed sky within 60 m on a vertical raycast. Mark's *anchor* must satisfy the same test at the moment of setting. |
-| **G3** | **Out of combat** | **A de-aggro gate, not a distance gate.** No hostile anywhere in the loaded scene may be in `alert_state ∈ {AGGRO, SEARCH}` with the player as `target`, and ≥ 300 frames (5 s) must have elapsed since the last combat event — the same fight-end definition as `ARBITRATION.md` §1. Sprinting 60 m from a pursuing enemy does **not** open the gate. |
-| **G4** | **Never into or within a dungeon, boss arena or locked area** | Neither the caster's position nor the destination may be inside a volume tagged `dungeon`, `boss_arena`, `interior` or `locked`. Mark **cannot be set** inside such a volume, so no re-entry anchor can ever exist. |
-| **G5** | **One anchor, no lists** | Exactly one Mark exists at a time. No spell presents a destination menu. |
+| **G1** | **Known places only** | `recall` requires an existing Mark. An Intervention resolves over **discovered** shrines/chapels only; with none discovered it **fizzles** and says so. There is no spell that reaches a place you have not been. |
+| **G2** | **Above ground** | The caster must be in an exterior cell **and** have unobstructed sky within 60 m on a vertical raycast. `mark`'s *anchor* must satisfy the same test at the moment of setting. |
+| **G3** | **Out of combat — and this gate is not redundant** | `RI-MAG01`'s `RITUAL` clock aborts the cast on damage, on entering `COMBAT`, and on any movement input, which closes the case at melee range by construction. **It has a hole at long range:** a hostile in `alert_state: AGGRO` 200 m away, or one that leashed but has not de-aggroed, leaves the player free to stand still for 210 frames and complete the cast — while `ARBITRATION.md` §1 says the fight is still on. G3 closes it: **no hostile anywhere in the loaded scene may be in `alert_state ∈ {AGGRO, SEARCH}` with the player as `target`, and ≥ 300 frames (5 s) must have elapsed since the last combat event.** A de-aggro gate, never a distance gate. |
+| **G4** | **Never into or within a dungeon, boss arena or locked area** | Neither the caster's position nor the destination may be inside a volume tagged `dungeon`, `boss_arena`, `interior` or `locked`. `mark` **cannot be set** inside such a volume, so no re-entry anchor can ever exist. |
+| **G5** | **One anchor, no lists** | Exactly one Mark exists at a time, game-wide. No spell presents a destination menu. |
 
-**Arrival tax, identical to root-speaking in `RI-TRV01` §2**: the game clock advances **20 in-world
-minutes** and **Fatigue drops 25% for two game-hours**, which feeds S4 and therefore disposition,
-persuasion and `RI-PRG05`'s barter. You arrive slightly wrong. This is what makes travel magic a member
-of the travel network rather than an exception to it: **every mode in this game charges you something
-that is not gold.**
+**Arrival tax: the game clock advances 20 in-world minutes**, the same as root-speaking in `RI-TRV01`
+§2. That is what makes travel magic a *member* of the travel network rather than an exception to it —
+every mode in this game advances the world while it moves you. The Fatigue penalty that root-speaking
+also carries is **deliberately not applied here**, because Focus does not regenerate (`RI-MAG01` §A) and
+double-taxing a spell that already costs an expedition's ammunition would make Recall strictly worse
+than walking.
 
 **Arrival geometry, identical to `RI-TRV01` §6**: you arrive at the shrine's or the Mark's marker,
 standing, on foot, and **never within 25 m of a live quest objective**.
@@ -170,32 +172,38 @@ reading `elder-souls/trace@1`.
 
 ### Positive tests — do the spells exist and work?
 
-**P1 — The catalogue (static).** Load `game/data/spells/`.
-- **Assert** the four ids `mark`, `recall`, `intervention_hist`, `intervention_imperial` exist, each with
-  a magicka cost, a 180-frame cast, a gold price, and a school.
-- **Assert** gold prices are 900 / 900 / 220 / 220, matching `RI-PRG05` tier-2 and tier-1 exactly.
+**P1 — The catalogue (static).** Load `game/data/spells/` and `corpus/25-magic/data/effects.json`.
+- **Assert** the four ids `mark`, `recall`, `intervention_root`, `intervention_imperial` exist, each with
+  a computed Focus cost, `class: "RITUAL"`, a 210-frame cast, a min tier, and a gold price.
+- **Assert** gold prices are **3,400 / 3,400 / 900 / 900**, i.e. `RI-PRG05` §2's tier-3 and tier-2 spell
+  prices at the min tiers `RI-MAG02` declares (3 / 3 / 2 / 2).
 - **Assert** each is stocked by **≥ 3 distinct vendors** in **≥ 2 distinct settlements**.
+- **Assert** the shipped records match `effects.json` field for field (weight 3.0 / 9.0 / 5.0, school
+  Warding, range `self`, `in_fight: false`).
 - **N-fail:** fewer than four spells, **or** any missing from every vendor inventory — a spell nobody
   sells does not exist. Score **0, fail-closed**.
 - **W-fail:** a fifth teleport spell, **or** any spell whose destination field is a list, a map pin, a
   quest id, a POI id, or a region centroid.
 
 **P2 — Mark → Recall round trip (live).** Scenario `trv-mark-recall`, fixed seed.
-Buy Mark and Recall. Stand at Helstrom's north gate, exterior, no hostiles. Cast Mark. Record
-`pos_mark`. Walk (scripted, not teleported) to Rootway Post. Cast Recall.
+Buy `mark` and `recall`. Stand at Helstrom's north gate, exterior, no hostiles, Warding ≥ 45. Cast
+`mark`. Record `pos_mark`. Walk (scripted, not teleported) to Rootway Post, ~840 m. Cast `recall`.
 - **Assert** a `mark_set` event and a `teleport{spell:"recall"}` event appear in the trace.
 - **Assert** final `player.pos` is within **5 m** of `pos_mark`.
-- **Assert** `player.magicka` fell by the declared cost on each cast.
-- **Assert** the game clock advanced by **20 in-world minutes** and `player.fatigue` fell 25%.
-- **Assert** the cast occupied **180 frames** with `player.state == "CAST"` throughout and no cancel.
+- **Assert** `player.focus` fell by the **computed** cost — for 840 m, `focus_base` ≈ 10 — and
+  **assert** the same recall from 3 km away costs ≈ 57, i.e. that the cost is a function of distance and
+  not a constant. A constant-cost Recall is an authored magnitude and fails `RI-MAG02` §G.
+- **Assert** the game clock advanced by **20 in-world minutes**.
+- **Assert** the cast occupied **210 frames** with `player.state == "CAST"` throughout, zero movement,
+  and no cancel.
 - **N-fail:** any assertion fails, **or** the cast is refused in this clean situation. A spell that is
   always refused is a spell that does not exist. **This is the single most important check in the item**
   and it must be run first, because it is the one the corpus has never had.
-- **W-fail:** the clock does not advance, **or** Fatigue does not fall, **or** the cast completes in
-  < 60 frames, **or** Recall succeeds without a Mark having been set.
+- **W-fail:** the clock does not advance, **or** the cast completes in < 100 frames, **or** the cost is
+  distance-independent, **or** `recall` succeeds without a Mark having been set.
 
 **P3 — Intervention resolves to the nearest *discovered* (live).** Scenario `trv-intervention`.
-- With **zero** shrines discovered, cast Hist Intervention. **Assert it fizzles**, spends no magicka, and
+- With **zero** shrines discovered, cast `intervention_root`. **Assert it fizzles**, spends no Focus, and
   writes `spell_refused{reason:"nothing known"}`.
 - Discover Gideon only. Cast from a point nearer to Helstrom's shrine than to Gideon's.
   **Assert arrival at Gideon**, not Helstrom.

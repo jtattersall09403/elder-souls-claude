@@ -2,7 +2,7 @@
   "task_id": "uesp-mining",
   "brief": "orchestration/briefs/uesp-mining.md",
   "started": "wave-0",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "tools/uesp/uesp-query.mjs",
     "tools/uesp/uesp-infobox.mjs",
@@ -19,14 +19,15 @@
     "tools/uesp/uesp-query.mjs",
     "tools/uesp/uesp-stats.mjs",
     "tools/uesp/README.md",
-    "corpus/30-quests/data/morrowind-quest-census.json",
     "tools/uesp/mine-quests.mjs",
-    "corpus/50-world/data/morrowind-world-census.json",
     "tools/uesp/mine-world.mjs",
-    "corpus/60-lore/data/blackmarsh-canon.json",
     "tools/uesp/mine-blackmarsh.mjs",
+    "tools/uesp/mine-argonian-names.mjs",
+    "corpus/30-quests/data/morrowind-quest-census.json",
+    "corpus/50-world/data/morrowind-world-census.json",
+    "corpus/60-lore/data/blackmarsh-canon.json",
     "corpus/60-lore/data/argonian-names.json",
-    "tools/uesp/mine-argonian-names.mjs"
+    "corpus/00-doctrine/PROVENANCE-UPGRADE-01.md"
   ],
   "findings": [
     "Extract decompressed to /tmp/uesp/extract.jsonl (20.7MB, 6299 lines). NEVER into repo.",
@@ -64,8 +65,14 @@
     "RI-LOR04 naming grammar CONTRADICTED on shape: of 377 attested Argonian names, only 43 are Tamrielic-descriptive; 142 are Jel compounds (Am-Lai, Heem-La, Miun-Gei, Okan-Shei) and 182 single Jel words. The dominant real form is NOT the hyphenated English phrase. In Morrowind-era names specifically: 17 descriptive, 14 Jel compound, 9 single.",
     "RI-LOR04 word-count rule CONTRADICTED: it says 2-4 words modal 3. Attested descriptive names run 2 (31), 3 (6), 4 (5), 5 (1 - Morning-Star-Steals-Away-Clouds). Modal is TWO, not three, and 5 exists.",
     "RI-LOR04 misses a whole register: attested Argonian TITLE PREFIXES - Tree-Minder (9), Nisswo (7), Sun-Eater (7), Dead-Water (3), Grave-Singer (2), Raj-Kaal (2), Egg-Tender, Bond-Guru, Chime-Maker, Sap-Speaker, Ux-Deelith. Raj-Kaal independently confirms kaal=war captain and raj- as honorific (primer: Raj-Beeko).",
-    "Canon Morrowind name Skink-in-Tree's-Shade contains an APOSTROPHE and a lowercase 'in' - both against RI-LOR04's letter."
+    "Canon Morrowind name Skink-in-Tree's-Shade contains an APOSTROPHE and a lowercase 'in' - both against RI-LOR04's letter.",
+    "RI-QST03 APPENDIX DELIVERED: 20 faction rank tables transcribed. Morrowind runs TWO ladders, not one per faction. Joinable guilds/Houses: attributes 30 (ranks 0-4) then +1/rank to 35; skills one favoured at 10x index plus two at 5x(index-2) from rank 3. Unjoinable/special (Ashlanders, Camonna Tong, 3 vampire clans, Blades, Census and Excise, Imperial Knights): attributes 40-80, top rank one skill at 110. Deviations: Hlaalu rank 7 needs stronghold started; Imperial Cult gentler secondary column (5,8,10,12,15,18,20,25,25); EEC has 9 ranks; Dark Brotherhood lists no skill req.",
+    "RI-PRG03 CONFIRMED and upgradeable: Morrowind:Skills states '27 skills', five major / five minor / seventeen miscellaneous, ten major-or-minor increases per level. Move from canonical-recall to community-data.",
+    "RI-PRG05 CONFIRMED and quantified: 345 merchants carry explicit gold pools. min 0, MEDIAN 350, mean 790, max 10,000. Modal values 300 (43x), 150 (33x), 400 (27x), 200 (22x).",
+    "FINAL SCOREBOARD: 9 confirmed, 6 confirmed-with-correction, 8 contradicted, 5 unsettled, 1 flagged for era ruling.",
+    "OPEN DEBTS (could not settle): RI-QST08 unique-reward fraction (58.7% of rewarding quests name an item, but UESP's Reward field does not distinguish unique from common - needs a join against item pages); RI-WLD03 named-interiors-per-settlement (UESP does not page every house, our 15 for Balmora is a floor); the '2,824 Vvardenfell NPCs' figure (extract has 1,429 NPC pages - not comparable, needs Construction Set); CF-044 Ruddy Man (no page in the extract); RI-QST07 side-quest type mix (UESP does not tag quest type).",
+    "NEEDS AN ARBITRATION RULING: the ESO Murkmire/Shadowfen body (tribes, Tree-Minders, Nisswos, 64 Murkmire places, ~330 named ESO Argonians) is 2E 582, ~855 years before our 3E 427. Richest Argonian source AND the most anachronistic. Corpus has no ruling. Every record in blackmarsh-canon.json carries an era field so it can be decided per fact."
   ],
-  "next_step": "add per-faction rank tables to quest census (RI-QST03 appendix debt), then write corpus/00-doctrine/PROVENANCE-UPGRADE-01.md",
-  "notes_for_successor": "Toolkit is done and verified. uesp-infobox.mjs exports loadExtract/parseTemplates/findTemplate/sections/wikitables/links/stripWiki. Mining scripts go in tools/uesp/mine-*.mjs so datasets are reproducible."
+  "next_step": "none - task complete",
+  "notes_for_successor": "All four datasets regenerate from tools/uesp/mine-*.mjs. If jel-lexicon.json or jel-phonotactics.py is amended, re-run mine-argonian-names.mjs to re-check the validator against attested Jel; the attested word list is the fixture that test should use. PROVENANCE-UPGRADE-01.md deliberately does NOT edit other agents' items - amendment text is supplied for owners to apply."
 }
