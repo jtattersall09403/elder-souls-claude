@@ -2,13 +2,17 @@
  "task_id": "W1-15-r2-critic",
  "brief": "critic round 2 for W1-15 stealth and crime",
  "started": "wave-1 round 2",
- "state": "writing",
+ "state": "complete",
  "outputs_expected": [
   "corpus/90-verdicts/wave1/W1-15-r2.json",
   "corpus/90-verdicts/wave1/W1-15-r2.md",
   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/"
  ],
- "outputs_written": [],
+ "outputs_written": [
+  "corpus/90-verdicts/wave1/W1-15-r2.json (schema-valid)",
+  "corpus/90-verdicts/wave1/W1-15-r2.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-15-r2/ (10 probes + 9 result JSONs)"
+ ],
  "findings": [
   "BOOT OK: tools/harness/smoke.mjs 6/6; game boots with 0 page errors in all five critic probes.",
   "COUPLING SURVIVES INDEPENDENT MEASUREMENT. My own instrument (kritik-perception.mjs, written from RI-STL01 not from the builder's probe) reproduces RI-STL01 \u00a72's five rows at 1.0167/3.95/8.45/26.65/26.65 s vs the item's 1.03/3.94/8.5/26.7/26.7 \u2014 worst error 1.29%. coupling |26.65-1.0167|/|26.7-1.03| = 0.9986. Round 1 was 0.00.",
@@ -29,6 +33,6 @@
   "Fence launder works with a real id (fence.lilmoth.rot-hookline): 5 g, laundered_by set, persists to save. getCrimeState() does not expose the fence roster, so the ids are undiscoverable from the harness.",
   "PROBE BUG WORTH RECORDING FOR SUCCESSORS: setEntityPos() silently ignores opts.yaw; only spawn() honours it. And queueInputs() frame numbers are RELATIVE to the current frame, not absolute."
  ],
- "next_step": "write corpus/90-verdicts/wave1/W1-15-r2.json + .md, validate",
- "notes_for_successor": ""
+ "next_step": "none \u2014 verdict written and validated",
+ "notes_for_successor": "Two probe traps that each produced a WRONG measurement in this critic's first pass and belong in AGENT-PROTOCOL.md next to setRenderRate(0): (1) setEntityPos() silently ignores opts.yaw while spawn() honours it, so every rear-arc measurement taken through setEntityPos is really taken at yaw 180 \u2014 facing the player; (2) queueInputs() frame numbers are RELATIVE to the current frame, so an absolute frame number never fires and the probe reports a clean zero. Also: the fence roster is not reachable from the harness (getCrimeState() omits it, fenceQuote throws) \u2014 real ids are in game/data/crime/fences.json, e.g. fence.lilmoth.rot-hookline."
 }

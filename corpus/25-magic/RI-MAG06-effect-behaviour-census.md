@@ -101,6 +101,50 @@ GENERIC-APPLICATOR = |HP_DAMAGE_ONLY| + |UNREAD_TIMER| / 55
 `GENERIC-APPLICATOR` is the diagnostic. When it is high, the build has one applicator and 55
 labels, and no other metric in `corpus/25-magic/` can see it.
 
+### D. DISTINGUISHABILITY — added wave 1, round 2, by the `W1-14-r2` critic
+
+**Why this section exists.** `EFFECT-FUNCTION 55/55` is exactly what the round-2 build measured,
+under the builder's instrument and under an independently written one. And the same build ships
+four effects — `shield`, `resist_element`, `resist_disease`, `sap_ward` — that write one
+multiplier with no element channel, so that a *resist-disease* buff blunts a sword by 85% and a
+*physical shield* blunts a fireball identically to a *resist-element* ward. All four pass §A's
+`FUNCTIONS_AS_SPECIFIED`. All four move their §B row. **A player cannot tell them apart.**
+
+`§A`'s vocabulary asks *did this effect move a system*. It cannot ask *did it move a system
+differently from the effect next to it*, and that is the failure that survives a clean census:
+**55 distinct code paths producing a much smaller number of distinct observable outcomes.** The
+generic applicator is not the only way to get one behaviour out of 55 records; a handler registry
+whose handlers all write the same field is the same thing with better hygiene.
+
+The statistic:
+
+```
+SIGNATURE(e)      = the sorted set of world-side leaf paths that differ between
+                    a run in which e was cast and an otherwise identical control run
+DISTINCT-VERBS    = |{ SIGNATURE(e) : e in the catalogue }|
+```
+
+The signature must be computed **mechanically from a flattened snapshot**, never from a per-effect
+probe table — a hand-written table of "what this effect should move" reintroduces exactly the
+declaration this item exists to distrust. Effects legitimately sharing a signature with opposite
+signs (`feather`/`burden`) are recorded, not excused: they are one verb with two directions and
+should be named as such in the verdict.
+
+**Measured, W1-14 round 2:** `EFFECT-FUNCTION 55/55`, `DISTINCT-VERBS 33/55`, with six collision
+groups. `corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-consumption-census.json`.
+
+### E. THE ARENA AUDIT — the gate no probe in the area ever touches
+
+Every magic probe in the `W1-14` tree opened its arena with
+`H.setMagicSkills({sorcery: 100, root_speech: 100, warding: 100, veiling: 100})`, including both
+probes the round-2 critic wrote before noticing. While that line is in the arena, the skill gate
+behind it is invisible: 25 of 72 shipped spells that the game itself will never let you attune
+were attuned in every single run, by every instrument, on both sides of the desk.
+
+`RI-MTH07` §C3 audits harness methods that accept **world facts as arguments**. This audits the
+**arena setup**, which is the same failure one line earlier and is not covered anywhere else in the
+corpus.
+
 ## Comparison method
 
 Script owed to `corpus/80-methods/`: **`m-mag06-effect-census.mjs`**. A working reference
@@ -136,6 +180,17 @@ pair is the exact claim `RI-MAG02` §B's census makes and this item falsifies.
 the missing consuming system. **More than five is a fail**; five or fewer is a wave-ordering
 fact rather than a defect, and the verdict must name each.
 
+**M7 — DISTINCTNESS (§D).** Compute `SIGNATURE(e)` for every effect from a mechanically flattened
+snapshot with a null control, and report `DISTINCT-VERBS` and every collision group by name. The
+snapshot must exclude the magic module's own bookkeeping — `focus`, `effects_active`, the
+`effect_apply` stream — because those are the model reporting on itself (`RI-MTH07` §B1).
+
+**M8 — THE ARENA AUDIT (§E).** Grep every probe that measures this piece for harness calls in its
+arena setup that write a **gating** variable — a skill, a rank, a standing, a knowledge flag.
+For each, re-run the census **without** it and report the delta. **Any effect, spell or resolution
+that is reachable only with the call is `unmeasurable ⇒ 0` on the item it serves**, and the
+verdict must say which harness call was holding it open.
+
 ## Scoring
 
 | Axis | 10 | 6 (pass floor) | 0 (we lose) |
@@ -146,6 +201,8 @@ fact rather than a defect, and the verdict must name each.
 | `NOT_OBSERVED` count | 0 | ≤ 2 | > 5 — the shelf ships effects nothing can deliver |
 | `UNMEASURABLE` count | 0 | ≤ 5, each with its owning piece named | > 5, or any unnamed |
 | Declared-vs-measured (M5) | zero `changes_traversal: true` effects measuring `UNREAD_TIMER` | ≤ 2 | ≥ 5 — the catalogue census is fiction |
+| `DISTINCT-VERBS` (M7) | ≥ 50/55 | ≥ 40/55 | < 25/55 — a handler registry with one behaviour |
+| Arena audit (M8) | no gating variable is hand-set in any probe's arena | hand-set, and the census is re-run without it | a result reachable only through a harness call, presented as measured |
 
 **Failure threshold: any axis below 6.** **Aggregation: min-over-axes.**
 

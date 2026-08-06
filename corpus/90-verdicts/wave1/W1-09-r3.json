@@ -1,0 +1,1718 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-09-r3",
+ "piece_title": "W1-09 — Combat core — round 3 (Ultracode escalation)",
+ "subsystem_paths": [
+  "combat.hitbox.sweep",
+  "combat.hitbox.resolution",
+  "combat.dodge.iframes",
+  "combat.stamina.costs",
+  "platform.determinism.harness"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-09-r3-3c19",
+  "role": "critic.combat",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-06T22:05:00Z",
+  "finished_at": "2026-08-06T22:55:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "93f3d2d99b23af862a57d78239fc639b577920ee",
+  "branch": "main",
+  "harness_commands": [
+   {
+    "command": "node tools/harness/cmb-reach.mjs --probe enemy,player,turtle",
+    "exit_code": 1,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-09-r3n.mjs --probe reach,rootdz,turtle",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-09-r3n.mjs --probe ablate,push,lateral,dice",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-09-r3.mjs --probe reach",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-09-r3.mjs --probe turtle,yaw",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json"
+   },
+   {
+    "command": "node tools/harness/cmb-probe.mjs --probe all",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+   },
+   {
+    "command": "node tools/harness/cmb-poise.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+   },
+   {
+    "command": "node tools/harness/cmb-exemplar.mjs --fights 1 --verify",
+    "exit_code": 0,
+    "seed": 0
+   },
+   {
+    "command": "node tools/harness/cmb-exemplar.mjs --fights 5 --greed-scale 0",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-greed-scale-0.txt"
+   },
+   {
+    "command": "node corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-wobble0.mjs --fights 5 --wobble 0",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-wobble0.txt"
+   },
+   {
+    "command": "node tools/harness/trace-stats.mjs --in reports/w1-09/exemplar/RI-CMB07-exemplar-F1-trace.jsonl",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-trace-stats-F1.json"
+   }
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "Declared before any measurement was taken. No screenshot is cited for any score. Every finding here is metres, frames, degrees or hit points read off the geometry and state channels of real runs — headless Chromium through window.__HARNESS for every headline, and the node arena for volume after it was verified against the browser."
+ },
+ "reference_items": [
+  {
+   "id": "RI-CMB01",
+   "path": "corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum (M1 20 / M2 35 / M3 20 / M4 15 / M5 10)",
+   "native_score": 80,
+   "native_max": 100,
+   "native_verdict": "70-89 — playable, gap named, remediable within a wave",
+   "score_0_10": 6,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "52 / 60 / 88 / 120 f@60, four tiers exact; i-frame runs contiguous",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ],
+     "note": "the `roll` probe re-run by me on this commit is byte-identical to the shipped reports/w1-09/cmb-probe-all.json"
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "f5-30 LIGHT; my own perturbation shrinking the window to [5,6] changes negations from 1 to 0 at roll leads 8/12/16, so the window is consumed and not decorative",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-c.json"
+     ]
+    },
+    {
+     "id": "M3",
+     "result": "fail",
+     "value": "worst single-frame weapon-socket displacement at a STATE BOUNDARY is 0.4561 m (ROLL_RECOVER -> ATK_STARTUP) in all five exemplar fights and 0.7537 m in F2, against a declared per-frame tip travel of 0.308 m",
+     "threshold": "per-frame delta matches the clip; <= 0.308 m at every transition",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-motion-boundary-vs-within.json"
+     ],
+     "note": "a genuine 5x improvement on round 2 (2.365-2.528 m) and still a fail. The build's own claim of 0.259 m worst transition and <= 0.367 m at every boundary is not reproducible on the shipped exemplar traces."
+    },
+    {
+     "id": "M4",
+     "result": "pass",
+     "value": "commitment grid: no cancel before the declared dodge-cancel frame, buffer 8 f@60",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "pass",
+     "value": "tier cliff at 30.0/30.1, 70.0/70.1, 100.0/100.1",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-motion-boundary-vs-within.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-c.json"
+   ],
+   "why_not_ten": "M3 still fails. The pose cross-fade is real and consumed — setting clips.json cross_fade.frames to 0 takes the worst boundary jump from 0.081 m to 0.684 m in a controlled fight — but in the shipped exemplar the ROLL_RECOVER -> ATK_STARTUP boundary still moves the weapon socket 0.4561 m in one 1/60 s step, 1.48x the declared per-frame tip travel, in every one of the five fights.",
+   "path_to_ten": "The cross-fade blends bone Eulers but the ROLL_RECOVER -> ATK_STARTUP transition also changes the socket distances (roll pose to guard pose) and the root velocity discontinuity is not blended. Extend Rig.beginCrossFade to blend the socket offsets and the root-delta ramp, not only the joint rotations, and drive the blend length from the magnitude of the discontinuity rather than a flat 10 frames. Acceptance: max single-frame socket displacement at any state boundary <= 0.308 m across five exemplar fights, measured by corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-motion.mjs.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-CMB02",
+   "path": "corpus/10-combat/RI-CMB02-attack-frame-data.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum (M1 25 / M2 30 / M3 20 / M4 10 / M5 10 / M6 5)",
+   "native_score": 55,
+   "native_max": 100,
+   "native_verdict": "< 70 — we lose",
+   "score_0_10": 3,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "14 rows, startup/active/recovery/total present and self-consistent",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "commitment grid restored: `C` appears only from anim frame 52, `B` only in the last 8; no cancel during startup or active",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ],
+     "note": "round 3 fixed a probe bug that had been reporting the item's automatic-fail signature (`C` in every cell) since W1-10 renamed the R1 to `r1.1`. Verified: the grid I measure is the round-2 grid."
+    },
+    {
+     "id": "M3",
+     "result": "fail",
+     "value": "peak tip speed measured in play is 39.57-45.22 m/s across the five exemplar fights against a declared straight-sword 18.5 m/s (x2.14-2.44); the offending frames are ATK_STARTUP of clip_garrison_r1_3, the third clip of the R1 chain",
+     "threshold": "per-frame match to the clip, within the declared peak_tip_speed_mps column",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-motion-boundary-vs-within.json"
+     ],
+     "note": "cmb-probe measures only the FIRST light of each class and reports 18.0 m/s for the same weapon — the probe passes a move the fight does not use. 4 of 14 probe rows also exceed their declared column (spear light x1.23, ultra-greatsword light x1.19, axe light x1.05, halberd heavy x1.05)."
+    },
+    {
+     "id": "M4",
+     "result": "unmeasurable",
+     "value": "§C modifier arithmetic not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "readability contract is a visual method; excluded by the declared not-visual axis",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "pass",
+     "value": "60 identical scripted hits produce exactly one damage value (63); stdev 0",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-motion-boundary-vs-within.json"
+   ],
+   "why_not_ten": "The weapon travels at 2.1-2.4x its declared peak tip speed for 379-499 frames per fight, and the probe that grades the frame data measures the one attack in the chain that does not. Round 2 recorded '14 of 14 movesets at or under the declared column'; measured in play on this build the straight sword's own chain reaches 45.2 m/s.",
+   "path_to_ten": "Extend tools/harness/cmb-probe.mjs `frames` to walk every clip in every chain (r1.1, r1.2, r1.3, r2.x) rather than the first light and heavy only, and assert peak tip travel per frame against hitgeometry.json §weapon_hitboxes for each; then retune the W1-10 chain clips whose amplitude exceeds it. Acceptance: max per-frame tip travel <= the declared column for every clip of every chain, and the exemplar's measured peak tip speed within 5% of 18.5 m/s for the straight sword.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-CMB03",
+   "path": "corpus/10-combat/RI-CMB03-stamina-economy.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum (M1 15 / M2 10 / M3 15 / M4 20 / M5 20 / M6 10 / M7 10)",
+   "native_score": 75,
+   "native_max": 100,
+   "native_verdict": "70-89 — playable, gap named, remediable",
+   "score_0_10": 5,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "regen delay 42 f, flat slope",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M3",
+     "result": "pass",
+     "value": "cost census identical to the shipped probe output; parry measures exactly 22 on the press frame",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ],
+     "note": "round 2's figure of 26 is not reproducible on this build; my own re-run of the `stamina` probe is byte-identical to the shipped file and reads 22."
+    },
+    {
+     "id": "M4",
+     "result": "pass",
+     "value": "block formulas exact",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "pass",
+     "value": "guard break 40 f, stamina 0 throughout, symmetric for enemies",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "marginal",
+     "value": "the gate drops rather than queues where it fires, but across five 150 s exemplar fights it fires 0, 1, 0, 3, 0 times — median 0",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ]
+    },
+    {
+     "id": "M7",
+     "result": "fail",
+     "value": "3 of the 5 stamina rows of the play distribution are out of band: row 15 stamina floor 0.143 (in), row 16 frames at exactly 0 stamina = 0 against [20,600], row 17 % below 25% = 0.0127 against [0.03,0.20], row 18 0.2706 (in), row 19 mean 0.7922 against [0.55,0.80] (in at the ceiling)",
+     "threshold": ">= 5 of 7 rows inside band",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-greed-scale-0.txt"
+     ],
+     "note": "round 2 measured row 16 = 130 frames at zero, row 17 = 0.1406 and row 28 = 32 denied inputs, all in band. This is a regression introduced by round 3's rewrite of the exemplar bot."
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+   ],
+   "why_not_ten": "The formulas are right and the economy has stopped happening. Across five 150 s fights the bar reaches exactly zero on 0 frames, spends 1.27% of the fight below a quarter full, and denies an input for want of stamina a median of zero times. A stamina system that never runs out is a HUD element.",
+   "path_to_ten": "The exemplar bot now refuses to swing below its profile `staminaFloor` (18-30). Remove the floor from the punish branch so the bot spends into the red the way round 2's did, or raise per-swing costs until a 120-stamina pool cannot sustain 20 attacks/min. Acceptance: RI-CMB07 rows 16 (20-600 frames at exactly 0), 17 (0.03-0.20) and 28 (>= 1) all in band on the median of five fights, without touching stamina.json's declared costs.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-CMB04",
+   "path": "corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum (M1 20 / M2 25 / M3 15 / M4 20 / M5 5 / M6 10 / M7 5)",
+   "native_score": 55,
+   "native_max": 100,
+   "native_verdict": "< 70 — we lose",
+   "score_0_10": 4,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "hurtbox midpoint-to-bone-origin invariant to 1e-4 m over a full roll; capsules travel 5.6-7.2 m in world space with the pose",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M2",
+     "result": "unmeasurable",
+     "value": "the item's own method (7 classes x 24 lateral offsets against an analytic swept hull) was not run",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.json"
+     ],
+     "note": "what I did measure is adjacent and bad: hitgeometry.sweep.substeps 4 -> 1 leaves the hit set byte-identical (36 of 71 distances, none lost, none gained), against the data file's own text 'Reducing them to 1 changes which attacks connect'; and the exemplar's peak per-substep travel is 2.36 capsule radii, against the 0.41-1.08 round 2 recorded as restoring §C's rationale."
+    },
+    {
+     "id": "M3",
+     "result": "unmeasurable",
+     "value": "boundary sharpness at 0.03 m not measured; my sweep step is 0.05 m",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+     ]
+    },
+    {
+     "id": "M4",
+     "result": "pass",
+     "value": "60 identical scripted hits, one damage value, stdev 0; no RNG import on the resolution path",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "pass",
+     "value": "one HIT per swing per target across 71 sweep distances x 4 enemy attacks",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "pass",
+     "value": "i-frames before block before poise before damage; body-vs-weapon ties resolve to the weapon; `via` is carried on every event",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+     ]
+    },
+    {
+     "id": "M7",
+     "result": "unmeasurable",
+     "value": "render decoupling not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "S26-contiguity",
+     "result": "fail",
+     "value": "player spear has an interior gap at 1.20-1.25 m and halberd at 1.15-1.30 m — reproduced identically in the browser and in the node arena",
+     "threshold": "the reachable band must be contiguous; an interior gap is the same defect wearing a different shape",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+     ],
+     "note": "the gaps sit exactly where the body corridor stops (spear 1.15, halberd 1.10) and the blade has not yet started (1.30, 1.35). The build's attribution to W1-10's roster is half right — with body_hazard deleted the spear's and halberd's weapon-only minimum is 1.30 and 1.35 — but the GAP is produced by the two-band architecture, not by the roster."
+    },
+    {
+     "id": "S26-not-a-distance-check",
+     "result": "pass",
+     "value": "with every enemy attack's root_dz_m overridden to 0, body hits = 0 at every distance from 0.0 m to 3.0 m on all four attacks, and no hit at all at 0.0 m",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+     ],
+     "note": "the gate is `A.lastRootDelta !== 0` inside the hitbox-active branch, and it holds under test. This is NOT a proximity check and RI-CMB04's 'how we lose' #1 is not triggered."
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json"
+   ],
+   "why_not_ten": "The reach hole was covered, not closed. Deleting hitgeometry.json §body_hazard restores the round-2 numbers exactly — chop 1.2, thrust 1.6, combo_a 1.1, combo_b 1.2 — so the weapon volume is unchanged; every hit inside those radii is `via: body` and pays the weapon's damage (chop 96 at 0.05 m via body equals 96 at 3.65 m via weapon). Two of seven player weapon classes have an interior gap where the two volumes fail to meet.",
+   "path_to_ten": "Fix the weapon volume, then let the body corridor be what S26 says it is — a hazard, not a substitute reach. In game/src/combat/swing.js the socket capsule for an overhead chop is projected 0.95 m in front of the attacker's root at the first active frame; give the enemy archetypes' chop/thrust clips a low arc phase so the blade passes through the 0.4-1.1 m band, and give a body hit its own motion value in hitgeometry.json §body_hazard rather than the weapon's. Acceptance: with §body_hazard deleted, min_hit_distance_m <= 0.35 m for all four champion attacks; with it present, every player weapon class contiguous from 0.05 m; and a body hit's damage strictly less than the same attack's weapon hit.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-CMB05",
+   "path": "corpus/10-combat/RI-CMB05-poise-stagger-criticals.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum (M1 20 / M2 10 / M3 15 / M4 20 / M5 15 / M6 10 / M7 5 / M8 5)",
+   "native_score": 50,
+   "native_max": 100,
+   "native_verdict": "< 70 — we lose",
+   "score_0_10": 4,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M3",
+     "result": "fail",
+     "value": "medium stagger exactly 44 f@60 as specified; greatsword and ultra-greatsword both measure [44] against a heavy spec of 64",
+     "threshold": "exact lengths per tier",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+     ],
+     "note": "round 2 could not measure this at all — the probe returned an empty list and read as a pass. It is now honest and it fails."
+    },
+    {
+     "id": "M4",
+     "result": "unmeasurable",
+     "value": "the control case now lands (hp 524 of 620, hit_landed true) but neither case staggers, so the probe still cannot tell working hyperarmour from none",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "pass",
+     "value": "behind at 0.9 m crits for 389.4; behind at 1.6 m, side at 0.9 m and front at 0.9 m all resolve as ordinary R1s for 63",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "pass",
+     "value": "parry at press-lead 18 and 24; PARRIED state exactly 56 f as specified; no parry at leads 0, 6, 12, 30, 40",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+     ]
+    },
+    {
+     "id": "M7",
+     "result": "pass",
+     "value": "riposte fires at parried frame k=7 for 584.1 damage; round 2 measured riposted:false and damage 0 in all seven cases",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+     ]
+    },
+    {
+     "id": "M8",
+     "result": "pass",
+     "value": "zero variance",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+     ]
+    },
+    {
+     "id": "M1",
+     "result": "unmeasurable",
+     "value": "pool arithmetic table not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+     ]
+    },
+    {
+     "id": "M2",
+     "result": "unmeasurable",
+     "value": "poise regeneration curve not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json"
+   ],
+   "why_not_ten": "The riposte is real for the first time and the heavy stagger tier is wrong: a greatsword and an ultra-greatsword both produce a 44 f stagger where the spec says 64, i.e. their poise damage lands in the medium band. Hyperarmour remains unverifiable because neither the inside-window nor the outside-window case staggers — the champion's chop does 32 poise damage against a 48 pool.",
+   "path_to_ten": "Two data changes and one probe change. Raise greatsword and ultra-greatsword poise_damage in the W1-10 roster until they cross 40 (RI-CMB05 §B's heavy band), and make cmb-poise m4_hyperarmour run its control against an EXHAUSTED player (poise halved) the way m3_medium already does, so the two cases differ. Acceptance: m3_heavy reports [64] for both weapons; m4_hyperarmour reports staggered:false inside the window and staggered:true outside it in the same run.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-CMB06",
+   "path": "corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum (M1 10 / M2 10 / M3 5 / M4 30 / M5 15 / M6 20 / M7 5 / M8 5)",
+   "native_score": 30,
+   "native_max": 100,
+   "native_verdict": "< 70 — we lose",
+   "score_0_10": 3,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "acquisition envelope exercised by the lockon probe",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "hysteresis and grace exercised by the lockon probe",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M3",
+     "result": "pass",
+     "value": "lock released on target death (locked_after_target_death: null with e1_dead: true)",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ],
+     "note": "the shipped report has this cell untested — its run left the target alive."
+    },
+    {
+     "id": "M4",
+     "result": "unmeasurable",
+     "value": "8-bin target-relative roll semantics not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "camera spring is a visual method, excluded by the declared axis",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "pass",
+     "value": "soft-lock steering frozen from first_active: yaw rate 0.0 dps across 683 player and 686 enemy ATK_ACTIVE/ATK_RECOVER frames",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    },
+    {
+     "id": "M7",
+     "result": "unmeasurable",
+     "value": "movement multipliers not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M8",
+     "result": "unmeasurable",
+     "value": "locked-vs-unlocked hit geometry not compared",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+   ],
+   "why_not_ten": "M4 carries 30 of the item's 100 weight and there is no probe for it: nothing in the harness rolls in eight target-relative directions under lock and diffs the resulting root track against the camera's yaw. Four of the eight checks are unmeasurable and score 0 fail-closed.",
+   "path_to_ten": "Add a `roll8` probe to tools/harness/cmb-probe.mjs: lock on, then roll on each of eight stick bins at three camera yaws, and record the world-space root delta of each roll. Acceptance: the eight root tracks are a function of the stick bin and the target bearing only, invariant to camera yaw within 1 degree, and M8's hit geometry identical locked and unlocked.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-CMB07",
+   "path": "corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md",
+   "side": "souls",
+   "kind": "trace",
+   "native_scale": "0-100 weighted sum (M0 15 / M1 30 / M2 40 / M3 10 / M4 5)",
+   "native_score": 0,
+   "native_max": 100,
+   "native_verdict": "automatic fail — row 28 equal to 0",
+   "score_0_10": 2,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "M0",
+     "result": "fail",
+     "value": "the RI-AI01 §A stream is now emitted and trace-stats reads it with 0 missing fields and 0 frame gaps; but the two streams disagree with each other at the same `f` on 8,843 of 8,999 comparable frames, and agree perfectly only at an offset of +1",
+     "threshold": "FAIL if the RI-AI01 §A enemy stream is absent, or disagrees with F.e[] on any frame",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-trace-stats-F1.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-stream-crosscheck.json"
+     ],
+     "note": "an off-by-one in the record index, not fabricated data — but it is exactly the clause M0 states. The stream also has no header and no schema record, and trace-stats reports rolls=0 and punish=0/53 because it looks for player.state === 'ROLL' and event.attacker === 'player' while the stream writes ROLL_STARTUP/ROLL_IFRAME/ROLL_RECOVER and src/dst."
+    },
+    {
+     "id": "M1",
+     "result": "unmeasurable",
+     "value": "Mode-A replay could not be run: the item's own scenario fixture is invalidated by seam S22 and has not been re-issued",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ]
+    },
+    {
+     "id": "M2",
+     "result": "fail",
+     "value": "18 of 25 banded rows in band on the median fight; the median of the PER-FIGHT counts is 17 (F1=17 F2=20 F3=17 F4=19 F5=17)",
+     "threshold": ">= 20 of 24 banded rows inside band, median over >= 5 fights",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ],
+     "note": "round 2 measured 21 of 24 on the same instrument. Rows 16, 17, 22 and 28 were in band in round 2 and are out now."
+    },
+    {
+     "id": "M3",
+     "result": "fail",
+     "value": "the fingerprint improved and still loses: 51.6-62.2% of enemy hitbox-active frames are covered by player invulnerability (round 2: 13.5-27.5%), but the 90th-percentile distance from an invulnerable frame to the nearest enemy hitbox frame is 58-96 f@60 against round 2's 62-104, with 803-1014 invulnerable frames per fight for 360-443 enemy active frames",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/blind-cmb07-m3d-reveal.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/blind-cmb07-m3d-pack.txt"
+     ]
+    },
+    {
+     "id": "M4",
+     "result": "unmeasurable",
+     "value": "adversarial self-check not run",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-trace-stats-F1.json"
+     ]
+    },
+    {
+     "id": "row-28",
+     "result": "fail",
+     "hard_fail": true,
+     "value": "median inputs dropped for insufficient stamina = 0 (per fight 0, 1, 0, 3, 0), recomputed by me from the raw JSONL by counting INPUT_DROPPED with reason 'no_stamina'",
+     "threshold": "the item's ## Scoring: 'row 28 equal to 0 — the stamina bar never denied an input, so there is no economy' is an automatic fail regardless of score",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ],
+     "note": "round 2's build measured 32. This is a regression introduced by round 3 and it triggers the item's own automatic fail."
+    },
+    {
+     "id": "determinism",
+     "result": "pass",
+     "value": "cmb-exemplar --fights 1 --verify reports hash_equal true, and the regenerated F1 frames file is byte-identical to the shipped reports/w1-09/exemplar/RI-CMB07-exemplar-F1-frames.jsonl",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ]
+    },
+    {
+     "id": "row-9",
+     "result": "fail",
+     "value": "in band in 4 fights of 5, not 5 of 5: F1 [-9,-3], F2 [-9,-1], F3 [-9,-4], F4 [-9,-3], F5 [-8,+20] against a band of [-24,+8]",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ],
+     "note": "recomputed independently from the raw per-frame JSONL; my numbers match the shipped statistics file to the digit, including its own OUT marking on F5. The round-3 claim of '5 of 5' contradicts the artifact it ships."
+    }
+   ],
+   "hard_fails": [
+    "row 28 == 0 — the stamina bar never denied an input over the median of five fights"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-trace-stats-F1.json"
+   ],
+   "why_not_ten": "The item's own automatic fail fires: row 28 is 0 on the median of five fights. Beneath it, M2 is 18 of 25 against a floor of 20 of 24 (per-fight median 17, against round 2's 21 of 24), M0 fails its stated cross-stream clause, and the M3(d) fingerprint still shows invulnerability sprayed rather than aimed at the 90th percentile.",
+   "path_to_ten": "Close row 28 first (see RI-CMB03's path_to_ten — it is the same bot change), then re-base the RI-AI01 §A stream's frame index onto the same `f` the es-combat-trace stream uses, add the §5 header record, and translate the state enum so trace-stats' roll and punish channels are non-zero. Acceptance: rows 16, 17, 22, 27 and 28 in band; >= 20 of 24 banded rows on the median of five fights AND on the median of the per-fight counts; trace-stats reporting rolls > 0 and punish windows_used > 0; and the two streams agreeing field-for-field at the same `f`.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-CMB09",
+   "path": "corpus/10-combat/RI-CMB09-recovery-and-exhaustion.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 18 / M2 14 / M3 8 / M4 18 / M5 14 / M6 12 / M7 8 / M8 8)",
+   "native_score": 32,
+   "native_max": 100,
+   "native_verdict": "< 70 — we lose",
+   "score_0_10": 3,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "recovery census present and exact at 60 Hz for the 14 probe rows",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "HARD inert, buffer 8 f@60, from the commitment grid",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M4",
+     "result": "fail",
+     "value": "the roll-spam arithmetic asks for >= 4 stamina drops and >= 1 exhaustion; across five 150 s exemplar fights the bar reaches 0 on zero frames and denies a median of zero inputs",
+     "threshold": "hit rate >= 0.35, >= 4 drops, >= 1 exhaustion",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ]
+    },
+    {
+     "id": "M3",
+     "result": "unmeasurable",
+     "value": "hurtbox restore on the first recovery frame not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "exhaustion entry/exit/window not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "unmeasurable",
+     "value": "exhaustion effects not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M7",
+     "result": "unmeasurable",
+     "value": "legibility is a visual method, excluded by the declared axis",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M8",
+     "result": "unmeasurable",
+     "value": "enemy exhaustion symmetry not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+   ],
+   "why_not_ten": "M4 carries 18 of the item's weight and fails on the play data: there is no exhaustion anywhere in 750 seconds of fighting, because the exemplar bot never spends its bar down. Five further checks have no instrument and score 0 fail-closed.",
+   "path_to_ten": "Write tools/harness/cmb-recovery.mjs: spam the roll at the button's maximum rate for 600 frames at each equip-load tier and record hit rate, stamina drops, exhaustion entries and the 90 f window. Acceptance: hit rate >= 0.35, >= 4 drops, >= 1 exhaustion entry and exit, at every tier, with no anti-spam rule anywhere in the trace.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-CMB11",
+   "path": "corpus/10-combat/RI-CMB11-input-latency.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 26 / M2 24 / M3 14 / M4 14 / M5 12 / M6 4 / M7 6)",
+   "native_score": 42,
+   "native_max": 100,
+   "native_verdict": "< 75 — we lose",
+   "score_0_10": 3,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "press to anim_frame 1 is exactly 1 on every probe row; observed startup equals declared on all 14",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M4",
+     "result": "pass",
+     "value": "buffer window exactly the last 8 frames, one slot, drops outside",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "pass",
+     "value": "exemplar re-run byte-identical; hash_equal true",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ]
+    },
+    {
+     "id": "M1",
+     "result": "unmeasurable",
+     "value": "200/200 zero-frame dispatch not run",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M3",
+     "result": "unmeasurable",
+     "value": "off-by-one mean offset not run",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "edge sampling and catch-up not run",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "M7",
+     "result": "unmeasurable",
+     "value": "L1/L4 in a real browser not measured; this container renders under SwiftShader",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+   ],
+   "why_not_ten": "Four of seven checks, carrying 58 of the item's 100 weight, have no instrument in this harness and score 0 fail-closed. The item's own note applies: until M1 is measured, every frame-data score in this verdict is provisional.",
+   "path_to_ten": "Add tools/harness/input-latency.mjs driving 200 scripted presses through window.__HARNESS with dispatch_lag recorded per press, and report L1/L4 with the unmeasured stages named. Acceptance: dispatch_lag == 0 on 200 of 200 actionable frames, mean offset exactly 0.0, and a stated L1/L4 figure with its unmeasured stages listed.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-AI01",
+   "path": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "M1-M9 scored 0/1/2, max 18",
+   "native_score": 0,
+   "native_max": 18,
+   "native_verdict": "<= 11 — loses outright (unmeasurable: there is no enemy AI in this build)",
+   "score_0_10": 0,
+   "measured": "unmeasurable",
+   "checks": [
+    {
+     "id": "M1-M9",
+     "result": "unmeasurable",
+     "value": "the champion's declared `ai` is `scripted`; decision-making is RI-AI01..07 and wave-1 piece W1-12, which does not exist. Nine of nine checks require an enemy that decides.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.json"
+     ],
+     "note": "BLOCKED ON W1-12, recorded as unmeasured and not credited. The one adjacent thing I could measure is bad: in a 2,617-frame scripted fight the two bodies interpenetrate on 585 frames (0.2235 of the fight) and the minimum centre-to-centre distance is 0.015 m against a required 0.60 m. RI-AI01 §spacing's own hard fail is min_dist_dwell > 0.35, so this passes — at a depth of total overlap."
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.json"
+   ],
+   "why_not_ten": "Unmeasurable, therefore 0 fail-closed per SCORING.md §1.1. There is no enemy that chooses when to swing, so aggro radius, approach, spacing variance, leash and inter-COMMIT variance have nothing to be measured on.",
+   "path_to_ten": "W1-12. Nothing in W1-09 can close this: the piece's own scope note says it owns how fighting works and not when an enemy decides to swing.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-AI02",
+   "path": "corpus/10-combat/RI-AI02-telegraph-doctrine.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "M1/M2/M3/M4/M6/M7 scored 0/1/2 x weight, max 36",
+   "native_score": 16,
+   "native_max": 36,
+   "native_verdict": "<= 23 — loses outright",
+   "score_0_10": 5,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "windup census 68 / 54 / 44 / 22 f@60, every attack's first live frame exactly its declared startup + 1; minimum 22 against the item's hard-fail floor of 12",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    },
+    {
+     "id": "M2",
+     "result": "marginal",
+     "value": "tracking is cut at 0.40 x startup (180 dps) then 0.80 x startup (45 dps) and is zero thereafter; but the scenario `face` override is honoured on frame 1 only and the tracking steer overrides it from frame 2, so an author cannot lock an attack's heading",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+     ]
+    },
+    {
+     "id": "M3",
+     "result": "unmeasurable",
+     "value": "silhouette is a visual method, excluded by the declared axis",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    },
+    {
+     "id": "M4",
+     "result": "unmeasurable",
+     "value": "blind readability requires a fresh judge naming the attack from silhouette",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    },
+    {
+     "id": "hard-fail-probes",
+     "result": "pass",
+     "value": "no attack instance with W < 12; no frame with yaw_rate_dps > 2 while phase is active or recovery (measured 0.0 dps across 686 enemy active/recovery frames)",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+   ],
+   "why_not_ten": "Every anti-probe passes and the half of the item that decides whether a telegraph is READABLE — silhouette, blind readability, severity correlation — has no instrument here. Removing the attack-start yaw snap was the right fix and it exposed a second defect: `face` in a scenario script is overridden from frame 2 by the tracking steer, so a scenario cannot state an attack's heading.",
+   "path_to_ten": "Honour `face` for the whole attack by setting a per-move `steerLocked` flag in game/src/combat/enemy.js rather than a one-frame yawExempt, then build the M4 pack: 12 unlabelled 20-frame windup clips, judge names the incoming attack. Acceptance: `face` held to within 1 degree for the whole animation, and >= 10 of 12 named correctly by a fresh judge.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-AI03",
+   "path": "corpus/10-combat/RI-AI03-punish-windows.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "M1/M3-M4/§C/M5/M6/M8 scored 0/1/2 x weight, max 36",
+   "native_score": 14,
+   "native_max": 36,
+   "native_verdict": "<= 23 — loses outright",
+   "score_0_10": 4,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "recovery census present; every enemy move declares punish_window [startup+active+1, total] and the trace offers 40-43 windows per 150 s fight",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ]
+    },
+    {
+     "id": "M3/M4",
+     "result": "fail",
+     "value": "punish-window usage rate 0.1818 recomputed by me from the raw JSONL, against RI-CMB07's band of [0.50, 0.95]",
+     "threshold": "realistic PWR against the class gates",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ],
+     "note": "essentially unchanged from round 2's 0.1622. The bot swings more often than it lands inside the enemy's recovery — row 2 (attacks/min 20.4 vs <= 17) and row 22 (committed ratio 0.6462 vs <= 0.56) are the same fact."
+    },
+    {
+     "id": "M8",
+     "result": "pass",
+     "value": "patient-player TTK is now finite and lethal in the shipping game: a motionless mashing player dies in 27.6-41.0 s at every stand distance from 0.0 to 3.2 m with the champion on 1565-2069 of 2876",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "risk/reward inversion not exercised",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "unmeasurable",
+     "value": "recovery-cancel not exercised on the enemy side",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json"
+   ],
+   "why_not_ten": "The enemy offers 42 punish windows a fight and the player uses 18% of them. A punish window nobody takes is not a punish window; it is recovery frames.",
+   "path_to_ten": "This is largely the exemplar bot, not the fight: it swings on a cadence rather than on the enemy's recovery. Gate the bot's punish branch on the enemy's declared punish_window rather than on `plan.done`, and cap its attacks/min at 17. Acceptance: RI-CMB07 row 27 in [0.50,0.95] with row 2 <= 17 and row 22 <= 0.56 on the median of five fights.",
+   "ten_by_wave": 2
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-w1-09-r3n.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic; imports game/src/combat/*.js through tools/lib/combat-node.mjs and runs its own fights. Never calls cmb-reach.mjs.",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-w1-09-r3.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic; drives the shipping game through window.__HARNESS in headless Chromium",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-09-r3n.mjs --probe reach,rootdz,turtle",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-09-r3.mjs --probe reach",
+   "seed": 0,
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json",
+   "kind": "report",
+   "produced_by": "headless Chromium replay of tools/harness/cmb-reach.mjs --probe turtle's exact configuration at three input phases",
+   "seed": 0,
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-via-browser.json",
+   "kind": "report",
+   "produced_by": "headless Chromium turtle with combatTraceStart, counting HIT->P by `via`",
+   "seed": 0,
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-node-vs-browser.md",
+   "kind": "negative-evidence",
+   "produced_by": "frame-by-frame diff of the same scenario in the node arena and in headless Chromium",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-node-vs-browser-frames.json",
+   "kind": "trace",
+   "produced_by": "per-frame (hp, hp, state, state, dist) series from the browser for the 0.8 m turtle",
+   "seed": 0,
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-09-r3n.mjs --probe ablate,push,lateral,dice",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json",
+   "kind": "report",
+   "produced_by": "node critic-r3-rows-7-8-9-28.mjs reports/w1-09/exemplar/RI-CMB07-exemplar-F*-frames.jsonl",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic from RI-CMB07 §D; reads only the raw per-frame JSONL and never opens RI-CMB07-exemplar-statistics.json",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-motion-boundary-vs-within.json",
+   "kind": "report",
+   "produced_by": "node critic-r3-motion.mjs — single-frame weapon-socket displacement classified as state-boundary or within-state",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-motion.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-a.json",
+   "kind": "report",
+   "produced_by": "node critic-r3-consumption-a.mjs — perturb each shipped model, observe an entity change behaviour (ARBITRATION §3 CONSUMPTION)",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.json",
+   "kind": "report",
+   "produced_by": "node critic-r3-consumption-b.mjs — body-overlap dwell and the substeps ablation",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-c.json",
+   "kind": "report",
+   "produced_by": "node critic-r3-consumption-c.mjs — i-frame window perturbation across six roll leads",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-a.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-c.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json",
+   "kind": "report",
+   "produced_by": "node critic-r3-ar1.mjs — AR-1 A4 (telegraph), A5 (cancel), A7 (yaw during active/recovery)",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/cmb-probe.mjs --probe all, re-run by this critic on this commit",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-poise.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/cmb-poise.mjs, re-run by this critic on this commit",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-trace-stats-F1.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/trace-stats.mjs --in reports/w1-09/exemplar/RI-CMB07-exemplar-F1-trace.jsonl",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-stream-crosscheck.json",
+   "kind": "negative-evidence",
+   "produced_by": "field-for-field comparison of the two exemplar streams at the same `f` and at offsets -1/0/+1",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-greed-scale-0.txt",
+   "kind": "log",
+   "produced_by": "node tools/harness/cmb-exemplar.mjs --fights 5 --greed-scale 0",
+   "seed": 0,
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-wobble0.txt",
+   "kind": "log",
+   "produced_by": "node critic-r3-exemplar-wobble0.mjs --fights 5 --wobble 0 — a copy of cmb-exemplar.mjs with one added CLI flag that zeroes the roll-timing jitter and changes nothing else",
+   "seed": 0,
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-wobble0.mjs",
+   "kind": "report",
+   "produced_by": "copy of tools/harness/cmb-exemplar.mjs with a --wobble flag added by this critic",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/blind-cmb07-m3d-pack.txt",
+   "kind": "blind-pack",
+   "produced_by": "node critic-r3-blind.mjs — A/B assigned by recorded seed 20260806",
+   "seed": 20260806,
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/blind-cmb07-m3d-reveal.json",
+   "kind": "blind-pack",
+   "produced_by": "node critic-r3-blind.mjs, written at pack time and read only after the pick was recorded",
+   "seed": 20260806,
+   "source": "mixed"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-blind.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "source": "ours"
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-CMB07",
+   "status": "done",
+   "question": "Which timeline shows a player whose invulnerability is AIMED at the enemy weapon rather than sprayed near it — a high X:i ratio and few bare H columns?",
+   "pack_artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/blind-cmb07-m3d-pack.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-blind.mjs"
+   ],
+   "assignment_seed": 20260806,
+   "blind_pick": "A",
+   "blind_rationale": "Every invulnerable column in A touches an enemy-hitbox column — there is no free-standing `i` anywhere in the strip — and the `iXi` groupings read as an i-frame window that opened before the weapon arrived and closed after it left. B contains three `i` columns immediately followed by a bare `H`, which is invulnerability that arrived a beat early and had expired when the blade landed, and B's unanswered swings are scattered singletons with no structure while A's come in pairs, which is what eating the second and third hits of a string looks like.",
+   "reveal": {
+    "A": "ours",
+    "B": "reference"
+   },
+   "picked": "ours",
+   "rerun_triggered": true,
+   "rerun": {
+    "method": "CRITIC-DOCTRINE §2.5 step 2 — re-measure at frame resolution rather than 20-frame columns, and add a second discriminator the item names: the distance from each invulnerable frame to the nearest enemy hitbox-active frame.",
+    "result": "Coverage of enemy hitbox-active frames by player invulnerability is 0.516-0.622 across the five fights against round 2's 0.135-0.275 — a real improvement, and the reason the coarse pack favoured ours. But the 90th-percentile distance from an invulnerable frame to the nearest enemy hitbox frame is 58-96 f@60 against round 2's 62-104, with 803-1014 invulnerable frames per fight for only 360-443 enemy active frames. The player is invulnerable for more than twice as long as anything is trying to hit it.",
+    "artifacts": [
+     "corpus/90-verdicts/wave1/artifacts/W1-09-r3/blind-cmb07-m3d-reveal.json"
+    ]
+   }
+  },
+  {
+   "ref_item": "RI-CMB01",
+   "status": "not_possible",
+   "not_possible_reason": "Degenerate pair, re-filed from rounds 1 and 2: both sides of a roll-frame-census pack coincide exactly when the work is correct, so the pack cannot discriminate. The sharper discriminator — the roll's per-frame root-delta curve — is filed again under corpus_extended."
+  },
+  {
+   "ref_item": "RI-CMB02",
+   "status": "not_possible",
+   "not_possible_reason": "Same degeneracy: a frame table that matches the reference is byte-identical to it."
+  },
+  {
+   "ref_item": "RI-CMB03",
+   "status": "not_possible",
+   "not_possible_reason": "No stamina-curve reference series exists in the corpus to pair against; RI-CMB03 §D gives bands, not a series."
+  },
+  {
+   "ref_item": "RI-CMB05",
+   "status": "not_possible",
+   "not_possible_reason": "No reference poise/stagger series exists; the item pairs against numbers, which are not blindable."
+  },
+  {
+   "ref_item": "RI-CMB06",
+   "status": "not_possible",
+   "not_possible_reason": "Lock-on is judged on camera behaviour and this critic declared the axis not-visual; no non-visual pair exists."
+  },
+  {
+   "ref_item": "RI-AI01",
+   "status": "not_possible",
+   "not_possible_reason": "The item's pack is two 60 s dist_m + state series from a real enemy AI. There is no enemy AI in this build (W1-12); a pack would compare a script against a behaviour model."
+  },
+  {
+   "ref_item": "RI-AI02",
+   "status": "not_possible",
+   "not_possible_reason": "M4 blind readability needs a fresh judge naming the incoming attack from silhouette alone, which is a visual method excluded by the declared not-visual axis."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "pass",
+     "observed": "71 sweep distances x 4 enemy attacks x 7 player weapon classes: every overlapping placement produces a damage event and every non-overlapping one does not; the hit set is bit-identical between the node arena and headless Chromium",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+     ]
+    },
+    {
+     "id": "A2",
+     "result": "pass",
+     "observed": "60 identical scripted hits produce exactly one damage value (63); stdev 0",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+     ]
+    },
+    {
+     "id": "A3",
+     "result": "pass",
+     "observed": "menu is a UI surface resolved outside the combat state machine; combat-state `menu.pauses_simulation` is false and the frame counter advances with it open",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "A4",
+     "result": "pass",
+     "observed": "telegraphs of 68 / 54 / 44 / 22 f@60 for chop / thrust / combo_a / combo_b, every one equal to its declared startup and every one above the 8-frame floor",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    },
+    {
+     "id": "A5",
+     "result": "pass",
+     "observed": "roll pressed at attack anim frames 2, 5, 10 and 30 does not shorten the attack; the animation ends at the same simulation frame in all four cases and only a press inside the declared dodge-cancel window shortens it",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    },
+    {
+     "id": "A6",
+     "result": "not_applicable",
+     "observed": "no character-level surface in this piece; enemy hp/damage/soul drop are read from a statblock with no level term",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+     ]
+    },
+    {
+     "id": "A7",
+     "result": "pass",
+     "observed": "worst yaw rate 0.0 dps across 683 player and 686 enemy ATK_ACTIVE/ATK_RECOVER frames in a 3,000-frame fight with the stick held off-axis",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+     ]
+    },
+    {
+     "id": "A8",
+     "result": "pass",
+     "observed": "no skill term appears on the hit-resolution path; damage is computeDamage(motion_value, attack_rating, damage_mult) with no draw",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+     ]
+    },
+    {
+     "id": "A9",
+     "result": "pass",
+     "observed": "no Fatigue value appears in any in-fight resolution; the combat state exposes stamina only",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "A10",
+     "result": "pass",
+     "observed": "no browsable topic surface in COMBAT; `interact` is a committed PARLEY_STARTUP/ACTIVE/RECOVER animation",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "S26-body-hazard-is-not-a-distance-check",
+     "result": "pass",
+     "observed": "with every enemy attack's root_dz_m overridden to 0 on a copy of the loaded data, body hits fall to 0 at every distance from 0.0 to 3.0 m on all four attacks and there is no hit at all at 0.0 m; the gate is `A.lastRootDelta !== 0` inside the hitbox-active branch and it holds under test",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+   ],
+   "note": "The body hazard was the specific thing this round was told to test for an AR-1 automatic fail and it survives the test. It is a swept corridor between two animated poses, gated on real root translation; a stationary attacker does not damage an adjacent player. AR-1 passes."
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B12",
+     "result": "pass",
+     "observed": "nine parley gate cases all resolve correctly — refuse with nothing, accept on a true name learned outside the fight, accept on faction rank, refuse when expelled, refuse when holding rank in the rival faction, refuse below the required rank, accept on gold at disposition 35 and spend it, refuse at disposition 5, refuse below the price; the humanoid exits COMBAT alive with deaths == 0; the beast has no parley and its input is dropped",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "B5",
+     "result": "pass",
+     "observed": "the bribe spends gold (200 -> 20); nothing in the piece is priced in souls",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    },
+    {
+     "id": "B1,B2,B3,B4,B6,B7,B8,B9,B10,B11,B13",
+     "result": "not_applicable",
+     "observed": "this piece ships no world surface — no HUD, no merchant, no quest, no settlement, no transport. The world-side checks belong to W1-01, W1-15 and the travel piece.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+   ]
+  },
+  "ar3": {
+   "status": "pass",
+   "seam_sterile": false,
+   "checks": [
+    {
+     "id": "AR-3",
+     "result": "pass",
+     "observed": "the parley reads topicsKnown, faction rank, expulsion, rival standing, disposition and the gold purse at 60 Hz and decides whether a hostile ends the fight alive. A lore topic learned outside the fight ends a fight inside it; a rank held in a rival faction prevents that. That is a real crossing, and it is the same one round 2 recorded.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-cmb-probe-all.json"
+   ]
+  },
+  "consumption": {
+   "status": "partial",
+   "checks": [
+    {
+     "id": "hitgeometry.body_hazard",
+     "result": "pass",
+     "observed": "deleting the block from a copy of the loaded data takes the player's damage in a fixed 500-frame exchange from 159 to 0, and the champion's minimum reach from 0.05 m back to 1.2 / 1.6 / 1.1 / 1.2 m",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-a.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+     ]
+    },
+    {
+     "id": "clips.cross_fade",
+     "result": "pass",
+     "observed": "frames 10 -> 0 takes the worst state-boundary socket jump from 0.081 m to 0.684 m; 10 -> 30 takes it to 0.088 m and the worst within-state jump from 0.640 m to 0.355 m",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-a.json"
+     ]
+    },
+    {
+     "id": "roll.iframes",
+     "result": "pass",
+     "observed": "LIGHT [5,30] -> [5,6] takes the invulnerable run from 26 frames to 2 and the negation count at roll leads 8/12/16 from 1 to 0",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-c.json"
+     ]
+    },
+    {
+     "id": "poise.stagger.tiers",
+     "result": "pass",
+     "observed": "frames -> 4 takes enemy stagger frames from 84 to 4 and the enemy's damage taken in the same exchange from 378 to 641",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-a.json"
+     ]
+    },
+    {
+     "id": "hitgeometry.bodies.separation",
+     "result": "fail",
+     "observed": "at its shipped radius the model has no demonstrated consumer. Zeroing player_radius_m and default_enemy_radius_m leaves a 2,617-frame fight byte-identical: 585 interpenetrating frames either way, minimum centre distance 0.015 m either way, and the hit set for 4 enemy attacks x 7 player weapon classes unchanged. Raising the radius to 0.8 m does move the minimum distance to 1.05 m, so it is wired — but at 0.30 m, with the push capped at 0.05 m per frame, the model changes nothing a player could see and the two bodies still stand at the same point.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json"
+     ]
+    },
+    {
+     "id": "hitgeometry.sweep.substeps",
+     "result": "fail",
+     "observed": "4 -> 1 leaves the hit set byte-identical: 36 of 71 sweep distances connect in both, none lost, none gained. The data file's own text says 'Reducing them to 1 changes which attacks connect, which changes the game.' It does not.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-a.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-c.json"
+   ],
+   "note": "Four of six shipped models perturb an entity's behaviour. Two do not, and both are scored where they sit: the substep model is folded into RI-CMB04 M2, the separation model into RI-AI01's spacing note."
+  }
+ },
+ "score": {
+  "overall_0_10": 4,
+  "pass_threshold": 7,
+  "aggregation": "mean",
+  "band_label": "Recognisable but wrong",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "Overall 4 (mean 42/12 = 3.5) against a wave-1 gate of 7.0.",
+  "RI-CMB07's own ## Scoring section lists 'row 28 equal to 0' as an automatic fail regardless of score. The shipped exemplar's median row 28 is 0, recomputed independently from the raw JSONL (per fight 0, 1, 0, 3, 0). Per SCORING.md §1.1 a triggered hard fail caps that item at 2 and may not be averaged away.",
+  "AR-1 passes, including the specific S26 test this round was dispatched to survive: zero root translation yields zero body hazard.",
+  "AR-2 passes; AR-3 is not sterile."
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage",
+  "subsystem_path": "combat.hitbox.sweep",
+  "severity": "major",
+  "what": "The round-2 hole in the weapon volume is untouched; it has been covered by a second volume that pays the weapon's damage. Ablation, measured on a copy of the loaded data with no file edited: delete `hitgeometry.json §body_hazard` and the champion's minimum reaching distance against a stationary player returns to chop 1.2 m, thrust 1.6 m, combo_a 1.1 m, combo_b 1.2 m — round 2's numbers to the decimal. With the block present, every hit inside those radii carries `via: \"body\"`, and a body hit deals the attack's full weapon damage: chop 96 at 0.05 m via body is the same 96 as at 3.65 m via weapon, thrust 75, combo_a 63. It is the same on the player's side — the dagger's blade cannot cut inside 0.75 m and the straight sword's inside 0.80 m, so 14 of the dagger's 19 connecting distances and 15 of the straight sword's 36 are torso-checks. Two of the seven player classes fail S26's contiguity clause outright, and the gaps sit exactly at the seam between the two volumes: the spear's body corridor stops at 1.15 m and its blade starts at 1.30 m, leaving 1.20-1.25 m dead; the halberd's stops at 1.10 m and starts at 1.35 m, leaving 1.15-1.30 m dead. Reproduced identically in headless Chromium and in the node arena. And it is what the fight is made of: in the shipping game, 5 to 7 of the 8 blows that kill a motionless player are `via: body`.",
+  "why_it_matters": "A player who walks inside the champion watches a 1.75 m greatsword sweep over their head and loses 96 hit points to the chest that walked through them, and a spearman standing at 1.22 m cannot be hit by anything at all.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-via-browser.json"
+  ],
+  "remedy": {
+   "action": "Two changes, in this order. (1) Fix the weapon volume rather than compensating for it. At the champion's first active frame the chop's socket capsule spans z = [1.34, 2.57] with the root at z = 0.384, i.e. the blade's near end is 0.95 m in front of its own root and never re-enters the 0.4-1.1 m band. Give the enemy archetypes' `chop_overhead` and `thrust` clip archetypes in game/data/combat/clips.json a low phase — a follow-through that brings the guard socket down through the attacker's own front quarter — so the swept hull covers the band the attacker is walking through. Verify with `--root-dz 0`, which isolates the blade from the corridor. (2) Stop the body corridor paying the weapon's damage. Give `hitgeometry.json §body_hazard` its own `motion_value` and `poise_damage` (a shoulder-check is a shove, not a cut) and resolve it against `struck_part` with that value in game/src/combat/resolve.js step 8b, so a trace reader and a player can tell the two apart. Then re-run the contiguity acceptance: with the weapon volume fixed, the spear's and halberd's dead ring disappears because the blade band now starts inside the corridor's outer edge.",
+   "targets": [
+    "game/data/combat/clips.json (§archetypes.chop_overhead, §archetypes.thrust — the low phase)",
+    "game/data/combat/hitgeometry.json (§body_hazard — its own motion_value and poise_damage)",
+    "game/src/combat/resolve.js (step 8b — use the body hazard's own damage terms)",
+    "game/data/combat/movesets/** (W1-10's spear and halberd R1 clips, whose weapon-only minimum is 1.30 m and 1.35 m)",
+    "tools/harness/cmb-reach.mjs (add an --ablate body_hazard mode so the weapon volume can be graded on its own)"
+   ],
+   "acceptance": "With `hitgeometry.json §body_hazard` removed, `min_hit_distance_m <= 0.35 m` for all four champion attacks and for all seven player weapon classes, `root_dz_m` unchanged. With it present, every attack's hit band is contiguous from 0.05 m for all eleven attacks (4 enemy + 7 player), no interior gap at any 0.05 m step. A body hit's `dmg` is strictly less than the same attack's weapon `dmg` in the trace. And in the browser turtle, the majority of hits taken carry `via: \"weapon\"` rather than `via: \"body\"`.",
+   "ref_item": "RI-CMB04",
+   "estimated_size": "M"
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "THE NODE ARENA IS NOT THE GAME AFTER ABOUT 300 FRAMES, AND ITS FIDELITY CLAIM IS UNCHECKED. tools/lib/combat-node.mjs states that `cmb-reach.mjs --verify` runs a sample of rows through both and fails if they differ. That flag does not exist — `grep -n verify tools/harness/cmb-reach.mjs` returns only the comment asserting it, and passing --verify is silently ignored (exit 0). I checked it instead. Reach agrees exactly, browser and node, on all eleven attacks including both interior gaps and the 0.5987 m contact distance. Long fights do not: NodeArena.step() calls CombatSystem.step alone, while sim/step.js stepOnce() also runs stepWorldCollision, settleWorld, encounters, skill use, NPCs, the stealth system, route and camera, plus the one seeded RNG draw. EnemyController._idleBehaviour steers toward the player at 240 dps only while `alertState === 'AGGRO'`, and alertState is written by sim/stealth/system.js::stepPerception(). In the node arena it is never AGGRO, so the champion never turns between attacks; by frame 1700 its yaw has drifted 85.5 degrees off the player. Frame-by-frame the two are identical for 194 frames, then diverge. The consequence is that tools/harness/cmb-reach.mjs --probe turtle — the acceptance instrument this whole remediation is graded on, and the source of reports/w1-09/cmb-reach.json — measures a fight the game does not have.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-node-vs-browser.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-node-vs-browser-frames.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json"
+   ],
+   "subsystem_path": "platform.determinism.harness"
+  },
+  {
+   "what": "THE TURTLE DOES NOT WIN, AND THE BUILD'S OWN CAVEAT IS WRONG IN THE OTHER DIRECTION. reports/w1-09/cmb-reach.json says a motionless mashing player kills the 2,876-HP champion at every stand distance from 0.4 m to 2.6 m taking 46-90% of its health. Replaying that exact configuration through window.__HARNESS in headless Chromium, at three input phases and at nine stand distances from 0.0 m to 3.2 m: the player DIES in every one of 27 runs, in 27.6-41.0 s, with the champion on 1565-2069 of 2876. The acceptance the round-2 gap set — 'a motionless mashing player at 0.8-1.5 m taking >= 0.4 x max HP' — is met in the shipping game by a wide margin. It is met by the body corridor: 5 to 7 of the 8 hits that kill it are `via: body`.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-via-browser.json"
+   ],
+   "subsystem_path": "combat.hitbox.sweep"
+  },
+  {
+   "what": "THE EXEMPLAR'S DANGER SURVIVES WITHOUT A KNOB — VERIFIED TWICE, AND THIS IS THE ROUND'S BEST RESULT. `eatRate` really is gone. `--greed-scale 0`, which the build offers as its own falsification, leaves row 13 at 0.125 and row 14 at 0.687, both in band. I then went looking for the successor knob and found the candidate: `wobble`, the 2-5 frame random jitter on the bot's roll lead. I copied cmb-exemplar.mjs, added a --wobble flag that changes nothing else, and ran it at 0 — a bot that rolls at a fixed lead every single time. Rows 13 and 14 come out at 0.143 and 0.842, and 0.842 is the shipped median to the digit. Neither greed nor the jitter drives the damage. Round 1's exemplar had no danger, round 2's was a constant, round 3's is a consequence.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-greed-scale-0.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-wobble0.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-wobble0.mjs"
+   ],
+   "subsystem_path": "platform.determinism.harness"
+  },
+  {
+   "what": "THE EXEMPLAR REGRESSED WHERE NOBODY WAS LOOKING. Round 2's independently written recompute tool, run on round 3's traces, puts the exemplar at 18 of 24 banded rows against the 21 of 24 it measured on round 2's build. Four rows that were in band are out: row 16 (frames at exactly 0 stamina) 130 -> 0, row 17 (% frames below 25% stamina) 0.1406 -> 0.0127, row 22 (committed-frame ratio) 0.4144 -> 0.6462, and row 28 (inputs dropped for insufficient stamina) 32 -> 0, which is the item's own automatic fail. The stamina economy did not degrade; it stopped. The build's status file lists rows 16/17/22/28 as 'STILL OPEN', which reads as pre-existing. They are not.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-recompute.json"
+   ],
+   "subsystem_path": "combat.stamina.costs"
+  },
+  {
+   "what": "THE ROUND-2 CRITIC'S OWN REACH PROBE NOW SILENTLY READS ZERO, AND IT IS NOT AN ENGINE FINDING. tools/harness/critic-w1-09-r2.mjs --probe reach reports that chop, thrust and combo_a hit at NO distance from 0.0 to 4.0 m on this build. The cause is that Engine.setEntityPos() accepts and ignores opts.yaw, which was harmless in round 2 because the enemy snapped its facing to the player's bearing on the frame an attack began; round 3 correctly removed that snap, so the probe now aims the champion away from its target. Recorded here so that no later critic re-runs that instrument and reports a catastrophe. Re-spawn with spawn(id, x, z, {yaw}) instead — Engine.spawn does honour it. Separately: Engine.setEntityPos()'s ignored yaw is a live harness defect and should either honour the argument or throw.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-w1-09-r3.mjs"
+   ],
+   "subsystem_path": "combat.hitbox.sweep"
+  },
+  {
+   "what": "reports/w1-09/W1-09-REPORT.md was not regenerated for round 3 — it is not in the round-3 commit's file list and still reads 'Twelve of the twenty-four banded statistics'. The piece's own report now describes a build two rounds old.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+   ],
+   "subsystem_path": "platform.determinism.harness"
+  },
+  {
+   "what": "THREE DIFFERENT BODY RADII ARE LIVE AT ONCE. hitgeometry.json §bodies gives 0.30 m for collision and the body hazard; the champion statblock's radius_m is 0.50 m (RI-AI01 spacing); sim/world-collision.js declares PLAYER_RADIUS_M 0.55 and ENEMY_RADIUS_DEFAULT_M 0.40 for the world capsule. The build documents why it did not use 0.50 and does not mention 0.55/0.40 at all, so the player's body is 0.30 m wide to a sword and 0.55 m wide to a wall.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-consumption-b.json"
+   ],
+   "subsystem_path": "combat.hitbox.resolution"
+  },
+  {
+   "what": "The bounded-turn law added in game/src/combat/system.js clamps every actor at turn_rate_moving_dps (720 dps) regardless of whether it is moving. RI-CAM02 §C gives 480 dps stationary, and the enemy controller's own steer already uses turn_rate_stationary_dps. Measured worst yaw rate outside active/recovery: player 720 dps, enemy 525 dps.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ar1-a4-a5-a7.json"
+   ],
+   "subsystem_path": "combat.hitbox.resolution"
+  }
+ ],
+ "gap_closure": [
+  {
+   "gap_id": "GAP-W1-enemy-attacks-cannot-reach-contact-range",
+   "status": "closed",
+   "acceptance_restated": "min_hit_distance_m <= 0.35 m for chop, thrust and combo_a with root_dz_m unchanged and no miss at any distance between 0.0 m and the outer reach; AND a motionless mashing player at 0.8, 1.0, 1.1 and 1.5 m taking >= 0.4 x max HP; AND row 11 (swings negated by i-frames) reaching 0.40-0.80 on the median of five fights with the enemy whiff share below 0.35.",
+   "measured_value": "Clause 1 met: min_hit_distance_m is 0.05 m for chop, thrust, combo_a and combo_b, contiguous, with root_dz_m unchanged at 1.2 / 1.6 / 0.9 / 1.1 — measured in headless Chromium and reproduced in the node arena. Clause 2 met and exceeded: in the shipping game a motionless mashing player takes 1.00 x max HP and dies at every stand distance from 0.0 m to 3.2 m. Clause 3 met: row 11 = 0.550 against [0.40,0.80], row 4 whiff = 0.145 against [0.03,0.25]. All three clauses met, so the gap is CLOSED — but on a different mechanism from the one the remedy named. The remedy's action ('sweep the attacker's root translation') was disproved by the builder and S26 was amended accordingly; the acceptance was met by adding a body corridor rather than by fixing the weapon volume, which is untouched and is this verdict's biggest gap.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-rows-7-8-9-28.json"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-combat-exemplar-has-no-danger",
+   "status": "closed",
+   "acceptance_restated": "The exemplar's danger must not be a tuned constant. Round 2 found `eatRate`, a per-swing probability the bot declines to defend, and named it as the source of rows 13, 14 and 21.",
+   "measured_value": "`eatRate` is gone from tools/harness/cmb-exemplar.mjs. Two independent falsifications: the build's own --greed-scale 0 leaves rows 13 and 14 at 0.125 and 0.687, both in band; and zeroing the roll-lead jitter (`wobble`), which I added as a flag to a copy of the generator, leaves them at 0.143 and 0.842, the latter identical to the shipped median. The danger is a consequence of geometry and commitment, not a dial.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-greed-scale-0.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-exemplar-wobble0.txt"
+   ]
+  }
+ ],
+ "corpus_extended": [
+  {
+   "id": "RI-MTH07",
+   "path": "corpus/80-methods/RI-MTH07-world-coupling-and-consumption.md",
+   "area": "80-methods",
+   "judges": [
+    "platform.determinism.harness"
+   ],
+   "reason": "corpus_hole",
+   "note": "RI-MTH07 makes a critic prove that a MODEL is consumed by the world. It says nothing about an INSTRUMENT that claims to reproduce the world. This build shipped tools/lib/combat-node.mjs, a headless arena 500x faster than the browser, adopted it for the acceptance measurement, and asserted in two files that a --verify flag checks it against window.__HARNESS. The flag does not exist, and the arena diverges from the game after 194 frames because it runs CombatSystem.step alone while the engine's fixed step also runs stealth perception, which is what makes the enemy turn. Proposed addition: any harness that reimplements or partially instantiates the simulation must ship a VERIFY mode that replays N sampled scenarios through the shipping entry point and fails on any divergence, and a critic may not cite a number from such a harness without running it."
+  },
+  {
+   "id": "RI-CMB04",
+   "path": "corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md",
+   "area": "10-combat",
+   "judges": [
+    "combat.hitbox.sweep"
+   ],
+   "reason": "method_gap",
+   "note": "M2's substep rationale ('Reducing them to 1 changes which attacks connect') is stated in the data file and is measurably false on this build: 4 -> 1 leaves the hit set byte-identical across 71 distances. Proposed M2c: the substep count must be validated by ablation — a build must show at least one (attack, distance) pair whose outcome changes between substeps 1 and the shipped value, or the substep count is unjustified and the sweep is not continuous."
+  },
+  {
+   "id": "RI-CMB07",
+   "path": "corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md",
+   "area": "10-combat",
+   "judges": [
+    "platform.determinism.harness"
+   ],
+   "reason": "method_gap",
+   "note": "Three defects, two carried from round 2. (a) '24 rows that carry a band' versus §D's 25-26 lets an implementation pick its own denominator; enumerate them by number. (b) M2 says 'median over >= 5 fights' without saying median of WHAT — this build takes the median of each row and counts the result (18 of 25), where the median of the per-fight counts is 17. State which. (c) M3(d)'s pack is coarse enough that a build can win it while failing the underlying statistic; add the 90th-percentile invulnerable-frame-to-nearest-hitbox-frame distance as a second, numeric discriminator with a stated band."
+  },
+  {
+   "id": "RI-AI02",
+   "path": "corpus/10-combat/RI-AI02-telegraph-doctrine.md",
+   "area": "10-combat",
+   "judges": [
+    "combat.enemy.telegraph"
+   ],
+   "reason": "corpus_hole",
+   "note": "Re-filed from round 2 and still open. The AP table fails damage with no hitbox; nothing fails a scenario `face` directive that the tracking steer overrides from frame 2, so an authored heading is not honoured and no check notices. Proposed AP13: an authored heading must hold for the whole animation."
+  }
+ ],
+ "method_deviations": [
+  {
+   "ref_item": "RI-CMB07",
+   "deviation": "M2 was executed against the build's 'Mode B-prime' artifact (enemy on a declared action schedule) rather than true Mode B, and M1's Mode-A replay was not run because the item's own scenario fixture is invalidated by seam S22 and has not been re-issued.",
+   "why": "There is no enemy AI in this build; the champion's declared ai is 'scripted'. Per the orchestrator's ruling, Mode B-prime is REFUSED as a scoring basis: rows 2, 22 and 27 are recorded as blocked on W1-12 and scored as unmeasured, not credited to the build. They are out of band in any case.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-AI01",
+   "deviation": "All nine checks unmeasurable; scored 0 fail-closed.",
+   "why": "Blocked on W1-12. The piece's own scope note disclaims enemy decision-making. Not credited, not excused.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-CMB04",
+   "deviation": "M2's stated method (7 player weapon classes x 24 lateral offsets against an analytic swept hull) was not run; a substep ablation and an 11-attack forward sweep at 0.05 m steps were run instead.",
+   "why": "Time budget, and the forward sweep is what S26 now requires of every combat critic. M2 is recorded unmeasurable and scored 0; the substep finding is reported as evidence, not as M2's result.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-CMB06",
+   "deviation": "M4 (30 of 100 weight), M5, M7 and M8 not exercised.",
+   "why": "No probe exists for target-relative 8-bin roll semantics; M5 is visual and excluded by the declared axis. All scored 0 fail-closed and a buildable probe is named in path_to_ten.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-CMB09",
+   "deviation": "M3, M5, M6, M7 and M8 not exercised.",
+   "why": "No recovery/exhaustion probe exists in the harness. Scored 0 fail-closed; the missing instrument is specified in path_to_ten.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-CMB11",
+   "deviation": "M1, M3, M5 and M7 not exercised (58 of 100 weight).",
+   "why": "No input-latency probe in the harness, and M7 cannot be measured under SwiftShader software rendering. Scored 0 fail-closed.",
+   "affects_scores": true
+  }
+ ],
+ "arbitration_questions": [
+  {
+   "question": "S26 as amended authorises a body corridor that resolves 'through the identical order (i-frames, block cone, dedup, poise, damage)'. It does not say the corridor should deal the WEAPON's damage. Measured, it does: the champion's chop deals 96 whether the blade cuts you at 3.65 m or its chest walks through you at 0.05 m, and the same holds for every player weapon. Is a shoulder-check that deals a greatsword's damage inside S26's intent, or does the ruling need a clause giving the body hazard its own motion value? I have not invented a ruling; I have scored the measured consequence under RI-CMB04 and named it as the biggest gap.",
+   "sides": [
+    "S26 says 'use the same VOLUME for pushing and for hitting' and gives a reason — the dead ring. It says nothing about the damage number, so the builder's reading is defensible.",
+    "A body hazard that pays the weapon's damage makes the weapon's geometry irrelevant at close range, which is exactly the state S26 was written to end. It also makes the `via` field in the trace a distinction without a difference for the player."
+   ]
+  }
+ ],
+ "source_reads": [
+  {
+   "path": "game/src/combat/resolve.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "read after the ablation had already shown the body hazard was carrying the whole close-range band, to find the gate (`A.lastRootDelta !== 0`) so it could be tested, and to confirm the damage term is the weapon's"
+  },
+  {
+   "path": "game/src/combat/enemy.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "read after the browser and the node arena had already been shown to diverge at frame 195, to find _idleBehaviour's alertState gate"
+  },
+  {
+   "path": "game/src/sim/step.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "read to enumerate what NodeArena.step() omits, after the divergence had been measured"
+  },
+  {
+   "path": "tools/lib/combat-node.mjs",
+   "purpose": "locate-harness",
+   "note": "read to find the loader so my own instrument could import the same modules; also the source of the --verify claim I then tested"
+  },
+  {
+   "path": "tools/harness/cmb-reach.mjs",
+   "purpose": "locate-harness",
+   "note": "read to find the turtle configuration so it could be replayed in the browser verbatim"
+  },
+  {
+   "path": "game/data/combat/hitgeometry.json",
+   "purpose": "quote-written-content",
+   "note": "the §bodies.separation and §sweep.substeps rationales are quoted verbatim against the measurements that contradict them"
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": false,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is false: RI-CMB04 M2/M3/M7, RI-CMB05 M1/M2, RI-CMB06 M4/M5/M7/M8, RI-CMB09 M3/M5/M6/M7/M8, RI-CMB11 M1/M3/M5/M7 and RI-CMB02 M4/M5 were not exercised. Every one is scored 0 fail-closed and named in method_deviations, and none is load-bearing for the FAIL, which rests on measurements taken. blind_done_where_required is false: one of the seven blind_pair items was run; six are recorded not_possible with reasons. The one that ran landed on OURS, so §2.5 fired: recorded, re-examined at frame resolution with a second discriminator, and the outcome recorded in blind_comparisons[0].rerun. The escalation ladder was used in full and it is what found the divergence: zoom (frame-by-frame instead of per-fight), change the sample (0.0 and 0.2 m, which the build's own turtle probe never tests), stress it (attacks back-to-back at each move's own total instead of every 160 frames, and three input phases), second-order (not 'does the body hazard hit' but 'what is it that hits, and for how much'), and first-minute-versus-tenth-hour (the spear's dead ring at 1.22 m is a tenth-hour discovery; the shoulder-check for 96 is a first-minute one). I read the builder's status file before measuring, which is a departure from CRITIC-DOCTRINE §8 and is recorded honestly in critic.saw_builder_notes_before_blind; it was supplied in the dispatch as a list of claims to disprove, and every one of them was re-measured with an instrument written by me rather than accepted."
+ },
+ "notes": "Read order, recorded as CRITIC-DOCTRINE §8 requires: ARBITRATION.md (including S26 as amended) and SCORING.md first; then the dispatch's list of builder claims; then measurement; then both prior verdicts and the gap ledger, after the raw numbers were in hand, to check closure. Source was read only for the three permitted purposes and each read is listed in source_reads. One round-2 artifact (critic-r2-motion.json) was overwritten by re-running round 2's own tool, which writes to a fixed path; it was restored from git immediately and `git status` is clean for that directory. No data file was edited at any point: every perturbation in this verdict was applied to a deep copy of the loaded data inside the critic's own process, which is the harness gap the round-2 critic hit and the round-3 build closed."
+}

@@ -13,7 +13,12 @@
     "full 117-frame region capture, day AND night, colour-stripped LOO+Fisher"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read W1-01-r2 verdict, then the world source (field/province/regions) to find where ordinary ground and ordinary flora are generated",
+  "findings": [
+    "ARCHITECTURE READ: heightAt = baseAt(25 m raster bilinear) + detailAt(x,z,relief,ridge,terrace) + _applySites + (deck ? deck : _applyRoads) + sig.groundDelta. detailAt is ONE global formula for all 13 regions; the only per-region variation in the ordinary ground is three scalars (relief_m, ridge, terrace) baked as rasters. That is why the ordinary ground is one place thirteen times.",
+    "build-terrain.mjs groundAt() is the SAME function offline; the per-region water-table offsets are SOLVED by bisection against it, so any new term added to the ground must be added to BOTH and the terrain rebuilt, after which the WCI targets are met by construction.",
+    "MESH NYQUIST: province.js TILE_SEG=40 over TILE_M=300 -> 7.5 m per ground quad. Micro-relief finer than ~15 m wavelength would be invisible in the render and would only show up in collision. Micro-relief must therefore live at 11-45 m, and the sub-metre half of ground character must be instanced PROPS, not heightAt.",
+    "province._scatter uses ONE jittered lattice (N=46 -> 6.5 m) for all thirteen regions with three layers (canopy/under/rock) differing only in shape, colour and density. Arrangement (clumping, lineation, isolation, drainage alignment) is identical everywhere."
+  ],
+  "next_step": "write game/src/world/microrelief.js (9 landform-micro kinds), wire into noise/field/build-terrain, extend build-regions.mjs with per-region micro+arrangement+cover, rebuild terrain, re-verify water census",
   "notes_for_successor": ""
 }

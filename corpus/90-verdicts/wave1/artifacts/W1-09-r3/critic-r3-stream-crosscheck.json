@@ -1,0 +1,182 @@
+{
+ "schema": "critic-r3-stream-crosscheck/1",
+ "note": "RI-CMB07 M0: FAIL if the RI-AI01 §A enemy stream is absent, or disagrees with F.e[] on any frame.",
+ "fights": {
+  "F1": {
+   "offset_0": {
+    "compared": 8999,
+    "mismatches": 8843,
+    "first_mismatch": {
+     "f": 1,
+     "frames_e": [
+      "IDLE",
+      "e_idle",
+      8,
+      2876,
+      0
+     ],
+     "ai_e": [
+      "IDLE",
+      7,
+      2876,
+      false
+     ]
+    }
+   },
+   "offset_1": {
+    "compared": 9000,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "frames_stream_f_range": [
+    0,
+    8999
+   ],
+   "ai_stream_f_range": [
+    1,
+    9000
+   ]
+  },
+  "F2": {
+   "offset_0": {
+    "compared": 8999,
+    "mismatches": 8805,
+    "first_mismatch": {
+     "f": 1,
+     "frames_e": [
+      "IDLE",
+      "e_idle",
+      8,
+      2876,
+      0
+     ],
+     "ai_e": [
+      "IDLE",
+      7,
+      2876,
+      false
+     ]
+    }
+   },
+   "offset_1": {
+    "compared": 9000,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "frames_stream_f_range": [
+    0,
+    8999
+   ],
+   "ai_stream_f_range": [
+    1,
+    9000
+   ]
+  },
+  "F3": {
+   "offset_0": {
+    "compared": 8944,
+    "mismatches": 8727,
+    "first_mismatch": {
+     "f": 1,
+     "frames_e": [
+      "IDLE",
+      "e_idle",
+      8,
+      2876,
+      0
+     ],
+     "ai_e": [
+      "IDLE",
+      7,
+      2876,
+      false
+     ]
+    }
+   },
+   "offset_1": {
+    "compared": 8945,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "frames_stream_f_range": [
+    0,
+    8944
+   ],
+   "ai_stream_f_range": [
+    1,
+    8945
+   ]
+  },
+  "F4": {
+   "offset_0": {
+    "compared": 8999,
+    "mismatches": 8834,
+    "first_mismatch": {
+     "f": 1,
+     "frames_e": [
+      "IDLE",
+      "e_idle",
+      8,
+      2876,
+      0
+     ],
+     "ai_e": [
+      "IDLE",
+      7,
+      2876,
+      false
+     ]
+    }
+   },
+   "offset_1": {
+    "compared": 9000,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "frames_stream_f_range": [
+    0,
+    8999
+   ],
+   "ai_stream_f_range": [
+    1,
+    9000
+   ]
+  },
+  "F5": {
+   "offset_0": {
+    "compared": 8999,
+    "mismatches": 8825,
+    "first_mismatch": {
+     "f": 1,
+     "frames_e": [
+      "IDLE",
+      "e_idle",
+      8,
+      2876,
+      0
+     ],
+     "ai_e": [
+      "IDLE",
+      7,
+      2876,
+      false
+     ]
+    }
+   },
+   "offset_1": {
+    "compared": 9000,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "frames_stream_f_range": [
+    0,
+    8999
+   ],
+   "ai_stream_f_range": [
+    1,
+    9000
+   ]
+  }
+ },
+ "conclusion": "At the same f the two streams disagree on essentially every frame; at an offset of +1 they agree field for field with hp rounding tolerance. The streams are recorded at different points in the fixed step and carry different frame indices for the same simulation frame. RI-CMB07 M0 states its fail condition as disagreement on any frame."
+}

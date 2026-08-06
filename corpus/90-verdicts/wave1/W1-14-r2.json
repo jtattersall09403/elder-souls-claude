@@ -1,0 +1,879 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-14-r2",
+  "piece_title": "Magic: casting, effects and utility (seam S19) \u2014 round 2",
+  "subsystem_paths": [
+    "magic.casting.frames",
+    "magic.casting.commitment",
+    "magic.casting.resource",
+    "magic.casting.geometry",
+    "magic.effects.catalogue",
+    "magic.effects.utility",
+    "magic.effects.traversal",
+    "magic.effects.teleport",
+    "magic.gating.skills",
+    "magic.quests.solutions",
+    "magic.vfx.fidelity",
+    "magic.vfx.artdirection"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-14-r2-7c31",
+    "role": "critic.magic",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-06T22:10:00Z",
+    "finished_at": "2026-08-07T00:05:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "7e7993d54c61e21c07ac5af99ea3eb63bb12b9f9",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "note": "Measured at the working tree at this commit. Boot confirmed before measuring: tools/harness/smoke.mjs 6/6 PASS, tools/harness/api-probe.mjs 33/33 present with 0 page errors. No unbootable stretch was hit during this critique.",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/smoke.mjs",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/api-probe.mjs",
+        "seed": 1337,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r2a.mjs   # my own consumption/distinguishability census, 55 effects x (control, magnitude-lo, magnitude-hi)",
+        "seed": 4242,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r2diag.mjs   # why 22 effects first read as 'moved nothing' \u2014 my flattener, not the build",
+        "seed": 4242,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r2b.mjs   # mitigation kind matrix, status procs, levitation denial, structural bugs, control verbs, teleport in a fight, hand-feed",
+        "seed": 9001,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r2c.mjs   # the two skill registers, Q-MAG-01 played to resolution, detect_life/frenzy/mark-recall, VFX draw calls",
+        "seed": 7331,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r2d.mjs   # skills-by-use in three shipped states + six 1920x1080 captures",
+        "seed": 11,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r2e.mjs   # 60 casts with the trace running",
+        "seed": 21,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r2f.mjs   # THE ONE THAT NEVER CALLS setMagicSkills()",
+        "seed": 31,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r2g.mjs   # acquisition cone entity-side + AR-1 A2 over 30 casts",
+        "seed": 77,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/mag-census.mjs --out corpus/90-verdicts/wave1/artifacts/W1-14-r2/builder-census-rerun   # the builder's instrument, re-run by me",
+        "seed": 1337,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/mag-probe.mjs && node tools/harness/save-audit.mjs && node tools/harness/lint-determinism.mjs && node tools/analysis/magic-audit.mjs",
+        "seed": 1337,
+        "exit_code": 0
+      },
+      {
+        "command": "node -e '<recompute the magic gold line from game/data/magic/spells.json + enchant-services.json>'",
+        "seed": null,
+        "exit_code": 0
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "both-separately",
+    "declared_before_citation": true,
+    "fidelity_refs": [
+      "RI-MAG05 PART 2 (B1 feature checklist, B2 budget, B3 RI-VIS03 metrics)",
+      "RI-VIS02 modern reference set"
+    ],
+    "art_refs": [
+      "RI-MAG05 PART 1 (A1 eight design-language rules, A2 per-school palette, A3 per-effect briefs)"
+    ],
+    "note": "Declared before any capture. Unlike round 1 there is now something to look at, so the two axes resolve to different numbers rather than the same zero. Art direction is judged against RI-MAG05 PART 1's own rules and the Morrowind transposition; fidelity against RI-VIS02/03. No 2002 screenshot is cited on the fidelity axis and no modern AAA screenshot on the art-direction axis. The six frames in artifacts/W1-14-r2/frames/ are ours at 1920x1080, third-person default rig, arena_flat, time-of-day 13 for 01-05 and 0 for 06."
+  },
+  "reference_items": [
+    {
+      "id": "RI-MAG01",
+      "path": "corpus/25-magic/RI-MAG01-combat-casting.md",
+      "side": "souls",
+      "kind": "number",
+      "native_scale": "0-100 weighted sum over M1-M9",
+      "native_score": 72,
+      "native_max": 100,
+      "native_verdict": "Playable; two named gaps and one unmeasurable check",
+      "score_0_10": 6,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-ballistics.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-gate.json"
+      ],
+      "checks": [
+        {
+          "id": "A2-dice",
+          "result": "pass",
+          "observed": "30 identical casts produced one distinct damage value (53); stdev 0.000000. The determinism guard reports 0 violations before and after every cast at all five classes."
+        },
+        {
+          "id": "M4-commitment",
+          "result": "pass",
+          "observed": "no cast i-frames observed on any frame of any run; the five denied buttons during levitation are refused at the input gate rather than after the move starts."
+        },
+        {
+          "id": "AP-M3-tracking-cutoff",
+          "result": "not_run",
+          "not_run_reason": "MagicSystem.hitboxRecords() emits per-projectile turn_rate_dps and travel_f, but engine.getHitGeometry() does not include it and no other harness surface exposes a projectile's heading. The checkpoint's headline figure (60.00 deg/s before the cutoff at travel_f 53, 0.000 after) therefore cannot be reproduced by a critic. Unmeasurable, recorded as such."
+        },
+        {
+          "id": "acquisition-cone",
+          "result": "fail",
+          "observed": "a projectile fired on the release heading hit a body standing 15 deg off axis at 14 m (53 damage) and missed one at 30 deg. Within the 20 deg acquisition cone the player does not have to aim. Round 1 recorded 0.000 deg/s and passed AR-1 A7 on 'no player homing exists'; that sentence is no longer true."
+        },
+        {
+          "id": "S19-teleport-out-of-a-fight",
+          "result": "fail",
+          "observed": "no can_cast_in_combat gate exists on the cast path. A commissioned LIGHT-class Intervention cast with in_combat true moved the player 44.77 m to a shrine; a LIGHT-class Recall moved 84.74 m from [60,0,60] to the mark. The shipped carriers are RITUAL and are interrupted, but spellmaking sets the class and nothing restricts it."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "Frame data, commitment and determinism are still excellent and would carry a 7 alone. Three things stop it: an in-fight teleport reachable through this piece's own spellmaking system against a named S19 prohibition; a new acquisition cone that makes aiming optional inside 20 deg; and a headline ballistics claim that no harness surface lets a critic reproduce.",
+      "path_to_ten": "Gate the teleport effects on out-of-combat (S19/S7), expose hitboxRecords() through getHitGeometry() so AP-M3 is measurable, and either drop the acquisition cone or record the residual-aim-error distribution M4 actually asks for."
+    },
+    {
+      "id": "RI-MAG02",
+      "path": "corpus/25-magic/RI-MAG02-effect-catalogue.md",
+      "side": "morrowind",
+      "kind": "trace",
+      "native_scale": "min-over-axes 0-10",
+      "native_score": 6,
+      "native_max": 10,
+      "native_verdict": "The catalogue is a catalogue of verbs now; eight of them still act on tables nobody else reads",
+      "score_0_10": 6,
+      "measured": "full",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-consumption-census.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/builder-census-rerun/mag-census.json"
+      ],
+      "checks": [
+        {
+          "id": "RI-MAG06-EFFECT-FUNCTION",
+          "result": "pass",
+          "observed": "55/55 under MY OWN instrument, built independently of the builder's: treatment-after vs control-after over a flattened snapshot of every consuming system, with no per-effect probe table anywhere in the file. Every effect moves at least one world-side leaf path."
+        },
+        {
+          "id": "RI-MAG06-HP_DAMAGE_ONLY",
+          "result": "pass",
+          "observed": "0. No non-damage effect takes hp from the target. combat-bridge.js's accumulator is closed over the five-element DAMAGE_EFFECTS set."
+        },
+        {
+          "id": "RI-MAG06-UNREAD_TIMER",
+          "result": "pass",
+          "observed": "0 at the effect level."
+        },
+        {
+          "id": "distinguishability",
+          "result": "fail",
+          "observed": "55 handlers, 33 distinct observable signatures. {resist_element, resist_disease, shield, sap_ward} are one signature; {fire, frost, shock, poison, damage_health} are one; {calm_beast, demoralise}, {open_lock, lock_lock}, {bind_lesser, bind_greater} and {corrode, cure_paralysis, burden, silence, paralyse} each collapse."
+        },
+        {
+          "id": "mitigation-is-kind-blind",
+          "result": "fail",
+          "observed": "identical scripted PHYSICAL hit of 100: baseline 100, shield 69.12, resist_element 15.00, resist_disease 15.00. A resist-DISEASE buff blunts a sword by 85%. Converse: a fire spell took an enemy from 412 hp for 405 damage bare, 5 damage under shield (physical) and 5 damage under resist_element \u2014 identical. body.mitigation is one multiplier with no element."
+        },
+        {
+          "id": "status-procs-consumed",
+          "result": "fail",
+          "observed": "only PARALYSED is read (magic/system.js writes b.state = 'PARALYSED' and the enemy stops: measured PARALYSED for 5 consecutive samples). BURNING procced twice on a live enemy and its state stayed REPOSITION throughout; FROSTBITE, CONCUSSED and POISONED write body.statusProc[kind] and nothing outside statusReport() reads it."
+        },
+        {
+          "id": "M4.1-levitation",
+          "result": "pass",
+          "observed": "pos[1] 5.5867 m, Focus 124 -> 98.62 over the climb (1.5/m), drift 1.388 m/s against a 1.4 cap and a measured walk of 3.173 m/s, state AIRBORNE, light/heavy/block/roll/parry all dropped with state and move unchanged, iframe false on 60/60 frames, and a 37-damage hit landed in full and ended the flight. All six assertions, up from two in round 1."
+        },
+        {
+          "id": "M4.2-no-fence",
+          "result": "pass",
+          "observed": "no altitude clamp, no no_levitation_zone, no ceiling plane in game/src or game/data; the declaration is in cast-classes.json \u00a7levitation.no_fence_declaration."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "The generic applicator is genuinely dead and levitation is genuinely built. But 55 code paths produce 33 outcomes a player could tell apart, four mitigation effects are literally one number, four of five status procs are written and never read, and eight effects act on registers that exist only inside game/src/sim/magic/**.",
+      "path_to_ten": "Give body.mitigation a per-element channel and make resist_element/resist_disease/shield read different ones; make the four non-paralysis procs change something (a damage-over-time, a stagger threshold, a speed multiplier); and connect telekinesis/detect_*/mend_item/buoyancy/breathe_water to the interaction, render, durability and traversal-water systems that already exist."
+    },
+    {
+      "id": "RI-MAG03",
+      "path": "corpus/25-magic/RI-MAG03-spellmaking-enchanting.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10, breakage register 0-11",
+      "native_score": 5,
+      "native_max": 10,
+      "native_verdict": "The arithmetic and the economy are right; the system it gates is frozen and it opens a hole S19 closed",
+      "score_0_10": 5,
+      "measured": "full",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-gate.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "checks": [
+        {
+          "id": "M8-economy",
+          "result": "pass",
+          "observed": "recomputed independently from game/data/magic/**: 49 purchasable spells = 20,754 g, 13 priced enchanting services = 9,046 g, magic line 29,800 g against a target of 28,000. Deviation +6.43%, inside the +/-10% band as well as the +/-15% one. Round 1 measured 19,808 g (-29%)."
+        },
+        {
+          "id": "spellmaking-effect-count",
+          "result": "fail",
+          "observed": "at the skill the game itself gives you, a three-effect spell is refused: '3 effects needs skill 50; your best relevant school is 30 (allows 2)'. Because MagicSystem.skills never rises, spellmaking is capped at two effects for the entire game."
+        },
+        {
+          "id": "spellmaking-defeats-the-teleport-fence",
+          "result": "fail",
+          "observed": "quoteSpell()/makeSpell() accept any class for any effect. Commissioning a LIGHT-class Recall or Intervention converts the only fence the shipped RITUAL carriers provided into a 56-frame escape button, measured moving the player 84.74 m and 44.77 m respectively with in_combat true."
+        },
+        {
+          "id": "uncastable-shelf-spells",
+          "result": "pass",
+          "observed": "0 shipped spells cost more Focus than the maximum reachable pool of 124. Round 1's three (185/594/156) are retuned."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "The cost model, the gold line and the enchanting arithmetic are all correct and independently reproduced. The system they price is capped at two effects forever, and the one place spellmaking touches a seam ruling it breaks it.",
+      "path_to_ten": "Feed MagicSystem.skills from sim.progression.skills, and refuse a non-RITUAL class for mark/recall/intervention in quoteSpell()."
+    },
+    {
+      "id": "RI-MAG04",
+      "path": "corpus/25-magic/RI-MAG04-magic-as-quest-solution.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "M1-M8, headline M6 x/10 and M7 x/7",
+      "native_score": "M6 reachable-by-harness-only; M7 3/7 independently confirmed",
+      "native_max": 10,
+      "native_verdict": "The machine exists and runs; the gate in front of it is only openable from the harness",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-by-use.json"
+      ],
+      "checks": [
+        {
+          "id": "quest-runtime-exists",
+          "result": "pass",
+          "observed": "QuestBook, FactionGates and QuestEngine are constructed at engine._boot; game/data/quests/hooks.json (12 hooks) and faction-gates.json exist; Q-MAG-01 opened, wrote journal index 90 on resolution, and returned faction_reputation {the_dockhands: +5, the_imperial_assize: -4} and npc_disposition {harbourmistress-tesh: +8}. Round 1 had no quest runtime at all."
+        },
+        {
+          "id": "gate-reads-cast-not-owned",
+          "result": "pass",
+          "observed": "confirmed in play. With every shipped spell learned but none cast, the magic resolution refuses with 'you cannot bring open_lock to bear'; getCastEffects() is [] until an effect actually resolves on something."
+        },
+        {
+          "id": "gate-skills-register",
+          "result": "fail",
+          "observed": "requires.skills reads sim.progression.skills. That object is {} in default, arena_flat and dungeon_primary, getSkillSheet() returns {}, and 60 casts at a live target produced 0 skill_use events. The resolution only became available after H.setSkills() \u2014 a harness call with no in-game counterpart. RI-MTH07 \u00a7C3 hand-feed failure on this item's central check."
+        },
+        {
+          "id": "resolution-is-location-blind",
+          "result": "fail",
+          "observed": "I completed 'The Warded Ledger' standing at [0,0,0.154] in arena_flat, having cast open_lock and shatter on the arena's own ward registers, never at the Lilmoth customs loft. requires.spell_effects names the effect, never the object; the lock:warded_ledger_door:open flag exists and feeds journal index 30, but no resolution requires it."
+        },
+        {
+          "id": "M7-AR3-crossings",
+          "result": "pass",
+          "observed": "3 of 7 independently confirmed: X1 (calm_beast on an aggroed beast_slitherfang: hp 286 -> 286, 0 deaths, in_combat true -> false, state YIELDED; demoralise and charm the same), X4 (feather 50% MEDIUM -> 0% LIGHT across the 30.00 cliff, which does not move), X6 (charm writes quest.dispositions.e0 = 100). The remaining four were not re-run for budget and are recorded as the builder's claim, not mine."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "1,155 lines of quest machine that had never been constructed now run, and the effects-cast gate is the right design. But the skill half of the same gate reads an empty register no play fills, and the resolution does not care where you are or what you cast it at.",
+      "path_to_ten": "Bridge magic to sim.progression.skills in both directions, and add a requires.world_flags clause to the magic resolutions so the ledger door has to be the door you opened."
+    },
+    {
+      "id": "RI-MAG05",
+      "path": "corpus/25-magic/RI-MAG05-magic-vfx.md",
+      "side": "modern-fidelity",
+      "kind": "image",
+      "native_scale": "ordered pair \u2014 ART DIRECTION x/10, FIDELITY y/10; ship gate min(x,y)",
+      "native_score": "ART 3 / FID 4; ship gate 3",
+      "native_max": 10,
+      "native_verdict": "Below the ship gate \u2014 a real particle system rendering an almost-empty frame",
+      "score_0_10": 3,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skills-vfx.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/frames/02-release.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/frames/04-impact.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/frames/06-night-release.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json"
+      ],
+      "checks": [
+        {
+          "id": "draw-call-series",
+          "result": "pass",
+          "observed": "windup 30 / release 30 / inflight 29 / impact 29 / residue+5s 29 / night release 32, with vfx {particles 246, systems 3, decals 0->1, particleDrawCalls 3->4}. Round 1's series was flat 8/8/8/8 with 1208 triangles throughout. Something renders."
+        },
+        {
+          "id": "F-M1-V1-V2-V4",
+          "result": "pass",
+          "observed": "all three mandatory rows present (depth prepass -> DepthTexture soft fade; transparent + depthWrite:false + per-system renderOrder; uAmbient/uSun taken from the live Sky)."
+        },
+        {
+          "id": "F-M3-VFX-LIT",
+          "result": "pass",
+          "observed": "visibly demonstrated. At time-of-day 0 the non-emissive halo is gone and only the emissive core survives (frames/06-night-release.png against frames/02-release.png), which is exactly the >=25% variation F-M3 asks for."
+        },
+        {
+          "id": "V7-motion-vectors",
+          "result": "pass",
+          "observed": "absent and declared absent in featureReport() with the reason (no temporal pass to feed). F-M1 permits 2 of 10 missing and V7 is not one of the three mandatory rows, so the declaration is adequate under the item as written \u2014 declaring an absence is not the same as satisfying the row, and it is scored as a miss, not a fail."
+        },
+        {
+          "id": "A1-design-language-in-frame",
+          "result": "fail",
+          "observed": "at the release frame the spell is a blown-out white blob with a few green sparks, floating above the caster's head. No rune ring (L1), no radial ground decal in frame (L5), no per-school colour identity \u2014 the sorcery palette in vfx.json does not survive to the pixel. A player could not name the school from the frame."
+        },
+        {
+          "id": "projectile-and-impact-in-frame",
+          "result": "fail",
+          "observed": "ten frames into flight the vfx counter reads particles 0, systems 0 \u2014 the projectile has no visual at all while it travels \u2014 and the impact frame (frames/04-impact.png) is pixel-indistinguishable from the idle frame. The decal counter says 1; nothing is visible on the ground."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "Round 1 was two honest zeros. This is a working modern particle system \u2014 prepass, soft particles, scene lighting, a visible night/day difference \u2014 rendering a white puff and then nothing. The counters moved much further than the frame did.",
+      "path_to_ten": "Give the projectile a trail system for its whole flight, an impact burst, and a residue decal that is actually drawn; and drive the emissive core's colour from the school palette instead of clipping it to white."
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10 (magic slice only)",
+      "native_score": 2,
+      "native_max": 10,
+      "native_verdict": "The magic skill is a constant",
+      "score_0_10": 2,
+      "measured": "full",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-gate.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-by-use.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json"
+      ],
+      "checks": [
+        {
+          "id": "casting-advances-a-skill",
+          "result": "fail",
+          "observed": "60 casts at a live target across three shipped states produced 0 skill_use events and left getSkillSheet() at {}. stepSkillUse() does handle spell_hit/effect_apply, but it maps every spell to spell_skill 'sorcery' regardless of school, and sim.progression.skills is empty in every shipped state so bankProgress has nothing to bank into."
+        },
+        {
+          "id": "the-magic-skill-can-rise-at-all",
+          "result": "fail",
+          "observed": "MagicSystem.skills is initialised to {sorcery:30, root_speech:30, warding:30, veiling:30} and written by nothing but H.setMagicSkills() and a temporary fortify_skill lease. 40 casts: no change. A HEARTH rest: no change. H.setSkills() on the character sheet: no change. H.grantSkillUse('cast_effective'): no change. Only the harness-only call moves it."
+        },
+        {
+          "id": "consequence-tier-gate",
+          "result": "fail",
+          "observed": "in default, arena_flat, dungeon_primary and helstrom-market alike: 47 of 72 shipped spells attunable, 25 refused \u2014 all 17 tier-3 and all 8 tier-4. setAttuned() drops them silently, returning a shorter list than it was given with no event and no reason."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "The piece's own gating variable is a constant. Every consequence RI-PRG03 exists to produce \u2014 a spell you could not cast becoming castable, a cost falling, a school opening \u2014 is unreachable.",
+      "path_to_ten": "Make MagicSystem.skills a view of sim.progression.skills; give effect_apply a `skill` field so stepSkillUse banks the right school; and make setAttuned() emit a refusal rather than dropping."
+    },
+    {
+      "id": "RI-QST05",
+      "path": "corpus/30-quests/RI-QST05-non-combat-resolution.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-10 (magic slice only)",
+      "native_score": 4,
+      "native_max": 10,
+      "native_verdict": "A bloodless resolution completes end to end for the first time, through a gate only the harness can open",
+      "score_0_10": 4,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "checks": [
+        {
+          "id": "a-non-violent-magic-resolution-completes",
+          "result": "pass",
+          "observed": "Q-MAG-01 resolved by mag_the_warded_ledger__magic with violence_required false, journal index 90 written, faction reputation and giver disposition moved, 0 kills. Round 1 could not start a quest at all."
+        },
+        {
+          "id": "a-fight-ends-without-a-corpse",
+          "result": "pass",
+          "observed": "calm_beast on an aggroed beast_slitherfang: hp 286 -> 286, dead false, yielded true, state YIELDED, in_combat true -> false, entity count unchanged. Same for demoralise and charm. B12 clause (c) works for the first time."
+        },
+        {
+          "id": "reachable-by-playing",
+          "result": "fail",
+          "observed": "the resolution's skill gate is only satisfiable by H.setSkills(); see RI-MAG04 and RI-PRG03."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "The bloodless exit is real and measured. It is behind a gate no player can open.",
+      "path_to_ten": "Close GAP-W1-magic-skill-frozen; then re-run M6 without a single setSkills/setMagicSkills call anywhere in the probe."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-consumption-census.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-14-r2a.mjs",
+      "seed": 4242,
+      "note": "My own instrument, not the builder's. Per effect: two magnitudes plus a null control, treatment-after vs control-after over a flattened snapshot of every consuming system. No per-effect probe table."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-14-r2b.mjs",
+      "seed": 9001,
+      "note": "Mitigation kind matrix, status procs, levitation button denial, the two structural bugs, control verbs, teleport in a fight, hand-feed audit."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-14-r2c.mjs",
+      "seed": 7331,
+      "note": "The two skill registers perturbed in both directions; Q-MAG-01 played to resolution; detect_life/frenzy/mark-recall in an arena that could show them; VFX draw calls."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skills-vfx.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-14-r2d.mjs",
+      "seed": 11,
+      "note": "Skills-by-use in three shipped states, and the six capture points."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-by-use.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-14-r2e.mjs",
+      "seed": 21,
+      "note": "60 casts with the trace running; 0 skill_use events."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-gate.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-14-r2f.mjs",
+      "seed": 31,
+      "note": "THE HEADLINE ARTIFACT. The only magic probe in the tree that never calls setMagicSkills(). 47/72 attunable in four shipped states; nothing a player can do moves it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-ballistics.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-14-r2g.mjs",
+      "seed": 77,
+      "note": "Acquisition cone measured entity-side (hit/miss at 0/15/30 deg) and AR-1 A2 damage determinism over 30 casts."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/diag-touch.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/harness/critic-w1-14-r2diag.mjs",
+      "note": "Written when my first census read 22 effects as 'moved nothing'. It proved the spells were resolving and my flattener was discarding array element state \u2014 the instrument was broken, not the build."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/builder-census-rerun/mag-census.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/mag-census.mjs --out corpus/90-verdicts/wave1/artifacts/W1-14-r2/builder-census-rerun",
+      "note": "The builder's own instrument, re-run at HEAD by me: EFFECT-FUNCTION 55/55, HP_DAMAGE_ONLY 0, UNREAD_TIMER 0. Recorded so the two instruments can be compared, not because it is evidence on its own."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/frames/02-release.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-14-r2d.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "default third-person rig, arena_flat, player at origin facing +z, target at 9 m, time-of-day 13",
+      "seed": 5,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/frames/04-impact.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-14-r2d.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "as 02-release, 40 frames later",
+      "seed": 5,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-14-r2/frames/06-night-release.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-14-r2d.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "as 02-release, time-of-day 0",
+      "seed": 5,
+      "source": "ours"
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-MAG05 A-M5",
+      "status": "not_possible",
+      "not_possible_reason": "A-M5 requires a FRESH judge shown 20 unlabeled release frames. I had already read game/data/magic/vfx.json, the renderer's featureReport() and the builder's checkpoint before any capture existed, so I am not a fresh judge and cannot be made into one. Recording the reason rather than running a compromised pack. Indicatively and non-blind: frame 02-release would not be mistaken for Skyrim, Elden Ring or a UE5 pack \u2014 but for the confound RI-VIS07 warns about, which is that the whole scene is untextured capsules on a flat brown plane, not because of anything in the effect."
+    },
+    {
+      "ref_item": "RI-MAG05 A-M6",
+      "status": "not_possible",
+      "not_possible_reason": "A-M6 interleaves 8 of our spell frames with 8 Morrowind spell-effect screenshots downsampled to a common resolution. corpus/70-visual/refs/morrowind/ carries full-frame Morrowind captures but none is indexed as a spell-effect frame, so the reference half of the pack cannot be assembled without hand-picking, which is the selection bias the protocol exists to stop. Same fresh-judge problem as A-M5."
+    },
+    {
+      "ref_item": "RI-MAG05 F-M6",
+      "status": "not_possible",
+      "not_possible_reason": "Same fresh-judge bar. I will say without the ritual of a blind pack that it would not survive one: at ten frames into flight the projectile renders zero particles and the impact frame is pixel-indistinguishable from idle, so half the pack would be a frame with no effect in it."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A2",
+          "result": "pass",
+          "observed": "30 identical casts, one distinct damage value (53), stdev 0.000000. No roll-to-hit, no damage dice, no failure_chance/resist_chance/proc_chance token in the shipped magic data.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-ballistics.json"
+          ]
+        },
+        {
+          "id": "A3",
+          "result": "pass",
+          "observed": "the fixed step never pauses; the S11 status meter is an integer buildup per contact with an integer threshold (measured 83/83 against 100, procs on the second contact) and never a coin flip.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+          ]
+        },
+        {
+          "id": "A5",
+          "result": "pass",
+          "observed": "commitment holds; no cast i-frames observed on any frame of any run, including the 60 frames of levitation where round 1 measured iframe true.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+          ]
+        },
+        {
+          "id": "A7",
+          "result": "fail",
+          "observed": "player-side projectile homing now exists. A spell fired on the release heading hit a body 15 deg off axis at 14 m. It is bounded (20 deg cone, stops at the declared cutoff) and the cutoff behaviour is declared by cast-classes.json, so this is recorded as a softening of the aim requirement rather than an AR-1 automatic fail: it is not one of the six mechanics AR-1 enumerates and S26 forbids widening AR-1 to cover ordinary defects. It is charged to RI-MAG01 instead.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-ballistics.json"
+          ]
+        },
+        {
+          "id": "A8",
+          "result": "pass",
+          "observed": "skill changes the Focus discount and the tier gate, never whether a spell connects \u2014 which is still true, and now vacuously so, because the skill never changes.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-gate.json"
+          ]
+        }
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "hist_sight writes a prose journal entry and zero HUD markers; detect_life/detect_key write diegetic marker records with hud:false and getMagicWorld().hud_elements stays 0.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json"
+          ]
+        },
+        {
+          "id": "B5",
+          "result": "pass",
+          "observed": "gold only. Every price the magic system quotes is in gold; the magic line recomputes to 29,800 g; `souls` is never read or written by the enchanting path.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json"
+          ]
+        },
+        {
+          "id": "B7",
+          "result": "pass",
+          "observed": "a non-combat resolution is reachable and completes with consequences, for the first time in this piece. It is reachable only through a harness skill call, which is scored against RI-MAG04, not as an AR-2 leak.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json"
+          ]
+        },
+        {
+          "id": "B12",
+          "result": "pass",
+          "observed": "the exit ladder's clause (c) works: calm/demoralise/charm each end a fight with 0 hp lost and 0 deaths. This was the clause round 1 failed.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+          ]
+        },
+        {
+          "id": "B-warp",
+          "result": "fail",
+          "observed": "a commissioned LIGHT-class Intervention moved the player 44.77 m to a shrine with in_combat true, and a LIGHT-class Recall moved 84.74 m to the mark. AR-2's enumerated leak is 'bonfire warp', and S7/S19 explicitly PERMIT Intervention as part of the travel network out of combat \u2014 so this is not the enumerated leak and I do not fail AR-2 on it. It is a direct breach of S19's named prohibition ('no recall out of a fight, no intervention as an escape button') and is charged to RI-MAG01 and RI-MAG03 and named here so the ruling is on the record rather than absorbed.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+          ]
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 4.4,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "band_label": "Between 'Recognisable but wrong' and 'Recognisably attempting the thing' \u2014 the catalogue became a set of verbs and the quest machine turned on; the character who casts them cannot get better at it",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "below_wave1_gate:4.4<7.0",
+    "hand_feed:RI-MAG04/M6-skill-gate",
+    "coupling_zero:progression.skills<->magic.skills",
+    "seam_breach:S19-teleport-in-combat",
+    "unmeasurable:RI-MAG01/AP-M3-no-harness-surface",
+    "blind_not_possible:RI-MAG05/A-M5,A-M6,F-M6"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-magic-skill-frozen",
+    "subsystem_path": "magic.gating.skills",
+    "what": "MagicSystem.skills is a private object initialised to {sorcery:30, root_speech:30, warding:30, veiling:30} that no gameplay path writes. Measured in four shipped states (default, arena_flat, dungeon_primary, helstrom-market): 47 of 72 shipped spells attunable and 25 refused \u2014 all 17 tier-3 and all 8 tier-4 \u2014 and setAttuned() drops them silently. 40 casts at a live target, a HEARTH rest, H.setSkills() on the character sheet and H.grantSkillUse('cast_effective') all leave the tier-3 attune at 0/1 and quoteSpell().attunable_now false; only H.setMagicSkills(), a harness call with no in-game counterpart, flips it to 1/1 and true. Spellmaking is capped at two effects for the whole game ('3 effects needs skill 50; your best relevant school is 30'). In the other direction, RI-MAG04's magic resolutions gate on sim.progression.skills, which is {} in every shipped state and which the magic system never writes: the coupling between the character's magic skill and the magic system is 0.00 in both directions, with the null control clean (perturbing magic.skills 30->100 does flip the gate, so the probe is driving a live gate and not a stub).",
+    "why_it_matters": "A mage who plays this game for forty hours casts exactly the spells they could cast in the first minute \u2014 a third of the shipped catalogue, every tier-3 and tier-4 spell, and every three-effect spell they might commission are locked behind a number that nothing they do can move, and the quest resolutions magic exists to unlock read a different, empty number.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-gate.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-by-use.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "Make MagicSystem.skills a VIEW of sim.progression.skills rather than a private copy: replace the literal at game/src/sim/magic/system.js:59 with a getter that reads sim.progression.skills (mapping root_speech <-> root-speech, which are spelled differently in the two files today), so _effectiveSkillFor, focusCost, the tier gate and quoteSpell's effect-count all read the character sheet. Then close the loop that fills the sheet: add `skill` to the effect_apply and spell_hit event payloads in game/src/sim/magic/system.js and game/src/sim/combat-bridge.js so game/src/character/skilluse.js:stepSkillUse banks the SPELL'S OWN school instead of hardcoding 'sorcery'; and make setAttuned() emit an `attune_refused` event with the shortfall instead of silently returning a shorter list. Ensure sim.progression.skills is non-empty in the shipped states (engine.js:575 fills it from ch.skills, which is empty when no character has been composed) \u2014 coordinate with W1-07, whose census owns that seeding, and record the seam if it cannot be done here.",
+      "targets": [
+        "game/src/sim/magic/system.js",
+        "game/src/sim/combat-bridge.js",
+        "game/src/character/skilluse.js",
+        "game/src/harness/api.js",
+        "game/data/states/*.json"
+      ],
+      "acceptance": "Re-run tools/harness/critic-w1-14-r2f.mjs, which never calls setMagicSkills(). Required: (a) in every shipped state, the attunable count rises when the character sheet's warding/sorcery rise, and 72/72 are attunable at skill 100; (b) 40 casts of a warding spell at a live target raise sim.progression.skills.warding by a non-zero amount and emit >= 1 skill_use event with skill == 'warding' (not 'sorcery'); (c) a three-effect spell is quotable once any relevant school reaches 50; (d) H.questResolutions('Q-MAG-01') reports the magic resolution available after the skills were reached BY CASTING, with no setSkills or setMagicSkills call anywhere in the probe; (e) setAttuned() on an under-skilled spell emits an attune_refused event naming the shortfall.",
+      "ref_item": "RI-PRG03"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "MITIGATION IS KIND-BLIND, AND THE BUILDER'S OWN HEADLINE NUMBER IS THE PROOF. body.mitigation is a single multiplier that resolve.js:mitigate() applies to every incoming number regardless of source. Identical scripted PHYSICAL hit of 100: baseline 100, shield 69.12, resist_element 15.00, resist_disease 15.00 \u2014 a resist-DISEASE buff blunts a sword by 85%. Converse: a fire spell took 405 hp off a bare enemy, 5 under shield (physical) and 5 under resist_element. The checkpoint reports '100 unbuffed, 53.68 with shield, 30.52 with resist_element' as a success; it is the same measurement.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "subsystem_path": "magic.effects/mitigation"
+    },
+    {
+      "what": "EIGHT EFFECTS ACT ON REGISTERS NOTHING OUTSIDE game/src/sim/magic/** READS. telekinesis writes M.reachM, but the interaction that actually reaches for a prop tests o.reach_m in engine._censusStep. detect_life/detect_key write M.markers, which no renderer pass and no entity consumes. mend_item writes an item-condition table that exists nowhere else in the build. buoyancy and breathe_water write M.water.{buoyant, breathes, drownF}, while the water the player actually swims and drowns in is engine.traversal (water_band, breath_s, submerged). restore_attribute has no reachable precondition: nothing in the build ever lowers an attribute. cure_disease and cure_poison splice sim.quest.afflictions, which only H.addAffliction() writes \u2014 the diseases the game can actually give you are pushed by hazards.js onto sim.player.afflictions, a different array. These are the shapes RI-MTH07 \u00a7A calls orphan model and orphan predicate, one layer in from round 1.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-consumption-census.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "subsystem_path": "magic.effects"
+    },
+    {
+      "what": "FOUR OF THE FIVE STATUS PROCS ARE WRITTEN AND NEVER READ. BURNING procced twice on a live enemy and its state stayed REPOSITION throughout; only PARALYSED is consumed (magic/system.js sets b.state and the enemy stops, measured for 5 consecutive samples). FROSTBITE, CONCUSSED and POISONED set body.statusProc[kind], which nothing outside the expiry deleter and statusReport() reads. This is the UNREAD_TIMER failure moved one level down, below where RI-MAG06's census looks.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "subsystem_path": "magic.effects/status"
+    },
+    {
+      "what": "THE CENSUS'S DECLARED-VS-MEASURED CHANNEL IS NEARLY VACUOUS. mag-census.mjs records the build's own `declared_consumer` alongside its own reading 'so the two can disagree in public', but it never compares the two consumer strings \u2014 the only disagreement it can raise is `self_report_disagrees`, which fires solely when the build says changed:false and the census still classed the row FUNCTIONS_AS_SPECIFIED (6 rows do). Every one of the 36 rows where the declared and measured consumer strings actually differ is a cosmetic wording difference the tool cannot see, and its `consuming_system` field is a hardcoded label from its own PROBES table rather than a measurement. If a handler declared the wrong consumer, this census would not notice.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/builder-census-rerun/mag-census.json"
+      ],
+      "subsystem_path": "magic.effects/instrumentation"
+    },
+    {
+      "what": "THE TWO STRUCTURAL BUGS ARE GENUINELY FIXED. The `_emit(frame, kind, fields)` collision is closed: 5 status_buildup and 2 status_proc events arrived on the stream with their own event types, `status_kind` carrying the element, and no event type is ever an element name. The SimState.reset() journal detachment is closed: after a loadState('arena_flat') that would have detached the QuestEngine in round 1, hist_sight wrote getQuestState().journal 0 -> 1 with the prose entry present. Both confirmed independently of the builder's own probes.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "subsystem_path": "magic.effects"
+    },
+    {
+      "what": "getQuestState() STILL DECLARES THERE IS NO QUEST RUNTIME. Its `_declared_incomplete` block reads missing: ['a quest runtime: no quest in this build can be started, advanced or completed by playing'] \u2014 which is now false, and which is the single most-read harness surface for the quest area. It also exposes neither `afflictions` nor `travel.mark`, so the consuming systems for cure_* and mark are not readable through the call every critic uses.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-consumption-census.json"
+      ],
+      "subsystem_path": "magic.quest-solution"
+    },
+    {
+      "what": "THE DEFENSIVE GUARD ON ANOTHER PIECE'S LINE PAPERS OVER NOTHING. engine.js:215 reads `this.sim.censusDriver = (input) => (this._censusStep ? this._censusStep(input) : null)`. `_censusStep` is a prototype method defined at engine.js:964 and is always truthy, so the guard is dead code today \u2014 it cannot mask a missing census driver because there is no state in which one is missing. It was added to survive a concurrent commit that had removed the method. Harmless; worth deleting rather than keeping as a permanent apology.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "subsystem_path": "platform.engine"
+    },
+    {
+      "what": "THE DRY WELL DATA STILL CONTRADICTS S27 AND ITS OWN IMPLEMENTATION. engine.hearthRest() correctly implements S27's drawback (focus_restores_at_hearth false for the sign). But game/data/progression/birthsigns.json still declares the power as 'You absorb 55% of the magnitude of any spell effect that lands on you, as Focus' and the drawback detail as 'Focus is refilled only by absorption and by consumables' \u2014 which contradicts the hearth-denial the engine now applies, and `spell_absorption` is derived in character/derive.js and consumed by nothing. tools/analysis/magic-audit.mjs still fails on CROSS_ITEM_CONFLICT_birthsign_focus_absorption (10 pass, 1 fail). The checkpoint says this 'needs a RULING'; S27 has ruled, in the same commit, and the data has not been amended to match.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "subsystem_path": "progression.birthsigns"
+    },
+    {
+      "what": "REGRESSIONS ARE GREEN AND I RAN THEM MYSELF: mag-probe 19/19 including AR3_X1 and AR3_X4; save-audit round-trip EQUAL on all four states (manifest-extra 13/1 belongs to W1-15's crime ledger and W1-07's NPC/prop records, not this piece); lint-determinism 0 errors over 87 files; magic-audit 10 pass / 1 fail (the birthsign conflict above).",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "subsystem_path": "platform.determinism"
+    },
+    {
+      "what": "MY OWN FIRST INSTRUMENT WAS WRONG AND THE BUILD WAS RIGHT. The first run of critic-w1-14-r2a.mjs reported 22 effects as 'moved nothing'. The flattener recorded only each array element's `id`, so a lock going locked:true -> false was invisible; and subtracting the control by key deleted every hp-moving effect because the control's own scripted hit also moved hp. diag-touch.json is the artifact that caught it \u2014 the spells were resolving all along. Recorded because this verdict charges other people with exactly this class of error.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/diag-touch.json"
+      ],
+      "subsystem_path": "magic.effects/instrumentation"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-magic-effects-no-behaviour",
+      "status": "closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-consumption-census.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-targeted.json"
+      ],
+      "measured_value": "EFFECT-FUNCTION 55/55, HP_DAMAGE_ONLY 0, UNREAD_TIMER 0, GENERIC-APPLICATOR 0/55",
+      "acceptance_restated": "EFFECT-FUNCTION >= 50/55, HP_DAMAGE_ONLY == 0, UNREAD_TIMER <= 2, plus five named single-trace assertions including 'still_the_beast on an aggroed beast ends COMBAT with zero death events' and 'recall moves getPlayerStats().pos to the mark'.",
+      "closed_by_builder_of_fix": false,
+      "note": "Closed on the acceptance as written, measured with my own instrument rather than the builder's. The five named assertions all hold: calm_beast on an aggroed beast_slitherfang left hp 286 -> 286, dead false, yielded true, in_combat false, 0 deaths; recall moved [60,0,60] -> [0,0,0.154], 84.74 m; shield and resist_element take a scripted 100 down to 69.12 and 15.00; paralyse builds an integer meter and procs on a later contact, never in one frame; feather crossed the 30.00 cliff MEDIUM -> LIGHT. What the acceptance did not ask, and what this verdict adds, is whether 55 distinct code paths produce 55 distinguishable outcomes: they produce 33."
+    },
+    {
+      "gap_id": "GAP-W1-magic-vfx-nothing-renders",
+      "status": "partially-closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skills-vfx.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/frames/02-release.png"
+      ],
+      "measured_value": "draw calls 30/30/29/29/29/32 against round 1's flat 8/8/8/8; 246 particles, 3 systems, V1/V2/V4 present, VFX-LIT visibly demonstrated",
+      "acceptance_restated": "the draw-call series must move and V1/V2/V4 must be present",
+      "closed_by_builder_of_fix": false,
+      "note": "The renderer half is closed. The frame is not: the projectile renders zero particles in flight and the impact frame is pixel-indistinguishable from idle."
+    }
+  ],
+  "corpus_extended": [],
+  "method_deviations": [
+    {
+      "ref_item": "RI-MAG01",
+      "deviation": "AP-M3 (turn rate past the tracking cutoff) was not run. hitboxRecords() computes it but getHitGeometry() does not expose it and no other harness surface does. I measured the acquisition cone entity-side instead (hit/miss at 0, 15 and 30 degrees off axis).",
+      "why": "A number a critic cannot reproduce is not a measurement. Recorded as not_run with the reason rather than repeated from the checkpoint.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-MAG04",
+      "deviation": "M7's seven AR-3 crossings: I independently confirmed 3 (X1, X4, X6) and did not re-run the other four.",
+      "why": "Budget. The four unconfirmed are recorded as the builder's claim, not as measured by me.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-MAG05",
+      "deviation": "A-M5, A-M6 and F-M6 recorded not_possible rather than run.",
+      "why": "All three require a fresh judge and I had read the build's VFX data and the builder's checkpoint before any capture existed. Running a pack against myself would produce a number with the form of a blind result and none of its content.",
+      "affects_scores": true
+    }
+  ],
+  "arbitration_questions": [
+    {
+      "question": "Does spellmaking inherit a seam ruling's fence, or may a commissioned spell take any cast class? S19 forbids recall out of a fight; the shipped carriers obey it only because they are RITUAL and rituals are interrupted. Nothing states that the fence is the class rather than the effect.",
+      "souls_side": "The cast class is a combat property and the player should be free to buy a faster version of any spell; the fence should be an explicit combat check, not an accident of duration.",
+      "morrowind_side": "Spellmaking is Morrowind's crown jewel and its whole point is that you may combine anything; the fence must therefore live on the effect, and the teleport effects must be refused a non-ritual class at quote time.",
+      "proposed_seam_id": "S28"
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/harness/api.js",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "tools/harness/mag-census.mjs",
+      "purpose": "locate-harness",
+      "note": "read to establish what the builder's instrument does and does not check, since the brief required me to judge it"
+    },
+    {
+      "path": "game/src/sim/magic/apply.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after the mitigation matrix and the signature collisions had been measured, to name the right file in the remedy"
+    },
+    {
+      "path": "game/src/sim/magic/system.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after critic-skill-gate.json showed the gate would not move, to find which register it read"
+    },
+    {
+      "path": "game/src/combat/resolve.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/sim/combat-bridge.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/character/skilluse.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after 60 casts produced 0 skill_use events"
+    },
+    {
+      "path": "game/src/sim/quest/machine.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/sim/quest/gate.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/combat/player.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after the five levitation buttons were measured as dropped, to confirm the denial is at the input gate rather than a flag"
+    },
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/sim/hazards.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after cure_disease moved nothing, to find where a disease actually lands"
+    },
+    {
+      "path": "game/src/render/spell-vfx.js",
+      "purpose": "quote-written-content",
+      "note": "featureReport()'s V7 declaration, quoted in the verdict"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method false: RI-MAG01 AP-M3 could not be run (no harness surface), RI-MAG04 M7 was confirmed on 3 of 7 crossings, and RI-MAG05's F-M2/F-M4/F-M5 image metrics were not computed. blind_done_where_required false: RI-MAG05's three blind pairs are recorded not_possible with reasons. Escalation ladder: the first sample \u2014 the builder's own census, re-run at HEAD \u2014 returned 55/55 and would have carried a comfortable pass. Rung 2 (change the sample) built an independent instrument and confirmed 55/55, which is the honest answer. Rung 4 (measure the second-order property) is what produced this verdict: not 'does an effect move a system' but 'how many distinguishable outcomes do 55 handlers produce' (33) and 'can the character who casts them ever get better at it' (no). CC-scan: manual. No sentence in this verdict excuses a V* or M* failure with 'it matches Morrowind's look', 'stylised', 'retro' or 'the art direction carries it'.",
+    "escalation": "used"
+  },
+  "notes": "Round 1 scored 2.7 and named a generic applicator behind 55 labels. That gap is closed, and closed properly: I built my own instrument rather than re-running the builder's, and it agrees \u2014 55/55, HP_DAMAGE_ONLY 0, UNREAD_TIMER 0, GENERIC-APPLICATOR 0/55. Levitation, the quest runtime, the control verbs, the two structural bugs, the economy and the VFX renderer are all real work that measures. The piece fails on something the previous round could not see because it was standing behind the thing that was broken: the character who casts these spells cannot get better at casting them, and the register the quest gate reads is not the register the magic system uses. Every magic probe in the tree, including the two I wrote first, opens its arena with setMagicSkills({...100}); the one that does not is the one that found this."
+}
