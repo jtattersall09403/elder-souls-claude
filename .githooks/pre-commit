@@ -8,18 +8,22 @@
 # this advisory: do not add `|| true`, and do not tell people to use --no-verify.
 set -e
 
-changed=$(git diff --cached --name-only --diff-filter=ACMR)
-
-echo "$changed" | grep -Eq '^(corpus/.*RI-.*\.md|corpus/00-doctrine/(subsystems|constants)\.json|tools/corpus-index\.mjs)$' || exit 0
+git diff --cached --name-only --diff-filter=ACMR \
+  | grep -Eq '^(corpus/.*RI-.*\.md|corpus/00-doctrine/(subsystems|constants)\.json|tools/corpus-index\.mjs)$' \
+  || exit 0
 
 echo "pre-commit: corpus coherence gate (node tools/corpus-index.mjs --check)"
 
-# Regenerate first: a stale INDEX.md is the single most common way this gate trips, and
-# INDEX.md is a generated file, so fixing it by hand is never the right move.
-node tools/corpus-index.mjs >/dev/null
-if ! git diff --quiet -- corpus/00-doctrine/INDEX.md; then
-  git add corpus/00-doctrine/INDEX.md
-  echo "pre-commit: INDEX.md was stale; regenerated and staged."
+# A stale INDEX.md is the most common way this gate trips, and INDEX.md is a generated
+# file, so fixing it by hand is never the right move. Regenerate and stage it, then
+# re-run the gate for real. The `Generated:` timestamp is ignored by --check, so this
+# only fires when the index is genuinely out of date.
+if ! node tools/corpus-index.mjs --check >/dev/null 2>&1; then
+  node tools/corpus-index.mjs >/dev/null
+  if ! git diff --quiet -- corpus/00-doctrine/INDEX.md; then
+    git add corpus/00-doctrine/INDEX.md
+    echo "pre-commit: INDEX.md was stale; regenerated and staged."
+  fi
 fi
 
 node tools/corpus-index.mjs --check

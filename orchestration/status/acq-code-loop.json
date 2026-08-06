@@ -4,12 +4,19 @@
   "started": "wave-?",
   "state": "researching",
   "outputs_expected": [
-    "corpus/70-visual/refs/acquire.py",
-    "corpus/70-visual/refs/_provenance.json",
-    "corpus/70-visual/refs/ACQUISITION-CODE-CRITIQUE.md"
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.json"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ACQUISITION-SPEC-AMENDMENTS.md, acquire.py, _provenance.json, RI-VIS03",
-  "notes_for_successor": "Three-role loop played internally. Round log lives in ACQUISITION-CODE-CRITIQUE.md."
+  "findings": [
+    "acquire.py CANNOT LOAD _provenance.json: the file is {_note, files:[...]}, load_records() expects a flat path-keyed dict. `python3 acquire.py --check` dies with ValueError: _note: missing source_url. Nothing in the pipeline has ever run.",
+    "No provenance record carries a destination path field; _note claims 'keyed by destination path' but files is a LIST. The builder must add a `path` per record or re-key the dict.",
+    "Only 46 of 211 records carry expected_bytes/expected_sha256 (Codex's Elden Ring set). The other 165 describe images that were in-container; 89 morrowind + 5 anti-generic + 24 hud + 8 rejected files DO still exist on disk, so hashes can be computed locally by make-manifest.py.",
+    "Steam apphub homecontent endpoint works for every appid incl. ones with a mod workshop: https://steamcommunity.com/app/<APPID>/homecontent/?userreviewsoffset=0&p=<N>&screenshotspage=<N>&numperpage=50&browsefilter=toprated&appid=<APPID>&appHubSubSection=2&l=english&filterLanguage=default&searchText=<Q>&maxInappropriateScore=100 -- searchText genuinely filters (disjoint id sets per query).",
+    "Steam detail page yields File Size / Posted date / WxH in div.detailsStatRight, and the bare https://images.steamusercontent.com/ugc/<a>/<b>/ URL (id=ActualMedia src) is the ORIGINAL bytes -- confirmed 10002569 bytes against a page stating 9.539 MB.",
+    "Steam rate-limits hard: 8 concurrent detail fetches returns a ~27.3KB 'Steam Community :: Error' page for ~96% of requests. 3 workers + 0.7s sleep is safe."
+  ],
+  "next_step": "harvest concrete candidate URLs for the builder, then write ACQUISITION-CRITIQUE-R1.{md,json}",
+  "notes_for_successor": "I am critic-only. I have NOT modified acquire.py or _provenance.json. Harvest tooling in scratchpad: hv.py (steam), drive.py (targeted), harvest.jsonl (results).",
+  "role": "CRITIC only (round 1) -- coordinator re-architected the loop into sequential agents"
 }

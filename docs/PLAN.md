@@ -27,6 +27,20 @@
 4. Loop until every critic's bar is met. Gaps go on the ledger; a gap may not be closed
    by the agent that built the fix.
 
+## Builder effort escalation
+
+Builder agents run at **Standard** effort by default. Six pre-declared hard pieces start at
+**Elevated**, and six triggers escalate a piece to **Ultracode** — chief among them *two
+consecutive critic rounds with no score improvement*, which is the signal that more feedback will
+not help. Escalation is per-round, not permanent, and it widens the builder's licence as well as
+its budget: an escalated builder is handed every prior verdict, may refactor across the piece
+boundary, and may argue that the bar itself is wrong.
+
+If escalation does not close the gap either, the next step is **not** a third dispatch — it is the
+bar critic or a re-decomposition, because the fault is then in the bar or the piece boundary.
+
+Full policy, triggers and recording requirements: `orchestration/EFFORT-POLICY.md`.
+
 ## The wide-before-deep constraint
 
 The world is traversable end to end and the main quest completable from **Wave 1**

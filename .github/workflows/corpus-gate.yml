@@ -75,7 +75,8 @@ jobs:
           fi
           echo "ok: the gate rejected a deliberately broken item."
           rm -f "$probe"
-          git diff --exit-code
+          test ! -e "$probe"
+          node tools/corpus-index.mjs --check   # and the gate passes again once it is gone
 
       - name: install measurement dependencies
         working-directory: tools

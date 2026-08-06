@@ -2,7 +2,7 @@
   "task_id": "wave1-prep",
   "brief": "inline (clear BAR-CRITIQUE-02 carry-forward conditions C1, C3, C14/G14, +C2 if budget)",
   "started": "wave-1-prep",
-  "state": "writing",
+  "state": "complete",
   "outputs_expected": [
     "C1: ladder mapping row added to 35 items",
     "C1: tools/corpus-index.mjs ladder-row check",
@@ -12,15 +12,17 @@
     "corpus/00-doctrine/CORPUS-COHERENCE-02.md edit log"
   ],
   "outputs_written": [
-    "C1: 109 ladder anchor rows inserted (all 137 items now carry one)",
-    "C1: tools/corpus-index.mjs check C6 + `ladder anchors` counter",
-    "C1: SCORING.md 1.2a amendment (three recognised forms + gate/cap clause)",
-    "C14: package.json (root)",
-    "C14: .github/workflows/corpus-gate.yml",
-    "C14: .githooks/pre-commit",
-    "C14: RI-MTH05 M8 amended + new M9 (C6) + hard fail 4 sharpened",
-    "C3: docs/PLAN.md rewritten - 28 wave-1 pieces covering all 250 wave-1 paths exactly once",
-    "C3: subsystems.json now carries `wave` on all 325 paths + corpus-index check C7"
+    "corpus/00-doctrine/SCORING.md \u2014 new \u00a71.2a (three recognised anchor forms, gate/cap clause, enforcement)",
+    "109 reference items \u2014 one appended native\u2192ladder anchor block each (no threshold changed)",
+    "tools/corpus-index.mjs \u2014 check C6 (ladder anchor row) + C7 (wave assignment) + two summary lines",
+    "docs/PLAN.md \u2014 rewritten; 28 wave-1 pieces covering all 250 wave-1 paths exactly once",
+    "corpus/00-doctrine/subsystems.json \u2014 `wave` on all 325 paths",
+    "package.json (root) \u2014 gate / gate:strict / ci / hooks:install",
+    ".github/workflows/corpus-gate.yml \u2014 blocking, with a step that proves the gate can fail",
+    ".githooks/pre-commit \u2014 regenerates a stale INDEX.md then runs --check",
+    "corpus/80-methods/RI-MTH05 \u2014 M8 made true (three wiring locations tabulated), new M9 = C6, hard fail 4 sharpened",
+    "corpus/00-doctrine/CONTENT-BUDGET.md \u2014 totals, Morrowind comparison, signed feasibility + cut order, FLOOR-HUG detector spec",
+    "corpus/00-doctrine/CORPUS-COHERENCE-02.md \u2014 full edit log"
   ],
   "findings": [
     "SCORING.md 1.2 mandated form is `| Ladder | 4 | 6 | 8 |` + `| Native | ... |`. ZERO items use that exact orientation. The 6 weapons items use a TRANSPOSED table `| Ladder | Native score |` with rows 4/6/8 - the critic counted those as 'verbatim'.",
@@ -31,8 +33,12 @@
     "5 items genuinely have no scale to map and are declared gate/cap items: RI-UIX02 (binary gate), RI-VIS09 (register/compliance), RI-VIS06 (caps RI-VIS03/05), RI-VIS07 (caps RI-VIS05 ART), plus RI-MTH05 which already declared itself a gate. Their rows carry `n/a` at the rungs their native scale does not have; SCORING.md 1.2a clause 3 makes that admissible only for declared gate/cap items.",
     "RI-VIS01 has a native scale with rungs 10/7/4/0 only - no 5, 6, 8 or 9. Its anchor row is 4 / 7 / 10 and says so.",
     "CONCURRENCY: another agent added corpus/40-dialogue/RI-DLG09-the-parley.md mid-task (corpus is now 138 items). The new C6 check caught it immediately with no anchor row - the gate worked on its first real encounter with drift. Anchor row added (4/6/8, weighted mean of seven axes).",
-    "C3 MEASURED: wide-before-deep forces 250 of 325 paths (77%) into wave 1. 28 pieces cover them exactly once, no overlaps, no gaps. 125 of 138 items own at least one wave-1 path; the 13 that do not are listed in PLAN.md 5 with the wave they become scoreable."
+    "C3 MEASURED: wide-before-deep forces 250 of 325 paths (77%) into wave 1. 28 pieces cover them exactly once, no overlaps, no gaps. 125 of 138 items own at least one wave-1 path; the 13 that do not are listed in PLAN.md 5 with the wave they become scoreable.",
+    "C2 MEASURED: total authored prose demanded is ~286,000 words at target (117k settlement-local + <=23k global + 73k books + 73k quest/journal), ~218,000 at floor. Morrowind BASE dialogue alone is 520,654 unique words (22,502 texts, measured from the vendored extract); base+expansions 682,372. Plus ~330 books ~231k words. Our demand is ~42% of Morrowind's base game, not 'at or above' it.",
+    "C2 quests: 4 joinable factions x 24-28 + main >=24 + side ~80 = 200-216 vs Morrowind's ~427 (396 UESP quest pages). 47-51%. NPCs 269 vs 1,429 pages (19-26%). Interiors 250 vs 624 place pages. Area 14.5 vs 24 km2 (60%).",
+    "C2 VERDICT: words are feasible; the EVIDENCE budget is not. ~117 distinct evidence artifacts must be regenerated EVERY wave (41 traced crossings + 15 re-probed breakages + 24 blind screenshots + ~36 blind pairs + 1 sabotage control that doubles the whole wave). Cut content units, never evidence per unit. Ranked cut order in CONTENT-BUDGET.md 5.",
+    "FLOOR-HUG detector proposed (CONTENT-BUDGET.md 6): slack s=(D-F)/(T-F) per metric; FH1 floor_hug_rate>0.35 fails, FH2 median_slack<0.30 fails, FH3 slack_IQR<0.20 FAILS FOR BEING TOO UNIFORM (evaluated only when median_slack<0.5), FH4 binomial simultaneity p<0.001, FH5 flat wave-over-wave delta. Needs corpus/00-doctrine/content-budget.json + tools/content-budget.mjs and a new item RI-MTH06 to own it."
   ],
-  "next_step": "C2: CONTENT-BUDGET.md, then CORPUS-COHERENCE-02.md edit log",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 task complete",
+  "notes_for_successor": "Open, in priority order: (1) write RI-MTH06 + content-budget.json + tools/content-budget.mjs so FLOOR-HUG actually computes \u2014 until then the aggregate is unmeasured, not passed. (2) BAR-CRITIQUE-02 C6 housekeeping: add the camera.* root and move RI-CAM01-07 judges: in ONE commit (PLAN.md W1-06 names the piece against the paths they judge today, so wave 1 is not blocked). (3) C4: sabotage-control schema enforcement in verdict-validate + the human-play clause. (4) C5 before wave 4. (5) The 28 items that already carried an anchor block use two other orientations; SCORING 1.2a accepts all three deliberately - reconciling is aesthetic churn. (6) RI-CMB11/RI-QST09/RI-WLD13 use a we-lose floor of 75 where eleven siblings use 70; possibly deliberate, recorded in CORPUS-COHERENCE-02 6, not changed."
 }
