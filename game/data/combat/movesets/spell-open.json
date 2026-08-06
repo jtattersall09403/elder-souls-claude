@@ -1,0 +1,31 @@
+{
+ "schema": "elder-souls/spell-moveset@1",
+ "id": "spell-open",
+ "spell_id": "open",
+ "corpus_item": "RI-MAG01 §B ES-CAST/1",
+ "unit": "f@60",
+ "class": "CANTRIP",
+ "clip": "cast_point",
+ "silhouette": "one hand snapped forward from the hip, elbow locked, body square — the only cast class that keeps walking",
+ "startup": 14,
+ "active": 3,
+ "recovery": 20,
+ "total": 37,
+ "Ps": 15,
+ "Tc": 10,
+ "hard_until": 29,
+ "stamina": 10,
+ "focus_cost_rod": 4,
+ "hyperarmour_window": null,
+ "hyperarmour_requires_two_handed_catalyst": true,
+ "iframes": null,
+ "hitbox": false,
+ "geometry": {
+  "kind": "projectile",
+  "radius_m": 0.14,
+  "speed_mps": 22,
+  "turn_rate_dps": 0,
+  "tracking_cutoff": null,
+  "lifetime_s": 1.5
+ }
+}

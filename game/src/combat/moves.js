@@ -21,6 +21,7 @@ export const PLAYER_STATE_ENUM = [
   'STAGGER', 'KNOCKDOWN', 'DEAD',
   // --- declared extensions, see STATE_ENUM_EXTENSIONS ---
   'PARLEY_STARTUP', 'PARLEY_ACTIVE', 'PARLEY_RECOVER',
+  'JUMP_RISE', 'JUMP_AIR', 'JUMP_LAND', 'STANCE_SWITCH', 'SWAP',
 ];
 
 export const STATE_ENUM_EXTENSIONS = {
@@ -33,6 +34,22 @@ export const STATE_ENUM_EXTENSIONS = {
     'exactly the terms every other action in the fight has, so it needs states in the same ' +
     'vocabulary. They are DECLARED in the trace META rather than smuggled in, so a conforming ' +
     'reader validates against the declared set and still fails closed on anything unexpected.',
+  added_wave1_remediation: {
+    states: ['JUMP_RISE', 'JUMP_AIR', 'JUMP_LAND', 'STANCE_SWITCH', 'SWAP'],
+    why:
+      "The W1-09 verdict §2.3 found `jump`, `two_hand`, `swap_right`, `swap_left` and `menu` " +
+      'ACCEPTED AND INERT: pressing jump produced no state change, max_y 0.0000 over 90 frames ' +
+      'and no stamina deduction, against a declared cost of 18. That made RI-CMB02 §C\'s ' +
+      "jump-attack row, RI-CMB01 §B's OVERLOADED jump-attack prohibition and RI-WPN06's whole " +
+      'stance contract structurally unmeasurable — "the methods are absent rather than ' +
+      'present-and-lying" does not cover a button that IS present and does nothing. They are ' +
+      'now real committed actions with real states, real costs and real frame data ' +
+      '(frames.json §actions), declared here on exactly the terms the PARLEY_* extension was.',
+    menu:
+      'NOT a state. `menu` opens a UI surface and DOES NOT PAUSE the fixed step — see ' +
+      'frames.json §actions.menu. AR-1 probe A3 ("pause mid-fight") was scored not_run for want ' +
+      'of a menu surface; it is now runnable and the answer is the Souls-side one.',
+  },
   not_added: {
     EXHAUSTED:
       'RI-CMB09 §6 asks for EXHAUSTED as a state. It is carried instead as the boolean field ' +
@@ -56,7 +73,7 @@ export const ENEMY_STATE_ENUM = [
  * @param {object} moveset one game/data/combat/movesets/*.json
  * @param {string} shieldId a key of stamina.json §block.shields, or null
  */
-export function buildMoveTable(d, moveset, shieldId) {
+export function buildMoveTable(d, moveset, shieldId, opts) {
   const arch = d.clips.archetypes;
   const wpn = moveset.weapon;
   const out = {};
@@ -64,8 +81,14 @@ export function buildMoveTable(d, moveset, shieldId) {
   const socketB = wpn.socket_b_dist_m;
 
   // ---- attacks (RI-CMB02 §A/§B) ----------------------------------------------------------
+  // `twoHanded` overlays the class's declared two-handed row (spine/*.json §moves.two_handed):
+  // a DIFFERENT pose archetype, amplitude and root displacement — RI-WPN06 §B's divergence
+  // clause — on top of RI-CMB02 §C's ×1.00 frame counts, ×1.15 stamina, ×1.15 motion value and
+  // ×1.30 poise damage, plus §C's R1 hyperarmour on axe / greatsword / ultra greatsword.
+  const twoHanded = !!(opts && opts.twoHanded) && !!moveset.moves.two_handed;
   for (const id of ['light', 'heavy']) {
-    const m = moveset.moves[id];
+    const base = moveset.moves[id];
+    const m = twoHanded ? Object.assign({}, base, moveset.moves.two_handed[id]) : base;
     const clip = new Clip(m.anim, arch[m.archetype], { startup: m.startup, active: m.active, total: m.total }, m.amplitude, m.root_dz_m);
     out[id] = {
       id,
@@ -91,6 +114,7 @@ export function buildMoveTable(d, moveset, shieldId) {
       hitstop_frames: m.hitstop_frames,
       root_dz_m: m.root_dz_m,
       reach_m_declared: m.reach_m_declared,
+      two_handed: twoHanded,
       iframes: null,
       // RI-CMB02 §D — the commitment rule, computed from the item's own formula.
       hard_until: m.startup + m.active + Math.ceil(0.45 * m.recovery),
@@ -235,6 +259,62 @@ export function buildMoveTable(d, moveset, shieldId) {
     source: 'ARBITRATION §1 as amended (drift ID-01) / seam S13 as amended',
   };
 
+  // ---- jump, stance switch and quick swap (frames.json §actions) ------------------------------
+  const acts = d.frames.actions;
+  if (acts && acts.jump) {
+    const j = acts.jump;
+    out.jump = {
+      id: 'jump',
+      kind: 'jump',
+      anim: 'jump',
+      clip: new Clip('jump', arch.jump_arc, { startup: j.startup, active: j.airborne, total: j.total }, 1.0, 0.9),
+      startup: j.startup,
+      active: j.airborne,
+      recovery: j.landing,
+      total: j.total,
+      stamina: d.stamina.costs.jump,
+      apex_m: j.apex_m,
+      // RI-WPN04 §B: "AIRBORNE and vel_y < 0 … No rising jump attacks."
+      attack_from: j.startup + Math.ceil(j.airborne / 2) + 1,
+      airborne: [j.startup + 1, j.startup + j.airborne],
+      hitbox: false,
+      iframes: null,          // a jump is not a dodge. Ever.
+      hitstop_frames: 0,
+      states: { startup: 'JUMP_RISE', active: 'JUMP_AIR', recovery: 'JUMP_LAND' },
+      source: 'frames.json §actions.jump (constructed) + RI-CMB03 §B for the 18 stamina',
+    };
+  }
+  if (acts && acts.stance_switch) {
+    const t = acts.stance_switch;
+    out.stance_switch = {
+      id: 'stance_switch',
+      kind: 'stance',
+      anim: twoHanded ? 'stance_to_one_hand' : 'stance_to_two_hand',
+      clip: new Clip('stance_switch', arch.stance_switch, { startup: 0, active: 0, total: t.total }, 1.0, 0),
+      startup: 0, active: 0, recovery: t.total, total: t.total,
+      stamina: t.stamina,
+      legal_from: t.legal_from,
+      hitbox: false, iframes: null, hitstop_frames: 0,
+      states: { startup: 'STANCE_SWITCH', active: 'STANCE_SWITCH', recovery: 'STANCE_SWITCH' },
+      source: 'RI-WPN06 §A (36 f@60, root-locked, uncancellable, legal from IDLE/WALK/RUN only)',
+    };
+  }
+  if (acts && acts.quick_swap) {
+    const q = acts.quick_swap;
+    out.swap = {
+      id: 'swap',
+      kind: 'swap',
+      anim: 'quick_swap',
+      clip: new Clip('quick_swap', arch.quick_swap, { startup: 0, active: 0, total: q.total }, 1.0, 0),
+      startup: 0, active: 0, recovery: q.total, total: q.total,
+      stamina: q.stamina,
+      legal_from: q.legal_from,
+      hitbox: false, iframes: null, hitstop_frames: 0,
+      states: { startup: 'SWAP', active: 'SWAP', recovery: 'SWAP' },
+      source: 'frames.json §actions.quick_swap (constructed, shaped by RI-WPN06 §A\'s no-instant-toggle rule)',
+    };
+  }
+
   // ---- reaction states (RI-CMB05 §B, RI-CMB03 §D) --------------------------------------------
   out._stagger = {};
   for (const t of d.poise.stagger.tiers) {
@@ -285,8 +365,10 @@ export function buildMoveTable(d, moveset, shieldId) {
   out._dead = new Clip('dead', arch.dead_collapse, { startup: 12, active: 12, total: 48 }, 1.0, 0.4);
 
   out._weapon = wpn;
-  out._movesetId = moveset.id;
+  out._movesetId = moveset.id + (twoHanded ? ':two_handed' : '');
   out._classKey = moveset.class_key;
+  out._twoHanded = twoHanded;
+  out._hasTwoHanded = !!moveset.moves.two_handed;
   return out;
 
   function critMove(id, total, dmgFrame, invuln, stam, mult, archetype, source) {

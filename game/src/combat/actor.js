@@ -42,6 +42,8 @@ export class CombatBody {
     this.anim = 'idle';
     this.animFrame = 0;
     this.move = null;
+    this.airborne = false;
+    this.twoHanded = false;
     this.actionableAt = 0;
     this.iframe = false;
     this.iframeKind = null;
@@ -133,6 +135,14 @@ export class CombatBody {
       this._wasInHA = inW;
     }
 
+    // The jump's VERTICAL is root motion too, and it is the character's world Y — not a rig
+    // offset. `max_y = 0.0000 over 90 frames` was the W1-09 verdict's evidence that jump did
+    // not exist; `pos[1]` is what that probe reads, so that is what moves.
+    if (m.kind === 'jump') {
+      this.pos[1] = Math.max(0, m.clip.rootOffsetYAt(f) * m.apex_m);
+      this.airborne = f >= m.airborne[0] && f <= m.airborne[1];
+    } else if (this.airborne) { this.airborne = false; this.pos[1] = 0; }
+
     // step 5: root motion. The clip's delta, along the direction latched at frame 1 for a
     // roll, or the actor's facing for everything else. The controller adds NOTHING of its own.
     const d = m.clip.rootDeltaAt(f);
@@ -147,7 +157,7 @@ export class CombatBody {
 
     // step 4 + 6, via the rig
     m.clip.applyPose(this.rig, f);
-    this.evaluateRig(m.clip.rootOffsetYAt(f));
+    this.evaluateRig(m.kind === 'jump' ? 0 : m.clip.rootOffsetYAt(f));
 
     // step 7: hitbox active flags, from the frame data at this anim_frame
     this.hitboxActive = !!m.hitbox && f > m.startup && f <= m.startup + m.active;
@@ -247,6 +257,7 @@ export class CombatBody {
   }
 
   endMove() {
+    if (this.move && this.move.kind === 'jump') { this.airborne = false; this.pos[1] = 0; }
     // RI-CMB05 §A: poise resets to full on the frame the stagger animation ENDS. Doing it on
     // the frame the stagger STARTS would let a second hit during the stagger begin eating a
     // fresh pool, which is the stagger-lock chain the reset exists to prevent.
@@ -312,4 +323,16 @@ export class CombatBody {
   spend(cost, frame, C) { return spendStamina(this, cost, frame, C.stamina.regen.delay_frames_after_any_spend); }
 
   chestPos(out) { return this.rig.chestPos(out); }
+
+  /**
+   * Replace the move table in place — the stance switch and the quick swap both end by doing
+   * this. In place, rather than by rebuilding the body, so hp, stamina, poise, position,
+   * facing, the swing counter and the hit-dedup set all survive: a swap in the middle of a
+   * fight must not be a free full heal.
+   */
+  setMoves(moves) {
+    this.moves = moves;
+    this.twoHanded = !!moves._twoHanded;
+    this.evaluateRig(0);
+  }
 }

@@ -74,6 +74,9 @@ export class PlayerController {
         b.regenBlockUntil = Math.max(b.regenBlockUntil, frame + this.d.stamina.regen.delay_frames_after_any_spend);
       }
       if (ended.kind === 'attack') { this.chainIndex = Math.min(2, this.chainIndex + 1); this.chainUntil = frame + 24; }
+      // RI-WPN06 §A: the grip changes when the 36 f@60 animation ENDS, not when it starts.
+      // Committing on the press would make the switch free, which is the hard fail §A names.
+      if (ended.kind === 'stance' || ended.kind === 'swap') this._commitLoadout(frame, ended, ctx);
     }
 
     // Reaction states own the actor completely — RI-CMB05 §B "no input is accepted".
@@ -170,6 +173,25 @@ export class PlayerController {
       this._tryStart(bit, frame, input, ctx, { cancelledFrom: m.id, atFrame: nextFrame });
       return;
     }
+    // RI-WPN04 §B: a jump attack is legal from AIRBORNE and vel_y < 0 only — "no rising jump
+    // attacks" — and RI-CMB01 §B / RI-CMB02 §C forbid it entirely at OVERLOADED.
+    if (m.kind === 'jump' && (bit === BIT.light || bit === BIT.heavy)) {
+      if (nextFrame < m.attack_from) {
+        input.droppedInputs++;
+        const e = ctx.emit(frame, 'INPUT_DROPPED');
+        e.button = nameOfBit(bit); e.reason = 'jump_rising'; e.anim_frame = nextFrame;
+        e.legal_from = m.attack_from;
+        return;
+      }
+      if (this.tier() === 'OVERLOADED') {
+        input.droppedInputs++;
+        const e = ctx.emit(frame, 'INPUT_DROPPED');
+        e.button = nameOfBit(bit); e.reason = 'overloaded_no_jump_attack';
+        return;
+      }
+      this._tryStart(bit, frame, input, ctx, { jumping: true });
+      return;
+    }
     // heal has its own dodge-cancel window (RI-CMB08 §C)
     if (bit === BIT.roll && m.kind === 'heal' && nextFrame >= m.dodge_cancel_from) {
       this._tryStart(bit, frame, input, ctx, { cancelledFrom: 'heal' });
@@ -250,6 +272,9 @@ export class PlayerController {
     }
 
     if (bit === BIT.parry) {
+      // RI-WPN06 §A: two-handed, the offhand item is STOWED and `block`, `parry` and `off.*`
+      // are unavailable for the whole duration. That is the cost that makes the grip a choice.
+      if (b.twoHanded) { const e = emit(frame, 'INPUT_DROPPED'); e.button = 'parry'; e.reason = 'two_handed_offhand_stowed'; return; }
       const m = b.moves.parry;
       if (!m) { const e = emit(frame, 'INPUT_DROPPED'); e.button = 'parry'; e.reason = 'no_parry_tool'; return; }
       if (!this._afford(m, frame, 'parry', emit)) return;
@@ -273,6 +298,48 @@ export class PlayerController {
       return;
     }
 
+    if (bit === BIT.jump) {
+      const m = b.moves.jump;
+      if (!m) return;
+      if (b.exhausted) { const e = emit(frame, 'INPUT_DROPPED'); e.button = 'jump'; e.reason = 'exhausted'; return; }
+      if (!this._afford(m, frame, 'jump', emit)) return;
+      b.begin(m, frame, {});
+      this._spend(m, frame);
+      const e = emit(frame, 'ACTION_START');
+      e.mv = 'JUMP'; e.tag = 'jump'; e.total = m.total; e.apex_m = m.apex_m;
+      e.airborne = m.airborne; e.attack_from = m.attack_from; e.tier = tier;
+      e.stam_after = round1(b.stamina);
+      return;
+    }
+
+    if (bit === BIT.two_hand || bit === BIT.swap_right || bit === BIT.swap_left) {
+      const stance = bit === BIT.two_hand;
+      const m = stance ? b.moves.stance_switch : b.moves.swap;
+      if (!m) return;
+      // RI-WPN06 §A: legal from IDLE, WALK, RUN only. `_tryStart` is only reached when the
+      // actor is uncommitted, so the states that remain to exclude are the guard and the
+      // exhausted bar; everything else is already excluded structurally.
+      if (m.legal_from && m.legal_from.indexOf(b.state) < 0) {
+        const e = emit(frame, 'INPUT_DROPPED');
+        e.button = nameOfBit(bit); e.reason = 'illegal_from_state'; e.state = b.state;
+        e.legal_from = m.legal_from;
+        return;
+      }
+      if (stance && !b.moves._hasTwoHanded) {
+        const e = emit(frame, 'INPUT_DROPPED'); e.button = 'two_hand'; e.reason = 'no_two_handed_moveset';
+        return;
+      }
+      b.begin(m, frame, {});
+      b.pendingLoadout = stance
+        ? { twoHanded: !b.twoHanded }
+        : { cycle: bit === BIT.swap_right ? 'right' : 'left' };
+      const e = emit(frame, 'ACTION_START');
+      e.mv = stance ? 'STANCE_SWITCH' : 'SWAP'; e.tag = stance ? 'stance' : 'swap';
+      e.total = m.total; e.to = stance ? (b.twoHanded ? 'one_hand' : 'two_hand') : e.mv;
+      e.stam_after = round1(b.stamina);
+      return;
+    }
+
     if (bit === BIT.interact) {
       const m = b.moves.parley;
       const tgt = ctx.lockedBody || this._nearestParleyable(ctx);
@@ -289,6 +356,22 @@ export class PlayerController {
       e.resolution_frame = m.resolution_frame; e.stam_after = round1(b.stamina);
       return;
     }
+  }
+
+  /** RI-WPN06 §A: the grip (or the item) changes when the committed animation ends. */
+  _commitLoadout(frame, ended, ctx) {
+    const b = this.b;
+    const p = b.pendingLoadout;
+    b.pendingLoadout = null;
+    if (!p || !ctx.rebuildLoadout) return;
+    const r = ctx.rebuildLoadout(p);
+    if (!r) return;
+    const e = ctx.emit(frame, 'ACTION_START');
+    e.mv = ended.kind === 'stance' ? 'STANCE_SWITCH' : 'SWAP';
+    e.tag = ended.kind === 'stance' ? 'stance_done' : 'swap_done';
+    e.total = 0; e.stance = b.twoHanded ? 'two_hand' : 'one_hand';
+    e.weapon = b.moves._movesetId; e.shield = b.shieldId;
+    this._derived.clear();
   }
 
   _afford(m, frame, name, emit) {
@@ -317,7 +400,8 @@ export class PlayerController {
     const b = this.b;
     let mod = null, tag = null;
     if (opts && opts.cancelledFrom) { /* attack out of a cancel is a plain attack */ }
-    if (b.state === 'ROLL_RECOVER' || (opts && opts.rolling)) { mod = 'rolling'; tag = 'rolling'; }
+    if (opts && opts.jumping) { mod = 'jump'; tag = 'jump'; }
+    else if (b.state === 'ROLL_RECOVER' || (opts && opts.rolling)) { mod = 'rolling'; tag = 'rolling'; }
     else if (b.state === 'SPRINT') { mod = 'running'; tag = 'running'; }
     else if (frame - this.lastBlockFrame <= this.d.frames.modifiers.guard_counter.window_after_block_f) { mod = 'guard_counter'; tag = 'guard_counter'; }
     else if (base.id === 'light' && this.chainIndex === 1) { mod = 'chain_hit_2'; tag = 'chain2'; }
@@ -363,7 +447,10 @@ export class PlayerController {
     const prevSpeed = b.speedMps;
 
     // RI-CMB09 §4: at zero stamina the guard may STAY up but may not be RAISED.
-    if (wantGuard && !b.guardRaised && b.exhausted) {
+    // RI-WPN06 §A: two-handed, the offhand is stowed and there is nothing to raise.
+    if (wantGuard && !b.guardRaised && b.twoHanded) {
+      const e = ctx.emit(frame, 'INPUT_DROPPED'); e.button = 'block'; e.reason = 'two_handed_offhand_stowed';
+    } else if (wantGuard && !b.guardRaised && b.exhausted) {
       const e = ctx.emit(frame, 'INPUT_DROPPED'); e.button = 'block'; e.reason = 'exhausted';
     } else {
       if (wantGuard && !b.guardRaised) { const e = ctx.emit(frame, 'GUARD_UP'); e.who = b.id; }
@@ -557,8 +644,14 @@ function firstActionBit(mask) {
   if (mask & BIT.parry) return BIT.parry;
   if (mask & BIT.use_item) return BIT.use_item;
   if (mask & BIT.interact) return BIT.interact;
+  if (mask & BIT.jump) return BIT.jump;
   if (mask & BIT.heavy) return BIT.heavy;
   if (mask & BIT.light) return BIT.light;
+  // The loadout buttons resolve LAST: a stance switch or a swap must never win a frame from a
+  // dodge or an attack. RI-WPN06 §A makes them legal only from IDLE/WALK/RUN anyway.
+  if (mask & BIT.two_hand) return BIT.two_hand;
+  if (mask & BIT.swap_right) return BIT.swap_right;
+  if (mask & BIT.swap_left) return BIT.swap_left;
   return 0;
 }
 function nameOfBit(bit) { for (const k in BIT) if (BIT[k] === bit) return k; return String(bit); }

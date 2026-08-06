@@ -287,12 +287,19 @@ function peakRatioFor(archName, archObj) {
   for (const id of CLASSES) {
     const ms = spine[id];
     for (const mv of ['light', 'heavy']) {
-      const m = ms.moves[mv];
-      if (m.archetype !== archName) continue;
-      const clip = new Clip(m.anim, archObj, { startup: m.startup, active: m.active, total: m.total }, m.amplitude, m.root_dz_m);
-      const peak = peakActiveTip(clip, ms.weapon, m);
-      const ratio = peak / ms.weapon.peak_tip_speed_mps_declared;
-      if (ratio > worst) worst = ratio;
+      const base = ms.moves[mv];
+      // one-handed and two-handed both, because the two-handed rows select a different
+      // archetype and a different amplitude and are just as bound by RI-CMB04 §B's column.
+      const variants = [base];
+      const th = ms.moves.two_handed && ms.moves.two_handed[mv];
+      if (th) variants.push(Object.assign({}, base, th));
+      for (const m of variants) {
+        if (m.archetype !== archName) continue;
+        const clip = new Clip(m.anim, archObj, { startup: base.startup, active: base.active, total: base.total }, m.amplitude, m.root_dz_m);
+        const peak = peakActiveTip(clip, ms.weapon, base);
+        const ratio = peak / ms.weapon.peak_tip_speed_mps_declared;
+        if (ratio > worst) worst = ratio;
+      }
     }
   }
   return worst;

@@ -39,7 +39,7 @@ export class CombatSystem {
     if (!moveset) throw new Error(`createPlayer: no moveset '${loadout.weapon}'. Known: ${Object.keys(d.movesets).join(', ')}`);
     const shieldId = loadout.shield === null ? null : (loadout.shield || d.stamina.block.exemplar_shield);
     const shield = shieldId ? d.stamina.block.shields[shieldId] : null;
-    const moves = buildMoveTable(d, moveset, shieldId);
+    const moves = buildMoveTable(d, moveset, shieldId, { twoHanded: !!loadout.twoHanded });
     const endurance = loadout.endurance !== undefined ? loadout.endurance : 20;
     const body = new CombatBody('P', 'P', d.skeleton, d.hitgeometry, moves, {
       hpMax: loadout.hpMax !== undefined ? loadout.hpMax : 620,
@@ -51,7 +51,9 @@ export class CombatSystem {
       haPool: (d.poise.hyperarmour.pools[moveset.class_key] || {}).one_handed || 0,
     });
     body.shieldId = shieldId;
+    body.twoHanded = !!moves._twoHanded;
     body.lockable = false;
+    this._playerLoadout = Object.assign({}, loadout, { weapon: loadout.weapon || 'straight-sword', shield: shieldId });
     this.player = body;
     this.playerCtl = new PlayerController(body, d, this.lock);
     this.playerCtl.flaskLevel = loadout.flaskLevel || 0;
@@ -147,6 +149,7 @@ export class CombatSystem {
       cameraYawDeg: camera ? camera.yaw : 0,
       player: this.player,
       world: this.world,
+      rebuildLoadout: (p) => this.rebuildPlayerLoadout(p),
     };
 
     // steps 1–7, player then enemies in stable id order (HARNESS.md D7)
@@ -165,6 +168,39 @@ export class CombatSystem {
     if (brk) { const e = emit(frame, 'LOCK_BREAK'); e.reason = brk; }
     if (camera) this.lock.measureFraming(camera, this.player, this.lock.target ? this.bodyOf(this.lock.target) : null, camera.fov, 16 / 9);
 
+  }
+
+  /**
+   * The stance switch (RI-WPN06 §A) and the quick swap, applied when their committed animation
+   * ENDS. Rebuilds the player's MOVE TABLE only — the body, and therefore hp, stamina, poise,
+   * position, facing and the swing counter, is untouched. Rebuilding the body here would make
+   * a mid-fight swap a free full heal.
+   */
+  rebuildPlayerLoadout(patch) {
+    const d = this.d;
+    const L = this._playerLoadout || {};
+    if (patch.twoHanded !== undefined) L.twoHanded = patch.twoHanded;
+    if (patch.cycle) {
+      if (patch.cycle === 'right') {
+        const ids = Object.keys(d.movesets).sort();
+        const i = ids.indexOf(L.weapon);
+        L.weapon = ids[(i + 1) % ids.length];
+      } else {
+        const ids = Object.keys(d.stamina.block.shields).sort().concat([null]);
+        const i = ids.indexOf(L.shield === undefined ? null : L.shield);
+        L.shield = ids[(i + 1) % ids.length];
+      }
+    }
+    const moveset = d.movesets[L.weapon];
+    if (!moveset) throw new Error(`rebuildPlayerLoadout: no moveset '${L.weapon}'`);
+    const shield = L.shield ? d.stamina.block.shields[L.shield] : null;
+    const moves = buildMoveTable(d, moveset, L.shield || null, { twoHanded: !!L.twoHanded });
+    this.player.setMoves(moves);
+    this.player.shield = shield;
+    this.player.shieldId = L.shield || null;
+    if (L.twoHanded) this.player.guardRaised = false;
+    this._playerLoadout = L;
+    return { weapon: moves._movesetId, shield: this.player.shieldId, two_handed: this.player.twoHanded };
   }
 
   toggleLock(frame, cameraYawDeg, bus) {
