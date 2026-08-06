@@ -2,12 +2,15 @@
   "task_id": "ref-critic-r2",
   "brief": "inline (round-2 reference coverage critic)",
   "started": "wave-2",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.md",
     "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.json"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.md",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.json"
+  ],
   "findings": [
     "DISK CENSUS: 449 media files on disk (359 jpg + 90 avif). MANIFEST.json holds 488 records, 450 media records. 1 ghost: video/V4-combat__...ia.mp4 is in the manifest but NOT on disk (3.3GB video deleted). H1 recurs; acquire.py --check '323 of 323 verify' is now false.",
     "video/ is EMPTY (0 files). Zero temporal reference exists.",
@@ -21,8 +24,17 @@
     "A7 has ZERO acquisition: no morrowind/REF-A21-regions, REF-A22-intraregion, REF-A23-ground directories exist.",
     "Morrowind: 89 square crops (84 marked superseded_by), 94 full-frame. Full-frame dims 1024x768(32), 1280x960(26), 1920x1080(11), 1366x768(8)...",
     "interval-run: 29 records total; 24 in modern/exterior_daylight, 5 mislabelled on anti-generic singletons. exterior_lowlight and interior_darkemissive still 0%.",
-    "pixel_metrics_valid = 0 across ALL of refs/morrowind/ and all of context/ and modern/ui/."
+    "pixel_metrics_valid = 0 across ALL of refs/morrowind/ and all of context/ and modern/ui/.",
+    "VERIFIED ROUTE: eldenring.fandom.com/api.php Category:Images - Animated gifs -> HTTP 200, 31 animated files incl. 4 'ER Moveset ... Longsword' (= RI-WPN01-04) and 11 'ER Skill Quickstep'. NEVER PREVIOUSLY SEARCHED.",
+    "VERIFIED: iiprop=metadata on a Fandom GIF returns frameCount and duration (81 frames / 5.67 s = 14.29 fps). This makes temporal metrics measurable at ~70 ms despite the WebP transcode stripping per-frame delays.",
+    "VERIFIED: deadendthrills.com serves lossless PNG 2560x1440-3840x2160; dark frame (lum 47.5) block_score 0.998. Art-directed photo mode - anchor set only.",
+    "VERIFIED: gamersyde.com HTTP 200, own-capture high-bitrate MP4, free account + JS-injected links.",
+    "DEAD END: imgsli.com 503.",
+    "ui-combat/ is 8 of 12 menus, not in-combat UI. REF-M22's real population is 16 across 4 games; RI-UIX01's is 4.",
+    "character_closeup: 9 of 13 are Elden Ring CUTSCENE portraits (Melina, Godrick, Malenia) - wrong camera for REF-M6, not merely wrong angle.",
+    "exterior_daylight: 24 of 43 share ONE identical depicts string, are Novigrad, and Novigrad is anti-generic/'s negative anchor. 56% of the band mass.",
+    "36 records are both corroboration=one-host AND pixel_metrics_valid=true (band-setting). 24 of those are the W3 run, which is GitHub-hosted, not Steam - wrong bucket. Leaves 12 genuinely weak."
   ],
-  "next_step": "verify luminance correlation on real corpus files; check A5 six-item coverage; check Morrowind region coverage for A7; then write critique",
-  "notes_for_successor": "Two required passes: (1) coverage against asked floors with REAL disk counts; (2) fresh first-principles findings. Must rule on builder's 3 reversible judgements + 5 filed amendments. A7 (geographical variation) has zero acquisition."
+  "next_step": "none - complete",
+  "notes_for_successor": "VERDICT NOT SATISFIED. Top 3 gaps: (1) zero temporal assets, fixable via two Fandom MediaWiki APIs verified 200 today; (2) block_score threshold is confounded with scene darkness - the 'Steam re-encodes' diagnosis is refuted by jpeg_quality_est=100 and a constant-quality darkening experiment (1.093->1.447); (3) A7 zero acquisition AND no metrics_valid_for flag so it could not be computed anyway. Ranks 0-2 of the work list are ZERO downloads."
 }

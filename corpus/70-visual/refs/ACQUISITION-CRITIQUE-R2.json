@@ -1,0 +1,831 @@
+{
+  "round": 2,
+  "role": "reference coverage critic",
+  "measured": "2026-08-06",
+  "measured_how": "directory walk over {jpg,jpeg,png,avif,webp,gif,mp4,webm,mkv}; pixel re-measurement with Pillow; manifest joined by path",
+  "verdict": "NOT SATISFIED",
+  "verdict_summary": "Round 1's builder did real, good work: souls-behaviour 0->93, REF-A12b 0->33, 57 full-frame Morrowind captures closing F1, context/ 0->23, 6 of 6 modern profiles now at >=3 games. Not satisfied for four reasons: (1) 449 media files and zero temporal - the set judges pose, not animation, and the fix is a MediaWiki API returning HTTP 200 today, not a video host; (2) the block_score / 'Steam re-encodes' diagnosis that is the stated binding constraint on the modern side is refuted by the builder's own computed fields and by a controlled experiment; (3) A7 has zero acquisition and could not be computed even if it had images, because no flag distinguishes fidelity-metric validity from art-direction-metric validity; (4) has_hud, side, slot and game are folder constants rather than observations, which overstates dependent populations by up to 9x.",
+  "satisfaction_conditions": [
+    "souls-behaviour/anim/ exists with >=20 named-move animated sequences from the two verified wiki APIs, each record carrying frame_count and duration_s copied from iiprop=metadata",
+    "block_score is exposure-invariant or per-profile-thresholded, and exterior_lowlight / interior_darkemissive are re-scored against it",
+    "REF-A21-regions/, REF-A22-intraregion/, REF-A23-ground/ exist and are populated, and a metrics_valid_for flag exists so A7 has a defined input set",
+    "has_hud, slot, side and game are per-file observations: one string per side, one per game, every REF-M* slot filled by name or listed unfilled by name",
+    "video/ has no manifest record for a file not on disk, and acquire.py --check's pass count is true",
+    "every remaining gap classified per A3 with no BLOCKING gap lacking a named search, and the three IMPOSSIBLE items written into the reference items themselves with the dependent bar actually lowered"
+  ],
+  "headline_counts": {
+    "media_files_on_disk": 449,
+    "manifest_records_total": 488,
+    "manifest_media_records": 450,
+    "ghost_records_in_manifest_not_on_disk": 1,
+    "files_with_pixel_metrics_valid_true": 69,
+    "files_flagged_heavily_recompressed": 199,
+    "superseded_morrowind_crops_still_counted_in_headline": 84,
+    "video_files_on_disk": 0,
+    "temporal_assets_anywhere": 0
+  },
+  "coverage": [
+    {
+      "folder": "modern/exterior_daylight",
+      "floor": "12/3/6",
+      "files": 43,
+      "countable": 33,
+      "games": 4,
+      "distinct_depicts": 20,
+      "interval_run": 24,
+      "verdict": "PASS on every clause",
+      "note": "but 24 of 43 share one identical depicts string and are the anti-generic negative-anchor location; see F16"
+    },
+    {
+      "folder": "modern/exterior_lowlight",
+      "floor": "12/3/6",
+      "files": 24,
+      "countable": 8,
+      "games": 4,
+      "distinct_depicts": 24,
+      "interval_run": 0,
+      "verdict": "count FAIL, games PASS, anti-curation FAIL",
+      "note": "count failure is a threshold artefact, not a source problem; see F13"
+    },
+    {
+      "folder": "modern/interior_darkemissive",
+      "floor": "10/2/5",
+      "files": 22,
+      "countable": 3,
+      "games": 4,
+      "distinct_depicts": 22,
+      "interval_run": 0,
+      "verdict": "count FAIL, games PASS, anti-curation FAIL",
+      "note": "19 of 22 exceed block_score 1.15; median 1.29; profile is defined by the property the metric punishes"
+    },
+    {
+      "folder": "modern/character_closeup",
+      "floor": "10/2/6",
+      "files": 13,
+      "countable": 7,
+      "games": 3,
+      "distinct_depicts": 13,
+      "interval_run": "exempt",
+      "verdict": "count FAIL and mis-populated",
+      "note": "9 of 13 are Elden Ring cutscene/NPC portraits; REF-M6 is the gameplay camera behind the player. Wrong camera, not merely wrong angle."
+    },
+    {
+      "folder": "modern/combat",
+      "floor": "8/2/4",
+      "files": 12,
+      "countable": 8,
+      "games": 4,
+      "distinct_depicts": 12,
+      "interval_run": "exempt",
+      "verdict": "PASS"
+    },
+    {
+      "folder": "modern/material_closeup",
+      "floor": "8/2/6",
+      "files": 9,
+      "countable": 5,
+      "games": 3,
+      "distinct_depicts": 9,
+      "interval_run": "exempt",
+      "verdict": "count FAIL, games PASS",
+      "note": "threshold fix alone likely takes this to 7-8"
+    },
+    {
+      "folder": "modern/ui (REF-M22)",
+      "floor": ">=2 games",
+      "files": 8,
+      "countable": "n/a",
+      "games": 3,
+      "distinct_depicts": 8,
+      "interval_run": "n/a",
+      "verdict": "PASS",
+      "note": "real population is 16 across 4 games once the 8 menus misfiled in souls-behaviour/ui-combat are counted; 6 of 8 at 1920x1080 makes F18 thin here"
+    },
+    {
+      "folder": "modern/hud",
+      "floor": "dissolved by A1",
+      "files": 0,
+      "verdict": "correctly dissolved"
+    },
+    {
+      "folder": "morrowind/REF-A1..A19 excl A12",
+      "floor": "2-3, core five 4-5",
+      "files": 141,
+      "full_frame": 57,
+      "superseded_crops": 84,
+      "verdict": "PASS on count; F1 closed"
+    },
+    {
+      "folder": "morrowind/REF-A3",
+      "floor": "2-3",
+      "files": 5,
+      "full_frame": 0,
+      "verdict": "FAIL - the only slot with no full-frame capture"
+    },
+    {
+      "folder": "morrowind/REF-A12",
+      "floor": "4-5",
+      "files": 38,
+      "images": 0,
+      "verdict": "structurally unfillable as images; REF-A12b supersedes; close the expectation"
+    },
+    {
+      "folder": "morrowind/REF-A12b",
+      "floor": "2-3 x 8 sub-kinds",
+      "files": 33,
+      "games": 1,
+      "verdict": "PASS",
+      "note": "11 sub-kinds, 8 distinct resolutions, 4:3 and 16:9 - genuinely serves RI-UIX06 F18 once resolution pairs are recorded"
+    },
+    {
+      "folder": "morrowind/REF-A20",
+      "floor": "loading/splash",
+      "files": 4,
+      "verdict": "PASS at the floor"
+    },
+    {
+      "folder": "morrowind/REF-A21-regions",
+      "floor": "4-6 x 9 regions",
+      "files": 0,
+      "verdict": "FAIL - directory absent",
+      "note": "A7. West Gash, Grazelands, Sheogorad, Azura's Coast have zero representation anywhere in the corpus"
+    },
+    {
+      "folder": "morrowind/REF-A22-intraregion",
+      "floor": "6-8 x 2 regions",
+      "files": 0,
+      "verdict": "FAIL - directory absent"
+    },
+    {
+      "folder": "morrowind/REF-A23-ground",
+      "floor": ">=1 per region",
+      "files": 0,
+      "verdict": "FAIL - directory absent"
+    },
+    {
+      "folder": "souls-behaviour/stance",
+      "files": 18,
+      "games": 1,
+      "verdict": "largest folder, easiest subject"
+    },
+    {
+      "folder": "souls-behaviour/arena",
+      "files": 14,
+      "games": 1,
+      "verdict": "good; F3 closed; 2 genuine fog gates"
+    },
+    {
+      "folder": "souls-behaviour/camera",
+      "files": 12,
+      "games": 1,
+      "verdict": "good"
+    },
+    {
+      "folder": "souls-behaviour/attacks",
+      "files": 12,
+      "games": 1,
+      "verdict": "best folder in the set - 3 windup/mid/recovery pairs of the same attack"
+    },
+    {
+      "folder": "souls-behaviour/ui-combat",
+      "files": 12,
+      "games": 1,
+      "verdict": "8 of 12 are menus, not in-combat UI"
+    },
+    {
+      "folder": "souls-behaviour/telegraph",
+      "files": 10,
+      "games": 2,
+      "verdict": "5 genuine windups, 5 approach/idle"
+    },
+    {
+      "folder": "souls-behaviour/death",
+      "files": 10,
+      "games": 1,
+      "verdict": "good; the bloodstain query was the right call"
+    },
+    {
+      "folder": "souls-behaviour/impact",
+      "files": 5,
+      "games": 1,
+      "verdict": "smallest folder, hardest subject, least servable by a still"
+    },
+    {
+      "folder": "souls-behaviour (whole axis)",
+      "files": 93,
+      "games": "DS3 91, DSR 2, Elden Ring 0",
+      "verdict": "built, but single-game against A5 rule 5"
+    },
+    {
+      "folder": "anti-generic",
+      "floor": "4-6",
+      "files": 5,
+      "verdict": "PASS"
+    },
+    {
+      "folder": "context",
+      "floor": "12-16 (A6)",
+      "files": 23,
+      "games": 1,
+      "verdict": "PASS on count, INCOMPLETE on subject",
+      "note": "xanmeer 2 and neither a stepped ziggurat; root-tunnel interiors 0; naga 0"
+    },
+    {
+      "folder": "video",
+      "floor": "V1+V2 required",
+      "files": 0,
+      "verdict": "FAIL - empty directory, and one ghost manifest record"
+    },
+    {
+      "folder": "rejected",
+      "files": 14,
+      "verdict": "ok"
+    }
+  ],
+  "catalogue_defects": [
+    {
+      "id": "H1",
+      "status": "fixed for 449 of 450"
+    },
+    {
+      "id": "H2",
+      "status": "fixed - the path-key copy-down in 15.5 is the right fix"
+    },
+    {
+      "id": "H3",
+      "status": "NOT FIXED, worse",
+      "detail": "of 131 modern records: 83 slot=null, 39 REF-M-supplemental, 8 REF-M22, 1 REF-M6. 20 of 21 REF-M* slots still formally unfilled. Section 15 never mentions H3."
+    },
+    {
+      "id": "H4",
+      "status": "still true, now quantified",
+      "detail": "449 files, 69 with pixel_metrics_valid true"
+    },
+    {
+      "id": "H5",
+      "status": "fixed"
+    },
+    {
+      "id": "H6",
+      "status": "NEW",
+      "detail": "manifest holds a record for video/V4-combat__archive-pc-longplay-dark-souls-remastered.ia.mp4; the file is not on disk. 15.1's 'acquire.py --check passes 323 of 323 including the 3.3 GB video' is stale."
+    },
+    {
+      "id": "H7",
+      "status": "NEW",
+      "detail": "side has two strings for one side: morrowind-art-direction (127) and morrowind-art (94). game has two strings for Morrowind, inflating a one-game side to a distinct-game count of 2."
+    },
+    {
+      "id": "H8",
+      "status": "NEW",
+      "detail": "has_hud is a folder constant: souls-behaviour 93/93, REF-A12b 33/33, anti-generic 5/5. Measured: 29 of 93 souls frames have exactly 0.0000 saturated pixels in the DS3 HP-bar region."
+    },
+    {
+      "id": "H9",
+      "status": "NEW",
+      "detail": "15.2 reports REF-A12b sub-kind 'menu-mode multi-window 8'; the catalogue has no such ui_subkind value. Critic F5's multi-window requirement is unverifiable from the data."
+    },
+    {
+      "id": "H10",
+      "status": "NEW",
+      "detail": "only 162 of 488 records cite any RI-* item id, all on the souls axis or context/. No modern/ or morrowind/ record names the reference item it serves."
+    }
+  ],
+  "fresh_findings": [
+    {
+      "id": "F12",
+      "title": "The set supports judging pose, not animation - and the fix is a MediaWiki API, not a video host",
+      "rank": "most important finding in this document",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-WPN01",
+        "RI-WPN02",
+        "RI-WPN03",
+        "RI-WPN04",
+        "RI-WPN05",
+        "RI-AI02",
+        "RI-CAM01",
+        "RI-CAM03",
+        "M11",
+        "M12"
+      ],
+      "argument": "449 media files, zero temporal. video/ is an empty directory. RI-WPN01-04 are windup silhouette, arc type, follow-through, recovery posture - three of the four are defined by what happens between frames. RI-AI02's bar is 'which attack is coming AND ROUGHLY WHEN' - a duration a still cannot contain. A5 rule 3 says in terms that video is first-class here and a still cannot show a windup; the axis was built entirely of stills. The project concluded IMPOSSIBLE because YouTube is closed and archive.org's holdings are too large. Both premises true, conclusion wrong: the artifact that serves these items is not a longplay, it is a per-move animation, and two wikis publish libraries of them.",
+      "verified_today": [
+        "darksouls.fandom.com/api.php list=categorymembers Category:Dark Souls: Boss Attack Animations -> HTTP 200, 12 files named per move (Artorias - Heavy Slam, Somersault Attack, Overwhelming Leap, ...). R1 found this; the builder did not act on it and 15.6 does not list it as attempted or blocked.",
+        "eldenring.fandom.com/api.php list=categorymembers Category:Images - Animated gifs -> HTTP 200, 31 files, NEVER PREVIOUSLY SEARCHED. Includes ER Moveset Neutral/Strong/War Cry/Barbaric Roar Attack Chain Longsword (= RI-WPN01-04 for one named weapon class, four times), 11 ER Skill Quickstep clips (locomotion+dodge library), Bloodstain rogier.gif (RI-JRN06), 5 enemy Ash-of-War clips (RI-AI02).",
+        "Downloaded ER_Moveset_Neutral_Attack_Chain_Longsword.gif: HTTP 200, 6,169,534 bytes, arrives as animated WebP (R1's F2 caveat confirmed), PIL reports n_frames=81 at 600x338.",
+        "iiprop=metadata on the same file returns frameCount:81, duration:5.67, looped:true -> 14.29 fps, ~70 ms per frame."
+      ],
+      "consequence": "RI-WPN01-04 become measurable as fractions of a known duration; RI-WPN05's ordering claim (dagger < ultra greatsword) becomes measurable, which is exactly the reduced bar 15.6 proposed - it can now be MET rather than merely restated; RI-AI02's 'roughly when' gets a number at +/-70 ms. Absolute frame-exact (16.7 ms) calibration stays IMPOSSIBLE and I am not asking for it.",
+      "secondary_route": "gamersyde.com returns HTTP 200 and publishes own-capture high-bitrate MP4 for direct download rather than via YouTube; links are behind a free account and JS-injected. Do not hold round 2 open for it."
+    },
+    {
+      "id": "F13",
+      "title": "block_score is confounded with scene darkness; the 'Steam re-encodes user uploads' diagnosis is refuted by the builder's own computed fields",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-VIS03 interior_darkemissive bands",
+        "RI-VIS03 exterior_lowlight bands"
+      ],
+      "evidence": [
+        "jpeg_quality_est median = 100.0 in EVERY Steam-sourced folder including the ones called heavily recompressed; bytes_per_pixel 1.29-2.31. My own q=95 re-encode of a corpus image produced 0.31 bytes/pixel. A file at 1.3 bpp with a q~100 quantisation table is not a heavy re-encode.",
+        "make-manifest.py line 138: return (aligned/n_aligned)/(other/n_other) - the denominator IS the scene's own detail, so a dark smooth scene inflates the ratio for a fixed amount of blocking. The metric measures visibility of blocking relative to content, not information destroyed.",
+        "CONTROLLED EXPERIMENT on run-w3nextgen-t0007.jpg (corpus's cleanest, block_score 0.987), one encoder, CONSTANT q=95, only luminance varied: lum 161.9 -> 1.093 PASS; lum 80.7 -> 1.203; lum 48.1 -> 1.313; lum 28.6 -> 1.447 FAIL. The luminance effect (+0.35) exceeds the whole margin between the 1.15 threshold and interior_darkemissive's 1.29 median.",
+        "CORPUS-WIDE, one host one encoder, n=106 Steam-sourced modern files: Pearson r(mean luminance, block_score) = -0.369; r(bytes_per_pixel, block_score) = -0.588. By luminance quintile, median block_score 1.284 / 1.246 / 1.162 / 1.133 / 1.133 and fail-rate 67% down to 38%. Monotone.",
+        "A genuinely lossless dark image passes easily: deadendthrills.com serves PNG at 2560x1440 and 3840x2160; battle.png at mean luminance 47.5 (squarely in the failing quintile) scores block_score 0.998; three other DET PNGs score 0.991-0.996."
+      ],
+      "correct_statement": "The metric is not broken - a lossless dark frame correctly scores 1.00. What is broken is applying ONE absolute threshold to all profiles when relative encode damage is inherently larger in dark scenes at any fixed quality. interior_darkemissive, the profile defined by darkness, is held to a strictly harder standard than exterior_daylight for identical source quality. That is a permanent self-inflicted fail of exactly the kind A3's IMPOSSIBLE class exists to stop.",
+      "recommended_fix": "(a) exposure-relative threshold, zero downloads - the luminance-quintile table above IS the calibration; threshold at quintile median + 0.10 takes interior_darkemissive from 3 countable to ~14 and exterior_lowlight from 8 to ~18. Or gate dark profiles on jpeg_quality_est + bytes_per_pixel, which are exposure-independent and already computed. (b) lossless source only for material_closeup, where a posed surface study costs nothing - deadendthrills is art-directed photo mode and must never be the bulk of a profile."
+    },
+    {
+      "id": "F14",
+      "title": "has_hud is a folder constant, so RI-UIX01's population is ~10 frames not 93 - and nothing in the set shows a lock-on reticle or a status-buildup bar",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-UIX01"
+      ],
+      "argument": "has_hud is true for 93/93 souls, 33/33 REF-A12b, 5/5 anti-generic; it varies per file in modern/ and REF-A1-A19, so this is a value typed once per folder this round. Measured: counting strongly-saturated pixels in the DS3 HP/stamina bar region, 29 of 93 souls frames return exactly 0.0000. One I opened by eye (souls-behaviour/telegraph/SB-TEL__ds3-3620431452.jpg) is a clean HUD-free photo-mode portrait of a robed scythe-bearer; its record says has_hud true and describes it as 'Dancer of the Boreal Valley standing with blades trailing before an attack'. It has no HUD and no attack. Consequences: A1 clause 3 makes the metrics battery mask a border band wherever has_hud is true, discarding real image data from 29 frames; and RI-UIX01's real population is ~10, not 93. Within those, reading all 93 depicts strings, NOT ONE names a lock-on reticle and NOT ONE names a status-buildup bar - both named explicitly by RI-UIX01, and both only appear under a specific condition, which is why a generic combat-screenshot search will never surface them.",
+      "detector": "fraction of pixels with max(RGB)-min(RGB) > 55 and max > 70 in box (0.03w,0.03h)-(0.35w,0.13h); < 0.012 means no DS3 HUD"
+    },
+    {
+      "id": "F15",
+      "title": "The behavioural axis is 91 of 93 one game, and A5 rule 5 asked for two",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-CAM01",
+        "RI-CAM03"
+      ],
+      "argument": "souls-behaviour is DARK SOULS III 91, Dark Souls Remastered 2, Elden Ring 0. A5 rule 5 ('both games count') was an invitation to breadth read as permission for depth in one title. Elden Ring's camera is not DS3's - different default FOV, different lock-on distances, a mounted mode, much larger arenas. RI-CAM01's pivot height and shoulder offset and RI-CAM03's lock-on containment law are being measured off one game's camera and generalised to 'Souls'. That is the single-source problem section 3's min-distinct-games rule exists to prevent, on the one axis where that rule was not written down. Not a source problem: Elden Ring is abundant in this repository; the souls harvest ran against 374320 and 570940 and not 1245620."
+    },
+    {
+      "id": "F16",
+      "title": "The interval run is 56% of exterior_daylight and is the negative anchor's location; section 3's anti-curation rule and its distinct-locations rule are in tension",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-VIS03 exterior_daylight bands",
+        "RI-VIS02",
+        "RI-VIS07"
+      ],
+      "argument": "I opened two of the 24 released Witcher 3 frames: run-w3nextgen-t0007.jpg and t0305.jpg are both Novigrad half-timbered townscape, and all 24 share one identical depicts string in the catalogue. anti-generic/ holds five files with role 'NEGATIVE anchor only ... the canonical fantasy look we must not converge on', one of which is literally ANTI__w3-novigrad-half-timbered.jpg. So 56% of the mass of the profile that sets our exterior_daylight fidelity bands is one walk through the exact town another folder designates as the thing we must measure distance away from. Defensible for pure rendering-quality metrics; not for the content-sensitive bands (colour entropy, sky fraction, palette centroid, foliage statistics), where one location at 56% weight IS the band. Structurally: section 3 requires >=6 distinct locations AND >=half interval-run, and those two rules fight each other because an interval run is by construction one location.",
+      "fix": "computation rule, no download: any single interval-run series counts as one location and is downweighted to at most 1/locations of band mass. Then report exterior_daylight's bands computed with and without the 24 and state the delta - if small this closes for free."
+    },
+    {
+      "id": "F17",
+      "title": "character_closeup is not short by three files; it is mostly the wrong camera",
+      "items_that_cannot_otherwise_be_judged": [
+        "REF-M6",
+        "RI-CAM07 section B"
+      ],
+      "argument": "13 files, of which 9 are Elden Ring cutscene or NPC portraits (Melina x2, Godrick x5, Malenia). REF-M6 is the player from behind at 40-70% of frame height, and RI-CAM07 B is explicit that the back of the head, armour, legs and hanging scabbard get more screen-time than any other surface. A cutscene close-up of Godrick answers none of that and is not even the same renderer path - cutscene cameras use different framing, LOD selection and often a different lighting rig. Wrong camera, not merely wrong angle. Genuinely useful here: 3 files. The builder named the fix and did not run it (15.6: cross-file the 24 rear-view Geralt frames); I checked by eye and the claim is HALF true - t0305 is a textbook three-quarter-rear, t0007 is a side profile with the face visible. Cross-filing works but needs eyes on all 24, not a bulk copy."
+    },
+    {
+      "id": "F18",
+      "title": "A7 cannot be computed even once its images exist, because 'valid for fidelity metrics' and 'valid for art-direction metrics' are the same flag",
+      "items_that_cannot_otherwise_be_judged": [
+        "A7 inter-region dispersion",
+        "A7 intra-region variance",
+        "A7 micro-scale variation",
+        "RI-WLD04"
+      ],
+      "argument": "pixel_metrics_valid is false for all 183 morrowind records, all 23 context, all 8 modern/ui - correct as written, since those are not used for fidelity judgements. But A7 asks for a DIFFERENT measurement over exactly those files: palette in CIELAB, luminance distribution, edge density, colour entropy, sky fraction, silhouette statistics. Two of those - edge density and colour entropy - are precisely what JPEG blocking corrupts, and 199 files carry heavily_recompressed true. Slot-level block_score medians make it concrete: REF-A4 1.50, REF-A19 1.42, REF-A2 1.42, REF-A18 1.33 - all worse than interior_darkemissive's 1.29, with bytes_per_pixel as low as 0.53. So A7's headline inter_median/intra_median would today be computed over a population where a meaningful fraction of between-region variance is JPEG artefacts, and there is no flag to filter on because the one flag that exists means something else."
+    },
+    {
+      "id": "F19",
+      "title": "ui-combat/ is two-thirds menus, which double-counts against REF-M22 and inflates RI-UIX01",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-UIX01",
+        "REF-M22",
+        "RI-UIX06 F17-F19"
+      ],
+      "argument": "8 of 12 souls-behaviour/ui-combat files are menu screens (title, options, equipment, storage x2, inventory x2, covenant); only 4 are in-combat HUD. Menus belong to REF-M22 / modern/ui. Two errors pointing opposite ways: REF-M22's real population is 16 across 4 games not 8 across 3, and RI-UIX01's is 4 not 12. Note the DS3 status screen with a live-rendered character beside the attribute column (3670478265) serves REF-M22, stance/ and R1's F7 armour-at-2m need simultaneously - good acquisition, wrong folder."
+    },
+    {
+      "id": "F20",
+      "title": "Morrowind's UI is catalogued at rest; its defining property is that it is arranged",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-UIX06 F18",
+        "RI-UIX03",
+        "RI-UIX06 section A1"
+      ],
+      "argument": "CREDIT FIRST: REF-A12b's 33 files span eight distinct resolutions from 1152x864 to 1920x1080 in both 4:3 and 16:9, which genuinely can support RI-UIX06 F18 (scaling and layout integrity) - all that is missing is a ui_resolution_pair id so the comparison is not rediscovered by eye each time. That is annotation, not acquisition. What is genuinely absent is the UI mid-use: no drag, no resize, no scrollbar part-way down a topic list, no tooltip over an inventory item, no partially-full inventory. And 15.2's claimed 8 multi-window frames have no corresponding ui_subkind in the catalogue (H9), so R1's F5 is unverifiable from the data.",
+      "ruling": "SUBSTITUTABLE and closing. Record the sub-kind and the resolution pairing. Do not spend a round hunting for a screenshot of a drag in progress - people do not photograph that, and keeping this BLOCKING would violate A3."
+    },
+    {
+      "id": "F21",
+      "title": "Weather and time-of-day states, no transitions - but the set is sitting on an unexploited labelled dataset",
+      "items_that_cannot_otherwise_be_judged": [
+        "REF-M14",
+        "REF-M20",
+        "REF-M21",
+        "A7 temporal variation"
+      ],
+      "argument": "Nothing in a set of independent stills can answer how a sky moves from clear to overcast or how light rotates through dusk. The unexploited asset: the Witcher 3 interval-run frames PRINT the game clock and weather in frame - I read '10:04 AM / CLEAR' off t0007 and '11:17 AM / CLEAR' off t0305. Filenames are elapsed seconds and run t0000 to t3197: 53 minutes of real time, one continuous session, ground-truth time-of-day and weather stamped in every frame. Nothing in the corpus uses it. It is enough to fit a measured time-of-day -> metric curve for one game, which is exactly the BASIS R1's F11 needed to make the overcast inference derived rather than asserted. Honest limit: all 24 are CLEAR mid-morning, so it cannot serve dusk or overcast - but it establishes the method."
+    },
+    {
+      "id": "F22",
+      "title": "No reference for enemy placement, first-sight distance, or sightlines",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-AI06",
+        "RI-AI02",
+        "RI-WLD06"
+      ],
+      "argument": "arena/'s 14 frames answer 'what does the fighting space look like'. Not one answers 'from where, and at what distance, does the player first see the enemy' - the placement question, which decides whether a fight is readable before it starts. Every combat frame in the corpus is taken inside an engagement, because that is when people press the screenshot key.",
+      "ruling": "SUBSTITUTABLE, low priority. Two arena frames are already close to right; tag them and move on."
+    },
+    {
+      "id": "F23",
+      "title": "Nothing records viewing distance, so no 'legible at combat distance' claim can be checked",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-AI02",
+        "RI-VIS08",
+        "REF-M6",
+        "RI-CAM01"
+      ],
+      "argument": "RI-AI02's bar and RI-VIS08's creature-design seam both turn on angular size. The corpus has width, height, depicts - and no field for subject distance, subject pixel height, or fraction of frame height. REF-M6 states its own constraint in those exact terms ('40-70% of frame height') and no record carries the number, so that clause has never been checked on any file. This is R1's F9 in a new place: not a search problem, and more images will never fix it.",
+      "fix": "add subject_frame_fraction (coarse three-level by eye is fine) to character_closeup, souls-behaviour/telegraph, /attacks and /camera"
+    },
+    {
+      "id": "F24",
+      "title": "RI-VIS07's naming test needs 'Dark Souls' and 'Elden Ring' added, by A6's own argument",
+      "items_that_cannot_otherwise_be_judged": [
+        "RI-VIS07",
+        "RI-VIS02"
+      ],
+      "argument": "A6 reasoned that handing builders ESO imagery invites convergence on ESO's Black Marsh and therefore added ESO to RI-VIS07's forbidden answers. The identical argument now applies with more force: 93 Dark Souls frames were just added to a builder-facing tree. A5 rule 2's guard protects the CRITICS; it does nothing about a builder who has been looking at 91 DS3 screenshots and reaches for a gothic-cathedral silhouette, a grey-brown palette and a fog gate. Our art direction descends from Morrowind. Cheapest insurance in this document; costs nothing."
+    },
+    {
+      "id": "F25",
+      "title": "context/ reads PASS on count and is missing two of A6's six named subjects",
+      "items_that_cannot_otherwise_be_judged": [
+        "S20 subject reference for W1-02, W1-03, W1-14"
+      ],
+      "argument": "CREDIT: two Hist records explicitly note human scale ('figures resting beneath Hist trees in mist, giving the trees scale') - somebody did think about scale. Against A6's six subjects: xanmeer ziggurats 2 and neither is a stepped ziggurat (A6 lists it first); Hist 6 PASS; settlement 7 PASS; marsh 4 PASS; naga 0 of the Argonian/naga subject; root-tunnel interiors 0. 15.6 reports Steam 306130 returned zero cards for every query, which I accept - so the unrun search is not Steam.",
+      "specific_search": "elderscrolls.fandom.com/api.php (same MediaWiki stack that returned 200 twice for me today): list=categorymembers on Category:Online-Places-Murkmire, Category:Online-Argonians; prop=images on Online:Xanmeer, Online:Vakka-Bok Xanmeer, Online:Root-Whisper Village, Online:Lilmoth"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "R2C-01",
+      "gap": "No temporal reference anywhere; video/ empty; RI-WPN01-05, RI-AI02, RI-CAM01/03, M11, M12 uncalibrated",
+      "classification": "BLOCKING",
+      "age_rounds": 2,
+      "specific_search": "eldenring.fandom.com/api.php?action=query&list=categorymembers&cmtitle=Category:Images%20-%20Animated%20gifs&cmlimit=500&cmtype=file&format=json (31 files, HTTP 200 verified) and darksouls.fandom.com/api.php Category:Dark%20Souls:%20Boss%20Attack%20Animations (12 files, HTTP 200 verified); resolve with &prop=imageinfo&iiprop=url|size|mime|metadata - metadata carries frameCount and duration; destination souls-behaviour/anim/",
+      "why": "Three of RI-WPN01-04's four properties are defined between frames; RI-AI02's bar contains a duration; A5 rule 3 says a still cannot show a windup"
+    },
+    {
+      "id": "R2C-02",
+      "gap": "V1-dolly and V2-static proper",
+      "classification": "SUBSTITUTABLE",
+      "age_rounds": 2,
+      "reclassified_from": "BLOCKING",
+      "specific_search": "gamersyde.com (HTTP 200) own-capture high-bitrate MP4, free account required, links JS-injected",
+      "why": "R2C-01 serves the purpose V1/V2 exist for; only V1's LOD-pop measurement is lost, and that should be recorded as derived with the risk stated"
+    },
+    {
+      "id": "R2C-03",
+      "gap": "exterior_lowlight 8/12 and interior_darkemissive 3/10 countable",
+      "classification": "INFERABLE",
+      "age_rounds": 2,
+      "reclassified_from": "BLOCKING",
+      "specific_search": "NO DOWNLOAD. Make block_score exposure-relative or gate dark profiles on jpeg_quality_est + bytes_per_pixel. Calibration is the luminance-quintile table in F13. Optional lossless anchor: deadendthrills.com/wp-content/gallery/bigsamples/*.png (verified 200, PNG 2560x1440-3840x2160, dark frame 0.998) - art-directed photo mode, small anchor set only.",
+      "why": "The builder's Steam-re-encode diagnosis is refuted: jpeg_quality_est median 100.0, bytes_per_pixel 1.29-2.31, and a controlled constant-quality experiment shows darkening alone moves block_score 1.093 -> 1.447"
+    },
+    {
+      "id": "R2C-04",
+      "gap": "exterior_lowlight / interior_darkemissive interval-run at 0%",
+      "classification": "BLOCKING",
+      "age_rounds": 2,
+      "specific_search": "Section 15.5 proved Steam publishedfileid is monotonic in time; therefore fetch one uploader's /id/<user>/screenshots/?appid=<app> showcase, sort by sid, and take runs of consecutive sids - those are one session by construction. Apps 1245620 / 374320 / 489830 for night and cave.",
+      "why": "Section 3 needs a continuous series per folder, not more selected frames, and 'find an unbiased series' has been restated twice without a method"
+    },
+    {
+      "id": "R2C-05",
+      "gap": "A7: REF-A21-regions, REF-A22-intraregion, REF-A23-ground all absent; four of nine regions have zero representation anywhere",
+      "classification": "BLOCKING",
+      "age_rounds": 1,
+      "specific_search": "Steam app 22320, searchText = Ascadian, Bitter Coast, West Gash, Grazelands, Ashlands, Molag Amur, Sheogorad, Azura's Coast, Red Mountain. Ground set: alchemy, ingredient, harvest, flowers, mushroom, plants, plus eye-triage for lower-third-ground frames in every region set. Re-use 15.4's vanilla triage (native width <=1366, then eyes on the fog wall) and 15.5's sid < 2.9e9 pre-2023 filter.",
+      "why": "A7's inter-region dispersion floor cannot be computed without >=4 per region; identity is a classification test and variation is a dispersion test, and only the first exists"
+    },
+    {
+      "id": "R2C-06",
+      "gap": "No metric-validity distinction between fidelity and art direction; A7's inputs undefined",
+      "classification": "INFERABLE",
+      "specific_search": "make-manifest.py: add computed metrics_valid_for",
+      "why": "A7 measures edge density and colour entropy over files flagged heavily_recompressed, and JPEG blocking corrupts exactly those two"
+    },
+    {
+      "id": "R2C-07",
+      "gap": "has_hud is a folder constant; 29 of 93 souls frames have no HUD; RI-UIX01's population is ~10 not 93",
+      "classification": "BLOCKING",
+      "specific_search": "NO DOWNLOAD. Set per file; detector is fraction of pixels with max-min > 55 and max > 70 in box (0.03w,0.03h)-(0.35w,0.13h), < 0.012 means no HUD",
+      "why": "A1 clause 3 masks a border band wherever has_hud is true, discarding real data from 29 frames, and RI-UIX01 cannot filter for the frames it needs"
+    },
+    {
+      "id": "R2C-08",
+      "gap": "No lock-on reticle and no status-buildup frame anywhere; RI-UIX01 names both",
+      "classification": "BLOCKING",
+      "specific_search": "Steam apps 374320 and 1245620, searchText = lock on, lock-on, target, bleed, frostbite, scarlet rot, poison; triage by eye for the reticle glyph and a partially-filled status bar",
+      "why": "Both elements only appear under a specific condition, which is why a generic combat-screenshot search never surfaces them"
+    },
+    {
+      "id": "R2C-09",
+      "gap": "souls-behaviour is 91/93 one game; A5 rule 5 asked for two",
+      "classification": "BLOCKING",
+      "specific_search": "Steam app 1245620 with the same queries the DS3 harvest used (lock on, boss fight, greatsword, swing, shield, jump attack, bloodstain); plus R2C-01's Elden Ring GIF category fills attacks/, stance/ and anim/ in one call. Target >=1/3 of each subfolder from a second title.",
+      "why": "RI-CAM01 pivot height and RI-CAM03 lock-on containment are being generalised to 'Souls' from one game's camera"
+    },
+    {
+      "id": "R2C-10",
+      "gap": "character_closeup is 9/13 cutscene camera; REF-M6's rear-view rule effectively 3/13",
+      "classification": "BLOCKING",
+      "specific_search": "NO DOWNLOAD. Eyeball all 24 W3 run frames (t0305 verified rear-view, t0007 verified side - not a bulk copy), cross-file the rear subset preserving sampling: interval-run, and re-file the 9 ER cutscene portraits out of the slot",
+      "why": "A cutscene camera is a different renderer path from the gameplay camera RI-CAM07 B is about"
+    },
+    {
+      "id": "R2C-11",
+      "gap": "REF-A3 (Telvanni) has no full-frame capture; the only such slot",
+      "classification": "BLOCKING",
+      "age_rounds": 2,
+      "specific_search": "app 22320, searchText = tel vos, tel branora, mushroom tower, tel aruhn, at <=1366 native width (15.6's own unrun next step)",
+      "why": "the single remaining hole in F1's closure"
+    },
+    {
+      "id": "R2C-12",
+      "gap": "material_closeup 5 countable of 8",
+      "classification": "SUBSTITUTABLE",
+      "reclassified_from": "BLOCKING",
+      "specific_search": "R2C-03's threshold fix alone likely takes this to 7-8 with no download; if still short, deadendthrills.com PNG is legitimate HERE because a surface study is properly posed",
+      "why": "people do not photograph surfaces; the 42-candidate bucket is mostly landscape and padding with vistas would make the table lie"
+    },
+    {
+      "id": "R2C-13",
+      "gap": "20 of 21 REF-M* slots formally unfilled; 83 of 131 modern records slot=null (R1 defect H3)",
+      "classification": "BLOCKING",
+      "age_rounds": 2,
+      "specific_search": "NO DOWNLOAD. Assign real slot ids; list by name any slot that stays unfilled",
+      "why": "R1 raised this and section 15 does not mention it; every slot-level coverage claim is currently unanswerable"
+    },
+    {
+      "id": "R2C-14",
+      "gap": "Ghost manifest record for a deleted 3.3 GB video; acquire.py --check claim is stale",
+      "classification": "BLOCKING",
+      "specific_search": "NO DOWNLOAD. Remove or mark evidence_only: true with the source URL retained (keeping the source catalogued was right); re-run --check and restate the true pass count",
+      "why": "catalogue and disk disagree again, and the report asserts a verification that can no longer pass"
+    },
+    {
+      "id": "R2C-15",
+      "gap": "Two side strings for one side; two game strings for Morrowind",
+      "classification": "BLOCKING",
+      "specific_search": "NO DOWNLOAD. Normalise.",
+      "why": "any per-side or per-game query silently returns half the set"
+    },
+    {
+      "id": "R2C-16",
+      "gap": "No record outside the souls axis names the RI-* item it serves",
+      "classification": "INFERABLE",
+      "specific_search": "add serves: [RI-...] to modern/ and morrowind/ records, following the souls axis's own good example",
+      "why": "a critic cannot ask what serves RI-WLD03 and get an answer"
+    },
+    {
+      "id": "R2C-17",
+      "gap": "Interval run is 56% of exterior_daylight and is the anti-generic negative-anchor location",
+      "classification": "INFERABLE",
+      "specific_search": "NO DOWNLOAD. Computation rule: any one series counts as one location and is capped at 1/locations of band mass. Report exterior_daylight's bands with and without the 24 and state the delta.",
+      "why": "section 3's >=6 locations rule and its >=half interval-run rule fight each other; the builder satisfied the second by concentrating the first"
+    },
+    {
+      "id": "R2C-18",
+      "gap": "No subject_frame_fraction; REF-M6's 40-70% rule has never been checked on any file",
+      "classification": "INFERABLE",
+      "specific_search": "add the field, coarse three-level by eye is acceptable",
+      "why": "angular size decides RI-AI02's combat-distance legibility and RI-VIS08's creature seam, and nothing records it"
+    },
+    {
+      "id": "R2C-19",
+      "gap": "ui-combat/ is 8/12 menus; REF-M22 undercounted, RI-UIX01 overcounted",
+      "classification": "INFERABLE",
+      "specific_search": "NO DOWNLOAD. Re-file and cross-reference.",
+      "why": "two errors pointing opposite ways, both free to fix"
+    },
+    {
+      "id": "R2C-20",
+      "gap": "context/: 0 root-tunnel interiors, 0 naga, 2 weak xanmeer",
+      "classification": "SUBSTITUTABLE",
+      "specific_search": "elderscrolls.fandom.com/api.php: list=categorymembers on Category:Online-Places-Murkmire and Category:Online-Argonians; prop=images on Online:Xanmeer, Online:Vakka-Bok Xanmeer, Online:Root-Whisper Village, Online:Lilmoth",
+      "why": "a builder asked to draw a xanmeer today still has no picture of a stepped ziggurat, which is the exact failure A6 was written to prevent"
+    },
+    {
+      "id": "R2C-21",
+      "gap": "No weather / time-of-day transition reference",
+      "classification": "INFERABLE",
+      "specific_search": "FREE FIRST: read the in-frame '10:04 AM / CLEAR' stamps off all 24 W3 frames into capture_time_of_day / capture_weather and fit the curve - that is the basis REF-M21's derived band needs. Then R2C-04's consecutive-sid method for a real dusk series.",
+      "why": "the corpus has states not transitions, and is sitting on 53 minutes of ground-truth-labelled continuous capture it has never read"
+    },
+    {
+      "id": "R2C-22",
+      "gap": "Morrowind UI mid-use; multi-window sub-kind unrecorded",
+      "classification": "SUBSTITUTABLE",
+      "specific_search": "record ui_subkind: multi_window and ui_resolution_pair; DO NOT search for a drag-in-progress screenshot",
+      "why": "people do not photograph that, and keeping it BLOCKING would violate A3"
+    },
+    {
+      "id": "R2C-23",
+      "gap": "No enemy-placement / first-sight-distance reference",
+      "classification": "SUBSTITUTABLE",
+      "specific_search": "tag the two arena/ wide frames that already serve it; add ambush, mimic, first time seeing to any future souls harvest",
+      "why": "every combat frame is taken inside an engagement because that is when people press the screenshot key"
+    },
+    {
+      "id": "R2C-24",
+      "gap": "RI-VIS07 naming test lacks Dark Souls / Elden Ring",
+      "classification": "INFERABLE",
+      "specific_search": "amendment only, no acquisition",
+      "why": "A6 identified this convergence risk and the project then created a larger instance of it in the same round"
+    },
+    {
+      "id": "R2C-25",
+      "gap": "Frame-exact hitstop calibration (RI-WPN05, 2f vs 8f)",
+      "classification": "IMPOSSIBLE",
+      "specific_search": "none at 16.7 ms - upheld from R1",
+      "why": "BUT R2C-01 delivers +/-70 ms, so the bar rises to 70 ms and to ordering rather than being abandoned, and this must be written into RI-WPN05 itself"
+    },
+    {
+      "id": "R2C-26",
+      "gap": "REF-M19 within-frame near/far water; section 5a foreground/sky",
+      "classification": "INFERABLE",
+      "status": "CLOSED",
+      "specific_search": "none - 15.6's foreground_present / sky_visible booleans are the right fix and are in place",
+      "why": "R1's F9 / R1C-17 discharged"
+    },
+    {
+      "id": "R2C-27",
+      "gap": "REF-A12 as images",
+      "classification": "IMPOSSIBLE",
+      "status": "CLOSED",
+      "specific_search": "none",
+      "why": "OpenMW MyGUI XML is structure not pixels and REF-A12b supplies the pixels; delete the expectation - it is a different artifact, not a gap"
+    }
+  ],
+  "work_list": [
+    {
+      "rank": 0,
+      "work": "Repair the four folder-constant / ghost defects: has_hud per file; one side string; one game string per game; remove the ghost video record and restate --check; assign real REF-M* slot ids",
+      "downloads": 0,
+      "gaps": [
+        "R2C-07",
+        "R2C-13",
+        "R2C-14",
+        "R2C-15"
+      ],
+      "why": "every count in circulation depends on these, RI-UIX01's population is overstated 9x, and A1's HUD mask is being applied to frames with no HUD"
+    },
+    {
+      "rank": 1,
+      "work": "Fix block_score: exposure-relative or gate dark profiles on jpeg_quality_est + bytes_per_pixel; add metrics_valid_for; re-score",
+      "downloads": 0,
+      "gaps": [
+        "R2C-03",
+        "R2C-06"
+      ],
+      "why": "this is the stated binding constraint on the whole modern side and it is a threshold bug, not a source problem. Should take two profiles from 8 and 3 countable to roughly 18 and 14. Do this before spending a single fetch on press kits."
+    },
+    {
+      "rank": 2,
+      "work": "The other free re-files: cross-file the rear-view subset of the 24 with eyes on each; re-file the 9 ER cutscene portraits; re-file the 8 menus out of ui-combat; tag the 2 placement frames; read the in-frame clock/weather off the 24; add subject_frame_fraction and serves",
+      "downloads": 0,
+      "gaps": [
+        "R2C-10",
+        "R2C-16",
+        "R2C-17",
+        "R2C-18",
+        "R2C-19",
+        "R2C-21",
+        "R2C-23"
+      ],
+      "why": "six findings discharged with no acquisition; F17 and F19 both move a floor"
+    },
+    {
+      "rank": 3,
+      "work": "souls-behaviour/anim/ from the two wiki APIs - ~43 named-move animations with frame_count and duration_s from iiprop=metadata",
+      "gaps": [
+        "R2C-01",
+        "R2C-09"
+      ],
+      "why": "the single highest-value acquisition available. Converts an axis the project had written off as IMPOSSIBLE into a measured one, serves RI-WPN01-05 and RI-AI02 directly, and simultaneously puts Elden Ring into a folder that is 91/93 one game. Two URLs."
+    },
+    {
+      "rank": 4,
+      "work": "A7's three sets: REF-A21-regions (9 regions x 4-6), REF-A22-intraregion (2 x 6-8), REF-A23-ground (>=1 x 9)",
+      "gaps": [
+        "R2C-05"
+      ],
+      "why": "the user's newest direction and the only amendment with zero acquisition against it; four of nine regions have no image anywhere. Depends on rank 1's metrics_valid_for."
+    },
+    {
+      "rank": 5,
+      "work": "Elden Ring into the souls axis, plus the lock-on and status-buildup search",
+      "gaps": [
+        "R2C-08",
+        "R2C-09"
+      ],
+      "why": "A5 rule 5, and two HUD elements RI-UIX01 names by hand that no search has ever targeted"
+    },
+    {
+      "rank": 6,
+      "work": "Interval-run series for exterior_lowlight and interior_darkemissive via the consecutive-sid method",
+      "gaps": [
+        "R2C-04"
+      ],
+      "why": "restated twice without a method; now it has one"
+    },
+    {
+      "rank": 7,
+      "work": "REF-A3 Telvanni full-frame; material_closeup top-up (probably unnecessary after rank 1); context/ root tunnels and a real xanmeer via the Fandom API",
+      "gaps": [
+        "R2C-11",
+        "R2C-12",
+        "R2C-20"
+      ],
+      "why": "real, small, all with named searches"
+    },
+    {
+      "rank": 8,
+      "work": "Write the reclassifications into the reference items themselves: RI-WPN05's bar at 70 ms and ordering; REF-M21's band as derived; RI-VIS07 gains Dark Souls and Elden Ring; REF-A12's image expectation deleted",
+      "gaps": [
+        "R2C-24",
+        "R2C-25",
+        "R2C-27"
+      ],
+      "why": "A3: an accepted IMPOSSIBLE recorded only in a critique is still a permanent fail in the corpus. Both previous rounds skipped this step."
+    }
+  ],
+  "rulings": [
+    {
+      "subject": "builder judgement 1 (flagged reversible, 15.3): promoting the 24 Witcher 3 interval-run frames despite exif_software = 'ACDSee Ultimate 8'",
+      "ruling": "UPHELD on integrity, QUALIFIED on weight",
+      "reasoning": "Section 8a's exif rule is a proxy for degradation, and here degradation is directly measurable and absent: I re-measured run-w3nextgen-t0007.jpg myself at block_score 0.9868 - the lowest in the entire corpus, against a Steam median of 1.16 for the same profile; all 24 sit at 0.99-1.01. A direct measurement supersedes a proxy for it. Keep them and keep the integrity_flag verbatim - that transparency is what makes the promotion defensible. BUT the promotion carries an unpriced cost: all 24 are one location, all CLEAR mid-morning Novigrad, they are 56% of the profile they now dominate, and Novigrad is anti-generic/'s negative anchor. Apply R2C-17's weighting rule and report the band delta with and without them."
+    },
+    {
+      "subject": "builder judgement 2 (flagged reversible, 15.4): three-valued vanilla tests, null for interior REF-A12b captures",
+      "ruling": "UPHELD, with one non-optional addition",
+      "reasoning": "V1 grass, V2 distant land and V4 water reflections are literally unevaluable in an interior; null with a vanilla_tests_note is more honest than unknown and is A3's reasoning applied to a test rather than a slot. Reading section 7 literally would have emptied the slot A2 calls the highest-value art-direction acquisition left. Right call, correctly flagged. ADDITION: 33 files are admitted with three of seven tests voided and nothing in their place. A menu capture has a decisive vanilla test the outdoor ones do not - the UI chrome itself, since MGE XE, OpenMW and the UI replacers all change bevel, panel colour and font visibly. Add V8 'the UI chrome matches vanilla Morrowind's bevel, panel colour and type' and score all 33. REF-A12's MyGUI data supplies checkable anchors (dialogue window 588x433, normal text RGB 202,165,96) with the caveat that OpenMW is a re-implementation, so treat them as corroboration not ground truth. Without V8, REF-A12b is the least-verified folder in the corpus and it is the one the whole UI transposition will be built from."
+    },
+    {
+      "subject": "builder judgement 3 (flagged reversible, 15.7): retaining 168 corroboration = 'one-host' records",
+      "ruling": "SPLIT - upheld for the non-band axes, REVERSED for band-setting records",
+      "reasoning": "Section 8b exists to stop an unverified image setting a [p10,p90] band. That risk is zero for records that can never enter a band, and souls-behaviour (93, pixel_metrics_valid false, forbidden_for fidelity-bands) and context/ (23, same) cannot. Keep them; the deviation is well reasoned and well recorded. It is NOT zero for the 36 records that are both one-host AND pixel_metrics_valid true - by definition the records that set the bands. They are: 24 W3 interval-run, 5 combat, 4 material_closeup, 2 interior_darkemissive, 1 REF-M6. In practice much less painful than it sounds: the 24 W3 frames are not Steam at all - they come from a GitHub-hosted mirror with a stated capture provenance, so 'one-host' is simply the wrong bucket; re-label, do not remove. That leaves 12 genuinely weak band-setting records: fetch each Steam detail page and read the printed date (15.5's method, already used on 95 records), or drop them from band computation while keeping them for composition. Twelve pages at one request per 4 s is under a minute."
+    },
+    {
+      "subject": "filed amendment 1: A5 gains arena/ and death/",
+      "ruling": "ADOPT as filed, and add a third: anim/",
+      "reasoning": "Both were R1's F3/F4, both were built, and death/ found the right query (bloodstain, not 'you died' - 15.8 is the best single paragraph in the report). anim/ per F12."
+    },
+    {
+      "subject": "filed amendment 2: section 5e gains a framing floor (full frame, native aspect, uncropped) for refs/morrowind/",
+      "ruling": "ADOPT as filed, with one clause",
+      "reasoning": "The 84 superseded crops must be excluded from every count. They are currently 84 of the 449 headline number and are, by the amendment's own logic, not references. Keep the files and the superseded_by links; exclude from counts."
+    },
+    {
+      "subject": "filed amendment 3: section 7 gains a three-valued vanilla test",
+      "ruling": "ADOPT, conditional on V8",
+      "reasoning": "Adopting the null without adding a replacement test is where this becomes a loophole. See ruling 2."
+    },
+    {
+      "subject": "filed amendment 4: section 8b gains a fourth corroboration category for post-2023 dated Steam apphub uploads",
+      "ruling": "ADOPT, NARROWED",
+      "reasoning": "Name it dated-apphub and permit it ONLY for records that never enter a band - pixel_metrics_valid false AND a forbidden_for list. Any record that sets a [p10,p90] band must still satisfy one of section 8b's original three. Otherwise the amendment repeals the rule it is amending."
+    },
+    {
+      "subject": "filed amendment 5: RI-VIS07's naming test gains 'ESO'",
+      "ruling": "ADOPT, EXTENDED",
+      "reasoning": "Add Dark Souls and Elden Ring for the reason in F24, and put the same admissibility_note on all 93 souls records. A6 identified this risk precisely and the project then created a larger instance of it in the same round."
+    }
+  ],
+  "verified_routes": [
+    {
+      "url": "https://eldenring.fandom.com/api.php ... Category:Images - Animated gifs",
+      "result": "HTTP 200, 31 animated files, never previously searched by any round"
+    },
+    {
+      "url": "https://darksouls.fandom.com/api.php ... Category:Dark Souls: Boss Attack Animations",
+      "result": "HTTP 200, 12 files named per move; R1 found it, nobody used it"
+    },
+    {
+      "url": "&prop=imageinfo&iiprop=metadata on a Fandom GIF",
+      "result": "returns frameCount and duration; verified 81 frames / 5.67 s = 14.29 fps - this is what makes the temporal axis measurable despite the WebP transcode"
+    },
+    {
+      "url": "https://static.wikia.nocookie.net/.../revision/latest",
+      "result": "HTTP 200, 6,169,534 bytes, animated WebP with n_frames intact and per-frame delays stripped; confirms R1's F2 caveat"
+    },
+    {
+      "url": "https://deadendthrills.com/wp-content/gallery/bigsamples/*.png",
+      "result": "HTTP 200, lossless PNG 2560x1440 and 3840x2160, 3-11 MB; dark frame (luminance 47.5) scores block_score 0.998; art-directed photo mode, anchor set only"
+    },
+    {
+      "url": "https://www.gamersyde.com/",
+      "result": "HTTP 200; own-capture high-bitrate MP4 downloads, not YouTube; links behind a free account and JS-injected"
+    }
+  ],
+  "dead_ends": [
+    "imgsli.com - HTTP 503, do not retry this round",
+    "en.uesp.net - still 403 (its own bot protection); BUT elderscrolls.fandom.com/api.php is the same MediaWiki stack that answered twice today and has never been tried",
+    "Everything in R1 section 5 and ACQUISITION-CRITIQUE-R1-code.md stands unchanged; I re-tested none of it and neither should the builder"
+  ],
+  "note_for_round_3": "Two of the four largest findings here came from re-measuring the pixels rather than reading the catalogue - F13's confound and F14's HUD constant were both invisible in MANIFEST.json and obvious in thirty lines of Pillow. The catalogue is now good enough that the next critic's marginal value is in the bytes, not the JSON."
+}
