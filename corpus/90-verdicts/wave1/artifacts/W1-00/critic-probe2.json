@@ -1,0 +1,484 @@
+{
+  "schema": "critic/w1-00-probe2@1",
+  "at": "2026-08-06T12:32:01.744Z",
+  "worldstats_rendered": {
+    "arena_flat": {
+      "drawCalls": 18,
+      "triangles": 2808,
+      "programs": 8,
+      "materials": 6,
+      "stateChanges": 18,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "textureMB": 0,
+      "geometryMB": 0.097,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    },
+    "settlement_primary_street": {
+      "drawCalls": 91,
+      "triangles": 119250,
+      "programs": 10,
+      "materials": 13,
+      "stateChanges": 91,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "textureMB": 0,
+      "geometryMB": 2.317,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    },
+    "dungeon_primary": {
+      "drawCalls": 31,
+      "triangles": 2864,
+      "programs": 13,
+      "materials": 7,
+      "stateChanges": 31,
+      "skinnedMeshes": 0,
+      "shadowLights": 2,
+      "textureMB": 0,
+      "geometryMB": 0.088,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    },
+    "vista_primary": {
+      "drawCalls": 66,
+      "triangles": 118842,
+      "programs": 15,
+      "materials": 13,
+      "stateChanges": 66,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "textureMB": 0,
+      "geometryMB": 2.317,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    },
+    "swamp_canopy": {
+      "drawCalls": 40,
+      "triangles": 118418,
+      "programs": 15,
+      "materials": 13,
+      "stateChanges": 40,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "textureMB": 0,
+      "geometryMB": 2.317,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    },
+    "interior_firelit": {
+      "drawCalls": 28,
+      "triangles": 2868,
+      "programs": 15,
+      "materials": 10,
+      "stateChanges": 28,
+      "skinnedMeshes": 0,
+      "shadowLights": 2,
+      "textureMB": 0,
+      "geometryMB": 0.088,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    },
+    "npc_showcase": {
+      "drawCalls": 61,
+      "triangles": 120210,
+      "programs": 15,
+      "materials": 14,
+      "stateChanges": 61,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "textureMB": 0,
+      "geometryMB": 2.357,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    },
+    "water_shallows": {
+      "drawCalls": 82,
+      "triangles": 119110,
+      "programs": 15,
+      "materials": 13,
+      "stateChanges": 82,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "textureMB": 0,
+      "geometryMB": 2.317,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    },
+    "material_showcase": {
+      "drawCalls": 61,
+      "triangles": 118730,
+      "programs": 15,
+      "materials": 15,
+      "stateChanges": 61,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "textureMB": 0,
+      "geometryMB": 2.32,
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52
+    }
+  },
+  "aggro": {
+    "eid": "ea",
+    "aggroRet": true,
+    "aggroErr": null,
+    "before": [
+      {
+        "eid": "ea",
+        "archetype": "INFANTRY",
+        "tier": "trash",
+        "state": "IDLE",
+        "state_entered_f": 0,
+        "prev_state": null,
+        "anim": "idle",
+        "anim_frame": 1,
+        "anim_len": 48,
+        "phase": "none",
+        "hit_active": false,
+        "hitboxes": [],
+        "pos": [
+          0,
+          0,
+          6
+        ],
+        "yaw_deg": 180,
+        "yaw_rate_dps": 0,
+        "speed_mps": 0,
+        "target": null,
+        "dist_m": 6,
+        "los": true,
+        "in_sight_cone": true,
+        "alert": 4,
+        "alert_state": "SUSPICIOUS",
+        "attack_token": false,
+        "hp": 412,
+        "hp_max": 412,
+        "poise_cur": 22,
+        "poise_max": 22,
+        "stagger": false,
+        "spawn_anchor": [
+          0,
+          0,
+          6
+        ],
+        "leash_dist_m": 0,
+        "ai": "hold_ground"
+      }
+    ],
+    "after": [
+      {
+        "eid": "ea",
+        "archetype": "INFANTRY",
+        "tier": "trash",
+        "state": "FACE",
+        "state_entered_f": 1,
+        "prev_state": "IDLE",
+        "anim": "idle",
+        "anim_frame": 25,
+        "anim_len": 48,
+        "phase": "none",
+        "hit_active": false,
+        "hitboxes": [],
+        "pos": [
+          0,
+          0,
+          6
+        ],
+        "yaw_deg": 180,
+        "yaw_rate_dps": 0,
+        "speed_mps": 0,
+        "target": "player",
+        "dist_m": 6,
+        "los": true,
+        "in_sight_cone": true,
+        "alert": 100,
+        "alert_state": "AGGRO",
+        "attack_token": false,
+        "hp": 412,
+        "hp_max": 412,
+        "poise_cur": 22,
+        "poise_max": 22,
+        "stagger": false,
+        "spawn_anchor": [
+          0,
+          0,
+          6
+        ],
+        "leash_dist_m": 0,
+        "ai": "hold_ground"
+      }
+    ],
+    "moved_m": 0,
+    "dummy": {
+      "eid": "eb",
+      "ret": true,
+      "err": null
+    }
+  },
+  "camera_settle": {
+    "immediately": {
+      "pos": [
+        10,
+        2,
+        10
+      ],
+      "pivot": [
+        0,
+        1,
+        0
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -8,
+      "roll_deg": 0,
+      "fov_deg": 55,
+      "dist_m": 3.6,
+      "mode": "free",
+      "shake": [
+        0,
+        0
+      ],
+      "hitstop": false,
+      "clip_through": false,
+      "lock_on": null
+    },
+    "after24": {
+      "pos": [
+        10,
+        2,
+        10
+      ],
+      "pivot": [
+        0,
+        1,
+        0
+      ],
+      "yaw_deg": 225,
+      "pitch_deg": -4.0447,
+      "roll_deg": 0,
+      "fov_deg": 55,
+      "dist_m": 14.1774,
+      "mode": "free",
+      "shake": [
+        0,
+        0
+      ],
+      "hitstop": false,
+      "clip_through": false,
+      "lock_on": null
+    },
+    "after_render": {
+      "pos": [
+        10,
+        2,
+        10
+      ],
+      "pivot": [
+        0,
+        1,
+        0
+      ],
+      "yaw_deg": 225,
+      "pitch_deg": -4.0447,
+      "roll_deg": 0,
+      "fov_deg": 55,
+      "dist_m": 14.1774,
+      "mode": "free",
+      "shake": [
+        0,
+        0
+      ],
+      "hitstop": false,
+      "clip_through": false,
+      "lock_on": null
+    },
+    "repeat_pose": {
+      "pos": [
+        10,
+        2,
+        10
+      ],
+      "pivot": [
+        0,
+        1,
+        0
+      ],
+      "yaw_deg": 225,
+      "pitch_deg": -4.0447,
+      "roll_deg": 0,
+      "fov_deg": 55,
+      "dist_m": 14.1774,
+      "mode": "free",
+      "shake": [
+        0,
+        0
+      ],
+      "hitstop": false,
+      "clip_through": false,
+      "lock_on": null
+    },
+    "sha_first": "df26c96f643352e53bda3de2298b95fc36cf0ed06a884bdb8841fe3490290da0",
+    "sha_repeat": "df26c96f643352e53bda3de2298b95fc36cf0ed06a884bdb8841fe3490290da0",
+    "identical": true
+  },
+  "trap": {
+    "globals_outside_step": {
+      "math_random_is_native": false,
+      "date_now_is_native": false,
+      "perf_now_is_native": false
+    },
+    "math_random_outside_step": {
+      "threw": false,
+      "v": 0.3231026427820325
+    },
+    "date_now_outside_step": {
+      "threw": false,
+      "v": 1786019545859
+    },
+    "getter_injection": [
+      [
+        "Math.random",
+        0.19806627626530826
+      ],
+      [
+        "Date.now",
+        1786019545859
+      ],
+      [
+        "Math.random-threw",
+        "DETERMINISM VIOLATION: Math.random() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomness and wall-clock reads in the sim path; use rng.next() and frame/60 instead."
+      ],
+      [
+        "Date.now-threw",
+        "DETERMINISM VIOLATION: Date.now() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomness and wall-clock reads in the sim path; use rng.next() and frame/60 instead."
+      ],
+      [
+        "Math.random-threw",
+        "DETERMINISM VIOLATION: Math.random() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomness and wall-clock reads in the sim path; use rng.next() and frame/60 instead."
+      ],
+      [
+        "Date.now-threw",
+        "DETERMINISM VIOLATION: Date.now() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomness and wall-clock reads in the sim path; use rng.next() and frame/60 instead."
+      ],
+      [
+        "Math.random-threw",
+        "DETERMINISM VIOLATION: Math.random() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomness and wall-clock reads in the sim path; use rng.next() and frame/60 instead."
+      ],
+      [
+        "Date.now-threw",
+        "DETERMINISM VIOLATION: Date.now() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomness and wall-clock reads in the sim path; use rng.next() and frame/60 instead."
+      ],
+      [
+        "Math.random-threw",
+        "DETERMINISM VIOLATION: Math.random() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomness and wall-clock reads in the sim path; use rng.next() and frame/60 instead."
+      ],
+      [
+        "Date.now-threw",
+        "DETERMINISM VIOLATION: Date.now() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomness and wall-clock reads in the sim path; use rng.next() and frame/60 instead."
+      ]
+    ]
+  },
+  "catchup": {
+    "has_stallMainThread": true,
+    "has_setRenderRate": true,
+    "has_getPerfStats": true,
+    "has_getLoadState": true,
+    "has_forceGC": false,
+    "has_getHeapUsage": false,
+    "all_methods": [
+      "advanceWallClock",
+      "aggro",
+      "camera",
+      "clearInputs",
+      "deleteSaveSlot",
+      "despawn",
+      "exportSave",
+      "getActionSet",
+      "getBuildInfo",
+      "getCapabilityReport",
+      "getDeterminismReport",
+      "getFrame",
+      "getInputState",
+      "getLoadState",
+      "getPerfStats",
+      "getPlayerStats",
+      "getQuestState",
+      "getRenderRate",
+      "getSaveManifest",
+      "getSeed",
+      "getStateHash",
+      "getStorageInfo",
+      "getWorldStats",
+      "importSave",
+      "listAnchors",
+      "listEntities",
+      "listSaveSlots",
+      "loadState",
+      "lockOn",
+      "queueInputs",
+      "readSave",
+      "ready",
+      "renderFrame",
+      "reset",
+      "saveRoundTrip",
+      "saveState",
+      "screenshot",
+      "setMode",
+      "setRenderRate",
+      "setSeed",
+      "setTimeOfDay",
+      "setUIVisible",
+      "setWeather",
+      "simulateStorageFailure",
+      "snapshot",
+      "spawn",
+      "stallMainThread",
+      "stepFrames",
+      "teleport",
+      "traceDrain",
+      "traceStart",
+      "traceStop",
+      "version",
+      "writeSave"
+    ]
+  },
+  "page_errors": [],
+  "console_errors": []
+}

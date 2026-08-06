@@ -1,0 +1,1012 @@
+{
+  "schema": "critic/w1-00-roundtrip-seedsweep@1",
+  "at": "2026-08-06T12:46:52.229Z",
+  "method": "setSeed(s); loadState(state); stepFrames(120); h0=getStateHash(); b0=saveState(); loadState(b0); h1=getStateHash(); b1=saveState(); loadState(b1); h2=getStateHash()",
+  "trials": 40,
+  "first_trip_mismatches": 36,
+  "second_trip_mismatches": 0,
+  "first_trip_mismatch_rate": 0.9,
+  "rows": [
+    {
+      "seed": 1337,
+      "state": "arena_flat",
+      "h0": "90c4a9efc74b2d5d3b8d1bb4bbf6d4eb2554d992b81402b605768076361100d4",
+      "h1": "90c4a9efc74b2d5d3b8d1bb4bbf6d4eb2554d992b81402b605768076361100d4",
+      "h2": "90c4a9efc74b2d5d3b8d1bb4bbf6d4eb2554d992b81402b605768076361100d4",
+      "first_trip_equal": true,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 1337,
+        "a": 1387272519,
+        "b": 1942107539,
+        "c": 1718137238,
+        "d": 268931381,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 1337,
+        "a": 1387272519,
+        "b": 1942107539,
+        "c": 1718137238,
+        "d": 268931381,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 1337,
+      "state": "sv5-journal-bloodstain",
+      "h0": "b4b303a168ee52d1d5a42d9f5059262acacf47b91c397771060ad6b2bf2c8df8",
+      "h1": "b4b303a168ee52d1d5a42d9f5059262acacf47b91c397771060ad6b2bf2c8df8",
+      "h2": "b4b303a168ee52d1d5a42d9f5059262acacf47b91c397771060ad6b2bf2c8df8",
+      "first_trip_equal": true,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 1337,
+        "a": 1387272519,
+        "b": 1942107539,
+        "c": 1718137238,
+        "d": 268931381,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 1337,
+        "a": 1387272519,
+        "b": 1942107539,
+        "c": 1718137238,
+        "d": 268931381,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 4242,
+      "state": "arena_flat",
+      "h0": "31bd3541da246357e07a74fcb13fb4e7f90ac34370a7fae4941a4e1722bce1f9",
+      "h1": "7a5da160577d73cd2c78307d821d1f575a46e5149b305f30b0e3685e392708b7",
+      "h2": "7a5da160577d73cd2c78307d821d1f575a46e5149b305f30b0e3685e392708b7",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 4242,
+        "a": 787035084,
+        "b": -627056890,
+        "c": 131650147,
+        "d": 24316254,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 4242,
+        "a": 787035084,
+        "b": 3667910406,
+        "c": 131650147,
+        "d": 24316254,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 4242,
+      "state": "sv5-journal-bloodstain",
+      "h0": "ace571cc31cde9c9ed06e9195f39faef0c89db2d6b8a1703da7a957d0a4a45fb",
+      "h1": "27a9d4cf346909dcb51510d2da534b02cc014eae43ce730b5929d4159450e892",
+      "h2": "27a9d4cf346909dcb51510d2da534b02cc014eae43ce730b5929d4159450e892",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 4242,
+        "a": 787035084,
+        "b": -627056890,
+        "c": 131650147,
+        "d": 24316254,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 4242,
+        "a": 787035084,
+        "b": 3667910406,
+        "c": 131650147,
+        "d": 24316254,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 4711,
+      "state": "arena_flat",
+      "h0": "fe9cbf8dd39d03dfe9853fffa54f560c9e6d929d447ada31294fa32751af6cd2",
+      "h1": "74703d0167d7e9c8884b99378d4ddf6733b726275a20accb04a0be27f0c8cd3a",
+      "h2": "74703d0167d7e9c8884b99378d4ddf6733b726275a20accb04a0be27f0c8cd3a",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 4711,
+        "a": -339423194,
+        "b": -1736603526,
+        "c": 1685673961,
+        "d": -100859197,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 4711,
+        "a": 3955544102,
+        "b": 2558363770,
+        "c": 1685673961,
+        "d": 4194108099,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 4711,
+      "state": "sv5-journal-bloodstain",
+      "h0": "4b2f407731e785de1d7a35447c768cbd375cdb393c8bfbc8e3950b2e3c5ebb7a",
+      "h1": "97a3548cc3740c30f4b533702a331eb58fa2fa3d520773478b7a5407dff47e0d",
+      "h2": "97a3548cc3740c30f4b533702a331eb58fa2fa3d520773478b7a5407dff47e0d",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 4711,
+        "a": -339423194,
+        "b": -1736603526,
+        "c": 1685673961,
+        "d": -100859197,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 4711,
+        "a": 3955544102,
+        "b": 2558363770,
+        "c": 1685673961,
+        "d": 4194108099,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 1,
+      "state": "arena_flat",
+      "h0": "c4544ea757d701ae469c98d40fb98bc65ed906c31bb388640b902a03637e7f8e",
+      "h1": "3dd68467f95084b8a9615488bd0a1b36eba755ba2a2933fef7489899ead2be6e",
+      "h2": "3dd68467f95084b8a9615488bd0a1b36eba755ba2a2933fef7489899ead2be6e",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 1,
+        "a": -25659772,
+        "b": -1855487245,
+        "c": 1591552067,
+        "d": -1283263675,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 1,
+        "a": 4269307524,
+        "b": 2439480051,
+        "c": 1591552067,
+        "d": 3011703621,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 1,
+      "state": "sv5-journal-bloodstain",
+      "h0": "b185b179555ad8e9f887b2c0040b4735aa55e52328356bad8c3a574adc7feb4f",
+      "h1": "eb4333a4bfe74aa471dd8035c79a066e410a24f9fc9cb8c8d5fbde54804c082f",
+      "h2": "eb4333a4bfe74aa471dd8035c79a066e410a24f9fc9cb8c8d5fbde54804c082f",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 1,
+        "a": -25659772,
+        "b": -1855487245,
+        "c": 1591552067,
+        "d": -1283263675,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 1,
+        "a": 4269307524,
+        "b": 2439480051,
+        "c": 1591552067,
+        "d": 3011703621,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 2,
+      "state": "arena_flat",
+      "h0": "8898e51c8063bd88195f3d81b0f6fb6e06c51901fde61c09aa13bb7730efeefd",
+      "h1": "8447d0a73366554ccd920febfc2d51a550c143c80d3bcc2ef0875417072c5327",
+      "h2": "8447d0a73366554ccd920febfc2d51a550c143c80d3bcc2ef0875417072c5327",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 2,
+        "a": -851345796,
+        "b": 1653462310,
+        "c": -1428793705,
+        "d": -2103904064,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 2,
+        "a": 3443621500,
+        "b": 1653462310,
+        "c": 2866173591,
+        "d": 2191063232,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 2,
+      "state": "sv5-journal-bloodstain",
+      "h0": "2731649694a32b5bd505ae9505c2aa400d739e05b14009f2fbfbf7a48b16ee92",
+      "h1": "9709fea15031a850d952f8bebda901fefc9bbc2d67e6e1d638951cc047e25237",
+      "h2": "9709fea15031a850d952f8bebda901fefc9bbc2d67e6e1d638951cc047e25237",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 2,
+        "a": -851345796,
+        "b": 1653462310,
+        "c": -1428793705,
+        "d": -2103904064,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 2,
+        "a": 3443621500,
+        "b": 1653462310,
+        "c": 2866173591,
+        "d": 2191063232,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 3,
+      "state": "arena_flat",
+      "h0": "60f06f25a7f5a54af0dbc9f390b6824e0dbab2f2b6fd43e54d74c2f97b8db57e",
+      "h1": "48418b8584aa38138112e1951e296ef190c58d52b263fa066b19e70bdf92a7b7",
+      "h2": "48418b8584aa38138112e1951e296ef190c58d52b263fa066b19e70bdf92a7b7",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 3,
+        "a": 1960653323,
+        "b": -188563446,
+        "c": 1299179686,
+        "d": 701051372,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 3,
+        "a": 1960653323,
+        "b": 4106403850,
+        "c": 1299179686,
+        "d": 701051372,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 3,
+      "state": "sv5-journal-bloodstain",
+      "h0": "e23c8cc862d84aab0936a8fd9512d569ba0ca867ac4808355b9ee9f2e33b8237",
+      "h1": "ab620f9fafa7e7a08daa09dbdf6689649dab1fa006ebb04ecfecfdd933a63b6d",
+      "h2": "ab620f9fafa7e7a08daa09dbdf6689649dab1fa006ebb04ecfecfdd933a63b6d",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 3,
+        "a": 1960653323,
+        "b": -188563446,
+        "c": 1299179686,
+        "d": 701051372,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 3,
+        "a": 1960653323,
+        "b": 4106403850,
+        "c": 1299179686,
+        "d": 701051372,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 7,
+      "state": "arena_flat",
+      "h0": "71142c66dc32a7a3b413993cba77f93920d539ab1ad91f8beae2eb5e58919cf3",
+      "h1": "3a0322ae3df7cb98cdc7c73a6f66f292e241a78393ecb808ea2f7d2519550146",
+      "h2": "3a0322ae3df7cb98cdc7c73a6f66f292e241a78393ecb808ea2f7d2519550146",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 7,
+        "a": -128633575,
+        "b": -1601565751,
+        "c": -1929160377,
+        "d": 1648156499,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 7,
+        "a": 4166333721,
+        "b": 2693401545,
+        "c": 2365806919,
+        "d": 1648156499,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 7,
+      "state": "sv5-journal-bloodstain",
+      "h0": "0f86b4ff03fe6ee2cdb196173999ddf722f38fa07bc8a17cfaebc3cbf0fd28c1",
+      "h1": "db8734d6b8ae04cbff98ad50190a122e9efaa2631273c2ca3573268bf5fb3970",
+      "h2": "db8734d6b8ae04cbff98ad50190a122e9efaa2631273c2ca3573268bf5fb3970",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 7,
+        "a": -128633575,
+        "b": -1601565751,
+        "c": -1929160377,
+        "d": 1648156499,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 7,
+        "a": 4166333721,
+        "b": 2693401545,
+        "c": 2365806919,
+        "d": 1648156499,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 42,
+      "state": "arena_flat",
+      "h0": "adee5898feb659ecdfc965019f00247321a9c9dd96a3988bd1a5091edc3f6ecb",
+      "h1": "c8239de36f451c8e154fcf229775be448bb142e286b626475ca6fd849fd23643",
+      "h2": "c8239de36f451c8e154fcf229775be448bb142e286b626475ca6fd849fd23643",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 42,
+        "a": -261892926,
+        "b": 1052955323,
+        "c": -1203115778,
+        "d": -1260157914,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 42,
+        "a": 4033074370,
+        "b": 1052955323,
+        "c": 3091851518,
+        "d": 3034809382,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 42,
+      "state": "sv5-journal-bloodstain",
+      "h0": "493076790b888af4e55f6449ee979b3d2a0894e1bb6cf9fc871f349a99ed82da",
+      "h1": "cd886deabe7958096d25d8141feb40084d03dcd57d5cb855081e59589c740538",
+      "h2": "cd886deabe7958096d25d8141feb40084d03dcd57d5cb855081e59589c740538",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 42,
+        "a": -261892926,
+        "b": 1052955323,
+        "c": -1203115778,
+        "d": -1260157914,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 42,
+        "a": 4033074370,
+        "b": 1052955323,
+        "c": 3091851518,
+        "d": 3034809382,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 99,
+      "state": "arena_flat",
+      "h0": "6d7c916b072b489a1f206674b45aa18732a1c772f3d58be36cc10646e005a135",
+      "h1": "000dc5f5af4e918aba6e52f6156fb02f1c4fae875b0971c0fd4a5e9b59a7b308",
+      "h2": "000dc5f5af4e918aba6e52f6156fb02f1c4fae875b0971c0fd4a5e9b59a7b308",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 99,
+        "a": -2009092279,
+        "b": -1410452046,
+        "c": 352205748,
+        "d": -281153964,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 99,
+        "a": 2285875017,
+        "b": 2884515250,
+        "c": 352205748,
+        "d": 4013813332,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 99,
+      "state": "sv5-journal-bloodstain",
+      "h0": "791c67e6ab5978dc18f4e13bf3bda1c9d44cf0260c03e8aa97298af01b955ae2",
+      "h1": "0c81277afc5cc7df6caa34016254167d252f712df16998e0033cbd408a88cfe6",
+      "h2": "0c81277afc5cc7df6caa34016254167d252f712df16998e0033cbd408a88cfe6",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 99,
+        "a": -2009092279,
+        "b": -1410452046,
+        "c": 352205748,
+        "d": -281153964,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 99,
+        "a": 2285875017,
+        "b": 2884515250,
+        "c": 352205748,
+        "d": 4013813332,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 100,
+      "state": "arena_flat",
+      "h0": "b74304e28b944d48d5aed308eb3104ac021134d3fbb7348bcb348e2cfbf7d25d",
+      "h1": "095f890ccfb88499244088915a6aa42b2051373fe0d49f4778c49f3b0acc5475",
+      "h2": "095f890ccfb88499244088915a6aa42b2051373fe0d49f4778c49f3b0acc5475",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 100,
+        "a": 1230817031,
+        "b": 1525277354,
+        "c": -90357474,
+        "d": -1828627054,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 100,
+        "a": 1230817031,
+        "b": 1525277354,
+        "c": 4204609822,
+        "d": 2466340242,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 100,
+      "state": "sv5-journal-bloodstain",
+      "h0": "1b83ade9fcaca340ac09b70d091a772bcb3d9261582193ff74be634b2686e91e",
+      "h1": "5faafbf264a83a333553a392b891fba8ce9e2370fcfcfc29498f40b52294b098",
+      "h2": "5faafbf264a83a333553a392b891fba8ce9e2370fcfcfc29498f40b52294b098",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 100,
+        "a": 1230817031,
+        "b": 1525277354,
+        "c": -90357474,
+        "d": -1828627054,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 100,
+        "a": 1230817031,
+        "b": 1525277354,
+        "c": 4204609822,
+        "d": 2466340242,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 12345,
+      "state": "arena_flat",
+      "h0": "86d58ba77c891354c693427fd24b647fd35c43660093b9e542dfaca8469acbd1",
+      "h1": "4d9f6f655fe75a2a70d038128c5e63d042faf9c0120774293e411ebd712124c9",
+      "h2": "4d9f6f655fe75a2a70d038128c5e63d042faf9c0120774293e411ebd712124c9",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 12345,
+        "a": 430842236,
+        "b": 1195127866,
+        "c": -801741589,
+        "d": 516375449,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 12345,
+        "a": 430842236,
+        "b": 1195127866,
+        "c": 3493225707,
+        "d": 516375449,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 12345,
+      "state": "sv5-journal-bloodstain",
+      "h0": "d941f9601987fd54af3ee6babe4b85ecfa85f5fe088c62d0fe185532b449fd8f",
+      "h1": "6310cb7595dd4df6817ddf529d14e8feec2fb7aac22293c4e8baef7f2a9b66d0",
+      "h2": "6310cb7595dd4df6817ddf529d14e8feec2fb7aac22293c4e8baef7f2a9b66d0",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 12345,
+        "a": 430842236,
+        "b": 1195127866,
+        "c": -801741589,
+        "d": 516375449,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 12345,
+        "a": 430842236,
+        "b": 1195127866,
+        "c": 3493225707,
+        "d": 516375449,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 65536,
+      "state": "arena_flat",
+      "h0": "eebe6821e2d5941746de3329abf6d2a97f683ec2990db5fe67413569e48d39f8",
+      "h1": "abd885d8b86f9f16c1428a219df302ff68e00fc5a43180199ee348409daae409",
+      "h2": "abd885d8b86f9f16c1428a219df302ff68e00fc5a43180199ee348409daae409",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 65536,
+        "a": 526623620,
+        "b": 168786888,
+        "c": 274416100,
+        "d": -1242184175,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 65536,
+        "a": 526623620,
+        "b": 168786888,
+        "c": 274416100,
+        "d": 3052783121,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 65536,
+      "state": "sv5-journal-bloodstain",
+      "h0": "5234ea0d85a25b61205a295868b72225dec170bd1d063004d93670c189252d59",
+      "h1": "5cca02c0ac011a18de58e97ef7967181d5de44cc8fd5f9a87494432c384f8ba8",
+      "h2": "5cca02c0ac011a18de58e97ef7967181d5de44cc8fd5f9a87494432c384f8ba8",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 65536,
+        "a": 526623620,
+        "b": 168786888,
+        "c": 274416100,
+        "d": -1242184175,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 65536,
+        "a": 526623620,
+        "b": 168786888,
+        "c": 274416100,
+        "d": 3052783121,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 999999,
+      "state": "arena_flat",
+      "h0": "6cf3c4a6886446df5a44e3b3236dc816c5861cbdf4d4ccffee26c8bb93ea7495",
+      "h1": "2e0523ae631b2630caf0a1d8d44e9b9750d7a3c220232a68524fce7684f9b607",
+      "h2": "2e0523ae631b2630caf0a1d8d44e9b9750d7a3c220232a68524fce7684f9b607",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 999999,
+        "a": 1760281482,
+        "b": 1680427917,
+        "c": -27218495,
+        "d": -2121522442,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 999999,
+        "a": 1760281482,
+        "b": 1680427917,
+        "c": 4267748801,
+        "d": 2173444854,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 999999,
+      "state": "sv5-journal-bloodstain",
+      "h0": "b7926fe3354ce623eea2a8d5d9bc8df7f6b568171ddaacb3a24e8c3f81b75ccc",
+      "h1": "9f149e2503c33c74c5ae4eb91047f151fd5358ea622fedb5e35e5f5c39eb69ca",
+      "h2": "9f149e2503c33c74c5ae4eb91047f151fd5358ea622fedb5e35e5f5c39eb69ca",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 999999,
+        "a": 1760281482,
+        "b": 1680427917,
+        "c": -27218495,
+        "d": -2121522442,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 999999,
+        "a": 1760281482,
+        "b": 1680427917,
+        "c": 4267748801,
+        "d": 2173444854,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 2024,
+      "state": "arena_flat",
+      "h0": "5b98b1f037b6c964637429025dc3856fa25c1f43f2b4f067a751c23b6566db0e",
+      "h1": "a880e8f74453612981f63fa68b1152dfd04c662187b2b8701092d689d3dcfbc3",
+      "h2": "a880e8f74453612981f63fa68b1152dfd04c662187b2b8701092d689d3dcfbc3",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 2024,
+        "a": -716442580,
+        "b": 256238778,
+        "c": 797056372,
+        "d": -1276170510,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 2024,
+        "a": 3578524716,
+        "b": 256238778,
+        "c": 797056372,
+        "d": 3018796786,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 2024,
+      "state": "sv5-journal-bloodstain",
+      "h0": "d1dab06f13352de079c841df53e491773cecb974b6f25e0f58684a3cd8799ecf",
+      "h1": "b4e0b319862a562e2a512a6a4da3e93502e7460237dc3b2a1c8163be914ef406",
+      "h2": "b4e0b319862a562e2a512a6a4da3e93502e7460237dc3b2a1c8163be914ef406",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 2024,
+        "a": -716442580,
+        "b": 256238778,
+        "c": 797056372,
+        "d": -1276170510,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 2024,
+        "a": 3578524716,
+        "b": 256238778,
+        "c": 797056372,
+        "d": 3018796786,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 8675309,
+      "state": "arena_flat",
+      "h0": "c221fc880601b49e74635081b96f8825fd2f4636848eac4b05e8d88857b57d3c",
+      "h1": "f949f5d909123264bb86974eafb66de72422d71bf87b52ceaf094b5bd896adaf",
+      "h2": "f949f5d909123264bb86974eafb66de72422d71bf87b52ceaf094b5bd896adaf",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 8675309,
+        "a": 67498535,
+        "b": 894015301,
+        "c": 1941847828,
+        "d": -827722040,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 8675309,
+        "a": 67498535,
+        "b": 894015301,
+        "c": 1941847828,
+        "d": 3467245256,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 8675309,
+      "state": "sv5-journal-bloodstain",
+      "h0": "1f7306c0dcc8aefa3f85efc47e12005bc059d4e40c7b7e4b332f3249a34e9e9b",
+      "h1": "3cc6decbdb434369228105985df37848421bf437e444ed1b1b5604be2198bd4d",
+      "h2": "3cc6decbdb434369228105985df37848421bf437e444ed1b1b5604be2198bd4d",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 8675309,
+        "a": 67498535,
+        "b": 894015301,
+        "c": 1941847828,
+        "d": -827722040,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 8675309,
+        "a": 67498535,
+        "b": 894015301,
+        "c": 1941847828,
+        "d": 3467245256,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 31337,
+      "state": "arena_flat",
+      "h0": "77146cea091370d08e998fae2c94c00a7d6450dca11be4af5dd69dda0f51c3d7",
+      "h1": "095123202f03d121c729bfad8e28e4868861d221cda208934e4ae8fb04faec0f",
+      "h2": "095123202f03d121c729bfad8e28e4868861d221cda208934e4ae8fb04faec0f",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 31337,
+        "a": -592745002,
+        "b": -1883262382,
+        "c": 1624664710,
+        "d": 1736917021,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 31337,
+        "a": 3702222294,
+        "b": 2411704914,
+        "c": 1624664710,
+        "d": 1736917021,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 31337,
+      "state": "sv5-journal-bloodstain",
+      "h0": "62de22688ee6b30ea2da913f685888ca49290de6ad2c44ff7e582d1ce7ac5bcf",
+      "h1": "5c17c4064efd219881981fd30c802a225c6950500ad20e73817e7455c0f834a0",
+      "h2": "5c17c4064efd219881981fd30c802a225c6950500ad20e73817e7455c0f834a0",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 31337,
+        "a": -592745002,
+        "b": -1883262382,
+        "c": 1624664710,
+        "d": 1736917021,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 31337,
+        "a": 3702222294,
+        "b": 2411704914,
+        "c": 1624664710,
+        "d": 1736917021,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 60606,
+      "state": "arena_flat",
+      "h0": "37f6dd24a8dd94578f3468bb77d2c89510a1868954d7b48765853fa83d9e551b",
+      "h1": "37f6dd24a8dd94578f3468bb77d2c89510a1868954d7b48765853fa83d9e551b",
+      "h2": "37f6dd24a8dd94578f3468bb77d2c89510a1868954d7b48765853fa83d9e551b",
+      "first_trip_equal": true,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 60606,
+        "a": 680440554,
+        "b": 931872275,
+        "c": 538376839,
+        "d": 1798936902,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 60606,
+        "a": 680440554,
+        "b": 931872275,
+        "c": 538376839,
+        "d": 1798936902,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 60606,
+      "state": "sv5-journal-bloodstain",
+      "h0": "41fda67c557870560dca44da2da1677a2f65ad3b2c7f110c040d15b9cec53270",
+      "h1": "41fda67c557870560dca44da2da1677a2f65ad3b2c7f110c040d15b9cec53270",
+      "h2": "41fda67c557870560dca44da2da1677a2f65ad3b2c7f110c040d15b9cec53270",
+      "first_trip_equal": true,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 60606,
+        "a": 680440554,
+        "b": 931872275,
+        "c": 538376839,
+        "d": 1798936902,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 60606,
+        "a": 680440554,
+        "b": 931872275,
+        "c": 538376839,
+        "d": 1798936902,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 777,
+      "state": "arena_flat",
+      "h0": "0c1f648a9141cbfcd3d13774344cf360f8a24d3da4835cebf291f75d30c788bc",
+      "h1": "b8277681dba457e6d2696c5a4a38a72c99f0a4fa946970ecb5df1822d1d20caa",
+      "h2": "b8277681dba457e6d2696c5a4a38a72c99f0a4fa946970ecb5df1822d1d20caa",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 777,
+        "a": 1710133350,
+        "b": -973060927,
+        "c": 806077973,
+        "d": 1287659050,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 777,
+        "a": 1710133350,
+        "b": 3321906369,
+        "c": 806077973,
+        "d": 1287659050,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 777,
+      "state": "sv5-journal-bloodstain",
+      "h0": "3b23f02a5b9faec912d42dfd6c10a33e29e494db74fbd5b1a561fdd616d26824",
+      "h1": "5d8e31eb1093755c654fd80e4735c785540fa31b56f4df58d9f08acf4ccd182c",
+      "h2": "5d8e31eb1093755c654fd80e4735c785540fa31b56f4df58d9f08acf4ccd182c",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 777,
+        "a": 1710133350,
+        "b": -973060927,
+        "c": 806077973,
+        "d": 1287659050,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 777,
+        "a": 1710133350,
+        "b": 3321906369,
+        "c": 806077973,
+        "d": 1287659050,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 5150,
+      "state": "arena_flat",
+      "h0": "d8d55b0b3ccf17e5415ea23b1cc03126cfec106ec666aae3f58b2b79f3407bd3",
+      "h1": "9fdf7800f51a6c545279c25808922c309bb17f9d284d8588a8f46017b6e513a4",
+      "h2": "9fdf7800f51a6c545279c25808922c309bb17f9d284d8588a8f46017b6e513a4",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 5150,
+        "a": 791918008,
+        "b": -1281769413,
+        "c": 2073067811,
+        "d": 693230426,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 5150,
+        "a": 791918008,
+        "b": 3013197883,
+        "c": 2073067811,
+        "d": 693230426,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 5150,
+      "state": "sv5-journal-bloodstain",
+      "h0": "a8a807058070e43f57dad5602c603bf1b74bcac8860ddb079a8185129628b926",
+      "h1": "159ef782c1661224d690b1227b0a26c3493731fd0427ed4b9b8d15ea8c0eeb42",
+      "h2": "159ef782c1661224d690b1227b0a26c3493731fd0427ed4b9b8d15ea8c0eeb42",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 5150,
+        "a": 791918008,
+        "b": -1281769413,
+        "c": 2073067811,
+        "d": 693230426,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 5150,
+        "a": 791918008,
+        "b": 3013197883,
+        "c": 2073067811,
+        "d": 693230426,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 1234567,
+      "state": "arena_flat",
+      "h0": "0a226bbf45ea6a2693273c7ce9ac917b36a4fc2f6a18e56f4b697be472306a16",
+      "h1": "f7c974d768b0b1b5338232c3b59efd61d4fe619bc516223146b35b7bc3a99dcf",
+      "h2": "f7c974d768b0b1b5338232c3b59efd61d4fe619bc516223146b35b7bc3a99dcf",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 1234567,
+        "a": -1291227461,
+        "b": -411566661,
+        "c": 963937242,
+        "d": 1553139246,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 1234567,
+        "a": 3003739835,
+        "b": 3883400635,
+        "c": 963937242,
+        "d": 1553139246,
+        "draws": 0
+      }
+    },
+    {
+      "seed": 1234567,
+      "state": "sv5-journal-bloodstain",
+      "h0": "cb572746c53ace745c7c5591d798d43ed7d80b31b111b2e3e5f2b47687a4c092",
+      "h1": "76ae92814dd29e1fc7f7b2339f372eb831fc8795129f89bd2172ad5bab5f1115",
+      "h2": "76ae92814dd29e1fc7f7b2339f372eb831fc8795129f89bd2172ad5bab5f1115",
+      "first_trip_equal": false,
+      "second_trip_equal": true,
+      "rng0": {
+        "seed": 1234567,
+        "a": -1291227461,
+        "b": -411566661,
+        "c": 963937242,
+        "d": 1553139246,
+        "draws": 0
+      },
+      "rng1": {
+        "seed": 1234567,
+        "a": 3003739835,
+        "b": 3883400635,
+        "c": 963937242,
+        "d": 1553139246,
+        "draws": 0
+      }
+    }
+  ],
+  "page_errors": []
+}

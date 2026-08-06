@@ -1,0 +1,419 @@
+{
+  "schema": "critic/w1-00-final@1",
+  "at": "2026-08-06T13:03:47.222Z",
+  "readSave": {
+    "h0": "4b2f407731e785de1d7a35447c768cbd375cdb393c8bfbc8e3950b2e3c5ebb7a",
+    "shape": {
+      "type": "object",
+      "isArray": false,
+      "keys": [
+        "ok",
+        "gen",
+        "degraded"
+      ]
+    },
+    "attempts": {
+      "loadState_r": {
+        "ok": false,
+        "err": "loadState: expected a named state (string) or an elder-souls/save@1 blob"
+      },
+      "loadState_r_ok": {
+        "ok": false,
+        "err": "loadState: expected a named state (string) or an elder-souls/save@1 blob"
+      },
+      "loadState_r_gen": {
+        "ok": false,
+        "err": "loadState: expected a named state (string) or an elder-souls/save@1 blob"
+      },
+      "loadState_r_degraded": {
+        "ok": false,
+        "err": "loadState: expected a named state (string) or an elder-souls/save@1 blob"
+      }
+    },
+    "h_after_r": "97a3548cc3740c30f4b533702a331eb58fa2fa3d520773478b7a5407dff47e0d",
+    "hash_now": "97a3548cc3740c30f4b533702a331eb58fa2fa3d520773478b7a5407dff47e0d"
+  },
+  "M5_event_diff": {
+    "event_diffs": [
+      {
+        "i": 60,
+        "control": [
+          {
+            "f": 180,
+            "type": "attack_start",
+            "move": "light",
+            "stamina_after": 100
+          },
+          {
+            "f": 180,
+            "type": "stamina_spend",
+            "amount": 20,
+            "cause": "light"
+          },
+          {
+            "f": 180,
+            "type": "input_action",
+            "button": "light"
+          }
+        ],
+        "loaded": [
+          {
+            "f": 60,
+            "type": "attack_start",
+            "move": "light",
+            "stamina_after": 100
+          },
+          {
+            "f": 60,
+            "type": "stamina_spend",
+            "amount": 20,
+            "cause": "light"
+          },
+          {
+            "f": 60,
+            "type": "input_action",
+            "button": "light"
+          }
+        ]
+      },
+      {
+        "i": 200,
+        "control": [
+          {
+            "f": 320,
+            "type": "roll_start",
+            "move": "roll",
+            "stamina_after": 98
+          },
+          {
+            "f": 320,
+            "type": "stamina_spend",
+            "amount": 22,
+            "cause": "roll"
+          },
+          {
+            "f": 320,
+            "type": "input_action",
+            "button": "roll"
+          }
+        ],
+        "loaded": [
+          {
+            "f": 200,
+            "type": "roll_start",
+            "move": "roll",
+            "stamina_after": 98
+          },
+          {
+            "f": 200,
+            "type": "stamina_spend",
+            "amount": 22,
+            "cause": "roll"
+          },
+          {
+            "f": 200,
+            "type": "input_action",
+            "button": "roll"
+          }
+        ]
+      }
+    ],
+    "event_diff_count": 2,
+    "first_non_event_divergence": null,
+    "frames": 300
+  },
+  "swing_geometry": {
+    "swings": 32,
+    "hits": 12,
+    "detail": [
+      {
+        "start_f": 25,
+        "player_pos": [
+          0,
+          0,
+          0.2574
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 1.7426,
+        "a": [
+          0,
+          1.1,
+          0.2574
+        ],
+        "b": [
+          0,
+          1.1,
+          2.2074
+        ],
+        "hit": true,
+        "active": 1
+      },
+      {
+        "start_f": 31,
+        "player_pos": [
+          0,
+          0,
+          0.2676
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 1.7324,
+        "a": [
+          0,
+          1.1,
+          0.2676
+        ],
+        "b": [
+          0,
+          1.1,
+          2.2176
+        ],
+        "hit": false,
+        "active": 9
+      },
+      {
+        "start_f": 145,
+        "player_pos": [
+          0,
+          0,
+          0.6074
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 1.3926,
+        "a": [
+          0,
+          1.1,
+          0.6074
+        ],
+        "b": [
+          0,
+          1.1,
+          2.5574
+        ],
+        "hit": true,
+        "active": 1
+      },
+      {
+        "start_f": 151,
+        "player_pos": [
+          0,
+          0,
+          0.6176
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 1.3824,
+        "a": [
+          0,
+          1.1,
+          0.6176
+        ],
+        "b": [
+          0,
+          1.1,
+          2.5676
+        ],
+        "hit": false,
+        "active": 9
+      },
+      {
+        "start_f": 265,
+        "player_pos": [
+          0,
+          0,
+          0.9574
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 1.0426,
+        "a": [
+          0,
+          1.1,
+          0.9574
+        ],
+        "b": [
+          0,
+          1.1,
+          2.9074
+        ],
+        "hit": true,
+        "active": 1
+      },
+      {
+        "start_f": 271,
+        "player_pos": [
+          0,
+          0,
+          0.9676
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 1.0324,
+        "a": [
+          0,
+          1.1,
+          0.9676
+        ],
+        "b": [
+          0,
+          1.1,
+          2.9176
+        ],
+        "hit": false,
+        "active": 9
+      },
+      {
+        "start_f": 385,
+        "player_pos": [
+          0,
+          0,
+          1.3074
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 0.6926,
+        "a": [
+          0,
+          1.1,
+          1.3074
+        ],
+        "b": [
+          0,
+          1.1,
+          3.2574
+        ],
+        "hit": true,
+        "active": 1
+      },
+      {
+        "start_f": 391,
+        "player_pos": [
+          0,
+          0,
+          1.3176
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 0.6824,
+        "a": [
+          0,
+          1.1,
+          1.3176
+        ],
+        "b": [
+          0,
+          1.1,
+          3.2676
+        ],
+        "hit": false,
+        "active": 9
+      }
+    ],
+    "last": [
+      {
+        "start_f": 2065,
+        "player_pos": [
+          0,
+          0,
+          6.2074
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 4.2074,
+        "a": [
+          0,
+          1.1,
+          6.2074
+        ],
+        "b": [
+          0,
+          1.1,
+          8.1574
+        ],
+        "hit": false,
+        "active": 10
+      },
+      {
+        "start_f": 2185,
+        "player_pos": [
+          0,
+          0,
+          6.5574
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 4.5574,
+        "a": [
+          0,
+          1.1,
+          6.5574
+        ],
+        "b": [
+          0,
+          1.1,
+          8.5074
+        ],
+        "hit": false,
+        "active": 10
+      },
+      {
+        "start_f": 2305,
+        "player_pos": [
+          0,
+          0,
+          6.9074
+        ],
+        "target_pos": [
+          0,
+          0,
+          2
+        ],
+        "dist": 4.9074,
+        "a": [
+          0,
+          1.1,
+          6.9074
+        ],
+        "b": [
+          0,
+          1.1,
+          8.8574
+        ],
+        "hit": false,
+        "active": 10
+      }
+    ]
+  }
+}

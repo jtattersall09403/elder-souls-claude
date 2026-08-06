@@ -1,0 +1,158 @@
+{
+  "schema": "critic/w1-00-ar1@1",
+  "at": "2026-08-06T12:51:32.949Z",
+  "sugar": {
+    "tap_sugar": {
+      "threw": false,
+      "v": 1
+    },
+    "after_tap_pressed": {
+      "threw": false,
+      "v": {
+        "move": [
+          0,
+          0
+        ],
+        "look": [
+          0,
+          0
+        ],
+        "held": [],
+        "pressed": [],
+        "dispatch_lag": 0,
+        "buffered": null,
+        "catchup_steps": 1
+      }
+    },
+    "hold_until_sugar": {
+      "threw": false,
+      "v": 1
+    },
+    "after_hold_held": {
+      "threw": false,
+      "v": {
+        "move": [
+          0,
+          0
+        ],
+        "look": [
+          0,
+          0
+        ],
+        "held": [],
+        "pressed": [],
+        "dispatch_lag": 0,
+        "buffered": null,
+        "catchup_steps": 1
+      }
+    },
+    "garbage_key": {
+      "threw": false,
+      "v": 1
+    },
+    "empty_event": {
+      "threw": false,
+      "v": 1
+    },
+    "no_f": {
+      "threw": true,
+      "msg": "queueInputs: event frame must be a non-negative integer (got undefined)"
+    },
+    "raw_press": {
+      "threw": false,
+      "v": 2
+    },
+    "after_raw_press": {
+      "threw": false,
+      "v": {
+        "move": [
+          0,
+          0
+        ],
+        "look": [
+          0,
+          0
+        ],
+        "held": [
+          "light"
+        ],
+        "pressed": [
+          "light"
+        ],
+        "dispatch_lag": 0,
+        "buffered": null,
+        "catchup_steps": 1
+      }
+    }
+  },
+  "AR1": {
+    "swings": {
+      "attacks": 50,
+      "hits": 11,
+      "event_census": {
+        "attack_start": 50,
+        "stamina_spend": 50,
+        "input_action": 50,
+        "hit": 11
+      },
+      "damage_distinct": [
+        90
+      ],
+      "damage_stdev": 0,
+      "player_states": [
+        "ATTACK",
+        "IDLE"
+      ],
+      "player_phases": [
+        "windup",
+        "active",
+        "hitstun",
+        "recovery",
+        "none"
+      ],
+      "player_anims": [
+        "atk_light_r1",
+        "idle"
+      ],
+      "frames_with_active_hitbox": 500,
+      "rng_draws_max": 0
+    },
+    "A5_cancel": [
+      {
+        "roll_at_recovery_frame": 2,
+        "first_recovery_index": 34,
+        "attack_frames_uninterrupted": 74,
+        "attack_frames_with_roll_input": 74,
+        "frames_skipped": 0
+      },
+      {
+        "roll_at_recovery_frame": 5,
+        "first_recovery_index": 34,
+        "attack_frames_uninterrupted": 74,
+        "attack_frames_with_roll_input": 74,
+        "frames_skipped": 0
+      },
+      {
+        "roll_at_recovery_frame": 10,
+        "first_recovery_index": 34,
+        "attack_frames_uninterrupted": 74,
+        "attack_frames_with_roll_input": 74,
+        "frames_skipped": 0
+      }
+    ],
+    "A7_yaw": {
+      "frames_in_active_or_recovery": 50,
+      "max_player_yaw_change_deg_per_frame": 0
+    },
+    "A4_enemy_attacks": {
+      "enemy_state_histogram": {
+        "FACE": 1800
+      },
+      "frames_with_enemy_hit_active": 0,
+      "events": {
+        "enemy_state": 1
+      }
+    }
+  },
+  "page_errors": []
+}

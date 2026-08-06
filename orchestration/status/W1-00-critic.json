@@ -7,8 +7,32 @@
     "corpus/90-verdicts/wave1/W1-00.json",
     "corpus/90-verdicts/wave1/W1-00.md"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read CRITIC-DOCTRINE.md, SCORING.md, VERDICT-SCHEMA.md, ARBITRATION.md, then the 10 reference items",
-  "notes_for_successor": "Must RUN the harness, not read source. Artifacts go under corpus/90-verdicts/wave1/artifacts/W1-00/."
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/artifacts/W1-00/harness-smoke.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-00/critic-api-probe.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-00/r4-seed-sensitivity.txt"
+  ],
+  "findings": [
+    "SHA judged: 8714e382941dbd4fdc9341dcd2692bff13f04648. game/ and tools/ clean; dirt is critic artifacts only.",
+    "R1/R2 PASS: two separate node processes, trace.mjs (pre-existing corpus tool, not builder-authored), cmb-duel-infantry s1337 -> body_sha256=0cb6c2a578174a11e055dd47be40f212e4a8fae67c3d4688828bcb80344341af both times.",
+    "MAJOR: R4 seed sensitivity is satisfied only on a technicality. seeds 1337 vs 4242, 3600 frames: the ONLY field that differs anywhere is `.rng.seed` (the echo of the seed). Zero simulation divergence. rng.draws == 0 on every one of 3600 frames. This is RI-MTH02 'How we lose' #8 verbatim.",
+    "M3 pass: stepFrames(137) delta exactly 137; t_ms err 3.3e-4 ms.",
+    "M4 pass: 1500 ms wall clock, frame unchanged (137 -> 137).",
+    "M5 pass: relative input frames work.",
+    "M7 pass on pixels: same pose twice -> byte-identical PNG sha256 df26c96f...; BUT camera readback yaw_deg/pitch_deg/dist_m are STALE after camera() (report the previous pose's values until a sim step runs).",
+    "M6 partial: banana/negative/spawn-nope/loadState-nope/setWeather/setTimeOfDay/lockOn/despawn/setSeed/setMode all throw. teleport('a','b') returns true (no throw). camera({pos:[1,2]}) returns pos:[1,2,null] look:[null,1.55,null] \u2014 fail-quiet.",
+    "getWorldStats(): drawCalls 18 and triangles 2808 IDENTICAL across arena_flat / settlement_primary_street / dungeon_primary / sv5 / endgame, while materials and geometryMB do change. Candidate RI-MTH01 hard fail (hard-coded/stale values that do not change when the world does). MUST re-test with renderFrame() before the read.",
+    "spawn('inf_trash') does NOT throw \u2014 returns an eid; entity has ai:'hold_ground'. spawn('nope') throws with a good message.",
+    "getQuestState() carries _declared_incomplete and real per-state values (endgame-200q: 200 completed / 1200 journal / 500 flags / 340 topics).",
+    "DECISIVE (RI-JRN05 M1 / HF1): the save round trip fails 36 of 40 trials (20 seeds x 2 states). getStateHash() before != after. The 4 passing rows are seeds 1337 and 60606 \u2014 exactly the seeds whose four PRNG state words a,b,c,d are all positive as int32. Mechanism: live RNG words are signed int32; the loaded copy is unsigned uint32 (same bits, e.g. -339423194 -> 3955544102). Second round trip is always stable. artifact: critic-roundtrip-seedsweep.json",
+    "The builder's own determinism.mjs R9 reports PASS because it runs seed 1337 \u2014 the corpus default and one of only two seeds in 20 that pass.",
+    "ALLOCATION (charter Q1): builder's '0 B/step' does not survive. CDP sampling heap profile, 64 B interval, 60000 steps, render disabled: F1 swamp_canopy 0.98 B/step, F5 dungeon 1.73 B/step, F4 six-enemy 0.78 B/step. Named sites: stepFrames@engine.js:217, Math.hypot<-stepPlayer@player.js:23, latchForStep@pipeline.js:137, stepEntities@entities.js:67, norm180@entities.js:118. P4 requires literally 0 B in F1/F5 -> FAIL; <=2 KB in F3/F4 -> PASS. HF4 (>8 KB) not triggered. Retained growth over 30000 steps = 0.354 B/step (no leak).",
+    "With traceStart() active allocation is 2220 B/step from makeRecord@record.js:31 and enemyRecord@record.js:101, and the profile stack shows makeRecord called from _step@engine.js:202 <- stepOnce@loop.js:134 \u2014 i.e. INSIDE the sim step, contrary to RI-PLT01 C.3 ('the trace record is built outside the sim step').",
+    "RI-PLT01 M6 decoupling PASS: 3600 steps and identical record hash at render rates 60/30/15/0. M7 rate independence PASS: pos/stamina/cam yaw identical at all four rates. M8 catch-up PASS: 400 ms stall -> max 5 sim steps in one rAF, catchupClamps=1.",
+    "Determinism trap: Math.random/Date.now/performance.now are wrapped globally and THROW inside a fixed step (verified by injecting a getter that fires during stepFrames). They return real values OUTSIDE a step. A-JRN9 (forceGC/getHeapUsage) is absent.",
+    "getWorldStats is NOT hard-coded once renderFrame() precedes the read (drawCalls 18/91/31/66/40/28/61/82/61 across 9 states). It IS stale if read without a render.",
+    "content-stats.mjs counts pois=27, interiors=0; getWorldStats reports pois=24, interiors=1 on the same data."
+  ],
+  "next_step": "finish probe7 (M3 cold reload, M11 kill-during-write), probe8 (camera + MTH02 R3/R5/R6/R7/R8), probe10 (TTFP/AR/CMB07 M0), then blind packs and the verdict.",
+  "notes_for_successor": "Artifacts under corpus/90-verdicts/wave1/artifacts/W1-00/. Critic-owned probe scripts live in .critic-tmp/ (delete before finishing). Builder authored determinism.mjs/api-probe.mjs/input-probe.mjs/save-audit.mjs/perf-probe.mjs \u2014 do not treat their output as independent evidence; re-derive."
 }

@@ -2,3 +2,9 @@ node_modules/
 reports/runs/
 *.log
 .DS_Store
+
+# Reference video: sources are catalogued in corpus/70-visual/refs/_provenance.json and
+# re-fetchable, but the bytes are too large to vendor. Clips under 40MB may be committed.
+corpus/70-visual/refs/video/*.mp4
+corpus/70-visual/refs/video/*.mkv
+corpus/70-visual/refs/video/*.webm

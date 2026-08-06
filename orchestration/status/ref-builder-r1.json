@@ -2,24 +2,35 @@
   "task_id": "ref-builder-r1",
   "brief": "inline: REFERENCE BUILDER round 1 — build from ACQUISITION-CRITIQUE-R1 work queue; coordinator added amendment A6 (context/ raised to 12-16, side subject-reference)",
   "started": "round-1",
-  "state": "building",
+  "state": "complete",
   "outputs_written": [
-    "modern/exterior_daylight/run-w3nextgen-*.jpg x24 (moved out of modern/hud per A1)",
-    "modern/ui/REF-M22__er-title-screen-2764019315.jpg",
-    "rejected/REF-ER__steam-dyules-27640667{02,894,939}.jpg (painted loading art, §8d)",
-    "souls-behaviour/camera/ x12",
-    "souls-behaviour/attacks/ x12",
-    "souls-behaviour/stance/ x18"
+    "corpus/70-visual/refs/modern/exterior_daylight/ 43 (24 W3 interval-run relocated out of modern/hud per A1, +10 selected Skyrim/RDR2/W3, 9 pre-existing ER)",
+    "corpus/70-visual/refs/modern/exterior_lowlight/ 24, interior_darkemissive/ 22, character_closeup/ 13, combat/ 12, material_closeup/ 9",
+    "corpus/70-visual/refs/modern/ui/ 8 (REF-M22, 3 games)",
+    "corpus/70-visual/refs/souls-behaviour/{camera 12, attacks 12, telegraph 10, stance 18, impact 5, ui-combat 12, arena 14, death 10} = 93",
+    "corpus/70-visual/refs/morrowind/REF-A12b/ 33, REF-A20/ 4",
+    "corpus/70-visual/refs/morrowind/ 57 full-frame across 17 REF-A slots; 84 crops marked superseded_by",
+    "corpus/70-visual/refs/context/ 23 (ESO, side subject-reference, A6)",
+    "corpus/70-visual/refs/video/ 1 (V4-combat + V3-locomotion, 3.3GB DSR longplay)",
+    "corpus/70-visual/refs/rejected/ 14 (6 added)",
+    "corpus/70-visual/refs/ACQUISITION-REPORT.md §15 (revision 5)",
+    "corpus/70-visual/refs/_provenance.json 556 records, MANIFEST.json 488 records / 0 PROVENANCE_MISSING"
   ],
   "findings": [
-    "G07 RESOLVED but only half the value the critic expected: ALL 24 Witcher 3 interval-run frames are bright sun-up exteriors (eyeballed contact sheet, mean luma 50-112, blue sky + cumulus in every frame). NONE is dawn/dusk/night/overcast. They all went to exterior_daylight. exterior_lowlight gets ZERO from G07 and must be filled by download.",
-    "The 4 Elden Ring files in modern/hud/ were: 1 title screen (-> modern/ui, serves REF-M22 F17/F19) and 3 PAINTED LOADING-SCREEN ARTWORKS (-> rejected/, §8d 'not an in-game render'). modern/hud/ is now empty.",
-    "_provenance.json had the 24 W3 records keyed by BARE ID ('run-w3nextgen-t0000') not by path, so make-manifest.py's path join was silently producing PROVENANCE_MISSING for them. Re-keyed to paths. This is the mechanism behind critic finding H2.",
-    "STEAM MECHANIC: publishedfileid is monotonic in time. Verified pairs: 682813253=May 2016, 1266422871=Jan 2018, 1350359390=Apr 2018, 1898037031=Oct 2019, 2061157174=Apr 2020, 2461550198=Apr 2021, 2713051696=Jan 2022, 2888289483=Nov 2022. So sid < ~2,900,000,000 == pre-2023 == §8b 'pre-2023-page' passes. Used as the primary triage filter.",
-    "Pre-2023 candidate counts per bucket (from the two candidate pools): souls_death 2/60, souls_creature_design 6/79, material_closeup 6/42, combat 7/41, REF-A20 1/6 are the buckets where §8b corroboration CANNOT be met from the delivered pool.",
-    "STEAM MECHANIC: /sharedfiles/filedetails/ 429s after ~19 requests in a burst but sustains ~1 request / 4 s indefinitely. scratchpad/metaloop.py runs that trickle in the background; scratchpad/steam-meta.json is the cache. ISteamRemoteStorage/GetPublishedFileDetails returns result:9 for screenshots — it does NOT work for this content type.",
-    "Steam CDN bare ugc URLs: 734/734 souls + morrowind candidates downloaded with zero failures via curl --compressed. 1 failure in souls_arena_framing."
+    "acquire.py --check PASSES: 323/323 fetchable records verify byte-for-byte, including the 3.3GB video.",
+    "G07 half-value: ALL 24 Witcher 3 interval-run frames are sun-up exteriors. exterior_lowlight gets ZERO interval-run frames from them and still has none.",
+    "THE BINDING CONSTRAINT IS NOW block_score, NOT COVERAGE. 199 files carry heavily_recompressed:true from COMPUTED block_score > 1.15 — 19 of 22 in interior_darkemissive, 16 of 24 in exterior_lowlight. Steam re-encodes user screenshot uploads and Steam is the only source with the needed breadth. More Steam frames will not fix these two profiles; a different KIND of source will (lossless capture series, press kit, Digital Foundry frame dump).",
+    "PROVENANCE STRUCTURE DEFECT (root cause of H2/H3): 68 records were keyed by bare id (REF-A1..A19 slot ids, run-w3nextgen-*, REF-ER-*) while make-manifest.py joins BY PATH, so 140 files produced PROVENANCE_MISSING regardless of how well their provenance was written. Fixed by copying each id-keyed record down to its path key with provenance_inherited_from; id-keyed records retained.",
+    "H5 closed: the 3 corroboration:'unknown' files moved to rejected/ per §8b.",
+    "STEAM publishedfileid is monotonic in time — 97 directly-read page dates, 0 violations, Feb 2014 to Mar 2024. sid < ~2,900,000,000 == pre-2023. Used as the primary triage filter and as a bracket-inference route for §8b (95 direct + 145 bracketed + 36 unresolved).",
+    "STEAM /sharedfiles/filedetails/ 429s after ~19 burst requests, is still throttled at 1 req/4s, sustains at 1 req/14s. ISteamRemoteStorage/GetPublishedFileDetails returns result:9 for screenshots.",
+    "STEAM listing card: id is in data-publishedfileid=\"N\", page URL in data-modal-content-url, NOT a plain href before the img. A href-then-img regex returns zero rows.",
+    "MORROWIND VANILLA: ~4 in 5 top-rated Morrowind screenshots at >=1920 wide FAIL V2 (MGE XE / OpenMW distant land). Filtering to <=1366 native width recovers a genuinely vanilla population (234 of 576). The vanilla fog wall closing the middle distance is the discriminator.",
+    "searchText=bloodstain on app 374320 is the query that answers RI-JRN06 — it returns real bloodstain pools at distance. It was in NEITHER candidate pool. searchText='you died' returns images TITLED that, almost never the card.",
+    "YOUTUBE IS CLOSED to this container: yt-dlp search works, every download returns 'Sign in to confirm you're not a bot' (web/web_safari/android_vr/ios) or 'DRM protected' (tv); mweb lists only storyboards. V1-dolly and V2-static could not be filled.",
+    "archive.org IS OPEN: PC_Longplay_Dark_Souls_Remastered.ia.mp4 = 3.3GB / 9h11m / 854x480 h.264 derivative (used). The RDR2 100% longplay is 82GB with NO derivative.",
+    "Steam ESO app 306130 listing returned ZERO cards for every query today, including ones the prior critic used successfully. Only the 30 pre-harvested candidates were usable; no explicit xanmeer ziggurat frame among them."
   ],
-  "next_step": "commit morrowind/REF-A12b (31 picked, eyeballed vanilla) and REF-A20; then souls telegraph/impact/ui-combat/arena/death; then morrowind full-frame re-acquisition; then modern profiles; then video; then context/ (A6, 12-16)",
-  "notes_for_successor": "Tooling in /tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/: fetch.py (stage download), sheet.py (contact sheets for eyeball triage), commit.py (copy exact bytes + merge provenance), prov.py (merge-only _provenance writer), metaloop.py (background Steam date fetcher). stage-index.json holds sha256+dims for every staged candidate, so a successor can commit without re-downloading. capture_date on records written before metaloop caught up needs a BACKFILL pass at the end (commit.py records 'unknown' + corroboration 'one-host' when the date is not yet cached)."
+  "next_step": "none — handed to the round-2 critic",
+  "notes_for_successor": "Tooling in /tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/: fetch.py (stage download), sheet.py (contact sheets for eyeball triage — the single biggest efficiency win), commit.py (copy exact bytes + merge provenance), prov.py (MERGE-ONLY _provenance writer, never rewrites), harvest2.py (Steam listing harvester, cheap route), metaloop.py (patient Steam date fetcher), postpass.py (§8a computed thresholds -> pixel_metrics_valid), backfill_dates.py (§8b corroboration), finalise.py, run_*.py (the commit batches, each self-documenting). stage-index.json holds sha256+dims+url for ~1900 staged candidates so a successor can commit more WITHOUT re-downloading — that is the cheapest place to continue. Unfilled and why: V1-dolly/V2-static (YouTube closed), exterior_lowlight + interior_darkemissive countable floors (Steam recompression, not coverage), character_closeup rear-view ratio, REF-A3 Telvanni full-frame, ESO xanmeer."
 }

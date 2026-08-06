@@ -1,0 +1,140 @@
+{
+  "schema": "elder-souls/determinism@1",
+  "scenario": "cmb-duel-infantry",
+  "seed": 1337,
+  "seed2": 4242,
+  "frames": 1800,
+  "rungs": [
+    {
+      "id": "R1",
+      "property": "run-to-run identical",
+      "pass": true,
+      "evidence": {
+        "run_a": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "run_b": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "frames": 1800
+      }
+    },
+    {
+      "id": "R2",
+      "property": "process-to-process identical (fresh realm; see note for the OS-process check)",
+      "pass": true,
+      "evidence": {
+        "run_a": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "fresh_realm": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "os_process_check": "node tools/harness/trace.mjs --scenario cmb-duel-infantry --out reports/runs/DET-A  (twice, compare body_sha256)"
+      }
+    },
+    {
+      "id": "R3",
+      "property": "batch-invariant: stepFrames(1)xN == stepFrames(N)x1 == stepFrames(60)xM",
+      "pass": true,
+      "evidence": {
+        "chunk_1": "5b10791770f8acf2dc1c4df49a29f887061e2e33c1c76ad6380b74ba9aea7f7a",
+        "chunk_N": "5b10791770f8acf2dc1c4df49a29f887061e2e33c1c76ad6380b74ba9aea7f7a",
+        "chunk_60": "5b10791770f8acf2dc1c4df49a29f887061e2e33c1c76ad6380b74ba9aea7f7a",
+        "frames": 600
+      }
+    },
+    {
+      "id": "R4",
+      "property": "seed-sensitive: different seed diverges, >=5% of frames differ",
+      "pass": true,
+      "evidence": {
+        "seed_a": 1337,
+        "hash_a": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "seed_b": 4242,
+        "hash_b": "6036f16536b26a22439a8e28d6f3203eac803610052af2dd39e8b10dcb380249",
+        "frames_differing_pct": 100
+      }
+    },
+    {
+      "id": "R5",
+      "property": "warm-up-invariant: scripted-window records identical after re-basing f",
+      "pass": false,
+      "evidence": {
+        "warmup_30_frames": 600,
+        "warmup_90_frames": 600,
+        "differing_fields": [
+          "enemies[].anim_frame",
+          "enemies[].state_entered_f"
+        ],
+        "differing_fields_outside_the_enemy_block": [],
+        "note": "Every differing field is in the enemy block, and both are warm-up-dependent BY CONSTRUCTION: enemies[].state_entered_f is an absolute frame index that the item does not re-base, and enemies[].anim_frame is the phase of a looping idle animation, which genuinely differs when the entity has been idling for 60 more frames. See orchestration/amendments/AM-W1-00-01-mth02-r5.md."
+      }
+    },
+    {
+      "id": "R6",
+      "property": "load-order documented and reproducible: setSeed -> loadState is authoritative",
+      "pass": true,
+      "evidence": {
+        "documented_order": "setSeed() then loadState() — HARNESS.md D6, implemented in tools/lib/run.mjs",
+        "seed_then_load": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "seed_then_load_again": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "load_then_seed": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "note": "load-then-seed is NOT the documented order; its hash is printed for information only."
+      }
+    },
+    {
+      "id": "R7",
+      "property": "wall-clock-invariant: host sleeps between chunks change nothing",
+      "pass": true,
+      "evidence": {
+        "normal": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "with_800ms_sleeps": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1"
+      }
+    },
+    {
+      "id": "R8",
+      "property": "resolution-invariant: the simulation does not know the viewport size",
+      "pass": true,
+      "evidence": {
+        "at_1920x1080": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1",
+        "at_640x360": "faf472cdc31102c2f3a62d979ef1121bf072e040070f04f1e2fd65c73d0fdad1"
+      }
+    },
+    {
+      "id": "R9",
+      "property": "save round trip: state hash equal, and the next 600 frames match the control",
+      "pass": true,
+      "evidence": {
+        "state_hash_before": "90c4a9efc74b2d5d3b8d1bb4bbf6d4eb2554d992b81402b605768076361100d4",
+        "state_hash_after": "90c4a9efc74b2d5d3b8d1bb4bbf6d4eb2554d992b81402b605768076361100d4",
+        "round_trip_equal": true,
+        "round_trip_diff_fields": 0,
+        "round_trip_diff": [],
+        "canonical_bytes": 1732,
+        "control_tail_sha256": "d821dd772c452ad75a9ba8c85f82cc2a3bf6aece2b6f1a8279f18147fd83316b",
+        "loaded_tail_sha256": "d821dd772c452ad75a9ba8c85f82cc2a3bf6aece2b6f1a8279f18147fd83316b"
+      }
+    }
+  ],
+  "guards": {
+    "violations": 0,
+    "detail": [],
+    "guards": [
+      "Math.random",
+      "Date.now",
+      "performance.now",
+      "new Date()"
+    ],
+    "armedDuring": "exactly one fixed simulation step",
+    "rngSeed": 1337,
+    "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+  },
+  "page_errors": [],
+  "pass": false,
+  "rungs_passed": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R6",
+    "R7",
+    "R8",
+    "R9"
+  ],
+  "rungs_failed": [
+    "R5"
+  ]
+}

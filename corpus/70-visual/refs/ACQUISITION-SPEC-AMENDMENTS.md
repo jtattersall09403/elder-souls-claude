@@ -176,3 +176,68 @@ ESO's Black Marsh, which is exactly what the earlier ruling guarded against. The
 they may answer "Skyrim". **Add ESO to that test's forbidden answers.** Subject reference tells a
 builder what a xanmeer *is*; our own art-direction spec, transposed from Morrowind, tells them what
 ours *looks like*.
+
+## A7 — Geographical variation, and the reference set that must prove it
+
+**User direction:** *"Variation of biomes, landscapes and scenes across the spectrum of small
+picture to big picture. I want visual tests as part of it."*
+
+Seam **S24** already forbids a uniformly swampy world, and `RI-WLD04` already tests whether a
+region can be *identified* from an unlabelled screenshot. **Neither is sufficient**, for two
+reasons:
+
+1. **Identifiable is not varied.** Thirteen regions could each be reliably identifiable while the
+   whole set occupies a narrow visual range — thirteen shades of one place. Identity is a
+   *classification* test; variation is a *dispersion* test, and we only have the first.
+2. **Variation happens at three scales and we test one.** Morrowind varies at the macro scale
+   (Ashlands versus Bitter Coast versus Grazelands), the meso scale (a foyada cutting a hillside,
+   a coastline turning to marsh within one region), and the micro scale (ground texture, flora
+   clustering, rock type, the specific plants at your feet). Our corpus tests only the macro.
+
+### The measurement this makes possible
+
+**Morrowind is the calibration set, not just the aspiration.** With enough real Morrowind
+screenshots we can compute how far apart *its own* regions actually are, and require ours to be at
+least as spread out:
+
+- **Inter-region dispersion.** Compute pairwise distance between region centroids across the
+  metric vector (palette in CIELAB, luminance distribution, edge density, colour entropy, sky
+  fraction, silhouette statistics). Morrowind's own inter-region distribution becomes the floor:
+  **our 13 regions must have a median pairwise distance ≥ Morrowind's**, and — importantly — a
+  **minimum** pairwise distance no smaller than Morrowind's minimum, so no two of our regions may
+  be closer together than Morrowind's two most similar regions.
+- **Intra-region variance, bounded on both sides.** A region must be internally *coherent* (its
+  screenshots cluster) but not *uniform* (the cluster has real spread). Both a floor and a ceiling,
+  because a region where every shot is interchangeable is as much a failure as one with no
+  identity. The ratio `inter_median / intra_median` is the headline number, calibrated against
+  Morrowind's own.
+- **Micro-scale variation** is measured at ground level: a downward-facing shot in each region must
+  differ from every other region's on texture, flora and material, without relying on skyline or
+  architecture to carry the distinction. **This is the scale most likely to be faked** by
+  recolouring one terrain material, and the one nothing currently checks.
+
+### What acquisition must therefore get
+
+This is a **new acquisition requirement**, not a nice-to-have — the bar above cannot be computed
+without it:
+
+| Set | What | Why |
+|---|---|---|
+| `morrowind/REF-A21-regions/` | **Full-frame exteriors from every distinct Vvardenfell region** — Ascadian Isles, Bitter Coast, West Gash, Grazelands, Ashlands, Molag Amur, Sheogorad, Azura's Coast, and the Red Mountain approach. **4–6 each**, native aspect, uncropped | The inter-region dispersion floor is computed from these. Fewer than 4 per region and the centroid is noise. |
+| `morrowind/REF-A22-intraregion/` | **Several shots from *within* one region**, showing how much it varies internally — 6–8 from Ascadian Isles and 6–8 from Bitter Coast | Calibrates the intra-region variance band. Without it we have a floor with no ceiling. |
+| `morrowind/REF-A23-ground/` | **Downward or near-ground shots** showing terrain texture, flora clustering and material at walking scale, ≥1 per region | The micro scale. Nothing in the current set shows the ground at all. |
+
+Note this depends on finding **F1** already being fixed: 320×320 square crops cannot support any of
+these measurements, because a crop has discarded both the composition and the skyline.
+
+Steam app **22320** is the route; queries by region name (`Ascadian`, `Bitter Coast`, `Grazelands`,
+`Ashlands`, `Molag Amur`, `Sheogorad`, `Azura's Coast`, `Red Mountain`, `West Gash`) return
+region-tagged galleries.
+
+### The honest caveat
+
+Morrowind's screenshot population is skewed toward the picturesque and toward the places players
+photograph, so the computed dispersion is an estimate from a biased sample, not a census. It is
+still enormously better than a constructed number — and the bias runs **against** us, since a
+picturesque-skewed sample will show *more* dispersion than the real game, making the floor harder
+rather than easier. Record it as `derived` with the bias stated.

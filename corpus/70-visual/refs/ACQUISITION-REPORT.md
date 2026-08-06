@@ -837,3 +837,233 @@ Each record includes the direct source URL, destination path, expected byte coun
 - This reproducible package covers the 46-source Elden Ring critic set, not every aspirational slot from the original measurement-instrument request.
 - Material close-ups, reconstructable Morrowind sources, ESO context, and videos require additional source catalogues.
 - `MANIFEST.json` and `_computed.json` are generated locally after download and are intentionally absent from the text-only change.
+
+---
+
+# §15 — Revision 5: reference builder, round 1 (agent `ref-builder-r1`, 2026-08-06)
+
+**Inputs:** `ACQUISITION-CRITIQUE-R1.md` (coverage critique, verdict INSUFFICIENT) and its 734
+verified souls/Morrowind candidates; `ACQUISITION-CRITIQUE-R1-code.md` and its 472 verified
+candidates; `ACQUISITION-SPEC-AMENDMENTS.md` A1–A6.
+
+**What this revision did:** built. It did not re-run the critics' research. 1,206 candidate URLs
+were already verified live; effort went into fetching, eyeball triage, filing and documenting.
+
+## 15.1 Headline
+
+| | before | after |
+|---|---:|---:|
+| media files under `refs/` | 173 | **450** (`MANIFEST.json`: 488 records including 38 REF-A12 text assets) |
+| `souls-behaviour/` (amendment A5, the user's explicit ask) | **0 files, directory absent** | **93 files, 8 subfolders** |
+| Morrowind UI as pixels (`REF-A12b` + `REF-A20`, A2) | **0** | **37** |
+| Morrowind images that are full-frame, native aspect | **0 of 89** | **57 new; the 89 crops kept and marked `superseded_by`** |
+| `refs/modern/` profiles with ≥2 distinct games | 1 of 6 | **6 of 6** |
+| interval-run frames in a profile folder (§3 anti-curation) | **0** | **24** |
+| `context/` (ESO, amendment A6) | 0 | **23** |
+| `video/` | 0 | 1 (V4/V3; **V1 and V2 not obtained — see 15.6**) |
+
+`python3 corpus/70-visual/refs/acquire.py --check` **passes: 323 of 323 fetchable records verify
+byte-for-byte**, including the 3.3 GB video. `MANIFEST.json` holds **488 records, 0 with
+`PROVENANCE_MISSING`** — catalogue and disk agree for the first time (critique defect **H1**).
+
+## 15.2 Per-folder counts against the floors
+
+Floors from §3 as amended by A1/A2/A4. §3 counts only `pixel_metrics_valid: true`; that flag is
+now set by a **computed** post-pass over `make-manifest.py`'s `nyq_ratio` / `upscale_test` /
+`block_score` against §8a's thresholds, never typed by hand.
+
+### `refs/modern/`
+
+| Folder | Floor imgs/games/locs | Files | **Countable** (`pixel_metrics_valid`) | Distinct games | Interval-run | Verdict |
+|---|---|---:|---:|---:|---:|---|
+| `exterior_daylight` | 12 / 3 / 6 | 43 | **33** | **4** (W3, ER, Skyrim SE, RDR2) | **24 of 43 (56%)** | **PASS on all three** |
+| `exterior_lowlight` | 12 / 3 / 6 | 24 | **8** | **4** | 0 | **count FAIL (8/12), games PASS, anti-curation FAIL** |
+| `interior_darkemissive` | 10 / 2 / 5 | 22 | **3** | **4** | 0 | **count FAIL (3/10), games PASS, anti-curation FAIL** |
+| `character_closeup` | 10 / 2 / 6 | 13 | **7** | **3** | exempt | **count FAIL (7/10); ≥½ rear-view rule FAIL** |
+| `combat` | 8 / 2 / 4 | 12 | **8** | **4** | exempt | **PASS** |
+| `material_closeup` | 8 / 2 / 6 | 9 | **5** | **3** | exempt | **count FAIL (5/8), games PASS** |
+| `modern/ui` (`REF-M22`, A2) | ≥2 games | 8 | n/a | **3** (W3, ER, Skyrim SE) | n/a | **PASS** |
+| `modern/hud` | dissolved by A1 | **0** | — | — | — | **emptied; folder dissolved** |
+
+**Before: 1 of 6 profiles had ≥2 games and 3 of 6 had a countable file at all. After: 6 of 6 have
+≥3 games, 6 of 6 have countable files, and `exterior_daylight` and `combat` meet every clause of
+§3. That is the shape of the change; the counts below are the honest residue.**
+
+**The binding constraint is no longer coverage. It is `block_score`.** `pixel_metrics_valid` is
+now set by a computed post-pass against §8a's thresholds, not typed. 199 files across the set
+carry `heavily_recompressed: true` because their **computed** `block_score` exceeds 1.15 — 19 of
+22 in `interior_darkemissive`, 16 of 24 in `exterior_lowlight`. §8a's own escape clause ("unless
+nothing better exists for that slot, in which case keep it and set `heavily_recompressed: true`")
+was taken, so they are retained for composition and design-language use and **excluded from every
+floor**. The cause is structural: **Steam re-encodes user screenshot uploads**, and Steam is the
+only source with the breadth these profiles need. Downloading more Steam frames will not fix
+`interior_darkemissive`; a different *kind* of source will — a lossless or high-bitrate capture
+series, a press kit, or a Digital Foundry frame dump.
+
+### `refs/souls-behaviour/` (amendment A5 + critic findings F3/F4)
+
+| Subfolder | Files | Games | Serves |
+|---|---:|---|---|
+| `camera/` | 12 | DS3 | `RI-CAM01`, `RI-CAM03`, `RI-CAM07` |
+| `attacks/` | 12 | DS3 | `RI-WPN01`–`RI-WPN04` |
+| `telegraph/` | 10 | DS3, DSR | `RI-AI02`, `RI-AI06` |
+| `stance/` | 18 | DS3 | `RI-CAM07`, `RI-WPN06` |
+| `impact/` | 5 | DS3 | `RI-WPN05`, `RI-AUD01` |
+| `ui-combat/` | 12 | DS3 | `RI-UIX01`, `RI-UIX03`, `RI-UIX06` |
+| `arena/` **(new, F3)** | 14 | DS3 | `RI-AI06`, `RI-JRN06`, `RI-WLD07` |
+| `death/` **(new, F4)** | 10 | DS3 | `RI-JRN06`, `RI-PRG04` |
+
+Every record carries `side: "souls-behaviour"`, `pixel_metrics_valid: false`, and
+`forbidden_for: ["fidelity-bands", "art-direction-judgement"]` per A5 rule 2.
+
+### `refs/morrowind/`
+
+| Slot | Full-frame added | Crops retained (superseded) | Total |
+|---|---:|---:|---:|
+| A1 A2 A4 A5 A6 A7 A8 A9 A10 A11 A13 A14 A15 A16 A17 A18 A19 | 57 | 84 | 141 |
+| `REF-A12` (OpenMW MyGUI XML, no image) | — | — | 38 files |
+| **`REF-A12b`** (A2, Morrowind UI as rendered) | **33** | — | 33 |
+| **`REF-A20`** (A2, title/main-menu art) | **4** | — | 4 |
+| `REF-A3` | 0 | 5 | 5 |
+
+`REF-A12b` sub-kind coverage: inventory 3, menu-mode multi-window 8, dialogue/topic list 5,
+journal 3, map 4, character sheet 4, book reader 4, barter 3, level up 2, tooltip 2,
+character creation 1. **Eight of the eight sub-kinds A2 names are filled; spellmaking is not
+(see 15.6).**
+
+### Other
+
+| Folder | Floor | Files | Verdict |
+|---|---|---:|---|
+| `anti-generic/` | 4–6 | 5 | PASS (unchanged) |
+| `context/` | **12–16 (A6)** | **23** | **PASS** |
+| `video/` | V1+V2 required | 1 | **FAIL on V1 and V2 — see 15.6** |
+| `rejected/` | n/a | **14** | 6 added this round: 3 painted loading artworks (§8d) and 3 `corroboration: unknown` (§8b — this closes critique defect **H5**) |
+
+## 15.3 The free win, and what it was actually worth
+
+24 Witcher 3 interval-run frames were released from `modern/hud/` into their profile folder under
+A1. **They are all `exterior_daylight`.** Every one of the 24 was eyeballed on a contact sheet:
+all are sun-up exteriors with blue sky and cumulus; none is dawn, dusk, night or overcast. The
+critic's expectation that G07 would supply both exterior profiles was wrong, and
+`exterior_lowlight` still has **zero** interval-run frames.
+
+Their `integrity_flag` — `exif_software = "ACDSee Ultimate 8"`, a batch image editor — is
+**preserved verbatim** on the promoted records and is a live risk: §8a says an editor in
+`exif_software` is a rejection. The counter-evidence recorded by the original acquirer (6.7–9.2
+bytes/pixel, `jpeg_quality_est` 100, `block_score` negative, `nyq_ratio` 0.05–0.17) says the
+pixels were not degraded. **A critic may legitimately reverse this promotion.** It is flagged
+rather than buried.
+
+The other four `modern/hud/` files were not fidelity references at all: one Elden Ring **title
+screen** (moved to `modern/ui/`, serves `RI-UIX06` F17/F19) and three **painted loading-screen
+artworks** (moved to `rejected/` — §8d, "not an in-game render").
+
+## 15.4 Finding F1 — the Morrowind crops — is closed, not deleted
+
+57 full-frame native captures were acquired from Steam app 22320 across 17 `REF-A` slots,
+prioritising the six slots the crop destroyed: **A1 (vista) 4, A8 (settlement layout) 2, A13
+(armour) 5, A14 (weapons) 4, A15 (signage) 2, A19 (stilted settlement) 6.** All 84 pre-existing
+320×320 AVIF crops in those slots are retained and now carry `superseded_by` naming the
+full-frame files, plus `superseded_reason`. No evidence was deleted.
+
+**The vanilla triage is the hard part of this job and is reported honestly.** Steam's top-rated
+Morrowind gallery is dominated by MGE XE and OpenMW distant land. The filter applied was:
+(a) native width ≤ 1366 (V7), then (b) eyes on every surviving frame for V1 grass, V2 a crisp
+horizon behind the fog wall, V3 cast shadows, V4 world reflections in water, V6 bloom/DoF.
+**Roughly four in five top-rated Morrowind screenshots at ≥1920 wide fail V2.** 576 candidates
+were harvested; 234 survived the resolution filter; 57 survived the eye. The single most reliable
+discriminator is the vanilla fog wall closing the middle distance.
+
+**A stated deviation on §7.** For `REF-A12b` menu captures taken in interiors, V1 (no grass),
+V2 (no distant land) and V4 (water not mirroring) are **not evaluable** — an interior contains no
+terrain, no horizon and no water. Those are recorded as `null` with `vanilla_tests_note` saying
+so, rather than as "unknown", and the files are filed in the slot rather than in `unconfirmed/`.
+Reading §7 literally would have emptied the slot A2 calls the highest-value art-direction
+acquisition left. **This is a judgement a critic may overturn; it is not silent.**
+
+## 15.5 Two mechanics worth more than the images
+
+**1. `_provenance.json` was structurally unjoinable, and that is the root cause of H2/H3.**
+68 records were keyed by a **bare id** — slot ids (`REF-A1`…`REF-A19`), series ids
+(`run-w3nextgen-*`), and per-image ids (`REF-ER-*`) — while `make-manifest.py` joins provenance
+to computed statistics **by path**. 140 files on disk were therefore producing
+`PROVENANCE_MISSING` in `MANIFEST.json` no matter how carefully their provenance had been
+written. Each id-keyed record has been copied down to its file's path key with
+`provenance_inherited_from`; the id-keyed records are retained unchanged. `MANIFEST.json` now
+reports **0** records with `PROVENANCE_MISSING`.
+
+**2. Steam `publishedfileid` is monotonic in time, which makes §8b's `pre-2023-page` cheap.**
+45 detail pages were fetched directly and their **visible** posted dates read; the (sid, date)
+pairs are strictly monotonic with **zero violations** across Feb 2014 → Mar 2024. So
+`sid < ~2,900,000,000` is pre-2023 (anchors: `2888289483` = Nov 13 2022, `2904212472` = 2023+).
+This was used as the **primary triage filter on every bucket**, which is why most of what landed
+this round satisfies §8b by a date actually printed on a page rather than by assertion.
+
+Two further Steam mechanics, learned the hard way and recorded so nobody repeats them:
+
+- `/sharedfiles/filedetails/` 429s after ~19 requests in a burst, is **still throttled at one
+  request per 4 s**, and sustains at one per 14 s. `ISteamRemoteStorage/GetPublishedFileDetails`
+  returns `result: 9` for screenshots — it is the wrong content type and does **not** work.
+- In an apphub listing card the id is in `data-publishedfileid="N"` and the page URL is in
+  `data-modal-content-url`, **not** in a plain `href` preceding the `<img>`. A regex that expects
+  href-then-image returns zero rows against a page that is otherwise fine.
+
+## 15.6 What could not be obtained, and why
+
+| Gap | Class (A3) | Reason, and the specific next step |
+|---|---|---|
+| **`video/V1-dolly` and `V2-static`** (both *required*) | **BLOCKING** | **YouTube is closed to this container.** `yt-dlp` search works, but every download returns *"Sign in to confirm you're not a bot"* on `web`, `web_safari`, `android_vr` and `ios`, and *"DRM protected"* on `tv`; `mweb` returns a player response listing **only storyboard formats**. archive.org **is** open and was used instead, but its current-gen holdings are unusable at size: the RDR2 100% longplay is **82 GB with no derivative**. Next step: archive.org items with an `.ia.mp4` derivative for a current-gen open-world title; a Digital Foundry mirror on a non-YouTube host; or a cookie jar for YouTube. |
+| `video/V3-locomotion`, `V4-combat` | **partly filled** | `PC_Longplay_Dark_Souls_Remastered.ia.mp4` (3.3 GB, 9.2 h, h.264) — uncut by construction, so it contains continuous third-person locomotion and continuous melee. Filed once under `V4-combat`, `serves: [V4, V3]`. It is a 2011/2018 renderer and therefore **cannot** serve V1's LOD-pop measurement. |
+| `material_closeup` 9 files / **5 countable** of 8, 3 games | **SUBSTITUTABLE → still short on count** | The 42-candidate bucket is mostly landscape: people do not photograph surfaces. A follow-up harvest on app 1174180 (`texture`, `close up`, `bark`, `mud`) added 3 genuine RDR2 surface studies and a third game; `searchText=texture` on 292030 returned **zero cards**. Nine frames are genuinely one-surface-filling-the-frame, five of them survive §8a. Padding to 8 with vistas would make the count table lie. Next step: press kits and Nexus "vanilla texture comparison" shots — a source that is not Steam-recompressed. |
+| `character_closeup` count 7/10 and the ≥½ rear-view rule (`REF-M6`) | **BLOCKING** | 13 files, 7 countable, 1 confirmed three-quarter-rear. The pre-2023 half of the 54-candidate bucket contains almost no back views — the anti-curation problem `RI-CAM07` §B names: **nobody photographs the surface the player looks at all day.** Next step: the 24 relocated Witcher 3 frames are all rear-view Geralt and could be **cross-filed** rather than re-downloaded. |
+| `exterior_lowlight` (8/12) and `interior_darkemissive` (3/10) **countable** floors | **BLOCKING, and the reason changed** | Both folders are well over their floors on *files* (24 and 22) and over on *games* (4 each). They fail on `pixel_metrics_valid`, which is now computed: 16 of 24 and 19 of 22 exceed §8a's `block_score` 1.15. **This is a source-quality problem, not a coverage problem, and more Steam downloads cannot fix it.** Next step: a non-Steam source — a press kit, a lossless capture series, or a Digital Foundry frame dump. |
+| `exterior_lowlight` / `interior_darkemissive` interval-run half | **BLOCKING** | No unbiased native screenshot **series** at dusk or in a cave has been found. §3 needs one continuous series per folder, not more selected frames. Next step: a single Steam user's screenshot showcase filtered by app, or an imgur album from one session. |
+| Morrowind **spellmaking** UI | **SUBSTITUTABLE** | `searchText=spellmaking` on app 22320 returns **0** (critic-confirmed, re-confirmed). Substituted by the magic/powers window, which is present in 4 of the 8 multi-window `REF-A12b` frames, recorded as `ui_subkind: inventory` with the magic list named in `identified_by`. |
+| Morrowind `REF-A3` (Telvanni) full-frame | **BLOCKING** | The only slot with no full-frame re-acquisition; the `telvanni`/`sadrith mora` queries returned MGE-modded frames almost exclusively. Next step: `searchText=tel vos`, `tel branora`, `mushroom tower` at ≤1366 width. |
+| ESO **xanmeer ziggurat** specifically | **SUBSTITUTABLE** | Steam app 306130's listing returned **zero cards for every query today**, including the ones the prior critic used successfully; only the 30 pre-harvested candidates were available. Two Murkmire ruin frames (`2231233681`, `1554702013`) and one settlement frame with a stepped mass on the skyline (`2424349086`) are filed as `subject_kind: xanmeer_ruin`. Next step: ESO's own media pages, or the ESO wiki. |
+| Frame-exact hitstop calibration (`RI-WPN05`) | **IMPOSSIBLE — accepted in writing** | No published artifact gives absolute frame counts. `souls-behaviour/impact/` bounds the *appearance* of a connecting hit only; its records say so in `deviation`. The dependent bar must be stated as ordering (dagger < ultra greatsword), not as absolute frames. |
+| `REF-M19` within-frame near/far water; §5a foreground/sky | **INFERABLE** | Unexpressible as a search (critic F9). Every file committed this round carries explicit `foreground_present` and `sky_visible` booleans set by eye, so the population can now be **filtered** for the constraint instead of searched for it. |
+
+## 15.7 Corroboration honesty
+
+**Final state across all 488 manifest records:** `pre-2023-page` **271**, `first-party` 38,
+`one-host` **168**, `unknown` 3 (all three now in `rejected/`), unset 8 (pre-existing
+`rejected/` files). Of the Steam-sourced records this round resolved: **95 direct** (the file's
+own page was fetched and its printed date read), **145 bracketed**, **36 unresolved**. Every
+record carries `corroboration_basis` naming which route was used and, for bracketed ones, the two
+anchor sids and their printed dates, so any of it can be re-checked without trusting this report.
+
+
+Records written this round carry `corroboration: "pre-2023-page"` **only** where a Steam detail
+page was fetched and its printed date read, or where the sid falls strictly between two such
+directly-read pages (recorded reasoning, monotonicity verified on 45 anchors, 0 violations).
+Everything else is `"one-host"`, which **satisfies none of §8b's three tests**. Those files are
+kept rather than moved to `rejected/`, and this is a **stated deviation**: they are Steam apphub
+uploads carrying a numeric community rating and an uploader profile, and every one of them is on
+an axis whose records are `pixel_metrics_valid: false`. A critic may reverse it. The buckets where
+pre-2023 candidates simply do not exist in the delivered pools are, for the record:
+`souls_death` 2/60, `souls_creature_design` 6/79, `material_closeup` 6/42, `combat` 7/41,
+`morrowind_REF-A20` 1/6.
+
+## 15.8 One search the critics did not run, and it mattered
+
+`searchText=you died` returns images **titled** "you died" and almost never the YOU DIED card —
+title matching, not image matching, exactly as the critic warned. The query that actually answers
+`RI-JRN06` is **`searchText=bloodstain` on app 374320**, which was in neither candidate pool. It
+returns real bloodstain pools at real distances, including one seen from a long way off against
+open sky (`1084578862`) and one with the *"Touch Bloodstain"* prompt drawn (`2296027105`). Eight
+of the ten files in `souls-behaviour/death/` come from it.
+
+## 15.9 Corpus amendments this round requires
+
+1. **A5 gains `arena/` and `death/`** — built, per critic findings F3 and F4. Filed here rather
+   than proceeded on informally.
+2. **§5e gains a framing floor** — *full frame, native aspect, uncropped* for `refs/morrowind/`.
+   Its absence caused F1. The 57 new files were acquired to that rule; nothing in §5e states it.
+3. **§7 needs a three-valued vanilla test** — `true` / `false` / `null = not evaluable in this
+   frame`. See 15.4.
+4. **§8b needs a fourth corroboration category or an explicit ruling** on dated Steam apphub
+   uploads from 2023 onward. See 15.7.
+5. **`RI-VIS07`'s naming test gains "ESO" as a forbidden answer** (A6). Recorded on all 23
+   `context/` records via `admissibility_note`.

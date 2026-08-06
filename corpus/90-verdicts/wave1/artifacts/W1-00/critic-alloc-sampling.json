@@ -1,0 +1,646 @@
+{
+  "schema": "critic/w1-00-alloc-fine@1",
+  "at": "2026-08-06T12:35:12.019Z",
+  "samplingInterval": 64,
+  "cases": {
+    "F1_fen": {
+      "state": "swamp_canopy",
+      "enemies": 0,
+      "steps": 60000,
+      "tracing": false,
+      "total_sampled_bytes_all": 60584,
+      "total_sampled_bytes_game": 58512,
+      "bytes_per_step_game": 0.9752,
+      "approx_samples": 914,
+      "top_sites": [
+        {
+          "site": "stepFrames @ engine.js:217:12",
+          "selfSize": 35948,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12"
+          ]
+        },
+        {
+          "site": "hypot @ :-1:-1",
+          "selfSize": 15740,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepPlayer @ player.js:23:26",
+            "hypot @ :-1:-1"
+          ]
+        },
+        {
+          "site": "(IDLE_EXTERNAL) @ :-1:-1",
+          "selfSize": 2140,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(IDLE_EXTERNAL) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "(V8 API) @ :-1:-1",
+          "selfSize": 2124,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(V8 API) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "(BYTECODE_COMPILER) @ :-1:-1",
+          "selfSize": 1224,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(BYTECODE_COMPILER) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "_tick @ loop.js:83:7",
+          "selfSize": 328,
+          "stack": [
+            "(root) @ :-1:-1",
+            "_tick @ loop.js:83:7"
+          ]
+        },
+        {
+          "site": "wallNow @ guards.js:95:23",
+          "selfSize": 296,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "wallNow @ guards.js:95:23"
+          ]
+        },
+        {
+          "site": "_step @ engine.js:202:7",
+          "selfSize": 288,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7"
+          ]
+        },
+        {
+          "site": "innerSerialize @ :169:23",
+          "selfSize": 248,
+          "stack": [
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "_promiseAwareJsonValueNoThrow @ :305:31",
+            "safeJson @ :306:21",
+            "jsonValue @ :300:11",
+            "serializeAsCallArgument @ :155:32",
+            "serialize @ :158:18",
+            "innerSerialize @ :169:23"
+          ]
+        },
+        {
+          "site": "push @ :-1:-1",
+          "selfSize": 96,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "push @ :-1:-1"
+          ]
+        },
+        {
+          "site": "get rafDrivesSim @ loop.js:61:18",
+          "selfSize": 80,
+          "stack": [
+            "(root) @ :-1:-1",
+            "_tick @ loop.js:83:7",
+            "get rafDrivesSim @ loop.js:61:18"
+          ]
+        }
+      ]
+    },
+    "F5_dungeon": {
+      "state": "dungeon_primary",
+      "enemies": 0,
+      "steps": 60000,
+      "tracing": false,
+      "total_sampled_bytes_all": 105732,
+      "total_sampled_bytes_game": 103668,
+      "bytes_per_step_game": 1.7278,
+      "approx_samples": 1620,
+      "top_sites": [
+        {
+          "site": "stepFrames @ engine.js:217:12",
+          "selfSize": 80152,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12"
+          ]
+        },
+        {
+          "site": "latchForStep @ pipeline.js:137:14",
+          "selfSize": 7576,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "latchForStep @ pipeline.js:137:14"
+          ]
+        },
+        {
+          "site": "_step @ engine.js:202:7",
+          "selfSize": 6988,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7"
+          ]
+        },
+        {
+          "site": "(V8 API) @ :-1:-1",
+          "selfSize": 2424,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(V8 API) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "stepEntities @ entities.js:67:28",
+          "selfSize": 2092,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepEntities @ entities.js:67:28"
+          ]
+        },
+        {
+          "site": "(BYTECODE_COMPILER) @ :-1:-1",
+          "selfSize": 1528,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(BYTECODE_COMPILER) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "(IDLE_EXTERNAL) @ :-1:-1",
+          "selfSize": 876,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(IDLE_EXTERNAL) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "stepOnce @ loop.js:134:10",
+          "selfSize": 828,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10"
+          ]
+        },
+        {
+          "site": "serializeAsCallArgument @ :155:32",
+          "selfSize": 428,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "_promiseAwareJsonValueNoThrow @ :305:31",
+            "safeJson @ :306:21",
+            "jsonValue @ :300:11",
+            "serializeAsCallArgument @ :155:32"
+          ]
+        },
+        {
+          "site": "hypot @ :-1:-1",
+          "selfSize": 276,
+          "stack": [
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "stepPlayer @ player.js:23:26",
+            "hypot @ :-1:-1"
+          ]
+        },
+        {
+          "site": "atan2 @ :-1:-1",
+          "selfSize": 216,
+          "stack": [
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "stepOnce @ step.js:20:24",
+            "stepPlayer @ player.js:23:26",
+            "atan2 @ :-1:-1"
+          ]
+        },
+        {
+          "site": "stepPlayer @ player.js:23:26",
+          "selfSize": 108,
+          "stack": [
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "stepOnce @ step.js:20:24",
+            "stepPlayer @ player.js:23:26"
+          ]
+        },
+        {
+          "site": "(PARSER) @ :-1:-1",
+          "selfSize": 104,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(PARSER) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "jsonValue @ :300:11",
+          "selfSize": 72,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "_promiseAwareJsonValueNoThrow @ :305:31",
+            "safeJson @ :306:21",
+            "jsonValue @ :300:11"
+          ]
+        }
+      ]
+    },
+    "F4_six": {
+      "state": "arena_flat",
+      "enemies": 6,
+      "steps": 60000,
+      "tracing": false,
+      "total_sampled_bytes_all": 48664,
+      "total_sampled_bytes_game": 46568,
+      "bytes_per_step_game": 0.7761333333333333,
+      "approx_samples": 728,
+      "top_sites": [
+        {
+          "site": "stepFrames @ engine.js:217:12",
+          "selfSize": 35472,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12"
+          ]
+        },
+        {
+          "site": "max @ :-1:-1",
+          "selfSize": 5804,
+          "stack": [
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "stepEntities @ entities.js:67:28",
+            "max @ :-1:-1"
+          ]
+        },
+        {
+          "site": "(V8 API) @ :-1:-1",
+          "selfSize": 2092,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(V8 API) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "(BYTECODE_COMPILER) @ :-1:-1",
+          "selfSize": 1080,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(BYTECODE_COMPILER) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "hypot @ :-1:-1",
+          "selfSize": 936,
+          "stack": [
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "stepEntities @ entities.js:67:28",
+            "hypot @ :-1:-1"
+          ]
+        },
+        {
+          "site": "serializeAsCallArgument @ :155:32",
+          "selfSize": 428,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "_promiseAwareJsonValueNoThrow @ :305:31",
+            "safeJson @ :306:21",
+            "jsonValue @ :300:11",
+            "serializeAsCallArgument @ :155:32"
+          ]
+        },
+        {
+          "site": "norm180 @ entities.js:118:16",
+          "selfSize": 404,
+          "stack": [
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "stepEntities @ entities.js:67:28",
+            "norm180 @ entities.js:118:16"
+          ]
+        },
+        {
+          "site": "(IDLE_EXTERNAL) @ :-1:-1",
+          "selfSize": 264,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(IDLE_EXTERNAL) @ :-1:-1"
+          ]
+        },
+        {
+          "site": "safeJson @ :306:21",
+          "selfSize": 88,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "_promiseAwareJsonValueNoThrow @ :305:31",
+            "safeJson @ :306:21"
+          ]
+        }
+      ]
+    },
+    "F4_six_tracing": {
+      "state": "arena_flat",
+      "enemies": 6,
+      "steps": 20000,
+      "tracing": true,
+      "total_sampled_bytes_all": 44415704,
+      "total_sampled_bytes_game": 44413736,
+      "bytes_per_step_game": 2220.6868,
+      "approx_samples": 693965,
+      "top_sites": [
+        {
+          "site": "enemyRecord @ record.js:101:20",
+          "selfSize": 19348580,
+          "stack": [
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "makeRecord @ record.js:31:26",
+            "map @ :-1:-1",
+            "(anon) @ record.js:87:60",
+            "enemyRecord @ record.js:101:20"
+          ]
+        },
+        {
+          "site": "enemyRecord @ record.js:101:20",
+          "selfSize": 9356252,
+          "stack": [
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "makeRecord @ record.js:31:26",
+            "map @ :-1:-1",
+            "(anon) @ record.js:87:60",
+            "enemyRecord @ record.js:101:20"
+          ]
+        },
+        {
+          "site": "makeRecord @ record.js:31:26",
+          "selfSize": 8736352,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "makeRecord @ record.js:31:26"
+          ]
+        },
+        {
+          "site": "makeRecord @ record.js:31:26",
+          "selfSize": 3960964,
+          "stack": [
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "makeRecord @ record.js:31:26"
+          ]
+        },
+        {
+          "site": "enemyRecord @ record.js:101:20",
+          "selfSize": 1237304,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "makeRecord @ record.js:31:26",
+            "enemyRecord @ record.js:101:20"
+          ]
+        },
+        {
+          "site": "map @ :-1:-1",
+          "selfSize": 845056,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "makeRecord @ record.js:31:26",
+            "map @ :-1:-1"
+          ]
+        },
+        {
+          "site": "map @ :-1:-1",
+          "selfSize": 363424,
+          "stack": [
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "makeRecord @ record.js:31:26",
+            "map @ :-1:-1"
+          ]
+        },
+        {
+          "site": "map @ :-1:-1",
+          "selfSize": 311248,
+          "stack": [
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "makeRecord @ record.js:31:26",
+            "map @ :-1:-1",
+            "(anon) @ record.js:87:60",
+            "enemyRecord @ record.js:101:20",
+            "map @ :-1:-1"
+          ]
+        },
+        {
+          "site": "stepFrames @ engine.js:217:12",
+          "selfSize": 170492,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12"
+          ]
+        },
+        {
+          "site": "slice @ :-1:-1",
+          "selfSize": 30816,
+          "stack": [
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "makeRecord @ record.js:31:26",
+            "slice @ :-1:-1"
+          ]
+        },
+        {
+          "site": "(anon) @ record.js:87:60",
+          "selfSize": 19912,
+          "stack": [
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "makeRecord @ record.js:31:26",
+            "map @ :-1:-1",
+            "(anon) @ record.js:87:60"
+          ]
+        },
+        {
+          "site": "r4 @ record.js:18:11",
+          "selfSize": 16624,
+          "stack": [
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "makeRecord @ record.js:31:26",
+            "map @ :-1:-1",
+            "(anon) @ record.js:87:60",
+            "enemyRecord @ record.js:101:20",
+            "r4 @ record.js:18:11"
+          ]
+        },
+        {
+          "site": "hypot @ :-1:-1",
+          "selfSize": 4664,
+          "stack": [
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7",
+            "makeRecord @ record.js:31:26",
+            "map @ :-1:-1",
+            "(anon) @ record.js:87:60",
+            "enemyRecord @ record.js:101:20",
+            "hypot @ :-1:-1"
+          ]
+        },
+        {
+          "site": "_step @ engine.js:202:7",
+          "selfSize": 3680,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(anon) @ :0:1",
+            "evaluate @ :283:10",
+            "(anon) @ :0:0",
+            "stepFrames @ api.js:77:14",
+            "stepFrames @ engine.js:217:12",
+            "stepOnce @ loop.js:134:10",
+            "_step @ engine.js:202:7"
+          ]
+        },
+        {
+          "site": "(V8 API) @ :-1:-1",
+          "selfSize": 2348,
+          "stack": [
+            "(root) @ :-1:-1",
+            "(V8 API) @ :-1:-1"
+          ]
+        }
+      ]
+    }
+  },
+  "page_errors": []
+}

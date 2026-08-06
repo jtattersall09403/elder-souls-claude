@@ -1,0 +1,107 @@
+{
+  "schema": "critic/w1-00-save2@1",
+  "at": "2026-08-06T13:02:34.757Z",
+  "M5_fair": [
+    {
+      "state": "sv1-midquest",
+      "control": "3052547644:543755",
+      "loaded": "2993524976:543752",
+      "identical": false,
+      "first_diff_frame": 60,
+      "diff_blocks": [
+        "events"
+      ]
+    },
+    {
+      "state": "sv5-journal-bloodstain",
+      "control": "815945163:835559",
+      "loaded": "3480886043:837356",
+      "identical": false,
+      "first_diff_frame": 0,
+      "diff_blocks": [
+        "enemies"
+      ]
+    },
+    {
+      "state": "arena_flat",
+      "control": "2510296166:522688",
+      "loaded": "3367767412:522685",
+      "identical": false,
+      "first_diff_frame": 60,
+      "diff_blocks": [
+        "events"
+      ]
+    },
+    {
+      "state": "dungeon_primary",
+      "control": "2313529164:534302",
+      "loaded": "396769484:534299",
+      "identical": false,
+      "first_diff_frame": 60,
+      "diff_blocks": [
+        "events"
+      ]
+    },
+    {
+      "state": "thorn-hall",
+      "control": "1259507003:531278",
+      "loaded": "3025588517:531275",
+      "identical": false,
+      "first_diff_frame": 60,
+      "diff_blocks": [
+        "events"
+      ]
+    }
+  ],
+  "M15": {
+    "frames_stepped": 300,
+    "records": 300,
+    "frame_gaps": 0,
+    "write": {
+      "ok": true,
+      "slot": "slotPerf",
+      "gen": 1,
+      "bytes": 504784,
+      "digest": "6516134982eaa9aa701278e401e69e7ec86679569d78b6932cf1998649386b1b",
+      "wallMs": 114.96000000089407
+    },
+    "wall_ms_total": 115.25499999895692
+  },
+  "page_errors": [],
+  "M3_cold_reload": {
+    "write": {
+      "h0": "4b2f407731e785de1d7a35447c768cbd375cdb393c8bfbc8e3950b2e3c5ebb7a",
+      "w": {
+        "ok": true,
+        "slot": "coldslot",
+        "gen": 1,
+        "bytes": 8426,
+        "digest": "01cb8c28b94081fcca7155a2bfcb1d1b5de8f50a0fae535a2e293efefe9abe54",
+        "wallMs": 9.195000000298023
+      }
+    },
+    "after": {
+      "slots": [
+        {
+          "slot": "coldslot",
+          "gen": 1,
+          "bytes": 8426,
+          "header": {
+            "name": "Nameless",
+            "level": 9,
+            "region": "thornmarsh",
+            "journal_entries": 42
+          },
+          "writtenAt": "2026-08-06T13:02:42.492Z"
+        }
+      ],
+      "err": "loadState: expected a named state (string) or an elder-souls/save@1 blob",
+      "h1": "97a3548cc3740c30f4b533702a331eb58fa2fa3d520773478b7a5407dff47e0d",
+      "journal": 42,
+      "flags": 3,
+      "topics": 5
+    },
+    "equal": false,
+    "page_errors": []
+  }
+}

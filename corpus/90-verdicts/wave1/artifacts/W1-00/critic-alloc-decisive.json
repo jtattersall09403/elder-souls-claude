@@ -1,0 +1,160 @@
+{
+  "schema": "critic/w1-00-alloc@1",
+  "at": "2026-08-06T12:34:30.741Z",
+  "runs": {
+    "F1_fen": {
+      "state": "swamp_canopy",
+      "enemies": 0,
+      "reps": [
+        {
+          "rep": 0,
+          "N": 20000,
+          "before": 5576500,
+          "after": 6045656,
+          "delta": 469156,
+          "bytes_per_step": 23.4578
+        },
+        {
+          "rep": 1,
+          "N": 20000,
+          "before": 5621608,
+          "after": 6194584,
+          "delta": 572976,
+          "bytes_per_step": 28.6488
+        },
+        {
+          "rep": 2,
+          "N": 20000,
+          "before": 5607592,
+          "after": 5704688,
+          "delta": 97096,
+          "bytes_per_step": 4.8548
+        }
+      ],
+      "median_bytes_per_step": 23.4578
+    },
+    "F5_dungeon": {
+      "state": "dungeon_primary",
+      "enemies": 0,
+      "reps": [
+        {
+          "rep": 0,
+          "N": 20000,
+          "before": 5661628,
+          "after": 5699648,
+          "delta": 38020,
+          "bytes_per_step": 1.901
+        },
+        {
+          "rep": 1,
+          "N": 20000,
+          "before": 5632952,
+          "after": 6297344,
+          "delta": 664392,
+          "bytes_per_step": 33.2196
+        },
+        {
+          "rep": 2,
+          "N": 20000,
+          "before": 5604496,
+          "after": 6194440,
+          "delta": 589944,
+          "bytes_per_step": 29.4972
+        }
+      ],
+      "median_bytes_per_step": 29.4972
+    },
+    "F3_boss": {
+      "state": "arena_flat",
+      "enemies": 1,
+      "reps": [
+        {
+          "rep": 0,
+          "N": 20000,
+          "before": 5657960,
+          "after": 6505452,
+          "delta": 847492,
+          "bytes_per_step": 42.3746
+        },
+        {
+          "rep": 1,
+          "N": 20000,
+          "before": 5652900,
+          "after": 5716672,
+          "delta": 63772,
+          "bytes_per_step": 3.1886
+        },
+        {
+          "rep": 2,
+          "N": 20000,
+          "before": 5717004,
+          "after": 5747496,
+          "delta": 30492,
+          "bytes_per_step": 1.5246
+        }
+      ],
+      "median_bytes_per_step": 3.1886
+    },
+    "F4_six": {
+      "state": "arena_flat",
+      "enemies": 6,
+      "reps": [
+        {
+          "rep": 0,
+          "N": 20000,
+          "before": 5684004,
+          "after": 6197368,
+          "delta": 513364,
+          "bytes_per_step": 25.6682
+        },
+        {
+          "rep": 1,
+          "N": 20000,
+          "before": 5651760,
+          "after": 7151616,
+          "delta": 1499856,
+          "bytes_per_step": 74.9928
+        },
+        {
+          "rep": 2,
+          "N": 20000,
+          "before": 5702896,
+          "after": 6141568,
+          "delta": 438672,
+          "bytes_per_step": 21.9336
+        }
+      ],
+      "median_bytes_per_step": 25.6682
+    }
+  },
+  "sampling_profile": {
+    "steps_sampled": 40000,
+    "sampling_interval_bytes": 2048,
+    "total_sampled_bytes": 9904,
+    "bytes_per_step_from_profile": 0.2476,
+    "top_sites": [
+      {
+        "site": "stepOnce @ loop.js:134",
+        "selfSize": 6792,
+        "stack": [
+          "(anon) @ :0",
+          "evaluate @ :283",
+          "(anon) @ :0",
+          "stepFrames @ api.js:77",
+          "stepFrames @ engine.js:217",
+          "stepOnce @ loop.js:134"
+        ]
+      },
+      {
+        "site": "evaluate @ :283",
+        "selfSize": 3112,
+        "stack": [
+          "(root) @ :-1",
+          "(anon) @ :0",
+          "evaluate @ :283"
+        ]
+      }
+    ]
+  },
+  "page_errors": []
+}

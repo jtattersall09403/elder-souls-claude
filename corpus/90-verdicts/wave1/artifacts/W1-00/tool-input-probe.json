@@ -1,0 +1,313 @@
+{
+  "schema": "elder-souls/input-probe@1",
+  "checks": {
+    "MK1_action_coverage": {
+      "routed": {
+        "light[0]=Mouse0": true,
+        "block[0]=Mouse2": true,
+        "block[1]=KeyF": true,
+        "parry[0]=Mouse1": true,
+        "parry[1]=KeyV": true,
+        "heavy[0]=KeyR": true,
+        "heavy[1]=Mouse3": true,
+        "roll[0]=Space": true,
+        "roll[1]=Mouse4": true,
+        "sprint[0]=ShiftLeft": true,
+        "jump[0]=KeyX": true,
+        "interact[0]=KeyE": true,
+        "interact[1]=Enter": true,
+        "use_item[0]=Digit1": true,
+        "lock_on[0]=Tab": true,
+        "lock_on[1]=Mouse1Hold12": "not-probed: a hold-gated modifier control needs a timed press the probe does not script",
+        "two_hand[0]=KeyG": true,
+        "swap_right[0]=Digit3": true,
+        "swap_right[1]=WheelUp": true,
+        "swap_left[0]=Digit4": true,
+        "swap_left[1]=WheelDown": true,
+        "menu[0]=Escape": true,
+        "menu[1]=KeyM": true
+      },
+      "all": true,
+      "probed": 22,
+      "not_probed": [
+        [
+          "lock_on[1]=Mouse1Hold12",
+          "not-probed: a hold-gated modifier control needs a timed press the probe does not script"
+        ]
+      ]
+    },
+    "MK2_code_not_key": {
+      "layouts": {
+        "qwerty": {
+          "move": [
+            0,
+            1
+          ],
+          "moved_m": 1.6
+        },
+        "azerty": {
+          "move": [
+            0,
+            1
+          ],
+          "moved_m": 1.6
+        },
+        "qwertz": {
+          "move": [
+            0,
+            1
+          ],
+          "moved_m": 1.6
+        }
+      },
+      "identical": true
+    },
+    "MK5_repeat_immunity": {
+      "attack_starts": 1,
+      "pass": true,
+      "frames": 120
+    },
+    "MK6_blur_release": {
+      "held_while_moving": [
+        "sprint"
+      ],
+      "held_1_frame_after": [],
+      "displacement_after_release_m": 0,
+      "pass": true
+    },
+    "MK7_visibility_release": {
+      "held_while_moving": [
+        "sprint"
+      ],
+      "held_1_frame_after": [],
+      "displacement_after_release_m": 0,
+      "pass": true
+    },
+    "MK12_look_frame_rate_independent": {
+      "degrees_turned": {
+        "hz60": 43.2,
+        "hz30": 43.2,
+        "hz15": 43.2,
+        "hz0": 43.2
+      },
+      "identical": true
+    },
+    "MK13_no_added_acceleration": {
+      "samples": [
+        {
+          "px": 2,
+          "deg": 9.6
+        },
+        {
+          "px": 4,
+          "deg": 19.2
+        },
+        {
+          "px": 8,
+          "deg": 38.4
+        },
+        {
+          "px": 16,
+          "deg": 76.8
+        }
+      ],
+      "degrees_per_pixel": [
+        4.8,
+        4.8,
+        4.8,
+        4.8
+      ],
+      "linear": true
+    },
+    "MK14_browser_does_not_steal": {
+      "contextmenu_prevented": true,
+      "space_scroll_prevented": true,
+      "tab_focus_prevented": true,
+      "quick_find_prevented": true,
+      "arrow_scroll_prevented": true,
+      "page_scrollable": false,
+      "cursor_hidden": true
+    },
+    "MK23_samples_requested": 200,
+    "MK23_input_latency_frames": {
+      "samples": 200,
+      "dropped": 0,
+      "p50": 0,
+      "p100": 0
+    },
+    "MK24_dropped_inputs": {
+      "droppedInputs": 0
+    }
+  },
+  "action_set": {
+    "actions": [
+      "light",
+      "heavy",
+      "roll",
+      "block",
+      "parry",
+      "sprint",
+      "jump",
+      "use_item",
+      "interact",
+      "lock_on",
+      "two_hand",
+      "swap_right",
+      "swap_left",
+      "menu"
+    ],
+    "bindings": {
+      "light": [
+        "Mouse0",
+        null
+      ],
+      "block": [
+        "Mouse2",
+        "KeyF"
+      ],
+      "parry": [
+        "Mouse1",
+        "KeyV"
+      ],
+      "heavy": [
+        "KeyR",
+        "Mouse3"
+      ],
+      "roll": [
+        "Space",
+        "Mouse4"
+      ],
+      "sprint": [
+        "ShiftLeft",
+        null
+      ],
+      "jump": [
+        "KeyX",
+        null
+      ],
+      "interact": [
+        "KeyE",
+        "Enter"
+      ],
+      "use_item": [
+        "Digit1",
+        null
+      ],
+      "lock_on": [
+        "Tab",
+        "Mouse1Hold12"
+      ],
+      "two_hand": [
+        "KeyG",
+        null
+      ],
+      "swap_right": [
+        "Digit3",
+        "WheelUp"
+      ],
+      "swap_left": [
+        "Digit4",
+        "WheelDown"
+      ],
+      "menu": [
+        "Escape",
+        "KeyM"
+      ]
+    },
+    "reserved": [
+      "Ctrl+KeyW",
+      "Ctrl+KeyR",
+      "Ctrl+KeyT",
+      "Ctrl+KeyN",
+      "Ctrl+Shift+KeyI",
+      "F5",
+      "F11",
+      "F12",
+      "AltLeft+F4"
+    ],
+    "audit": [],
+    "bufferFrames": 8,
+    "bufferSlots": 1,
+    "catchupCap": 5
+  },
+  "input_state": {
+    "pointerLocked": false,
+    "hasFocus": false,
+    "activeDevice": "mouse",
+    "deviceClass": "desktop",
+    "held": [],
+    "bindings": {
+      "light": [
+        "Mouse0",
+        null
+      ],
+      "block": [
+        "Mouse2",
+        "KeyF"
+      ],
+      "parry": [
+        "Mouse1",
+        "KeyV"
+      ],
+      "heavy": [
+        "KeyR",
+        "Mouse3"
+      ],
+      "roll": [
+        "Space",
+        "Mouse4"
+      ],
+      "sprint": [
+        "ShiftLeft",
+        null
+      ],
+      "jump": [
+        "KeyX",
+        null
+      ],
+      "interact": [
+        "KeyE",
+        "Enter"
+      ],
+      "use_item": [
+        "Digit1",
+        null
+      ],
+      "lock_on": [
+        "Tab",
+        "Mouse1Hold12"
+      ],
+      "two_hand": [
+        "KeyG",
+        null
+      ],
+      "swap_right": [
+        "Digit3",
+        "WheelUp"
+      ],
+      "swap_left": [
+        "Digit4",
+        "WheelDown"
+      ],
+      "menu": [
+        "Escape",
+        "KeyM"
+      ]
+    },
+    "droppedInputs": 0,
+    "mode": "play-instrumented",
+    "bufferFrames": 8,
+    "buffered": null,
+    "violations": 0
+  },
+  "not_measured_here": {
+    "M-K3": "label localisation — needs the settings surface (wave-1 piece W1-21)",
+    "M-K8/M-K9/M-K10/M-K11": "pointer-lock acquisition, Escape behaviour and lock-failure playability — need a menu surface and a real user gesture; headless Chromium will not grant pointer lock without one",
+    "M-K15": "cursor in a screenshot — the computed cursor style is checked above; the screenshot check needs the UI piece",
+    "M-K16": "rollover safety — needs a keyboard emulator that drops the third simultaneous key",
+    "M-K17/M-K18/M-K19": "rebinding — the rebinding SURFACE is wave-1 piece W1-21. The binding MODEL (per-device, two slots, reserved-chord list) is in game/src/input/bindings.js and is reported by getActionSet()",
+    "M-K20/M-K21/M-K22": "instruction budget, inscription census, prompt purity — need UI text and world inscriptions",
+    "naive pass": "JC-03N, a fresh-context agent. Not something a builder may run on its own work"
+  },
+  "page_errors": []
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "elder-souls/run-manifest@1",
+  "run_id": "20260806T122706Z-cmb-duel-infantry-s1337-ab976f",
+  "ok": true,
+  "scenario": "cmb-duel-infantry",
+  "scenario_title": "60s duel: player vs one INFANTRY trash enemy on flat ground, scripted aggressive play.",
+  "seed": 1337,
+  "frames_requested": 3600,
+  "frames_traced": 3600,
+  "warmup_frames": 30,
+  "fixed_step_hz": 60,
+  "trace": {
+    "path": "trace.jsonl",
+    "records": 3600,
+    "body_sha256": "0cb6c2a578174a11e055dd47be40f212e4a8fae67c3d4688828bcb80344341af"
+  },
+  "url": "http://127.0.0.1:42081/game/index.html",
+  "harness_version": 1,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.1.0-w1-00",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 1,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-00 — harness, determinism and persistence",
+    "threeVersion": "180",
+    "dataFiles": 33
+  },
+  "git": {
+    "commit": "8714e382941dbd4fdc9341dcd2692bff13f04648",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "data": {
+    "files": 34,
+    "sha256": "b6d73d15814329a612974aeea0b54d1465008a0982ebfa8104f8382ecad0845c"
+  },
+  "started_at": "2026-08-06T12:27:06.668Z",
+  "ended_at": "2026-08-06T12:27:11.509Z",
+  "wall_ms": 4841,
+  "page_errors": [],
+  "console_errors": [],
+  "node": "v22.22.2",
+  "tool_argv": [
+    "/home/user/elder-souls-claude/tools/harness/trace.mjs",
+    "--scenario",
+    "cmb-duel-infantry",
+    "--out",
+    "reports/runs/CRIT-DET-A"
+  ]
+}

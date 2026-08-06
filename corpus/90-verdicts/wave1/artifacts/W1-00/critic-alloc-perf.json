@@ -1,0 +1,417 @@
+{
+  "schema": "critic/w1-00-probe3@1",
+  "at": "2026-08-06T12:33:35.735Z",
+  "method": "CDP HeapProfiler.collectGarbage + Runtime.getHeapUsage; A-JRN9 absent from window.__HARNESS",
+  "alloc": {
+    "F1_fen": {
+      "state": "swamp_canopy",
+      "points": [
+        {
+          "N": 0,
+          "before": 5553276,
+          "after_raw": 5553276,
+          "after_gc": 5553276,
+          "delta_raw": 0,
+          "delta_retained": 0
+        },
+        {
+          "N": 500,
+          "before": 5553660,
+          "after_raw": 5992548,
+          "after_gc": 5563400,
+          "delta_raw": 438888,
+          "delta_retained": 9740
+        },
+        {
+          "N": 1000,
+          "before": 5563400,
+          "after_raw": 6349892,
+          "after_gc": 5587952,
+          "delta_raw": 786492,
+          "delta_retained": 24552
+        },
+        {
+          "N": 2000,
+          "before": 5587952,
+          "after_raw": 5959920,
+          "after_gc": 5603016,
+          "delta_raw": 371968,
+          "delta_retained": 15064
+        },
+        {
+          "N": 4000,
+          "before": 5603016,
+          "after_raw": 6020472,
+          "after_gc": 5647624,
+          "delta_raw": 417456,
+          "delta_retained": 44608
+        }
+      ],
+      "bytes_per_step_slope": 39.749
+    },
+    "F5_dungeon": {
+      "state": "dungeon_primary",
+      "points": [
+        {
+          "N": 0,
+          "before": 5568548,
+          "after_raw": 5568548,
+          "after_gc": 5568548,
+          "delta_raw": 0,
+          "delta_retained": 0
+        },
+        {
+          "N": 500,
+          "before": 5568524,
+          "after_raw": 5627656,
+          "after_gc": 5574496,
+          "delta_raw": 59132,
+          "delta_retained": 5972
+        },
+        {
+          "N": 1000,
+          "before": 5574496,
+          "after_raw": 5679524,
+          "after_gc": 5587948,
+          "delta_raw": 105028,
+          "delta_retained": 13452
+        },
+        {
+          "N": 2000,
+          "before": 5587972,
+          "after_raw": 5709036,
+          "after_gc": 5604656,
+          "delta_raw": 121064,
+          "delta_retained": 16684
+        },
+        {
+          "N": 4000,
+          "before": 5604680,
+          "after_raw": 5846760,
+          "after_gc": 5649308,
+          "delta_raw": 242080,
+          "delta_retained": 44628
+        }
+      ],
+      "bytes_per_step_slope": 55.4086
+    },
+    "F3_boss": {
+      "state": "arena_flat",
+      "points": [
+        {
+          "N": 0,
+          "before": 5586128,
+          "after_raw": 5586152,
+          "after_gc": 5586152,
+          "delta_raw": 24,
+          "delta_retained": 24
+        },
+        {
+          "N": 500,
+          "before": 5586128,
+          "after_raw": 5676404,
+          "after_gc": 5588708,
+          "delta_raw": 90276,
+          "delta_retained": 2580
+        },
+        {
+          "N": 1000,
+          "before": 5588684,
+          "after_raw": 6250356,
+          "after_gc": 5593984,
+          "delta_raw": 661672,
+          "delta_retained": 5300
+        },
+        {
+          "N": 2000,
+          "before": 5593984,
+          "after_raw": 5838244,
+          "after_gc": 5625080,
+          "delta_raw": 244260,
+          "delta_retained": 31096
+        },
+        {
+          "N": 4000,
+          "before": 5625056,
+          "after_raw": 6032900,
+          "after_gc": 5669692,
+          "delta_raw": 407844,
+          "delta_retained": 44636
+        }
+      ],
+      "bytes_per_step_slope": 72.0592
+    },
+    "F4_six": {
+      "state": "arena_flat",
+      "points": [
+        {
+          "N": 0,
+          "before": 5592360,
+          "after_raw": 5592360,
+          "after_gc": 5592360,
+          "delta_raw": 0,
+          "delta_retained": 0
+        },
+        {
+          "N": 500,
+          "before": 5592336,
+          "after_raw": 5862396,
+          "after_gc": 5596348,
+          "delta_raw": 270060,
+          "delta_retained": 4012
+        },
+        {
+          "N": 1000,
+          "before": 5596348,
+          "after_raw": 5991224,
+          "after_gc": 5612596,
+          "delta_raw": 394876,
+          "delta_retained": 16248
+        },
+        {
+          "N": 2000,
+          "before": 5612620,
+          "after_raw": 6022324,
+          "after_gc": 5622192,
+          "delta_raw": 409704,
+          "delta_retained": 9572
+        },
+        {
+          "N": 4000,
+          "before": 5622192,
+          "after_raw": 7250504,
+          "after_gc": 5674536,
+          "delta_raw": 1628312,
+          "delta_retained": 52344
+        }
+      ],
+      "bytes_per_step_slope": 380.8134
+    },
+    "F2_settlement": {
+      "state": "settlement_primary_street",
+      "points": [
+        {
+          "N": 0,
+          "before": 5595072,
+          "after_raw": 5595072,
+          "after_gc": 5595048,
+          "delta_raw": 0,
+          "delta_retained": -24
+        },
+        {
+          "N": 500,
+          "before": 5595072,
+          "after_raw": 5643188,
+          "after_gc": 5599048,
+          "delta_raw": 48116,
+          "delta_retained": 3976
+        },
+        {
+          "N": 1000,
+          "before": 5599060,
+          "after_raw": 5687540,
+          "after_gc": 5608988,
+          "delta_raw": 88480,
+          "delta_retained": 9928
+        },
+        {
+          "N": 2000,
+          "before": 5609012,
+          "after_raw": 5778452,
+          "after_gc": 5628936,
+          "delta_raw": 169440,
+          "delta_retained": 19924
+        },
+        {
+          "N": 4000,
+          "before": 5628924,
+          "after_raw": 6032948,
+          "after_gc": 5675272,
+          "delta_raw": 404024,
+          "delta_retained": 46348
+        }
+      ],
+      "bytes_per_step_slope": 100.2424
+    }
+  },
+  "retained_growth": {
+    "series": [
+      {
+        "block": 0,
+        "steps_done": 0,
+        "heap_after_gc": 5596448
+      },
+      {
+        "block": 1,
+        "steps_done": 3000,
+        "heap_after_gc": 5630284
+      },
+      {
+        "block": 2,
+        "steps_done": 6000,
+        "heap_after_gc": 5650552
+      },
+      {
+        "block": 3,
+        "steps_done": 9000,
+        "heap_after_gc": 5607552
+      },
+      {
+        "block": 4,
+        "steps_done": 12000,
+        "heap_after_gc": 5632636
+      },
+      {
+        "block": 5,
+        "steps_done": 15000,
+        "heap_after_gc": 5677508
+      },
+      {
+        "block": 6,
+        "steps_done": 18000,
+        "heap_after_gc": 5612972
+      },
+      {
+        "block": 7,
+        "steps_done": 21000,
+        "heap_after_gc": 5641104
+      },
+      {
+        "block": 8,
+        "steps_done": 24000,
+        "heap_after_gc": 5668216
+      },
+      {
+        "block": 9,
+        "steps_done": 27000,
+        "heap_after_gc": 5615816
+      },
+      {
+        "block": 10,
+        "steps_done": 30000,
+        "heap_after_gc": 5639840
+      }
+    ],
+    "bytes_per_step_retained": 0.3539259259259259
+  },
+  "decoupling": [
+    {
+      "render_hz": 60,
+      "steps": 3600,
+      "records": 3600,
+      "js_hash": 257184490,
+      "len": 4921071,
+      "render_rate_readback": 60
+    },
+    {
+      "render_hz": 30,
+      "steps": 3600,
+      "records": 3600,
+      "js_hash": 257184490,
+      "len": 4921071,
+      "render_rate_readback": 30
+    },
+    {
+      "render_hz": 15,
+      "steps": 3600,
+      "records": 3600,
+      "js_hash": 257184490,
+      "len": 4921071,
+      "render_rate_readback": 15
+    },
+    {
+      "render_hz": 0,
+      "steps": 3600,
+      "records": 3600,
+      "js_hash": 257184490,
+      "len": 4921071,
+      "render_rate_readback": 0
+    }
+  ],
+  "rate_independence": [
+    {
+      "render_hz": 60,
+      "pos": [
+        1.1149,
+        0,
+        31.9805
+      ],
+      "stamina": 120,
+      "cam_yaw": 2,
+      "frame": 600
+    },
+    {
+      "render_hz": 30,
+      "pos": [
+        1.1149,
+        0,
+        31.9805
+      ],
+      "stamina": 120,
+      "cam_yaw": 2,
+      "frame": 600
+    },
+    {
+      "render_hz": 15,
+      "pos": [
+        1.1149,
+        0,
+        31.9805
+      ],
+      "stamina": 120,
+      "cam_yaw": 2,
+      "frame": 600
+    },
+    {
+      "render_hz": 0,
+      "pos": [
+        1.1149,
+        0,
+        31.9805
+      ],
+      "stamina": 120,
+      "cam_yaw": 2,
+      "frame": 600
+    }
+  ],
+  "catchup": {
+    "before": 11,
+    "stall_ms": 400.070000000298,
+    "steps_per_raf_after_stall": [
+      5,
+      0,
+      0,
+      1,
+      1,
+      1
+    ],
+    "max_steps_in_one_raf": 5,
+    "t_ms": 316.667,
+    "f": 19,
+    "t_over_f": 16.666684210526313,
+    "expect": 16.666666666666668,
+    "perf": {
+      "simMs": 0.00094,
+      "renderCpuMs": 0,
+      "drawCalls": 18,
+      "triangles": 2808,
+      "programsBound": 8,
+      "materials": 6,
+      "stateChanges": 18,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "textureMB": 0,
+      "geometryMB": 0.097,
+      "heapUsed": 31200000,
+      "allocBytesThisStep": null,
+      "simStepsTotal": 87919,
+      "rendersTotal": 19,
+      "catchupClamps": 1,
+      "_unmeasurable": {
+        "renderCpuMs": "Tier-H. This container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game (RI-PLT01 §A/T1).",
+        "allocBytesThisStep": "requires --js-flags=--expose-gc and CDP Runtime.getHeapUsage; measured by the runner (A-JRN9), not self-reported."
+      }
+    }
+  },
+  "page_errors": []
+}

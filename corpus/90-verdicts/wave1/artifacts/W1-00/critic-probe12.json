@@ -1,0 +1,320 @@
+{
+  "schema": "critic/w1-00-probe12@1",
+  "at": "2026-08-06T12:57:21.176Z",
+  "rows": {
+    "traceDrain": {
+      "ok": true,
+      "v": {
+        "first": 10,
+        "second": 5,
+        "stop": 0,
+        "first_f": 1,
+        "second_f": 11,
+        "cleared": true
+      }
+    },
+    "despawn": {
+      "ok": true,
+      "v": {
+        "before": 1,
+        "after": 0,
+        "snapshot_enemies": 0
+      }
+    },
+    "aggro": {
+      "ok": true,
+      "v": {
+        "before": "SUSPICIOUS",
+        "after": "AGGRO",
+        "ai": "hold_ground"
+      }
+    },
+    "aggro_on_dummy": {
+      "ok": true,
+      "v": {
+        "ret": true,
+        "err": null,
+        "alert": "AGGRO"
+      }
+    },
+    "lockOn": {
+      "ok": true,
+      "v": {
+        "player_locked_on": "lo",
+        "camera_mode": "locked",
+        "camera_lock": "lo"
+      }
+    },
+    "tod_weather": {
+      "ok": true,
+      "v": {
+        "ret_tod": 1,
+        "ret_weather": "storm",
+        "env1": {
+          "time_of_day": 1,
+          "weather": "storm",
+          "region": "thornmarsh",
+          "interior": null
+        },
+        "env2": {
+          "time_of_day": 1,
+          "weather": "storm",
+          "region": "thornmarsh",
+          "interior": null
+        },
+        "stable": true
+      }
+    },
+    "anchors": {
+      "ok": true,
+      "v": [
+        "arena_flat",
+        "dungeon_primary",
+        "interior_firelit",
+        "material_showcase",
+        "npc_showcase",
+        "settlement_primary_street",
+        "swamp_canopy",
+        "vista_primary",
+        "water_shallows"
+      ]
+    },
+    "listEntities": {
+      "ok": true,
+      "v": [
+        {
+          "eid": "q1",
+          "archetype": "INFANTRY",
+          "pos": [
+            1,
+            0,
+            4
+          ],
+          "hp": 412
+        },
+        {
+          "eid": "q2",
+          "archetype": "DUMMY",
+          "pos": [
+            -1,
+            0,
+            4
+          ],
+          "hp": 9999
+        }
+      ]
+    },
+    "buildInfo": {
+      "ok": true,
+      "v": {
+        "name": "elder-souls",
+        "version": "0.1.0-w1-00",
+        "commit": null,
+        "builtAt": null,
+        "harnessVersion": 1,
+        "fixedStepHz": 60,
+        "dataRoot": "game/data",
+        "piece": "W1-00 — harness, determinism and persistence",
+        "threeVersion": "180",
+        "dataFiles": 33
+      }
+    },
+    "hit_ranges": {
+      "ok": true,
+      "v": [
+        {
+          "dist_m": 0.8,
+          "hitbox_active_frames": 10,
+          "frames_with_a_hit": 1,
+          "sample_hitbox": {
+            "id": "wpn_light",
+            "owner": "player",
+            "kind": "capsule",
+            "a": [
+              0,
+              1.1,
+              0.2574
+            ],
+            "b": [
+              0,
+              1.1,
+              2.2074
+            ],
+            "r": 0.22,
+            "active_f": 1,
+            "dmg": {
+              "phys": 90
+            },
+            "poise_dmg": 22,
+            "hits": [
+              "hr"
+            ]
+          }
+        },
+        {
+          "dist_m": 1.2,
+          "hitbox_active_frames": 10,
+          "frames_with_a_hit": 1,
+          "sample_hitbox": {
+            "id": "wpn_light",
+            "owner": "player",
+            "kind": "capsule",
+            "a": [
+              0,
+              1.1,
+              0.2574
+            ],
+            "b": [
+              0,
+              1.1,
+              2.2074
+            ],
+            "r": 0.22,
+            "active_f": 1,
+            "dmg": {
+              "phys": 90
+            },
+            "poise_dmg": 22,
+            "hits": [
+              "hr"
+            ]
+          }
+        },
+        {
+          "dist_m": 1.6,
+          "hitbox_active_frames": 10,
+          "frames_with_a_hit": 1,
+          "sample_hitbox": {
+            "id": "wpn_light",
+            "owner": "player",
+            "kind": "capsule",
+            "a": [
+              0,
+              1.1,
+              0.2574
+            ],
+            "b": [
+              0,
+              1.1,
+              2.2074
+            ],
+            "r": 0.22,
+            "active_f": 1,
+            "dmg": {
+              "phys": 90
+            },
+            "poise_dmg": 22,
+            "hits": [
+              "hr"
+            ]
+          }
+        },
+        {
+          "dist_m": 2,
+          "hitbox_active_frames": 10,
+          "frames_with_a_hit": 1,
+          "sample_hitbox": {
+            "id": "wpn_light",
+            "owner": "player",
+            "kind": "capsule",
+            "a": [
+              0,
+              1.1,
+              0.2574
+            ],
+            "b": [
+              0,
+              1.1,
+              2.2074
+            ],
+            "r": 0.22,
+            "active_f": 1,
+            "dmg": {
+              "phys": 90
+            },
+            "poise_dmg": 22,
+            "hits": [
+              "hr"
+            ]
+          }
+        },
+        {
+          "dist_m": 2.4,
+          "hitbox_active_frames": 10,
+          "frames_with_a_hit": 1,
+          "sample_hitbox": {
+            "id": "wpn_light",
+            "owner": "player",
+            "kind": "capsule",
+            "a": [
+              0,
+              1.1,
+              0.2574
+            ],
+            "b": [
+              0,
+              1.1,
+              2.2074
+            ],
+            "r": 0.22,
+            "active_f": 1,
+            "dmg": {
+              "phys": 90
+            },
+            "poise_dmg": 22,
+            "hits": [
+              "hr"
+            ]
+          }
+        },
+        {
+          "dist_m": 2.8,
+          "hitbox_active_frames": 10,
+          "frames_with_a_hit": 0,
+          "sample_hitbox": {
+            "id": "wpn_light",
+            "owner": "player",
+            "kind": "capsule",
+            "a": [
+              0,
+              1.1,
+              0.2574
+            ],
+            "b": [
+              0,
+              1.1,
+              2.2074
+            ],
+            "r": 0.22,
+            "active_f": 1,
+            "dmg": {
+              "phys": 90
+            },
+            "poise_dmg": 22,
+            "hits": []
+          }
+        }
+      ]
+    },
+    "fifty_at_best": {
+      "ok": true,
+      "v": {
+        "attacks": 50,
+        "hits": 12,
+        "distinct_damage": [
+          90
+        ],
+        "min_stamina": 100,
+        "rng_draws_max": 0
+      }
+    }
+  },
+  "screenshot": {
+    "is_data_url": true,
+    "length": 731694,
+    "sha256": "a615f0531d44c01ed7ba79906ea5a36a3aea46e9ff0d41a38d99e410a2df20d9",
+    "bytes": 548752,
+    "camera_pose": "pos [12,6,24] look [0,1,0] fov 60, state vista_primary, tod 12.0, weather clear, HUD off, 1920x1080 dpr1, 24 settle steps"
+  },
+  "page_errors": []
+}
