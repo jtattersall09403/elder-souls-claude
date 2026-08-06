@@ -35,7 +35,22 @@ const coupling = (obsA, obsB, predA, predB) => {
 };
 
 const h = await launchGame(args);
-const ev = (fn, arg) => h.page.evaluate(fn, arg);
+/**
+ * Every in-page block below starts by turning the RENDERER OFF.
+ *
+ * `Engine.stepFrames()` ends with `if (loop.renderRateHz !== 0) loop.renderNow()`, so a probe
+ * that steps one frame at a time draws one SwiftShader frame per simulation frame. Measured:
+ * 600 bare simulation frames cost **71 ms**; 600 frames driven one at a time with the renderer
+ * live never returned and eventually killed the page. The simulation was never the cost — the
+ * instrument was, which is exactly the trap `RI-PLT01` M3 names ("measure the simulation, not
+ * the instrument"). `setRenderRate(0)` is A-JRN11's documented switch for this, changes no
+ * simulation state, and is re-asserted before every block because `loadState` may reset it.
+ * The one measurement that needs pixels (NO-METER) must turn it back on.
+ */
+const ev = async (fn, arg) => {
+  await h.page.evaluate(() => window.__HARNESS.setRenderRate(0));
+  return h.page.evaluate(fn, arg);
+};
 
 try {
   // =========================================================================================

@@ -17,6 +17,9 @@
     "progress": "node tools/progress.mjs",
     "doctrine": "npm run gate:strict && npm run ledger && npm run verdicts",
     "ci": "npm run gate:strict && npm run metrics:selftest && npm run verdicts",
-    "hooks:install": "git config core.hooksPath .githooks && echo 'hooks installed: .githooks/pre-commit'"
+    "hooks:install": "git config core.hooksPath .githooks && echo 'hooks installed: .githooks/pre-commit'",
+    "weapons:frames": "node tools/weapons/verify-frames.mjs --gate",
+    "weapons:measure": "node tools/weapons/measure.mjs --gate",
+    "weapons:build": "node tools/weapons/build-movesets.mjs --check"
   }
 }

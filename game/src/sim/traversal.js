@@ -145,23 +145,30 @@ export class Traversal {
     // (It did: THE CROSSING stalled at 321 m, on the Stormhold-Helstrom span, before this.) On a
     // deck the structure's own gradient governs, and that is `deck_y` along the segment.
     this.onDeck = f.onDeckAt ? f.onDeckAt(x, z) : null;
+    this.onRoad = f.onRoadAt ? f.onRoadAt(x, z) : false;
     this.blockedBySlope = false;
-    if (!this.airborne && !swimming && !this.onDeck && (dx !== 0 || dz !== 0)) {
-      const y0 = f.heightAt(px, pz);
-      let y1 = f.heightAt(x, z);
+    if (!this.airborne && !swimming && !this.onDeck && !this.onRoad && (dx !== 0 || dz !== 0)) {
       const run = Math.hypot(dx, dz);
-      const rise = y1 - y0;
-      // TWO TESTS, and the first one is the one that matters. The GATE is the slope of the ground
-      // at the destination, measured with the same 5 m central difference `getTerrainAt` reports —
-      // so the number a critic reads off the terrain and the number the body obeys are the same
-      // number. (A per-frame-rise test alone cannot work: at 2 m/s a frame covers 33 mm, so even a
-      // vertical wall produces a rise of a few centimetres and every slope is walkable. That is
-      // literally why round 2 measured 70.63 degrees walked at full stick.) The second test is a
-      // discontinuity catch for a genuine step in the field, and its threshold is deliberately
-      // loose: a 0.57 m kerb at the edge of a waystation pad is a step up, not a cliff.
-      const destSlope = f.slopeAt(x, z);
-      const tooSteep = rise > 0 && (destSlope > C.slope.max_walkable_deg || rise > 1.2);
-      if (run > 1e-9 && rise > C.slope.step_up_m * 0.05 && tooSteep) {
+      const ux = dx / run, uz = dz / run;
+      // THE GATE IS THE SLOPE IN FRONT OF YOU, over a 3 m baseline.
+      //
+      // Three instruments were tried before this one and each failed for a reason worth keeping:
+      //   * per-frame rise: at 2 m/s a frame covers 33 mm, so a vertical wall produces a 3 cm rise
+      //     and every slope on the province is walkable. That is exactly how round 2 measured
+      //     70.63 degrees walked at full stick.
+      //   * per-frame rise with a threshold: trips on the sub-2 m step discontinuities where a
+      //     settlement pad meets a road corridor. THE CROSSING stopped dead at 321 m on a 0.57 m
+      //     kerb.
+      //   * omnidirectional `slopeAt(x, z)`: a road on a 2.4 m embankment reads 40 deg+ ACROSS the
+      //     carriageway even though it is flat ALONG it, so the road became unwalkable at 502 m.
+      // The directional test has none of those failure modes: it is what the body is about to
+      // climb, it is smoothed over 3 m so a step in the field cannot spike it, and it is exactly
+      // the quantity `slope.max_walkable_deg` names.
+      const L = 3.0;
+      const y0 = f.heightAt(x, z);
+      const yA = f.heightAt(x + ux * L, z + uz * L);
+      const climbDeg = Math.atan2(yA - y0, L) * DEG;
+      if (climbDeg > C.slope.max_walkable_deg) {
         // Slide along the contour instead of stopping dead, so a steep face guides rather than
         // glues — but no upward progress is made at all.
         const gx = (f.heightAt(x + 1.2, z) - f.heightAt(x - 1.2, z)) / 2.4;
@@ -169,13 +176,11 @@ export class Traversal {
         const gl = Math.hypot(gx, gz) || 1;
         const nx = gx / gl, nz = gz / gl;                    // uphill unit vector
         const along = dx * nx + dz * nz;
-        const tx = dx - nx * along, tz = dz - nz * along;    // the contour component
-        x = px + tx; z = pz + tz;
-        y1 = f.heightAt(x, z);
-        if (y1 - y0 > C.slope.step_up_m) { x = px; z = pz; }
+        x = px + (dx - nx * along); z = pz + (dz - nz * along);
         dx = x - px; dz = z - pz;
         this.blockedBySlope = true;
-        this.events.push({ kind: 'slope_blocked', deg: +destSlope.toFixed(2) });
+        this.climbBlockedDeg = +climbDeg.toFixed(2);
+        this.events.push({ kind: 'slope_blocked', deg: +climbDeg.toFixed(2) });
       }
     }
 
@@ -220,8 +225,8 @@ export class Traversal {
 
     // ---- 6. sliding ---------------------------------------------------------------------------
     // Above `slide_deg` the body is not supported; it goes downhill whether it was asked to or not.
-    if (!this.airborne && !swimming && !this.onDeck) {
-      const deg = f.slopeAt(x, z);
+    if (!this.airborne && !swimming && !this.onDeck && !this.onRoad) {
+      const deg = f.slopeAt(x, z, 1.5);
       this.slopeDeg = deg;
       if (deg > C.slope.slide_deg) {
         const gx = (f.heightAt(x + 1.2, z) - f.heightAt(x - 1.2, z)) / 2.4;
@@ -233,7 +238,7 @@ export class Traversal {
         p.pos[1] = f.heightAt(p.pos[0], p.pos[2]);
         this._setState(p, 'SLIDE');
       } else this.slide = 0;
-    } else this.slopeDeg = f.slopeAt(x, z);
+    } else this.slopeDeg = f.slopeAt(x, z, 1.5);
 
     // ---- 7. what the water costs --------------------------------------------------------------
     const W = C.water;
@@ -394,6 +399,7 @@ export class Traversal {
         mire: this.mire, mired: this.mired,
         blocked_by_slope: this.blockedBySlope,
         on_deck: this.onDeck || null,
+        on_road: !!this.onRoad,
         denies: { sprint: this.denies('sprint'), roll: this.denies('roll'), attack: this.denies('attack') },
         last_fall: this.lastFall,
       },

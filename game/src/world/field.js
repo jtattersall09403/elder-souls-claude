@@ -300,6 +300,27 @@ export class WorldField {
     return null;
   }
 
+  /**
+   * Is (x, z) on the carriageway? A road is a BUILT surface with a declared gradient — every leg's
+   * `max_grade` and its `grade_exceptions` are in `roads.json`, capped at 0.58 (30.1 deg), which is
+   * deliberately below `traversal.json slope.max_walkable_deg` (40 deg). The max-walkable-slope
+   * rule governs terrain; it must not adjudicate a road, because sampling the ground 5 m either
+   * side of a 6 m carriageway on a 2.4 m embankment reads 40 deg+ ACROSS a surface that is flat
+   * ALONG it, and the road becomes unwalkable.
+   */
+  onRoadAt(x, z) {
+    if (!this.roadGrid) return false;
+    const segs = this.roadGrid.at(x, z);
+    for (let i = 0; i < segs.length; i++) {
+      const s = segs[i];
+      const dx = s.bx - s.ax, dz = s.bz - s.az;
+      const len2 = dx * dx + dz * dz || 1;
+      const t = clamp(((x - s.ax) * dx + (z - s.az) * dz) / len2, 0, 1);
+      if (Math.hypot(x - (s.ax + dx * t), z - (s.az + dz * t)) <= s.hw * 1.15) return true;
+    }
+    return false;
+  }
+
   /** Is (x, z) standing on a bridge deck rather than on the ground? */
   onDeckAt(x, z) {
     if (!this.roadGrid) return null;

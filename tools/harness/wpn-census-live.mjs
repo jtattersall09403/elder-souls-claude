@@ -18,14 +18,26 @@ import path from 'node:path';
 import { launch } from './critic-w1-10-launch.mjs';
 
 const OUT = process.argv[2] || 'reports/W1-10-live-census.json';
-const LIMIT = Number(process.argv[3] || 0);
+// argv[3]: a number (first N weapons), a comma-separated weapon-id list, or `per-class` for the
+// fifteen class BASELINES — the stratification RI-WPN02 §D's matrix is defined over, and a run
+// that completes in about ten minutes instead of forty.
+const SEL = process.argv[3] || '';
+const LIMIT = /^\d+$/.test(SEL) ? Number(SEL) : 0;
 
 const h = await launch();
 const ids = await h.ev(async () => {
   const H = window.__HARNESS;
   return H.weapons.listWeapons().map((w) => w.weapon_id);
 });
-const list = LIMIT ? ids.slice(0, LIMIT) : ids;
+let list = ids;
+if (LIMIT) list = ids.slice(0, LIMIT);
+else if (SEL === 'per-class') {
+  const base = await h.ev(async () => {
+    const H = window.__HARNESS;
+    return H.weapons.listWeapons().filter((w) => w.baseline).map((w) => w.weapon_id);
+  });
+  list = base;
+} else if (SEL) list = SEL.split(',');
 
 const out = {
   probe: 'W1-10 live census — all 87 weapons through window.__HARNESS',
