@@ -1,0 +1,900 @@
+{
+  "url": "http://127.0.0.1:35945/game/index.html",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "s": {
+    "sheet": {
+      "salt_blade_dunmer": {
+        "created": true,
+        "given_name": "Unwritten",
+        "hatch_name": "",
+        "hatch_name_refused": false,
+        "sex": "unrecorded",
+        "race": "dunmer",
+        "upbringing": "foreign-born",
+        "upbringing_given_as": "a river you have not heard of",
+        "class_id": "salt-blade",
+        "class_name": "Salt-Blade",
+        "class_family": "fighter",
+        "class_family_fit": null,
+        "class_route": "named",
+        "birthsign": "raj-xul",
+        "birthsign_second": null,
+        "attributes": {
+          "strength": 16,
+          "endurance": 14,
+          "agility": 12,
+          "speed": 12,
+          "vigour": 10,
+          "willpower": 11,
+          "intellect": 8,
+          "hist-bond": 10,
+          "personality": 6,
+          "luck": 13
+        },
+        "skills": {
+          "blades": 25,
+          "axes-maces": 15,
+          "polearms": 5,
+          "greatweapons": 5,
+          "marksman": 15,
+          "claw-fang": 5,
+          "shieldcraft": 25,
+          "sorcery": 15,
+          "root-speech": 5,
+          "warding": 5,
+          "veiling": 10,
+          "alchemy": 5,
+          "athletics": 25,
+          "acrobatics": 5,
+          "survival": 15,
+          "sneak": 5,
+          "security": 5,
+          "mercantile": 5,
+          "speechcraft": 5
+        },
+        "signature": {
+          "race": "dunmer",
+          "class_family": "fighter",
+          "birthsign_family": "given",
+          "upbringing_class": "foreign",
+          "key": "dunmer|fighter|given|foreign"
+        },
+        "powers": [
+          {
+            "sign": "raj-xul",
+            "scale": 1,
+            "power": {
+              "summary": "The tithe-gourd holds one more swallow.",
+              "effects": [
+                {
+                  "kind": "flask_charges",
+                  "delta": 1,
+                  "note": "+1 tithe-gourd charge at every charge tier (RI-CMB08). At the 4-charge start this is +25% healing throughput; at the 10-charge cap, +10%. Deliberately front-loaded."
+                }
+              ]
+            }
+          }
+        ],
+        "drawbacks": [],
+        "invariants": {
+          "attribute_total": 112,
+          "attribute_total_ok": true,
+          "race_delta_sum": 12,
+          "class_delta_sum": 0,
+          "skills_above_baseline": 8,
+          "skills_above_baseline_ok": true,
+          "max_skill": 25,
+          "max_skill_ok": true
+        },
+        "flags": [],
+        "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Unwritten\nAlso called: \nObserved as: Dunmer\nRaised at: a river you have not heard of\nTrade declared: Salt-Blade\nTide drawn on: The Full Root (Raj-Xul)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-FIG\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+      },
+      "sap_reader_orsimer": {
+        "created": true,
+        "given_name": "Unwritten",
+        "hatch_name": "",
+        "hatch_name_refused": false,
+        "sex": "unrecorded",
+        "race": "orsimer",
+        "upbringing": "foreign-born",
+        "upbringing_given_as": "a river you have not heard of",
+        "class_id": "sap-reader",
+        "class_name": "Sap-Reader",
+        "class_family": "mage",
+        "class_family_fit": null,
+        "class_route": "named",
+        "birthsign": "raj-xul",
+        "birthsign_second": null,
+        "attributes": {
+          "strength": 11,
+          "endurance": 11,
+          "agility": 10,
+          "speed": 9,
+          "vigour": 14,
+          "willpower": 15,
+          "intellect": 14,
+          "hist-bond": 10,
+          "personality": 7,
+          "luck": 11
+        },
+        "skills": {
+          "blades": 5,
+          "axes-maces": 25,
+          "polearms": 5,
+          "greatweapons": 20,
+          "marksman": 5,
+          "claw-fang": 5,
+          "shieldcraft": 20,
+          "sorcery": 25,
+          "root-speech": 5,
+          "warding": 25,
+          "veiling": 15,
+          "alchemy": 25,
+          "athletics": 5,
+          "acrobatics": 5,
+          "survival": 10,
+          "sneak": 5,
+          "security": 5,
+          "mercantile": 5,
+          "speechcraft": 15
+        },
+        "signature": {
+          "race": "orsimer",
+          "class_family": "mage",
+          "birthsign_family": "given",
+          "upbringing_class": "foreign",
+          "key": "orsimer|mage|given|foreign"
+        },
+        "powers": [
+          {
+            "sign": "raj-xul",
+            "scale": 1,
+            "power": {
+              "summary": "The tithe-gourd holds one more swallow.",
+              "effects": [
+                {
+                  "kind": "flask_charges",
+                  "delta": 1,
+                  "note": "+1 tithe-gourd charge at every charge tier (RI-CMB08). At the 4-charge start this is +25% healing throughput; at the 10-charge cap, +10%. Deliberately front-loaded."
+                }
+              ]
+            }
+          }
+        ],
+        "drawbacks": [],
+        "invariants": {
+          "attribute_total": 112,
+          "attribute_total_ok": true,
+          "race_delta_sum": 12,
+          "class_delta_sum": 0,
+          "skills_above_baseline": 9,
+          "skills_above_baseline_ok": true,
+          "max_skill": 25,
+          "max_skill_ok": true
+        },
+        "flags": [],
+        "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Unwritten\nAlso called: \nObserved as: Orsimer\nRaised at: a river you have not heard of\nTrade declared: Sap-Reader\nTide drawn on: The Full Root (Raj-Xul)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You keep the root under your tongue when you talk. Whoever taught you that did it early.\nBounty ledger reference: TW-ORS-MAG\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+      },
+      "wet_foot_khajiit": {
+        "created": true,
+        "given_name": "Unwritten",
+        "hatch_name": "",
+        "hatch_name_refused": false,
+        "sex": "unrecorded",
+        "race": "khajiit",
+        "upbringing": "foreign-born",
+        "upbringing_given_as": "a river you have not heard of",
+        "class_id": "wet-foot",
+        "class_name": "Wet-Foot",
+        "class_family": "thief",
+        "class_family_fit": null,
+        "class_route": "named",
+        "birthsign": "raj-xul",
+        "birthsign_second": null,
+        "attributes": {
+          "strength": 6,
+          "endurance": 10,
+          "agility": 19,
+          "speed": 17,
+          "vigour": 6,
+          "willpower": 10,
+          "intellect": 11,
+          "hist-bond": 10,
+          "personality": 10,
+          "luck": 13
+        },
+        "skills": {
+          "blades": 5,
+          "axes-maces": 5,
+          "polearms": 5,
+          "greatweapons": 5,
+          "marksman": 10,
+          "claw-fang": 15,
+          "shieldcraft": 5,
+          "sorcery": 5,
+          "root-speech": 5,
+          "warding": 5,
+          "veiling": 5,
+          "alchemy": 5,
+          "athletics": 15,
+          "acrobatics": 25,
+          "survival": 5,
+          "sneak": 25,
+          "security": 25,
+          "mercantile": 15,
+          "speechcraft": 5
+        },
+        "signature": {
+          "race": "khajiit",
+          "class_family": "thief",
+          "birthsign_family": "given",
+          "upbringing_class": "foreign",
+          "key": "khajiit|thief|given|foreign"
+        },
+        "powers": [
+          {
+            "sign": "raj-xul",
+            "scale": 1,
+            "power": {
+              "summary": "The tithe-gourd holds one more swallow.",
+              "effects": [
+                {
+                  "kind": "flask_charges",
+                  "delta": 1,
+                  "note": "+1 tithe-gourd charge at every charge tier (RI-CMB08). At the 4-charge start this is +25% healing throughput; at the 10-charge cap, +10%. Deliberately front-loaded."
+                }
+              ]
+            }
+          }
+        ],
+        "drawbacks": [],
+        "invariants": {
+          "attribute_total": 112,
+          "attribute_total_ok": true,
+          "race_delta_sum": 12,
+          "class_delta_sum": 0,
+          "skills_above_baseline": 7,
+          "skills_above_baseline_ok": true,
+          "max_skill": 25,
+          "max_skill_ok": true
+        },
+        "flags": [],
+        "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Unwritten\nAlso called: \nObserved as: Khajiit\nRaised at: a river you have not heard of\nTrade declared: Wet-Foot\nTide drawn on: The Full Root (Raj-Xul)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-KHA-THI\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+      }
+    },
+    "getCharacter": {
+      "created": true,
+      "given_name": "Unwritten",
+      "hatch_name": "",
+      "hatch_name_refused": false,
+      "sex": "unrecorded",
+      "race": "khajiit",
+      "upbringing": "foreign-born",
+      "upbringing_given_as": "a river you have not heard of",
+      "class_id": "wet-foot",
+      "class_name": "Wet-Foot",
+      "class_family": "thief",
+      "class_family_fit": null,
+      "class_route": "named",
+      "birthsign": "raj-xul",
+      "birthsign_second": null,
+      "attributes": {
+        "strength": 6,
+        "endurance": 10,
+        "agility": 19,
+        "speed": 17,
+        "vigour": 6,
+        "willpower": 10,
+        "intellect": 11,
+        "hist-bond": 10,
+        "personality": 10,
+        "luck": 13
+      },
+      "skills": {
+        "blades": 5,
+        "axes-maces": 5,
+        "polearms": 5,
+        "greatweapons": 5,
+        "marksman": 10,
+        "claw-fang": 15,
+        "shieldcraft": 5,
+        "sorcery": 5,
+        "root-speech": 5,
+        "warding": 5,
+        "veiling": 5,
+        "alchemy": 5,
+        "athletics": 15,
+        "acrobatics": 25,
+        "survival": 5,
+        "sneak": 25,
+        "security": 25,
+        "mercantile": 15,
+        "speechcraft": 5
+      },
+      "signature": {
+        "race": "khajiit",
+        "class_family": "thief",
+        "birthsign_family": "given",
+        "upbringing_class": "foreign",
+        "key": "khajiit|thief|given|foreign"
+      },
+      "powers": [
+        {
+          "sign": "raj-xul",
+          "scale": 1,
+          "power": {
+            "summary": "The tithe-gourd holds one more swallow.",
+            "effects": [
+              {
+                "kind": "flask_charges",
+                "delta": 1,
+                "note": "+1 tithe-gourd charge at every charge tier (RI-CMB08). At the 4-charge start this is +25% healing throughput; at the 10-charge cap, +10%. Deliberately front-loaded."
+              }
+            ]
+          }
+        }
+      ],
+      "drawbacks": [],
+      "invariants": {
+        "attribute_total": 112,
+        "attribute_total_ok": true,
+        "race_delta_sum": 12,
+        "class_delta_sum": 0,
+        "skills_above_baseline": 7,
+        "skills_above_baseline_ok": true,
+        "max_skill": 25,
+        "max_skill_ok": true
+      },
+      "flags": [],
+      "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Unwritten\nAlso called: \nObserved as: Khajiit\nRaised at: a river you have not heard of\nTrade declared: Wet-Foot\nTide drawn on: The Full Root (Raj-Xul)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-KHA-THI\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+    },
+    "playerStats": {
+      "pos": [
+        2766.5,
+        2.769865,
+        5011
+      ],
+      "yaw_deg": 180,
+      "state": "IDLE",
+      "anim": "idle",
+      "anim_frame": 0,
+      "hp": 620,
+      "hp_max": 620,
+      "stamina": 120,
+      "stamina_max": 120,
+      "poise_cur": 48,
+      "poise_max": 48,
+      "estus": 5,
+      "locked_on": null,
+      "level": 1,
+      "souls": 0,
+      "attributes": {
+        "strength": 6,
+        "endurance": 10,
+        "agility": 19,
+        "speed": 17,
+        "vigour": 6,
+        "willpower": 10,
+        "intellect": 11,
+        "hist-bond": 10,
+        "personality": 10,
+        "luck": 13
+      },
+      "equip_load_pct": 24,
+      "roll_class": "LIGHT",
+      "burden_ratio": 0,
+      "burden_tier": "UNBURDENED",
+      "in_combat": false,
+      "focus": 94,
+      "focus_max": 94,
+      "focus_locked": true,
+      "attuned": [
+        "spark_dart",
+        "slowfall"
+      ],
+      "effects_active": [],
+      "levitating": false,
+      "airborne": false,
+      "altitude_m": 0
+    },
+    "price_par": {
+      "raw": {
+        "r": -44,
+        "buyMult": 1.264,
+        "sellMult": 0.78,
+        "buy": 76,
+        "sell": 47
+      },
+      "with_fence_mult": {
+        "r": -44,
+        "buyMult": 1.264,
+        "sellMult": 0.78,
+        "buy": 61,
+        "sell": 47
+      },
+      "sax_ref": {
+        "r": 24,
+        "buyMult": 0.9,
+        "sellMult": 1.1,
+        "buy": 54,
+        "sell": 66
+      }
+    },
+    "dry_well": {
+      "nu-ixtu": {
+        "char": {
+          "created": false,
+          "_why": "RI-JRN01 O6: the player is controllable, in a body, before anything defines them. Nothing has been written down yet."
+        },
+        "focus_start": 94,
+        "series": [
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94
+        ],
+        "magic_state_sample": {
+          "focus": 94,
+          "focus_max": 94,
+          "focus_locked": true,
+          "attuned": [
+            "spark_dart",
+            "slowfall"
+          ],
+          "slots": 4,
+          "catalyst": "none",
+          "cast": null,
+          "effects_active": [],
+          "levitating": false,
+          "airborne": false,
+          "altitude_m": 0,
+          "projectiles": 0,
+          "volumes": 0,
+          "residues": 0,
+          "xul_hesh": 0,
+          "gems": 0,
+          "custom_spells": 0
+        }
+      },
+      "raj-xul": {
+        "char": {
+          "created": false,
+          "_why": "RI-JRN01 O6: the player is controllable, in a body, before anything defines them. Nothing has been written down yet."
+        },
+        "focus_start": 94,
+        "series": [
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94,
+          94
+        ],
+        "magic_state_sample": {
+          "focus": 94,
+          "focus_max": 94,
+          "focus_locked": true,
+          "attuned": [
+            "spark_dart",
+            "slowfall"
+          ],
+          "slots": 4,
+          "catalyst": "none",
+          "cast": null,
+          "effects_active": [],
+          "levitating": false,
+          "airborne": false,
+          "altitude_m": 0,
+          "projectiles": 0,
+          "volumes": 0,
+          "residues": 0,
+          "xul_hesh": 0,
+          "gems": 0,
+          "custom_spells": 0
+        }
+      }
+    },
+    "kaal_kaal": {
+      "created": true,
+      "given_name": "Unwritten",
+      "hatch_name": "",
+      "hatch_name_refused": false,
+      "sex": "unrecorded",
+      "race": "dunmer",
+      "upbringing": "foreign-born",
+      "upbringing_given_as": "a river you have not heard of",
+      "class_id": "salt-blade",
+      "class_name": "Salt-Blade",
+      "class_family": "fighter",
+      "class_family_fit": null,
+      "class_route": "named",
+      "birthsign": "kaal-kaal",
+      "birthsign_second": null,
+      "attributes": {
+        "strength": 16,
+        "endurance": 14,
+        "agility": 12,
+        "speed": 12,
+        "vigour": 10,
+        "willpower": 11,
+        "intellect": 8,
+        "hist-bond": 10,
+        "personality": 6,
+        "luck": 13
+      },
+      "skills": {
+        "blades": 25,
+        "axes-maces": 15,
+        "polearms": 5,
+        "greatweapons": 5,
+        "marksman": 15,
+        "claw-fang": 5,
+        "shieldcraft": 25,
+        "sorcery": 15,
+        "root-speech": 5,
+        "warding": 5,
+        "veiling": 10,
+        "alchemy": 5,
+        "athletics": 25,
+        "acrobatics": 5,
+        "survival": 15,
+        "sneak": 5,
+        "security": 5,
+        "mercantile": 5,
+        "speechcraft": 5
+      },
+      "signature": {
+        "race": "dunmer",
+        "class_family": "fighter",
+        "birthsign_family": "turned",
+        "upbringing_class": "foreign",
+        "key": "dunmer|fighter|turned|foreign"
+      },
+      "powers": [
+        {
+          "sign": "kaal-kaal",
+          "scale": 1,
+          "power": {
+            "summary": "Choose a second sign at creation. You receive its power at half magnitude.",
+            "effects": [
+              {
+                "kind": "second_sign",
+                "power_scale": 0.5,
+                "drawback_scale": 1
+              }
+            ]
+          }
+        }
+      ],
+      "drawbacks": [
+        {
+          "sign": "kaal-kaal",
+          "scale": 1,
+          "drawback": {
+            "kind": "conditional",
+            "summary": "You receive that second sign's drawback at FULL magnitude.",
+            "detail": "Choosing The Dry Well gives you x1.30 Focus and 27.5% absorption AND zero Focus regeneration. Choosing The Unlit Water gives you -10% detection radius and a 10 s invisibility AND the full Shadowscale claim. Choosing a Given sign gives you half a modest power and nothing else, which is legal, safe, and the reason this sign is not simply the best one.",
+            "implementation_warning": "The single most likely implementation bug is halving the drawback too. If it lands, Two-Drink is strictly the best sign in the game and eight of the nine are dead."
+          }
+        }
+      ],
+      "invariants": {
+        "attribute_total": 112,
+        "attribute_total_ok": true,
+        "race_delta_sum": 12,
+        "class_delta_sum": 0,
+        "skills_above_baseline": 8,
+        "skills_above_baseline_ok": true,
+        "max_skill": 25,
+        "max_skill_ok": true
+      },
+      "flags": [],
+      "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Unwritten\nAlso called: \nObserved as: Dunmer\nRaised at: a river you have not heard of\nTrade declared: Salt-Blade\nTide drawn on: The Two-Drink (Kaal-Kaal)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-FIG\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+    },
+    "skill_use": {
+      "entities": [
+        {
+          "eid": "E1",
+          "archetype": "INFANTRY",
+          "pos": [
+            0,
+            0,
+            4.2
+          ],
+          "hp": 412
+        }
+      ],
+      "player_after": {
+        "pos": [
+          0,
+          0,
+          0.35
+        ],
+        "yaw_deg": 0,
+        "state": "IDLE",
+        "anim": "idle",
+        "anim_frame": 6,
+        "hp": 620,
+        "hp_max": 620,
+        "stamina": 120,
+        "stamina_max": 120,
+        "poise_cur": 48,
+        "poise_max": 48,
+        "estus": 5,
+        "locked_on": null,
+        "level": 1,
+        "souls": 0,
+        "attributes": {
+          "vigour": 10,
+          "endurance": 20,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10
+        },
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT",
+        "burden_ratio": 0,
+        "burden_tier": "UNBURDENED",
+        "in_combat": true,
+        "focus": 94,
+        "focus_max": 94,
+        "focus_locked": true,
+        "attuned": [
+          "spark_dart",
+          "slowfall"
+        ],
+        "effects_active": [],
+        "levitating": false,
+        "airborne": false,
+        "altitude_m": 0
+      }
+    },
+    "attack_test": {
+      "saxhleel": {
+        "encounter_race_reported": "saxhleel",
+        "n_dres": 6,
+        "hp_before": 620,
+        "hp_after": 620,
+        "damage_taken": 0,
+        "event_types": {
+          "enemy_state": 6
+        },
+        "enemy_state_histogram": {
+          "dres-raid-party-infantry-0:IDLE": 1,
+          "dres-raid-party-infantry-1:IDLE": 1,
+          "dres-raid-party-infantry-2:IDLE": 1,
+          "dres-raid-party-infantry-3:IDLE": 1,
+          "dres-raid-party-net-thrower-0:IDLE": 1,
+          "dres-raid-party-net-thrower-1:IDLE": 1,
+          "dres-raid-party-infantry-0:REPOSITION": 899,
+          "dres-raid-party-infantry-1:REPOSITION": 899,
+          "dres-raid-party-infantry-2:REPOSITION": 899,
+          "dres-raid-party-infantry-3:REPOSITION": 899,
+          "dres-raid-party-net-thrower-0:REPOSITION": 899,
+          "dres-raid-party-net-thrower-1:REPOSITION": 899
+        },
+        "events_sample": [
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-infantry-0",
+            "from": "IDLE",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 3,
+            "encounter": "dres-raid-party",
+            "role": "infantry",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-infantry-1",
+            "from": "IDLE",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 3,
+            "encounter": "dres-raid-party",
+            "role": "infantry",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-infantry-2",
+            "from": "SUSPICIOUS",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 2.683,
+            "encounter": "dres-raid-party",
+            "role": "infantry",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-infantry-3",
+            "from": "SUSPICIOUS",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 2.683,
+            "encounter": "dres-raid-party",
+            "role": "infantry",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-net-thrower-0",
+            "from": "SUSPICIOUS",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 6.56,
+            "encounter": "dres-raid-party",
+            "role": "net-thrower",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-net-thrower-1",
+            "from": "SUSPICIOUS",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 6.56,
+            "encounter": "dres-raid-party",
+            "role": "net-thrower",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          }
+        ]
+      },
+      "dunmer": {
+        "encounter_race_reported": "saxhleel",
+        "n_dres": 6,
+        "hp_before": 620,
+        "hp_after": 620,
+        "damage_taken": 0,
+        "event_types": {
+          "enemy_state": 6
+        },
+        "enemy_state_histogram": {
+          "dres-raid-party-infantry-0:IDLE": 1,
+          "dres-raid-party-infantry-1:IDLE": 1,
+          "dres-raid-party-infantry-2:IDLE": 1,
+          "dres-raid-party-infantry-3:IDLE": 1,
+          "dres-raid-party-net-thrower-0:IDLE": 1,
+          "dres-raid-party-net-thrower-1:IDLE": 1,
+          "dres-raid-party-infantry-0:REPOSITION": 899,
+          "dres-raid-party-infantry-1:REPOSITION": 899,
+          "dres-raid-party-infantry-2:REPOSITION": 899,
+          "dres-raid-party-infantry-3:REPOSITION": 899,
+          "dres-raid-party-net-thrower-0:REPOSITION": 899,
+          "dres-raid-party-net-thrower-1:REPOSITION": 899
+        },
+        "events_sample": [
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-infantry-0",
+            "from": "IDLE",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 3,
+            "encounter": "dres-raid-party",
+            "role": "infantry",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-infantry-1",
+            "from": "IDLE",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 3,
+            "encounter": "dres-raid-party",
+            "role": "infantry",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-infantry-2",
+            "from": "SUSPICIOUS",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 2.683,
+            "encounter": "dres-raid-party",
+            "role": "infantry",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-infantry-3",
+            "from": "SUSPICIOUS",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 2.683,
+            "encounter": "dres-raid-party",
+            "role": "infantry",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-net-thrower-0",
+            "from": "SUSPICIOUS",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 6.56,
+            "encounter": "dres-raid-party",
+            "role": "net-thrower",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          },
+          {
+            "f": 0,
+            "type": "enemy_state",
+            "eid": "dres-raid-party-net-thrower-1",
+            "from": "SUSPICIOUS",
+            "to": "AGGRO",
+            "channel": "alert_state",
+            "dist_m": 6.56,
+            "encounter": "dres-raid-party",
+            "role": "net-thrower",
+            "because": "race=saxhleel opening=hostile aggro_at_m=28",
+            "net_behaviour": "capture"
+          }
+        ]
+      }
+    },
+    "control_arena": {
+      "entities": [
+        {
+          "eid": "E1"
+        }
+      ],
+      "hp_before": 620,
+      "hp_after": 620,
+      "damage_taken": 0
+    }
+  },
+  "page_errors": []
+}

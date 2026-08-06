@@ -1,0 +1,6695 @@
+{
+ "generated_by": "tools/harness/critic-w1-10-static.mjs (critic-owned)",
+ "weapons": 87,
+ "census": {
+  "DGR": {
+   "present": 6,
+   "required_min": 6,
+   "baselines": 1
+  },
+  "SSW": {
+   "present": 8,
+   "required_min": 8,
+   "baselines": 1
+  },
+  "CSW": {
+   "present": 6,
+   "required_min": 6,
+   "baselines": 1
+  },
+  "TSW": {
+   "present": 5,
+   "required_min": 5,
+   "baselines": 1
+  },
+  "FST": {
+   "present": 4,
+   "required_min": 4,
+   "baselines": 1
+  },
+  "SPR": {
+   "present": 7,
+   "required_min": 7,
+   "baselines": 1
+  },
+  "AXE": {
+   "present": 6,
+   "required_min": 6,
+   "baselines": 1
+  },
+  "MCE": {
+   "present": 6,
+   "required_min": 6,
+   "baselines": 1
+  },
+  "WHP": {
+   "present": 4,
+   "required_min": 4,
+   "baselines": 1
+  },
+  "HLB": {
+   "present": 6,
+   "required_min": 6,
+   "baselines": 1
+  },
+  "GSW": {
+   "present": 8,
+   "required_min": 8,
+   "baselines": 1
+  },
+  "CGS": {
+   "present": 5,
+   "required_min": 5,
+   "baselines": 1
+  },
+  "GHM": {
+   "present": 5,
+   "required_min": 5,
+   "baselines": 1
+  },
+  "UGS": {
+   "present": 6,
+   "required_min": 6,
+   "baselines": 1
+  },
+  "BOW": {
+   "present": 5,
+   "required_min": 5,
+   "baselines": 1
+  }
+ },
+ "slots": {
+  "axe_bog_cleaver": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "axe_hatchet_pair": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "axe_kings_bite": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "axe_ridge_axe": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "axe_shell_reaper": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "axe_shell_splitter": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "bow_chitin_recurve": {
+   "declared": 7,
+   "mandatory_present": 7,
+   "mandatory_required": 7,
+   "missing": []
+  },
+  "bow_horn_sinew": {
+   "declared": 7,
+   "mandatory_present": 7,
+   "mandatory_required": 7,
+   "missing": []
+  },
+  "bow_kings_horn": {
+   "declared": 7,
+   "mandatory_present": 7,
+   "mandatory_required": 7,
+   "missing": []
+  },
+  "bow_marsh_longbow": {
+   "declared": 7,
+   "mandatory_present": 7,
+   "mandatory_required": 7,
+   "missing": []
+  },
+  "bow_reed_shortbow": {
+   "declared": 7,
+   "mandatory_present": 7,
+   "mandatory_required": 7,
+   "missing": []
+  },
+  "cgs_drowned_reaper": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "cgs_harvest_edge": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "cgs_kings_crescent": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "cgs_mire_scythe": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "cgs_tide_falx": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "csw_drowned_kris": {
+   "declared": 34,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "csw_mangrove_hook": {
+   "declared": 34,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "csw_naga_sickle": {
+   "declared": 34,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "csw_reaver_blade": {
+   "declared": 34,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "csw_saltmarsh_sabre": {
+   "declared": 34,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "csw_tide_falchion": {
+   "declared": 34,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "dgr_bone_awl": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "dgr_hist_barb": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "dgr_kings_needle": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "dgr_reed_dirk": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "dgr_shell_knife": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "dgr_thornfang": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "fst_hist_talon": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "fst_marsh_claw": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "fst_quarry_caestus": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "fst_wrapped_fists": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ghm_bog_maul": {
+   "declared": 29,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ghm_kings_ruin": {
+   "declared": 29,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ghm_pile_driver": {
+   "declared": 29,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ghm_root_hammer": {
+   "declared": 29,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ghm_stone_breaker": {
+   "declared": 29,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "gsw_drowned_greatblade": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "gsw_fen_claymore": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "gsw_hist_greatblade": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "gsw_memorial_blade": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "gsw_oath_of_ash": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "gsw_reed_bastard": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "gsw_saltwind": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "gsw_tomb_guard": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "hlb_fen_hook": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "hlb_garrison_bill": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "hlb_lane_keeper": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "hlb_marsh_glaive": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "hlb_reed_partisan": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "hlb_saltcutter": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "mce_bog_iron_mace": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "mce_bone_hammer": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "mce_chain_flail": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "mce_pilgrim_club": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "mce_root_maul": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "mce_stone_answer": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "spr_drowned_harpoon": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "spr_fishers_gig": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "spr_marsh_lance": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "spr_mire_trident": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "spr_reed_gig": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "spr_root_pike": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "spr_xanmeer_sting": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ssw_barsaebic_warblade": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ssw_fen_wardens": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ssw_garrison_sword": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ssw_hist_sap_blade": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ssw_kothringi_bronze": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ssw_marsh_shortsword": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ssw_oath_of_drowned": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ssw_rusted_levy": {
+   "declared": 31,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "tsw_bog_rapier": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "tsw_duelling_pick": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "tsw_oath_of_salt": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "tsw_reed_estoc": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "tsw_xanmeer_needle": {
+   "declared": 33,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ugs_drowned_slab": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ugs_fen_zwei": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ugs_golem_sword": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ugs_oath_of_root": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ugs_saltiron_greatsword": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "ugs_tomb_colossus": {
+   "declared": 30,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "whp_hide_lash": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "whp_hist_bindings": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "whp_root_tendril": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  },
+  "whp_salt_scourge": {
+   "declared": 32,
+   "mandatory_present": 25,
+   "mandatory_required": 25,
+   "missing": []
+  }
+ },
+ "slots_summary": {
+  "weapons_missing_a_mandatory_slot": 0,
+  "median_mandatory_present": 25,
+  "detail": []
+ },
+ "alias": {
+  "distinct_anim": {
+   "axe_bog_cleaver": 33,
+   "axe_hatchet_pair": 33,
+   "axe_kings_bite": 33,
+   "axe_ridge_axe": 33,
+   "axe_shell_reaper": 33,
+   "axe_shell_splitter": 33,
+   "bow_chitin_recurve": 7,
+   "bow_horn_sinew": 7,
+   "bow_kings_horn": 7,
+   "bow_marsh_longbow": 7,
+   "bow_reed_shortbow": 7,
+   "cgs_drowned_reaper": 31,
+   "cgs_harvest_edge": 31,
+   "cgs_kings_crescent": 31,
+   "cgs_mire_scythe": 31,
+   "cgs_tide_falx": 31,
+   "csw_drowned_kris": 34,
+   "csw_mangrove_hook": 34,
+   "csw_naga_sickle": 34,
+   "csw_reaver_blade": 34,
+   "csw_saltmarsh_sabre": 34,
+   "csw_tide_falchion": 34,
+   "dgr_bone_awl": 33,
+   "dgr_hist_barb": 33,
+   "dgr_kings_needle": 33,
+   "dgr_reed_dirk": 33,
+   "dgr_shell_knife": 33,
+   "dgr_thornfang": 33,
+   "fst_hist_talon": 33,
+   "fst_marsh_claw": 33,
+   "fst_quarry_caestus": 33,
+   "fst_wrapped_fists": 33,
+   "ghm_bog_maul": 29,
+   "ghm_kings_ruin": 29,
+   "ghm_pile_driver": 29,
+   "ghm_root_hammer": 29,
+   "ghm_stone_breaker": 29,
+   "gsw_drowned_greatblade": 30,
+   "gsw_fen_claymore": 30,
+   "gsw_hist_greatblade": 30,
+   "gsw_memorial_blade": 30,
+   "gsw_oath_of_ash": 30,
+   "gsw_reed_bastard": 30,
+   "gsw_saltwind": 30,
+   "gsw_tomb_guard": 30,
+   "hlb_fen_hook": 33,
+   "hlb_garrison_bill": 33,
+   "hlb_lane_keeper": 33,
+   "hlb_marsh_glaive": 33,
+   "hlb_reed_partisan": 33,
+   "hlb_saltcutter": 33,
+   "mce_bog_iron_mace": 32,
+   "mce_bone_hammer": 32,
+   "mce_chain_flail": 32,
+   "mce_pilgrim_club": 32,
+   "mce_root_maul": 32,
+   "mce_stone_answer": 32,
+   "spr_drowned_harpoon": 31,
+   "spr_fishers_gig": 31,
+   "spr_marsh_lance": 31,
+   "spr_mire_trident": 31,
+   "spr_reed_gig": 31,
+   "spr_root_pike": 31,
+   "spr_xanmeer_sting": 31,
+   "ssw_barsaebic_warblade": 31,
+   "ssw_fen_wardens": 31,
+   "ssw_garrison_sword": 31,
+   "ssw_hist_sap_blade": 31,
+   "ssw_kothringi_bronze": 31,
+   "ssw_marsh_shortsword": 31,
+   "ssw_oath_of_drowned": 31,
+   "ssw_rusted_levy": 31,
+   "tsw_bog_rapier": 33,
+   "tsw_duelling_pick": 33,
+   "tsw_oath_of_salt": 33,
+   "tsw_reed_estoc": 33,
+   "tsw_xanmeer_needle": 33,
+   "ugs_drowned_slab": 30,
+   "ugs_fen_zwei": 30,
+   "ugs_golem_sword": 30,
+   "ugs_oath_of_root": 30,
+   "ugs_saltiron_greatsword": 30,
+   "ugs_tomb_colossus": 30,
+   "whp_hide_lash": 32,
+   "whp_hist_bindings": 32,
+   "whp_root_tendril": 32,
+   "whp_salt_scourge": 32
+  },
+  "under_18": [],
+  "roll_eq_r1": [],
+  "backstep_eq_r1": [],
+  "run_eq_r1": []
+ },
+ "ARI": {
+  "S_total": 2085,
+  "C_over_mandatory_slots": 948,
+  "C_over_all_declared_slots": 1133,
+  "ARI_mandatory": 0.4547,
+  "ARI_all_declared": 0.43,
+  "thresholds": {
+   "pass": ">= 0.26",
+   "hard_fail": "< 0.19",
+   "over_fragmented": "> 0.55"
+  }
+ },
+ "clip_share_histogram": {
+  "1": 322,
+  "2": 214,
+  "3": 313,
+  "4": 99,
+  "5+": 0
+ },
+ "share_over_4": [],
+ "UNQ": {
+  "per_weapon": {
+   "axe_bog_cleaver": 4,
+   "axe_hatchet_pair": 1,
+   "axe_kings_bite": 6,
+   "axe_ridge_axe": 2,
+   "axe_shell_reaper": 3,
+   "axe_shell_splitter": 3,
+   "bow_chitin_recurve": 4,
+   "bow_horn_sinew": 4,
+   "bow_kings_horn": 6,
+   "bow_marsh_longbow": 4,
+   "bow_reed_shortbow": 5,
+   "cgs_drowned_reaper": 4,
+   "cgs_harvest_edge": 3,
+   "cgs_kings_crescent": 6,
+   "cgs_mire_scythe": 3,
+   "cgs_tide_falx": 7,
+   "csw_drowned_kris": 6,
+   "csw_mangrove_hook": 3,
+   "csw_naga_sickle": 3,
+   "csw_reaver_blade": 1,
+   "csw_saltmarsh_sabre": 3,
+   "csw_tide_falchion": 3,
+   "dgr_bone_awl": 4,
+   "dgr_hist_barb": 2,
+   "dgr_kings_needle": 7,
+   "dgr_reed_dirk": 4,
+   "dgr_shell_knife": 3,
+   "dgr_thornfang": 2,
+   "fst_hist_talon": 4,
+   "fst_marsh_claw": 6,
+   "fst_quarry_caestus": 4,
+   "fst_wrapped_fists": 2,
+   "ghm_bog_maul": 3,
+   "ghm_kings_ruin": 6,
+   "ghm_pile_driver": 3,
+   "ghm_root_hammer": 6,
+   "ghm_stone_breaker": 3,
+   "gsw_drowned_greatblade": 3,
+   "gsw_fen_claymore": 1,
+   "gsw_hist_greatblade": 5,
+   "gsw_memorial_blade": 3,
+   "gsw_oath_of_ash": 7,
+   "gsw_reed_bastard": 1,
+   "gsw_saltwind": 1,
+   "gsw_tomb_guard": 4,
+   "hlb_fen_hook": 4,
+   "hlb_garrison_bill": 3,
+   "hlb_lane_keeper": 6,
+   "hlb_marsh_glaive": 2,
+   "hlb_reed_partisan": 4,
+   "hlb_saltcutter": 2,
+   "mce_bog_iron_mace": 3,
+   "mce_bone_hammer": 4,
+   "mce_chain_flail": 3,
+   "mce_pilgrim_club": 4,
+   "mce_root_maul": 2,
+   "mce_stone_answer": 7,
+   "spr_drowned_harpoon": 7,
+   "spr_fishers_gig": 3,
+   "spr_marsh_lance": 2,
+   "spr_mire_trident": 4,
+   "spr_reed_gig": 5,
+   "spr_root_pike": 1,
+   "spr_xanmeer_sting": 2,
+   "ssw_barsaebic_warblade": 4,
+   "ssw_fen_wardens": 1,
+   "ssw_garrison_sword": 3,
+   "ssw_hist_sap_blade": 5,
+   "ssw_kothringi_bronze": 5,
+   "ssw_marsh_shortsword": 1,
+   "ssw_oath_of_drowned": 7,
+   "ssw_rusted_levy": 1,
+   "tsw_bog_rapier": 4,
+   "tsw_duelling_pick": 4,
+   "tsw_oath_of_salt": 6,
+   "tsw_reed_estoc": 6,
+   "tsw_xanmeer_needle": 4,
+   "ugs_drowned_slab": 4,
+   "ugs_fen_zwei": 1,
+   "ugs_golem_sword": 3,
+   "ugs_oath_of_root": 6,
+   "ugs_saltiron_greatsword": 2,
+   "ugs_tomb_colossus": 3,
+   "whp_hide_lash": 3,
+   "whp_hist_bindings": 6,
+   "whp_root_tendril": 4,
+   "whp_salt_scourge": 3
+  },
+  "min": 1,
+  "mean": 3.701,
+  "zero": []
+ },
+ "DEV": {
+  "per_weapon": {
+   "axe_bog_cleaver": 8,
+   "axe_hatchet_pair": 33,
+   "axe_kings_bite": 33,
+   "axe_ridge_axe": 33,
+   "axe_shell_reaper": 18,
+   "axe_shell_splitter": null,
+   "bow_chitin_recurve": 7,
+   "bow_horn_sinew": null,
+   "bow_kings_horn": 7,
+   "bow_marsh_longbow": 7,
+   "bow_reed_shortbow": 5,
+   "cgs_drowned_reaper": null,
+   "cgs_harvest_edge": 31,
+   "cgs_kings_crescent": 9,
+   "cgs_mire_scythe": 31,
+   "cgs_tide_falx": 7,
+   "csw_drowned_kris": 34,
+   "csw_mangrove_hook": 9,
+   "csw_naga_sickle": null,
+   "csw_reaver_blade": 34,
+   "csw_saltmarsh_sabre": 34,
+   "csw_tide_falchion": 23,
+   "dgr_bone_awl": 17,
+   "dgr_hist_barb": 33,
+   "dgr_kings_needle": 33,
+   "dgr_reed_dirk": 24,
+   "dgr_shell_knife": null,
+   "dgr_thornfang": 33,
+   "fst_hist_talon": 30,
+   "fst_marsh_claw": 30,
+   "fst_quarry_caestus": 24,
+   "fst_wrapped_fists": null,
+   "ghm_bog_maul": 29,
+   "ghm_kings_ruin": 25,
+   "ghm_pile_driver": null,
+   "ghm_root_hammer": 7,
+   "ghm_stone_breaker": 29,
+   "gsw_drowned_greatblade": 16,
+   "gsw_fen_claymore": 30,
+   "gsw_hist_greatblade": 30,
+   "gsw_memorial_blade": null,
+   "gsw_oath_of_ash": 13,
+   "gsw_reed_bastard": 30,
+   "gsw_saltwind": 30,
+   "gsw_tomb_guard": 8,
+   "hlb_fen_hook": 15,
+   "hlb_garrison_bill": null,
+   "hlb_lane_keeper": 33,
+   "hlb_marsh_glaive": 33,
+   "hlb_reed_partisan": 24,
+   "hlb_saltcutter": 33,
+   "mce_bog_iron_mace": null,
+   "mce_bone_hammer": 7,
+   "mce_chain_flail": 32,
+   "mce_pilgrim_club": 15,
+   "mce_root_maul": 32,
+   "mce_stone_answer": 32,
+   "spr_drowned_harpoon": 12,
+   "spr_fishers_gig": null,
+   "spr_marsh_lance": 31,
+   "spr_mire_trident": 21,
+   "spr_reed_gig": 7,
+   "spr_root_pike": 31,
+   "spr_xanmeer_sting": 31,
+   "ssw_barsaebic_warblade": 13,
+   "ssw_fen_wardens": 31,
+   "ssw_garrison_sword": null,
+   "ssw_hist_sap_blade": 31,
+   "ssw_kothringi_bronze": 24,
+   "ssw_marsh_shortsword": 31,
+   "ssw_oath_of_drowned": 26,
+   "ssw_rusted_levy": 31,
+   "tsw_bog_rapier": 33,
+   "tsw_duelling_pick": 33,
+   "tsw_oath_of_salt": 10,
+   "tsw_reed_estoc": 27,
+   "tsw_xanmeer_needle": null,
+   "ugs_drowned_slab": 8,
+   "ugs_fen_zwei": 30,
+   "ugs_golem_sword": null,
+   "ugs_oath_of_root": 30,
+   "ugs_saltiron_greatsword": 30,
+   "ugs_tomb_colossus": 13,
+   "whp_hide_lash": null,
+   "whp_hist_bindings": 17,
+   "whp_root_tendril": 7,
+   "whp_salt_scourge": 6
+  },
+  "under_4": []
+ },
+ "DEV_id": {
+  "per_weapon": {
+   "axe_bog_cleaver": 5,
+   "axe_hatchet_pair": 5,
+   "axe_kings_bite": 5,
+   "axe_ridge_axe": 5,
+   "axe_shell_reaper": 4,
+   "axe_shell_splitter": null,
+   "bow_chitin_recurve": 1,
+   "bow_horn_sinew": null,
+   "bow_kings_horn": 1,
+   "bow_marsh_longbow": 1,
+   "bow_reed_shortbow": 1,
+   "cgs_drowned_reaper": null,
+   "cgs_harvest_edge": 5,
+   "cgs_kings_crescent": 5,
+   "cgs_mire_scythe": 5,
+   "cgs_tide_falx": 4,
+   "csw_drowned_kris": 5,
+   "csw_mangrove_hook": 3,
+   "csw_naga_sickle": null,
+   "csw_reaver_blade": 5,
+   "csw_saltmarsh_sabre": 5,
+   "csw_tide_falchion": 5,
+   "dgr_bone_awl": 5,
+   "dgr_hist_barb": 5,
+   "dgr_kings_needle": 5,
+   "dgr_reed_dirk": 4,
+   "dgr_shell_knife": null,
+   "dgr_thornfang": 5,
+   "fst_hist_talon": 5,
+   "fst_marsh_claw": 5,
+   "fst_quarry_caestus": 4,
+   "fst_wrapped_fists": null,
+   "ghm_bog_maul": 5,
+   "ghm_kings_ruin": 5,
+   "ghm_pile_driver": null,
+   "ghm_root_hammer": 4,
+   "ghm_stone_breaker": 5,
+   "gsw_drowned_greatblade": 5,
+   "gsw_fen_claymore": 5,
+   "gsw_hist_greatblade": 5,
+   "gsw_memorial_blade": null,
+   "gsw_oath_of_ash": 5,
+   "gsw_reed_bastard": 5,
+   "gsw_saltwind": 5,
+   "gsw_tomb_guard": 4,
+   "hlb_fen_hook": 5,
+   "hlb_garrison_bill": null,
+   "hlb_lane_keeper": 5,
+   "hlb_marsh_glaive": 5,
+   "hlb_reed_partisan": 4,
+   "hlb_saltcutter": 5,
+   "mce_bog_iron_mace": null,
+   "mce_bone_hammer": 4,
+   "mce_chain_flail": 5,
+   "mce_pilgrim_club": 4,
+   "mce_root_maul": 5,
+   "mce_stone_answer": 5,
+   "spr_drowned_harpoon": 5,
+   "spr_fishers_gig": null,
+   "spr_marsh_lance": 5,
+   "spr_mire_trident": 4,
+   "spr_reed_gig": 4,
+   "spr_root_pike": 5,
+   "spr_xanmeer_sting": 5,
+   "ssw_barsaebic_warblade": 4,
+   "ssw_fen_wardens": 5,
+   "ssw_garrison_sword": null,
+   "ssw_hist_sap_blade": 5,
+   "ssw_kothringi_bronze": 4,
+   "ssw_marsh_shortsword": 5,
+   "ssw_oath_of_drowned": 5,
+   "ssw_rusted_levy": 5,
+   "tsw_bog_rapier": 5,
+   "tsw_duelling_pick": 5,
+   "tsw_oath_of_salt": 5,
+   "tsw_reed_estoc": 4,
+   "tsw_xanmeer_needle": null,
+   "ugs_drowned_slab": 5,
+   "ugs_fen_zwei": 5,
+   "ugs_golem_sword": null,
+   "ugs_oath_of_root": 5,
+   "ugs_saltiron_greatsword": 5,
+   "ugs_tomb_colossus": 3,
+   "whp_hide_lash": null,
+   "whp_hist_bindings": 4,
+   "whp_root_tendril": 3,
+   "whp_salt_scourge": 5
+  },
+  "zero": []
+ },
+ "signature": {
+  "DGR": 1,
+  "SSW": 1,
+  "CSW": 1,
+  "TSW": 2,
+  "FST": 1,
+  "SPR": 1,
+  "AXE": 1,
+  "MCE": 1,
+  "WHP": 1,
+  "HLB": 1,
+  "GSW": 1,
+  "CGS": 2,
+  "GHM": 2,
+  "UGS": 1,
+  "BOW": 1
+ },
+ "clips_per_class": {
+  "DGR": 14.5,
+  "SSW": 11.13,
+  "CSW": 14.67,
+  "TSW": 16.6,
+  "FST": 12.25,
+  "SPR": 12.14,
+  "AXE": 14,
+  "MCE": 14.17,
+  "WHP": 12,
+  "HLB": 14.33,
+  "GSW": 10.88,
+  "CGS": 15.8,
+  "GHM": 14.8,
+  "UGS": 13.33,
+  "BOW": 5.8
+ },
+ "VEC_collisions": [],
+ "TDV": {
+  "per_weapon": {
+   "axe_bog_cleaver": 0.6667,
+   "axe_hatchet_pair": 0.8333,
+   "axe_kings_bite": 0.9167,
+   "axe_ridge_axe": 0.9167,
+   "axe_shell_reaper": 0.6667,
+   "axe_shell_splitter": 0.6667,
+   "bow_chitin_recurve": null,
+   "bow_horn_sinew": null,
+   "bow_kings_horn": null,
+   "bow_marsh_longbow": null,
+   "bow_reed_shortbow": null,
+   "cgs_drowned_reaper": 1,
+   "cgs_harvest_edge": 1,
+   "cgs_kings_crescent": 1,
+   "cgs_mire_scythe": 1,
+   "cgs_tide_falx": 1,
+   "csw_drowned_kris": 0.8333,
+   "csw_mangrove_hook": 0.9167,
+   "csw_naga_sickle": 0.8333,
+   "csw_reaver_blade": 0.6667,
+   "csw_saltmarsh_sabre": 0.75,
+   "csw_tide_falchion": 0.75,
+   "dgr_bone_awl": 0.5833,
+   "dgr_hist_barb": 0.75,
+   "dgr_kings_needle": 0.6667,
+   "dgr_reed_dirk": 0.6667,
+   "dgr_shell_knife": 0.5833,
+   "dgr_thornfang": 0.5833,
+   "fst_hist_talon": "n/a (RI-WPN06 §B FST exception)",
+   "fst_marsh_claw": "n/a (RI-WPN06 §B FST exception)",
+   "fst_quarry_caestus": "n/a (RI-WPN06 §B FST exception)",
+   "fst_wrapped_fists": "n/a (RI-WPN06 §B FST exception)",
+   "ghm_bog_maul": 1,
+   "ghm_kings_ruin": 1,
+   "ghm_pile_driver": 1,
+   "ghm_root_hammer": 1,
+   "ghm_stone_breaker": 1,
+   "gsw_drowned_greatblade": 1,
+   "gsw_fen_claymore": 1,
+   "gsw_hist_greatblade": 1,
+   "gsw_memorial_blade": 1,
+   "gsw_oath_of_ash": 1,
+   "gsw_reed_bastard": 1,
+   "gsw_saltwind": 0.9167,
+   "gsw_tomb_guard": 0.9167,
+   "hlb_fen_hook": 0.75,
+   "hlb_garrison_bill": 0.9167,
+   "hlb_lane_keeper": 0.8333,
+   "hlb_marsh_glaive": 0.75,
+   "hlb_reed_partisan": 0.8333,
+   "hlb_saltcutter": 0.75,
+   "mce_bog_iron_mace": 0.75,
+   "mce_bone_hammer": 0.75,
+   "mce_chain_flail": 0.8333,
+   "mce_pilgrim_club": 0.6667,
+   "mce_root_maul": 0.6667,
+   "mce_stone_answer": 0.75,
+   "spr_drowned_harpoon": 0.9167,
+   "spr_fishers_gig": 0.8333,
+   "spr_marsh_lance": 0.8333,
+   "spr_mire_trident": 0.8333,
+   "spr_reed_gig": 0.8333,
+   "spr_root_pike": 0.8333,
+   "spr_xanmeer_sting": 0.8333,
+   "ssw_barsaebic_warblade": 0.6667,
+   "ssw_fen_wardens": 0.5833,
+   "ssw_garrison_sword": 0.5833,
+   "ssw_hist_sap_blade": 0.8333,
+   "ssw_kothringi_bronze": 0.5833,
+   "ssw_marsh_shortsword": 0.6667,
+   "ssw_oath_of_drowned": 0.8333,
+   "ssw_rusted_levy": 0.5833,
+   "tsw_bog_rapier": 0.8333,
+   "tsw_duelling_pick": 0.8333,
+   "tsw_oath_of_salt": 0.9167,
+   "tsw_reed_estoc": 0.8333,
+   "tsw_xanmeer_needle": 0.8333,
+   "ugs_drowned_slab": 1,
+   "ugs_fen_zwei": 1,
+   "ugs_golem_sword": 1,
+   "ugs_oath_of_root": 1,
+   "ugs_saltiron_greatsword": 1,
+   "ugs_tomb_colossus": 1,
+   "whp_hide_lash": 0.9167,
+   "whp_hist_bindings": 0.8333,
+   "whp_root_tendril": 0.9167,
+   "whp_salt_scourge": 0.8333
+  },
+  "per_class": {},
+  "median": 0.8333,
+  "min": 0.5833,
+  "zero_weapons": [],
+  "exclusive_slots_per_class": {
+   "DGR": 2,
+   "SSW": 2,
+   "CSW": 2,
+   "TSW": 2,
+   "FST": 2,
+   "SPR": 2,
+   "AXE": 2,
+   "MCE": 2,
+   "WHP": 2,
+   "HLB": 2,
+   "GSW": 2,
+   "CGS": 2,
+   "GHM": 2,
+   "UGS": 2,
+   "BOW": 0
+  },
+  "chain_change_classes": [
+   "DGR",
+   "CSW",
+   "TSW",
+   "CGS"
+  ]
+ },
+ "fingerprint_class": {
+  "classes": [
+   "DGR",
+   "SSW",
+   "CSW",
+   "TSW",
+   "FST",
+   "SPR",
+   "AXE",
+   "MCE",
+   "WHP",
+   "HLB",
+   "GSW",
+   "CGS",
+   "GHM",
+   "UGS",
+   "BOW"
+  ],
+  "D_min": 1.629,
+  "D_min_pair": [
+   "AXE",
+   "MCE"
+  ],
+  "D_med": 4.393,
+  "Dg_min": 0.8999,
+  "Dg_min_pair": [
+   "AXE",
+   "HLB"
+  ],
+  "Dg_med": 2.6657,
+  "clean_classes_ge_1_6": 15,
+  "matrix": [
+   [
+    0,
+    3.44,
+    2.39,
+    3.49,
+    1.88,
+    4.67,
+    4.79,
+    4.63,
+    5.43,
+    5.65,
+    6.97,
+    7.73,
+    7.76,
+    9.87,
+    7.11
+   ],
+   [
+    3.44,
+    0,
+    2.09,
+    1.96,
+    3.22,
+    2.35,
+    1.92,
+    2.01,
+    3.52,
+    2.59,
+    4.14,
+    4.98,
+    5,
+    7.19,
+    5.57
+   ],
+   [
+    2.39,
+    2.09,
+    0,
+    2.61,
+    3.02,
+    3.48,
+    3.34,
+    3.05,
+    3.82,
+    3.8,
+    5.21,
+    5.8,
+    6.17,
+    8.19,
+    6.51
+   ],
+   [
+    3.49,
+    1.96,
+    2.61,
+    0,
+    3.12,
+    2.04,
+    3.38,
+    2.92,
+    3.81,
+    3.56,
+    4.96,
+    6.14,
+    5.97,
+    7.88,
+    5.26
+   ],
+   [
+    1.88,
+    3.22,
+    3.02,
+    3.12,
+    0,
+    4.43,
+    4.6,
+    4.39,
+    5.21,
+    5.59,
+    7.01,
+    7.78,
+    7.8,
+    10.01,
+    5.71
+   ],
+   [
+    4.67,
+    2.35,
+    3.48,
+    2.04,
+    4.43,
+    0,
+    2.78,
+    2.76,
+    3.14,
+    2.49,
+    3.9,
+    5.17,
+    4.91,
+    6.75,
+    5.76
+   ],
+   [
+    4.79,
+    1.92,
+    3.34,
+    3.38,
+    4.6,
+    2.78,
+    0,
+    1.63,
+    3.84,
+    1.86,
+    2.98,
+    3.83,
+    3.68,
+    5.99,
+    5.97
+   ],
+   [
+    4.63,
+    2.01,
+    3.05,
+    2.92,
+    4.39,
+    2.76,
+    1.63,
+    0,
+    3.69,
+    1.94,
+    3.19,
+    4.25,
+    3.82,
+    6.26,
+    5.51
+   ],
+   [
+    5.43,
+    3.52,
+    3.82,
+    3.81,
+    5.21,
+    3.14,
+    3.84,
+    3.69,
+    0,
+    3.12,
+    4.72,
+    4.88,
+    5.92,
+    7.53,
+    5.72
+   ],
+   [
+    5.65,
+    2.59,
+    3.8,
+    3.56,
+    5.59,
+    2.49,
+    1.86,
+    1.94,
+    3.12,
+    0,
+    2.07,
+    3.05,
+    3.1,
+    5.14,
+    6.31
+   ],
+   [
+    6.97,
+    4.14,
+    5.21,
+    4.96,
+    7.01,
+    3.9,
+    2.98,
+    3.19,
+    4.72,
+    2.07,
+    0,
+    2.08,
+    1.84,
+    3.18,
+    7.73
+   ],
+   [
+    7.73,
+    4.98,
+    5.8,
+    6.14,
+    7.78,
+    5.17,
+    3.83,
+    4.25,
+    4.88,
+    3.05,
+    2.08,
+    0,
+    2.94,
+    3.57,
+    8.44
+   ],
+   [
+    7.76,
+    5,
+    6.17,
+    5.97,
+    7.8,
+    4.91,
+    3.68,
+    3.82,
+    5.92,
+    3.1,
+    1.84,
+    2.94,
+    0,
+    3.06,
+    8.43
+   ],
+   [
+    9.87,
+    7.19,
+    8.19,
+    7.88,
+    10.01,
+    6.75,
+    5.99,
+    6.26,
+    7.53,
+    5.14,
+    3.18,
+    3.57,
+    3.06,
+    0,
+    10.48
+   ],
+   [
+    7.11,
+    5.57,
+    6.51,
+    5.26,
+    5.71,
+    5.76,
+    5.97,
+    5.51,
+    5.72,
+    6.31,
+    7.73,
+    8.44,
+    8.43,
+    10.48,
+    0
+   ]
+  ],
+  "matrix_grammar": [
+   [
+    0,
+    2.51,
+    1.72,
+    2.79,
+    1.74,
+    3.01,
+    3.5,
+    2.94,
+    3.29,
+    3.34,
+    4.03,
+    4.95,
+    3.74,
+    5.55,
+    6.79
+   ],
+   [
+    2.51,
+    0,
+    1.96,
+    1.76,
+    1.68,
+    1.37,
+    1.29,
+    1.05,
+    1.79,
+    1.03,
+    1.95,
+    3.13,
+    1.57,
+    3.78,
+    5.04
+   ],
+   [
+    1.72,
+    1.96,
+    0,
+    2.52,
+    2.22,
+    2.68,
+    2.73,
+    2.07,
+    2.03,
+    2.31,
+    3.01,
+    3.68,
+    3.02,
+    4.65,
+    6.18
+   ],
+   [
+    2.79,
+    1.76,
+    2.52,
+    0,
+    1.93,
+    1.09,
+    2.72,
+    1.71,
+    2.67,
+    2.2,
+    2.72,
+    4.34,
+    2.64,
+    4.24,
+    4.85
+   ],
+   [
+    1.74,
+    1.68,
+    2.22,
+    1.93,
+    0,
+    2.14,
+    2.82,
+    1.97,
+    2.56,
+    2.63,
+    3.56,
+    4.65,
+    3.18,
+    5.29,
+    5.23
+   ],
+   [
+    3.01,
+    1.37,
+    2.68,
+    1.09,
+    2.14,
+    0,
+    1.89,
+    1.44,
+    2.67,
+    1.67,
+    2.25,
+    3.97,
+    1.81,
+    3.83,
+    4.78
+   ],
+   [
+    3.5,
+    1.29,
+    2.73,
+    2.72,
+    2.82,
+    1.89,
+    0,
+    1.57,
+    2.2,
+    0.9,
+    1.71,
+    2.67,
+    0.94,
+    3.43,
+    5.06
+   ],
+   [
+    2.94,
+    1.05,
+    2.07,
+    1.71,
+    1.97,
+    1.44,
+    1.57,
+    0,
+    1.32,
+    1.07,
+    2.28,
+    3.4,
+    2.04,
+    4.2,
+    4.29
+   ],
+   [
+    3.29,
+    1.79,
+    2.03,
+    2.67,
+    2.56,
+    2.67,
+    2.2,
+    1.32,
+    0,
+    1.59,
+    2.62,
+    2.96,
+    2.74,
+    4.49,
+    4.58
+   ],
+   [
+    3.34,
+    1.03,
+    2.31,
+    2.2,
+    2.63,
+    1.67,
+    0.9,
+    1.07,
+    1.59,
+    0,
+    1.32,
+    2.46,
+    1.17,
+    3.25,
+    4.82
+   ],
+   [
+    4.03,
+    1.95,
+    3.01,
+    2.72,
+    3.56,
+    2.25,
+    1.71,
+    2.28,
+    2.62,
+    1.32,
+    0,
+    1.95,
+    1.1,
+    1.94,
+    5.61
+   ],
+   [
+    4.95,
+    3.13,
+    3.68,
+    4.34,
+    4.65,
+    3.97,
+    2.67,
+    3.4,
+    2.96,
+    2.46,
+    1.95,
+    0,
+    2.56,
+    2.65,
+    6.39
+   ],
+   [
+    3.74,
+    1.57,
+    3.02,
+    2.64,
+    3.18,
+    1.81,
+    0.94,
+    2.04,
+    2.74,
+    1.17,
+    1.1,
+    2.56,
+    0,
+    2.6,
+    5.46
+   ],
+   [
+    5.55,
+    3.78,
+    4.65,
+    4.24,
+    5.29,
+    3.83,
+    3.43,
+    4.2,
+    4.49,
+    3.25,
+    1.94,
+    2.65,
+    2.6,
+    0,
+    7.06
+   ],
+   [
+    6.79,
+    5.04,
+    6.18,
+    4.85,
+    5.23,
+    4.78,
+    5.06,
+    4.29,
+    4.58,
+    4.82,
+    5.61,
+    6.39,
+    5.46,
+    7.06,
+    0
+   ]
+  ]
+ },
+ "fingerprint_F87": {
+  "B_min": 1.4385,
+  "B_min_pair": [
+   "axe_ridge_axe",
+   "mce_chain_flail"
+  ],
+  "W_min": 0.1754,
+  "W_min_pair": [
+   "ghm_kings_ruin",
+   "ghm_pile_driver"
+  ],
+  "W_max": 0.9942,
+  "W_max_pair": [
+   "bow_kings_horn",
+   "bow_marsh_longbow"
+  ],
+  "W_med": 0.5386,
+  "SEP": 1.4469,
+  "W_med_per_class": {
+   "DGR": 0.5577,
+   "SSW": 0.5882,
+   "CSW": 0.5313,
+   "TSW": 0.5373,
+   "FST": 0.7339,
+   "SPR": 0.4921,
+   "AXE": 0.6119,
+   "MCE": 0.5807,
+   "WHP": 0.644,
+   "HLB": 0.4715,
+   "GSW": 0.5828,
+   "CGS": 0.5465,
+   "GHM": 0.3932,
+   "UGS": 0.5754,
+   "BOW": 0.6748
+  }
+ },
+ "matrix_conformance": [
+  {
+   "class": "DGR",
+   "weapon": "dgr_shell_knife",
+   "errors": []
+  },
+  {
+   "class": "FST",
+   "weapon": "fst_wrapped_fists",
+   "errors": [
+    "chain 3 != 5"
+   ]
+  },
+  {
+   "class": "CSW",
+   "weapon": "csw_naga_sickle",
+   "errors": []
+  },
+  {
+   "class": "TSW",
+   "weapon": "tsw_xanmeer_needle",
+   "errors": []
+  },
+  {
+   "class": "SSW",
+   "weapon": "ssw_garrison_sword",
+   "errors": []
+  },
+  {
+   "class": "SPR",
+   "weapon": "spr_fishers_gig",
+   "errors": []
+  },
+  {
+   "class": "AXE",
+   "weapon": "axe_shell_splitter",
+   "errors": []
+  },
+  {
+   "class": "MCE",
+   "weapon": "mce_bog_iron_mace",
+   "errors": []
+  },
+  {
+   "class": "HLB",
+   "weapon": "hlb_garrison_bill",
+   "errors": []
+  },
+  {
+   "class": "WHP",
+   "weapon": "whp_hide_lash",
+   "errors": []
+  },
+  {
+   "class": "GSW",
+   "weapon": "gsw_memorial_blade",
+   "errors": []
+  },
+  {
+   "class": "CGS",
+   "weapon": "cgs_drowned_reaper",
+   "errors": [
+    "chain 3 != 2"
+   ]
+  },
+  {
+   "class": "GHM",
+   "weapon": "ghm_pile_driver",
+   "errors": [
+    "chain 3 != 2"
+   ]
+  },
+  {
+   "class": "UGS",
+   "weapon": "ugs_golem_sword",
+   "errors": []
+  }
+ ],
+ "matrix_conformance_failing": 3,
+ "contextual_conformance": [],
+ "CFS_declared": {
+  "instances": 1167,
+  "T1_failures": 0,
+  "T2_failures": 0,
+  "CFS": 1,
+  "examples": []
+ },
+ "shape_census": {
+  "slash_d": 18,
+  "slash_h": 15,
+  "shoot": 5,
+  "spin": 5,
+  "smash": 15,
+  "sweep": 8,
+  "thrust": 12,
+  "slash_v": 5,
+  "lash": 4
+ },
+ "distinct_r1_1_shapes": 9,
+ "shape_arc_violations": [
+  {
+   "id": "axe_bog_cleaver",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 58.8,
+   "root": 0.87,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_bog_cleaver",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 69.4,
+   "root": 1.015,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_hatchet_pair",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 112.2,
+   "root": 0.967,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_hatchet_pair",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.343,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_hatchet_pair",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.584,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_hatchet_pair",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.672,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_hatchet_pair",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 219.8,
+   "root": 0.688,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "axe_hatchet_pair",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 132.4,
+   "root": 1.112,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_hatchet_pair",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.343,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_hatchet_pair",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 149.3,
+   "root": 0.122,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_kings_bite",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 123.2,
+   "root": 1.003,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_kings_bite",
+   "slot": "2h.r1.2",
+   "shape": "slash_h",
+   "arc": 205.2,
+   "root": 0.327,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "axe_kings_bite",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.379,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_kings_bite",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.708,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_kings_bite",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 232.8,
+   "root": 0.724,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "axe_kings_bite",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 145.4,
+   "root": 1.148,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_kings_bite",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.379,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_kings_bite",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.158,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_ridge_axe",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 98.2,
+   "root": 1.037,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_ridge_axe",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 138.9,
+   "root": 0.413,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_ridge_axe",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 138.9,
+   "root": 0.654,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_ridge_axe",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.742,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_ridge_axe",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 203.3,
+   "root": 0.758,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "axe_ridge_axe",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 115.9,
+   "root": 1.182,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_ridge_axe",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 151.2,
+   "root": 0.413,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_ridge_axe",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 132.8,
+   "root": 0.192,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_shell_reaper",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 50.2,
+   "root": 1.016,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_shell_reaper",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 106.8,
+   "root": 0.721,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_shell_reaper",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 59.2,
+   "root": 1.161,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_shell_splitter",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 71.5,
+   "root": 0.969,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_shell_splitter",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 131.9,
+   "root": 0.674,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "axe_shell_splitter",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 84.4,
+   "root": 1.114,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_drowned_reaper",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.368,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_drowned_reaper",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 129,
+   "root": 2.261,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_drowned_reaper",
+   "slot": "2h.r1.3",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 0.805,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_drowned_reaper",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.573,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_drowned_reaper",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.61,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_drowned_reaper",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 2.599,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_drowned_reaper",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.29,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_drowned_reaper",
+   "slot": "2h.r1.4",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.368,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.401,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 129,
+   "root": 2.294,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "guardbreak",
+   "shape": "smash",
+   "arc": 10,
+   "root": 1.203,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "2h.r1.3",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 0.838,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.606,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.643,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 2.632,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.323,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_harvest_edge",
+   "slot": "2h.r1.4",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.401,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_kings_crescent",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.467,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_kings_crescent",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 129,
+   "root": 2.359,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_kings_crescent",
+   "slot": "2h.r1.3",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 0.903,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_kings_crescent",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.671,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_kings_crescent",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.708,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_kings_crescent",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 2.697,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_kings_crescent",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.388,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_mire_scythe",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.266,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_mire_scythe",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 129,
+   "root": 2.159,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_mire_scythe",
+   "slot": "2h.r1.3",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 0.703,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_mire_scythe",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.471,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_mire_scythe",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.508,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_mire_scythe",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 2.497,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_mire_scythe",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.188,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_mire_scythe",
+   "slot": "2h.r1.4",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.266,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_tide_falx",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.412,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_tide_falx",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 129,
+   "root": 2.305,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_tide_falx",
+   "slot": "2h.r1.3",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 0.849,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_tide_falx",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.617,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_tide_falx",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.654,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "cgs_tide_falx",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 2.643,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_tide_falx",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.334,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "cgs_tide_falx",
+   "slot": "2h.r1.4",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.412,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "csw_drowned_kris",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 81,
+   "root": 0.896,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_drowned_kris",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.601,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_drowned_kris",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 95.5,
+   "root": 1.041,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_drowned_kris",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 137.6,
+   "root": 0.272,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_drowned_kris",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.335,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "csw_mangrove_hook",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 87.7,
+   "root": 0.878,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_mangrove_hook",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.583,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_mangrove_hook",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 207.7,
+   "root": 0.599,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "csw_mangrove_hook",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 103.4,
+   "root": 1.023,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_mangrove_hook",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 145.5,
+   "root": 0.254,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_mangrove_hook",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.317,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "csw_naga_sickle",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 85.3,
+   "root": 0.969,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_naga_sickle",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.674,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_naga_sickle",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 204.8,
+   "root": 0.69,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "csw_naga_sickle",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 100.6,
+   "root": 1.114,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_naga_sickle",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 142.7,
+   "root": 0.345,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_naga_sickle",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.408,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "csw_reaver_blade",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 37,
+   "root": 0.986,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_reaver_blade",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 43.6,
+   "root": 1.131,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_reaver_blade",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.425,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "csw_saltmarsh_sabre",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 74.9,
+   "root": 1.052,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_saltmarsh_sabre",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 145,
+   "root": 0.757,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_saltmarsh_sabre",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 88.3,
+   "root": 1.197,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_saltmarsh_sabre",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 130.4,
+   "root": 0.428,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_saltmarsh_sabre",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.491,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "csw_tide_falchion",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 69.5,
+   "root": 1.032,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_tide_falchion",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 138.7,
+   "root": 0.737,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_tide_falchion",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 82,
+   "root": 1.177,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "csw_tide_falchion",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.471,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_bone_awl",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.223,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_bone_awl",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.322,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_bone_awl",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.439,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_bone_awl",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.673,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_bone_awl",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.337,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_bone_awl",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.744,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_bone_awl",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 20.7,
+   "root": 0.263,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_hist_barb",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.247,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_hist_barb",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.346,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_hist_barb",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.463,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_hist_barb",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.697,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_hist_barb",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.361,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_hist_barb",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.768,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_hist_barb",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.287,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_kings_needle",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.318,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_kings_needle",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.534,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_kings_needle",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.534,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_kings_needle",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.768,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_kings_needle",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.432,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_kings_needle",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.839,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_kings_needle",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.358,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_reed_dirk",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.268,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_reed_dirk",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.367,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_reed_dirk",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.484,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_reed_dirk",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.718,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_reed_dirk",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.382,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_reed_dirk",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.789,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_reed_dirk",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.308,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_shell_knife",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.224,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_shell_knife",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.323,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_shell_knife",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.44,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_shell_knife",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.674,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_shell_knife",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.338,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_shell_knife",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.745,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_shell_knife",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.264,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_thornfang",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.128,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_thornfang",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.227,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_thornfang",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.344,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_thornfang",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.578,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_thornfang",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.242,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_thornfang",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.649,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "dgr_thornfang",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.168,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "fst_hist_talon",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.166,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "fst_marsh_claw",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.322,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "fst_wrapped_fists",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.225,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.2,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "r2.follow",
+   "shape": "smash",
+   "arc": 129,
+   "root": 0.885,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 98,
+   "root": 1.167,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.781,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "2h.r1.1",
+   "shape": "smash",
+   "arc": 125.6,
+   "root": 0.717,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 0.786,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "2h.r2",
+   "shape": "smash",
+   "arc": 85.9,
+   "root": 0.731,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.375,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 115.6,
+   "root": 1.337,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 3.195,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_bog_maul",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 148.2,
+   "root": 0.717,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.209,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "r2.follow",
+   "shape": "smash",
+   "arc": 129,
+   "root": 0.894,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 104.2,
+   "root": 1.176,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.79,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "guardbreak",
+   "shape": "smash",
+   "arc": 59.8,
+   "root": 1.206,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "2h.r1.1",
+   "shape": "smash",
+   "arc": 132.9,
+   "root": 0.726,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 0.795,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "2h.r2",
+   "shape": "smash",
+   "arc": 93.2,
+   "root": 0.74,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.384,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 123,
+   "root": 1.346,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 3.204,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_kings_ruin",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.726,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 103.2,
+   "root": 1.173,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "r2.follow",
+   "shape": "smash",
+   "arc": 129,
+   "root": 0.858,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 66,
+   "root": 1.14,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 102,
+   "root": 2.754,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 0.759,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "2h.r2",
+   "shape": "smash",
+   "arc": 48.1,
+   "root": 0.704,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 121.8,
+   "root": 1.348,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 77.9,
+   "root": 1.31,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_pile_driver",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 120.4,
+   "root": 3.168,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "r1.2",
+   "shape": "smash",
+   "arc": 127.4,
+   "root": 0.746,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 98.6,
+   "root": 1.259,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "r2.follow",
+   "shape": "smash",
+   "arc": 127.4,
+   "root": 0.944,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 97.4,
+   "root": 2.84,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "2h.r1.1",
+   "shape": "smash",
+   "arc": 82.4,
+   "root": 0.776,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 150.3,
+   "root": 0.845,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "2h.r2",
+   "shape": "smash",
+   "arc": 42.7,
+   "root": 0.79,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 116.3,
+   "root": 1.434,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 72.5,
+   "root": 1.396,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 114.9,
+   "root": 3.254,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 105,
+   "root": 0.776,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_root_hammer",
+   "slot": "2h.art.1",
+   "shape": "smash",
+   "arc": 56.9,
+   "root": 0.707,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 127.6,
+   "root": 1.076,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "r2.follow",
+   "shape": "smash",
+   "arc": 129,
+   "root": 0.761,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 90.4,
+   "root": 1.043,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 126.4,
+   "root": 2.657,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 0.662,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 150.6,
+   "root": 1.251,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 106.7,
+   "root": 1.213,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 149.2,
+   "root": 3.071,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ghm_stone_breaker",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 139.2,
+   "root": 0.593,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 99.3,
+   "root": 1.462,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 127.3,
+   "root": 1.679,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 73.1,
+   "root": 2.762,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 113.3,
+   "root": 0.867,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 117.2,
+   "root": 0.994,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 117.2,
+   "root": 1.679,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 150.2,
+   "root": 1.927,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 203.9,
+   "root": 1.972,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 86.2,
+   "root": 3.173,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 133.7,
+   "root": 0.994,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_drowned_greatblade",
+   "slot": "2h.art.2",
+   "shape": "smash",
+   "arc": 63.5,
+   "root": 0.848,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "r1.3",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.86,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.455,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.672,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 129,
+   "root": 2.755,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.86,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.r1.2",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 0.84,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.987,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.672,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.92,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.965,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 3.166,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.987,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.362,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_fen_claymore",
+   "slot": "2h.art.2",
+   "shape": "smash",
+   "arc": 140.2,
+   "root": 0.841,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.626,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 129,
+   "root": 2.709,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "art.1",
+   "shape": "smash",
+   "arc": 129,
+   "root": 0.729,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.r1.2",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 0.794,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.941,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.626,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.874,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.919,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 3.12,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.941,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.316,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_hist_greatblade",
+   "slot": "2h.art.2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 0.795,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "r1.3",
+   "shape": "slash_v",
+   "arc": 122.5,
+   "root": 0.85,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 122.5,
+   "root": 1.445,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.662,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 96.3,
+   "root": 2.745,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.85,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 144.6,
+   "root": 0.977,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 144.6,
+   "root": 1.662,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.91,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 231.3,
+   "root": 1.955,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 113.6,
+   "root": 3.156,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.977,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 136.3,
+   "root": 0.352,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_memorial_blade",
+   "slot": "2h.art.2",
+   "shape": "smash",
+   "arc": 90.9,
+   "root": 0.831,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "r1.2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.981,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "r1.3",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.854,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.666,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 119.3,
+   "root": 2.749,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.854,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.r1.1",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 0.981,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.r1.2",
+   "shape": "slash_h",
+   "arc": 221.3,
+   "root": 0.834,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.981,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.r2",
+   "shape": "smash",
+   "arc": 118,
+   "root": 0.835,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.914,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.959,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 140.7,
+   "root": 3.16,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.981,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.356,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_oath_of_ash",
+   "slot": "2h.art.2",
+   "shape": "smash",
+   "arc": 118,
+   "root": 0.835,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "r1.3",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.859,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.454,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.671,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 111,
+   "root": 2.754,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.859,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.r1.2",
+   "shape": "slash_h",
+   "arc": 211.5,
+   "root": 0.839,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.986,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.671,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.919,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 1.964,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 130.9,
+   "root": 3.165,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.986,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.361,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_reed_bastard",
+   "slot": "2h.art.2",
+   "shape": "smash",
+   "arc": 108.2,
+   "root": 0.84,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "r1.3",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.958,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.553,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.77,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 125.9,
+   "root": 2.853,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.958,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.r1.2",
+   "shape": "slash_h",
+   "arc": 229,
+   "root": 0.938,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.086,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.77,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 2.018,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 2.063,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 148.5,
+   "root": 3.264,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.086,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.46,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_saltwind",
+   "slot": "2h.art.2",
+   "shape": "smash",
+   "arc": 125.8,
+   "root": 0.939,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "r1.3",
+   "shape": "slash_v",
+   "arc": 111,
+   "root": 0.751,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 111,
+   "root": 1.346,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.563,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 84.8,
+   "root": 2.646,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 125,
+   "root": 0.751,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "2h.r1.3",
+   "shape": "slash_v",
+   "arc": 131,
+   "root": 0.879,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "2h.r2",
+   "shape": "smash",
+   "arc": 114.5,
+   "root": 1.563,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.811,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 217.7,
+   "root": 1.856,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 100,
+   "root": 3.057,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 147.5,
+   "root": 0.879,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "gsw_tomb_guard",
+   "slot": "2h.art.2",
+   "shape": "smash",
+   "arc": 77.3,
+   "root": 0.732,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_fen_hook",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 55.4,
+   "root": 1.489,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_fen_hook",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.604,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_fen_hook",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.355,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_fen_hook",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.225,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_fen_hook",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 65.3,
+   "root": 1.706,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_garrison_bill",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 79.8,
+   "root": 1.454,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_garrison_bill",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.569,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_garrison_bill",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.32,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_garrison_bill",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.19,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_garrison_bill",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 94.1,
+   "root": 1.671,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_garrison_bill",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 133.5,
+   "root": 0.518,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_lane_keeper",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 83.9,
+   "root": 1.53,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_lane_keeper",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.645,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_lane_keeper",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.396,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_lane_keeper",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.266,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_lane_keeper",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 98.9,
+   "root": 1.747,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_lane_keeper",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 138.3,
+   "root": 0.593,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_marsh_glaive",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 56.4,
+   "root": 1.341,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_marsh_glaive",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.456,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_marsh_glaive",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.207,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_marsh_glaive",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.077,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_marsh_glaive",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 66.5,
+   "root": 1.558,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_reed_partisan",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 66.9,
+   "root": 1.473,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_reed_partisan",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.588,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_reed_partisan",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.339,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_reed_partisan",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.209,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_reed_partisan",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 78.9,
+   "root": 1.69,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_saltcutter",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 57.9,
+   "root": 0.9,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_saltcutter",
+   "slot": "run.r2",
+   "shape": "smash",
+   "arc": 57.9,
+   "root": 1.499,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "hlb_saltcutter",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.614,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_saltcutter",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.365,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_saltcutter",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.235,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "hlb_saltcutter",
+   "slot": "2h.run.r2",
+   "shape": "smash",
+   "arc": 68.3,
+   "root": 1.716,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_bog_iron_mace",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 80.8,
+   "root": 1.285,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_bog_iron_mace",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 95.3,
+   "root": 1.478,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_bog_iron_mace",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.493,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "mce_bone_hammer",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 60.7,
+   "root": 1.336,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_bone_hammer",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 71.6,
+   "root": 1.529,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_bone_hammer",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.544,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "mce_chain_flail",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 127.9,
+   "root": 1.336,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_chain_flail",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 0.405,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_chain_flail",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152,
+   "root": 0.68,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_chain_flail",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 150.9,
+   "root": 1.529,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_chain_flail",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 143,
+   "root": 0.373,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_chain_flail",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.544,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "mce_pilgrim_club",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 89.6,
+   "root": 1.203,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_pilgrim_club",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 133.7,
+   "root": 0.272,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_pilgrim_club",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 105.7,
+   "root": 1.396,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_pilgrim_club",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.411,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "mce_root_maul",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 102,
+   "root": 1.204,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_root_maul",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 148.3,
+   "root": 0.273,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_root_maul",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 120.3,
+   "root": 1.397,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_root_maul",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.412,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.379,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "guardbreak",
+   "shape": "smash",
+   "arc": 76.6,
+   "root": 1.264,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "2h.r1.1",
+   "shape": "smash",
+   "arc": 134.4,
+   "root": 0.416,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "2h.r1.2",
+   "shape": "smash",
+   "arc": 152.2,
+   "root": 0.448,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "2h.r1.3",
+   "shape": "smash",
+   "arc": 134.4,
+   "root": 0.416,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.723,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 126.6,
+   "root": 0.706,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.572,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.416,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "mce_stone_answer",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.587,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 38.8,
+   "root": 2.55,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.r1.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.816,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.r1.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.721,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.847,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.208,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.638,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.479,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 45.8,
+   "root": 2.929,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.265,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.05,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_drowned_harpoon",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 2.606,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_fishers_gig",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 10,
+   "root": 2.525,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_fishers_gig",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 11.8,
+   "root": 2.904,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_marsh_lance",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 10,
+   "root": 2.58,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_marsh_lance",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 11.8,
+   "root": 2.959,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_mire_trident",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 10,
+   "root": 2.524,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_mire_trident",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 11.8,
+   "root": 2.903,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 17.2,
+   "root": 2.457,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "2h.r1.1",
+   "shape": "thrust",
+   "arc": 21.7,
+   "root": 0.723,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "2h.r1.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.628,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 20.8,
+   "root": 0.754,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 20.8,
+   "root": 1.33,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.545,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.386,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 20.3,
+   "root": 2.836,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_reed_gig",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 2.513,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_root_pike",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 15.3,
+   "root": 2.49,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_root_pike",
+   "slot": "2h.r1.2",
+   "shape": "thrust",
+   "arc": 21.4,
+   "root": 0.661,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_root_pike",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 20.4,
+   "root": 1.578,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_root_pike",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.3,
+   "root": 1.419,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_root_pike",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 18.1,
+   "root": 2.869,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_root_pike",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 2.546,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_xanmeer_sting",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 14.1,
+   "root": 2.617,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_xanmeer_sting",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 20.9,
+   "root": 1.546,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "spr_xanmeer_sting",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 16.6,
+   "root": 2.996,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_xanmeer_sting",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 16,
+   "root": 0.724,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "spr_xanmeer_sting",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.3,
+   "root": 2.673,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "r1.1",
+   "shape": "slash_h",
+   "arc": 87.9,
+   "root": 0.378,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 72.5,
+   "root": 0.712,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 64.8,
+   "root": 0.712,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 85.6,
+   "root": 0.815,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.601,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.817,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.767,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "2h.r2.follow",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.884,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_barsaebic_warblade",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.644,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_fen_wardens",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 86.3,
+   "root": 0.743,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_fen_wardens",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 101.8,
+   "root": 0.846,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_fen_wardens",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.632,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_fen_wardens",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.848,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_fen_wardens",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.798,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_fen_wardens",
+   "slot": "2h.r2.follow",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.915,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_fen_wardens",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.675,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_garrison_sword",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 111.6,
+   "root": 0.787,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_garrison_sword",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.573,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_garrison_sword",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.789,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_garrison_sword",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.739,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_garrison_sword",
+   "slot": "2h.r2.follow",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.856,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_garrison_sword",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.616,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_hist_sap_blade",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 132.2,
+   "root": 0.797,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_hist_sap_blade",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.583,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_hist_sap_blade",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.799,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_hist_sap_blade",
+   "slot": "2h.r2.follow",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.866,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_hist_sap_blade",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.626,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_kothringi_bronze",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 99.3,
+   "root": 0.729,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_kothringi_bronze",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 117.2,
+   "root": 0.832,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_kothringi_bronze",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.618,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_kothringi_bronze",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.834,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_kothringi_bronze",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.784,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_kothringi_bronze",
+   "slot": "2h.r2.follow",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.901,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_kothringi_bronze",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.661,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_marsh_shortsword",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.476,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_marsh_shortsword",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.692,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_marsh_shortsword",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.642,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_marsh_shortsword",
+   "slot": "2h.r2.follow",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.759,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_marsh_shortsword",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.519,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_oath_of_drowned",
+   "slot": "r1.1",
+   "shape": "slash_h",
+   "arc": 88.8,
+   "root": 0.43,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ssw_oath_of_drowned",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 73.4,
+   "root": 0.764,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_oath_of_drowned",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 86.6,
+   "root": 0.867,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ssw_oath_of_drowned",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.653,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_oath_of_drowned",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.869,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_oath_of_drowned",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.819,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_oath_of_drowned",
+   "slot": "2h.r2.follow",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.936,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_oath_of_drowned",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.696,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_rusted_levy",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.475,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_rusted_levy",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.691,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_rusted_levy",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.641,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_rusted_levy",
+   "slot": "2h.r2.follow",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.758,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ssw_rusted_levy",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.518,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_bog_rapier",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 14.1,
+   "root": 2.986,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_bog_rapier",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 20.8,
+   "root": 0.824,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_bog_rapier",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 21.9,
+   "root": 1.721,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_bog_rapier",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 16.6,
+   "root": 3.434,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_bog_rapier",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 15.8,
+   "root": 0.75,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_bog_rapier",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 3.231,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_bog_rapier",
+   "slot": "2h.r1.4",
+   "shape": "thrust",
+   "arc": 20.8,
+   "root": 1.4,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "r1.1",
+   "shape": "thrust",
+   "arc": 21.4,
+   "root": 0.545,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "r2",
+   "shape": "smash",
+   "arc": 26.7,
+   "root": 1,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 29,
+   "root": 2.879,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.r1.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.83,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.r1.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.867,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.717,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.547,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.801,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.614,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 34.2,
+   "root": 3.327,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.36,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 3.124,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_duelling_pick",
+   "slot": "2h.r1.4",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.293,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 32.5,
+   "root": 3.096,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 31.8,
+   "root": 0.762,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.r1.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.047,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.r1.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.084,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.r1.3",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.934,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 2.018,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.r2.charged",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 2.018,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.run.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.831,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 38.4,
+   "root": 3.544,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 37.5,
+   "root": 0.859,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.backstep.r1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.577,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.art.1",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 3.341,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_oath_of_salt",
+   "slot": "2h.r1.4",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 1.51,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "tsw_reed_estoc",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 10,
+   "root": 3.047,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_reed_estoc",
+   "slot": "roll.r1",
+   "shape": "slash_v",
+   "arc": 10,
+   "root": 0.713,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_reed_estoc",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 11.8,
+   "root": 3.495,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_reed_estoc",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 11.8,
+   "root": 0.811,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_xanmeer_needle",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 10,
+   "root": 2.984,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_xanmeer_needle",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 11.8,
+   "root": 3.432,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "tsw_xanmeer_needle",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 11.8,
+   "root": 0.747,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "r1.1",
+   "shape": "slash_v",
+   "arc": 197.7,
+   "root": 1.303,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "r1.3",
+   "shape": "smash",
+   "arc": 59.1,
+   "root": 0.743,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.283,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.64,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 103.2,
+   "root": 2.563,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "art.1",
+   "shape": "smash",
+   "arc": 80.1,
+   "root": 1.163,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.r1.1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.513,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.r1.2",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.513,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.r2",
+   "shape": "smash",
+   "arc": 69.7,
+   "root": 1.545,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 3.049,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 121.8,
+   "root": 2.961,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 6,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 149,
+   "root": 0.483,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.art.1",
+   "shape": "smash",
+   "arc": 94.5,
+   "root": 1.352,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_drowned_slab",
+   "slot": "2h.r2.follow",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 2.64,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "r1.1",
+   "shape": "slash_v",
+   "arc": 217.4,
+   "root": 1.418,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.398,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.755,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 100.8,
+   "root": 2.678,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "art.1",
+   "shape": "smash",
+   "arc": 77.7,
+   "root": 1.278,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.r1.1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.628,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.r1.2",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.628,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 2.755,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 3.164,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 118.9,
+   "root": 3.076,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 6,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 146.2,
+   "root": 0.598,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.art.1",
+   "shape": "smash",
+   "arc": 91.7,
+   "root": 1.467,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_fen_zwei",
+   "slot": "2h.r2.follow",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 2.755,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "r1.1",
+   "shape": "slash_v",
+   "arc": 210,
+   "root": 1.4,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.38,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.737,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 115.5,
+   "root": 2.66,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "art.1",
+   "shape": "smash",
+   "arc": 92.4,
+   "root": 1.26,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.r1.1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.61,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.r1.2",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.61,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 2.737,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 3.146,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 136.3,
+   "root": 3.058,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 6,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.58,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.art.1",
+   "shape": "smash",
+   "arc": 109,
+   "root": 1.449,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_golem_sword",
+   "slot": "2h.r2.follow",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 2.737,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "r1.3",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 1.429,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.766,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 101.6,
+   "root": 2.689,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "2h.r1.1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.639,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "2h.r1.2",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.639,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "2h.r2",
+   "shape": "smash",
+   "arc": 92.6,
+   "root": 1.397,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 3.175,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 119.9,
+   "root": 3.087,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 6,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 147.1,
+   "root": 0.609,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_oath_of_root",
+   "slot": "2h.art.1",
+   "shape": "smash",
+   "arc": 92.6,
+   "root": 1.478,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "r1.1",
+   "shape": "slash_v",
+   "arc": 197.8,
+   "root": 1.478,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 112.7,
+   "root": 2.458,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.815,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "art.1",
+   "shape": "smash",
+   "arc": 58.1,
+   "root": 1.338,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "2h.r1.1",
+   "shape": "slash_v",
+   "arc": 133,
+   "root": 1.688,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "2h.r1.2",
+   "shape": "sweep",
+   "arc": 222.2,
+   "root": 1.688,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 133,
+   "root": 2.815,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 3.224,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 95.8,
+   "root": 3.136,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 6,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "2h.art.1",
+   "shape": "smash",
+   "arc": 68.6,
+   "root": 1.527,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_saltiron_greatsword",
+   "slot": "2h.r2.follow",
+   "shape": "sweep",
+   "arc": 222.2,
+   "root": 2.815,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "r1.1",
+   "shape": "slash_v",
+   "arc": 187.7,
+   "root": 1.425,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "r2",
+   "shape": "slash_v",
+   "arc": 124.7,
+   "root": 2.405,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "r2.charged",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 2.762,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "run.r1",
+   "shape": "smash",
+   "arc": 93.2,
+   "root": 2.685,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "guard.counter",
+   "shape": "slash_v",
+   "arc": 124.7,
+   "root": 1.145,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "art.1",
+   "shape": "smash",
+   "arc": 70.1,
+   "root": 1.285,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.r1.1",
+   "shape": "slash_v",
+   "arc": 147.1,
+   "root": 1.635,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.r1.2",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 1.635,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.r2",
+   "shape": "slash_v",
+   "arc": 147.1,
+   "root": 2.762,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 3.171,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.run.r1",
+   "shape": "smash",
+   "arc": 110,
+   "root": 3.083,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.run.r2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 6,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 137.2,
+   "root": 0.605,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.art.1",
+   "shape": "smash",
+   "arc": 82.7,
+   "root": 1.474,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "ugs_tomb_colossus",
+   "slot": "2h.r2.follow",
+   "shape": "sweep",
+   "arc": 236,
+   "root": 2.762,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "whp_hide_lash",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.918,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hide_lash",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.449,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hide_lash",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 0.46,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "whp_hide_lash",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.056,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hide_lash",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.23,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hide_lash",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.083,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hide_lash",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.352,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "whp_hist_bindings",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.99,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hist_bindings",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.521,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hist_bindings",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 0.532,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "whp_hist_bindings",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.128,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hist_bindings",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.302,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hist_bindings",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 131.9,
+   "root": 0.155,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_hist_bindings",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.424,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "whp_root_tendril",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.825,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_root_tendril",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.356,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_root_tendril",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 0.367,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "whp_root_tendril",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.963,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_root_tendril",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.137,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_root_tendril",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": -0.01,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_root_tendril",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.259,
+   "rule": "thrust requires arc < 20"
+  },
+  {
+   "id": "whp_salt_scourge",
+   "slot": "run.r2",
+   "shape": "slash_v",
+   "arc": 129,
+   "root": 0.963,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_salt_scourge",
+   "slot": "2h.r2.charged",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.494,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_salt_scourge",
+   "slot": "2h.run.r1",
+   "shape": "slash_h",
+   "arc": 236,
+   "root": 0.505,
+   "rule": "sweep/slash_h requires 90..200"
+  },
+  {
+   "id": "whp_salt_scourge",
+   "slot": "2h.run.r2",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 1.101,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_salt_scourge",
+   "slot": "2h.roll.r1",
+   "shape": "slash_v",
+   "arc": 152.2,
+   "root": 0.275,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_salt_scourge",
+   "slot": "2h.jump.r1",
+   "shape": "slash_v",
+   "arc": 141.6,
+   "root": 0.128,
+   "rule": "smash/slash_v requires arc<130 and root<0.7"
+  },
+  {
+   "id": "whp_salt_scourge",
+   "slot": "2h.art.2",
+   "shape": "thrust",
+   "arc": 22.4,
+   "root": 0.397,
+   "rule": "thrust requires arc < 20"
+  }
+ ],
+ "shape_arc_violation_count": 605,
+ "answer_matrix": {
+  "counts": {
+   "INFANTRY": 1347,
+   "TURTLE": 579,
+   "DUELIST": 556,
+   "POISE_MONSTER": 1167,
+   "RANGED": 343,
+   "AMBUSHER": 97,
+   "SWARM": 313,
+   "CASTER": 174,
+   "ELITE": 667,
+   "GANK_DUO": 333
+  },
+  "unanswered": []
+ }
+}

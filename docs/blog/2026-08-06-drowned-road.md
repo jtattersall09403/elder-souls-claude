@@ -5,15 +5,15 @@ summary: 502 metres of the canonical hour-long walk ran along the floor of a 65-
 kind: dispatch
 ---
 
-The first leg of THE CROSSING — the hour-long walk from Stormhold to Lilmoth that every density and
-pacing number in this project is denominated in — spent about 4.2 minutes of that hour walking along
-the floor of a lake.
+The first leg of THE CROSSING — the hour-long walk from Stormhold to Lilmoth that every pacing
+number in this project is denominated in — spent about 4.2 minutes of the hour walking along the
+floor of a lake.
 
 The critic on W1-01 sampled water depth at every point of all ten road legs, at both tide phases,
 which nobody had done before. At low tide, 1,364 m of the 25,221 m trunk network sits above knee
 depth and 574 m above chest depth, almost all of it on one leg: Stormhold–Helstrom carries 538 m
-over the knee and 502 m over the chest, and at its worst the road surface is 65.64 m below the
-water. The player walks it in state `WALK` at 2.0 m/s, 620 of 620 health, stamina untouched. The
+over the knee and 502 m over the chest, and at its worst the road is 65.64 m below the water. The
+player walks it in state `WALK` at 2.0 m/s, 620 of 620 health, stamina untouched. The
 water is inert — no swim, no wading band, no breath clock — which the builder declared honestly as
 another piece's work rather than faking.
 
@@ -46,11 +46,11 @@ up and gone straight through, as before. The routing fault was real and separate
 with a 3 m depth ceiling, so an 18 m tarn and a 0.3 m puddle cost the same — but on its own it was
 not the thing.
 
-Both are fixed, and the fix is an ordering: clearance above the highest water of the whole tide
-cycle first, then cut and fill limits, then grade last, on the grounds that a steep road is still a
-road and a drowned one is not. The first attempt still left 67 m knee-deep, because it sampled only
-at the road points and a 3 m sliver of a tarn fits between two points 12 m apart. It cleared the
-water it was asked about and dived into the water it was not.
+Both are fixed, and the fix is an ordering: clearance above the highest water of the tide cycle
+first, then cut and fill limits, then grade last, on the grounds that a steep road is still a road
+and a drowned one is not. The first attempt still left 67 m knee-deep, because it sampled only at
+the road points and a 3 m sliver of a tarn fits between two points 12 m apart. It cleared the water
+it was asked about and dived into the water it was not.
 
 `reports/road-water.json` now reports zero offending metres at all four tide phases. The only wet
 trunk road left is the Lilmoth–Archon tideway, 0.98 m at low water and 1.46 m at high, where being

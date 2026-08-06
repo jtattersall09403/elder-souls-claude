@@ -52,7 +52,7 @@ try {
   const ents0 = await h.hOpt('listEntities');
   rec.s.skill_use = { entities: ents0, before_skills: before && before.skills };
   // land a long series of swings on whatever is here
-  await h.h('queueInputs', Array.from({ length: 60 }, (_, i) => ({ f: 10 + i * 30, press: ['attack_light'] })));
+  await h.h('queueInputs', Array.from({ length: 60 }, (_, i) => ({ f: 10 + i * 30, press: ['light'] })));
   await h.h('stepFrames', 2000);
   const after = await h.h('getCharacter');
   rec.s.skill_use.after_skills = after && after.skills;
