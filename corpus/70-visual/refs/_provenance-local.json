@@ -1,0 +1,53 @@
+{
+  "_note": "In-container acquisition records (already-downloaded files). Not consumed by acquire.py, which only handles remote-fetchable entries.",
+  "files": [
+    {
+      "id": "REJECTED",
+      "pixel_metrics_valid": false,
+      "profile": "rejected",
+      "rejection_reason": "REF-A15 asks for books, scrolls and written pages readable at close range. This is a wide Ashlands shot with scrolls scattered on the ground at roughly 30 px; neither the page nor the Daedric script can be read.",
+      "side": "rejected",
+      "slot": null
+    },
+    {
+      "id": "REJECTED",
+      "pixel_metrics_valid": false,
+      "profile": "rejected",
+      "rejection_reason": "1920x1080 at 0.35 bits/pixel \u2014 an order of magnitude below the 6-9 bits/pixel of the other RDR2 and Witcher 3 captures. Heavily recompressed; measuring it would measure the recompressor. Also HUD-bearing.",
+      "side": "rejected",
+      "slot": null
+    },
+    {
+      "id": "REJECTED",
+      "pixel_metrics_valid": false,
+      "profile": "rejected",
+      "rejection_reason": "Genuine Skyrim SE frame but a large \"SKYRIM SPECIAL EDITION / BEAUTIFICATION PROJECT\" text lockup is burned into the pixels. Text is high-contrast synthetic geometry: it inflates M4 edge density and destroys the M8 flat-shading and M5 spectral statistics. Also a modded install.",
+      "side": "rejected",
+      "slot": null
+    },
+    {
+      "id": "REJECTED",
+      "pixel_metrics_valid": false,
+      "profile": "rejected",
+      "rejection_reason": "Same text lockup. Additionally near-black silhouette composition \u2014 M1 would read as crushed.",
+      "side": "rejected",
+      "slot": null
+    },
+    {
+      "id": "REJECTED",
+      "pixel_metrics_valid": false,
+      "profile": "rejected",
+      "rejection_reason": "Same text lockup, and the subject is an aurora sky with a silhouette; effectively a title card, not a gameplay frame.",
+      "side": "rejected",
+      "slot": null
+    },
+    {
+      "id": "REJECTED",
+      "pixel_metrics_valid": false,
+      "profile": "rejected",
+      "rejection_reason": "Same text lockup.",
+      "side": "rejected",
+      "slot": null
+    }
+  ]
+}

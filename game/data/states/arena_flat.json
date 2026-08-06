@@ -1,0 +1,25 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "arena_flat",
+  "title": "Flat featureless arena at the origin. The scenario fixtures in tools/harness/scenarios/ load this.",
+  "env": {
+    "timeOfDay": 12.0,
+    "weather": "clear",
+    "region": "arena",
+    "interior": "arena_flat"
+  },
+  "player": {
+    "pos": [
+      0,
+      0,
+      0
+    ],
+    "yaw": 0.0
+  },
+  "camera": {
+    "yaw": 0.0,
+    "pitch": -8.0,
+    "mode": "free"
+  },
+  "spawn": []
+}

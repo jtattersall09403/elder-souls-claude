@@ -85,3 +85,52 @@ games each is worth more than two profiles at triple depth, because the bands ar
 profile with no population cannot be calibrated at all. The `min distinct games` requirement stands
 — a single game's art director is not a population — but it may be met at **2** rather than 3 where
 3 proves unobtainable, recorded as a deviation.
+
+## A5 — The third axis: Souls **behavioural** reference
+
+**This is a new category, and the corpus does not currently have it.**
+
+The bifurcation protocol (`RI-VIS01`) splits visual judgement two ways: **fidelity** (modern
+references) and **art direction** (Morrowind references). That partition is correct for judging how
+our renderer looks. It is **the wrong tool for judging whether our combat looks like Souls**, and
+until now nothing has owned that.
+
+We need Dark Souls and Elden Ring imagery and footage as reference for **behaviour**, not for
+rendering quality and not for design language:
+
+| What it judges | Why an image or clip is the only way to check it |
+|---|---|
+| **Camera position and framing** (`RI-CAM01`, `RI-CAM03`) | Pivot height, shoulder offset, arm length and the lock-on containment law are geometry you can *measure off a frame*. Our numbers are currently `constructed` with no visual reference at all. |
+| **Attack animation shape** (`RI-WPN01`–`RI-WPN04`) | Windup silhouette, arc type, follow-through and recovery posture per weapon class. The frame *data* is now verified; the *poses* are not. |
+| **Telegraph readability** (`RI-AI02`) | Whether a windup is legible at combat distance is a question about silhouette and contrast, not about frame counts. |
+| **Stance, guard and locomotion poses** (`RI-CAM07`, `RI-WPN06`) | Two-handing, shield-up, the walk/run/strafe set — the character's back is the most-looked-at surface in our game and we have no reference for it. |
+| **Impact and hitstop** (`RI-WPN05`, `RI-AUD01`) | What a connecting hit *looks* like — the freeze, the recoil, the particle. |
+| **UI in combat** (`RI-UIX01`) | HP/stamina/flask placement, lock-on reticle, status buildup — measured as screen coverage and contrast. |
+
+### Rules for this axis
+
+1. It lives in **`refs/souls-behaviour/`**, keyed by the reference item it serves, not by lighting
+   profile. Subfolders: `camera/`, `attacks/`, `telegraph/`, `stance/`, `impact/`, `ui-combat/`.
+2. `"side": "souls-behaviour"` in the manifest. It is **cited by combat, camera and weapon critics —
+   never by the fidelity or art-direction critics.** A Dark Souls screenshot is not a fidelity
+   reference (DS1 is 2011) and not an art-direction reference (our art direction is Morrowind).
+   Mixing it into either voids the verdict, exactly as CC-1..CC-6 already require.
+3. **Video is first-class here, not a fallback.** Attack arcs, hitstop and camera behaviour are
+   temporal by nature; a still cannot show a windup. `pixel_metrics_valid: false` on all of it —
+   these are never used for texture, anti-aliasing or colour statistics.
+4. **HUD is wanted**, not tolerated: `RI-UIX01` needs it.
+5. **Both games count.** Dark Souls 1/3 and Elden Ring are equally valid here — behaviour is what
+   is being referenced, and it is consistent across the series in the ways we care about.
+6. Frame-accurate capture is not required. A clear photo-mode shot of a mid-swing pose, a
+   community-made move-list GIF, a wiki's attack-animation still, or a Digital Foundry clip all
+   serve. **Community frame-data videos and moveset showcases are the single richest source** —
+   they exist precisely because players wanted to study these poses.
+
+### Why this was missed
+
+Every visual item in the corpus was written to the fidelity/art-direction bifurcation, so a whole
+class of reference had nowhere to be filed and therefore was never requested. `RI-VIS01` §A
+declares its property partition "exhaustive and closed" — which made it structurally impossible to
+ask for this. That partition needs a third branch, or an explicit statement that behavioural
+reference sits outside it. **Filed as a required corpus amendment, not a licence to proceed
+informally.**

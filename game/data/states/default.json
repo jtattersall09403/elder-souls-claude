@@ -1,0 +1,37 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "default",
+  "title": "A fresh character standing on the boards east of Thorn.",
+  "env": {
+    "timeOfDay": 12.0,
+    "weather": "clear",
+    "region": "thornmarsh",
+    "interior": null
+  },
+  "player": {
+    "pos": [
+      3820.0,
+      0,
+      865.0
+    ],
+    "yaw": 0.0
+  },
+  "camera": {
+    "yaw": 0.0,
+    "pitch": -8.0,
+    "mode": "free"
+  },
+  "spawn": [],
+  "inventory": [
+    {
+      "id": "eshis-knife",
+      "count": 1,
+      "condition": 1.0,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": "right",
+      "quickSlot": null
+    }
+  ]
+}
