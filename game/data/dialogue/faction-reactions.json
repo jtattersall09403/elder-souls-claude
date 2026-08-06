@@ -1,0 +1,70 @@
+{
+  "schema": "elder-souls/faction-reactions@1",
+  "id": "faction-reactions",
+  "owner": "W1-17 (dialogue). RI-DLG04 §B: 'Faction reaction is a matrix, not a flag.'",
+  "provenance": "constructed",
+  "range": [-4, 4],
+  "roster_owner": "W1-20 owns the faction roster and its ranks (game/data/progression/factions.json). This file is the ORDERED-PAIR reaction matrix the disposition formula indexes; it covers every faction id that appears anywhere under game/data/** today.",
+
+  "application": "derivedDisposition() adds (fDispFactionRankMult*rank + fDispFactionRankBase) * fDispFactionMod * reaction. With the shipped GMSTs that is (0.5*rank + 1) * 3 * reaction: a rank-0 member of a faction whose self-reaction is +2 gets +6; a rank-5 Ninth Cohort officer talking to House Dres (reaction -3) gets (0.5*5+1)*3*-3 = -31.5. Rank AMPLIFIES the sign, in both directions. That is the design: the higher you climb in one house, the more the rival house sees you coming.",
+
+  "worst_reaction_rule": "When the player belongs to several factions the engine takes the WORST reaction the speaker's faction holds toward any of them (RI-DLG04 §B, argmin). Joining a rival costs you, permanently and visibly.",
+
+  "self_reaction_note": "The diagonal is NOT 0. RI-DLG04 §B reads factionReaction(npc.faction, npc.faction) for members, so the diagonal is what being one of us is worth. It varies: the Rootkeepers are warm to their own (+4), the Wet Ledger is a business relationship (+2), the Blackwood Company pays you and does not love you (+1).",
+
+  "factions": [
+    { "id": "ninth-cohort",      "name": "The Ninth Cohort",           "kind": "imperial-military", "reaction_group": "RG-EMPIRE" },
+    { "id": "provincial-office", "name": "The Provincial Office",      "kind": "imperial-civil",    "reaction_group": "RG-EMPIRE" },
+    { "id": "wet-ledger",        "name": "The Wet Ledger",             "kind": "criminal-commercial", "reaction_group": "RG-LEDGER" },
+    { "id": "drowned-court",     "name": "The Drowned Court",          "kind": "criminal-native",   "reaction_group": "RG-COURT" },
+    { "id": "rootkeepers",       "name": "The Rootkeepers",            "kind": "religious",         "reaction_group": "RG-ROOT" },
+    { "id": "marsh-wardens",     "name": "The Marsh Wardens",          "kind": "native-military",   "reaction_group": "RG-DEEP" },
+    { "id": "xul-aneekh",        "name": "The Deep-Kin",               "kind": "native-interior",   "reaction_group": "RG-DEEP" },
+    { "id": "sap-cutters",       "name": "The Sap-Cutters",            "kind": "trade",             "reaction_group": "RG-TOWN" },
+    { "id": "blackwood-company", "name": "The Blackwood Company",      "kind": "mercenary",         "reaction_group": "RG-BWC" },
+    { "id": "house-dres",        "name": "House Dres",                 "kind": "foreign-noble",     "reaction_group": "RG-DRES" },
+    { "id": "shadowscale-order", "name": "The Shadowscale Order",      "kind": "native-covert",     "reaction_group": "RG-DEEP" },
+    { "id": "morag-tong",        "name": "The Morag Tong",             "kind": "foreign-covert",    "reaction_group": "RG-DRES" }
+  ],
+
+  "matrix": {
+    "ninth-cohort":      { "ninth-cohort": 3, "provincial-office": 2, "wet-ledger": -2, "drowned-court": -3, "rootkeepers": 0, "marsh-wardens": -1, "xul-aneekh": -2, "sap-cutters": 1, "blackwood-company": 1, "house-dres": -1, "shadowscale-order": -3, "morag-tong": -2 },
+    "provincial-office": { "ninth-cohort": 2, "provincial-office": 3, "wet-ledger": -1, "drowned-court": -2, "rootkeepers": 1, "marsh-wardens": 0, "xul-aneekh": -1, "sap-cutters": 2, "blackwood-company": 0, "house-dres": 1, "shadowscale-order": -2, "morag-tong": -1 },
+    "wet-ledger":        { "ninth-cohort": -2, "provincial-office": 0, "wet-ledger": 2, "drowned-court": -4, "rootkeepers": 0, "marsh-wardens": -1, "xul-aneekh": 0, "sap-cutters": 2, "blackwood-company": -1, "house-dres": 1, "shadowscale-order": -1, "morag-tong": 0 },
+    "drowned-court":     { "ninth-cohort": -3, "provincial-office": -2, "wet-ledger": -4, "drowned-court": 3, "rootkeepers": 1, "marsh-wardens": -2, "xul-aneekh": 2, "sap-cutters": -1, "blackwood-company": -2, "house-dres": -4, "shadowscale-order": 1, "morag-tong": -1 },
+    "rootkeepers":       { "ninth-cohort": -1, "provincial-office": 0, "wet-ledger": -2, "drowned-court": 0, "rootkeepers": 4, "marsh-wardens": 2, "xul-aneekh": 3, "sap-cutters": -3, "blackwood-company": -3, "house-dres": -4, "shadowscale-order": 2, "morag-tong": -2 },
+    "marsh-wardens":     { "ninth-cohort": -1, "provincial-office": 0, "wet-ledger": -1, "drowned-court": -2, "rootkeepers": 2, "marsh-wardens": 3, "xul-aneekh": 2, "sap-cutters": -1, "blackwood-company": -2, "house-dres": -4, "shadowscale-order": 1, "morag-tong": -2 },
+    "xul-aneekh":        { "ninth-cohort": -3, "provincial-office": -2, "wet-ledger": -2, "drowned-court": 1, "rootkeepers": 3, "marsh-wardens": 2, "xul-aneekh": 4, "sap-cutters": -3, "blackwood-company": -4, "house-dres": -4, "shadowscale-order": 2, "morag-tong": -3 },
+    "sap-cutters":       { "ninth-cohort": 1, "provincial-office": 2, "wet-ledger": 2, "drowned-court": -1, "rootkeepers": -3, "marsh-wardens": -1, "xul-aneekh": -3, "sap-cutters": 2, "blackwood-company": 1, "house-dres": 2, "shadowscale-order": -2, "morag-tong": 0 },
+    "blackwood-company": { "ninth-cohort": 1, "provincial-office": 0, "wet-ledger": -1, "drowned-court": -2, "rootkeepers": -2, "marsh-wardens": -2, "xul-aneekh": -3, "sap-cutters": 1, "blackwood-company": 1, "house-dres": 2, "shadowscale-order": -2, "morag-tong": 1 },
+    "house-dres":        { "ninth-cohort": -1, "provincial-office": 1, "wet-ledger": 1, "drowned-court": -4, "rootkeepers": -4, "marsh-wardens": -4, "xul-aneekh": -4, "sap-cutters": 2, "blackwood-company": 2, "house-dres": 3, "shadowscale-order": -4, "morag-tong": 2 },
+    "shadowscale-order": { "ninth-cohort": -2, "provincial-office": -1, "wet-ledger": -1, "drowned-court": 1, "rootkeepers": 2, "marsh-wardens": 1, "xul-aneekh": 2, "sap-cutters": -2, "blackwood-company": -2, "house-dres": -4, "shadowscale-order": 3, "morag-tong": -3 },
+    "morag-tong":        { "ninth-cohort": -1, "provincial-office": -1, "wet-ledger": 0, "drowned-court": -1, "rootkeepers": -2, "marsh-wardens": -2, "xul-aneekh": -3, "sap-cutters": 0, "blackwood-company": 1, "house-dres": 2, "shadowscale-order": -3, "morag-tong": 3 }
+  },
+
+  "load_bearing_cells": [
+    { "pair": ["drowned-court", "wet-ledger"], "value": -4, "why": "The corpus's Camonna-Tong/Thieves-Guild pair. Two criminal organisations competing for the same river. A Wet Ledger rank-4 walking into a Drowned Court room takes (0.5*4+1)*3*-4 = -36 disposition and will be refused everything including the parley." },
+    { "pair": ["house-dres", "xul-aneekh"], "value": -4, "why": "House Dres took Argonians for three centuries. There is no rank at which a Dres oathman is welcome in the interior." },
+    { "pair": ["rootkeepers", "sap-cutters"], "value": -3, "why": "One tends the wells, the other sells what comes out of them. This is a THEOLOGICAL dispute with a commercial surface, and it is why the Sap-Cutters cannot buy their way into a sapwell." },
+    { "pair": ["xul-aneekh", "xul-aneekh"], "value": 4, "why": "The strongest diagonal in the matrix. RG-DEEP already gives a saxhleel +14 before this term; a rank-3 Deep-Kin adds (0.5*3+1)*3*4 = +30 on top. Being interior-born and interior-sworn is the single largest social advantage available, and it is unavailable to a Dunmer character at any price." }
+  ],
+
+  "asymmetry_note": "14 of the 66 unordered pairs are authored ASYMMETRICALLY, which is the whole reason this is a matrix of ordered pairs and not a table of grudges. Verify with tools/dialogue/faction-matrix-audit.mjs. The ones that carry weight: xul-aneekh→wet-ledger is -2 while wet-ledger→xul-aneekh is 0 — the interior distrusts the smugglers, the smugglers do not care either way, which is exactly what an asymmetry of power looks like from below. rootkeepers→wet-ledger is -2 while wet-ledger→rootkeepers is 0, the same shape: contempt travels up the hierarchy of self-regard, not down it. drowned-court→xul-aneekh is +2 but xul-aneekh→drowned-court is only +1, because the Court claims a kinship the interior does not fully return. ninth-cohort→shadowscale-order is -3 while shadowscale-order→ninth-cohort is -2, because the Legion has a name for them and they do not have a name for the Legion.",
+
+  "asymmetric_pairs": [
+    ["ninth-cohort", "rootkeepers", 0, -1],
+    ["ninth-cohort", "xul-aneekh", -2, -3],
+    ["ninth-cohort", "shadowscale-order", -3, -2],
+    ["provincial-office", "wet-ledger", -1, 0],
+    ["provincial-office", "rootkeepers", 1, 0],
+    ["provincial-office", "xul-aneekh", -1, -2],
+    ["provincial-office", "shadowscale-order", -2, -1],
+    ["wet-ledger", "xul-aneekh", 0, -2],
+    ["drowned-court", "rootkeepers", 1, 0],
+    ["drowned-court", "xul-aneekh", 2, 1],
+    ["rootkeepers", "wet-ledger", -2, 0],
+    ["blackwood-company", "rootkeepers", -2, -3],
+    ["blackwood-company", "xul-aneekh", -3, -4],
+    ["morag-tong", "ninth-cohort", -1, -2]
+  ]
+}
