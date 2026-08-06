@@ -1,0 +1,71 @@
+{
+  "schema": "elder-souls/moveset@1",
+  "id": "ultra-greatsword",
+  "class_key": "ultra_greatsword",
+  "class": "Ultra greatsword",
+  "unit": "f@60",
+  "provenance": "Frame data transcribed from game/data/combat/frames.json (RI-CMB02 \u00a7A/\u00a7B, S22-rebased). Geometry from game/data/combat/hitgeometry.json (RI-CMB04 \u00a7B). Neither is re-derived here; this file selects the POSE and the WEAPON for the class and nothing else.",
+  "weapon": {
+    "length_m": 1.81,
+    "length_derivation": "FLOORED at capsule_length + 0.11 m grip. RI-CMB04 \u00a7B's capsule length for this class is longer than RI-CMB02 \u00a7A's reach column allows given a 0.54 m arm and the declared lunge (1.010 m wanted, 1.810 m needed). That is a pre-existing tension between two corpus items which geometry surfaces; the capsule length wins because RI-CMB04 \u00a7E resolves hits by geometry and RI-CMB02 lists no tolerance on the reach column. The measured reach is reported in every frame census so the divergence is visible rather than buried.",
+    "capsule_length_m": 1.7,
+    "radius_m": 0.11,
+    "socket_a": "wpn_guard",
+    "socket_b": "wpn_tip",
+    "socket_a_dist_m": 0.11,
+    "socket_b_dist_m": 1.81,
+    "peak_tip_speed_mps_declared": 26.0,
+    "attack_rating": 168,
+    "attack_rating_provenance": "PROVISIONAL, constructed. RI-CMB02 defines motion values but no attack rating; AR is owned by RI-WPN01/RI-WPN02 (wave-1 piece W1-10). The straight sword's 118 is pinned to the RI-CMB07 exemplar's canonical R1 HIT (dmg 118 at motion value 1.00), which is not frame data and therefore survives the S22 invalidation. The other six are scaled from it and must be re-derived by W1-10.",
+    "equip_weight": 20.0,
+    "parry_class": null,
+    "stance_default": "two_handed"
+  },
+  "moves": {
+    "light": {
+      "id": "light",
+      "state": "ATK",
+      "anim": "ultra_greatsword_r1",
+      "archetype": "sweep_wide",
+      "amplitude": 1.2,
+      "startup": 58,
+      "Ps": 59,
+      "active": 20,
+      "recovery": 88,
+      "total": 166,
+      "stamina": 42,
+      "poise_damage": 58,
+      "motion_value": 1.75,
+      "reach_m_declared": 2.95,
+      "root_dz_m": 1.4,
+      "hitbox": true,
+      "hyperarmour_window": null,
+      "hitstop_frames": 6,
+      "source": "RI-CMB02 \u00a7A"
+    },
+    "heavy": {
+      "id": "heavy",
+      "state": "ATK",
+      "anim": "ultra_greatsword_r2",
+      "archetype": "chop_overhead",
+      "amplitude": 1.35,
+      "startup": 104,
+      "Ps": 105,
+      "active": 24,
+      "recovery": 124,
+      "total": 252,
+      "stamina": 62,
+      "poise_damage": 92,
+      "motion_value": 2.6,
+      "reach_m_declared": 2.95,
+      "root_dz_m": 1.9,
+      "hitbox": true,
+      "hyperarmour_window": [
+        63,
+        128
+      ],
+      "hitstop_frames": 8,
+      "source": "RI-CMB02 \u00a7B"
+    }
+  }
+}

@@ -42,7 +42,10 @@ These are hard on their face, and starting them cheap wastes a round:
 4. **The builder itself reports it is stuck** — a builder that says so honestly should be believed
    and re-dispatched at a higher tier, not re-sent the same prompt.
 5. **The piece blocks three or more other pieces** and is late.
-6. **A verdict comes back `VOID`** for reasons inside the builder's control (unmeasurable output,
+6. **A `path_to_ten` debt slips two waves.** Under `SCORING.md` §0 every score below 10 carries a
+   remedy and the wave it closes by. Missing that twice means the remedy is wrong or the piece is
+   harder than scoped — escalate rather than re-file the same debt a third time.
+7. **A verdict comes back `VOID`** for reasons inside the builder's control (unmeasurable output,
    missing harness surface, no artifacts) twice.
 
 ## De-escalation

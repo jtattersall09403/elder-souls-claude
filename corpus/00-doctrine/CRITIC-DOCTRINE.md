@@ -410,3 +410,22 @@ above the piece's `pass_threshold` (default 6.0, raised per wave by the orchestr
 and a named gap with a buildable remedy. Everything else is FAIL.
 
 A PASS is not "done". A PASS with a named gap is the normal, healthy outcome.
+
+
+## Addendum — the 10/10 requirement (user direction, wave 1)
+
+`SCORING.md` §0 sets the project's terminal condition at **10 on every item**. Two consequences
+bind every critic from now on:
+
+1. **Any item you score below 10 must carry `why_not_ten`, `path_to_ten` and `ten_by_wave`.**
+   A sub-10 score without a concrete, buildable path to 10 is **VOID**, on the same footing as a
+   verdict with no artifacts. "It is a wave-1 skeleton" is not a `why_not_ten`; name the
+   measurement that falls short and what would close it.
+2. **A 10 still requires evidence of parity with or superiority to the reference.** The bar rising
+   does not license generosity — inflating a 7 to a 10 to satisfy the target is the single most
+   damaging thing a critic can do here, because it converts a real gap into an invisible one. If
+   the work is a 7, score it 7 and write the path.
+
+If an item cannot reach 10 because **the corpus is broken** — an unmeasurable metric, a missing
+constant, a cap left over from when we had no reference images — that is a corpus bug. File it as
+`corpus_extended`, do not absorb it into the piece's score.

@@ -27,6 +27,21 @@
 4. Loop until every critic's bar is met. Gaps go on the ledger; a gap may not be closed
    by the agent that built the fix.
 
+## The bar is 10/10
+
+**User direction, wave 1: the terminal condition is 10 on every item.** `SCORING.md` §0 carries
+the full ruling. In short: 10 means *matches or beats the reference*, the gate rises by wave
+(**W1 ≥7.0 · W2 ≥8.5 · W3 ≥9.5 · ship = 10 everywhere**), and **no piece ships below 10**. A wave
+may pass below 10; the project may not finish below 10.
+
+Every sub-10 score is now a **tracked debt**, not an accepted state: a verdict must carry
+`why_not_ten`, `path_to_ten` and `ten_by_wave` per item, or the verdict is VOID. A debt that
+slips two waves escalates the piece under `orchestration/EFFORT-POLICY.md`.
+
+The wave-1 gate rose from 6.0 to 7.0 with this ruling. `W1-00`'s two existing verdicts (3.0 and
+4.1) were scored against the old gate and are unaffected as records, but the piece now has further
+to climb.
+
 ## Builder effort escalation
 
 Builder agents run at **Standard** effort by default. Six pre-declared hard pieces start at

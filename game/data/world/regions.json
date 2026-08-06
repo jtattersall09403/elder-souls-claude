@@ -1,412 +1,1414 @@
 {
-  "schema": "elder-souls/regions@1",
-  "provenance": "Transcribed from corpus/50-world/regions.json. Seam S24: Black Marsh is the name, not the terrain — thirteen regions, each a different place. Region CONTENT is owned by wave-1 piece W1-02; this file exists so W1-00's harness has real region data to report and to hash.",
+  "schema": "elder-souls/regions@2",
+  "generator": "tools/world/build-regions.mjs",
+  "note": "Thirteen regions, each a different place (ARBITRATION S24). `flora`/`fauna`/`architecture`/`audio`/`weather`/`hazard`/`ground`/`fog`/`terrain` are the nine axes RI-WLD04 M18 scores pairwise; `water` is the RI-WLD10 §8 profile the S24 census reads. `index` is the value stored per cell in game/data/world/terrain.json's region raster.",
   "metres_per_source_pixel": 3.5,
   "total_land_km2": 14.52,
+  "world_bounds_m": {
+    "x": [
+      0,
+      4822
+    ],
+    "z": [
+      0,
+      5540
+    ]
+  },
   "regions": [
     {
+      "index": 0,
       "id": "blackwood",
       "name": "Blackwood",
+      "centroid_m": [
+        1118,
+        3487.5
+      ],
       "bounds_m": {
         "x": [
-          355.0,
+          355,
           1807.5
         ],
         "z": [
-          2840.0,
-          4240.0
+          2840,
+          4240
         ]
       },
       "area_km2": 2.07,
       "danger_tier": 2,
-      "climate": "heavy rain; light arrives only in shafts",
       "palette_hex": [
         "#1F2E1C",
         "#4A3423",
         "#C9A54B"
       ],
-      "flora": "buttressed hardwood, strangler vine, luminous fungus shelves",
-      "fauna": "chitin hounds (eyeless pack predators), tusk-lurkers, bandits",
-      "architecture": "Ayleid white-stone drowned to the second storey; Imperial logging camps; Gideon",
-      "hazard": "sightline under 20 m - ambush country",
-      "only_here": "welkynd-lit Ayleid ruins swallowed by living wood: white stone with roots through it, glowing blue in green dark",
+      "ground": {
+        "id": "gnd_leaf_mulch",
+        "albedo": "#1F2E1C",
+        "roughness": 0.96,
+        "name": "black leaf mulch and root buttress"
+      },
+      "fog": {
+        "colour": "#25361F",
+        "extinction_per_m": 0.014,
+        "height_falloff_m": 60
+      },
+      "sky": {
+        "zenith": "#243A2C",
+        "horizon": "#3E5238"
+      },
+      "terrain": {
+        "base_m": 2.6,
+        "amp_m": 5,
+        "wavelength_m": 700,
+        "relief_m": 2.7,
+        "ridge": 0,
+        "terrace": 0,
+        "style": "flooded-forest"
+      },
+      "water": {
+        "wci": 0.41,
+        "class": "flooded-forest",
+        "deepest_band": "W5",
+        "tidal": false,
+        "sea": null,
+        "k": 2.6,
+        "substrates": [
+          "SILT",
+          "SUCK"
+        ]
+      },
+      "flora": [
+        "buttress_hardwood",
+        "strangler_vine",
+        "fungus_shelf",
+        "green_dark_fern"
+      ],
+      "fauna": [
+        "chitin_hound",
+        "tusk_lurker",
+        "blackwood_bandit"
+      ],
+      "architecture": [
+        "ayleid_drowned_stone",
+        "imperial_logging_camp",
+        "welkynd_pillar"
+      ],
+      "audio": [
+        "amb_insect_wall",
+        "amb_canopy_drip",
+        "sfx_distant_axe"
+      ],
+      "weather": [
+        "heavy_rain",
+        "overcast",
+        "dawn_mist"
+      ],
+      "hazard": {
+        "id": "spore-bloom",
+        "class": "VECTOR"
+      },
+      "only_here": {
+        "id": "welkynd_pillar",
+        "instances": 34,
+        "text": "welkynd-lit Ayleid ruins swallowed by living wood: white stone with roots through it, glowing blue in green dark"
+      },
+      "flora_density_per_100m2": 3.4,
+      "canopy_closure": 0.92,
+      "sightline_m": 18,
+      "climate": "heavy rain; light arrives only in shafts",
+      "flora_text": "buttressed hardwood, strangler vine, luminous fungus shelves",
+      "fauna_text": "chitin hounds (eyeless pack predators), tusk-lurkers, bandits",
+      "architecture_text": "Ayleid white-stone drowned to the second storey; Imperial logging camps; Gideon",
+      "ambient_text": "canopy drip; a solid wall of insect noise; distant axe-strokes",
+      "hazard_text": "sightline under 20 m - ambush country",
       "settlements": [
         "Gideon"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 1,
       "id": "clay-moor",
       "name": "The Clay Moor",
+      "centroid_m": [
+        3743,
+        2010.5
+      ],
       "bounds_m": {
         "x": [
           3277.5,
           4292.5
         ],
         "z": [
-          1615.0,
-          2350.0
+          1615,
+          2350
         ]
       },
       "area_km2": 0.81,
       "danger_tier": 4,
-      "climate": "dry; dust-devils; heat shimmer",
       "palette_hex": [
         "#9C5B3C",
         "#C39A5C",
         "#C8BFA8"
       ],
-      "flora": "sparse scrub on fired red clay; no standing water",
-      "fauna": "naga (hostile culture with settlements), clay-crawlers",
-      "architecture": "naga kiln-cities: domes fired in place, the kiln still burning beneath the floor",
-      "hazard": "naga territory - the only hostile CULTURE, with patrols, sentries and reprisal",
-      "only_here": "buildings that were fired like pots, with the kiln still lit underneath them",
-      "settlements": [
-        "None"
+      "ground": {
+        "id": "gnd_fired_clay",
+        "albedo": "#9C5B3C",
+        "roughness": 0.52,
+        "name": "fired red clay pan"
+      },
+      "fog": {
+        "colour": "#C9A87C",
+        "extinction_per_m": 0.0018,
+        "height_falloff_m": 150
+      },
+      "sky": {
+        "zenith": "#4C74A0",
+        "horizon": "#DCC49A"
+      },
+      "terrain": {
+        "base_m": 31,
+        "amp_m": 15,
+        "wavelength_m": 700,
+        "relief_m": 2.4,
+        "ridge": 0,
+        "terrace": 0.48,
+        "style": "fired-flat"
+      },
+      "water": {
+        "wci": 0,
+        "class": "arid",
+        "deepest_band": "W0",
+        "tidal": false,
+        "sea": null,
+        "k": null,
+        "substrates": [
+          "FIRM"
+        ]
+      },
+      "flora": [
+        "clay_scrub",
+        "kiln_thistle"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "fauna": [
+        "naga_patrol",
+        "clay_crawler",
+        "kiln_drake"
+      ],
+      "architecture": [
+        "naga_kiln_dome",
+        "lit_kiln_flue",
+        "naga_sentry_post"
+      ],
+      "audio": [
+        "amb_kiln_roar",
+        "sfx_naga_speech",
+        "amb_wind_open_dry"
+      ],
+      "weather": [
+        "dust_devil",
+        "clear",
+        "heat_shimmer"
+      ],
+      "hazard": {
+        "id": "kiln-ground",
+        "class": "ATTRITION"
+      },
+      "only_here": {
+        "id": "naga_kiln_dome",
+        "instances": 26,
+        "text": "buildings that were fired like pots, with the kiln still lit underneath them"
+      },
+      "flora_density_per_100m2": 0.18,
+      "canopy_closure": 0,
+      "sightline_m": 1100,
+      "climate": "dry; dust-devils; heat shimmer",
+      "flora_text": "sparse scrub on fired red clay; no standing water",
+      "fauna_text": "naga (hostile culture with settlements), clay-crawlers",
+      "architecture_text": "naga kiln-cities: domes fired in place, the kiln still burning beneath the floor",
+      "ambient_text": "kiln roar; untranslated naga speech; wind over open ground",
+      "hazard_text": "naga territory - the only hostile CULTURE, with patrols, sentries and reprisal",
+      "settlements": [],
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 2,
       "id": "crimson-coast",
       "name": "Crimson Coast",
+      "centroid_m": [
+        4212,
+        2686
+      ],
       "bounds_m": {
         "x": [
           3872.5,
           4642.5
         ],
         "z": [
-          2140.0,
-          3260.0
+          2140,
+          3260
         ]
       },
       "area_km2": 0.63,
       "danger_tier": 4,
-      "climate": "sea-squalls off the Padomaic",
       "palette_hex": [
         "#8E2B33",
         "#232021",
         "#6C7A80"
       ],
-      "flora": "crimson tide-lichen covering every surface to the high-water mark",
-      "fauna": "dye-worms, red cormorants, lichen-blind beggars",
-      "architecture": "Archon's kiln-fired clay domes; open dye-vats on the strand",
-      "hazard": "dye-fume sickness (named disease, curable); slick lichen on rock",
-      "only_here": "a coastline that is red because it is alive, and screams thinly under your boots",
+      "ground": {
+        "id": "gnd_tide_lichen",
+        "albedo": "#8E2B33",
+        "roughness": 0.4,
+        "name": "living crimson tide-lichen on black rock"
+      },
+      "fog": {
+        "colour": "#6C7A80",
+        "extinction_per_m": 0.0048,
+        "height_falloff_m": 120
+      },
+      "sky": {
+        "zenith": "#2A4A6E",
+        "horizon": "#8E7A74"
+      },
+      "terrain": {
+        "base_m": 12,
+        "amp_m": 18,
+        "wavelength_m": 560,
+        "relief_m": 3.6,
+        "ridge": 0.48,
+        "terrace": 0.08,
+        "style": "littoral-rock"
+      },
+      "water": {
+        "wci": 0.34,
+        "class": "tidal-littoral",
+        "deepest_band": "W5",
+        "tidal": true,
+        "sea": "padomaic",
+        "k": 0.35,
+        "substrates": [
+          "FIRM",
+          "SILT"
+        ]
+      },
+      "flora": [
+        "tide_lichen",
+        "dye_kelp"
+      ],
+      "fauna": [
+        "dye_worm",
+        "red_cormorant",
+        "lichen_blind_beggar"
+      ],
+      "architecture": [
+        "archon_clay_dome",
+        "open_dye_vat",
+        "lichen_stair"
+      ],
+      "audio": [
+        "amb_lichen_scream",
+        "amb_padomaic_surf",
+        "sfx_vat_bubble"
+      ],
+      "weather": [
+        "sea_squall",
+        "overcast",
+        "clear"
+      ],
+      "hazard": {
+        "id": "dye-fume",
+        "class": "VECTOR"
+      },
+      "only_here": {
+        "id": "open_dye_vat",
+        "instances": 18,
+        "text": "a coastline that is red because it is alive, and screams thinly under your boots"
+      },
+      "flora_density_per_100m2": 0.55,
+      "canopy_closure": 0,
+      "sightline_m": 700,
+      "climate": "sea-squalls off the Padomaic",
+      "flora_text": "crimson tide-lichen covering every surface to the high-water mark",
+      "fauna_text": "dye-worms, red cormorants, lichen-blind beggars",
+      "architecture_text": "Archon's kiln-fired clay domes; open dye-vats on the strand",
+      "ambient_text": "the lichen's thin scream when trodden; surf; vat-bubble",
+      "hazard_text": "dye-fume sickness (named disease, curable); slick lichen on rock",
       "settlements": [
         "Archon"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 3,
       "id": "deep-marshes",
       "name": "The Deep Marshes",
+      "centroid_m": [
+        3123.5,
+        3715
+      ],
       "bounds_m": {
         "x": [
           2472.5,
           3592.5
         ],
         "z": [
-          3190.0,
-          4170.0
+          3190,
+          4170
         ]
       },
       "area_km2": 1.26,
       "danger_tier": 5,
-      "climate": "green fever-fog carrying a named disease",
       "palette_hex": [
         "#16191A",
         "#3B5A3A",
         "#4A3A55"
       ],
-      "flora": "corpse-lily, drowned trees, black standing water",
-      "fauna": "voriplasm (living mud), naga raiders, unnamed things",
-      "architecture": "nothing stands - only drowned xanmeers breaking surface like teeth",
-      "hazard": "THE GROUND IS AN ANIMAL - voriplasm swallows and digests; instant-death sinks",
-      "only_here": "mud that moves toward you",
-      "settlements": [
-        "None"
+      "ground": {
+        "id": "gnd_black_silt",
+        "albedo": "#16191A",
+        "roughness": 0.99,
+        "name": "black silt and voriplasm margin"
+      },
+      "fog": {
+        "colour": "#3B5A3A",
+        "extinction_per_m": 0.023,
+        "height_falloff_m": 30
+      },
+      "sky": {
+        "zenith": "#2B3A33",
+        "horizon": "#4A5A46"
+      },
+      "terrain": {
+        "base_m": 1.1,
+        "amp_m": 2.6,
+        "wavelength_m": 620,
+        "relief_m": 1.9,
+        "ridge": 0,
+        "terrace": 0,
+        "style": "drowned"
+      },
+      "water": {
+        "wci": 0.86,
+        "class": "drowned",
+        "deepest_band": "W5",
+        "tidal": false,
+        "sea": null,
+        "k": 4.5,
+        "substrates": [
+          "SUCK",
+          "SILT"
+        ]
+      },
+      "flora": [
+        "corpse_lily",
+        "drowned_tree",
+        "black_reed"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "fauna": [
+        "voriplasm",
+        "naga_raider",
+        "the_unnamed"
+      ],
+      "architecture": [
+        "drowned_xanmeer_tooth"
+      ],
+      "audio": [
+        "amb_intestinal_gurgle",
+        "amb_breathing_not_yours",
+        "amb_no_birds"
+      ],
+      "weather": [
+        "fever_fog",
+        "heavy_rain",
+        "still"
+      ],
+      "hazard": {
+        "id": "voriplasm",
+        "class": "KILL"
+      },
+      "only_here": {
+        "id": "voriplasm",
+        "instances": 40,
+        "text": "mud that moves toward you"
+      },
+      "flora_density_per_100m2": 1.6,
+      "canopy_closure": 0.3,
+      "sightline_m": 22,
+      "climate": "green fever-fog carrying a named disease",
+      "flora_text": "corpse-lily, drowned trees, black standing water",
+      "fauna_text": "voriplasm (living mud), naga raiders, unnamed things",
+      "architecture_text": "nothing stands - only drowned xanmeers breaking surface like teeth",
+      "ambient_text": "NO birds. A low intestinal gurgle. A sound like breathing that is not yours",
+      "hazard_text": "THE GROUND IS AN ANIMAL - voriplasm swallows and digests; instant-death sinks",
+      "settlements": [],
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 4,
       "id": "eastern-rootlands",
       "name": "Eastern Rootlands",
+      "centroid_m": [
+        3232,
+        4495.5
+      ],
       "bounds_m": {
         "x": [
           2542.5,
           4047.5
         ],
         "z": [
-          3890.0,
-          5010.0
+          3890,
+          5010
         ]
       },
       "area_km2": 1.44,
       "danger_tier": 2,
-      "climate": "humid; night bioluminescence turns the water into a second sky",
       "palette_hex": [
         "#4F7A5E",
         "#2A211A",
         "#B7C4C0"
       ],
-      "flora": "floating meadow, air-plants, tannin-black channels",
-      "fauna": "swamp-jelly canopies, wamasu, tide-fishers",
-      "architecture": "stilt-row villages on platforms that rise and fall with the tide",
-      "hazard": "tide-gated paths; drowning; you can be cut off for 6 real minutes",
-      "only_here": "translucent bell-organisms drifting metres above the water, glowing at night, throwing moving light down onto it",
-      "settlements": [
-        "None"
+      "ground": {
+        "id": "gnd_tannin_channel",
+        "albedo": "#4F7A5E",
+        "roughness": 0.86,
+        "name": "floating meadow over tannin-black channel"
+      },
+      "fog": {
+        "colour": "#B7C4C0",
+        "extinction_per_m": 0.0075,
+        "height_falloff_m": 50
+      },
+      "sky": {
+        "zenith": "#356E93",
+        "horizon": "#BFC9C2"
+      },
+      "terrain": {
+        "base_m": 1.3,
+        "amp_m": 2.6,
+        "wavelength_m": 540,
+        "relief_m": 1.05,
+        "ridge": 0,
+        "terrace": 0,
+        "style": "delta"
+      },
+      "water": {
+        "wci": 0.71,
+        "class": "tidal-delta",
+        "deepest_band": "W5",
+        "tidal": true,
+        "sea": "padomaic",
+        "k": 3.2,
+        "substrates": [
+          "SILT",
+          "SUCK"
+        ]
+      },
+      "flora": [
+        "floating_meadow",
+        "air_plant",
+        "channel_sedge"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "fauna": [
+        "swamp_jelly",
+        "wamasu",
+        "tide_fisher"
+      ],
+      "architecture": [
+        "stilt_row_platform",
+        "tide_hydraulic",
+        "tideway_marker"
+      ],
+      "audio": [
+        "amb_water_slap_stilts",
+        "amb_jelly_hum",
+        "sfx_oars"
+      ],
+      "weather": [
+        "warm_rain",
+        "sea_fog",
+        "clear"
+      ],
+      "hazard": {
+        "id": "cut-off-by-the-tide",
+        "class": "GATE"
+      },
+      "only_here": {
+        "id": "swamp_jelly_canopy",
+        "instances": 48,
+        "text": "translucent bell-organisms drifting metres above the water, glowing at night, throwing moving light down onto it"
+      },
+      "flora_density_per_100m2": 1.7,
+      "canopy_closure": 0.22,
+      "sightline_m": 300,
+      "climate": "humid; night bioluminescence turns the water into a second sky",
+      "flora_text": "floating meadow, air-plants, tannin-black channels",
+      "fauna_text": "swamp-jelly canopies, wamasu, tide-fishers",
+      "architecture_text": "stilt-row villages on platforms that rise and fall with the tide",
+      "ambient_text": "water slapping stilts; a low jelly-hum; oars",
+      "hazard_text": "tide-gated paths; drowning; you can be cut off for 6 real minutes",
+      "settlements": [],
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 5,
       "id": "hive",
       "name": "The Hive",
+      "centroid_m": [
+        1237,
+        3732.5
+      ],
       "bounds_m": {
         "x": [
           1002.5,
           1527.5
         ],
         "z": [
-          3540.0,
-          3960.0
+          3540,
+          3960
         ]
       },
       "area_km2": 0.31,
       "danger_tier": 2,
-      "climate": "none - it is always warm and still; rain does not fall inside the hive's air",
       "palette_hex": [
         "#D6C77A",
         "#9A6B2F",
         "#E6E2D0"
       ],
-      "flora": "none - the ground is comb",
-      "fauna": "hive drones the size of dogs; one queen",
-      "architecture": "the hive IS the architecture: waxen towers, comb-cliffs, sphincter doors",
-      "hazard": "the floor is comb and gives way; falls into sealed cells",
-      "only_here": "a region with no weather and no plants, whose floor is edible and load-bearing only sometimes",
-      "settlements": [
-        "None"
+      "ground": {
+        "id": "gnd_wax_comb",
+        "albedo": "#D6C77A",
+        "roughness": 0.3,
+        "name": "load-bearing wax comb"
+      },
+      "fog": {
+        "colour": "#E6E2D0",
+        "extinction_per_m": 0.0064,
+        "height_falloff_m": 45
+      },
+      "sky": {
+        "zenith": "#7A7048",
+        "horizon": "#E6E2D0"
+      },
+      "terrain": {
+        "base_m": 21,
+        "amp_m": 17,
+        "wavelength_m": 420,
+        "relief_m": 5.4,
+        "ridge": 0.08,
+        "terrace": 0.66,
+        "style": "comb"
+      },
+      "water": {
+        "wci": 0,
+        "class": "arid",
+        "deepest_band": "W0",
+        "tidal": false,
+        "sea": null,
+        "k": null,
+        "substrates": [
+          "FIRM"
+        ]
+      },
+      "flora": [],
+      "fauna": [
+        "hive_drone",
+        "hive_queen",
+        "comb_mite"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "architecture": [
+        "waxen_tower",
+        "comb_cliff",
+        "sphincter_door"
+      ],
+      "audio": [
+        "amb_hive_chord"
+      ],
+      "weather": [
+        "still"
+      ],
+      "hazard": {
+        "id": "comb-collapse",
+        "class": "TRAP"
+      },
+      "only_here": {
+        "id": "comb_cliff",
+        "instances": 30,
+        "text": "a region with no weather and no plants, whose floor is edible and load-bearing only sometimes"
+      },
+      "flora_density_per_100m2": 0,
+      "canopy_closure": 0,
+      "sightline_m": 55,
+      "climate": "none - it is always warm and still; rain does not fall inside the hive's air",
+      "flora_text": "none - the ground is comb",
+      "fauna_text": "hive drones the size of dogs; one queen",
+      "architecture_text": "the hive IS the architecture: waxen towers, comb-cliffs, sphincter doors",
+      "ambient_text": "a single sustained insect chord that shifts pitch with distance to the queen",
+      "hazard_text": "the floor is comb and gives way; falls into sealed cells",
+      "settlements": [],
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 6,
       "id": "marauders-coast",
       "name": "Marauder's Coast",
+      "centroid_m": [
+        400.5,
+        4485
+      ],
       "bounds_m": {
         "x": [
           267.5,
           897.5
         ],
         "z": [
-          4065.0,
-          4765.0
+          4065,
+          4765
         ]
       },
       "area_km2": 0.49,
       "danger_tier": 2,
-      "climate": "sea-fog banks rolling in on a ~6 minute cycle",
       "palette_hex": [
         "#8E8A7E",
         "#2C3A2E",
         "#5E7C88"
       ],
-      "flora": "mangrove, salt-grass, barnacle-shelf",
-      "fauna": "mire-crabs (cart-sized, used as pack animals), gulls, drowned-things at night",
-      "architecture": "bone-scaffold towers of lashed leviathan ribs; ship hulls beached hull-up and lived in",
-      "hazard": "the tide - flats flood and strand you",
-      "only_here": "whole ships walked up the shore and inhabited hull-up, chimneys punched through the keel",
-      "settlements": [
-        "None"
+      "ground": {
+        "id": "gnd_barnacle_flat",
+        "albedo": "#8E8A7E",
+        "roughness": 0.88,
+        "name": "barnacle shelf over sucking mudflat"
+      },
+      "fog": {
+        "colour": "#9AA6AC",
+        "extinction_per_m": 0.0125,
+        "height_falloff_m": 55
+      },
+      "sky": {
+        "zenith": "#4E7391",
+        "horizon": "#B7BFC0"
+      },
+      "terrain": {
+        "base_m": 0.55,
+        "amp_m": 2.1,
+        "wavelength_m": 500,
+        "relief_m": 0.95,
+        "ridge": 0,
+        "terrace": 0.05,
+        "style": "tidal-flat"
+      },
+      "water": {
+        "wci": 0.58,
+        "class": "tidal-flat",
+        "deepest_band": "W5",
+        "tidal": true,
+        "sea": "topal",
+        "k": 1.4,
+        "substrates": [
+          "SUCK",
+          "SILT"
+        ]
+      },
+      "flora": [
+        "mangrove",
+        "salt_grass",
+        "barnacle_shelf"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "fauna": [
+        "mire_crab_cart",
+        "gull",
+        "drowned_thing"
+      ],
+      "architecture": [
+        "bone_scaffold_tower",
+        "beached_hull_house",
+        "tide_pole"
+      ],
+      "audio": [
+        "amb_topal_surf",
+        "sfx_bell_buoy_600m",
+        "sfx_rope_creak"
+      ],
+      "weather": [
+        "sea_fog",
+        "overcast",
+        "clear"
+      ],
+      "hazard": {
+        "id": "the-flats-flood",
+        "class": "STRANDING"
+      },
+      "only_here": {
+        "id": "beached_hull_house",
+        "instances": 12,
+        "text": "whole ships walked up the shore and inhabited hull-up, chimneys punched through the keel"
+      },
+      "flora_density_per_100m2": 0.85,
+      "canopy_closure": 0.08,
+      "sightline_m": 420,
+      "climate": "sea-fog banks rolling in on a ~6 minute cycle",
+      "flora_text": "mangrove, salt-grass, barnacle-shelf",
+      "fauna_text": "mire-crabs (cart-sized, used as pack animals), gulls, drowned-things at night",
+      "architecture_text": "bone-scaffold towers of lashed leviathan ribs; ship hulls beached hull-up and lived in",
+      "ambient_text": "surf; rope creak; gull-cry; one bell buoy audible from 600 m",
+      "hazard_text": "the tide - flats flood and strand you",
+      "settlements": [],
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 7,
       "id": "salt-hills",
       "name": "The Salt Hills",
+      "centroid_m": [
+        1982.5,
+        705
+      ],
       "bounds_m": {
         "x": [
           1457.5,
           2997.5
         ],
         "z": [
-          250.0,
-          1230.0
+          250,
+          1230
         ]
       },
       "area_km2": 0.94,
       "danger_tier": 3,
-      "climate": "cold rain; snow visible on unreachable peaks",
       "palette_hex": [
         "#7D8B5C",
         "#9A968C",
         "#C6D2DA"
       ],
-      "flora": "hill grass, salt-cedar, gorse; the only place with open sky over dry ground",
-      "fauna": "guar herds, hill-wamasu, Dunmer slaver-raiders coming down the passes",
-      "architecture": "Imperial cut stone: milestones, watchtowers on every third hill, a legion fort",
-      "hazard": "slaver ambush on the pass roads; exposure on the ridge at night",
-      "only_here": "Imperial road-milestones with distances carved in Cyrodilic - the only place in Argonia where anyone measured anything",
+      "ground": {
+        "id": "gnd_hill_turf",
+        "albedo": "#7D8B5C",
+        "roughness": 0.93,
+        "name": "thin hill turf over limestone"
+      },
+      "fog": {
+        "colour": "#B9C6CE",
+        "extinction_per_m": 0.0021,
+        "height_falloff_m": 340
+      },
+      "sky": {
+        "zenith": "#3E6F9E",
+        "horizon": "#C6D2DA"
+      },
+      "terrain": {
+        "base_m": 132,
+        "amp_m": 168,
+        "wavelength_m": 1240,
+        "relief_m": 4.2,
+        "ridge": 0.34,
+        "terrace": 0.02,
+        "style": "upland"
+      },
+      "water": {
+        "wci": 0.02,
+        "class": "dry-upland",
+        "deepest_band": "W2",
+        "tidal": false,
+        "sea": null,
+        "k": 0.8,
+        "substrates": [
+          "FIRM",
+          "SILT"
+        ]
+      },
+      "flora": [
+        "hill_grass",
+        "salt_cedar",
+        "gorse",
+        "ridge_thistle"
+      ],
+      "fauna": [
+        "guar_herd",
+        "hill_wamasu",
+        "dres_slaver",
+        "crag_hackwing"
+      ],
+      "architecture": [
+        "imperial_milestone",
+        "legion_watchtower",
+        "legion_fort",
+        "cut_stone_wall"
+      ],
+      "audio": [
+        "amb_wind_open_dry",
+        "sfx_legion_horn_hour",
+        "sfx_guar_bells"
+      ],
+      "weather": [
+        "clear",
+        "cold_rain",
+        "overcast"
+      ],
+      "hazard": {
+        "id": "ridge-exposure",
+        "class": "ATTRITION"
+      },
+      "only_here": {
+        "id": "imperial_milestone",
+        "instances": 22,
+        "text": "Imperial road-milestones with distances carved in Cyrodilic - the only place in Argonia where anyone measured anything"
+      },
+      "flora_density_per_100m2": 0.3,
+      "canopy_closure": 0,
+      "sightline_m": 900,
+      "climate": "cold rain; snow visible on unreachable peaks",
+      "flora_text": "hill grass, salt-cedar, gorse; the only place with open sky over dry ground",
+      "fauna_text": "guar herds, hill-wamasu, Dunmer slaver-raiders coming down the passes",
+      "architecture_text": "Imperial cut stone: milestones, watchtowers on every third hill, a legion fort",
+      "ambient_text": "legion horn on the hour; guar-bells; wind with no insect layer under it",
+      "hazard_text": "slaver ambush on the pass roads; exposure on the ridge at night",
       "settlements": [
         "Stormhold"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 8,
       "id": "stone-forest",
       "name": "The Stone Forest",
+      "centroid_m": [
+        2749,
+        2252
+      ],
       "bounds_m": {
         "x": [
           1982.5,
           3417.5
         ],
         "z": [
-          1580.0,
-          2840.0
+          1580,
+          2840
         ]
       },
       "area_km2": 1.8,
       "danger_tier": 3,
-      "climate": "clear high light; sudden dry thunder with no rain",
       "palette_hex": [
         "#7C8794",
         "#B8712C",
         "#3D5A3A"
       ],
-      "flora": "living trees standing among petrified ones; stone-bark indistinguishable until touched",
-      "fauna": "wamasu herds, stone-shelled beetles, Hist-tenders",
-      "architecture": "xanmeer ziggurats; Helstrom grown into the greatest Hist in Argonia",
-      "hazard": "moderate; wamasu pair-lightning",
-      "only_here": "a forest half turned to stone, where you cannot tell which trees are alive until you put a hand on one",
+      "ground": {
+        "id": "gnd_petrified_flag",
+        "albedo": "#7C8794",
+        "roughness": 0.6,
+        "name": "petrified root-flags"
+      },
+      "fog": {
+        "colour": "#9FA9A2",
+        "extinction_per_m": 0.0026,
+        "height_falloff_m": 200
+      },
+      "sky": {
+        "zenith": "#37699C",
+        "horizon": "#C3C7BA"
+      },
+      "terrain": {
+        "base_m": 38,
+        "amp_m": 30,
+        "wavelength_m": 940,
+        "relief_m": 4.2,
+        "ridge": 0.14,
+        "terrace": 0.36,
+        "style": "plateau"
+      },
+      "water": {
+        "wci": 0.06,
+        "class": "damp",
+        "deepest_band": "W2",
+        "tidal": false,
+        "sea": null,
+        "k": 1.1,
+        "substrates": [
+          "FIRM"
+        ]
+      },
+      "flora": [
+        "petrified_bole",
+        "living_hist_bole",
+        "stone_bark_sapling",
+        "rockpool_weed"
+      ],
+      "fauna": [
+        "wamasu_herd",
+        "stone_beetle",
+        "hist_tender"
+      ],
+      "architecture": [
+        "xanmeer_ziggurat",
+        "hist_grown_hall",
+        "root_stair"
+      ],
+      "audio": [
+        "amb_stone_tick",
+        "amb_hist_choral_hum",
+        "sfx_dry_thunder"
+      ],
+      "weather": [
+        "clear",
+        "dry_thunder",
+        "overcast"
+      ],
+      "hazard": {
+        "id": "pair-lightning",
+        "class": "TRAP"
+      },
+      "only_here": {
+        "id": "petrified_bole",
+        "instances": 400,
+        "text": "a forest half turned to stone, where you cannot tell which trees are alive until you put a hand on one"
+      },
+      "flora_density_per_100m2": 1.1,
+      "canopy_closure": 0.35,
+      "sightline_m": 260,
+      "climate": "clear high light; sudden dry thunder with no rain",
+      "flora_text": "living trees standing among petrified ones; stone-bark indistinguishable until touched",
+      "fauna_text": "wamasu herds, stone-shelled beetles, Hist-tenders",
+      "architecture_text": "xanmeer ziggurats; Helstrom grown into the greatest Hist in Argonia",
+      "ambient_text": "stone tick as boles cool; wind through petrified trunks; a low choral hum from the Hist",
+      "hazard_text": "moderate; wamasu pair-lightning",
       "settlements": [
         "Helstrom"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 9,
       "id": "stone-wastes",
       "name": "Stone Wastes",
+      "centroid_m": [
+        813.5,
+        4894.5
+      ],
       "bounds_m": {
         "x": [
-          390.0,
+          390,
           1352.5
         ],
         "z": [
-          4520.0,
-          5255.0
+          4520,
+          5255
         ]
       },
       "area_km2": 0.81,
       "danger_tier": 5,
-      "climate": "salt-storms (ash-storm analogue): visibility to 15 m, chip damage over time",
       "palette_hex": [
         "#DCD2B8",
         "#8C5A3A",
         "#EDEDE6"
       ],
-      "flora": "almost none: salt-crust and glass-thorn",
-      "fauna": "salt-worms, bone-pickers, the last dying Hist",
-      "architecture": "Soulrest: whale-bone frames and salt-block walls, bleached white",
-      "hazard": "no water; salt-storm strips health; the storm hides everything including enemies",
-      "only_here": "crater-fields - perfectly circular pits of glassed salt, and no one will say what made them",
+      "ground": {
+        "id": "gnd_salt_crust",
+        "albedo": "#DCD2B8",
+        "roughness": 0.66,
+        "name": "glassed salt crust"
+      },
+      "fog": {
+        "colour": "#EDEDE6",
+        "extinction_per_m": 0.0038,
+        "height_falloff_m": 190
+      },
+      "sky": {
+        "zenith": "#5C86AE",
+        "horizon": "#EDEDE6"
+      },
+      "terrain": {
+        "base_m": 9,
+        "amp_m": 10,
+        "wavelength_m": 600,
+        "relief_m": 2.1,
+        "ridge": 0.06,
+        "terrace": 0.52,
+        "style": "crater-salt"
+      },
+      "water": {
+        "wci": 0.03,
+        "class": "arid-salt-fringe",
+        "deepest_band": "W3",
+        "tidal": true,
+        "sea": "topal",
+        "k": 1.4,
+        "substrates": [
+          "FIRM",
+          "SILT"
+        ]
+      },
+      "flora": [
+        "glass_thorn",
+        "salt_crust_bloom"
+      ],
+      "fauna": [
+        "salt_worm",
+        "bone_picker",
+        "dying_hist"
+      ],
+      "architecture": [
+        "whale_bone_frame",
+        "salt_block_wall",
+        "crater_rim"
+      ],
+      "audio": [
+        "amb_near_silence_tick",
+        "sfx_salt_storm_roar"
+      ],
+      "weather": [
+        "salt_storm",
+        "clear",
+        "overcast"
+      ],
+      "hazard": {
+        "id": "salt-storm",
+        "class": "ATTRITION"
+      },
+      "only_here": {
+        "id": "glassed_crater",
+        "instances": 16,
+        "text": "crater-fields - perfectly circular pits of glassed salt, and no one will say what made them"
+      },
+      "flora_density_per_100m2": 0.12,
+      "canopy_closure": 0,
+      "sightline_m": 1400,
+      "climate": "salt-storms (ash-storm analogue): visibility to 15 m, chip damage over time",
+      "flora_text": "almost none: salt-crust and glass-thorn",
+      "fauna_text": "salt-worms, bone-pickers, the last dying Hist",
+      "architecture_text": "Soulrest: whale-bone frames and salt-block walls, bleached white",
+      "ambient_text": "near-silence broken by the tick of cooling stone; then the salt-storm roar",
+      "hazard_text": "no water; salt-storm strips health; the storm hides everything including enemies",
       "settlements": [
         "Soulrest"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 10,
       "id": "thornmarsh",
       "name": "Thornmarsh",
+      "centroid_m": [
+        3522.5,
+        1090
+      ],
       "bounds_m": {
         "x": [
           2997.5,
           4397.5
         ],
         "z": [
-          355.0,
-          1685.0
+          355,
+          1685
         ]
       },
       "area_km2": 1.08,
       "danger_tier": 4,
-      "climate": "grey ash carried south from Morrowind, dusting every surface",
       "palette_hex": [
         "#241E1C",
         "#8B8577",
         "#46583F"
       ],
-      "flora": "black needle-thorn thickets 6 m tall, impenetrable except on cut paths",
-      "fauna": "hackwings nesting in thorn, feral guar, thorn-spiders",
-      "architecture": "Thorn village: thatch of black thorn over a rotted Argonian great-hall",
-      "hazard": "no sightlines - the thicket is a maze and the cut paths are re-cut weekly",
-      "only_here": "an ash-dusted thorn labyrinth navigated by knife-marks cut into stems",
+      "ground": {
+        "id": "gnd_ash_over_peat",
+        "albedo": "#4A4438",
+        "roughness": 0.97,
+        "name": "ash-dusted peat"
+      },
+      "fog": {
+        "colour": "#8B8577",
+        "extinction_per_m": 0.009,
+        "height_falloff_m": 90
+      },
+      "sky": {
+        "zenith": "#54524B",
+        "horizon": "#9A9484"
+      },
+      "terrain": {
+        "base_m": 13,
+        "amp_m": 12,
+        "wavelength_m": 700,
+        "relief_m": 2.8,
+        "ridge": 0.1,
+        "terrace": 0,
+        "style": "thicket"
+      },
+      "water": {
+        "wci": 0.09,
+        "class": "seasonal",
+        "deepest_band": "W2",
+        "tidal": false,
+        "sea": null,
+        "k": 2,
+        "substrates": [
+          "FIRM",
+          "SILT"
+        ]
+      },
+      "flora": [
+        "needle_thorn",
+        "ash_bracken",
+        "thorn_creeper"
+      ],
+      "fauna": [
+        "thorn_hackwing",
+        "feral_guar",
+        "thorn_spider"
+      ],
+      "architecture": [
+        "thorn_thatch_hall",
+        "cut_path_marker",
+        "rotted_greathall"
+      ],
+      "audio": [
+        "amb_thorn_clatter",
+        "amb_no_birdsong",
+        "sfx_ash_fall"
+      ],
+      "weather": [
+        "ashfall",
+        "overcast",
+        "cold_rain"
+      ],
+      "hazard": {
+        "id": "the-thicket",
+        "class": "ATTRITION"
+      },
+      "only_here": {
+        "id": "knife_mark_stem",
+        "instances": 60,
+        "text": "an ash-dusted thorn labyrinth navigated by knife-marks cut into stems"
+      },
+      "flora_density_per_100m2": 2.6,
+      "canopy_closure": 0.55,
+      "sightline_m": 30,
+      "climate": "grey ash carried south from Morrowind, dusting every surface",
+      "flora_text": "black needle-thorn thickets 6 m tall, impenetrable except on cut paths",
+      "fauna_text": "hackwings nesting in thorn, feral guar, thorn-spiders",
+      "architecture_text": "Thorn village: thatch of black thorn over a rotted Argonian great-hall",
+      "ambient_text": "thorn-clatter like dice in a cup; NO birdsong inside the thicket",
+      "hazard_text": "no sightlines - the thicket is a maze and the cut paths are re-cut weekly",
       "settlements": [
         "Thorn"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 11,
       "id": "valus-ridge",
       "name": "Valus Ridge",
+      "centroid_m": [
+        1209,
+        2178.5
+      ],
       "bounds_m": {
         "x": [
           407.5,
           1702.5
         ],
         "z": [
-          1160.0,
-          2840.0
+          1160,
+          2840
         ]
       },
       "area_km2": 1.71,
       "danger_tier": 4,
-      "climate": "cold rain, cloud BELOW the player on high paths",
       "palette_hex": [
         "#B9B2A0",
         "#4E6B3C",
         "#8FA6B4"
       ],
-      "flora": "stunted thorn-pine, hanging moss curtains, cliff-lichen",
-      "fauna": "hackwing eyries, wamasu, mountain chitin-hounds",
-      "architecture": "Ayleid watchtowers and Imperial border cairns; nothing lived in",
-      "hazard": "falls; hackwings that stagger you off ledges (Souls-style plunge deaths)",
-      "only_here": "the rock flutes - wind-holed limestone spires that hum a fixed chord audible from 400 m and usable as a compass",
-      "settlements": [
-        "None"
+      "ground": {
+        "id": "gnd_cliff_limestone",
+        "albedo": "#B9B2A0",
+        "roughness": 0.78,
+        "name": "wind-holed limestone and scree"
+      },
+      "fog": {
+        "colour": "#8FA6B4",
+        "extinction_per_m": 0.0033,
+        "height_falloff_m": 260
+      },
+      "sky": {
+        "zenith": "#2F5A8C",
+        "horizon": "#A8BDC8"
+      },
+      "terrain": {
+        "base_m": 268,
+        "amp_m": 286,
+        "wavelength_m": 1560,
+        "relief_m": 8,
+        "ridge": 0.86,
+        "terrace": 0.03,
+        "style": "mountain"
+      },
+      "water": {
+        "wci": 0.01,
+        "class": "dry-upland",
+        "deepest_band": "W3",
+        "tidal": false,
+        "sea": null,
+        "k": 0.9,
+        "substrates": [
+          "FIRM"
+        ]
+      },
+      "flora": [
+        "thorn_pine",
+        "moss_curtain",
+        "cliff_lichen"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "fauna": [
+        "hackwing_eyrie",
+        "mountain_wamasu",
+        "chitin_hound_mountain"
+      ],
+      "architecture": [
+        "ayleid_watchtower",
+        "imperial_cairn",
+        "rock_flute_spire"
+      ],
+      "audio": [
+        "amb_rock_flute_chord",
+        "sfx_rockfall",
+        "sfx_hackwing_scream"
+      ],
+      "weather": [
+        "cold_rain",
+        "clear",
+        "storm"
+      ],
+      "hazard": {
+        "id": "the-fall",
+        "class": "TRAP"
+      },
+      "only_here": {
+        "id": "rock_flute_spire",
+        "instances": 14,
+        "text": "the rock flutes - wind-holed limestone spires that hum a fixed chord audible from 400 m and usable as a compass"
+      },
+      "flora_density_per_100m2": 0.45,
+      "canopy_closure": 0.1,
+      "sightline_m": 2200,
+      "climate": "cold rain, cloud BELOW the player on high paths",
+      "flora_text": "stunted thorn-pine, hanging moss curtains, cliff-lichen",
+      "fauna_text": "hackwing eyries, wamasu, mountain chitin-hounds",
+      "architecture_text": "Ayleid watchtowers and Imperial border cairns; nothing lived in",
+      "ambient_text": "wind through rock flutes (a real audible chord); rockfall; hackwing screams",
+      "hazard_text": "falls; hackwings that stagger you off ledges (Souls-style plunge deaths)",
+      "settlements": [],
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     },
     {
+      "index": 12,
       "id": "western-rootlands",
       "name": "Western Rootlands",
+      "centroid_m": [
+        1727,
+        4716
+      ],
       "bounds_m": {
         "x": [
           1212.5,
           2472.5
         ],
         "z": [
-          4240.0,
-          5185.0
+          4240,
+          5185
         ]
       },
       "area_km2": 1.17,
       "danger_tier": 1,
-      "climate": "warm rain; dawn mist",
       "palette_hex": [
         "#6E8A4E",
         "#6B5638",
         "#A8B7A6"
       ],
-      "flora": "reed, paddy-fern, and root-arches 8 m high over the road",
-      "fauna": "mudcrabs, egg-tender herds, hackwings",
-      "architecture": "root-arch villages and nest-mounds; Blackrose's prison walls; Lilmoth's stilt slum",
-      "hazard": "low - mudcrabs, thieves, the occasional slaver press-gang",
-      "only_here": "the road IS a Hist root - you walk on living wood that flexes underfoot and the arches are its branches",
+      "ground": {
+        "id": "gnd_paddy_bund",
+        "albedo": "#6E8A4E",
+        "roughness": 0.9,
+        "name": "paddy bund and root-wood road"
+      },
+      "fog": {
+        "colour": "#A8B7A6",
+        "extinction_per_m": 0.0058,
+        "height_falloff_m": 70
+      },
+      "sky": {
+        "zenith": "#3E77A8",
+        "horizon": "#C4CFB8"
+      },
+      "terrain": {
+        "base_m": 2.4,
+        "amp_m": 3.1,
+        "wavelength_m": 560,
+        "relief_m": 1.15,
+        "ridge": 0,
+        "terrace": 0.3,
+        "style": "paddy"
+      },
+      "water": {
+        "wci": 0.47,
+        "class": "paddy-channel",
+        "deepest_band": "W4",
+        "tidal": true,
+        "sea": "topal",
+        "k": 1.9,
+        "substrates": [
+          "FIRM",
+          "SILT"
+        ]
+      },
+      "flora": [
+        "paddy_fern",
+        "reed",
+        "root_arch",
+        "egg_lily"
+      ],
+      "fauna": [
+        "mudcrab",
+        "egg_tender_herd",
+        "hackwing"
+      ],
+      "architecture": [
+        "root_arch_village",
+        "nest_mound",
+        "stilt_slum",
+        "blackrose_wall"
+      ],
+      "audio": [
+        "amb_frog_chorus",
+        "amb_reed_rustle",
+        "sfx_hide_drum_90s"
+      ],
+      "weather": [
+        "warm_rain",
+        "dawn_mist",
+        "clear"
+      ],
+      "hazard": {
+        "id": "press-gang-water",
+        "class": "STRANDING"
+      },
+      "only_here": {
+        "id": "root_arch",
+        "instances": 120,
+        "text": "the road IS a Hist root - you walk on living wood that flexes underfoot and the arches are its branches"
+      },
+      "flora_density_per_100m2": 2.1,
+      "canopy_closure": 0.4,
+      "sightline_m": 120,
+      "climate": "warm rain; dawn mist",
+      "flora_text": "reed, paddy-fern, and root-arches 8 m high over the road",
+      "fauna_text": "mudcrabs, egg-tender herds, hackwings",
+      "architecture_text": "root-arch villages and nest-mounds; Blackrose's prison walls; Lilmoth's stilt slum",
+      "ambient_text": "frog chorus; reed rustle; a distant hide-drum on a 90-second beat",
+      "hazard_text": "low - mudcrabs, thieves, the occasional slaver press-gang",
       "settlements": [
         "Lilmoth",
         "Blackrose"
       ],
-      "provenance": "corpus/50-world/regions.json (seam S24: the map is authoritative)"
+      "provenance": "corpus/50-world/regions.json + corpus/50-world/world-scale.json (S24: the map is authoritative); measurable axes and terrain parameters are W1-01"
     }
   ]
 }

@@ -34,8 +34,70 @@ Two layers of scoring, and they do not replace each other:
 
 ### 1.1 Rules that stop inflation
 
-- **9–10 requires beating the reference on that dimension, and is expected to be
-  rare-to-never.** If your wave produced several 9s, the wave is mis-scored, not brilliant.
+## 0. THE TARGET IS 10/10 — AMENDED BY USER DIRECTION, WAVE 1
+
+> *"6/10 sounds like too low a pass mark. I want 10/10 on everything across the board. We are
+> being ambitious here."*
+
+**The terminal condition for this project is 10 on every item.** Not 6, not "meets the bar", not
+"good enough for a browser game". The ladder below is unchanged and 10 still means *matches or
+beats the reference on that dimension* — that is exactly why it is the target. A 10 against
+Morrowind's dialogue density or Dark Souls' frame data is a real achievement, and settling at 7
+means shipping something we already know is worse.
+
+**But the gate rises by wave, and here is the honest reason.** The brief's own wide-before-deep
+rule requires the whole province traversable and the main quest completable from wave 1, which
+puts 77% of the taxonomy into a skeleton wave. A skeleton scoring 10 is a contradiction in terms:
+10 means it matches Morrowind, and a first pass does not. Demanding 10 in wave 1 would either
+stop wave 1 shipping at all — breaking the wide-before-deep rule — or force critics to inflate,
+which destroys the only thing that makes these numbers worth anything.
+
+So:
+
+| Wave | Gate | What it means |
+|---|---|---|
+| 1 | **≥ 7.0** | The skeleton is real, honest and measurable, not a stub |
+| 2 | **≥ 8.5** | Recognisably the thing, with named remaining gaps |
+| 3 | **≥ 9.5** | A player would not call it worse than the reference |
+| **4+ / ship** | **10 on every item** | Matches or beats the reference, everywhere |
+
+**No piece ships below 10.** A wave may *pass* below 10; the project may not *finish* below 10.
+
+### Every score below 10 is a tracked debt, not an accepted state
+
+From now on a verdict scoring an item under 10 **must** carry, per item:
+
+- `why_not_ten` — the specific reason, naming the artifact or measurement that falls short;
+- `path_to_ten` — a concrete, buildable remedy;
+- `ten_by_wave` — the wave it will be closed by.
+
+A score under 10 with no `path_to_ten` is **VOID**, exactly as an evidence-free verdict is void.
+The gap ledger carries these to the wave named, and a debt that slips two waves escalates the
+piece under `EFFORT-POLICY.md`.
+
+### The three honest exceptions, which must be fixed rather than tolerated
+
+Three things currently make 10 unreachable for reasons that are **ours, not the build's**, and
+each is a defect in the corpus rather than a licence to score low:
+
+1. **`RI-VIS03` caps FIDELITY at 7** for any wave where no blind pair could run for want of
+   reference images. We now have 808 reference images — **this cap must be re-examined and lifted
+   where the population now exists.**
+2. **`RI-PLT01` M3 is unscoreable on any machine**, because `sim_units` is defined against a
+   `cpu_index_reference` for `phone-mid` that has **no numeric value anywhere in the corpus**.
+   `SCORING.md` §1.1 then scores it 0 fail-closed. **Declare the constant.**
+3. **Tier-H performance metrics cannot be measured under SwiftShader software rendering**, which
+   is what this container has. Either they are measured on real hardware before ship, or they are
+   formally excluded from the 10/10 requirement with the risk written down.
+
+An item that cannot reach 10 because *the corpus is broken* is a corpus bug. Fix the corpus.
+
+---
+
+- **9–10 requires beating or matching the reference on that dimension, with evidence.** It is
+  expected to be rare *early* — a wave-1 wave full of 9s is mis-scored, not brilliant — and it is
+  **required at ship** per §0. The evidence requirement never relaxes: a 10 must cite the
+  measurement that shows parity with or superiority to the reference, not an impression.
 - **Any score ≥ 7 requires `justification` naming a specific artifact.** The aggregator
   clamps unjustified ≥ 7 to **6** and records `unjustified_high_score`.
 - **A score may never exceed the item's own verdict band.** If the item's `## Scoring`
