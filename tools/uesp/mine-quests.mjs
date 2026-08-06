@@ -254,8 +254,20 @@ for (const p of pages) {
       extra: cells.slice(3).filter(Boolean),
     });
   }
+  // Morrowind runs TWO advancement ladders. Classify which one this faction is on.
+  const CANON_SKILLS = ['—', 'One skill at 10', 'One skill at 20', 'One skill at 30 and two at 5',
+    'One skill at 40 and two at 10', 'One skill at 50 and two at 15', 'One skill at 60 and two at 20',
+    'One skill at 70 and two at 25', 'One skill at 80 and two at 30', 'One skill at 90 and two at 35'];
+  const topSkill = (ranks.find((r) => r.index === 9) || ranks[ranks.length - 1] || {}).required_skills || '';
+  const topAttr = Math.max(0, ...((ranks.find((r) => r.index === 9) || ranks[ranks.length - 1] || {}).required_attributes || '').match(/\d+/g)?.map(Number) || [0]);
+  const ladder = /110/.test(topSkill) || topAttr >= 70 ? 'steep (unjoinable / special: top rank one skill at 110, attributes to 80)'
+    : ranks.every((r) => r.index === null || r.index > 9 || !r.required_skills || r.required_skills === CANON_SKILLS[r.index] || /stronghold/i.test(r.required_skills))
+      ? 'standard (attributes 30→35, one skill 10→90 plus two at 5→35)'
+      : 'standard with a modified secondary-skill column';
+
   const fs2 = findTemplate(p.text, 'Faction Summary');
   factionRanks.push({
+    ladder,
     faction: p.title.replace(/^[A-Za-z]+:/, ''),
     page: p.title,
     game: p.ns,
@@ -376,6 +388,8 @@ const out = {
     note: 'RI-QST03 states this debt explicitly: "Morrowind\'s actual per-rank threshold tables should be transcribed into an appendix." This is that appendix, transcribed from the == Ranks == wikitable on each faction page. community-data.',
     factions: factionRanks.length,
     rank_counts: Object.fromEntries(factionRanks.map((f) => [f.faction, f.rank_count])),
+    ladders: Object.fromEntries(factionRanks.map((f) => [f.faction, f.ladder])),
+    finding: 'Morrowind runs TWO ladders, not one per faction. The joinable guilds and Great Houses share a single curve (attributes 30 for ranks 0-4 then +1/rank to 35; one favoured skill at 10x the rank index plus two more at 5x(index-2) from rank 3). The unjoinable and special factions - Ashlanders, Camonna Tong, the three vampire clans, Blades, Census and Excise, Imperial Knights - share a steeper one (attributes 40 to 80, top rank one skill at 110). Deviations from the standard curve are narrow and legible: House Hlaalu adds "must have started stronghold" at rank 7; the Imperial Cult uses a gentler secondary-skill column (5, 8, 10, 12, 15, 18, 20, 25, 25); the East Empire Company has nine ranks instead of ten; the Dark Brotherhood lists no skill requirement at all.',
     tables: factionRanks,
   },
   gating: {

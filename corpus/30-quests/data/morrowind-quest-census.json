@@ -545,8 +545,32 @@
       "Imperial Knights": 10,
       "Dark Brotherhood": 10
     },
+    "ladders": {
+      "Fighters Guild": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "Mages Guild": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "House Hlaalu": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "House Redoran": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "Ashlanders": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
+      "Tribunal Temple": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "Camonna Tong": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
+      "House Telvanni": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "Morag Tong": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "Berne Clan": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
+      "Aundae Clan": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
+      "Quarra Clan": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
+      "Thieves Guild": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "East Empire Company": "standard with a modified secondary-skill column",
+      "Blades": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
+      "Imperial Legion": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
+      "Imperial Cult": "standard with a modified secondary-skill column",
+      "Census and Excise": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
+      "Imperial Knights": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
+      "Dark Brotherhood": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)"
+    },
+    "finding": "Morrowind runs TWO ladders, not one per faction. The joinable guilds and Great Houses share a single curve (attributes 30 for ranks 0-4 then +1/rank to 35; one favoured skill at 10x the rank index plus two more at 5x(index-2) from rank 3). The unjoinable and special factions - Ashlanders, Camonna Tong, the three vampire clans, Blades, Census and Excise, Imperial Knights - share a steeper one (attributes 40 to 80, top rank one skill at 110). Deviations from the standard curve are narrow and legible: House Hlaalu adds \"must have started stronghold\" at rank 7; the Imperial Cult uses a gentler secondary-skill column (5, 8, 10, 12, 15, 18, 20, 25, 25); the East Empire Company has nine ranks instead of ten; the Dark Brotherhood lists no skill requirement at all.",
     "tables": [
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "Fighters Guild",
         "page": "Morrowind:Fighters Guild",
         "game": "Morrowind",
@@ -642,6 +666,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "Mages Guild",
         "page": "Morrowind:Mages Guild",
         "game": "Morrowind",
@@ -737,6 +762,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "House Hlaalu",
         "page": "Morrowind:House Hlaalu",
         "game": "Morrowind",
@@ -832,6 +858,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "House Redoran",
         "page": "Morrowind:House Redoran",
         "game": "Morrowind",
@@ -927,6 +954,7 @@
         ]
       },
       {
+        "ladder": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
         "faction": "Ashlanders",
         "page": "Morrowind:Ashlanders",
         "game": "Morrowind",
@@ -1022,6 +1050,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "Tribunal Temple",
         "page": "Morrowind:Tribunal Temple",
         "game": "Morrowind",
@@ -1117,6 +1146,7 @@
         ]
       },
       {
+        "ladder": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
         "faction": "Camonna Tong",
         "page": "Morrowind:Camonna Tong",
         "game": "Morrowind",
@@ -1212,6 +1242,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "House Telvanni",
         "page": "Morrowind:House Telvanni",
         "game": "Morrowind",
@@ -1307,6 +1338,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "Morag Tong",
         "page": "Morrowind:Morag Tong",
         "game": "Morrowind",
@@ -1402,6 +1434,7 @@
         ]
       },
       {
+        "ladder": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
         "faction": "Berne Clan",
         "page": "Morrowind:Berne Clan",
         "game": "Morrowind",
@@ -1497,6 +1530,7 @@
         ]
       },
       {
+        "ladder": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
         "faction": "Aundae Clan",
         "page": "Morrowind:Aundae Clan",
         "game": "Morrowind",
@@ -1592,6 +1626,7 @@
         ]
       },
       {
+        "ladder": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
         "faction": "Quarra Clan",
         "page": "Morrowind:Quarra Clan",
         "game": "Morrowind",
@@ -1687,6 +1722,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "Thieves Guild",
         "page": "Morrowind:Thieves Guild",
         "game": "Morrowind",
@@ -1782,6 +1818,7 @@
         ]
       },
       {
+        "ladder": "standard with a modified secondary-skill column",
         "faction": "East Empire Company",
         "page": "Bloodmoon:East Empire Company",
         "game": "Bloodmoon",
@@ -1869,6 +1906,7 @@
         ]
       },
       {
+        "ladder": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
         "faction": "Blades",
         "page": "Morrowind:Blades",
         "game": "Morrowind",
@@ -1964,6 +2002,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "Imperial Legion",
         "page": "Morrowind:Imperial Legion",
         "game": "Morrowind",
@@ -2091,6 +2130,7 @@
         ]
       },
       {
+        "ladder": "standard with a modified secondary-skill column",
         "faction": "Imperial Cult",
         "page": "Morrowind:Imperial Cult",
         "game": "Morrowind",
@@ -2208,6 +2248,7 @@
         ]
       },
       {
+        "ladder": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
         "faction": "Census and Excise",
         "page": "Morrowind:Census and Excise",
         "game": "Morrowind",
@@ -2303,6 +2344,7 @@
         ]
       },
       {
+        "ladder": "steep (unjoinable / special: top rank one skill at 110, attributes to 80)",
         "faction": "Imperial Knights",
         "page": "Morrowind:Imperial Knights",
         "game": "Morrowind",
@@ -2398,6 +2440,7 @@
         ]
       },
       {
+        "ladder": "standard (attributes 30→35, one skill 10→90 plus two at 5→35)",
         "faction": "Dark Brotherhood",
         "page": "Tribunal:Dark Brotherhood",
         "game": "Tribunal",

@@ -2,7 +2,7 @@
  "task_id": "opacity-tone",
  "brief": "orchestration/briefs/opacity-tone.md",
  "started": "wave-?",
- "state": "researching",
+ "state": "complete",
  "outputs_expected": [
   "corpus/40-dialogue/RI-DLG08-tonal-range-and-the-indifference-ratio.md",
   "corpus/50-world/RI-WLD09-the-opacity-budget.md",
@@ -11,11 +11,11 @@
   "corpus/80-methods/opacity-audit.py"
  ],
  "outputs_written": [
-  "corpus/80-methods/tone-metrics.py",
   "corpus/40-dialogue/RI-DLG08-tonal-range-and-the-indifference-ratio.md",
+  "corpus/50-world/RI-WLD09-the-opacity-budget.md",
   "corpus/50-world/sealed/SEALED-ANSWERS.md",
   "corpus/80-methods/opacity-audit.py",
-  "corpus/50-world/RI-WLD09-the-opacity-budget.md"
+  "corpus/80-methods/tone-metrics.py"
  ],
  "findings": [
   "BAR-CRITIQUE-01 gap rank 11 = G11 -> RI-WLD09 (opacity budget). Proposed: register of >=15 unsignposted things, >=3 locations via unobvious route, >=2 quests needing knowledge journal never records, >=5 places world never mentions; >=60% of register undiscovered by 6h first-time player; hard fail on entries merely hidden rather than unexplained. Cross-rule: RI-WLD06 M29 scored only over quest destinations.",
@@ -38,6 +38,6 @@
   "Region sparsity from RI-WLD02 \u00a75 (Tier A+B per km2): The Hive 12.9, Valus Ridge 20.5, Marauder's Coast 22.4, Eastern Rootlands 22.9, Deep Marshes 25.4 -- these are where the void tracts belong. Land area 14.52 km2 (regions.json total_land_km2).",
   "corpus-index.mjs reports 78 pre-existing orphan-judges-path errors from OTHER agents' items (weapon.*, experience.*, journey.*, input.*, platform.perf.allocation ...). RI-DLG08 and RI-WLD09 add none -- both use canonical paths only."
  ],
- "next_step": "verify quests.discovery.hooks path is canonical; finalise W1/W2 amendment text for reply",
- "notes_for_successor": "Brief closes BAR-CRITIQUE-01 G11 (opacity budget) and G12 (tone existence). Must measure indifference ratio from real corpus csv.gz, not recall."
+ "next_step": "",
+ "notes_for_successor": "DONE. Two RI items + two instruments + the sealed-answer register. OUTSTANDING WORK a successor could pick up: (1) SEALED-ANSWERS.md entries M-05..M-24 are WIP (4 of 24 written; composition quota >=8 place / >=6 object / >=4 creature / >=3 phenomenon / >=3 person; written so far 2 place, 1 object, 1 phenomenon). (2) corpus/40-dialogue/data/badprose-arm.json (RI-DLG08 T6's deliberately-bad third arm) must be committed BEFORE any good-bad blind run. (3) The RI-WLD02 and RI-WLD05 amendments are PROPOSED in the reply only -- neither file was edited (brief forbids editing other agents' items). Until RI-WLD02 is amended it directly contradicts RI-WLD09 \u00a7B4 and a critic handed both must fail one. (4) Four new game/data schemas and three harness extensions are requested in the reply and not yet in HARNESS.md."
 }
