@@ -1,7 +1,7 @@
 {
- "generated": "2026-08-06T22:18:24.501Z",
+ "generated": "2026-08-06T22:19:54.114Z",
  "instrument": "kritik-browser.mjs (critic-authored)",
- "booted_at_head_without_repair": true,
+ "booted_at_head_without_route_repair": true,
  "page_errors": [],
  "build": {
   "name": "elder-souls",
@@ -18,7 +18,8 @@
  "B1": {
   "attempted": 87,
   "setLoadout_ok": 87,
-  "live_id_matches_requested": 0,
+  "live_id_matches_requested": 87,
+  "live_class_matches": 87,
   "live_reach_matches_declared": 87,
   "distinct_live_reach_values": 86,
   "rejected": 0,
@@ -29,931 +30,1292 @@
     "weapon_id": "axe_bog_cleaver",
     "class": "AXE",
     "declared_reach": 1.794,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 1.794
-    }
+    "live_id": "axe_bog_cleaver",
+    "live_class": "AXE",
+    "live_reach": 1.794,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "axe_hatchet_pair",
     "class": "AXE",
     "declared_reach": 1.795,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 1.795
-    }
+    "live_id": "axe_hatchet_pair",
+    "live_class": "AXE",
+    "live_reach": 1.795,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "axe_kings_bite",
     "class": "AXE",
     "declared_reach": 1.639,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 1.639
-    }
+    "live_id": "axe_kings_bite",
+    "live_class": "AXE",
+    "live_reach": 1.639,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "axe_ridge_axe",
     "class": "AXE",
     "declared_reach": 2.005,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 2.005
-    }
+    "live_id": "axe_ridge_axe",
+    "live_class": "AXE",
+    "live_reach": 2.005,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "axe_shell_reaper",
     "class": "AXE",
     "declared_reach": 1.675,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 1.675
-    }
+    "live_id": "axe_shell_reaper",
+    "live_class": "AXE",
+    "live_reach": 1.675,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "axe_shell_splitter",
     "class": "AXE",
     "declared_reach": 1.8,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 1.8
-    }
+    "live_id": "axe_shell_splitter",
+    "live_class": "AXE",
+    "live_reach": 1.8,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "bow_chitin_recurve",
     "class": "BOW",
     "declared_reach": 1.552,
+    "declared_slots": 7,
     "ok": true,
-    "equipped": {
-     "reach": 1.552
-    }
+    "live_id": "bow_chitin_recurve",
+    "live_class": "BOW",
+    "live_reach": 1.552,
+    "slots_declared": 7,
+    "reachable": 8
    },
    {
     "weapon_id": "bow_horn_sinew",
     "class": "BOW",
     "declared_reach": 1.6,
+    "declared_slots": 7,
     "ok": true,
-    "equipped": {
-     "reach": 1.6
-    }
+    "live_id": "bow_horn_sinew",
+    "live_class": "BOW",
+    "live_reach": 1.6,
+    "slots_declared": 7,
+    "reachable": 8
    },
    {
     "weapon_id": "bow_kings_horn",
     "class": "BOW",
     "declared_reach": 1.802,
+    "declared_slots": 7,
     "ok": true,
-    "equipped": {
-     "reach": 1.802
-    }
+    "live_id": "bow_kings_horn",
+    "live_class": "BOW",
+    "live_reach": 1.802,
+    "slots_declared": 7,
+    "reachable": 8
    },
    {
     "weapon_id": "bow_marsh_longbow",
     "class": "BOW",
     "declared_reach": 1.813,
+    "declared_slots": 7,
     "ok": true,
-    "equipped": {
-     "reach": 1.813
-    }
+    "live_id": "bow_marsh_longbow",
+    "live_class": "BOW",
+    "live_reach": 1.813,
+    "slots_declared": 7,
+    "reachable": 8
    },
    {
     "weapon_id": "bow_reed_shortbow",
     "class": "BOW",
     "declared_reach": 1.275,
+    "declared_slots": 7,
     "ok": true,
-    "equipped": {
-     "reach": 1.275
-    }
+    "live_id": "bow_reed_shortbow",
+    "live_class": "BOW",
+    "live_reach": 1.275,
+    "slots_declared": 7,
+    "reachable": 8
    },
    {
     "weapon_id": "cgs_drowned_reaper",
     "class": "CGS",
     "declared_reach": 2.75,
+    "declared_slots": 32,
     "ok": true,
-    "equipped": {
-     "reach": 2.75
-    }
+    "live_id": "cgs_drowned_reaper",
+    "live_class": "CGS",
+    "live_reach": 2.75,
+    "slots_declared": 32,
+    "reachable": 18
    },
    {
     "weapon_id": "cgs_harvest_edge",
     "class": "CGS",
     "declared_reach": 2.835,
+    "declared_slots": 32,
     "ok": true,
-    "equipped": {
-     "reach": 2.835
-    }
+    "live_id": "cgs_harvest_edge",
+    "live_class": "CGS",
+    "live_reach": 2.835,
+    "slots_declared": 32,
+    "reachable": 18
    },
    {
     "weapon_id": "cgs_kings_crescent",
     "class": "CGS",
     "declared_reach": 2.652,
+    "declared_slots": 32,
     "ok": true,
-    "equipped": {
-     "reach": 2.652
-    }
+    "live_id": "cgs_kings_crescent",
+    "live_class": "CGS",
+    "live_reach": 2.652,
+    "slots_declared": 32,
+    "reachable": 18
    },
    {
     "weapon_id": "cgs_mire_scythe",
     "class": "CGS",
     "declared_reach": 2.854,
+    "declared_slots": 32,
     "ok": true,
-    "equipped": {
-     "reach": 2.854
-    }
+    "live_id": "cgs_mire_scythe",
+    "live_class": "CGS",
+    "live_reach": 2.854,
+    "slots_declared": 32,
+    "reachable": 18
    },
    {
     "weapon_id": "cgs_tide_falx",
     "class": "CGS",
     "declared_reach": 2.648,
+    "declared_slots": 32,
     "ok": true,
-    "equipped": {
-     "reach": 2.648
-    }
+    "live_id": "cgs_tide_falx",
+    "live_class": "CGS",
+    "live_reach": 2.648,
+    "slots_declared": 32,
+    "reachable": 18
    },
    {
     "weapon_id": "csw_drowned_kris",
     "class": "CSW",
     "declared_reach": 1.52,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 1.52
-    }
+    "live_id": "csw_drowned_kris",
+    "live_class": "CSW",
+    "live_reach": 1.52,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "csw_mangrove_hook",
     "class": "CSW",
     "declared_reach": 1.902,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 1.902
-    }
+    "live_id": "csw_mangrove_hook",
+    "live_class": "CSW",
+    "live_reach": 1.902,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "csw_naga_sickle",
     "class": "CSW",
     "declared_reach": 1.75,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 1.75
-    }
+    "live_id": "csw_naga_sickle",
+    "live_class": "CSW",
+    "live_reach": 1.75,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "csw_reaver_blade",
     "class": "CSW",
     "declared_reach": 1.679,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 1.679
-    }
+    "live_id": "csw_reaver_blade",
+    "live_class": "CSW",
+    "live_reach": 1.679,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "csw_saltmarsh_sabre",
     "class": "CSW",
     "declared_reach": 1.823,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 1.823
-    }
+    "live_id": "csw_saltmarsh_sabre",
+    "live_class": "CSW",
+    "live_reach": 1.823,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "csw_tide_falchion",
     "class": "CSW",
     "declared_reach": 1.784,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 1.784
-    }
+    "live_id": "csw_tide_falchion",
+    "live_class": "CSW",
+    "live_reach": 1.784,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "dgr_bone_awl",
     "class": "DGR",
     "declared_reach": 0.867,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 0.867
-    }
+    "live_id": "dgr_bone_awl",
+    "live_class": "DGR",
+    "live_reach": 0.867,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "dgr_hist_barb",
     "class": "DGR",
     "declared_reach": 0.891,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 0.891
-    }
+    "live_id": "dgr_hist_barb",
+    "live_class": "DGR",
+    "live_reach": 0.891,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "dgr_kings_needle",
     "class": "DGR",
     "declared_reach": 1.222,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.222
-    }
+    "live_id": "dgr_kings_needle",
+    "live_class": "DGR",
+    "live_reach": 1.222,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "dgr_reed_dirk",
     "class": "DGR",
     "declared_reach": 1.194,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.194
-    }
+    "live_id": "dgr_reed_dirk",
+    "live_class": "DGR",
+    "live_reach": 1.194,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "dgr_shell_knife",
     "class": "DGR",
     "declared_reach": 1.05,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.05
-    }
+    "live_id": "dgr_shell_knife",
+    "live_class": "DGR",
+    "live_reach": 1.05,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "dgr_thornfang",
     "class": "DGR",
     "declared_reach": 1.138,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.138
-    }
+    "live_id": "dgr_thornfang",
+    "live_class": "DGR",
+    "live_reach": 1.138,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "fst_hist_talon",
     "class": "FST",
     "declared_reach": 0.99,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 0.99
-    }
+    "live_id": "fst_hist_talon",
+    "live_class": "FST",
+    "live_reach": 0.99,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "fst_marsh_claw",
     "class": "FST",
     "declared_reach": 1.011,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 1.011
-    }
+    "live_id": "fst_marsh_claw",
+    "live_class": "FST",
+    "live_reach": 1.011,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "fst_quarry_caestus",
     "class": "FST",
     "declared_reach": 0.771,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 0.771
-    }
+    "live_id": "fst_quarry_caestus",
+    "live_class": "FST",
+    "live_reach": 0.771,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "fst_wrapped_fists",
     "class": "FST",
     "declared_reach": 0.9,
+    "declared_slots": 35,
     "ok": true,
-    "equipped": {
-     "reach": 0.9
-    }
+    "live_id": "fst_wrapped_fists",
+    "live_class": "FST",
+    "live_reach": 0.9,
+    "slots_declared": 35,
+    "reachable": 18
    },
    {
     "weapon_id": "ghm_bog_maul",
     "class": "GHM",
     "declared_reach": 2.148,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.148
-    }
+    "live_id": "ghm_bog_maul",
+    "live_class": "GHM",
+    "live_reach": 2.148,
+    "slots_declared": 30,
+    "reachable": 16
    },
    {
     "weapon_id": "ghm_kings_ruin",
     "class": "GHM",
     "declared_reach": 2.238,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.238
-    }
+    "live_id": "ghm_kings_ruin",
+    "live_class": "GHM",
+    "live_reach": 2.238,
+    "slots_declared": 30,
+    "reachable": 16
    },
    {
     "weapon_id": "ghm_pile_driver",
     "class": "GHM",
     "declared_reach": 2.3,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.3
-    }
+    "live_id": "ghm_pile_driver",
+    "live_class": "GHM",
+    "live_reach": 2.3,
+    "slots_declared": 30,
+    "reachable": 16
    },
    {
     "weapon_id": "ghm_root_hammer",
     "class": "GHM",
     "declared_reach": 2.435,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.435
-    }
+    "live_id": "ghm_root_hammer",
+    "live_class": "GHM",
+    "live_reach": 2.435,
+    "slots_declared": 30,
+    "reachable": 16
    },
    {
     "weapon_id": "ghm_stone_breaker",
     "class": "GHM",
     "declared_reach": 2.363,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.363
-    }
+    "live_id": "ghm_stone_breaker",
+    "live_class": "GHM",
+    "live_reach": 2.363,
+    "slots_declared": 30,
+    "reachable": 16
    },
    {
     "weapon_id": "gsw_drowned_greatblade",
     "class": "GSW",
     "declared_reach": 2.741,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.741
-    }
+    "live_id": "gsw_drowned_greatblade",
+    "live_class": "GSW",
+    "live_reach": 2.741,
+    "slots_declared": 31,
+    "reachable": 17
    },
    {
     "weapon_id": "gsw_fen_claymore",
     "class": "GSW",
     "declared_reach": 2.515,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.515
-    }
+    "live_id": "gsw_fen_claymore",
+    "live_class": "GSW",
+    "live_reach": 2.515,
+    "slots_declared": 31,
+    "reachable": 17
    },
    {
     "weapon_id": "gsw_hist_greatblade",
     "class": "GSW",
     "declared_reach": 2.594,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.594
-    }
+    "live_id": "gsw_hist_greatblade",
+    "live_class": "GSW",
+    "live_reach": 2.594,
+    "slots_declared": 31,
+    "reachable": 17
    },
    {
     "weapon_id": "gsw_memorial_blade",
     "class": "GSW",
     "declared_reach": 2.6,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.6
-    }
+    "live_id": "gsw_memorial_blade",
+    "live_class": "GSW",
+    "live_reach": 2.6,
+    "slots_declared": 31,
+    "reachable": 17
    },
    {
     "weapon_id": "gsw_oath_of_ash",
     "class": "GSW",
     "declared_reach": 2.86,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.86
-    }
+    "live_id": "gsw_oath_of_ash",
+    "live_class": "GSW",
+    "live_reach": 2.86,
+    "slots_declared": 31,
+    "reachable": 17
    },
    {
     "weapon_id": "gsw_reed_bastard",
     "class": "GSW",
     "declared_reach": 2.385,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.385
-    }
+    "live_id": "gsw_reed_bastard",
+    "live_class": "GSW",
+    "live_reach": 2.385,
+    "slots_declared": 31,
+    "reachable": 17
    },
    {
     "weapon_id": "gsw_saltwind",
     "class": "GSW",
     "declared_reach": 2.572,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.572
-    }
+    "live_id": "gsw_saltwind",
+    "live_class": "GSW",
+    "live_reach": 2.572,
+    "slots_declared": 31,
+    "reachable": 17
    },
    {
     "weapon_id": "gsw_tomb_guard",
     "class": "GSW",
     "declared_reach": 2.624,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.624
-    }
+    "live_id": "gsw_tomb_guard",
+    "live_class": "GSW",
+    "live_reach": 2.624,
+    "slots_declared": 31,
+    "reachable": 17
    },
    {
     "weapon_id": "hlb_fen_hook",
     "class": "HLB",
     "declared_reach": 2.865,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 2.865
-    }
+    "live_id": "hlb_fen_hook",
+    "live_class": "HLB",
+    "live_reach": 2.865,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "hlb_garrison_bill",
     "class": "HLB",
     "declared_reach": 2.85,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 2.85
-    }
+    "live_id": "hlb_garrison_bill",
+    "live_class": "HLB",
+    "live_reach": 2.85,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "hlb_lane_keeper",
     "class": "HLB",
     "declared_reach": 2.931,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 2.931
-    }
+    "live_id": "hlb_lane_keeper",
+    "live_class": "HLB",
+    "live_reach": 2.931,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "hlb_marsh_glaive",
     "class": "HLB",
     "declared_reach": 2.802,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 2.802
-    }
+    "live_id": "hlb_marsh_glaive",
+    "live_class": "HLB",
+    "live_reach": 2.802,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "hlb_reed_partisan",
     "class": "HLB",
     "declared_reach": 2.875,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 2.875
-    }
+    "live_id": "hlb_reed_partisan",
+    "live_class": "HLB",
+    "live_reach": 2.875,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "hlb_saltcutter",
     "class": "HLB",
     "declared_reach": 2.839,
+    "declared_slots": 34,
     "ok": true,
-    "equipped": {
-     "reach": 2.839
-    }
+    "live_id": "hlb_saltcutter",
+    "live_class": "HLB",
+    "live_reach": 2.839,
+    "slots_declared": 34,
+    "reachable": 17
    },
    {
     "weapon_id": "mce_bog_iron_mace",
     "class": "MCE",
     "declared_reach": 1.7,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.7
-    }
+    "live_id": "mce_bog_iron_mace",
+    "live_class": "MCE",
+    "live_reach": 1.7,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "mce_bone_hammer",
     "class": "MCE",
     "declared_reach": 1.79,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.79
-    }
+    "live_id": "mce_bone_hammer",
+    "live_class": "MCE",
+    "live_reach": 1.79,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "mce_chain_flail",
     "class": "MCE",
     "declared_reach": 1.882,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.882
-    }
+    "live_id": "mce_chain_flail",
+    "live_class": "MCE",
+    "live_reach": 1.882,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "mce_pilgrim_club",
     "class": "MCE",
     "declared_reach": 1.619,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.619
-    }
+    "live_id": "mce_pilgrim_club",
+    "live_class": "MCE",
+    "live_reach": 1.619,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "mce_root_maul",
     "class": "MCE",
     "declared_reach": 1.665,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.665
-    }
+    "live_id": "mce_root_maul",
+    "live_class": "MCE",
+    "live_reach": 1.665,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "mce_stone_answer",
     "class": "MCE",
     "declared_reach": 1.495,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 1.495
-    }
+    "live_id": "mce_stone_answer",
+    "live_class": "MCE",
+    "live_reach": 1.495,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "spr_drowned_harpoon",
     "class": "SPR",
     "declared_reach": 3.283,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 3.283
-    }
+    "live_id": "spr_drowned_harpoon",
+    "live_class": "SPR",
+    "live_reach": 3.283,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "spr_fishers_gig",
     "class": "SPR",
     "declared_reach": 3.1,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 3.1
-    }
+    "live_id": "spr_fishers_gig",
+    "live_class": "SPR",
+    "live_reach": 3.1,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "spr_marsh_lance",
     "class": "SPR",
     "declared_reach": 3.168,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 3.168
-    }
+    "live_id": "spr_marsh_lance",
+    "live_class": "SPR",
+    "live_reach": 3.168,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "spr_mire_trident",
     "class": "SPR",
     "declared_reach": 3.216,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 3.216
-    }
+    "live_id": "spr_mire_trident",
+    "live_class": "SPR",
+    "live_reach": 3.216,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "spr_reed_gig",
     "class": "SPR",
     "declared_reach": 2.924,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.924
-    }
+    "live_id": "spr_reed_gig",
+    "live_class": "SPR",
+    "live_reach": 2.924,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "spr_root_pike",
     "class": "SPR",
     "declared_reach": 3.148,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 3.148
-    }
+    "live_id": "spr_root_pike",
+    "live_class": "SPR",
+    "live_reach": 3.148,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "spr_xanmeer_sting",
     "class": "SPR",
     "declared_reach": 2.937,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.937
-    }
+    "live_id": "spr_xanmeer_sting",
+    "live_class": "SPR",
+    "live_reach": 2.937,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "ssw_barsaebic_warblade",
     "class": "SSW",
     "declared_reach": 2.069,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.069
-    }
+    "live_id": "ssw_barsaebic_warblade",
+    "live_class": "SSW",
+    "live_reach": 2.069,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "ssw_fen_wardens",
     "class": "SSW",
     "declared_reach": 2.136,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.136
-    }
+    "live_id": "ssw_fen_wardens",
+    "live_class": "SSW",
+    "live_reach": 2.136,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "ssw_garrison_sword",
     "class": "SSW",
     "declared_reach": 1.95,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 1.95
-    }
+    "live_id": "ssw_garrison_sword",
+    "live_class": "SSW",
+    "live_reach": 1.95,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "ssw_hist_sap_blade",
     "class": "SSW",
     "declared_reach": 1.805,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 1.805
-    }
+    "live_id": "ssw_hist_sap_blade",
+    "live_class": "SSW",
+    "live_reach": 1.805,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "ssw_kothringi_bronze",
     "class": "SSW",
     "declared_reach": 1.841,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 1.841
-    }
+    "live_id": "ssw_kothringi_bronze",
+    "live_class": "SSW",
+    "live_reach": 1.841,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "ssw_marsh_shortsword",
     "class": "SSW",
     "declared_reach": 1.911,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 1.911
-    }
+    "live_id": "ssw_marsh_shortsword",
+    "live_class": "SSW",
+    "live_reach": 1.911,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "ssw_oath_of_drowned",
     "class": "SSW",
     "declared_reach": 1.809,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 1.809
-    }
+    "live_id": "ssw_oath_of_drowned",
+    "live_class": "SSW",
+    "live_reach": 1.809,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "ssw_rusted_levy",
     "class": "SSW",
     "declared_reach": 2.024,
+    "declared_slots": 31,
     "ok": true,
-    "equipped": {
-     "reach": 2.024
-    }
+    "live_id": "ssw_rusted_levy",
+    "live_class": "SSW",
+    "live_reach": 2.024,
+    "slots_declared": 31,
+    "reachable": 15
    },
    {
     "weapon_id": "tsw_bog_rapier",
     "class": "TSW",
     "declared_reach": 2.087,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 2.087
-    }
+    "live_id": "tsw_bog_rapier",
+    "live_class": "TSW",
+    "live_reach": 2.087,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "tsw_duelling_pick",
     "class": "TSW",
     "declared_reach": 2.262,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 2.262
-    }
+    "live_id": "tsw_duelling_pick",
+    "live_class": "TSW",
+    "live_reach": 2.262,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "tsw_oath_of_salt",
     "class": "TSW",
     "declared_reach": 2.302,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 2.302
-    }
+    "live_id": "tsw_oath_of_salt",
+    "live_class": "TSW",
+    "live_reach": 2.302,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "tsw_reed_estoc",
     "class": "TSW",
     "declared_reach": 2.238,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 2.238
-    }
+    "live_id": "tsw_reed_estoc",
+    "live_class": "TSW",
+    "live_reach": 2.238,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "tsw_xanmeer_needle",
     "class": "TSW",
     "declared_reach": 2.2,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 2.2
-    }
+    "live_id": "tsw_xanmeer_needle",
+    "live_class": "TSW",
+    "live_reach": 2.2,
+    "slots_declared": 33,
+    "reachable": 17
    },
    {
     "weapon_id": "ugs_drowned_slab",
     "class": "UGS",
     "declared_reach": 3.033,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 3.033
-    }
+    "live_id": "ugs_drowned_slab",
+    "live_class": "UGS",
+    "live_reach": 3.033,
+    "slots_declared": 30,
+    "reachable": 17
    },
    {
     "weapon_id": "ugs_fen_zwei",
     "class": "UGS",
     "declared_reach": 2.894,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.894
-    }
+    "live_id": "ugs_fen_zwei",
+    "live_class": "UGS",
+    "live_reach": 2.894,
+    "slots_declared": 30,
+    "reachable": 17
    },
    {
     "weapon_id": "ugs_golem_sword",
     "class": "UGS",
     "declared_reach": 2.95,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.95
-    }
+    "live_id": "ugs_golem_sword",
+    "live_class": "UGS",
+    "live_reach": 2.95,
+    "slots_declared": 30,
+    "reachable": 17
    },
    {
     "weapon_id": "ugs_oath_of_root",
     "class": "UGS",
     "declared_reach": 2.78,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.78
-    }
+    "live_id": "ugs_oath_of_root",
+    "live_class": "UGS",
+    "live_reach": 2.78,
+    "slots_declared": 30,
+    "reachable": 17
    },
    {
     "weapon_id": "ugs_saltiron_greatsword",
     "class": "UGS",
     "declared_reach": 3.142,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 3.142
-    }
+    "live_id": "ugs_saltiron_greatsword",
+    "live_class": "UGS",
+    "live_reach": 3.142,
+    "slots_declared": 30,
+    "reachable": 17
    },
    {
     "weapon_id": "ugs_tomb_colossus",
     "class": "UGS",
     "declared_reach": 2.852,
+    "declared_slots": 30,
     "ok": true,
-    "equipped": {
-     "reach": 2.852
-    }
+    "live_id": "ugs_tomb_colossus",
+    "live_class": "UGS",
+    "live_reach": 2.852,
+    "slots_declared": 30,
+    "reachable": 17
    },
    {
     "weapon_id": "whp_hide_lash",
     "class": "WHP",
     "declared_reach": 3.6,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 3.6
-    }
+    "live_id": "whp_hide_lash",
+    "live_class": "WHP",
+    "live_reach": 3.6,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "whp_hist_bindings",
     "class": "WHP",
     "declared_reach": 3.781,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 3.781
-    }
+    "live_id": "whp_hist_bindings",
+    "live_class": "WHP",
+    "live_reach": 3.781,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "whp_root_tendril",
     "class": "WHP",
     "declared_reach": 3.696,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 3.696
-    }
+    "live_id": "whp_root_tendril",
+    "live_class": "WHP",
+    "live_reach": 3.696,
+    "slots_declared": 33,
+    "reachable": 16
    },
    {
     "weapon_id": "whp_salt_scourge",
     "class": "WHP",
     "declared_reach": 3.421,
+    "declared_slots": 33,
     "ok": true,
-    "equipped": {
-     "reach": 3.421
-    }
+    "live_id": "whp_salt_scourge",
+    "live_class": "WHP",
+    "live_reach": 3.421,
+    "slots_declared": 33,
+    "reachable": 16
    }
   ]
  },
  "B2": {
   "total": 20,
-  "contextual": 0,
-  "CFS_live_browser": 0,
+  "contextual": 16,
+  "CFS_live_browser": 0.8,
   "rows": [
    {
     "weapon": "dagger",
     "state": "ROLL",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 33,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_dgr_shell_knife_r1_1",
+    "baseline_len": 42,
+    "slot": "roll.r1",
+    "anim": "clip_shell_roll_r1",
+    "len": 39,
+    "states_seen": "IDLE>RUN>ROLL_STARTUP>ROLL_IFRAME>ROLL_RECOVER>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "dagger",
     "state": "BACKSTEP",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 19,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_dgr_shell_knife_r1_1",
+    "baseline_len": 42,
+    "slot": "backstep.r1",
+    "anim": "clip_shell_backstep_r1",
+    "len": 37,
+    "states_seen": "IDLE>BACKSTEP>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "dagger",
     "state": "SPRINT",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 31,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_dgr_shell_knife_r1_1",
+    "baseline_len": 42,
+    "slot": "run.r1",
+    "anim": "clip_shell_run_r1",
+    "len": 38,
+    "states_seen": "IDLE>SPRINT>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "dagger",
     "state": "AIRBORNE",
-    "baseline": null,
+    "press_frame": 17,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_dgr_shell_knife_r1_1",
+    "baseline_len": 42,
     "slot": null,
-    "drop": "nothing-fired"
+    "anim": null,
+    "len": null,
+    "states_seen": "IDLE>JUMP_RISE>JUMP_AIR>JUMP_LAND"
    },
    {
     "weapon": "dagger",
     "state": "BLOCK",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 7,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_dgr_shell_knife_r1_1",
+    "baseline_len": 42,
+    "slot": "shield.bash",
+    "anim": "shield_bash_medium",
+    "len": 52,
+    "states_seen": "IDLE>BLOCK_HOLD>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "straight-sword",
     "state": "ROLL",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 33,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ssw_garrison_sword_r1_1",
+    "baseline_len": 74,
+    "slot": "roll.r1",
+    "anim": "clip_garrison_roll_r1",
+    "len": 68,
+    "states_seen": "IDLE>RUN>ROLL_STARTUP>ROLL_IFRAME>ROLL_RECOVER>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "straight-sword",
     "state": "BACKSTEP",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 19,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ssw_garrison_sword_r1_1",
+    "baseline_len": 74,
+    "slot": "backstep.r1",
+    "anim": "clip_garrison_backstep_r1",
+    "len": 64,
+    "states_seen": "IDLE>BACKSTEP>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "straight-sword",
     "state": "SPRINT",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 31,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ssw_garrison_sword_r1_1",
+    "baseline_len": 74,
+    "slot": "run.r1",
+    "anim": "clip_garrison_run_r1",
+    "len": 67,
+    "states_seen": "IDLE>SPRINT>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "straight-sword",
     "state": "AIRBORNE",
-    "baseline": null,
+    "press_frame": 17,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ssw_garrison_sword_r1_1",
+    "baseline_len": 74,
     "slot": null,
-    "drop": "nothing-fired"
+    "anim": null,
+    "len": null,
+    "states_seen": "IDLE>JUMP_RISE>JUMP_AIR>JUMP_LAND"
    },
    {
     "weapon": "straight-sword",
     "state": "BLOCK",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 7,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ssw_garrison_sword_r1_1",
+    "baseline_len": 74,
+    "slot": "shield.bash",
+    "anim": "shield_bash_medium",
+    "len": 52,
+    "states_seen": "IDLE>BLOCK_HOLD>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "axe",
     "state": "ROLL",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 33,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_axe_shell_splitter_r1_1",
+    "baseline_len": 92,
+    "slot": "roll.r1",
+    "anim": "clip_splitter_roll_r1",
+    "len": 84,
+    "states_seen": "IDLE>RUN>ROLL_STARTUP>ROLL_IFRAME>ROLL_RECOVER>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "axe",
     "state": "BACKSTEP",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 19,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_axe_shell_splitter_r1_1",
+    "baseline_len": 92,
+    "slot": "backstep.r1",
+    "anim": "clip_splitter_backstep_r1",
+    "len": 79,
+    "states_seen": "IDLE>BACKSTEP>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "axe",
     "state": "SPRINT",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 31,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_axe_shell_splitter_r1_1",
+    "baseline_len": 92,
+    "slot": "run.r1",
+    "anim": "clip_splitter_run_r1",
+    "len": 82,
+    "states_seen": "IDLE>SPRINT>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "axe",
     "state": "AIRBORNE",
-    "baseline": null,
+    "press_frame": 17,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_axe_shell_splitter_r1_1",
+    "baseline_len": 92,
     "slot": null,
-    "drop": "nothing-fired"
+    "anim": null,
+    "len": null,
+    "states_seen": "IDLE>JUMP_RISE>JUMP_AIR>JUMP_LAND"
    },
    {
     "weapon": "axe",
     "state": "BLOCK",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 7,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_axe_shell_splitter_r1_1",
+    "baseline_len": 92,
+    "slot": "shield.bash",
+    "anim": "shield_bash_medium",
+    "len": 52,
+    "states_seen": "IDLE>BLOCK_HOLD>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "ultra-greatsword",
     "state": "ROLL",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 33,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ugs_golem_sword_r1_1",
+    "baseline_len": 166,
+    "slot": "roll.r1",
+    "anim": "clip_golem_roll_r1",
+    "len": 152,
+    "states_seen": "IDLE>RUN>ROLL_STARTUP>ROLL_IFRAME>ROLL_RECOVER>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "ultra-greatsword",
     "state": "BACKSTEP",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 19,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ugs_golem_sword_r1_1",
+    "baseline_len": 166,
+    "slot": "backstep.r1",
+    "anim": "clip_golem_backstep_r1",
+    "len": 142,
+    "states_seen": "IDLE>BACKSTEP>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "ultra-greatsword",
     "state": "SPRINT",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 31,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ugs_golem_sword_r1_1",
+    "baseline_len": 166,
+    "slot": "run.r1",
+    "anim": "clip_golem_run_r1",
+    "len": 149,
+    "states_seen": "IDLE>SPRINT>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    },
    {
     "weapon": "ultra-greatsword",
     "state": "AIRBORNE",
-    "baseline": null,
+    "press_frame": 17,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ugs_golem_sword_r1_1",
+    "baseline_len": 166,
     "slot": null,
-    "drop": "nothing-fired"
+    "anim": null,
+    "len": null,
+    "states_seen": "IDLE>JUMP_RISE>JUMP_AIR>JUMP_LAND"
    },
    {
     "weapon": "ultra-greatsword",
     "state": "BLOCK",
-    "baseline": null,
-    "slot": null,
-    "drop": "nothing-fired"
+    "press_frame": 7,
+    "baseline_slot": "r1.1",
+    "baseline_anim": "clip_w_ugs_golem_sword_r1_1",
+    "baseline_len": 166,
+    "slot": "shield.bash",
+    "anim": "shield_bash_medium",
+    "len": 52,
+    "states_seen": "IDLE>BLOCK_HOLD>ATK_STARTUP>ATK_ACTIVE>ATK_RECOVER"
    }
   ]
  }

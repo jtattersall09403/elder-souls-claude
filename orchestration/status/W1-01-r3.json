@@ -18,7 +18,11 @@
     "tools/world/build-signatures.mjs",
     "game/data/world/signatures.json",
     "game/data/world/traversal.json",
-    "game/src/sim/traversal.js"
+    "game/src/sim/traversal.js",
+    "game/src/sim/hazards.js",
+    "tools/world/hazard-fire.mjs",
+    "game/src/world/signature-geo.js",
+    "tools/world/build-signatures.mjs"
   ],
   "findings": [
     "BASELINE CONFIRMED (probe critic-w1-01-r2-loco.mjs re-run at HEAD): L1 70.63 deg walked at full stick, state WALK; L2 150 m drop HP unchanged; L3 8.28 m water -> 1.1 m/s but stamina 120->120.",
@@ -35,8 +39,12 @@
     "S17 NEAR-MISS FOUND AND FIXED: applying RI-WLD10 \u00a74's substrate multiplier to the raster under the road took the crossing to mean 1.9032 m/s with 9.7% of samples below the honesty floor. RI-WLD10 \u00a74's own FIRM row names 'root-wood roads, boardwalk' as FIRM, so field.substrateAt returns FIRM on the carriageway. The hour is distance again.",
     "SLOPE GATE: four instruments tried. per-frame rise (useless at 60 Hz: a wall gives a 3 cm rise), rise+threshold (trips on 0.57 m pad/road step discontinuities, stalled the crossing at 321 m), omnidirectional slopeAt (a road on a 2.4 m embankment reads 40 deg ACROSS a surface flat ALONG it, stalled at 502 m), and finally DIRECTIONAL slope over a 3 m lookahead with the carriageway and bridge decks exempt. That last one works and is the one shipped.",
     "scale-audit: M2-ROAD-CUT-AND-FILL now re-measures from the terrain sub-sampled at 3 m along and across (not read out of roads.json), and SPLITS earth embankment from deck span. Result: cut 3.00 m (was 3.62 at 3 m sampling while the tool reported 3.0), tallest EARTH embankment 6.85 m (was 17.52), tallest deck span 33.34 m over 1,679 m of structure. New check M2b-DECK-SPANS-ARE-STRUCTURES: 15/15 spans read by field.onDeckAt() with >=3.62 m clearance under them (RI-MTH07 consumption).",
-    "M1-SETTLEMENT-FLAT regression found and fixed mid-work: dilating from the cut lower bound alone puts the road exactly MAX_CUT below flat ground, which drove a 3 m trench through all eight settlements (23.0 deg). Fixed by taking max(dilation(L), erosion(ground)) - both grade-feasible, so the max is too. Back to 6.8 deg."
+    "M1-SETTLEMENT-FLAT regression found and fixed mid-work: dilating from the cut lower bound alone puts the road exactly MAX_CUT below flat ground, which drove a 3 m trench through all eight settlements (23.0 deg). Fixed by taking max(dilation(L), erosion(ground)) - both grade-feasible, so the max is too. Back to 6.8 deg.",
+    "camera(): unknown pose keys now THROW with a closed vocabulary [pos, look, fov, mode, lockOn]; pos/look shape and fov range validated; camera({}) is now a pure READ (it used to install an override at the current pose, i.e. asking where the camera was froze it).",
+    "HAZARDS: game/src/sim/hazards.js reads hazards.json as the only source of magnitudes. 9 of 19 are ANCHORED on placed signature geometry (kiln domes, comb cliffs, voriplasm, dye vats, boles, welkynd pillars, root arches), 10 are terrain/water/weather conditions. SHELTER table implements RI-WLD11 H3 route/knowledge counters using the region's own ONLY-HERE element: a crater shelters from the salt-storm, the knife-marked stems are the safe path through the thicket, the Imperial road shelters from ridge-exposure.",
+    "SIX of the nineteen hazards have damage.kind 'none' by design (RI-WLD11 M57 requires >=6). A health-bar probe cannot measure a VECTOR/GATE/STRANDING firing - that is why round 2's centroid probe read 620->620. They now fire with a consequence (affliction / route_closed) and a hazard_fired event carrying it.",
+    "NIGHT: six regions own an emissive signature element; Province.updateSignatureLights() places up to 6 bounded point lights of the region's own glow colour, driven from the same sun elevation the sky uses. An emissive material alone lights nothing around it, which is why round 2's night frames were near-black."
   ],
-  "next_step": "camera() closed key vocabulary; hazard system; region shots + dispersion",
+  "next_step": "rebuild region shot pack; run dispersion + structure-only + night LOO",
   "notes_for_successor": ""
 }

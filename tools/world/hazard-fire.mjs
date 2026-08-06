@@ -68,7 +68,7 @@ try {
         }
       }
     }
-    const res = await handle.page.evaluate(async ({ hz, sites, weather, tide }) => {
+    const res = await handle.page.evaluate(async ({ hz, hzLead, sites, weather, tide }) => {
       const H = window.__HARNESS;
       H.loadState('default');
       if (weather) H.setWeather(weather);
@@ -92,13 +92,21 @@ try {
         }
         return { entered: false, closest: best };
       }
-      // Approach from 60 m out so the telegraph has somewhere to happen, then stand for 60 s.
-      H.teleport(found.x + 60, found.z);
-      H.stepFrames(2);
+      // Approach from 60 m out so the telegraph has somewhere to happen, then stand. The trace
+      // starts BEFORE the approach or the `hazard_tell` lands outside the window that records it.
+      // The stand is 60 s, or 40 s past the declared tell lead where that lead is longer — a
+      // salt-storm declares 40 s of warning and a thirst clock 60 s, and a 60 s probe would record
+      // "did not fire" for a hazard that is behaving exactly as its own declaration says.
+      H.loadState('default');
+      if (weather) H.setWeather(weather);
+      if (tide) H.setTide(tide);
+      H.setTimeOfDay(12);
       H.traceStart({ events: true });
+      H.teleport(found.x + 60, found.z);
+      H.stepFrames(4);
       const before = H.getPlayerStats();
       H.teleport(found.x, found.z);
-      H.stepFrames(3600);
+      H.stepFrames(Math.max(3600, Math.round((hzLead + 40) * 60)));
       const after = H.getPlayerStats();
       const rep = H.getHazardReport();
       const row = rep.here.find((q) => q.id === hz) || null;
@@ -114,7 +122,7 @@ try {
         tell_frame: (evs.find((e) => e.type === 'hazard_tell') || {}).f ?? null,
         first_damage_frame: row ? row.first_damage_frame : null,
       };
-    }, { hz: h.id, sites, weather: WEATHER_FOR[h.id] || null, tide: TIDE_FOR[h.id] || null });
+    }, { hz: h.id, hzLead: h.tell.lead_s, sites, weather: WEATHER_FOR[h.id] || null, tide: TIDE_FOR[h.id] || null });
 
     const fired = !!(res.entered && res.row && res.row.fired);
     out.hazards.push({ id: h.id, class: h.class, damage: h.damage, tell: h.tell, regions: h.regions, fired, ...res });

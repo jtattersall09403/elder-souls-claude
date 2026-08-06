@@ -322,6 +322,40 @@ export class SignatureField {
     return hit ? [ox, oz] : null;
   }
 
+  /**
+   * Distance to the nearest instance of `kind`, or Infinity beyond `maxR`.
+   *
+   * Bucketed, because the hazard system asks this every frame for every hazard live in the region
+   * and The Stone Forest declares four hundred petrified boles: a linear scan is 800 distance tests
+   * per frame, which is 165 million over the 207,000 frames of THE CROSSING.
+   */
+  nearestOfKind(kind, x, z, maxR) {
+    if (!this.kindGrid) {
+      this.kindCell = 48;
+      this.kindGrid = new Map();
+      for (const it of this.items) {
+        const k = `${it.kind}:${Math.floor(it.x / this.kindCell)}:${Math.floor(it.z / this.kindCell)}`;
+        if (!this.kindGrid.has(k)) this.kindGrid.set(k, []);
+        this.kindGrid.get(k).push(it);
+      }
+    }
+    const c = this.kindCell;
+    const rad = Math.ceil(maxR / c);
+    const cx = Math.floor(x / c), cz = Math.floor(z / c);
+    let best = Infinity;
+    for (let ix = cx - rad; ix <= cx + rad; ix++) {
+      for (let iz = cz - rad; iz <= cz + rad; iz++) {
+        const b = this.kindGrid.get(`${kind}:${ix}:${iz}`);
+        if (!b) continue;
+        for (let i = 0; i < b.length; i++) {
+          const d = Math.hypot(b[i].x - x, b[i].z - z);
+          if (d < best) best = d;
+        }
+      }
+    }
+    return best;
+  }
+
   inRegion(id) { return this.byRegion.get(id) || this.EMPTY; }
   ofKind(k) { return this.byKind.get(k) || this.EMPTY; }
 

@@ -1,0 +1,15 @@
+{
+  "task_id": "W1-15-r2-critic",
+  "brief": "critic round 2 for W1-15 stealth and crime",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-15-r2.json",
+    "corpus/90-verdicts/wave1/W1-15-r2.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-15-r2/"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "confirm boot with tools/harness/smoke.mjs; read ARBITRATION S21/S13/S22, RI-MTH07, SCORING S0, round-1 verdict",
+  "notes_for_successor": ""
+}

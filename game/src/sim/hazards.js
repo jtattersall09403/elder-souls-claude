@@ -87,8 +87,7 @@ const SHELTER = {
 
 function nearKind(sig, c, kind, r) {
   if (!sig) return false;
-  for (const it of sig.ofKind(kind)) if (Math.hypot(it.x - c.x, it.z - c.z) <= r) return true;
-  return false;
+  return sig.nearestOfKind(kind, c.x, c.z, r) <= r;
 }
 
 export class Hazards {
@@ -119,6 +118,7 @@ export class Hazards {
 
   reset() {
     this.active = new Map();          // hazard id -> { since, told, damageFrom }
+    this.spent = new Set();           // TRAP/KILL ids that have fired and not yet been left
     this.told = new Map();            // hazard id -> frame the tell fired
     this.events = [];
     this.lastReport = [];
@@ -153,12 +153,7 @@ export class Hazards {
   _anchorDist(h, ctx) {
     const a = ANCHOR[h.id];
     if (!a || !this.sig) return null;
-    let best = Infinity;
-    for (const it of this.sig.ofKind(a.kind)) {
-      const d = Math.hypot(it.x - ctx.x, it.z - ctx.z);
-      if (d < best) best = d;
-    }
-    return { d: best, r: a.r };
+    return { d: this.sig.nearestOfKind(a.kind, ctx.x, ctx.z, Math.max(a.r, h.tell.range_m)), r: a.r };
   }
 
   /**
@@ -215,7 +210,8 @@ export class Hazards {
       }
       if (!suppressed && approach > h.tell.range_m * 1.35) this.told.delete(h.id);
 
-      if (inside && !st) {
+      if (!inside) this.spent.delete(h.id);
+      if (inside && !st && !this.spent.has(h.id)) {
         const toldAt = this.told.has(h.id) ? this.told.get(h.id) : f;
         const entry = { since: f, damageFrom: toldAt + Math.round(h.tell.lead_s * 60), ticks: 0, dealt: 0 };
         this.active.set(h.id, entry);
@@ -275,8 +271,10 @@ export class Hazards {
             e.hazard = h.id; e.outcome = 'death';
           }
         }
-        // A TRAP fires once and then the volume is spent until you leave and come back.
-        if (h.class === 'TRAP' || h.class === 'KILL') { this.active.delete(h.id); }
+        // A TRAP fires ONCE and the volume is then spent until you leave it and come back.
+        // Without `spent` the entry re-armed on the next frame while the player was still inside,
+        // so a 16%-of-max-HP comb collapse fired sixty times a second and read as a kill volume.
+        if (h.class === 'TRAP' || h.class === 'KILL') { this.active.delete(h.id); this.spent.add(h.id); }
       }
 
       // H9: hazards hurt everyone. The same volume, the same declared magnitude, no player term.
