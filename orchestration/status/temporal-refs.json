@@ -8,7 +8,12 @@
     "corpus/70-visual/refs/video/**",
     "corpus/70-visual/refs/souls-behaviour/** (temporal additions)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/70-visual/refs/TEMPORAL-ACQUISITION.md (WIP, s0-s1 written)",
+    "corpus/70-visual/refs/souls-behaviour/telegraph/ds1-moves/ (170 DS1 per-move boss animation GIFs)",
+    "corpus/70-visual/refs/souls-behaviour/{attacks,stance,impact,death,arena,telegraph}/ (30 more GIFs: DS3 parries/weapon arts, ER movesets/quickstep/enemy AoW)",
+    "200 records merged into corpus/70-visual/refs/_provenance.json; acquire.py --check = 578/578 OK"
+  ],
   "findings": [
     "BREAKTHROUGH: static.wikia.nocookie.net DOES serve original GIF bytes. Append `?format=original` to the bare image path (https://static.wikia.nocookie.net/<wiki>/images/x/xx/Name.gif?format=original) -> 200, content-type image/gif, byte length EXACTLY equal to the API's imageinfo `size`. Verified on File:Artorias - Heavy Slam.gif: 605902 bytes GIF89a 210x118, vs 220726-byte animated WebP on every other variant. ACQUISITION-CRITIQUE-R1's finding 'the true GIF bytes are not obtainable' is FALSE and should be corrected. `/revision/latest?format=original` also works. Bare path, ?cb=, Accept: image/gif, vignette.wikia host, browser UA -> all still WebP.",
     "darksouls.fandom.com/api.php Category:Dark Souls: Boss Attack Animations = 12 files, all .gif (10 Artorias/arrow/orb/sphere).",
@@ -16,8 +21,12 @@
     "ffmpeg/ffprobe were NOT installed and apt-get install ffmpeg FAILS (Ubuntu archive 404s on mesa-va-drivers deps). Fixed by static build: curl -sL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz, untar, cp ffmpeg ffprobe /usr/local/bin. Needed for yt-dlp --download-sections (stream-copy range extraction, not a re-encode).",
     "reddit.com AND old.reddit.com .json endpoints are BOTH 403 (189908-byte block page) even with a browser UA. Reddit route is dead for this container.",
     "elderscrolls.fandom.com has 369 animated files but they are Arena/Daggerfall cutscene GIFs, Legends card art and shop signs. ZERO Morrowind in-engine animation. Dead end for Morrowind temporal reference.",
-    "darksouls3.fandom.com/api.php returns byte-identical results to darksouls.fandom.com (same 12056 images) - it is an alias/redirect, not a separate wiki. Do not enumerate both."
+    "darksouls3.fandom.com/api.php returns byte-identical results to darksouls.fandom.com (same 12056 images) - it is an alias/redirect, not a separate wiki. Do not enumerate both.",
+    "200 wiki GIFs committed = 378.0 MB, 18,447 decoded frames total. All verify byte-for-byte through acquire.py --check (578/578). GIF budget 400MB: 22MB headroom left.",
+    "Fandom `list=allimages&aimime=image/gif` returns ZERO (miser mode). Must walk allimages unfiltered (500/page, ~24 pages per wiki) and filter by mime locally.",
+    "`action=query&prop=fileusage&titles=File:A|File:B|...` (40 titles/request) resolves what an unlabelled wiki file depicts from the article embedding it. Identified 7 of 37 unlabelled ER GIF_20240621_*.gif files this way; the other 30 are orphaned.",
+    "DS wiki holds a COMPLETE per-move library: 190 clips at 210x118 named <Boss>-<Move> across 23 DS1 bosses. 170 vendored (<=2.6MB cap); 20 catalogued-not-downloaded (>2.6MB, 69MB) - see TEMPORAL-ACQUISITION.md."
   ],
-  "next_step": "finish GIF fetch; then Invidious clips via yt-dlp --download-sections",
+  "next_step": "finish clip downloads via yewtu.be; then archive.org sparse-range; then substitutes",
   "notes_for_successor": "Constraints: <=40MB/file, <=250MB total for video/. Never re-encode. pixel_metrics_valid:false on all temporal media."
 }

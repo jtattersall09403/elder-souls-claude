@@ -1,0 +1,17 @@
+{
+  "task_id": "ref-builder-r2",
+  "brief": "inline (round 2 reference builder; spec = corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.md)",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/70-visual/refs/reference-metrics.json (block_score exposure-relative, metrics_valid_for, has_hud/slot/side/game per-file)",
+    "corpus/70-visual/refs/_provenance.json (ghost records removed / catalogued-not-vendored distinguished)",
+    "corpus/70-visual/refs/souls-behaviour/anim/ (>=20 named-move sequences with frame_count+duration_s)",
+    "corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md (A9+ : RI-VIS03 exposure-relative, 3 IMPOSSIBLE lowered bars, V8 UI-chrome vanilla test)",
+    "corpus/70-visual/refs/MANIFEST.json (regenerated)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ACQUISITION-CRITIQUE-R2.md + .json, AMENDMENTS, REPORT s16, TEMPORAL-ACQUISITION",
+  "notes_for_successor": "Two critic findings are stale: A7 delivered (a21_member field, not folder); video/ non-empty. A concurrent temporal agent is writing _provenance.json -> ALWAYS load-modify-write."
+}
