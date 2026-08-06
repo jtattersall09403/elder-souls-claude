@@ -2,7 +2,7 @@
   "task_id": "W1-14",
   "brief": "wave-1 piece W1-14 - Magic (seam S19)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "game/data/magic/effects.json",
     "game/data/magic/spells.json",
@@ -10,7 +10,11 @@
     "game/src/sim/magic/*.js",
     "game/data/magic/README.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/data/magic/effects.json",
+    "game/data/magic/cast-classes.json",
+    "game/src/sim/magic/cost.js"
+  ],
   "findings": [
     "RI-MAG01: cast classes CANTRIP/LIGHT/HEAVY/GREAT/RITUAL with startup/active/recovery 14-3-20, 24-4-28, 36-6-40, 52-8-60, 150-12-48 (f@60). Ps={15,25,37,53}. Stamina 10/16/24/34/0. Focus mult 0.50/1.00/2.10/4.40/1.00.",
     "RI-MAG01: dual cost Focus+stamina both on frame 1, never refunded (except RITUAL abort). Focus NEVER regenerates outside HEARTH rest/respawn. 42-frame stamina regen delay re-armed.",
@@ -19,8 +23,10 @@
     "RI-MAG02: 55 effects in corpus/25-magic/data/effects.json (binding, must be mirrored to game/data/magic/effects.json). Schools Sorcery14/Root-Speech14/Warding15/Veiling12.",
     "RI-MAG02 D cost formula: focus_base=ceil(weight*(M^1.30+0.7*D^0.95+0.55*M^0.80*D^0.45)*(1+0.09*A^1.25)*range_mult/10); focus_cost=ceil(focus_base*class_mult*catalyst_mult*(1-skill_discount)). range_mult self0.70 touch0.85 target1.00 projectile1.15 area_at_range1.25. Tier bands <=12/13-30/31-65/66-120/>=121 -> req 0/25/45/65/85. gold=round(3.9*focus_base^1.75). Teleport 4 spells priced by min_tier instead (recall/intervention_root 3400, mark/intervention_imperial 900).",
     "RI-MAG02 F: levitate bounded by 4 mechanisms: drift 1.4m/s (< walk 2.0), climb 0.8m/s + 1.5 Focus per metre net altitude, AIRBORNE defenceless (any damage ends it), diegetic canopy/ceiling. NO prohibition flags anywhere (grep no_levitat|maxAltitude|ceilingClamp must be 0 hits).",
-    "RI-MAG02 G: mark/recall/intervention_root/intervention_imperial are RITUAL class; recall magnitude computed = distance/100m; aborts on damage/COMBAT/movement with Focus refund."
+    "RI-MAG02 G: mark/recall/intervention_root/intervention_imperial are RITUAL class; recall magnitude computed = distance/100m; aborts on damage/COMBAT/movement with Focus refund.",
+    "VERIFIED: game/src/sim/magic/cost.js reproduces every published RI-MAG02 figure exactly - nuke/balanced 73/25=2.92, weak 11, spark-dart focus_base 7, levitate 8/25/66, slowfall 3, focusMax curve 30/46/62/94/103/112/124, gold 219/872/3414 vs published 220/900/3400.",
+    "Engine integration plan: cast is a MOVE of kind 'cast' in the existing combat move table, so RI-CMB02 commitment machinery handles it. actor.js hitboxActive requires m.hitbox so a cast never makes a weapon hitbox; m.iframes undefined so casting can never grant i-frames. Dodge-cancel needs a kind==='cast' branch in player.js _inputDuringCommitment."
   ],
-  "next_step": "read RI-MAG03/04/05, corpus effects.json, HARNESS.md, game/ engine",
+  "next_step": "generate game/data/magic/spells.json (60 spells, tier mix 26/18/10/5/1, ~28000g) via tools/analysis generator",
   "notes_for_successor": ""
 }

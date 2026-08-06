@@ -18,6 +18,13 @@
 
 function smoothstep(t) { return t * t * (3 - 2 * t); }
 
+/** Sample `keys` at `p` with `A` scaling the excursion from the curve's terminal value. */
+function amp(keys, p, A) {
+  if (A === 1) return sampleCurve(keys, p);
+  const end = keys[keys.length - 1][1];
+  return end + (sampleCurve(keys, p) - end) * A;
+}
+
 /** Sample a key list [[phase, value], ...] at `p`, smoothstep between keys, clamped outside. */
 export function sampleCurve(keys, p) {
   const n = keys.length;
@@ -90,7 +97,18 @@ export class Clip {
 
   rootOffsetYAt(f) { return sampleCurve(this.rootOffsetY, this.phaseAt(f)); }
 
-  /** Write this frame's pose into a Rig's Euler arrays. Allocation-free. */
+  /**
+   * Write this frame's pose into a Rig's Euler arrays. Allocation-free.
+   *
+   * `amplitude` scales the EXCURSION FROM THE CLIP'S OWN TERMINAL POSE, not the absolute
+   * angle. The terminal pose (phase 3.0) of every attack archetype is the idle stance, so a
+   * heavy attack authored at amplitude 1.15 swings 15 % harder and still lands EXACTLY on the
+   * pose free locomotion holds. Scaling the absolute angle instead — which is what this did —
+   * multiplied the terminal pose too, so an amplitude-1.15 clip ended 15 % of an idle pose away
+   * from idle and the weapon jumped on the retire frame. For a clip authored around zero
+   * (rolls, staggers, the death collapse) the terminal is 0 and this is arithmetically
+   * identical to the old form.
+   */
   applyPose(rig, f) {
     rig.clearPose();
     const p = this.phaseAt(f);
@@ -99,9 +117,9 @@ export class Clip {
       const idx = rig.index.get(boneId);
       if (idx === undefined) continue;
       const t = this.tracks[boneId];
-      if (t.rx) rig.rx[idx] = sampleCurve(t.rx, p) * A;
-      if (t.ry) rig.ry[idx] = sampleCurve(t.ry, p) * A;
-      if (t.rz) rig.rz[idx] = sampleCurve(t.rz, p) * A;
+      if (t.rx) rig.rx[idx] = amp(t.rx, p, A);
+      if (t.ry) rig.ry[idx] = amp(t.ry, p, A);
+      if (t.rz) rig.rz[idx] = amp(t.rz, p, A);
     }
   }
 }

@@ -270,7 +270,13 @@ export function buildMoveTable(d, moveset, shieldId) {
   };
 
   // ---- non-committed loops ------------------------------------------------------------------
-  out._idle = new LoopClip('idle', arch.idle_ready, 96);
+  // `_idle` plays `idle_loop` — a breathing/weight-shift cycle with NO absolute arm pose —
+  // because the stance layer below ADDS `idle_ready` on top of whatever loop is playing. It
+  // used to play `idle_ready` itself, so a standing character held DOUBLE the authored idle
+  // pose while every attack clip ended on a single one: that difference is the 1.42–2.54 m
+  // single-frame weapon snap the W1-09 verdict §2.5 measured at the attack/idle boundary. See
+  // clips.json §archetypes.idle_loop.
+  out._idle = new LoopClip('idle', arch.idle_loop, 96);
   out._walk = new LoopClip('walk', arch.locomotion_cycle, 44);
   out._run = new LoopClip('run', arch.locomotion_cycle, 30);
   out._sprint = new LoopClip('sprint', arch.locomotion_cycle, 22);

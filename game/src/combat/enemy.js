@@ -81,7 +81,7 @@ export function buildEnemyMoves(stat, data, weapon) {
     states: { startup: 'GUARD_BREAK', active: 'GUARD_BREAK', recovery: 'GUARD_BREAK' },
     source: 'RI-CMB03 §D — "the identical rule applies to enemies"',
   };
-  out._idle = new LoopClip('e_idle', arch.idle_ready, stat.idle_anim_frames || 96);
+  out._idle = new LoopClip('e_idle', arch.idle_loop, stat.idle_anim_frames || 96);
   out._walk = new LoopClip('e_walk', arch.locomotion_cycle, 44);
   out._run = out._walk; out._sprint = out._walk;
   out._blockPose = arch.block_hold;

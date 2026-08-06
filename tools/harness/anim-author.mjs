@@ -35,7 +35,7 @@
 //     solved for as a blend `cock + t·(hit − cock)`. Raising `t` moves arc out of the active
 //     window and into the startup where the hitbox is not live; the solver picks the largest
 //     `t` on a 0.001 grid at which EVERY class using that archetype measures a peak tip speed
-//     at or under RI-CMB04 §B's declared column, with a 4 % margin. One parameter, solved
+//     at or under RI-CMB04 §B's declared column, with a 1 % margin. One parameter, solved
 //     against the item's own number, not fourteen hand-tuned curves.
 //
 // Run: node tools/harness/anim-author.mjs [--write]   (default is a dry run)
@@ -78,13 +78,13 @@ const IDLE_LOOP = {
   root_forward: [[0.0, 0.0], [3.0, 0.0]],
   root_offset: { y: [[0.0, 0.0], [0.75, -0.008], [1.5, 0.0], [2.25, -0.008], [3.0, 0.0]] },
   tracks: {
-    spine_00: { rx: [[0.0, 0], [0.75, 1.1], [1.5, 0], [2.25, -1.1], [3.0, 0]] },
-    spine_02: { ry: [[0.0, 0], [1.0, 1.4], [2.0, -1.4], [3.0, 0]] },
-    neck: { rx: [[0.0, 0], [1.5, 1.2], [3.0, 0]] },
-    upperarm_r: { rx: [[0.0, 0], [1.5, 2.2], [3.0, 0]] },
-    upperarm_l: { rx: [[0.0, 0], [1.5, -2.2], [3.0, 0]] },
-    thigh_l: { rx: [[0.0, 0], [1.5, 0.8], [3.0, 0]] },
-    thigh_r: { rx: [[0.0, 0], [1.5, -0.8], [3.0, 0]] },
+    spine_00: { rx: [[0.0, 0], [0.75, 0.45], [1.5, 0], [2.25, -0.45], [3.0, 0]] },
+    spine_02: { ry: [[0.0, 0], [1.0, 0.55], [2.0, -0.55], [3.0, 0]] },
+    neck: { rx: [[0.0, 0], [1.5, 0.5], [3.0, 0]] },
+    upperarm_r: { rx: [[0.0, 0], [1.5, 0.8], [3.0, 0]] },
+    upperarm_l: { rx: [[0.0, 0], [1.5, -0.8], [3.0, 0]] },
+    thigh_l: { rx: [[0.0, 0], [1.5, 0.35], [3.0, 0]] },
+    thigh_r: { rx: [[0.0, 0], [1.5, -0.35], [3.0, 0]] },
   },
 };
 
@@ -252,6 +252,18 @@ function buildArch(def, t) {
       ];
     }
   }
+  // Every channel `idle_ready` holds MUST appear in every attack archetype, even if the swing
+  // does not move it: a channel the archetype is silent about is written as 0 by
+  // Clip.applyPose(), which is NOT the idle value, so the first and last frames of the clip
+  // would differ from the idle pose by exactly that channel. That is a boundary snap with no
+  // motion in it at all — 6 degrees of shoulder is 0.27 m at a spear's tip — and it is why the
+  // spear and halberd still stepped 0.11-0.22 m after the terminal-pose rule went in.
+  for (const bone of Object.keys(IDLE)) {
+    for (const ch of Object.keys(IDLE[bone])) {
+      tracks[bone] = tracks[bone] || {};
+      if (!tracks[bone][ch]) tracks[bone][ch] = [[0.0, IDLE[bone][ch]], [3.0, IDLE[bone][ch]]];
+    }
+  }
   return {
     note: def.note,
     solved_startup_blend: t,
@@ -260,7 +272,7 @@ function buildArch(def, t) {
       'active band then runs to `hit` in four evenly spaced keys, and the recovery decelerates ' +
       'onto the idle pose. `t` is solved by tools/harness/anim-author.mjs as the SMALLEST blend ' +
       'at which every class using this archetype measures a peak tip speed at or under its ' +
-      'RI-CMB04 §B declared column with a 4 % margin — smallest, so that as much of the arc as ' +
+      'RI-CMB04 §B declared column with a 1 % margin — smallest, so that as much of the arc as ' +
       'possible is inside the hitbox-active window rather than hidden in the windup.',
     root_forward: def.root_forward,
     root_offset: { y: def.root_offset_y },
@@ -305,7 +317,7 @@ function peakActiveTip(clip, w, m) {
 }
 
 // ---- solve ------------------------------------------------------------------------------
-const MARGIN = 0.96;      // 4 % under the declared column
+const MARGIN = 0.99;      // 1 % under the declared column
 const solved = {};
 for (const name of Object.keys(ARCH)) {
   let best = 0;

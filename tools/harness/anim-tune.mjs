@@ -55,7 +55,7 @@ if (process.argv.includes('--json')) {
 function measure(weapon, mv, ms, m, clip) {
   const w = ms.weapon;
   const rig = new Rig(skel, hitgeo);
-  const idleLoop = new LoopClip('idle', clips.archetypes[clips.archetypes.idle_loop ? 'idle_loop' : 'idle_ready'], 96);
+  const idleLoop = new LoopClip('idle', clips.archetypes.idle_loop, 96);
   const idlePose = clips.archetypes.idle_ready;
   const pos = [0, 0, 0];
   const socketsOf = () => [rig.socketA.slice(), rig.socketB.slice()];
