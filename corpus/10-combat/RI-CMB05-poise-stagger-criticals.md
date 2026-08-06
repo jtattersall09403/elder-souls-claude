@@ -295,8 +295,24 @@ before the reveal.
 Mixed. `confidence: medium` overall, and deliberately lower than RI-CMB01–04 because the
 upstream behaviour this item imitates is itself contested in the community.
 
-- **`community-data`, confidence low–medium:** the existence and rough shape of the Dark
-  Souls III model — that poise health is a pool, that a hit's poise damage is scaled by the
+> **AMENDED wave 0 (corpus-audit) — orchestrator ruling **R3**. THE ATTRIBUTION IS WRONG; THE
+> MODEL IS NOT.** This item implements an **always-on depleting poise pool** (Dark Souls 1 /
+> Elden Ring) fused with **hyperarmour granted only on declared heavy-attack frames** (Dark
+> Souls 3), and attributes the whole thing to DS3. DS3 does not have an always-on poise pool.
+> **The fused model is not fictional: Elden Ring ships exactly that combination.** So this is a
+> **citation fix, not a redesign** — do not change the model. Cite Elden Ring for the
+> always-on-pool half and DS3 for the declared-frames-hyperarmour half, and say that the fusion
+> is Elden Ring's. Sources to add:
+> [Poise — Elden Ring Wiki (Fextralife)](https://eldenring.wiki.fextralife.com/Poise).
+> Source: `PROVENANCE-UPGRADE-02-SOULS.md` §4; recorded in `CORPUS-COHERENCE-01.md` §9c.
+>
+> **Also outstanding under seam S22 (rebase):** the parry windows and critical animation lengths
+> below are upstream-recalled *tick* counts adopted as 60 Hz frames and must be doubled. Not
+> applied by the audit — see `CORPUS-COHERENCE-01.md` §12.
+
+- **`community-data`, confidence low–medium** (**attribution amended — see above; the pool half
+  is Elden Ring, not DS3**)**:** the existence and rough shape of the model — that poise health
+  is a pool, that a hit's poise damage is scaled by the
   defender's Poise stat, that the stagger point is reached when poise health hits zero, that
   hyperarmour is granted only during declared frames of heavy attacks and generally requires
   two-handing on mid-weight classes, and that a fully charged strong attack increases poise

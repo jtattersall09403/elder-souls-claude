@@ -87,8 +87,16 @@ simulation step. Frame indices are 1-based and inclusive.
 > implement 13/11/5/0 at 60 Hz — and the question of whether the whole ladder should double is
 > an open design question, not a licence for a builder to improvise. See §A's unit warning.
 >
-> **This item owns the equip-load ladder outright, including the tier structure** (ruling wave 0
-> — see the block after §B's table).
+> **This item owns the equip-load ladder inside the fight, tier boundaries included**
+> (ARBITRATION seam **S23**). `RI-PRG07` owns out-of-fight encumbrance and may keep finer
+> granularity there provided its extra tiers have no in-fight effect.
+>
+> **UNDECLARED BLEND, now declared (orchestrator ruling R5).** This item pairs **DS3's 30/70
+> breakpoints** with **DS1's tier-DURATION model**. In DS3, light and medium rolls are the same
+> length and the light roll buys *distance* only; our 26 f / 30 f / 44 f ladder makes duration
+> scale with tier, which is DS1's model. That is defensible — it makes the tier legible from the
+> animation alone — but it is a third blend on top of the two §B already names, and it was not
+> stated. It is now.
 
 | Tier | Equip load | Startup (vulnerable) | **i-frames** | Recovery (vulnerable) | Total | Stamina | Ground distance | Speed of animation |
 |---|---|---|---|---|---|---|---|---|

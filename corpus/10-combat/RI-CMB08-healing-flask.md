@@ -134,7 +134,11 @@ On death: charges restored to maximum at the respawn point, with the rest of S6'
 | Enemies healing without the same commitment | An enemy that heals must use a ≥ 52-frame committed, interruptible animation and must lose the heal when interrupted |
 | Any speed-up ring, buff, or stat reducing the 65 frames | Frame counts are invariant (RI-CMB02 §D.7) |
 
-**Proposed seam ruling S16 (for the doctrine owner; NOT yet enacted).** Morrowind owns the
+**Proposed seam ruling ~~S16~~ — NUMBER WITHDRAWN, wave 0 (corpus-audit): S16 was taken by the
+dungeon census (8 loops / 82 caves) before this proposal was written. Same class of collision as
+the S20/S21 clash. The proposal below stands on its merits and needs a free number from the
+doctrine owner; ARBITRATION §2 is at S24 as of this wave. (For the doctrine owner; NOT yet
+enacted.)** Morrowind owns the
 alchemy economy — named potions, ingredients, merchants, gold prices — and that survives
 untouched outside the fight. But an instantly-consumed Restore Health potion inside the fight
 is an AR-1 Souls-leakage violation of the first order: it deletes the entire resource tension
@@ -290,6 +294,22 @@ happening.
     rather than the flask, and it is the one most likely to be skipped.
 
 ## Provenance note
+
+> **AMENDED wave 0 (corpus-audit) — orchestrator ruling **R5**: two undeclared blends, now
+> declared.**
+>
+> 1. **The flask mixes DS1 charge counts with DS3 upgrade rules.** Defensible — DS1's charge
+>    economy is the tighter one and DS3's upgrade path is the legible one — but it is a blend of
+>    two games, it was not stated, and a reader would reasonably have taken the whole model for
+>    one game's.
+> 2. **The percentage heal is ours.** It is `constructed`, not recalled, and this item must not
+>    be cited as a FromSoftware figure. (This item already forbade citing its numbers as
+>    FromSoftware figures, which is why the Souls verification pass was cheap here; the point is
+>    now made explicitly about the heal curve.)
+>
+> **Also outstanding under seam S22 (rebase):** the drink animation frames are upstream-recalled
+> tick counts adopted as 60 Hz frames and must be doubled. Not applied by the audit — see
+> `CORPUS-COHERENCE-01.md` §12. Source: `PROVENANCE-UPGRADE-02-SOULS.md` §5.
 
 `confidence: medium`, split by section.
 

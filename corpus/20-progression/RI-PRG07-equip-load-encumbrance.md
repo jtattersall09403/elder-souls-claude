@@ -76,7 +76,20 @@ Inventory weight is **not** counted. Consumables are **not** counted.
 > structure — **which is precisely what conflicts**, so the conflict was not resolvable by
 > reading the items.
 >
-> **Ruling: `RI-CMB01` owns the whole ladder, tier structure included.** Under ARBITRATION §1,
+> **SUPERSEDED IN PART by ARBITRATION seam S23** (orchestrator ruling R2, issued after this
+> edit): the split is **by domain**, not wholesale. `RI-CMB01` owns everything the tier does
+> **inside the fight** — tier boundaries as they gate roll behaviour, i-frames, roll distance,
+> roll stamina, recovery. **This item owns encumbrance outside the fight and MAY KEEP FINER
+> GRANULARITY THERE** — carrying capacity, world-map movement, fatigue, what you can loot and
+> haul — **provided its extra tiers have no in-fight effect whatsoever.** The 55% and 80% marks
+> may therefore survive as out-of-fight encumbrance bands (that is this item's call, and the
+> ruling licenses it); what they may not do is change an i-frame count, a roll distance, a roll
+> stamina cost or an in-fight regen multiplier. Where the two tables disagree on an in-fight
+> number, `RI-CMB01`'s value stands. The §2 table below is therefore the **in-fight** ladder and
+> is not independently settable; any out-of-fight ladder this item wants must be stated
+> separately and must be provably inert inside the fight.
+>
+> **Ruling as originally recorded by the audit (now the in-fight half of S23):** under ARBITRATION §1,
 > *"equip load changing roll type, distance and recovery"* is **inside the fight** and Souls is
 > authoritative there; the canonical path `combat.dodge.equipload` sits in `10-combat` under
 > `critic.combat`. The tiers exist for no purpose except to change roll behaviour, so the

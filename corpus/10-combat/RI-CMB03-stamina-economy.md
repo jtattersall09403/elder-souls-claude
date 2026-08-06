@@ -24,6 +24,23 @@ Above all: **stamina must gate inputs by dropping them, not by queueing them.** 
 attempted at 3 stamina does not happen, does not go into debt, and does not fire later. The
 player learns the bar by being denied.
 
+> **AMENDED wave 0 (corpus-audit) — orchestrator ruling **R4**: this is a `constructed` rule and
+> must not be presented as Souls behaviour.** No Souls game implements it. **DS3 lets stamina go
+> negative to −60**, and both DS1 and DS3 gate on `stamina > 0` — you may start an action you
+> cannot afford and pay the debt afterwards. Our drop-the-input rule is **ours**, and it is a
+> deliberately better fit for a trace-verifiable simulation: a dropped input is a discrete,
+> assertable event, and a debt is not.
+>
+> **Ruling: keep the rule, relabel the claim.** The rule stays exactly as written and stays
+> binding. What changes is that this paragraph no longer implies it is "what makes the economy
+> feel like Souls" — it is a documented divergence *from* Souls, and this item's own provenance
+> note was already correct in calling it constructed. The bar and the provenance note now agree.
+> Source: `PROVENANCE-UPGRADE-02-SOULS.md` §3/§11.3.
+>
+> **Not affected by seam S22 (the 30 Hz rebase):** this item derived its 42-frame regen pause
+> from a figure denominated in **seconds** (0.70 s at 60 Hz), which is the one place in the
+> corpus the conversion was done correctly. **Do not double it.**
+
 ## The reference artifact
 
 ### A. Pools and regeneration (`ES-STAM/1`)

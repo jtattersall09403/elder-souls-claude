@@ -16,7 +16,9 @@
     "verdicts": "node verdict-validate.mjs --all",
     "refs": "node refs/merge-manifest.mjs",
     "refs:check": "node refs/merge-manifest.mjs --strict",
-    "doctrine": "node corpus-index.mjs && node gap-ledger.mjs && node verdict-validate.mjs --all"
+    "doctrine": "node corpus-index.mjs && node gap-ledger.mjs && node verdict-validate.mjs --all",
+    "metrics": "node metrics/image-metrics.mjs",
+    "metrics:selftest": "node metrics/self-test.mjs"
   },
   "dependencies": {
     "@jsquash/avif": "^2.1.1",

@@ -988,3 +988,112 @@ yet, so 0 gaps — the ledger is correctly empty, not broken).
 
 **G7 is closed by a standing gate, not by this report.** The report discharges the manual half;
 `RI-MTH05` and `corpus-index.mjs --check` are what stop it happening again.
+
+
+---
+
+## 14. Orchestrator rulings R1–R7 (`orchestration/ORCHESTRATOR-RULINGS.md`)
+
+These landed **after** §9 was written and **supersede this audit's ruling in two places**. They
+are recorded here as the authority, with what was applied and what was not.
+
+### R1 / seam S22 — the 30 Hz rebase. **SUPERSEDES §9a.**
+
+**The orchestrator ruled REBASE. This audit had ruled DECLARE.** The orchestrator's ruling
+governs: all combat durations are rebased to 60 Hz by **doubling the upstream tick count**, and
+every frame figure in the corpus must state its unit — a frame count without a stated framerate
+is a defect.
+
+**Applied:** the unit is now declared everywhere it was ambiguous — `RI-CMB01` §A carries the
+warning and its DS1/DS3 columns are headed `@30 fps ticks`; ARBITRATION §1's I-frame row carries
+it; `constants.json` registers `combat.sim_step_hz` (60) and `combat.souls_tick_hz` (30) with the
+conversion. `RI-CMB05` and `RI-CMB08` carry an explicit note that their windows are outstanding
+under S22.
+
+**NOT applied — and this is the single largest outstanding item in the corpus.** The mechanical
+rebase itself was not performed, on the judgement that **a half-applied rebase is strictly worse
+than none**: doubling `RI-CMB01`'s roll ladder while `RI-CMB02`'s attack table stays unrebased
+would create a fresh, live contradiction between the two most load-bearing combat items, and the
+edit is large enough that finishing it inside this audit's remaining budget could not be
+guaranteed. **It must be done in one commit, by one agent, across the whole set:**
+
+| Item | What doubles |
+|---|---|
+| `RI-CMB01` | roll i-frames, startup, recovery, totals — the whole `ES-ROLL/1` ladder |
+| `RI-CMB02` | the entire `ES-FRAMES/1` attack table, §B heavies, §C's fixed backstab/riposte frames |
+| `RI-CMB05` | parry windows, critical animation lengths, stagger tiers, hyperarmour windows |
+| `RI-CMB08` | the 65-frame drink animation and `heal_secure_frames` |
+| `RI-AI02`, `RI-AI03` | windup and punish windows — **derived against the unrebased player numbers**, so they move with them |
+| `RI-WPN01`–`RI-WPN06` | all slot frame data |
+| `RI-CAM04` | the tracking cutoff |
+| **`RI-CMB03`** | **NOTHING — do not double the 42-frame regen pause.** It was derived from 0.70 s and is already correct at 60 Hz. It is the one place the conversion was done properly |
+| **`RI-CMB07`** | the exemplar trace is **invalidated** and must be regenerated. The orchestrator accepts that cost explicitly |
+
+Derived constraints that must be re-checked after the rebase, because they are ratios against
+frame counts: `RI-CMB02` §E's `recovery/startup` floors and the **6 f minimum startup** (§8a — at
+2× it should become 12 f, or be restated in milliseconds), `RI-AI03`'s `P_safe ≥ 15 f` floor
+against `RI-CMB08`'s `heal_secure_frames`, and `RI-CMB01` M5's cliff test.
+
+### R2 / seam S23 — equip load. **REFINES §9b.**
+
+This audit ruled the whole ladder to `RI-CMB01`. **S23 splits it by domain instead**, which is
+the better ruling: `RI-CMB01` owns everything the tier does **inside the fight** (boundaries as
+they gate roll behaviour, i-frames, roll distance, recovery); `RI-PRG07` owns **out-of-fight
+encumbrance and may keep finer granularity there** — carrying capacity, world-map movement,
+fatigue, hauling — **provided its extra tiers have no in-fight effect whatsoever**. On any
+in-fight disagreement `RI-CMB01` wins. **Applied:** `RI-PRG07` §2 now carries S23 explicitly and
+its 55%/80% marks are licensed to survive as out-of-fight bands. Both items' method scripts are
+reconciled (`RI-PRG07` method 4's four-transition assertion yields to `RI-CMB01` M5's two
+cliffs); **the scripts no longer fail each other.**
+
+### R3 — poise provenance. **APPLIED.**
+
+`RI-CMB05` implements an always-on depleting poise pool (DS1/Elden Ring) fused with
+hyperarmour-on-declared-frames (DS3), and attributed the whole thing to DS3, which does not have
+an always-on pool. **The fused model is not fictional — Elden Ring ships exactly that
+combination.** Citation fix, not a redesign; the model is untouched and the provenance note now
+says so.
+
+### R4 — the stamina floor. **APPLIED.**
+
+`RI-CMB03`'s drop-the-input-below-cost rule is a **construction**, not Souls behaviour: DS3 lets
+stamina go to −60 and both games gate on `stamina > 0`. It is a good construction for a
+trace-verifiable sim — a dropped input is a discrete assertable event, a debt is not — so the
+rule is kept and the **claim** is relabelled. The item's bar and its provenance note now agree;
+previously the bar called it "what makes the economy feel like Souls" while the provenance note
+correctly called it constructed.
+
+### R5 — two undeclared blends. **APPLIED.**
+
+`RI-CMB01` pairs DS3's 30/70 breakpoints with **DS1's tier-duration model** (in DS3 light and
+medium rolls are the same length and light buys distance only). `RI-CMB08`'s flask mixes **DS1
+charge counts with DS3 upgrade rules**, and its percentage heal is ours. Both are defensible;
+both now say so.
+
+### R6 — the two manifest defects. **NOT APPLIED, correctly.**
+
+The ruling itself says *"apply when Codex's set has landed"*, to avoid racing on `MANIFEST.json`.
+Restated so it is not lost: five `anti-generic/` records carry `side: "modern-fidelity"` where §9
+requires `"anti-generic"` — **this one matters**, because anything selecting the fidelity
+population by `side` would pull five *deliberately generic-fantasy* anchors into the set they
+exist to be measured against. And two mwscr images are filed under two slots each, so REF-A18 and
+REF-A19 are 4 images, not 5.
+
+### R7 / seam S24 — biome diversity. **NOT APPLIED — a content sweep, recorded.**
+
+Black Marsh is the *name*, not the terrain: thirteen regions, mountains through petrified forest
+through two different seas, and **water, tides and wetland belong to specific regions, never to
+the world globally**. Any item, brief or builder instruction implying a globally swampy world
+must be corrected, and `RI-WLD04`'s blind region-identification test (≥33/39 from unlabelled
+screenshots, ≥6 of 9 axes differing per pair) is the enforcement. **This is a sweep over world,
+art-direction, audio and encounter prose** — a search for a *tone* rather than a contradiction
+between two numbers — and it is the one queue item this audit could not scope reliably. It needs
+its own pass with the map open. Recorded here rather than half-done.
+
+### One more numbering collision found while applying these
+
+`RI-CMB08` §E proposes a seam ruling and numbers it **S16** — which was already taken by the
+dungeon census before that proposal was written. Same class of error as the S20/S21 clash. The
+number is withdrawn in the item and the proposal (in-fight healing consumables locked as topic
+lists are under S13) stands on its merits, awaiting a free number from the doctrine owner.
+ARBITRATION §2 is at **S24** as of this wave.
