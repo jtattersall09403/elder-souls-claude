@@ -17,7 +17,8 @@
     "corpus/12-weapons/moveset.schema.json",
     "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md",
     "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
-    "corpus/12-weapons/RI-WPN03-within-class-subtlety.md"
+    "corpus/12-weapons/RI-WPN03-within-class-subtlety.md",
+    "corpus/12-weapons/RI-WPN04-contextual-attacks.md"
   ],
   "findings": [
     "RI-CMB02 owns 7 classes x {R1,R2} frame data (dagger/straight sword/spear/axe/halberd/greatsword/ultra greatsword) + modifier table \u00a7C incl. rolling/running/jump attack multipliers. MUST cite, not restate. Pinned cells: straight sword R1 Ps=13, R2 Ps=26.",
@@ -28,8 +29,10 @@
     "HARNESS.md closed button set includes two_hand, swap_right, swap_left, parry, block \u2014 sufficient for RI-WPN06 scripting. No 'kick' button exists (kick must be a forward+heavy modifier or a new button = harness amendment).",
     "RI-WPN02 written: 15 classes, 12-dim fingerprint, D_min>=1.6 PASS / <1.0 HARD FAIL, plus grammar-only Dg_min>=1.0 PASS / <0.5 HARD FAIL (anti-gaming, catches 'one weapon on a weight slider').",
     "AMENDMENT REQUESTS to RI-CMB02 recorded in RI-WPN02 \u00a7B: (a) adopt the 8 new class rows into ES-FRAMES/1; (b) scope \u00a7E's adjacent-class >=2f startup rule to the 7-class spine only (arithmetically impossible at 15 classes); (c) strengthen \u00a7C's two-handed row from 'different clip, same frame counts' to the RI-WPN06 divergence requirement.",
-    "RI-WPN03: 87-weapon census, 15 class baselines, 16 signature weapons. Metrics UNQ/DEV/DEV_id/SHARE/VEC + Animation Reuse Index ARI=C/S_total with S_total=2085; pure-sharing floor ARI=0.171, PASS >=0.26, HARD FAIL <0.19 (= 'forty weapons, three animations'). Separation SEP=B_min/W_max >=1.4, within-class W_med band [0.35,1.00]."
+    "RI-WPN03: 87-weapon census, 15 class baselines, 16 signature weapons. Metrics UNQ/DEV/DEV_id/SHARE/VEC + Animation Reuse Index ARI=C/S_total with S_total=2085; pure-sharing floor ARI=0.171, PASS >=0.26, HARD FAIL <0.19 (= 'forty weapons, three animations'). Separation SEP=B_min/W_max >=1.4, within-class W_med band [0.35,1.00].",
+    "CORPUS DEFECT FOUND: RI-CMB02 is internally contradictory. \u00a7E requires >=6f startup for any player attack; \u00a7C's rolling multiplier x0.60 on \u00a7A's dagger 6f gives 4f. RI-WPN04 resolves by clamping to 6 (binds DGR+FST only) and files it as an amendment request against RI-CMB02.",
+    "CORPUS GAP: RI-CMB02 \u00a7C has no backstep-attack row and no guard-counter row. RI-WPN04 \u00a7A proposes both (backstep x0.65 st /x0.95 rec /x1.40 rootDz; guard counter x0.85 st /x1.05 rec /x1.30 MV /x1.60 poise) as amendment requests."
   ],
-  "next_step": "write RI-WPN04 (contextual attacks: roll/backstep/running/jumping, fallback detector)",
+  "next_step": "write RI-WPN05 (weapon feel: hitstop, material impact, whiff, mass)",
   "notes_for_successor": "DECISIONS LOCKED. 15 weapon classes with codes: DGR SSW CSW TSW FST SPR AXE MCE WHP HLB GSW CGS GHM UGS BOW. Weight tiers light/medium/heavy/ultra/ranged. 41 slot ids, 25 mandatory on melee, 7 on BOW. Slot ids are enumerated in moveset.schema.json $defs.slotId \u2014 treat that file as the vocabulary source of truth and keep every RI consistent with it. Fingerprint: D_min >= 1.6 PASS, < 1.0 HARD FAIL (RI-WPN02). Within-class distance band [0.35, 1.00] (RI-WPN03). New subsystem root weapon.* \u2014 collect every path used in front-matter and report in reply. Follow RI-AI05 as the structural template. Every Scoring section MUST carry the native-to-ladder 4/6/8 row (BAR-CRITIQUE W7)."
 }

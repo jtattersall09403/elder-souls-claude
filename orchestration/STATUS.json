@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-06T08:28:28.882Z",
+  "generated": "2026-08-06T08:45:04.524Z",
   "complete": 1,
   "total": 12,
   "tasks": [
@@ -16,152 +16,128 @@
     {
       "id": "weapons",
       "title": "Weapon movesets, per-weapon identity, dedicated weapon critic",
-      "state": "not-started",
-      "done": 0,
+      "state": "partial",
+      "done": 4,
       "expected": 7,
       "missing": [
-        "corpus/12-weapons/RI-WPN01*",
-        "corpus/12-weapons/RI-WPN02*",
-        "corpus/12-weapons/RI-WPN03*",
-        "corpus/12-weapons/RI-WPN04*",
         "corpus/12-weapons/RI-WPN05*",
         "corpus/12-weapons/RI-WPN06*",
         "corpus/12-weapons/WEAPON-CRITIC.md"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "write RI-WPN04 (contextual attacks: roll/backstep/running/jumping, fallback detector)",
+      "findings": 9
     },
     {
       "id": "uesp-mining",
       "title": "Mine the UESP extract; upgrade provenance from recall to measurement",
-      "state": "not-started",
-      "done": 0,
+      "state": "partial",
+      "done": 5,
       "expected": 7,
       "missing": [
-        "tools/uesp/uesp-query.mjs",
-        "tools/uesp/uesp-infobox.mjs",
-        "corpus/60-lore/data/blackmarsh-canon.json",
         "corpus/60-lore/data/argonian-names.json",
-        "corpus/30-quests/data/morrowind-quest-census.json",
-        "corpus/50-world/data/morrowind-world-census.json",
         "corpus/00-doctrine/PROVENANCE-UPGRADE-01.md"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "mine-blackmarsh.mjs -> corpus/60-lore/data/blackmarsh-canon.json; cross-check vs canon-facts.json",
+      "findings": 21
     },
     {
       "id": "journeys",
       "title": "User-journey corpus, journey-critic fleet, platform budget",
-      "state": "not-started",
-      "done": 0,
+      "state": "partial",
+      "done": 3,
       "expected": 11,
       "missing": [
         "corpus/88-journeys/RI-JRN02*",
         "corpus/88-journeys/RI-JRN03*",
-        "corpus/88-journeys/RI-JRN04*",
-        "corpus/88-journeys/RI-JRN05*",
         "corpus/88-journeys/RI-JRN06*",
         "corpus/88-journeys/RI-JRN07*",
         "corpus/88-journeys/RI-JRN08*",
         "corpus/88-journeys/JOURNEY-CRITIC-FLEET.md",
-        "corpus/85-platform/RI-PLT01*",
         "corpus/85-platform/RI-PLT02*",
         "corpus/85-platform/RI-PLT03*"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "write RI-JRN03 (desktop controls)",
+      "findings": 17
     },
     {
       "id": "experience",
       "title": "Played-experience critic, anecdote census, cross-system composition",
-      "state": "not-started",
-      "done": 0,
+      "state": "partial",
+      "done": 3,
       "expected": 8,
       "missing": [
-        "corpus/95-experience/RI-EXP03*",
-        "corpus/95-experience/RI-EXP04*",
-        "corpus/95-experience/RI-EXP05*",
         "corpus/95-experience/RI-EXP06*",
         "corpus/95-experience/RI-CMP01*",
         "corpus/95-experience/RI-CMP02*",
         "corpus/95-experience/RI-CMP03*",
         "corpus/95-experience/CROSS-SYSTEM-BUILDER-BRIEF.md"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "write RI-EXP05 endings and the last hour (PONR at >=94% of run, diegetic signalling >=2 channels, 0 modal dialogs; anticlimax operationalised as LOW SPECTACLE + HIGH SPECIFICITY: cutscene<=90s, boss phases<=3, ending text cites >=3 player-specific facts; antagonist_refuted_by_game must be false; blind pair vs Vivec/Dagoth Ur + Gwyn; sabotage SAB-C margin >=70%)",
+      "findings": 14
     },
     {
       "id": "magic",
       "title": "Magic: casting, effect catalogue, spellmaking, enchanting, quest use",
-      "state": "not-started",
-      "done": 0,
+      "state": "partial",
+      "done": 1,
       "expected": 5,
       "missing": [
-        "corpus/25-magic/RI-MAG01*",
         "corpus/25-magic/RI-MAG02*",
         "corpus/25-magic/RI-MAG03*",
         "corpus/25-magic/RI-MAG04*",
         "corpus/25-magic/RI-MAG05*"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "write RI-MAG02 + data/effects.json (>=40 effects, >=12 out-of-fight; levitation + teleport rulings)",
+      "findings": 20
     },
     {
       "id": "character-stealth-crime",
       "title": "Character creation, race, birthsign; stealth, theft, crime and justice",
-      "state": "not-started",
-      "done": 0,
+      "state": "partial",
+      "done": 3,
       "expected": 7,
       "missing": [
-        "corpus/22-character/RI-CHR01*",
-        "corpus/22-character/RI-CHR02*",
-        "corpus/22-character/RI-CHR03*",
         "corpus/23-stealth-crime/RI-STL01*",
         "corpus/23-stealth-crime/RI-STL02*",
         "corpus/23-stealth-crime/RI-CRM01*",
         "corpus/23-stealth-crime/RI-CRM02*"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "22-character COMPLETE (CHR01/02/03). Now write RI-STL01 detection+sneak, then STL02, CRM01, CRM02. CHR03 exports: 9 signs, families given/withheld/turned, The Unlit Water carries shadowscale-claim (feeds CRM02), The Spilled changes respawn well, Dry Well = Atronach. CHR01 DONE: 8 inputs, 14 classes + custom, 12 questionnaire dilemmas, 540 signatures (10 race x 6 class-family x 3 birthsign-family x 3 upbringing-class), birthsign families must be named Given/Withheld/Turned in CHR03 §2 and CHR03 §5 owns the one-time re-cut at the Helstrom Hist. CHR02 exports: 10 races (Saxhleel, Naga, Dunmer, Imperial, Nord, Breton, Redguard, Khajiit, Orsimer, Bosmer), 12 reaction groups RG-DEEP/ROOT/LUKIUL/NAGA/LEDGER/EMPIRE/DRES/BWC/VAKH/COURT/TOWN/OUTLAW, 4 upbringings interior/lukiul/foreign-born/blackrose (CHR01 owns upbringing), guard lawFactor+suspicion table (CRM01/STL01 consume), raceSurcharge price formula.",
+      "findings": 8
     },
     {
       "id": "travel",
       "title": "The fast-travel network as a built, judged system (seam S7)",
-      "state": "not-started",
+      "state": "started-nothing-written",
       "done": 0,
       "expected": 2,
       "missing": [
         "corpus/50-world/RI-TRV01*",
         "corpus/50-world/RI-TRV02*"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "write corpus/50-world/travel-network.json (computed graph), then RI-TRV01, then RI-TRV02",
+      "findings": 16
     },
     {
       "id": "opacity-tone",
       "title": "The opacity budget and the tonal-range / indifference ratio",
-      "state": "not-started",
+      "state": "started-nothing-written",
       "done": 0,
       "expected": 2,
       "missing": [
         "corpus/50-world/RI-WLD09*",
         "corpus/40-dialogue/RI-DLG08*"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "write corpus/40-dialogue/RI-DLG08",
+      "findings": 16
     },
     {
       "id": "audio-ui",
       "title": "Audio design and user-interface corpus",
-      "state": "not-started",
-      "done": 0,
+      "state": "partial",
+      "done": 5,
       "expected": 11,
       "missing": [
-        "corpus/87-audio/RI-AUD01*",
-        "corpus/87-audio/RI-AUD02*",
-        "corpus/87-audio/RI-AUD03*",
-        "corpus/87-audio/RI-AUD04*",
-        "corpus/87-audio/RI-AUD05*",
         "corpus/86-ui/RI-UIX01*",
         "corpus/86-ui/RI-UIX02*",
         "corpus/86-ui/RI-UIX03*",
@@ -169,21 +145,21 @@
         "corpus/86-ui/RI-UIX05*",
         "corpus/86-ui/RI-UIX06*"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "write UI items: RI-UIX01 combat HUD, then 02 no-marker, 03 inventory, 04 journal, 05 books, 06 diegesis",
+      "findings": 12
     },
     {
       "id": "image-acquisition",
       "title": "Acquire real reference images via the one reachable channel (GitHub)",
-      "state": "not-started",
+      "state": "started-nothing-written",
       "done": 0,
       "expected": 2,
       "missing": [
         "corpus/70-visual/refs/MANIFEST.json",
         "corpus/70-visual/refs/ACQUISITION-REPORT.md"
       ],
-      "next_step": null,
-      "findings": 0
+      "next_step": "modern-fidelity acquisition: hunt GitHub for current-gen game screenshots",
+      "findings": 12
     },
     {
       "id": "corpus-audit",

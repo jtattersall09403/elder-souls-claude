@@ -10,7 +10,8 @@
     "corpus/70-visual/RI-VIS09-reference-image-set.md"
   ],
   "outputs_written": [
-    "corpus/70-visual/refs/morrowind/ (73 images across 15 REF-A slots + 2 unconfirmed) - DONE"
+    "corpus/70-visual/refs/morrowind/ (73 images across 15 REF-A slots + 2 unconfirmed) - DONE",
+    "corpus/70-visual/refs/modern/hud/ (24 x Witcher 3 2560x1440 gameplay JPEGs) - DONE"
   ],
   "findings": [
     "Disk at start: 23G avail on /, repo 39M.",
@@ -24,8 +25,13 @@
     "MWSCR filename keyword census (shots+inbox+wallpapers) covers almost every REF-A slot: silt-strider 5, redoran 5, aldruhn 5, telvanni 5, sadrith 6, tel- 21, mushroom 10, dwemer 8, kwama 3, netch 5, guar 22, ashland 6, molag 17, velothi 5, tomb 16, temple 8, bitter-coast 8, vivec 15, balmora 7, suran 14, pelagiad 8, fort 13, census 2, imperial 8, parasol 3.",
     "PIL 12.3.0 is installed and DECODES AVIF. So avif->png for measurement works (scratch only; originals committed byte-exact).",
     "NO ffmpeg / imagemagick / vips in container. playwright + pngjs + pixelmatch in tools/node_modules.",
-    "MORROWIND SIDE DONE: 73 AVIF previews from dehero/mwscr placed in refs/morrowind/REF-A1..A17 (A12 UI unfillable - mwscr policy is 'no interface'; A13 armour/clothing has no filename hook and was not filled). 1 rejected (REF-A15 paper-trail, subject too small). 2 Sindorius/morrowind-improved 1920x1080 JPEGs in unconfirmed/ (fail V3/V5 - texture replacer + cast shadows likely). All verified by eye via PIL contact sheets."
+    "MORROWIND SIDE DONE: 73 AVIF previews from dehero/mwscr placed in refs/morrowind/REF-A1..A17 (A12 UI unfillable - mwscr policy is 'no interface'; A13 armour/clothing has no filename hook and was not filled). 1 rejected (REF-A15 paper-trail, subject too small). 2 Sindorius/morrowind-improved 1920x1080 JPEGs in unconfirmed/ (fail V3/V5 - texture replacer + cast shadows likely). All verified by eye via PIL contact sheets.",
+    "MODERN WIN: elfhuo-github/sksebp-og.github.io (a GitHub Pages mirror of the Skyrim SE Beautification Project) holds witcher3nextgen/ = 24 NATIVE 2560x1440 Witcher 3 gameplay screenshots, 3.1-4.3 MB each (~7.4 bits/px, no sign of re-encode), captured 2022-12-17 in one session as 12 paired old-gen/next-gen A/B stops. Third-person over-the-shoulder, Geralt from behind = exactly REF-M6 framing. BUT ALL 24 CARRY HUD (minimap + quest tracker) -> REQUEST 5a forces them into modern/hud/, kept but never compared. Placed there.",
+    "That same repo also has se/wallpapers/*.jpg (4 Skyrim SE), and dirs for doom3/alice/bloodrayne/wolf1/hexen/tron20/avpclassic/darkforces/vtmbloodlines - all pre-current-gen, useless for the fidelity axis.",
+    "DEAD ENDS probed (image census, no usable gameplay frames): InTheBottle/CSVO(23 icons), c-stew/SkyrimSE-Modlist(0), TitansBane/The-Phoenix-Flavour(clone fail/404), zesterer/openmw-shaders(1), rfuzzo/MorrowindPlusPlus(17 modded), doublemoulinet/Morrowind-Modular-Mod-Guide(19), doodlum/skyrim-community-shaders(37 UI icons), Wildlander/Wildlander(404), LivingSkyrim/LivingSkyrim(404), OpenMW/openmw.org(404), EanNewton/Awesome-Elden-Ring-Resources(1), Alaxouche/Wunduniik(3 banners), Oghma-Infinium/Ascensio(4), originalnicodr/CorgiFX(5 shader textures), gposingway/gposingway(497 shader textures), prod80/prod80-ReShade-Repository(10 LUTs), morrowind-modding.github.io(218, all tutorial UI/modded).",
+    "isl-org/PhotorealismEnhancement website/img/gta = 17 GTA V web-sized frames + enhanced versions. Not fetched: GTA V is not in the reference title list and web-sized images fail 4 integrity.",
+    "GITHUB REPO SEARCH WORKS via mcp__github__search_repositories (contrary to the brief's assumption). Code search mcp__github__search_code untested for this purpose. api.github.com/search via curl still untested."
   ],
-  "next_step": "modern-fidelity acquisition: hunt GitHub for current-gen game screenshots",
+  "next_step": "try github code search for .htm/.html galleries linking in-repo game screenshots; fill anti-generic + context; then metrics + manifest + report + RI-VIS09",
   "notes_for_successor": "RI-VIS03 exterior_daylight bands to compare against: M1 DR>=0.72 meanYp 0.28-0.58; M2 C_global 0.13-0.28 C_local_med>=0.045; M3 meanC 12-32 chroma_frac>=0.55; M4 ED_1 0.10-0.34; M5 HFR 0.06-0.24 NYQ<=0.18 alpha 1.6-2.6; M8 FS>=0.035 LargestFlat<=0.06 TotalFlat<=0.18."
 }
