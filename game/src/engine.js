@@ -19,6 +19,7 @@ import {
   pitchArmScale, projectNDC, cameraBasis,
 } from './sim/camera.js';
 import { PLAYER_RADIUS_M } from './sim/world-collision.js';
+import { beginRoute, endRoute, groundYInCell } from './sim/route.js';
 import { makeEntity, reanchorFreeRunning } from './sim/entities.js';
 import { InputPipeline } from './input/pipeline.js';
 import { RealInput } from './input/real.js';
@@ -305,6 +306,10 @@ export class Engine {
   _buildCombat(loadout) {
     this.combat = new CombatSystem(this._combatData());
     const b = this.combat.createPlayer(loadout);
+    // The combat body is the AUTHORITY and `sim.player` is a view (sim/combat-bridge.js). A
+    // scripted route therefore has to write the body, not the view, or `mirror()` undoes it on
+    // the next frame. This reference is how sim/route.js reaches it without importing combat.
+    this.sim.combatBody = b;
     const p = this.sim.player;
     b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];
     b.yaw = p.yaw;
@@ -1003,6 +1008,47 @@ export class Engine {
   solidAt(x, y, z) {
     const cell = this.sim.cell || EMPTY_CELL;
     return { solid: cell.contains(Number(x), Number(y), Number(z)), distance_m: cell.distance(Number(x), Number(y), Number(z)) };
+  }
+
+  /**
+   * RI-CAM01 M2 / RI-CAM05 M4 / M5 — begin the scripted navmesh-spine traversal of a camera
+   * cell at run speed. Returns the route's length so a probe can size its own frame budget
+   * rather than guessing it.
+   *
+   * `yaw` sets the CAMERA's yaw once, at the start. It is set once and never touched again,
+   * which is the point: RI-CAM02 §D says the camera does not auto-follow during walking or
+   * running, so "8 camera yaws per segment" is achieved by 8 passes at 8 starting yaws, and
+   * any yaw drift observed over a pass is itself a RI-CAM02 M5 failure.
+   */
+  cameraRoute(opts = {}) {
+    const cellId = String(opts.cell);
+    this.setCameraCell(cellId);
+    const cell = this.cells.get(cellId);
+    const pts = (cell.meta && cell.meta.spine) || null;
+    if (!pts || pts.length < 2) throw new Error(`cameraRoute('${cellId}'): cell has no spine`);
+    // Land on the first point through the ordinary teleport so the pivot spring starts settled
+    // (RI-CAM01 §B "Reset": snapped on teleport, not eased) — then the route never teleports
+    // again, so every later frame's spring state is earned.
+    const y0 = groundYInCell(cell, pts[0][0], pts[0][1]);
+    this.teleport(pts[0][0], pts[0][1], { y: y0 });
+    if (opts.yaw !== undefined) {
+      const c = this.sim.camera;
+      c.yaw = ((Number(opts.yaw) % 360) + 360) % 360;
+      c.pivotSnap = true;
+    }
+    const r = beginRoute(this.sim, {
+      pts, speedMps: opts.speedMps === undefined ? 4.5 : Number(opts.speedMps),
+      laps: opts.laps === undefined ? 1 : Number(opts.laps),
+    });
+    return { cell: cellId, ...r, class: cell.meta.class, ground_y0: y0 };
+  }
+
+  cameraRouteEnd() { endRoute(this.sim); return true; }
+
+  cameraRouteState() {
+    const r = this.sim.route;
+    if (!r) return null;
+    return { s_m: r.s, total_m: r.total, lap: r.lap, laps: r.laps, done: r.done, frames: r.frames };
   }
 
   /** Drive `cam-collision-rig`'s wall along its rail. RI-CAM01 M4's fixture. */

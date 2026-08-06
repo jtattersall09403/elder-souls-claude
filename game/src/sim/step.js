@@ -16,6 +16,7 @@
 import { armSim, disarmSim } from '../core/guards.js';
 import { quantiseSaveGrid } from './state.js';
 import { stepCamera } from './camera.js';
+import { stepRoute } from './route.js';
 import { stepCombat } from './combat-bridge.js';
 import { stepWorldCollision } from './world-collision.js';
 import { stepEncounters } from '../character/encounter.js';
@@ -36,6 +37,11 @@ export function stepOnce(sim, input, combat, bus) {
     // so it reads the same positions the trace reports on this frame, and BEFORE the camera so
     // an aggro latch on frame N is visible in frame N's record.
     if (sim.character && sim.encounterData) stepEncounters(sim, combat, bus, sim.encounterData);
+    // The scripted navmesh-spine traversal (RI-CAM01 M2, RI-CAM05 M4/M5) writes the controller
+    // in the same slot world collision does — after physics, before the camera — so the pivot
+    // reads a post-physics position exactly as RI-CAM01 §A requires, and the vertical spring
+    // is never reset mid-route the way a per-frame teleport would reset it.
+    if (sim.route) stepRoute(sim);
     stepCamera(sim);
     // The state the frame ends in must be a state the save can hold exactly (RI-JRN05 §C
     // rule 3 vs HF1 — see sim/state.js quantiseSaveGrid). Allocation-free.

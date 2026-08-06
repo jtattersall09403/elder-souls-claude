@@ -150,6 +150,11 @@ export function installHarness(engine, bootPromise) {
     castCameraArm(len) { return engine.castCameraArm(len); },
     solidAt(x, y, z) { return engine.solidAt(x, y, z); },
     setCameraObstacle(id, x, y, z) { return engine.setCameraObstacle(id, x, y, z); },
+    // RI-CAM01 M2 / RI-CAM05 M4/M5's scripted navmesh-spine traversal. Without it neither
+    // method can be run at all, and both are weighted 25.
+    cameraRoute(opts) { return engine.cameraRoute(opts || {}); },
+    cameraRouteEnd() { return engine.cameraRouteEnd(); },
+    cameraRouteState() { return engine.cameraRouteState(); },
     setUIVisible(v) { return engine.renderer.setUIVisible(v); },
 
     // ---- queries ----------------------------------------------------------------------------

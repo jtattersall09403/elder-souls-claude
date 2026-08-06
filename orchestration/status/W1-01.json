@@ -2,7 +2,7 @@
   "task_id": "W1-01",
   "brief": "docs/PLAN.md \u00a73 piece W1-01 \u2014 World shape and the traversal budget",
   "started": "wave-1",
-  "state": "measuring",
+  "state": "complete",
   "outputs_expected": [
     "game/data/world/terrain.json",
     "game/data/world/regions.json (rewritten, 13 regions)",
@@ -60,8 +60,13 @@
     "walkRoute stick magnitude must be 0.55 - 1e-9: hypot() lands one ulp above 0.55 and combat/player.js switches to the jog, which cost 12% of the frames and 4.5 minutes.",
     "region-axes: all 78 pairs differ on >= 8 of 9 axes (min pair blackwood/marauders-coast at 8).",
     "scale-audit: 14/15 checks pass. The one miss is RI-WLD07 \u00a74's road-relief target (26.7% of 500 m road windows change >= 15 m, target 30%, fail floor 12%) \u2014 the marsh legs are genuinely flat and letting A* climb more broke the settlement pads.",
-    "Two exterior cells by design: `province` (the world) and `exterior` (W1-00's seeded 420 m origin patch, kept because HARNESS \u00a76 poses VP01-VP12 absolutely near the origin and HARNESS D6 measures seed sensitivity on a GENERATED cell). Documented in game/README.md."
+    "Two exterior cells by design: `province` (the world) and `exterior` (W1-00's seeded 420 m origin patch, kept because HARNESS \u00a76 poses VP01-VP12 absolutely near the origin and HARNESS D6 measures seed sensitivity on a GENERATED cell). Documented in game/README.md.",
+    "S9-NO-FENCES built: flood fill from Lilmoth over cells with depth <= 1.40 m and slope <= 40 deg reaches 13/13 regions, 8/8 settlements, 99.3% of walkable land. The land test had to be dropped from passability \u2014 a causeway crosses water and is still a road.",
+    "TIDE PHASE: RI-WLD10 \u00a77 is h = A/2 sin(2 pi phase), so phase 0 is MID-RISING. Naming 0=LOW and 0.5=HIGH (both zero-crossings) made the tideway measure identical at both. Correct map: RISING 0.0, HIGH 0.25, FALLING 0.5, LOW 0.75.",
+    "M48 built-vs-declared WCI agrees to 0.0001 in all 13 regions (bar 0.04).",
+    "determinism.mjs is 7/9 rungs; R5 and R9 differ only on camera.* and *.anim_frame fields, which belong to the concurrent W1-09 combat/camera work, not to the province. It was already 7/9 before this piece's uncommitted changes.",
+    "OPEN: RI-WLD07 \u00a74's road-relief target (>=30% of 500 m road windows change >=15 m) measures 26.7%. Fail floor is 12%, so this is a target miss, not a fail. Lowering the A* slope penalty to make roads climb did not move it and broke the settlement pads (75 deg carve cliffs)."
   ],
-  "next_step": "re-run crossing after the road rebuild; finish the region shot set; final commit",
-  "notes_for_successor": "Build order: build-landmask -> build-regions -> build-terrain -> build-water-hazards -> build-roads. All are idempotent. terrain.json is generated, do not hand-edit."
+  "next_step": "complete",
+  "notes_for_successor": "Build order: build-landmask -> build-regions -> build-terrain -> build-water-hazards -> build-roads -> build-pois. All idempotent; every game/data/world/*.json except landmask.json is generated from them. Measure with tools/world/{scale-audit,region-axes,crossing,province-shots}.mjs and corpus/80-methods/m-wld1{0,1}-*.mjs. The one open target is M36-ROAD-RELIEF at 26.7% vs 30%. Band DENIAL (no sprint/roll above W2), the water stamina drain, the breath clock and MIRED are W1-03 (world.water.marsh) and are declared missing, not faked."
 }
