@@ -25,7 +25,19 @@
     "corpus/50-world/RI-WLD08-the-living-world.md (judges: 5 dead paths -> canonical)",
     "corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md (judges: 8 dead -> canonical)",
     "corpus/60-lore/RI-LOR06-contradiction-discipline.md (judges: 8 -> canonical)",
-    "corpus/50-world/RI-TRV01-transport-network.md (judges: +stations,+schedule)"
+    "corpus/50-world/RI-TRV01-transport-network.md (judges: +stations,+schedule)",
+    "corpus/80-methods/jel-phonotactics.py (two-mode canon/coinage + --self-test + 3 classifier fixes)",
+    "corpus/60-lore/data/jel-lexicon.json (42 attested exceptions, inventory gaps, 4 glosses, +16 roots, grammar amended)",
+    "corpus/60-lore/RI-LOR04-naming-and-language.md (\u00a74 rewritten, \u00a76b appended)",
+    "corpus/80-methods/RI-MTH05-corpus-coherence.md (NEW)",
+    "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md (W5: 5 false mappings removed)",
+    "corpus/50-world/RI-WLD05-strangeness-bar.md (W1 + E-column arithmetic + element 29 exclusion)",
+    "corpus/50-world/RI-WLD02-density-per-minute.md (W2 + B2: settled-region D1/D2/D13, V5/V6 added)",
+    "corpus/50-world/RI-WLD09-the-opacity-budget.md (amendments marked APPLIED)",
+    "corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md (W3: indistinguishability replaces ours_win_rate)",
+    "corpus/10-combat/RI-AI05-*.md (W8: fixture wave-standard-build pinned)",
+    "corpus/30-quests/RI-QST05-*.md (W6: VERB-SPREAD hard fail + STL/CRM dependency)",
+    "corpus/00-doctrine/SCORING.md (W7: mandatory per-item ladder anchor row)"
   ],
   "findings": [
     "corpus-index.mjs --check ONLY gates on INDEX.md staleness; error-gating is behind --strict. Brief wants --check to gate. Will make --check imply strict-on-errors.",
@@ -39,8 +51,11 @@
     "RULED B5 dialogue scope: canonical = Source in {Morrowind,Tribunal,Bloodmoon} dedup exact text = 27,875 texts / 682,372 words (24.5 w/entry). NEW FINDING: the README's 28,050/1,869,218 mis-paired a distinct-text count with a per-row word sum; would have inflated targets 2.7x. NEW WRONG BAR: RI-DLG02 locality floor 0.35 fails Morrowind's own Balmora (0.30) at canonical scope -> restated to 0.28. Per-settlement tier targets deliberately UNCHANGED (they derive from Balmora's 38,760, not the total).",
     "INDEX/subsystems DONE: 148 errors -> 0. 323 paths (was 200), 125 items, 309 judged, 14 holes (all pre-existing), 0 unresolved. --check now exits 1 on any error. Sources used: corpus/88-journeys/paths-requested.json (28), corpus/25-magic/subsystems-patch.proposed.json (20), authored 75 more (weapon 20, character 10, stealth 9, crime 9, experience 15, composition 6, world 5, lore 1). New critics: critic.weapons, critic.magic, critic.journey, critic.experience, critic.stealth.",
     "DECISION NOT MADE: no camera.* root. RI-CAM01..07 all judge existing combat.camera.* / render.* paths and indexed cleanly; 8 unused camera.* paths would have created 8 new HOLES. Recorded in the report.",
-    "DECISION: 206 legacy aliases left in use. They resolve correctly, aliases are a documented migration aid, and rewriting front-matter across 60+ items is churn with no semantic gain. --check does not gate on them."
+    "DECISION: 206 legacy aliases left in use. They resolve correctly, aliases are a documented migration aid, and rewriting front-matter across 60+ items is churn with no semantic gain. --check does not gate on them.",
+    "RULED B6/B7: Jel validator split into --mode canon (attested never fails; 26.7%->0.0%) and --mode coinage (strict; still rejects Krothgar/Blooddrinker). --self-test is the regression guard. Glosses xul/uxith/ojel/kaal corrected from the attested primer; xul-aneekh and ixtu-xul RE-GLOSSED not renamed (Deep-Kin kept as Tamrielic exonym) so 5 other items keep working. RI-LOR04 \u00a74 minority-form fixed: Jel primary (86% of attested), word count 2-5 modal 2, verb slot non-obligatory, 15 title-prefixes added. NEW: 3 classifier bugs - Skink-in-Tree's-Shade classified khajiit, Jel compounds classified tamrielic, Tree-Minder Deyapa classified imperial.",
+    "RI-MTH05 written. --check still 0 errors, 126 items, 323 paths, 14 holes, 202 aliases.",
+    "W1,W2,W3,W5,W6,W7,W8 applied. W4 was the traversal minute (done). W9 needs no change (BAR-CRITIQUE itself says 'no change to the ruling'); its counterweight RI-CMP01 exists."
   ],
-  "next_step": "write corpus/80-methods/RI-MTH05; then Jel validator + lexicon glosses",
+  "next_step": "B4 RI-CMB02 internal contradiction; B8 harness DPR; B10 two-directional travel; B11 MAG02 prices; seam propagation S20/S21; RI-VIS01 F17-F19; GAP-LEDGER + progress; finish report",
   "notes_for_successor": "corpus-index.mjs --check PASSES cleanly as of now. Do not break it. Remaining queue: RI-MTH05 item; Jel validator (B6) + 3 lexicon glosses (B7); RI-WLD02 vs WLD09 (B2); RI-WLD05 tick arithmetic (B3); RI-CMB02 internal contradiction (B4); harness deviceScaleFactor (B8); RI-MTH03 hitstop drop (B9); two-directional travel checks (B10/ID-17/ID-09); RI-MAG02 teleport prices (B11); seam propagation S16-S21 + S20-vs-S21 misnumbering; W1-W8; RI-VIS01 F17-F19+CC-7; GAP-LEDGER + progress.mjs."
 }

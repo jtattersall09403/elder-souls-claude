@@ -116,10 +116,47 @@ name the bonfire differently: `xul-teekh` (souls) · `ixtu-xul` (sapwell) · `xu
 
 ### 4. Argonian Tamrielic names — the hyphenated system
 
-Canon (CF-023, CF-024): Argonians carry both a Jel name and a Tamrielic one, usually a translation, and
-the possessive marks gender (*Lifts-Her-Tail* f, *Hides-His-Eyes* m).
+> **AMENDED wave 0 (corpus-audit). The rule below had the minority form as the rule.** Measured
+> over every attested Argonian name in `argonian-names.json → naming_grammar_as_attested`:
+>
+> | Shape | Count | Share |
+> |---|---:|---:|
+> | Jel single word (*Huleeya, Okur, Chuna, Shatalg*) | 182 | 48% |
+> | Jel compound (*An-Deesei, Heem-La, Vistha-Kai, Keel-Raniur*) | 142 | 38% |
+> | **Tamrielic descriptive** (*Hides-His-Foot, Nine-Toes*) | **43** | **11%** |
+> | Mixed | 10 | 3% |
+>
+> **The Jel name is the primary form — 86% of attested Argonian names are Jel.** The hyphenated
+> descriptive name is the *Tamrielic-facing* form, which is what CF-023 actually says: a
+> Tamrielic name **in addition to** a Jel one. Legislating the descriptive template as *the*
+> Argonian naming system makes our world sound **less** Argonian, not more. Three further
+> corrections follow, all from the same measurement. See CORPUS-COHERENCE-01 §5.
 
-**Template:** `[Verb-3sg] - [optional Determiner|Possessive] - [Noun (+Noun)]`, **2–4 words, modal 3.**
+**Primary form: the Jel name** (single word or two-element compound), validated by §1–§3.
+A settlement roster in which most Argonians carry hyphenated English names has failed this
+section however well each individual name scores.
+
+**Secondary form, Tamrielic-facing:** `[Verb-3sg | Noun | Adjective] - [optional
+Determiner|Possessive] - [Noun (+Noun)]`, **2–5 words, modal 2** (~~2–4, modal 3~~).
+
+- **The word count was wrong at both ends.** Attested hyphenated names: 2 words ×31, 3 ×6,
+  4 ×5, 5 ×1. The mode is **2** (*Nine-Toes, Twice-Bitten, Fine-Mouth, Grey-Throat,
+  Tongue-Toad, Egg-Face*), and five-word names exist —
+  *Morning-Star-Steals-Away-Clouds* (Morrowind, 3E 427).
+- **The verb-initial slot is not obligatory.** ~~`[Verb-3sg]` first, always.~~ Canon has
+  noun- and adjective-initial epithets: *Nine-Toes, Twice-Bitten, Tongue-Toad, Fine-Mouth,
+  Grey-Throat, Big Head, Egg-Face*. The validator no longer errors on a non-verb head; it
+  warns only if **neither** the head nor any element is attested material.
+- **A whole register was missing: attested title-prefixes.** *Tree-Minder* (9 bearers),
+  *Nisswo* (7), *Sun-Eater* (7), *Dead-Water* (3), *Grave-Singer* (2), *Raj-Kaal* (2),
+  *Egg-Tender, Sap-Speaker, Bond-Guru, Chime-Maker, Copper-Eye, Ux-Deelith, Bright-Throat,
+  Root-House, Moss-Skin*. These do exactly the work this section wants "affectionate, faintly
+  insulting, domestic" names to do, and they are canon. A title-prefix is **stripped before
+  classification** and does not count toward the word budget.
+- ***Skink-in-Tree's-Shade*** (Morrowind, 3E 427) carries an **apostrophe** and a **lowercase
+  medial word**, both of which the letter below forbids. The apostrophe rule is written for
+  *Jel*, so a Tamrielic-facing name is not bound by it — but it is the one name every reader
+  will recognise, and it is now a fixture the classifier is tested against.
 
 - Verbs (44 attested in the JSON): Hides, Lifts, Counts, Tastes, Wades, Keeps, Breaks, Drowns, Weighs,
   Salts, Buries, Refuses, Forgets, Answers, Ties, Sells…
@@ -193,6 +230,64 @@ Forcing the Argonian culture on apostrophe-salad (`--culture jel`) flags all fou
 runs first; (c) `xanmeer` — a canon word — failed the coda rules, because `r` was missing from the coda
 inventory. **A phonology that rejects the canon word it was derived from is wrong**, and only running it
 found that.
+
+### 6b. Re-run after the wave-0 validator amendment (corpus-audit)
+
+§6 above stands as recorded. It was run against **our own** worked examples, which is why it
+passed — and that is exactly how the defect below survived. Running the same validator against
+**attested Jel** instead:
+
+```
+BEFORE (wave 0, as found)
+python3 corpus/80-methods/jel-phonotactics.py --names <30 attested Jel> --culture jel
+violation rate: 26.7%   (threshold 5%)   RESULT: FAIL
+rejected: Saxhleel, Thtithil, Xeech, Greel, Krona, Norg, Vakka, Xthari
+
+AFTER
+python3 corpus/80-methods/jel-phonotactics.py --self-test
+self-test: 33 attested Jel forms, 0 rejected (must be 0)
+SELF-TEST PASSED
+
+python3 corpus/80-methods/jel-phonotactics.py --names <34 worked examples>
+names checked : 34    violation rate: 0.0%    RESULT: PASS      (unchanged)
+
+python3 corpus/80-methods/jel-phonotactics.py --names <adversarial 6> 
+Grimfang-Of-The-Blackwater  blocklisted form 'Of'
+Slays-The-Shadow-Lord       epic-register noun 'Shadow'; blocklisted form 'Lord'
+Blooddrinker                forbidden clusters 'bl','dr'; geminate 'dd'
+Zzzarkath / Fenwyck / Thorgrim   unclassifiable
+RESULT: FAIL      (unchanged — the tool is no weaker)
+```
+
+**What changed and why.** §6(c) already states this item's own governing principle: *"A
+phonology that rejects the canon word it was derived from is wrong."* The validator was
+rejecting **Saxhleel**, the Argonians' own word for themselves. The fix is a **two-mode
+split**, not a loosening:
+
+- **`--mode canon` (default, what a critic runs):** an attested Jel form is never a violation.
+  The attested-exception list grew from 7 elements to 42 — every attested form in
+  `argonian-names.json → jel_glossary`.
+- **`--mode coinage`:** the exception list is ignored entirely, so the narrow constructed rules
+  apply in full to anything we *invent*. `gr`, `kr` and geminates stay forbidden here even
+  though canon contains them — those rules exist to stop coined Jel drifting into generic
+  fantasy, and canon's licence to say *Krona* is not our licence to coin *Krothgar*.
+- **Inventory gaps proved by canon were filled**: coda `ch` (*Xeech* — a root in our own
+  lexicon), onsets `hl` / `tht` / `xth` (*Saxhleel*, *Thtithil*, *Xthari*), coda cluster `rg`
+  (*Norg*).
+- **`--self-test` is now the regression guard**: it runs the attested fixture through canon
+  mode and exits non-zero if any attested word is rejected. Run it after any lexicon edit.
+
+**Three classifier corrections in the same pass**, each of which had been quietly annexing an
+Argonian name to another culture:
+
+| Name | Was | Now |
+|---|---|---|
+| *Skink-in-Tree's-Shade* (Morrowind, 3E 427) | `khajiit`, on the apostrophe | `argonian-tamrielic`; an English possessive is not a Khajiit apostrophe, and lowercase medial function words are permitted |
+| *An-Deesei*, *Ixt-Shaneekh* and other Jel compounds | `argonian-tamrielic`, because a Jel compound also matches the hyphenated-English shape | `jel`; the sound-signature test now runs before the shape test |
+| *Tree-Minder Deyapa*, *Nisswo Ajul-Jas* | `imperial`, then failed for "hyphen in an Imperial name" | title prefix stripped before classification and checking |
+
+**Four lexicon glosses corrected against attested Jel** — see `jel-lexicon.json.amendments` and
+CORPUS-COHERENCE-01 §5.
 
 ## Comparison method
 

@@ -66,7 +66,42 @@ area is smaller and our regions are more differentiated. Total POI density = **7
 | D10 | **Hostile groups per minute inside a Souls-loop dungeon** | **2.0 – 3.5** | < 1.2 | aggro events / min |
 | D11 | **Creature sightings per minute in wilderness** (hostile + ambient) | **≥ 3.0** | < 1.5 | entities entering frustum |
 | D12 | **Sightline rule** — distinct landmark silhouettes visible from a random walkable point | **≥ 2**, at 95% of sample points | < 2 at >20% of points | raycast test, below |
-| D13 | **Longest "nothing" stretch** anywhere on the road network | **≤ 150 s** with no POI in 40 m | > 240 s | scripted walk |
+| D13 | **Longest "nothing" stretch** on **settled-region** road network | **≤ 150 s** with no POI in 40 m | > 240 s | scripted walk, **outside declared void tracts** |
+| **V5** | **Share of road-network kilometres with TTNIT > 3 min** (the negative-space floor) | **≥ 12%** | < 6% | scripted walk, whole network |
+| **V6** | **Regions with median TTNIT > 2 min** | **≥ 2** | < 1 | scripted walk, per region |
+
+> **AMENDED wave 0 (corpus-audit) — BAR-CRITIQUE-01 W2, and the direct RI-WLD02 / RI-WLD09
+> contradiction (queue B2).** As written, D1, D2 and D13 were **global** floors: TTNIT median
+> ≤45 s, p90 ≤90 s, longest nothing-stretch ≤150 s, *everywhere*. Three consequences, all bad:
+>
+> 1. **Deliberate emptiness became illegal.** Vvardenfell is not uniformly dense — Molag Amur,
+>    the deep Ashlands and Sheogorad are long, hostile and empty, and that emptiness is where
+>    scale, dread and the relief of arrival come from. A 150-second global cap forbids the Deep
+>    Marshes from being the Deep Marshes.
+> 2. **It invited the exact failure M7 exists to catch.** The cheapest way to satisfy a p90 is
+>    to sprinkle. This item was simultaneously demanding POI inflation and scanning for it.
+> 3. **It contradicted `RI-WLD09` outright.** RI-WLD09 §B4 requires ≥5 declared void tracts
+>    totalling ≥14% of the landmass, each with a ≥240 s empty walk. **A critic handed both
+>    items had to fail one of them**, and would have failed RI-WLD09, because this item is
+>    older and has a scripted walk behind it.
+>
+> **Ruling: `RI-WLD09` wins on emptiness; this item wins on density; the two are made
+> commensurable rather than one being deleted.** Density is a *rhythm*, and the original bar
+> measured only its mean. Applied here exactly as RI-WLD09 §B4's "consequential amendment"
+> specifies:
+>
+> - **D1, D2 and D13 are now settled-region thresholds**, scored over the road network
+>   **outside** the void tracts declared in `game/data/world/voids.json`.
+> - **V5 and V6 are added as peers of D1** — the negative-space floor. It is now possible to
+>   fail this item for having *too little* emptiness, which is the correction.
+> - **Inside a declared tract**, D13's cap rises 150 s → **600 s** and D9's hostile-group floor
+>   drops 0.4 → **0.15** per minute.
+> - **The score-0 clause `D3 < 9` is scoped to non-void road kilometres** (see §Scoring).
+> - A tract only counts as declared if it passes RI-WLD09's V1–V9, including the witness-prop
+>   rule. **Undeclared or failing emptiness is still measured by the settled-region
+>   thresholds**, so "declare a void over the land we did not build" is not an escape.
+>
+> Full reasoning: `CORPUS-COHERENCE-01.md` §7.
 
 ### 3. Budget reconciliation (so the targets are provably achievable and provably not padded)
 
@@ -169,8 +204,9 @@ is empty.
 
 ## Scoring
 
-Score 0–10 on the weighted mean of D1–D13 (each scored 0/1/2 → fail/pass/exceed), weights: D1 ×3,
-D3 ×3, D12 ×2, D7 ×2, D8 ×2, all others ×1.
+Score 0–10 on the weighted mean of D1–D13 **plus V5 and V6** (each scored 0/1/2 →
+fail/pass/exceed), weights: D1 ×3, D3 ×3, D12 ×2, D7 ×2, D8 ×2, **V5 ×2, V6 ×1**, all others ×1.
+D1, D2 and D13 are computed over **settled-region** road kilometres only (amended wave 0, W2).
 
 | Score | Condition |
 |---|---|
@@ -179,7 +215,7 @@ D3 ×3, D12 ×2, D7 ×2, D8 ×2, all others ×1.
 | 6 | D1/D2 pass, ≤3 other metrics below target |
 | 4 | TTNIT median 45–75 s, or D3 in 9–15 |
 | 2 | TTNIT median >75 s but POIs exist |
-| **0 — WE LOSE** | Any of: M7 flags >5/60 (scatter tagged as POI); D3 < 9 (fewer than 9 POIs per km of road); D12 fails at >20% of points (you can stand somewhere and see nothing worth walking to); the total named-location count is below the fail floor of 276 (A+B) |
+| **0 — WE LOSE** | Any of: M7 flags >5/60 (scatter tagged as POI); **D3 < 9 over non-void road kilometres** (fewer than 9 POIs per km of settled road — amended wave 0, W2); D12 fails at >20% of points (you can stand somewhere and see nothing worth walking to); the total named-location count is below the fail floor of 276 (A+B); **V5 < 6% — a world with no negative space anywhere is as broken as one with no density, and this clause is what makes that failable** |
 
 ## How we lose
 
@@ -187,6 +223,14 @@ D3 ×3, D12 ×2, D7 ×2, D8 ×2, all others ×1.
   every procedurally-vegetated world and M7 exists solely to catch it. Foliage density is *art*
   (RI-WLD04); it contributes exactly zero to this item's score.
 - **POI inflation.** Tagging every rock as a POI to make D3 pass. M7 samples and dumps components.
+- **Uniform density.** Every kilometre of road identically eventful, so nothing is a journey and
+  arriving anywhere feels like nothing. V5/V6 exist for this, and before the wave-0 amendment
+  this item actively mandated it.
+- **Voids declared over land nobody built.** The inverse cheat, once emptiness became legal.
+  `RI-WLD09` V1–V9 — especially the witness-prop rule (≥6 authored, non-POI props per km²:
+  *emptiness somebody walked through has litter in it, and unbuilt terrain is spotless*) — is
+  what separates the two, and an undeclared or failing tract falls back to this item's
+  settled-region thresholds.
 - **Density that is all in the towns.** 460 named locations, 400 of them inside the 8 settlements, and
   25 km of empty road between them. D6 and D13 catch this.
 - **Density that is all on one road.** The Helstrom–Gideon Imperial road is beautiful and the Clay Moor

@@ -16,6 +16,27 @@ Cultures and their tests:
   imperial / dunmer    -> no apostrophes, no hyphens, Latinate/Dunmeri shape
   unknown              -> counted as a violation (an unclassifiable name is a random name)
 
+Two modes (AMENDED wave 0, corpus-audit)
+----------------------------------------
+  --mode canon    (DEFAULT) Validating names that APPEAR IN THE GAME. An attested Jel form is
+                  never a violation, whatever our constructed phonotactics say about it. This
+                  is the mode a critic runs.
+  --mode coinage  Validating names we are about to INVENT. The attested-exception list is
+                  ignored entirely, so the narrow constructed rules apply in full. Attested
+                  words are exceptions BECAUSE they are attested; nothing new may be coined on
+                  their pattern, and this mode is what enforces that.
+
+  Before this split the tool had one mode, and it was the strict one. Run against the 30
+  attested Jel words in corpus/60-lore/data/argonian-names.json it scored 26.7% violations
+  against its own 5% threshold — it rejected *Saxhleel*, the Argonians' own word for
+  themselves, plus *Thtithil* (egg, cited as canon in CF-025) and *Xeech* (seed, a root in our
+  own lexicon). A canon-fidelity tool calibrated to fail canon is inverted. See
+  corpus/00-doctrine/CORPUS-COHERENCE-01.md §5.
+
+  --self-test     Run the attested-Jel fixture (argonian-names.json → jel_glossary) through
+                  canon mode and exit non-zero if ANY attested word is rejected. This is the
+                  regression test for the inversion above; run it after any lexicon edit.
+
 Exit codes
 ----------
   0  violation rate <= threshold (default 5%)
@@ -26,8 +47,9 @@ Usage
 -----
   python3 corpus/80-methods/jel-phonotactics.py --names names.txt
   python3 corpus/80-methods/jel-phonotactics.py --extract game/data/**/*.json
+  python3 corpus/80-methods/jel-phonotactics.py --self-test
   cat names.txt | python3 corpus/80-methods/jel-phonotactics.py
-  ... [--threshold 0.05] [--culture jel] [--verbose] [--json]
+  ... [--threshold 0.05] [--culture jel] [--mode canon|coinage] [--verbose] [--json]
 """
 
 import argparse
@@ -132,10 +154,13 @@ def split_medial(run, onsets, codas):
     return False
 
 
-def check_jel(word, lex):
+MODE = "canon"          # set from --mode in main(); see the module docstring
+
+
+def check_jel(word, lex, mode=None):
     """Return list of violation strings ([] == valid). Validates one hyphen-element."""
     ph = lex["phonology"]
-    if word.lower() in set(ph.get("attested_exceptions", [])):
+    if (mode or MODE) == "canon" and word.lower() in set(ph.get("attested_exceptions", [])):
         return []                                    # canon form, exempt by attestation
     cons = ph["consonant_units"]
     vows = ph["vowels_short"] + ph["vowels_long"] + ph["diphthongs"]
@@ -204,14 +229,40 @@ def check_jel_name(name, lex):
 # --------------------------------------------------------------------------- #
 # Argonian Tamrielic (hyphenated English) validation
 # --------------------------------------------------------------------------- #
+def strip_title_prefix(name, lex):
+    """Attested Argonian title-prefixes (Tree-Minder, Nisswo, Sap-Speaker...) are a register of
+    their own and are removed before the name is classified or counted.
+    Added wave 0 (corpus-audit) — the register was missing entirely."""
+    for t in sorted(lex["tamrielic_name_grammar"].get("title_prefixes", []), key=len, reverse=True):
+        for sep in ("-", " "):
+            if name.startswith(t + sep):
+                return name[len(t) + 1:], t
+    return name, None
+
+
 def check_tamrielic_argonian(name, lex):
     g = lex["tamrielic_name_grammar"]
     bad = []
-    parts = name.split("-")
+    name, _title = strip_title_prefix(name, lex)
+    parts = [p for p in name.split("-") if p]
     n = len(parts)
     if n < g["word_count"]["min"] or n > g["word_count"]["max"]:
         bad.append(f"{n} words, allowed {g['word_count']['min']}-{g['word_count']['max']}")
-    if parts and parts[0] not in g["verbs"]:
+    # AMENDED wave 0 (corpus-audit): the verb-initial slot is NOT obligatory in canon mode.
+    # Canon has noun- and adjective-initial epithets (Nine-Toes, Twice-Bitten, Grey-Throat,
+    # Fine-Mouth, Tongue-Toad, Egg-Face). The register is policed by the blocklist, which is
+    # what actually catches `Slays-The-Shadow-Lord`; a positive vocabulary requirement only
+    # makes sense for names we are COINING, so it now lives in coinage mode.
+    obligatory = g.get("verb_initial", {}).get("obligatory", True)
+    if MODE == "coinage":
+        vocab = (set(g["verbs"]) | set(g["determiners"]) | set(g["nouns"])
+                 | {w for n2 in g["nouns"] for w in n2.split()})
+        if parts and not any(p in vocab for p in parts):
+            bad.append(f"coinage: no element of {name!r} is drawn from the curated verb/"
+                       f"determiner/noun vocabulary")
+        if obligatory and parts and parts[0] not in g["verbs"]:
+            bad.append(f"first element {parts[0]!r} is not an attested 3sg verb")
+    elif obligatory and parts and parts[0] not in g["verbs"]:
         bad.append(f"first element {parts[0]!r} is not an attested 3sg verb")
     for p in parts:
         if p in g["blocklist_nouns"]:
@@ -220,10 +271,20 @@ def check_tamrielic_argonian(name, lex):
         f = form.strip("-")
         if f and f in parts:
             bad.append(f"blocklisted form {f!r}")
-    if "'" in name:
+    # The apostrophe ban is a JEL rule (see phonology.forbidden.note_on_apostrophe). A
+    # Tamrielic-facing name may carry an English possessive — `Skink-in-Tree's-Shade`
+    # (Morrowind, 3E 427) is the canonical example. Only a Khajiit-style apostrophe is a fault.
+    if "'" in name and not re.search(r"[A-Za-z]'s(\b|-|$)", name):
         bad.append("apostrophe in an Argonian name")
-    if not all(p[:1].isupper() for p in parts if p):
-        bad.append("elements must be Capitalised")
+    # Lowercase medial FUNCTION words are attested (`Skink-in-Tree's-Shade`). The first and
+    # last elements must still be Capitalised.
+    FUNCTION_WORDS = {"in", "on", "at", "to", "the", "a", "and"}
+    for i, p in enumerate(parts):
+        if not p:
+            continue
+        first_or_last = i in (0, len(parts) - 1)
+        if not p[:1].isupper() and (first_or_last or p.lower() not in FUNCTION_WORDS):
+            bad.append(f"element {p!r} must be Capitalised")
     return bad
 
 
@@ -304,6 +365,16 @@ def classify(name, lex):
     n = name.strip()
     if not n:
         return "empty"
+    # Attested title-prefixes are a register, not a culture marker. Strip before classifying.
+    # (Wave 0, corpus-audit.)
+    n, _title = strip_title_prefix(n, lex)
+    if not n:
+        return "argonian-tamrielic"
+    # An English POSSESSIVE inside a hyphenated Tamrielic name is not a Khajiit apostrophe.
+    # `Skink-in-Tree's-Shade` (Morrowind, 3E 427) was being annexed as Khajiit; it is the one
+    # Argonian name every reader recognises. Wave 0 (corpus-audit).
+    if re.search(r"[A-Za-z]'s(\b|-)", n) and "-" in n:
+        return "argonian-tamrielic"
     if "'" in n:
         return "khajiit"
     # A Tamrielic Argonian name is identified by its FIRST element being an attested
@@ -316,12 +387,16 @@ def classify(name, lex):
     # because a Jel compound (Ixt-Shaneekh) also matches that pattern.
     if jel_lexical(n, lex):
         return "jel"
-    if ENGLISH_HYPHEN.match(n):
-        return "argonian-tamrielic"          # shape is Argonian even when contents are wrong
-    if not re.match(r"^[A-Za-z][A-Za-z\-\s]*$", n):
-        return "unknown"
+    # Jel's sound signature is tested BEFORE the hyphenated-English shape (wave 0,
+    # corpus-audit): a Jel compound such as An-Deesei or Ixt-Shaneekh also matches
+    # ENGLISH_HYPHEN, and was being annexed as a descriptive Tamrielic name — which is the
+    # same minority-form-as-the-rule error §4 of RI-LOR04 was carrying.
     if jel_sonic(n):
         return "jel"
+    if ENGLISH_HYPHEN.match(n):
+        return "argonian-tamrielic"          # shape is Argonian even when contents are wrong
+    if not re.match(r"^[A-Za-z][A-Za-z\-\s']*$", n):
+        return "unknown"
     toks = elements_of(n)                    # any token may carry the culture
     if any(t.endswith(IMPERIAL_ENDINGS) for t in toks):
         return "imperial"
@@ -371,6 +446,44 @@ def extract_names(paths):
 
 
 # --------------------------------------------------------------------------- #
+# self-test — the regression guard for "the validator rejects canon"
+# --------------------------------------------------------------------------- #
+FIXTURE = os.path.normpath(
+    os.path.join(HERE, "..", "60-lore", "data", "argonian-names.json")
+)
+
+
+def self_test(lex):
+    """Every attested Jel form must pass in canon mode. Added wave 0 (corpus-audit) after the
+    validator was found rejecting Saxhleel, Thtithil and Xeech."""
+    global MODE
+    MODE = "canon"
+    if not os.path.exists(FIXTURE):
+        print(f"self-test: fixture missing: {FIXTURE}", file=sys.stderr)
+        return 2
+    with open(FIXTURE, "r", encoding="utf-8") as fh:
+        fixture = json.load(fh)
+    words = [g["word"] for g in fixture.get("jel_glossary", [])]
+    if not words:
+        print("self-test: fixture has no jel_glossary", file=sys.stderr)
+        return 2
+    bad = []
+    for w in words:
+        v = check_jel_name(w, lex)
+        if v:
+            bad.append((w, v))
+    print(f"self-test: {len(words)} attested Jel forms, {len(bad)} rejected (must be 0)")
+    for w, v in bad:
+        print(f"  REJECTED {w:20s} {'; '.join(v)}")
+    if bad:
+        print("\nSELF-TEST FAILED: the validator rejects attested Jel. "
+              "Fix the validator or the lexicon, never the canon.", file=sys.stderr)
+        return 1
+    print("SELF-TEST PASSED: the validator accepts every attested Jel form.")
+    return 0
+
+
+# --------------------------------------------------------------------------- #
 # main
 # --------------------------------------------------------------------------- #
 def main():
@@ -380,12 +493,25 @@ def main():
     ap.add_argument("--names", help="file of proper nouns, one per line")
     ap.add_argument("--extract", nargs="*", help="game JSON files to harvest names from")
     ap.add_argument("--culture", help="force a culture instead of classifying")
+    ap.add_argument("--mode", choices=("canon", "coinage"), default="canon",
+                    help="canon: attested Jel is never a violation (default, what a critic runs). "
+                         "coinage: ignore the attested-exception list; the strict constructed "
+                         "rules apply in full, for names we are about to invent.")
+    ap.add_argument("--self-test", dest="self_test", action="store_true",
+                    help="run the attested-Jel fixture through canon mode; non-zero if any "
+                         "attested word is rejected")
     ap.add_argument("--threshold", type=float, default=0.05)
     ap.add_argument("--verbose", action="store_true")
     ap.add_argument("--json", dest="as_json", action="store_true")
     args = ap.parse_args()
 
+    global MODE
+    MODE = args.mode
+
     lex = load_lexicon(args.lexicon)
+
+    if args.self_test:
+        return self_test(lex)
 
     if args.names:
         with open(args.names, "r", encoding="utf-8") as fh:
@@ -404,9 +530,16 @@ def main():
 
     results, by_culture = [], {}
     for name in names:
-        culture = args.culture or classify(name, lex)
-        problems = CHECKERS.get(culture, CHECKERS["unknown"])(name, lex)
-        results.append({"name": name, "culture": culture, "violations": problems})
+        # Attested Argonian title-prefixes are stripped BEFORE classification and checking
+        # (wave 0, corpus-audit): `Tree-Minder Deyapa` is Deyapa with a title, and the title
+        # must not be fed to a phonotactic or Latinate check. The reported name is unchanged.
+        core, title = strip_title_prefix(name, lex)
+        culture = args.culture or classify(core, lex)
+        problems = CHECKERS.get(culture, CHECKERS["unknown"])(core, lex)
+        rec = {"name": name, "culture": culture, "violations": problems}
+        if title:
+            rec["title_prefix"] = title
+        results.append(rec)
         b = by_culture.setdefault(culture, {"n": 0, "bad": 0})
         b["n"] += 1
         if problems:

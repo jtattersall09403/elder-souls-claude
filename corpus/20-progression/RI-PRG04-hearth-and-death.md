@@ -252,13 +252,27 @@ rule, which is what keeps the number from being far worse.
 | Axis | 10 | 6 (pass floor) | 0 (we lose) |
 |---|---|---|---|
 | Rest effects | all 10 rows correct, named NPCs untouched | all correct | any named NPC/merchant respawns → **automatic fail** |
-| S7 | no warp code path exists | warp only in in-fiction transport | HEARTH menu offers destinations → **automatic fail** |
+| S7 | **the transport network of `RI-TRV01` exists and is used** (≥5 modes, ≥17 lines, ≥60 services, all fares > 0, all ride times > 0) **and** every warp code path in the build lies inside the transport module | network present but thin (≥3 modes), **or** a warp path outside the transport module that is not player-reachable | **EITHER** HEARTH menu offers destinations, **OR** warp-to-map-pin / teleport-to-objective exists, **OR** no transport network exists at all → **automatic fail in both directions** |
 | Spacing | mean 3.2–3.8, all rules hold | mean 3.0–4.0, no rule broken by >20% | any pair <2.0 min, or any point >11 min, or a boss >2 min from rest |
 | Death loop | all of 4/5/7 exact | 4 and 5 exact | souls survive death, or two bloodstains exist, or a lost stain is recoverable |
 | Persistence | 100% of state survives | 100% of quest/faction/journal survives | any quest or faction state resets on death → **S6 automatic fail** |
 | Clock cost | full consequence chain fires | clock advances and roster swaps | resting has no consequence at all |
 | Death cost | loss 11–13%, retention 0.87–0.89 | loss 9–15% | loss <5% (death is free) or >25% (death is a spiral) |
 | Flask purity | neither upgrade purchasable | same | either is purchasable → RI-PRG08 §"How we lose" also fails |
+
+> **AMENDED wave 0 (corpus-audit) — INTENT-AUDIT-01 drift **ID-09**, and queue B10. The S7 axis
+> scored backwards.** It awarded **10 for "no warp code path exists"** — i.e. its top score for
+> the *absence of the system S7 mandates*. S7 says fast travel is **required**: a diegetic,
+> node-to-node transport network you pay gold for and physically walk to. Only
+> **warp-to-map-pin** is banned. As written, a naive build that shipped a walkable map and
+> nothing else scored **10** on this axis.
+>
+> The verification procedure at §"assert every warp hit is inside the transport module" was
+> always correct; the *scale above it* rewarded zero hits. **Every travel check in the corpus is
+> now two-directional: it must fail when the network is missing AND when it degenerates into
+> warp-to-map-pin.** `RI-TRV01` M1's N-fail/W-fail pair is the reference shape. A verdict
+> reporting "no warping found, passes" on a build with zero transport services has scored a 0 as
+> a 10 and is **void**.
 
 **Failure threshold: any axis below 6.**
 

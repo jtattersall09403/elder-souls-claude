@@ -182,7 +182,11 @@ authoritative). The critic loads the built world, runs headless Three.js, and dr
 
 **M2 — Traversal budget (the hour).**
 1. Path the capsule along the road network Stormhold → Helstrom → Blackrose → Lilmoth using the
-   built road spline, no fast travel, no sprint, forced speed 2.0 m/s, collisions on, combat disabled.
+   built road spline, ~~no fast travel~~ **transport network disabled for the measurement**, no
+   sprint, forced speed 2.0 m/s, collisions on, combat disabled. (**AMENDED wave 0
+   (corpus-audit), drift ID-17:** the old wording read as a prohibition. Seam **S7 mandates** the
+   transport network — `RI-TRV01` builds it. What this step requires is that the *walk-time
+   measurement* is taken on foot, which is a measurement condition, not a design ban.)
 2. Record wall-clock/sim-clock elapsed and integrated path length.
 3. **Pass: 52–65 minutes and 6,300–7,600 m.** Fail: <45 min (world too small) or >75 min (the hour is
    being manufactured by friction, not distance).

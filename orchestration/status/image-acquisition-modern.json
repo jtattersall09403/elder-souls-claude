@@ -2,14 +2,25 @@
  "task_id": "image-acquisition-modern",
  "brief": "inline (task prompt) \u2014 fill modern/ half of corpus/70-visual/refs per docs/REFERENCE-IMAGE-REQUEST.md",
  "started": "wave-N (2026-08-06)",
- "state": "researching",
+ "state": "complete",
  "outputs_expected": [
   "corpus/70-visual/refs/morrowind/REF-A12/ (OpenMW MyGUI layout+skin XML, README.md)",
   "corpus/70-visual/refs/_provenance.json (REF-A12 blocks appended)",
   "corpus/70-visual/refs/MANIFEST.json (regenerated)",
   "tools/refs/merge-manifest.mjs"
  ],
- "outputs_written": [],
+ "outputs_written": [
+  "corpus/70-visual/refs/morrowind/REF-A12/README.md",
+  "corpus/70-visual/refs/morrowind/REF-A12/mygui/ (36 byte-exact OpenMW MyGUI layout/skin files)",
+  "corpus/70-visual/refs/morrowind/REF-A12/config/openmw.cfg + mwui_constants.lua",
+  "corpus/70-visual/refs/make-manifest.py (extended additively: TEXT_EXT + analyse_text)",
+  "corpus/70-visual/refs/_provenance.json (127 -> 165)",
+  "corpus/70-visual/refs/MANIFEST.json (127 -> 165 records)",
+  "corpus/70-visual/refs/ACQUISITION-REPORT.md (REF-A12 row corrected; \u00a714 appended; \u00a70 marked superseded)",
+  "corpus/70-visual/RI-VIS09-reference-image-set.md (\u00a71 count+table, \u00a72 consumers, \u00a73 gap 5)",
+  "tools/refs/merge-manifest.mjs",
+  "tools/package.json (refs / refs:check scripts)"
+ ],
  "findings": [
   "Predecessor (image-acquisition.json) filled morrowind/ side: 89 images, 18/19 slots, all from dehero/mwscr. Concluded modern side unobtainable under old policy proxy \u2014 that conclusion is STALE, proxy removed.",
   "NETWORK CONFIRMED OPEN: steamcommunity.com 200, upload.wikimedia.org, i.imgur.com, youtube.com, flickr, reddit all reachable. images.nexusmods.com 403.",
@@ -19,8 +30,18 @@
   "yt-dlp installs via pip (2026.7.4). NO ffmpeg in container -> cannot merge DASH streams or trim; must use progressive/single-file formats for video/.",
   "STAND-DOWN (coordinator, mid-task): acquisition of refs/modern, refs/video, refs/context handed to external Codex agent with unrestricted internet. This task WROTE NOTHING under corpus/70-visual/refs/ before standing down \u2014 zero files created, modified or deleted anywhere in the repo except this status file. No merge de-duplication is needed on account of this task. All acquisition work lived in the scratchpad only.",
   "Steam search endpoint quirk banked for whoever resumes acquisition: /workshop/browse/?appid=X&section=screenshots&searchtext=Q works ONLY for apps with no Steam Workshop (Elden Ring 1245620 -> 21 hits). For apps that HAVE a workshop (Witcher 3 292030, Skyrim SE 489830) that URL renders the mod workshop and yields zero screenshots. Universal endpoint that works for all: https://steamcommunity.com/app/<appid>/screenshots/?p=N&browsefilter=toprated&searchText=Q (11 results/page, paginate with p).",
-  "Steam detail-page scraper + original-bytes fetcher written and verified at scratchpad/steam.py; ~/harvest.py drives it. Not committed (out of scope after stand-down) but the mechanics are described in the finding above."
+  "Steam detail-page scraper + original-bytes fetcher written and verified at scratchpad/steam.py; ~/harvest.py drives it. Not committed (out of scope after stand-down) but the mechanics are described in the finding above.",
+  "JOB 1 DONE. REF-A12 filled from OpenMW commit f673ab858b8d1ccedeaeb39383896d8be3017ce1 (2026-08-03), files/data/mygui + files/openmw.cfg + files/data/scripts/omw/mwui/constants.lua. 38 files, byte-exact, --depth 1 clone.",
+  "REF-A12 key measurements now on record: MW_Window 256x256 nominal, client inset 8 28 240 220, 4px tiling edge strips, corners = 4x4 casting + two 10px shoulders. MW_Box = same at 2px. Only two border weights in the whole UI (thickBorder=4, border=2, padding=2 per mwui constants.lua). Dialogue window 588x433, topic MWList 166px wide at x=398 = 28% of width. Inventory 600x300, LeftPane 224 / RightPane 350, five 60x24 category BUTTONS not a tab strip. Journal 565x390 with NO window frame - tx_menubook.dds drawn at -70 0 705 390, two 240x320 pages, 25px gutter, black ink (0 0 0) in Journalbook font. Map 300x300 pinnable, 284x264 MW_MapView, 32x32 RotatingSkin compass from compass.dds.",
+  "Morrowind UI colour table recovered verbatim from openmw.cfg lines 71-115 (45 [FontColor] entries): normal 202,165,96; over/header/notify/positive 223,201,159; pressed 243,237,221; active 96,112,202; link 112,126,207; journal_link 37,49,112; answer 150,50,30; health 200,60,30; magic 53,69,159; fatigue 0,150,60; misc 0,205,205.",
+  "UI is assembled from ~30 small TILING sprites (menu_thick_border_* x8, menu_thin_border_* x8, menu_bar_gray.dds referenced 12x, menu_small_energy_bar_* x3) plus one large painted asset (tx_menubook.dds) and its 12 button states. Textures live in Morrowind.bsa and are NOT in OpenMW's repo - the skins name them, that is all. omw_*.dds (scrollbar arrows, controller glyphs) are OpenMW-authored and were deliberately EXCLUDED.",
+  "make-manifest.py extension verified: pre-existing 127 _computed.json entries are byte-identical after the change (0 changed), --check reports 'ok: 165 files, no drift'.",
+  "_provenance.json uses side='morrowind-art-direction' but spec \u00a79 says 'morrowind-art'. Both spellings will exist once Codex writes. Merge tool must tolerate/flag this.",
+  "JOB 2 DONE. tools/refs/merge-manifest.mjs. Audit + content-hash duplicate detection + sha256-keyed merge + \u00a73 floor table. Verified against live manifest and against a 5-case synthetic foreign manifest exercising: same-bytes-different-path, same-bytes-different-classification, same-path-different-bytes collision, new-file-not-on-disk, malformed-record. --write is idempotent (2nd pass 0/0) and NEVER writes provenance for a file not on disk. --strict exits 1. --json valid.",
+  "AUDIT FOUND 2 REAL DEFECTS IN THE EXISTING SET (reported in ACQUISITION-REPORT \u00a714.3, deliberately NOT fixed - coordinator scoped me to REF-A12 only): (1) all 5 anti-generic/ records carry side='modern-fidelity' where \u00a79 requires 'anti-generic' - a consumer filtering fidelity by side would pull 5 generic-fantasy anchors into the fidelity population. (2) Two mwscr images are filed under two slots each (2017-01-12-sunset-on-ascadian-isles in REF-A1+REF-A18; 2016-12-19-hla-oad in REF-A8+REF-A19), so those slots are effectively 4 not 5.",
+  "121 of 165 records are corroboration='one-host', which \u00a78b does not permit. Pre-existing and already noted in \u00a78.4 - it was unfixable under the old proxy. Now that the network is open, re-corroborating the existing 127 is cheap and is the single largest compliance gap left.",
+  "DID NOT re-run tools/metrics/image-metrics.mjs: REF-A12 adds zero images so no population changes, and a parallel agent is actively rewriting that tool (tools/metrics/lib/vis03.mjs, battery.mjs are new and uncommitted). Re-running would have raced it for reference-metrics.json."
  ],
- "next_step": "JOB 1: clone OpenMW --depth 1, extract resources/mygui -> refs/morrowind/REF-A12/",
- "notes_for_successor": "Acquisition is Codex-owned. Do not write under refs/modern, refs/video, refs/context."
+ "next_step": "none - complete",
+ "notes_for_successor": "Acquisition of refs/modern, refs/video, refs/context was handed to an external Codex agent; this task wrote NOTHING there. When Codex lands: run `node tools/refs/merge-manifest.mjs --merge <codex-manifest>` (dry run first), then `--write`, then ALWAYS `python3 corpus/70-visual/refs/make-manifest.py`. make-manifest.py is the only writer of MANIFEST.json and of every numeric field. Two known defects to fix as one deliberate decision: anti-generic side value, and the two double-filed Morrowind images (ACQUISITION-REPORT \u00a714.3). The Steam harvest recipe that works is in ACQUISITION-REPORT \u00a714.0 - the non-obvious part is that /workshop/browse/ search only works for apps WITHOUT a Steam Workshop; use /app/<id>/screenshots/?searchText= instead."
 }

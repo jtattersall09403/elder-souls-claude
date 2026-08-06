@@ -459,9 +459,12 @@ both.
   rule is the coupling, and it must be checked *inside* tracts specifically — a world-average
   sightline pass rate will hide a blind void completely.
 - **The opacity budget colliding with the density budget and one of them silently winning.**
-  Right now RI-WLD02 forbids what §B4 requires. Until the proposed amendment lands, a critic
+  ~~Right now RI-WLD02 forbids what §B4 requires. Until the proposed amendment lands, a critic
   handed both items must fail one of them, and will probably fail this one, because RI-WLD02
-  is older and has a scripted walk behind it.
+  is older and has a scripted walk behind it.~~ **RESOLVED wave 0 (corpus-audit): the amendment
+  landed.** The residual risk is now the opposite one — a void declared over land nobody built.
+  V1–V9, and the witness-prop rule in particular, are what catch that, and an undeclared or
+  failing tract falls back to RI-WLD02's settled-region thresholds rather than escaping them.
 - **Mysteries with loot at the end.** The easiest way to make a mystery feel "finished" is to
   put a reward in it, at which point it is a dungeon and the opacity is decorative. §B1 caps
   rewarded mysteries at 6 of 24.
@@ -507,6 +510,13 @@ both.
   **not** been run against a real build, because none exists yet; its exit codes and report
   shape are therefore `constructed` and confidence is high only for the seal and leak logic,
   which is exercised.
-- **Amendments proposed, not applied** (this item does not edit other agents' files):
+- ~~**Amendments proposed, not applied** (this item does not edit other agents' files):
   RI-WLD02 §2/§Scoring per §B4's "consequential amendment"; RI-WLD05 M24 per BAR-CRITIQUE-01
-  W1. Both are recorded in the dispatching agent's reply.
+  W1. Both are recorded in the dispatching agent's reply.~~
+  **APPLIED wave 0 (corpus-audit).** Both amendments are now in force:
+  `RI-WLD02` D1/D2/D13 are settled-region thresholds scored outside declared void tracts, V5
+  and V6 are peers of D1, the score-0 `D3 < 9` clause is scoped to non-void road kilometres,
+  and inside a tract D13 rises to 600 s and D9's floor drops to 0.15/min. `RI-WLD05`'s M24 is
+  re-thresholded to ≤12 with hour-10 and hour-18 completions. **This item and `RI-WLD02` are no
+  longer in contradiction**, and the "until the proposed amendment lands" caveat in §How-we-lose
+  is discharged. See `CORPUS-COHERENCE-01.md` §6–§7.

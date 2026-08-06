@@ -212,9 +212,26 @@ for 15 minutes. Compute souls-per-minute.
 - **FAIL** if ≥ 3× — the progression curve is decided by a single loop and every other
   encounter in the region is decorative.
 
-**M7 — Health-sponge detector.** For each archetype, compute
-`hits_to_kill` = `hp_max` / (median player light-attack damage at the region's expected
-build). Then compute `player_hits_to_die` = refHP / median enemy attack damage.
+**M7 — Health-sponge detector.**
+
+> **AMENDED wave 0 (corpus-audit) — BAR-CRITIQUE-01 W8: the fixture is now pinned.** "The
+> region's expected build" named no weapon, no upgrade level, no character level and no skill
+> grade. `RI-PRG08` puts the +0 → +10 upgrade swing at **1.92×**, so measured with a +10 weapon
+> at level 60 **every enemy passes M7 and the hard fail can never fire**. A threshold whose
+> measurement is unpinned is not a threshold.
+>
+> **`fixture: wave-standard-build`** — binding for M7 and for the hard fail:
+> - weapon: the region's **reference class at +0**, two-handed grip excluded
+> - character level: the **region-entry level** from `RI-PRG06` §1's "typical" column
+> - attributes/skills: the wave-standard allocation for that level, not a min-maxed build
+> - no buffs, no consumables, no enchantments, no ring/talisman damage modifiers
+>
+> A critic that cannot state the fixture it measured with has produced an **unmeasurable**
+> result, which scores 0 fail-closed per SCORING.md §1.2 — not a pass.
+
+For each archetype, compute
+`hits_to_kill` = `hp_max` / (median player light-attack damage **at `wave-standard-build`**).
+Then compute `player_hits_to_die` = refHP / median enemy attack damage.
 - **PASS** if `hits_to_kill` ≤ 14 for trash, ≤ 40 for elite, and the ratio
   `hits_to_kill / player_hits_to_die` ≤ 5.0 for trash, ≤ 9.0 for elite.
 - **FAIL** if any trash enemy needs > 20 light attacks. A trash enemy that outlasts the
@@ -251,7 +268,9 @@ Each 0/1/2 × weight. Max 44.
 - M5: any stat differing by player level (ARBITRATION S9, AR-1).
 - M4: any archetype introduced in an ambush or a group.
 - M1: any archetype pair with fingerprint distance < 1.0.
-- M7: any trash enemy requiring > 20 light attacks to kill.
+- M7: any trash enemy requiring > 20 light attacks to kill **at `fixture: wave-standard-build`**
+  (region reference weapon at **+0**, region-entry level from RI-PRG06 §1, no buffs — pinned
+  wave 0, W8). **M7 reported without a stated fixture is `unmeasurable ⇒ 0`, not a pass.**
 - Fewer than 8 archetypes clearing M1's distinctness bar (the roster is not a roster).
 
 Blind pair: give the critic ten unlabelled 90-second behaviour fingerprints (ours) mixed

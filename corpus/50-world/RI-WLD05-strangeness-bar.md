@@ -17,9 +17,38 @@ Telvanni do not build towers, they *grow* them; the Redoran do not quarry halls,
 carapace of a dead emperor crab. Mushrooms are load-bearing. Ash falls like weather. A cliff racer
 screams at you from a sky that is the wrong colour. Every one of those is a *specific object* a player
 can point at, and there are dozens. Our bar is a hard inventory: **30 mandated strangeness elements**,
-of which **≥22 must be encounterable in the first 30 minutes of play**, **≥8 must be systemic** (they
+of which ~~**≥22 must be encounterable in the first 30 minutes of play**~~ **≤12 may be encounterable
+in the first 30 minutes**, **≥26 must be encountered by hour 10 and all 30 by hour 18**, **≥8 must be
+systemic** (they
 change how the game is played, not just how it looks), and **0 may be generic-fantasy**. The acceptance
 test is the brief's own: show a screenshot to a fresh judge; **if it could be Skyrim, it fails.**
+
+> **AMENDED wave 0 (corpus-audit) — BAR-CRITIQUE-01 W1, the front-loaded strangeness curve.**
+> The original threshold mandated that **73% of the world's entire novelty vocabulary be
+> available inside half an hour**. Neither reference game does this and both would fail it:
+> Morrowind's Telvanni towers, Vivec, the Ghostfence, the Dwemer ruins and the Sixth House
+> shrines arrive over dozens of hours; Anor Londo is hour ten. A build that satisfied it would
+> have a **flat surprise curve** — every hour after the first shows the player recombinations of
+> things they have already seen — which is the *opposite* of what this item is for.
+>
+> **The intent was right and is untouched: strangeness must not be hero assets.** That is
+> M23's ≥6-placed-instances rule, which is unchanged. What moved is the *guard*, from the
+> opening to the whole run. The curve itself is delegated to `RI-EXP04` (novelty curve), which
+> owns LT1–LT5 and the decay exponent; this item keeps the **inventory**.
+>
+> This applies the amendment text `RI-EXP04` §H specifies verbatim. **`RI-EXP04`'s hard fail 6,
+> recorded there as `pending_amendment` and unenforced, is enforceable as of this edit** — an
+> item may not fail a build for satisfying a rule still binding on it, and that rule is now
+> gone. Two arithmetic defects `RI-EXP04` found in this item while deriving the amendment are
+> fixed at §2 below. Full reasoning: `CORPUS-COHERENCE-01.md` §6.
+>
+> **Advisory split of the 30** (this item's owner may choose a different twelve; only the count
+> binds). First 30 min: **1, 2, 6, 12, 13, 15, 18, 21, 22, 25, 26, 30** — the ones that are
+> everywhere or that the opening settlement is literally made of. Deliberately latest:
+> **11** (rooted intelligences that speak), **23** (Hist-sap dreaming), **27** (egg-law),
+> **29** (the Hive's chord) — these are `N4`/`N6`-weight in `RI-EXP04` and belong to hours 6–18.
+> Withholding a playable visionary interior until the mid-game is worth more than four
+> hackwings in the opening.
 
 ## The reference artifact
 
@@ -51,7 +80,8 @@ our world is smaller and must be denser in strangeness per km² to feel equally 
 
 ### 2. THE THIRTY — the required strangeness inventory for Black Marsh
 
-`E` = encounterable in first 30 min (target ≥22). `S` = systemic (target ≥8).
+`E` = encounterable in first 30 min (~~target ≥22~~ **ceiling ≤12** — a high `E` is now a
+defect, not an achievement). `S` = systemic (target ≥8).
 
 **Architecture — buildings that are organisms (10)**
 
@@ -88,7 +118,7 @@ our world is smaller and must be denser in strangeness per km² to feel equally 
 | # | Element | Region | E | S |
 |---|---|---|---|---|
 | 21 | **Tidewalking** — the tide is a real 12-minute system; roads, dungeons and one whole route exist only at low tide | Eastern Rootlands, coasts | ✔ | ✔ |
-| 22 | **Root-network travel** — you pay a Hist-speaker in gold to be *pulled through* the root-tunnels between settlements. The only fast travel (S7, S15) | all settlements | ✔ | ✔ |
+| 22 | **Root-network travel** — you pay a Hist-speaker in gold to be *pulled through* the root-tunnels between settlements. ~~The only fast travel (S7, S15)~~ **One of five transport modes (S7, S15); `RI-TRV01` owns the network — amended wave 0, drift ID-17** | all settlements | ✔ | ✔ |
 | 23 | **Hist-sap dreaming** — drinking at a Hist opens a visionary interior that is a real, playable, hostile space | Hist sites | ✔ | ✔ |
 | 24 | **Marsh-fever fog** — hot green fog carrying a named, curable disease; region-timed; forces mask or cure items | Deep Marshes, Rootlands | ✔ | ✔ |
 | 25 | **Rot** — organic loot and food decay on a visible clock; corpses bloat, are eaten by fauna, and leave bone | all | ✔ | ✔ |
@@ -98,7 +128,27 @@ our world is smaller and must be denser in strangeness per km² to feel equally 
 | 29 | **The Hive's chord** — an entire region whose ambient audio is one sustained insect note that shifts pitch with your distance to the queen, and is therefore a *navigation instrument* | The Hive | | ✔ |
 | 30 | **Nothing is symmetrical.** No settlement uses a grid and no building uses a right angle — *except* Imperial ones, and every Imperial building in Argonia is visibly failing | all | ✔ | |
 
-**Totals: 30 elements. E = 22 ✔ (target ≥22). S = 15 ✔ (target ≥8).**
+**Totals: 30 elements. ~~E = 22 ✔ (target ≥22)~~ → E = 20 (ceiling ≤12: see below). S = 15 ✔
+(target ≥8) → S = 14 scoreable.**
+
+> **Two arithmetic defects corrected wave 0 (corpus-audit), found by `RI-EXP04` §H.**
+>
+> 1. **The `E` column never summed to 22.** Counting the ✔ marks actually in the table gives
+>    **20** — architecture 6 (#1, 2, 3, 4, 6, 8), flora/fauna 7 (#11, 12, 13, 15, 17, 18, 20),
+>    systems 7 (#21, 22, 23, 24, 25, 26, 30). **This item failed its own stated threshold by
+>    its own table**, and had done since it was written. Under the W1 amendment the number that
+>    binds is a *ceiling* of 12, so 20 is now a **defect to be reduced**, not a shortfall to be
+>    padded — the advisory twelve in the bar statement above is the target composition.
+> 2. **Element 29, "the Hive's chord", is pure audio** — its entire mechanism is a sustained
+>    note shifting pitch with distance. `HARNESS.md` §3 and `PLAYTHROUGH-CRITIC.md` §4.7 both
+>    state audio is unreachable through the harness, so element 29 is **permanently
+>    `unmeasurable ⇒ 0`** for every automated instrument while being counted toward the 30 and
+>    toward the systemic count. **Ruling: it stays in the inventory and is excluded from every
+>    automated count, with the exclusion recorded**, until it gains a non-audio observable —
+>    a visible correlate, or a directional cue emitted to the trace. Deleting it would lose a
+>    good idea to a tooling limitation; counting it silently makes a permanent 0 look like a
+>    build failure. Scoreable inventory is therefore **29**, scoreable systemic **14**, and any
+>    check that reports 30 or 15 has not applied this exclusion.
 
 ### 3. The banned list (generic-fantasy contamination — any instance is a defect)
 
@@ -128,8 +178,21 @@ that fires in a scripted probe.** **Fail: <26 present, or <6 systemic elements a
 
 **M24 — First-30-minutes audit.** Run a scripted new-game session for 30 minutes following the critical
 path from the Lilmoth start. Log which of the 30 elements were seen (rendered on screen ≥1 s) or
-experienced (system fired). **Pass: ≥18. Target: 22. Fail: <12** — a strange world that hides its
-strangeness for an hour has failed the only player who matters, the one deciding whether to continue.
+experienced (system fired). ~~**Pass: ≥18. Target: 22. Fail: <12**~~
+**AMENDED wave 0 (W1) — the method is retained and re-thresholded, and its result becomes an
+input to `RI-EXP04` rather than a standalone pass/fail:**
+
+- **Pass: M24 ≤ 12** of the 29 scoreable elements encounterable in the first 30 minutes.
+- **Plus, measured by `RI-EXP04` LT5, not here:** ≥26 of 30 encountered by hour 10, all 30 by
+  hour 18.
+- **Plus, measured by `RI-EXP04` LT1, not here:** no 90-minute window after hour 2 with zero
+  first-time elements.
+- **Fail: M24 > 16** — the vocabulary is spent in the opening and the rest of the game is
+  recombination.
+
+A strange world that shows you everything in half an hour has not been generous; it has
+spent its whole budget on the first impression and left the next eighteen hours with nothing
+to reveal.
 
 **M25 — Banned-list scan.** Grep the asset manifest and entity registry for the banned list by mesh
 name, entity class and tag. Additionally, sample 40 random loot instances and 40 random enemies and
@@ -152,12 +215,17 @@ direction, has committed a hard error and its verdict is void.
 
 | Score | Condition |
 |---|---|
-| 10 | M22 24/24 "none of these" with 22+ named objects; all 30 elements present; M24 ≥22; M26 median rank in top third |
-| 8 | M22 ≥22/24; all 30 present; ≥10 systemic functional; M24 ≥18 |
-| 6 | M22 20–21/24; 26–29 elements present; M24 15–17 |
+| 10 | M22 24/24 "none of these" with 22+ named objects; all 29 scoreable elements present; **M24 ≤ 12**; **all 30 encountered by hour 18** (`RI-EXP04` LT5); M26 median rank in top third |
+| 8 | M22 ≥22/24; all 29 present; ≥10 systemic functional; **M24 ≤ 14**; **≥26 by hour 10** |
+| 6 | M22 20–21/24; 26–28 elements present; **M24 ≤ 16** |
 | 4 | M22 17–19/24; 20–25 elements; strangeness exists but is thin and clustered |
 | 2 | M22 13–16/24; strangeness is a handful of hero assets and the rest is swamp |
-| **0 — WE LOSE** | Any of: ≥4 of 24 screenshots read as Skyrim/Elden Ring/asset-pack; fewer than 26 of the 30 elements present; fewer than 6 systemic elements functional; any banned-list item found in normal use; M26 median rank bottom quartile |
+| **0 — WE LOSE** | Any of: ≥4 of 24 screenshots read as Skyrim/Elden Ring/asset-pack; fewer than 26 of the 29 scoreable elements present; fewer than 6 systemic elements functional; any banned-list item found in normal use; M26 median rank bottom quartile; **M24 > 16** (the vocabulary spent in the opening) |
+
+> **AMENDED wave 0 (corpus-audit), W1.** Every M24 row was inverted: a *high* M24 was rewarded
+> at 10 and is now the failure. Element counts read against the **29 scoreable** elements
+> (element 29 excluded as permanently unmeasurable — see §2). The hour-10 and hour-18
+> completions are measured by `RI-EXP04` LT5, not here.
 
 ## How we lose
 
@@ -165,7 +233,14 @@ direction, has committed a hard error and its verdict is void.
   It is the default output of every asset pipeline and it is *exactly* what Black Marsh must not be.
   This is the single most likely way this whole project reads as forgettable, and M22 exists for it.
 - **Strangeness as hero assets only.** One beautiful xanmeer on the loading screen and 14 km² of
-  ordinary marsh. M23's ≥6-instances rule and M24's first-30-minutes rule together forbid it.
+  ordinary marsh. ~~M23's ≥6-instances rule and M24's first-30-minutes rule together forbid it.~~
+  **M23's ≥6-instances rule alone forbids it** (amended wave 0, W1) — it is the rule about
+  *placement*, and it is the one doing this work. M24 now forbids the opposite failure: spending
+  the whole vocabulary in the opening.
+- **The flat surprise curve.** Everything strange is available in the first half hour, so every
+  subsequent hour is recombination of things already seen. This is what the *old* M24 threshold
+  mandated, and it is the reason it was amended. `RI-EXP04` owns the curve; M24 owns its
+  opening value.
 - **Strangeness that is only visual.** Thirty weird meshes and zero weird systems, so the world looks
   alien and *plays* like every other game. The S column is 15 for a reason: tide, rot, egg-law,
   mud-memory and the Hive's chord change decisions, not just pixels.

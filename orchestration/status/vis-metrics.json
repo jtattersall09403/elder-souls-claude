@@ -10,11 +10,19 @@
     "tools/metrics/self-test.mjs",
     "corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/metrics/lib/decode.mjs",
+    "tools/metrics/lib/vis03.mjs",
+    "tools/metrics/lib/battery.mjs",
+    "tools/metrics/image-metrics.mjs"
+  ],
   "findings": [
     "DECODE SOLVED. `npm i jpeg-js @jsquash/avif @jsquash/webp` all install cleanly in tools/ (network is open). @jsquash/avif's default decode() does `fetch` of its wasm and FAILS ('fetch failed'); the fix is to import '@jsquash/avif/decode.js' and call init(undefined, {wasmBinary: fs.readFileSync('node_modules/@jsquash/avif/codec/dec/avif_dec.wasm')}) BEFORE decode. Verified decoding a 320x320 mwscr AVIF. Same pattern for @jsquash/webp. This removes the 'refs must be decoded to PNG in a scratch dir' step from ACQUISITION-REPORT s9.",
     "Fallback also exists: python3 + Pillow 12.3.0 in this container has avif:True webp:True. No ffmpeg, no imagemagick.",
     "CONSUMER CONTRACT: tools/run-all.mjs:112 calls image-metrics.mjs with --in <shotsDir> --out <report>/image-metrics.json. HARNESS.md:464 documents the same. So --in/--out must keep working; the legacy per-image blocks are kept at top level and the RI-VIS03 battery is ADDED as `metrics`+`verdict` (schema bumped to @2).",
+    "FIRST REAL MEASUREMENT (RDR2 REF-M6, character_closeup, native 1921x1081): M5 NYQ_ratio = 0.093 on a NATIVE 1024^2 crop, i.e. it PASSES the 0.18 band. The acquisition report's 0.363-0.465 (100% of the reference population failing) was entirely the 256x256 box-downscale artefact. ACQUISITION-REPORT amendment 5 is therefore WITHDRAWN, not adopted: the band was never broken, the instrument was. Do not relax M5 NYQ.",
+    "REAL MODERN FRAME HARD-FAILS AS BANDED (RDR2): M3 p95C=16.4 (band >=42, hard-fail <20) 'DEAD RENDER'; M3 meanC=6.27 (band 10-34); M6 retention=0.266 (hard-fail <0.30); M9 ShoulderRatio=0.023 (hard-fail <0.12); M4 scale_ratio=1.47 (band 0.35-1.10). These are band errors, not render errors -> the four biggest proposed amendments.",
+    "M4 scale_ratio is >1 on real photography-grade frames because a fixed Sobel threshold on a box-downsampled image sees HIGHER edge density (downsampling concentrates contrast). RI-VIS03's 0.35-1.10 band assumed it falls. The alias-storm guard (scale_ratio < 0.22) is still correct and still fires on noise; the UPPER bound is what is wrong.",
     "SOBEL NORMALISATION: the pre-existing sobel() divides magnitude by 4 (so a 0->1 step edge gives G~1). The acquisition report's measured ED_1 = 0.172-0.320 (modern) was measured on that normalised scale against RI-VIS03's 0.08 threshold, and it matches the constructed band 0.10-0.34. Keeping /4 is therefore required for continuity; RI-VIS03's formula omits it. Documented in the tool."
   ],
   "next_step": "write tools/metrics/lib/decode.mjs then lib/vis03.mjs (M1-M10), then M11/M12, then CLI, then self-test, then doctrine doc",

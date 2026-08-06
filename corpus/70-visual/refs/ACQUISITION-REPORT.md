@@ -16,9 +16,23 @@ statistics RI-VIS03 defines.** Even a complete image set would not calibrate M5,
 hard-fail statistics are not computed by any tool in this repository. That, not the shortage of
 pixels, is now the binding constraint.
 
+> **Revision 3** (2026-08-06, agent `image-acquisition-modern`) — **§14.** Three things changed.
+> **(a) §0 and §7 are stale: the policy proxy has been removed and the internet is open.** Steam
+> Community, Wikimedia, imgur, YouTube, Flickr and Reddit are all reachable, and Steam serves
+> original un-recompressed screenshot bytes; §7's "GitHub is all there is" conclusion was true of
+> the old network and is false now. Acquisition of `modern/`, `video/` and `context/` was handed
+> to an external Codex agent, and revision 3 wrote **nothing** into those three folders — §1's
+> modern rows are unchanged and still accurate. **(b) REF-A12 is filled** — by OpenMW's MyGUI
+> layout and skin XML rather than by a screenshot, which is what §13.2 recommended. **(c)** a
+> merge and audit tool, `tools/refs/merge-manifest.mjs`, now exists for reconciling Codex's set
+> with this one; it found two defects in the existing set, recorded in §14.3.
+
 ---
 
 ## §0 What the network actually permitted
+
+**Superseded by §14.0 — the proxy described here no longer exists.** The table below is revision
+1's measurement and is retained because it explains the shape of everything in §2–§7.
 
 The container reaches the internet only through a policy proxy. Everything relevant to this task
 was tested by hand:
@@ -80,7 +94,7 @@ to `modern/hud/` by §5a) or was rejected.
 | REF-A9 | Velothi / Temple ancient stone | yes | 5 | Velothi tower, two ancestral tombs, Gnisis temple, the Ghostfence |
 | REF-A10 | Plant life close, ≥4 images | yes | 5 | mushroom stack, mushroom field, ash-yam rows, tree-stone, Dren plantation |
 | REF-A11 | Bitter Coast swamp | yes | 5 | Seyda Neen ×2, swampy islands, far swamps, lighthouse at night |
-| **REF-A12** | **The UI** — inventory, dialogue topics, journal, map | **NO** | 0 | **structurally unfillable from this source** — see §4 |
+| **REF-A12** | **The UI** — inventory, dialogue topics, journal, map | **yes (rev 3), by structure not by pixels** | 38 files | Filled from **OpenMW's MyGUI layout and skin XML**, not from a screenshot: exact widget geometry, border weights, texture vocabulary and the `[FontColor]` table. Fills the layout half of the slot exactly; fills the appearance half not at all. **See §14 and `morrowind/REF-A12/README.md`.** |
 | REF-A13 | Armour and clothing on NPCs at close range | **yes (rev 2)** | 5 | Ordinator in Indoril armour (front), High Ordinator (**from behind**), road guard, a female NPC in skirt-and-cuirass, two figures at the Mournhold armoury |
 | REF-A14 | Weapons, close | yes | 5 | Daedric tanto, Sixth House hammer, spear statue, dagger, weaponsmith's stands |
 | REF-A15 | Books, scrolls, Daedric script | yes | **5** | open books ×3, scroll pile, **+ the Gnaar Mok Daedric signboard (rev 2)**; one candidate rejected |
@@ -620,3 +634,152 @@ The manifest schema takes both sides; nothing here needs restructuring.
    `reference-metrics.json`. **Never rewrite a committed image file.**
 5. Update §1, §2 and §10 here, and the coverage table in `RI-VIS09` §3. Both documents are
    written so that a new population changes a row, not the document.
+
+---
+
+## §14 Revision 3 addendum (2026-08-06, agent `image-acquisition-modern`)
+
+This revision did **two** things and deliberately did not do the third it was dispatched for.
+
+### §14.0 What this agent did not do, and why — read first
+
+It was dispatched to fill the **modern fidelity side**, on the correct observation that §0's
+network table is stale: **the policy proxy has been removed and outbound internet is now
+unrestricted.** That was verified before standing down, and the verification is worth keeping
+because it overturns §7's structural conclusion:
+
+| Host | Revision 1 result | **Revision 3 result** |
+|---|---|---|
+| `steamcommunity.com` | 403 at CONNECT | **200** |
+| `images.steamusercontent.com` (Steam UGC originals) | untested | **200, full original bytes** |
+| `upload.wikimedia.org`, `i.imgur.com`, `www.youtube.com`, `flickr.com`, `reddit.com` | 403 at CONNECT | **reachable** |
+| `images.nexusmods.com` | 403 | 403 (still) |
+
+A working Steam harvest was built and proven end to end: the app screenshot hub yields
+`sharedfiles/filedetails/?id=…` links; each detail page (fetched **with `--compressed`**, or the
+response is gzip and unparseable) yields the poster, the date, the resolution and the
+`ActualMedia` URL, whose **query string stripped** is the original upload. A sample Elden Ring
+original measured **3840×1608 at 6.97 bits/pixel** — a native, high-quality, un-recompressed
+capture, exactly the class of file §4 wants and §7 concluded did not exist reachably.
+
+**§7's "the realistic in-container ceiling is one clean frame" is therefore false as of this
+revision.** It was true of the network it was written against.
+
+Acquisition was then **handed to an external Codex agent** running the same specification against
+the same branch with unrestricted internet, to avoid two uncoordinated processes writing
+`refs/modern/`, `refs/video/`, `refs/context/`, `MANIFEST.json` and `ACQUISITION-REPORT.md` at
+once. **This agent wrote nothing into those three folders — zero files created, modified or
+deleted there.** §1's modern rows are unchanged and remain accurate. Two things a successor
+should carry:
+
+- **Steam search endpoint, the non-obvious part.**
+  `/workshop/browse/?appid=X&section=screenshots&searchtext=Q` works **only for apps that have no
+  Steam Workshop** (Elden Ring, 1245620 — 21 hits/page). For apps that *do* have one (Skyrim SE
+  489830, The Witcher 3 292030) that URL renders the mod workshop and returns **zero**
+  screenshots, which reads exactly like "the search found nothing". The endpoint that works
+  everywhere is `https://steamcommunity.com/app/<appid>/screenshots/?p=<n>&browsefilter=toprated&searchText=<q>`.
+- **Steam is a natural fit for §8b.** Every screenshot page carries a visible post date, so
+  anything posted before 2023-01-01 satisfies `pre-2023-page` outright — and Skyrim SE (2016),
+  The Witcher 3 (2015) and RDR2 (2019) all have deep pre-2023 galleries. A single poster's
+  gallery for one app, sorted oldest-first, is also the cleanest available **interval-run** source
+  under §3: it is a real upload series, and taking every Nth entry is genuinely unbiased.
+- **Aspect ratio is the first filter, not an afterthought.** The very first Elden Ring original
+  sampled was 3840×1608 (21:9). §6 rejects ultrawide, and a large share of Steam's most-rated
+  screenshots are ultrawide precisely because they look impressive.
+
+### §14.1 REF-A12 filled — the Morrowind UI, by structure rather than by pixels
+
+**38 files, byte-exact, from `https://github.com/OpenMW/openmw` at commit
+`f673ab858b8d1ccedeaeb39383896d8be3017ce1` (2026-08-03)**, cloned `--depth 1`:
+`files/data/mygui/` (36 layout and skin files), `files/openmw.cfg`, and
+`files/data/scripts/omw/mwui/constants.lua`. They live in `morrowind/REF-A12/{mygui,config}/`.
+
+§13.2's own recommendation, acted on. The full account — what this does and does not license a
+critic to judge, and the caveat that OpenMW is a *reproduction* of an interface Bethesda compiled
+into `Morrowind.exe` rather than a Bethesda artifact — is in **`morrowind/REF-A12/README.md`**,
+which anyone citing this slot must read. The short version:
+
+- **Filled exactly:** window and panel geometry, border weights (the whole UI has exactly two,
+  4 px and 2 px), client insets, column widths, control placement, anchor and stretch rules,
+  spacing constants (`border 2`, `thickBorder 4`, `padding 2`), the texture-name vocabulary
+  (~30 small *tiling* sprites plus one painted book asset), and the complete 45-entry
+  Morrowind.ini `[FontColor]` table with RGB values.
+- **Not filled at all:** appearance. No pixel of Morrowind's UI art is here — the `menu_*.dds` and
+  `tx_menubook*.dds` files live in `Morrowind.bsa` and are named by the skins, not contained in
+  them. Bevel, sheen, wear, type and populated density remain unjudgeable, and four 1024×768
+  vanilla captures (inventory, dialogue, journal, map) would still be worth acquiring.
+- OpenMW's own `omw_*.dds` additions (scrollbar arrows, controller glyphs — things Morrowind never
+  had) were **deliberately excluded** so nothing here can be mistaken for 2002 art direction.
+
+`vanilla_confidence: "high"` on all 38, with `vanilla_tests: null` and an explicit note: §7's seven
+tests are tests of a rendered screenshot and **none of them applies to an XML file**. Recording
+them as `null` rather than as passes is the honest reading. `pixel_metrics_valid: false` and every
+pixel statistic `null` on all 38 — they must never enter a metrics population.
+
+**`make-manifest.py` was extended, additively**, with a `TEXT_EXT` set and an `analyse_text()`
+path that records `bytes`, `sha256`, `format` and a line count for non-image assets and computes
+nothing else. Verified: **all 127 pre-existing `_computed.json` entries are byte-identical after
+the change**, and `--check` reports `ok: 165 files, no drift`.
+
+### §14.2 `tools/refs/merge-manifest.mjs` — the tool this set needed before Codex arrives
+
+Written and verified against the live manifest. Four jobs, one refusal.
+
+1. **Audit** — every record against §9's schema, against the file on disk, and against the file's
+   real sha256. `file-missing`, `file-unrecorded` and `hash-mismatch` are the failures that
+   silently corrupt every band computed downstream, so they are reported first.
+2. **Duplicate detection by content hash**, across folders — the thing two uncoordinated
+   acquisition runs are guaranteed to produce. Duplicates that a record *declares* (§5c's
+   `anti-generic/` anchor is five deliberate byte-copies of `modern/hud/` frames) are separated
+   from undeclared ones.
+3. **Merge a foreign manifest by `sha256`, never by path.** Same bytes under two names is a
+   conflict to report, not a second file to add. Same path with different bytes is refused
+   outright — overwriting there would silently swap an image. Where both sides describe the same
+   bytes, the richer provenance is adopted onto *our* path and the swap is recorded in a
+   `merge_note`.
+4. **Per-folder counts against §3's floors**, counting only `pixel_metrics_valid: true` records,
+   which is what §3 actually says — and counting non-image assets in a separate column so
+   REF-A12's 38 files can never be mistaken for 38 pictures.
+
+**The refusal:** it never writes an image, never writes a numeric field, and **never writes a
+provenance record for a file it cannot see on disk** (§9 rule 9 — verified in test: a foreign
+record for a file that does not exist is counted, reported, and skipped). `--write` touches
+`_provenance.json` only and then prints the instruction to re-run `make-manifest.py`, which
+remains the sole writer of `MANIFEST.json` and of every computed number. Running without
+`--write` changes nothing, and re-running with it is idempotent (verified: second pass reports
+`+0 new, 0 upgraded`).
+
+```
+node tools/refs/merge-manifest.mjs                          # audit + duplicates + floors
+node tools/refs/merge-manifest.mjs --merge codex.json       # dry run, report only
+node tools/refs/merge-manifest.mjs --merge codex.json --write
+python3 corpus/70-visual/refs/make-manifest.py              # always, afterwards
+```
+
+Also wired as `npm run refs` / `npm run refs:check` in `tools/package.json`.
+
+### §14.3 Two defects the new audit found in the *existing* set
+
+Both pre-date this revision and neither was previously noticed. Reported, not fixed — fixing them
+touches `anti-generic/` and Morrowind slot folders and should be one deliberate decision, not a
+side effect of a tooling change.
+
+1. **All five `anti-generic/` records carry `side: "modern-fidelity"`.** §9 is explicit that
+   `side` must agree with the folder, and the correct value is `"anti-generic"`. This is not
+   cosmetic: `anti-generic/` is the negative anchor that §5c says is *never* cited as a target,
+   and a consumer selecting the fidelity population by `side === "modern-fidelity"` would pull
+   five deliberately generic-fantasy frames into it. **Fix: set `side` to `"anti-generic"` on
+   those five provenance blocks.** (They are byte-copies of `modern/hud/` frames, which is
+   declared and legitimate — only the `side` value is wrong.)
+2. **Two Morrowind images are filed under two slots each**, inflating both slot counts by one:
+   `mwscr-2017-01-12-sunset-on-ascadian-isles.avif` in both REF-A1 and REF-A18, and
+   `mwscr-2016-12-19-hla-oad.avif` in both REF-A8 and REF-A19. Both re-uses are defensible on
+   subject (an Ascadian sunset really is both a vista and a dusk exterior), but §5e's "two to
+   three images per slot" reads as distinct images, so REF-A18 and REF-A19 are effectively 4 not
+   5. Either add a `duplicate_of` declaration — which is what `anti-generic/` does and what makes
+   the audit quiet — or replace one copy.
+
+The audit's remaining output is **121 `WARN corroboration` records**, which is not a new finding:
+§8.4 already recorded that every file in the set is `"one-host"` because no second host was
+reachable when it was acquired. Now that the network is open, **re-corroborating the existing 127
+is cheap and would clear the single largest compliance gap in the set.**

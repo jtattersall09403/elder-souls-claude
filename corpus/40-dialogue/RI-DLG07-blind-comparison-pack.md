@@ -280,19 +280,43 @@ category named. It is worse than losing the pair.
 
 ## Scoring
 
+> **AMENDED wave 0 (corpus-audit) — BAR-CRITIQUE-01 W3. This item scored victory; it now
+> scores indistinguishability.**
+>
+> `ours_win_rate ≥ 0.25` as a **pass condition** directly contradicted CORPUS-CONTRACT §6 and
+> CRITIC-DOCTRINE §2.5, which state that a blind pick landing on ours is **a signal to distrust
+> the critic** and triggers a harsher re-run. This item made the doctrine's evidence-of-a-broken-
+> instrument into our pass condition — and it is **self-administered**: we build the pack, we
+> choose the excerpts, and §A's "random selection" is on our honour. A team under pressure hits
+> 0.25 by tuning the pack, not by writing better prose.
+>
+> Step 7's re-run condition was already correct and is kept. What changes is that winning is no
+> longer *rewarded*. The target is that a judge asked which set is the 2002 shipped game is
+> **barely better than chance**. Every automatic fail below is unchanged. Full reasoning:
+> `CORPUS-COHERENCE-01.md` §7.
+
 | Metric | Excellent | Acceptable | Fail |
 |---|---|---|---|
-| `ours_win_rate` (harsher run) | ≥ 0.40 | 0.25–0.39 | < 0.15 |
+| **`professional_bet_accuracy`** — across ≥ 12 pairs, how often the judge correctly names the reference set as the shipped game | **≤ 0.55** (chance) | **≤ 0.65** | **> 0.80** — the judge can tell, every time |
+| **`judge_cannot_name_a_consistent_tell`** — asked for the single feature that gives our set away, the judge either declines or names a different feature each time | **true** | true | **false with a repeated language tell** |
 | `tie_rate` | 0.15–0.35 | ≤ 0.45 | > 0.60 (judge not discriminating; re-run) |
+| ~~`ours_win_rate` (harsher run)~~ | ~~≥ 0.40~~ | ~~0.25–0.39~~ | ~~< 0.15~~ — **withdrawn as a pass condition; still reported, and see the void clause below** |
 | `menu_flag_rate_ours` | 0.00 | ≤ 0.10 | > 0.20 → **automatic fail**, filed as ARBITRATION AR-2 leakage |
 | `template_flag_rate_ours` | ≤ 0.15 | ≤ 0.30 | > 0.50 |
 | `distinct_voices_heard` (our excerpts, 18 lines) | ≥ 5 | 4 | ≤ 2 → **automatic fail** (cross-file with RI-DLG06 step 7) |
 | Categories we could not fill | 0 | 1 | ≥ 2 → **automatic fail** |
 | `professional_bet` names the reference set with a **language** tell | expected | — | if the judge names the reference set citing a *content* tell, the run is void — re-normalise and re-run |
 
-**PASS** = no automatic fail, `ours_win_rate ≥ 0.25`, all six categories fillable.
-**MARGINAL** = no automatic fail, `ours_win_rate` 0.15–0.24.
+**PASS** = no automatic fail, `professional_bet_accuracy ≤ 0.65` over ≥ 12 pairs,
+`judge_cannot_name_a_consistent_tell = true`, `tie_rate ≤ 0.45`, all six categories fillable.
+**MARGINAL** = no automatic fail, `professional_bet_accuracy` 0.66–0.80.
 **FAIL** = anything else.
+
+**VOID** (new, wave 0, W3) = `ours_win_rate > 0.5`. The run does not fail and does not pass:
+**it is void, and the pack is rebuilt by a different agent** before anything is scored. This
+matches CRITIC-DOCTRINE §2.5 instead of contradicting it — a judge preferring our
+work-in-progress prose to a shipped commercial game is evidence about the *instrument*, not
+about the prose. ~~`ours_win_rate ≥ 0.25` was previously required for PASS.~~
 
 A critic that reports "no gap found" has failed its own job (ARBITRATION §3). Every run of
 this pack must end by naming **the single biggest remaining gap** in our dialogue writing,

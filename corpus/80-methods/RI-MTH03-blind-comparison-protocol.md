@@ -3,7 +3,14 @@ id: RI-MTH03
 title: The blind-comparison protocol
 kind: structure
 side: neutral
-judges: [process.critic.discipline, process.verdict.format, visual.fidelity, visual.artdirection, dialogue.prose, quests.structure, combat.feel]
+judges: [process.critic.discipline, process.verdict.format]
+# AMENDED wave 0 (corpus-audit), BAR-CRITIQUE-01 W5 / G5 second clause.
+# Removed: combat.feel (aliased to combat.feedback.hitstop, now owned by RI-AUD01 and
+# RI-WPN05), visual.fidelity, visual.artdirection, dialogue.prose, quests.structure.
+# A blind-comparison PROTOCOL sets no bar for combat impact, fidelity, art direction, prose
+# or quest structure — it specifies how a blind pack is built and read. Listing them made
+# INDEX.md show those paths as judged, which is worse than a hole: a hole stops a builder,
+# a false mapping tells them to proceed and tells the critic it has a bar. See RI-MTH05 §C.
 provenance: constructed
 confidence: high
 blind_pair: no

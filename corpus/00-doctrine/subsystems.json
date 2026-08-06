@@ -1080,10 +1080,11 @@
     },
     {
       "path": "world.traversal.transport",
-      "title": "In-fiction transport network only; no warp-to-pin (seam S7)",
+      "title": "The in-fiction transport network REQUIRED by seam S7 - modes, lines, stations, fares, ride time; warp-to-map-pin is what is banned, not travel",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "retitled": "wave-0 corpus-audit, drift ID-17: was 'In-fiction transport network only; no warp-to-pin (seam S7)', which reads as a prohibition and let a build with no network at all pass. Path unchanged (renaming a path orphans every verdict that cited it); only the title moved."
     },
     {
       "path": "world.wayfinding.directions",

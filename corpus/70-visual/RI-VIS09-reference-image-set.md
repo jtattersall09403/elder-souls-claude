@@ -37,7 +37,8 @@ coverage honestly.
 
 ### §1 What exists
 
-Root: `corpus/70-visual/refs/`. **119 files in slot folders, 8 in `rejected/`.**
+Root: `corpus/70-visual/refs/`. **157 files in slot folders, 8 in `rejected/`** — of which **119
+are images and 38 are the non-image UI definitions that fill REF-A12** (see the REF-A12 row below).
 
 **This table is a snapshot. Regenerate it rather than trusting it:**
 
@@ -50,7 +51,8 @@ python3 -c "import json,collections,os; \
 
 | Folder | n | Source | What it is |
 |---|---|---|---|
-| `morrowind/REF-A1 … REF-A19` | **89** | `dehero/mwscr` | Vanilla-Morrowind art-direction reference, **18 of 19 slots**, 4–6 images each. **AVIF previews, ≤ 569×320, mostly 320×320 square crops.** |
+| `morrowind/REF-A1 … REF-A19` (excl. A12) | **89** | `dehero/mwscr` | Vanilla-Morrowind art-direction reference, **18 of 19 image slots**, 4–6 images each. **AVIF previews, ≤ 569×320, mostly 320×320 square crops.** |
+| `morrowind/REF-A12/` | **38** | `OpenMW/openmw` @ `f673ab8` | **The Morrowind UI, as structure rather than as a picture** — MyGUI layout and skin XML, plus the Morrowind.ini `[FontColor]` table. Exact widget geometry, border weights, texture vocabulary and colour constants. **No image; `pixel_metrics_valid: false` on all 38 and every pixel field `null`.** Fills the layout half of the slot exactly and the appearance half not at all. Read `refs/morrowind/REF-A12/README.md` before citing. |
 | `modern/hud/` | **24** | `elfhuo-github/sksebp-og.github.io` | Native 2560×1440 Witcher 3 gameplay, one 2022-12-17 session, twelve locations shot old-gen and next-gen. **Every frame carries HUD.** |
 | `modern/character_closeup/` | **1** | `BAAI-Agents/Cradle` | RDR2, Arthur Morgan from behind at Horseshoe Overlook, 1921×1081, HUD-free. |
 | `anti-generic/` | **5** | (copies of `modern/hud/`) | The negative anchor: crenellated castle, half-timbered street, pitched-roof village, thatched hamlet, birch-and-meadow woodland. |
@@ -71,7 +73,8 @@ it and diffs), `refs/LICENCE-NOTE.md`, `refs/ACQUISITION-REPORT.md` (the full ac
 | **RI-VIS02** (modern fidelity set) | `refs/modern/character_closeup/` | anything under `refs/morrowind/` |
 | **RI-VIS03** (image metrics) | `refs/reference-metrics.json` population `modern-character_closeup` as a target; population `modern-hud` **only** as evidence in a band-amendment proposal, always with its `n` and its HUD caveat | `modern-hud` as the band a render is scored against; the `morrowind` population as a *target* — it is a contrast population only |
 | **RI-VIS04** (renderer feature checklist) | `refs/modern/` for "what a shipped renderer does here" | `refs/morrowind/` |
-| **RI-VIS05** (Morrowind transposition) | all **18** filled `refs/morrowind/REF-A*` slots | anything under `refs/modern/` |
+| **RI-VIS05** (Morrowind transposition) | all **19** filled `refs/morrowind/REF-A*` slots, REF-A12 for layout and colour only | anything under `refs/modern/`; REF-A12 for any claim about how the UI *looked* |
+| **`RI-UIX*`** (UI transposition) | `refs/morrowind/REF-A12/` — widget geometry, border weights, spacing, the `[FontColor]` table | REF-A12 for bevel, sheen, wear, type, iconography or populated density; any metrics population |
 | **RI-VIS06 Protocol A** (fidelity blind) | `refs/modern/character_closeup/` as the `--ref` side | `refs/morrowind/`, `refs/modern/hud/` |
 | **RI-VIS06 Protocol B** (art-direction blind) | `refs/morrowind/REF-A*` as the `--ref` side | `refs/modern/` |
 | **RI-VIS07** ("could this be Skyrim?") | `refs/anti-generic/` as the thing to measure distance **from** | `refs/anti-generic/` as a target — ever |
@@ -115,14 +118,20 @@ writes there.
    by eye; V2 was assessed per image (7 files show distant land and are recorded
    `engine: "openmw-distant-land"`); **V3, V4 and V6 could not be assessed at 320×320 and are
    recorded `null`.**
-5. **REF-A12 (the Morrowind UI) is the one unfilled Morrowind slot**, and REF-A8 (NPC density)
-   and REF-A17 (Imperial interior) are partial. REF-A12 is **permanently unfillable from this
-   source** — the archive's editorial policy is "no interface", so no menu, journal, dialogue list
-   or map exists anywhere in it. **The right fix is not a screenshot:** Morrowind's UI is
-   recoverable exactly from OpenMW's `resources/mygui/` layout XML, which gives real widget
-   geometry rather than a photograph of it. `RI-UIX*` should cite those files. REF-A13 (armour and
-   clothing), REF-A18 (dusk/night exterior) and REF-A19 (stilted settlement) were filled in the
-   acquisition's second revision; see ACQUISITION-REPORT §13.1.
+5. **REF-A12 (the Morrowind UI) is now filled — by structure, not by pixels.** Revision 2 called
+   it permanently unfillable, correctly for its source: `dehero/mwscr`'s editorial policy is "no
+   interface", so no menu, journal, dialogue list or map exists anywhere in it. Revision 3 acted on
+   the alternative revision 2 had already identified: **OpenMW's `files/data/mygui/` layout and
+   skin XML**, 38 files taken byte-exact at commit `f673ab8`. That gives exact widget geometry
+   (`MW_Window` client inset `8 28 240 220`, 4 px tiling frame, 2 px inner box, 166 px dialogue
+   topic column of a 588 px window, 240×320 journal pages with a 25 px gutter), the spacing
+   constants, the texture-name vocabulary and the complete 45-entry `[FontColor]` table.
+   **What remains genuinely missing is appearance:** no pixel of Morrowind's UI art is in the set,
+   so bevel, sheen, wear, type and populated density are unjudgeable, and four 1024×768 vanilla
+   screenshots — inventory, dialogue, journal, map — would still be worth having. **`RI-UIX*` may
+   cite REF-A12 for layout and colour and must not cite it for look.** REF-A8 (NPC density) and
+   REF-A17 (Imperial interior) remain partial. REF-A13, REF-A18 and REF-A19 were filled in the
+   acquisition's second revision; see ACQUISITION-REPORT §13.1 and §14.
 6. **`refs/context/` is empty**, so no builder has seen a depiction of Shadowfen or Murkmire. The
    "deliberately do not converge on ESO" instruction in RI-VIS05 currently has nothing behind it.
 7. **`refs/video/` is empty**, so every motion claim in RI-VIS08 — LOD pop, foliage frequency,

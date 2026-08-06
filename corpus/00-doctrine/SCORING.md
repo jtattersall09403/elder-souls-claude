@@ -62,6 +62,37 @@ the item itself calls 12/18 "below bar". Instead:
 3. Apply the caps in §1.1.
 4. Record both numbers. The native one is the measurement; the ladder one is the summary.
 
+> **AMENDED wave 0 (corpus-audit) — BAR-CRITIQUE-01 W7. The mapping is now MANDATORY and
+> TABULATED PER ITEM, not left to the critic.**
+>
+> Score scales across areas were never comparable while `pass_threshold: 6.0` was applied to
+> all of them. `10-combat` uses **weighted sums** where 70/100 is "gap named, remediable" and
+> <70 is "we lose". `20-progression` uses **min over axes**, where any axis below 6 fails the
+> item. `70-visual` uses `min(ART, FIDELITY)` with hard caps. `30-quests` uses bands.
+> `50-world` uses 0–10 with "WE LOSE" clauses. **A "6" therefore meant five different
+> things**, and §3 below additionally let the critic pick `mean` / `min` / `weighted-mean`
+> per piece — so the aggregate progress number was noise.
+>
+> **Every reference item's `## Scoring` section MUST now contain this row, verbatim, with its
+> own native numbers filled in:**
+>
+> ```
+> | Ladder | 4 | 6 | 8 |
+> |---|---|---|---|
+> | Native | <native score that maps to 4> | <…to 6> | <…to 8> |
+> ```
+>
+> - **Aggregation is a property of the item, not of the critic's mood.** Each item also states
+>   its own aggregation rule (`weighted-sum`, `min-over-axes`, `band`) in that section. §3's
+>   choice applies only to combining *items*, never to computing one.
+> - **An item with no ladder row is `unmeasurable` and scores 0**, fail-closed. This is
+>   deliberately harsh: without the row the ladder is a translation nobody can check, and a
+>   translation nobody can check is how every number in the corpus quietly becomes a 7.
+> - **Enforcement:** this is a per-item obligation on the item's owner, and it is the one
+>   wave-0 amendment that could not be applied by the audit — see `CORPUS-COHERENCE-01.md` §7,
+>   "edits not made", for why filling in 126 items' anchor rows is authorship rather than
+>   coherence repair, and for the ledger entry tracking it.
+
 ---
 
 ## 2. Worked calibration examples
@@ -208,6 +239,10 @@ faction you are still running errands for someone."
   a weighting is defensible from the item list itself, never from importance-to-us.
 
 Then apply, in order: item ceilings (§1.2), hard-fail caps (§1.1), unjustified-≥7 clamp.
+
+**The choice above applies only to combining *items* into a piece score.** Computing a single
+item's native score uses **that item's own stated aggregation rule** (§1.2, amended wave 0) and
+the critic has no discretion over it.
 `pass_threshold` defaults to **6.0** and is raised by the orchestrator in later waves;
 whatever it is, record it in the verdict — a threshold that is not written down is a
 threshold that drifts.

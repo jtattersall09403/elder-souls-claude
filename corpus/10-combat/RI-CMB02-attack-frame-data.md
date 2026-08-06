@@ -83,6 +83,39 @@ frame data.
 Rounding rule: `round-half-up` to integer frames, applied once, to the final product. A
 straight-sword R1 chain hit 2 has startup `round(12 × 0.78) = 9`, `Ps = 10`.
 
+> **AMENDED wave 0 (corpus-audit) — §C and §E contradicted each other (queue B4).**
+> §E requires **≥ 6 f startup for any player attack**. §A's dagger R1 startup is **6 f**.
+> §C's rolling-attack multiplier is **×0.60**, giving `round(6 × 0.60) = 4 f` — **below this
+> item's own floor**, on the fastest weapon in the game, in the most-used contextual attack.
+> The same product breaks the running multiplier (×0.70 → 4 f) and, for the fist class
+> `RI-WPN02` adds at 5 f R1, both.
+>
+> **The floor wins; the multiplier clamps to it.** §E's 6 f is a *readability* rule — below
+> 100 ms an attack is unreactable and un-trade-able — and a readability floor that a modifier
+> can silently pass through is not a floor.
+>
+> **`startup_final = max(6, round(base × modifier))`**, applied after the rounding rule above
+> and after **every** §C startup multiplier. The clamp is not silent: a class whose contextual
+> startup clamps must be listed in the check's output, so a critic can see that the class has
+> **lost its contextual speed advantage** rather than gained a hidden one. In practice this
+> binds only the two fastest classes — `DGR` and `FST` — and only on rolling, running and
+> chain-hit-2/3 startups. Resolved as `RI-WPN04` requested; recorded in
+> `constants.json` as `combat.min_startup_frames`, owner `RI-CMB02`.
+
+**Two contextual rows added wave 0**, requested by `RI-WPN04` (`corpus/12-weapons/`), which
+needs them to specify per-class contextual attacks and had no base row to multiply:
+
+| Modifier | Startup | Active | Recovery | Stamina | Motion value | Poise dmg | Notes |
+|---|---|---|---|---|---|---|---|
+| Backstep attack | ×0.65 | ×1.00 | ×0.95 | ×1.00 | ×1.00 | ×1.00 | Root Δz ×1.40 (backward). Subject to the 6 f clamp. |
+| Guard counter | ×0.85 | ×1.00 | ×1.05 | ×1.00 | ×1.30 | ×1.60 | Only within 12 f of a successful block. Subject to the 6 f clamp. |
+
+**The two-handed row is strengthened.** ~~"Different clip, same frame counts."~~ Same frame
+counts is the *floor*, not the specification: `RI-WPN06` requires two-handing to produce a
+**divergent moveset**, not a reskin, and this row as written licensed exactly the reskin it
+warns about elsewhere. The frame multipliers stay ×1.00 — two-handing must not become a
+strictly-faster mode — and `RI-WPN06` §`weapon.stance.twohand` owns which *slots* change.
+
 ### D. The commitment rule (as binding as any number)
 
 ```
@@ -130,8 +163,25 @@ Additional binding rules:
 | Startup delta, light vs heavy of the same class | ≥ **8 f** | R2 must be a visibly different decision, not a slightly slower R1 |
 | `active / total` | ≤ 0.16 for every row | A swing is dangerous briefly; a long active window is a hitbox, not an attack |
 | Startup spread across the 7 classes, R1 | ≥ 23 f (dagger 6 → UGS 29) | Weapon class must be legible from timing alone |
-| Startup delta between adjacent classes, R1 and R2 separately | ≥ **2 f** | Adjacent classes must be distinguishable by timing alone. Verified: R1 startups 6/12/14/16/19/22/29 → deltas 6,2,2,3,3,7; R2 startups 14/25/27/30/34/40/52 → deltas 11,2,3,4,6,12 |
-| Minimum startup, any player attack | ≥ 6 f (100 ms) | Below this the attack is unreactable and un-trade-able |
+| Startup delta between adjacent classes, R1 and R2 separately | ≥ **2 f**, **scoped to the 7-class spine of §A/§B only** (amended wave 0) | Adjacent classes must be distinguishable by timing alone. Verified over the spine: R1 startups 6/12/14/16/19/22/29 → deltas 6,2,2,3,3,7; R2 startups 14/25/27/30/34/40/52 → deltas 11,2,3,4,6,12 |
+| Minimum startup, any player attack | ≥ 6 f (100 ms), **and §C's startup multipliers clamp to it** (amended wave 0) | Below this the attack is unreactable and un-trade-able. See the clamp rule at the end of §C |
+
+> **The ≥2 f adjacent-class rule is arithmetically impossible at 15 classes, and is therefore
+> scoped (amended wave 0, corpus-audit; requested by `RI-WPN02`).** `RI-WPN02` defines **15**
+> weapon classes. Fourteen gaps of ≥2 f across an R1 startup range of 6 → 29 f needs **28 f**
+> of range and there are **23**. The rule cannot be satisfied by any assignment, so as written
+> it failed the roster automatically.
+>
+> **Ruling: the rule binds the 7-class spine that §A and §B actually tabulate** — dagger,
+> straight sword, spear, axe, halberd, greatsword, ultra greatsword — where it is verified
+> above and where it does the work it was written for. The other 8 classes are separated by
+> `RI-WPN02`'s **12-dimensional fingerprint distance** (`D_min ≥ 1.6` PASS, `< 1.0` HARD FAIL),
+> which is the right instrument at that population: with 15 classes, timing alone cannot carry
+> differentiation and was never going to. Timing separation within the spine, fingerprint
+> separation across the roster — the intent survives, the arithmetic now closes.
+>
+> **`RI-CMB02` remains the owner of frame data.** `RI-WPN02`'s 8 additional class rows are
+> adopted into `ES-FRAMES/1` by that item and cited, not restated, here.
 | Maximum `Ps` for the intended punish weapon | ≤ 15 f | RI-AI03's absolute `P_safe` floor is 15 f; a weapon with `Ps > 15` cannot punish the tightest legal window |
 
 All frame counts in §A and §B: tolerance **±0 frames**. Motion values: ±0.02. Root Δz:

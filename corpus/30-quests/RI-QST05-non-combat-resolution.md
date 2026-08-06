@@ -198,9 +198,30 @@ numbers. Record the run in `corpus/90-verdicts/`.
 | 3–4 | PACIFIST-ALL 15–30%; non-violent options exist but are ungated skips |
 | 0–2 | < 15%, or every non-violent option is a speechcraft check with no requirement |
 
-**Hard fails:** PACIFIST-ALL < 30%; any verb of the five with 0 quests; any live-verification quest that
+**Hard fails:** PACIFIST-ALL < 30%; **VERB-SPREAD > 40%** (promoted from a band condition to a hard
+fail, wave 0, W6); any verb of the five with 0 quests; any live-verification quest that
 contradicts its own `kill_required_npcs`; any kill-target NPC that is pre-aggroed such that it cannot be
-spoken to (this simultaneously fails RI-QST02 D6).
+spoken to (this simultaneously fails RI-QST02 D6); **PACIFIST-ALL reported without a working stealth
+and crime system** (see the dependency below).
+
+> **AMENDED wave 0 (corpus-audit) — BAR-CRITIQUE-01 W6.** When this item was written, sneak and
+> theft had **no subsystem path, no reference item and therefore no builder assignment**. That
+> made speechcraft the *only buildable route* to a 30% pacifist fraction — and
+> "speechcraft-solves-everything" is this item's own top-listed failure mode. **A threshold
+> whose only reachable satisfaction is its own named failure is gameable by construction.**
+>
+> Two changes close it:
+>
+> 1. **VERB-SPREAD ≤ 40% is now a hard fail**, not a band condition. One verb carrying more
+>    than 40% of the non-violent resolutions fails the item outright, whatever PACIFIST-ALL says.
+> 2. **This item now formally depends on `RI-STL01` (detection and sneak), `RI-STL02` (theft,
+>    locks, fencing) and `RI-CRM01` (crime, witnesses, justice)**, which exist as of wave 0 and
+>    are registered under the `stealth.*` and `crime.*` roots. **If those systems are absent from
+>    the build, PACIFIST-ALL is `unmeasurable` and scores 0** — per CRITIC-DOCTRINE §7.3 — rather
+>    than being satisfied by dialogue alone. `RI-MAG02`'s utility effects (S19) are the fourth
+>    route and count toward VERB-SPREAD as their own verb.
+>
+> Full reasoning: `CORPUS-COHERENCE-01.md` §7.
 
 ## How we lose
 

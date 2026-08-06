@@ -304,3 +304,292 @@ additionally fails on corpus holes. Two new checks were added, both specified in
   writing a reference item, which is authorship, not coherence repair.
 
 ---
+
+## 5. The Jel validator and the lexicon — RULED
+
+### 5a. The validator rejected canon
+
+`corpus/80-methods/jel-phonotactics.py` scored **26.7% violations against its own 5% pass
+threshold** when run on attested Jel. It rejected **Saxhleel** — the Argonians' own word for
+themselves — plus **Thtithil** (egg, already cited as canon in CF-025) and **Xeech** (seed, *a
+root in our own lexicon*), and five more.
+
+**Ruling: fix the validator, and fix it by splitting it in two rather than by loosening it.**
+
+A single-mode validator has an unresolvable conflict of duties. It is asked to (a) never reject
+a real Argonian word and (b) stop us inventing *Krothgar*. Those are different questions and
+they need different rules. So:
+
+- **`--mode canon` (new default — what a critic runs).** An attested Jel form is never a
+  violation. `phonology.attested_exceptions` grew from **7 to 42 elements**: every attested
+  form in `argonian-names.json → jel_glossary`, split on hyphen and space.
+- **`--mode coinage`.** The attested-exception list is ignored *entirely*, so the narrow
+  constructed rules apply in full to anything we invent. `gr`, `kr` and geminates remain
+  forbidden here **even though canon contains them**: those rules exist to stop coined Jel
+  drifting into generic fantasy, and canon's licence to say *Krona* is not our licence to coin
+  *Krothgar*. Verified: coinage mode still rejects `Krothgar`, `Ssaxleel`, `Blooddrinker`.
+- **Inventory gaps that canon proved were gaps** were filled, since these are not matters of
+  taste: coda `ch` (*Xeech*), onsets `hl` / `tht` / `xth` (*Saxhleel* = sa-xhleel, *Thtithil*,
+  *Xthari*), coda cluster `rg` (*Norg*).
+- **`--self-test` added as the regression guard.** It runs the attested fixture through canon
+  mode and exits non-zero if a single attested word is rejected. `self-test: 33 attested Jel
+  forms, 0 rejected. SELF-TEST PASSED.`
+
+**RI-LOR04 licensed this itself.** Its §6(c) already records the same failure in miniature —
+*"`xanmeer` — a canon word — failed the coda rules… **A phonology that rejects the canon word
+it was derived from is wrong**"* — and fixed it by adding `r` to the coda inventory. This
+amendment is that principle applied to the other eight cases.
+
+**Verified no weaker:** the 34 worked examples still score **0.0% PASS**, and the adversarial
+set (`Slays-The-Shadow-Lord`, `Grimfang-Of-The-Blackwater`, `Blooddrinker`, `Zzzarkath`,
+`Fenwyck`, `Thorgrim`) still **FAILs** on the same grounds.
+
+### 5b. Three classifier corrections found while testing — not in the queue
+
+Each was quietly annexing an Argonian name to another culture, which is the same class of
+error as the wrong glosses:
+
+| Name | Was classified | Now | Fix |
+|---|---|---|---|
+| ***Skink-in-Tree's-Shade*** (Morrowind, 3E 427) — the one Argonian name every reader knows | `khajiit`, on the apostrophe | `argonian-tamrielic` | The apostrophe ban is a **Jel** rule. An English possessive in a Tamrielic-facing name is not a Khajiit apostrophe. Lowercase medial function words (`in`) are now permitted; first and last element must still be capitalised |
+| ***An-Deesei***, ***Ixt-Shaneekh***, Jel compounds generally | `argonian-tamrielic` — a Jel compound also matches the hyphenated-English shape | `jel` | The Jel sound-signature test now runs **before** the shape test. This is the *same* minority-form-as-the-rule error as §5d, in code |
+| ***Tree-Minder Deyapa***, ***Nisswo Ajul-Jas*** | `imperial`, then failed for "hyphen in an Imperial name" | title stripped, remainder classified | Attested title-prefixes are a register, stripped before classification **and** before checking |
+
+### 5c. Four lexicon glosses corrected against attested Jel
+
+| Root | Was | Now (attested: *Lore:The Sharper Tongue: A Jel Primer*) |
+|---|---|---|
+| `xul` | "root, that which goes down" (`inferred`) | **"death, and by the same word rebirth — they are thought to be one and the same"** (`community-data`) |
+| `uxith` | "old, long-standing, kept" (`community-data`, **no source**) | **"nest, home, bed — for my people these concepts are one and the same"** (`community-data`, sourced) |
+| `ojel` | "tongue, the organ" (`inferred`) | **"not of a tribe, outsider — literally *not of Argonian tongue*"** (`community-data`) |
+| `kaal` | "to kneel, to put the hand down into" (`constructed`) | **"war captain"** (`community-data`) — a constructed root had landed on an attested word with an unrelated meaning |
+
+`uxith` was the serious one: `community-data` means *verified against a source*, and there was
+no source. The label was wrong twice — wrong gloss, and a provenance claim the corpus's own
+definitions did not support.
+
+**`kaal`:** our constructed sense was **renamed to `kaan`**, not deleted, so nothing coined on
+it is lost. `kaal` is used nowhere else in the corpus, so the rename is contained.
+
+**`xul` was load-bearing — five coined terms are built on it — and the ruling is to RE-GLOSS,
+not rename.** `Xul-Aneekh` appears across `RI-CRM01`, `RI-CRM02`, `RI-MAG03`, `RI-TRV01` and
+`travel-network.json`; renaming it would have been a corpus-wide sweep with a real chance of
+leaving a dangling reference. It also turns out to be unnecessary, because under the *attested*
+gloss four of the five terms get **better**:
+
+| Coined term | Old reading | Reading under attested `xul` | Verdict |
+|---|---|---|---|
+| `xul-teekh` (the souls currency) | "root-tithe / sap-debt" | **"death-tithe"** | improved, and now canon-grounded |
+| `xul-hesh` (soul-trapping) | "root-theft" | **"death-theft"** | improved |
+| `xul-vaska` (the Estus analogue) | "tithe-gourd" | **"rebirth-gourd"** | improved |
+| `ixtu-xul` (the bonfire analogue) | "the opened root" | **"the opened rebirth"** | improved — a checkpoint you return to after dying is *exactly* an opened rebirth |
+| `xul-aneekh` (the faction) | "the Deep-Kin" | **"the Rebirth-Kin"** | **re-glossed**: Rebirth-Kin is a better name for an isolationist Hist-consensus than Deep-Kin was. *Deep-Kin* is kept as the **Tamrielic exonym** — what outsiders call them — so every existing reference in the corpus stays correct |
+
+The primer's own note that death and rebirth "are one and the same in the eyes of my people" is
+what makes this work; it is not a rescue, it is the source being better than our invention.
+
+**15 attested Jel words that the lexicon simply did not contain** were added as roots (`bok`,
+`greel`, `krona`, `naheesh`, `nalpa`, `norg`, `saxhleel`, `thtithil`, `thuxis`, `toteik`,
+`tsona`, `xal`, `vakka`, `xanmeer`, `xthari`).
+
+### 5d. RI-LOR04 §4 had the minority form as the rule
+
+`RI-LOR04` §4 legislated the hyphenated descriptive name (*Counts-The-Wet-Days*) as **the**
+Argonian naming system. Measured over every attested Argonian name:
+
+| Shape | Count | Share |
+|---|---:|---:|
+| Jel single word | 182 | 48% |
+| Jel compound | 142 | 38% |
+| **Tamrielic descriptive** | **43** | **11%** |
+| Mixed | 10 | 3% |
+
+**86% of attested Argonian names are Jel.** Legislating the 11% form as the rule makes the
+world sound *less* Argonian, not more — and CF-023 says a Tamrielic name is carried **in
+addition to** a Jel one, not instead of it.
+
+**Ruling — four corrections, applied to both `RI-LOR04` §4 and `jel-lexicon.json`:**
+
+1. **The Jel name is the primary form.** A roster in which most Argonians carry hyphenated
+   English names now **fails** §4 however well each individual name scores.
+2. **Word count 2–5, modal 2** (~~2–4, modal 3~~). Attested: 2 words ×31, 3 ×6, 4 ×5, 5 ×1.
+   The mode was wrong and the ceiling was wrong — *Morning-Star-Steals-Away-Clouds* is five.
+3. **The verb-initial slot is not obligatory.** Canon has *Nine-Toes, Twice-Bitten,
+   Tongue-Toad, Fine-Mouth, Grey-Throat, Big Head, Egg-Face*. The register is policed by the
+   epic-register blocklist — which is what actually catches `Slays-The-Shadow-Lord` — and the
+   positive vocabulary requirement moved to **coinage mode only**, where it belongs.
+4. **The title-prefix register was missing entirely** and is now in the lexicon: *Tree-Minder*
+   (9 bearers), *Nisswo* (7), *Sun-Eater* (7), *Dead-Water* (3), *Grave-Singer* (2),
+   *Raj-Kaal* (2), *Egg-Tender, Bond-Guru, Chime-Maker, Copper-Eye, Sap-Speaker, Ux-Deelith,
+   Bright-Throat, Root-House, Moss-Skin*. These do exactly the work §4 wants done, and they are
+   canon.
+
+**Closes:** queue items **B6** and **B7**; PROVENANCE-UPGRADE-01 §A and §B8.
+
+---
+
+## 6. The strangeness curve — W1, and two arithmetic defects
+
+**W1 — `RI-WLD05` mandated a flat surprise curve.** "≥22 of the 30 strangeness elements
+encounterable in the first 30 minutes" required **73% of the world's entire novelty vocabulary
+inside half an hour**. Neither reference game does this and both would fail it: Morrowind's
+Telvanni towers, Vivec, the Ghostfence, the Dwemer ruins and the Sixth House shrines arrive over
+dozens of hours; Anor Londo is hour ten.
+
+**Ruling: apply `RI-EXP04` §H's replacement text verbatim.** The item's *intent* — strangeness
+must not be hero assets — was right and is untouched; that intent lives in M23's
+≥6-placed-instances rule, which is unchanged. What was wrong was fixing the guard to the
+opening instead of to the whole run.
+
+| | Was | Now |
+|---|---|---|
+| First 30 min | ≥ 22 of 30 | **≤ 12** |
+| By hour 10 | unspecified | **≥ 26** (measured by `RI-EXP04` LT5) |
+| By hour 18 | unspecified | **30** |
+| Sustained | unspecified | **no 90-min window after hour 2 with zero first-time elements** (`RI-EXP04` LT1) |
+| M24 fail | < 12 | **> 16** — the sign of the test is reversed |
+| Score table | rewarded M24 ≥22 at ladder 10 | every M24 row inverted; a high M24 is a defect |
+| M23 ≥6 instances | — | **unchanged** |
+| Systemic ≥8 | — | **unchanged** |
+
+**Consequence recorded:** `RI-EXP04`'s hard fail 6 was marked `pending_amendment` and
+**unenforced**, on the correct principle that *an item may not fail a build for satisfying a
+rule still binding on it*. That rule is now gone, so hard fail 6 is enforceable as of this
+edit, and `RI-WLD05` says so in its own amendment block.
+
+**Two arithmetic defects in `RI-WLD05`, found by `RI-EXP04` and fixed here (queue B3):**
+
+1. **`RI-WLD05` failed its own threshold, by its own table.** The `E` column's ✔ marks sum to
+   **20**, not the asserted 22 — architecture 6 (#1, 2, 3, 4, 6, 8), flora/fauna 7 (#11, 12, 13,
+   15, 17, 18, 20), systems 7 (#21, 22, 23, 24, 25, 26, 30). It had been wrong since the item
+   was written and nothing checked it. Under W1 the binding number is a **ceiling of 12**, so
+   20 is now a defect to reduce rather than a shortfall to pad — which is the happier direction
+   to discover an arithmetic error in.
+2. **Element 29, "the Hive's chord", is pure audio** — a sustained note shifting pitch with
+   distance. `HARNESS.md` §3 and `PLAYTHROUGH-CRITIC.md` §4.7 both state audio is unreachable
+   through the harness, so it was **permanently `unmeasurable ⇒ 0`** while being counted toward
+   the 30 and toward the 15 systemic. **Ruling: keep it in the inventory, exclude it from every
+   automated count, record the exclusion.** Deleting it loses a good idea to a tooling
+   limitation; counting it silently makes a permanent zero look like a build failure. Scoreable
+   inventory is **29**, scoreable systemic **14**, and any check reporting 30 or 15 has not
+   applied the exclusion. The exclusion lapses if the element gains a non-audio observable.
+
+---
+
+## 7. The remaining wrong bars — W2, W3, W6, W7, W8
+
+### W2 + queue B2 — `RI-WLD02` made deliberate emptiness illegal, and contradicted `RI-WLD09`
+
+`RI-WLD02`'s D1 (TTNIT median ≤45 s), D2 (p90 ≤90 s) and D13 (longest nothing-stretch ≤150 s)
+were **global**. `RI-WLD09` §B4 requires ≥5 declared void tracts covering ≥14% of the landmass,
+each with a ≥240 s empty walk. **A critic handed both items had to fail one of them** — and
+would have failed `RI-WLD09`, because `RI-WLD02` is older and has a scripted walk behind it.
+
+Three things were wrong at once, which is why this counts as both a wrong bar and a
+contradiction: sustained emptiness was illegal *everywhere*; the cheapest way to satisfy a p90
+is to sprinkle, so the item was simultaneously demanding the POI inflation its own M7 scans
+for; and two items in the same area disagreed.
+
+**Ruling: `RI-WLD09` wins on emptiness, `RI-WLD02` wins on density, and they are made
+commensurable rather than one being overruled.** Density is a *rhythm*; the original bar
+measured only its mean. `RI-WLD09` proposed the fix in its own §B4 and this audit applied it
+exactly as specified:
+
+- **D1, D2, D13 become settled-region thresholds**, scored outside declared void tracts.
+- **V5 (≥12% of road-km with TTNIT > 3 min) and V6 (≥2 regions with median TTNIT > 2 min) are
+  added as peers of D1**, weighted ×2 and ×1. **It is now possible to fail `RI-WLD02` for
+  having too little emptiness** — that is the correction, not the exemption.
+- Inside a declared tract, D13 rises 150 s → **600 s**, D9's hostile floor drops 0.4 → **0.15**.
+- The score-0 clause `D3 < 9` is scoped to **non-void** road kilometres, and `V5 < 6%` is added
+  to it.
+- **The anti-abuse clause:** a tract counts as declared only if it passes `RI-WLD09` V1–V9,
+  including the witness-prop rule (≥6 authored, non-`poi`-tagged props per km² — *emptiness
+  somebody walked through has litter in it, and unbuilt terrain is spotless*). Undeclared or
+  failing emptiness is still measured by the settled-region thresholds, so "declare a void over
+  the land we did not build" gains nothing.
+
+`RI-WLD09`'s "amendments proposed, not applied" note and its "until the amendment lands, a
+critic must fail one of us" bullet are both marked resolved in place.
+
+### W3 — `RI-DLG07` scored victory where the doctrine scores suspicion
+
+`ours_win_rate ≥ 0.25` was a **pass condition**. CORPUS-CONTRACT §6 and CRITIC-DOCTRINE §2.5
+both say a blind pick landing on ours is **evidence the critic is broken** and triggers a
+harsher re-run. The item therefore rewarded the exact outcome the doctrine treats as instrument
+failure — and it is self-administered: we build the pack, we choose the excerpts, and §A's
+"random selection" is on our honour. A team under pressure hits 0.25 by tuning the pack.
+
+**Ruling: score indistinguishability, not victory.**
+
+- **New pass metrics:** `professional_bet_accuracy ≤ 0.65` across ≥12 pairs (the judge, asked
+  which set is the 2002 shipped game, is barely better than chance), and
+  `judge_cannot_name_a_consistent_tell = true`.
+- `tie_rate` band unchanged; every automatic fail unchanged.
+- `ours_win_rate` is **still reported** but is no longer a pass condition.
+- **New VOID outcome:** `ours_win_rate > 0.5` makes the run void — not failed, not passed — and
+  the pack is rebuilt **by a different agent** before anything is scored. That matches §2.5
+  instead of contradicting it.
+
+### W6 — `RI-QST05`'s pacifist fraction was gameable by construction
+
+The item mandates PACIFIST-ALL ≥ 45% (hard fail < 30%) and names
+"speechcraft-solves-everything" as its own top failure mode. When it was written, **sneak and
+theft had no subsystem path, no reference item and no builder assignment**, so speechcraft was
+the *only buildable route* to 30%. **A threshold whose only reachable satisfaction is its own
+named failure mode is gameable by construction.**
+
+**Ruling: keep the threshold, close the route.**
+
+- **VERB-SPREAD ≤ 40% promoted from a band condition to a hard fail.** One verb carrying more
+  than 40% of non-violent resolutions now fails the item outright, whatever PACIFIST-ALL reads.
+- **`RI-QST05` now formally depends on `RI-STL01`, `RI-STL02` and `RI-CRM01`** — which exist as
+  of wave 0 and are registered under the `stealth.*` and `crime.*` roots this audit created. If
+  those systems are absent from the build, **PACIFIST-ALL is `unmeasurable` and scores 0** per
+  CRITIC-DOCTRINE §7.3, rather than being satisfied by dialogue alone. `RI-MAG02`'s utility
+  effects (S19) are the fourth route and count as their own verb.
+
+### W7 — a "6" meant five different things
+
+`10-combat` uses weighted sums where 70/100 is "remediable". `20-progression` uses min-over-axes
+where any axis below 6 fails the item. `70-visual` uses `min(ART, FIDELITY)`. `30-quests` uses
+bands. `50-world` uses 0–10 with "WE LOSE" clauses. `pass_threshold: 6.0` was applied across all
+of them, and SCORING.md §3 additionally let the critic choose `mean` / `min` / `weighted-mean`
+per piece. The aggregate progress number was noise.
+
+**Ruling: the native→ladder mapping is mandatory and tabulated per item, and aggregation is a
+property of the item rather than of the critic.** SCORING.md §1.2 now requires every item's
+`## Scoring` section to carry a fixed row giving the native score that maps to ladder 4, 6 and
+8, plus its own aggregation rule. **An item with no ladder row is `unmeasurable` and scores 0**,
+fail-closed. §3's choice of `mean`/`min`/`weighted-mean` is scoped to combining *items* into a
+piece score and never to computing one.
+
+**This is the one wave-0 amendment the audit could not finish** — see §10.
+
+### W8 — `RI-AI05`'s health-sponge hard fail could never fire
+
+*"Any trash enemy requiring > 20 light attacks to kill"* named no weapon, no upgrade level, no
+character level and no skill grade. `RI-PRG08` puts the +0 → +10 upgrade swing at **1.92×**, so
+measured with a +10 weapon at level 60 **every enemy passes and the hard fail is unreachable**.
+
+**Ruling: pin the fixture, and make an unstated fixture score zero.**
+`fixture: wave-standard-build` — region reference weapon at **+0**, region-entry level from
+`RI-PRG06` §1's "typical" column, wave-standard allocation, no buffs, consumables or
+enchantments. **M7 reported without a stated fixture is `unmeasurable ⇒ 0`, not a pass.**
+
+### W5 — a protocol document was listed as the bar for combat impact
+
+`RI-MTH03`, the blind-comparison **protocol**, claimed `combat.feel` (aliasing to
+`combat.feedback.hitstop`, now owned by `RI-AUD01` and `RI-WPN05`), plus `visual.fidelity`,
+`visual.artdirection`, `dialogue.prose` and `quests.structure`. **A false mapping is worse than
+a hole**: a hole stops a builder, a false mapping tells them to proceed and tells the critic it
+has a bar. All five removed; `RI-MTH03` keeps `process.critic.discipline` and
+`process.verdict.format`, which are the two things a protocol document can actually bar. Holes
+did not increase — every one of the five is judged by a real item. Generalised as `RI-MTH05` §C.
+
+### W9 — deliberately no change
+
+BAR-CRITIQUE-01 asks for no change to `RI-PRG07`'s "Burden clamped to 1.00 inside COMBAT"
+ruling, only for the counterweight to exist. **AR-3 is in ARBITRATION §3 and `RI-CMP01` exists**,
+so W9 is closed by their existence and nothing in `RI-PRG07` was touched.
+
+---

@@ -1,378 +1,324 @@
 #!/usr/bin/env node
-// image-metrics.mjs — objective image statistics for the visual-fidelity reference items.
-// Pure JS (pngjs only, no native deps). Spec: corpus/80-methods/HARNESS.md §7.
-// Consumers: corpus/70-visual/RI-* (fidelity side only; art direction is not scored here).
+// image-metrics.mjs — the RI-VIS03 fidelity battery, M1..M12.
+//
+// Spec:      corpus/70-visual/RI-VIS03-fidelity-image-metrics.md   (normative)
+// Notes:     corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md       (what is / isn't implemented)
+// Side:      FIDELITY only (RI-VIS01 §B). Never cite this tool on the art-direction side.
+// Deps:      pngjs, jpeg-js, @jsquash/avif, @jsquash/webp, pixelmatch — all pure JS or wasm.
+//
+// Schema v2 keeps every v1 top-level per-image block (so reference-metrics.json and
+// tools/run-all.mjs keep working) and ADDS `metrics` (M1..M12) and `verdict` per image.
+//
+// Every statistic is emitted as {value, unit, profile, measurable, reason, band, pass}.
+// `measurable: false` with a stated reason is a legitimate and required output — the tool
+// never reports a number it did not actually compute, and RI-VIS03 §0c forbids a consumer
+// from reading a skipped or unmeasurable metric as a pass.
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, die, log, EXIT, writeJson, sha256, quantile, mean, stdev } from '../lib/cli.mjs';
+import { decodeImage, isDecodable, SUPPORTED_EXT, writeMaskPng } from './lib/decode.mjs';
+import * as V from './lib/vis03.mjs';
+import { runBattery } from './lib/battery.mjs';
 
 const USAGE = `
-image-metrics.mjs — compute fidelity image metrics for one or many PNGs.
+image-metrics.mjs — compute the RI-VIS03 fidelity battery (M1..M12) for one or many images.
 
 USAGE
-  node tools/metrics/image-metrics.mjs --in <file.png|dir> [--out <metrics.json>] [--json]
+  node tools/metrics/image-metrics.mjs --in <file|dir> [--profile <p>] [--out <metrics.json>]
 
 OPTIONS
-  --in <path>     PNG file, or a directory of PNGs (e.g. a run's shots/ dir)   (required)
-  --out <path>    Output JSON (default: <dir>/image-metrics.json)
-  --sky-rows <f>  Fraction of image height treated as sky for the gradient metric (default 0.4)
-  --edge-thresh   Sobel magnitude threshold on 0..1 luminance (default 0.08)
-  --compare <p>   Second PNG (or directory) to pixel-diff against --in, via pixelmatch.
-                  Use for RI-MTH01 M7 (same camera pose twice must be identical) and for
-                  cross-wave regression. Adds a "diff" block; writes <out>-diff.png.
-  --json          Print the full result on stdout
-  --help          This message
+  --in <path>        Image file, or a directory of images (recurses one level)     (required)
+                     Formats: ${SUPPORTED_EXT.join(' ')}
+  --out <path>       Output JSON (default: <dir>/image-metrics.json)
+  --profile <name>   RI-VIS03 §0c profile. One of:
+                       exterior_daylight | exterior_lowlight | interior_darkemissive
+                       | character_closeup
+                     RI-VIS03 says the harness refuses to run without one. If omitted, the
+                     profile is INFERRED from the containing directory name and the verdict is
+                     marked  "admissible": false  — the numbers are still real, the grade is not.
+  --shot <name>      Shot name, for shot-level band overrides (e.g. xanmeer_vista for M10).
+  --anti <path>      Anti-reference image (refs/anti/threejs-default.png). Enables M8's
+                     AT DEFAULT check. Without it RI-VIS03 caps the verdict at 6/10.
+  --sequence <dir>   Ordered frames for M11 (LOD pop) and M12 TemporalVar. Without it both are
+                     reported unmeasurable — no single-frame proxy is faked.
+  --stationary a,b   Two frames captured with the camera stationary, to build M11's
+                     animated-region mask (wind/water). Without it M11 records
+                     ANIMATED_MASK_ABSENT and over-counts.
+  --displacements f  JSON file: array of per-pair camera displacement in metres, so M11 can
+                     apply RI-VIS03's "< 0.07 m" gate.
+  --water-mask <p>   WATER_MASK image (white = water) enabling M12.
+  --masks-out <dir>  Write SKY_MASK / FG_MASK / FLAT (M8) PNGs — RI-VIS03 requires masks to be
+                     emitted as artefacts alongside the metrics JSON.
+  --compare <p>      Second image (or directory) to pixel-diff against --in, via pixelmatch.
+  --no-legacy        Omit the v1 statistics blocks (smaller output).
+  --edge-thresh <f>  Sobel magnitude threshold on the normalised 0..1 scale (default 0.08)
+  --json             Print the full result on stdout
+  --help             This message
 
-METRICS (per image)
-  luminance      mean/stdev/entropy/percentiles, 64-bin histogram, clipped black+white %
-  dynamic_range  p99.5 - p00.5 luminance, and the same in stops
-  rms_contrast   global RMS contrast (Michelson-free) + mean 16x16 local RMS contrast
-  saturation     HSV saturation mean/p50/p95, grey-pixel fraction, mean chroma
-  edge_density   fraction of pixels above the Sobel threshold, mean |grad|, 3 thresholds
-  fft_high_band  radial power spectrum on a 256x256 luminance crop: high-band energy
-                 ratio (r>0.25 Nyquist), mid-band ratio, spectral slope
-  flat_shading   flat-tile fraction, unique 15-bit colours, largest flat run, banding index
-  sky_gradient   row-mean luminance profile of the sky band: monotonicity, smoothness
-                 residual, banding steps, horizontal uniformity
-
-All values are deterministic functions of the PNG bytes: same PNG in, same JSON out.
+WHAT CHANGED FROM v1 (all of it was a correctness bug, see METRICS-IMPLEMENTATION-01.md)
+  * FG_MASK / SKY_MASK now exist. Every band RI-VIS03 says excludes sky, excludes sky.
+  * M5's FFT runs on a NATIVE 1024x1024 crop, never a downscale. Images smaller than 1024^2
+    report M5 unmeasurable instead of measuring the resampler.
+  * M8's two HARD FAIL statistics (FS_score, LargestFlat) exist.
+  * M3 is CIELAB, not HSV. M4 computes scale_ratio. M6, M9, M10, M11, M12 exist.
+  * M1 reports dynamic range in stops.
 `;
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 if (!args.in) usage(USAGE, EXIT.USAGE);
 
-let PNG;
-try { ({ PNG } = await import('pngjs')); }
-catch (e) { die(EXIT.INTERNAL, "cannot import 'pngjs'. Run `npm install` in tools/.", { cause: e.message }); }
-
 const inPath = path.resolve(String(args.in));
-if (!fs.existsSync(inPath)) {
-  die(EXIT.MISSING_GAME, `no such file or directory: ${inPath}\n` +
-    '  Capture screenshots first:  node tools/harness/shoot.mjs');
-}
-const files = fs.statSync(inPath).isDirectory()
-  ? fs.readdirSync(inPath).filter((f) => f.toLowerCase().endsWith('.png')).sort().map((f) => path.join(inPath, f))
-  : [inPath];
-if (!files.length) die(EXIT.MISSING_GAME, `no PNGs found in ${inPath}`);
+if (!fs.existsSync(inPath)) die(EXIT.MISSING_GAME, `no such file or directory: ${inPath}`);
 
-const SKY_ROWS = Number(args['sky-rows'] || 0.4);
-const EDGE_T = Number(args['edge-thresh'] || 0.08);
-
-// ---------------------------------------------------------------- primitives
-const srgbToLin = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
-function toLuma(png) {
-  const { width: w, height: h, data } = png;
-  const Y = new Float32Array(w * h);       // perceptual (gamma) luminance, 0..1
-  const Ylin = new Float32Array(w * h);    // linear luminance, for dynamic range in stops
-  const S = new Float32Array(w * h);       // HSV saturation
-  const C = new Float32Array(w * h);       // chroma (max-min)
-  for (let i = 0, p = 0; i < Y.length; i++, p += 4) {
-    const r = data[p] / 255, g = data[p + 1] / 255, b = data[p + 2] / 255;
-    Y[i] = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-    Ylin[i] = 0.2126 * srgbToLin(r) + 0.7152 * srgbToLin(g) + 0.0722 * srgbToLin(b);
-    const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
-    C[i] = mx - mn;
-    S[i] = mx > 0 ? (mx - mn) / mx : 0;
-  }
-  return { Y, Ylin, S, C, w, h };
-}
-
-function histogram(Y, bins = 64) {
-  const h = new Array(bins).fill(0);
-  for (let i = 0; i < Y.length; i++) h[Math.min(bins - 1, Math.floor(Y[i] * bins))]++;
-  return h;
-}
-function entropyBits(hist) {
-  const n = hist.reduce((s, x) => s + x, 0);
-  let e = 0;
-  for (const c of hist) if (c > 0) { const p = c / n; e -= p * Math.log2(p); }
-  return e;
-}
-// Percentiles / moments over big planes are computed from a 16-bit histogram rather than a
-// sort: exact to 1/65535, and O(n) instead of O(n log n) on 2M-pixel images.
-const HB = 65536;
-function planeHist(arr) {
-  const h = new Uint32Array(HB);
-  for (let i = 0; i < arr.length; i++) {
-    let v = arr[i]; if (!(v >= 0)) v = 0; else if (v > 1) v = 1;
-    h[(v * (HB - 1)) | 0]++;
-  }
-  return h;
-}
-function histPct(h, n, q) {
-  let target = Math.max(0, Math.min(n - 1, Math.round((n - 1) * q))), acc = 0;
-  for (let i = 0; i < HB; i++) { acc += h[i]; if (acc > target) return i / (HB - 1); }
-  return 1;
-}
-function histMoments(h, n) {
-  let s = 0, s2 = 0;
-  for (let i = 0; i < HB; i++) { if (!h[i]) continue; const v = i / (HB - 1); s += v * h[i]; s2 += v * v * h[i]; }
-  const m = s / n;
-  return { mean: m, stdev: Math.sqrt(Math.max(0, s2 / n - m * m)) };
-}
-function histCountBelow(h, t) { let c = 0; const lim = Math.min(HB - 1, Math.round(t * (HB - 1))); for (let i = 0; i <= lim; i++) c += h[i]; return c; }
-function histCountAbove(h, t) { let c = 0; const lim = Math.max(0, Math.round(t * (HB - 1))); for (let i = lim; i < HB; i++) c += h[i]; return c; }
-
-// ---------------------------------------------------------------- FFT
-function fft(re, im, inverse = false) {
-  const n = re.length;
-  for (let i = 1, j = 0; i < n; i++) {
-    let bit = n >> 1;
-    for (; j & bit; bit >>= 1) j ^= bit;
-    j ^= bit;
-    if (i < j) { [re[i], re[j]] = [re[j], re[i]];[im[i], im[j]] = [im[j], im[i]]; }
-  }
-  for (let len = 2; len <= n; len <<= 1) {
-    const ang = (inverse ? 2 : -2) * Math.PI / len;
-    const wr = Math.cos(ang), wi = Math.sin(ang);
-    for (let i = 0; i < n; i += len) {
-      let cr = 1, ci = 0;
-      for (let k = 0; k < len / 2; k++) {
-        const ur = re[i + k], ui = im[i + k];
-        const vr = re[i + k + len / 2] * cr - im[i + k + len / 2] * ci;
-        const vi = re[i + k + len / 2] * ci + im[i + k + len / 2] * cr;
-        re[i + k] = ur + vr; im[i + k] = ui + vi;
-        re[i + k + len / 2] = ur - vr; im[i + k + len / 2] = ui - vi;
-        const ncr = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = ncr;
-      }
-    }
-  }
-}
-/** Box-resample a luminance plane to NxN (centre crop to square first). */
-function resampleSquare(Y, w, h, N) {
-  const side = Math.min(w, h);
-  const ox = ((w - side) >> 1), oy = ((h - side) >> 1);
-  const out = new Float32Array(N * N);
-  const step = side / N;
-  for (let y = 0; y < N; y++) {
-    const y0 = oy + Math.floor(y * step), y1 = Math.max(y0 + 1, oy + Math.floor((y + 1) * step));
-    for (let x = 0; x < N; x++) {
-      const x0 = ox + Math.floor(x * step), x1 = Math.max(x0 + 1, ox + Math.floor((x + 1) * step));
-      let s = 0, n = 0;
-      for (let yy = y0; yy < y1; yy++) for (let xx = x0; xx < x1; xx++) { s += Y[yy * w + xx]; n++; }
-      out[y * N + x] = n ? s / n : 0;
-    }
+function listImages(p) {
+  if (!fs.statSync(p).isDirectory()) return [p];
+  const out = [];
+  for (const e of fs.readdirSync(p, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+    const full = path.join(p, e.name);
+    if (e.isDirectory()) { for (const f of fs.readdirSync(full).sort()) if (isDecodable(f)) out.push(path.join(full, f)); }
+    else if (isDecodable(full)) out.push(full);
   }
   return out;
 }
-function radialSpectrum(Y, w, h, N = 256) {
-  const g = resampleSquare(Y, w, h, N);
-  // Hann window to suppress edge-wrap energy that would fake high-frequency detail.
-  const win = new Float32Array(N);
-  for (let i = 0; i < N; i++) win[i] = 0.5 * (1 - Math.cos((2 * Math.PI * i) / (N - 1)));
-  const re = new Float64Array(N * N), im = new Float64Array(N * N);
-  const m = mean(Array.from(g));
-  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) re[y * N + x] = (g[y * N + x] - m) * win[x] * win[y];
-  const rowR = new Float64Array(N), rowI = new Float64Array(N);
-  for (let y = 0; y < N; y++) {
-    for (let x = 0; x < N; x++) { rowR[x] = re[y * N + x]; rowI[x] = im[y * N + x]; }
-    fft(rowR, rowI);
-    for (let x = 0; x < N; x++) { re[y * N + x] = rowR[x]; im[y * N + x] = rowI[x]; }
-  }
-  const colR = new Float64Array(N), colI = new Float64Array(N);
-  for (let x = 0; x < N; x++) {
-    for (let y = 0; y < N; y++) { colR[y] = re[y * N + x]; colI[y] = im[y * N + x]; }
-    fft(colR, colI);
-    for (let y = 0; y < N; y++) { re[y * N + x] = colR[y]; im[y * N + x] = colI[y]; }
-  }
-  const nyq = N / 2;
-  const bins = new Float64Array(nyq).fill(0), counts = new Float64Array(nyq).fill(0);
-  let total = 0;
-  for (let y = 0; y < N; y++) {
-    const fy = y <= nyq ? y : y - N;
-    for (let x = 0; x < N; x++) {
-      const fx = x <= nyq ? x : x - N;
-      const r = Math.round(Math.hypot(fx, fy));
-      if (r === 0 || r >= nyq) continue;
-      const p = re[y * N + x] ** 2 + im[y * N + x] ** 2;
-      bins[r] += p; counts[r]++; total += p;
+const files = listImages(inPath);
+if (!files.length) die(EXIT.MISSING_GAME, `no decodable images found in ${inPath} (looked for ${SUPPORTED_EXT.join(', ')})`);
+
+const EDGE_T = Number(args['edge-thresh'] || 0.08);
+const SKY_ROWS = Number(args['sky-rows'] || 0.4);
+const WANT_LEGACY = !args['no-legacy'];
+
+// ---------------------------------------------------------------- profile resolution
+function resolveProfile(file) {
+  if (args.profile && args.profile !== true) {
+    if (!V.PROFILE_NAMES.includes(String(args.profile))) {
+      die(EXIT.USAGE, `unknown --profile "${args.profile}" (RI-VIS03 §0c: ${V.PROFILE_NAMES.join(', ')})`);
     }
+    return { profile: String(args.profile), source: 'declared' };
   }
-  const radial = Array.from(bins, (v, i) => (counts[i] ? v / counts[i] : 0));
-  const band = (a, b) => {
-    let s = 0;
-    for (let r = Math.floor(a * nyq); r < Math.floor(b * nyq); r++) s += bins[r];
-    return total ? s / total : 0;
-  };
-  // spectral slope: log-log linear fit of radial power over r in [4, nyq/2]
-  const xs = [], ys = [];
-  for (let r = 4; r < nyq / 2; r++) if (radial[r] > 0) { xs.push(Math.log(r)); ys.push(Math.log(radial[r])); }
-  let slope = null;
-  if (xs.length > 4) {
-    const mx = mean(xs), my = mean(ys);
-    let num = 0, den = 0;
-    for (let i = 0; i < xs.length; i++) { num += (xs[i] - mx) * (ys[i] - my); den += (xs[i] - mx) ** 2; }
-    slope = den ? num / den : null;
-  }
-  return {
-    low_band_ratio: +band(0, 0.08).toFixed(6),
-    mid_band_ratio: +band(0.08, 0.25).toFixed(6),
-    high_band_ratio: +band(0.25, 1.0).toFixed(6),
-    very_high_band_ratio: +band(0.5, 1.0).toFixed(6),
-    spectral_slope: slope === null ? null : +slope.toFixed(4),
-    n: N,
-  };
+  const dir = path.basename(path.dirname(file));
+  if (V.PROFILE_NAMES.includes(dir)) return { profile: dir, source: 'inferred-from-directory' };
+  if (/dusk|night|lowlight|evening/i.test(file)) return { profile: 'exterior_lowlight', source: 'inferred-from-filename' };
+  if (/interior|indoor|rootway/i.test(file)) return { profile: 'interior_darkemissive', source: 'inferred-from-filename' };
+  if (/closeup|character|combat/i.test(file)) return { profile: 'character_closeup', source: 'inferred-from-filename' };
+  return { profile: 'exterior_daylight', source: 'default' };
 }
 
-// ---------------------------------------------------------------- metrics
-/** Per-tile mean and stdev in one O(n) pass — no intermediate arrays per tile. */
-function tileStats(Y, w, h, T) {
-  const means = [], sds = [];
-  for (let ty = 0; ty + T <= h; ty += T) {
-    for (let tx = 0; tx + T <= w; tx += T) {
-      let s = 0, s2 = 0;
-      for (let y = 0; y < T; y++) {
-        const base = (ty + y) * w + tx;
-        for (let x = 0; x < T; x++) { const v = Y[base + x]; s += v; s2 += v * v; }
-      }
-      const n = T * T, m = s / n;
-      means.push(m); sds.push(Math.sqrt(Math.max(0, s2 / n - m * m)));
-    }
-  }
-  return { means, sds };
+// ---------------------------------------------------------------- optional inputs
+let ANTI = null;
+if (args.anti) {
+  const p = path.resolve(String(args.anti));
+  if (!fs.existsSync(p)) die(EXIT.MISSING_GAME, `--anti not found: ${p}`);
+  const img = await decodeImage(p);
+  const pl = V.prepare(img);
+  const G = V.sobel(pl.Yp, pl.W, pl.H);
+  const masks = V.computeMasks(pl, G);
+  const m8 = V.M8(pl, masks);
+  ANTI = { path: p, FS_score: m8.FS_score, LargestFlat: m8.LargestFlat, TotalFlat: m8.TotalFlat };
+  log(`anti-reference ${path.basename(p)}: FS_score=${m8.FS_score === null ? 'n/a' : m8.FS_score.toFixed(5)} LargestFlat=${m8.LargestFlat.toFixed(5)}`);
 }
 
-function sobel(Y, w, h) {
-  const mag = new Float32Array(w * h);
-  let sum = 0;
-  for (let y = 1; y < h - 1; y++) {
-    for (let x = 1; x < w - 1; x++) {
-      const i = y * w + x;
-      const gx = -Y[i - w - 1] - 2 * Y[i - 1] - Y[i + w - 1] + Y[i - w + 1] + 2 * Y[i + 1] + Y[i + w + 1];
-      const gy = -Y[i - w - 1] - 2 * Y[i - w] - Y[i - w + 1] + Y[i + w - 1] + 2 * Y[i + w] + Y[i + w + 1];
-      const m = Math.sqrt(gx * gx + gy * gy) / 4;
-      mag[i] = m; sum += m;
-    }
+let SEQUENCE = null, SEQ_META = null;
+if (args.sequence) {
+  const d = path.resolve(String(args.sequence));
+  if (!fs.existsSync(d)) die(EXIT.MISSING_GAME, `--sequence not found: ${d}`);
+  const sf = listImages(d);
+  SEQUENCE = [];
+  let W0 = null, H0 = null;
+  for (const f of sf) {
+    const img = await decodeImage(f);
+    if (W0 === null) { W0 = img.width; H0 = img.height; }
+    else if (img.width !== W0 || img.height !== H0) die(EXIT.MEASUREMENT_FAIL, `sequence frame ${path.basename(f)} is ${img.width}x${img.height}, expected ${W0}x${H0}`);
+    SEQUENCE.push(V.prepare(img).Yp);
   }
-  return { mag, meanMag: sum / (w * h) };
+  SEQ_META = { dir: d, frames: SEQUENCE.length, w: W0, h: H0 };
+  log(`sequence: ${SEQUENCE.length} frames at ${W0}x${H0}`);
 }
 
-function analyse(file) {
-  const buf = fs.readFileSync(file);
-  const png = PNG.sync.read(buf);
-  const { Y, Ylin, S, C, w, h } = toLuma(png);
-  const N = w * h;
+let ANIMATED = null;
+if (args.stationary) {
+  const [a, b] = String(args.stationary).split(',').map((s) => path.resolve(s.trim()));
+  if (!a || !b || !fs.existsSync(a) || !fs.existsSync(b)) die(EXIT.MISSING_GAME, '--stationary needs two existing image paths: --stationary a.png,b.png');
+  const ia = await decodeImage(a), ib = await decodeImage(b);
+  const am = V.animatedMask(V.prepare(ia).Yp, V.prepare(ib).Yp, ia.width, ia.height);
+  ANIMATED = am.empty ? null : am.mask;
+  if (am.empty) log('ANIMATED_MASK_EMPTY — the stationary pair is identical everywhere. RI-VIS03 M11 §note: this fails RI-VIS04 §11 (no wind).');
+  else log(`animated-region mask: ${(am.frac * 100).toFixed(2)}% of the frame`);
+}
 
-  // --- luminance / dynamic range
-  const hist = histogram(Y, 64);
-  const hY = planeHist(Y), hLin = planeHist(Ylin), hS = planeHist(S), hC = planeHist(C);
-  const { mean: yMean, stdev: ySd } = histMoments(hY, N);
+let DISPLACEMENTS = null;
+if (args.displacements) DISPLACEMENTS = JSON.parse(fs.readFileSync(path.resolve(String(args.displacements)), 'utf8'));
+
+let WATER = null;
+if (args['water-mask']) {
+  const p = path.resolve(String(args['water-mask']));
+  if (!fs.existsSync(p)) die(EXIT.MISSING_GAME, `--water-mask not found: ${p}`);
+  const img = await decodeImage(p);
+  WATER = new Uint8Array(img.width * img.height);
+  for (let i = 0, q = 0; i < WATER.length; i++, q += 4) WATER[i] = img.data[q] > 127 ? 1 : 0;
+  log(`water mask: ${(WATER.reduce((a, b) => a + b, 0) / WATER.length * 100).toFixed(1)}% of the frame`);
+}
+
+// ---------------------------------------------------------------- legacy (schema v1) block
+const srgbToLin = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+const HBL = 65536;
+function planeHist(arr) {
+  const h = new Uint32Array(HBL);
+  for (let i = 0; i < arr.length; i++) { let v = arr[i]; if (!(v >= 0)) v = 0; else if (v > 1) v = 1; h[(v * (HBL - 1)) | 0]++; }
+  return h;
+}
+const histPct = (h, n, q) => { const t = Math.max(0, Math.min(n - 1, Math.round((n - 1) * q))); let acc = 0; for (let i = 0; i < HBL; i++) { acc += h[i]; if (acc > t) return i / (HBL - 1); } return 1; };
+const histBelow = (h, t) => { let c = 0; const lim = Math.min(HBL - 1, Math.round(t * (HBL - 1))); for (let i = 0; i <= lim; i++) c += h[i]; return c; };
+const histAbove = (h, t) => { let c = 0; const lim = Math.max(0, Math.round(t * (HBL - 1))); for (let i = lim; i < HBL; i++) c += h[i]; return c; };
+
+/** v1 statistics, kept byte-for-byte compatible so reference-metrics.json stays comparable.
+ *  DEPRECATED for judgement: `fft` here is the 256x256 box-downscale that made M5 measure the
+ *  resampler. Use metrics.M5. Retained only for continuity with the pre-existing population. */
+function legacyBlock(img, pl, G) {
+  const { W: w, H: h, N, Yp: Y, Ylin, rgba } = pl;
+  const S = new Float32Array(N), C = new Float32Array(N);
+  for (let i = 0, p = 0; i < N; i++, p += 4) {
+    const r = rgba[p] / 255, g = rgba[p + 1] / 255, b = rgba[p + 2] / 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+    C[i] = mx - mn; S[i] = mx > 0 ? (mx - mn) / mx : 0;
+  }
+  const hist = new Array(64).fill(0);
+  for (let i = 0; i < N; i++) hist[Math.min(63, Math.floor(Y[i] * 64))]++;
+  let ent = 0; for (const c of hist) if (c > 0) { const p = c / N; ent -= p * Math.log2(p); }
+  const hY = planeHist(Y), hLin = planeHist(Ylin), hS = planeHist(S), hC = planeHist(C), hMag = planeHist(G);
+  let s = 0, s2 = 0; for (let i = 0; i < N; i++) { s += Y[i]; s2 += Y[i] * Y[i]; }
+  const yMean = s / N, ySd = Math.sqrt(Math.max(0, s2 / N - yMean * yMean));
   const p005 = histPct(hY, N, 0.005), p995 = histPct(hY, N, 0.995);
   const linLo = Math.max(histPct(hLin, N, 0.005), 1e-5), linHi = Math.max(histPct(hLin, N, 0.995), 1e-5);
-  const clippedBlack = histCountBelow(hY, 0.004) / N;
-  const clippedWhite = histCountAbove(hY, 0.996) / N;
-
-  // --- local contrast
-  const T = 16;
-  const { means: tileMean, sds: tileSd } = tileStats(Y, w, h, T);
-
-  // --- edges
-  const { mag, meanMag } = sobel(Y, w, h);
-  const hMag = planeHist(mag);
-  const above = (t) => histCountAbove(hMag, t) / N;
-
-  // --- flat shading / banding
-  const flatTiles = tileSd.filter((s) => s < 0.004).length / (tileSd.length || 1);
-  const nearFlatTiles = tileSd.filter((s) => s < 0.012).length / (tileSd.length || 1);
+  const tiles = V.tileStdevs(Y, null, w, h, 16, false);
+  const tileSd = tiles.map((t) => t.sd), tileMean = tiles.map((t) => t.mean);
   const colours = new Set();
-  for (let i = 0, p = 0; i < N; i++, p += 4) {
-    colours.add(((png.data[p] >> 3) << 10) | ((png.data[p + 1] >> 3) << 5) | (png.data[p + 2] >> 3));
-  }
-  // banding index: fraction of 1-pixel-wide luminance "steps" between otherwise flat rows
+  for (let i = 0, p = 0; i < N; i++, p += 4) colours.add(((rgba[p] >> 3) << 10) | ((rgba[p + 1] >> 3) << 5) | (rgba[p + 2] >> 3));
   let stepPixels = 0;
-  for (let y = 1; y < h; y++) {
-    for (let x = 1; x < w; x++) {
-      const a = Y[y * w + x], b = Y[(y - 1) * w + x], c2 = Y[y * w + x - 1];
-      const d1 = Math.abs(a - b), d2 = Math.abs(a - c2);
-      if (d1 > 0.002 && d1 < 0.012 && d2 < 0.0008) stepPixels++;
-    }
+  for (let y = 1; y < h; y++) for (let x = 1; x < w; x++) {
+    const a = Y[y * w + x], b = Y[(y - 1) * w + x], c2 = Y[y * w + x - 1];
+    const d1 = Math.abs(a - b), d2 = Math.abs(a - c2);
+    if (d1 > 0.002 && d1 < 0.012 && d2 < 0.0008) stepPixels++;
   }
-
-  // --- sky gradient (top band)
   const skyH = Math.max(4, Math.floor(h * SKY_ROWS));
-  const rowMeans = [];
-  const rowSds = [];
+  const rowMeans = [], rowSds = [];
   for (let y = 0; y < skyH; y++) {
     const row = [];
     for (let x = 0; x < w; x += Math.max(1, Math.floor(w / 512))) row.push(Y[y * w + x]);
     rowMeans.push(mean(row)); rowSds.push(stdev(row));
   }
-  let mono = 0;
-  for (let i = 1; i < rowMeans.length; i++) if (rowMeans[i] >= rowMeans[i - 1]) mono++;
-  const monotonic = Math.max(mono, rowMeans.length - 1 - mono) / Math.max(1, rowMeans.length - 1);
-  // smoothness: RMS of the discrete second derivative of the row-mean profile
-  let d2sum = 0;
-  for (let i = 1; i < rowMeans.length - 1; i++) d2sum += (rowMeans[i + 1] - 2 * rowMeans[i] + rowMeans[i - 1]) ** 2;
-  const smoothResidual = Math.sqrt(d2sum / Math.max(1, rowMeans.length - 2));
-  const distinctLevels = new Set(rowMeans.map((v) => Math.round(v * 255))).size;
-
+  let mono = 0; for (let i = 1; i < rowMeans.length; i++) if (rowMeans[i] >= rowMeans[i - 1]) mono++;
+  let d2sum = 0; for (let i = 1; i < rowMeans.length - 1; i++) d2sum += (rowMeans[i + 1] - 2 * rowMeans[i] + rowMeans[i - 1]) ** 2;
+  const flatTiles = tileSd.filter((v) => v < 0.004).length / (tileSd.length || 1);
+  const nearFlat = tileSd.filter((v) => v < 0.012).length / (tileSd.length || 1);
+  let gsum = 0; for (let i = 0; i < N; i++) gsum += G[i];
   return {
-    file: path.basename(file),
-    path: file,
-    sha256: sha256(buf),
-    width: w, height: h, bytes: buf.length,
     luminance: {
       mean: +yMean.toFixed(5), stdev: +ySd.toFixed(5),
       p005: +p005.toFixed(5), p50: +histPct(hY, N, 0.5).toFixed(5), p995: +p995.toFixed(5),
-      histogram_entropy_bits: +entropyBits(hist).toFixed(4),
-      histogram_64: hist,
-      clipped_black_frac: +clippedBlack.toFixed(5),
-      clipped_white_frac: +clippedWhite.toFixed(5),
-      occupied_bins_frac: +(hist.filter((c) => c / N > 0.0005).length / hist.length).toFixed(4),
+      histogram_entropy_bits: +ent.toFixed(4), histogram_64: hist,
+      clipped_black_frac: +(histBelow(hY, 0.004) / N).toFixed(5),
+      clipped_white_frac: +(histAbove(hY, 0.996) / N).toFixed(5),
+      occupied_bins_frac: +(hist.filter((c) => c / N > 0.0005).length / 64).toFixed(4),
     },
-    dynamic_range: {
-      p995_minus_p005: +(p995 - p005).toFixed(5),
-      stops: +(Math.log2(linHi / linLo)).toFixed(4),
-    },
+    dynamic_range: { p995_minus_p005: +(p995 - p005).toFixed(5), stops: +Math.log2(linHi / linLo).toFixed(4) },
     rms_contrast: {
-      global: +(yMean > 0 ? ySd / yMean : 0).toFixed(5),
-      global_stdev: +ySd.toFixed(5),
-      local_mean_16px: +mean(tileSd).toFixed(5),
-      local_p95_16px: +quantile(tileSd, 0.95).toFixed(5),
-      tile_mean_spread: +stdev(tileMean).toFixed(5),
-      tiles: tileSd.length,
+      global: +(yMean > 0 ? ySd / yMean : 0).toFixed(5), global_stdev: +ySd.toFixed(5),
+      local_mean_16px: +mean(tileSd).toFixed(5), local_p95_16px: +quantile(tileSd, 0.95).toFixed(5),
+      tile_mean_spread: +stdev(tileMean).toFixed(5), tiles: tileSd.length,
     },
     saturation: {
-      mean: +histMoments(hS, N).mean.toFixed(5),
-      p50: +histPct(hS, N, 0.5).toFixed(5),
-      p95: +histPct(hS, N, 0.95).toFixed(5),
-      grey_frac: +(histCountBelow(hS, 0.05) / N).toFixed(5),
-      oversat_frac: +(histCountAbove(hS, 0.85) / N).toFixed(5),
-      mean_chroma: +histMoments(hC, N).mean.toFixed(5),
+      mean: +(Array.from(S).reduce((a, b) => a + b, 0) / N).toFixed(5),
+      p50: +histPct(hS, N, 0.5).toFixed(5), p95: +histPct(hS, N, 0.95).toFixed(5),
+      grey_frac: +(histBelow(hS, 0.05) / N).toFixed(5), oversat_frac: +(histAbove(hS, 0.85) / N).toFixed(5),
+      mean_chroma: +(Array.from(C).reduce((a, b) => a + b, 0) / N).toFixed(5),
+      note: 'HSV/RGB, NOT CIELAB. RI-VIS03 M3 is CIELAB C* — see metrics.M3.',
     },
     edge_density: {
       threshold: EDGE_T,
-      frac_above_threshold: +above(EDGE_T).toFixed(5),
-      frac_above_0_04: +above(0.04).toFixed(5),
-      frac_above_0_16: +above(0.16).toFixed(5),
-      mean_gradient: +meanMag.toFixed(5),
-      p95_gradient: +histPct(hMag, N, 0.95).toFixed(5),
+      frac_above_threshold: +(histAbove(hMag, EDGE_T) / N).toFixed(5),
+      frac_above_0_04: +(histAbove(hMag, 0.04) / N).toFixed(5),
+      frac_above_0_16: +(histAbove(hMag, 0.16) / N).toFixed(5),
+      mean_gradient: +(gsum / N).toFixed(5), p95_gradient: +histPct(hMag, N, 0.95).toFixed(5),
+      note: 'whole-frame, no FG_MASK. RI-VIS03 M4 excludes sky — see metrics.M4.',
     },
-    fft: radialSpectrum(Y, w, h, 256),
     flat_shading: {
-      flat_tile_frac: +flatTiles.toFixed(5),
-      near_flat_tile_frac: +nearFlatTiles.toFixed(5),
-      unique_colours_15bit: colours.size,
-      unique_colours_per_kpx: +(colours.size / (N / 1000)).toFixed(4),
+      flat_tile_frac: +flatTiles.toFixed(5), near_flat_tile_frac: +nearFlat.toFixed(5),
+      unique_colours_15bit: colours.size, unique_colours_per_kpx: +(colours.size / (N / 1000)).toFixed(4),
       banding_step_frac: +(stepPixels / N).toFixed(6),
       verdict_hint: flatTiles > 0.35 || colours.size < 4096 ? 'suspect-flat' : 'ok',
+      note: 'NOT RI-VIS03 M8. M8 is FS_score + LargestFlat — see metrics.M8.',
     },
     sky_gradient: {
       band_rows: skyH,
       row_mean_range: +(Math.max(...rowMeans) - Math.min(...rowMeans)).toFixed(5),
-      monotonicity: +monotonic.toFixed(4),
-      smoothness_residual: +smoothResidual.toFixed(7),
-      distinct_row_levels: distinctLevels,
-      distinct_levels_per_100_rows: +((distinctLevels / skyH) * 100).toFixed(3),
+      monotonicity: +(Math.max(mono, rowMeans.length - 1 - mono) / Math.max(1, rowMeans.length - 1)).toFixed(4),
+      smoothness_residual: +Math.sqrt(d2sum / Math.max(1, rowMeans.length - 2)).toFixed(7),
+      distinct_row_levels: new Set(rowMeans.map((v) => Math.round(v * 255))).size,
+      distinct_levels_per_100_rows: +((new Set(rowMeans.map((v) => Math.round(v * 255))).size / skyH) * 100).toFixed(3),
       horizontal_uniformity: +(1 - Math.min(1, mean(rowSds) * 10)).toFixed(4),
+      note: 'top 40% of rows, no SKY_MASK. RI-VIS03 M7 detects the sky — see metrics.M7.',
+    },
+    deprecated_fft_note: 'the v1 `fft` block box-downscaled the frame to 256x256 before transforming, which destroyed the band M5 exists to measure and made the statistic resolution-dependent. It is not computed any more. Use metrics.M5.',
+  };
+}
+
+// ---------------------------------------------------------------- per-image run
+async function analyse(file) {
+  const img = await decodeImage(file);
+  const { profile, source } = resolveProfile(file);
+  const pl = V.prepare(img);
+  const G = V.sobel(pl.Yp, pl.W, pl.H);
+  const shot = args.shot ? String(args.shot) : path.basename(file).replace(/\.[^.]+$/, '');
+  const seqOk = SEQUENCE && SEQ_META && SEQ_META.w === pl.W && SEQ_META.h === pl.H;
+  const waterOk = WATER && WATER.length === pl.N;
+  const out = runBattery(pl, {
+    profile, shot, anti: ANTI,
+    sequence: seqOk ? SEQUENCE : null,
+    animatedMask: seqOk ? ANIMATED : null,
+    displacements: seqOk ? DISPLACEMENTS : null,
+    water: waterOk ? WATER : null,
+  });
+  if (SEQUENCE && !seqOk) log(`WARN ${path.basename(file)}: sequence is ${SEQ_META.w}x${SEQ_META.h}, image is ${pl.W}x${pl.H} — M11/M12 temporal not applied`);
+  if (WATER && !waterOk) log(`WARN ${path.basename(file)}: water mask size mismatch — M12 not applied`);
+
+  const rec = {
+    file: path.basename(file), path: file, sha256: sha256(img.buffer),
+    width: pl.W, height: pl.H, bytes: img.bytes, format: img.format,
+    profile, profile_source: source,
+    masks: {
+      sky_frac: +out.masks.skyFrac.toFixed(6), fg_frac: +out.masks.fgFrac.toFixed(6),
+      shadow_frac: +out.masks.shadowFrac.toFixed(6), lit_frac: +out.masks.litFrac.toFixed(6),
+      method: 'SKY_MASK = largest 4-connected component, touching row 0, of {row < 0.45H AND Sobel G < 0.02 AND Yp > P60(Yp)}; FG_MASK = NOT SKY_MASK; SHADOW/LIT = FG below P25 / above P75 of Yp[FG]. Deterministic; RI-VIS03 M7 §detect.',
+      sky_detect: out.masks.sky_detect,
+    },
+    metrics: out.metrics,
+    verdict: {
+      ...out.verdict,
+      admissible: source === 'declared',
+      admissibility_reason: source === 'declared' ? null
+        : `profile was ${source}, not declared. RI-VIS03 §0c: the harness refuses to run without a declared profile and "profile laundering" is a named failure mode. The measured values are real; the GRADE is not admissible in a verdict.`,
     },
   };
+  if (WANT_LEGACY) Object.assign(rec, legacyBlock(img, pl, G), { legacy_schema: 'elder-souls/image-metrics@1 (deprecated; superseded by `metrics`)' });
+
+  if (args['masks-out']) {
+    const md = path.resolve(String(args['masks-out']));
+    fs.mkdirSync(md, { recursive: true });
+    const base = path.basename(file).replace(/\.[^.]+$/, '');
+    await writeMaskPng(path.join(md, `${base}.sky.png`), pl.W, pl.H, out.masks.sky);
+    await writeMaskPng(path.join(md, `${base}.fg.png`), pl.W, pl.H, out.masks.fg);
+    await writeMaskPng(path.join(md, `${base}.shadow.png`), pl.W, pl.H, out.masks.shadow);
+    rec.mask_artifacts = [`${base}.sky.png`, `${base}.fg.png`, `${base}.shadow.png`];
+  }
+  return rec;
 }
 
 const results = [];
 for (const f of files) {
-  try { results.push(analyse(f)); log(`analysed ${path.basename(f)}`); }
+  const t0 = Date.now();
+  try { results.push(await analyse(f)); log(`analysed ${path.basename(f)} (${Date.now() - t0} ms)`); }
   catch (e) { log(`FAILED ${f}: ${e.message}`); results.push({ file: path.basename(f), path: f, error: e.message }); }
 }
 
@@ -384,60 +330,86 @@ if (args.compare) {
   let pixelmatch;
   try { pixelmatch = (await import('pixelmatch')).default; }
   catch (e) { die(EXIT.INTERNAL, "cannot import 'pixelmatch'. Run `npm install` in tools/.", { cause: e.message }); }
+  const { PNG } = await import('pngjs');
   const cmpIsDir = fs.statSync(cmpPath).isDirectory();
   diffs = [];
   for (const f of files) {
     const other = cmpIsDir ? path.join(cmpPath, path.basename(f)) : cmpPath;
     if (!fs.existsSync(other)) { diffs.push({ file: path.basename(f), error: 'no counterpart at ' + other }); continue; }
     try {
-      const a = PNG.sync.read(fs.readFileSync(f)), b = PNG.sync.read(fs.readFileSync(other));
-      if (a.width !== b.width || a.height !== b.height) {
-        diffs.push({ file: path.basename(f), error: `size mismatch ${a.width}x${a.height} vs ${b.width}x${b.height}` });
-        continue;
-      }
+      const a = await decodeImage(f), b = await decodeImage(other);
+      if (a.width !== b.width || a.height !== b.height) { diffs.push({ file: path.basename(f), error: `size mismatch ${a.width}x${a.height} vs ${b.width}x${b.height}` }); continue; }
       const outPng = new PNG({ width: a.width, height: a.height });
       const n = pixelmatch(a.data, b.data, outPng.data, a.width, a.height, { threshold: 0.1 });
-      const diffFile = f.replace(/\.png$/i, '-diff.png');
+      const diffFile = f.replace(/\.[^.]+$/i, '-diff.png');
       if (n > 0) fs.writeFileSync(diffFile, PNG.sync.write(outPng));
       diffs.push({
-        file: path.basename(f), against: other,
-        differing_pixels: n,
-        differing_frac: +(n / (a.width * a.height)).toFixed(7),
-        identical: n === 0,
-        sha_equal: sha256(fs.readFileSync(f)) === sha256(fs.readFileSync(other)),
-        diff_image: n > 0 ? diffFile : null,
+        file: path.basename(f), against: other, differing_pixels: n,
+        differing_frac: +(n / (a.width * a.height)).toFixed(7), identical: n === 0,
+        sha_equal: sha256(a.buffer) === sha256(b.buffer), diff_image: n > 0 ? diffFile : null,
       });
       log(`diff ${path.basename(f)}: ${n} px differing`);
     } catch (e) { diffs.push({ file: path.basename(f), error: e.message }); }
   }
 }
 
+// ---------------------------------------------------------------- aggregate + write
+function summarize(a) {
+  return a.length
+    ? { n: a.length, mean: +mean(a).toFixed(5), p10: +quantile(a, 0.10).toFixed(5), p50: +quantile(a, 0.50).toFixed(5), p90: +quantile(a, 0.90).toFixed(5), min: +Math.min(...a).toFixed(5), max: +Math.max(...a).toFixed(5) }
+    : { n: 0 };
+}
+function aggregate(rs) {
+  const ok = rs.filter((r) => !r.error);
+  if (!ok.length) return null;
+  const stat = (mId, key) => summarize(ok.map((r) => r.metrics?.[mId]?.stats?.[key]).filter((s) => s && s.measurable).map((s) => s.value));
+  const legacyPick = (fn) => summarize(ok.map(fn).filter((v) => typeof v === 'number'));
+  return {
+    images: ok.length,
+    // RI-VIS03 statistics. These are the ones a band amendment must be argued from.
+    ri_vis03: {
+      'M1.DR': stat('M1', 'DR'), 'M1.mean_Yp': stat('M1', 'mean_Yp'), 'M1.stops': stat('M1', 'stops'),
+      'M1.blown': stat('M1', 'blown'), 'M1.crushed': stat('M1', 'crushed'), 'M1.occupancy': stat('M1', 'occupancy'),
+      'M2.C_global': stat('M2', 'C_global'), 'M2.C_local_med': stat('M2', 'C_local_med'), 'M2.C_local_p10': stat('M2', 'C_local_p10'),
+      'M3.meanC': stat('M3', 'meanC'), 'M3.p95C': stat('M3', 'p95C'), 'M3.H_hue': stat('M3', 'H_hue'), 'M3.chroma_frac': stat('M3', 'chroma_frac'),
+      'M4.ED_1': stat('M4', 'ED_1'), 'M4.scale_ratio': stat('M4', 'scale_ratio'),
+      'M5.HFR': stat('M5', 'HFR'), 'M5.NYQ_ratio': stat('M5', 'NYQ_ratio'), 'M5.alpha': stat('M5', 'alpha'),
+      'M6.retention': stat('M6', 'retention'), 'M6.hue_offset': stat('M6', 'hue_offset'), 'M6.C_shadow': stat('M6', 'C_shadow'),
+      'M7.dY_sky': stat('M7', 'dY_sky'), 'M7.dC_sky': stat('M7', 'dC_sky'), 'M7.dH_sky': stat('M7', 'dH_sky'), 'M7.BI': stat('M7', 'BI'), 'M7.sky_noise': stat('M7', 'sky_noise'),
+      'M8.FS_score': stat('M8', 'FS_score'), 'M8.LargestFlat': stat('M8', 'LargestFlat'), 'M8.TotalFlat': stat('M8', 'TotalFlat'),
+      'M9.ClipFrac': stat('M9', 'ClipFrac'), 'M9.ShoulderRatio': stat('M9', 'ShoulderRatio'), 'M9.HighlightDesat': stat('M9', 'HighlightDesat'), 'M9.BloomHalo': stat('M9', 'BloomHalo'), 'M9.VeilIndex': stat('M9', 'VeilIndex'),
+      'M10.R_aerial': stat('M10', 'R_aerial'), 'M10.dC_depth': stat('M10', 'dC_depth'),
+      sky_frac: summarize(ok.map((r) => r.masks?.sky_frac).filter((v) => typeof v === 'number')),
+    },
+    unmeasurable_counts: ok.reduce((acc, r) => { for (const k of r.verdict?.unmeasurable || []) acc[k] = (acc[k] || 0) + 1; return acc; }, {}),
+    skipped_counts: ok.reduce((acc, r) => { for (const k of r.verdict?.skipped || []) acc[k] = (acc[k] || 0) + 1; return acc; }, {}),
+    score: summarize(ok.map((r) => r.verdict?.score).filter((v) => typeof v === 'number')),
+    // v1 keys, retained
+    dynamic_range_stops: legacyPick((r) => r.dynamic_range?.stops),
+    local_contrast: legacyPick((r) => r.rms_contrast?.local_mean_16px),
+    edge_density: legacyPick((r) => r.edge_density?.frac_above_threshold),
+    saturation_mean: legacyPick((r) => r.saturation?.mean),
+    flat_tile_frac: legacyPick((r) => r.flat_shading?.flat_tile_frac),
+    unique_colours: legacyPick((r) => r.flat_shading?.unique_colours_15bit),
+  };
+}
+
 const out = {
-  schema: 'elder-souls/image-metrics@1',
+  schema: 'elder-souls/image-metrics@2',
+  spec: 'corpus/70-visual/RI-VIS03-fidelity-image-metrics.md',
+  side: 'FIDELITY (RI-VIS01 §B). Not admissible on the art-direction side.',
   computed_at: new Date().toISOString(),
   input: inPath,
-  params: { sky_rows: SKY_ROWS, edge_threshold: EDGE_T },
+  params: {
+    edge_threshold: EDGE_T, sky_rows_legacy: SKY_ROWS,
+    profile: args.profile && args.profile !== true ? String(args.profile) : null,
+    anti: ANTI ? { path: ANTI.path, FS_score: ANTI.FS_score, LargestFlat: ANTI.LargestFlat } : null,
+    sequence: SEQ_META, water_mask: args['water-mask'] || null,
+  },
   images: results,
   aggregate: aggregate(results),
   ...(diffs ? { diff: diffs } : {}),
 };
-
-function aggregate(rs) {
-  const ok = rs.filter((r) => !r.error);
-  if (!ok.length) return null;
-  const pick = (fn) => summarize(ok.map(fn).filter((v) => typeof v === 'number'));
-  const summarize = (a) => a.length ? { n: a.length, mean: +mean(a).toFixed(5), min: +Math.min(...a).toFixed(5), max: +Math.max(...a).toFixed(5) } : { n: 0 };
-  return {
-    images: ok.length,
-    dynamic_range_stops: pick((r) => r.dynamic_range.stops),
-    local_contrast: pick((r) => r.rms_contrast.local_mean_16px),
-    edge_density: pick((r) => r.edge_density.frac_above_threshold),
-    fft_high_band: pick((r) => r.fft.high_band_ratio),
-    saturation_mean: pick((r) => r.saturation.mean),
-    flat_tile_frac: pick((r) => r.flat_shading.flat_tile_frac),
-    unique_colours: pick((r) => r.flat_shading.unique_colours_15bit),
-  };
-}
 
 const outPath = args.out ? path.resolve(String(args.out))
   : path.join(fs.statSync(inPath).isDirectory() ? inPath : path.dirname(inPath), 'image-metrics.json');

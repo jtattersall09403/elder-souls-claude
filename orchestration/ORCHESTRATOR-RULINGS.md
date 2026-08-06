@@ -46,3 +46,16 @@ Two more to declare rather than change: `RI-CMB01` pairs DS3's 30/70 breakpoints
 tier-duration model (in DS3 light and medium rolls are the same length; light buys distance only),
 and `RI-CMB08`'s flask mixes DS1 charge counts with DS3 upgrade rules. Both are defensible; both
 must say so.
+
+## R6 — Two manifest defects found by the merge tool (apply when Codex's set has landed)
+
+Found by `tools/refs/merge-manifest.mjs`, deliberately left unfixed to avoid racing Codex on
+`MANIFEST.json`. Apply **after** the external acquisition run has landed and been merged:
+
+1. **All five `anti-generic/` records carry `side: "modern-fidelity"`.** §9 requires
+   `"anti-generic"`. This one matters: anything selecting the fidelity population by `side` would
+   pull five *deliberately generic-fantasy* anchors into the set they exist to be measured against.
+2. **Two mwscr images are filed under two slots each**, so REF-A18 and REF-A19 are really 4 images
+   each, not 5.
+3. The remaining 121 warnings are the `corroboration: "one-host"` gap — unfixable under the old
+   proxy, now cheap to close with a second source per file.
