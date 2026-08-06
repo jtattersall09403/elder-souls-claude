@@ -244,7 +244,7 @@ with different world outcomes.** A build that can demonstrate that one loop end-
 thing this item exists for, and it is worth 6 points as a crossing structural cell (`BOS→FAC`) plus
 9 for the three non-crossing structural cells.
 
-### F. The mechanical layer — the 145 remaining cells, by source
+### F. The mechanical layer — the 146 remaining cells, by source
 
 One line per source row. Each names its targets and the mechanism; `RI-CMP01.cells.json` expands them.
 
@@ -306,7 +306,9 @@ One line per source row. Each names its targets and the mechanism; `RI-CMP01.cel
   `RI-PRG08`'s non-farmable rule · `BOS` the roster around a boss.
 - **`BOS`** → `GLD` a hand-placed reward · `SPL` a dropped or taught effect · `WEA` killing it ends a
   regional weather state · `EQP` a unique drop · `LVL` souls · `UPG` a unique material ·
-  `DUN` the arena becomes a shortcut · `JRN` the entry that records it.
+  `DUN` the arena becomes a shortcut · `JRN` the entry that records it ·
+  **`ROS` the boss's faction's patrols change composition afterwards — fight-to-fight, therefore
+  `mechanical` and *not* seam-crossing (§D)**.
 - **`DUN`** → `LOR` architecture is evidence (Xanmeer inscriptions) · `STL` layout decides stealth
   viability · `QST` layout gates a route · `WLD` an opened shortcut is a world route (`S16`).
 - **`SCH`** → `FAC` officers present only at hours · `DIS` waking someone · `GLD` shops open ·

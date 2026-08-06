@@ -11,7 +11,13 @@
     "corpus/80-methods/RI-MTH05-*.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "survey repo: tools/corpus-index.mjs, subsystems.json, ARBITRATION.md, BAR-CRITIQUE-01",
-  "notes_for_successor": "Just started. Nothing edited yet."
+  "findings": [
+    "corpus-index.mjs --check ONLY gates on INDEX.md staleness; error-gating is behind --strict. Brief wants --check to gate. Will make --check imply strict-on-errors.",
+    "148 errors: 147 orphan judges paths (134 unique) + 1 bad front-matter (RI-STL01 side: 'split' not in enum). Roots: weapon 20, magic 20, experience 15, input 10, character 10, stealth 9, journey 9, crime 9, platform 7, composition 6, combat 5, progression 4, world 3, lore 3, ui/npc/critic/audio 1 each.",
+    "Formal registration files already on disk: corpus/88-journeys/paths-requested.json (journey/input/platform, formatted records) and corpus/25-magic/subsystems-patch.proposed.json (20 magic.* records + critic.magic). Character/stealth/crime path list in orchestration/status/character-stealth-crime.json new_subsystem_paths (28, names only). Weapons/experience/camera: names only, must derive titles from items.",
+    "ARBITRATION.md S17 fixes walk speed at 2.0 m/s and forbids lowering it to inflate traversal. S16,S18,S19,S20,S21 all present in ARBITRATION.md \u00a72 (out of numeric order: S16,S21,S20,S19,S18,S17).",
+    "subsystems.json: 200 paths, 226 aliases, 13 critics, version 1. Record shape {path,title,arb,area,critic} + optional judged_by_doctrine."
+  ],
+  "next_step": "read BAR-CRITIQUE-01.md (W1-W8) and INTENT-AUDIT-01.md; then RI-AI07 vs RI-WLD01 traversal minute",
+  "notes_for_successor": "Nothing edited yet. Plan order: (1) constants.json + traversal-minute amendment, (2) subsystems.json registration + --check gate, (3) Jel validator + lexicon, (4) remaining queue. Report file corpus/00-doctrine/CORPUS-COHERENCE-01.md must be created early and appended to after EVERY edit."
 }
