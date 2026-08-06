@@ -106,6 +106,6 @@ function applyRoute(sim) {
   p.grounded = true;
   // The combat body is the authority (sim/combat-bridge.js); writing only the view would be
   // undone by `mirror()` on the next frame's stepCombat.
-  const b = sim.combatBody;
-  if (b) { b.pos[0] = x; b.pos[1] = p.pos[1]; b.pos[2] = z; b.hasPrev = false; }
+  const body = sim.combatBody;
+  if (body) { body.pos[0] = x; body.pos[1] = p.pos[1]; body.pos[2] = z; body.hasPrev = false; }
 }
