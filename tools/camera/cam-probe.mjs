@@ -131,7 +131,19 @@ async function runProbe(name) {
     const ppos = () => H.getCameraFrame().player_pos;
     const pyaw = () => H.getCameraFrame().player_yaw_deg;
     const step = (n) => { H.stepFrames(n); FR += n; };
-    const qi = (ev) => H.queueInputs([Object.assign({ f: FR }, ev)]);
+    // `queueInputs` frames are RELATIVE to the call (pipeline.scriptBase), so every event this
+    // probe queues is `f: 0` — "the next step". `tap`/`hold`/`until` are scenario-file sugar
+    // that never reaches the pipeline; in-page we speak press/release.
+    const qi = (ev) => H.queueInputs([Object.assign({ f: 0 }, ev)]);
+    const CELLS = {};
+    for (const c of H.getCameraRig().cells_meta) CELLS[c.id] = c;
+    /** Put the character INSIDE a camera cell — the fixtures are not in the province
+     *  heightfield, so a bare teleport(x,z) drops it 41 m below cam-flat-plain's floor. */
+    function place(cellId, x, z, yaw) {
+      H.setCameraCell(cellId);
+      H.teleport(x === undefined ? 0 : x, z === undefined ? 0 : z,
+        { y: CELLS[cellId].ground_y, yaw: yaw === undefined ? 0 : yaw });
+    }
     /** Step n frames, collecting the camera block each frame. */
     function collect(n, perFrame) {
       const rows = [];
@@ -194,7 +206,7 @@ async function runProbe(name) {
     // =====================================================================================
     if (name === 'rig') {
       // RI-CAM01 M1 — the static rig census.
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0); step(60);
+      fresh(); place('cam-flat-plain', 0, 0); step(60);
       const rig = H.getCameraRig();
       const K = rig.const;
       const c0 = cam();
@@ -307,7 +319,7 @@ async function runProbe(name) {
     // =====================================================================================
     if (name === 'rate') {
       // RI-CAM01 M4 — the pull-in / push-out rate law on the moving-wall rig.
-      fresh(); H.setCameraCell('cam-collision-rig'); H.teleport(0, 0); step(30);
+      fresh(); place('cam-collision-rig', 0, 0); step(30);
       setYaw(0); setPitch(0); step(30);
       const rows = [];
       const CYCLE = 240, CYCLES = 12;
@@ -348,7 +360,7 @@ async function runProbe(name) {
     // =====================================================================================
     if (name === 'wall') {
       // RI-CAM01 M5 — back into a wall. No auto-yaw, no pitch drift, no FOV change, fade+shadow.
-      fresh(); H.setCameraCell('cam-collision-rig'); H.teleport(0, 0);
+      fresh(); place('cam-collision-rig', 0, 0);
       H.setCameraObstacle('wall', 0, 2.0, -3.0);
       setYaw(0); setPitch(0); step(60);
       const y0 = cam().yaw_deg, p0 = cam().pitch_deg;
@@ -376,7 +388,7 @@ async function runProbe(name) {
     if (name === 'layers') {
       // RI-CAM01 M6 — actors never push the arm. Structural: the camera cell contains only
       // static world geometry, so this measures that the structure holds in a real fight.
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0); setYaw(0); setPitch(0); step(60);
+      fresh(); place('cam-flat-plain', 0, 0); setYaw(0); setPitch(0); step(60);
       const before = cam().arm_len_m;
       const eid = H.spawn('naga_levy', 0, -1.5);
       H.aggro(eid); step(30);
@@ -391,7 +403,7 @@ async function runProbe(name) {
     // =====================================================================================
     if (name === 'look') {
       // RI-CAM02 M1 (deadzone + curve), M2 (pitch clamp), M3 (zero lag / zero smoothing).
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0); step(30);
+      fresh(); place('cam-flat-plain', 0, 0); step(30);
       // --- M3 first: step input, tail, and frame-1 exactness.
       setYaw(0); step(10);
       const stepYaws = [];
@@ -432,7 +444,7 @@ async function runProbe(name) {
       // RI-CAM02 M5 — the discriminator: NO auto-follow while walking or running.
       const res = {};
       for (const label of ['walk', 'run', 'strafe']) {
-        fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0); setYaw(0); step(30);
+        fresh(); place('cam-flat-plain', 0, 0); setYaw(0); step(30);
         const y0 = cam().yaw_deg;
         const N = label === 'strafe' ? 300 : 720;
         let sum = 0; let prev = y0;
@@ -455,7 +467,7 @@ async function runProbe(name) {
       // RI-CAM02 M7 — camera-relative, not world-relative.
       const bearings = [];
       for (const yaw of [0, 45, 90, 135, 180, 225, 270, 315]) {
-        fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0); setYaw(yaw); step(20);
+        fresh(); place('cam-flat-plain', 0, 0); setYaw(yaw); step(20);
         const a = ppos().slice();
         for (let i = 0; i < 60; i++) { qi({ move: [0, 1] }); step(1); }
         const b = ppos();
@@ -467,7 +479,7 @@ async function runProbe(name) {
       chk('camera_relative_mapping', bearings.every((b) => Math.abs(b.err) <= 2.0), `max bearing error ${r3(Math.max(...bearings.map((b) => Math.abs(b.err))))}° across 8 camera yaws (a world-relative mapping gives the same bearing 8 times)`);
 
       // §C: movement must not be built from the un-projected camera forward.
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0); setYaw(0); setPitch(-55); step(20);
+      fresh(); place('cam-flat-plain', 0, 0); setYaw(0); setPitch(-55); step(20);
       const a2 = ppos().slice();
       for (let i = 0; i < 60; i++) { qi({ move: [0, 1] }); step(1); }
       const b2 = ppos();
@@ -479,7 +491,7 @@ async function runProbe(name) {
       // RI-CAM02 M4 — the character turn-rate ceiling.
       const turns = [];
       for (const th of [45, 90, 135, 180, 225, 270, 315]) {
-        fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0, { yaw: 0 }); setYaw(0); step(20);
+        fresh(); place('cam-flat-plain', 0, 0, 0); setYaw(0); step(20);
         // already running in +Z, then reverse to bearing th
         for (let i = 0; i < 60; i++) { qi({ move: [0, 1] }); step(1); }
         const rad = th * Math.PI / 180;
@@ -499,7 +511,7 @@ async function runProbe(name) {
     // =====================================================================================
     if (name === 'recentre') {
       // RI-CAM02 M6 — the gate arms at 20 frames and disengages the same frame.
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0, { yaw: 0 }); setYaw(90); step(20);
+      fresh(); place('cam-flat-plain', 0, 0, 0); setYaw(90); step(20);
       const rows = [];
       for (let i = 0; i < 400; i++) {
         qi({ move: [0, 1], hold: ['sprint'], until: FR + 1 });
@@ -540,7 +552,7 @@ async function runProbe(name) {
       for (let i = 0; i < 120; i++) { qi({ move: [0, 1] }); step(1); const y = cam().yaw_deg; sum += Math.abs(ang180(y - prev)); prev = y; }
       chk('no_residual_after_release', sum <= 0.001, `Σ|Δyaw| over 120 frames after sprint release = ${r4(sum)}° (bar: no coast, no settle)`);
       // Never engages while walking / running without sprint.
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0, { yaw: 0 }); setYaw(90); step(20);
+      fresh(); place('cam-flat-plain', 0, 0, 0); setYaw(90); step(20);
       let anyActive = false;
       for (let i = 0; i < 240; i++) { qi({ move: [0, 1] }); step(1); if (cam().recentre_active) anyActive = true; }
       chk('never_engages_without_sprint', !anyActive, 'running at full stick for 240 frames with no sprint held: recentre never armed');
@@ -627,7 +639,7 @@ async function runProbe(name) {
       const grid = [];
       for (const h of [0.6, 1.9, 2.6, 4.5, 8.0]) {
         for (const d of [2, 3, 4, 6, 8, 10, 12, 14]) {
-          fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0, { yaw: 0 });
+          fresh(); place('cam-flat-plain', 0, 0, 0);
           const eid = H.spawn('naga_levy', 0, -d, { height_m: h });
           H.lockOn(eid); step(240);
           const c = cam();
@@ -663,7 +675,7 @@ async function runProbe(name) {
       // RI-CAM03 M4 / M5 — acquisition, reframe, switch, and break-with-no-snap.
       const reframes = [], acquires = [];
       for (let trial = 0; trial < 20; trial++) {
-        fresh(1337 + trial); H.setCameraCell('cam-boss-arena'); H.teleport(0, 0, { yaw: 0 });
+        fresh(1337 + trial); place('cam-boss-arena', 0, 0, 0);
         const eid = H.spawn('naga_levy', 0, -4);
         step(30);
         H.lockOn(eid);
@@ -683,7 +695,7 @@ async function runProbe(name) {
       chk('reframe_le_22', Math.max(...reframes) <= 22 && Math.min(...reframes) > 0, `p100 = ${Math.max(...reframes)} frames (bar ≤22)`);
 
       // Break with no snap.
-      fresh(); H.setCameraCell('cam-boss-arena'); H.teleport(0, 0, { yaw: 0 });
+      fresh(); place('cam-boss-arena', 0, 0, 0);
       const eid = H.spawn('naga_levy', 2, -4);
       H.lockOn(eid); step(120);
       const pre = [];
@@ -709,7 +721,7 @@ async function runProbe(name) {
       // RI-CAM05 M1 (combat ≡ exploration), M2 (dialogue), M3 (menu), M6 (HEARTH rest).
       // --- M1: the four properties must be bit-identical at matched pitch.
       const sample = (locked) => {
-        fresh(); H.setCameraCell('cam-boss-arena'); H.teleport(0, 0, { yaw: 0 });
+        fresh(); place('cam-boss-arena', 0, 0, 0);
         let eid = null;
         if (locked) { eid = H.spawn('naga_levy', 0, -4); H.lockOn(eid); }
         const rows = [];
@@ -728,7 +740,7 @@ async function runProbe(name) {
         `free ${expl[0].shoulder[0]} → locked ${comb[0].shoulder[0]} (RI-CAM01 §A: reduced so the framing law is not fighting a lateral bias)`);
 
       // --- M2: dialogue. One bounded accommodation, then frozen.
-      fresh(); H.setCameraCell('cam-boss-arena'); H.teleport(0, 0, { yaw: 0 }); step(30);
+      fresh(); place('cam-boss-arena', 0, 0, 0); step(30);
       const before = cam();
       H.uiOpen('dialogue', { npcHeadNdcX: 0.02 });     // head behind the topic panel's left edge
       const acc = collect(12);
@@ -763,7 +775,7 @@ async function runProbe(name) {
       H.uiClose(); step(20);
 
       // --- M3: menu freeze, harder than dialogue — no accommodation at all.
-      fresh(); H.setCameraCell('cam-boss-arena'); H.teleport(0, 0, { yaw: 0 }); step(30);
+      fresh(); place('cam-boss-arena', 0, 0, 0); step(30);
       H.uiOpen('menu');
       let mPos = 0, mAng = 0; let mp = cam();
       for (let i = 0; i < 300; i++) {
@@ -780,7 +792,7 @@ async function runProbe(name) {
       H.uiClose(); step(20);
 
       // --- M6: HEARTH rest.
-      fresh(); H.setCameraCell('cam-boss-arena'); H.teleport(0, 0, { yaw: 0 }); setPitch(0); step(30);
+      fresh(); place('cam-boss-arena', 0, 0, 0); setPitch(0); step(30);
       const r0 = cam();
       H.uiOpen('rest');
       const rest = collect(120);
@@ -842,7 +854,7 @@ async function runProbe(name) {
       for (const st of STATES) {
         for (const b of BUTTONS) {
           for (const kind of ['tap', 'hold']) {
-            fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0, { yaw: 0 });
+            fresh(); place('cam-flat-plain', 0, 0, 0);
             let eid = null;
             if (st === 'locked') { eid = H.spawn('naga_levy', 0, -4); H.lockOn(eid); }
             if (st === 'dialogue') H.uiOpen('dialogue');
@@ -870,7 +882,7 @@ async function runProbe(name) {
       }
       // Mouse-wheel / unmapped-axis sweep.
       let wheelMin = Infinity;
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0); step(10);
+      fresh(); place('cam-flat-plain', 0, 0); step(10);
       for (let notch = -60; notch <= 60; notch++) {
         qi({ wheel: notch, zoom: notch / 60 });
         step(1);
@@ -907,14 +919,14 @@ async function runProbe(name) {
       // RI-CAM06 M2 (derivatives), M4 (FOV variance), M5 (head-bob), M7 (shake).
       const windows = {};
       // (a) ordinary locomotion, flat, no look input
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0, { yaw: 0 }); setYaw(0); step(30);
+      fresh(); place('cam-flat-plain', 0, 0, 0); setYaw(0); step(30);
       windows.locomotion_flat = collect(300, () => qi({ move: [0, 1] }));
       // (b) locked duel, no look input
-      fresh(); H.setCameraCell('cam-boss-arena'); H.teleport(0, 0, { yaw: 0 });
+      fresh(); place('cam-boss-arena', 0, 0, 0);
       { const e = H.spawn('naga_levy', 0, -4); H.lockOn(e); step(30);
         windows.locked_duel = collect(300, (i) => { const a = (i * 90 / 60) * Math.PI / 180; H.setEntityPos(e, Math.sin(a) * 4, Math.cos(a) * 4); }); }
       // (c) manual look, constant stick
-      fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0); step(30);
+      fresh(); place('cam-flat-plain', 0, 0); step(30);
       windows.manual_look = collect(300, () => qi({ look: [1.5, 0] }));
       // (d) interior traversal with collision active
       { fresh(); const info = H.cameraRoute({ cell: 'cam-walk-cistern', yaw: 0 }); step(1);
@@ -950,7 +962,7 @@ async function runProbe(name) {
       // M5 — head-bob absence, at three speeds, flat.
       const bob = {};
       for (const [label, mag, sprint] of [['walk', 0.4, false], ['run', 1.0, false], ['sprint', 1.0, true]]) {
-        fresh(); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0, { yaw: 0 }); setYaw(0); step(30);
+        fresh(); place('cam-flat-plain', 0, 0, 0); setYaw(0); step(30);
         const rows = collect(300, () => {
           const f = FR;
           H.queueInputs(sprint ? [{ f, move: [0, mag], hold: ['sprint'], until: f + 1 }] : [{ f, move: [0, mag] }]);
@@ -971,7 +983,7 @@ async function runProbe(name) {
       // M7 — damage shake: amplitude, duration, decay, energy, rotational-only, seeded.
       const shakeRuns = [];
       for (const seed of [1337, 1337, 4242]) {
-        fresh(seed); H.setCameraCell('cam-flat-plain'); H.teleport(0, 0, { yaw: 0 }); step(30);
+        fresh(seed); place('cam-flat-plain', 0, 0, 0); step(30);
         const p0 = cam().pos.slice();
         H.triggerCameraShake(0.60);
         const rows = collect(30);
@@ -1051,7 +1063,7 @@ async function runProbe(name) {
       chk('death_fov_unchanged', D.every((d) => d.fov_span <= 0.001), 'no FOV change through the death sequence');
 
       // --- fog gate + the reproducibility test.
-      fresh(); H.setCameraCell('cam-boss-arena'); H.teleport(0, 0, { yaw: 180 });
+      fresh(); place('cam-boss-arena', 0, 0, 180);
       const eid = H.spawn('naga_levy', 0, -8, { height_m: 4.5 });
       step(20);
       const start = cam();
