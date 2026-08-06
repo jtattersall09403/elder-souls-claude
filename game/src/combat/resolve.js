@@ -54,9 +54,13 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
           if (d <= (A.move.reach_m_declared || 2.5) + 0.6 && front <= 70) {
             A.hitThisSwing.add(B.id);
             const frames = C.poise.criticals.parry.parried_state.frames;
+            // The attack's id is read BEFORE the reaction is queued: queueParried() clears
+            // `A.move`, exactly as beginParried() used to, and the emit below used to read
+            // `A.move.id` afterwards. It survived until a probe parried something.
+            const atkId = A.move.id;
             A.queueParried(frames, frame);
             const e = emit(frame, 'PARRY');
-            e.src = B.id; e.who = A.id; e.atk = A.move.id; e.parry_frame = pf;
+            e.src = B.id; e.who = A.id; e.atk = atkId; e.parry_frame = pf;
             e.window = w; e.frames = frames;
             e.riposte_window = C.poise.criticals.parry.parried_state.riposte_window;
             sim.hitstopUntil = frame + 10;

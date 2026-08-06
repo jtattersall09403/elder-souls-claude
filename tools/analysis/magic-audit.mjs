@@ -320,6 +320,48 @@ const rec = (id, pass, detail) => { R.checks[id] = { pass, ...detail }; };
   });
 }
 
+// ============================== RI-MAG01 §F / M7 static — enemy casters ======================
+{
+  const dir = path.join(ROOT, 'game/data/combat/enemies');
+  const casters = fs.readdirSync(dir).map((f) => rd(`game/data/combat/enemies/${f}`)).filter((e) => e.spells);
+  const rows = [];
+  for (const c of casters) {
+    const spells = Object.entries(c.spells);
+    const melee = Object.values(c.attacks || {}).filter((a) => !a.reposition);
+    const reposNonRetreat = Object.values(c.attacks || {}).filter((a) => a.reposition && a.reposition_kind !== 'retreat');
+    const sils = new Set(spells.map(([, s2]) => s2.silhouette.split('+')[0].trim()));
+    rows.push({
+      id: c.id, spells: spells.length,
+      min_windup_f: Math.min(...spells.map(([, s2]) => s2.windup_f)),
+      windup_floor_f: 12,
+      every_spell_meets_its_severity_floor: spells.every(([, s2]) => s2.windup_f >= s2.min_windup_required_f),
+      min_dodge_window_f: Math.min(...spells.map(([, s2]) => s2.min_dodge_window_f)),
+      dodge_window_floor_f: 20,
+      speeds_over_ceiling: spells.filter(([, s2]) => (s2.geometry.speed_mps || 0) > 30).map(([k]) => k),
+      volumes_without_20f_decal: spells.filter(([, s2]) => s2.geometry.kind === 'volume' && s2.geometry.decal_lead_f < 20).map(([k]) => k),
+      volumes_with_mismatched_footprint: spells.filter(([, s2]) => s2.geometry.kind === 'volume' && Math.abs((s2.geometry.decal_footprint_ratio || 0) - 1) > 0.05).map(([k]) => k),
+      tracking_past_cutoff: spells.filter(([, s2]) => s2.geometry.turn_rate_dps > 0 && s2.geometry.tracking_cutoff === null).map(([k]) => k),
+      has_melee_move: melee.length >= 1,
+      has_non_retreat_reposition: reposNonRetreat.length >= 1,
+      distinct_windup_silhouettes: sils.size, spells_count: spells.length,
+      ap_m6_clean: sils.size === spells.length,
+      declared_incomplete: !!c._declared_incomplete,
+    });
+  }
+  const ok = casters.length >= 1 && rows.every((r) =>
+    r.min_windup_f >= r.windup_floor_f && r.every_spell_meets_its_severity_floor
+    && r.min_dodge_window_f >= r.dodge_window_floor_f
+    && r.speeds_over_ceiling.length === 0 && r.volumes_without_20f_decal.length === 0
+    && r.volumes_with_mismatched_footprint.length === 0 && r.tracking_past_cutoff.length === 0
+    && r.has_melee_move && r.has_non_retreat_reposition && r.ap_m6_clean);
+  rec('MAG01_M7_enemy_casters_static', ok, {
+    caster_archetypes: casters.length, rows,
+    live_sweep_runnable: false,
+    live_sweep_reason: "This build's enemies execute SCRIPTED actions on declared frames (the RI-CMB07 M1 Mode-A instrument); enemy action SELECTION is RI-AI01..07 / wave-1 piece W1-12. The enemy cast state machine is therefore not implemented and RI-MAG01 M7's live sweep is UNMEASURABLE here and scores 0, fail-closed. The statblock declares every number the sweep would read so that AP-M1..AP-M6 are at least statically falsifiable now.",
+    note: 'AP-M1 hitscan, AP-M2 untelegraphed AoE, AP-M3 homing past cutoff, AP-M6 colliding cast poses, and RI-MAG01 §F\'s "the caster is also a fighter" requirement, all checked against the declaration.',
+  });
+}
+
 // ============================== spell movesets exist, one per spell ==========================
 {
   const dir = path.join(ROOT, 'game/data/combat/movesets');
