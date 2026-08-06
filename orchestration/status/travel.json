@@ -2,12 +2,16 @@
   "task_id": "travel",
   "brief": "orchestration/briefs/travel.md",
   "started": "wave-N",
-  "state": "researching",
+  "state": "writing",
   "outputs_expected": [
+    "corpus/50-world/travel-network.json",
     "corpus/50-world/RI-TRV01-transport-network.md",
     "corpus/50-world/RI-TRV02-travel-magic.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/50-world/travel-network.json",
+    "corpus/50-world/RI-TRV01-transport-network.md"
+  ],
   "findings": [
     "S7 (ARBITRATION.md L82) MANDATES the network: silt-strider analogue + boat/barge + guild-guide teleport + Mark/Recall + Intervention. Banned = warp-to-map-pin, teleport-to-objective, travel to never-visited. HEARTH shrines explicitly NOT part of travel network.",
     "S19 (L92) reconciled: Mark/Recall/Intervention are part of the S7 network; forbidden is teleport as level-design solvent (recall out of fight, warp past unopened shortcut, intervention as escape button).",
@@ -26,6 +30,6 @@
     "No `magic.*` root exists in subsystems.json (only combat.magic.casting); corpus/25-magic is EMPTY. Magicka pool undefined anywhere -- express spell costs as fraction of pool + absolute budget handed to the magic owner.",
     "Canonical judges paths available: world.traversal.transport (aliases world.travel, world.transport), world.traversal.roads, world.traversal.time, world.traversal.locomotion, progression.gold.economy, progression.bonfire.function, world.dungeon.design, world.wayfinding.directions, world.settlement.anatomy, combat.magic.casting, quests.resolution.noncombat, world.time.daynight, world.water.marsh."
   ],
-  "next_step": "write corpus/50-world/travel-network.json (computed graph), then RI-TRV01, then RI-TRV02",
+  "next_step": "write RI-TRV02 (travel magic + S19 reconciliation): Mark/Recall/Hist Intervention/Imperial Intervention, gating, solvent detector, positive tests",
   "notes_for_successor": "DESIGN DECIDED. 5 transport modes + 2 spell pairs. M1 Barge (Wet Ledger poled river barge, PRIMARY, 7 of 10 road legs have water: Stormhold-Helstrom, Helstrom-Gideon, Helstrom-Blackrose, Gideon-Soulrest, Soulrest-Blackrose, Blackrose-Lilmoth, Lilmoth-Archon(tideway, HIGH tide only - inverse of the walking gate)). M2 Coastal packet (Lilmoth-Soulrest across the bay, Lilmoth-Archon round the point, Archon-Bloodmarl Isle), weather-gated. M3 Rootway root-tunnel haulage: silt-strider analogue, ALL 10 road legs, 26 adjacent-station hops, daylight only, severable by plot. M4 Tide-poler local punts, hop-tier only, low/falling tide. M5 Root-speaking = guild guide, Xul-Aneekh rank>=3, star centred on Helstrom to 5 deep-root nodes. Thorn is the ONLY dry settlement (Rootway only) - deliberate, declared. Fares: tier bases from RI-PRG05 (hop<=1600m=12g, leg 1600-3500m=45g, through>3500m=90g) x mode mult {barge .8, poler 1.0, rootway 1.0, packet 1.3, rootspeak 2.5} x faction mult. Fares POSTED, not bartered; disposition<30 => poler refuses (CF-C012 'refusable'). Spells: Mark(t2,900g), Recall(t2,900g), Hist Intervention(t1,220g), Imperial Intervention(t1,220g). Teleport costs 20 game-min + 25% Fatigue (S4) => makes you worse at talking. EVERY check must be written as an explicit N-fail (network missing) / W-fail (warp-to-pin) PAIR."
 }

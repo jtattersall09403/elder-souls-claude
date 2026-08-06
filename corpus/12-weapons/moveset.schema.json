@@ -32,7 +32,11 @@
       "additionalProperties": false,
       "properties": {
         "one_hand": { "$ref": "#/$defs/stanceBlock" },
-        "two_hand": { "$ref": "#/$defs/stanceBlock" }
+        "two_hand": { "$ref": "#/$defs/stanceBlock" },
+        "off_hand": {
+          "$ref": "#/$defs/stanceBlock",
+          "description": "Present only when this weapon is legal in the offhand of a dual-wield configuration. Supplies the off.* slots. RI-WPN06 §C."
+        }
       }
     },
     "parry_capable": {
@@ -89,6 +93,8 @@
         "guardbreak",
         "art.1", "art.2",
         "parry",
+        "off.r1.1", "off.r1.2", "off.r2",
+        "shield.bash", "shield.charge",
         "2h.r1.1", "2h.r1.2", "2h.r1.3", "2h.r1.4",
         "2h.r2", "2h.r2.charged", "2h.r2.follow",
         "2h.run.r1", "2h.run.r2",
