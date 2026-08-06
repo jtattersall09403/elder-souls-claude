@@ -2,7 +2,7 @@
   "task_id": "W1-00",
   "brief": "wave-1 piece W1-00 - Harness, determinism and persistence",
   "started": "wave-1",
-  "state": "building",
+  "state": "complete",
   "subsystem_paths": [
     "platform.determinism.harness",
     "platform.input.pipeline",
@@ -21,7 +21,19 @@
     "game/data/** per HARNESS.md S5",
     "tools/harness/smoke.mjs, run-headless.mjs, trace.mjs, trace-stats.mjs"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/index.html, game/README.md, game/vendor/three/ (r180, vendored)",
+    "game/src/core/{loop,rng,guards,sha256,canonical}.js",
+    "game/src/sim/{state,step,player,entities,camera,record,events}.js",
+    "game/src/input/{actions,pipeline,bindings,real}.js",
+    "game/src/save/{state,store,exchange}.js",
+    "game/src/render/{scene,sky,renderer}.js",
+    "game/src/{engine,main}.js, game/src/harness/api.js",
+    "game/data/** (33 files) incl. save-manifest.json, states/, combat/movesets|enemies|input, world/, npcs/, dialogue/, quests/, items/, books/, progression/",
+    "tools/harness/{determinism,api-probe,save-audit,input-probe,lint-determinism}.mjs",
+    "tools/platform/perf-probe.mjs, tools/analysis/data-index.mjs",
+    "orchestration/amendments/AM-W1-00-01-mth02-r5.md"
+  ],
   "findings": [
     "HARNESS.md S3 is the API contract; tools/lib/run.mjs REQUIRED_METHODS = setSeed, stepFrames, queueInputs, snapshot, traceStart, traceStop.",
     "tools/lib/run.mjs drives: setSeed -> loadState(scenario.state) OR reset({seed}) -> setTimeOfDay/setWeather -> setup ops -> stepFrames(warmup) -> queueInputs -> traceStart -> stepFrames(chunk) + traceDrain loop -> traceStop. Game must match this order exactly.",
@@ -34,6 +46,6 @@
     "viewpoints.json anchors needed: vista_primary, swamp_canopy, settlement_primary_street, interior_firelit, water_shallows, npc_showcase, material_showcase, dungeon_primary, arena_flat.",
     "corpus/50-world/regions.json holds 13 real regions - transcribe, do not invent."
   ],
-  "next_step": "write game/src core (rng, guards, fixed loop), then harness API, then save, then data tree",
-  "notes_for_successor": ""
+  "next_step": "critic review",
+  "notes_for_successor": "Evidence lives in reports/runs/{DETERMINISM,API-PROBE,SAVE-AUDIT,INPUT-PROBE,SHOTS} and reports/platform/TIER-S. Known open items: (1) RI-MTH02 R5 fails on two enemy fields that are warm-up-dependent by construction - amendment AM-W1-00-01 filed, NOT applied; (2) alloc/step is measured with performance.memory, which is coarse - a CDP Runtime.getHeapUsage probe (A-JRN9) is the stronger instrument and belongs to the runner; (3) pointer-lock checks M-K8..M-K11 need a real user gesture and a menu surface (W1-21); (4) enemy AI is deliberately absent - inf_trash declares ai='hold_ground' and never attacks, so cmb-duel-infantry's punish statistics are structurally 0."
 }

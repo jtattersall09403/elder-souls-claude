@@ -37,6 +37,16 @@ export function stepPlayer(sim, input, moves, bus) {
     return;
   }
 
+  // The animation ends at the TOP of the step, before action selection: an animation with
+  // `total: 52` must occupy exactly 52 simulated frames and the character must be
+  // actionable on the 53rd. Ending it at the bottom of the step costs one frame and shows
+  // up in the trace as every move in the game being one frame short of its declared length
+  // — the "declared vs observed" mismatch HARNESS.md §7 rule 4 calls a hard fail.
+  if (p.moveData && p.animFrame >= p.moveData.total) {
+    p.moveData = null; p.move = null; p.state = 'IDLE'; p.anim = 'idle';
+    p.animFrame = 0; p.animLen = 1; p.phase = 'none';
+  }
+
   const committed = p.moveData !== null;
 
   // ---- 1. buffered / fresh action selection ---------------------------------------
@@ -82,6 +92,7 @@ export function stepPlayer(sim, input, moves, bus) {
         p.animFrame = 0;
         p.animLen = md.total;
         p.animStamp = f;             // identifies this swing, so one hitbox hits once
+        // The move occupies frames f..f+total-1; the first actionable frame is f+total.
         p.actionableAt = f + md.total;
         const e = bus.emit(f, id === 'roll' ? 'roll_start' : 'attack_start');
         e.move = id; e.stamina_after = +p.stamina.toFixed(3);
@@ -136,10 +147,6 @@ export function stepPlayer(sim, input, moves, bus) {
       resolveHits(sim, hb, md, bus);
     }
 
-    if (af >= md.total) {
-      p.moveData = null; p.move = null; p.state = 'IDLE'; p.anim = 'idle';
-      p.animFrame = 0; p.animLen = 1; p.phase = 'none';
-    }
   } else {
     // ---- 4. locomotion ------------------------------------------------------------
     const mx = input.moveX, my = input.moveY;
