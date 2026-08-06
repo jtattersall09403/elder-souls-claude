@@ -122,8 +122,11 @@ export class EnemyController {
       return;
     }
 
+    // Retire at the TOP of the step — see the note in combat/player.js.
+    if (b.move && b.animFrame >= b.move.total) b.endMove();
+
     if (b.move && (b.move.kind === 'stagger' || b.move.kind === 'guard_break')) {
-      if (b.advance(frame)) b.endMove();
+      b.advance(frame);
       b.tickResources(frame, this.d);
       return;
     }
@@ -178,7 +181,7 @@ export class EnemyController {
         if (nf > 1 && nf <= 0.40 * b.move.startup) this._steer(ctx.player, 180);
         else if (nf <= 0.80 * b.move.startup) this._steer(ctx.player, 45);
       }
-      if (b.advance(frame)) b.endMove();
+      b.advance(frame);
     } else {
       this._idleBehaviour(frame, ctx);
     }

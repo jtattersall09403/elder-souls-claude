@@ -169,6 +169,15 @@ export class InputPipeline {
       const e = this.script[this.scriptIdx++];
       if (e.move) { this.moveX = e.move[0]; this.moveY = e.move[1]; }
       if (e.look) { this.lookX = e.look[0]; this.lookY = e.look[1]; }
+      // `look_stick` is a raw right-stick vector in [-1,1]²; `look` is already degrees per
+      // frame. Both exist because RI-CAM02 M1 measures the STICK response curve (deadzone,
+      // saturation, quadratic magnitude) while M3 measures the DEGREE path (lag 0, no
+      // smoothing), and a single field cannot be probed for both.
+      if (e.look_stick) {
+        const d = shapeLookStick(e.look_stick[0], e.look_stick[1]);
+        this.lookX = d[0]; this.lookY = d[1];
+        this.lookStickX = e.look_stick[0]; this.lookStickY = e.look_stick[1];
+      }
       if (e.press) for (let i = 0; i < e.press.length; i++) this.pendingPress |= BIT[e.press[i]];
       if (e.release) for (let i = 0; i < e.release.length; i++) this.pendingRelease |= BIT[e.release[i]];
     }
@@ -221,4 +230,33 @@ export class InputPipeline {
 
   heldNames() { return maskToNames(this.held, this._names); }
   pressedNames() { return maskToNames(this.pressed, this._names2); }
+}
+
+/**
+ * RI-CAM02 §A — the right-stick response, and the only place it exists.
+ *
+ * Radial deadzone at 0.15, outer saturation at 0.95, `m' = clamp((m − 0.15)/0.80, 0, 1)` and
+ * then `m'' = m'²` — a quadratic on MAGNITUDE ONLY. The direction is never reshaped, which
+ * is what a per-axis deadzone gets wrong and what makes a stick feel cross-shaped. Rates are
+ * 180 °/s yaw and 120 °/s pitch at full deflection, i.e. 3.000 and 2.000 degrees per frame.
+ *
+ * @returns {[number, number]} degrees for THIS frame — yaw, pitch. Never accumulated.
+ */
+const _shaped = [0, 0];
+export function shapeLookStick(x, y) {
+  const m = Math.sqrt(x * x + y * y);
+  if (m <= 0.15) { _shaped[0] = 0; _shaped[1] = 0; return _shaped; }
+  let mm = (Math.min(m, 0.95) - 0.15) / 0.80;
+  if (mm > 1) mm = 1;
+  mm *= mm;
+  const ux = x / m, uy = y / m;
+  _shaped[0] = ux * mm * 3.0;
+  _shaped[1] = uy * mm * 2.0;
+  return _shaped;
+}
+
+/** RI-CAM02 §C — the movement stick's radial deadzone. Same 0.15, same radial semantics. */
+export function moveStickMagnitude(x, y) {
+  const m = Math.sqrt(x * x + y * y);
+  return m <= 0.15 ? 0 : m;
 }

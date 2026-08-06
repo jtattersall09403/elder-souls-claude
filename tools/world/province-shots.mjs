@@ -19,6 +19,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, log, EXIT, REPO_ROOT as ROOT, ensureDir, sha256, readJson } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
+import { PNG } from '../node_modules/pngjs/lib/png.js';
+
+function meanLuma(file) {
+  const p = PNG.sync.read(fs.readFileSync(file));
+  let L = 0;
+  for (let i = 0; i < p.data.length; i += 4) L += 0.299 * p.data[i] + 0.587 * p.data[i + 1] + 0.114 * p.data[i + 2];
+  return L / (p.data.length / 4);
+}
 
 const USAGE = `province-shots.mjs — RI-WLD04 M17 unlabelled region frames.
   --out <dir>   output directory (required)
@@ -86,10 +94,21 @@ try {
       const id = `${String(shots.length + 1).padStart(2, '0')}`;
       const file = path.join(outDir, `frame-${id}.png`);
       await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide' });
+      // A frame whose eye landed inside a trunk is not a sample of the region, it is a sample of
+      // one tree. Re-yaw and re-shoot rather than ship a black rectangle a judge cannot classify.
+      let lum = meanLuma(file), spins = 0;
+      while (lum < 18 && spins++ < 5) {
+        const y2 = rnd() * Math.PI * 2;
+        await handle.h('camera', { pos: eye, look: [p.x + Math.sin(y2) * 40, p.y + 1.7 - 3.0, p.z + Math.cos(y2) * 40], fov: 70 });
+        await handle.h('renderFrame');
+        await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide' });
+        lum = meanLuma(file);
+      }
       shots.push({
         frame: `frame-${id}.png`, region: r.id, region_name: r.name,
         x: +p.x.toFixed(1), z: +p.z.toFixed(1), y: +p.y.toFixed(2),
         yaw_deg: +(yaw * 180 / Math.PI).toFixed(1), weather, hours: +hours.toFixed(2),
+        mean_luma: +lum.toFixed(1), reshot: spins,
         sha256: sha256(fs.readFileSync(file)),
       });
       log(`  ${r.id} ${shots.length}/${regions.length * PER}`);

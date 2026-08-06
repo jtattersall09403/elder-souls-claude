@@ -16,6 +16,8 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 function md(src) {
   const lines = src.split('\n');
   let out = '', inCode = false, inList = false, inQuote = false;
+  let para = [];
+  const flushPara = () => { if (para.length) { out += `<p>${inline(para.join(' '))}</p>\n`; para = []; } };
   const inline = t => esc(t)
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) =>
       `<figure><img src="${src.replace(/^\.\.\//, '')}" alt="${alt}" loading="lazy"><figcaption>${alt}</figcaption></figure>`)
@@ -27,20 +29,23 @@ function md(src) {
   const closeQuote = () => { if (inQuote) { out += '</blockquote>\n'; inQuote = false; } };
   for (const raw of lines) {
     const l = raw.trimEnd();
-    if (l.startsWith('```')) { inCode = !inCode; out += inCode ? '<pre><code>' : '</code></pre>\n'; continue; }
+    if (l.startsWith('```')) { flushPara(); inCode = !inCode; out += inCode ? '<pre><code>' : '</code></pre>\n'; continue; }
     if (inCode) { out += esc(raw) + '\n'; continue; }
-    if (/^\s*$/.test(l)) { closeList(); closeQuote(); continue; }
-    if (l.startsWith('> ')) { if (!inQuote) { out += '<blockquote>\n'; inQuote = true; } out += `<p>${inline(l.slice(2))}</p>\n`; continue; }
+    if (/^\s*$/.test(l)) { flushPara(); closeList(); closeQuote(); continue; }
+    if (l.startsWith('> ')) { flushPara(); if (!inQuote) { out += '<blockquote>\n'; inQuote = true; } out += `<p>${inline(l.slice(2))}</p>\n`; continue; }
     closeQuote();
     const h = l.match(/^(#{1,4})\s+(.*)$/);
-    if (h) { closeList(); out += `<h${h[1].length + 1}>${inline(h[2])}</h${h[1].length + 1}>\n`; continue; }
-    if (/^[-*]\s+/.test(l)) { if (!inList) { out += '<ul>\n'; inList = true; } out += `<li>${inline(l.replace(/^[-*]\s+/, ''))}</li>\n`; continue; }
+    if (h) { flushPara(); closeList(); out += `<h${h[1].length + 1}>${inline(h[2])}</h${h[1].length + 1}>\n`; continue; }
+    if (/^[-*]\s+/.test(l)) { flushPara(); if (!inList) { out += '<ul>\n'; inList = true; } out += `<li>${inline(l.replace(/^[-*]\s+/, ''))}</li>\n`; continue; }
     closeList();
     // an image on its own line becomes a figure, not a paragraph
-    if (/^!\[/.test(l)) { out += inline(l) + '\n'; continue; }
-    out += `<p>${inline(l)}</p>\n`;
+    if (/^!\[/.test(l)) { flushPara(); out += inline(l) + '\n'; continue; }
+    // Accumulate consecutive prose lines into ONE paragraph. Source markdown is hard-wrapped
+    // for readability; without this every wrapped line became its own <p>, which put line
+    // breaks in the middle of sentences on the rendered page.
+    para.push(l);
   }
-  closeList(); closeQuote();
+  flushPara(); closeList(); closeQuote();
   return out;
 }
 

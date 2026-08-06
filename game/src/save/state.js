@@ -65,6 +65,10 @@ export function buildSave(sim, build) {
       sign: sim.identity.sign,
       profession: sim.identity.profession,
       document: sim.identity.document || '',
+      // W1-07 — every field the Warden-Scribe wrote down. RI-CHR01 §7: none of these is
+      // reversible except `given_name` (once, 250 g) and `birthsign` (once, at Helstrom), so
+      // they are durable by definition and the save is where that is enforced.
+      creation: saveCreation(sim.character),
     },
     character: {
       level: sim.progression.level,
@@ -251,6 +255,7 @@ export function applySave(sim, blob, moves, statFor) {
   sim.identity.sign = blob.identity.sign;
   sim.identity.profession = blob.identity.profession;
   sim.identity.document = blob.identity.document;
+  sim.character = loadCreation(blob.identity.creation);
 
   sim.progression.level = blob.character.level;
   sim.progression.soulsHeld = blob.character.souls_held;
@@ -408,4 +413,65 @@ function sortedQuestMap(m) {
     };
   }
   return out;
+}
+
+
+// ---- W1-07: the creation record ------------------------------------------------------------
+// `created:false` is a real state — the player is in the barge hold and nobody has written
+// anything down yet — so the block is always present and always the same shape. A save whose
+// key set changes with a game state is a save whose manifest cannot be a set difference.
+
+export function saveCreation(ch) {
+  if (!ch) {
+    return {
+      created: false, given_name: '', hatch_name: '', hatch_name_refused: false, sex: '',
+      race: '', upbringing: '', class_id: '', class_name: '', class_family: '', class_route: '',
+      birthsign: '', birthsign_second: '', signature_key: '', writ_text: '',
+      attributes: {}, skills: {}, flags: [],
+    };
+  }
+  return {
+    created: true,
+    given_name: ch.given_name || '',
+    hatch_name: ch.hatch_name || '',
+    hatch_name_refused: !!ch.hatch_name_refused,
+    sex: ch.sex || '',
+    race: ch.race || '',
+    upbringing: ch.upbringing || '',
+    class_id: ch.class_id || '',
+    class_name: ch.class_name || '',
+    class_family: ch.class_family || '',
+    class_route: ch.class_route || '',
+    birthsign: ch.birthsign || '',
+    birthsign_second: ch.birthsign_second || '',
+    signature_key: ch.signature ? ch.signature.key : '',
+    writ_text: ch.writ_text || '',
+    attributes: sortedMap(ch.attributes || {}),
+    skills: sortedMap(ch.skills || {}),
+    flags: [...(ch.flags || [])].sort(),
+  };
+}
+
+export function loadCreation(blob) {
+  if (!blob || !blob.created) return null;
+  const [race, class_family, birthsign_family, upbringing_class] = String(blob.signature_key).split('|');
+  return {
+    given_name: blob.given_name,
+    hatch_name: blob.hatch_name,
+    hatch_name_refused: blob.hatch_name_refused,
+    sex: blob.sex,
+    race: blob.race,
+    upbringing: blob.upbringing,
+    class_id: blob.class_id,
+    class_name: blob.class_name,
+    class_family: blob.class_family,
+    class_route: blob.class_route,
+    birthsign: blob.birthsign,
+    birthsign_second: blob.birthsign_second || null,
+    signature: { race, class_family, birthsign_family, upbringing_class, key: blob.signature_key },
+    attributes: { ...blob.attributes },
+    skills: { ...blob.skills },
+    flags: [...blob.flags],
+    writ_text: blob.writ_text,
+  };
 }

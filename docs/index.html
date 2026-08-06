@@ -58,7 +58,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-06 16:19Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-06 17:02Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -69,122 +69,55 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <article class="post" id="2026-08-06-what-we-are-building">
   <h2>Six weeks of arguing before a single tree</h2>
   <div class="meta">2026-08-06 &middot; Morrowind's world, Dark Souls' combat, Black Marsh. Why nothing was built for weeks, and the first screenshots.</div>
-  <p>The pitch is simple enough to say in a sentence: **Vvardenfell's design philosophy, Dark Souls'</p>
-<p>combat, set in Black Marsh** — the Argonian province nobody has ever made a proper single-player</p>
-<p>game in. Eight settlements from the map, thirteen regions, about an hour to cross on foot. Original</p>
-<p>main quest, original faction lines. In a browser.</p>
-<p>The hard part isn't either half. It's that the two games want opposite things, constantly, and</p>
-<p>every one of those conflicts needs an answer before anyone writes code — otherwise you get a</p>
-<p>compromise that satisfies neither, which is how most &quot;Morrowind but with good combat&quot; projects die.</p>
+  <p>The pitch is simple enough to say in a sentence: <strong>Vvardenfell's design philosophy, Dark Souls' combat, set in Black Marsh</strong> — the Argonian province nobody has ever made a proper single-player game in. Eight settlements from the map, thirteen regions, about an hour to cross on foot. Original main quest, original faction lines. In a browser.</p>
+<p>The hard part isn't either half. It's that the two games want opposite things, constantly, and every one of those conflicts needs an answer before anyone writes code — otherwise you get a compromise that satisfies neither, which is how most &quot;Morrowind but with good combat&quot; projects die.</p>
 <h3>The rule everything hangs off</h3>
 <blockquote>
 <p><strong>Inside the fight, Souls wins. Everywhere else, Morrowind wins.</strong></p>
 </blockquote>
-<p>That single line resolves most of it. Does your sword connect because the geometry says so, or</p>
-<p>because your Long Blade skill rolled well? Souls wins — geometry, always, and Morrowind's</p>
-<p>miss-chance is deleted outright. Should there be a compass marker on your objective? Morrowind</p>
-<p>wins — absolutely not, you get prose directions in your journal and a landmark to walk toward.</p>
-<p>There are now <strong>25 of these rulings</strong>, written before building, covering every collision we could</p>
-<p>find in advance. A few that took real thought:</p>
-<p><strong>Souls are levelling only; gold is the currency.</strong> That was in the brief, and it forces a nice</p>
-<p>seam: gold buys the smith's <em>labour</em>, the world buys the <em>stone</em>. Reaching +10 on a weapon costs</p>
-<p>14,400 gold <strong>and</strong> materials you cannot purchase at any price. There are exactly two Heart-stones</p>
-<p>in the province, so exactly two weapons in a playthrough can ever hit +10.</p>
-<p><strong>Fast travel exists</strong>, because Morrowind has silt striders, boats, guild guides and Mark/Recall,</p>
-<p>and travel is a world system rather than a combat one. We got this wrong at first — the doctrine</p>
-<p>said &quot;no fast travel,&quot; which inverted the intent — and it took an audit against the original brief</p>
-<p>to catch it. What's actually banned is warp-to-map-pin. You get a poled-barge network instead,</p>
-<p>which for a marsh is the primary mode rather than a curiosity: 68 purchasable services across 17</p>
-<p>lines, and one route that only sails at high tide, when the walking route across the same tideway</p>
-<p>is submerged.</p>
-<p><strong>A fight must have a non-lethal exit.</strong> This one came out of an audit finding that our own</p>
-<p>boundary was drawn too greedily — &quot;inside the fight, Souls wins&quot; had been read as *hostility</p>
-<p>deletes the world*, so the only sanctioned way out of a fight was killing. That quietly broke the</p>
-<p>target of &quot;45% of quests completable without killing anyone&quot;, because a quest target becomes</p>
-<p>unreachable the moment they aggro. So there's now a parley: hold the interact button, and your</p>
-<p>character spends <strong>102 frames</strong> — about 1.7 seconds — committed, guard down, no i-frames, 20</p>
-<p>stamina gone. Offering mercy is a real decision under pressure, punishable if you misjudge the</p>
-<p>spacing, and the enemy's punish window on it is wider than on a heavy attack.</p>
+<p>That single line resolves most of it. Does your sword connect because the geometry says so, or because your Long Blade skill rolled well? Souls wins — geometry, always, and Morrowind's miss-chance is deleted outright. Should there be a compass marker on your objective? Morrowind wins — absolutely not, you get prose directions in your journal and a landmark to walk toward.</p>
+<p>There are now <strong>25 of these rulings</strong>, written before building, covering every collision we could find in advance. A few that took real thought:</p>
+<p><strong>Souls are levelling only; gold is the currency.</strong> That was in the brief, and it forces a nice seam: gold buys the smith's <em>labour</em>, the world buys the <em>stone</em>. Reaching +10 on a weapon costs 14,400 gold <strong>and</strong> materials you cannot purchase at any price. There are exactly two Heart-stones in the province, so exactly two weapons in a playthrough can ever hit +10.</p>
+<p><strong>Fast travel exists</strong>, because Morrowind has silt striders, boats, guild guides and Mark/Recall, and travel is a world system rather than a combat one. We got this wrong at first — the doctrine said &quot;no fast travel,&quot; which inverted the intent — and it took an audit against the original brief to catch it. What's actually banned is warp-to-map-pin. You get a poled-barge network instead, which for a marsh is the primary mode rather than a curiosity: 68 purchasable services across 17 lines, and one route that only sails at high tide, when the walking route across the same tideway is submerged.</p>
+<p><strong>A fight must have a non-lethal exit.</strong> This one came out of an audit finding that our own boundary was drawn too greedily — &quot;inside the fight, Souls wins&quot; had been read as <em>hostility deletes the world</em>, so the only sanctioned way out of a fight was killing. That quietly broke the target of &quot;45% of quests completable without killing anyone&quot;, because a quest target becomes unreachable the moment they aggro. So there's now a parley: hold the interact button, and your character spends <strong>102 frames</strong> — about 1.7 seconds — committed, guard down, no i-frames, 20 stamina gone. Offering mercy is a real decision under pressure, punishable if you misjudge the spacing, and the enemy's punish window on it is wider than on a heavy attack.</p>
 <h3>Why nothing existed for weeks</h3>
-<p>Before any code, we wrote down <strong>how we'd know if it was any good</strong> — 138 written standards, each</p>
-<p>naming what &quot;good&quot; is and exactly how to check it. Not opinions. Measurements.</p>
-<p>That's the part that sounds like procrastination and isn't. It's very easy to ship a swamp with</p>
-<p>lizards and a stamina bar, technically satisfy the pitch, and produce something with none of what</p>
-<p>made either game worth copying. That failure is undramatic. It just quietly isn't good, and by the</p>
-<p>time you can feel it, it's structural.</p>
+<p>Before any code, we wrote down <strong>how we'd know if it was any good</strong> — 138 written standards, each naming what &quot;good&quot; is and exactly how to check it. Not opinions. Measurements.</p>
+<p>That's the part that sounds like procrastination and isn't. It's very easy to ship a swamp with lizards and a stamina bar, technically satisfy the pitch, and produce something with none of what made either game worth copying. That failure is undramatic. It just quietly isn't good, and by the time you can feel it, it's structural.</p>
 <p>Some of the standards, so you can judge whether they're the right ones:</p>
 <ul>
 <li><strong>Dialogue density.</strong> We pulled every line out of Morrowind — 69,876 records — and counted.</li>
 </ul>
-<p>  Balmora carries about <strong>38,760 words</strong> of unique dialogue, and **87% of the game's dialogue is</p>
-<p>  person- or place-specific** rather than shared. That kills the cheapest fake, which is one</p>
-<p>  generic pool filtered eight ways.</p>
+<p>  Balmora carries about <strong>38,760 words</strong> of unique dialogue, and <strong>87% of the game's dialogue is   person- or place-specific</strong> rather than shared. That kills the cheapest fake, which is one   generic pool filtered eight ways.</p>
 <ul>
 <li><strong>Roll i-frames.</strong> Verified against real frame data rather than memory, and this caught</li>
 </ul>
-<p>  something serious — Souls community frame counts are in 1/30s ticks, and our simulation runs at</p>
-<p>  60Hz. We'd adopted the numbers without converting the unit, so **every duration in the game was</p>
-<p>  half its true length**. Combat was running at double speed while passing every internal check we</p>
-<p>  had, because all the <em>ratios</em> were still correct. It would only ever have surfaced as</p>
-<p>  &quot;Souls-ish but wrong&quot; in someone's hands. DS3's light roll is 13 ticks of invulnerability =</p>
-<p>  433ms; ours is now 26 frames at 60Hz = 433ms.</p>
+<p>  something serious — Souls community frame counts are in 1/30s ticks, and our simulation runs at   60Hz. We'd adopted the numbers without converting the unit, so <strong>every duration in the game was   half its true length</strong>. Combat was running at double speed while passing every internal check we   had, because all the <em>ratios</em> were still correct. It would only ever have surfaced as   &quot;Souls-ish but wrong&quot; in someone's hands. DS3's light roll is 13 ticks of invulnerability =   433ms; ours is now 26 frames at 60Hz = 433ms.</p>
 <ul>
 <li><strong>Geographical variation.</strong> Morrowind is the calibration set, not just the aspiration: we measure</li>
 </ul>
-<p>  how far apart <em>its own</em> regions are visually, then require our thirteen to be at least as</p>
-<p>  dispersed — and no two of ours may be closer together than Morrowind's two most similar. There's</p>
-<p>  a separate test at ground level, because the easiest way to fake regional variety is recolouring</p>
-<p>  one terrain material.</p>
+<p>  how far apart <em>its own</em> regions are visually, then require our thirteen to be at least as   dispersed — and no two of ours may be closer together than Morrowind's two most similar. There's   a separate test at ground level, because the easiest way to fake regional variety is recolouring   one terrain material.</p>
 <ul>
 <li><strong>Opacity.</strong> Every other standard pushes toward legibility — readable telegraphs, signposted</li>
 </ul>
-<p>  junctions, discoverable rumours. Nothing protected <em>mystery</em>, which is a large part of why</p>
-<p>  Vvardenfell is remembered. So there's now a budget of 24 things in the world that are **never</p>
-<p>  explained anywhere**, with the authorial answer sealed in the design documents and only a hash of</p>
-<p>  it shipped in the game. That way a critic can verify a mystery is deliberate and coherent without</p>
-<p>  the game ever revealing it — and can catch the cheap version, which is leaving something</p>
-<p>  unexplained because nobody wrote the explanation.</p>
+<p>  junctions, discoverable rumours. Nothing protected <em>mystery</em>, which is a large part of why   Vvardenfell is remembered. So there's now a budget of 24 things in the world that are <strong>never   explained anywhere</strong>, with the authorial answer sealed in the design documents and only a hash of   it shipped in the game. That way a critic can verify a mystery is deliberate and coherent without   the game ever revealing it — and can catch the cheap version, which is leaving something   unexplained because nobody wrote the explanation.</p>
 <h3>The builders and the critics argue</h3>
-<p>Work is done by AI agents split into two roles that never mix. <strong>Builders</strong> make things. <strong>Critics</strong></p>
-<p>get fresh context, the relevant standards, and one instruction: try to fail this. A critic that</p>
-<p>can't find a problem is considered to have failed its own job.</p>
+<p>Work is done by AI agents split into two roles that never mix. <strong>Builders</strong> make things. <strong>Critics</strong> get fresh context, the relevant standards, and one instruction: try to fail this. A critic that can't find a problem is considered to have failed its own job.</p>
 <p>It works better than I expected. Two from this week:</p>
-<p>A builder reported the engine's seeded random-number generator working perfectly, with hashes. A</p>
-<p>critic checked and found the generator was being **initialised correctly and never actually drawn</p>
-<p>from**. Two different starting seeds produced runs differing in exactly one field — the echo of the</p>
-<p>seed itself. The determinism test that should have caught this was passing <em>because of</em> that echo.</p>
-<p>Everything green, nothing random.</p>
-<p>A builder reported save/load round-tripping perfectly. The critic tested **forty starting</p>
-<p>conditions instead of one** and thirty-six failed — a signed/unsigned mismatch in how the</p>
-<p>generator's state words were stored, which only bites when a word is negative. The four that</p>
-<p>passed included the default seed the builder had tested with.</p>
+<p>A builder reported the engine's seeded random-number generator working perfectly, with hashes. A critic checked and found the generator was being <strong>initialised correctly and never actually drawn from</strong>. Two different starting seeds produced runs differing in exactly one field — the echo of the seed itself. The determinism test that should have caught this was passing <em>because of</em> that echo. Everything green, nothing random.</p>
+<p>A builder reported save/load round-tripping perfectly. The critic tested <strong>forty starting conditions instead of one</strong> and thirty-six failed — a signed/unsigned mismatch in how the generator's state words were stored, which only bites when a word is negative. The four that passed included the default seed the builder had tested with.</p>
 <p>Both fixed. Neither findable by asking nicely.</p>
 <h3>What it actually looks like</h3>
 <p>Here's the first landscape the engine has drawn:</p>
 <figure><img src="shots/2026-08-06-first-vista.png" alt="A wide view over green hills with simple untextured trees under a flat blue sky" loading="lazy"><figcaption>A wide view over green hills with simple untextured trees under a flat blue sky</figcaption></figure>
-<p>That is not Black Marsh and isn't trying to be. It's a test patch — flat colours, no textures,</p>
-<p>generic trees — whose only job is to let the machinery underneath be proven correct before anyone</p>
-<p>makes it beautiful. It could be anywhere, which is precisely what our own art-direction standard</p>
-<p>will fail it for later. There's a specific test for this, borrowed in spirit from the &quot;could this</p>
-<p>be Skyrim?&quot; problem: show a fresh judge a screenshot, ask them to name the setting, and if the</p>
-<p>answer is generic fantasy, the art direction has failed regardless of how good the rendering is.</p>
+<p>That is not Black Marsh and isn't trying to be. It's a test patch — flat colours, no textures, generic trees — whose only job is to let the machinery underneath be proven correct before anyone makes it beautiful. It could be anywhere, which is precisely what our own art-direction standard will fail it for later. There's a specific test for this, borrowed in spirit from the &quot;could this be Skyrim?&quot; problem: show a fresh judge a screenshot, ask them to name the setting, and if the answer is generic fantasy, the art direction has failed regardless of how good the rendering is.</p>
 <p>A street, an interior lit by firelight, and the over-the-shoulder framing used in combat:</p>
 <figure><img src="shots/2026-08-06-settlement.png" alt="Simple buildings along a path" loading="lazy"><figcaption>Simple buildings along a path</figcaption></figure>
 <figure><img src="shots/2026-08-06-firelit.png" alt="A dark interior lit by warm firelight" loading="lazy"><figcaption>A dark interior lit by warm firelight</figcaption></figure>
 <figure><img src="shots/2026-08-06-combat-framing.png" alt="Third-person camera framed behind the character for combat" loading="lazy"><figcaption>Third-person camera framed behind the character for combat</figcaption></figure>
-<p>The camera one matters more than it looks. The game is third-person always — no first-person</p>
-<p>toggle, even outside combat, because you read your own recovery frames off your own animation, and</p>
-<p>a perspective that changes at the combat boundary would break the exact seam the rules exist to</p>
-<p>keep clean.</p>
+<p>The camera one matters more than it looks. The game is third-person always — no first-person toggle, even outside combat, because you read your own recovery frames off your own animation, and a perspective that changes at the combat boundary would break the exact seam the rules exist to keep clean.</p>
 <h3>Where things actually stand</h3>
-<p>The engine runs, deterministically — meaning identical inputs produce a byte-identical result</p>
-<p>every time, which is the only reason any of the measurements above can be trusted. Save/load works</p>
-<p>across forty seed variations. The first piece has been through the critics <strong>twice</strong> and failed</p>
-<p><strong>twice</strong>: 3/10, then 4.1/10, against a pass mark of 6. Each failure named a specific defect, all</p>
-<p>now fixed, including three nobody had noticed at all.</p>
-<p>We also have <strong>808 reference images and 208 animation sequences</strong> pulled from both source games —</p>
-<p>including per-move boss animations named by move, which means an attack whose frame counts are</p>
-<p>right but whose arc and follow-through are wrong can actually be caught.</p>
+<p>The engine runs, deterministically — meaning identical inputs produce a byte-identical result every time, which is the only reason any of the measurements above can be trusted. Save/load works across forty seed variations. The first piece has been through the critics <strong>twice</strong> and failed <strong>twice</strong>: 3/10, then 4.1/10, against a pass mark of 6. Each failure named a specific defect, all now fixed, including three nobody had noticed at all.</p>
+<p>We also have <strong>808 reference images and 208 animation sequences</strong> pulled from both source games — including per-move boss animations named by move, which means an attack whose frame counts are right but whose arc and follow-through are wrong can actually be caught.</p>
 <p>Next: the province itself — 14.5 km² of it — and the combat core.</p>
 
 </article>

@@ -23,6 +23,16 @@ export const EVENT_TYPES = new Set([
   // W1-09 additions to the §5 vocabulary, lower-case like the rest of it
   'guard_break', 'guard_up', 'whiff', 'exhausted_enter', 'exhausted_exit', 'winded',
   'parley_accept', 'parley_refuse', 'parley_exempt', 'lock_on', 'lock_break', 'lock_switch',
+  // W1-07 addition, by the amendment clause HARNESS.md §5 grants ("a closed vocabulary,
+  // extensible by amendment"). RI-CHR02 method 8 asserts, verbatim: "assert the Dunmer run
+  // contains zero AGGRO transitions in 1,800 frames and >= 1 `parley_offer` event". There was
+  // no event in the vocabulary that could carry it. `parley_offer` is the encounter OFFERING
+  // a non-lethal opening; `parley_accept`/`parley_refuse` remain W1-09's in-fight resolution.
+  'parley_offer',
+  // W1-07: the census is a dialogue scene, so its nodes are dialogue events. `dialogue_open`
+  // and `dialogue_close` already exist (A-JRN7); this is the per-field record RI-CHR01
+  // method 1 needs to prove that every character field was set by answering a named person.
+  'creation_field',
   // ---------------------------------------------------------------------------------------
   // RI-CMB07 §A's CLOSED event-kind set, for the SECOND stream (`es-combat-trace/1`).
   //

@@ -186,6 +186,17 @@ export class Engine {
         jog_mps: PLAYER_CONST.jog_mps,
         sprint_mps: PLAYER_CONST.sprint_mps,
         turn_rate_dps: PLAYER_CONST.turn_rate_dps,
+        // W1-06 / RI-CAM02 §C: the bounded-turn law has TWO ceilings and a clip, not one
+        // rate. 720 °/s while moving (a visible arc), 480 °/s while stationary under 100° of
+        // error, and an 18-frame root-motion `turn_in_place` clip beyond it. The single
+        // 480 °/s constant this build shipped made a running 180° reversal take 22 frames
+        // instead of 15 and had no turn-in-place at all, which RI-CAM02 M4 fails on both rows.
+        turn_rate_moving_dps: 720,
+        turn_rate_stationary_dps: 480,
+        turn_in_place_threshold_deg: 100,
+        turn_in_place_frames: 18,
+        move_deadzone: 0.15,
+        walk_run_threshold: 0.55,
       },
     };
   }
@@ -300,6 +311,29 @@ export class Engine {
   /** The equip load the fight reads. Seam S23: RI-CMB01 owns what the tier DOES in a fight;
    *  RI-PRG07 owns encumbrance outside it and may keep finer granularity with no in-fight
    *  effect. This setter is the seam, and it is deliberately the only way across it. */
+  /**
+   * Re-equip and rebuild the fight in place. The loadout is merged over the current one, so
+   * `setLoadout({weapon:'axe'})` keeps the build's endurance, armour and shield. Position,
+   * facing, equip load and the enemies are preserved; a fresh weapon means a fresh move table,
+   * which is what makes RI-CMB02 M1's 14-row census a census rather than seven separate runs.
+   */
+  setLoadout(patch) {
+    const c = this.combat;
+    const prev = c.player;
+    this._loadout = Object.assign({}, this._loadout || {}, patch || {});
+    const others = c.bodies.filter((b) => b !== prev).map((b) => ({ b, ctl: c.enemies.get(b.id) }));
+    const b = c.createPlayer(this._loadout);
+    b.pos[0] = prev.pos[0]; b.pos[1] = prev.pos[1]; b.pos[2] = prev.pos[2];
+    b.yaw = prev.yaw;
+    b.equipLoadPct = prev.equipLoadPct;
+    b.tier = c.tierOf(b);
+    for (const { b: eb, ctl } of others) { c.bodies.push(eb); if (ctl) c.enemies.set(eb.id, ctl); }
+    c.bodies.sort((x, y) => (x.id < y.id ? -1 : x.id > y.id ? 1 : 0));
+    b.evaluateRig(0);
+    mirror(this.sim, this.combat);
+    return { weapon: b.moves._movesetId, weapon_class: b.moves._classKey, shield: b.shieldId, stamina_max: b.staminaMax, tier: b.tier };
+  }
+
   setEquipLoad(pct) {
     const v = Number(pct);
     if (!Number.isFinite(v) || v < 0) throw new Error(`setEquipLoad(${JSON.stringify(pct)}): expected a non-negative percentage`);

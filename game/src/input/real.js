@@ -26,7 +26,11 @@ export class RealInput {
     this.pointerLocked = false;
     this.hasFocus = true;
     this.activeDevice = 'keyboard';
-    this.lookSensitivity = 0.12;   // degrees per pixel, linear. PL8: no hidden acceleration.
+    // RI-CAM02 §A: 0.120 °/px horizontal, 0.100 °/px vertical, LINEAR, and no mouse
+    // acceleration at any sensitivity setting. The two axes differ; one shared constant
+    // was a 20% over-rotation on pitch against a hard clamp.
+    this.lookSensitivity = 0.120;   // degrees per pixel, yaw
+    this.lookSensitivityY = 0.100;  // degrees per pixel, pitch
     this.lookExponent = 1.0;
     this.moveDirs = { forward: false, back: false, left: false, right: false };
     this._handlers = [];
@@ -81,7 +85,7 @@ export class RealInput {
       let dx = 0, dy = 0;
       if (events && events.length) { for (const ev of events) { dx += ev.movementX; dy += ev.movementY; } }
       else { dx = e.movementX; dy = e.movementY; }
-      this.pipe.addLook(dx * this.lookSensitivity, dy * this.lookSensitivity);
+      this.pipe.addLook(dx * this.lookSensitivity, dy * this.lookSensitivityY);
     });
 
     on(this.canvas, 'wheel', (e) => {

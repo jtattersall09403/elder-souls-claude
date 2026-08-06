@@ -82,7 +82,7 @@ export class CombatBody {
   // ---- committed actions ------------------------------------------------------------------
 
   isActionable(frame) {
-    return !this.dead && this.move === null && frame >= this.staggerUntil
+    return !this.dead && (this.move === null || this.animFrame >= this.move.total) && frame >= this.staggerUntil
       && frame >= this.guardBreakUntil && !this.beingCritted;
   }
 

@@ -4,7 +4,25 @@
   "started": "wave-1",
   "state": "building",
   "outputs_expected": [],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/data/combat/frames.json",
+    "game/data/combat/roll.json",
+    "game/data/combat/stamina.json",
+    "game/data/combat/poise.json",
+    "game/data/combat/hitgeometry.json",
+    "game/data/combat/lockon.json",
+    "game/data/combat/flask.json",
+    "game/data/combat/parley.json",
+    "game/data/combat/skeleton.json",
+    "game/data/combat/clips.json",
+    "game/data/combat/movesets/*.json (7)",
+    "game/data/combat/enemies/*.json (3)",
+    "game/data/states/arena_duel.json",
+    "game/src/combat/{geometry,skeleton,clips,moves,rules,actor,resolve,lockon,parley,player,enemy,system,trace}.js",
+    "game/src/sim/combat-bridge.js",
+    "tools/harness/cmb-probe.mjs",
+    "modified: game/src/engine.js, game/src/sim/step.js, game/src/sim/entities.js, game/src/sim/events.js, game/src/harness/api.js"
+  ],
   "findings": [
     "W1-00 already shipped: game/src/{core,sim,harness,input,save,render}, tools/harness/{run-headless,trace,trace-stats,seed-sweep,determinism}.mjs, scenarios cmb-*.json, and game/data/combat/{movesets/straight-sword.json,enemies/*,input.json}. Combat core extends this rather than starting fresh.",
     "ORCHESTRATOR-RULINGS.md lives at orchestration/ORCHESTRATOR-RULINGS.md (NOT corpus/00-doctrine/).",
@@ -29,6 +47,6 @@
     "Reference animation observed (corpus/70-visual/refs/souls-behaviour/anim/attacks/er-ER_Moveset_Neutral_Attack_Chain_Longsword.gif, 81 frames): R1 windup = blade drops back/down behind right hip then rises to an overhead cock with torso rotated away and weight on the back foot; the swing is a DIAGONAL downward arc through the centreline led by the hips; recovery is the FOLLOW-THROUGH HELD low across the body with the character visibly off-balance for many frames, not a snap back to idle. Chain hit 2 starts from that follow-through and swings back the other way.",
     "Reference animation observed (anim/stance/er-ER_Skill_Quickstep_Forward.gif, 31 frames): displacement is strongly FRONT-LOADED - the character crouches, covers most ground in the first third, then the tail is a stationary rise. Confirms RI-CMB01 M3's non-constant root curve requirement and RI-CMB09 \u00a72's no-translation recovery tail."
   ],
-  "next_step": "write game/data/combat/** data files (frames, roll, stamina, poise, hitgeometry, lockon, flask, parley, clips), then game/src/combat/**",
-  "notes_for_successor": "Elevated-effort hard piece. S22: every duration is 60Hz, label f@60."
+  "next_step": "run cmb-probe for all probes; fix observed vs declared mismatches; regenerate RI-CMB07 exemplar; write report",
+  "notes_for_successor": "Architecture: CombatSystem (game/src/combat/system.js) is the authority; sim.player/sim.entities are a VIEW refreshed by game/src/sim/combat-bridge.js mirror(). Data files transcribe the corpus; code never holds a second copy of a number. Probe: node tools/harness/cmb-probe.mjs --probe <roll|iframe|frames|commit|stamina|block|geometry|lockon|parley|all>"
 }

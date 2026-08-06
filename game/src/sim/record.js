@@ -86,6 +86,8 @@ export function makeRecord(sim, input, bus, opts, perf) {
       roll_class: p.rollClass,
       hitboxes: opts.hitboxes === false ? [] : p.hitboxes.map(cloneHitbox),
     },
+    // The `camera` channel. Every field below is named by a method in RI-CAM01..07; the
+    // items say in as many words that without it "every check scores 0, fail-closed".
     camera: {
       pos: [r4(c.pos[0]), r4(c.pos[1]), r4(c.pos[2])],
       pivot: [r4(c.pivot[0]), r4(c.pivot[1]), r4(c.pivot[2])],
@@ -93,12 +95,47 @@ export function makeRecord(sim, input, bus, opts, perf) {
       pitch_deg: r4(c.pitch),
       roll_deg: 0,                                  // RI-CAM06 §E: exactly 0, everywhere
       fov_deg: r4(c.fov),
+      near_m: 0.10,
+      far_m: 1200,
       dist_m: r4(c.dist),
       mode: c.mode,
-      shake: [r4(c.shakeYaw), r4(c.shakePitch)],    // rotational only
+      // RI-CAM01 §C — the spring arm, in the terms M2 and M4 measure it in.
+      arm_len_m: r4(c.armLen),
+      arm_desired_m: r4(c.armDesired),
+      arm_cast_m: r4(c.armCast),
+      arm_hit: c.armHit,
+      arm_penetration_guard: c.armGuard,
+      arm_clear_frames: c.clearFrames,
+      shoulder: [r4(c.shoulderR), r4(c.shoulderU)],
+      char_opacity: r4(c.charOpacity),
+      shake: [r4(c.shakeYaw), r4(c.shakePitch)],    // rotational only, never positional
       hitstop: c.hitstop,
       clip_through: c.clipThrough,
       lock_on: p.lockOn,
+      lock_target: p.lockOn,
+      // RI-CAM03 §B/§E — the containment law, as per-frame anchors rather than a claim.
+      onscreen: {
+        player: c.onscreen.p,
+        target: c.onscreen.t,
+        target_head: c.onscreen.th,
+        player_safe: c.onscreen.pSafe,
+        target_safe: c.onscreen.tSafe,
+        both: c.onscreen.both,
+        target_band: c.onscreen.tBand,
+        target_band_y: r4(c.onscreen.tBandY),
+        player_ndc: [r4(c.onscreen.pNdc[0]), r4(c.onscreen.pNdc[1])],
+        target_ndc: [r4(c.onscreen.tNdc[0]), r4(c.onscreen.tNdc[1])],
+        target_head_ndc: [r4(c.onscreen.thNdc[0]), r4(c.onscreen.thNdc[1])],
+      },
+      contain_arm_m: r4(c.containArm),
+      contain_pitch_deg: r4(c.containPitch),
+      lock_dist_m: r4(c.lockDist),
+      lock_height_m: r4(c.lockHeight),
+      // RI-CAM02 §E — the auto-recentre gate, so "it only fires on a committed sprint" is
+      // a boolean a critic reads rather than a sentence a builder writes.
+      recentre_frames: c.recentreFrames,
+      recentre_active: c.recentreActive,
+      cell: sim.cellId || null,
     },
     enemies: opts.enemies === false ? [] : sim.entities.map((e) => enemyRecord(e, sim, opts)),
     events: opts.events === false ? [] : bus.snapshotInto(evBuf).slice(),

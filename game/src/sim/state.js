@@ -82,18 +82,61 @@ export function makePlayer() {
 
 export function makeCamera() {
   return {
-    mode: 'free',               // free | locked | fog_gate | death | dialogue
+    // RI-CAM05 §F's CLOSED vocabulary. A value outside it appearing in a trace is a fail,
+    // so nothing in the build may write this field except sim/camera.js's resolveMode().
+    mode: 'free',               // free | locked | dialogue | menu | rest | death | fog_gate
     pivot: [0, 1.55, 0],
-    pos: [0, 1.55, -3.6],
+    pos: [0, 1.55, -4.1],
     yaw: 0,
     pitch: -8,
-    fov: 60,
-    dist: 3.6,
-    distTarget: 3.6,
+    fov: 50,                    // RI-CAM01 §A — 50.0°, constant, in every state, forever
+    dist: 4.1,
+    distTarget: 4.1,
+    // ---- spring arm (RI-CAM01 §C) ----------------------------------------------------
+    armLen: 4.1,                // the solved length, after rate limiting and the guard
+    armDesired: 4.1,            // f(mode, target_dist, pitch), before collision
+    armEased: 4.1,              // the eased target under lock (RI-CAM03 §C step 8)
+    armCast: 4.1,               // the raw sphere-cast length, before clamps and rate limits
+    armHit: false,
+    armGuard: false,            // §C step 7 fired on this frame — the flag M4 reads
+    clearFrames: 0,             // consecutive unobstructed frames, for the 6-frame dwell
+    shoulderR: 0.42,
+    shoulderU: 0.10,
+    charOpacity: 1,             // RI-CAM01 §C fade; the renderer consumes, never decides
+    pivotSnap: true,            // snap the vertical spring on teleport/load/rest/respawn
+    // ---- look / recentre (RI-CAM02) ---------------------------------------------------
+    lookBufX: 0, lookBufY: 0,   // hitstop buffer — RI-CAM06 §F: buffered, never dropped
+    lookActive: false,
+    recentreFrames: 0,
+    recentreActive: false,
+    // ---- lock framing (RI-CAM03) ------------------------------------------------------
+    lockDist: 0,
+    lockHeight: 1.9,
+    containArm: 0,
+    containPitch: 0,
+    yawRate: 0,
+    onscreen: {
+      p: false, t: false, th: false, pSafe: false, tSafe: false, both: false,
+      tBand: false, tBandY: -1,
+      pNdc: [0, 0], tNdc: [0, 0], thNdc: [0, 0],
+    },
+    // ---- outside the fight (RI-CAM05) -------------------------------------------------
+    uiMode: null,               // null | dialogue | menu | rest
+    dialogueFrames: 0,
+    dialogueYawStep: 0,
+    dialogueArmStep: 0,
+    dialogueArm: 0,
+    dialogueYawTotal: 0,
+    // ---- scripted states (RI-CAM06 §H/§I) ---------------------------------------------
+    deathFrame: -1,
+    fogUntil: 0,
+    fogTarget: null,
+    // ---- shake (RI-CAM06 §G) ----------------------------------------------------------
     shakeYaw: 0,
     shakePitch: 0,
     shakeUntil: 0,
     shakeAmp: 0,
+    shakeAge: 0,
     hitstop: false,
     clipThrough: false,
     override: null,             // set by __HARNESS.camera(); suspends the rig (see sim/camera.js)
@@ -187,6 +230,14 @@ export function quantiseSaveGrid(sim) {
   p.hp = q6(p.hp); p.stamina = q6(p.stamina); p.poise = q6(p.poise);
   p.equipLoadPct = q6(p.equipLoadPct);
   c.yaw = q6(c.yaw); c.pitch = q6(c.pitch); c.dist = q6(c.dist); c.shakeAmp = q6(c.shakeAmp);
+  // The spring arm's state carries across a save the same way the angles do: `armLen` is a
+  // rate-limited integrator, so a value the save cannot represent exactly reappears as a
+  // post-load trace divergence (RI-JRN05 HF1), which is the defect the grid exists to stop.
+  c.armLen = q6(c.armLen); c.armEased = q6(c.armEased); c.armDesired = q6(c.armDesired);
+  c.pivot[0] = q6(c.pivot[0]); c.pivot[1] = q6(c.pivot[1]); c.pivot[2] = q6(c.pivot[2]);
+  c.containArm = q6(c.containArm); c.containPitch = q6(c.containPitch);
+  c.shakeYaw = q6(c.shakeYaw); c.shakePitch = q6(c.shakePitch);
+  c.dialogueArm = q6(c.dialogueArm);
   sim.env.timeOfDay = q6(sim.env.timeOfDay);
   for (let i = 0; i < sim.entities.length; i++) {
     const e = sim.entities[i];
@@ -260,6 +311,10 @@ export class SimState {
     // object gained a key across a round trip (undefined -> ''), which the durable-field
     // census reports as a field that does not survive.
     this.identity = { name: 'Nameless', race: 'argonian', sign: 'the-shadow', profession: 'outlander', document: '' };
+    // W1-07 — the composed character sheet, or null before the Writ House. `null` is a real
+    // and reachable state: RI-JRN01 O6 requires the player to be controllable, in a body,
+    // with a walkable space and another person in it, BEFORE anything defines them.
+    this.character = null;
     return { ok: true, frame: 0, seed: this.seed };
   }
 

@@ -53,13 +53,29 @@ export class PlayerController {
 
     if (b.dead) { b.poseDead(frame); return; }
 
-    // Reaction states own the actor completely — RI-CMB05 §B "no input is accepted".
-    if (b.move && (b.move.kind === 'stagger' || b.move.kind === 'guard_break')) {
-      if (b.advance(frame)) {
-        b.endMove();
+    // RETIRE AT THE TOP OF THE STEP, never at the bottom of the previous one.
+    //
+    // A move declared `total: 52` must OCCUPY exactly 52 simulated frames and the character
+    // must be actionable on the 53rd. Retiring it at the bottom of the step that reached
+    // anim_frame 52 makes the character actionable ON frame 52, so every move in the game is
+    // observably one frame short of its declared length — a "declared vs observed" mismatch,
+    // which HARNESS.md §7 rule 4 calls a hard fail and which RI-CMB01 M1 / RI-CMB02 M1 both
+    // measure to +/-0 frames. W1-00 got this right for the same reason and the comment is
+    // repeated here because it is the single easiest frame to lose.
+    if (b.move && b.animFrame >= b.move.total) {
+      const ended = b.move;
+      b.endMove();
+      if (ended.kind === 'stagger' || ended.kind === 'guard_break') {
         b.regenBlockUntil = Math.max(b.regenBlockUntil, frame + this.d.stamina.regen.delay_frames_after_any_spend);
       }
-      b.tickResources(frame, this.d) && emitExhaust(emit, frame, b);
+      if (ended.kind === 'attack') { this.chainIndex = Math.min(2, this.chainIndex + 1); this.chainUntil = frame + 24; }
+    }
+
+    // Reaction states own the actor completely — RI-CMB05 §B "no input is accepted".
+    if (b.move && (b.move.kind === 'stagger' || b.move.kind === 'guard_break')) {
+      b.advance(frame);
+      const x = b.tickResources(frame, this.d);
+      if (x) emitExhaust(emit, frame, b, x);
       return;
     }
     if (frame < b.parriedUntil) {
@@ -111,12 +127,7 @@ export class PlayerController {
       } else if (m.kind === 'crit') {
         if (b.animFrame + 1 === m.damage_frame) this._critDamage(frame, ctx);
       }
-      const ended = b.advance(frame);
-      if (ended) {
-        const wasAttack = m.kind === 'attack';
-        b.endMove();
-        if (wasAttack) { this.chainIndex = Math.min(2, this.chainIndex + 1); this.chainUntil = frame + 24; }
-      }
+      b.advance(frame);
     } else {
       this._locomotion(frame, input, ctx);
     }
@@ -144,8 +155,10 @@ export class PlayerController {
     if (!pressed) return;
     const bit = firstActionBit(pressed);
     if (!bit) return;
+    // Input is resolved BEFORE the animation advances (RI-CMB11 D1), so the frame this press
+    // lands on is anim_frame + 1 and `framesLeft` counts the frames AFTER it.
     const nextFrame = b.animFrame + 1;
-    const framesLeft = m.total - b.animFrame;
+    const framesLeft = m.total - nextFrame;
 
     // dodge-cancel: attacks only, and only after the hard part of recovery
     if (bit === BIT.roll && m.kind === 'attack' && nextFrame > m.hard_until) {
@@ -157,7 +170,7 @@ export class PlayerController {
       this._tryStart(bit, frame, input, ctx, { cancelledFrom: 'heal' });
       return;
     }
-    if (framesLeft <= this.d.frames.buffer_frames) {
+    if (framesLeft < this.d.frames.buffer_frames) {
       input.tryBuffer(bit, frame, framesLeft);
       const e = ctx.emit(frame, 'INPUT_BUFFERED');
       e.button = nameOfBit(bit); e.frames_left = framesLeft;
