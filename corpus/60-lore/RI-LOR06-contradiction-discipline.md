@@ -3,7 +3,7 @@ id: RI-LOR06
 title: Contradiction discipline — the canon-facts registry, and how a critic tells intent from error
 kind: structure
 side: morrowind
-judges: [lore.canon, lore.coherence, books.content, dialogue.claims, quests.main, quests.factions, world.settlements, critic.method]
+judges: [lore.canon.registry, coherence.lore.consistency, lore.book.unreliability, dialogue.topics.truth, quests.lore.hooks, quests.faction.escalation, world.settlement.anatomy, process.critic.discipline]
 provenance: constructed
 confidence: high
 blind_pair: no

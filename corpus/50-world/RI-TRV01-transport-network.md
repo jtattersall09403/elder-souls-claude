@@ -3,7 +3,7 @@ id: RI-TRV01
 title: The transport network — modes, route graph, fares, stations and the walked-it-once rule
 kind: graph
 side: morrowind
-judges: [world.traversal.transport, world.traversal.roads, world.traversal.time, world.settlement.anatomy, world.wayfinding.directions, world.time.daynight, progression.gold.economy]
+judges: [world.traversal.transport, world.traversal.stations, world.traversal.schedule, world.traversal.roads, world.traversal.time, world.settlement.anatomy, world.wayfinding.directions, world.time.daynight, progression.gold.economy]
 provenance: constructed
 confidence: medium
 blind_pair: no

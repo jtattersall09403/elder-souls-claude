@@ -3,7 +3,7 @@ id: RI-LOR05
 title: Religion and metaphysics — the Hist, Sithis, the colonial gods, and a diegetic account of souls-as-levelling
 kind: text
 side: neutral
-judges: [lore.religion, lore.metaphysics, progression.souls, progression.bonfires, progression.levelling, progression.estus, combat.death, combat.respawn, world.travel, quests.main, dialogue.claims, ui.terminology]
+judges: [lore.religion.hist, lore.religion.metaphysics, progression.souls.economy, progression.bonfire.function, progression.level.curve, combat.heal.charges, combat.death.corpserun, combat.death.worldreset, world.traversal.transport, quests.mainline.prophecy, dialogue.topics.truth, coherence.naming.consistency]
 provenance: constructed
 confidence: high
 blind_pair: no
