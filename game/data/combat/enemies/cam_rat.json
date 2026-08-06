@@ -1,0 +1,33 @@
+{
+  "schema": "elder-souls/enemy@1",
+  "id": "cam_rat",
+  "name": "Framing dummy h=0.6 m",
+  "archetype": "DUMMY",
+  "tier": "prop",
+  "ai": "none",
+  "unit": "f@60",
+  "hp": 99999,
+  "poise": 99999,
+  "stamina_max": 1,
+  "radius_m": 0.25,
+  "sight_radius_m": 0.0,
+  "sight_cone_deg": 0,
+  "reach_m": 0.0,
+  "idle_anim_frames": 1,
+  "lockable": true,
+  "weapon": {
+    "radius_m": 0.095,
+    "socket_a_dist_m": 0.3,
+    "socket_b_dist_m": 1.45,
+    "attack_rating": 120,
+    "socket_a": "wpn_guard",
+    "socket_b": "wpn_tip",
+    "capsule_length_m": 1.15,
+    "length_m": 1.45
+  },
+  "attacks": {},
+  "parley": null,
+  "note": "A stationary framing fixture for RI-CAM03 M2's 40-pose pitch sweep and M1's on-screen fractions. Collision height 0.6 m \u2014 the row of RI-CAM03 \u00a7D's worked table this dummy IS. It has no attacks and no AI; the camera is the thing under test, not the fight.",
+  "parley_note": "parley: null \u2014 a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_mindless` rather than silently doing nothing.",
+  "height_m": 0.6
+}

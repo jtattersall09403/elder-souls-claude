@@ -15,6 +15,23 @@ export const WEATHER = {
   rain: { fogDensity: 0.0112, sunIntensity: 0.45, ambient: 0.85, tint: [0.72, 0.78, 0.84], overcast: 0.92, rain: 0.6 },
   storm: { fogDensity: 0.0180, sunIntensity: 0.28, ambient: 0.62, tint: [0.55, 0.62, 0.72], overcast: 1.00, rain: 1.0 },
   fog: { fogDensity: 0.0320, sunIntensity: 0.65, ambient: 1.05, tint: [0.80, 0.82, 0.80], overcast: 0.70, rain: 0.0 },
+  // Regional states (W1-01). RI-WLD04 makes the weather STATE SET one of the nine axes, so the
+  // vocabulary has to be bigger than five: a region whose only weather is "clear or storm" cannot
+  // differ from twelve others on this axis. W1-02 owns the transition machine; these are the
+  // named states it will transition between, and setWeather() stays a closed set.
+  cold_rain:    { fogDensity: 0.0098, sunIntensity: 0.40, ambient: 0.80, tint: [0.70, 0.78, 0.90], overcast: 0.90, rain: 0.7 },
+  warm_rain:    { fogDensity: 0.0125, sunIntensity: 0.55, ambient: 0.95, tint: [0.82, 0.86, 0.74], overcast: 0.82, rain: 0.6 },
+  heavy_rain:   { fogDensity: 0.0165, sunIntensity: 0.32, ambient: 0.78, tint: [0.66, 0.76, 0.68], overcast: 0.96, rain: 1.0 },
+  dawn_mist:    { fogDensity: 0.0280, sunIntensity: 0.80, ambient: 1.00, tint: [0.90, 0.92, 0.86], overcast: 0.45, rain: 0.0 },
+  sea_fog:      { fogDensity: 0.0360, sunIntensity: 0.60, ambient: 1.05, tint: [0.84, 0.88, 0.92], overcast: 0.62, rain: 0.0 },
+  sea_squall:   { fogDensity: 0.0210, sunIntensity: 0.30, ambient: 0.66, tint: [0.62, 0.68, 0.76], overcast: 1.00, rain: 0.9 },
+  fever_fog:    { fogDensity: 0.0420, sunIntensity: 0.45, ambient: 0.90, tint: [0.62, 0.86, 0.60], overcast: 0.75, rain: 0.1 },
+  salt_storm:   { fogDensity: 0.0520, sunIntensity: 0.34, ambient: 1.10, tint: [1.00, 0.98, 0.90], overcast: 0.88, rain: 0.0 },
+  ashfall:      { fogDensity: 0.0190, sunIntensity: 0.42, ambient: 0.72, tint: [0.72, 0.70, 0.64], overcast: 0.86, rain: 0.0 },
+  dust_devil:   { fogDensity: 0.0090, sunIntensity: 1.50, ambient: 0.70, tint: [1.00, 0.86, 0.66], overcast: 0.10, rain: 0.0 },
+  heat_shimmer: { fogDensity: 0.0040, sunIntensity: 2.30, ambient: 0.66, tint: [1.00, 0.92, 0.78], overcast: 0.00, rain: 0.0 },
+  dry_thunder:  { fogDensity: 0.0068, sunIntensity: 0.90, ambient: 0.74, tint: [0.86, 0.86, 0.90], overcast: 0.55, rain: 0.0 },
+  still:        { fogDensity: 0.0058, sunIntensity: 1.20, ambient: 0.98, tint: [1.00, 0.97, 0.86], overcast: 0.18, rain: 0.0 },
 };
 
 const SKY_VERT = `
@@ -102,7 +119,7 @@ export class Sky {
    * @param {string} weatherId a key of WEATHER
    * @param {THREE.Vector3} focus where the shadow frustum should sit
    */
-  apply(hours, weatherId, focus) {
+  apply(hours, weatherId, focus, regionFog) {
     const w = WEATHER[weatherId];
     if (!w) throw new Error(`unknown weather '${weatherId}'. Named states: ${Object.keys(WEATHER).join(', ')}`);
 
@@ -144,8 +161,16 @@ export class Sky {
     this.hemi.intensity = w.ambient * Math.max(0.10, day * 0.9 + 0.10);
     this.hemi.color.copy(hor);
 
-    this.scene.fog.density = w.fogDensity;
-    this.scene.fog.color.copy(hor).multiplyScalar(0.92);
+    if (regionFog) {
+      // The region owns the hue and the extinction; the weather multiplies the extinction and
+      // tints toward the sky, so "Blackwood in rain" is Blackwood, wetter — not generic rain.
+      const rc = new THREE.Color(regionFog.colour);
+      this.scene.fog.color.copy(rc).lerp(hor, 0.34).multiplyScalar(lerp(0.34, 1.0, day));
+      this.scene.fog.density = regionFog.extinction * (1 + w.fogDensity / 0.0026 * 0.22);
+    } else {
+      this.scene.fog.density = w.fogDensity;
+      this.scene.fog.color.copy(hor).multiplyScalar(0.92);
+    }
 
     return weatherId;
   }

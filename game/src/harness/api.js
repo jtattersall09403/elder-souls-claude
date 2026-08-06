@@ -133,6 +133,23 @@ export function installHarness(engine, bootPromise) {
     setWeather(id) { return engine.setWeather(id); },
     camera(pose) { return engine.camera(pose === undefined ? null : pose); },
     listAnchors() { return engine.renderer.listAnchors(); },
+
+    // ---- camera (W1-06) — the surface RI-CAM01..07's methods name -----------------------
+    // RI-CAM05 §F: `listPerspectiveModes()` must return exactly ["third"], and
+    // `camera({mode:'first'})` must THROW. Both are wired to the same closed vocabulary in
+    // sim/camera.js, so they cannot disagree.
+    listPerspectiveModes() { return engine.listPerspectiveModes(); },
+    listCameraModes() { return engine.listCameraModes(); },
+    getCameraRig() { return engine.getCameraRig(); },
+    setCameraCell(id) { return engine.setCameraCell(id === undefined ? null : id); },
+    uiOpen(id, opts) { return engine.uiOpen(id, opts || {}); },
+    uiClose() { return engine.uiClose(); },
+    fogGate(eid) { return engine.fogGate(eid === undefined ? null : eid); },
+    deathCamera() { return engine.deathCamera(); },
+    projectPoint(x, y, z) { return engine.projectPoint(x, y, z); },
+    castCameraArm(len) { return engine.castCameraArm(len); },
+    solidAt(x, y, z) { return engine.solidAt(x, y, z); },
+    setCameraObstacle(id, x, y, z) { return engine.setCameraObstacle(id, x, y, z); },
     setUIVisible(v) { return engine.renderer.setUIVisible(v); },
 
     // ---- queries ----------------------------------------------------------------------------
@@ -140,6 +157,25 @@ export function installHarness(engine, bootPromise) {
     getPlayerStats() { return engine.getPlayerStats(); },
     getWorldStats() { return engine.getWorldStats(); },
     getQuestState() { return engine.getQuestState(); },
+
+    // ---- the province (W1-01) ---------------------------------------------------------
+    // Added by wave-1 piece W1-01 and documented in game/README.md. RI-WLD10 §12 formally
+    // requested getWaterAt() and setTide(); the rest is what RI-WLD01 M1-M5, RI-WLD04 M18 and
+    // RI-WLD07 M36 need in order to be measurements rather than assertions.
+    getWaterAt(x, z) { return engine.getWaterAt(x, z); },
+    getTerrainAt(x, z) { return engine.getTerrainAt(x, z); },
+    getRegionAt(x, z) { return engine.getRegionAt(x, z); },
+    setTide(stateOrPhase) { return engine.setTide(stateOrPhase); },
+    getTide() { return engine.getTide(); },
+    getRoutes() { return engine.getRoutes(); },
+    getProvinceStats() { return engine.getProvinceStats(); },
+    walkRoute(opts) { return engine.walkRoute(opts); },
+    streamAround(x, z, budget) {
+      if (!engine.renderer.province) throw new Error('streamAround: no province is loaded');
+      const queued = engine.renderer.province.request(Number(x), Number(z));
+      const built = budget === undefined ? engine.renderer.province.drain() : engine.renderer.province.pump(Number(budget));
+      return { queued, built, ...engine.renderer.province.stats() };
+    },
 
     // ---- rendering ---------------------------------------------------------------------------
     renderFrame() { engine.loop.renderNow(); return true; },

@@ -11,8 +11,10 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 import { buildScene, makeActor, terrainHeight } from './scene.js';
 import { Sky, WEATHER } from './sky.js';
+import { Province } from '../world/province.js';
 
 export class Renderer {
   constructor(canvas, seed) {
@@ -38,10 +40,14 @@ export class Renderer {
     this.playerMesh = built.player;
     this.mats = built.mats;
     this.cell = 'exterior';
+    this.province = null;
+    this.field = null;
     this.setCell('exterior');
 
     this.sky = new Sky(this.scene);
-    this.camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 900);
+    // 6 km of far plane: the Valus Ridge is 400 m high and must be on the horizon from the
+    // Stone Forest, which is 1.6 km away. A 900 m far plane is a 900 m world.
+    this.camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 6400);
     this.enemyMeshes = new Map();
     this.uiVisible = true;
     this.lastStats = { drawCalls: 0, triangles: 0, programs: 0, geometries: 0, textures: 0 };
@@ -81,6 +87,9 @@ export class Renderer {
     this.mats = built.mats;
     this.sky = new Sky(this.scene);
     this.enemyMeshes.clear();          // re-created against the new scene by syncEntities()
+    // The province is authored, not generated, so a seed change must not rebuild it — but the
+    // scene graph it was attached to has just been replaced, so it is re-parented.
+    if (this.province) { old.remove(this.province.group); this.scene.add(this.province.group); this.cells.province = this.province.group; }
     this.setCell(this.cell);
     disposeGraph(old);
     return this.seed;
@@ -112,8 +121,41 @@ export class Renderer {
   }
 
   /** Height of the ground under (x,z). Flat inside every non-exterior cell. */
+  /**
+   * The province: 4,825 x 5,540 m of Argonia, streamed, with its own ground field.
+   *
+   * It is a FIFTH cell alongside exterior/interior/dungeon/arena rather than a replacement for
+   * the exterior one, and that is deliberate: HARNESS.md §6 pins the twelve canonical viewpoints
+   * to absolute poses within 130 m of the world origin, the world origin is 250 m out in the
+   * Topal, and "changing a pose invalidates every cross-wave comparison that used it". So W1-00's
+   * origin neighbourhood survives as the capture rig those twelve poses were framed against, and
+   * the province gets its own viewpoint set (tools/harness/viewpoints-province.json) shot at real
+   * province coordinates. Nothing W1-00 measured is invalidated and nothing the player walks on
+   * is a stand-in.
+   */
+  setWorld(field, roads) {
+    this.field = field;
+    if (roads) field.setRoads(roads);
+    this.province = new Province(field);
+    this.cells.province = this.province.group;
+    this.scene.add(this.province.group);
+    this.province.group.visible = false;
+    for (const [id, s] of Object.entries(this.provinceAnchors(field))) this.anchors[id] = s;
+    return this.province;
+  }
+
+  provinceAnchors(field) {
+    const out = {};
+    for (const s of field.sites) out[`site_${s.id}`] = new THREE.Vector3(s.x, s.y, s.z);
+    for (const r of field.regions) {
+      out[`region_${r.id.replace(/-/g, '_')}`] = new THREE.Vector3(r.centroid_m[0], field.heightAt(r.centroid_m[0], r.centroid_m[1]), r.centroid_m[1]);
+    }
+    return out;
+  }
+
   groundAt(x, z, seed, cell) {
     const c = cell || this.cell;
+    if (c === 'province') return this.field ? this.field.heightAt(x, z) : 0;
     if (c !== 'exterior') return 0;
     return terrainHeight(x, z, seed === undefined ? this.seed : seed);
   }
@@ -157,7 +199,16 @@ export class Renderer {
     if (this.camera.fov !== c.fov) { this.camera.fov = c.fov; this.camera.updateProjectionMatrix(); }
 
     this._focus.set(sim.player.pos[0], sim.player.pos[1], sim.player.pos[2]);
-    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus);
+    // Region fog. RI-WLD04 counts fog as ONE of nine axes and never more than one, but it is the
+    // axis Morrowind leans on hardest — an Ashlands frame is red because the fog is red — so it is
+    // driven from the region under the camera rather than from a single global constant.
+    let regionFog = null;
+    if (this.cell === 'province' && this.field) {
+      const cx = clamp(c.pos[0], 0, this.field.sizeX - 1), cz = clamp(c.pos[2], 0, this.field.sizeZ - 1);
+      const r = this.field.regionAt(cx, cz);
+      regionFog = { colour: r.fog.colour, extinction: r.fog.extinction_per_m };
+    }
+    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog);
     this.sky.followCamera(this.camera);
 
     this.three.info.reset();

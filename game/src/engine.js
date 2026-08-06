@@ -12,11 +12,19 @@ import { CombatSystem } from './combat/system.js';
 import { combatMeta, combatFrame } from './combat/trace.js';
 import { mirror } from './sim/combat-bridge.js';
 import { makeRecord } from './sim/record.js';
+import { buildCells, EMPTY_CELL } from './sim/collision.js';
+import {
+  CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS,
+  openUI as cameraOpenUI, closeUI as cameraCloseUI, beginFogGate, beginDeathCamera,
+  pitchArmScale, projectNDC, cameraBasis,
+} from './sim/camera.js';
+import { PLAYER_RADIUS_M } from './sim/world-collision.js';
 import { makeEntity, reanchorFreeRunning } from './sim/entities.js';
 import { InputPipeline } from './input/pipeline.js';
 import { RealInput } from './input/real.js';
 import { Renderer } from './render/renderer.js';
 import { WEATHER } from './render/sky.js';
+import { WorldField } from './world/field.js';
 import { SaveStore } from './save/store.js';
 import { buildSave, applySave, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
 import { exportSave, importSave } from './save/exchange.js';
@@ -24,6 +32,9 @@ import { canonicalise } from './core/canonical.js';
 
 /** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
 const PERF_SAMPLES = 20000;
+
+/** `ES-WATER/1` walk multipliers, RI-WLD10 §2. Mirrored in game/data/world/water.json. */
+const WATER_SPEED_MULT = { W0: 1.00, W1: 0.97, W2: 0.85, W3: 0.65, W4: 0.43, W5: 0.55 };
 
 export const BUILD = {
   name: 'elder-souls',
@@ -100,6 +111,17 @@ export class Engine {
     installGuards({ replaceMathRandom: true, cosmeticSeed: 0x5eed1337 });
 
     this.renderer = new Renderer(this.canvas, 1337);
+    // The province (W1-01). One field answers every spatial question — ground height for
+    // collision, region for identity, water depth for the band, tide, substrate — and the
+    // renderer builds its meshes from the same field, so the surface you collide with and the
+    // surface you see are the same surface by construction.
+    this.field = new WorldField(this.data.terrain, this.data.regions, this.data.water);
+    this.renderer.setWorld(this.field, this.data.roads);
+    // The camera's collision set. Built once from game/data/camera/cells.json and then
+    // selected per named state; the sim step only ever reads it.
+    this.cells = buildCells(this.data.cameraCells);
+    this.sim.cameraTargets = this.data.cameraTargets.heights_m;
+    this.sim.cameraTargets._default = this.data.cameraTargets._default;
     this.real = new RealInput(this.input, this.canvas);
 
     this.loadState_.phase = 'opening-store';
@@ -240,6 +262,10 @@ export class Engine {
     for (const s of patch.spawn || []) this.spawn(s.id, s.x, s.z, { as: s.as });
     // Put the player on the ground of whatever cell the state names.
     sim.player.pos[1] = this.groundAt(sim.player.pos[0], sim.player.pos[2]);
+    // The camera's collision cell. A named state may declare `camera_cell`; without one the
+    // cell is empty and the spring arm has nothing to collide with, which is the honest
+    // state of the procedural exterior until W1-01 publishes collision for it.
+    this.setCameraCell(patch.camera_cell || null);
     this._settleCamera();
     quantiseColdState(sim);
     return { ok: true, frame: sim.frame, seed: rng.seed };
@@ -356,7 +382,11 @@ export class Engine {
     if (env.region === 'arena') return 'arena';
     if (env.interior === 'dungeon-primary') return 'dungeon';
     if (env.interior) return 'interior';
-    return 'exterior';
+    // `showcase` is W1-00's 420 m origin neighbourhood, kept as the capture rig for the twelve
+    // canonical viewpoints (HARNESS.md §6 poses are absolute and near the origin). Everything
+    // else is the province.
+    if (env.showcase) return 'exterior';
+    return 'province';
   }
 
   groundAt(x, z) {
@@ -369,21 +399,66 @@ export class Engine {
     // The generated world comes first: setCell() only chooses which cell is visible, while
     // setWorldSeed() decides what the exterior one IS, and groundAt() must agree with it.
     if (this.sim.worldSeed !== null && this.sim.worldSeed !== undefined) this.renderer.setWorldSeed(this.sim.worldSeed);
-    this.renderer.setCell(this.cellFor(this.sim.env));
+    const cell = this.cellFor(this.sim.env);
+    this.renderer.setCell(cell);
+    if (cell === 'province' && this.renderer.province) {
+      this._boundaryBegin('region');
+      this.renderer.province.request(this.sim.player.pos[0], this.sim.player.pos[2]);
+      this.renderer.province.drain();
+      this.loadState_.regionsResident = [this.field.regionAt(this.sim.player.pos[0], this.sim.player.pos[2]).id];
+      this._boundaryEnd('region');
+    }
     this.renderer.setProp('npcShowcase', this.sim.stateName === 'npc_showcase');
     this.renderer.setProp('materialShowcase', this.sim.stateName === 'material_showcase');
   }
 
+  /**
+   * Put the rig in the pose it would settle into, with no input, before the first step.
+   * The vertical pivot spring is SNAPPED rather than eased here — RI-CAM01 §B lists `load`
+   * and `teleport` among the four events that snap it, and an eased pivot after a teleport
+   * is the camera dragging itself across the map over a quarter of a second.
+   */
   _settleCamera() {
-    // One camera update with no input, so the pose is correct before the first step.
     const c = this.sim.camera;
-    c.pivot[0] = this.sim.player.pos[0];
-    c.pivot[1] = this.sim.player.pos[1] + 1.55;
-    c.pivot[2] = this.sim.player.pos[2];
+    const p = this.sim.player;
+    c.pivot[0] = p.pos[0];
+    c.pivot[1] = p.pos[1] + CAMERA_CONST.pivot_height_m;
+    c.pivot[2] = p.pos[2];
+    c.pivotSnap = true;
+    const locked = p.lockOn !== null && p.lockOn !== undefined;
+    const sr = locked ? CAMERA_CONST.shoulder_right_locked_m : CAMERA_CONST.shoulder_right_free_m;
+    const su = locked ? CAMERA_CONST.shoulder_up_locked_m : CAMERA_CONST.shoulder_up_free_m;
+    c.shoulderR = sr; c.shoulderU = su;
+    const want = (locked ? CAMERA_CONST.arm_locked_near_m : CAMERA_CONST.arm_free_m) * pitchArmScale(c.pitch);
+    c.armDesired = want; c.armEased = want; c.armLen = want; c.armCast = want;
+    c.dist = want; c.distTarget = want; c.clearFrames = 0;
+    c.containArm = 0; c.containPitch = 0; c.armHit = false; c.armGuard = false;
+    c.lookBufX = 0; c.lookBufY = 0; c.recentreFrames = 0; c.recentreActive = false;
+    c.deathFrame = -1; c.fogUntil = 0; c.fogTarget = null; c.uiMode = null;
+    c.dialogueFrames = 0; c.dialogueArm = 0; c.dialogueYawStep = 0; c.dialogueArmStep = 0;
+    c.fov = CAMERA_CONST.fov_deg;
+    c.mode = locked ? 'locked' : 'free';
     const yaw = c.yaw * Math.PI / 180, pitch = c.pitch * Math.PI / 180, cp = Math.cos(pitch);
-    c.pos[0] = c.pivot[0] - Math.sin(yaw) * cp * c.dist;
-    c.pos[1] = c.pivot[1] - Math.sin(pitch) * c.dist;
-    c.pos[2] = c.pivot[2] - Math.cos(yaw) * cp * c.dist;
+    const fwd = [Math.sin(yaw) * cp, Math.sin(pitch), Math.cos(yaw) * cp];
+    const right = [Math.cos(yaw), 0, -Math.sin(yaw)];
+    const up = [
+      right[1] * fwd[2] - right[2] * fwd[1],
+      right[2] * fwd[0] - right[0] * fwd[2],
+      right[0] * fwd[1] - right[1] * fwd[0],
+    ];
+    for (let i = 0; i < 3; i++) c.pos[i] = c.pivot[i] - fwd[i] * want + right[i] * sr + up[i] * su;
+  }
+
+  /** Select the static collision cell the spring arm casts against. */
+  setCameraCell(id) {
+    if (id === null || id === undefined) { this.sim.cell = EMPTY_CELL; this.sim.cellId = null; return null; }
+    const cell = this.cells.get(String(id));
+    if (!cell) {
+      throw new Error(`setCameraCell('${id}'): no such cell. Known: ${[...this.cells.keys()].sort().join(', ')}`);
+    }
+    this.sim.cell = cell;
+    this.sim.cellId = cell.id;
+    return cell.id;
   }
 
   // ---- stepping -------------------------------------------------------------------------
@@ -410,6 +485,7 @@ export class Engine {
    * `stepFrames` describe the simulation and not the instrument.
    */
   _afterStep() {
+    this._settleWorld();
     if (this.firstControlAt === null && this.sim.frame > 0) this.firstControlAt = wallNow();
     if (this.trace) {
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
@@ -418,6 +494,39 @@ export class Engine {
       const ev = this.bus.snapshotInto([]).slice();
       this.combatTrace.records.push(combatFrame(this.combat, this.sim.frame - 1, this.input, ev, this.sim.camera));
     }
+  }
+
+  /**
+   * The province's claim on the player, applied strictly after the step and strictly before the
+   * frame record: stand on the ground, and pay the water's price for crossing it.
+   *
+   * Two things happen here and nothing else. (1) The player's Y is the field's ground height, so
+   * the capsule follows the terrain instead of floating at the elevation it was loaded at.
+   * (2) `ES-WATER/1` band locomotion (RI-WLD10 §2) is applied as a RETRACTION of the horizontal
+   * displacement the step just produced — walking into hip-deep water costs 0.65 of your speed.
+   * It is done this way, rather than by editing the locomotion constants, for one reason that is
+   * also the seam ruling: **S25 says water may never change a frame number.** A retraction cannot
+   * reach a frame count, a startup, an i-frame window or a stamina cost; it can only change where
+   * you ended up. Denial (no sprint and no roll above W2), the stamina drain, the breath clock and
+   * MIRED are `world.water.marsh`, which is W1-03's path, and are declared missing rather than
+   * faked here — see getCapabilityReport().
+   *
+   * No wall clock, no PRNG draw, no allocation: this runs 207,000 times during a crossing.
+   */
+  _settleWorld() {
+    if (!this.field || this.cellFor(this.sim.env) !== 'province') return;
+    const p = this.sim.player;
+    const x = p.pos[0], z = p.pos[2];
+    const px = this._prevX === undefined ? x : this._prevX;
+    const pz = this._prevZ === undefined ? z : this._prevZ;
+    const dx = x - px, dz = z - pz;
+    if (dx !== 0 || dz !== 0) {
+      const depth = this.field.depthAt(px + dx * 0.5, pz + dz * 0.5);
+      const mult = WATER_SPEED_MULT[this.field.bandOf(depth)];
+      if (mult < 1) { p.pos[0] = px + dx * mult; p.pos[2] = pz + dz * mult; }
+    }
+    p.pos[1] = this.field.heightAt(p.pos[0], p.pos[2]);
+    this._prevX = p.pos[0]; this._prevZ = p.pos[2];
   }
 
   _render() {
@@ -488,6 +597,14 @@ export class Engine {
     const p = this.sim.player;
     p.pos[0] = Number(x);
     p.pos[2] = Number(z);
+    this._prevX = p.pos[0]; this._prevZ = p.pos[2];
+    if (this.renderer && this.renderer.province && this.cellFor(this.sim.env) === 'province') {
+      this._boundaryBegin('region');
+      this.renderer.province.request(p.pos[0], p.pos[2]);
+      this.renderer.province.drain();
+      this.loadState_.regionsResident = [this.field.regionAt(p.pos[0], p.pos[2]).id];
+      this._boundaryEnd('region');
+    }
     p.pos[1] = opts.y !== undefined ? Number(opts.y) : this.groundAt(p.pos[0], p.pos[2]);
     if (opts.yaw !== undefined) p.yaw = Number(opts.yaw);
     if (this.combat && this.combat.player) {
@@ -530,13 +647,120 @@ export class Engine {
       look: pose.look ? [Number(pose.look[0]), Number(pose.look[1]), Number(pose.look[2])] : cur.look,
       fov: pose.fov !== undefined ? Number(pose.fov) : cur.fov,
     };
-    if (pose.mode) c.mode = String(pose.mode);
+    // RI-CAM05 §F/M7: `camera({mode:'first'})` must THROW, not silently accept. The check is
+    // against the closed vocabulary rather than a blocklist, so a future mode name cannot
+    // sneak a first-person view in under a synonym.
+    if (pose.mode !== undefined) {
+      const m = String(pose.mode);
+      if (!CAMERA_MODES.includes(m)) {
+        throw new Error(
+          `camera({mode:'${m}'}): '${m}' is not a camera mode. Seam S18 makes this game ` +
+          `third-person at all times and RI-CAM05 §F fixes the vocabulary to ` +
+          `[${CAMERA_MODES.join(', ')}]. There is no first-person mode, on a key, on the ` +
+          'wheel, in the options, or through this API.');
+      }
+      c.mode = m;
+    }
     // Apply immediately so a read-back before the next step is truthful.
     const o = c.override;
     c.pos[0] = o.pos[0]; c.pos[1] = o.pos[1]; c.pos[2] = o.pos[2];
     c.pivot[0] = o.look[0]; c.pivot[1] = o.look[1]; c.pivot[2] = o.look[2];
     c.fov = o.fov;
     return this.cameraState();
+  }
+
+  // ---- camera (W1-06) ---------------------------------------------------------------
+  //
+  // RI-CAM05 §F's detector is a SWEEP, not a promise: `listPerspectiveModes()` is what a
+  // critic reads, `camera({mode:'first'})` is what a critic calls, and both have to be
+  // wrong-proof rather than merely correct today.
+
+  listPerspectiveModes() { return PERSPECTIVE_MODES.slice(); }
+
+  listCameraModes() { return CAMERA_MODES.slice(); }
+
+  /** The rig's DECLARED constants, for the "declared vs observed" pair HARNESS §7 rule 4
+   *  wants. The trace is the observation; this is the declaration; they come from the same
+   *  module, so a critic diffing them is checking the DATA FILE against both. */
+  getCameraRig() {
+    return {
+      const: { ...CAMERA_CONST },
+      alphas: { ...CAMERA_ALPHAS },
+      near_corner_radius_m: NEAR_CORNER_R,
+      player_collision_radius_m: PLAYER_RADIUS_M,
+      modes: CAMERA_MODES.slice(),
+      perspective_modes: PERSPECTIVE_MODES.slice(),
+      declared_file: 'game/data/camera/rig.json',
+      cells: [...this.cells.keys()].sort(),
+      cell: this.sim.cellId || null,
+    };
+  }
+
+  /** Scripted UI entry — RI-CAM05 M2/M3 need `uiOpen("dialogue")` / `uiClose()`. */
+  uiOpen(id, opts) {
+    const kind = String(id);
+    if (kind !== 'dialogue' && kind !== 'menu' && kind !== 'rest') {
+      throw new Error(`uiOpen('${kind}'): expected 'dialogue', 'menu' or 'rest'`);
+    }
+    return { ok: true, mode: cameraOpenUI(this.sim, kind, opts && opts.npcHeadNdcX) };
+  }
+
+  uiClose() { return { ok: true, closed: cameraCloseUI(this.sim) }; }
+
+  /** RI-CAM06 §I. The fog gate is the SAME RIG driven to a different target for 90 frames. */
+  fogGate(eid) {
+    if (eid !== null && eid !== undefined && !this.sim.findEntity(eid)) throw new Error(`fogGate('${eid}'): no such entity`);
+    return { ok: true, until: beginFogGate(this.sim, eid === undefined ? null : eid) };
+  }
+
+  /** RI-CAM06 §H. */
+  deathCamera() { beginDeathCamera(this.sim); return { ok: true, frame: this.sim.frame }; }
+
+  /** Project a world point through the live camera. RI-CAM03's anchors are defined in NDC
+   *  precisely so they are aspect- and FOV-independent, and a critic must be able to
+   *  recompute them rather than trust `camera.onscreen`. */
+  projectPoint(x, y, z) {
+    const out = [0, 0, 0];
+    const ok = projectNDC(this.sim.camera, [Number(x), Number(y), Number(z)], out);
+    return { ndc: [out[0], out[1]], z: out[2], in_front: ok, on_screen: ok && Math.abs(out[0]) <= 1 && Math.abs(out[1]) <= 1 };
+  }
+
+  /** Cast the camera's own sphere against the live collision cell. Lets a critic re-derive
+   *  the arm length from the pivot and the two angles, which is RI-CAM01's whole bar. */
+  castCameraArm(len) {
+    const c = this.sim.camera;
+    const cell = this.sim.cell || EMPTY_CELL;
+    const fwd = [0, 0, 0], right = [0, 0, 0], up = [0, 0, 0];
+    cameraBasis(c, fwd, right, up);
+    const L = len === undefined ? c.armDesired : Number(len);
+    const k = Math.min(1, L / CAMERA_CONST.arm_free_m);
+    const to = [
+      c.pivot[0] - fwd[0] * L + (right[0] * c.shoulderR + up[0] * c.shoulderU) * k,
+      c.pivot[1] - fwd[1] * L + (right[1] * c.shoulderR + up[1] * c.shoulderU) * k,
+      c.pivot[2] - fwd[2] * L + (right[2] * c.shoulderR + up[2] * c.shoulderU) * k,
+    ];
+    const t = cell.sphereCast(c.pivot, to, CAMERA_CONST.cast_radius_m);
+    return { t, hit: t < 1, desired_len_m: L, cast_len_m: L * t, cell: this.sim.cellId || null };
+  }
+
+  /** Point containment against the same collision set the cast uses (RI-CAM01 §D). */
+  solidAt(x, y, z) {
+    const cell = this.sim.cell || EMPTY_CELL;
+    return { solid: cell.contains(Number(x), Number(y), Number(z)), distance_m: cell.distance(Number(x), Number(y), Number(z)) };
+  }
+
+  /** Drive `cam-collision-rig`'s wall along its rail. RI-CAM01 M4's fixture. */
+  setCameraObstacle(id, x, y, z) {
+    const cell = this.sim.cell || EMPTY_CELL;
+    for (const sh of cell.shapes) {
+      if (sh.id === String(id)) {
+        if (x !== undefined && x !== null) sh.c[0] = Number(x);
+        if (y !== undefined && y !== null) sh.c[1] = Number(y);
+        if (z !== undefined && z !== null) sh.c[2] = Number(z);
+        return { ok: true, id: sh.id, c: [sh.c[0], sh.c[1], sh.c[2]] };
+      }
+    }
+    throw new Error(`setCameraObstacle('${id}'): no such shape in cell '${this.sim.cellId}'`);
   }
 
   cameraState() {
@@ -912,19 +1136,205 @@ export class Engine {
     };
   }
 
+  // ---- the province (W1-01) -------------------------------------------------------------
+
+  /** `RI-WLD10` M47/M48: the water field at a point, without moving the player. */
+  getWaterAt(x, z) {
+    if (!this.field) throw new Error('getWaterAt: no province is loaded');
+    return this.field.waterAt(Number(x), Number(z));
+  }
+
+  /** The ground at a point: height, slope, region, substrate, land/sea, distance to the coast. */
+  getTerrainAt(x, z) {
+    if (!this.field) throw new Error('getTerrainAt: no province is loaded');
+    const f = this.field, px = Number(x), pz = Number(z);
+    const r = f.regionAt(px, pz);
+    return {
+      x: px, z: pz,
+      y: +f.heightAt(px, pz).toFixed(3),
+      base_y: +f.baseAt(px, pz).toFixed(3),
+      slope_deg: +f.slopeAt(px, pz).toFixed(2),
+      region: r.id, region_name: r.name, region_index: f.regionIndexAt(px, pz),
+      danger_tier: r.danger_tier,
+      land: f.isLandAt(px, pz), ocean: f.isOceanAt(px, pz),
+      coast_dist_m: +f.coastDistAt(px, pz).toFixed(1),
+      substrate: f.substrateAt(px, pz),
+      sea: f.seaAt(px, pz) === 2 ? 'padomaic' : 'topal',
+    };
+  }
+
+  getRegionAt(x, z) { return this.getTerrainAt(x, z).region; }
+
+  /**
+   * Pin the tide. `RI-WLD10` §7's cycle is 12 real minutes with four states; the phase is the
+   * only state the simulation keeps, and it is a number, so a critic can hold it still.
+   */
+  setTide(stateOrPhase) {
+    if (!this.field) throw new Error('setTide: no province is loaded');
+    const names = { LOW: 0.0, RISING: 0.25, HIGH: 0.5, FALLING: 0.75 };
+    let phase;
+    if (typeof stateOrPhase === 'string') {
+      if (!(stateOrPhase in names)) throw new Error(`setTide('${stateOrPhase}'): states are ${Object.keys(names).join(', ')}`);
+      phase = names[stateOrPhase];
+    } else {
+      const v = Number(stateOrPhase);
+      if (!Number.isFinite(v)) throw new Error('setTide(phase): phase must be 0..1 or a named state');
+      phase = ((v % 1) + 1) % 1;
+    }
+    this.field.tidePhase = phase;
+    this.sim.env.tidePhase = phase;
+    return this.getTide();
+  }
+
+  getTide() {
+    const f = this.field;
+    return {
+      phase: +f.tidePhase.toFixed(4),
+      state: f.tideState(),
+      height_m: { topal: +f.tideHeight(1).toFixed(3), padomaic: +f.tideHeight(2).toFixed(3) },
+      cycle_real_min: this.data.water.tide.cycle_real_min,
+      mean_range_m: { topal: +f.tideRange[1].toFixed(3), padomaic: +f.tideRange[2].toFixed(3) },
+    };
+  }
+
+  /** The road network, its named routes, and their lengths as BUILT. */
+  getRoutes() {
+    const r = this.data.roads;
+    return {
+      named_routes: r.named_routes,
+      total_trunk_m: r.total_trunk_m,
+      legs: r.legs.map((l) => ({
+        id: l.id, from: l.from, to: l.to, class: l.class, tide_gated: l.tide_gated,
+        declared_path_m: l.declared_path_m, built_path_m: l.built_path_m,
+        built_walk_min: l.built_walk_min, sinuosity_built: l.sinuosity_built,
+        max_grade: l.max_grade, waypoints: l.waypoints, points: l.points.length,
+      })),
+    };
+  }
+
+  getProvinceStats() {
+    const t = this.data.terrain;
+    return {
+      world_bounds_m: t.world_bounds_m,
+      cell_m: t.cell_m, cols: t.cols, rows: t.rows,
+      elevation_range_m: t.elevation_range_m,
+      land_km2: t.land_km2, land_above_sea_km2: t.land_above_sea_km2,
+      frac_land_below_5m: t.frac_land_below_5m, frac_land_above_100m: t.frac_land_above_100m,
+      regions: t.regions, sites: t.sites.length,
+      streaming: this.renderer && this.renderer.province ? this.renderer.province.stats() : null,
+    };
+  }
+
+  /**
+   * Walk a named route on foot, through the ordinary locomotion path, and report what happened.
+   *
+   * This is `RI-WLD01` M2 and M3's instrument and it is deliberately not a shortcut: every frame
+   * it computes the bearing to the next point on the BUILT road spline, converts it to the
+   * camera-relative stick vector the player would hold, pushes it through `queueInputs()`, and
+   * advances the simulation by exactly one fixed step. The capsule is moved by
+   * `combat/player.js`, not by this method — which is the point, because M3 exists to catch an
+   * hour manufactured out of friction rather than distance, and a method that teleported the
+   * capsule along the spline would be unable to show either.
+   *
+   * Speed is set by the magnitude of the stick, exactly as a player's would be: 0.55 is the walk
+   * band's ceiling, which is `walk_mps` = 2.0 m/s, and 1.0 is the jog.
+   *
+   * Resumable: pass `chunkFrames` and call again until `done` — 57.6 minutes is 207,360 fixed
+   * steps and a single call would sit past a browser automation timeout.
+   */
+  walkRoute(opts = {}) {
+    const o = Object.assign({ route: 'crossing', speed: 'walk', chunkFrames: 40000, sampleEvery: 6, lookahead_m: 4.5, stream: false, restart: false }, opts);
+    if (!this.field) throw new Error('walkRoute: no province is loaded');
+    const R = this.data.roads;
+    if (o.restart || !this._walk || this._walk.route !== o.route || this._walk.speed !== o.speed) {
+      const named = R.named_routes[o.route];
+      if (!named) throw new Error(`walkRoute: unknown route '${o.route}'. Known: ${Object.keys(R.named_routes).join(', ')}`);
+      const pts = [];
+      for (let i = 0; i + 1 < named.settlements.length; i++) {
+        const a = named.settlements[i], b = named.settlements[i + 1];
+        const leg = R.legs.find((l) => (l.from === a && l.to === b) || (l.from === b && l.to === a));
+        if (!leg) throw new Error(`walkRoute: no built leg for ${a}-${b}`);
+        const p = leg.from === a ? leg.points : leg.points.slice().reverse();
+        for (let k = (pts.length ? 1 : 0); k < p.length; k++) pts.push([p[k][0], p[k][1], leg.id]);
+      }
+      this._walk = {
+        route: o.route, speed: o.speed, pts, idx: 1, frames: 0, dist: 0,
+        samples: [], legFrames: new Map(), regions: [], lastRegion: null,
+        startedFrame: this.sim.frame, done: false,
+      };
+      this.teleport(pts[0][0], pts[0][1]);
+      this.sim.player.pos[1] = this.field.heightAt(pts[0][0], pts[0][1]);
+    }
+    const w = this._walk;
+    // The walk band's ceiling is `mag > 0.55 ? jog : walk * (mag / 0.55)` in combat/player.js, and
+    // `mag` is compared AFTER a hypot that can land one ulp above 0.55. One ulp of stick is 12% of
+    // the crossing at the jog, so the walk request sits a nanometre under the boundary and the
+    // measured ground speed is 2.000 m/s rather than a mixture.
+    const mag = o.speed === 'jog' ? 1.0 : o.speed === 'walk' ? 0.55 - 1e-9 : Math.max(0, Math.min(1, Number(o.speed)));
+    const p = this.sim.player;
+    let n = 0;
+    while (n < o.chunkFrames && !w.done) {
+      // advance the target along the spline
+      while (w.idx < w.pts.length - 1 && Math.hypot(p.pos[0] - w.pts[w.idx][0], p.pos[2] - w.pts[w.idx][1]) < o.lookahead_m) w.idx++;
+      const t = w.pts[w.idx];
+      const dx = t[0] - p.pos[0], dz = t[1] - p.pos[2];
+      const d = Math.hypot(dx, dz);
+      if (w.idx >= w.pts.length - 1 && d < 1.5) { w.done = true; break; }
+      const b = Math.atan2(dx, dz);
+      const cy = this.sim.camera.yaw * Math.PI / 180;
+      this.input.reset(this.sim.frame);
+      this.input.queueInputs([{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }], this.sim.frame);
+      const x0 = p.pos[0], z0 = p.pos[2];
+      this.loop.stepOnce();
+      this._afterStep();
+      const step = Math.hypot(p.pos[0] - x0, p.pos[2] - z0);
+      w.dist += step;
+      w.frames++; n++;
+      w.legFrames.set(t[2], (w.legFrames.get(t[2]) || 0) + 1);
+      if (w.frames % o.sampleEvery === 0) w.samples.push(+(step * 60).toFixed(4));
+      const reg = this.field.regionAt(p.pos[0], p.pos[2]).id;
+      if (reg !== w.lastRegion) { w.regions.push({ region: reg, frame: w.frames, m: +w.dist.toFixed(1) }); w.lastRegion = reg; }
+      if (o.stream && w.frames % 90 === 0) { this.renderer.province.request(p.pos[0], p.pos[2]); this.renderer.province.pump(1); }
+    }
+    const s = w.samples;
+    const below = s.filter((v) => v < 1.6).length;
+    return {
+      route: w.route, speed: o.speed, done: w.done,
+      frames: w.frames, seconds: +(w.frames / 60).toFixed(2), minutes: +(w.frames / 3600).toFixed(3),
+      path_m: +w.dist.toFixed(1),
+      declared_route_m: R.named_routes[w.route].metres,
+      mean_speed_mps: s.length ? +(s.reduce((a, v) => a + v, 0) / s.length).toFixed(4) : 0,
+      min_speed_mps: s.length ? +Math.min(...s).toFixed(4) : 0,
+      max_speed_mps: s.length ? +Math.max(...s).toFixed(4) : 0,
+      speed_samples: s.length,
+      speed_histogram: histogram(s),
+      frac_samples_below_1_6: s.length ? +(below / s.length).toFixed(5) : 0,
+      leg_minutes: Object.fromEntries([...w.legFrames].map(([k, v]) => [k, +(v / 3600).toFixed(3)])),
+      region_sequence: w.regions,
+      remaining_points: w.pts.length - w.idx,
+    };
+  }
+
   // ---- world / quest queries ----------------------------------------------------------------
 
   getWorldStats() {
     const d = this.data;
     const census = this.renderer ? this.renderer.sceneCensus() : {};
     const s = this.renderer ? this.renderer.lastStats : {};
+    const prov = this.renderer && this.renderer.province ? this.renderer.province.stats() : null;
     return {
       regions: d.regions.regions.length,
       settlements: d.pois.pois.filter((p) => p.kind === 'settlement').length,
       pois: d.pois.pois.length,
       interiors: Object.keys(d.interiors).length,
       npcs: Object.values(d.npcs).reduce((n, g) => n + g.npcs.length, 0),
-      areaKm2: d.regions.total_land_km2,
+      areaKm2: d.terrain.land_km2,
+      worldBoundsM: d.terrain.world_bounds_m,
+      elevationRangeM: d.terrain.elevation_range_m,
+      roadNetworkM: d.roads.total_trunk_m,
+      crossingM: d.roads.named_routes.crossing.metres,
+      crossingWalkMin: d.roads.named_routes.crossing.walk_min,
+      streaming: prov,
       drawCalls: s.drawCalls || 0,
       triangles: s.triangles || 0,
       textureMB: census.textureMB || 0,
@@ -1056,6 +1466,16 @@ export class Engine {
   }
 }
 
+/** Ground-speed distribution, so M3's tail is visible rather than summarised away. */
+function histogram(s) {
+  const edges = [0, 0.5, 1.0, 1.6, 1.9, 1.99, 2.01, 2.5, 3.0, 3.3, 99];
+  const bins = new Array(edges.length - 1).fill(0);
+  for (const v of s) { for (let i = 0; i < bins.length; i++) if (v >= edges[i] && v < edges[i + 1]) { bins[i]++; break; } }
+  const out = {};
+  for (let i = 0; i < bins.length; i++) out[`${edges[i]}-${edges[i + 1]}`] = bins[i];
+  return out;
+}
+
 function deepAssign(target, src) {
   for (const k of Object.keys(src)) {
     if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k]) && target[k] && typeof target[k] === 'object' && !Array.isArray(target[k])) {
@@ -1095,13 +1515,48 @@ async function loadData(onBytes) {
     if (b) out[b][doc.id || entry.path.split('/').pop().replace(/\.json$/, '')] = doc;
     else if (entry.path === 'world/regions.json') out.regions = doc;
     else if (entry.path === 'world/pois.json') out.pois = doc;
+    else if (entry.path === 'world/terrain.json') out.terrain = doc;
+    else if (entry.path === 'world/water.json') out.water = doc;
+    else if (entry.path === 'world/roads.json') out.roads = doc;
+    else if (entry.path === 'world/hazards.json') out.hazards = doc;
+    else if (entry.path === 'world/landmask.json') out.landmask = doc;
+    else if (entry.path === 'camera/cells.json') out.cameraCells = doc;
+    else if (entry.path === 'camera/rig.json') out.cameraRig = doc;
+    else if (entry.path === 'camera/targets.json') out.cameraTargets = doc;
     else if (entry.path === 'save-manifest.json') out.saveManifest = doc;
     else if (entry.path === 'combat/input.json') out.input = doc;
     else if (entry.path.startsWith('combat/movesets/')) out.movesets[doc.id] = doc;
     else if (entry.path.startsWith('combat/')) out.combat[entry.path.slice('combat/'.length).replace(/\.json$/, '')] = doc;
     else if (entry.path === 'dialogue/greetings.json') out.greetings = doc;
     else if (entry.path === 'dialogue/rumours.json') out.rumours = doc;
-    else if (entry.path.startsWith('progression/')) (out.progression = out.progression || {})[doc.schema] = doc;
+    else if (entry.path === 'dialogue/creation-questions.json') out.creationQuestions = doc;
+    else if (entry.path === 'world/encounters.json') out.encounters = doc;
+    else if (entry.path.startsWith('progression/')) {
+      out.progression = out.progression || {};
+      out.progression[doc.schema] = doc;
+      // W1-07: also key by id, because a consumer wants `progression.races`, not
+      // `progression['elder-souls/races@1']`, and the schema key must stay for W1-00's readers.
+      if (doc.id) out.progression[doc.id] = doc;
+    }
+  }
+  // W1-07 — the character-creation view of the data, assembled once at boot so that
+  // game/src/character/** and tools/analysis/creation-audit.mjs consume the identical object.
+  out.character = {
+    attributes: out.progression['attributes'],
+    skills: out.progression['skills'],
+    races: out.progression['races'],
+    classes: out.progression['classes'],
+    birthsigns: out.progression['birthsigns'],
+    reactions: out.progression['race-reactions'],
+    creation: out.progression['creation'],
+    creationQuestions: out.creationQuestions,
+    encounters: out.encounters,
+    writHouse: out.topics['writ-house'],
+    writItems: out.items['writ'],
+    npcs: out.npcs['writ-house'],
+  };
+  for (const k of Object.keys(out.character)) {
+    if (!out.character[k]) throw new Error(`character data missing: ${k} (W1-07 expects it in game/data/**)`);
   }
   return out;
 }

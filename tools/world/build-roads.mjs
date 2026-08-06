@@ -145,25 +145,35 @@ const minorsFor = (a, b) => Object.entries(scale.minor_settlements)
 
 const legs = [];
 for (const leg of scale.roads) {
+  // The sinuosity solve is applied PER SUB-SEGMENT (settlement to minor to minor to settlement),
+  // not across the whole leg. Solving it across the leg pushed the road up to 200 m sideways and
+  // left the minor settlements that justify the leg's shape stranded off it — which is M5's
+  // habitation-gap failure wearing a different hat.
   const way = [[S[leg.from].x, S[leg.from].z], ...minorsFor(leg.from, leg.to).map((m) => [m.x, m.z]), [S[leg.to].x, S[leg.to].z]];
-  let raw = [];
+  const chords = [];
+  for (let i = 0; i + 1 < way.length; i++) chords.push(Math.hypot(way[i + 1][0] - way[i][0], way[i + 1][1] - way[i][1]));
+  const chordSum = chords.reduce((a, b) => a + b, 0);
+  const modes = [];
+  let p = [];
   for (let i = 0; i + 1 < way.length; i++) {
-    const seg = astar(way[i][0], way[i][1], way[i + 1][0], way[i + 1][1]);
-    raw = raw.length ? raw.concat(seg.slice(1)) : seg;
+    let sp = smooth(resample(astar(way[i][0], way[i][1], way[i + 1][0], way[i + 1][1]), 18), 12);
+    const tgt = leg.path_m * chords[i] / chordSum;
+    const L0 = len2d(sp);
+    let mode, amount;
+    if (L0 > tgt) {
+      let lo = 0, hi = 1;
+      for (let it = 0; it < 40; it++) { const m = (lo + hi) / 2; if (len2d(straighten(sp, m)) > tgt) lo = m; else hi = m; }
+      amount = (lo + hi) / 2; sp = straighten(sp, amount); mode = 'straightened';
+    } else {
+      let lo = 0, hi = 400;
+      for (let it = 0; it < 40; it++) { const m = (lo + hi) / 2; if (len2d(wiggle(sp, m, 0.11 + i * 0.19)) < tgt) lo = m; else hi = m; }
+      amount = (lo + hi) / 2; sp = wiggle(sp, amount, 0.11 + i * 0.19); mode = 'sinuosity added';
+    }
+    modes.push(`${mode} ${amount.toFixed(1)}`);
+    for (let k = (p.length ? 1 : 0); k < sp.length; k++) p.push(sp[k]);
   }
-  let p = smooth(resample(raw, 18), 14);
-  const target = leg.path_m;
-  const L0 = len2d(p);
-  let mode, amount;
-  if (L0 > target) {
-    let lo = 0, hi = 1;
-    for (let it = 0; it < 40; it++) { const m = (lo + hi) / 2; if (len2d(straighten(p, m)) > target) lo = m; else hi = m; }
-    amount = (lo + hi) / 2; p = straighten(p, amount); mode = 'straightened';
-  } else {
-    let lo = 0, hi = 400;
-    for (let it = 0; it < 40; it++) { const m = (lo + hi) / 2; if (len2d(wiggle(p, m, 0.13)) < target) lo = m; else hi = m; }
-    amount = (lo + hi) / 2; p = wiggle(p, amount, 0.13); mode = 'sinuosity added';
-  }
+  const mode = modes.join(' | ');
+  const amount = 0;
   p = resample(p, 12);
 
   // ---- elevation profile --------------------------------------------------------------------
@@ -183,7 +193,7 @@ for (const leg of scale.roads) {
   // against the water clearance until both hold.
   const MAX_GRADE = 0.12;
   const surfAt = p.map(([x, z]) => field.waterSurfaceAt(x, z, 0));
-  for (let k = 0; k < 90; k++) {
+  for (let k = 0; k < 18; k++) {
     const q = y.slice();
     for (let i = 1; i < y.length - 1; i++) q[i] = (y[i - 1] + 2 * y[i] + y[i + 1]) / 4;
     for (let i = 1; i < y.length - 1; i++) if (!tideway && surfAt[i] !== null) q[i] = Math.max(q[i], surfAt[i] + 0.40);
@@ -210,12 +220,73 @@ for (const leg of scale.roads) {
     straight_m: leg.straight_m, declared_path_m: leg.path_m, built_path_m: +built.toFixed(1),
     declared_walk_min: leg.walk_min, built_walk_min: +(built / 2.0 / 60).toFixed(2),
     sinuosity_built: +(built / Math.hypot(S[leg.to].x - S[leg.from].x, S[leg.to].z - S[leg.from].z)).toFixed(3),
-    routing: mode, routing_amount: +amount.toFixed(3),
+    routing: mode,
     max_grade: +maxGrade.toFixed(3),
     half_width_m: tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0,
     waypoints: minorsFor(leg.from, leg.to).map((m) => m.name),
     points: pts,
   });
+}
+
+// ---- waystations: RI-WLD01 §6's rule, enforced rather than assumed --------------------------------
+// "No road leg may have a >8 min gap without habitation." The sixteen minor settlements the corpus
+// derives from the map do not achieve it on their own — Archon-Thorn is 4.3 km with two of them, so
+// its sub-segments are 11-13 walking minutes each. Every remaining gap gets a named wayside place on
+// the road itself: a shrine, a well, a ferry-post or a camp, chosen by the region it stands in.
+const WAY_KINDS = {
+  'salt-hills': ['Legion Milepost', 'Watchtower Well'],
+  thornmarsh: ['Knife-Mark Camp', 'Ash Shelter'],
+  'valus-ridge': ['Rock-Flute Cairn', 'Border Cairn'],
+  'stone-forest': ['Wayshrine of the Root', 'Tender\u2019s Rest'],
+  'clay-moor': ['Fired-Cold Well', 'Kiln Post'],
+  'crimson-coast': ['Vat-Keeper\u2019s Hut', 'Lichen Post'],
+  blackwood: ['Logging Camp', 'Welkynd Shrine'],
+  hive: ['Comb Gate', 'Drone Post'],
+  'deep-marshes': ['Corpse-Lily Shrine', 'Pole Camp'],
+  'marauders-coast': ['Bell-Buoy Post', 'Hull Shelter'],
+  'western-rootlands': ['Root-Arch Rest', 'Paddy Post'],
+  'eastern-rootlands': ['Stilt-Rest', 'Tide-Pole Post'],
+  'stone-wastes': ['Salt Cistern', 'Crater Shelter'],
+};
+const GAP_M = 8.0 * 60 * 2.0;                 // 8 walking minutes at 2.0 m/s
+const inhabited = [
+  ...Object.values(scale.settlements).map((s) => ({ x: s.x, z: s.z })),
+  ...Object.values(scale.minor_settlements).map((s) => ({ x: s.x, z: s.z })),
+];
+const waystations = [];
+for (const l of legs) {
+  const marks = [0];
+  let cum = 0;
+  const cums = [0];
+  for (let i = 1; i < l.points.length; i++) {
+    cum += Math.hypot(l.points[i][0] - l.points[i - 1][0], l.points[i][1] - l.points[i - 1][1]);
+    cums.push(cum);
+    if (inhabited.some((p) => Math.hypot(p.x - l.points[i][0], p.z - l.points[i][1]) < 70)) marks.push(cum);
+  }
+  marks.push(cum);
+  const total = cum;
+  const extra = [];
+  for (let k = 1; k < marks.length; k++) {
+    const gap = marks[k] - marks[k - 1];
+    if (gap <= GAP_M) continue;
+    const n = Math.ceil(gap / GAP_M);
+    for (let q = 1; q < n; q++) extra.push(marks[k - 1] + gap * q / n);
+  }
+  for (const at of extra) {
+    let i = 1;
+    while (i < cums.length - 1 && cums[i] < at) i++;
+    const pt = l.points[i];
+    const reg = field.regionAt(pt[0], pt[1]);
+    const names = WAY_KINDS[reg.id] || ['Wayside Camp'];
+    const nm = names[waystations.length % names.length];
+    waystations.push({
+      id: `way-${l.id}-${waystations.length}`,
+      name: `${nm} (${l.from}\u2013${l.to})`,
+      leg: l.id, region: reg.id,
+      x: pt[0], z: pt[1], y: pt[2],
+      at_m: +at.toFixed(0), of_m: +total.toFixed(0),
+    });
+  }
 }
 
 // ---- the crossing and the long way ------------------------------------------------------------------
@@ -238,6 +309,7 @@ const doc = {
       + 'what makes a causeway a causeway instead of a decal on a marsh.',
   speeds_mps: scale.scale.speeds_mps,
   legs,
+  waystations,
   named_routes: {
     crossing: { ...routeOf(CROSSING), note: 'RI-WLD01 §5 THE CROSSING — Stormhold south gate to Lilmoth harbour steps.' },
     long_way: { ...routeOf(LONG), note: 'RI-WLD01 §5 THE LONG WAY — Thorn to Soulrest.' },
@@ -251,6 +323,7 @@ for (const l of legs) {
   process.stdout.write(`${(l.from + ' -> ' + l.to).padEnd(24)} ${String(l.declared_path_m).padStart(6)} ${String(l.built_path_m).padStart(9)} `
     + `${((l.built_path_m / l.declared_path_m - 1) * 100).toFixed(2).padStart(7)}  ${String(l.built_walk_min).padStart(8)}  ${l.max_grade.toFixed(2).padStart(5)}  ${l.routing}\n`);
 }
-process.stdout.write(`\ntrunk network ${doc.total_trunk_m} m (RI-WLD01: 25,331 m)\n`);
+process.stdout.write(`\nwaystations ${waystations.length} inserted to hold every habitation gap under 8 walking minutes\n`);
+process.stdout.write(`trunk network ${doc.total_trunk_m} m (RI-WLD01: 25,331 m)\n`);
 process.stdout.write(`THE CROSSING  ${doc.named_routes.crossing.metres} m = ${doc.named_routes.crossing.walk_min} min walk (RI-WLD01: 6,909 m / 57.6 min)\n`);
 process.stdout.write(`THE LONG WAY  ${doc.named_routes.long_way.metres} m = ${doc.named_routes.long_way.walk_min} min walk (RI-WLD01: 9,477 m / 79.0 min)\n`);

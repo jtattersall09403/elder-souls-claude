@@ -1,0 +1,16 @@
+{
+  "schema": "elder-souls/camera-targets@1",
+  "owner": "RI-CAM03 §D — `size_bias(h) = 2.20 × max(0, h − 2.5)` and `k(h) = clamp((h − 2.5)/4, 0, 0.75)` are functions of the target's COLLISION HEIGHT, so the height has to be declared per archetype rather than guessed from a radius.",
+  "note": "Heights in metres, floor to the topmost tell-bearing node. The worked table in RI-CAM03 §D uses 0.6 (marsh rat), 1.9 (naga levy / INFANTRY), 2.6 (elite), 4.5 (mid boss) and 8.0 (great boss); those five rows are what RI-CAM03 M2's 40-pose sweep needs, and they are the five `cam_*` dummies below.",
+  "_default": 1.9,
+  "heights_m": {
+    "inf_trash": 1.9,
+    "dummy_passive": 1.9,
+    "beast_slitherfang": 1.2,
+    "cam_rat": 0.6,
+    "cam_levy": 1.9,
+    "cam_elite": 2.6,
+    "cam_boss_mid": 4.5,
+    "cam_boss_great": 8.0
+  }
+}

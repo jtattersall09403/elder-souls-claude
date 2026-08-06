@@ -107,7 +107,7 @@ const R = {
     flora_density: 0.18, canopy: 0.0, sightline_m: 1100,
   },
   'crimson-coast': {
-    terrain: { base_m: 12, amp_m: 18, wavelength_m: 560, relief_m: 3.6, ridge: 0.48, terrace: 0.08, style: 'littoral-rock' },
+    terrain: { base_m: 10, amp_m: 16, wavelength_m: 560, relief_m: 3.6, ridge: 0.48, terrace: 0.08, style: 'littoral-rock' },
     ground: { id: 'gnd_tide_lichen', albedo: '#8E2B33', roughness: 0.40, name: 'living crimson tide-lichen on black rock' },
     fog: { colour: '#6C7A80', extinction_per_m: 0.0048, height_falloff_m: 120 },
     sky: { zenith: '#2A4A6E', horizon: '#8E7A74' },
@@ -177,7 +177,7 @@ const R = {
     flora_density: 0.85, canopy: 0.08, sightline_m: 420,
   },
   'western-rootlands': {
-    terrain: { base_m: 2.4, amp_m: 3.1, wavelength_m: 560, relief_m: 1.15, ridge: 0.0, terrace: 0.30, style: 'paddy' },
+    terrain: { base_m: 2.0, amp_m: 2.8, wavelength_m: 560, relief_m: 1.15, ridge: 0.0, terrace: 0.30, style: 'paddy' },
     ground: { id: 'gnd_paddy_bund', albedo: '#6E8A4E', roughness: 0.90, name: 'paddy bund and root-wood road' },
     fog: { colour: '#A8B7A6', extinction_per_m: 0.0058, height_falloff_m: 70 },
     sky: { zenith: '#3E77A8', horizon: '#C4CFB8' },

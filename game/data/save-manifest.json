@@ -2,7 +2,7 @@
   "schema": "elder-souls/save-manifest@1",
   "save_schema": "elder-souls/save@1",
   "save_schema_version": 1,
-  "provenance": "Enumerated from RI-JRN05 §B, which is binding. This file is the SPECIFICATION; game/src/save/state.js is the implementation. RI-JRN05 M4 is a set-difference in BOTH directions between this file and the key set of canonicalise(saveState()) — a field in the save that is not here is a defect, and a field here that is not in the save is a defect.",
+  "provenance": "Enumerated from RI-JRN05 \u00a7B, which is binding. This file is the SPECIFICATION; game/src/save/state.js is the implementation. RI-JRN05 M4 is a set-difference in BOTH directions between this file and the key set of canonicalise(saveState()) \u2014 a field in the save that is not here is a defect, and a field here that is not in the save is a defect.",
   "rules": {
     "V1": "The volatile list is CLOSED. A field that differs across a round trip and is not on it is a defect. Moving a field onto it to make a test pass is falsification under RI-MTH04, not a fix.",
     "float_precision_dp": 6,
@@ -38,6 +38,8 @@
       "dialogue.dispositions",
       "factions",
       "flags",
+      "identity.creation.attributes",
+      "identity.creation.skills",
       "progression.upgrades",
       "quests"
     ]
@@ -57,8 +59,27 @@
         "identity.race",
         "identity.sign",
         "identity.profession",
-        "identity.document"
-      ]
+        "identity.document",
+        "identity.creation.created",
+        "identity.creation.given_name",
+        "identity.creation.hatch_name",
+        "identity.creation.hatch_name_refused",
+        "identity.creation.sex",
+        "identity.creation.race",
+        "identity.creation.upbringing",
+        "identity.creation.class_id",
+        "identity.creation.class_name",
+        "identity.creation.class_family",
+        "identity.creation.class_route",
+        "identity.creation.birthsign",
+        "identity.creation.birthsign_second",
+        "identity.creation.signature_key",
+        "identity.creation.writ_text",
+        "identity.creation.attributes",
+        "identity.creation.skills",
+        "identity.creation.flags"
+      ],
+      "note": "W1-07: identity.creation.* is the Writ House record \u2014 RI-CHR01 \u00a77 marks six of its eight fields permanently irreversible, so the save is where irreversibility is actually enforced."
     },
     {
       "group": "Character",
@@ -78,7 +99,7 @@
         "character.equip_load_pct",
         "character.roll_class"
       ],
-      "note": "Every skill's current value AND its accumulated use-progress fraction (RI-JRN05 §B) — character.skills entries are {value, use_progress}."
+      "note": "Every skill's current value AND its accumulated use-progress fraction (RI-JRN05 \u00a7B) \u2014 character.skills entries are {value, use_progress}."
     },
     {
       "group": "Inventory",
@@ -139,7 +160,7 @@
         "crime.stolen_registry",
         "crime.hunting"
       ],
-      "note": "Witness IDENTITIES, not a count — RI-JRN05 M8 and 'How we lose' #4."
+      "note": "Witness IDENTITIES, not a count \u2014 RI-JRN05 M8 and 'How we lose' #4."
     },
     {
       "group": "World",
@@ -157,24 +178,65 @@
         "world.gen_seed"
       ],
       "entity_record_fields": [
-        "id", "eid", "pos", "yaw_deg", "yaw_rate_dps", "speed_mps",
-        "hp", "poise", "alert", "alert_state",
-        "state", "prev_state", "anim", "anim_frame", "anim_phase0",
-        "phase", "hit_active", "attack_token", "hit_by_id",
-        "anchor", "stagger", "stagger_in_frames", "state_entered_ago_frames"
+        "id",
+        "eid",
+        "pos",
+        "yaw_deg",
+        "yaw_rate_dps",
+        "speed_mps",
+        "hp",
+        "poise",
+        "alert",
+        "alert_state",
+        "state",
+        "prev_state",
+        "anim",
+        "anim_frame",
+        "anim_phase0",
+        "phase",
+        "hit_active",
+        "attack_token",
+        "hit_by_id",
+        "anchor",
+        "stagger",
+        "stagger_in_frames",
+        "state_entered_ago_frames"
       ],
       "entity_field_live_to_save": {
-        "id": "id", "eid": "eid", "pos": "pos", "yaw": "yaw_deg", "yawRate": "yaw_rate_dps",
-        "speed": "speed_mps", "hp": "hp", "poise": "poise", "alert": "alert",
-        "alertState": "alert_state", "state": "state", "prevState": "prev_state",
-        "anim": "anim", "animFrame": "anim_frame", "animPhase0": "anim_phase0",
-        "phase": "phase", "hitActive": "hit_active", "attackToken": "attack_token",
-        "hitById": "hit_by_id", "anchor": "anchor", "stagger": "stagger",
-        "staggerUntil": "stagger_in_frames", "stateEnteredF": "state_entered_ago_frames"
+        "id": "id",
+        "eid": "eid",
+        "pos": "pos",
+        "yaw": "yaw_deg",
+        "yawRate": "yaw_rate_dps",
+        "speed": "speed_mps",
+        "hp": "hp",
+        "poise": "poise",
+        "alert": "alert",
+        "alertState": "alert_state",
+        "state": "state",
+        "prevState": "prev_state",
+        "anim": "anim",
+        "animFrame": "anim_frame",
+        "animPhase0": "anim_phase0",
+        "phase": "phase",
+        "hitActive": "hit_active",
+        "attackToken": "attack_token",
+        "hitById": "hit_by_id",
+        "anchor": "anchor",
+        "stagger": "stagger",
+        "staggerUntil": "stagger_in_frames",
+        "stateEnteredF": "state_entered_ago_frames"
       },
       "entity_fields_derived_from_the_archetype": [
-        "archetype", "tier", "ai", "animLen", "hpMax", "poiseMax",
-        "radius_m", "sight_radius_m", "sight_cone_deg"
+        "archetype",
+        "tier",
+        "ai",
+        "animLen",
+        "hpMax",
+        "poiseMax",
+        "radius_m",
+        "sight_radius_m",
+        "sight_cone_deg"
       ],
       "entity_fields_declared_absent": {
         "hitboxes": "An entity's own hitboxes are produced by an attack, and no wave-1 archetype attacks (ai is 'none' or 'hold_ground'), so the array is empty on every frame this build can produce and serialising it would be untested code. getDurableFieldCensus() ASSERTS it is empty instead, and the assertion fails loudly the moment W1-06 gives an enemy a swing."
@@ -278,7 +340,7 @@
     }
   ],
   "declared_incomplete": {
-    "note": "Groups whose OWNING SYSTEM does not exist in wave 1 are present here and in the save as real, empty, round-tripping containers — not omitted. quests{} is empty because no quest runtime exists (owner: wave-1 pieces W1-14..W1-16), not because quest state is unsaved. RI-JRN05's five scenarios SV1-SV5 exercise late-game state; game/data/states/ ships sv1 and sv5 as fixtures so the round trip is measured against non-trivial state rather than a fresh character (RI-JRN05 'How we lose' #14).",
+    "note": "Groups whose OWNING SYSTEM does not exist in wave 1 are present here and in the save as real, empty, round-tripping containers \u2014 not omitted. quests{} is empty because no quest runtime exists (owner: wave-1 pieces W1-14..W1-16), not because quest state is unsaved. RI-JRN05's five scenarios SV1-SV5 exercise late-game state; game/data/states/ ships sv1 and sv5 as fixtures so the round trip is measured against non-trivial state rather than a fresh character (RI-JRN05 'How we lose' #14).",
     "unowned_here": [
       "quest runtime",
       "crime runtime",

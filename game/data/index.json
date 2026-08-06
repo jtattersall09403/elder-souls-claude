@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 55,
+  "file_count": 77,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -11,6 +11,27 @@
       "bytes": 841,
       "sha256": "fb0e38e389a2c802",
       "declared_incomplete": true
+    },
+    {
+      "path": "camera/cells.json",
+      "schema": "elder-souls/camera-cells@1",
+      "id": null,
+      "bytes": 79065,
+      "sha256": "cd1049c8f5ec4c8b"
+    },
+    {
+      "path": "camera/rig.json",
+      "schema": "elder-souls/camera@1",
+      "id": "ES-CAM/1",
+      "bytes": 11785,
+      "sha256": "41ca703f6631ab5d"
+    },
+    {
+      "path": "camera/targets.json",
+      "schema": "elder-souls/camera-targets@1",
+      "id": null,
+      "bytes": 837,
+      "sha256": "944f999482d0670f"
     },
     {
       "path": "combat/clips.json",
@@ -25,6 +46,41 @@
       "id": "beast_slitherfang",
       "bytes": 1863,
       "sha256": "acf132a5278f6c81"
+    },
+    {
+      "path": "combat/enemies/cam_boss_great.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "cam_boss_great",
+      "bytes": 1136,
+      "sha256": "f61f28a283f2249e"
+    },
+    {
+      "path": "combat/enemies/cam_boss_mid.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "cam_boss_mid",
+      "bytes": 1134,
+      "sha256": "f173e09d7127286a"
+    },
+    {
+      "path": "combat/enemies/cam_elite.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "cam_elite",
+      "bytes": 1132,
+      "sha256": "275f7cf05290d04b"
+    },
+    {
+      "path": "combat/enemies/cam_levy.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "cam_levy",
+      "bytes": 1130,
+      "sha256": "6dc9dacfdeac5f71"
+    },
+    {
+      "path": "combat/enemies/cam_rat.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "cam_rat",
+      "bytes": 1130,
+      "sha256": "9a668a05039678bb"
     },
     {
       "path": "combat/enemies/dummy_passive.json",
@@ -160,6 +216,13 @@
       "sha256": "51636260f40a6f65"
     },
     {
+      "path": "dialogue/creation-questions.json",
+      "schema": "elder-souls/creation-questions@1",
+      "id": "creation-questions",
+      "bytes": 13722,
+      "sha256": "90ce9a96e484235c"
+    },
+    {
       "path": "dialogue/greetings.json",
       "schema": "elder-souls/greetings@1",
       "id": null,
@@ -184,6 +247,13 @@
       "declared_incomplete": true
     },
     {
+      "path": "dialogue/topics/writ-house.json",
+      "schema": "elder-souls/topics@1",
+      "id": null,
+      "bytes": 18625,
+      "sha256": "fc74a1210e2da0ee"
+    },
+    {
       "path": "items/thorn.json",
       "schema": "elder-souls/items@1",
       "id": null,
@@ -192,11 +262,55 @@
       "declared_incomplete": true
     },
     {
+      "path": "items/writ.json",
+      "schema": "elder-souls/items@1",
+      "id": null,
+      "bytes": 2749,
+      "sha256": "d982cecd158822d7"
+    },
+    {
       "path": "npcs/thorn.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
       "bytes": 1360,
       "sha256": "623101ad5277c85a",
+      "declared_incomplete": true
+    },
+    {
+      "path": "npcs/writ-house.json",
+      "schema": "elder-souls/npcs@1",
+      "id": null,
+      "bytes": 4550,
+      "sha256": "72cd801430743613",
+      "declared_incomplete": true
+    },
+    {
+      "path": "progression/attributes.json",
+      "schema": "elder-souls/attributes@1",
+      "id": "attributes",
+      "bytes": 4593,
+      "sha256": "7e9b25abd152a78a"
+    },
+    {
+      "path": "progression/birthsigns.json",
+      "schema": "elder-souls/birthsigns@1",
+      "id": "birthsigns",
+      "bytes": 14761,
+      "sha256": "473c6a18cbe58af9"
+    },
+    {
+      "path": "progression/classes.json",
+      "schema": "elder-souls/classes@1",
+      "id": "classes",
+      "bytes": 9727,
+      "sha256": "eaa0150751dbb3ea"
+    },
+    {
+      "path": "progression/creation.json",
+      "schema": "elder-souls/creation@1",
+      "id": "creation",
+      "bytes": 9546,
+      "sha256": "e287b88d158610d1",
       "declared_incomplete": true
     },
     {
@@ -214,11 +328,26 @@
       "sha256": "911c9ce7c43ccd37"
     },
     {
+      "path": "progression/race-reactions.json",
+      "schema": "elder-souls/race-reactions@1",
+      "id": "race-reactions",
+      "bytes": 11326,
+      "sha256": "39f119f9dc7daf80",
+      "declared_incomplete": true
+    },
+    {
+      "path": "progression/races.json",
+      "schema": "elder-souls/races@1",
+      "id": "races",
+      "bytes": 9665,
+      "sha256": "b7a0c0cf8307cc83"
+    },
+    {
       "path": "progression/skills.json",
       "schema": "elder-souls/skills@1",
-      "id": null,
-      "bytes": 631,
-      "sha256": "e113d0a0fe438ae1"
+      "id": "skills",
+      "bytes": 5673,
+      "sha256": "fef05242d2cece6d"
     },
     {
       "path": "quests/the-boards.json",
@@ -232,16 +361,16 @@
       "path": "save-manifest.json",
       "schema": "elder-souls/save-manifest@1",
       "id": null,
-      "bytes": 10892,
-      "sha256": "ce207cc459ac9ad6",
+      "bytes": 12231,
+      "sha256": "b1f6934fc6fe962d",
       "declared_incomplete": true
     },
     {
       "path": "states/arena_duel.json",
       "schema": "elder-souls/state@1",
       "id": "arena_duel",
-      "bytes": 1124,
-      "sha256": "c187b41759fc8c60"
+      "bytes": 1599,
+      "sha256": "29deef6ab40e452b"
     },
     {
       "path": "states/arena_flat.json",
@@ -254,8 +383,8 @@
       "path": "states/default.json",
       "schema": "elder-souls/state@1",
       "id": "default",
-      "bytes": 974,
-      "sha256": "81adcb108fa4fba9"
+      "bytes": 979,
+      "sha256": "39b1ff1a2ce49ac3"
     },
     {
       "path": "states/dungeon_primary.json",
@@ -282,22 +411,29 @@
       "path": "states/material_showcase.json",
       "schema": "elder-souls/state@1",
       "id": "material_showcase",
-      "bytes": 855,
-      "sha256": "18aa6096a3508884"
+      "bytes": 1320,
+      "sha256": "5ab5e870c66b7565"
     },
     {
       "path": "states/npc_showcase.json",
       "schema": "elder-souls/state@1",
       "id": "npc_showcase",
-      "bytes": 835,
-      "sha256": "8347bcaf36456081"
+      "bytes": 1300,
+      "sha256": "3178285ddb0e6647"
     },
     {
       "path": "states/settlement_primary_street.json",
       "schema": "elder-souls/state@1",
       "id": "settlement_primary_street",
-      "bytes": 767,
-      "sha256": "ca0d927cab0f39c5"
+      "bytes": 1232,
+      "sha256": "1d17e8e6d96a5bea"
+    },
+    {
+      "path": "states/showcase_patch.json",
+      "schema": "elder-souls/state@1",
+      "id": "showcase_patch",
+      "bytes": 905,
+      "sha256": "2135f122e5c356a0"
     },
     {
       "path": "states/sv1-midquest.json",
@@ -317,8 +453,8 @@
       "path": "states/swamp_canopy.json",
       "schema": "elder-souls/state@1",
       "id": "swamp_canopy",
-      "bytes": 757,
-      "sha256": "78b37ba2b88ff074"
+      "bytes": 1222,
+      "sha256": "8fe43c695278da85"
     },
     {
       "path": "states/thorn-hall.json",
@@ -331,15 +467,22 @@
       "path": "states/vista_primary.json",
       "schema": "elder-souls/state@1",
       "id": "vista_primary",
-      "bytes": 795,
-      "sha256": "87bec1d07b5758ce"
+      "bytes": 1260,
+      "sha256": "1b2b98243a9140e2"
     },
     {
       "path": "states/water_shallows.json",
       "schema": "elder-souls/state@1",
       "id": "water_shallows",
-      "bytes": 778,
-      "sha256": "eceaedfd481cf0cc"
+      "bytes": 1243,
+      "sha256": "5b9c6b90bfdd676a"
+    },
+    {
+      "path": "world/encounters.json",
+      "schema": "elder-souls/encounters@1",
+      "id": "encounters",
+      "bytes": 5177,
+      "sha256": "989dc5df824fb93b"
     },
     {
       "path": "world/hazards.json",
@@ -357,6 +500,14 @@
       "declared_incomplete": true
     },
     {
+      "path": "world/interiors/writ-house.json",
+      "schema": "elder-souls/interior@1",
+      "id": "writ-house",
+      "bytes": 1969,
+      "sha256": "e7b62f8ff5714e2f",
+      "declared_incomplete": true
+    },
+    {
       "path": "world/landmask.json",
       "schema": "elder-souls/landmask@1",
       "id": null,
@@ -367,16 +518,23 @@
       "path": "world/pois.json",
       "schema": "elder-souls/pois@1",
       "id": null,
-      "bytes": 7297,
-      "sha256": "fc572cc25a418272",
+      "bytes": 16096,
+      "sha256": "197e3b4c499968dc",
       "declared_incomplete": true
     },
     {
       "path": "world/regions.json",
       "schema": "elder-souls/regions@2",
       "id": null,
-      "bytes": 37047,
-      "sha256": "673d21538aa0bab7"
+      "bytes": 42956,
+      "sha256": "d609fa68c96d8bc7"
+    },
+    {
+      "path": "world/roads.json",
+      "schema": "elder-souls/roads@1",
+      "id": null,
+      "bytes": 116157,
+      "sha256": "d81b3d1f0f3bfdc6"
     },
     {
       "path": "world/settlements/thorn.json",
@@ -390,15 +548,15 @@
       "path": "world/terrain.json",
       "schema": "elder-souls/terrain@1",
       "id": null,
-      "bytes": 872546,
-      "sha256": "4000288b96384ffa"
+      "bytes": 872551,
+      "sha256": "7666a3dda701166c"
     },
     {
       "path": "world/water.json",
       "schema": "elder-souls/water@1",
       "id": null,
-      "bytes": 8667,
-      "sha256": "8468075e27a9f648"
+      "bytes": 8669,
+      "sha256": "8bf5a8100df9e8e6"
     }
   ]
 }

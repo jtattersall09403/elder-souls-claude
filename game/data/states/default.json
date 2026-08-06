@@ -1,21 +1,21 @@
 {
   "schema": "elder-souls/state@1",
   "id": "default",
-  "title": "A fresh character on the boardwalk at the south end of the street.",
-  "note": "The renderable patch is a 420 m neighbourhood at the WORLD ORIGIN. The province coordinates in game/data/world/pois.json (Thorn at x=3820, z=859) are the map wave-1 piece W1-01 builds; this piece ships the one neighbourhood the canonical viewpoints are posed against, and says so rather than pretending the province exists.",
+  "title": "A fresh character on the harbour steps at Lilmoth, in the Western Rootlands.",
+  "note": "W1-01. The province is real: 4,825 x 5,540 m, 14.24 km2 of walkable land placed from RI-WLD01 \u00a73 verbatim. Lilmoth is the tier-1 start (RI-WLD04 \u00a7difficulty tiers). The old 420 m origin neighbourhood survives as the state `showcase_patch` and as the anchor for the twelve canonical viewpoints.",
   "env": {
-    "timeOfDay": 12.0,
-    "weather": "clear",
-    "region": "thornmarsh",
+    "timeOfDay": 9.0,
+    "weather": "dawn_mist",
+    "region": "western-rootlands",
     "interior": null
   },
   "player": {
     "pos": [
-      4.0,
+      2766.5,
       0,
-      -10.0
+      5011.0
     ],
-    "yaw": 0.0
+    "yaw": 180.0
   },
   "camera": {
     "yaw": 0.0,

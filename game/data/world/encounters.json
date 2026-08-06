@@ -1,0 +1,67 @@
+{
+  "schema": "elder-souls/encounters@1",
+  "id": "encounters",
+  "owner": "W1-07 — character creation (the AR-3 seam crossing)",
+  "source": "corpus/22-character/RI-CHR02-race-and-standing.md §4e; method 8",
+  "provenance": "constructed",
+  "ar3_rule": {
+    "legal_lever": "WHETHER, WHEN and HOW an encounter aggros, and what parley it offers.",
+    "illegal_lever": "Any change to hp, poise, damage, archetype, moveset, frame data or attack selection as a function of the player's race. That is Morrowind reaching into the fight and is an automatic AR-1 fail (RI-CHR02 'how we lose' #4).",
+    "enforcement": "Every member of every encounter below names an EXISTING statblock id. The statblock is loaded once and is invariant to race by construction — there is no per-race statblock and no per-race override field in this schema. tools/analysis/creation-audit.mjs --section ar3 asserts the schema contains no such field."
+  },
+  "encounters": [
+    {
+      "id": "dres-raid-party",
+      "name": "Dres raid party",
+      "regions": ["rootlands", "salt-hills"],
+      "schedule": "fixed",
+      "reaction_group": "RG-DRES",
+      "members": [
+        { "role": "infantry", "statblock": "inf_trash", "count": 4, "spawn_offsets_m": [[-3.0, 0, 2.0], [3.0, 0, 2.0], [-1.2, 0, 4.4], [1.2, 0, 4.4]] },
+        { "role": "net-thrower", "statblock": "inf_trash", "count": 2, "spawn_offsets_m": [[-5.2, 0, 6.0], [5.2, 0, 6.0]] }
+      ],
+      "member_note": "Six members in wave 1. RI-CHR02 §4e specifies 4-6 INFANTRY + 1 CASTER + 2 net-throwers; the CASTER is absent because W1-07 does not own a caster statblock and inventing one would be inventing frame data. The absence is declared, not hidden.",
+      "race_behaviour": {
+        "saxhleel": { "opening": "hostile", "aggro_at_m": 28.0, "net_behaviour": "capture", "parley_offer": false, "on_player_defeat": "capture-transport-archon" },
+        "naga": { "opening": "hostile", "aggro_at_m": 28.0, "net_behaviour": "capture", "parley_offer": false, "on_player_defeat": "capture-transport-archon" },
+        "khajiit": { "opening": "hostile", "aggro_at_m": 12.0, "net_behaviour": "kill", "parley_offer": false, "on_player_defeat": "death" },
+        "dunmer": { "opening": "hail", "aggro_at_m": null, "net_behaviour": "idle", "parley_offer": true, "parley_kind": "purchase", "on_player_defeat": "death" },
+        "imperial": { "opening": "hail", "aggro_at_m": null, "net_behaviour": "idle", "parley_offer": true, "parley_kind": "purchase", "on_player_defeat": "death" },
+        "nord": { "opening": "hail", "aggro_at_m": null, "net_behaviour": "idle", "parley_offer": true, "parley_kind": "purchase", "on_player_defeat": "death" },
+        "breton": { "opening": "hail", "aggro_at_m": null, "net_behaviour": "idle", "parley_offer": true, "parley_kind": "purchase", "on_player_defeat": "death" },
+        "redguard": { "opening": "hail", "aggro_at_m": null, "net_behaviour": "idle", "parley_offer": true, "parley_kind": "purchase", "on_player_defeat": "death" },
+        "orsimer": { "opening": "hail", "aggro_at_m": null, "net_behaviour": "idle", "parley_offer": true, "parley_kind": "purchase", "on_player_defeat": "death" },
+        "bosmer": { "opening": "hail", "aggro_at_m": null, "net_behaviour": "idle", "parley_offer": true, "parley_kind": "purchase", "on_player_defeat": "death" }
+      },
+      "hail_line": "Hold up. You are not what we are out here for. — Are you buying? We have four and one of them can read.",
+      "capture_line": "Nets. Nets, not blades, that one is worth the walk back.",
+      "khajiit_line": "Take it. Nobody writes a receipt for a cat.",
+      "parley": {
+        "kind": "purchase",
+        "grounds": ["gold", "faction", "name"],
+        "race_independent_route": "name",
+        "true_name_topic": "the-sallow-wife",
+        "note": "S13 / RI-CHR02 method 11: every parley must have at least one route that is not disposition-gated, or a race term alone can close every non-lethal exit. Here that route is knowledge — the name of the ship — and it is available to a Saxhleel at disposition 0."
+      }
+    },
+    {
+      "id": "deep-kin-war-brood",
+      "name": "Deep-Kin war-brood camp",
+      "regions": ["deep-marshes", "stone-forest"],
+      "reaction_group": "RG-DEEP",
+      "members": [
+        { "role": "infantry", "statblock": "inf_trash", "count": 3, "spawn_offsets_m": [[-2.4, 0, 3.0], [2.4, 0, 3.0], [0, 0, 5.5]] }
+      ],
+      "hostile_below_disposition": 15,
+      "behaviour_rule": "hostile_below_disposition",
+      "behaviour_note": "RI-CHR02 §4e mechanism 2. Not a race table — a DISPOSITION threshold, which the race term happens to push a Dunmer under all by itself. An entire tier-3/4 region's encounter density is therefore a function of what the Warden-Scribe wrote down.",
+      "aggro_at_m": 18.0,
+      "parley": {
+        "grounds": ["name", "faction", "gold"],
+        "race_independent_route": "name",
+        "true_name_topic": "the-twin-lamps",
+        "note": "The Twin Lamps password is race-blind and disposition-blind (RI-CHR02 §6). It is the reason a Dunmer at disposition 6 still has a non-lethal exit here."
+      }
+    }
+  ]
+}

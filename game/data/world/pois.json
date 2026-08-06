@@ -1,328 +1,699 @@
 {
   "schema": "elder-souls/pois@1",
-  "provenance": "Settlement POIs transcribed from corpus/50-world/settlements.json. Non-settlement POI density is owned by wave-1 pieces W1-01/W1-05/W1-07; this file carries the settlements only and says so.",
+  "generator": "tools/world/build-pois.mjs",
+  "provenance": "RI-WLD01 §3/§6/§7 verbatim for position; region, elevation, slope and water band read off the BUILT world (game/src/world/field.js), so a coordinate that drifted would show here.",
   "declared_incomplete": {
-    "owner": "W1-01 world shape, W1-05 roads and signposts",
+    "owner": "W1-02 (strangeness), W1-04 (settlement anatomy and interiors), W1-05 (signposts and stations)",
     "missing": [
-      "ruins",
-      "camps",
-      "shrines",
-      "dungeons",
-      "landmarks"
+      "dungeon entrances",
+      "shrines beyond the wayside set",
+      "named caves",
+      "signposts",
+      "transport stations"
     ]
   },
+  "counts": {
+    "settlement": 8,
+    "minor-settlement": 16,
+    "landmark": 10,
+    "waystation": 8
+  },
   "pois": [
-    {
-      "id": "archon",
-      "name": "Archon",
-      "kind": "settlement",
-      "tier": "town",
-      "region": "crimson-coast",
-      "pos": [
-        3785.0,
-        0,
-        3823.5
-      ],
-      "provenance": "corpus/50-world/settlements.json (coordinates authoritative)"
-    },
-    {
-      "id": "blackrose",
-      "name": "Blackrose",
-      "kind": "settlement",
-      "tier": "town",
-      "region": "western-rootlands",
-      "pos": [
-        1905.5,
-        0,
-        4450.0
-      ],
-      "provenance": "corpus/50-world/settlements.json (coordinates authoritative)"
-    },
-    {
-      "id": "gideon",
-      "name": "Gideon",
-      "kind": "settlement",
-      "tier": "town",
-      "region": "blackwood",
-      "pos": [
-        439.0,
-        0,
-        2913.5
-      ],
-      "provenance": "corpus/50-world/settlements.json (coordinates authoritative)"
-    },
-    {
-      "id": "helstrom",
-      "name": "Helstrom",
-      "kind": "settlement",
-      "tier": "capital",
-      "region": "stone-forest",
-      "pos": [
-        2262.5,
-        0,
-        2773.5
-      ],
-      "provenance": "corpus/50-world/settlements.json (coordinates authoritative)"
-    },
-    {
-      "id": "lilmoth",
-      "name": "Lilmoth",
-      "kind": "settlement",
-      "tier": "city",
-      "region": "western-rootlands",
-      "pos": [
-        2766.5,
-        0,
-        5027.5
-      ],
-      "provenance": "corpus/50-world/settlements.json (coordinates authoritative)"
-    },
-    {
-      "id": "soulrest",
-      "name": "Soulrest",
-      "kind": "settlement",
-      "tier": "village",
-      "region": "stone-wastes",
-      "pos": [
-        610.5,
-        0,
-        4877.0
-      ],
-      "provenance": "corpus/50-world/settlements.json (coordinates authoritative)"
-    },
     {
       "id": "stormhold",
       "name": "Stormhold",
       "kind": "settlement",
-      "tier": "city",
       "region": "salt-hills",
       "pos": [
         2171.5,
-        0,
-        761.0
+        141.19,
+        761
       ],
-      "provenance": "corpus/50-world/settlements.json (coordinates authoritative)"
+      "slope_deg": 0,
+      "water_band": "W0",
+      "tier": "city",
+      "declared_region": "The Salt Hills",
+      "provenance": "corpus/50-world/settlements.json — coordinates authoritative"
     },
     {
       "id": "thorn",
       "name": "Thorn",
       "kind": "settlement",
-      "tier": "village",
       "region": "thornmarsh",
       "pos": [
-        3820.0,
-        0,
-        859.0
+        3820,
+        13.32,
+        859
       ],
-      "provenance": "corpus/50-world/settlements.json (coordinates authoritative)"
+      "slope_deg": 0,
+      "water_band": "W0",
+      "tier": "village",
+      "declared_region": "Thornmarsh",
+      "provenance": "corpus/50-world/settlements.json — coordinates authoritative"
     },
     {
-      "id": "bone-ladder",
-      "name": "Bone Ladder",
+      "id": "gideon",
+      "name": "Gideon",
       "kind": "settlement",
-      "tier": "minor",
-      "region": "",
+      "region": "blackwood",
       "pos": [
-        637.4,
-        0,
-        4380.0
+        439,
+        2.72,
+        2913.5
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
+      "slope_deg": 0,
+      "water_band": "W0",
+      "tier": "town",
+      "declared_region": "Blackwood",
+      "provenance": "corpus/50-world/settlements.json — coordinates authoritative"
     },
     {
-      "id": "clayfast",
-      "name": "Clayfast",
+      "id": "helstrom",
+      "name": "Helstrom",
       "kind": "settlement",
-      "tier": "minor",
-      "region": "",
+      "region": "stone-forest",
       "pos": [
-        3718.5,
-        0,
-        2787.5
+        2262.5,
+        26.53,
+        2773.5
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
+      "slope_deg": 0,
+      "water_band": "W0",
+      "tier": "capital",
+      "declared_region": "The Stone Forest",
+      "provenance": "corpus/50-world/settlements.json — coordinates authoritative"
     },
     {
-      "id": "hollow-reeds",
-      "name": "Hollow-Reeds",
+      "id": "archon",
+      "name": "Archon",
       "kind": "settlement",
-      "tier": "minor",
-      "region": "",
+      "region": "crimson-coast",
       "pos": [
-        544.0,
-        0,
-        3652.0
+        3785,
+        3.28,
+        3823.5
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
+      "slope_deg": 4.29,
+      "water_band": "W0",
+      "tier": "town",
+      "declared_region": "Crimson Coast",
+      "provenance": "corpus/50-world/settlements.json — coordinates authoritative"
+    },
+    {
+      "id": "blackrose",
+      "name": "Blackrose",
+      "kind": "settlement",
+      "region": "western-rootlands",
+      "pos": [
+        1905.5,
+        2.68,
+        4450
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "tier": "town",
+      "declared_region": "Western Rootlands",
+      "provenance": "corpus/50-world/settlements.json — coordinates authoritative"
+    },
+    {
+      "id": "soulrest",
+      "name": "Soulrest",
+      "kind": "settlement",
+      "region": "stone-wastes",
+      "pos": [
+        610.5,
+        7.92,
+        4877
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "tier": "village",
+      "declared_region": "Stone Wastes",
+      "provenance": "corpus/50-world/settlements.json — coordinates authoritative"
+    },
+    {
+      "id": "lilmoth",
+      "name": "Lilmoth",
+      "kind": "settlement",
+      "region": "western-rootlands",
+      "pos": [
+        2766.5,
+        0.85,
+        5027.5
+      ],
+      "slope_deg": 4.29,
+      "water_band": "W0",
+      "tier": "city",
+      "declared_region": "Western Rootlands",
+      "provenance": "corpus/50-world/settlements.json — coordinates authoritative"
     },
     {
       "id": "ixtaxh-tzil",
       "name": "Ixtaxh-Tzil",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
+      "kind": "minor-settlement",
+      "region": "stone-forest",
       "pos": [
         2988.6,
-        0,
+        49.83,
         929.8
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "kiln-camp",
-      "name": "Kiln Camp",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        3489.8,
-        0,
-        3534.9
+      "slope_deg": 41.71,
+      "water_band": "W0",
+      "on_leg": [
+        "Stormhold",
+        "Thorn"
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "mudwater-landing",
-      "name": "Mudwater Landing",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        1909.0,
-        0,
-        4121.0
-      ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
+      "provenance": "RI-WLD01 §6"
     },
     {
       "id": "nine-mud",
       "name": "Nine-Mud",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
+      "kind": "minor-settlement",
+      "region": "stone-forest",
       "pos": [
         2293.3,
-        0,
+        116.68,
         1461.3
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "rootway-post",
-      "name": "Rootway Post",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        1617.4,
-        0,
-        2732.8
+      "slope_deg": 28.39,
+      "water_band": "W0",
+      "on_leg": [
+        "Stormhold",
+        "Helstrom"
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "salt-egg-camp",
-      "name": "Salt-Egg Camp",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        1163.5,
-        0,
-        4625.0
-      ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "stilt-row",
-      "name": "Stilt-Row",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        2274.7,
-        0,
-        4830.1
-      ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "sunken-barrow",
-      "name": "Sunken Barrow",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        2224.0,
-        0,
-        3550.5
-      ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "tenmarch-bridge",
-      "name": "Tenmarch Bridge",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        990.6,
-        0,
-        2931.3
-      ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "the-red-wells",
-      "name": "The Red Wells",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        3909.5,
-        0,
-        1749.5
-      ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
+      "provenance": "RI-WLD01 §6"
     },
     {
       "id": "the-weeping-ford",
       "name": "The Weeping Ford",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
+      "kind": "minor-settlement",
+      "region": "stone-forest",
       "pos": [
         2129.5,
-        0,
+        105.45,
         2206.5
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
-    },
-    {
-      "id": "tideway-shrine",
-      "name": "Tideway Shrine",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
-      "pos": [
-        3207.0,
-        0,
-        4367.4
+      "slope_deg": 83.87,
+      "water_band": "W0",
+      "on_leg": [
+        "Stormhold",
+        "Helstrom"
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
+      "provenance": "RI-WLD01 §6"
     },
     {
       "id": "xal-ithix",
       "name": "Xal-Ithix",
-      "kind": "settlement",
-      "tier": "minor",
-      "region": "",
+      "kind": "minor-settlement",
+      "region": "deep-marshes",
       "pos": [
-        2938.0,
-        0,
+        2938,
+        2.55,
         3347.5
       ],
-      "provenance": "corpus/50-world/settlements.json minor_settlements"
+      "slope_deg": 0.34,
+      "water_band": "W0",
+      "on_leg": [
+        "Helstrom",
+        "Archon"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "kiln-camp",
+      "name": "Kiln Camp",
+      "kind": "minor-settlement",
+      "region": "eastern-rootlands",
+      "pos": [
+        3489.8,
+        2.39,
+        3534.9
+      ],
+      "slope_deg": 0.01,
+      "water_band": "W0",
+      "on_leg": [
+        "Helstrom",
+        "Archon"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "sunken-barrow",
+      "name": "Sunken Barrow",
+      "kind": "minor-settlement",
+      "region": "deep-marshes",
+      "pos": [
+        2224,
+        4.5,
+        3550.5
+      ],
+      "slope_deg": 0.06,
+      "water_band": "W0",
+      "on_leg": [
+        "Helstrom",
+        "Blackrose"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "mudwater-landing",
+      "name": "Mudwater Landing",
+      "kind": "minor-settlement",
+      "region": "western-rootlands",
+      "pos": [
+        1909,
+        2.6,
+        4121
+      ],
+      "slope_deg": 0.19,
+      "water_band": "W0",
+      "on_leg": [
+        "Helstrom",
+        "Blackrose"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "rootway-post",
+      "name": "Rootway Post",
+      "kind": "minor-settlement",
+      "region": "blackwood",
+      "pos": [
+        1617.4,
+        34.86,
+        2732.8
+      ],
+      "slope_deg": 7.46,
+      "water_band": "W0",
+      "on_leg": [
+        "Helstrom",
+        "Gideon"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "tenmarch-bridge",
+      "name": "Tenmarch Bridge",
+      "kind": "minor-settlement",
+      "region": "blackwood",
+      "pos": [
+        990.6,
+        2.71,
+        2931.3
+      ],
+      "slope_deg": 0.09,
+      "water_band": "W0",
+      "on_leg": [
+        "Helstrom",
+        "Gideon"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "hollow-reeds",
+      "name": "Hollow-Reeds",
+      "kind": "minor-settlement",
+      "region": "marauders-coast",
+      "pos": [
+        544,
+        1.35,
+        3652
+      ],
+      "slope_deg": 0.21,
+      "water_band": "W0",
+      "on_leg": [
+        "Gideon",
+        "Soulrest"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "bone-ladder",
+      "name": "Bone Ladder",
+      "kind": "minor-settlement",
+      "region": "stone-wastes",
+      "pos": [
+        637.4,
+        3.8,
+        4380
+      ],
+      "slope_deg": 0.14,
+      "water_band": "W0",
+      "on_leg": [
+        "Gideon",
+        "Soulrest"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "salt-egg-camp",
+      "name": "Salt-Egg Camp",
+      "kind": "minor-settlement",
+      "region": "stone-wastes",
+      "pos": [
+        1163.5,
+        8.67,
+        4625
+      ],
+      "slope_deg": 0.28,
+      "water_band": "W0",
+      "on_leg": [
+        "Soulrest",
+        "Blackrose"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "stilt-row",
+      "name": "Stilt-Row",
+      "kind": "minor-settlement",
+      "region": "western-rootlands",
+      "pos": [
+        2274.7,
+        0.82,
+        4830.1
+      ],
+      "slope_deg": 0.21,
+      "water_band": "W0",
+      "on_leg": [
+        "Blackrose",
+        "Lilmoth"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "clayfast",
+      "name": "Clayfast",
+      "kind": "minor-settlement",
+      "region": "deep-marshes",
+      "pos": [
+        3718.5,
+        6.21,
+        2787.5
+      ],
+      "slope_deg": 0.38,
+      "water_band": "W0",
+      "on_leg": [
+        "Archon",
+        "Thorn"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "the-red-wells",
+      "name": "The Red Wells",
+      "kind": "minor-settlement",
+      "region": "clay-moor",
+      "pos": [
+        3909.5,
+        29.53,
+        1749.5
+      ],
+      "slope_deg": 0.23,
+      "water_band": "W0",
+      "on_leg": [
+        "Archon",
+        "Thorn"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "tideway-shrine",
+      "name": "Tideway Shrine",
+      "kind": "minor-settlement",
+      "region": "eastern-rootlands",
+      "pos": [
+        3207,
+        1.81,
+        4367.4
+      ],
+      "slope_deg": 1.54,
+      "water_band": "W0",
+      "on_leg": [
+        "Lilmoth",
+        "Archon"
+      ],
+      "provenance": "RI-WLD01 §6"
+    },
+    {
+      "id": "the-xanmeer-of-ix-thakla",
+      "name": "The Xanmeer of Ix-Thakla",
+      "kind": "landmark",
+      "region": "stone-forest",
+      "pos": [
+        2129.5,
+        214.03,
+        1422.5
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "the-counting-obelisk",
+      "name": "The Counting Obelisk",
+      "kind": "landmark",
+      "region": "stone-forest",
+      "pos": [
+        2822.5,
+        34.45,
+        1569.5
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "wayshrine-of-the-ninth-root",
+      "name": "Wayshrine of the Ninth Root",
+      "kind": "landmark",
+      "region": "stone-forest",
+      "pos": [
+        2567,
+        35.14,
+        1790
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "the-drowned-xanmeer",
+      "name": "The Drowned Xanmeer",
+      "kind": "landmark",
+      "region": "deep-marshes",
+      "pos": [
+        3477,
+        3.87,
+        2857.5
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "xanmeer-of-sunken-teeth",
+      "name": "Xanmeer of Sunken Teeth",
+      "kind": "landmark",
+      "region": "eastern-rootlands",
+      "pos": [
+        2444.5,
+        2.68,
+        4170
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "ceyatatar-zel-ayleid-vault",
+      "name": "Ceyatatar-Zel (Ayleid vault)",
+      "kind": "landmark",
+      "region": "blackwood",
+      "pos": [
+        1433,
+        4.59,
+        2906.5
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "the-leaning-stone",
+      "name": "The Leaning Stone",
+      "kind": "landmark",
+      "region": "stone-wastes",
+      "pos": [
+        1335,
+        5.25,
+        4572.5
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "the-border-falls",
+      "name": "The Border Falls",
+      "kind": "landmark",
+      "region": "salt-hills",
+      "pos": [
+        2752.5,
+        84.78,
+        425
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "the-glassed-crater",
+      "name": "The Glassed Crater",
+      "kind": "landmark",
+      "region": "stone-wastes",
+      "pos": [
+        740,
+        8.77,
+        4922.5
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "bloodmarl-isle",
+      "name": "Bloodmarl Isle",
+      "kind": "landmark",
+      "region": "crimson-coast",
+      "pos": [
+        4520,
+        0.85,
+        2805
+      ],
+      "slope_deg": 0,
+      "water_band": "W0",
+      "provenance": "RI-WLD01 §7 — read from the map source"
+    },
+    {
+      "id": "way-stormhold-thorn-0",
+      "name": "Legion Milepost (Stormhold–Thorn)",
+      "kind": "waystation",
+      "region": "salt-hills",
+      "pos": [
+        2674.8,
+        102.82,
+        751.9
+      ],
+      "slope_deg": 5.43,
+      "water_band": "W0",
+      "leg": "stormhold-thorn",
+      "provenance": "W1-01 — inserted to hold RI-WLD01 M5 (no habitation gap over 8 walking minutes)"
+    },
+    {
+      "id": "way-stormhold-thorn-1",
+      "name": "Ash Shelter (Stormhold–Thorn)",
+      "kind": "waystation",
+      "region": "thornmarsh",
+      "pos": [
+        3385.3,
+        12.68,
+        806.4
+      ],
+      "slope_deg": 0.2,
+      "water_band": "W0",
+      "leg": "stormhold-thorn",
+      "provenance": "W1-01 — inserted to hold RI-WLD01 M5 (no habitation gap over 8 walking minutes)"
+    },
+    {
+      "id": "way-helstrom-archon-2",
+      "name": "Corpse-Lily Shrine (Helstrom–Archon)",
+      "kind": "waystation",
+      "region": "deep-marshes",
+      "pos": [
+        2845.2,
+        8.9,
+        2837.8
+      ],
+      "slope_deg": 2.61,
+      "water_band": "W0",
+      "leg": "helstrom-archon",
+      "provenance": "W1-01 — inserted to hold RI-WLD01 M5 (no habitation gap over 8 walking minutes)"
+    },
+    {
+      "id": "way-helstrom-blackrose-3",
+      "name": "Welkynd Shrine (Helstrom–Blackrose)",
+      "kind": "waystation",
+      "region": "blackwood",
+      "pos": [
+        2220.8,
+        5.73,
+        3238.2
+      ],
+      "slope_deg": 0.83,
+      "water_band": "W0",
+      "leg": "helstrom-blackrose",
+      "provenance": "W1-01 — inserted to hold RI-WLD01 M5 (no habitation gap over 8 walking minutes)"
+    },
+    {
+      "id": "way-archon-thorn-4",
+      "name": "Vat-Keeper’s Hut (Archon–Thorn)",
+      "kind": "waystation",
+      "region": "crimson-coast",
+      "pos": [
+        3955.4,
+        15.48,
+        2302.1
+      ],
+      "slope_deg": 0.54,
+      "water_band": "W0",
+      "leg": "archon-thorn",
+      "provenance": "W1-01 — inserted to hold RI-WLD01 M5 (no habitation gap over 8 walking minutes)"
+    },
+    {
+      "id": "way-archon-thorn-5",
+      "name": "Kiln Post (Archon–Thorn)",
+      "kind": "waystation",
+      "region": "clay-moor",
+      "pos": [
+        3909.7,
+        26.41,
+        1248.8
+      ],
+      "slope_deg": 0.94,
+      "water_band": "W0",
+      "leg": "archon-thorn",
+      "provenance": "W1-01 — inserted to hold RI-WLD01 M5 (no habitation gap over 8 walking minutes)"
+    },
+    {
+      "id": "way-lilmoth-archon-6",
+      "name": "Stilt-Rest (Lilmoth–Archon)",
+      "kind": "waystation",
+      "region": "eastern-rootlands",
+      "pos": [
+        3047.5,
+        0.95,
+        4653.8
+      ],
+      "slope_deg": 0.17,
+      "water_band": "W3",
+      "leg": "lilmoth-archon",
+      "provenance": "W1-01 — inserted to hold RI-WLD01 M5 (no habitation gap over 8 walking minutes)"
+    },
+    {
+      "id": "way-lilmoth-archon-7",
+      "name": "Tide-Pole Post (Lilmoth–Archon)",
+      "kind": "waystation",
+      "region": "eastern-rootlands",
+      "pos": [
+        3634.5,
+        0.91,
+        4146.9
+      ],
+      "slope_deg": 0.36,
+      "water_band": "W3",
+      "leg": "lilmoth-archon",
+      "provenance": "W1-01 — inserted to hold RI-WLD01 M5 (no habitation gap over 8 walking minutes)"
     }
   ]
 }

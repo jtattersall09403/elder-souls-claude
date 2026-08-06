@@ -82,6 +82,8 @@ export class WorldField {
 
     this.sites = terrain.sites;
     this.siteGrid = buildBuckets(this.sites.map((s) => ({ x: s.x, z: s.z, r: s.r_falloff, ref: s })), 400);
+    this.dryGrid = buildBuckets(this.sites.filter((s) => s.kind !== 'landmark')
+      .map((s) => ({ x: s.x, z: s.z, r: s.r_flat, ref: s })), 400);
     this.roads = null;
     this.roadGrid = null;
     this.tidePhase = 0;                        // 0..1 through the 12-minute cycle
@@ -220,6 +222,14 @@ export class WorldField {
     const i = this._cellIndex(x, z);
     const r = this.regionU[i];
     if (this.dry[r]) return null;
+    // A settlement pad is drained. RI-WLD01 M1 treats a settlement under standing water as a
+    // defect, and Helstrom is built at the edge of a lake: the ground is levelled AND the water
+    // is kept off it, which is what a town on a lakeshore actually is.
+    const pads = this.dryGrid.at(x, z);
+    for (let k = 0; k < pads.length; k++) {
+      const s = pads[k].ref;
+      if (Math.hypot(x - s.x, z - s.z) < s.r_flat) return null;
+    }
     const g = this.heightAt(x, z);
     const table = this.baseAt(x, z) + this._bilinear(this.woffI, x, z, 0.01);
     let surf = table;
