@@ -1,6 +1,6 @@
 {
  "schema": "critic/w1-01-r2-loco@1",
- "measured_at": "2026-08-06T21:38:35.522Z",
+ "measured_at": "2026-08-06T21:43:21.050Z",
  "probes": {
   "L1_uphill": [
    {
@@ -151,7 +151,7 @@
     "ground": 22.33,
     "hp": [
      620,
-     620
+     613.632969
     ],
     "state_before": "WALK",
     "state_after": "WALK"
@@ -163,8 +163,8 @@
     "y1": 22.55,
     "ground": 22.33,
     "hp": [
-     620,
-     620
+     613.632969,
+     104.196736
     ],
     "state_before": "WALK",
     "state_after": "WALK"
@@ -176,8 +176,8 @@
     "y1": 22.55,
     "ground": 22.33,
     "hp": [
-     620,
-     620
+     104.196736,
+     0
     ],
     "state_before": "WALK",
     "state_after": "WALK"
@@ -189,8 +189,8 @@
     "y1": 30.62,
     "ground": 22.33,
     "hp": [
-     620,
-     620
+     0,
+     0
     ],
     "state_before": "WALK",
     "state_after": "FALL"
@@ -210,8 +210,8 @@
      120
     ],
     "hp": [
-     620,
-     620
+     0,
+     0
     ],
     "state": "WALK"
    },
@@ -228,8 +228,8 @@
      120
     ],
     "hp": [
-     620,
-     620
+     0,
+     0
     ],
     "state": "MIRED"
    },
@@ -240,16 +240,16 @@
     "depth_m": 0,
     "band": "W0",
     "substrate": "SUCK",
-    "walk_mps": 0,
+    "walk_mps": 0.238,
     "stamina": [
      120,
      120
     ],
     "hp": [
-     620,
-     620
+     0,
+     0
     ],
-    "state": "MIRED"
+    "state": "WALK"
    },
    {
     "id": "W2-silt",
@@ -258,14 +258,14 @@
     "depth_m": 0.437,
     "band": "W2",
     "substrate": "SILT",
-    "walk_mps": 0.2659,
+    "walk_mps": 1.564,
     "stamina": [
      120,
      120
     ],
     "hp": [
-     620,
-     620
+     0,
+     0
     ],
     "state": "WALK"
    },
@@ -278,12 +278,12 @@
     "substrate": "SILT",
     "walk_mps": 1.012,
     "stamina": [
-     119.933333,
-     119.933333
+     119.733333,
+     99.733333
     ],
     "hp": [
-     476,
-     476
+     0,
+     0
     ],
     "state": "SWIM"
    }

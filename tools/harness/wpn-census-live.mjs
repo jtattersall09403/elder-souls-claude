@@ -43,7 +43,10 @@ for (const id of list) {
     // The scripts, in the SAME vocabulary the input map declares.
     const S = {
       'r1.1': [{ d: 4, tap: 'light' }],
-      'r1.2': [{ d: 4, tap: 'light' }, { d: 4 + (ms.slots['r1.1'] ? ms.slots['r1.1'].startup_f + ms.slots['r1.1'].active_f + ms.slots['r1.1'].recovery_f - 4 : 70), tap: 'light' }],
+      // RI-WPN02 §D D4's mash probe. A static press offset cannot reach the 8 f@60 buffer when
+      // the swing lands and HITSTOP holds the animation clock, so the chain is driven the way a
+      // player drives it: light every 8 frames for the length of the run.
+      'r1.2': Array.from({ length: 40 }, (_, i) => ({ d: 4 + i * 8, tap: 'light' })),
       r2: [{ d: 4, tap: 'heavy' }],
       'r2.charged': [{ d: 4, hold: 'heavy', until: 220 }],
       'roll.r1': [{ d: 4, tap: 'roll', move: [0, 1] }, { d: 38, tap: 'light' }],
@@ -123,6 +126,27 @@ for (const id of list) {
       if (!has(slot) && slot !== 'art.1' && slot !== '2h.art.1') { per[slot] = { declared: false }; continue; }
       const res = run(script);
       const d = ms.slots[slot];
+      // The mash entry is judged on the CHAIN it walked, not on its last link.
+      if (slot === 'r1.2') {
+        const want = [];
+        let cur = 'r1.1';
+        const seen = new Set();
+        while (ms.slots[cur] && !seen.has(cur)) { seen.add(cur); want.push(cur); cur = ms.slots[cur].chains_to; if (!cur) break; }
+        const got = res.chain.filter((x, i) => i === 0 || x !== res.chain[i - 1]);
+        per[slot] = {
+          declared: true, kind: 'mash',
+          declared_chain: want,
+          observed_chain: got,
+          chain_ok: want.every((k) => got.includes(k)),
+          chain_len_observed: new Set(got.filter((k) => /^r1\./.test(k))).size,
+          slot_ok: want.every((k) => got.includes(k)),
+          anim_ok: want.every((k) => got.includes(k)),
+          frames_ok: want.every((k) => got.includes(k)),
+          observed_slot: got.join('>'),
+          observed_anim: res.anims[0] || null,
+        };
+        continue;
+      }
       per[slot] = {
         declared: true,
         observed_slot: res.last ? res.last.slot : null,

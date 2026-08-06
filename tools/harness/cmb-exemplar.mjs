@@ -308,7 +308,7 @@ function RUN_ONE({ prof, cap }) {
             press.push('roll');
             mx = 0; my = 1;
             plan.done = true; dbg.rolls++;
-            punishLeft = 2 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.6 ? 1 : 0);
+            punishLeft = 1 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.6 ? 1 : 0);
           }
         }
       }
@@ -363,13 +363,17 @@ function RUN_ONE({ prof, cap }) {
       //         An earlier version reached zero by roll-spamming away instead; it hit rows 15,
       //         16 and 28 and destroyed rows 17, 19, 22, 24 and 25, because a bot walking around
       //         on an empty bar is not a fight.
-      if (p.hp / p.hp_max < prof.panicHp && p.stamina > 0.7 * p.stamina_max && burnLeft === 0 && burnCd <= 0) {
-        burnLeft = 3; burnCd = 1800;
+      if (p.hp / p.hp_max < prof.panicHp && burnLeft === 0 && burnCd <= 0) {
+        burnLeft = 5; burnCd = 1100;
       }
       if (burnCd > 0) burnCd--;
       // ...and then it panics and rolls clear, which is what actually empties the bar: four
       // LIGHT rolls is 88 of 120 on top of a five-hit punish, and the 42 f delay is re-armed by
       // every one of them.
+      // No stamina check. The burn is the bot OVER-SPENDING, and when the bar cannot pay the
+      // press is DROPPED — which is RI-CMB03 §E's mandatory ">0 inputs dropped for insufficient
+      // stamina" ("a fight where the bar never denies you has no economy") and RI-CMB07 row 28.
+      // Checking the bar first would make the bot incapable of the mistake the row measures.
       if (burnLeft > 0 && actionable && !winding && !active && !press.length) {
         // SIDEWAYS, not backwards. A LIGHT roll is 5.20 m (RI-CMB01 §B) and the burn is four of
         // them; backwards, that is 20 m of retreat per panic, which is how round 2's fight F2
