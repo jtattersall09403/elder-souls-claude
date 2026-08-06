@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-00-fix",
+  "brief": "remediation of wave-1 piece W1-00 after critic verdict 3/10 (threshold 6.0)",
+  "started": "wave-1-remediation",
+  "state": "researching",
+  "outputs_expected": [
+    "fix: PRNG actually drawn from in-step (GAP-W1-platform-prng-never-drawn)",
+    "fix: tools/harness/determinism.mjs R4 excludes .rng.seed + fails when max(rng.draws)==0",
+    "fix: save round-trip signed/unsigned PRNG word asymmetry, proven over seed sweep",
+    "fix: 0 B/step allocation (RI-PLT01 P4)",
+    "fix: trace record built outside fixed step (RI-PLT01 C.3)",
+    "fix: RI-PLT03 / RI-CAM02 closable items",
+    "fix/refile: AM-W1-00-01-mth02-r5 amendment (self-misdiagnosing)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read verdict corpus/90-verdicts/wave1/W1-00.md + .json and the two amendments",
+  "notes_for_successor": "Fresh remediation builder. Did not write the original."
+}
