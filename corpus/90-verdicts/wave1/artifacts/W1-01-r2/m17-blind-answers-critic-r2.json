@@ -1,0 +1,17 @@
+{
+  "schema": "critic/m17-blind-r2@1",
+  "method": "RI-WLD04 M17 steps 3-4, PARTIAL (8 of 117 frames). Written to disk BEFORE ANSWERS.json's per-frame region labels were read.",
+  "contamination_declared": "Before this read I ran a shuffle audit over ANSWERS.json which printed shots[0] and part of shots[1] to my terminal, revealing frame-001 = crimson-coast. frame-001 is therefore EXCLUDED from this read and from any score I report. No other frame label was displayed; region labels were consumed only programmatically (spearman, per-region counts) and never printed.",
+  "frames_sampled": "8 of the 39 brightest frames, chosen by mean luminance computed from the pixels, not from ANSWERS.json",
+  "calls": {
+    "frame-075": {"region": "valus-ridge",       "why": "pale limestone/scree ground, angular boulders, a single dark conifer (thorn_pine), blue high light"},
+    "frame-067": {"region": "hive",              "why": "uniform waxy yellow-olive floor, parasol/comb-cap forms on dark stems, no ground flora, no weather"},
+    "frame-042": {"region": "marauders-coast",   "why": "flat khaki mudflat, flat grey polygonal tide pools, storm sky over a white fog bank"},
+    "frame-050": {"region": "marauders-coast",   "why": "same mudflat and pools; low rock lumps at the fog line"},
+    "frame-023": {"region": "marauders-coast",   "why": "same again — khaki flat, one pool, boulder lumps, dark sky, white fog band"},
+    "frame-083": {"region": "marauders-coast",   "why": "khaki flat with dark teal boulders and upright brown posts I read as tide poles"},
+    "frame-102": {"region": "clay-moor",         "why": "fired red clay pan under clear dry sky, black rock line, unmistakable"},
+    "frame-017": {"region": "eastern-rootlands", "why": "green plain, ball-canopy trees, small green cones, thick fog band; guessed from palette, not from any named feature"}
+  },
+  "pre_reveal_note": "Only two of these eight — frame-102 (Clay Moor) and frame-075 (Valus Ridge) — were identified from something the region OWNS. frame-067 is a guess from palette. Four of the eight are the same picture: a khaki flat under a white fog band, and I assigned all four to one region because I could not tell them apart. That is the finding, whatever the reveal says: the pack contains a repeated frame type that carries no region."
+}

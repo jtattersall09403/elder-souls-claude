@@ -1,0 +1,154 @@
+{
+ "player_stagger": [
+  {
+   "f": 1,
+   "st": "IDLE",
+   "poise": 48,
+   "hp": 620
+  }
+ ],
+ "enemy_pool": [
+  {
+   "weapon": "dagger",
+   "staggers": [],
+   "state_events": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "poise": 32
+    },
+    {
+     "f": 26,
+     "st": "REPOSITION",
+     "poise": 24.8
+    },
+    {
+     "f": 1314,
+     "st": "DEAD",
+     "poise": 24.8
+    }
+   ]
+  },
+  {
+   "weapon": "straight-sword",
+   "staggers": [],
+   "state_events": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "poise": 32
+    },
+    {
+     "f": 21,
+     "st": "REPOSITION",
+     "poise": 32
+    },
+    {
+     "f": 809,
+     "st": "IDLE",
+     "poise": 32
+    }
+   ]
+  },
+  {
+   "weapon": "axe",
+   "staggers": [],
+   "state_events": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "poise": 32
+    },
+    {
+     "f": 21,
+     "st": "REPOSITION",
+     "poise": 32
+    },
+    {
+     "f": 1075,
+     "st": "IDLE",
+     "poise": 32
+    }
+   ]
+  },
+  {
+   "weapon": "greatsword",
+   "staggers": [
+    {
+     "at": 53,
+     "len": 64
+    }
+   ],
+   "state_events": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "poise": 32
+    },
+    {
+     "f": 21,
+     "st": "REPOSITION",
+     "poise": 32
+    },
+    {
+     "f": 53,
+     "st": "STAGGER",
+     "poise": 32
+    },
+    {
+     "f": 117,
+     "st": "REPOSITION",
+     "poise": 32
+    },
+    {
+     "f": 306,
+     "st": "DEAD",
+     "poise": 32
+    }
+   ]
+  },
+  {
+   "weapon": "ultra-greatsword",
+   "staggers": [
+    {
+     "at": 66,
+     "len": 64
+    }
+   ],
+   "state_events": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "poise": 32
+    },
+    {
+     "f": 21,
+     "st": "REPOSITION",
+     "poise": 32
+    },
+    {
+     "f": 66,
+     "st": "STAGGER",
+     "poise": 32
+    },
+    {
+     "f": 130,
+     "st": "REPOSITION",
+     "poise": 32
+    },
+    {
+     "f": 322,
+     "st": "IDLE",
+     "poise": 32
+    }
+   ]
+  }
+ ],
+ "stunlock": [
+  {
+   "f": 1,
+   "st": "IDLE"
+  }
+ ],
+ "regen": null
+}

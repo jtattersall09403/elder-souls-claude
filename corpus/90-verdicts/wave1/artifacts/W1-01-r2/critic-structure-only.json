@@ -1,0 +1,22 @@
+{
+ "schema": "critic/structure-only@1",
+ "note": "Region identity with colour and exposure removed. Descriptor = 6x4 grid of Sobel edge density plus 6x4 luminance layout, both z-scored per image, so only silhouette/prop density/composition survive.",
+ "ours_day": {
+  "regions": 13,
+  "images": 39,
+  "loo": 0.3077,
+  "chance": 0.0769,
+  "fisher": 1.771
+ },
+ "morrowind": {
+  "regions": 9,
+  "images": 39,
+  "loo": 0.1795,
+  "chance": 0.1111,
+  "fisher": 0.868
+ },
+ "mean_saturation": {
+  "ours_day": 0.369,
+  "morrowind": 0.291
+ }
+}

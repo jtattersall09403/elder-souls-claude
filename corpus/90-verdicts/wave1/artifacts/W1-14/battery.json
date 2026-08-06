@@ -1,0 +1,86 @@
+{
+ "base_damage": 100,
+ "shield_damage": 100,
+ "resist_damage": 100,
+ "restore": {
+  "hp0": 420,
+  "hp1": 420,
+  "max": 620
+ },
+ "feather": {
+  "loadout": {
+   "weapon": "straight-sword",
+   "weapon_class": "straight_sword",
+   "shield": "marsh_oak_medium",
+   "stamina_max": 120,
+   "tier": "LIGHT"
+  },
+  "pre": {
+   "eq": 24,
+   "roll": "LIGHT"
+  },
+  "post": {
+   "eq": 24,
+   "roll": "LIGHT"
+  }
+ },
+ "paralyse": {
+  "enemy_state": "REPOSITION",
+  "keys_with_status": [],
+  "stagger": false
+ },
+ "calm": {
+  "alert": "AGGRO",
+  "state": "REPOSITION",
+  "in_combat": true,
+  "hp": 255
+ },
+ "sap_speaker_states": [
+  "REPOSITION"
+ ],
+ "teleport": {
+  "posA": [
+   0,
+   0,
+   0
+  ],
+  "posB": [
+   60,
+   0,
+   60
+  ],
+  "posC": [
+   60,
+   0,
+   60
+  ],
+  "markEv": [
+   "cast_start@2",
+   "focus_spend@2",
+   "effect_apply@152",
+   "cast_release@152"
+  ],
+  "recallEv": [
+   "cast_start@262",
+   "focus_spend@262",
+   "effect_apply@412",
+   "cast_release@412"
+  ]
+ },
+ "hist_sight": {
+  "j0": 0,
+  "j1": 0,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "effect_apply@152",
+   "cast_release@152"
+  ]
+ },
+ "soul_trap": {
+  "gems0": 0,
+  "gems1": 0,
+  "xul": 0
+ },
+ "locks": null
+}

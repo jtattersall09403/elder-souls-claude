@@ -1,0 +1,779 @@
+{
+ "schema": "critic/w1-01-r2-props@1",
+ "measured_at": "2026-08-06T20:46:28.618Z",
+ "provinceStats": {
+  "world_bounds_m": {
+   "x": [
+    0,
+    4825
+   ],
+   "z": [
+    0,
+    5540
+   ]
+  },
+  "cell_m": 25,
+  "cols": 193,
+  "rows": 222,
+  "elevation_range_m": [
+   -41.8,
+   424.2
+  ],
+  "land_km2": 14.309,
+  "land_above_sea_km2": 14.214,
+  "frac_land_below_5m": 0.355,
+  "frac_land_above_100m": 0.194,
+  "regions": [
+   {
+    "id": "blackwood",
+    "index": 0,
+    "built_area_km2": 2.052,
+    "declared_area_km2": 2.07,
+    "max_elevation_m": 224.8,
+    "mean_slope_deg": 9.48,
+    "frac_below_5m": 0.564,
+    "dry": false,
+    "water_offset_m": -0.1272,
+    "channel_wet": 1,
+    "wci_declared": 0.41,
+    "wci_built": 0.41
+   },
+   {
+    "id": "clay-moor",
+    "index": 1,
+    "built_area_km2": 0.797,
+    "declared_area_km2": 0.81,
+    "max_elevation_m": 35.3,
+    "mean_slope_deg": 2.96,
+    "frac_below_5m": 0,
+    "dry": true,
+    "water_offset_m": -12,
+    "channel_wet": 0,
+    "wci_declared": 0,
+    "wci_built": 0
+   },
+   {
+    "id": "crimson-coast",
+    "index": 2,
+    "built_area_km2": 0.614,
+    "declared_area_km2": 0.63,
+    "max_elevation_m": 25.4,
+    "mean_slope_deg": 4.19,
+    "frac_below_5m": 0.053,
+    "dry": false,
+    "water_offset_m": -0.5691,
+    "channel_wet": 1,
+    "wci_declared": 0.34,
+    "wci_built": 0.3399
+   },
+   {
+    "id": "deep-marshes",
+    "index": 3,
+    "built_area_km2": 1.244,
+    "declared_area_km2": 1.26,
+    "max_elevation_m": 17.6,
+    "mean_slope_deg": 2.92,
+    "frac_below_5m": 0.769,
+    "dry": false,
+    "water_offset_m": 0.7111,
+    "channel_wet": 1,
+    "wci_declared": 0.86,
+    "wci_built": 0.86
+   },
+   {
+    "id": "eastern-rootlands",
+    "index": 4,
+    "built_area_km2": 1.42,
+    "declared_area_km2": 1.44,
+    "max_elevation_m": 5.5,
+    "mean_slope_deg": 1.61,
+    "frac_below_5m": 0.998,
+    "dry": false,
+    "water_offset_m": 0.2094,
+    "channel_wet": 1,
+    "wci_declared": 0.71,
+    "wci_built": 0.71
+   },
+   {
+    "id": "hive",
+    "index": 5,
+    "built_area_km2": 0.291,
+    "declared_area_km2": 0.31,
+    "max_elevation_m": 15.2,
+    "mean_slope_deg": 4.49,
+    "frac_below_5m": 0.002,
+    "dry": true,
+    "water_offset_m": -12,
+    "channel_wet": 0,
+    "wci_declared": 0,
+    "wci_built": 0
+   },
+   {
+    "id": "marauders-coast",
+    "index": 6,
+    "built_area_km2": 0.467,
+    "declared_area_km2": 0.49,
+    "max_elevation_m": 8.8,
+    "mean_slope_deg": 3.68,
+    "frac_below_5m": 0.892,
+    "dry": false,
+    "water_offset_m": 0.2244,
+    "channel_wet": 1,
+    "wci_declared": 0.58,
+    "wci_built": 0.5799
+   },
+   {
+    "id": "salt-hills",
+    "index": 7,
+    "built_area_km2": 0.933,
+    "declared_area_km2": 0.94,
+    "max_elevation_m": 265.3,
+    "mean_slope_deg": 15.91,
+    "frac_below_5m": 0,
+    "dry": false,
+    "water_offset_m": -12,
+    "channel_wet": 0.6231,
+    "wci_declared": 0.02,
+    "wci_built": 0.02
+   },
+   {
+    "id": "stone-forest",
+    "index": 8,
+    "built_area_km2": 1.787,
+    "declared_area_km2": 1.8,
+    "max_elevation_m": 213.5,
+    "mean_slope_deg": 9.22,
+    "frac_below_5m": 0,
+    "dry": false,
+    "water_offset_m": -2.2813,
+    "channel_wet": 1,
+    "wci_declared": 0.06,
+    "wci_built": 0.06
+   },
+   {
+    "id": "stone-wastes",
+    "index": 9,
+    "built_area_km2": 0.787,
+    "declared_area_km2": 0.81,
+    "max_elevation_m": 10.8,
+    "mean_slope_deg": 2.23,
+    "frac_below_5m": 0.129,
+    "dry": false,
+    "water_offset_m": -12,
+    "channel_wet": 0.4228,
+    "wci_declared": 0.03,
+    "wci_built": 0.03
+   },
+   {
+    "id": "thornmarsh",
+    "index": 10,
+    "built_area_km2": 1.074,
+    "declared_area_km2": 1.08,
+    "max_elevation_m": 77.2,
+    "mean_slope_deg": 5.02,
+    "frac_below_5m": 0,
+    "dry": false,
+    "water_offset_m": -1.3948,
+    "channel_wet": 1,
+    "wci_declared": 0.09,
+    "wci_built": 0.09
+   },
+   {
+    "id": "valus-ridge",
+    "index": 11,
+    "built_area_km2": 1.694,
+    "declared_area_km2": 1.71,
+    "max_elevation_m": 424.2,
+    "mean_slope_deg": 30.12,
+    "frac_below_5m": 0,
+    "dry": false,
+    "water_offset_m": -12,
+    "channel_wet": 0.3311,
+    "wci_declared": 0.01,
+    "wci_built": 0.01
+   },
+   {
+    "id": "western-rootlands",
+    "index": 12,
+    "built_area_km2": 1.149,
+    "declared_area_km2": 1.17,
+    "max_elevation_m": 11.2,
+    "mean_slope_deg": 1.74,
+    "frac_below_5m": 0.872,
+    "dry": false,
+    "water_offset_m": -0.0689,
+    "channel_wet": 1,
+    "wci_declared": 0.47,
+    "wci_built": 0.47
+   }
+  ],
+  "sites": 34,
+  "streaming": {
+   "tilesResident": 25,
+   "tilesQueued": 0,
+   "tilesBuiltTotal": 25,
+   "tileSizeM": 300,
+   "residentRadiusTiles": 2,
+   "meshes": 121,
+   "instances": 13498
+  }
+ },
+ "worldStats": {
+  "regions": 13,
+  "settlements": 8,
+  "pois": 42,
+  "interiors": 2,
+  "npcs": 5,
+  "areaKm2": 14.309,
+  "worldBoundsM": {
+   "x": [
+    0,
+    4825
+   ],
+   "z": [
+    0,
+    5540
+   ]
+  },
+  "elevationRangeM": [
+   -41.8,
+   424.2
+  ],
+  "roadNetworkM": 25099.7,
+  "crossingM": 6861.2,
+  "crossingWalkMin": 57.18,
+  "streaming": {
+   "tilesResident": 25,
+   "tilesQueued": 0,
+   "tilesBuiltTotal": 25,
+   "tileSizeM": 300,
+   "residentRadiusTiles": 2,
+   "meshes": 121,
+   "instances": 13498
+  },
+  "drawCalls": 49,
+  "triangles": 80112,
+  "textureMB": 0,
+  "programs": 8,
+  "materials": 17,
+  "stateChanges": 49,
+  "skinnedMeshes": 0,
+  "shadowLights": 1,
+  "geometryMB": 4.18,
+  "audioMB": 0,
+  "atlasCount": 0,
+  "entitiesLive": 0,
+  "region": "western-rootlands",
+  "interior": null,
+  "_declared_incomplete": {
+   "owner": "wave-1 pieces W1-01..W1-05 (world, regions, settlements, interiors, roads)",
+   "note": "regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because there is no audio (RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed)."
+  }
+ },
+ "regions": [
+  {
+   "id": "blackwood",
+   "x": 1118,
+   "z": 3487.5,
+   "only_here": "welkynd_pillar",
+   "declared_instances": 34,
+   "architecture": [
+    "ayleid_drowned_stone",
+    "imperial_logging_camp",
+    "welkynd_pillar"
+   ],
+   "flora": [
+    "buttress_hardwood",
+    "strangler_vine",
+    "fungus_shelf",
+    "green_dark_fern"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 1118,
+    "z": 3487.5,
+    "y": 5.039,
+    "base_y": 5.366,
+    "slope_deg": 6.17,
+    "region": "blackwood",
+    "region_name": "Blackwood",
+    "region_index": 0,
+    "danger_tier": 2,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 508.5,
+    "substrate": "SUCK",
+    "sea": "topal"
+   },
+   "region": "blackwood"
+  },
+  {
+   "id": "clay-moor",
+   "x": 3743,
+   "z": 2010.5,
+   "only_here": "naga_kiln_dome",
+   "declared_instances": 26,
+   "architecture": [
+    "naga_kiln_dome",
+    "lit_kiln_flue",
+    "naga_sentry_post"
+   ],
+   "flora": [
+    "clay_scrub",
+    "kiln_thistle"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 3743,
+    "z": 2010.5,
+    "y": 28.832,
+    "base_y": 29.216,
+    "slope_deg": 3.16,
+    "region": "clay-moor",
+    "region_name": "The Clay Moor",
+    "region_index": 1,
+    "danger_tier": 4,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 293.8,
+    "substrate": "FIRM",
+    "sea": "padomaic"
+   },
+   "region": "clay-moor"
+  },
+  {
+   "id": "crimson-coast",
+   "x": 4212,
+   "z": 2686,
+   "only_here": "open_dye_vat",
+   "declared_instances": 18,
+   "architecture": [
+    "archon_clay_dome",
+    "open_dye_vat",
+    "lichen_stair"
+   ],
+   "flora": [
+    "tide_lichen",
+    "dye_kelp"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 4212,
+    "z": 2686,
+    "y": -0.365,
+    "base_y": -0.306,
+    "slope_deg": 21.28,
+    "region": "crimson-coast",
+    "region_name": "Crimson Coast",
+    "region_index": 2,
+    "danger_tier": 4,
+    "land": false,
+    "ocean": false,
+    "coast_dist_m": -64,
+    "substrate": "SILT",
+    "sea": "padomaic"
+   },
+   "region": "crimson-coast"
+  },
+  {
+   "id": "deep-marshes",
+   "x": 3123.5,
+   "z": 3715,
+   "only_here": "voriplasm",
+   "declared_instances": 40,
+   "architecture": [
+    "drowned_xanmeer_tooth"
+   ],
+   "flora": [
+    "corpse_lily",
+    "drowned_tree",
+    "black_reed"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 3123.5,
+    "z": 3715,
+    "y": 1.231,
+    "base_y": 1,
+    "slope_deg": 2.38,
+    "region": "deep-marshes",
+    "region_name": "The Deep Marshes",
+    "region_index": 3,
+    "danger_tier": 5,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 327.7,
+    "substrate": "SUCK",
+    "sea": "topal"
+   },
+   "region": "deep-marshes"
+  },
+  {
+   "id": "eastern-rootlands",
+   "x": 3232,
+   "z": 4495.5,
+   "only_here": "swamp_jelly_canopy",
+   "declared_instances": 48,
+   "architecture": [
+    "stilt_row_platform",
+    "tide_hydraulic",
+    "tideway_marker"
+   ],
+   "flora": [
+    "floating_meadow",
+    "air_plant",
+    "channel_sedge"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 3232,
+    "z": 4495.5,
+    "y": 1.03,
+    "base_y": 1.268,
+    "slope_deg": 2.07,
+    "region": "eastern-rootlands",
+    "region_name": "Eastern Rootlands",
+    "region_index": 4,
+    "danger_tier": 2,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 42.9,
+    "substrate": "SUCK",
+    "sea": "padomaic"
+   },
+   "region": "eastern-rootlands"
+  },
+  {
+   "id": "hive",
+   "x": 1237,
+   "z": 3732.5,
+   "only_here": "comb_cliff",
+   "declared_instances": 30,
+   "architecture": [
+    "waxen_tower",
+    "comb_cliff",
+    "sphincter_door"
+   ],
+   "flora": [],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 1237,
+    "z": 3732.5,
+    "y": 12.769,
+    "base_y": 12.436,
+    "slope_deg": 16.45,
+    "region": "hive",
+    "region_name": "The Hive",
+    "region_index": 5,
+    "danger_tier": 2,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 211.5,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "region": "hive"
+  },
+  {
+   "id": "marauders-coast",
+   "x": 400.5,
+   "z": 4485,
+   "only_here": "beached_hull_house",
+   "declared_instances": 12,
+   "architecture": [
+    "bone_scaffold_tower",
+    "beached_hull_house",
+    "tide_pole"
+   ],
+   "flora": [
+    "mangrove",
+    "salt_grass",
+    "barnacle_shelf"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 400.5,
+    "z": 4485,
+    "y": -2.834,
+    "base_y": -2.964,
+    "slope_deg": 11.23,
+    "region": "marauders-coast",
+    "region_name": "Marauder's Coast",
+    "region_index": 6,
+    "danger_tier": 2,
+    "land": false,
+    "ocean": false,
+    "coast_dist_m": -72.4,
+    "substrate": "SILT",
+    "sea": "topal"
+   },
+   "region": "marauders-coast"
+  },
+  {
+   "id": "salt-hills",
+   "x": 1982.5,
+   "z": 705,
+   "only_here": "imperial_milestone",
+   "declared_instances": 22,
+   "architecture": [
+    "imperial_milestone",
+    "legion_watchtower",
+    "legion_fort",
+    "cut_stone_wall"
+   ],
+   "flora": [
+    "hill_grass",
+    "salt_cedar",
+    "gorse",
+    "ridge_thistle"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 1982.5,
+    "z": 705,
+    "y": 142.654,
+    "base_y": 144.488,
+    "slope_deg": 4.72,
+    "region": "salt-hills",
+    "region_name": "The Salt Hills",
+    "region_index": 7,
+    "danger_tier": 3,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 140.8,
+    "substrate": "SILT",
+    "sea": "topal"
+   },
+   "region": "salt-hills"
+  },
+  {
+   "id": "stone-forest",
+   "x": 2749,
+   "z": 2252,
+   "only_here": "petrified_bole",
+   "declared_instances": 400,
+   "architecture": [
+    "xanmeer_ziggurat",
+    "hist_grown_hall",
+    "root_stair"
+   ],
+   "flora": [
+    "petrified_bole",
+    "living_hist_bole",
+    "stone_bark_sapling",
+    "rockpool_weed"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 2749,
+    "z": 2252,
+    "y": 31.771,
+    "base_y": 31.972,
+    "slope_deg": 4.86,
+    "region": "stone-forest",
+    "region_name": "The Stone Forest",
+    "region_index": 8,
+    "danger_tier": 3,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 214.7,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "region": "stone-forest"
+  },
+  {
+   "id": "stone-wastes",
+   "x": 813.5,
+   "z": 4894.5,
+   "only_here": "glassed_crater",
+   "declared_instances": 16,
+   "architecture": [
+    "whale_bone_frame",
+    "salt_block_wall",
+    "crater_rim"
+   ],
+   "flora": [
+    "glass_thorn",
+    "salt_crust_bloom"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 813.5,
+    "z": 4894.5,
+    "y": 9.444,
+    "base_y": 9.376,
+    "slope_deg": 1.89,
+    "region": "stone-wastes",
+    "region_name": "Stone Wastes",
+    "region_index": 9,
+    "danger_tier": 5,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 88.8,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "region": "stone-wastes"
+  },
+  {
+   "id": "thornmarsh",
+   "x": 3522.5,
+   "z": 1090,
+   "only_here": "knife_mark_stem",
+   "declared_instances": 60,
+   "architecture": [
+    "thorn_thatch_hall",
+    "cut_path_marker",
+    "rotted_greathall"
+   ],
+   "flora": [
+    "needle_thorn",
+    "ash_bracken",
+    "thorn_creeper"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 3522.5,
+    "z": 1090,
+    "y": 17.697,
+    "base_y": 17.37,
+    "slope_deg": 5.09,
+    "region": "thornmarsh",
+    "region_name": "Thornmarsh",
+    "region_index": 10,
+    "danger_tier": 4,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 331.2,
+    "substrate": "FIRM",
+    "sea": "padomaic"
+   },
+   "region": "thornmarsh"
+  },
+  {
+   "id": "valus-ridge",
+   "x": 1209,
+   "z": 2178.5,
+   "only_here": "rock_flute_spire",
+   "declared_instances": 14,
+   "architecture": [
+    "ayleid_watchtower",
+    "imperial_cairn",
+    "rock_flute_spire"
+   ],
+   "flora": [
+    "thorn_pine",
+    "moss_curtain",
+    "cliff_lichen"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 1209,
+    "z": 2178.5,
+    "y": 346.796,
+    "base_y": 346.133,
+    "slope_deg": 20.88,
+    "region": "valus-ridge",
+    "region_name": "Valus Ridge",
+    "region_index": 11,
+    "danger_tier": 4,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 265.4,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "region": "valus-ridge"
+  },
+  {
+   "id": "western-rootlands",
+   "x": 1727,
+   "z": 4716,
+   "only_here": "root_arch",
+   "declared_instances": 120,
+   "architecture": [
+    "root_arch_village",
+    "nest_mound",
+    "stilt_slum",
+    "blackrose_wall"
+   ],
+   "flora": [
+    "paddy_fern",
+    "reed",
+    "root_arch",
+    "egg_lily"
+   ],
+   "found_scene": false,
+   "names": {},
+   "geos": {},
+   "mats": [],
+   "entities": 0,
+   "terrain": {
+    "x": 1727,
+    "z": 4716,
+    "y": 1.833,
+    "base_y": 2.206,
+    "slope_deg": 1.97,
+    "region": "western-rootlands",
+    "region_name": "Western Rootlands",
+    "region_index": 12,
+    "danger_tier": 1,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 179.5,
+    "substrate": "SILT",
+    "sea": "topal"
+   },
+   "region": "western-rootlands"
+  }
+ ]
+}

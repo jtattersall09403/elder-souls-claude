@@ -1,0 +1,559 @@
+{
+ "made": [
+  {
+   "name": "Critic Three-Fold",
+   "quote": {
+    "refused": false,
+    "notes": [],
+    "effects": [
+     {
+      "effect": "fire_damage",
+      "magnitude": 41,
+      "duration_s": 7,
+      "area_r_m": 3
+     },
+     {
+      "effect": "chameleon",
+      "magnitude": 13,
+      "duration_s": 44,
+      "area_r_m": 0
+     },
+     {
+      "effect": "feather",
+      "magnitude": 29,
+      "duration_s": 61,
+      "area_r_m": 0
+     }
+    ],
+    "range": "target",
+    "class": "LIGHT",
+    "schools": [
+     "sorcery",
+     "veiling",
+     "warding"
+    ],
+    "focus_base": 89,
+    "band_tier": 4,
+    "tier": 4,
+    "skill_req": 65,
+    "focus_cost": 74,
+    "gold": 16243,
+    "castable_now": true,
+    "attunable_now": true,
+    "over_reservoir": false
+   },
+   "made": {
+    "refused": false,
+    "spell": {
+     "id": "custom_1_critic_three_fold",
+     "name": "Critic Three-Fold",
+     "custom": true,
+     "schools": [
+      "sorcery",
+      "veiling",
+      "warding"
+     ],
+     "school": "sorcery",
+     "class": "LIGHT",
+     "range": "target",
+     "effects": [
+      {
+       "effect": "fire_damage",
+       "magnitude": 41,
+       "duration_s": 7,
+       "area_r_m": 3
+      },
+      {
+       "effect": "chameleon",
+       "magnitude": 13,
+       "duration_s": 44,
+       "area_r_m": 0
+      },
+      {
+       "effect": "feather",
+       "magnitude": 29,
+       "duration_s": 61,
+       "area_r_m": 0
+      }
+     ],
+     "focus_base": 89,
+     "band_tier": 4,
+     "tier": 4,
+     "skill_req": 65,
+     "stamina": 16,
+     "gold_price": 16243,
+     "geometry": {
+      "kind": "volume",
+      "shape": "sphere",
+      "radius_m": 3,
+      "active_f": 6,
+      "ticks_every_f": 12,
+      "decal_lead_f": 20,
+      "placement": "caster"
+     },
+     "frames": {
+      "startup": 24,
+      "active": 4,
+      "recovery": 28,
+      "total": 56,
+      "Ps": 25,
+      "Tc": 16,
+      "hard_until": 45,
+      "unit": "f@60"
+     }
+    },
+    "quote": {
+     "refused": false,
+     "notes": [],
+     "effects": [
+      {
+       "effect": "fire_damage",
+       "magnitude": 41,
+       "duration_s": 7,
+       "area_r_m": 3
+      },
+      {
+       "effect": "chameleon",
+       "magnitude": 13,
+       "duration_s": 44,
+       "area_r_m": 0
+      },
+      {
+       "effect": "feather",
+       "magnitude": 29,
+       "duration_s": 61,
+       "area_r_m": 0
+      }
+     ],
+     "range": "target",
+     "class": "LIGHT",
+     "schools": [
+      "sorcery",
+      "veiling",
+      "warding"
+     ],
+     "focus_base": 89,
+     "band_tier": 4,
+     "tier": 4,
+     "skill_req": 65,
+     "focus_cost": 74,
+     "gold": 16243,
+     "castable_now": true,
+     "attunable_now": true,
+     "over_reservoir": false
+    }
+   }
+  },
+  {
+   "name": "Critic Max Mag",
+   "quote": {
+    "refused": false,
+    "notes": [],
+    "effects": [
+     {
+      "effect": "fire_damage",
+      "magnitude": 200,
+      "duration_s": 1,
+      "area_r_m": 0
+     }
+    ],
+    "range": "projectile",
+    "class": "LIGHT",
+    "schools": [
+     "sorcery"
+    ],
+    "focus_base": 176,
+    "band_tier": 5,
+    "tier": 5,
+    "skill_req": 85,
+    "focus_cost": 163,
+    "gold": 53217,
+    "castable_now": false,
+    "attunable_now": true,
+    "over_reservoir": true
+   },
+   "made": {
+    "refused": false,
+    "spell": {
+     "id": "custom_2_critic_max_mag",
+     "name": "Critic Max Mag",
+     "custom": true,
+     "schools": [
+      "sorcery"
+     ],
+     "school": "sorcery",
+     "class": "LIGHT",
+     "range": "projectile",
+     "effects": [
+      {
+       "effect": "fire_damage",
+       "magnitude": 200,
+       "duration_s": 1,
+       "area_r_m": 0
+      }
+     ],
+     "focus_base": 176,
+     "band_tier": 5,
+     "tier": 5,
+     "skill_req": 85,
+     "stamina": 16,
+     "gold_price": 53217,
+     "geometry": {
+      "kind": "projectile",
+      "radius_m": 0.22,
+      "speed_mps": 16,
+      "turn_rate_dps": 60,
+      "tracking_cutoff": 0.35,
+      "lifetime_s": 2.5
+     },
+     "frames": {
+      "startup": 24,
+      "active": 4,
+      "recovery": 28,
+      "total": 56,
+      "Ps": 25,
+      "Tc": 16,
+      "hard_until": 45,
+      "unit": "f@60"
+     }
+    },
+    "quote": {
+     "refused": false,
+     "notes": [],
+     "effects": [
+      {
+       "effect": "fire_damage",
+       "magnitude": 200,
+       "duration_s": 1,
+       "area_r_m": 0
+      }
+     ],
+     "range": "projectile",
+     "class": "LIGHT",
+     "schools": [
+      "sorcery"
+     ],
+     "focus_base": 176,
+     "band_tier": 5,
+     "tier": 5,
+     "skill_req": 85,
+     "focus_cost": 163,
+     "gold": 53217,
+     "castable_now": false,
+     "attunable_now": true,
+     "over_reservoir": true
+    }
+   }
+  },
+  {
+   "name": "Critic Max Dur",
+   "quote": {
+    "refused": false,
+    "notes": [],
+    "effects": [
+     {
+      "effect": "chameleon",
+      "magnitude": 5,
+      "duration_s": 300,
+      "area_r_m": 0
+     }
+    ],
+    "range": "self",
+    "class": "CANTRIP",
+    "schools": [
+     "veiling"
+    ],
+    "focus_base": 43,
+    "band_tier": 3,
+    "tier": 3,
+    "skill_req": 45,
+    "focus_cost": 16,
+    "gold": 4656,
+    "castable_now": true,
+    "attunable_now": true,
+    "over_reservoir": false
+   },
+   "made": {
+    "refused": false,
+    "spell": {
+     "id": "custom_3_critic_max_dur",
+     "name": "Critic Max Dur",
+     "custom": true,
+     "schools": [
+      "veiling"
+     ],
+     "school": "veiling",
+     "class": "CANTRIP",
+     "range": "self",
+     "effects": [
+      {
+       "effect": "chameleon",
+       "magnitude": 5,
+       "duration_s": 300,
+       "area_r_m": 0
+      }
+     ],
+     "focus_base": 43,
+     "band_tier": 3,
+     "tier": 3,
+     "skill_req": 45,
+     "stamina": 10,
+     "gold_price": 4656,
+     "geometry": {
+      "kind": "none"
+     },
+     "frames": {
+      "startup": 14,
+      "active": 3,
+      "recovery": 20,
+      "total": 37,
+      "Ps": 15,
+      "Tc": 10,
+      "hard_until": 29,
+      "unit": "f@60"
+     }
+    },
+    "quote": {
+     "refused": false,
+     "notes": [],
+     "effects": [
+      {
+       "effect": "chameleon",
+       "magnitude": 5,
+       "duration_s": 300,
+       "area_r_m": 0
+      }
+     ],
+     "range": "self",
+     "class": "CANTRIP",
+     "schools": [
+      "veiling"
+     ],
+     "focus_base": 43,
+     "band_tier": 3,
+     "tier": 3,
+     "skill_req": 45,
+     "focus_cost": 16,
+     "gold": 4656,
+     "castable_now": true,
+     "attunable_now": true,
+     "over_reservoir": false
+    }
+   }
+  },
+  {
+   "name": "Critic Over Pool",
+   "quote": {
+    "refused": false,
+    "notes": [],
+    "effects": [
+     {
+      "effect": "frost_damage",
+      "magnitude": 180,
+      "duration_s": 25,
+      "area_r_m": 6
+     }
+    ],
+    "range": "area_at_range",
+    "class": "GREAT",
+    "schools": [
+     "sorcery"
+    ],
+    "focus_base": 353,
+    "band_tier": 5,
+    "tier": 5,
+    "skill_req": 85,
+    "focus_cost": 1437,
+    "gold": 179537,
+    "castable_now": false,
+    "attunable_now": true,
+    "over_reservoir": true
+   },
+   "made": {
+    "refused": false,
+    "spell": {
+     "id": "custom_4_critic_over_pool",
+     "name": "Critic Over Pool",
+     "custom": true,
+     "schools": [
+      "sorcery"
+     ],
+     "school": "sorcery",
+     "class": "GREAT",
+     "range": "area_at_range",
+     "effects": [
+      {
+       "effect": "frost_damage",
+       "magnitude": 180,
+       "duration_s": 25,
+       "area_r_m": 6
+      }
+     ],
+     "focus_base": 353,
+     "band_tier": 5,
+     "tier": 5,
+     "skill_req": 85,
+     "stamina": 34,
+     "gold_price": 179537,
+     "geometry": {
+      "kind": "volume",
+      "shape": "sphere",
+      "radius_m": 6,
+      "active_f": 6,
+      "ticks_every_f": 12,
+      "decal_lead_f": 20,
+      "placement": "resolved_world_point"
+     },
+     "frames": {
+      "startup": 52,
+      "active": 8,
+      "recovery": 60,
+      "total": 120,
+      "Ps": 53,
+      "Tc": 34,
+      "hard_until": 96,
+      "unit": "f@60"
+     }
+    },
+    "quote": {
+     "refused": false,
+     "notes": [],
+     "effects": [
+      {
+       "effect": "frost_damage",
+       "magnitude": 180,
+       "duration_s": 25,
+       "area_r_m": 6
+      }
+     ],
+     "range": "area_at_range",
+     "class": "GREAT",
+     "schools": [
+      "sorcery"
+     ],
+     "focus_base": 353,
+     "band_tier": 5,
+     "tier": 5,
+     "skill_req": 85,
+     "focus_cost": 1437,
+     "gold": 179537,
+     "castable_now": false,
+     "attunable_now": true,
+     "over_reservoir": true
+    }
+   }
+  },
+  {
+   "name": "Critic Nonsense",
+   "quote": {
+    "refused": true,
+    "gate": "range",
+    "reason": "'invisibility' does not accept range 'area_at_range' (accepts self/touch/target)"
+   },
+   "made": {
+    "refused": true,
+    "gate": "range",
+    "reason": "'invisibility' does not accept range 'area_at_range' (accepts self/touch/target)"
+   }
+  },
+  {
+   "name": "Critic Tiny",
+   "quote": {
+    "refused": false,
+    "notes": [],
+    "effects": [
+     {
+      "effect": "night_eye",
+      "magnitude": 3,
+      "duration_s": 11,
+      "area_r_m": 0
+     }
+    ],
+    "range": "self",
+    "class": "CANTRIP",
+    "schools": [
+     "veiling"
+    ],
+    "focus_base": 2,
+    "band_tier": 1,
+    "tier": 1,
+    "skill_req": 0,
+    "focus_cost": 1,
+    "gold": 171,
+    "castable_now": true,
+    "attunable_now": true,
+    "over_reservoir": false
+   },
+   "made": {
+    "refused": false,
+    "spell": {
+     "id": "custom_5_critic_tiny",
+     "name": "Critic Tiny",
+     "custom": true,
+     "schools": [
+      "veiling"
+     ],
+     "school": "veiling",
+     "class": "CANTRIP",
+     "range": "self",
+     "effects": [
+      {
+       "effect": "night_eye",
+       "magnitude": 3,
+       "duration_s": 11,
+       "area_r_m": 0
+      }
+     ],
+     "focus_base": 2,
+     "band_tier": 1,
+     "tier": 1,
+     "skill_req": 0,
+     "stamina": 10,
+     "gold_price": 171,
+     "geometry": {
+      "kind": "none"
+     },
+     "frames": {
+      "startup": 14,
+      "active": 3,
+      "recovery": 20,
+      "total": 37,
+      "Ps": 15,
+      "Tc": 10,
+      "hard_until": 29,
+      "unit": "f@60"
+     }
+    },
+    "quote": {
+     "refused": false,
+     "notes": [],
+     "effects": [
+      {
+       "effect": "night_eye",
+       "magnitude": 3,
+       "duration_s": 11,
+       "area_r_m": 0
+      }
+     ],
+     "range": "self",
+     "class": "CANTRIP",
+     "schools": [
+      "veiling"
+     ],
+     "focus_base": 2,
+     "band_tier": 1,
+     "tier": 1,
+     "skill_req": 0,
+     "focus_cost": 1,
+     "gold": 171,
+     "castable_now": true,
+     "attunable_now": true,
+     "over_reservoir": false
+    }
+   }
+  }
+ ],
+ "errors": [],
+ "save_has_custom": false,
+ "custom_count": 5
+}

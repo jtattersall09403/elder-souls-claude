@@ -1,0 +1,1257 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-07",
+  "piece_title": "W1-07 \u2014 Character creation (Writ House census, 10 attributes / 19 skills, 10 races, 9 birthsigns, 14 classes, the 12x10 reaction matrix)",
+  "subsystem_paths": [
+    "character.creation.flow",
+    "character.creation.identity",
+    "character.creation.irreversibility",
+    "character.class.custom",
+    "character.race.profile",
+    "character.race.reaction",
+    "character.birthsign.powers",
+    "character.birthsign.drawback",
+    "progression.level.attributes",
+    "progression.skill.usegrowth",
+    "progression.build.identity",
+    "journey.chargen.diegesis"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-07-a91c",
+    "role": "critic.character",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-06T20:05:00Z",
+    "finished_at": "2026-08-06T20:55:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "65275dcd5fca9b1bf21e16999c8295fb109b6353",
+    "branch": "detached (clean worktree at HEAD)",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/critic-w1-07a.mjs corpus/90-verdicts/wave1/artifacts/W1-07/probeA",
+        "seed": 1337,
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json"
+      },
+      {
+        "command": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=<r>,upbringing=foreign-born\"  (r in saxhleel|dunmer|khajiit)",
+        "seed": 1337,
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/critic-rerun.json"
+      },
+      {
+        "command": "node tools/analysis/ar3-encounter-test.mjs --runs corpus/90-verdicts/wave1/artifacts/W1-07/ar3/",
+        "seed": 1337,
+        "exit_code": 1,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/critic-rerun.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07b.mjs corpus/90-verdicts/wave1/artifacts/W1-07/probeB",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07c.mjs corpus/90-verdicts/wave1/artifacts/W1-07/probeC",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07e.mjs corpus/90-verdicts/wave1/artifacts/W1-07/probeE",
+        "seed": 1337,
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/probeE/probeE.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07f.mjs corpus/90-verdicts/wave1/artifacts/W1-07/probeF",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/probeF/probeF.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07g.mjs corpus/90-verdicts/wave1/artifacts/W1-07/probeG",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json"
+      },
+      {
+        "command": "node tools/analysis/critic-w1-07-audit.mjs corpus/90-verdicts/wave1/artifacts/W1-07/audit <worktree>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+      },
+      {
+        "command": "node tools/harness/run-headless.mjs --scenario cmb-duel-infantry  (control: does the combat system ever fire)",
+        "seed": 1337,
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07/control-duel/manifest.json"
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Declared before any screenshot was taken. RI-CHR01/02/03/PRG02/PRG03 are structure and number items; RI-JRN01 judges diegesis, which is a question about WHAT IS ON SCREEN AT ALL, not about rendering quality. The screenshots in this verdict are used only as presence/absence evidence (is a room, a person, a question rendered?) and never to score fidelity or art direction. No visual reference item is cited and no Morrowind or modern screenshot is used as a bar."
+  },
+  "reference_items": [
+    {
+      "id": "RI-CHR01",
+      "path": "corpus/22-character/RI-CHR01-character-creation.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "10 axes, 0/6/10 each, aggregation min-over-axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "We lose \u2014 the Legibility axis sits at its own 0 band ('nothing about the character is visible in play')",
+      "score_0_10": 2,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1-field-inventory",
+          "result": "pass",
+          "value": "8/8 inputs in creation.json, each with asked_by (jeeh-ei @B01, warden-scribe-tuleeh-ma @B03) and asked_at; 'sex' appears in zero requires clauses anywhere in game/data",
+          "threshold": "all 8 present with a named asker",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'Inputs' = 6. Not 10: the named askers are never instantiated \u2014 listEntities() returns 0 entities in writ-house before and after creation."
+        },
+        {
+          "id": "M2-attribute-arithmetic",
+          "result": "pass",
+          "value": "140 race x class pairs, every one totals exactly 112; every classDelta sums to 0 with |d| <= 4 on <= 4 attributes",
+          "threshold": "112 for every combination",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.json"
+          ],
+          "note": "Independently recomputed from the shipped JSON, not by importing game/src/character/sheet.js. Axis 'Attribute/skill arithmetic' = 8."
+        },
+        {
+          "id": "M3-skill-composition",
+          "result": "fail",
+          "value": "140 pairs all in [5,10] raised skills, none above 25 \u2014 but Polearms is above baseline in 0 of 140 pairs",
+          "threshold": "every one of the 19 skills above baseline in >= 1 pair",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Corroborates the builder's declared GAP-W1-07-polearms; the cause is that no RI-CHR02 \u00a71 race row and no RI-CHR01 \u00a74 class row raises Polearms. A corpus defect, but the assertion still fails."
+        },
+        {
+          "id": "M4-questionnaire-purity",
+          "result": "pass",
+          "value": "12 questions, 48 answers; 0 occurrences of any of the 19 skill names, any of the 10 attribute names, '+', '%' or a digit used as a quantity; every one of the 19 skills appears in >= 5 answers' weight lists",
+          "threshold": "zero stat tokens; all 19 skills >= 5 answers",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'Questionnaire' = 8. The 10-of-14 named-class reachability half was NOT independently enumerated by me."
+        },
+        {
+          "id": "M5-signature-coverage",
+          "result": "pass",
+          "value": "10 races x 6 class families (fighter,thief,social,scout,mage,root) x 3 birthsign families (given,withheld,turned) x 3 upbringing classes = 540",
+          "threshold": "all 540 constructible",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        },
+        {
+          "id": "M6-viability-sim",
+          "result": "unmeasurable",
+          "value": "tools/analysis/build-viability.mjs does not exist",
+          "threshold": ">= 486 of 540 signatures end-to-end viable",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Harness gap, CRITIC-DOCTRINE \u00a77.3 \u2014 scored 0 fail-closed. The 'Distinctness' axis therefore cannot reach its 6 band ('540 constructible, >= 70% viable') and is scored 3."
+        },
+        {
+          "id": "M7-legibility",
+          "result": "fail",
+          "value": "unperformable AND its 0 band is what was observed: the method requires 5 minutes of ordinary play per signature (walk into a settlement, talk to three NPCs, buy something, open one lock, fight one trash enemy). writ-house instantiates 0 entities; the whole build ships 5 NPC records; no merchant exists; the one authored encounter never enters COMBAT and deals 0 damage in 899 frames at 3 m.",
+          "threshold": ">= 14 of 20 traces yield >= 3 of 4 components correct",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json"
+          ],
+          "note": "Axis 'Legibility' = 0, at the item's own 0 band ('nothing about the character is visible in play'). This is the axis that drives min-over-axes to 0. It is negative evidence, not a missing tool."
+        },
+        {
+          "id": "M8-five-prohibitions",
+          "result": "marginal",
+          "value": "0 requires_class / class_min hits across quests, dialogue, items, world \u2014 the class-never-locks prohibition holds. But \u00a76.5's counterweight does not: the 3 caste topics exist only inside progression/classes.json and appear on 0 of the 5 shipped NPC records (bar: >= 25 NPCs each); 0 NPCs echo a custom class string (bar: >= 4).",
+          "threshold": "all five prohibitions hold AND \u00a76.5 visibility holds",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'Class never locks' = 6. Trainer-price and equip-refusal sub-checks unperformable (no trainer, no merchant)."
+        },
+        {
+          "id": "M9-irreversibility",
+          "result": "marginal",
+          "value": "Audit clean: no item, spell, service, quest reward or console action in game/data sets race, upbringing, class, hatch_name or an attribute; no respec and no race-change exists. But neither reversible service is executable \u2014 there is no Provincial Office and no Helstrom Hist in any loadable state (the 28 loadable states are enumerated in probeB.json), so 'costs 250 g and fires exactly once' could not be exercised.",
+          "threshold": "audit clean AND both reversible services exist and fire once",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+          ],
+          "note": "Axis 'Irreversibility' = 6."
+        },
+        {
+          "id": "M10-strangeness",
+          "result": "pass",
+          "value": "The Warden-Scribe's race read-back fires and is wrong on purpose, verbatim from the live build: \"Altmer. \u2014 No, of course not, you are not tall enough and you are not smug enough. Dunmer. I will write Dunmer.\"",
+          "threshold": "dedicated exchange for each of the three odd combinations, and >= 1 later NPC reference",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/blind/ours-beats.md"
+          ],
+          "note": "The 'later NPC references it' half is unperformable \u2014 there are no later NPCs."
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "Creation becomes a screen and RI-JRN01 is quietly overridden \u2014 worse: it became neither a screen nor a scene, but an API",
+        "The 540 signatures are constructible and nobody knows how many are unplayable (method 6's checker was never written)",
+        "Class gets its visibility cut: the three caste topics ship as data on zero NPCs"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+      ],
+      "why_not_ten": "min-over-axes is 0 because the Legibility axis is at its own 0 band: nothing about the character is visible in play, because there is no play with people in it (0 entities in writ-house, 5 NPC records in the whole build, 0 merchants, an encounter that deals 0 damage). Distinctness cannot exceed 3 because tools/analysis/build-viability.mjs \u2014 the tool method 6 names \u2014 does not exist, so 540-constructible is verified and 0 of 540 are known-viable.",
+      "path_to_ten": "1) Write tools/analysis/build-viability.mjs as method 6 specifies (walk game/data/quests/** stage graphs against each signature's gate-passing ability at simulated L1/20/40/60, including criterion 4's lethality model) and publish the failing-signature list. 2) Instantiate the Writ House: give writ-house.json the two NPC entities it already names (jeeh-ei, warden-scribe-tuleeh-ma) so listEntities() returns >= 2 and each census node has a body attached to it. 3) Attach the three caste topics in classes.json to >= 25 NPC records each and have >= 4 NPCs echo the custom-class free-text string, so method 7's legibility trace has something to read.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-CHR02",
+      "path": "corpus/22-character/RI-CHR02-race-and-standing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "11 axes, 0/6/10 each, aggregation min-over-axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "We lose \u2014 the Dialogue-volume axis is at its own 0 band ('< 50% of any minimum, or zero forbids.race records')",
+      "score_0_10": 3,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1-race-table",
+          "result": "marginal",
+          "value": "10 races; all 10 attribute-delta rows sum to exactly +12 (including the amended Imperial PER +5); every race has >= 4 skills raised and >= 1 ability; 9/10 distinct skill ID sets \u2014 Nord and Orsimer name the same five skills",
+          "threshold": "10 races, sums == 12, no two identical skill sets",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "The Nord/Orsimer collision is in RI-CHR02 \u00a71's OWN table; the build reproduces the corpus faithfully. Filed as an arbitration/corpus question, not charged to the build."
+        },
+        {
+          "id": "M2-matrix-shape",
+          "result": "pass",
+          "value": "full 12 x 10, no nulls, range -40..+14; sigma over 120 cells = 9.894; 12/12 rows distinct; 10/10 columns distinct; RG-COURT all zeroes",
+          "threshold": "sigma >= 9.0, rows and columns distinct, >= 1 neutral row",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'Matrix shape' = 8. Not 10 because the 10 band asks sigma >= 12 and this is 9.894."
+        },
+        {
+          "id": "M3-68-point-test",
+          "result": "pass",
+          "value": "LIVE, via __HARNESS.getReaction against the running build: (Saxhleel, interior) = 74 friendly; (Saxhleel, lukiul) = 48 neutral; (Imperial, foreign-born) = 24 cold; (Dunmer, foreign-born) = 6 hostile; (Dunmer, lukiul) = 0 hostile-floor. A - D = 68 points, 4 bands. Aggregate Saxhleel - Dunmer over all 12 groups = 11.750.",
+          "threshold": ">= 60-point gap in different bands; aggregate >= 8",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+          ],
+          "note": "Axis 'Disposition spread' = 8. This is the strongest thing in the piece: the matrix is real and fires in the running build with the exact \u00a74a numbers."
+        },
+        {
+          "id": "M4-npc-coverage",
+          "result": "fail",
+          "value": "5 NPC records exist in the whole build, across 2 files. 5/5 carry a reaction_group, but the group shares are RG-DEEP 2 (40%), RG-LUKIUL 1, RG-LEDGER 1, RG-EMPIRE 1 \u2014 40% in one group, against a \u00a72 target of 21% +- 4 points.",
+          "threshold": "100% tagged, shares within +-4 points of \u00a72",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'NPC coverage' = 3. The item's own 0 band is '> 40% of NPCs in one group'; at n=5 the population-share assertion carries no information."
+        },
+        {
+          "id": "M5-dialogue-volume",
+          "result": "fail",
+          "value": "greetings.json contains 4 lines across 3 disposition pools with faction:null and no player_race_class key at all (bar: 1,500 lines over 300 cells). 81 topic records shipped; 0 carry requires.race and 0 carry forbids.race (bar: >= 90 with >= 30 forbids). rumours.json contains 0 race-gated entries (bar: 16). 8 slavery-vocabulary hits across all dialogue (bar: >= 60 lines, >= 12 addressed to a Dunmer player).",
+          "threshold": "1500 / 90 / 30 / 16 / 60",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'Dialogue volume' = 0, exactly at the item's stated 0 band. This is the axis that drives min-over-axes to 0. The item's How-we-lose predicted it verbatim: 'the 120-cell matrix and 1,500 greeting lines are wave 2 content'."
+        },
+        {
+          "id": "M6-register",
+          "result": "unmeasurable",
+          "value": "0 shipped Argonian-voiced race-filtered lines exist to sample; the blind sort has no 'ours' pile",
+          "threshold": "<= 70% blind sorting accuracy",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        },
+        {
+          "id": "M7-prices",
+          "result": "marginal",
+          "value": "LIVE via getPriceQuote on a 60 g draught at a Helstrom (RG-DEEP) merchant: Saxhleel/interior r=+24 buy 54 sell 66; Imperial/foreign r=-26 buy 69 sell 52; Dunmer/foreign r=-44 buy 76 sell 47. Against the item's {54,70,76} / {66,52,47}: max deviation 1.4%. The par clause holds ONLY when the caller supplies RI-PRG05's own multiplier: getPriceQuote takes skill_buy_mult as an INPUT and computes no Mercantile or PERSONALITY term itself, so a Dunmer with mercantile=100, personality=60 quotes buyMult 1.264, identical to an untrained Dunmer; feeding skill_buy_mult=0.80 by hand gives an effective 1.011, inside the required [0.98,1.05].",
+          "threshold": "quotes within 3%; Mercantile-100/PER-60 Dunmer buy multiplier in [0.98,1.05]",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json"
+          ],
+          "note": "Axis 'Prices' = 6. The surcharge composes correctly; nothing in the build derives the term it composes with, so 'a handicap you can pay down' has no paying-down inside this piece."
+        },
+        {
+          "id": "M8-encounter-AR3",
+          "result": "fail",
+          "value": "10/12 assertions PASS at HEAD, not 12/12. Running the item's literal command at seed 1337 for all three races: Saxhleel 6 AGGRO transitions, first at 27.996 m, net_behaviour=capture; Dunmer 0 AGGRO and 1 parley_offer at 23.975 m kind=purchase; Khajiit ZERO AGGRO transitions in 1,800 frames. M8-khajiit-aggro-14m and M8-khajiit-no-capture FAIL. Cause: closest approach is 18.198 m in all three runs (identical), so the <= 12 m Khajiit band is never entered. Statblock/moveset/archetype/tier fingerprints are identical across all three runs (inf_trash / enemy:inf_trash / INFANTRY / trash) \u2014 the AR-1 half of the assertion passes cleanly.",
+          "threshold": "Saxhleel AGGRO at >= 26 m; Dunmer 0 AGGRO + >= 1 parley_offer; Khajiit first AGGRO <= 14 m; identical movesets",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/critic-rerun.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/saxhleel/trace.jsonl.gz",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/dunmer/trace.jsonl.gz",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/khajiit/trace.jsonl.gz"
+          ],
+          "note": "Axis 'AR-3 encounter test' = 4. Behavioural difference is non-zero, so the item's 'AR-3 sterile' 0 band is not triggered \u2014 but see the escalation note: the difference is confined to the alert-state trace channel."
+        },
+        {
+          "id": "M8b-escalation-does-the-fight-change",
+          "result": "fail",
+          "value": "Escalation ladder step 4 (second-order property). Across all three 1,800-frame runs the player takes ZERO damage and the party never closes: distance to the lead raider is frozen at 18.20 m from f900 to f1800. After the Saxhleel AGGRO the six raiders sit in REPOSITION for 1,657 consecutive frames. Placing a Saxhleel 3 m from the party and stepping 899 frames: all six report AGGRO at f0, then 899 frames of REPOSITION, player hp 620 -> 620, zero attack_start events, and the net-throwers never throw a net. The control (cmb-duel-infantry, same build) produces 21 attack_start, 4 HIT, 2 STAGGER and 1 DEATH in 3,600 frames, so the combat system does fire \u2014 this encounter's members simply never act.",
+          "threshold": "race changes who attacks you",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/control-duel/manifest.json"
+          ],
+          "note": "'capture' and 'kill' are strings in a trace event's net_behaviour field. No capture, no net, no transport to Archon's holds and no fight of any kind was observed."
+        },
+        {
+          "id": "M9-guard-thresholds",
+          "result": "marginal",
+          "value": "LIVE via getGuardTerms: 7 distinct lawFactors across the 10 races (Naga 0.33 arrest at 99, Khajiit 0.55 at 165, Saxhleel 0.70 at 210, Orsimer 0.85 at 255, Dunmer 1.10 at 330, Nord/Breton/Redguard/Bosmer 1.15 at 345, Imperial 1.35 at 405); loiter-to-challenge Naga 4.5 s : Imperial 11.3 s = ratio 2.511, inside the required [2.2, 2.8]. But the method's behavioural half is unperformable: loadState('stormhold-street') does not exist (28 states are loadable and it is not one of them), no guard entity can be spawned, and no arrest dialogue exists to initiate.",
+          "threshold": "arrest fires for Saxhleel and Naga at bounty 250 and not for Imperial or Dunmer; ratio 2.2-2.8",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+          ],
+          "note": "Axis 'Guard thresholds' = 3. The numbers are a pure function exposed to the harness; no guard in the running world reads them."
+        },
+        {
+          "id": "M10-no-lockout",
+          "result": "marginal",
+          "value": "0 race gates exist anywhere in game/data/quests, so no race is locked out of anything \u2014 vacuously. Against \u00a74d's requirement of 34 race-gated quests (11 Argonian-only, 7 non-Argonian-only, 3 Naga-only, 5 Dunmer-easier), the shipped count is 0.",
+          "threshold": "<= 12 net-locked quests per race",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'No lockout' = 6, passed by the absence of the system it constrains. Race currently closes nothing and opens nothing."
+        },
+        {
+          "id": "M11-parley-coverage",
+          "result": "marginal",
+          "value": "The one authored parley (dres-raid-party) declares grounds [gold, faction, name] with race_independent_route='name' keyed on the topic 'the-sallow-wife' \u2014 correct by the letter of the method. But there is no verb by which a player takes it: window.__HARNESS exposes zero parley/yield/bribe/surrender/calm methods, and the encounter never enters COMBAT, so the exit cannot be exercised.",
+          "threshold": "every parley has >= 1 route that is not disposition-gated",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeF/probeF.json"
+          ],
+          "note": "Axis 'Parley coverage' = 6 on the data; unexecutable in play."
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "Race becomes a stat block and the 1,500 greeting lines are 'wave 2 content' \u2014 measured 4 lines",
+        "Prices are close to the only thing that differs: prices, disposition, guard terms and the encounter opening all exist as oracle functions, and no NPC, merchant or guard in the running build consumes any of them",
+        "Slavery is present as scenery: 8 vocabulary hits against a floor of 60 lines"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/critic-rerun.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/control-duel/manifest.json"
+      ],
+      "why_not_ten": "min-over-axes is 0: the dialogue-volume axis measures 4 greeting lines against 1,500, 0 race-filtered topic records against 90, 0 forbids.race against 30, 0 race-gated rumours against 16, and 8 slavery hits against 60. Separately, the item's headline AR-3 method fails 2 of 12 assertions at HEAD (zero Khajiit AGGRO in 1,800 frames), and the behavioural difference that does fire never becomes a fight: 0 damage in 1,800 frames, 0 attack_start events at 3 m.",
+      "path_to_ten": "1) Ship the \u00a74c volumes as data: 1,500 greeting lines keyed (reaction_group, disposition_band, player_race_class) filling >= 250 of the 300 cells; 90 topic records with requires.race/forbids.race of which >= 30 are forbids; 16 race-gated rumours; 60 slavery lines with >= 12 addressed to a Dunmer player, written in the third-person nominative-plus-status register of corpus/60-lore/data/argonian-dialogue-corpus.json. 2) Fix the AR-3 scenario so the <= 12 m Khajiit band is reachable: extend wld-dres-raid-road.json's input script past f600 (or move the party's spawn) until closest approach is <= 10 m, and re-run tools/analysis/ar3-encounter-test.mjs to 12/12. 3) Give the raid party the behaviour its net_behaviour field claims: on AGGRO the infantry must close to weapon range and the net-throwers must emit a bind, so that a Saxhleel run produces >= 1 hit_active frame against the player and a capture transition, and a Dunmer run still produces none.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-CHR03",
+      "path": "corpus/22-character/RI-CHR03-birthsigns.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "8 axes, 0/6/10 each, aggregation min-over-axes; cosmology and drawback-reality are binary",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "We lose \u2014 Visibility and Numbers are both at their 0 bands",
+      "score_0_10": 1,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1-cosmology",
+          "result": "pass",
+          "value": "exactly 9 signs, 3 given / 3 withheld / 3 turned, zero Imperial sign names anywhere in the roster; Imperial sign vocabulary appears in 1 book/dialogue file, so the thirteen exist in-world",
+          "threshold": "9 Hist-rooted signs; zero Imperial names in the roster; the thirteen present in-world",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'Cosmology' = 8. The one binary axis in the item that passes cleanly."
+        },
+        {
+          "id": "M2-drawback-reality",
+          "result": "fail",
+          "value": "The Dry Well (nu-ixtu) is indistinguishable from having no birthsign. player.focus is 94 flat across 3,600 frames for nu-ixtu AND for raj-xul, because focus_locked is true for every character \u2014 there is no Focus regeneration for anyone, so the drawback removes nothing. focus_max is 94 for a WILLPOWER-18 character with and without nu-ixtu, so the sign's \u00d71.60 max-Focus power is not applied either.",
+          "threshold": "the mechanical drawback removes a system rather than scaling it, and the sign's numbers are within 1%",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json"
+          ],
+          "note": "The monotonicity assertion passes vacuously (nothing ever regenerates) while the sign's entire mechanical identity is absent. Axis 'Drawback reality' = 0; axis 'Numbers' = 0 at its own band 'any sign's headline number missing'."
+        },
+        {
+          "id": "M4-unlit-water-claim",
+          "result": "fail",
+          "value": "The shadowscale-claim drawback is fully authored in birthsigns.json with an unremovable flag and three arbiter encounters described in prose. game/data/quests contains 0 occurrences of 'shadowscale', 'arbiter' or 'ku-vastei'; there are no quest records with obey/refuse outcomes and no named persistent hostile.",
+          "threshold": "3 arbiter encounters exist as quest records with obey and refuse outcomes",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "The item's How-we-lose named this exactly: 'The Unlit Water's claim is never built.'"
+        },
+        {
+          "id": "M5-decidability",
+          "result": "unmeasurable",
+          "value": "tools/analysis/build-viability.mjs does not exist",
+          "threshold": "every sign viable with 4-6 class families; Dry Well non-viable with >= 2",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        },
+        {
+          "id": "M6-visibility",
+          "result": "fail",
+          "value": "0 rootkeeper greeting lines keyed on birthsign (bar 9, one per sign); 0 birthsign-gated topics outside the creation scene itself (bar 4); 0 birthsign-gated quests (bar 1). The only 'birthsign' occurrences in all of game/data/dialogue are the 11 inside topics/writ-house.json \u2014 the creation scene asking the question. birthsigns.json ships a `visibility` object that states these requirements as prose.",
+          "threshold": ">= 9 rootkeeper lines, >= 4 topics, >= 1 quest",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ],
+          "note": "Axis 'Visibility' = 0, at the item's own 0 band: 'birthsign appears only on the character sheet'."
+        },
+        {
+          "id": "M9-kaal-kaal",
+          "result": "marginal",
+          "value": "Composition is arithmetically correct in the sheet: setCharacter({birthsign:'kaal-kaal', birthsign_second:'nu-ixtu'}) returns the nu-ixtu POWER at scale 0.5 and the nu-ixtu DRAWBACK at scale 1.0 \u2014 the asymmetry the method exists to check. But nothing consumes it: focus_max stays 94, so neither the halved \u00d71.60 nor the full zero-regen is observable. Note the key is `birthsign_second`; `second_birthsign` is silently accepted and dropped, returning birthsign_second: null with no error.",
+          "threshold": "power halved, drawback full, all 8 combinations",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json"
+          ]
+        },
+        {
+          "id": "M7-recut",
+          "result": "unmeasurable",
+          "value": "The re-cut is fully specified in birthsigns.json (Helstrom bole, three alternative prerequisites, all carried souls to a 25,000 minimum, one in-game week, exactly one use, Grey Sap refused). No Helstrom state is loadable and no service exists, so it could not be invoked.",
+          "threshold": "souls zeroed with a 25,000 minimum, one week passes, two quest timers advance, second attempt refused in dialogue",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "RI-CHR03/drawback-reality"
+      ],
+      "how_we_lose_hits": [
+        "Nothing in the world reads the sign \u2014 the most quietly damaging outcome, and it landed exactly",
+        "The Unlit Water's claim is never built",
+        "The drawbacks get softened: not softened, but unimplemented, which is the same player experience"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+      ],
+      "why_not_ten": "The drawback-reality axis is at 0 and it is binary: The Dry Well produces exactly the same 3,600-frame Focus series (94, flat) and exactly the same focus_max (94) as a no-drawback sign, so the item's central claim \u2014 'at least two signs must carry a drawback a competent player can lose the run to' \u2014 is unmet in the running build. Visibility is also 0: 0 of the required 9 rootkeeper lines, 0 of 4 topics, 0 of 1 quest, 0 of 3 arbiter encounters.",
+      "path_to_ten": "1) Wire the sign's effect block into the sim: WILLPOWER must drive focus_max (see the RI-PRG02 remedy), then apply focus_max_multiplier 1.6 for nu-ixtu and gate the regen path on the sign, so a harness run of `--scenario prg-focus-regen --state birthsign=nu-ixtu --frames 3600` shows focus_max = 1.60 x base and a strictly non-increasing focus series while a raj-xul run of the same scenario shows regen. Write that scenario; it does not exist. 2) Author the three ku-vastei arbiter encounters as quest records with obey/refuse outcomes, refuse setting Reputation -15 and spawning a named persistent hostile that then appears in >= 3 encounter tables. 3) Ship the 9 rootkeeper greeting lines (one per sign), the 4 birthsign-gated topics and the 1 birthsign-gated quest that birthsigns.json's own `visibility` object already specifies.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-PRG02",
+      "path": "corpus/20-progression/RI-PRG02-stat-sheet.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "6 axes, 0/6/10 each, aggregation min-over-axes; six-characters is the item's reason for existing",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "We lose \u2014 the Curves axis and the Two-streams axis are both at their 0 bands",
+      "score_0_10": 2,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1-completeness",
+          "result": "pass",
+          "value": "exactly 10 attributes with the ten expected ids, each carrying both an in_fight and an out_of_fight description",
+          "threshold": "10 attributes, all documented",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        },
+        {
+          "id": "M2-breadth",
+          "result": "marginal",
+          "value": "10/10 attributes carry an out_of_fight effect; exactly 2 (speed, personality) declare 'NOTHING, explicitly' in fight, and speed's entry carries the AR-1 clamp note. The declarations are all distinct. But the item's own How-we-lose warns 'Critics must verify the call site, not the definition' \u2014 and PERSONALITY's documented price multiplier is not called: getPriceQuote takes skill_buy_mult as a caller-supplied input and derives no PERSONALITY or Mercantile term.",
+          "threshold": ">= 7 attributes with an out_of_fight effect; exactly 2 with none in fight; no two identical effect sets",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json"
+          ]
+        },
+        {
+          "id": "M3-soft-cap-curves",
+          "result": "fail",
+          "value": "The curves are not wired to the sheet at all. Four characters composed live: VIG 18 / END 19 -> hp_max 620, stamina_max 120. VIG 6 / END 10 -> hp_max 620, stamina_max 120. VIG 17 / END 18 -> 620 / 120. VIG 10 / END 6 -> 620 / 120. WILLPOWER 10 and 18 both give focus_max 94. Against RI-PRG02 \u00a73's anchors (HP 300 at VIG 10 rising to 1,122 at 99; stamina 80 at END 10 rising to 181), the measured HP is constant, wrong by +107% at VIG 10, and has zero dependence on the attribute.",
+          "threshold": "HP within 5% of {300,560,742,924,1044,1122}; stamina within 5% of {80,120,145,157,181}",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json"
+          ],
+          "note": "Axis 'Curves' = 0. The composed attributes DO reach the sim \u2014 getPlayerStats().attributes returns the 112-point sheet \u2014 but nothing downstream derives from them."
+        },
+        {
+          "id": "M4-grade-separation",
+          "result": "unmeasurable",
+          "value": "No harness verb sets a skill or an attribute directly, and setCharacter's reachable spread is skill 5..25, so the gradeCoeff curve cannot be sampled. Damage fields on the hit events in probeD/probeE are null.",
+          "threshold": "six strictly decreasing values, S >= 2.0 x D, post-cap gain <= 20%",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeD/probeD.json"
+          ]
+        },
+        {
+          "id": "M5-two-streams",
+          "result": "fail",
+          "value": "Neither stream runs. After 3,600 frames of scripted play including 4 connecting hits and 1 enemy DEATH, getPlayerStats() reports level 1 and souls 0, and getCharacter() reports the same 19 skill values and the same 10 attribute values it reported at creation. Earned fraction = 0/0, outside the required [0.19, 0.31] in the direction of the item's 0 band.",
+          "threshold": "earned fraction in [0.19, 0.31]",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeE/probeE.json"
+          ],
+          "note": "Axis 'Two streams' = 0, at the item's own 0 band: 'no earned stream at all (pure Souls)' \u2014 except the Souls stream is not running either."
+        },
+        {
+          "id": "M7-six-characters",
+          "result": "marginal",
+          "value": "Six materially different sheets are constructible on paper from attributes.json and the shipped race/class tables, and the composed sheets differ sharply in shape (Orsimer Marsh-Knight VIG 18/END 19/PER 2 vs Breton Sap-Reader WIL 18/INT 18/STR 5). But no differentiating clause is mechanically true in the running build: the Fence's price advantage is not computed, the Marsh-Runner's travel modifier is not applied, the Shell-Warden's equip load is the same 24% as everyone else's, and HP is 620 for all of them.",
+          "threshold": "6 distinct descriptions in which the differentiating clause is not about weapon damage",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "Out-of-fight effects exist in the data but nothing reads them \u2014 the item calls this 'worse than not shipping the stat'",
+        "The earned stream is dropped",
+        "No soft caps \u2014 here, no curve at all"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeE/probeE.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+      ],
+      "why_not_ten": "VIGOUR 6 and VIGOUR 18 both produce hp_max 620; ENDURANCE 6 and 19 both produce stamina_max 120; WILLPOWER 10 and 18 both produce focus_max 94. The attribute sheet composes to the correct 112 points and reaches getPlayerStats(), and then nothing in the simulation reads it. Both progression streams are at zero: 4 connecting hits and a kill move no skill and grant no souls.",
+      "path_to_ten": "1) Wire game/src/character/sheet.js's composed attributes into the sim's derived stats: implement RI-PRG02 \u00a73's piecewise curves so that HP(VIG) hits {300,560,742,924,1044,1122} at VIG {10,20,27,40,60,99} within 5%, stamina(END) hits {80,120,145,157,181}, and focus_max scales with WILLPOWER. Acceptance: a probe that composes four characters at VIG {6,10,18,27} returns four different hp_max values on the curve. 2) Implement the earned stream: a skill crossing a multiple of 15 grants +1 to its governing attribute, and expose a getSkillProgress() harness verb so RI-PRG03 method 6's accounting can be run. 3) Add a setAttribute/setSkill harness verb so method 4's grade curve can be sampled at all.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "7 axes, 0/6/10 each, aggregation min-over-axes; S1 purity is binary with no 6",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "We lose \u2014 skills do not improve by use, and the gate-determinism and no-lockout axes are unmeasurable",
+      "score_0_10": 1,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1-skill-inventory",
+          "result": "pass",
+          "value": "exactly 19 skills with the expected ids; 19/19 carry a governing attribute drawn from the ten; 19/19 carry a non-empty gate string; use_events with point values are declared per skill",
+          "threshold": "19 skills, all gated, all governed",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        },
+        {
+          "id": "M2-curve",
+          "result": "marginal",
+          "value": "skills.json declares progress_formula; nothing computes it, because no progress is ever accrued (see M-use).",
+          "threshold": "max relative error <= 5% against round(1.6s + 6)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        },
+        {
+          "id": "M-use-skills-improve-by-use",
+          "result": "fail",
+          "value": "The item's headline. A Salt-Blade Dunmer (Blades 25) was locked on and swung for 3,600 frames, producing 46 attack_start, 42 WHIFF, 4 HIT, 2 STAGGER and 1 enemy DEATH. Blades stayed at 25 and every one of the other 18 skills was byte-identical to its creation value. The Cost Gate's only qualifying weapon event \u2014 a connecting hit on a hostile, worth 1 point \u2014 granted 0.",
+          "threshold": "a connecting hit grants 1 progress point",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeE/probeE.json"
+          ],
+          "note": "There is also no harness verb by which skill progress could be observed even if it existed: no getSkillProgress, no setSkill."
+        },
+        {
+          "id": "M3-S1-purity",
+          "result": "marginal",
+          "value": "Two characters an identical scripted swing apart, Blades 25 (Salt-Blade Dunmer) and Blades 5 (Sap-Reader Breton), produced identical event sequences and identical hit frames. No skill read into hit resolution was observed. But the item's dynamic test (all skills at 5 vs all at 100, byte-identical traces, only damage differing) cannot be run: there is no verb to set a skill, and setCharacter's reachable range is 5..25.",
+          "threshold": "hit/miss sequence, contact frames, stagger events and stamina timeline byte-identical; only damage differs",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeD/probeD.json"
+          ],
+          "note": "S1 purity holds trivially because skill affects nothing at all \u2014 including damage, which it is supposed to affect."
+        },
+        {
+          "id": "M4-grade-shift",
+          "result": "unmeasurable",
+          "value": "requires setting Greatweapons to {20,32,42,50,72}; no verb exists and no hit event carries a damage field",
+          "threshold": "AR within 5% of {165,181,199,218,240}; AR(72)/AR(20) in [1.35,1.55]",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeD/probeD.json"
+          ]
+        },
+        {
+          "id": "M5-cost-gate",
+          "result": "marginal",
+          "value": "All six no-cost grinds would yield 0 progress \u2014 vacuously, since every action yields 0. The +3-levels-per-rest clamp cannot fire because no level is ever gained.",
+          "threshold": "all six grinds yield exactly 0; the clamp fires on a legal grind",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeE/probeE.json"
+          ]
+        },
+        {
+          "id": "M7-gate-determinism",
+          "result": "unmeasurable",
+          "value": "no gated action in \u00a76's tables is reachable from any of the 28 loadable states within this piece's scope (no locks, no spells to equip, no merchant, no persuade attempt)",
+          "threshold": "100/100 fail below threshold, 100/100 pass at threshold",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "Skills exist and gate nothing \u2014 nineteen counters that never tick",
+        "RI-PRG02 and this item drift: the 27-earned-attribute-points figure is a joint output and both sides measure zero"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeE/probeE.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeD/probeD.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+      ],
+      "why_not_ten": "The item is named 'skills that improve by use' and in the running build they do not: 4 connecting hits and 1 kill left all 19 skill values unchanged. Skill also does not reach damage, so the S3 mechanic that is supposed to make skill matter without touching the hit test is absent in both directions.",
+      "path_to_ten": "1) Implement the use-event accrual in the sim: on a `hit` event credit the wielded weapon class's skill with its \u00a73 point value, apply progressToNext = round(1.6s + 6), and enforce the Cost Gate so whiffs, empty-room sneaking and re-picked locks credit zero. Acceptance: 400 scripted connecting hits at Blades 25 raise Blades by >= 5 levels, and 400 whiffs raise it by 0. 2) Add getSkillProgress() and setSkill() to window.__HARNESS so methods 3, 4, 6 and 7 become runnable at all. 3) Wire \u00a75's grade-shift into the damage formula and emit `damage` on the hit event, so method 4's {165,181,199,218,240} ladder can be measured.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-JRN01",
+      "path": "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-100 weighted, plus hard fails capping at 2",
+      "native_score": 0,
+      "native_max": 100,
+      "native_verdict": "We lose \u2014 and unmeasurable by the item's own harness rule",
+      "score_0_10": 0,
+      "measured": "unmeasurable",
+      "checks": [
+        {
+          "id": "M1-M15-instrumented-pass",
+          "result": "unmeasurable",
+          "value": "tools/journey/journey-run.mjs does not exist, nor do beat-extract.mjs or gamepad-shim.mjs. The item states: 'Requires harness amendment A-JRN1. Until it exists every check below is unmeasurable and scores 0, fail-closed.'",
+          "threshold": "M1-M15",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        },
+        {
+          "id": "M5-diegesis-direct",
+          "result": "fail",
+          "value": "Measured directly rather than skipped. The whole Writ House sequence was driven node by node through window.__HARNESS and screenshotted at 1920x1080 after each of the 19 nodes: censusBegin, the hatch-name, censusEnter, the race read-back, sex, upbringing, given name, the route choice, all ten questionnaire answers, the birthsign. All 20 creation-sequence PNGs are BYTE-IDENTICAL, sha256 7277a273453ac8631c318f3d9120d7b12b7f562b187adabf59fe3ca7b5daaeb5. The frame shows a third-person body standing in an open green field under low-poly trees. There is no barge hold, no Writ House interior, no Jeeh-Ei, no Warden-Scribe Tuleeh-Ma, no question text, no answer options, and document.body.innerText is the empty string throughout. getCensusState() self-reports full_screen:false, world_visible:true, full_screen_panels:0 \u2014 fields in a JSON return value with no rendered counterpart.",
+          "threshold": "100% of character-defining inputs occur with the world visible and a named interlocutor present; opaque UI <= 55% of frame area",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/00-boot.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/07-censusAnswer-questionnaire.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/18-censusAnswer-nu_ixtu.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json"
+          ],
+          "note": "Strictly, HF1 asks for an input taken on a screen with NO world behind it. Here a world is behind it and the scene is not. The item's How-we-lose #3 \u2014 'the bureaucrat is a skin on the menu, diegesis is claimed and not delivered' \u2014 is the closest named failure, one step further along: there is not even a menu."
+        },
+        {
+          "id": "M4-control-before-definition",
+          "result": "fail",
+          "value": "listEntities() returns 0 entities at boot and 0 after creation. O6 requires >= 60 s of available play containing a walkable space, at least one other person, and at least one object that can be picked up. There is no other person and no takeable object anywhere in the writ-house state.",
+          "threshold": ">= 1 other NPC entity and >= 1 takeable item entity during the pre-definition window",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json"
+          ]
+        },
+        {
+          "id": "M3-title-composition",
+          "result": "fail",
+          "value": "There is no title surface at all. Page load goes straight to a rendered world with a controllable body; the accessibility tree has no focusable elements and the DOM has no text. O1 (<= 2 surfaces) is satisfied by having none; O3's required element set \u2014 Continue / New / Load / Settings / Quit-to-menu \u2014 does not exist.",
+          "threshold": "exactly the O3 set",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/00-boot.png"
+          ]
+        },
+        {
+          "id": "M8-carried-object",
+          "result": "pass",
+          "value": "readWrit() returns a complete stamped reed-case writ carrying every one of the eight answers in the Warden-Scribe's own voice, including the bounty-ledger reference TW-DUN-SCO and the caste line. Verbatim opening: 'PROVINCIAL OFFICE OF ARGONIA \u2014 WRIT OF PERSON / Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.'",
+          "threshold": "present, readable, contains the player's name, origin and profession as given",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json"
+          ],
+          "note": "O10 is satisfied in content and unsatisfied in kind: it is a string returned by an API, never rendered, and RI-JRN01's How-we-lose #10 is 'the stamped document is a flag, not an object'."
+        },
+        {
+          "id": "M9-M11-instruction-and-marker-budget",
+          "result": "pass",
+          "value": "0 UI strings rendered anywhere across the entire captured sequence, therefore 0 tutorial pop-ups, 0 'Press X to Y' banners, 0 objective text, 0 markers, arrows, compass or minimap. The restraint block passes by having no UI at all.",
+          "threshold": "0 hits",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json"
+          ]
+        },
+        {
+          "id": "M13-modality-parity",
+          "result": "unmeasurable",
+          "value": "tools/journey/gamepad-shim.mjs absent; and with no interactive surface there is nothing to operate on any modality",
+          "threshold": "4/4 runs complete",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        },
+        {
+          "id": "M16-M19-naive-pass",
+          "result": "unmeasurable",
+          "value": "no isolated fresh-agent channel available to this critic, and the item's own runner is absent",
+          "threshold": "3/3 answers without naming a menu; found_fraction >= 0.30; <= 1 defect",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "RI-JRN01/HF1-adjacent: every character-defining input is taken with nothing of the scene rendered"
+      ],
+      "how_we_lose_hits": [
+        "#3 The bureaucrat is a skin on the menu \u2014 passed through and out the other side: there is no menu and no bureaucrat, only a state machine",
+        "#10 The stamped document is a flag, not an object"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/00-boot.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/07-censusAnswer-questionnaire.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+      ],
+      "why_not_ten": "Scored 0 by the item's own binding rule (harness amendment A-JRN1 absent), and independently corroborated by direct measurement: 20 byte-identical 1920x1080 frames across the entire 19-node creation sequence, 0 NPC entities, 0 rendered characters of text. The written content of the scene is excellent and none of it reaches a screen.",
+      "path_to_ten": "1) Build tools/journey/journey-run.mjs (A-JRN1: real input path, first_input/first_control trace events, UI-text stream capture) plus beat-extract.mjs and gamepad-shim.mjs, so M1-M15 become measurable at all. 2) Render the scene: give writ-house.json the jeeh-ei and warden-scribe-tuleeh-ma NPC entities with positions, and draw getCensusState()'s `line`, `input.kind` and `input.options` as a dialogue surface over the live 3D view with opaque UI <= 55% of frame area. Acceptance: consecutive creation-node screenshots have distinct sha256 hashes, >= 1 NPC entity is present in listEntities() at every node, and the frame shows the interior named in getCensusState().interior. 3) Render the writ as a readable inventory object rather than a string returned by readWrit().",
+      "ten_by_wave": 2
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07a.mjs \u2014 drives censusBegin/censusEnter/censusAnswer node by node against the running build, capturing DOM/UI metrics and a screenshot at every node",
+      "seed": 1337,
+      "sha256": "d60b3b596030d13ac3835580a49e9b23410bafe2bc1db4d3b1e74fd4f5cb60f2",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/00-boot.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07a.mjs (page.screenshot at boot, before censusBegin)",
+      "resolution": "1920x1080",
+      "camera_pose": "default third-person follow rig, pivot at player origin, dist 3.99 m, yaw 0, pitch -8, fov 50; state writ-house; timeOfDay 10.0; weather overcast",
+      "sha256": "946e3102e91bd0c7020e7470f8cd82c6faa1b2b7c94610d75d63e777a36c99c6",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/07-censusAnswer-questionnaire.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07a.mjs \u2014 the frame at the moment the class route is chosen",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to 00-boot; the camera was never moved and the sequence never changed a pixel",
+      "sha256": "7277a273453ac8631c318f3d9120d7b12b7f562b187adabf59fe3ca7b5daaeb5",
+      "source": "ours",
+      "note": "This hash is shared by all 20 creation-sequence PNGs. It is the piece's central negative evidence."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/18-censusAnswer-nu_ixtu.png",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/harness/critic-w1-07a.mjs \u2014 the frame at the moment the birthsign is chosen; byte-identical to 07 and to 00 after boot",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to 00-boot",
+      "sha256": "7277a273453ac8631c318f3d9120d7b12b7f562b187adabf59fe3ca7b5daaeb5",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/critic-rerun.json",
+      "kind": "report",
+      "produced_by": "node tools/analysis/ar3-encounter-test.mjs --runs corpus/90-verdicts/wave1/artifacts/W1-07/ar3/ (the builder's own assertion tool, run by the critic over the critic's own three traces)",
+      "seed": 1337,
+      "sha256": "a3c8449fe0a84f288fff361d69dc01b698d7acd89c9ed7b75f97bd2e086ae982",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/saxhleel/trace.jsonl.gz",
+      "kind": "trace",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=saxhleel,upbringing=foreign-born\"",
+      "seed": 1337,
+      "duration_s": 30,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/dunmer/trace.jsonl.gz",
+      "kind": "trace",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=dunmer,upbringing=foreign-born\"",
+      "seed": 1337,
+      "duration_s": 30,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/khajiit/trace.jsonl.gz",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=khajiit,upbringing=foreign-born\" \u2014 1,800 frames containing zero events of any kind",
+      "seed": 1337,
+      "duration_s": 30,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07b.mjs \u2014 the 12x10 disposition oracle, the price quotes, the ten guard rows and the close-range encounter track, all read live from the running build",
+      "sha256": "f9fe29b6950a3c4bf62874d543589686f9e4071d824485c79b6ca62a0d400aed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07c.mjs \u2014 the Dry Well focus series, the sheet composition, and the 899-frame at-3-metres attack test",
+      "sha256": "2e9a56e964dea549ef54dc98e4dbf3119aa384f3cc1abb3b04cc0c90c06f3698",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeD/probeD.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07d.mjs \u2014 Blades 25 vs Blades 5 on an identical scripted swing",
+      "seed": 1337,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeE/probeE.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/harness/critic-w1-07e.mjs \u2014 3,600 frames, 46 attack_start, 4 HIT, 1 DEATH, zero change to any of the 19 skills or 10 attributes",
+      "seed": 1337,
+      "sha256": "db979d6c22f382ebe4f8b82b454b633c44a43471252da72c6828b13f4f4bd378",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeF/probeF.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07f.mjs \u2014 AR-2 B5/B12/B13: the travel network, the parley verb surface, and the soul-denominated price sweep",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/harness/critic-w1-07g.mjs \u2014 four composed characters spanning VIG 6..18, END 6..19, WIL 10..18, all returning hp_max 620 / stamina_max 120 / focus_max 94; plus the Kaal-Kaal 0.5/1.0 composition",
+      "sha256": "83b5eb88a7836d1f0bc78a778621ca2959a712f3eecc807eb0a7524c8e298a95",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt",
+      "kind": "report",
+      "produced_by": "node tools/analysis/critic-w1-07-audit.mjs \u2014 48 assertions recomputed independently from the shipped JSON, deliberately WITHOUT importing game/src/character/*.js",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.json",
+      "kind": "report",
+      "produced_by": "node tools/analysis/critic-w1-07-audit.mjs (machine-readable form)",
+      "sha256": "ea6f63fa343e90d6a3ded79ac6a8c7242947ac7eee27ed6a514f01abd969ce8e",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/control-duel/manifest.json",
+      "kind": "trace",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario cmb-duel-infantry \u2014 the control that shows the combat system DOES fire in this build (21 attack_start, 4 HIT, 2 STAGGER, 1 DEATH), so the Dres raid party's inertness is a property of that encounter and not of the engine",
+      "seed": 1337,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/blind/pack/A.md",
+      "kind": "blind-pack",
+      "produced_by": "node tools/blind/make-pair.mjs --ours .../ours-beats.md --ref .../ref-beats.md --seed 4711 --item RI-JRN01",
+      "seed": 4711,
+      "source": "blind-pack"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/blind/pack/B.md",
+      "kind": "blind-pack",
+      "produced_by": "node tools/blind/make-pair.mjs (same invocation)",
+      "seed": 4711,
+      "source": "blind-pack"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/blind/pack.reveal/mapping.json",
+      "kind": "blind-pack",
+      "produced_by": "node tools/blind/make-pair.mjs \u2014 reveal key, written outside the pack",
+      "seed": 4711,
+      "source": "mixed"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07/blind/ours-beats.md",
+      "kind": "text-excerpt",
+      "produced_by": "extracted from probeA.json's live getCensusState() returns \u2014 the nine spoken lines of the creation scene as the running build emits them",
+      "source": "ours"
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-JRN01",
+      "status": "done",
+      "question": "In which of these two openings is the player's identity produced by something a character in the world is doing for a reason of their own?",
+      "pack_artifacts": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/blind/pack/A.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/blind/pack/B.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/blind/pack.reveal/mapping.json"
+      ],
+      "assignment_seed": 4711,
+      "blind_pick": "A",
+      "blind_rationale": "A's official has motives that are visibly his own and not the player's: he says the sex box exists because 'the box is there. It changes nothing. Nothing in this province will treat you differently for it and I have watched for eleven years'; he guesses the race wrong first ('Altmer. \u2014 No, of course not, you are not tall enough and you are not smug enough'); and he offers the class routes with 'there are three ways to do this and I do not care which, and neither does the box'. B's beats are recorded from outside the fiction \u2014 'You choose. He writes it down.' \u2014 and the person doing the recording has no stated reason of his own. A is the one in which identity is a by-product of somebody else's paperwork.",
+      "reveal": {
+        "A": "ours",
+        "B": "reference"
+      },
+      "picked": "ours",
+      "rerun_triggered": true,
+      "rerun": {
+        "harsher_lens": "CRITIC-DOCTRINE \u00a72.5. The pack was not fairly matched in form \u2014 A is verbatim transcript from the running build, B is RI-JRN01 \u00a7A's recalled beat table, which is narration and not dialogue, so A wins partly on register rather than on the property under test. The harsher pass moved from the text layer to the pixel layer: instead of asking whether the scene READS as a scene, I asked whether the scene EXISTS, by screenshotting every one of the 19 creation nodes at 1920x1080.",
+        "additional_measurement": "All 20 creation-sequence PNGs are byte-identical (sha256 7277a273...). No interlocutor is rendered, no line of the quoted dialogue reaches a screen, document.body.innerText is empty at every node, and listEntities() returns 0. The prose that won the blind pick is never delivered to a player.",
+        "artifacts": [
+          "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/00-boot.png",
+          "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/07-censusAnswer-questionnaire.png",
+          "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/18-censusAnswer-nu_ixtu.png",
+          "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json"
+        ],
+        "result": "reference-wins-on-review",
+        "item_capped_at_8": false
+      }
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A1",
+          "result": "not_applicable",
+          "observed": "This piece adds no hit-resolution path. The 50-swing dummy protocol belongs to the combat piece; within this piece the only candidate leak is skill or race reaching the hit test, covered by A8 and A6.",
+          "not_run_reason": "no hit-resolution code is authored by W1-07"
+        },
+        {
+          "id": "A6",
+          "result": "pass",
+          "observed": "The three race runs at seed 1337 produce identical statblock, moveset, archetype and tier fingerprints for all six raid-party entities (inf_trash / enemy:inf_trash / INFANTRY / trash). No per-race HP, damage or tier difference exists. This is the mistake RI-CHR02's How-we-lose predicted ('the AR-3 encounter difference is implemented as a stat change') and the build did not make it.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/critic-rerun.json"
+          ]
+        },
+        {
+          "id": "A8",
+          "result": "pass",
+          "observed": "Blades 25 and Blades 5 on an identical scripted swing produced identical event sequences and identical hit frames; no skill value was observed to change whether or when a hit landed. The dynamic 5-vs-100 comparison could not be run (no setSkill verb), so this is a partial pass on the range reachable through setCharacter.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeD/probeD.json"
+          ]
+        },
+        {
+          "id": "A9",
+          "result": "pass",
+          "observed": "No Fatigue value appears in any in-fight resolution; the sheet exposes stamina and Fatigue separately and neither is coupled to the other in the traces.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeE/probeE.json"
+          ]
+        },
+        {
+          "id": "A10",
+          "result": "pass",
+          "observed": "No topic list can be opened in COMBAT because no topic list exists in the running build at all; window.__HARNESS exposes uiOpen/uiClose and arrestTopics and no dialogue surface.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeF/probeF.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/critic-rerun.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeD/probeD.json"
+      ]
+    },
+    "ar2": {
+      "status": "fail",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "21 screenshots at 1920x1080 across boot and the whole creation sequence: zero arrows, pins, waypoints, distance readouts or edge indicators. There is no HUD of any kind.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/00-boot.png"
+          ]
+        },
+        {
+          "id": "B3",
+          "result": "fail",
+          "observed": "The 10-NPC sample cannot be drawn: the build ships 5 NPC records in total across 2 files, and the writ-house state \u2014 the piece's own interior \u2014 instantiates 0 entities. greetings.json contains 4 lines in 3 disposition pools with faction:null and no race key; 81 topic records exist and 0 carry a race filter. Median topics offered by an NPC the player can actually meet is 0.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json"
+          ]
+        },
+        {
+          "id": "B5",
+          "result": "pass",
+          "observed": "Every price this piece exposes is in gold: getPriceQuote returns gold buy/sell figures and getGuardTerms returns gold bounty thresholds. The one soul-denominated cost in the shipped data is RI-CHR03 \u00a75's birthsign re-cut ('cost_souls: all souls currently carried, cost_min_souls 25000'), which the corpus itself prescribes; it is data-only and no such service exists in the build. Filed as an arbitration question rather than scored as a leak.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeF/probeF.json"
+          ]
+        },
+        {
+          "id": "B12",
+          "result": "not_run",
+          "observed": "The precondition could not be met. This piece authors one encounter class (a faction patrol, dres-raid-party). Placing a Saxhleel 3 m from six raiders and stepping 899 frames leaves player.in_combat false and hp 620 -> 620 with 0 attack_start events, so COMBAT never begins and there is nothing to exit. Separately, window.__HARNESS exposes zero parley/yield/bribe/surrender/calm verbs, so the encounter's declared race-independent 'name' route cannot be taken even if COMBAT did begin.",
+          "not_run_reason": "the piece's one encounter never enters COMBAT, and no non-violent-exit verb exists to attempt",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeC/probeC.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeF/probeF.json"
+          ]
+        },
+        {
+          "id": "B13",
+          "result": "pass",
+          "observed": "The travel network exists and is not a map-pin menu: 68 services across 26 stations, fares in gold, and boarding is refused in fiction for ground you have not walked ('You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.'). Paired with B2, which is not applicable to this piece.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07/probeF/probeF.json"
+          ]
+        },
+        {
+          "id": "B2",
+          "result": "not_applicable",
+          "observed": "No rest point is reachable in any state this piece owns.",
+          "not_run_reason": "no HEARTH in writ-house or wld-dres-raid-road"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeF/probeF.json"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 1.5,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "band_label": "Between Placeholder and Wrong shape \u2014 a complete and largely correct data model with almost no runtime consumer",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "ar2_fail:B3",
+    "hard_fail:RI-CHR03/drawback-reality",
+    "hard_fail:RI-JRN01/diegesis-not-rendered",
+    "below_threshold:1.5<7.0",
+    "unmeasurable_fail_closed:RI-JRN01",
+    "builder_claim_not_reproduced:RI-CHR02-method-8-10of12"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-creation-is-an-api-not-a-scene",
+    "subsystem_path": "journey.chargen.diegesis",
+    "what": "The entire Writ House creation sequence renders nothing. Driving all 19 census nodes through window.__HARNESS and screenshotting after each at 1920x1080 produces 20 byte-identical PNGs (sha256 7277a273453ac8631c318f3d9120d7b12b7f562b187adabf59fe3ca7b5daaeb5) showing a body standing in an empty green field: no barge hold, no Writ House interior, no Jeeh-Ei, no Warden-Scribe Tuleeh-Ma, no question, no answer options, and document.body.innerText empty at every node. listEntities() returns 0 entities before and after creation. The scene exists only as a JSON state machine whose getCensusState() self-reports full_screen:false, world_visible:true and full_screen_panels:0 \u2014 three fields with no rendered counterpart. RI-CHR01's first bar is 'creation is a scene, not a screen'; what shipped is neither, and RI-JRN01's whole Diegesis block (35 of its 100 points) has nothing to measure.",
+    "why_it_matters": "A player starting this game is never asked anything by anybody: the best-written material in the piece \u2014 a bored official who guesses your race wrong and tells you the sex box changes nothing because he has watched for eleven years \u2014 is delivered to no one, so character creation cannot be experienced at all.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/00-boot.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/07-censusAnswer-questionnaire.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/18-censusAnswer-nu_ixtu.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-07/blind/ours-beats.md"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "Render the census scene over the live 3D view. (1) In game/data/states/writ-house.json, place the two NPC entities the scene already names \u2014 jeeh-ei in the barge hold and warden-scribe-tuleeh-ma behind the desk \u2014 as real entities with positions and the npcs/writ-house.json records attached, so listEntities() returns >= 2 throughout creation and the speaker named by getCensusState().speaker has a body in the frame. (2) Add a dialogue surface to game/src/render that draws getCensusState()'s `line`, `input.kind` and `input.options` as a bottom-anchored panel occupying <= 55% of frame area with the world rendering behind it, and drives censusAnswer() from real input (press/release on the closed action set, so keyboard, gamepad and touch all work). (3) Move the camera to the interior named in getCensusState().interior for the duration of the scene. (4) Render readWrit() as an openable inventory object rather than a string returned by an API.",
+      "targets": [
+        "game/data/states/writ-house.json",
+        "game/src/render/",
+        "game/src/character/census.js",
+        "game/src/engine.js (census scene)",
+        "tools/journey/journey-run.mjs (new: harness amendment A-JRN1)"
+      ],
+      "acceptance": "Re-run tools/harness/critic-w1-07a.mjs. Acceptance is met when: (a) the 19 creation-node screenshots yield >= 15 distinct sha256 hashes rather than 1; (b) listEntities() returns >= 1 NPC entity at every node and the entity id equals getCensusState().speaker at the node where that speaker talks; (c) the line returned by getCensusState() appears as rendered text in the frame at every node, with opaque non-world UI <= 55% of frame area and 0 frames whose background is uniform over >= 90% of the frame; (d) the whole sequence is completable on keyboard only and on gamepad only. RI-JRN01 M5/M6 then become measurable and the item can leave 0.",
+      "ref_item": "RI-JRN01",
+      "estimated_size": "M"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "The build does not boot at HEAD. game/data/index.json references dialogue/topics/thorn.json, which does not exist at commit 65275dc (the entry arrived with the W1-18 commit); loadData() throws and window.__HARNESS.ready() fails, so no harness measurement of any kind is possible on the repository as checked out. Every measurement in this verdict was taken in a clean git worktree at the same commit with that single index entry removed. It is not W1-07's defect but it is the state of the tree the piece was delivered into, and it blocks every other critic too.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt"
+      ],
+      "subsystem_path": "progression.level.attributes"
+    },
+    {
+      "what": "The builder's checkpoint claims 12/12 on RI-CHR02 method 8; at HEAD it is 10/12. Running the item's literal command for all three races at seed 1337 produces zero Khajiit AGGRO transitions in 1,800 frames, because closest approach is 18.198 m in all three runs and the Khajiit band is 12 m. The builder's own report records a Khajiit AGGRO at 11.956 m at f=514 and a Saxhleel AGGRO at f=90, so player locomotion along this road changed between the W1-07 commit and HEAD. tools/analysis/ar3-encounter-test.mjs is a good tool and it now exits 1.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/critic-rerun.json"
+      ],
+      "subsystem_path": "character.race.reaction"
+    },
+    {
+      "what": "getEncounterState('dres-raid-party') reports race:'saxhleel' for a Dunmer, a Khajiit and a Nord when setCharacter is called and the state reloaded within the same browser session. The encounter's race binding is latched at first spawn and is not re-derived on state reload, so the AR-3 behaviour is only correct in a fresh process.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+      ],
+      "subsystem_path": "character.race.reaction"
+    },
+    {
+      "what": "Three of the four world states RI-CHR02's and RI-CHR03's methods name by id do not exist: helstrom-market (CHR02 m7), stormhold-street (CHR02 m9) and rootlands-well-graph (CHR03 m3). Only writ-house and wld-dres-raid-road are loadable of the states this piece needs. Every consequence the piece claims is therefore reachable only as a harness oracle function, never through a merchant, a guard or a well.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+      ],
+      "subsystem_path": "character.race.reaction"
+    },
+    {
+      "what": "setCharacter silently accepts and discards an unknown key: passing second_birthsign:'nu-ixtu' returns birthsign_second:null with no error, while birthsign_second:'nu-ixtu' works. A harness verb that drops a field it does not recognise will produce a false negative for the next critic who runs RI-CHR03 method 9.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeG/probeG.json"
+      ],
+      "subsystem_path": "character.birthsign.powers"
+    },
+    {
+      "what": "The written content is the strongest thing in the piece and should not be lost when the delivery is rebuilt. The Warden-Scribe's race read-back, the sex-box speech, the three-routes line and the stamped writ (with its caste line and bounty-ledger reference TW-DUN-SCO) are Morrowind-register work; the blind pick on RI-JRN01's discriminating question landed on ours on the text alone.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/blind/ours-beats.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json"
+      ],
+      "subsystem_path": "character.creation.identity"
+    }
+  ],
+  "gap_closure": [],
+  "corpus_extended": [
+    {
+      "id": "RI-MTH06",
+      "path": "corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md",
+      "area": "80-methods",
+      "judges": [
+        "process.critic.discipline",
+        "process.verdict.format"
+      ],
+      "reason": "harness_gap",
+      "note": "Three reference items assigned to this piece name tools that have never been written: RI-CHR01 method 6 and RI-CHR03 method 5 both call tools/analysis/build-viability.mjs, and RI-JRN01's entire instrumented pass requires A-JRN1 (tools/journey/journey-run.mjs) plus beat-extract.mjs and gamepad-shim.mjs. Their absence forced RI-JRN01 to 0 without a check being run and drove RI-CHR01's min-over-axes to 0. RI-MTH06 gives the two instruments a contract, a liveness test that a stubbed criterion 4 cannot pass, and a blocked-dimension ledger that gets worse with time if nothing is built.",
+      "index_regenerated": true
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-CHR01",
+      "deviation": "All measurements were taken in a clean git worktree at commit 65275dc with one line removed from game/data/index.json: the entry for dialogue/topics/thorn.json, a file that does not exist at that commit. Without the removal the game does not boot and window.__HARNESS never appears.",
+      "why": "Otherwise every check in this verdict would be unmeasurable and score 0 fail-closed for a reason that has nothing to do with the piece under judgement. The removed entry is a dialogue topic file; it cannot affect attribute arithmetic, the reaction matrix, birthsign composition, skill progression or the rendering of the census scene.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-CHR02",
+      "deviation": "Method 7's price assertion was run through getPriceQuote's own parameters rather than through loadState('helstrom-market'), which does not exist. The 'best social build reaches par' clause was evaluated by supplying skill_buy_mult=0.80 by hand, because the build derives no Mercantile or PERSONALITY term.",
+      "why": "The named state is absent and no merchant entity exists anywhere in the build.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-CHR02",
+      "deviation": "Method 6 (register conformance, blind sort of 30 shipped Argonian-voiced race-filtered lines against 30 from the Morrowind corpus) was not run.",
+      "why": "There are zero shipped race-filtered lines to sample; the 'ours' pile would be empty. Recorded as unmeasurable, not skipped.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-JRN01",
+      "deviation": "The instrumented pass (M1-M15) could not be run and the naive pass (M16-M19) was not run. In their place the diegesis question was measured directly by driving every creation node through the harness and screenshotting each one at 1920x1080.",
+      "why": "tools/journey/journey-run.mjs, beat-extract.mjs and gamepad-shim.mjs do not exist; the item's own text scores it 0 fail-closed in that case. This critic has no isolated fresh-agent channel for the naive pass. The direct screenshot measurement is recorded as the closest executable variant and it corroborates the 0 rather than substituting for it.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-CHR01",
+      "deviation": "This critic read orchestration/status/W1-07.json (the builder's checkpoint) at the start of the run, before taking measurements or recording the blind pick, because the task brief named it as the piece's entry point.",
+      "why": "CRITIC-DOCTRINE \u00a78 excludes the builder's notes until after raw measurement. Recorded honestly via critic.saw_builder_notes_before_blind = true. Mitigation: the offline audit deliberately recomputes from the shipped JSON rather than importing game/src/character/*.js, so it is an independent second opinion; and the two builder claims that mattered most (12/12 on method 8, and the census scene's diegesis) were both re-measured from scratch and both failed to reproduce.",
+      "affects_scores": false
+    }
+  ],
+  "arbitration_questions": [
+    {
+      "question": "AR-2 check B5 makes any price denominated in souls an automatic fail of the piece (seam S15: 'souls level you and ONLY level you'). RI-CHR03 \u00a75 prices the birthsign re-cut at 'all souls currently carried, to a minimum of 25,000', and RI-CHR01 \u00a77 endorses it. Which governs when the re-cut is actually built?",
+      "souls_side": "S15 is absolute: the moment souls buy anything other than a level, the currency stops being a levelling resource and becomes gold, and every soul-spend decision in RI-PRG01's curve is contaminated. B5 says any such price fails the piece.",
+      "morrowind_side": "The re-cut is not a purchase, it is a sacrifice: RI-CHR03 \u00a75 prices it in souls precisely so it can never be a routine optimisation, and pricing it in gold would make it a shrine you visit before a boss fight \u2014 the exact failure RI-CHR03's How-we-lose names. A one-per-save irreversible sacrifice is not a shop.",
+      "proposed_seam_id": "S15a"
+    },
+    {
+      "question": "RI-CHR02 method 1 asserts 'no two races have identical skill sets', but RI-CHR02 \u00a71's own table gives Nord and Orsimer the same five skills (Greatweapons, Axes & Maces, Shieldcraft, Survival, Athletics) at different values. Is 'skill set' the set of skill ids or the id-to-value map?",
+      "souls_side": "n/a \u2014 this is a corpus self-consistency question, not a seam collision. Recorded here because CRITIC-DOCTRINE \u00a77.4 forbids a critic inventing the ruling.",
+      "morrowind_side": "The build reproduces the corpus table faithfully, so charging the failure to the build would punish fidelity. Either method 1 should read 'no two identical skill PROFILES', or one cell of the Nord or Orsimer row should change. The builder declared this in game/data/progression/KNOWN-GAPS.json with the same reasoning and this critic reached it independently.",
+      "proposed_seam_id": ""
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/harness/api.js",
+      "purpose": "locate-harness",
+      "note": "to enumerate the W1-07 verbs (censusBegin/censusAnswer/getCensusState/readWrit/getReaction/getPriceQuote/getGuardTerms/getEncounterState) and to establish that no parley, setSkill or getSkillProgress verb exists"
+    },
+    {
+      "path": "tools/harness/scenarios/chr-census.json",
+      "purpose": "locate-harness",
+      "note": "to drive the census in the same node order the shipped scenario uses"
+    },
+    {
+      "path": "tools/analysis/ar3-encounter-test.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after my three runs failed 2 assertions, to confirm the tool implements the item's method literally and that the failure is in the build/scenario rather than the assertion"
+    },
+    {
+      "path": "game/src/engine.js (getPriceQuote only)",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after measuring that a Mercantile-100/PER-60 Dunmer quotes the same buyMult as an untrained one, to establish that skill_buy_mult is a caller-supplied parameter rather than a derived term"
+    },
+    {
+      "path": "game/data/progression/*.json, game/data/dialogue/*.json",
+      "purpose": "quote-written-content",
+      "note": "the census lines, the writ text, the questionnaire prose, the birthsign scribe lines and the caste topics are the artifact; counted and quoted, never used as evidence that a mechanic runs"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is false. Not run, each with a recorded reason: RI-CHR01 M6 (build-viability.mjs does not exist) and its dependent RI-CHR03 M5; RI-CHR01 M7 legibility as a 20-signature blind trace study (no play with NPCs in it to trace); RI-CHR02 M6 register blind sort (zero shipped race-filtered lines to sample); RI-CHR02 M9's behavioural half and RI-CHR03 M3/M7 (the named states do not exist); RI-PRG02 M4 and RI-PRG03 M4/M7 (no verb sets a skill or attribute); RI-JRN01 M1-M15 and M16-M19 (journey-run.mjs absent; no isolated fresh-agent channel). All are recorded as unmeasurable and scored 0 fail-closed rather than skipped. Also: critic.saw_builder_notes_before_blind is true \u2014 the task brief named the builder's checkpoint as the piece's entry point and it was read before measurement; see method_deviations for the mitigation."
+  },
+  "notes": "Ordering, per CRITIC-DOCTRINE \u00a78: the gap ledger for these subsystem paths was read only after raw measurement was complete. Two mapping decisions are recorded here so they can be audited or overruled. (1) RI-CHR01, RI-CHR02, RI-CHR03, RI-PRG02 and RI-PRG03 all aggregate min-over-axes and all have at least one axis sitting at its own 0 band, so each has a native score of 0. Mapping all five to ladder 0 would assert that the thing does not exist, which the artifacts contradict \u2014 the data model is complete, the 112-point invariant holds across 140 pairs, the 12x10 matrix is authored rather than generated (sigma 9.894, all rows and columns distinct, one genuine neutral row) and the disposition oracle produces the item's own 74/48/24/6/0 live. The ladder scores of 1-3 are therefore assigned as the lowest band that is not a claim of non-existence, with the zero axes named in each item's checks and why_not_ten. (2) The overall score uses mean rather than min so the number carries information about how much was built; the gate is enforced by status and by the hard fails, not by the mean. The single sentence that summarises the piece: everything a save file would contain was built correctly, and almost nothing that reads a save file was."
+}

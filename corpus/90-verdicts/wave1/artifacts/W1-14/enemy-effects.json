@@ -1,0 +1,740 @@
+{
+ "demoralise": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 301,
+   "poise": 32,
+   "stagger": false,
+   "dist": 5.846,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   301
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "demoralise",
+    "magnitude": 111.16,
+    "duration_f": 1200,
+    "target": "e0",
+    "spell": "demoralise"
+   }
+  ]
+ },
+ "still_the_beast": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 381,
+   "poise": 32,
+   "stagger": false,
+   "dist": 5.846,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   381
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "calm_beast",
+    "magnitude": 30.88,
+    "duration_f": 1200,
+    "target": "e0",
+    "spell": "still_the_beast"
+   }
+  ]
+ },
+ "the_grey_fuzz": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 400,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   400
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 65,
+    "kind": "effect_apply",
+    "effect": "paralyse",
+    "magnitude": 12.35,
+    "duration_f": 480,
+    "target": "e0",
+    "spell": "the_grey_fuzz"
+   }
+  ]
+ },
+ "burden": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 350,
+   "poise": 32,
+   "stagger": false,
+   "dist": 5.846,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   350
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "burden",
+    "magnitude": 61.76,
+    "duration_f": 1200,
+    "target": "e0",
+    "spell": "burden"
+   }
+  ]
+ },
+ "silence": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 381,
+   "poise": 32,
+   "stagger": false,
+   "dist": 5.846,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   381
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "silence",
+    "magnitude": 30.88,
+    "duration_f": 1200,
+    "target": "e0",
+    "spell": "silence"
+   }
+  ]
+ },
+ "frenzy": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 301,
+   "poise": 32,
+   "stagger": false,
+   "dist": 5.846,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   301
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "frenzy",
+    "magnitude": 111.16,
+    "duration_f": 1800,
+    "target": "e0",
+    "spell": "frenzy"
+   }
+  ]
+ },
+ "root_theft": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 381,
+   "poise": 32,
+   "stagger": false,
+   "dist": 5.846,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   381
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "soul_trap",
+    "magnitude": 30.88,
+    "duration_f": 1200,
+    "target": "e0",
+    "spell": "root_theft"
+   }
+  ]
+ },
+ "open": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 381,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   381
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 30,
+    "kind": "effect_apply",
+    "effect": "open_lock",
+    "magnitude": 30.88,
+    "duration_f": 0,
+    "target": "e0",
+    "spell": "open"
+   }
+  ]
+ },
+ "spark_dart": {
+  "first": {
+   "f": 1,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 412,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "last": {
+   "f": 200,
+   "st": "REPOSITION",
+   "alert": "AGGRO",
+   "hp": 365,
+   "poise": 32,
+   "stagger": false,
+   "dist": 6,
+   "sp": 0,
+   "extra": ""
+  },
+  "states": [
+   "REPOSITION"
+  ],
+  "alerts": [
+   "AGGRO"
+  ],
+  "hpTrack": [
+   412,
+   365
+  ],
+  "enemyKeys": [
+   "eid",
+   "statblock",
+   "moveset",
+   "encounter",
+   "encounter_role",
+   "archetype",
+   "tier",
+   "state",
+   "state_entered_f",
+   "prev_state",
+   "anim",
+   "anim_frame",
+   "anim_len",
+   "phase",
+   "hit_active",
+   "hitboxes",
+   "pos",
+   "yaw_deg",
+   "yaw_rate_dps",
+   "speed_mps",
+   "target",
+   "dist_m",
+   "los",
+   "in_sight_cone",
+   "alert",
+   "alert_state",
+   "attack_token",
+   "hp",
+   "hp_max",
+   "poise_cur",
+   "poise_max",
+   "stagger",
+   "spawn_anchor",
+   "leash_dist_m",
+   "ai"
+  ],
+  "events": [
+   {
+    "f": 30,
+    "kind": "effect_apply",
+    "effect": "shock_damage",
+    "magnitude": 47.24,
+    "duration_f": 0,
+    "target": "e0",
+    "spell": "spark_dart"
+   }
+  ]
+ }
+}

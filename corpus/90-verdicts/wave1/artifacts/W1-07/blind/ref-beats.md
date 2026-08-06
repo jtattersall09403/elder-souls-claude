@@ -1,0 +1,10 @@
+- «person» in «place»: "Wake up. We're here. Why are you shaking? Are you okay?" — records «field»
+- «person» in «place»: "You are in control, in the hold, undefined. There are crates and a door." — records «field»
+- «person» in «place»: "And your name?" You type it. He remarks on it. — records «field»
+- «person» in «place»: "Up the stairs, onto the deck. Weather, gulls, a coastline, a guard telling you to get moving." — records «field»
+- «person» in «place»: "Down the gangplank into the office. Somebody behind a desk." — records «field»
+- «person» in «place»: "...and your race?" You choose. He writes it down. — records «field»
+- «person» in «place»: "Under which sign were you born?" You choose. He writes it down. — records «field»
+- «person» in «place»: "Name a profession, describe yourself, or answer some questions." — records «field»
+- «person» in «place»: "He confirms the record aloud, stamps it, hands you a document, tells you to see somebody in the next room." — records «field»
+- «person» in «place»: "A package, a note, orders to go somewhere and find somebody. He does not explain who that is." — records «field»

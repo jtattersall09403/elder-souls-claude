@@ -1,0 +1,94 @@
+{
+ "stealth_base": "ERR:visibility: unknown motion undefined; expected still|crouch_move|walk|sprint",
+ "stealth_chameleon": "ERR:visibility: unknown motion undefined; expected still|crouch_move|walk|sprint",
+ "stealth_invis": "ERR:visibility: unknown motion undefined; expected still|crouch_move|walk|sprint",
+ "stealth_muffle": "ERR:visibility: unknown motion undefined; expected still|crouch_move|walk|sprint",
+ "stealth_nighteye": "ERR:visibility: unknown motion undefined; expected still|crouch_move|walk|sprint",
+ "lock_api": null,
+ "lock_after_open": null,
+ "lock_after_seal": null,
+ "bind_lesser": {
+  "n0": 0,
+  "n1": 0
+ },
+ "bound_weapon": {
+  "loadout": null,
+  "stats": {
+   "stam": 120
+  }
+ },
+ "wall": {
+  "solid_before": {
+   "solid": false,
+   "distance_m": null
+  },
+  "solid_after": {
+   "solid": false,
+   "distance_m": null
+  }
+ },
+ "leap": {
+  "y0": 0,
+  "ymax": 0
+ },
+ "slowfall": {
+  "y_series": [
+   30,
+   30,
+   30,
+   30
+  ],
+  "hp": 620
+ },
+ "telekinesis": "ERR:no property zone \"undefined\"",
+ "fortify": {
+  "before": {
+   "vigour": 10,
+   "endurance": 20,
+   "strength": 12,
+   "dexterity": 12,
+   "intelligence": 10,
+   "faith": 10
+  },
+  "after": {
+   "vigour": 10,
+   "endurance": 20,
+   "strength": 12,
+   "dexterity": 12,
+   "intelligence": 10,
+   "faith": 10
+  },
+  "lockGate_before": "ERR:tierOf: no lock tier null"
+ },
+ "afflictions_api": [
+  "pos",
+  "yaw_deg",
+  "state",
+  "anim",
+  "anim_frame",
+  "hp",
+  "hp_max",
+  "stamina",
+  "stamina_max",
+  "poise_cur",
+  "poise_max",
+  "estus",
+  "locked_on",
+  "level",
+  "souls",
+  "attributes",
+  "equip_load_pct",
+  "roll_class",
+  "burden_ratio",
+  "burden_tier",
+  "in_combat",
+  "focus",
+  "focus_max",
+  "focus_locked",
+  "attuned",
+  "effects_active",
+  "levitating",
+  "airborne",
+  "altitude_m"
+ ]
+}

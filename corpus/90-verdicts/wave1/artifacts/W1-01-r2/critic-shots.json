@@ -1,0 +1,958 @@
+{
+ "schema": "critic/w1-01-r2-shots@1",
+ "res": "1280x720",
+ "shots": [
+  {
+   "id": "embankment-stormhold-helstrom-air",
+   "x": 2240.3,
+   "z": 1340.2,
+   "eye_offset": [
+    60,
+    40,
+    60
+   ],
+   "look_dy": 6,
+   "tod": 12,
+   "weather": "clear",
+   "ground_y": 158.74,
+   "terrain": {
+    "x": 2240.3,
+    "z": 1340.2,
+    "y": 158.74,
+    "base_y": 140.225,
+    "slope_deg": 36.92,
+    "region": "stone-forest",
+    "region_name": "The Stone Forest",
+    "region_index": 8,
+    "danger_tier": 3,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 83.3,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "water": {
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "FIRM",
+    "region": "stone-forest",
+    "region_name": "The Stone Forest",
+    "sea": null,
+    "tidal": false,
+    "k": 1.100000023841858,
+    "ground_y": 158.74,
+    "surface_y": null
+   },
+   "cam": {
+    "f": 7,
+    "camera": {
+     "pos": [
+      2300.3,
+      198.74,
+      1400.2
+     ],
+     "pivot": [
+      2240.3,
+      164.74,
+      1340.2
+     ],
+     "yaw_deg": 225,
+     "pitch_deg": -21.8357,
+     "roll_deg": 0,
+     "fov_deg": 55,
+     "near_m": 0.1,
+     "far_m": 1200,
+     "dist_m": 91.4112,
+     "mode": "free",
+     "arm_len_m": 91.4112,
+     "arm_desired_m": 3.9927,
+     "arm_cast_m": 3.9927,
+     "arm_hit": false,
+     "arm_penetration_guard": false,
+     "arm_clear_frames": 0,
+     "shoulder": [
+      0.42,
+      0.1
+     ],
+     "char_opacity": 1,
+     "shake": [
+      0,
+      0
+     ],
+     "hitstop": false,
+     "clip_through": false,
+     "lock_on": null,
+     "lock_target": null,
+     "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+       0,
+       0
+      ],
+      "target_ndc": [
+       0,
+       0
+      ],
+      "target_head_ndc": [
+       0,
+       0
+      ]
+     },
+     "contain_arm_m": 0,
+     "contain_pitch_deg": 0,
+     "lock_dist_m": 0,
+     "lock_height_m": 1.9,
+     "recentre_frames": 0,
+     "recentre_active": false,
+     "cell": null
+    },
+    "player_pos": [
+     2240.3,
+     158.74,
+     1340.2
+    ],
+    "player_yaw_deg": 180
+   }
+  },
+  {
+   "id": "embankment-stormhold-helstrom-eye",
+   "x": 2240.3,
+   "z": 1340.2,
+   "eye_offset": [
+    25,
+    3,
+    0
+   ],
+   "look_dy": 1.6,
+   "tod": 12,
+   "weather": "clear",
+   "ground_y": 158.74,
+   "terrain": {
+    "x": 2240.3,
+    "z": 1340.2,
+    "y": 158.74,
+    "base_y": 140.225,
+    "slope_deg": 36.92,
+    "region": "stone-forest",
+    "region_name": "The Stone Forest",
+    "region_index": 8,
+    "danger_tier": 3,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 83.3,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "water": {
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "FIRM",
+    "region": "stone-forest",
+    "region_name": "The Stone Forest",
+    "sea": null,
+    "tidal": false,
+    "k": 1.100000023841858,
+    "ground_y": 158.74,
+    "surface_y": null
+   },
+   "cam": {
+    "f": 14,
+    "camera": {
+     "pos": [
+      2265.3,
+      161.74,
+      1340.2
+     ],
+     "pivot": [
+      2240.3,
+      160.34,
+      1340.2
+     ],
+     "yaw_deg": 270,
+     "pitch_deg": -3.2052,
+     "roll_deg": 0,
+     "fov_deg": 55,
+     "near_m": 0.1,
+     "far_m": 1200,
+     "dist_m": 25.0392,
+     "mode": "free",
+     "arm_len_m": 25.0392,
+     "arm_desired_m": 3.807,
+     "arm_cast_m": 3.807,
+     "arm_hit": false,
+     "arm_penetration_guard": false,
+     "arm_clear_frames": 0,
+     "shoulder": [
+      0.42,
+      0.1
+     ],
+     "char_opacity": 1,
+     "shake": [
+      0,
+      0
+     ],
+     "hitstop": false,
+     "clip_through": false,
+     "lock_on": null,
+     "lock_target": null,
+     "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+       0,
+       0
+      ],
+      "target_ndc": [
+       0,
+       0
+      ],
+      "target_head_ndc": [
+       0,
+       0
+      ]
+     },
+     "contain_arm_m": 0,
+     "contain_pitch_deg": 0,
+     "lock_dist_m": 0,
+     "lock_height_m": 1.9,
+     "recentre_frames": 0,
+     "recentre_active": false,
+     "cell": null
+    },
+    "player_pos": [
+     2240.3,
+     158.74,
+     1340.2
+    ],
+    "player_yaw_deg": 180
+   }
+  },
+  {
+   "id": "ramp-58deg-side",
+   "x": 2104.4,
+   "z": 1235.7,
+   "eye_offset": [
+    30,
+    12,
+    25
+   ],
+   "look_dy": 2,
+   "tod": 12,
+   "weather": "clear",
+   "ground_y": 248.7,
+   "terrain": {
+    "x": 2104.4,
+    "z": 1235.7,
+    "y": 248.7,
+    "base_y": 235.211,
+    "slope_deg": 38.96,
+    "region": "valus-ridge",
+    "region_name": "Valus Ridge",
+    "region_index": 11,
+    "danger_tier": 4,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 33.2,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "water": {
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "FIRM",
+    "region": "valus-ridge",
+    "region_name": "Valus Ridge",
+    "sea": null,
+    "tidal": false,
+    "k": 0.8999999761581421,
+    "ground_y": 248.7,
+    "surface_y": null
+   },
+   "cam": {
+    "f": 21,
+    "camera": {
+     "pos": [
+      2134.4,
+      260.7,
+      1260.7
+     ],
+     "pivot": [
+      2104.4,
+      250.7,
+      1235.7
+     ],
+     "yaw_deg": 230.1944,
+     "pitch_deg": -14.3633,
+     "roll_deg": 0,
+     "fov_deg": 55,
+     "near_m": 0.1,
+     "far_m": 1200,
+     "dist_m": 40.3113,
+     "mode": "free",
+     "arm_len_m": 40.3113,
+     "arm_desired_m": 4.057,
+     "arm_cast_m": 4.057,
+     "arm_hit": false,
+     "arm_penetration_guard": false,
+     "arm_clear_frames": 0,
+     "shoulder": [
+      0.42,
+      0.1
+     ],
+     "char_opacity": 1,
+     "shake": [
+      0,
+      0
+     ],
+     "hitstop": false,
+     "clip_through": false,
+     "lock_on": null,
+     "lock_target": null,
+     "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+       0,
+       0
+      ],
+      "target_ndc": [
+       0,
+       0
+      ],
+      "target_head_ndc": [
+       0,
+       0
+      ]
+     },
+     "contain_arm_m": 0,
+     "contain_pitch_deg": 0,
+     "lock_dist_m": 0,
+     "lock_height_m": 1.9,
+     "recentre_frames": 0,
+     "recentre_active": false,
+     "cell": null
+    },
+    "player_pos": [
+     2104.4,
+     248.7,
+     1235.7
+    ],
+    "player_yaw_deg": 180
+   }
+  },
+  {
+   "id": "old-drowned-point-2182-2214",
+   "x": 2182.5,
+   "z": 2214.6,
+   "eye_offset": [
+    40,
+    25,
+    40
+   ],
+   "look_dy": 4,
+   "tod": 12,
+   "weather": "clear",
+   "ground_y": 157.48,
+   "terrain": {
+    "x": 2182.5,
+    "z": 2214.6,
+    "y": 157.48,
+    "base_y": 125.866,
+    "slope_deg": 32.95,
+    "region": "stone-forest",
+    "region_name": "The Stone Forest",
+    "region_index": 8,
+    "danger_tier": 3,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 30.9,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "water": {
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "FIRM",
+    "region": "stone-forest",
+    "region_name": "The Stone Forest",
+    "sea": null,
+    "tidal": false,
+    "k": 1.100000023841858,
+    "ground_y": 157.48,
+    "surface_y": null
+   },
+   "cam": {
+    "f": 28,
+    "camera": {
+     "pos": [
+      2222.5,
+      182.48,
+      2254.6
+     ],
+     "pivot": [
+      2182.5,
+      161.48,
+      2214.6
+     ],
+     "yaw_deg": 225,
+     "pitch_deg": -20.3665,
+     "roll_deg": 0,
+     "fov_deg": 55,
+     "near_m": 0.1,
+     "far_m": 1200,
+     "dist_m": 60.3407,
+     "mode": "free",
+     "arm_len_m": 60.3407,
+     "arm_desired_m": 3.9073,
+     "arm_cast_m": 3.9073,
+     "arm_hit": false,
+     "arm_penetration_guard": false,
+     "arm_clear_frames": 0,
+     "shoulder": [
+      0.42,
+      0.1
+     ],
+     "char_opacity": 1,
+     "shake": [
+      0,
+      0
+     ],
+     "hitstop": false,
+     "clip_through": false,
+     "lock_on": null,
+     "lock_target": null,
+     "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+       0,
+       0
+      ],
+      "target_ndc": [
+       0,
+       0
+      ],
+      "target_head_ndc": [
+       0,
+       0
+      ]
+     },
+     "contain_arm_m": 0,
+     "contain_pitch_deg": 0,
+     "lock_dist_m": 0,
+     "lock_height_m": 1.9,
+     "recentre_frames": 0,
+     "recentre_active": false,
+     "cell": null
+    },
+    "player_pos": [
+     2182.5,
+     157.4801,
+     2214.6
+    ],
+    "player_yaw_deg": 180
+   }
+  },
+  {
+   "id": "tideway-lilmoth-archon",
+   "x": 3444.7,
+   "z": 3663,
+   "eye_offset": [
+    20,
+    8,
+    20
+   ],
+   "look_dy": 1.5,
+   "tod": 12,
+   "weather": "clear",
+   "ground_y": 1.43,
+   "terrain": {
+    "x": 3444.7,
+    "z": 3663,
+    "y": 1.43,
+    "base_y": 1.401,
+    "slope_deg": 0.55,
+    "region": "eastern-rootlands",
+    "region_name": "Eastern Rootlands",
+    "region_index": 4,
+    "danger_tier": 2,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 554.8,
+    "substrate": "SUCK",
+    "sea": "padomaic"
+   },
+   "water": {
+    "depth_m": 0.181,
+    "band": "W1",
+    "substrate": "SUCK",
+    "region": "eastern-rootlands",
+    "region_name": "Eastern Rootlands",
+    "sea": "padomaic",
+    "tidal": true,
+    "k": 3.200000047683716,
+    "ground_y": 1.43,
+    "surface_y": 1.611
+   },
+   "cam": {
+    "f": 35,
+    "camera": {
+     "pos": [
+      3464.7,
+      9.43,
+      3683
+     ],
+     "pivot": [
+      3444.7,
+      2.93,
+      3663
+     ],
+     "yaw_deg": 225,
+     "pitch_deg": -12.9424,
+     "roll_deg": 0,
+     "fov_deg": 55,
+     "near_m": 0.1,
+     "far_m": 1200,
+     "dist_m": 29.0215,
+     "mode": "free",
+     "arm_len_m": 29.0215,
+     "arm_desired_m": 3.8267,
+     "arm_cast_m": 3.8267,
+     "arm_hit": false,
+     "arm_penetration_guard": false,
+     "arm_clear_frames": 0,
+     "shoulder": [
+      0.42,
+      0.1
+     ],
+     "char_opacity": 1,
+     "shake": [
+      0,
+      0
+     ],
+     "hitstop": false,
+     "clip_through": false,
+     "lock_on": null,
+     "lock_target": null,
+     "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+       0,
+       0
+      ],
+      "target_ndc": [
+       0,
+       0
+      ],
+      "target_head_ndc": [
+       0,
+       0
+      ]
+     },
+     "contain_arm_m": 0,
+     "contain_pitch_deg": 0,
+     "lock_dist_m": 0,
+     "lock_height_m": 1.9,
+     "recentre_frames": 0,
+     "recentre_active": false,
+     "cell": null
+    },
+    "player_pos": [
+     3444.7,
+     1.43,
+     3663
+    ],
+    "player_yaw_deg": 180
+   }
+  },
+  {
+   "id": "viaduct-blackrose-lilmoth",
+   "x": 2689.5,
+   "z": 4810.3,
+   "eye_offset": [
+    45,
+    25,
+    45
+   ],
+   "look_dy": 3,
+   "tod": 12,
+   "weather": "clear",
+   "ground_y": 1.58,
+   "terrain": {
+    "x": 2689.5,
+    "z": 4810.3,
+    "y": 1.58,
+    "base_y": -16.631,
+    "slope_deg": 1.83,
+    "region": "western-rootlands",
+    "region_name": "Western Rootlands",
+    "region_index": 12,
+    "danger_tier": 1,
+    "land": false,
+    "ocean": true,
+    "coast_dist_m": -109.5,
+    "substrate": "SILT",
+    "sea": "topal"
+   },
+   "water": {
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "SILT",
+    "region": "western-rootlands",
+    "region_name": "Western Rootlands",
+    "sea": "topal",
+    "tidal": true,
+    "k": 1.899999976158142,
+    "ground_y": 1.58,
+    "surface_y": null
+   },
+   "cam": {
+    "f": 42,
+    "camera": {
+     "pos": [
+      2734.5,
+      26.58,
+      4855.3
+     ],
+     "pivot": [
+      2689.5,
+      4.58,
+      4810.3
+     ],
+     "yaw_deg": 225,
+     "pitch_deg": -19.0701,
+     "roll_deg": 0,
+     "fov_deg": 55,
+     "near_m": 0.1,
+     "far_m": 1200,
+     "dist_m": 67.335,
+     "mode": "free",
+     "arm_len_m": 67.335,
+     "arm_desired_m": 3.9263,
+     "arm_cast_m": 3.9263,
+     "arm_hit": false,
+     "arm_penetration_guard": false,
+     "arm_clear_frames": 6,
+     "shoulder": [
+      0.42,
+      0.1
+     ],
+     "char_opacity": 1,
+     "shake": [
+      0,
+      0
+     ],
+     "hitstop": false,
+     "clip_through": false,
+     "lock_on": null,
+     "lock_target": null,
+     "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+       0,
+       0
+      ],
+      "target_ndc": [
+       0,
+       0
+      ],
+      "target_head_ndc": [
+       0,
+       0
+      ]
+     },
+     "contain_arm_m": 0,
+     "contain_pitch_deg": 0,
+     "lock_dist_m": 0,
+     "lock_height_m": 1.9,
+     "recentre_frames": 0,
+     "recentre_active": false,
+     "cell": null
+    },
+    "player_pos": [
+     2689.5,
+     1.58,
+     4810.3
+    ],
+    "player_yaw_deg": 180
+   }
+  },
+  {
+   "id": "viaduct-blackrose-lilmoth-eye",
+   "x": 2689.5,
+   "z": 4810.3,
+   "eye_offset": [
+    18,
+    2.5,
+    0
+   ],
+   "look_dy": 1.6,
+   "tod": 12,
+   "weather": "clear",
+   "ground_y": 1.58,
+   "terrain": {
+    "x": 2689.5,
+    "z": 4810.3,
+    "y": 1.58,
+    "base_y": -16.631,
+    "slope_deg": 1.83,
+    "region": "western-rootlands",
+    "region_name": "Western Rootlands",
+    "region_index": 12,
+    "danger_tier": 1,
+    "land": false,
+    "ocean": true,
+    "coast_dist_m": -109.5,
+    "substrate": "SILT",
+    "sea": "topal"
+   },
+   "water": {
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "SILT",
+    "region": "western-rootlands",
+    "region_name": "Western Rootlands",
+    "sea": "topal",
+    "tidal": true,
+    "k": 1.899999976158142,
+    "ground_y": 1.58,
+    "surface_y": null
+   },
+   "cam": {
+    "f": 49,
+    "camera": {
+     "pos": [
+      2707.5,
+      4.08,
+      4810.3
+     ],
+     "pivot": [
+      2689.5,
+      3.18,
+      4810.3
+     ],
+     "yaw_deg": 270,
+     "pitch_deg": -2.8624,
+     "roll_deg": 0,
+     "fov_deg": 55,
+     "near_m": 0.1,
+     "far_m": 1200,
+     "dist_m": 18.0225,
+     "mode": "free",
+     "arm_len_m": 18.0225,
+     "arm_desired_m": 3.8441,
+     "arm_cast_m": 3.8441,
+     "arm_hit": false,
+     "arm_penetration_guard": false,
+     "arm_clear_frames": 0,
+     "shoulder": [
+      0.42,
+      0.1
+     ],
+     "char_opacity": 1,
+     "shake": [
+      0,
+      0
+     ],
+     "hitstop": false,
+     "clip_through": false,
+     "lock_on": null,
+     "lock_target": null,
+     "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+       0,
+       0
+      ],
+      "target_ndc": [
+       0,
+       0
+      ],
+      "target_head_ndc": [
+       0,
+       0
+      ]
+     },
+     "contain_arm_m": 0,
+     "contain_pitch_deg": 0,
+     "lock_dist_m": 0,
+     "lock_height_m": 1.9,
+     "recentre_frames": 0,
+     "recentre_active": false,
+     "cell": null
+    },
+    "player_pos": [
+     2689.5,
+     1.58,
+     4810.3
+    ],
+    "player_yaw_deg": 180
+   }
+  },
+  {
+   "id": "helstrom-gideon-fill",
+   "x": 1603.7,
+   "z": 2827.2,
+   "eye_offset": [
+    40,
+    22,
+    40
+   ],
+   "look_dy": 3,
+   "tod": 12,
+   "weather": "clear",
+   "ground_y": 27.395,
+   "terrain": {
+    "x": 1603.7,
+    "z": 2827.2,
+    "y": 27.395,
+    "base_y": 18.067,
+    "slope_deg": 24.54,
+    "region": "blackwood",
+    "region_name": "Blackwood",
+    "region_index": 0,
+    "danger_tier": 2,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 138.4,
+    "substrate": "SUCK",
+    "sea": "topal"
+   },
+   "water": {
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "SUCK",
+    "region": "blackwood",
+    "region_name": "Blackwood",
+    "sea": null,
+    "tidal": false,
+    "k": 2.5999999046325684,
+    "ground_y": 27.395,
+    "surface_y": null
+   },
+   "cam": {
+    "f": 56,
+    "camera": {
+     "pos": [
+      1643.7,
+      49.395,
+      2867.2
+     ],
+     "pivot": [
+      1603.7,
+      30.395,
+      2827.2
+     ],
+     "yaw_deg": 225,
+     "pitch_deg": -18.5659,
+     "roll_deg": 0,
+     "fov_deg": 55,
+     "near_m": 0.1,
+     "far_m": 1200,
+     "dist_m": 59.6741,
+     "mode": "free",
+     "arm_len_m": 59.6741,
+     "arm_desired_m": 4.0616,
+     "arm_cast_m": 4.0616,
+     "arm_hit": false,
+     "arm_penetration_guard": false,
+     "arm_clear_frames": 0,
+     "shoulder": [
+      0.42,
+      0.1
+     ],
+     "char_opacity": 1,
+     "shake": [
+      0,
+      0
+     ],
+     "hitstop": false,
+     "clip_through": false,
+     "lock_on": null,
+     "lock_target": null,
+     "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+       0,
+       0
+      ],
+      "target_ndc": [
+       0,
+       0
+      ],
+      "target_head_ndc": [
+       0,
+       0
+      ]
+     },
+     "contain_arm_m": 0,
+     "contain_pitch_deg": 0,
+     "lock_dist_m": 0,
+     "lock_height_m": 1.9,
+     "recentre_frames": 0,
+     "recentre_active": false,
+     "cell": null
+    },
+    "player_pos": [
+     1603.7,
+     27.3945,
+     2827.2
+    ],
+    "player_yaw_deg": 180
+   }
+  }
+ ]
+}

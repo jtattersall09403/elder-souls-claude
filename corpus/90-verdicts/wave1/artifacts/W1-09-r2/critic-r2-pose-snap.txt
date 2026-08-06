@@ -1,0 +1,22 @@
+--- worst single-frame TIP-socket jump per state transition (metres) ---
+RUN->ROLL_STARTUP                  2.528   n=74  worst at F1:f7017  => 152 m/s
+SPRINT->ROLL_STARTUP               2.521   n=27  worst at F4:f3011  => 151 m/s
+ATK_RECOVER->ATK_STARTUP           2.293   n=65  worst at F2:f410  => 138 m/s
+WALK->ROLL_STARTUP                 2.131   n=4  worst at F1:f4904  => 128 m/s
+IDLE->ROLL_STARTUP                 1.922   n=30  worst at F4:f4521  => 115 m/s
+BLOCK_HOLD->ROLL_STARTUP           1.836   n=1  worst at F4:f5821  => 110 m/s
+ROLL_RECOVER->ATK_STARTUP          1.787   n=5  worst at F3:f2447  => 107 m/s
+RUN->ATK_STARTUP                   1.631   n=58  worst at F3:f3863  => 98 m/s
+WALK->ATK_STARTUP                  1.543   n=5  worst at F3:f6000  => 93 m/s
+ROLL_RECOVER->SPRINT               1.443   n=17  worst at F3:f5355  => 87 m/s
+ROLL_RECOVER->RUN                  1.426   n=77  worst at F5:f8227  => 86 m/s
+WALK->SPRINT                       1.314   n=50  worst at F2:f5579  => 79 m/s
+WALK->HEAL_STARTUP                 1.281   n=4  worst at F1:f5119  => 77 m/s
+RUN->WALK                          1.264   n=21  worst at F2:f3906  => 76 m/s
+--- worst WITHIN-state jump ---
+WALK                 0.818
+ATK_STARTUP          0.446
+SPRINT               0.445
+RUN                  0.398
+HEAL_RECOVER         0.382
+CRIT_ATTACK          0.363

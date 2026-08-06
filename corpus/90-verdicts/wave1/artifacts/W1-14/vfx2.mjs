@@ -1,0 +1,23 @@
+import { launchGame } from '/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/w1-14/tools/lib/browser.mjs';
+import fs from 'node:fs';
+const h = await launchGame({});
+const dir='/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/art';
+const pose = await h.page.evaluate(async () => {
+  const H = window.__HARNESS; await H.ready();
+  H.setSeed(1337); H.loadState('arena_flat'); H.setRenderRate(1); H.setTimeOfDay(12); H.setWeather('clear');
+  H.setWillpower(99); H.setCatalyst('rod'); H.setMagicSkills({sorcery:100,root_speech:100,warding:100,veiling:100});
+  H.hearthRest(); H.setAttuned(['marshfire']); H.setUIVisible(false);
+  H.camera({pos:[3.0,1.8,-3.0], look:[0,1.0,0.5], fov:55});
+  H.stepFrames(5); H.renderFrame();
+  return {cam:'pos[3,1.8,-3] look[0,1,0.5] fov55 tod12 clear 1920x1080', stats:H.getWorldStats()};
+});
+await h.page.screenshot({path: dir+'/c-idle.png'});
+const rel = await h.page.evaluate(async () => { const H=window.__HARNESS;
+  H.queueInputs([{f:2,press:['light']},{f:4,release:['light']}]);
+  H.stepFrames(27); H.renderFrame(); return {ws:H.getWorldStats(), snap:H.snapshot().player.phase}; });
+await h.page.screenshot({path: dir+'/c-release.png'});
+const fl = await h.page.evaluate(async () => { const H=window.__HARNESS; H.stepFrames(10); H.renderFrame(); return H.getWorldStats(); });
+await h.page.screenshot({path: dir+'/c-inflight.png'});
+fs.writeFileSync(dir+'/c-stats.json', JSON.stringify({pose, rel, fl},null,1));
+console.log(JSON.stringify({pose:pose.cam, idle_draws:pose.stats.drawCalls, idle_tris:pose.stats.triangles, rel_phase:rel.snap, rel_draws:rel.ws.drawCalls, rel_tris:rel.ws.triangles, fl_draws:fl.drawCalls, fl_tris:fl.triangles},null,1));
+await h.close();

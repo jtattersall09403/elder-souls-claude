@@ -1,0 +1,212 @@
+{
+  "schema": "elder-souls/trace-stats@1",
+  "source": {
+    "path": "/home/user/elder-souls-claude/reports/w1-09/exemplar/RI-CMB07-exemplar-F1-frames.jsonl",
+    "records": 9001,
+    "seconds": 150.017,
+    "hz": 60
+  },
+  "run": null,
+  "trace_body_sha256": null,
+  "computed_at": "2026-08-06T20:30:15.913Z",
+  "attack_rate": {
+    "attacks": 0,
+    "attacks_per_min": 0,
+    "inter_attack_frames": {
+      "n": 0
+    },
+    "inter_attack_cv": null,
+    "attack_lengths_frames": {
+      "n": 0
+    }
+  },
+  "stamina": {
+    "max": 120,
+    "floor": null,
+    "ceiling": null,
+    "distribution": {
+      "n": 0
+    },
+    "frac_at_zero": null,
+    "frac_below_25pct": null,
+    "spend_events": 0,
+    "spend_amounts": {
+      "n": 0
+    },
+    "regen_delay_frames": {
+      "n": 0
+    },
+    "regen_rate_per_sec": {
+      "n": 0
+    },
+    "regen_blocked_frac": 0,
+    "denied_actions_low_stamina": 0
+  },
+  "commitment": {
+    "committed_frames": 0,
+    "committed_ratio": 0,
+    "commitment_lengths": {
+      "n": 0
+    },
+    "free_ratio": 1,
+    "suspected_cancels": 0
+  },
+  "rolls": {
+    "count": 0,
+    "roll_lengths": {
+      "n": 0
+    },
+    "iframe_windows": {
+      "n": 0
+    },
+    "iframe_start_offsets": {
+      "n": 0
+    },
+    "rolls_overlapping_active": 0,
+    "dodge_events_logged": 0,
+    "roll_vs_active_delta_f": {
+      "n": 0
+    },
+    "samples": []
+  },
+  "punish": {
+    "windows_offered": 0,
+    "window_lengths": {
+      "n": 0
+    },
+    "windows_used": 0,
+    "usage_rate": null,
+    "reaction_frames": {
+      "n": 0
+    },
+    "player_hits": 0,
+    "player_hits_outside_windows": 0
+  },
+  "enemies": [
+    {
+      "archetype": "INFANTRY",
+      "state_histogram": {
+        "undefined": 1
+      },
+      "state_entropy_bits": 0,
+      "dist_m": {
+        "n": 0
+      },
+      "spacing_variance_m": 0,
+      "min_dist_dwell": null,
+      "speed_mps": {
+        "n": 0
+      },
+      "max_yaw_rate_during_active_recovery": null,
+      "hp_start": null,
+      "hp_end": null
+    }
+  ],
+  "concurrency": {
+    "concurrent_commit_p50": 0,
+    "concurrent_commit_p99": 0,
+    "concurrent_commit_max": 0,
+    "concurrent_commit_mean": 0
+  },
+  "events": {},
+  "integrity": {
+    "has_header": false,
+    "has_footer": false,
+    "schema": null,
+    "frame_discontinuities": 1,
+    "enemy_records": 1,
+    "missing_fields": [
+      {
+        "field": "f",
+        "present": 9000,
+        "total": 9001
+      },
+      {
+        "field": "t_ms",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "player",
+        "present": 1,
+        "total": 9001
+      },
+      {
+        "field": "player.pos",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "player.state",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "player.anim",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "player.anim_frame",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "player.phase",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "player.stamina",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "player.hp",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "player.iframe",
+        "present": 0,
+        "total": 9001
+      },
+      {
+        "field": "enemy.eid",
+        "present": 0,
+        "total": 1
+      },
+      {
+        "field": "enemy.state",
+        "present": 0,
+        "total": 1
+      },
+      {
+        "field": "enemy.phase",
+        "present": 0,
+        "total": 1
+      },
+      {
+        "field": "enemy.pos",
+        "present": 0,
+        "total": 1
+      },
+      {
+        "field": "enemy.dist_m",
+        "present": 0,
+        "total": 1
+      },
+      {
+        "field": "enemy.hp",
+        "present": 0,
+        "total": 1
+      },
+      {
+        "field": "enemy.anim_frame",
+        "present": 0,
+        "total": 1
+      }
+    ],
+    "fail_closed": true
+  }
+}

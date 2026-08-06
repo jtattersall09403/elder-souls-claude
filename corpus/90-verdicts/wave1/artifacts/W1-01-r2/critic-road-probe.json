@@ -1,0 +1,1438 @@
+{
+ "schema": "critic/w1-01-r2-road@1",
+ "measured_at": "2026-08-06T20:29:04.024Z",
+ "probes": {
+  "R1_ramp": {
+   "note": "held walk stick along the steepest built road segment (grade 1.637 declared)",
+   "terrain_A": {
+    "x": 2092.6,
+    "z": 1233.5,
+    "y": 243.61,
+    "base_y": 242.637,
+    "slope_deg": 15.47,
+    "region": "valus-ridge",
+    "region_name": "Valus Ridge",
+    "region_index": 11,
+    "danger_tier": 4,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 34.6,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "terrain_B": {
+    "x": 2104.44,
+    "z": 1235.65,
+    "y": 248.7,
+    "base_y": 235.181,
+    "slope_deg": 39.52,
+    "region": "valus-ridge",
+    "region_name": "Valus Ridge",
+    "region_index": 11,
+    "danger_tier": 4,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 33.2,
+    "substrate": "FIRM",
+    "sea": "topal"
+   },
+   "start": [
+    2092.6,
+    243.609717,
+    1233.5
+   ],
+   "end": [
+    2099.880932,
+    247.333413,
+    1234.822129
+   ],
+   "seconds": 4,
+   "horizontal_m": 7.4,
+   "vertical_m": 3.72,
+   "horizontal_mps": 1.8501,
+   "max_dy_per_frame_m": 0.053,
+   "stamina": [
+    120,
+    120
+   ],
+   "hp": [
+    620,
+    620
+   ],
+   "states": [
+    "IDLE",
+    "WALK"
+   ],
+   "samples_every_10f": [
+    [
+     2092.6,
+     243.61,
+     1233.5,
+     "IDLE"
+    ],
+    [
+     2092.6,
+     243.61,
+     1233.5,
+     "IDLE"
+    ],
+    [
+     2092.698,
+     243.549,
+     1233.518,
+     "WALK"
+    ],
+    [
+     2093.026,
+     243.354,
+     1233.577,
+     "WALK"
+    ],
+    [
+     2093.354,
+     243.171,
+     1233.637,
+     "WALK"
+    ],
+    [
+     2093.682,
+     242.999,
+     1233.697,
+     "WALK"
+    ],
+    [
+     2094.01,
+     242.837,
+     1233.756,
+     "WALK"
+    ],
+    [
+     2094.338,
+     242.685,
+     1233.816,
+     "WALK"
+    ],
+    [
+     2094.666,
+     242.542,
+     1233.875,
+     "WALK"
+    ],
+    [
+     2094.994,
+     242.41,
+     1233.935,
+     "WALK"
+    ],
+    [
+     2095.322,
+     242.348,
+     1233.994,
+     "WALK"
+    ],
+    [
+     2095.65,
+     242.374,
+     1234.054,
+     "WALK"
+    ],
+    [
+     2095.978,
+     242.478,
+     1234.113,
+     "WALK"
+    ],
+    [
+     2096.306,
+     242.655,
+     1234.173,
+     "WALK"
+    ],
+    [
+     2096.634,
+     242.898,
+     1234.233,
+     "WALK"
+    ],
+    [
+     2096.962,
+     243.203,
+     1234.292,
+     "WALK"
+    ],
+    [
+     2097.29,
+     243.557,
+     1234.352,
+     "WALK"
+    ],
+    [
+     2097.618,
+     243.934,
+     1234.411,
+     "WALK"
+    ],
+    [
+     2097.946,
+     244.361,
+     1234.471,
+     "WALK"
+    ],
+    [
+     2098.274,
+     244.828,
+     1234.53,
+     "WALK"
+    ],
+    [
+     2098.602,
+     245.328,
+     1234.59,
+     "WALK"
+    ],
+    [
+     2098.93,
+     245.848,
+     1234.649,
+     "WALK"
+    ],
+    [
+     2099.258,
+     246.374,
+     1234.709,
+     "WALK"
+    ],
+    [
+     2099.586,
+     246.891,
+     1234.769,
+     "WALK"
+    ]
+   ]
+  },
+  "R2_walkoff": [
+   {
+    "site": "fill-17.5m-stormhold-helstrom",
+    "x": 2240.3,
+    "z": 1340.2,
+    "on_road": {
+     "pos": [
+      2240.3,
+      158.74,
+      1340.2
+     ],
+     "terrain": {
+      "x": 2240.3,
+      "z": 1340.2,
+      "y": 158.74,
+      "base_y": 140.225,
+      "slope_deg": 36.92,
+      "region": "stone-forest",
+      "region_name": "The Stone Forest",
+      "region_index": 8,
+      "danger_tier": 3,
+      "land": true,
+      "ocean": false,
+      "coast_dist_m": 83.3,
+      "substrate": "FIRM",
+      "sea": "topal"
+     },
+     "water": {
+      "depth_m": 0,
+      "band": "W0",
+      "substrate": "FIRM",
+      "region": "stone-forest",
+      "region_name": "The Stone Forest",
+      "sea": null,
+      "tidal": false,
+      "k": 1.100000023841858,
+      "ground_y": 158.74,
+      "surface_y": null
+     }
+    },
+    "sides": [
+     {
+      "dir": [
+       1,
+       0
+      ],
+      "moved_m": 20,
+      "dy": -29.22,
+      "end": [
+       2260.3,
+       1340.2
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2260.3,
+       "z": 1340.2,
+       "y": 129.517,
+       "base_y": 127.968,
+       "slope_deg": 66.2,
+       "region": "stone-forest",
+       "region_name": "The Stone Forest",
+       "region_index": 8,
+       "danger_tier": 3,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 81.9,
+       "substrate": "FIRM",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "stone-forest",
+       "region_name": "The Stone Forest",
+       "sea": null,
+       "tidal": false,
+       "k": 1.100000023841858,
+       "ground_y": 129.517,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       -1,
+       0
+      ],
+      "moved_m": 20,
+      "dy": 0.11,
+      "end": [
+       2220.3,
+       1340.2
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2220.3,
+       "z": 1340.2,
+       "y": 158.851,
+       "base_y": 153.308,
+       "slope_deg": 61.33,
+       "region": "stone-forest",
+       "region_name": "The Stone Forest",
+       "region_index": 8,
+       "danger_tier": 3,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 94.5,
+       "substrate": "FIRM",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "stone-forest",
+       "region_name": "The Stone Forest",
+       "sea": null,
+       "tidal": false,
+       "k": 1.100000023841858,
+       "ground_y": 158.851,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       0,
+       1
+      ],
+      "moved_m": 20,
+      "dy": -18.94,
+      "end": [
+       2240.3,
+       1360.2
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2240.3,
+       "z": 1360.2,
+       "y": 139.803,
+       "base_y": 138.287,
+       "slope_deg": 38.73,
+       "region": "stone-forest",
+       "region_name": "The Stone Forest",
+       "region_index": 8,
+       "danger_tier": 3,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 107.4,
+       "substrate": "FIRM",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "stone-forest",
+       "region_name": "The Stone Forest",
+       "sea": null,
+       "tidal": false,
+       "k": 1.100000023841858,
+       "ground_y": 139.803,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       0,
+       -1
+      ],
+      "moved_m": 20,
+      "dy": -16.56,
+      "end": [
+       2240.3,
+       1320.2
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2240.3,
+       "z": 1320.2,
+       "y": 142.177,
+       "base_y": 142.163,
+       "slope_deg": 37.24,
+       "region": "stone-forest",
+       "region_name": "The Stone Forest",
+       "region_index": 8,
+       "danger_tier": 3,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 67.7,
+       "substrate": "FIRM",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "stone-forest",
+       "region_name": "The Stone Forest",
+       "sea": null,
+       "tidal": false,
+       "k": 1.100000023841858,
+       "ground_y": 142.177,
+       "surface_y": null
+      }
+     }
+    ]
+   },
+   {
+    "site": "fill-13.7m-blackrose-lilmoth",
+    "x": 2689.5,
+    "z": 4810.3,
+    "on_road": {
+     "pos": [
+      2689.5,
+      1.58,
+      4810.3
+     ],
+     "terrain": {
+      "x": 2689.5,
+      "z": 4810.3,
+      "y": 1.58,
+      "base_y": -16.631,
+      "slope_deg": 1.83,
+      "region": "western-rootlands",
+      "region_name": "Western Rootlands",
+      "region_index": 12,
+      "danger_tier": 1,
+      "land": false,
+      "ocean": true,
+      "coast_dist_m": -109.5,
+      "substrate": "SILT",
+      "sea": "topal"
+     },
+     "water": {
+      "depth_m": 0,
+      "band": "W0",
+      "substrate": "SILT",
+      "region": "western-rootlands",
+      "region_name": "Western Rootlands",
+      "sea": "topal",
+      "tidal": true,
+      "k": 1.899999976158142,
+      "ground_y": 1.58,
+      "surface_y": null
+     }
+    },
+    "sides": [
+     {
+      "dir": [
+       1,
+       0
+      ],
+      "moved_m": 13.22,
+      "dy": -9.79,
+      "end": [
+       2702.7,
+       4810.3
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2702.719667,
+       "z": 4810.3,
+       "y": -8.208,
+       "base_y": -16.151,
+       "slope_deg": 14.51,
+       "region": "western-rootlands",
+       "region_name": "Western Rootlands",
+       "region_index": 12,
+       "danger_tier": 1,
+       "land": false,
+       "ocean": true,
+       "coast_dist_m": -102.6,
+       "substrate": "SILT",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 8.278,
+       "band": "W5",
+       "substrate": "SILT",
+       "region": "western-rootlands",
+       "region_name": "Western Rootlands",
+       "sea": "topal",
+       "tidal": true,
+       "k": 1.899999976158142,
+       "ground_y": -8.208,
+       "surface_y": 0.07
+      }
+     },
+     {
+      "dir": [
+       -1,
+       0
+      ],
+      "moved_m": 13.18,
+      "dy": -11.97,
+      "end": [
+       2676.3,
+       4810.3
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2676.324667,
+       "z": 4810.3,
+       "y": -10.388,
+       "base_y": -17.192,
+       "slope_deg": 18.96,
+       "region": "western-rootlands",
+       "region_name": "Western Rootlands",
+       "region_index": 12,
+       "danger_tier": 1,
+       "land": false,
+       "ocean": true,
+       "coast_dist_m": -117.1,
+       "substrate": "SILT",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 10.458,
+       "band": "W5",
+       "substrate": "SILT",
+       "region": "western-rootlands",
+       "region_name": "Western Rootlands",
+       "sea": "topal",
+       "tidal": true,
+       "k": 1.899999976158142,
+       "ground_y": -10.388,
+       "surface_y": 0.07
+      }
+     },
+     {
+      "dir": [
+       0,
+       1
+      ],
+      "moved_m": 19.97,
+      "dy": -0.54,
+      "end": [
+       2689.5,
+       4830.3
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2689.5,
+       "z": 4830.27,
+       "y": 1.039,
+       "base_y": -6.889,
+       "slope_deg": 22.62,
+       "region": "western-rootlands",
+       "region_name": "Western Rootlands",
+       "region_index": 12,
+       "danger_tier": 1,
+       "land": false,
+       "ocean": false,
+       "coast_dist_m": -88.9,
+       "substrate": "SILT",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0.143,
+       "band": "W1",
+       "substrate": "SILT",
+       "region": "western-rootlands",
+       "region_name": "Western Rootlands",
+       "sea": "topal",
+       "tidal": true,
+       "k": 1.899999976158142,
+       "ground_y": 1.039,
+       "surface_y": 1.182
+      }
+     },
+     {
+      "dir": [
+       0,
+       -1
+      ],
+      "moved_m": 18.47,
+      "dy": -3.06,
+      "end": [
+       2689.5,
+       4791.8
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2689.5,
+       "z": 4791.831,
+       "y": -1.481,
+       "base_y": -15.948,
+       "slope_deg": 55.22,
+       "region": "western-rootlands",
+       "region_name": "Western Rootlands",
+       "region_index": 12,
+       "danger_tier": 1,
+       "land": false,
+       "ocean": true,
+       "coast_dist_m": -99.6,
+       "substrate": "SILT",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 1.551,
+       "band": "W5",
+       "substrate": "SILT",
+       "region": "western-rootlands",
+       "region_name": "Western Rootlands",
+       "sea": "topal",
+       "tidal": true,
+       "k": 1.899999976158142,
+       "ground_y": -1.481,
+       "surface_y": 0.07
+      }
+     }
+    ]
+   },
+   {
+    "site": "fill-8.0m-stormhold-thorn",
+    "x": 2692,
+    "z": 815,
+    "on_road": {
+     "pos": [
+      2692,
+      100.787384,
+      815
+     ],
+     "terrain": {
+      "x": 2692,
+      "z": 815,
+      "y": 100.787,
+      "base_y": 97.274,
+      "slope_deg": 41.19,
+      "region": "salt-hills",
+      "region_name": "The Salt Hills",
+      "region_index": 7,
+      "danger_tier": 3,
+      "land": true,
+      "ocean": false,
+      "coast_dist_m": 32.3,
+      "substrate": "FIRM",
+      "sea": "topal"
+     },
+     "water": {
+      "depth_m": 0,
+      "band": "W0",
+      "substrate": "FIRM",
+      "region": "salt-hills",
+      "region_name": "The Salt Hills",
+      "sea": null,
+      "tidal": false,
+      "k": 0.800000011920929,
+      "ground_y": 100.787,
+      "surface_y": null
+     }
+    },
+    "sides": [
+     {
+      "dir": [
+       1,
+       0
+      ],
+      "moved_m": 20,
+      "dy": -8.68,
+      "end": [
+       2712,
+       815
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2712,
+       "z": 815,
+       "y": 92.111,
+       "base_y": 93.114,
+       "slope_deg": 12.02,
+       "region": "salt-hills",
+       "region_name": "The Salt Hills",
+       "region_index": 7,
+       "danger_tier": 3,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 33.6,
+       "substrate": "FIRM",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "salt-hills",
+       "region_name": "The Salt Hills",
+       "sea": null,
+       "tidal": false,
+       "k": 0.800000011920929,
+       "ground_y": 92.111,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       -1,
+       0
+      ],
+      "moved_m": 20,
+      "dy": -0.89,
+      "end": [
+       2672,
+       815
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2672,
+       "z": 815,
+       "y": 99.9,
+       "base_y": 99.822,
+       "slope_deg": 3.48,
+       "region": "salt-hills",
+       "region_name": "The Salt Hills",
+       "region_index": 7,
+       "danger_tier": 3,
+       "land": false,
+       "ocean": false,
+       "coast_dist_m": -7.7,
+       "substrate": "FIRM",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "salt-hills",
+       "region_name": "The Salt Hills",
+       "sea": "topal",
+       "tidal": false,
+       "k": 0.800000011920929,
+       "ground_y": 99.9,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       0,
+       1
+      ],
+      "moved_m": 20,
+      "dy": 1.79,
+      "end": [
+       2692,
+       835
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2692,
+       "z": 835,
+       "y": 102.574,
+       "base_y": 96.554,
+       "slope_deg": 44.44,
+       "region": "salt-hills",
+       "region_name": "The Salt Hills",
+       "region_index": 7,
+       "danger_tier": 3,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 34.6,
+       "substrate": "SILT",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "SILT",
+       "region": "salt-hills",
+       "region_name": "The Salt Hills",
+       "sea": null,
+       "tidal": false,
+       "k": 0.800000011920929,
+       "ground_y": 102.574,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       0,
+       -1
+      ],
+      "moved_m": 20,
+      "dy": -3.87,
+      "end": [
+       2692,
+       795
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 2692,
+       "z": 795,
+       "y": 96.917,
+       "base_y": 96.244,
+       "slope_deg": 40.62,
+       "region": "salt-hills",
+       "region_name": "The Salt Hills",
+       "region_index": 7,
+       "danger_tier": 3,
+       "land": false,
+       "ocean": false,
+       "coast_dist_m": -12.8,
+       "substrate": "FIRM",
+       "sea": "topal"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "salt-hills",
+       "region_name": "The Salt Hills",
+       "sea": "topal",
+       "tidal": false,
+       "k": 0.800000011920929,
+       "ground_y": 96.917,
+       "surface_y": null
+      }
+     }
+    ]
+   },
+   {
+    "site": "flat-archon-thorn",
+    "x": 3915.5,
+    "z": 2111.6,
+    "on_road": {
+     "pos": [
+      3915.5,
+      22.33,
+      2111.6
+     ],
+     "terrain": {
+      "x": 3915.5,
+      "z": 2111.6,
+      "y": 22.33,
+      "base_y": 22.23,
+      "slope_deg": 2.18,
+      "region": "clay-moor",
+      "region_name": "The Clay Moor",
+      "region_index": 1,
+      "danger_tier": 4,
+      "land": true,
+      "ocean": false,
+      "coast_dist_m": 300.9,
+      "substrate": "FIRM",
+      "sea": "padomaic"
+     },
+     "water": {
+      "depth_m": 0,
+      "band": "W0",
+      "substrate": "FIRM",
+      "region": "clay-moor",
+      "region_name": "The Clay Moor",
+      "sea": null,
+      "tidal": false,
+      "k": null,
+      "ground_y": 22.33,
+      "surface_y": null
+     }
+    },
+    "sides": [
+     {
+      "dir": [
+       1,
+       0
+      ],
+      "moved_m": 20,
+      "dy": -0.45,
+      "end": [
+       3935.5,
+       2111.6
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 3935.5,
+       "z": 2111.6,
+       "y": 21.877,
+       "base_y": 21.593,
+       "slope_deg": 0.99,
+       "region": "clay-moor",
+       "region_name": "The Clay Moor",
+       "region_index": 1,
+       "danger_tier": 4,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 288.1,
+       "substrate": "FIRM",
+       "sea": "padomaic"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "clay-moor",
+       "region_name": "The Clay Moor",
+       "sea": null,
+       "tidal": false,
+       "k": null,
+       "ground_y": 21.877,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       -1,
+       0
+      ],
+      "moved_m": 20,
+      "dy": 0.32,
+      "end": [
+       3895.5,
+       2111.6
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 3895.5,
+       "z": 2111.6,
+       "y": 22.649,
+       "base_y": 22.804,
+       "slope_deg": 6.71,
+       "region": "clay-moor",
+       "region_name": "The Clay Moor",
+       "region_index": 1,
+       "danger_tier": 4,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 303.2,
+       "substrate": "FIRM",
+       "sea": "padomaic"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "clay-moor",
+       "region_name": "The Clay Moor",
+       "sea": null,
+       "tidal": false,
+       "k": null,
+       "ground_y": 22.649,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       0,
+       1
+      ],
+      "moved_m": 20,
+      "dy": -0.44,
+      "end": [
+       3915.5,
+       2131.6
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 3915.5,
+       "z": 2131.6,
+       "y": 21.895,
+       "base_y": 21.602,
+       "slope_deg": 4.49,
+       "region": "clay-moor",
+       "region_name": "The Clay Moor",
+       "region_index": 1,
+       "danger_tier": 4,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 315.8,
+       "substrate": "FIRM",
+       "sea": "padomaic"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "clay-moor",
+       "region_name": "The Clay Moor",
+       "sea": null,
+       "tidal": false,
+       "k": null,
+       "ground_y": 21.895,
+       "surface_y": null
+      }
+     },
+     {
+      "dir": [
+       0,
+       -1
+      ],
+      "moved_m": 20,
+      "dy": 0.97,
+      "end": [
+       3915.5,
+       2091.6
+      ],
+      "hp": [
+       620,
+       620
+      ],
+      "end_state": "WALK",
+      "end_terrain": {
+       "x": 3915.5,
+       "z": 2091.6,
+       "y": 23.302,
+       "base_y": 22.799,
+       "slope_deg": 7.25,
+       "region": "clay-moor",
+       "region_name": "The Clay Moor",
+       "region_index": 1,
+       "danger_tier": 4,
+       "land": true,
+       "ocean": false,
+       "coast_dist_m": 275.3,
+       "substrate": "FIRM",
+       "sea": "padomaic"
+      },
+      "end_water": {
+       "depth_m": 0,
+       "band": "W0",
+       "substrate": "FIRM",
+       "region": "clay-moor",
+       "region_name": "The Clay Moor",
+       "sea": null,
+       "tidal": false,
+       "k": null,
+       "ground_y": 23.302,
+       "surface_y": null
+      }
+     }
+    ]
+   }
+  ],
+  "R3_shots": [
+   {
+    "id": "embankment-stormhold-helstrom",
+    "x": 2240.3,
+    "z": 1340.2,
+    "tod": 12,
+    "weather": "clear",
+    "pose": {
+     "yaw": 90,
+     "pitch": -8,
+     "arm": 14
+    },
+    "file": "shot-embankment-stormhold-helstrom.png",
+    "bytes": 923088,
+    "terrain": {
+     "x": 2240.3,
+     "z": 1340.2,
+     "y": 158.74,
+     "base_y": 140.225,
+     "slope_deg": 36.92,
+     "region": "stone-forest",
+     "region_name": "The Stone Forest",
+     "region_index": 8,
+     "danger_tier": 3,
+     "land": true,
+     "ocean": false,
+     "coast_dist_m": 83.3,
+     "substrate": "FIRM",
+     "sea": "topal"
+    },
+    "water": {
+     "depth_m": 0,
+     "band": "W0",
+     "substrate": "FIRM",
+     "region": "stone-forest",
+     "region_name": "The Stone Forest",
+     "sea": null,
+     "tidal": false,
+     "k": 1.100000023841858,
+     "ground_y": 158.74,
+     "surface_y": null
+    }
+   },
+   {
+    "id": "embankment-side-on",
+    "x": 2265,
+    "z": 1340.2,
+    "tod": 12,
+    "weather": "clear",
+    "pose": {
+     "yaw": 180,
+     "pitch": -4,
+     "arm": 20
+    },
+    "file": "shot-embankment-side-on.png",
+    "bytes": 918058,
+    "terrain": {
+     "x": 2265,
+     "z": 1340.2,
+     "y": 123.639,
+     "base_y": 125.228,
+     "slope_deg": 58.76,
+     "region": "stone-forest",
+     "region_name": "The Stone Forest",
+     "region_index": 8,
+     "danger_tier": 3,
+     "land": true,
+     "ocean": false,
+     "coast_dist_m": 81.7,
+     "substrate": "FIRM",
+     "sea": "topal"
+    },
+    "water": {
+     "depth_m": 0,
+     "band": "W0",
+     "substrate": "FIRM",
+     "region": "stone-forest",
+     "region_name": "The Stone Forest",
+     "sea": null,
+     "tidal": false,
+     "k": 1.100000023841858,
+     "ground_y": 123.639,
+     "surface_y": null
+    }
+   },
+   {
+    "id": "ramp-58deg",
+    "x": 2098,
+    "z": 1234.5,
+    "tod": 12,
+    "weather": "clear",
+    "pose": {
+     "yaw": 12,
+     "pitch": -2,
+     "arm": 10
+    },
+    "file": "shot-ramp-58deg.png",
+    "bytes": 903569,
+    "terrain": {
+     "x": 2098,
+     "z": 1234.5,
+     "y": 244.444,
+     "base_y": 239.246,
+     "slope_deg": 40.44,
+     "region": "valus-ridge",
+     "region_name": "Valus Ridge",
+     "region_index": 11,
+     "danger_tier": 4,
+     "land": true,
+     "ocean": false,
+     "coast_dist_m": 33.9,
+     "substrate": "FIRM",
+     "sea": "topal"
+    },
+    "water": {
+     "depth_m": 0,
+     "band": "W0",
+     "substrate": "FIRM",
+     "region": "valus-ridge",
+     "region_name": "Valus Ridge",
+     "sea": null,
+     "tidal": false,
+     "k": 0.8999999761581421,
+     "ground_y": 244.444,
+     "surface_y": null
+    }
+   },
+   {
+    "id": "old-drowned-point",
+    "x": 2182.5,
+    "z": 2214.6,
+    "tod": 12,
+    "weather": "clear",
+    "pose": {
+     "yaw": 90,
+     "pitch": -5,
+     "arm": 4
+    },
+    "file": "shot-old-drowned-point.png",
+    "bytes": 851168,
+    "terrain": {
+     "x": 2182.5,
+     "z": 2214.6,
+     "y": 157.48,
+     "base_y": 125.866,
+     "slope_deg": 32.95,
+     "region": "stone-forest",
+     "region_name": "The Stone Forest",
+     "region_index": 8,
+     "danger_tier": 3,
+     "land": true,
+     "ocean": false,
+     "coast_dist_m": 30.9,
+     "substrate": "FIRM",
+     "sea": "topal"
+    },
+    "water": {
+     "depth_m": 0,
+     "band": "W0",
+     "substrate": "FIRM",
+     "region": "stone-forest",
+     "region_name": "The Stone Forest",
+     "sea": null,
+     "tidal": false,
+     "k": 1.100000023841858,
+     "ground_y": 157.48,
+     "surface_y": null
+    }
+   },
+   {
+    "id": "tideway-lilmoth-archon",
+    "x": 3444.7,
+    "z": 3663,
+    "tod": 12,
+    "weather": "clear",
+    "pose": {
+     "yaw": 45,
+     "pitch": -5,
+     "arm": 6
+    },
+    "file": "shot-tideway-lilmoth-archon.png",
+    "bytes": 658942,
+    "terrain": {
+     "x": 3444.7,
+     "z": 3663,
+     "y": 1.43,
+     "base_y": 1.401,
+     "slope_deg": 0.55,
+     "region": "eastern-rootlands",
+     "region_name": "Eastern Rootlands",
+     "region_index": 4,
+     "danger_tier": 2,
+     "land": true,
+     "ocean": false,
+     "coast_dist_m": 554.8,
+     "substrate": "SUCK",
+     "sea": "padomaic"
+    },
+    "water": {
+     "depth_m": 0.181,
+     "band": "W1",
+     "substrate": "SUCK",
+     "region": "eastern-rootlands",
+     "region_name": "Eastern Rootlands",
+     "sea": "padomaic",
+     "tidal": true,
+     "k": 3.200000047683716,
+     "ground_y": 1.43,
+     "surface_y": 1.611
+    }
+   },
+   {
+    "id": "viaduct-blackrose-lilmoth",
+    "x": 2689.5,
+    "z": 4810.3,
+    "tod": 12,
+    "weather": "clear",
+    "pose": {
+     "yaw": 180,
+     "pitch": -6,
+     "arm": 18
+    },
+    "file": "shot-viaduct-blackrose-lilmoth.png",
+    "bytes": 660499,
+    "terrain": {
+     "x": 2689.5,
+     "z": 4810.3,
+     "y": 1.58,
+     "base_y": -16.631,
+     "slope_deg": 1.83,
+     "region": "western-rootlands",
+     "region_name": "Western Rootlands",
+     "region_index": 12,
+     "danger_tier": 1,
+     "land": false,
+     "ocean": true,
+     "coast_dist_m": -109.5,
+     "substrate": "SILT",
+     "sea": "topal"
+    },
+    "water": {
+     "depth_m": 0,
+     "band": "W0",
+     "substrate": "SILT",
+     "region": "western-rootlands",
+     "region_name": "Western Rootlands",
+     "sea": "topal",
+     "tidal": true,
+     "k": 1.899999976158142,
+     "ground_y": 1.58,
+     "surface_y": null
+    }
+   }
+  ],
+  "R4_travel": {
+   "stations": 26,
+   "services": 68,
+   "modes": 5,
+   "keys": [
+    "present",
+    "modes",
+    "mode_detail",
+    "counts",
+    "stations",
+    "services",
+    "lines",
+    "tariff",
+    "unresolved_endpoints"
+   ]
+  },
+  "world": {
+   "regions": 13,
+   "settlements": 8,
+   "pois": 42,
+   "interiors": 2,
+   "npcs": 5,
+   "areaKm2": 14.309,
+   "worldBoundsM": {
+    "x": [
+     0,
+     4825
+    ],
+    "z": [
+     0,
+     5540
+    ]
+   },
+   "elevationRangeM": [
+    -41.8,
+    424.2
+   ],
+   "roadNetworkM": 25099.7,
+   "crossingM": 6861.2,
+   "crossingWalkMin": 57.18,
+   "streaming": {
+    "tilesResident": 25,
+    "tilesQueued": 0,
+    "tilesBuiltTotal": 225,
+    "tileSizeM": 300,
+    "residentRadiusTiles": 2,
+    "meshes": 126,
+    "instances": 18585
+   },
+   "drawCalls": 127,
+   "triangles": 301300,
+   "textureMB": 0,
+   "programs": 10,
+   "materials": 14,
+   "stateChanges": 127,
+   "skinnedMeshes": 0,
+   "shadowLights": 1,
+   "geometryMB": 3.936,
+   "audioMB": 0,
+   "atlasCount": 0,
+   "entitiesLive": 0,
+   "region": "western-rootlands",
+   "interior": null,
+   "_declared_incomplete": {
+    "owner": "wave-1 pieces W1-01..W1-05 (world, regions, settlements, interiors, roads)",
+    "note": "regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because there is no audio (RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed)."
+   }
+  }
+ },
+ "build": {
+  "name": "elder-souls",
+  "version": "0.2.0-w1-09",
+  "commit": null,
+  "builtAt": null,
+  "harnessVersion": 2,
+  "fixedStepHz": 60,
+  "dataRoot": "game/data",
+  "piece": "W1-09 — combat core (on W1-00’s harness)",
+  "threeVersion": "180",
+  "dataFiles": 288
+ }
+}

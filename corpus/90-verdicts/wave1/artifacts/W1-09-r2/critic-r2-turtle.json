@@ -1,0 +1,150 @@
+{
+  "generated": "2026-08-06T20:38:40.074Z",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "probes": {
+    "turtle": {
+      "runs": [
+        {
+          "stand_distance_m": 0.8,
+          "enemy_killed": true,
+          "ended_frame": 1153,
+          "player_hp_end": 620,
+          "player_hp_max": 620,
+          "damage_taken": 0,
+          "enemy_hp_end": 0,
+          "enemy_hp_max": 2876,
+          "player_hits_landed": 11,
+          "enemy_swings_scheduled": 39,
+          "enemy_state_histogram": {
+            "IDLE": 502,
+            "ATK_WINDUP": 293,
+            "ATK_ACTIVE": 44,
+            "ATK_RECOVER": 312,
+            "REPOSITION": 2,
+            "DEAD": 1
+          },
+          "enemy_active_frames": 44
+        },
+        {
+          "stand_distance_m": 1,
+          "enemy_killed": true,
+          "ended_frame": 1377,
+          "player_hp_end": 620,
+          "player_hp_max": 620,
+          "damage_taken": 0,
+          "enemy_hp_end": 0,
+          "enemy_hp_max": 2876,
+          "player_hits_landed": 12,
+          "enemy_swings_scheduled": 39,
+          "enemy_state_histogram": {
+            "IDLE": 559,
+            "ATK_WINDUP": 356,
+            "ATK_ACTIVE": 54,
+            "ATK_RECOVER": 393,
+            "REPOSITION": 15,
+            "DEAD": 1
+          },
+          "enemy_active_frames": 54
+        },
+        {
+          "stand_distance_m": 1.1,
+          "enemy_killed": true,
+          "ended_frame": 1377,
+          "player_hp_end": 620,
+          "player_hp_max": 620,
+          "damage_taken": 0,
+          "enemy_hp_end": 0,
+          "enemy_hp_max": 2876,
+          "player_hits_landed": 12,
+          "enemy_swings_scheduled": 39,
+          "enemy_state_histogram": {
+            "IDLE": 551,
+            "ATK_WINDUP": 356,
+            "ATK_ACTIVE": 54,
+            "ATK_RECOVER": 393,
+            "REPOSITION": 23,
+            "DEAD": 1
+          },
+          "enemy_active_frames": 54
+        },
+        {
+          "stand_distance_m": 1.5,
+          "enemy_killed": true,
+          "ended_frame": 1411,
+          "player_hp_end": 620,
+          "player_hp_max": 620,
+          "damage_taken": 0,
+          "enemy_hp_end": 0,
+          "enemy_hp_max": 2876,
+          "player_hits_landed": 14,
+          "enemy_swings_scheduled": 39,
+          "enemy_state_histogram": {
+            "IDLE": 576,
+            "ATK_WINDUP": 357,
+            "ATK_ACTIVE": 44,
+            "ATK_RECOVER": 307,
+            "STAGGER": 44,
+            "REPOSITION": 83,
+            "DEAD": 1
+          },
+          "enemy_active_frames": 44
+        },
+        {
+          "stand_distance_m": 2,
+          "enemy_killed": true,
+          "ended_frame": 1716,
+          "player_hp_end": 524,
+          "player_hp_max": 620,
+          "damage_taken": 96,
+          "enemy_hp_end": 0,
+          "enemy_hp_max": 2876,
+          "player_hits_landed": 14,
+          "enemy_swings_scheduled": 39,
+          "enemy_state_histogram": {
+            "IDLE": 660,
+            "ATK_WINDUP": 481,
+            "ATK_ACTIVE": 67,
+            "ATK_RECOVER": 390,
+            "REPOSITION": 74,
+            "STAGGER": 44,
+            "DEAD": 1
+          },
+          "enemy_active_frames": 67
+        },
+        {
+          "stand_distance_m": 2.6,
+          "enemy_killed": true,
+          "ended_frame": 1716,
+          "player_hp_end": 524,
+          "player_hp_max": 620,
+          "damage_taken": 96,
+          "enemy_hp_end": 0,
+          "enemy_hp_max": 2876,
+          "player_hits_landed": 14,
+          "enemy_swings_scheduled": 39,
+          "enemy_state_histogram": {
+            "IDLE": 642,
+            "ATK_WINDUP": 481,
+            "ATK_ACTIVE": 67,
+            "ATK_RECOVER": 395,
+            "REPOSITION": 87,
+            "STAGGER": 44,
+            "DEAD": 1
+          },
+          "enemy_active_frames": 67
+        }
+      ]
+    }
+  }
+}

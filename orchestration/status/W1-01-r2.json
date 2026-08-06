@@ -9,7 +9,15 @@
     "corpus/90-verdicts/wave1/artifacts/W1-01-r2/"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read SCORING.md, CRITIC-DOCTRINE.md, verdict.schema.json, round-1 verdict",
+  "findings": [
+    "BUILD BREAK (not W1-01's): game/data/index.json lists dialogue/topics/thorn.json which W1-18 (65275dc) deleted. Engine._boot throws 'data file missing' and the game does not boot at all. Restored from 65275dc^ into the worktree to measure; MUST delete again before finishing.",
+    "W1-01.json (round 1) is confirmed VOID: node tools/verdict-validate.mjs reports 2 missing artifacts reports/region-shots/frame-01.png and frame-39.png.",
+    "Road water fix HOLDS on the centreline: road-water-audit re-run = 0 offences over 4 tides x 10 legs; only the declared tideway lilmoth-archon is wet (max 1.456 m at HIGH).",
+    "Crossing re-measures 55.356 min / 6642.1 m / mean 1.9998 m/s / 0.009% below 1.6. S17 satisfied; the hour is still distance.",
+    "BUT the fix is an EARTH EMBANKMENT: independent cut/fill probe (nat field vs road field) gives max fill 17.52 m (stormhold-helstrom @2240.3,1340.2), max cut 3.62 m (exceeds the tool's own 3.5 pass bar), 2537 sampled shoulder points above 40 deg, worst shoulder slope 70.6 deg. 1498 m of trunk has |offset| > 6 m.",
+    "roads.json declares 21 'deck_spans' (11 viaducts up to 16 m on stormhold-helstrom, 2494 m total) but NOTHING reads deck_spans in game/src \u2014 grep finds it only in tools/world/build-roads.mjs. The viaducts are JSON labels; the built world is solid fill.",
+    "ROAD GRADE: stormhold-helstrom (leg 1 of THE CROSSING) has a segment rising 19.63 m over 11.99 m horizontal = grade 1.637 = 58.6 deg. 638 m of trunk above 30% grade, 2231 m above 12%. Declared MAX_GRADE was 0.12."
+  ],
+  "next_step": "probe the 58.6-deg ramp with the live capsule; capture frames; blind pack audit; visual dispersion like-for-like",
   "notes_for_successor": ""
 }

@@ -1,0 +1,512 @@
+{
+ "schema": "elder-souls/critic-effect-census@1",
+ "piece": "W1-14",
+ "ref_item": "RI-MAG02",
+ "commit": "75c8e3a",
+ "method": "For each of the 71 shipped spells: loadState(arena_flat), setWillpower(99), setCatalyst(rod), all four school skills 100, hearthRest(), setAttuned([spell]), spawn inf_trash, queueInputs press light, step total+180 frames, then read magicEventsDrain(), getMagicState(), listEntities(), getPlayerStats(). Touch-range effects re-run with the target at 1.4 m. Buff effects re-probed against the system they claim to move (damagePlayer, getStealthState, equip_load_pct, listEntities, solidAt, getQuestState).",
+ "declared_effects": 55,
+ "tally": {
+  "FUNCTIONS_AS_SPECIFIED": 5,
+  "HP_DAMAGE_ONLY": 16,
+  "UNREAD_TIMER": 33,
+  "PARTIAL": 1
+ },
+ "rows": [
+  {
+   "id": "fire_damage",
+   "school": "sorcery",
+   "utility_class": "survival",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "FUNCTIONS_AS_SPECIFIED",
+   "observed": "deterministic HP damage = magnitude x output_per_point; this IS the effect"
+  },
+  {
+   "id": "frost_damage",
+   "school": "sorcery",
+   "utility_class": "traversal",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "FUNCTIONS_AS_SPECIFIED",
+   "observed": "deterministic HP damage = magnitude x output_per_point; this IS the effect"
+  },
+  {
+   "id": "shock_damage",
+   "school": "sorcery",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "FUNCTIONS_AS_SPECIFIED",
+   "observed": "deterministic HP damage = magnitude x output_per_point; this IS the effect"
+  },
+  {
+   "id": "poison_damage",
+   "school": "sorcery",
+   "utility_class": null,
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "FUNCTIONS_AS_SPECIFIED",
+   "observed": "deterministic HP damage = magnitude x output_per_point; this IS the effect"
+  },
+  {
+   "id": "damage_health",
+   "school": "sorcery",
+   "utility_class": null,
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "FUNCTIONS_AS_SPECIFIED",
+   "observed": "deterministic HP damage = magnitude x output_per_point; this IS the effect"
+  },
+  {
+   "id": "drain_health",
+   "school": "sorcery",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "leech @1.4m: 310 hp to target, 0 hp to caster"
+  },
+  {
+   "id": "absorb_health",
+   "school": "sorcery",
+   "utility_class": null,
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "sap_thief @1.4m: 200 hp to target, 0 hp to caster"
+  },
+  {
+   "id": "soul_trap",
+   "school": "sorcery",
+   "utility_class": "economy",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "root_theft: 31 hp; gems 0->0, xul_hesh 0"
+  },
+  {
+   "id": "shatter",
+   "school": "sorcery",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "the_unmaking/shell_splitter: 46 hp"
+  },
+  {
+   "id": "corrode",
+   "school": "sorcery",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "verdigris @1.4m: 310 hp, no armour/lock state exists to degrade"
+  },
+  {
+   "id": "bind_lesser",
+   "school": "sorcery",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "listEntities() 0 -> 0, nothing summoned"
+  },
+  {
+   "id": "bind_greater",
+   "school": "sorcery",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "no castable carrier: call_the_deep_drowned costs 185 Focus against a 124 maximum pool"
+  },
+  {
+   "id": "bound_weapon",
+   "school": "sorcery",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only; loadout unchanged"
+  },
+  {
+   "id": "telekinesis",
+   "school": "sorcery",
+   "utility_class": "access",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only, no reach change observable"
+  },
+  {
+   "id": "restore_health",
+   "school": "root_speech",
+   "utility_class": "survival",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "hp 420->420 of 620 after the_greater_mending"
+  },
+  {
+   "id": "cure_disease",
+   "school": "root_speech",
+   "utility_class": "survival",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only; no affliction state exposed"
+  },
+  {
+   "id": "cure_poison",
+   "school": "root_speech",
+   "utility_class": "survival",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only"
+  },
+  {
+   "id": "cure_paralysis",
+   "school": "root_speech",
+   "utility_class": "survival",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only"
+  },
+  {
+   "id": "restore_attribute",
+   "school": "root_speech",
+   "utility_class": "survival",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only"
+  },
+  {
+   "id": "fortify_attribute",
+   "school": "root_speech",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "getPlayerStats().attributes identical"
+  },
+  {
+   "id": "fortify_skill",
+   "school": "root_speech",
+   "utility_class": "access",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "getPlayerStats().attributes identical; no gate re-evaluated"
+  },
+  {
+   "id": "resist_element",
+   "school": "root_speech",
+   "utility_class": "survival",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "100 damage taken with and without the buff"
+  },
+  {
+   "id": "resist_disease",
+   "school": "root_speech",
+   "utility_class": "survival",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only; no disease system exposed"
+  },
+  {
+   "id": "sap_ward",
+   "school": "root_speech",
+   "utility_class": "survival",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only"
+  },
+  {
+   "id": "speak_to_the_dead",
+   "school": "root_speech",
+   "utility_class": "knowledge",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "RITUAL completes, no knowledge flag, no journal entry"
+  },
+  {
+   "id": "hist_sight",
+   "school": "root_speech",
+   "utility_class": "knowledge",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "RITUAL completes, journal length 0 -> 0"
+  },
+  {
+   "id": "mend_item",
+   "school": "root_speech",
+   "utility_class": "economy",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "effect_apply x5, no item condition changes"
+  },
+  {
+   "id": "calm_beast",
+   "school": "root_speech",
+   "utility_class": "social",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "still_the_beast on beast_slitherfang: 157 hp, alert_state AGGRO, in_combat true at frame 240"
+  },
+  {
+   "id": "open_lock",
+   "school": "warding",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "open: 31 hp to a creature; lockState() null, no lock event"
+  },
+  {
+   "id": "lock_lock",
+   "school": "warding",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "seal @1.4m: 184 hp"
+  },
+  {
+   "id": "ward_trap",
+   "school": "warding",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "spring_the_trap: 5 hp"
+  },
+  {
+   "id": "buoyancy",
+   "school": "warding",
+   "utility_class": "traversal",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only; no water in arena_flat"
+  },
+  {
+   "id": "breathe_water",
+   "school": "warding",
+   "utility_class": "traversal",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only; no water in arena_flat"
+  },
+  {
+   "id": "feather",
+   "school": "warding",
+   "utility_class": "access",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "equip_load_pct 24->24, roll_class LIGHT->LIGHT"
+  },
+  {
+   "id": "burden",
+   "school": "warding",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "burden: 62 hp; enemy equip tier/roll unchanged"
+  },
+  {
+   "id": "slowfall",
+   "school": "warding",
+   "utility_class": "traversal",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only; arena has no fall to measure (unmeasurable, scored as not-demonstrated)"
+  },
+  {
+   "id": "levitate",
+   "school": "warding",
+   "utility_class": "traversal",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "PARTIAL",
+   "observed": "altitude_m meter + 1.5 Focus/m tax measured; pos[1] stays 0, drift 4.96 m/s, roll/block/parry all execute, iframe true"
+  },
+  {
+   "id": "leap",
+   "school": "warding",
+   "utility_class": "traversal",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "pos[1] max 0.0 over 60 frames after the cast"
+  },
+  {
+   "id": "shield",
+   "school": "warding",
+   "utility_class": null,
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "100 damage taken with and without the buff"
+  },
+  {
+   "id": "wall",
+   "school": "warding",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "the_broken_wall: 65 hp; solidAt(0,4) unchanged before and after"
+  },
+  {
+   "id": "mark",
+   "school": "warding",
+   "utility_class": "teleport",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "RITUAL completes and writes a position"
+  },
+  {
+   "id": "recall",
+   "school": "warding",
+   "utility_class": "teleport",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "RITUAL completes; player position [60,0,60] -> [60,0,60]"
+  },
+  {
+   "id": "intervention",
+   "school": "warding",
+   "utility_class": "teleport",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "RITUAL completes; no position change"
+  },
+  {
+   "id": "invisibility",
+   "school": "veiling",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "active; getStealthState() identical to baseline; does NOT break when the player casts"
+  },
+  {
+   "id": "chameleon",
+   "school": "veiling",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "magnitude clamped at 80; getStealthState() identical to baseline"
+  },
+  {
+   "id": "muffle",
+   "school": "veiling",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "getStealthState() identical to baseline"
+  },
+  {
+   "id": "silence",
+   "school": "veiling",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "silence: 31 hp; nothing in the build casts to be silenced"
+  },
+  {
+   "id": "night_eye",
+   "school": "veiling",
+   "utility_class": "traversal",
+   "declared_changes_traversal": true,
+   "declared_changes_quest_resolution": false,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "getStealthState() identical to baseline"
+  },
+  {
+   "id": "detect_life",
+   "school": "veiling",
+   "utility_class": "knowledge",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only, no world output"
+  },
+  {
+   "id": "detect_key",
+   "school": "veiling",
+   "utility_class": "knowledge",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "timer only, no world output"
+  },
+  {
+   "id": "charm",
+   "school": "veiling",
+   "utility_class": "social",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "charm @1.4m: 184 hp"
+  },
+  {
+   "id": "paralyse",
+   "school": "veiling",
+   "utility_class": "access",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "the_grey_fuzz: 12 hp, enemy state REPOSITION throughout, no buildup field on the enemy record"
+  },
+  {
+   "id": "demoralise",
+   "school": "veiling",
+   "utility_class": "social",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "demoralise: 111 hp, alert_state AGGRO throughout"
+  },
+  {
+   "id": "frenzy",
+   "school": "veiling",
+   "utility_class": "social",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "HP_DAMAGE_ONLY",
+   "observed": "frenzy: 111 hp"
+  },
+  {
+   "id": "false_face",
+   "school": "veiling",
+   "utility_class": "social",
+   "declared_changes_traversal": false,
+   "declared_changes_quest_resolution": true,
+   "observed_class": "UNREAD_TIMER",
+   "observed": "getStealthState() identical to baseline"
+  }
+ ],
+ "headline": "5 of 55 effects produce the mechanical consequence their own record describes; 1 is partial; 16 resolve only as HP damage equal to their magnitude; 33 are a row in effects_active that nothing in the simulation reads."
+}

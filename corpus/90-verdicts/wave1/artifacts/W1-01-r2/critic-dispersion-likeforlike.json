@@ -1,0 +1,673 @@
+{
+ "schema": "critic/w1-01-r2-dispersion@1",
+ "measured_at": "2026-08-06T20:42:55.052Z",
+ "grid": "4x4",
+ "populations_note": "ours = reports/region-shots (117, 13 regions, 3 passes). morrowind = REF-A21-regions (39, 9 regions).",
+ "mean_L": {
+  "morrowind": {
+   "n": 39,
+   "mean": 35.7,
+   "sd": 14.6,
+   "min": 5.5,
+   "max": 70.1
+  },
+  "ours": {
+   "worst": {
+    "n": 39,
+    "mean": 30.5,
+    "sd": 8.1,
+    "min": 9.8,
+    "max": 47.1
+   },
+   "day": {
+    "n": 39,
+    "mean": 34.2,
+    "sd": 10.4,
+    "min": 10.5,
+    "max": 59.4
+   },
+   "night": {
+    "n": 39,
+    "mean": 5.5,
+    "sd": 3.8,
+    "min": 1.2,
+    "max": 15.1
+   }
+  }
+ },
+ "designs": {
+  "raw": {
+   "ours_pooled": {
+    "regions": 13,
+    "images": 117,
+    "loo": 0.4359,
+    "chance": 0.0769,
+    "inter": 64.58,
+    "intra": 64.25,
+    "fisher": 1.005,
+    "closest": [
+     {
+      "a": "marauders-coast",
+      "b": "stone-forest",
+      "d": 25.1
+     },
+     {
+      "a": "blackwood",
+      "b": "deep-marshes",
+      "d": 28.9
+     },
+     {
+      "a": "marauders-coast",
+      "b": "salt-hills",
+      "d": 32.1
+     },
+     {
+      "a": "salt-hills",
+      "b": "thornmarsh",
+      "d": 32.2
+     },
+     {
+      "a": "marauders-coast",
+      "b": "thornmarsh",
+      "d": 32.3
+     }
+    ],
+    "confusions": 66
+   },
+   "ours_day": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.7436,
+    "chance": 0.0769,
+    "inter": 99.95,
+    "intra": 32.24,
+    "fisher": 3.1,
+    "closest": [
+     {
+      "a": "stone-wastes",
+      "b": "valus-ridge",
+      "d": 36.9
+     },
+     {
+      "a": "marauders-coast",
+      "b": "stone-forest",
+      "d": 39.8
+     },
+     {
+      "a": "salt-hills",
+      "b": "thornmarsh",
+      "d": 47.8
+     },
+     {
+      "a": "eastern-rootlands",
+      "b": "salt-hills",
+      "d": 48.2
+     },
+     {
+      "a": "thornmarsh",
+      "b": "valus-ridge",
+      "d": 50.4
+     }
+    ],
+    "confusions": 10
+   },
+   "ours_night": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.3333,
+    "chance": 0.0769,
+    "inter": 33.63,
+    "intra": 16.92,
+    "fisher": 1.987,
+    "closest": [
+     {
+      "a": "crimson-coast",
+      "b": "western-rootlands",
+      "d": 6.8
+     },
+     {
+      "a": "clay-moor",
+      "b": "crimson-coast",
+      "d": 11.4
+     },
+     {
+      "a": "clay-moor",
+      "b": "western-rootlands",
+      "d": 12.5
+     },
+     {
+      "a": "blackwood",
+      "b": "crimson-coast",
+      "d": 13.1
+     },
+     {
+      "a": "eastern-rootlands",
+      "b": "marauders-coast",
+      "d": 13.7
+     }
+    ],
+    "confusions": 26
+   },
+   "ours_worst": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.8205,
+    "chance": 0.0769,
+    "inter": 85.53,
+    "intra": 24.21,
+    "fisher": 3.533,
+    "closest": [
+     {
+      "a": "blackwood",
+      "b": "deep-marshes",
+      "d": 27.5
+     },
+     {
+      "a": "eastern-rootlands",
+      "b": "salt-hills",
+      "d": 38
+     },
+     {
+      "a": "thornmarsh",
+      "b": "valus-ridge",
+      "d": 38.8
+     },
+     {
+      "a": "salt-hills",
+      "b": "western-rootlands",
+      "d": 41.6
+     },
+     {
+      "a": "salt-hills",
+      "b": "thornmarsh",
+      "d": 44.9
+     }
+    ],
+    "confusions": 7
+   },
+   "morrowind": {
+    "regions": 9,
+    "images": 39,
+    "loo": 0.2564,
+    "chance": 0.1111,
+    "inter": 86.09,
+    "intra": 60.74,
+    "fisher": 1.417,
+    "closest": [
+     {
+      "a": "ashlands",
+      "b": "red_mountain",
+      "d": 34.2
+     },
+     {
+      "a": "bitter_coast",
+      "b": "grazelands",
+      "d": 36.3
+     },
+     {
+      "a": "sheogorad",
+      "b": "west_gash",
+      "d": 40.4
+     },
+     {
+      "a": "azuras_coast",
+      "b": "sheogorad",
+      "d": 45.6
+     },
+     {
+      "a": "grazelands",
+      "b": "sheogorad",
+      "d": 47.7
+     }
+    ],
+    "confusions": 29
+   },
+   "matched_ours_day": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 3.087,
+    "fisher_sd": 0.322,
+    "loo_mean": 0.775,
+    "loo_sd": 0.075,
+    "chance": 0.1111
+   },
+   "matched_ours_pooled": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 1.536,
+    "fisher_sd": 0.312,
+    "loo_mean": 0.359,
+    "loo_sd": 0.125,
+    "chance": 0.1111
+   },
+   "matched_morrowind": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 1.614,
+    "fisher_sd": 0.113,
+    "loo_mean": 0.242,
+    "loo_sd": 0.062,
+    "chance": 0.1111
+   }
+  },
+  "lnorm": {
+   "ours_pooled": {
+    "regions": 13,
+    "images": 117,
+    "loo": 0.4872,
+    "chance": 0.0769,
+    "inter": 78.86,
+    "intra": 60.72,
+    "fisher": 1.299,
+    "closest": [
+     {
+      "a": "blackwood",
+      "b": "deep-marshes",
+      "d": 29.6
+     },
+     {
+      "a": "blackwood",
+      "b": "eastern-rootlands",
+      "d": 37.8
+     },
+     {
+      "a": "blackwood",
+      "b": "thornmarsh",
+      "d": 38
+     },
+     {
+      "a": "marauders-coast",
+      "b": "valus-ridge",
+      "d": 38.9
+     },
+     {
+      "a": "blackwood",
+      "b": "salt-hills",
+      "d": 42.7
+     }
+    ],
+    "confusions": 60
+   },
+   "ours_day": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.6923,
+    "chance": 0.0769,
+    "inter": 110.26,
+    "intra": 45.59,
+    "fisher": 2.418,
+    "closest": [
+     {
+      "a": "blackwood",
+      "b": "deep-marshes",
+      "d": 44.3
+     },
+     {
+      "a": "salt-hills",
+      "b": "valus-ridge",
+      "d": 44.6
+     },
+     {
+      "a": "blackwood",
+      "b": "eastern-rootlands",
+      "d": 45.5
+     },
+     {
+      "a": "blackwood",
+      "b": "thornmarsh",
+      "d": 49.2
+     },
+     {
+      "a": "deep-marshes",
+      "b": "eastern-rootlands",
+      "d": 52.7
+     }
+    ],
+    "confusions": 12
+   },
+   "ours_night": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.2564,
+    "chance": 0.0769,
+    "inter": 74.91,
+    "intra": 40.86,
+    "fisher": 1.833,
+    "closest": [
+     {
+      "a": "crimson-coast",
+      "b": "western-rootlands",
+      "d": 16.1
+     },
+     {
+      "a": "clay-moor",
+      "b": "crimson-coast",
+      "d": 23.4
+     },
+     {
+      "a": "blackwood",
+      "b": "crimson-coast",
+      "d": 24.6
+     },
+     {
+      "a": "blackwood",
+      "b": "clay-moor",
+      "d": 25
+     },
+     {
+      "a": "eastern-rootlands",
+      "b": "thornmarsh",
+      "d": 27.3
+     }
+    ],
+    "confusions": 29
+   },
+   "ours_worst": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.6667,
+    "chance": 0.0769,
+    "inter": 99.25,
+    "intra": 41.63,
+    "fisher": 2.384,
+    "closest": [
+     {
+      "a": "blackwood",
+      "b": "deep-marshes",
+      "d": 33.2
+     },
+     {
+      "a": "eastern-rootlands",
+      "b": "salt-hills",
+      "d": 42.9
+     },
+     {
+      "a": "crimson-coast",
+      "b": "thornmarsh",
+      "d": 46.9
+     },
+     {
+      "a": "salt-hills",
+      "b": "thornmarsh",
+      "d": 48.4
+     },
+     {
+      "a": "blackwood",
+      "b": "crimson-coast",
+      "d": 54.1
+     }
+    ],
+    "confusions": 13
+   },
+   "morrowind": {
+    "regions": 9,
+    "images": 39,
+    "loo": 0.1795,
+    "chance": 0.1111,
+    "inter": 53.25,
+    "intra": 58.09,
+    "fisher": 0.917,
+    "closest": [
+     {
+      "a": "ascadian_isles",
+      "b": "sheogorad",
+      "d": 26
+     },
+     {
+      "a": "grazelands",
+      "b": "sheogorad",
+      "d": 31.5
+     },
+     {
+      "a": "ascadian_isles",
+      "b": "molag_amur",
+      "d": 36.5
+     },
+     {
+      "a": "sheogorad",
+      "b": "west_gash",
+      "d": 37.3
+     },
+     {
+      "a": "molag_amur",
+      "b": "sheogorad",
+      "d": 38.3
+     }
+    ],
+    "confusions": 32
+   },
+   "matched_ours_day": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 2.492,
+    "fisher_sd": 0.267,
+    "loo_mean": 0.721,
+    "loo_sd": 0.07,
+    "chance": 0.1111
+   },
+   "matched_ours_pooled": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 1.806,
+    "fisher_sd": 0.244,
+    "loo_mean": 0.43,
+    "loo_sd": 0.107,
+    "chance": 0.1111
+   },
+   "matched_morrowind": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 1.118,
+    "fisher_sd": 0.086,
+    "loo_mean": 0.147,
+    "loo_sd": 0.052,
+    "chance": 0.1111
+   }
+  },
+  "chrom": {
+   "ours_pooled": {
+    "regions": 13,
+    "images": 117,
+    "loo": 0.4957,
+    "chance": 0.0769,
+    "inter": 45.53,
+    "intra": 27.61,
+    "fisher": 1.649,
+    "closest": [
+     {
+      "a": "deep-marshes",
+      "b": "stone-forest",
+      "d": 8.2
+     },
+     {
+      "a": "stone-wastes",
+      "b": "valus-ridge",
+      "d": 15.2
+     },
+     {
+      "a": "salt-hills",
+      "b": "stone-wastes",
+      "d": 15.3
+     },
+     {
+      "a": "stone-wastes",
+      "b": "thornmarsh",
+      "d": 15.8
+     },
+     {
+      "a": "blackwood",
+      "b": "stone-forest",
+      "d": 18.7
+     }
+    ],
+    "confusions": 59
+   },
+   "ours_day": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.7436,
+    "chance": 0.0769,
+    "inter": 71.68,
+    "intra": 19.08,
+    "fisher": 3.756,
+    "closest": [
+     {
+      "a": "blackwood",
+      "b": "marauders-coast",
+      "d": 22.7
+     },
+     {
+      "a": "stone-wastes",
+      "b": "thornmarsh",
+      "d": 23
+     },
+     {
+      "a": "deep-marshes",
+      "b": "stone-forest",
+      "d": 23.5
+     },
+     {
+      "a": "marauders-coast",
+      "b": "stone-forest",
+      "d": 24.5
+     },
+     {
+      "a": "stone-wastes",
+      "b": "valus-ridge",
+      "d": 25.4
+     }
+    ],
+    "confusions": 10
+   },
+   "ours_night": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.4615,
+    "chance": 0.0769,
+    "inter": 16.71,
+    "intra": 6.18,
+    "fisher": 2.705,
+    "closest": [
+     {
+      "a": "crimson-coast",
+      "b": "stone-forest",
+      "d": 3.8
+     },
+     {
+      "a": "eastern-rootlands",
+      "b": "salt-hills",
+      "d": 4.2
+     },
+     {
+      "a": "eastern-rootlands",
+      "b": "western-rootlands",
+      "d": 4.8
+     },
+     {
+      "a": "salt-hills",
+      "b": "western-rootlands",
+      "d": 4.8
+     },
+     {
+      "a": "marauders-coast",
+      "b": "western-rootlands",
+      "d": 4.9
+     }
+    ],
+    "confusions": 21
+   },
+   "ours_worst": {
+    "regions": 13,
+    "images": 39,
+    "loo": 0.9231,
+    "chance": 0.0769,
+    "inter": 59.99,
+    "intra": 10.24,
+    "fisher": 5.856,
+    "closest": [
+     {
+      "a": "blackwood",
+      "b": "deep-marshes",
+      "d": 18.6
+     },
+     {
+      "a": "stone-wastes",
+      "b": "valus-ridge",
+      "d": 21
+     },
+     {
+      "a": "deep-marshes",
+      "b": "stone-forest",
+      "d": 21.1
+     },
+     {
+      "a": "stone-wastes",
+      "b": "thornmarsh",
+      "d": 21.4
+     },
+     {
+      "a": "salt-hills",
+      "b": "western-rootlands",
+      "d": 26.3
+     }
+    ],
+    "confusions": 3
+   },
+   "morrowind": {
+    "regions": 9,
+    "images": 39,
+    "loo": 0.2821,
+    "chance": 0.1111,
+    "inter": 38.12,
+    "intra": 30.04,
+    "fisher": 1.269,
+    "closest": [
+     {
+      "a": "bitter_coast",
+      "b": "sheogorad",
+      "d": 13.1
+     },
+     {
+      "a": "ascadian_isles",
+      "b": "bitter_coast",
+      "d": 16.2
+     },
+     {
+      "a": "ashlands",
+      "b": "red_mountain",
+      "d": 17.7
+     },
+     {
+      "a": "grazelands",
+      "b": "west_gash",
+      "d": 18
+     },
+     {
+      "a": "ascadian_isles",
+      "b": "sheogorad",
+      "d": 19.2
+     }
+    ],
+    "confusions": 28
+   },
+   "matched_ours_day": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 3.634,
+    "fisher_sd": 0.33,
+    "loo_mean": 0.776,
+    "loo_sd": 0.069,
+    "chance": 0.1111
+   },
+   "matched_ours_pooled": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 2.186,
+    "fisher_sd": 0.439,
+    "loo_mean": 0.506,
+    "loo_sd": 0.115,
+    "chance": 0.1111
+   },
+   "matched_morrowind": {
+    "design": "9 regions x 3 images, 200 random draws",
+    "fisher_mean": 1.574,
+    "fisher_sd": 0.208,
+    "loo_mean": 0.262,
+    "loo_sd": 0.06,
+    "chance": 0.1111
+   }
+  }
+ }
+}

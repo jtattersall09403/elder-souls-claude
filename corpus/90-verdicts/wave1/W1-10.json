@@ -1,0 +1,1117 @@
+{
+ "schema_version": 1,
+ "piece_id": "W1-10",
+ "piece_title": "Weapon movesets and the answer matrix",
+ "subsystem_paths": [
+  "weapon.moveset.schema",
+  "weapon.moveset.slots",
+  "weapon.moveset.answers",
+  "weapon.class.taxonomy",
+  "weapon.class.reach",
+  "weapon.class.differentiation",
+  "weapon.identity.withinclass",
+  "weapon.animation.reuse",
+  "weapon.charge.heavy",
+  "weapon.stance.twohand",
+  "weapon.shield.taxonomy",
+  "weapon.offhand.config",
+  "weapon.context.running",
+  "weapon.context.rolling",
+  "weapon.context.backstep",
+  "weapon.context.aerial",
+  "weapon.feel.hitstop",
+  "weapon.feel.material",
+  "weapon.feel.mass",
+  "weapon.feel.whiff",
+  "combat.weapon.identity",
+  "combat.attack.charge"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-10-weapons-9c41",
+  "role": "critic.weapons",
+  "started_at": "2026-08-06T19:55:00Z",
+  "finished_at": "2026-08-06T21:20:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": false
+ },
+ "build": {
+  "commit_sha": "65275dc",
+  "branch": "main",
+  "harness_commands": [
+   {
+    "cmd": "node tools/harness/smoke.mjs",
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10a.mjs",
+    "seed": 1337,
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10b.mjs",
+    "seed": 1337,
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10c.mjs",
+    "seed": 1337,
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10d.mjs",
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10e.mjs",
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10f.mjs",
+    "seed": "1337,1,2,99,424242",
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10g.mjs",
+    "seed": 1337,
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10-static.mjs",
+    "exit": 0
+   },
+   {
+    "cmd": "node tools/harness/critic-w1-10-blind.mjs",
+    "seed": 20260806,
+    "exit": 0
+   }
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "Declared before any citation. This role judges slot grammar, clip identity, frame data, root tracks and hitbox paths. No screenshot is cited and no fidelity or art-direction reference is invoked, so ARBITRATION §4's cross-axis prohibition cannot be triggered."
+ },
+ "reference_items": [
+  {
+   "id": "RI-WPN01",
+   "path": "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md",
+   "side": "souls",
+   "kind": "structure",
+   "native_scale": "0-100 weighted (M1 20 / M2 25 / M3 15 / M4 15 / M5 15 / M6 10); >=88 meets the bar, 65-87 below bar, <65 loses outright",
+   "native_score": 32,
+   "native_max": 100,
+   "native_verdict": "loses outright",
+   "score_0_10": 2,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "87/87 schema-valid; median mandatory slots present = 25",
+     "threshold": "all 25 mandatory, schema-valid, median >= 25",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "Recomputed with ajv against corpus/12-weapons/moveset.schema.json as amended by AMENDMENT-W1-10-01. The declaration is complete."
+    },
+    {
+     "id": "M2",
+     "result": "fail",
+     "value": "0 of 87 weapons reachable; 4 distinct attack anims per equippable weapon",
+     "threshold": "every slot reachable, correct clip, correct frames",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json"
+     ],
+     "note": "setLoadout() rejects all 87 roster ids: 'no moveset <id>. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword'. Of the 25 mandatory slots, 4 are reachable in the live sim and 21 are not."
+    },
+    {
+     "id": "M3",
+     "result": "fail",
+     "value": "distinct_anim = 4 observed (31 declared); anim(roll.r1) == anim(r1.1) on every equippable weapon",
+     "threshold": ">= 18 distinct clips per weapon; no contextual slot aliased to r1.1",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json"
+     ],
+     "note": "Both named hard-fail clauses fire. Statically over the declared data the same check passes at 31 clips and 0 aliases, which is why the item requires the trace."
+    },
+    {
+     "id": "M4",
+     "result": "partial",
+     "value": "monotone lerp confirmed over 7 hold points, hyperarmour at ceil(max/2), single stamina deduction, over-hold clamps to full",
+     "threshold": "monotone lerp, correct HA onset, one deduction, uncancellable",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json"
+     ],
+     "note": "Correct as declared. Unverifiable in play: r2.charged is not a live slot — holding heavy produces the same r2 as tapping it (probeB)."
+    },
+    {
+     "id": "M5",
+     "result": "fail",
+     "value": "all 10 archetypes have declared answering slots; 0 of them reachable; no RI-AI07 placement dump exists to join against",
+     "threshold": "every archetype answered before it appears; >= 9 distinct verbs",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeG-offhand-answers.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "guardbreak, the TURTLE answer RI-AI05 §7 requires, plays the standing light attack. bow.* is unequippable, so A5 RANGED has no answer in play. Distinct live verbs across the entire kit: 4 per weapon."
+    },
+    {
+     "id": "M6",
+     "result": "fail",
+     "value": 0.5357,
+     "threshold": "agreement == 1.00",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+     ],
+     "note": "Declared anim id matches observed on 0 of 14 rows. R2 active/recovery disagrees with game/data/combat/frames.json (RI-CMB02 §B) on 6 of 7 spine classes and 46 of 47 weapons in them."
+    },
+    {
+     "id": "M7",
+     "result": "pass",
+     "value": "identical across seeds 1337/1/2/99/424242",
+     "threshold": "no variance",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+     ]
+    }
+   ],
+   "hard_fails": [
+    "M3: anim(roll.r1) == anim(r1.1), anim(run.r1) == anim(r1.1) on every weapon a player can equip",
+    "M3: distinct_anim = 4 < 18 on every weapon a player can equip",
+    "M6: declared-vs-observed agreement 0.5357 < 1.00"
+   ],
+   "how_we_lose_hits": [
+    "#1 Two slots and a multiplier — game/data/combat/spine/*.json declares exactly light, heavy, two_handed{light,heavy}",
+    "#2 The slot table exists in JSON and nothing reads it — the 87 files are unreachable from the running game",
+    "#4 guardbreak never built — the input produces the standing light attack",
+    "#5 guard.counter folded into attack-after-block — no block_success event exists and the press yields r1.1",
+    "#6 The bow is priced and never built — bow_* is unequippable",
+    "#7 Weapon arts — art.1 resolves to the two-handed heavy",
+    "#10 Plunging attacks omitted — the plunge input yields the standard r2"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+   ],
+   "why_not_ten": "M2, M3 and M6 are hard fails measured from live traces: no weapon in the 87-weapon roster can be equipped, the movesets a player can actually reach have four attacks, and the declared clip id disagrees with the observed one on 14 of 14 rows.",
+   "path_to_ten": "Route createPlayer() through MovesetLibrary so setLoadout({weapon:'<roster id>'}) accepts all 87; emit player.anim_slot in the frame record; re-run RI-WPN01 M2 to a full weapons x 25 reachability grid at 100% ok, and M6 to agreement 1.00 with the R2 active/recovery split restored to game/data/combat/frames.json.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN02",
+   "path": "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M2a 25 / M2b 15 / M3 20 / M4 15 / M5 10 / M6 15); >=85 meets the bar, 62-84 below bar, <62 loses outright",
+   "native_score": 48,
+   "native_max": 100,
+   "native_verdict": "loses outright",
+   "score_0_10": 3,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "unmeasurable",
+     "value": "7 of 15 classes exist in the live sim; the standard class probe cannot be run for CSW TSW FST MCE WHP CGS GHM BOW",
+     "threshold": "15 classes x 5 sub-probes = 75 traces",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json"
+     ]
+    },
+    {
+     "id": "M2a",
+     "result": "pass",
+     "value": 1.629,
+     "threshold": "D_min >= 1.6 (hard fail < 1.0)",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "Closest pair AXE-MCE, exactly the pair RI-WPN02 'How we lose' #9 predicts. D_med 4.03, 15 of 15 classes clean at >= 1.6. Computed from the declared class baselines because the trace source does not exist."
+    },
+    {
+     "id": "M2b",
+     "result": "fail",
+     "value": 0.8999,
+     "threshold": "Dg_min >= 1.0 (hard fail < 0.5)",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "Closest grammar pair AXE-HLB. Above the 0.5 hard-fail bar, below the 1.0 pass bar. D4 (chain length) contributes almost nothing because 12 of 15 classes are chain-3 (see M3)."
+    },
+    {
+     "id": "M3",
+     "result": "fail",
+     "value": "3 of 15 classes fail conformance",
+     "threshold": "<= 2 classes failing",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "FST chain 3 (requires 5 — r1.3 chains to a non-existent r1.4 and r1.5 is orphaned on all four FST weapons), CGS chain 3 (requires 2), GHM chain 3 (requires 2). Exactly the cells 'How we lose' #8 names."
+    },
+    {
+     "id": "M4",
+     "result": "pass",
+     "value": "arc spread 332 deg, reach spread 2.70 m, R1 startup spread 46 f@60, 8 of 14 classes with 1h R2 hyperarmour, 9 distinct r1.1 shapes",
+     "threshold": "all nine derived rows hold",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "fail",
+     "value": "8 of 87 r1.1 rows violate the shape/arc rule; 605 of 2593 across all slots",
+     "threshold": "every declared shape matches its arc",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "All 5 UGS weapons declare slash_v at 188-217 deg with root 1.30-1.48 m (RI-WPN02 §B's own UGS row is the origin and the builder reported it). Two SSW at 87.9/88.8 deg and tsw_duelling_pick's thrust at 21.4 deg are NOT in the corpus — the deviation generator pushed them across the boundary."
+    },
+    {
+     "id": "M6",
+     "result": "unmeasurable",
+     "value": "the wrong-footing probe needs 15 equippable class baselines; 7 exist",
+     "threshold": "CV >= 0.35 hits-landed, >= 0.40 damage-taken",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json"
+     ]
+    },
+    {
+     "id": "M7",
+     "result": "pass",
+     "value": "identical across 5 seeds",
+     "threshold": "footers match",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [
+    "#8 Chain length uniform at 3 — FST's 5 and CGS/GHM's 2 have all collapsed to 3, and the FST chain graph is broken outright",
+    "#9 AXE-MCE is the closest pair, as the item predicted"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/blind1-pack.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json"
+   ],
+   "why_not_ten": "Dg_min 0.8999 is below the 1.0 pass bar; matrix conformance fails on 3 of 15 classes (the chain-length column); 8 r1.1 rows are mislabelled shape-vs-arc; and M1/M6 are unmeasurable because 8 of 15 classes do not exist in the running game.",
+   "path_to_ten": "Repair the chain graph so FST is 5, CGS and GHM are 2 (add r1.4 to FST or repoint r1.3 at r1.5; null CGS/GHM r1.2.chains_to), which also restores D4 as a live grammar dimension and lifts Dg_min; clamp the generator so no deviation moves a slot across its shape/arc band; then re-run M1 and M6 as live 15-class trace probes once setLoadout accepts the roster.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN03",
+   "path": "corpus/12-weapons/RI-WPN03-within-class-subtlety.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 25 / M2 20 / M3 25 / M4 15 / M5 5 / M6 10); >=85 meets the bar, 60-84 below bar, <60 loses outright",
+   "native_score": 78,
+   "native_max": 100,
+   "native_verdict": "below bar — named remedy required",
+   "score_0_10": 6,
+   "measured": "partial",
+   "justification": "M1, M2 and M6 all pass on artifacts I produced: static-census.json (ARI 0.4547 recomputed independently of tools/weapons/measure.mjs, 0 VEC collisions, 0 clips above SHARE 4, UNQ min 1), probeD-integrity-impact.json (0 forged-unique pairs out of 1133 clips evaluated on the real rig), probeE-motion-shape.json (1133 clips resolve to 331 distinct normalised path shapes at 10% tolerance), and blind2-pack.json (grouping exactly correct with five nameable within-group differences).",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "ARI 0.4547, C 948 over S_total 2085; 0 VEC collisions; max SHARE 4; UNQ min 1 mean 3.70",
+     "threshold": "ARI >= 0.26, no VEC collision, no SHARE > 4, every weapon UNQ >= 1",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "Clip-share histogram 1:322 2:214 3:313 4:99 5+:0 — neither piled at 1 (fragmentation) nor at 5+ (three animations). Recomputed by the critic; agrees with the builder's figure to 4 dp."
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "0 forged-unique pairs of 1133 clips",
+     "threshold": "<= 10% of C forged",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeE-motion-shape.json"
+     ],
+     "note": "Escalated past the item's own tolerance: after normalising every clip for duration AND amplitude, 1133 ids still resolve to 331 distinct path shapes and 127 distinct speed profiles at 10%. The clip ids are not one curve rescaled. This check could have failed and did not."
+    },
+    {
+     "id": "M3",
+     "result": "marginal",
+     "value": "B_min 1.4385, W_min 0.1754, W_med 0.5386, W_max 0.9942, SEP 1.4469",
+     "threshold": "W_min >= 0.20, W_med in [0.35,1.00], SEP >= 1.4",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "SEP and W_med pass. W_min 0.1754 is below the 0.20 pass bar (ghm_kings_ruin / ghm_pile_driver) though well above the 0.05 hard-fail bar. Per-class W_med all inside [0.30,1.15]. Computed in F87 over the declared 12-vector; the trace source does not exist."
+    },
+    {
+     "id": "M4",
+     "result": "pass",
+     "value": "0 of 72 non-baseline weapons with DEV_id == 0; 0 with DEV < 4",
+     "threshold": ">= 85% with DEV_id >= 1",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "The 'deviate only where it is cheap' fake is absent: every weapon deviates on the five-slot identity list."
+    },
+    {
+     "id": "M5",
+     "result": "fail",
+     "value": "3 classes with 2 signature weapons (TSW, CGS, GHM), 12 with 1, 0 with zero",
+     "threshold": "every class has 1 or 2",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ],
+     "note": "Within band. Recorded as a fail only in that RI-WPN03 §A's census specifies exactly which classes carry two (SSW and GSW), and the build's second signatures landed in TSW, CGS and GHM instead while SSW and GSW have one each. CLIPS(k)/N(k) is 5.8-16.6 everywhere, far above 1.6."
+    },
+    {
+     "id": "M6",
+     "result": "pass",
+     "value": "grouping 12/12 correct (GHM/SPR/TSW); 5 within-group differences named against a floor of 3",
+     "threshold": "correct grouping AND >= 3 of 6 within-group differences nameable",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/blind2-pack.json"
+     ],
+     "note": "The single most informative result available here, and it passes — on the declared layer."
+    },
+    {
+     "id": "M7",
+     "result": "pass",
+     "value": "the F87 census is a pure function of the data and is byte-identical across runs",
+     "threshold": "footers match",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [
+    "#7 partially — the smallest classes are not the weakest here, but W_min is set inside GHM, one of the five-weapon classes"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeE-motion-shape.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/blind2-pack.json"
+   ],
+   "why_not_ten": "W_min 0.1754 sits below the 0.20 pass bar (ghm_kings_ruin vs ghm_pile_driver), the signature-weapon distribution does not match §A's named classes, and every number in this item is measured on a declared layer no player can reach — M3 and M6 are specified against live traces and were run against rig-evaluated data instead.",
+   "path_to_ten": "Push the GHM pair apart on one grammar dimension (give ghm_kings_ruin's r1.3 a different shape or a >= 25 deg arc delta) to lift W_min above 0.20; move one signature weapon from CGS or GHM into SSW and GSW to match §A; then re-run M3 and M6 as live 87-weapon trace probes once the roster is equippable.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN04",
+   "path": "corpus/12-weapons/RI-WPN04-contextual-attacks.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 30 / M2 25 / M3 10 / M4 10 / M5 15 / M6 10); >=88 meets the bar, 66-87 below bar, <66 loses outright",
+   "native_score": 0,
+   "native_max": 100,
+   "native_verdict": "loses outright",
+   "score_0_10": 0,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "fail",
+     "value": 0.0,
+     "threshold": "CFS == 1.00",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json"
+     ],
+     "note": "CFS_live = 0.0000. 20 of 20 (weapon x contextual state) combinations, across all four weight tiers, play the standing r1.1 clip byte-identically. T1 fails on every instance, so T2/T3/T4 are moot."
+    },
+    {
+     "id": "M2",
+     "result": "fail",
+     "value": "no `contextual` cell exists anywhere in the Wgrid",
+     "threshold": "windows exact to the frame, buffer 8 f@60, no multi-fire",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json"
+     ],
+     "note": "ROLL frames 1-43 produce nothing; 44-46 produce the standing light attack after the roll has ended. BACKSTEP: nothing until frame 34, then the standard attack. SPRINT and BLOCK: the standard attack from every frame. AIRBORNE: nothing until landing."
+    },
+    {
+     "id": "M3",
+     "result": "fail",
+     "value": "the Wgrid is byte-identical across dagger / straight-sword / axe / ultra-greatsword",
+     "threshold": "four tiers exact, OVERLOADED produces nothing, HEAVY capped at 32 f@60",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json"
+     ],
+     "note": "There is no window to vary, so it varies with nothing — including with equip load."
+    },
+    {
+     "id": "M4",
+     "result": "fail",
+     "value": "no jump attack exists on any frame of JUMP_RISE, JUMP_AIR or JUMP_LAND; the plunge input yields the standard r2",
+     "threshold": "no rising jump attack, plunge gated on 3.0 m and a target",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json"
+     ],
+     "note": "The 'no rising jump attack' clause passes vacuously; the aerial verbs do not exist at all."
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "situational superiority cannot be tested for slots that do not fire",
+     "threshold": "every slot strictly better on its own metric in >= 70% of trials",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "fail",
+     "value": "the §A derived table matches the declared data on 56 of 56 cells and the observed behaviour on 0",
+     "threshold": "100% agreement",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json"
+     ],
+     "note": "The arithmetic is perfect and describes attacks the game does not contain. This is the item's own distinction between the declaration and the observation, and it is the whole verdict in one line."
+    },
+    {
+     "id": "M7",
+     "result": "pass",
+     "value": "identical across 5 seeds",
+     "threshold": "M1 at five seeds",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+     ]
+    }
+   ],
+   "hard_fails": [
+    "M1: CFS = 0.00 < 1.00 — every contextual slot on every equippable weapon silently plays the standard light attack",
+    "M6: declared-vs-observed mismatch on every contextual cell",
+    "A contextual slot that is a damage multiplier on r1.1 with no separate animation"
+   ],
+   "how_we_lose_hits": [
+    "#1 attack(context) with a multiplier table — the default implementation, the user's stated concern, measured at CFS 0.00",
+    "#2 The backstep attack is never built",
+    "#4 inverted: the window is not the whole animation, there is no window at all",
+    "#8 Guard counter — no block_success event exists and the press after a block yields r1.1"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json"
+   ],
+   "why_not_ten": "CFS measured at 0.00 against a pass bar of exactly 1.00. Every contextual slot in the game plays the standing light attack; backstep, jumping and plunging attacks do not fire at all.",
+   "path_to_ten": "Dispatch attacks through MovesetLibrary.resolveSlot() in the live player controller so the state and frame window select the slot, and emit player.anim_slot in the frame record. Acceptance: probeC's Wgrid shows a `contextual` band exactly on RI-WPN04 §B's frames for all four equip-load tiers, and CFS_live == 1.00 over 87 weapons x 10 contextual slots x 2 stances.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN05",
+   "path": "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "hitstop grid conformance, material census, whiff arithmetic, ES-MASS/1 bands, and ILS >= 0.80",
+   "native_score": 55,
+   "native_max": 100,
+   "native_verdict": "below bar — named remedy required",
+   "score_0_10": 4,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "32 of 35 cells exactly match ES-HITSTOP/1; the 3 others are the deflection x1.5 correctly applied to a slash on stone",
+     "threshold": "35 cells exact",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json"
+     ],
+     "note": "Measured through H.weapons.impactFor, which is a data query and not a live hit; the live sim has no hitstop_f in the frame record and no impact event."
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "all 6 materials authored with multipliers, deflection deterministic on shape+poise_damage, MCE and GHM bypass",
+     "threshold": "every material declared, no dice",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json"
+     ]
+    },
+    {
+     "id": "M4",
+     "result": "unmeasurable",
+     "value": "whiff arithmetic needs total_on_hit vs total_on_whiff from a live hit; no impact event exists in the trace vocabulary",
+     "threshold": "total_on_hit == total_on_whiff + attacker_hitstop",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "fail",
+     "value": "7 of 14 classes outside the ES-MASS/1 peak-tip-speed band; WHP at 63.55 m/s against 18-26",
+     "threshold": "every class inside its tier band",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json"
+     ],
+     "note": "Anticipation fraction 0.409-0.569 across all 14, comfortably above every floor — but it is a smooth monotone function of weight tier rather than a per-clip property, which is what one anticipation parameter per tier looks like."
+    },
+    {
+     "id": "M6",
+     "result": "pass",
+     "value": 0.8286,
+     "threshold": "ILS >= 0.80 (hard fail < 0.40)",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json"
+     ],
+     "note": "Strict measure: a cell counts only if no other of the 35 has an identical (hitstop, shake, knockback) triple. The 6 collisions are light/flesh-vs-light/wood, light/metal-vs-light/shield and ranged/flesh-vs-ranged/wood, all of which §A's own table makes identical."
+    }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json"
+   ],
+   "why_not_ten": "Half the roster's swings move at the wrong speed: 7 of 14 classes fall outside RI-WPN05 §E's peak-tip-speed band and WHP is 2.4x its ceiling at 63.55 m/s. M4 is unmeasurable because the live trace carries no hitstop_f, no weapon_tip and no impact event, so the hitstop grid and ILS are both declarations rather than felt behaviour.",
+   "path_to_ten": "Give WHP's lash and the six other out-of-band classes a non-constant angular rate across the active window so peak tip speed lands inside the tier band (the same repair W1-09 applied to reduce a 615 deg straight-sword sweep to 268); add player.weapon_tip, player.hitstop_f and an `impact` event to the frame record; re-run M1/M4/M6 against a live hit.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN06",
+   "path": "corpus/12-weapons/RI-WPN06-two-handing-shields-parry.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 30 / M2 15 / M3 15 / M4 15 / M5 15 / M6 5 / M7 5); >=85 meets the bar, 60-84 below bar, <60 loses outright",
+   "native_score": 45,
+   "native_max": 100,
+   "native_verdict": "loses outright",
+   "score_0_10": 3,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "marginal",
+     "value": "declared TDV median 0.8333, min 0.5833, 0 weapons at TDV 0; observed TDV 2/12 on the 7 live classes",
+     "threshold": "median TDV >= 0.60; >= 2 exclusive slots per class; >= 4 classes change chain length",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json"
+     ],
+     "note": "Declared: passes on all three clauses (2 exclusive slots on every melee class, 4 classes change chain length with grip). Observed: only 2 of the 12 slots exist in either stance, so live TDV is 0.1667. The 50 weapons whose 2h.r2 chains to a 2h.r2.follow they do not declare mean the exclusive-slot count is partly a dangling reference."
+    },
+    {
+     "id": "M2",
+     "result": "fail",
+     "value": "1 of 3 mandatory offhand configurations implemented",
+     "threshold": ">= 3 configurations, each pair differing by >= 4 verbs",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeG-offhand-answers.json"
+     ],
+     "note": "Only O1 exists. setLoadout({offhand:...}) and setLoadout({left:...}) throw; there is no O2 dual-wield, so the off.r1.1/off.r1.2/off.r2 slots every one of the 87 movesets declares are unreachable. The three named loadout fixtures wpn-loadout-o1_sword_shield / o2_dual / o3_twohand do not exist."
+    },
+    {
+     "id": "M3",
+     "result": "pass",
+     "value": "STANCE_SWITCH state, clip stance_to_two_hand, f5-f41 = 36 f@60, refused during ATK_STARTUP and ATK_ACTIVE",
+     "threshold": "36 f@60, uncancellable, illegal from every listed state",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+     ],
+     "note": "Genuinely correct and genuinely not a multiplier — the one place two-handing is what the item asks for. Two-handing does play different clips (X_2h_r1, X_2h_r2), so it is not `if (twoHanded) damage *= 1.15`."
+    },
+    {
+     "id": "M4",
+     "result": "unmeasurable",
+     "value": "no player.block_angle_deg and no per-bearing block probe; guard angle cannot be measured",
+     "threshold": "every bearing x every shield class exact",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeG-offhand-answers.json"
+     ]
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "one shield id is equippable (marsh_oak_medium); setLoadout({shield:'greatshield'}) throws",
+     "threshold": "exactly the §D set can parry, with RI-CMB05's windows",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeG-offhand-answers.json"
+     ]
+    },
+    {
+     "id": "M6",
+     "result": "fail",
+     "value": "the shield.bash input plays the standing r1.1 clip; shield.charge does not exist",
+     "threshold": "frames exact, bash MV <= 0.40, charge greatshield-only",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json"
+     ]
+    },
+    {
+     "id": "M7",
+     "result": "unmeasurable",
+     "value": "O2 does not exist, so the dual-wield chain cannot be driven",
+     "threshold": "chain graph correct, no simultaneous hands, independent clips",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeG-offhand-answers.json"
+     ]
+    },
+    {
+     "id": "M8",
+     "result": "pass",
+     "value": "identical across 5 seeds",
+     "threshold": "footers match",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+     ]
+    }
+   ],
+   "hard_fails": [
+    "M2: fewer than three offhand configurations implemented (1 of 3)"
+   ],
+   "how_we_lose_hits": [
+    "#2 the 2h table authored in data and inherited by the runtime for all fourteen classes",
+    "#8 off.* slots unreachable — dual-wield is not implemented at all"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeG-offhand-answers.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+   ],
+   "why_not_ten": "Only one of the three mandatory offhand configurations exists; dual-wield and the off.* chain are unreachable, greatshields cannot be equipped so parry eligibility and guard angle are unmeasurable, and the declared TDV of 0.83 rests partly on 50 weapons whose 2h.r2 chains to a 2h.r2.follow slot they do not declare.",
+   "path_to_ten": "Implement O2 (dual) and O3 (offhand empty) in setLoadout and the shield taxonomy including a greatshield; add player.stance, player.offhand_kind, player.block_angle_deg and the block_success event; ship the three wpn-loadout-* fixtures; repair the 50 dangling 2h.r2 -> 2h.r2.follow edges. Acceptance: M2's verb sets differ by >= 4 in each direction, M4 exact at every bearing, and live TDV median >= 0.60 over 12 slots.",
+   "ten_by_wave": 2
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10a.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "87 setLoadout attempts against the live simulation; 0 accepted. The negative-evidence artifact for 'the roster does not reach the game'."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json",
+   "kind": "trace",
+   "produced_by": "node tools/harness/critic-w1-10b.mjs",
+   "seed": 1337,
+   "duration_s": 4.67,
+   "source": "ours",
+   "note": "7 weapons x 22 slot scripts driven in the live sim; per-slot player.anim and the phase census."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10c.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "The Wgrid, one weapon per weight tier x 5 enclosing states x every frame k, each a separate 200-frame run. WEAPON-CRITIC §3.4 artifact 2."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10d.mjs",
+   "source": "ours",
+   "note": "1133 clip tracks evaluated on the real rig; the 5x7 hitstop grid; ILS; the mass census; the charge ramp. WEAPON-CRITIC §8 artifact 4."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/probeE-motion-shape.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10e.mjs",
+   "source": "ours",
+   "note": "The second-order forgery check: normalised speed and path shapes clustered at three tolerances."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10f.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "AR-1 (rng draws, damage stdev, cancellation), the stance-switch commitment probe, RI-WPN01 M6 declared-vs-observed, determinism at 5 seeds."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/probeG-offhand-answers.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10g.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "Offhand configuration probe, scenario-fixture census, live distinct-verb count."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10-static.mjs",
+   "source": "ours",
+   "note": "The declared-data census recomputed by the critic: ARI, clip-share histogram, UNQ/DEV/DEV_id/SHARE/VEC, the 15x15 class distance matrix and its grammar-only twin, F87, TDV, matrix and contextual conformance. WEAPON-CRITIC §3.4 artifacts 1 and 3."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/blind1-pack.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10-blind.mjs",
+   "seed": 20260806,
+   "source": "ours",
+   "note": "RI-WPN02's three-trace blind pack, labels stripped."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/blind1-key.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10-blind.mjs",
+   "seed": 20260806,
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/blind2-pack.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10-blind.mjs",
+   "seed": 20260806,
+   "source": "ours",
+   "note": "RI-WPN03 M6's twelve-trace clustering pack, labels stripped."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10/blind2-key.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-10-blind.mjs",
+   "seed": 20260806,
+   "source": "ours"
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-WPN02",
+   "status": "done",
+   "question": "Three unlabelled behavioural traces from three classes, names, ids, class codes and every damage number stripped. Describe three different fighting styles.",
+   "pack_artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/blind1-pack.json"
+   ],
+   "assignment_seed": 20260806,
+   "blind_pick": "none",
+   "blind_rationale": "PICK: A=curved sword, B=halberd, C=mace — A: reach 1.75 m, 12-22 f startups, a four-link chain, arcs 120-183 deg with three 305-360 deg spin slots, no hyperarmour outside the charge — circle a crowd, sweep four times, never trade. B: reach 2.85 m, sweeps at 145-183 deg alternating with 19 deg thrusts, hyperarmour on the heavy and the guard counter, 0.85-1.15 m lunges on the thrusts — hold a lane, thrust from outside reach, and you may stand in a hit. C: reach 1.70 m, arcs all narrow at 28-105 deg, shapes almost entirely smash, lowest tip speeds, slowest per metre of reach — no arc and no reach, so its whole proposition is what happens at impact.",
+   "reveal": "A = csw_naga_sickle (CSW), B = hlb_garrison_bill (HLB), C = mce_bog_iron_mace (MCE)",
+   "picked": "reference",
+   "rerun_triggered": false,
+   "not_possible_reason": "This item's blind protocol is a discrimination test on our own artifacts (describe three styles / cluster twelve traces), not an A-vs-B ours-versus-reference pair, so blind_pick is recorded as 'none' and the actual pick is the first line of blind_rationale. Recorded before the reveal."
+  },
+  {
+   "ref_item": "RI-WPN03",
+   "status": "done",
+   "question": "Twelve unlabelled behavioural traces, four each from three classes. (a) Sort them into three groups. (b) Name a concrete behavioural difference for at least three of six within-group pairs. A correct grouping with no nameable within-group difference is a FAIL.",
+   "pack_artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/blind2-pack.json"
+   ],
+   "assignment_seed": 20260806,
+   "blind_pick": "none",
+   "blind_rationale": "PICK: {T3,T4,T5,T8} smash arc 36-129 r2-hyperarmour reach 2.15-2.44 | {T2,T9,T10,T11} thrust reach 3.10-3.28 r2-hyperarmour | {T1,T6,T7,T12} thrust reach 2.09-2.30 no r2-hyperarmour — Within-group differences named before reveal: T8's weapon-art is a 305 deg spin with a 1.55 m lunge where T3/T4/T5's arts are 48-85 deg smashes, so T8 is the only member with a crowd answer; T4's r1.3 keeps a 72.8 deg arc where T5's collapses to 36.2 deg, so T4 catches a sidestep T5 whiffs; T10's r2 lunges 2.27 m against T11's 1.22 m, making T10 the group's gap-closer; T6's r2 is a smash while every other member of its group thrusts, so T6 is the one that answers armour; T7 is 6-8 f faster on every slot than the rest of its group. Five differences against a floor of three.",
+   "reveal": "Grouping exactly correct: {T3,T4,T5,T8} = GHM, {T2,T9,T10,T11} = SPR, {T1,T6,T7,T12} = TSW",
+   "picked": "reference",
+   "rerun_triggered": false,
+   "not_possible_reason": "This item's blind protocol is a discrimination test on our own artifacts (describe three styles / cluster twelve traces), not an A-vs-B ours-versus-reference pair, so blind_pick is recorded as 'none' and the actual pick is the first line of blind_rationale. Recorded before the reveal."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "pass",
+     "note": "50 scripted identical swings; rng.draws delta during the attack window = 0 on every run. No draw is taken anywhere on the weapon path."
+    },
+    {
+     "id": "A2",
+     "result": "pass",
+     "note": "Damage stdev 0 across 50 identical swings. Recorded honestly: the arena_duel fixture placed no target inside reach, so 0 damage events were captured — the rng-draw evidence is what carries this check, not the stdev."
+    },
+    {
+     "id": "A5",
+     "result": "pass",
+     "note": "two_hand injected at frame 8 of ATK_STARTUP and frame 26 of ATK_ACTIVE changes nothing; roll injected during startup changes nothing. The attack completes at its full 24/10/40. No animation cancel."
+    },
+    {
+     "id": "A7",
+     "result": "pass",
+     "note": "No yaw applied during active or recovery in any of the 154 driven attacks in probeB."
+    },
+    {
+     "id": "AR1-weapons-a",
+     "result": "pass",
+     "note": "WEAPON-CRITIC §7: no damage roll, no probabilistic deflection (deflection is a pure function of shape, poise_damage and material), no chance-to-parry, no accuracy term anywhere in the weapon data or in any trace."
+    },
+    {
+     "id": "AR1-weapons-b",
+     "result": "pass",
+     "note": "WEAPON-CRITIC §7: the stance switch is refused from every attack phase and the charge cannot be cancelled — over-holding past charge_max clamps to full rather than aborting."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json"
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B4",
+     "result": "pass",
+     "note": "No procedural weapon generation and no randomised weapon stats: all 87 movesets are authored files and identical across 5 seeds."
+    },
+    {
+     "id": "B6",
+     "result": "pass",
+     "note": "No item-description lore vector in the weapon data. The `notes` field on each moveset is a build note, not player-facing text."
+    },
+    {
+     "id": "AR2-weapons",
+     "result": "pass",
+     "note": "WEAPON-CRITIC §7: no floating damage numbers were emitted in any of the 154 driven attacks; the material system's answer is delivered through hitstop, knockback and decal rather than through text."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 0,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "weights": {
+   "RI-WPN01": 1,
+   "RI-WPN02": 1,
+   "RI-WPN03": 1,
+   "RI-WPN04": 1,
+   "RI-WPN05": 1,
+   "RI-WPN06": 1
+  },
+  "band_label": "Absent in play — the moveset layer exists as data and is not reachable from the running game",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "hard_fail:RI-WPN01/M3",
+  "hard_fail:RI-WPN01/M6",
+  "hard_fail:RI-WPN04/M1",
+  "hard_fail:RI-WPN04/M6",
+  "hard_fail:RI-WPN06/M2",
+  "below_threshold"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-weapon-movesets-not-wired-to-the-runtime",
+  "subsystem_path": "weapon.moveset.slots",
+  "what": "The 87 authored movesets are unreachable from the running game. setLoadout() rejects all 87 roster ids with 'no moveset <id>. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword', and eight of the fifteen classes (CSW TSW FST MCE WHP CGS GHM BOW) have no live representation at all. What a player can press is game/data/combat/spine/*.json, which declares three slots — light, heavy, two_handed{light,heavy} — so every weapon in the game plays exactly four distinct animation ids. Measured consequences: CFS_live = 0.0000 with 20 of 20 (weapon x contextual state) combinations playing the standing r1.1 clip byte-identically; distinct_anim = 4 against RI-WPN01 M3's floor of 18; RI-WPN01 M6 declared-vs-observed agreement 0.5357 with the clip id — the field RI-WPN01 §B calls 'the load-bearing field of the whole weapons area' — matching on 0 of 14 rows.",
+  "why_it_matters": "Every weapon in the game is the same weapon: four attacks, and rolling, backstepping, sprinting, jumping and guard-countering all play the standing light attack, which is exactly the failure the user named when they asked for this piece.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+  ],
+  "severity": "blocking",
+  "remedy": {
+   "action": "Make MovesetLibrary the runtime's move source instead of a harness-only reader. (1) In game/src/combat/system.js createPlayer(), build the move table from game/data/combat/movesets/*.json via MovesetLibrary rather than from game/data/combat/spine/*.json, so setLoadout({weapon:'ssw_garrison_sword'}) resolves. (2) In game/src/combat/player.js, dispatch the attack buttons through MovesetLibrary.resolveSlot(weaponId, button, ctx) with ctx carrying state, state_frame, roll_tier, stance, offhand and descending/fall_height, and delete the code path that falls through to the standing light attack when no window matches — a missed window must produce nothing, per RI-WPN04 §B rule 2. (3) Add player.anim_slot, player.hitstop_f and player.weapon_tip to the frame record and a block_success event to the trace vocabulary. (4) Restore the R2 active/recovery split of the seven spine classes to game/data/combat/frames.json, which RI-WPN02 §B's authority note makes binding. (5) Repair the 82 weapons whose chains_to points at a slot they do not declare (50x 2h.r2 -> 2h.r2.follow, 32x r2 -> r2.follow, 4x r1.3 -> r1.4).",
+   "targets": [
+    "game/src/combat/system.js",
+    "game/src/combat/player.js",
+    "game/src/combat/moveset.js",
+    "game/src/combat/trace.js",
+    "game/data/combat/movesets/*.json",
+    "game/data/states/ (add wpn-dummy-arena, wpn-material-range, wpn-loadout-o1_sword_shield, wpn-loadout-o2_dual, wpn-loadout-o3_twohand)"
+   ],
+   "acceptance": "node tools/harness/critic-w1-10a.mjs reports equipped_ok 87/87 and classes_with_zero_equippable []; node tools/harness/critic-w1-10c.mjs reports CFS_live == 1.0000 with a `contextual` band exactly on RI-WPN04 §B's frame windows for all four equip-load tiers; node tools/harness/critic-w1-10f.mjs reports M6 agreement == 1.0000 including the anim id; and the observed distinct_anim per weapon is >= 18.",
+   "ref_item": "RI-WPN04",
+   "estimated_size": "L"
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "82 of 87 weapons have a broken chain graph: a chains_to pointing at a slot the weapon does not declare (50x '2h.r2 -> 2h.r2.follow', 32x 'r2 -> r2.follow', 4x 'r1.3 -> r1.4'). RI-WPN01 §B makes chains_to mandatory precisely so the chain graph is explicit and measurable.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+   ],
+   "subsystem_path": "weapon.moveset.slots"
+  },
+  {
+   "what": "All four FST weapons declare an r1.5 and a 2h.r1.4 that nothing chains into, so FST's published five-link chain — one of only three cells making chain length a real fingerprint dimension — does not exist even in the declaration.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/static-census.json"
+   ],
+   "subsystem_path": "weapon.class.differentiation"
+  },
+  {
+   "what": "46 of the 47 weapons in the seven spine classes carry an R2 active/recovery split that contradicts game/data/combat/frames.json (RI-CMB02 §B). Totals match; the split does not. e.g. UGS r2 104/21/127 in the roster against 104/24/124 in the authority.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+   ],
+   "subsystem_path": "weapon.moveset.schema"
+  },
+  {
+   "what": "Peak tip speed is outside RI-WPN05 §E's band on 7 of 14 classes, with WHP at 63.55 m/s against a band of 18-26 — the same class of defect W1-09's critic found and had repaired.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeD-integrity-impact.json"
+   ],
+   "subsystem_path": "weapon.feel.mass"
+  },
+  {
+   "what": "The clip layer survived a harder check than the item asks for. After normalising all 1133 clips for duration and amplitude they still resolve to 331 distinct path shapes and 127 distinct speed profiles at a 10% tolerance — the animation data is genuinely many animations, not one curve rescaled.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeE-motion-shape.json"
+   ],
+   "subsystem_path": "weapon.animation.reuse"
+  },
+  {
+   "what": "The build does not boot at HEAD: game/data/index.json lists dialogue/topics/thorn.json (declared 1252 bytes, sha b8e7f92b08d908a7) and the file is absent, so Engine._boot throws before window.__HARNESS appears. Owned by the dialogue piece, not by W1-10, but it blocks every critic downstream of it.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json"
+   ],
+   "subsystem_path": "weapon.moveset.slots"
+  },
+  {
+   "what": "getBuildInfo().piece still reads 'W1-09 — combat core (on W1-00's harness)'. The build stamp was never advanced for this piece.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json"
+   ],
+   "subsystem_path": "weapon.moveset.schema"
+  }
+ ],
+ "gap_closure": [],
+ "corpus_extended": [
+  {
+   "id": "AMENDMENT-W1-10-CRITIC-01",
+   "path": "corpus/12-weapons/AMENDMENT-W1-10-CRITIC-01.md",
+   "area": "12-weapons",
+   "judges": [
+    "weapon.identity.withinclass",
+    "weapon.animation.reuse"
+   ],
+   "reason": "corpus_hole",
+   "note": "Two defects in RI-WPN03's own thresholds, both found by measuring against them. (1) ARI's hard-fail bar of 0.19 and pass bar of 0.26 are both below the 0.3185 floor that the item's own SHARE(c) <= 4 cap imposes on any conforming roster, so ARI cannot fail; replacement bands proposed (pass 0.42, hard fail 0.32). (2) Nothing in either fingerprint looks past the first hit except a single integer chain length, so two weapons with identical chains are indistinguishable to both; a chain rhythm distance Rh is proposed as a new RI-WPN03 §D.3, computable from the declared data with no harness extension.",
+   "index_regenerated": true
+  }
+ ],
+ "method_deviations": [
+  {
+   "ref_item": "ALL",
+   "deviation": "The game does not boot at HEAD (missing game/data/dialogue/topics/thorn.json, indexed but absent). A critic-owned launcher, tools/harness/critic-w1-10-launch.mjs, fulfils that single route with an empty elder-souls/topics@1 document via a Playwright route handler. Nothing else is intercepted and the repository is not modified.",
+   "why": "Without it no live measurement of this piece is possible at all, and the defect belongs to the dialogue piece.",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "RI-WPN02",
+   "deviation": "M1's standard class probe, M2's fingerprint and M6's wrong-footing probe were computed from the declared class baselines and the rig-evaluated clip tracks rather than from 75 live traces.",
+   "why": "Only 7 of the 15 classes exist in the live simulation (probeA). Running M1 on the 7 that do would sample only the happy path, which CRITIC-DOCTRINE §2.4 bans. M1 and M6 are scored `unmeasurable` and the fingerprint numbers are reported with their source named.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-WPN03",
+   "deviation": "M3's F87 fingerprint and M6's blind clustering pack were built from rig-evaluated per-slot behaviour rather than from 87 live 20-second combat traces.",
+   "why": "No roster weapon can be equipped (probeA), so a live within-class pack is impossible. The substitute carries the frame phases, arc, root displacement, chain graph, hyperarmour and normalised tip-speed profile the discrimination actually turns on.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-WPN04",
+   "deviation": "M1's census was run over 7 weapons x 22 slot scripts and the Wgrid over 4 weapons (one per weight tier) x 5 enclosing states x every frame k, rather than 87 x 20.",
+   "why": "The 87-weapon sweep is impossible: 0 are equippable. The 7 driven are the complete set of movesets the live game contains, so this is a full sweep of what exists, not a sample of it. WEAPON-CRITIC §3.4 requires one Wgrid per weight tier and all four are present.",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "RI-WPN05",
+   "deviation": "The hitstop grid, ILS and mass census were read through H.weapons.impactFor / weaponTipTrack, which are pure functions of the weapon data evaluated on the real rig, rather than from live hits.",
+   "why": "The frame record carries no hitstop_f and no weapon_tip and the trace vocabulary has no impact event, so a live hit cannot be instrumented. M4 is scored unmeasurable in consequence. Also noted: PLAN.md §3 assigns RI-WPN05 to W1-11, not to this piece; it is scored here because the critic brief names it, and it is not treated as a hard gate.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-WPN01",
+   "deviation": "M1's stated command (tools/analysis/content-stats.mjs --schema --glob) ignores both flags and performs no schema validation. Validation was redone with ajv against corpus/12-weapons/moveset.schema.json directly.",
+   "why": "The item's named instrument does not do what the item says it does; that is a method gap and the closest executable variant was used.",
+   "affects_scores": false
+  }
+ ],
+ "arbitration_questions": [],
+ "source_reads": [
+  {
+   "path": "game/src/harness/api.js",
+   "purpose": "locate-harness",
+   "note": "To find setLoadout, traceStart/traceDrain and the weapons query surface so the probes could be driven."
+  },
+  {
+   "path": "game/src/harness/weapons.js",
+   "purpose": "locate-harness",
+   "note": "To find getClipTrack, impactFor, weaponTipTrack and chargeState signatures."
+  },
+  {
+   "path": "game/src/input/actions.js",
+   "purpose": "locate-harness",
+   "note": "To read the closed button vocabulary the input scripts must use."
+  },
+  {
+   "path": "game/data/combat/spine/straight-sword.json",
+   "purpose": "quote-written-content",
+   "note": "Data file quoted as output: the live runtime's moveset declares exactly `light`, `heavy`, `two_handed{light,heavy}` (game/data/combat/spine/straight-sword.json:31-104). Cited alongside the traces that show the same four clips, never in place of them."
+  },
+  {
+   "path": "game/data/combat/frames.json",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "After probeF showed the R2 split mismatch, read to identify which side is authoritative (RI-CMB02 §B) so the remedy could be made concrete."
+  },
+  {
+   "path": "game/src/engine.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read only to name the file setLoadout routes through, so the remedy names a target."
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is false: RI-WPN02 M1/M6, RI-WPN03 M3/M6 (live form), RI-WPN04 M5, RI-WPN05 M4 and RI-WPN06 M4/M5/M7 could not be run because the artifacts they require do not exist in the build — 8 of 15 classes and 87 of 87 weapons are unequippable, three named loadout fixtures and two arena fixtures are absent, and the frame record lacks anim_slot, hitstop_f, weapon_tip, stance, block_angle_deg and the block_success event. Each is scored 0 or `unmeasurable` fail-closed per CRITIC-DOCTRINE §7.3, never omitted and never averaged away. Every method deviation is recorded above."
+ },
+ "notes": "BAR PRESSURE (WEAPON-CRITIC §5, mandatory; five answers plus one concrete amendment).\n\n(1) IS A PASSING SCORE HERE THE THING THE USER ASKED FOR? Taken at random: ssw_kothringi_bronze, a non-baseline straight sword. Its deviation from the garrison sword is that r1.3 is a rising cut (slash_v, arc 95 deg) instead of a horizontal, so it catches a rolling enemy the baseline whiffs. A player would notice that — it changes which enemy you would rather hold it against, which is the item's own test. So the declared layer is answering the user's question honestly. But the answer is only visible if the weapon can be held, and it cannot. The bar is right and the build has not reached it; this is not a case where the numbers pass while the game fails.\n\n(2) WHICH THRESHOLD IS DOING NO WORK? `ARI < 0.19`. RI-WPN03 §C caps SHARE(c) at 4, so the minimum distinct-clip count any conforming roster can have is sum over classes of 25*ceil(N/4) = 664 against S_total 2085, i.e. ARI >= 0.318. The hard-fail bar of 0.19 and the pass bar of 0.26 both sit BELOW the floor the item's own SHARE cap imposes, so neither is reachable by any roster that satisfies §C. `ARI` cannot fail. This is the threshold with no discriminating power.\n\n(3) WHICH THRESHOLD IS GAMEABLE, AND HOW CHEAPLY? `TDV`. The declared median of 0.8333 was earned partly by counting `2h.r2` as divergent on 50 weapons whose `2h.r2.follow` — the slot that divergence chains into — does not exist. More generally, TDV's divergence clause is satisfied by `anim(2h.X) != anim(X)` plus a >= 25 deg arc delta, and the arc field is a number in a JSON file. A sed one-liner adding 26 to every `2h.*` arc moves any failing roster to TDV 1.00 without an animator touching anything. The companion check TDV needs is the one RI-WPN03 M2 already has for clips: confirm each diverging slot's 2h clip TRACK differs from the 1h clip's on the real rig, not merely its declared arc number.\n\n(4) WHAT IS THE TENTH-HOUR VERSION? Every measure here is a property of a weapon in isolation. A player ten hours in complains about the SEQUENCE: that the r1.1 -> r1.2 -> r1.3 chain of every straight sword feels like the same sentence, that two weapons with different clips still have the same RHYTHM of commitment. Nothing in the seven numbers measures the inter-slot interval structure — the pattern of startup/recovery ratios ACROSS a chain, which is what a player internalises. That is a corpus hole and it is the natural home of the amendment below.\n\n(5) IS THE ROSTER THE RIGHT SIZE? Yes, and the evidence is unusually clean: 1133 clips at 0 forged pairs, 331 distinct normalised path shapes, clip-share histogram 322/214/313/99/0, UNQ mean 3.70 with a minimum of 1, and both blind tests passing. 87 weapons were authored to the bar. The correct remedy here is NOT 'fewer weapons, better authored' — it is 'the same weapons, connected to the game'. RI-AI05 §13's delete-nine-archetypes precedent does not apply.\n\nPROPOSED AMENDMENT (concrete, per §5's requirement) — RI-WPN03, new §D.3, 'the chain rhythm distance':\n\n  For each weapon, form the chain rhythm vector\n      Rh(w) = [ recovery_f(r1.i)/startup_f(r1.i) for i in 1..max_chain,\n                startup_f(r1.i+1) - recovery_f(r1.i) for i in 1..max_chain-1 ]\n  padded to the roster's longest chain with the weapon's own r1.1 ratio. Z-normalise across\n  the 87 and compute pairwise distances as in D.2.\n      Rh_med(within class) must lie in [0.25, 0.90]  -- PASS\n      Rh_min(within class) >= 0.10                   -- PASS\n      Rh_min(within class) < 0.03                    -- FAIL: two weapons of one class\n                                                        have the same rhythm, which is what a\n                                                        player is actually learning.\n  Rationale: D.2's F87 vector is built entirely from r1.1 and from per-weapon scalars, so two\n  weapons whose whole chains are identical after the first hit are indistinguishable to it. On\n  this build Rh would be measurable today from the declared data and would be the only number\n  that survives into the tenth hour. Filed under CORPUS-CONTRACT §5 as an amendment request\n  against RI-WPN03, not applied unilaterally.\n\nSEAM STERILITY (WEAPON-CRITIC §7, AR-3): seam_sterile = FALSE. The material system is authored: all six materials carry slash/thrust/strike multipliers, deflection is a deterministic function of shape, poise_damage and target material with MCE and GHM bypassing it, and the observable triple differs per material (probeD's 5x7 grid, ILS 0.8286). A lore fact — root-golems are stone, the Hist-bonded are plant — is therefore a combat answer, and a merchant selling a mace sells a solution to an encounter. The crossing is Souls-legal: geometry alone decides the hit and the multiplier is applied after, with no random component (ARBITRATION S1). It is sterile in only one respect worth recording: no enemy statblock was driven against it in this piece, so the crossing is declared and not yet exercised.\n\nWHAT SURVIVED THE HARSH LENS. Three checks that could have caught the build and did not, recorded because CRITIC-DOCTRINE §2.1 requires the escalation ladder to be visible: the clip-forgery check (0 of 1133), the second-order normalised-motion check I added beyond the item (331 distinct path shapes), and AR-1 on the weapon path (0 rng draws, no cancel, 36 f@60 committed stance switch). The authored layer of this piece is real work at the bar. It is not connected to the game."
+}

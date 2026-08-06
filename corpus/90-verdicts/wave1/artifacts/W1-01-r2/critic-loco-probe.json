@@ -1,0 +1,495 @@
+{
+ "schema": "critic/w1-01-r2-loco@1",
+ "measured_at": "2026-08-06T20:47:57.890Z",
+ "probes": {
+  "L1_uphill": [
+   {
+    "at": [
+     2286.3,
+     1360.9
+    ],
+    "slope_deg": 70.63,
+    "uphill": [
+     -0.81,
+     0.58
+    ],
+    "horiz_m": 9.4,
+    "climbed_m": 10.28,
+    "state": "WALK",
+    "hp": [
+     620,
+     620
+    ],
+    "stam": [
+     120,
+     120
+    ],
+    "end_slope_deg": 52.34
+   },
+   {
+    "at": [
+     2220.3,
+     1340.2
+    ],
+    "slope_deg": 61.33,
+    "uphill": [
+     0.27,
+     -0.96
+    ],
+    "horiz_m": 10,
+    "climbed_m": 11.76,
+    "state": "WALK",
+    "hp": [
+     620,
+     620
+    ],
+    "stam": [
+     120,
+     120
+    ],
+    "end_slope_deg": 54.21
+   },
+   {
+    "at": [
+     2260.3,
+     1340.2
+    ],
+    "slope_deg": 66.2,
+    "uphill": [
+     -0.62,
+     0.79
+    ],
+    "horiz_m": 10,
+    "climbed_m": 16.76,
+    "state": "WALK",
+    "hp": [
+     620,
+     620
+    ],
+    "stam": [
+     120,
+     120
+    ],
+    "end_slope_deg": 48.21
+   },
+   {
+    "at": [
+     2692.9,
+     820.4
+    ],
+    "slope_deg": 42.39,
+    "uphill": [
+     -0.99,
+     0.1
+    ],
+    "horiz_m": 10,
+    "climbed_m": 3.69,
+    "state": "WALK",
+    "hp": [
+     620,
+     620
+    ],
+    "stam": [
+     120,
+     120
+    ],
+    "end_slope_deg": 26.35
+   },
+   {
+    "at": [
+     1701.4,
+     1885.6
+    ],
+    "slope_deg": 6.49,
+    "uphill": [
+     0.92,
+     0.39
+    ],
+    "horiz_m": 10,
+    "climbed_m": 0.22,
+    "state": "WALK",
+    "hp": [
+     620,
+     620
+    ],
+    "stam": [
+     120,
+     120
+    ],
+    "end_slope_deg": 8.71
+   },
+   {
+    "at": [
+     1642.6,
+     1617.8
+    ],
+    "slope_deg": 26.89,
+    "uphill": [
+     -0.77,
+     -0.64
+    ],
+    "horiz_m": 10,
+    "climbed_m": 4.25,
+    "state": "WALK",
+    "hp": [
+     620,
+     620
+    ],
+    "stam": [
+     120,
+     120
+    ],
+    "end_slope_deg": 11.05
+   }
+  ],
+  "L2_fall": [
+   {
+    "drop_m": 5,
+    "placed": true,
+    "y0": 27.33,
+    "y1": 22.55,
+    "ground": 22.33,
+    "hp": [
+     620,
+     620
+    ],
+    "state_before": "WALK",
+    "state_after": "WALK"
+   },
+   {
+    "drop_m": 20,
+    "placed": true,
+    "y0": 42.33,
+    "y1": 22.55,
+    "ground": 22.33,
+    "hp": [
+     620,
+     620
+    ],
+    "state_before": "WALK",
+    "state_after": "WALK"
+   },
+   {
+    "drop_m": 60,
+    "placed": true,
+    "y0": 82.33,
+    "y1": 22.55,
+    "ground": 22.33,
+    "hp": [
+     620,
+     620
+    ],
+    "state_before": "WALK",
+    "state_after": "WALK"
+   },
+   {
+    "drop_m": 150,
+    "placed": true,
+    "y0": 172.33,
+    "y1": 22.55,
+    "ground": 22.33,
+    "hp": [
+     620,
+     620
+    ],
+    "state_before": "WALK",
+    "state_after": "WALK"
+   }
+  ],
+  "L3_water": [
+   {
+    "id": "dry-firm",
+    "x": 3915.5,
+    "z": 2111.6,
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "FIRM",
+    "walk_mps": 2,
+    "stamina": [
+     120,
+     120
+    ],
+    "hp": [
+     620,
+     620
+    ],
+    "state": "WALK"
+   },
+   {
+    "id": "W1-silt",
+    "x": 3444.7,
+    "z": 3663,
+    "depth_m": 0.181,
+    "band": "W1",
+    "substrate": "SUCK",
+    "walk_mps": 1.8664,
+    "stamina": [
+     120,
+     120
+    ],
+    "hp": [
+     620,
+     620
+    ],
+    "state": "WALK"
+   },
+   {
+    "id": "W2-suck",
+    "x": 3184.6,
+    "z": 3463.9,
+    "depth_m": 0,
+    "band": "W0",
+    "substrate": "SUCK",
+    "walk_mps": 1.8632,
+    "stamina": [
+     120,
+     120
+    ],
+    "hp": [
+     620,
+     620
+    ],
+    "state": "WALK"
+   },
+   {
+    "id": "W2-silt",
+    "x": 3254.9,
+    "z": 3801.9,
+    "depth_m": 0.437,
+    "band": "W2",
+    "substrate": "SILT",
+    "walk_mps": 1.7,
+    "stamina": [
+     120,
+     120
+    ],
+    "hp": [
+     620,
+     620
+    ],
+    "state": "WALK"
+   },
+   {
+    "id": "deep-off-road",
+    "x": 2702.7,
+    "z": 4810.3,
+    "depth_m": 8.28,
+    "band": "W5",
+    "substrate": "SILT",
+    "walk_mps": 1.1,
+    "stamina": [
+     120,
+     120
+    ],
+    "hp": [
+     620,
+     620
+    ],
+    "state": "WALK"
+   }
+  ],
+  "L4_travel": {
+   "modes": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "stations": 26,
+   "services": 68,
+   "boardings": [
+    {
+     "mode": "rootway",
+     "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+     "quote": {
+      "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+      "mode": "rootway",
+      "from": "stormhold",
+      "to": "ixtaxh-tzil",
+      "fare_gold": 15,
+      "fare_gold_modelled": 18,
+      "game_min": 53.6,
+      "route_m": 1254.9,
+      "requires_walked": "stormhold-thorn",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+     },
+     "boarded": {
+      "boarded": false,
+      "refused": true,
+      "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+      "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+      "mode": "rootway",
+      "from": "stormhold",
+      "to": "ixtaxh-tzil",
+      "fare_gold": 15,
+      "fare_gold_modelled": 18,
+      "game_min": 53.6,
+      "route_m": 1254.9,
+      "requires_walked": "stormhold-thorn",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+     },
+     "board_error": "travelRide: no ride is in progress"
+    },
+    {
+     "mode": "barge",
+     "service": "svc-006-barge-stormhold-nine-mud",
+     "quote": {
+      "service": "svc-006-barge-stormhold-nine-mud",
+      "mode": "barge",
+      "from": "stormhold",
+      "to": "nine-mud",
+      "fare_gold": 12,
+      "fare_gold_modelled": 9,
+      "game_min": 84,
+      "route_m": 954.7,
+      "requires_walked": "stormhold-thorn",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+     },
+     "boarded": {
+      "boarded": false,
+      "refused": true,
+      "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+      "service": "svc-006-barge-stormhold-nine-mud",
+      "mode": "barge",
+      "from": "stormhold",
+      "to": "nine-mud",
+      "fare_gold": 12,
+      "fare_gold_modelled": 9,
+      "game_min": 84,
+      "route_m": 954.7,
+      "requires_walked": "stormhold-thorn",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+     },
+     "board_error": "travelRide: no ride is in progress"
+    },
+    {
+     "mode": "poler",
+     "service": "svc-007-poler-stormhold-nine-mud",
+     "quote": {
+      "service": "svc-007-poler-stormhold-nine-mud",
+      "mode": "poler",
+      "from": "stormhold",
+      "to": "nine-mud",
+      "fare_gold": 15,
+      "fare_gold_modelled": 11,
+      "game_min": 126,
+      "route_m": 954.7,
+      "requires_walked": "stormhold-thorn",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+     },
+     "boarded": {
+      "boarded": false,
+      "refused": true,
+      "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+      "service": "svc-007-poler-stormhold-nine-mud",
+      "mode": "poler",
+      "from": "stormhold",
+      "to": "nine-mud",
+      "fare_gold": 15,
+      "fare_gold_modelled": 11,
+      "game_min": 126,
+      "route_m": 954.7,
+      "requires_walked": "stormhold-thorn",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+     },
+     "board_error": "travelRide: no ride is in progress"
+    },
+    {
+     "mode": "packet",
+     "service": "svc-061-packet-lilmoth-soulrest",
+     "quote": {
+      "service": "svc-061-packet-lilmoth-soulrest",
+      "mode": "packet",
+      "from": "lilmoth",
+      "to": "soulrest",
+      "fare_gold": 58,
+      "fare_gold_modelled": 67,
+      "game_min": 138.1,
+      "route_m": 3106.6,
+      "requires_walked": "blackrose-lilmoth",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the blackrose-lilmoth road. No one sells passage over ground you have not crossed."
+     },
+     "boarded": {
+      "boarded": false,
+      "refused": true,
+      "reason": "You have not walked the blackrose-lilmoth road. No one sells passage over ground you have not crossed.",
+      "service": "svc-061-packet-lilmoth-soulrest",
+      "mode": "packet",
+      "from": "lilmoth",
+      "to": "soulrest",
+      "fare_gold": 58,
+      "fare_gold_modelled": 67,
+      "game_min": 138.1,
+      "route_m": 3106.6,
+      "requires_walked": "blackrose-lilmoth",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the blackrose-lilmoth road. No one sells passage over ground you have not crossed."
+     },
+     "board_error": "travelRide: no ride is in progress"
+    },
+    {
+     "mode": "rootspeak",
+     "service": "svc-064-rootspeak-helstrom-soulrest",
+     "quote": {
+      "service": "svc-064-rootspeak-helstrom-soulrest",
+      "mode": "rootspeak",
+      "from": "helstrom",
+      "to": "soulrest",
+      "fare_gold": 38,
+      "fare_gold_modelled": 31,
+      "game_min": 20,
+      "route_m": 3199.6,
+      "requires_walked": "stormhold-helstrom",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the stormhold-helstrom road. No one sells passage over ground you have not crossed."
+     },
+     "boarded": {
+      "boarded": false,
+      "refused": true,
+      "reason": "You have not walked the stormhold-helstrom road. No one sells passage over ground you have not crossed.",
+      "service": "svc-064-rootspeak-helstrom-soulrest",
+      "mode": "rootspeak",
+      "from": "helstrom",
+      "to": "soulrest",
+      "fare_gold": 38,
+      "fare_gold_modelled": 31,
+      "game_min": 20,
+      "route_m": 3199.6,
+      "requires_walked": "stormhold-helstrom",
+      "walked": false,
+      "gold": 0,
+      "purchasable": false,
+      "refusal": "You have not walked the stormhold-helstrom road. No one sells passage over ground you have not crossed."
+     },
+     "board_error": "travelRide: no ride is in progress"
+    }
+   ]
+  }
+ }
+}

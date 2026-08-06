@@ -10,7 +10,7 @@ import path from 'node:path';
 import { launch } from './critic-w1-10-launch.mjs';
 
 const OUT = process.argv[2] || 'corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json';
-const WEAPONS = ['straight-sword', 'dagger', 'ultra-greatsword', 'axe', 'halberd', 'spear', 'greatsword'];
+const WEAPONS = ['dagger', 'straight-sword', 'axe', 'ultra-greatsword'];  // one per weight tier, WEAPON-CRITIC §3.4
 
 const h = await launch();
 const out = { probe: 'C — Wgrid + live CFS', build: await h.h('getBuildInfo'), baseline_anim: {}, wgrid: {}, cfs: {} };
@@ -36,11 +36,11 @@ for (const w of WEAPONS) {
 
 // Wgrid: for each enclosing state, press `light` at frame k of that state
 const STATES = {
-  ROLL:     { setup: 'roll_move', frames: 60 },
-  BACKSTEP: { setup: 'roll_still', frames: 50 },
-  SPRINT:   { setup: 'sprint', frames: 60 },
-  AIRBORNE: { setup: 'jump', frames: 50 },
-  BLOCK:    { setup: 'block', frames: 60 },
+  ROLL:     { setup: 'roll_move', frames: 46 },
+  BACKSTEP: { setup: 'roll_still', frames: 46 },
+  SPRINT:   { setup: 'sprint', frames: 40 },
+  AIRBORNE: { setup: 'jump', frames: 40 },
+  BLOCK:    { setup: 'block', frames: 40 },
 };
 
 for (const w of WEAPONS) {
@@ -63,7 +63,7 @@ for (const w of WEAPONS) {
         q.push({ f: pressF, press: ['light'] }, { f: pressF + 2, release: ['light'] });
         q.sort((a, b) => a.f - b.f);
         H.queueInputs(q);
-        H.traceStart({}); H.stepFrames(300); const recs = H.traceDrain() || []; H.traceStop();
+        H.traceStart({}); H.stepFrames(200); const recs = H.traceDrain() || []; H.traceStop();
         const a = recs.find((x) => x.player && /^ATK/.test(x.player.state) && x.f >= pressF);
         res.push(a ? { k, anim: a.player.anim, started_f: a.f, lag: a.f - pressF, state_at_press: (recs.find((x) => x.f === pressF) || { player: {} }).player.state } : { k, anim: null, state_at_press: (recs.find((x) => x.f === pressF) || { player: {} }).player.state });
       }

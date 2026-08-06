@@ -1,0 +1,1016 @@
+{
+ "probe": "D — clip integrity, impact grid, mass, charge",
+ "build": {
+  "name": "elder-souls",
+  "version": "0.2.0-w1-09",
+  "commit": null,
+  "builtAt": null,
+  "harnessVersion": 2,
+  "fixedStepHz": 60,
+  "dataRoot": "game/data",
+  "piece": "W1-09 — combat core (on W1-00’s harness)",
+  "threeVersion": "180",
+  "dataFiles": 288
+ },
+ "clip_count": 1133,
+ "track_errors": 0,
+ "clip_integrity": {
+  "clips_tracked": 1133,
+  "forged_unique_pairs": 0,
+  "fraction_of_C": 0,
+  "hard_fail_threshold": "> 10% of C",
+  "examples": []
+ },
+ "hitstop_grid": {
+  "light": {
+   "flesh": {
+    "weapon_id": "ssw_garrison_sword",
+    "slot": "r1.1",
+    "material": "flesh",
+    "weight_tier": "light",
+    "attacker_hitstop_f": 4,
+    "victim_hitstop_f": 8,
+    "knockback_m": 0.05,
+    "damage_multiplier": 1.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.25,
+    "decal": "blood"
+   },
+   "chitin": {
+    "weapon_id": "ssw_garrison_sword",
+    "slot": "r1.1",
+    "material": "chitin",
+    "weight_tier": "light",
+    "attacker_hitstop_f": 6,
+    "victim_hitstop_f": 8,
+    "knockback_m": 0.03,
+    "damage_multiplier": 0.85,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.25,
+    "decal": "chip"
+   },
+   "stone": {
+    "weapon_id": "ssw_garrison_sword",
+    "slot": "r1.1",
+    "material": "stone",
+    "weight_tier": "light",
+    "attacker_hitstop_f": 15,
+    "victim_hitstop_f": 0,
+    "knockback_m": -0.1,
+    "damage_multiplier": 0.45,
+    "deflect": true,
+    "added_recovery_f": 16,
+    "camera_shake_deg": 0.25,
+    "decal": "spark_dust"
+   },
+   "metal": {
+    "weapon_id": "ssw_garrison_sword",
+    "slot": "r1.1",
+    "material": "metal",
+    "weight_tier": "light",
+    "attacker_hitstop_f": 8,
+    "victim_hitstop_f": 8,
+    "knockback_m": -0.1,
+    "damage_multiplier": 0.75,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.25,
+    "decal": "spark_dust"
+   },
+   "shield": {
+    "weapon_id": "ssw_garrison_sword",
+    "slot": "r1.1",
+    "material": "shield",
+    "weight_tier": "light",
+    "attacker_hitstop_f": 8,
+    "victim_hitstop_f": 8,
+    "knockback_m": -0.1,
+    "damage_multiplier": 0.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.25,
+    "decal": "spark_dust"
+   },
+   "wood": {
+    "weapon_id": "ssw_garrison_sword",
+    "slot": "r1.1",
+    "material": "wood",
+    "weight_tier": "light",
+    "attacker_hitstop_f": 4,
+    "victim_hitstop_f": 8,
+    "knockback_m": 0.05,
+    "damage_multiplier": 1.15,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.25,
+    "decal": "splinter"
+   },
+   "water": {
+    "weapon_id": "ssw_garrison_sword",
+    "slot": "r1.1",
+    "material": "water",
+    "weight_tier": "light",
+    "attacker_hitstop_f": 2,
+    "victim_hitstop_f": 2,
+    "knockback_m": 0,
+    "damage_multiplier": 1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.25,
+    "decal": "splash"
+   }
+  },
+  "medium": {
+   "flesh": {
+    "weapon_id": "axe_shell_splitter",
+    "slot": "r1.1",
+    "material": "flesh",
+    "weight_tier": "medium",
+    "attacker_hitstop_f": 8,
+    "victim_hitstop_f": 12,
+    "knockback_m": 0.15,
+    "damage_multiplier": 1.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.5,
+    "decal": "blood"
+   },
+   "chitin": {
+    "weapon_id": "axe_shell_splitter",
+    "slot": "r1.1",
+    "material": "chitin",
+    "weight_tier": "medium",
+    "attacker_hitstop_f": 10,
+    "victim_hitstop_f": 12,
+    "knockback_m": 0.1,
+    "damage_multiplier": 0.85,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.5,
+    "decal": "chip"
+   },
+   "stone": {
+    "weapon_id": "axe_shell_splitter",
+    "slot": "r1.1",
+    "material": "stone",
+    "weight_tier": "medium",
+    "attacker_hitstop_f": 24,
+    "victim_hitstop_f": 0,
+    "knockback_m": -0.2,
+    "damage_multiplier": 0.45,
+    "deflect": true,
+    "added_recovery_f": 16,
+    "camera_shake_deg": 0.5,
+    "decal": "spark_dust"
+   },
+   "metal": {
+    "weapon_id": "axe_shell_splitter",
+    "slot": "r1.1",
+    "material": "metal",
+    "weight_tier": "medium",
+    "attacker_hitstop_f": 12,
+    "victim_hitstop_f": 12,
+    "knockback_m": -0.2,
+    "damage_multiplier": 0.75,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.5,
+    "decal": "spark_dust"
+   },
+   "shield": {
+    "weapon_id": "axe_shell_splitter",
+    "slot": "r1.1",
+    "material": "shield",
+    "weight_tier": "medium",
+    "attacker_hitstop_f": 14,
+    "victim_hitstop_f": 14,
+    "knockback_m": -0.2,
+    "damage_multiplier": 0.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.5,
+    "decal": "spark_dust"
+   },
+   "wood": {
+    "weapon_id": "axe_shell_splitter",
+    "slot": "r1.1",
+    "material": "wood",
+    "weight_tier": "medium",
+    "attacker_hitstop_f": 6,
+    "victim_hitstop_f": 10,
+    "knockback_m": 0.15,
+    "damage_multiplier": 1.15,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.5,
+    "decal": "splinter"
+   },
+   "water": {
+    "weapon_id": "axe_shell_splitter",
+    "slot": "r1.1",
+    "material": "water",
+    "weight_tier": "medium",
+    "attacker_hitstop_f": 2,
+    "victim_hitstop_f": 2,
+    "knockback_m": 0,
+    "damage_multiplier": 1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.5,
+    "decal": "splash"
+   }
+  },
+  "heavy": {
+   "flesh": {
+    "weapon_id": "gsw_memorial_blade",
+    "slot": "r1.1",
+    "material": "flesh",
+    "weight_tier": "heavy",
+    "attacker_hitstop_f": 12,
+    "victim_hitstop_f": 16,
+    "knockback_m": 0.35,
+    "damage_multiplier": 1.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.75,
+    "decal": "blood"
+   },
+   "chitin": {
+    "weapon_id": "gsw_memorial_blade",
+    "slot": "r1.1",
+    "material": "chitin",
+    "weight_tier": "heavy",
+    "attacker_hitstop_f": 16,
+    "victim_hitstop_f": 18,
+    "knockback_m": 0.25,
+    "damage_multiplier": 0.85,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.75,
+    "decal": "chip"
+   },
+   "stone": {
+    "weapon_id": "gsw_memorial_blade",
+    "slot": "r1.1",
+    "material": "stone",
+    "weight_tier": "heavy",
+    "attacker_hitstop_f": 22,
+    "victim_hitstop_f": 22,
+    "knockback_m": -0.3,
+    "damage_multiplier": 0.45,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.75,
+    "decal": "spark_dust"
+   },
+   "metal": {
+    "weapon_id": "gsw_memorial_blade",
+    "slot": "r1.1",
+    "material": "metal",
+    "weight_tier": "heavy",
+    "attacker_hitstop_f": 18,
+    "victim_hitstop_f": 18,
+    "knockback_m": -0.3,
+    "damage_multiplier": 0.75,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.75,
+    "decal": "spark_dust"
+   },
+   "shield": {
+    "weapon_id": "gsw_memorial_blade",
+    "slot": "r1.1",
+    "material": "shield",
+    "weight_tier": "heavy",
+    "attacker_hitstop_f": 20,
+    "victim_hitstop_f": 20,
+    "knockback_m": -0.3,
+    "damage_multiplier": 0.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.75,
+    "decal": "spark_dust"
+   },
+   "wood": {
+    "weapon_id": "gsw_memorial_blade",
+    "slot": "r1.1",
+    "material": "wood",
+    "weight_tier": "heavy",
+    "attacker_hitstop_f": 10,
+    "victim_hitstop_f": 14,
+    "knockback_m": 0.35,
+    "damage_multiplier": 1.15,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.75,
+    "decal": "splinter"
+   },
+   "water": {
+    "weapon_id": "gsw_memorial_blade",
+    "slot": "r1.1",
+    "material": "water",
+    "weight_tier": "heavy",
+    "attacker_hitstop_f": 4,
+    "victim_hitstop_f": 4,
+    "knockback_m": 0,
+    "damage_multiplier": 1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0.75,
+    "decal": "splash"
+   }
+  },
+  "ultra": {
+   "flesh": {
+    "weapon_id": "ugs_golem_sword",
+    "slot": "r1.1",
+    "material": "flesh",
+    "weight_tier": "ultra",
+    "attacker_hitstop_f": 16,
+    "victim_hitstop_f": 20,
+    "knockback_m": 0.6,
+    "damage_multiplier": 1.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 1,
+    "decal": "blood"
+   },
+   "chitin": {
+    "weapon_id": "ugs_golem_sword",
+    "slot": "r1.1",
+    "material": "chitin",
+    "weight_tier": "ultra",
+    "attacker_hitstop_f": 20,
+    "victim_hitstop_f": 22,
+    "knockback_m": 0.45,
+    "damage_multiplier": 0.85,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 1,
+    "decal": "chip"
+   },
+   "stone": {
+    "weapon_id": "ugs_golem_sword",
+    "slot": "r1.1",
+    "material": "stone",
+    "weight_tier": "ultra",
+    "attacker_hitstop_f": 28,
+    "victim_hitstop_f": 28,
+    "knockback_m": -0.35,
+    "damage_multiplier": 0.45,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 1,
+    "decal": "spark_dust"
+   },
+   "metal": {
+    "weapon_id": "ugs_golem_sword",
+    "slot": "r1.1",
+    "material": "metal",
+    "weight_tier": "ultra",
+    "attacker_hitstop_f": 24,
+    "victim_hitstop_f": 24,
+    "knockback_m": -0.35,
+    "damage_multiplier": 0.75,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 1,
+    "decal": "spark_dust"
+   },
+   "shield": {
+    "weapon_id": "ugs_golem_sword",
+    "slot": "r1.1",
+    "material": "shield",
+    "weight_tier": "ultra",
+    "attacker_hitstop_f": 26,
+    "victim_hitstop_f": 26,
+    "knockback_m": -0.35,
+    "damage_multiplier": 0.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 1,
+    "decal": "spark_dust"
+   },
+   "wood": {
+    "weapon_id": "ugs_golem_sword",
+    "slot": "r1.1",
+    "material": "wood",
+    "weight_tier": "ultra",
+    "attacker_hitstop_f": 12,
+    "victim_hitstop_f": 16,
+    "knockback_m": 0.6,
+    "damage_multiplier": 1.15,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 1,
+    "decal": "splinter"
+   },
+   "water": {
+    "weapon_id": "ugs_golem_sword",
+    "slot": "r1.1",
+    "material": "water",
+    "weight_tier": "ultra",
+    "attacker_hitstop_f": 4,
+    "victim_hitstop_f": 4,
+    "knockback_m": 0,
+    "damage_multiplier": 1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 1,
+    "decal": "splash"
+   }
+  },
+  "ranged": {
+   "flesh": {
+    "weapon_id": "bow_horn_sinew",
+    "slot": "bow.quick",
+    "material": "flesh",
+    "weight_tier": "ranged",
+    "attacker_hitstop_f": 2,
+    "victim_hitstop_f": 6,
+    "knockback_m": 0.02,
+    "damage_multiplier": 1.05,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0,
+    "decal": "blood"
+   },
+   "chitin": {
+    "weapon_id": "bow_horn_sinew",
+    "slot": "bow.quick",
+    "material": "chitin",
+    "weight_tier": "ranged",
+    "attacker_hitstop_f": 4,
+    "victim_hitstop_f": 6,
+    "knockback_m": 0.01,
+    "damage_multiplier": 1.15,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0,
+    "decal": "chip"
+   },
+   "stone": {
+    "weapon_id": "bow_horn_sinew",
+    "slot": "bow.quick",
+    "material": "stone",
+    "weight_tier": "ranged",
+    "attacker_hitstop_f": 9,
+    "victim_hitstop_f": 0,
+    "knockback_m": -0.05,
+    "damage_multiplier": 0.55,
+    "deflect": true,
+    "added_recovery_f": 16,
+    "camera_shake_deg": 0,
+    "decal": "spark_dust"
+   },
+   "metal": {
+    "weapon_id": "bow_horn_sinew",
+    "slot": "bow.quick",
+    "material": "metal",
+    "weight_tier": "ranged",
+    "attacker_hitstop_f": 4,
+    "victim_hitstop_f": 4,
+    "knockback_m": -0.05,
+    "damage_multiplier": 0.95,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0,
+    "decal": "spark_dust"
+   },
+   "shield": {
+    "weapon_id": "bow_horn_sinew",
+    "slot": "bow.quick",
+    "material": "shield",
+    "weight_tier": "ranged",
+    "attacker_hitstop_f": 6,
+    "victim_hitstop_f": 6,
+    "knockback_m": -0.05,
+    "damage_multiplier": 0.1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0,
+    "decal": "spark_dust"
+   },
+   "wood": {
+    "weapon_id": "bow_horn_sinew",
+    "slot": "bow.quick",
+    "material": "wood",
+    "weight_tier": "ranged",
+    "attacker_hitstop_f": 2,
+    "victim_hitstop_f": 6,
+    "knockback_m": 0.02,
+    "damage_multiplier": 0.9,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0,
+    "decal": "splinter"
+   },
+   "water": {
+    "weapon_id": "bow_horn_sinew",
+    "slot": "bow.quick",
+    "material": "water",
+    "weight_tier": "ranged",
+    "attacker_hitstop_f": 2,
+    "victim_hitstop_f": 2,
+    "knockback_m": 0,
+    "damage_multiplier": 1,
+    "deflect": false,
+    "added_recovery_f": 0,
+    "camera_shake_deg": 0,
+    "decal": "splash"
+   }
+  }
+ },
+ "hitstop_conformance": {
+  "cells": 35,
+  "mismatches": 3,
+  "detail": [
+   {
+    "tier": "light",
+    "material": "stone",
+    "observed": 15,
+    "required": 10
+   },
+   {
+    "tier": "medium",
+    "material": "stone",
+    "observed": 24,
+    "required": 16
+   },
+   {
+    "tier": "ranged",
+    "material": "stone",
+    "observed": 9,
+    "required": 6
+   }
+  ]
+ },
+ "ILS": {
+  "cells": 35,
+  "uniquely_recoverable": 29,
+  "ILS": 0.8286,
+  "collisions": [
+   {
+    "cell": "light/flesh",
+    "indistinguishable_from": [
+     "light/wood"
+    ],
+    "triple": [
+     4,
+     0.25,
+     0.05
+    ]
+   },
+   {
+    "cell": "light/metal",
+    "indistinguishable_from": [
+     "light/shield"
+    ],
+    "triple": [
+     8,
+     0.25,
+     -0.1
+    ]
+   },
+   {
+    "cell": "light/shield",
+    "indistinguishable_from": [
+     "light/metal"
+    ],
+    "triple": [
+     8,
+     0.25,
+     -0.1
+    ]
+   },
+   {
+    "cell": "light/wood",
+    "indistinguishable_from": [
+     "light/flesh"
+    ],
+    "triple": [
+     4,
+     0.25,
+     0.05
+    ]
+   },
+   {
+    "cell": "ranged/flesh",
+    "indistinguishable_from": [
+     "ranged/wood"
+    ],
+    "triple": [
+     2,
+     0,
+     0.02
+    ]
+   },
+   {
+    "cell": "ranged/wood",
+    "indistinguishable_from": [
+     "ranged/flesh"
+    ],
+    "triple": [
+     2,
+     0,
+     0.02
+    ]
+   }
+  ]
+ },
+ "mass": [
+  {
+   "weapon": "dgr_shell_knife",
+   "tier": "light",
+   "frames": 42,
+   "peak_tip_speed_mps": 24.28,
+   "band": [
+    14,
+    20
+   ],
+   "in_band": false,
+   "anticipation_fraction": 0.417,
+   "startup_f": 12
+  },
+  {
+   "weapon": "ssw_garrison_sword",
+   "tier": "light",
+   "frames": 74,
+   "peak_tip_speed_mps": 19.61,
+   "band": [
+    14,
+    20
+   ],
+   "in_band": true,
+   "anticipation_fraction": 0.417,
+   "startup_f": 24
+  },
+  {
+   "weapon": "csw_naga_sickle",
+   "tier": "light",
+   "frames": 64,
+   "peak_tip_speed_mps": 27.03,
+   "band": [
+    14,
+    20
+   ],
+   "in_band": false,
+   "anticipation_fraction": 0.45,
+   "startup_f": 20
+  },
+  {
+   "weapon": "tsw_xanmeer_needle",
+   "tier": "light",
+   "frames": 66,
+   "peak_tip_speed_mps": 19.27,
+   "band": [
+    14,
+    20
+   ],
+   "in_band": true,
+   "anticipation_fraction": 0.409,
+   "startup_f": 22
+  },
+  {
+   "weapon": "fst_wrapped_fists",
+   "tier": "light",
+   "frames": 44,
+   "peak_tip_speed_mps": 25.09,
+   "band": [
+    14,
+    20
+   ],
+   "in_band": false,
+   "anticipation_fraction": 0.429,
+   "startup_f": 14
+  },
+  {
+   "weapon": "spr_fishers_gig",
+   "tier": "medium",
+   "frames": 80,
+   "peak_tip_speed_mps": 26.8,
+   "band": [
+    18,
+    26
+   ],
+   "in_band": false,
+   "anticipation_fraction": 0.5,
+   "startup_f": 28
+  },
+  {
+   "weapon": "axe_shell_splitter",
+   "tier": "medium",
+   "frames": 92,
+   "peak_tip_speed_mps": 19.01,
+   "band": [
+    18,
+    26
+   ],
+   "in_band": true,
+   "anticipation_fraction": 0.5,
+   "startup_f": 32
+  },
+  {
+   "weapon": "mce_bog_iron_mace",
+   "tier": "medium",
+   "frames": 96,
+   "peak_tip_speed_mps": 27.41,
+   "band": [
+    18,
+    26
+   ],
+   "in_band": false,
+   "anticipation_fraction": 0.5,
+   "startup_f": 34
+  },
+  {
+   "weapon": "whp_hide_lash",
+   "tier": "medium",
+   "frames": 108,
+   "peak_tip_speed_mps": 63.55,
+   "band": [
+    18,
+    26
+   ],
+   "in_band": false,
+   "anticipation_fraction": 0.55,
+   "startup_f": 40
+  },
+  {
+   "weapon": "hlb_garrison_bill",
+   "tier": "medium",
+   "frames": 108,
+   "peak_tip_speed_mps": 20.94,
+   "band": [
+    18,
+    26
+   ],
+   "in_band": true,
+   "anticipation_fraction": 0.5,
+   "startup_f": 38
+  },
+  {
+   "weapon": "gsw_memorial_blade",
+   "tier": "heavy",
+   "frames": 126,
+   "peak_tip_speed_mps": 23.84,
+   "band": [
+    22,
+    32
+   ],
+   "in_band": true,
+   "anticipation_fraction": 0.545,
+   "startup_f": 44
+  },
+  {
+   "weapon": "cgs_drowned_reaper",
+   "tier": "heavy",
+   "frames": 136,
+   "peak_tip_speed_mps": 33.22,
+   "band": [
+    22,
+    32
+   ],
+   "in_band": false,
+   "anticipation_fraction": 0.563,
+   "startup_f": 48
+  },
+  {
+   "weapon": "ghm_pile_driver",
+   "tier": "heavy",
+   "frames": 148,
+   "peak_tip_speed_mps": 28.45,
+   "band": [
+    22,
+    32
+   ],
+   "in_band": true,
+   "anticipation_fraction": 0.519,
+   "startup_f": 52
+  },
+  {
+   "weapon": "ugs_golem_sword",
+   "tier": "ultra",
+   "frames": 166,
+   "peak_tip_speed_mps": 32.49,
+   "band": [
+    26,
+    40
+   ],
+   "in_band": true,
+   "anticipation_fraction": 0.569,
+   "startup_f": 58
+  }
+ ],
+ "charge": {
+  "ssw_garrison_sword": {
+   "slot": "r2.charged",
+   "charge_max_f": 30,
+   "ramp": [
+    {
+     "c": 0,
+     "charge_f": 0,
+     "at_full": false,
+     "motion_value": 1.55,
+     "poise_damage": 41,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 1,
+     "charge_f": 1,
+     "at_full": false,
+     "motion_value": 1.5655000000000001,
+     "poise_damage": 41.68333333333333,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 8,
+     "charge_f": 8,
+     "at_full": false,
+     "motion_value": 1.6740000000000002,
+     "poise_damage": 46.46666666666667,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 15,
+     "charge_f": 15,
+     "at_full": false,
+     "motion_value": 1.7825,
+     "poise_damage": 51.25,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 23,
+     "charge_f": 23,
+     "at_full": false,
+     "motion_value": 1.9065,
+     "poise_damage": 56.71666666666667,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 30,
+     "charge_f": 30,
+     "at_full": true,
+     "motion_value": 2.015,
+     "poise_damage": 61.5,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 50,
+     "charge_f": 30,
+     "at_full": true,
+     "motion_value": 2.015,
+     "poise_damage": 61.5,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    }
+   ]
+  },
+  "ugs_golem_sword": {
+   "slot": "r2.charged",
+   "charge_max_f": 60,
+   "ramp": [
+    {
+     "c": 0,
+     "charge_f": 0,
+     "at_full": false,
+     "motion_value": 2.71,
+     "poise_damage": 107,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 1,
+     "charge_f": 1,
+     "at_full": false,
+     "motion_value": 2.7235499999999995,
+     "poise_damage": 107.89166666666667,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 15,
+     "charge_f": 15,
+     "at_full": false,
+     "motion_value": 2.9132499999999997,
+     "poise_damage": 120.375,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 30,
+     "charge_f": 30,
+     "at_full": false,
+     "motion_value": 3.1165,
+     "poise_damage": 133.75,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 45,
+     "charge_f": 45,
+     "at_full": false,
+     "motion_value": 3.31975,
+     "poise_damage": 147.125,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 60,
+     "charge_f": 60,
+     "at_full": true,
+     "motion_value": 3.523,
+     "poise_damage": 160.5,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 80,
+     "charge_f": 60,
+     "at_full": true,
+     "motion_value": 3.523,
+     "poise_damage": 160.5,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    }
+   ]
+  },
+  "bow_horn_sinew": {
+   "slot": "bow.aimed",
+   "charge_max_f": 90,
+   "ramp": [
+    {
+     "c": 0,
+     "charge_f": 0,
+     "at_full": false,
+     "motion_value": 1.6,
+     "poise_damage": 6,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 1,
+     "charge_f": 1,
+     "at_full": false,
+     "motion_value": 1.6053333333333335,
+     "poise_damage": 6.033333333333333,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 23,
+     "charge_f": 23,
+     "at_full": false,
+     "motion_value": 1.7226666666666668,
+     "poise_damage": 6.766666666666667,
+     "hyperarmour": false,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 45,
+     "charge_f": 45,
+     "at_full": false,
+     "motion_value": 1.8399999999999999,
+     "poise_damage": 7.5,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 68,
+     "charge_f": 68,
+     "at_full": false,
+     "motion_value": 1.9626666666666666,
+     "poise_damage": 8.266666666666666,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 90,
+     "charge_f": 90,
+     "at_full": true,
+     "motion_value": 2.08,
+     "poise_damage": 9,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    },
+    {
+     "c": 110,
+     "charge_f": 90,
+     "at_full": true,
+     "motion_value": 2.08,
+     "poise_damage": 9,
+     "hyperarmour": true,
+     "stamina_deducted_on_frame": 1
+    }
+   ]
+  }
+ }
+}

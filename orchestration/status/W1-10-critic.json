@@ -1,14 +1,35 @@
 {
-  "task_id": "W1-10-critic",
-  "brief": "CRITIC for wave-1 piece W1-10 — Weapon movesets (RI-WPN01..RI-WPN06)",
-  "started": "wave-1",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/90-verdicts/wave1/W1-10.json",
-    "corpus/90-verdicts/wave1/W1-10.md"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read WEAPON-CRITIC.md charter, CRITIC-DOCTRINE, SCORING §0, PLAN §3 W1-10",
-  "notes_for_successor": ""
+ "task_id": "W1-10-critic",
+ "brief": "CRITIC for wave-1 piece W1-10 — Weapon movesets (RI-WPN01..RI-WPN06)",
+ "started": "wave-1",
+ "state": "complete",
+ "outputs_expected": [
+  "corpus/90-verdicts/wave1/W1-10.json",
+  "corpus/90-verdicts/wave1/W1-10.md"
+ ],
+ "outputs_written": [
+  "corpus/90-verdicts/wave1/W1-10.json (schema-valid)",
+  "corpus/90-verdicts/wave1/W1-10.md",
+  "corpus/12-weapons/AMENDMENT-W1-10-CRITIC-01.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-10/{probeA..probeG,static-census,blind1-pack,blind1-key,blind2-pack,blind2-key}.json (12 artifacts)",
+  "tools/harness/critic-w1-10{-launch,a,b,c,d,e,f,g,-static,-blind}.mjs"
+ ],
+ "findings": [
+  "THE PIECE IS A DATA ISLAND. 0 of 87 roster weapons can be equipped in the live simulation. setLoadout() rejects every one: 'no moveset <id>. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword'. Eight of fifteen classes (CSW TSW FST MCE WHP CGS GHM BOW) have no live representation at all. Artifact: probeA-live-runtime.json.",
+  "THE LIVE MOVESET IS FOUR ATTACKS. game/data/combat/spine/*.json (the 7 files the runtime does read) declare three slots: light, heavy, two_handed{light,heavy}. Driven in traces, every weapon plays exactly 4 distinct anim ids: X_r1, X_r2, X_2h_r1, X_2h_r2. RI-WPN01 M3 HARD FAIL (distinct_anim 4 < 18).",
+  "CFS_live = 0.0000. 20 of 20 (weapon x contextual state) combinations play the standing r1.1 clip byte-identically. Wgrid is identical across all four weight tiers and contains no `contextual` cell anywhere. backstep.r1 / jump.r1 / jump.r2 / parry produce no attack at all. RI-WPN04 HARD FAIL, and it is the exact fake the item was written to detect.",
+  "RI-WPN01 M6 agreement = 0.5357 (HARD FAIL, requires 1.00). Declared anim id matches observed on 0 of 14 rows. R2 active/recovery split disagrees with game/data/combat/frames.json (RI-CMB02 §B, the authority RI-WPN02 §B defers to) on 6 of the 7 spine classes and on 46 of the 47 weapons in them: e.g. UGS r2 declared 104/21/127, RI-CMB02 104/24/124.",
+  "82 of 87 weapons have a BROKEN CHAIN GRAPH: a chains_to pointing at a slot the weapon does not declare. 50x '2h.r2 -> 2h.r2.follow', 32x 'r2 -> r2.follow', 4x 'r1.3 -> r1.4' (all four FST weapons). All four FST weapons also carry an ORPHAN r1.5 and 2h.r1.4 that nothing chains into. FST's published 5-chain therefore does not exist.",
+  "RI-WPN02 M3 matrix conformance fails on 3 of 15 classes (>2 = item FAIL), all on the chain-length column, and they are exactly the three cells RI-WPN02 'How we lose' #8 predicts: FST 3 (needs 5), CGS 3 (needs 2), GHM 3 (needs 2). D4 is thereby near-constant across the roster.",
+  "THE DECLARED LAYER IS GENUINELY GOOD AND MY RECOMPUTATION AGREES WITH THE BUILDER'S. Independently recomputed: ARI 0.4547, D_min 1.629 (AXE-MCE), Dg_min 0.8999 (AXE-HLB), SEP 1.4469, W_med 0.5386, W_min 0.1754, TDV median 0.8333, no VEC collision, no SHARE>4, UNQ min 1 mean 3.70, DEV_id zero on 0 weapons, 87/87 schema-valid.",
+  "CLIP INTEGRITY IS REAL: 0 forged-unique pairs out of 1133 clips on the real rig. I escalated: after normalising every clip for duration AND amplitude, 1133 clips still resolve to 331 distinct path shapes and 127 distinct speed profiles at a 10% tolerance. The animation layer is not one curve rescaled. This check could have failed and did not.",
+  "BOTH BLIND TESTS PASS on the declared data. RI-WPN02 three-trace: A=CSW B=HLB C=MCE, three nameable styles. RI-WPN03 M6 clustering: grouping exactly correct (GHM/SPR/TSW) with five nameable within-group differences. The authored roster is real; nothing connects it to the game.",
+  "MASS: peak tip speed out of RI-WPN05 §E band on 7 of 14 classes; WHP at 63.55 m/s against a band of 18-26. Anticipation fraction 0.41-0.57 everywhere, comfortably above every floor, but is a smooth monotone function of weight tier rather than per-clip variation.",
+  "AR-1 PASSES on the weapon path: 0 rng draws during an attack across 50 runs; stance switch is a 36 f@60 STANCE_SWITCH state that is refused during ATK_STARTUP and ATK_ACTIVE; roll during startup is refused; determinism identical across 5 seeds.",
+  "HITSTOP/ILS: 32 of 35 cells match RI-WPN05 §A exactly; the 3 'mismatches' are the deflection x1.5 correctly applied. ILS 0.8286 (PASS >= 0.80) on strict triple-uniqueness; the collisions are light/flesh-vs-light/wood and light/metal-vs-light/shield, which the table itself makes indistinguishable.",
+  "THE BUILD DOES NOT BOOT AT HEAD. game/data/index.json lists dialogue/topics/thorn.json and the file is absent; Engine._boot throws before window.__HARNESS appears. Owned by the dialogue piece, not W1-10. Worked around with a Playwright route repair (tools/harness/critic-w1-10-launch.mjs), recorded as a method deviation.",
+  "NONE of the four scenario fixtures the items request exist: wpn-dummy-arena, wpn-material-range, wpn-loadout-o1_sword_shield/o2_dual/o3_twohand. getPlayerStats() has no `equipped` block, no `stance`, no `weapon`; the frame record has no anim_slot, no hitstop_f, no weapon_tip; there is no block_success event."
+ ],
+ "next_step": "none — verdict emitted, gap ledger regenerated, tools/publish.mjs run",
+ "notes_for_successor": "The single biggest gap is the runtime join, not the data. tools/harness/critic-w1-10*.mjs are the instruments; rerun them after any remediation. The static census tool independently reproduces every headline number the builder claimed, so do not spend time re-auditing the spreadsheet — spend it on setLoadout()."
 }

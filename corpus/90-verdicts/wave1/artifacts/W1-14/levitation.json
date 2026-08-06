@@ -1,0 +1,108 @@
+{
+ "ascent": {
+  "s0": {
+   "alt": 0,
+   "focus": 9,
+   "lev": true
+  },
+  "asc": [
+   {
+    "f": 101,
+    "alt": 0,
+    "focus": 9,
+    "y": 0,
+    "state": "IDLE"
+   },
+   {
+    "f": 201,
+    "alt": 1.33,
+    "focus": 7,
+    "y": 0,
+    "state": "IDLE"
+   },
+   {
+    "f": 301,
+    "alt": 2.67,
+    "focus": 5,
+    "y": 0,
+    "state": "IDLE"
+   },
+   {
+    "f": 401,
+    "alt": 4,
+    "focus": 3,
+    "y": 0,
+    "state": "IDLE"
+   },
+   {
+    "f": 501,
+    "alt": 5.33,
+    "focus": 1,
+    "y": 0,
+    "state": "IDLE"
+   },
+   {
+    "f": 601,
+    "alt": 6,
+    "focus": 0,
+    "y": 0,
+    "state": "IDLE"
+   },
+   {
+    "f": 700,
+    "alt": 6,
+    "focus": 0,
+    "y": 0,
+    "state": "IDLE"
+   }
+  ]
+ },
+ "drift": {
+  "from": [
+   0,
+   0,
+   0
+  ],
+  "to": [
+   0,
+   0,
+   9.916667
+  ],
+  "mps": 4.9583335,
+  "lev": true,
+  "state": "SPRINT"
+ },
+ "walk": {
+  "mps": 3.1733335,
+  "state": "RUN"
+ },
+ "airborne_actions": {
+  "acts": {
+   "light": [
+    "IDLE"
+   ],
+   "heavy": [
+    "IDLE"
+   ],
+   "roll": [
+    "IDLE",
+    "BACKSTEP"
+   ],
+   "block": [
+    "BACKSTEP",
+    "IDLE"
+   ],
+   "parry": [
+    "IDLE",
+    "PARRY_ACTIVE",
+    "PARRY_RECOVER"
+   ]
+  },
+  "lev_after": true
+ },
+ "damage_ends": {
+  "levBefore": true,
+  "levAfter": false
+ },
+ "iframe_while_levitating": true
+}

@@ -1,15 +1,32 @@
 {
-  "task_id": "critic-w1-09-r2",
-  "brief": "Round-2 critic on W1-09 (combat core: frames, stamina, hitboxes, i-frames, commitment)",
-  "started": "wave-1",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/90-verdicts/wave1/W1-09-r2.json",
-    "corpus/90-verdicts/wave1/W1-09-r2.md",
-    "corpus/90-verdicts/wave1/artifacts/W1-09-r2/*"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read round-1 verdict W1-09.md/.json, then RI-CMB01..09 / RI-AI01..03",
-  "notes_for_successor": ""
+ "task_id": "critic-w1-09-r2",
+ "brief": "Round-2 critic on W1-09 (combat core: frames, stamina, hitboxes, i-frames, commitment)",
+ "started": "wave-1",
+ "state": "writing",
+ "outputs_expected": [
+  "corpus/90-verdicts/wave1/W1-09-r2.json",
+  "corpus/90-verdicts/wave1/W1-09-r2.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-09-r2/*"
+ ],
+ "outputs_written": [],
+ "findings": [
+  "Independent recompute of RI-CMB07 \u00a7D from the raw per-frame JSONL REPRODUCES the shipped statistics file exactly (21/24 median in band, same three rows out: 4, 11, 27). Round 1's 'shipped stats lie' pattern does NOT recur. Artifact: artifacts/W1-09-r2/critic-r2-recompute.json",
+  "ROW 9 IS SILENTLY UN-BANDED. RI-CMB07 \u00a7D gives row 9 (roll timing delta range) a band 'within [-24,+8]'. The shipped statistics file computes its value ([-8,17] [-9,15] [-10,15] [-7,15] [-8,13]) and sets band:null,in_band:null. Every one of the five fights exceeds +8 on the upper end. Counting it, the result is 4 rows out of band, not 3.",
+  "4 of 5 fights do not end: 9000-frame hard cap. Only F4 emits a DEATH event. Row 1 'fight duration 150 s' is the harness cap in 4 of 5 fights and the IQR is [150,150].",
+  "F2: median distance between player and enemy AT THE ENEMY'S HITBOX ACTIVATION FRAME is 37.06 m; median minimum distance during the active window 36.77 m. The player is 37 metres away for the median swing of that fight and F2 still contributed 17/25 rows to the median.",
+  "141 of 211 enemy swings across the five fights are WHIFF:E1 (67%). The exemplar the item defines has 23 swings and zero enemy whiffs.",
+  "bot_profile carries eatRate 0.18-0.30 = the per-swing probability the bot deliberately declines to defend ('greed'). The generator's own comment says 'it is where rows 13, 14 and 21 come from'. Damage taken is a tuned dial, not an emergent property.",
+  "bot hold band is 4.0-4.6 m while the generator's own comment says '2.6-3.2 m is the band where its swing ARRIVES in reach'. Constant and rationale disagree.",
+  "In F1, 11 enemy swings had the player in ROLL_IFRAME for EVERY active frame at 0.06-0.60 m and resolved as WHIFF:E1, not IFRAME_NEGATE. 35 such swings across 5 fights vs 26 negations. Needs an in-engine discriminator.",
+  "mode is declared 'B-prime': the enemy is a scripted schedule, not AI. RI-CMB07 M2 requires the enemy be governed by RI-AI01-05 and NOT scripted. M2 (weight 40) cannot be passed by this artifact by construction.",
+  "MEASURED: the enemy's attacks cannot hit a target inside their forward root travel. Stationary player, stationary enemy, arena_champion: chop hits 1.2-3.6 m and MISSES at every distance 0.0-1.1 m; thrust hits 1.6-4.0 m, misses 0.0-1.5 m; combo_a hits 1.1-2.9 m, misses 0.0-1.0 m. Minimum hit distance == declared root_dz_m (1.2 / 1.6 / 0.9). Artifact: critic-r2-reach.json",
+  "The PLAYER's weapons have no such hole: dagger/straight-sword/spear/greatsword/halberd all hit from 0.0 m. Artifact: critic-r2-preach.json. The hole is asymmetric and enemy-side only.",
+  "Diagnostic: zeroing root_dz_m on all three attacks moves the inner boundary from 1.2/1.6/1.1 m to 0.6/0.8/0.8 m and the outer from 3.6/4.0/2.9 to 2.6/2.4/2.5. Data file reverted, git clean.",
+  "DOMINANT STRATEGY: a motionless player at 0.8-1.1 m from champion_hist_marked (2876 HP, boss-class) who does nothing but mash light kills it in 1153-1377 frames taking ZERO damage, with the enemy completing 44-54 frames of live hitbox and ZERO stagger frames. At 2.0-2.6 m the player takes 96 of 620. Artifact: critic-r2-turtle.json",
+  "Roll probe (critic-r2-roll.json): control no-roll HITS; roll at press 44-70 survives with i-frames overlapping the active window; roll at 72+ HITS. The i-frame window is correct and negation is emitted when it happens. Candidates (b) and (c) for row 11 are innocent.",
+  "trace-stats.mjs (the corpus's own general trace consumer, HARNESS.md \u00a75) cannot read the exemplar: integrity fail_closed, 18 missing fields, attacks/min 0, committed 0.0%, rolls 0. The RI-AI01 \u00a7A enemy stream required by RI-CMB07 M0 is absent from the exemplar run; RI-CMB07 Scoring lists 'emitted only for the player' as an AUTOMATIC FAIL.",
+  "cmb-poise: m3_heavy stagger_lengths_f is [] for greatsword and ultra-greatsword (unmeasured); m4_hyperarmour control case took zero damage so the check is vacuous; m6_parry riposted:false in all seven cases."
+ ],
+ "next_step": "animation frames vs 70-visual refs; AR-1/AR-2; per-item scores; write verdict",
+ "notes_for_successor": ""
 }

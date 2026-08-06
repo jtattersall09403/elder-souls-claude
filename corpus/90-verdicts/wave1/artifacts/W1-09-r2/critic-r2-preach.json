@@ -1,0 +1,1082 @@
+{
+  "generated": "2026-08-06T20:34:35.596Z",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "probes": {
+    "preach": {
+      "weapons": {
+        "dagger": {
+          "min_hit_distance_m": 0,
+          "max_hit_distance_m": 1.4,
+          "misses_inside_min": [],
+          "row": [
+            {
+              "d": 0,
+              "hit": true,
+              "min_dist_m": 0
+            },
+            {
+              "d": 0.1,
+              "hit": false,
+              "min_dist_m": 0.017
+            },
+            {
+              "d": 0.2,
+              "hit": false,
+              "min_dist_m": 0.05
+            },
+            {
+              "d": 0.3,
+              "hit": false,
+              "min_dist_m": 0.15
+            },
+            {
+              "d": 0.4,
+              "hit": false,
+              "min_dist_m": 0.25
+            },
+            {
+              "d": 0.5,
+              "hit": false,
+              "min_dist_m": 0.35
+            },
+            {
+              "d": 0.6,
+              "hit": true,
+              "min_dist_m": 0.45
+            },
+            {
+              "d": 0.7,
+              "hit": true,
+              "min_dist_m": 0.55
+            },
+            {
+              "d": 0.8,
+              "hit": true,
+              "min_dist_m": 0.65
+            },
+            {
+              "d": 0.9,
+              "hit": true,
+              "min_dist_m": 0.75
+            },
+            {
+              "d": 1,
+              "hit": true,
+              "min_dist_m": 0.85
+            },
+            {
+              "d": 1.1,
+              "hit": true,
+              "min_dist_m": 0.95
+            },
+            {
+              "d": 1.2,
+              "hit": true,
+              "min_dist_m": 1.05
+            },
+            {
+              "d": 1.3,
+              "hit": true,
+              "min_dist_m": 1.15
+            },
+            {
+              "d": 1.4,
+              "hit": true,
+              "min_dist_m": 1.25
+            },
+            {
+              "d": 1.5,
+              "hit": false,
+              "min_dist_m": 1.35
+            },
+            {
+              "d": 1.6,
+              "hit": false,
+              "min_dist_m": 1.45
+            },
+            {
+              "d": 1.7,
+              "hit": false,
+              "min_dist_m": 1.55
+            },
+            {
+              "d": 1.8,
+              "hit": false,
+              "min_dist_m": 1.65
+            },
+            {
+              "d": 1.9,
+              "hit": false,
+              "min_dist_m": 1.75
+            },
+            {
+              "d": 2,
+              "hit": false,
+              "min_dist_m": 1.85
+            },
+            {
+              "d": 2.1,
+              "hit": false,
+              "min_dist_m": 1.95
+            },
+            {
+              "d": 2.2,
+              "hit": false,
+              "min_dist_m": 2.05
+            },
+            {
+              "d": 2.3,
+              "hit": false,
+              "min_dist_m": 2.15
+            },
+            {
+              "d": 2.4,
+              "hit": false,
+              "min_dist_m": 2.25
+            },
+            {
+              "d": 2.5,
+              "hit": false,
+              "min_dist_m": 2.35
+            },
+            {
+              "d": 2.6,
+              "hit": false,
+              "min_dist_m": 2.45
+            },
+            {
+              "d": 2.7,
+              "hit": false,
+              "min_dist_m": 2.55
+            },
+            {
+              "d": 2.8,
+              "hit": false,
+              "min_dist_m": 2.65
+            },
+            {
+              "d": 2.9,
+              "hit": false,
+              "min_dist_m": 2.75
+            },
+            {
+              "d": 3,
+              "hit": false,
+              "min_dist_m": 2.85
+            },
+            {
+              "d": 3.1,
+              "hit": false,
+              "min_dist_m": 2.95
+            },
+            {
+              "d": 3.2,
+              "hit": false,
+              "min_dist_m": 3.05
+            },
+            {
+              "d": 3.3,
+              "hit": false,
+              "min_dist_m": 3.15
+            },
+            {
+              "d": 3.4,
+              "hit": false,
+              "min_dist_m": 3.25
+            },
+            {
+              "d": 3.5,
+              "hit": false,
+              "min_dist_m": 3.35
+            },
+            {
+              "d": 3.6,
+              "hit": false,
+              "min_dist_m": 3.45
+            },
+            {
+              "d": 3.7,
+              "hit": false,
+              "min_dist_m": 3.55
+            },
+            {
+              "d": 3.8,
+              "hit": false,
+              "min_dist_m": 3.65
+            },
+            {
+              "d": 3.9,
+              "hit": false,
+              "min_dist_m": 3.75
+            },
+            {
+              "d": 4,
+              "hit": false,
+              "min_dist_m": 3.85
+            }
+          ]
+        },
+        "straight-sword": {
+          "min_hit_distance_m": 0,
+          "max_hit_distance_m": 2.1,
+          "misses_inside_min": [],
+          "row": [
+            {
+              "d": 0,
+              "hit": true,
+              "min_dist_m": 0
+            },
+            {
+              "d": 0.1,
+              "hit": false,
+              "min_dist_m": 0.001
+            },
+            {
+              "d": 0.2,
+              "hit": false,
+              "min_dist_m": 0.005
+            },
+            {
+              "d": 0.3,
+              "hit": false,
+              "min_dist_m": 0.002
+            },
+            {
+              "d": 0.4,
+              "hit": false,
+              "min_dist_m": 0.05
+            },
+            {
+              "d": 0.5,
+              "hit": false,
+              "min_dist_m": 0.15
+            },
+            {
+              "d": 0.6,
+              "hit": true,
+              "min_dist_m": 0.25
+            },
+            {
+              "d": 0.7,
+              "hit": true,
+              "min_dist_m": 0.35
+            },
+            {
+              "d": 0.8,
+              "hit": true,
+              "min_dist_m": 0.45
+            },
+            {
+              "d": 0.9,
+              "hit": true,
+              "min_dist_m": 0.55
+            },
+            {
+              "d": 1,
+              "hit": true,
+              "min_dist_m": 0.65
+            },
+            {
+              "d": 1.1,
+              "hit": true,
+              "min_dist_m": 0.75
+            },
+            {
+              "d": 1.2,
+              "hit": true,
+              "min_dist_m": 0.85
+            },
+            {
+              "d": 1.3,
+              "hit": true,
+              "min_dist_m": 0.95
+            },
+            {
+              "d": 1.4,
+              "hit": true,
+              "min_dist_m": 1.05
+            },
+            {
+              "d": 1.5,
+              "hit": true,
+              "min_dist_m": 1.15
+            },
+            {
+              "d": 1.6,
+              "hit": true,
+              "min_dist_m": 1.25
+            },
+            {
+              "d": 1.7,
+              "hit": true,
+              "min_dist_m": 1.35
+            },
+            {
+              "d": 1.8,
+              "hit": true,
+              "min_dist_m": 1.45
+            },
+            {
+              "d": 1.9,
+              "hit": true,
+              "min_dist_m": 1.55
+            },
+            {
+              "d": 2,
+              "hit": true,
+              "min_dist_m": 1.65
+            },
+            {
+              "d": 2.1,
+              "hit": true,
+              "min_dist_m": 1.75
+            },
+            {
+              "d": 2.2,
+              "hit": false,
+              "min_dist_m": 1.85
+            },
+            {
+              "d": 2.3,
+              "hit": false,
+              "min_dist_m": 1.95
+            },
+            {
+              "d": 2.4,
+              "hit": false,
+              "min_dist_m": 2.05
+            },
+            {
+              "d": 2.5,
+              "hit": false,
+              "min_dist_m": 2.15
+            },
+            {
+              "d": 2.6,
+              "hit": false,
+              "min_dist_m": 2.25
+            },
+            {
+              "d": 2.7,
+              "hit": false,
+              "min_dist_m": 2.35
+            },
+            {
+              "d": 2.8,
+              "hit": false,
+              "min_dist_m": 2.45
+            },
+            {
+              "d": 2.9,
+              "hit": false,
+              "min_dist_m": 2.55
+            },
+            {
+              "d": 3,
+              "hit": false,
+              "min_dist_m": 2.65
+            },
+            {
+              "d": 3.1,
+              "hit": false,
+              "min_dist_m": 2.75
+            },
+            {
+              "d": 3.2,
+              "hit": false,
+              "min_dist_m": 2.85
+            },
+            {
+              "d": 3.3,
+              "hit": false,
+              "min_dist_m": 2.95
+            },
+            {
+              "d": 3.4,
+              "hit": false,
+              "min_dist_m": 3.05
+            },
+            {
+              "d": 3.5,
+              "hit": false,
+              "min_dist_m": 3.15
+            },
+            {
+              "d": 3.6,
+              "hit": false,
+              "min_dist_m": 3.25
+            },
+            {
+              "d": 3.7,
+              "hit": false,
+              "min_dist_m": 3.35
+            },
+            {
+              "d": 3.8,
+              "hit": false,
+              "min_dist_m": 3.45
+            },
+            {
+              "d": 3.9,
+              "hit": false,
+              "min_dist_m": 3.55
+            },
+            {
+              "d": 4,
+              "hit": false,
+              "min_dist_m": 3.65
+            }
+          ]
+        },
+        "spear": {
+          "min_hit_distance_m": 0,
+          "max_hit_distance_m": 3.1,
+          "misses_inside_min": [],
+          "row": [
+            {
+              "d": 0,
+              "hit": true,
+              "min_dist_m": 0
+            },
+            {
+              "d": 0.1,
+              "hit": false,
+              "min_dist_m": 0.008
+            },
+            {
+              "d": 0.2,
+              "hit": false,
+              "min_dist_m": 0.013
+            },
+            {
+              "d": 0.3,
+              "hit": false,
+              "min_dist_m": 0.042
+            },
+            {
+              "d": 0.4,
+              "hit": false,
+              "min_dist_m": 0.002
+            },
+            {
+              "d": 0.5,
+              "hit": false,
+              "min_dist_m": 0.001
+            },
+            {
+              "d": 0.6,
+              "hit": false,
+              "min_dist_m": 0.05
+            },
+            {
+              "d": 0.7,
+              "hit": false,
+              "min_dist_m": 0.15
+            },
+            {
+              "d": 0.8,
+              "hit": false,
+              "min_dist_m": 0.25
+            },
+            {
+              "d": 0.9,
+              "hit": false,
+              "min_dist_m": 0.35
+            },
+            {
+              "d": 1,
+              "hit": false,
+              "min_dist_m": 0.45
+            },
+            {
+              "d": 1.1,
+              "hit": false,
+              "min_dist_m": 0.55
+            },
+            {
+              "d": 1.2,
+              "hit": false,
+              "min_dist_m": 0.65
+            },
+            {
+              "d": 1.3,
+              "hit": false,
+              "min_dist_m": 0.75
+            },
+            {
+              "d": 1.4,
+              "hit": false,
+              "min_dist_m": 0.85
+            },
+            {
+              "d": 1.5,
+              "hit": false,
+              "min_dist_m": 0.95
+            },
+            {
+              "d": 1.6,
+              "hit": false,
+              "min_dist_m": 1.05
+            },
+            {
+              "d": 1.7,
+              "hit": false,
+              "min_dist_m": 1.15
+            },
+            {
+              "d": 1.8,
+              "hit": false,
+              "min_dist_m": 1.25
+            },
+            {
+              "d": 1.9,
+              "hit": false,
+              "min_dist_m": 1.35
+            },
+            {
+              "d": 2,
+              "hit": false,
+              "min_dist_m": 1.45
+            },
+            {
+              "d": 2.1,
+              "hit": false,
+              "min_dist_m": 1.55
+            },
+            {
+              "d": 2.2,
+              "hit": true,
+              "min_dist_m": 1.65
+            },
+            {
+              "d": 2.3,
+              "hit": true,
+              "min_dist_m": 1.75
+            },
+            {
+              "d": 2.4,
+              "hit": true,
+              "min_dist_m": 1.85
+            },
+            {
+              "d": 2.5,
+              "hit": true,
+              "min_dist_m": 1.95
+            },
+            {
+              "d": 2.6,
+              "hit": true,
+              "min_dist_m": 2.05
+            },
+            {
+              "d": 2.7,
+              "hit": true,
+              "min_dist_m": 2.15
+            },
+            {
+              "d": 2.8,
+              "hit": true,
+              "min_dist_m": 2.25
+            },
+            {
+              "d": 2.9,
+              "hit": true,
+              "min_dist_m": 2.35
+            },
+            {
+              "d": 3,
+              "hit": true,
+              "min_dist_m": 2.45
+            },
+            {
+              "d": 3.1,
+              "hit": true,
+              "min_dist_m": 2.55
+            },
+            {
+              "d": 3.2,
+              "hit": false,
+              "min_dist_m": 2.65
+            },
+            {
+              "d": 3.3,
+              "hit": false,
+              "min_dist_m": 2.75
+            },
+            {
+              "d": 3.4,
+              "hit": false,
+              "min_dist_m": 2.85
+            },
+            {
+              "d": 3.5,
+              "hit": false,
+              "min_dist_m": 2.95
+            },
+            {
+              "d": 3.6,
+              "hit": false,
+              "min_dist_m": 3.05
+            },
+            {
+              "d": 3.7,
+              "hit": false,
+              "min_dist_m": 3.15
+            },
+            {
+              "d": 3.8,
+              "hit": false,
+              "min_dist_m": 3.25
+            },
+            {
+              "d": 3.9,
+              "hit": false,
+              "min_dist_m": 3.35
+            },
+            {
+              "d": 4,
+              "hit": false,
+              "min_dist_m": 3.45
+            }
+          ]
+        },
+        "greatsword": {
+          "min_hit_distance_m": 0,
+          "max_hit_distance_m": 2.9,
+          "misses_inside_min": [],
+          "row": [
+            {
+              "d": 0,
+              "hit": true,
+              "min_dist_m": 0
+            },
+            {
+              "d": 0.1,
+              "hit": false,
+              "min_dist_m": 0.004
+            },
+            {
+              "d": 0.2,
+              "hit": false,
+              "min_dist_m": 0.002
+            },
+            {
+              "d": 0.3,
+              "hit": false,
+              "min_dist_m": 0.011
+            },
+            {
+              "d": 0.4,
+              "hit": false,
+              "min_dist_m": 0.028
+            },
+            {
+              "d": 0.5,
+              "hit": false,
+              "min_dist_m": 0.045
+            },
+            {
+              "d": 0.6,
+              "hit": false,
+              "min_dist_m": 0.032
+            },
+            {
+              "d": 0.7,
+              "hit": true,
+              "min_dist_m": 0.002
+            },
+            {
+              "d": 0.8,
+              "hit": true,
+              "min_dist_m": 0.006
+            },
+            {
+              "d": 0.9,
+              "hit": true,
+              "min_dist_m": 0.05
+            },
+            {
+              "d": 1,
+              "hit": true,
+              "min_dist_m": 0.15
+            },
+            {
+              "d": 1.1,
+              "hit": true,
+              "min_dist_m": 0.25
+            },
+            {
+              "d": 1.2,
+              "hit": true,
+              "min_dist_m": 0.35
+            },
+            {
+              "d": 1.3,
+              "hit": true,
+              "min_dist_m": 0.45
+            },
+            {
+              "d": 1.4,
+              "hit": true,
+              "min_dist_m": 0.55
+            },
+            {
+              "d": 1.5,
+              "hit": true,
+              "min_dist_m": 0.65
+            },
+            {
+              "d": 1.6,
+              "hit": true,
+              "min_dist_m": 0.75
+            },
+            {
+              "d": 1.7,
+              "hit": true,
+              "min_dist_m": 0.85
+            },
+            {
+              "d": 1.8,
+              "hit": true,
+              "min_dist_m": 0.95
+            },
+            {
+              "d": 1.9,
+              "hit": true,
+              "min_dist_m": 1.05
+            },
+            {
+              "d": 2,
+              "hit": true,
+              "min_dist_m": 1.15
+            },
+            {
+              "d": 2.1,
+              "hit": true,
+              "min_dist_m": 1.25
+            },
+            {
+              "d": 2.2,
+              "hit": true,
+              "min_dist_m": 1.35
+            },
+            {
+              "d": 2.3,
+              "hit": true,
+              "min_dist_m": 1.45
+            },
+            {
+              "d": 2.4,
+              "hit": true,
+              "min_dist_m": 1.55
+            },
+            {
+              "d": 2.5,
+              "hit": true,
+              "min_dist_m": 1.65
+            },
+            {
+              "d": 2.6,
+              "hit": true,
+              "min_dist_m": 1.75
+            },
+            {
+              "d": 2.7,
+              "hit": true,
+              "min_dist_m": 1.85
+            },
+            {
+              "d": 2.8,
+              "hit": true,
+              "min_dist_m": 1.95
+            },
+            {
+              "d": 2.9,
+              "hit": true,
+              "min_dist_m": 2.05
+            },
+            {
+              "d": 3,
+              "hit": false,
+              "min_dist_m": 2.15
+            },
+            {
+              "d": 3.1,
+              "hit": false,
+              "min_dist_m": 2.25
+            },
+            {
+              "d": 3.2,
+              "hit": false,
+              "min_dist_m": 2.35
+            },
+            {
+              "d": 3.3,
+              "hit": false,
+              "min_dist_m": 2.45
+            },
+            {
+              "d": 3.4,
+              "hit": false,
+              "min_dist_m": 2.55
+            },
+            {
+              "d": 3.5,
+              "hit": false,
+              "min_dist_m": 2.65
+            },
+            {
+              "d": 3.6,
+              "hit": false,
+              "min_dist_m": 2.75
+            },
+            {
+              "d": 3.7,
+              "hit": false,
+              "min_dist_m": 2.85
+            },
+            {
+              "d": 3.8,
+              "hit": false,
+              "min_dist_m": 2.95
+            },
+            {
+              "d": 3.9,
+              "hit": false,
+              "min_dist_m": 3.05
+            },
+            {
+              "d": 4,
+              "hit": false,
+              "min_dist_m": 3.15
+            }
+          ]
+        },
+        "halberd": {
+          "min_hit_distance_m": 0,
+          "max_hit_distance_m": 2.8,
+          "misses_inside_min": [],
+          "row": [
+            {
+              "d": 0,
+              "hit": true,
+              "min_dist_m": 0
+            },
+            {
+              "d": 0.1,
+              "hit": false,
+              "min_dist_m": 0.005
+            },
+            {
+              "d": 0.2,
+              "hit": false,
+              "min_dist_m": 0.002
+            },
+            {
+              "d": 0.3,
+              "hit": false,
+              "min_dist_m": 0.001
+            },
+            {
+              "d": 0.4,
+              "hit": false,
+              "min_dist_m": 0.002
+            },
+            {
+              "d": 0.5,
+              "hit": false,
+              "min_dist_m": 0.05
+            },
+            {
+              "d": 0.6,
+              "hit": false,
+              "min_dist_m": 0.15
+            },
+            {
+              "d": 0.7,
+              "hit": false,
+              "min_dist_m": 0.25
+            },
+            {
+              "d": 0.8,
+              "hit": false,
+              "min_dist_m": 0.35
+            },
+            {
+              "d": 0.9,
+              "hit": false,
+              "min_dist_m": 0.45
+            },
+            {
+              "d": 1,
+              "hit": false,
+              "min_dist_m": 0.55
+            },
+            {
+              "d": 1.1,
+              "hit": false,
+              "min_dist_m": 0.65
+            },
+            {
+              "d": 1.2,
+              "hit": false,
+              "min_dist_m": 0.75
+            },
+            {
+              "d": 1.3,
+              "hit": false,
+              "min_dist_m": 0.85
+            },
+            {
+              "d": 1.4,
+              "hit": false,
+              "min_dist_m": 0.95
+            },
+            {
+              "d": 1.5,
+              "hit": false,
+              "min_dist_m": 1.05
+            },
+            {
+              "d": 1.6,
+              "hit": true,
+              "min_dist_m": 1.15
+            },
+            {
+              "d": 1.7,
+              "hit": true,
+              "min_dist_m": 1.25
+            },
+            {
+              "d": 1.8,
+              "hit": true,
+              "min_dist_m": 1.35
+            },
+            {
+              "d": 1.9,
+              "hit": true,
+              "min_dist_m": 1.45
+            },
+            {
+              "d": 2,
+              "hit": true,
+              "min_dist_m": 1.55
+            },
+            {
+              "d": 2.1,
+              "hit": true,
+              "min_dist_m": 1.65
+            },
+            {
+              "d": 2.2,
+              "hit": true,
+              "min_dist_m": 1.75
+            },
+            {
+              "d": 2.3,
+              "hit": true,
+              "min_dist_m": 1.85
+            },
+            {
+              "d": 2.4,
+              "hit": true,
+              "min_dist_m": 1.95
+            },
+            {
+              "d": 2.5,
+              "hit": true,
+              "min_dist_m": 2.05
+            },
+            {
+              "d": 2.6,
+              "hit": true,
+              "min_dist_m": 2.15
+            },
+            {
+              "d": 2.7,
+              "hit": true,
+              "min_dist_m": 2.25
+            },
+            {
+              "d": 2.8,
+              "hit": true,
+              "min_dist_m": 2.35
+            },
+            {
+              "d": 2.9,
+              "hit": false,
+              "min_dist_m": 2.45
+            },
+            {
+              "d": 3,
+              "hit": false,
+              "min_dist_m": 2.55
+            },
+            {
+              "d": 3.1,
+              "hit": false,
+              "min_dist_m": 2.65
+            },
+            {
+              "d": 3.2,
+              "hit": false,
+              "min_dist_m": 2.75
+            },
+            {
+              "d": 3.3,
+              "hit": false,
+              "min_dist_m": 2.85
+            },
+            {
+              "d": 3.4,
+              "hit": false,
+              "min_dist_m": 2.95
+            },
+            {
+              "d": 3.5,
+              "hit": false,
+              "min_dist_m": 3.05
+            },
+            {
+              "d": 3.6,
+              "hit": false,
+              "min_dist_m": 3.15
+            },
+            {
+              "d": 3.7,
+              "hit": false,
+              "min_dist_m": 3.25
+            },
+            {
+              "d": 3.8,
+              "hit": false,
+              "min_dist_m": 3.35
+            },
+            {
+              "d": 3.9,
+              "hit": false,
+              "min_dist_m": 3.45
+            },
+            {
+              "d": 4,
+              "hit": false,
+              "min_dist_m": 3.55
+            }
+          ]
+        }
+      },
+      "note": "enemy stationary at d, player swings R1 from a standstill"
+    }
+  }
+}

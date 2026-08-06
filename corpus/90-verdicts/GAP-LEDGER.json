@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-06T19:36:44Z",
+  "generated": "2026-08-06T20:48:44Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1
   ],
-  "verdicts_read": 4,
+  "verdicts_read": 7,
   "counts": {
-    "total": 4,
-    "open": 4,
+    "total": 7,
+    "open": 7,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -18,11 +18,20 @@
     "combat.frames.timing": [
       "GAP-W1-combat-exemplar-has-no-danger"
     ],
+    "journey.chargen.diegesis": [
+      "GAP-W1-creation-is-an-api-not-a-scene"
+    ],
+    "magic.effects.utility": [
+      "GAP-W1-magic-effects-no-behaviour"
+    ],
     "platform.determinism.harness": [
       "GAP-W1-platform-prng-never-drawn"
     ],
     "platform.save.persistence": [
       "GAP-W1-platform-save-drops-entity-prev-state"
+    ],
+    "weapon.moveset.slots": [
+      "GAP-W1-weapon-movesets-not-wired-to-the-runtime"
     ],
     "world.terrain.form": [
       "GAP-W1-world-trunk-road-below-the-waterline"
@@ -61,6 +70,98 @@
         "reports/w1-09/exemplar/RI-CMB07-exemplar-frames.jsonl",
         "corpus/90-verdicts/wave1/artifacts/W1-09/critic-guardbreak3.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09/blind-cmb03-pack.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-creation-is-an-api-not-a-scene",
+      "subsystem_path": "journey.chargen.diegesis",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-07-a91c",
+      "opened_in": "corpus/90-verdicts/wave1/W1-07.json",
+      "piece_id": "w1-07",
+      "severity": "blocking",
+      "what": "The entire Writ House creation sequence renders nothing. Driving all 19 census nodes through window.__HARNESS and screenshotting after each at 1920x1080 produces 20 byte-identical PNGs (sha256 7277a273453ac8631c318f3d9120d7b12b7f562b187adabf59fe3ca7b5daaeb5) showing a body standing in an empty green field: no barge hold, no Writ House interior, no Jeeh-Ei, no Warden-Scribe Tuleeh-Ma, no question, no answer options, and document.body.innerText empty at every node. listEntities() returns 0 entities before and after creation. The scene exists only as a JSON state machine whose getCensusState() self-reports full_screen:false, world_visible:true and full_screen_panels:0 — three fields with no rendered counterpart. RI-CHR01's first bar is 'creation is a scene, not a screen'; what shipped is neither, and RI-JRN01's whole Diegesis block (35 of its 100 points) has nothing to measure.",
+      "why_it_matters": "A player starting this game is never asked anything by anybody: the best-written material in the piece — a bored official who guesses your race wrong and tells you the sex box changes nothing because he has watched for eleven years — is delivered to no one, so character creation cannot be experienced at all.",
+      "remedy": {
+        "action": "Render the census scene over the live 3D view. (1) In game/data/states/writ-house.json, place the two NPC entities the scene already names — jeeh-ei in the barge hold and warden-scribe-tuleeh-ma behind the desk — as real entities with positions and the npcs/writ-house.json records attached, so listEntities() returns >= 2 throughout creation and the speaker named by getCensusState().speaker has a body in the frame. (2) Add a dialogue surface to game/src/render that draws getCensusState()'s `line`, `input.kind` and `input.options` as a bottom-anchored panel occupying <= 55% of frame area with the world rendering behind it, and drives censusAnswer() from real input (press/release on the closed action set, so keyboard, gamepad and touch all work). (3) Move the camera to the interior named in getCensusState().interior for the duration of the scene. (4) Render readWrit() as an openable inventory object rather than a string returned by an API.",
+        "targets": [
+          "game/data/states/writ-house.json",
+          "game/src/render/",
+          "game/src/character/census.js",
+          "game/src/engine.js (census scene)",
+          "tools/journey/journey-run.mjs (new: harness amendment A-JRN1)"
+        ],
+        "acceptance": "Re-run tools/harness/critic-w1-07a.mjs. Acceptance is met when: (a) the 19 creation-node screenshots yield >= 15 distinct sha256 hashes rather than 1; (b) listEntities() returns >= 1 NPC entity at every node and the entity id equals getCensusState().speaker at the node where that speaker talks; (c) the line returned by getCensusState() appears as rendered text in the frame at every node, with opaque non-world UI <= 55% of frame area and 0 frames whose background is uniform over >= 90% of the frame; (d) the whole sequence is completable on keyboard only and on gamepad only. RI-JRN01 M5/M6 then become measurable and the item can leave 0.",
+        "ref_item": "RI-JRN01",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Render the census scene over the live 3D view. (1) In game/data/states/writ-house.json, place the two NPC entities the scene already names — jeeh-ei in the barge hold and warden-scribe-tuleeh-ma behind the desk — as real entities with positions and the npcs/writ-house.json records attached, so listEntities() returns >= 2 throughout creation and the speaker named by getCensusState().speaker has a body in the frame. (2) Add a dialogue surface to game/src/render that draws getCensusState()'s `line`, `input.kind` and `input.options` as a bottom-anchored panel occupying <= 55% of frame area with the world rendering behind it, and drives censusAnswer() from real input (press/release on the closed action set, so keyboard, gamepad and touch all work). (3) Move the camera to the interior named in getCensusState().interior for the duration of the scene. (4) Render readWrit() as an openable inventory object rather than a string returned by an API.",
+      "remedy_acceptance": "Re-run tools/harness/critic-w1-07a.mjs. Acceptance is met when: (a) the 19 creation-node screenshots yield >= 15 distinct sha256 hashes rather than 1; (b) listEntities() returns >= 1 NPC entity at every node and the entity id equals getCensusState().speaker at the node where that speaker talks; (c) the line returned by getCensusState() appears as rendered text in the frame at every node, with opaque non-world UI <= 55% of frame area and 0 frames whose background is uniform over >= 90% of the frame; (d) the whole sequence is completable on keyboard only and on gamepad only. RI-JRN01 M5/M6 then become measurable and the item can leave 0.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/00-boot.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/07-censusAnswer-questionnaire.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/18-censusAnswer-nu_ixtu.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07/blind/ours-beats.md"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-magic-effects-no-behaviour",
+      "subsystem_path": "magic.effects.utility",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-14-e9a2",
+      "opened_in": "corpus/90-verdicts/wave1/W1-14.json",
+      "piece_id": "W1-14",
+      "severity": "blocking",
+      "what": "The effect catalogue is a complete, correctly priced, deterministic parameter space with one behaviour behind it. Measured across all 71 shipped spells: 5 of 55 effects produce the mechanical consequence their own record describes (fire, frost, shock and poison damage, and damage_health); 1 is partial (levitate meters altitude and charges 1.5 Focus/m but never moves pos[1]); 16 resolve only as HP damage equal to their own magnitude — demoralise deals 111 hp and the enemy stays AGGRO, calm_beast deals 31 hp and the beast stays in COMBAT, open_lock deals 31 hp to a creature, charm 184, corrode 310, lock_lock 184, silence 31, paralyse 12 with no buildup field on the enemy record at all; and 33 are a row in effects_active that no other system in the build reads — shield and resist_element each mitigate 0 of a scripted 100-damage hit, the_greater_mending heals 0 with the player at 420 of 620, feather leaves equip_load_pct at 24 and roll_class at LIGHT, fortify_skill satisfies no gate, bind_lesser summons nothing (entity count 0 to 0), wall creates no collider, leap adds 0 m of altitude, recall completes its 210-frame ritual and leaves the player at exactly the coordinates it started from, hist_sight completes and writes 0 journal entries, and all five Veiling effects leave getStealthState() byte-identical to baseline against the stealth system shipping in the same build.",
+      "why_it_matters": "S19 says spell effects are tools and quests must be solvable with them, so a player who buys the Open spell to get past the warded door in The Warded Ledger will instead do thirty-one points of damage to the door's guard, and the >=45% non-combat resolution bar that magic is supposed to supply a fifth of is satisfied only in JSON.",
+      "remedy": {
+        "action": "Replace the single generic applicator with a per-effect handler registry. Concretely: (1) In game/src/sim/combat-bridge.js, the spell-contact callback currently accumulates `dmg += outputOf(effect, magnitude)` for every effect whose utility_class is null OR whose geometry is not 'none' — restrict that accumulation to the five damage effects (fire_damage, frost_damage, shock_damage, poison_damage, damage_health) plus the status buildup each declares, so a non-damage effect can never deal HP damage. (2) Add game/src/sim/magic/apply.js: a table keyed by effect id, one handler per effect, called from MagicSystem.applyEffects(), each handler writing into the system RI-MAG06 §B names for that effect. (3) Wire the eight consumers that already exist in this build before touching anything that does not: CombatBody.equipLoadPct/tier for feather and burden (RI-CMB01's 30.00/70.00 cliff must stay exactly where it is); CombatBody.hp for restore_health, drain_health and absorb_health, and hpMax for drain; a mitigation multiplier ahead of the damage write for shield, resist_element and sap_ward; sim.stealth.d.detection's V terms and sound radius for chameleon (clamped 80), invisibility (breaking on attack, cast, interact, container and COMBAT), muffle, night_eye and false_face; the S11 buildup meter for paralyse, so it crosses a threshold instead of arriving in one frame; enemy alert_state and the leash for calm_beast, demoralise and frenzy, ending COMBAT with zero death events; CombatBody.pos for mark/recall/intervention, so a completed ritual actually moves the player; and a real locomotion mode for levitate that writes pos[1], caps horizontal speed at 1.4 m/s and drops light, heavy, block, roll and parry. (4) Every effect whose consuming system genuinely does not exist yet (water bands, the lock register, item condition, the quest knowledge store) gets an explicit UNMEASURABLE row in the census naming the piece that owns it, capped at five per RI-MAG06 M6.",
+        "targets": [
+          "game/src/sim/magic/apply.js (new)",
+          "game/src/sim/magic/system.js (applyEffects)",
+          "game/src/sim/combat-bridge.js (the spell-contact damage accumulator)",
+          "game/src/sim/stealth/detection.js (a veiling term in V)",
+          "corpus/80-methods/m-mag06-effect-census.mjs (new, from artifacts/W1-14/consolidate.mjs)"
+        ],
+        "acceptance": "Re-run RI-MAG06's census (reference implementation at corpus/90-verdicts/wave1/artifacts/W1-14/consolidate.mjs). EFFECT-FUNCTION >= 50/55; HP_DAMAGE_ONLY == 0 (hard fail above 3); UNREAD_TIMER <= 2; UNMEASURABLE <= 5, each naming its owning piece. Plus these five named single-trace assertions, each of which fails today: still_the_beast on an aggroed beast_slitherfang ends COMBAT with alert_state != AGGRO and zero death events; feather moves roll_class across RI-CMB01's 30.00% cliff with the discontinuity still at exactly 30.00; thick_skin reduces a scripted 100-damage hit by the declared fraction; the_deep_chameleon changes getStealthState().V; recall moves getPlayerStats().pos to the mark.",
+        "ref_item": "RI-MAG06",
+        "estimated_size": "L"
+      },
+      "remedy_action": "Replace the single generic applicator with a per-effect handler registry. Concretely: (1) In game/src/sim/combat-bridge.js, the spell-contact callback currently accumulates `dmg += outputOf(effect, magnitude)` for every effect whose utility_class is null OR whose geometry is not 'none' — restrict that accumulation to the five damage effects (fire_damage, frost_damage, shock_damage, poison_damage, damage_health) plus the status buildup each declares, so a non-damage effect can never deal HP damage. (2) Add game/src/sim/magic/apply.js: a table keyed by effect id, one handler per effect, called from MagicSystem.applyEffects(), each handler writing into the system RI-MAG06 §B names for that effect. (3) Wire the eight consumers that already exist in this build before touching anything that does not: CombatBody.equipLoadPct/tier for feather and burden (RI-CMB01's 30.00/70.00 cliff must stay exactly where it is); CombatBody.hp for restore_health, drain_health and absorb_health, and hpMax for drain; a mitigation multiplier ahead of the damage write for shield, resist_element and sap_ward; sim.stealth.d.detection's V terms and sound radius for chameleon (clamped 80), invisibility (breaking on attack, cast, interact, container and COMBAT), muffle, night_eye and false_face; the S11 buildup meter for paralyse, so it crosses a threshold instead of arriving in one frame; enemy alert_state and the leash for calm_beast, demoralise and frenzy, ending COMBAT with zero death events; CombatBody.pos for mark/recall/intervention, so a completed ritual actually moves the player; and a real locomotion mode for levitate that writes pos[1], caps horizontal speed at 1.4 m/s and drops light, heavy, block, roll and parry. (4) Every effect whose consuming system genuinely does not exist yet (water bands, the lock register, item condition, the quest knowledge store) gets an explicit UNMEASURABLE row in the census naming the piece that owns it, capped at five per RI-MAG06 M6.",
+      "remedy_acceptance": "Re-run RI-MAG06's census (reference implementation at corpus/90-verdicts/wave1/artifacts/W1-14/consolidate.mjs). EFFECT-FUNCTION >= 50/55; HP_DAMAGE_ONLY == 0 (hard fail above 3); UNREAD_TIMER <= 2; UNMEASURABLE <= 5, each naming its owning piece. Plus these five named single-trace assertions, each of which fails today: still_the_beast on an aggroed beast_slitherfang ends COMBAT with alert_state != AGGRO and zero death events; feather moves roll_class across RI-CMB01's 30.00% cliff with the discontinuity still at exactly 30.00; thick_skin reduces a scripted 100-damage hit by the declared fraction; the_deep_chameleon changes getStealthState().V; recall moves getPlayerStats().pos to the mark.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14/effect-census.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14/enemy-effects.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14/enemy-effects-HEAD.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14/self-effects.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14/stealth-coupling.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14/battery.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14/battery2.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14/touch.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14/levitation.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,
@@ -143,6 +244,50 @@
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload.json",
         "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload-prefix.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-weapon-movesets-not-wired-to-the-runtime",
+      "subsystem_path": "weapon.moveset.slots",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-10-weapons-9c41",
+      "opened_in": "corpus/90-verdicts/wave1/W1-10.json",
+      "piece_id": "W1-10",
+      "severity": "blocking",
+      "what": "The 87 authored movesets are unreachable from the running game. setLoadout() rejects all 87 roster ids with 'no moveset <id>. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword', and eight of the fifteen classes (CSW TSW FST MCE WHP CGS GHM BOW) have no live representation at all. What a player can press is game/data/combat/spine/*.json, which declares three slots — light, heavy, two_handed{light,heavy} — so every weapon in the game plays exactly four distinct animation ids. Measured consequences: CFS_live = 0.0000 with 20 of 20 (weapon x contextual state) combinations playing the standing r1.1 clip byte-identically; distinct_anim = 4 against RI-WPN01 M3's floor of 18; RI-WPN01 M6 declared-vs-observed agreement 0.5357 with the clip id — the field RI-WPN01 §B calls 'the load-bearing field of the whole weapons area' — matching on 0 of 14 rows.",
+      "why_it_matters": "Every weapon in the game is the same weapon: four attacks, and rolling, backstepping, sprinting, jumping and guard-countering all play the standing light attack, which is exactly the failure the user named when they asked for this piece.",
+      "remedy": {
+        "action": "Make MovesetLibrary the runtime's move source instead of a harness-only reader. (1) In game/src/combat/system.js createPlayer(), build the move table from game/data/combat/movesets/*.json via MovesetLibrary rather than from game/data/combat/spine/*.json, so setLoadout({weapon:'ssw_garrison_sword'}) resolves. (2) In game/src/combat/player.js, dispatch the attack buttons through MovesetLibrary.resolveSlot(weaponId, button, ctx) with ctx carrying state, state_frame, roll_tier, stance, offhand and descending/fall_height, and delete the code path that falls through to the standing light attack when no window matches — a missed window must produce nothing, per RI-WPN04 §B rule 2. (3) Add player.anim_slot, player.hitstop_f and player.weapon_tip to the frame record and a block_success event to the trace vocabulary. (4) Restore the R2 active/recovery split of the seven spine classes to game/data/combat/frames.json, which RI-WPN02 §B's authority note makes binding. (5) Repair the 82 weapons whose chains_to points at a slot they do not declare (50x 2h.r2 -> 2h.r2.follow, 32x r2 -> r2.follow, 4x r1.3 -> r1.4).",
+        "targets": [
+          "game/src/combat/system.js",
+          "game/src/combat/player.js",
+          "game/src/combat/moveset.js",
+          "game/src/combat/trace.js",
+          "game/data/combat/movesets/*.json",
+          "game/data/states/ (add wpn-dummy-arena, wpn-material-range, wpn-loadout-o1_sword_shield, wpn-loadout-o2_dual, wpn-loadout-o3_twohand)"
+        ],
+        "acceptance": "node tools/harness/critic-w1-10a.mjs reports equipped_ok 87/87 and classes_with_zero_equippable []; node tools/harness/critic-w1-10c.mjs reports CFS_live == 1.0000 with a `contextual` band exactly on RI-WPN04 §B's frame windows for all four equip-load tiers; node tools/harness/critic-w1-10f.mjs reports M6 agreement == 1.0000 including the anim id; and the observed distinct_anim per weapon is >= 18.",
+        "ref_item": "RI-WPN04",
+        "estimated_size": "L"
+      },
+      "remedy_action": "Make MovesetLibrary the runtime's move source instead of a harness-only reader. (1) In game/src/combat/system.js createPlayer(), build the move table from game/data/combat/movesets/*.json via MovesetLibrary rather than from game/data/combat/spine/*.json, so setLoadout({weapon:'ssw_garrison_sword'}) resolves. (2) In game/src/combat/player.js, dispatch the attack buttons through MovesetLibrary.resolveSlot(weaponId, button, ctx) with ctx carrying state, state_frame, roll_tier, stance, offhand and descending/fall_height, and delete the code path that falls through to the standing light attack when no window matches — a missed window must produce nothing, per RI-WPN04 §B rule 2. (3) Add player.anim_slot, player.hitstop_f and player.weapon_tip to the frame record and a block_success event to the trace vocabulary. (4) Restore the R2 active/recovery split of the seven spine classes to game/data/combat/frames.json, which RI-WPN02 §B's authority note makes binding. (5) Repair the 82 weapons whose chains_to points at a slot they do not declare (50x 2h.r2 -> 2h.r2.follow, 32x r2 -> r2.follow, 4x r1.3 -> r1.4).",
+      "remedy_acceptance": "node tools/harness/critic-w1-10a.mjs reports equipped_ok 87/87 and classes_with_zero_equippable []; node tools/harness/critic-w1-10c.mjs reports CFS_live == 1.0000 with a `contextual` band exactly on RI-WPN04 §B's frame windows for all four equip-load tiers; node tools/harness/critic-w1-10f.mjs reports M6 agreement == 1.0000 including the anim id; and the observed distinct_anim per weapon is >= 18.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-10/probeA-live-runtime.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

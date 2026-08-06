@@ -1,0 +1,143 @@
+{
+ "probe": "G — offhand configs, verb sets, answer matrix",
+ "build": {
+  "name": "elder-souls",
+  "version": "0.2.0-w1-09",
+  "commit": null,
+  "builtAt": null,
+  "harnessVersion": 2,
+  "fixedStepHz": 60,
+  "dataRoot": "game/data",
+  "piece": "W1-09 — combat core (on W1-00’s harness)",
+  "threeVersion": "180",
+  "dataFiles": 288
+ },
+ "scenario_fixtures": {
+  "wpn-dummy-arena": "ABSENT: loadState('wpn-dummy-arena'): no such named state. Known: arena_champion, arena_duel, aren",
+  "wpn-material-range": "ABSENT: loadState('wpn-material-range'): no such named state. Known: arena_champion, arena_duel, a",
+  "wpn-loadout-o1_sword_shield": "ABSENT: loadState('wpn-loadout-o1_sword_shield'): no such named state. Known: arena_champion, aren",
+  "wpn-loadout-o2_dual": "ABSENT: loadState('wpn-loadout-o2_dual'): no such named state. Known: arena_champion, arena_duel, ",
+  "wpn-loadout-o3_twohand": "ABSENT: loadState('wpn-loadout-o3_twohand'): no such named state. Known: arena_champion, arena_due",
+  "arena_probe": "exists"
+ },
+ "offhand_setLoadout": {
+  "{\"shield\":\"marsh_oak_medium\"}": {
+   "weapon": "straight-sword",
+   "weapon_class": "straight_sword",
+   "shield": "marsh_oak_medium",
+   "stamina_max": 120,
+   "tier": "LIGHT"
+  },
+  "{\"shield\":null}": {
+   "weapon": "straight-sword",
+   "weapon_class": "straight_sword",
+   "shield": null,
+   "stamina_max": 120,
+   "tier": "LIGHT"
+  },
+  "{\"shield\":\"greatshield\"}": "THREW: Cannot read properties of undefined (reading 'class')",
+  "{\"offhand\":\"dagger\"}": "THREW: Cannot read properties of undefined (reading 'class')",
+  "{\"offhand\":null}": "THREW: Cannot read properties of undefined (reading 'class')",
+  "{\"stance\":\"two_hand\"}": "THREW: Cannot read properties of undefined (reading 'class')",
+  "{\"left\":\"buckler\"}": "THREW: Cannot read properties of undefined (reading 'class')"
+ },
+ "verb_sets": {
+  "o1_sword_shield": {
+   "verbs": [
+    "block:BLOCK_HOLD",
+    "heavy:ATK_ACTIVE",
+    "heavy:ATK_RECOVER",
+    "heavy:ATK_STARTUP",
+    "jump:JUMP_AIR",
+    "jump:JUMP_LAND",
+    "jump:JUMP_RISE",
+    "light:ATK_ACTIVE",
+    "light:ATK_RECOVER",
+    "light:ATK_STARTUP",
+    "parry:PARRY_ACTIVE",
+    "parry:PARRY_RECOVER",
+    "roll:BACKSTEP",
+    "swap_left:SWAP",
+    "swap_right:SWAP",
+    "two_hand:STANCE_SWITCH",
+    "use_item:HEAL_ACTIVE",
+    "use_item:HEAL_RECOVER",
+    "use_item:HEAL_STARTUP"
+   ]
+  },
+  "o3_twohand_attempt": {
+   "verbs": [
+    "block:BLOCK_HOLD",
+    "heavy:ATK_ACTIVE",
+    "heavy:ATK_RECOVER",
+    "heavy:ATK_STARTUP",
+    "jump:JUMP_AIR",
+    "jump:JUMP_LAND",
+    "jump:JUMP_RISE",
+    "light:ATK_ACTIVE",
+    "light:ATK_RECOVER",
+    "light:ATK_STARTUP",
+    "parry:PARRY_ACTIVE",
+    "parry:PARRY_RECOVER",
+    "roll:BACKSTEP",
+    "swap_left:SWAP",
+    "swap_right:SWAP",
+    "two_hand:STANCE_SWITCH",
+    "use_item:HEAL_ACTIVE",
+    "use_item:HEAL_RECOVER",
+    "use_item:HEAL_STARTUP"
+   ]
+  }
+ },
+ "answer_matrix_join": {
+  "placement_dump_paths_checked": [
+   {
+    "path": "game/data/combat/placement.json",
+    "exists": false
+   },
+   {
+    "path": "game/data/world/encounters.json",
+    "exists": true
+   },
+   {
+    "path": "game/data/combat/encounters.json",
+    "exists": false
+   }
+  ],
+  "found": null
+ },
+ "live_distinct_verbs": {
+  "distinct_attack_anims_across_the_whole_kit": 28,
+  "per_weapon": 4,
+  "list": [
+   "axe::axe_2h_r1",
+   "axe::axe_2h_r2",
+   "axe::axe_r1",
+   "axe::axe_r2",
+   "dagger::dagger_2h_r1",
+   "dagger::dagger_2h_r2",
+   "dagger::dagger_r1",
+   "dagger::dagger_r2",
+   "greatsword::greatsword_2h_r1",
+   "greatsword::greatsword_2h_r2",
+   "greatsword::greatsword_r1",
+   "greatsword::greatsword_r2",
+   "halberd::halberd_2h_r1",
+   "halberd::halberd_2h_r2",
+   "halberd::halberd_r1",
+   "halberd::halberd_r2",
+   "spear::spear_2h_r1",
+   "spear::spear_2h_r2",
+   "spear::spear_r1",
+   "spear::spear_r2",
+   "straight-sword::straight_sword_2h_r1",
+   "straight-sword::straight_sword_2h_r2",
+   "straight-sword::straight_sword_r1",
+   "straight-sword::straight_sword_r2",
+   "ultra-greatsword::ultra_greatsword_2h_r1",
+   "ultra-greatsword::ultra_greatsword_2h_r2",
+   "ultra-greatsword::ultra_greatsword_r1",
+   "ultra-greatsword::ultra_greatsword_r2"
+  ]
+ }
+}

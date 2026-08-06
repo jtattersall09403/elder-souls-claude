@@ -1,0 +1,545 @@
+{
+ "probe": "F — AR-1 / stance / M6",
+ "build": {
+  "name": "elder-souls",
+  "version": "0.2.0-w1-09",
+  "commit": null,
+  "builtAt": null,
+  "harnessVersion": 2,
+  "fixedStepHz": 60,
+  "dataRoot": "game/data",
+  "piece": "W1-09 — combat core (on W1-00’s harness)",
+  "threeVersion": "180",
+  "dataFiles": 288
+ },
+ "ar1_damage": {
+  "swings": 50,
+  "hits_recorded": 0,
+  "damage_values": [],
+  "mean": 0,
+  "stdev": 0,
+  "rng_draws_per_run": [
+   0
+  ]
+ },
+ "stance": {
+  "bare_two_hand_tap": [
+   {
+    "f": 1,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   },
+   {
+    "f": 5,
+    "state": "STANCE_SWITCH",
+    "anim": "stance_to_two_hand",
+    "phase": "recovery"
+   },
+   {
+    "f": 41,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   }
+  ],
+  "two_hand_during_startup": [
+   {
+    "f": 1,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   },
+   {
+    "f": 5,
+    "state": "ATK_STARTUP",
+    "anim": "straight_sword_r1",
+    "phase": "windup"
+   },
+   {
+    "f": 29,
+    "state": "ATK_ACTIVE",
+    "anim": "straight_sword_r1",
+    "phase": "active"
+   },
+   {
+    "f": 39,
+    "state": "ATK_RECOVER",
+    "anim": "straight_sword_r1",
+    "phase": "recovery"
+   },
+   {
+    "f": 79,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   }
+  ],
+  "two_hand_during_active": [
+   {
+    "f": 1,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   },
+   {
+    "f": 5,
+    "state": "ATK_STARTUP",
+    "anim": "straight_sword_r1",
+    "phase": "windup"
+   },
+   {
+    "f": 29,
+    "state": "ATK_ACTIVE",
+    "anim": "straight_sword_r1",
+    "phase": "active"
+   },
+   {
+    "f": 39,
+    "state": "ATK_RECOVER",
+    "anim": "straight_sword_r1",
+    "phase": "recovery"
+   },
+   {
+    "f": 79,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   }
+  ],
+  "two_hand_during_roll": [
+   {
+    "f": 1,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   },
+   {
+    "f": 5,
+    "state": "BACKSTEP",
+    "anim": "backstep_light",
+    "phase": "windup"
+   },
+   {
+    "f": 47,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   }
+  ],
+  "roll_during_attack_startup": [
+   {
+    "f": 1,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   },
+   {
+    "f": 5,
+    "state": "ATK_STARTUP",
+    "anim": "straight_sword_r1",
+    "phase": "windup"
+   },
+   {
+    "f": 29,
+    "state": "ATK_ACTIVE",
+    "anim": "straight_sword_r1",
+    "phase": "active"
+   },
+   {
+    "f": 39,
+    "state": "ATK_RECOVER",
+    "anim": "straight_sword_r1",
+    "phase": "recovery"
+   },
+   {
+    "f": 79,
+    "state": "IDLE",
+    "anim": "idle",
+    "phase": "none"
+   }
+  ]
+ },
+ "m6": {
+  "rows": [
+   {
+    "live_weapon": "dagger",
+    "roster_baseline": "dgr_shell_knife",
+    "slot": "r1.1",
+    "declared_anim": "clip_w_dgr_shell_knife_r1_1",
+    "observed_anim": "dagger_r1",
+    "fields": {
+     "startup_f": {
+      "declared": 12,
+      "observed": 12,
+      "match": true
+     },
+     "active_f": {
+      "declared": 6,
+      "observed": 6,
+      "match": true
+     },
+     "recovery_f": {
+      "declared": 24,
+      "observed": 24,
+      "match": true
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "dagger",
+    "roster_baseline": "dgr_shell_knife",
+    "slot": "r2",
+    "declared_anim": "clip_w_dgr_shell_knife_r2",
+    "observed_anim": "dagger_r2",
+    "fields": {
+     "startup_f": {
+      "declared": 28,
+      "observed": 28,
+      "match": true
+     },
+     "active_f": {
+      "declared": 7,
+      "observed": 6,
+      "match": false
+     },
+     "recovery_f": {
+      "declared": 43,
+      "observed": 44,
+      "match": false
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "straight-sword",
+    "roster_baseline": "ssw_garrison_sword",
+    "slot": "r1.1",
+    "declared_anim": "clip_w_ssw_garrison_sword_r1_1",
+    "observed_anim": "straight_sword_r1",
+    "fields": {
+     "startup_f": {
+      "declared": 24,
+      "observed": 24,
+      "match": true
+     },
+     "active_f": {
+      "declared": 10,
+      "observed": 10,
+      "match": true
+     },
+     "recovery_f": {
+      "declared": 40,
+      "observed": 40,
+      "match": true
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "straight-sword",
+    "roster_baseline": "ssw_garrison_sword",
+    "slot": "r2",
+    "declared_anim": "clip_w_ssw_garrison_sword_r2",
+    "observed_anim": "straight_sword_r2",
+    "fields": {
+     "startup_f": {
+      "declared": 50,
+      "observed": 50,
+      "match": true
+     },
+     "active_f": {
+      "declared": 12,
+      "observed": 12,
+      "match": true
+     },
+     "recovery_f": {
+      "declared": 60,
+      "observed": 60,
+      "match": true
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "spear",
+    "roster_baseline": "spr_fishers_gig",
+    "slot": "r1.1",
+    "declared_anim": "clip_w_spr_fishers_gig_r1_1",
+    "observed_anim": "spear_r1",
+    "fields": {
+     "startup_f": {
+      "declared": 28,
+      "observed": 28,
+      "match": true
+     },
+     "active_f": {
+      "declared": 8,
+      "observed": 8,
+      "match": true
+     },
+     "recovery_f": {
+      "declared": 44,
+      "observed": 44,
+      "match": true
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "spear",
+    "roster_baseline": "spr_fishers_gig",
+    "slot": "r2",
+    "declared_anim": "clip_w_spr_fishers_gig_r2",
+    "observed_anim": "spear_r2",
+    "fields": {
+     "startup_f": {
+      "declared": 54,
+      "observed": 54,
+      "match": true
+     },
+     "active_f": {
+      "declared": 9,
+      "observed": 10,
+      "match": false
+     },
+     "recovery_f": {
+      "declared": 65,
+      "observed": 64,
+      "match": false
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "axe",
+    "roster_baseline": "axe_shell_splitter",
+    "slot": "r1.1",
+    "declared_anim": "clip_w_axe_shell_splitter_r1_1",
+    "observed_anim": "axe_r1",
+    "fields": {
+     "startup_f": {
+      "declared": 32,
+      "observed": 32,
+      "match": true
+     },
+     "active_f": {
+      "declared": 12,
+      "observed": 12,
+      "match": true
+     },
+     "recovery_f": {
+      "declared": 48,
+      "observed": 48,
+      "match": true
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "axe",
+    "roster_baseline": "axe_shell_splitter",
+    "slot": "r2",
+    "declared_anim": "clip_w_axe_shell_splitter_r2",
+    "observed_anim": "axe_r2",
+    "fields": {
+     "startup_f": {
+      "declared": 60,
+      "observed": 60,
+      "match": true
+     },
+     "active_f": {
+      "declared": 13,
+      "observed": 14,
+      "match": false
+     },
+     "recovery_f": {
+      "declared": 73,
+      "observed": 72,
+      "match": false
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "halberd",
+    "roster_baseline": "hlb_garrison_bill",
+    "slot": "r1.1",
+    "declared_anim": "clip_w_hlb_garrison_bill_r1_1",
+    "observed_anim": "halberd_r1",
+    "fields": {
+     "startup_f": {
+      "declared": 38,
+      "observed": 38,
+      "match": true
+     },
+     "active_f": {
+      "declared": 14,
+      "observed": 14,
+      "match": true
+     },
+     "recovery_f": {
+      "declared": 56,
+      "observed": 56,
+      "match": true
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "halberd",
+    "roster_baseline": "hlb_garrison_bill",
+    "slot": "r2",
+    "declared_anim": "clip_w_hlb_garrison_bill_r2",
+    "observed_anim": "halberd_r2",
+    "fields": {
+     "startup_f": {
+      "declared": 68,
+      "observed": 68,
+      "match": true
+     },
+     "active_f": {
+      "declared": 15,
+      "observed": 16,
+      "match": false
+     },
+     "recovery_f": {
+      "declared": 85,
+      "observed": 84,
+      "match": false
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "greatsword",
+    "roster_baseline": "gsw_memorial_blade",
+    "slot": "r1.1",
+    "declared_anim": "clip_w_gsw_memorial_blade_r1_1",
+    "observed_anim": "greatsword_r1",
+    "fields": {
+     "startup_f": {
+      "declared": 44,
+      "observed": 44,
+      "match": true
+     },
+     "active_f": {
+      "declared": 16,
+      "observed": 16,
+      "match": true
+     },
+     "recovery_f": {
+      "declared": 66,
+      "observed": 66,
+      "match": true
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "greatsword",
+    "roster_baseline": "gsw_memorial_blade",
+    "slot": "r2",
+    "declared_anim": "clip_w_gsw_memorial_blade_r2",
+    "observed_anim": "greatsword_r2",
+    "fields": {
+     "startup_f": {
+      "declared": 80,
+      "observed": 80,
+      "match": true
+     },
+     "active_f": {
+      "declared": 17,
+      "observed": 20,
+      "match": false
+     },
+     "recovery_f": {
+      "declared": 99,
+      "observed": 96,
+      "match": false
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "ultra-greatsword",
+    "roster_baseline": "ugs_golem_sword",
+    "slot": "r1.1",
+    "declared_anim": "clip_w_ugs_golem_sword_r1_1",
+    "observed_anim": "ultra_greatsword_r1",
+    "fields": {
+     "startup_f": {
+      "declared": 58,
+      "observed": 58,
+      "match": true
+     },
+     "active_f": {
+      "declared": 20,
+      "observed": 20,
+      "match": true
+     },
+     "recovery_f": {
+      "declared": 88,
+      "observed": 88,
+      "match": true
+     }
+    },
+    "anim_match": false
+   },
+   {
+    "live_weapon": "ultra-greatsword",
+    "roster_baseline": "ugs_golem_sword",
+    "slot": "r2",
+    "declared_anim": "clip_w_ugs_golem_sword_r2",
+    "observed_anim": "ultra_greatsword_r2",
+    "fields": {
+     "startup_f": {
+      "declared": 104,
+      "observed": 104,
+      "match": true
+     },
+     "active_f": {
+      "declared": 21,
+      "observed": 24,
+      "match": false
+     },
+     "recovery_f": {
+      "declared": 127,
+      "observed": 124,
+      "match": false
+     }
+    },
+    "anim_match": false
+   }
+  ],
+  "fields_total": 56,
+  "fields_matching": 30,
+  "agreement": 0.5357
+ },
+ "determinism": {
+  "sigs": [
+   {
+    "seed": 1337,
+    "sig": "3641:74"
+   },
+   {
+    "seed": 1,
+    "sig": "3641:74"
+   },
+   {
+    "seed": 2,
+    "sig": "3641:74"
+   },
+   {
+    "seed": 99,
+    "sig": "3641:74"
+   },
+   {
+    "seed": 424242,
+    "sig": "3641:74"
+   }
+  ],
+  "identical": true
+ }
+}

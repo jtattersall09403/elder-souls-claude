@@ -42,16 +42,16 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-06 20:25:36Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-06 20:49:22Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
 <div class="grid">
-  <div class="card"><div class="n">138</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">140</div><div class="l">Reference items</div></div>
   <div class="card"><div class="n">466</div><div class="l">Subsystems judged</div></div>
-  <div class="card"><div class="n">4</div><div class="l">Verdicts filed</div></div>
-  <div class="card"><div class="n bad">0/4</div><div class="l">Verdicts passing</div></div>
-  <div class="card"><div class="n warn">4</div><div class="l">Open gaps</div></div>
+  <div class="card"><div class="n">8</div><div class="l">Verdicts filed</div></div>
+  <div class="card"><div class="n bad">0/8</div><div class="l">Verdicts passing</div></div>
+  <div class="card"><div class="n warn">7</div><div class="l">Open gaps</div></div>
   <div class="card"><div class="n">96,608</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">21</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">1,035</div><div class="l">Dialogue words</div></div>
@@ -109,8 +109,8 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>EXP</code></td><td></td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
 <tr><td><code>JRN</code></td><td></td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
 <tr><td><code>LOR</code></td><td>Lore &amp; canon</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
-<tr><td><code>MAG</code></td><td></td><td>5</td><td style="width:40%"><div class="bar"><i style="width:60%"></i></div></td></tr>
-<tr><td><code>MTH</code></td><td>Measurement</td><td>5</td><td style="width:40%"><div class="bar"><i style="width:60%"></i></div></td></tr>
+<tr><td><code>MAG</code></td><td></td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
+<tr><td><code>MTH</code></td><td>Measurement</td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
 <tr><td><code>PLT</code></td><td></td><td>3</td><td style="width:40%"><div class="bar"><i style="width:36%"></i></div></td></tr>
 <tr><td><code>PRG</code></td><td>Progression &amp; economy</td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>QST</code></td><td>Quests &amp; factions</td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
@@ -197,11 +197,13 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>RI-MAG03</code></td><td>Spellmaking and enchanting — the maker's systems, the soul-gem ruling, and eleven sanctioned breakages</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>magic.spellmaking.combination magic.spellmaking.cost magic.enchanting.items magic.enchanting.soulgems magic.gating.skills magic.economy.prices magic.diegesis.lore</code></td></tr>
 <tr><td><code>RI-MAG04</code></td><td>Magic as a quest solution — the required census, the diversity rule, and the AR-3 crossing</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>magic.quests.solutions magic.effects.utility quests.resolution.noncombat magic.effects.traversal</code></td></tr>
 <tr><td><code>RI-MAG05</code></td><td>Magic VFX — spell design language (ART) and particle quality (FIDELITY), declared separately</td><td>image</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>magic.vfx.artdirection magic.vfx.fidelity render.fidelity.vfx render.art.weirdness</code></td></tr>
+<tr><td><code>RI-MAG06</code></td><td>The effect-behaviour census — an effect is what it does, not what its record says it does</td><td>trace</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>magic.effects.catalogue magic.effects.parameters magic.effects.utility magic.effects.traversal</code></td></tr>
 <tr><td><code>RI-MTH01</code></td><td>The harness API surface — what a critic can and cannot measure</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>engine.harness engine.loop engine.input engine.state engine.camera engine.build</code></td></tr>
 <tr><td><code>RI-MTH02</code></td><td>Determinism and reproducibility as a judged property</td><td>trace</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>engine.loop engine.rng engine.physics engine.animation engine.ai engine.state</code></td></tr>
 <tr><td><code>RI-MTH03</code></td><td>The blind-comparison protocol</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>process.critic.discipline process.verdict.format</code></td></tr>
 <tr><td><code>RI-MTH04</code></td><td>Measurement integrity — proving the critic actually ran the thing</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>process.critic.discipline process.verdict.format</code></td></tr>
 <tr><td><code>RI-MTH05</code></td><td>Corpus coherence as a judged property — the corpus must pass its own audit</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>measured</td><td>&mdash;</td><td><code>process.critic.discipline process.verdict.format coherence.naming.consistency coherence.lore.consistency coherence.systems.composition</code></td></tr>
+<tr><td><code>RI-MTH06</code></td><td>The two missing instruments — build viability, and a journey you can actually record</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>process.critic.discipline process.verdict.format</code></td></tr>
 <tr><td><code>RI-PLT01</code></td><td>The frame budget as a combat-correctness requirement — and what may honestly be measured on a software rasteriser</td><td>number</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>platform.perf.framerate platform.perf.simtime platform.perf.allocation platform.determinism.harness</code></td></tr>
 <tr><td><code>RI-PLT02</code></td><td>Memory, asset budgets, and the ten-minute traversal leak test — sized for a phone</td><td>number</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>platform.perf.memory platform.asset.budget</code></td></tr>
 <tr><td><code>RI-PLT03</code></td><td>Load, streaming, and hitches — time to first playable, silent region borders, and a hitch census</td><td>number</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>platform.load.streaming platform.load.ttfp platform.load.hitches</code></td></tr>
@@ -269,11 +271,18 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td>1</td><td>w1-00-r2</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>w1-00</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>W1-01</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
+<tr><td>1</td><td>w1-07</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>W1-09</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
+<tr><td>1</td><td>W1-10</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
+<tr><td>1</td><td>W1-14</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
+<tr><td></td><td>W1-14</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
 </table>
 
 <h2>Open gap ledger</h2>
 <table><tr><th>Gap</th><th>Subsystem</th><th>Remedy</th><th>Status</th></tr>
+<tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
+<tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
+<tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>

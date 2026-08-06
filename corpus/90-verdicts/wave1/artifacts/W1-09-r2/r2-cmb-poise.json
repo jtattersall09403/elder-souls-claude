@@ -1,0 +1,182 @@
+{
+ "m3_medium": {
+  "stamina_at_impact": 0,
+  "exhausted": true,
+  "state_runs": [
+   [
+    "IDLE",
+    80
+   ],
+   [
+    "STAGGER",
+    44
+   ],
+   [
+    "IDLE",
+    136
+   ]
+  ],
+  "spec_f": 44
+ },
+ "m3_heavy": [
+  {
+   "weapon": "greatsword",
+   "stagger_lengths_f": [],
+   "spec_f": 64
+  },
+  {
+   "weapon": "ultra-greatsword",
+   "stagger_lengths_f": [],
+   "spec_f": 64
+  }
+ ],
+ "stunlock": {
+  "enemy_state_runs": [
+   [
+    "IDLE",
+    20
+   ],
+   [
+    "REPOSITION",
+    53
+   ],
+   [
+    "IDLE",
+    157
+   ],
+   [
+    "REPOSITION",
+    470
+   ]
+  ],
+  "hits_landed": 1
+ },
+ "m4_hyperarmour": [
+  {
+   "case": "hit inside the HA window",
+   "press_f": 29,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "staggered": false,
+   "hp": 524
+  },
+  {
+   "case": "hit outside it",
+   "press_f": -31,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "staggered": false,
+   "hp": 620
+  }
+ ],
+ "m5_backstab": [
+  {
+   "case": "behind, 0.9 m",
+   "crit": true,
+   "states": [
+    "IDLE",
+    "CRIT_ATTACK"
+   ],
+   "damage": 389.4
+  },
+  {
+   "case": "behind, 1.6 m",
+   "crit": false,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "damage": 118
+  },
+  {
+   "case": "side, 0.9 m",
+   "crit": false,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "damage": 118
+  },
+  {
+   "case": "front, 0.9 m",
+   "crit": false,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "damage": 118
+  }
+ ],
+ "m6_parry": [
+  {
+   "press_lead_f": 0,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0
+  },
+  {
+   "press_lead_f": 6,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0
+  },
+  {
+   "press_lead_f": 12,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0
+  },
+  {
+   "press_lead_f": 18,
+   "parried": true,
+   "parried_len_f": 56,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0
+  },
+  {
+   "press_lead_f": 24,
+   "parried": true,
+   "parried_len_f": 56,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0
+  },
+  {
+   "press_lead_f": 30,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0
+  },
+  {
+   "press_lead_f": 40,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0
+  }
+ ]
+}

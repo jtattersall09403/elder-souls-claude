@@ -1,0 +1,1024 @@
+{
+  "generated": "2026-08-06T20:33:41.601Z",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "probes": {
+    "reach": {
+      "moves": {
+        "chop": {
+          "hit_distances": [
+            1.2,
+            1.3,
+            1.4,
+            1.5,
+            1.6,
+            1.7,
+            1.8,
+            1.9,
+            2,
+            2.1,
+            2.2,
+            2.3,
+            2.4,
+            2.5,
+            2.6,
+            2.7,
+            2.8,
+            2.9,
+            3,
+            3.1,
+            3.2,
+            3.3,
+            3.4,
+            3.5,
+            3.6
+          ],
+          "min_hit_distance_m": 1.2,
+          "max_hit_distance_m": 3.6,
+          "misses_inside_min": [
+            0,
+            0.1,
+            0.2,
+            0.3,
+            0.4,
+            0.5,
+            0.6,
+            0.7,
+            0.8,
+            0.9,
+            1,
+            1.1
+          ],
+          "contiguous": true,
+          "row": [
+            {
+              "d": 0,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0,
+              "active_frames": 10
+            },
+            {
+              "d": 0.1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.003,
+              "active_frames": 10
+            },
+            {
+              "d": 0.2,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.003,
+              "active_frames": 10
+            },
+            {
+              "d": 0.3,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.001,
+              "active_frames": 10
+            },
+            {
+              "d": 0.4,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.016,
+              "active_frames": 10
+            },
+            {
+              "d": 0.5,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.044,
+              "active_frames": 10
+            },
+            {
+              "d": 0.6,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.029,
+              "active_frames": 10
+            },
+            {
+              "d": 0.7,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.071,
+              "active_frames": 10
+            },
+            {
+              "d": 0.8,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.035,
+              "active_frames": 10
+            },
+            {
+              "d": 0.9,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.065,
+              "active_frames": 10
+            },
+            {
+              "d": 1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.008,
+              "active_frames": 10
+            },
+            {
+              "d": 1.1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.009,
+              "active_frames": 10
+            },
+            {
+              "d": 1.2,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0,
+              "active_frames": 15
+            },
+            {
+              "d": 1.3,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.1,
+              "active_frames": 15
+            },
+            {
+              "d": 1.4,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.2,
+              "active_frames": 15
+            },
+            {
+              "d": 1.5,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.3,
+              "active_frames": 15
+            },
+            {
+              "d": 1.6,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.4,
+              "active_frames": 15
+            },
+            {
+              "d": 1.7,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.5,
+              "active_frames": 15
+            },
+            {
+              "d": 1.8,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.6,
+              "active_frames": 15
+            },
+            {
+              "d": 1.9,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.7,
+              "active_frames": 15
+            },
+            {
+              "d": 2,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.8,
+              "active_frames": 15
+            },
+            {
+              "d": 2.1,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 0.9,
+              "active_frames": 15
+            },
+            {
+              "d": 2.2,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1,
+              "active_frames": 15
+            },
+            {
+              "d": 2.3,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.1,
+              "active_frames": 15
+            },
+            {
+              "d": 2.4,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.2,
+              "active_frames": 15
+            },
+            {
+              "d": 2.5,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.3,
+              "active_frames": 15
+            },
+            {
+              "d": 2.6,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.4,
+              "active_frames": 15
+            },
+            {
+              "d": 2.7,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.5,
+              "active_frames": 15
+            },
+            {
+              "d": 2.8,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.6,
+              "active_frames": 15
+            },
+            {
+              "d": 2.9,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.7,
+              "active_frames": 15
+            },
+            {
+              "d": 3,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.8,
+              "active_frames": 15
+            },
+            {
+              "d": 3.1,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 1.9,
+              "active_frames": 15
+            },
+            {
+              "d": 3.2,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 2,
+              "active_frames": 15
+            },
+            {
+              "d": 3.3,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 2.1,
+              "active_frames": 15
+            },
+            {
+              "d": 3.4,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 2.2,
+              "active_frames": 15
+            },
+            {
+              "d": 3.5,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 2.3,
+              "active_frames": 15
+            },
+            {
+              "d": 3.6,
+              "hit": true,
+              "dmg": 96,
+              "min_dist_m": 2.4,
+              "active_frames": 15
+            },
+            {
+              "d": 3.7,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.5,
+              "active_frames": 10
+            },
+            {
+              "d": 3.8,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.6,
+              "active_frames": 10
+            },
+            {
+              "d": 3.9,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.7,
+              "active_frames": 10
+            },
+            {
+              "d": 4,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.8,
+              "active_frames": 10
+            }
+          ]
+        },
+        "thrust": {
+          "hit_distances": [
+            1.6,
+            1.7,
+            1.8,
+            1.9,
+            2,
+            2.1,
+            2.2,
+            2.3,
+            2.4,
+            2.5,
+            2.6,
+            2.7,
+            2.8,
+            2.9,
+            3,
+            3.1,
+            3.2,
+            3.3,
+            3.4,
+            3.5,
+            3.6,
+            3.7,
+            3.8,
+            3.9,
+            4
+          ],
+          "min_hit_distance_m": 1.6,
+          "max_hit_distance_m": 4,
+          "misses_inside_min": [
+            0,
+            0.1,
+            0.2,
+            0.3,
+            0.4,
+            0.5,
+            0.6,
+            0.7,
+            0.8,
+            0.9,
+            1,
+            1.1,
+            1.2,
+            1.3,
+            1.4,
+            1.5
+          ],
+          "contiguous": true,
+          "row": [
+            {
+              "d": 0,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0,
+              "active_frames": 8
+            },
+            {
+              "d": 0.1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.008,
+              "active_frames": 8
+            },
+            {
+              "d": 0.2,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.01,
+              "active_frames": 8
+            },
+            {
+              "d": 0.3,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.001,
+              "active_frames": 8
+            },
+            {
+              "d": 0.4,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.01,
+              "active_frames": 8
+            },
+            {
+              "d": 0.5,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.008,
+              "active_frames": 8
+            },
+            {
+              "d": 0.6,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.056,
+              "active_frames": 8
+            },
+            {
+              "d": 0.7,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.052,
+              "active_frames": 8
+            },
+            {
+              "d": 0.8,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.048,
+              "active_frames": 8
+            },
+            {
+              "d": 0.9,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.148,
+              "active_frames": 8
+            },
+            {
+              "d": 1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.157,
+              "active_frames": 8
+            },
+            {
+              "d": 1.1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.057,
+              "active_frames": 8
+            },
+            {
+              "d": 1.2,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.043,
+              "active_frames": 8
+            },
+            {
+              "d": 1.3,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.13,
+              "active_frames": 8
+            },
+            {
+              "d": 1.4,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.03,
+              "active_frames": 8
+            },
+            {
+              "d": 1.5,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.014,
+              "active_frames": 8
+            },
+            {
+              "d": 1.6,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0,
+              "active_frames": 12
+            },
+            {
+              "d": 1.7,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.1,
+              "active_frames": 12
+            },
+            {
+              "d": 1.8,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.2,
+              "active_frames": 12
+            },
+            {
+              "d": 1.9,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.3,
+              "active_frames": 12
+            },
+            {
+              "d": 2,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.4,
+              "active_frames": 12
+            },
+            {
+              "d": 2.1,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.5,
+              "active_frames": 12
+            },
+            {
+              "d": 2.2,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.6,
+              "active_frames": 12
+            },
+            {
+              "d": 2.3,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.7,
+              "active_frames": 12
+            },
+            {
+              "d": 2.4,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.8,
+              "active_frames": 12
+            },
+            {
+              "d": 2.5,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 0.9,
+              "active_frames": 12
+            },
+            {
+              "d": 2.6,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1,
+              "active_frames": 12
+            },
+            {
+              "d": 2.7,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.1,
+              "active_frames": 12
+            },
+            {
+              "d": 2.8,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.2,
+              "active_frames": 12
+            },
+            {
+              "d": 2.9,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.3,
+              "active_frames": 12
+            },
+            {
+              "d": 3,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.4,
+              "active_frames": 12
+            },
+            {
+              "d": 3.1,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.5,
+              "active_frames": 12
+            },
+            {
+              "d": 3.2,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.6,
+              "active_frames": 12
+            },
+            {
+              "d": 3.3,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.7,
+              "active_frames": 12
+            },
+            {
+              "d": 3.4,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.8,
+              "active_frames": 12
+            },
+            {
+              "d": 3.5,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 1.9,
+              "active_frames": 12
+            },
+            {
+              "d": 3.6,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 2,
+              "active_frames": 12
+            },
+            {
+              "d": 3.7,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 2.1,
+              "active_frames": 12
+            },
+            {
+              "d": 3.8,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 2.2,
+              "active_frames": 12
+            },
+            {
+              "d": 3.9,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 2.3,
+              "active_frames": 12
+            },
+            {
+              "d": 4,
+              "hit": true,
+              "dmg": 75,
+              "min_dist_m": 2.4,
+              "active_frames": 12
+            }
+          ]
+        },
+        "combo_a": {
+          "hit_distances": [
+            1.1,
+            1.2,
+            1.3,
+            1.4,
+            1.5,
+            1.6,
+            1.7,
+            1.8,
+            1.9,
+            2,
+            2.1,
+            2.2,
+            2.3,
+            2.4,
+            2.5,
+            2.6,
+            2.7,
+            2.8,
+            2.9
+          ],
+          "min_hit_distance_m": 1.1,
+          "max_hit_distance_m": 2.9,
+          "misses_inside_min": [
+            0,
+            0.1,
+            0.2,
+            0.3,
+            0.4,
+            0.5,
+            0.6,
+            0.7,
+            0.8,
+            0.9,
+            1
+          ],
+          "contiguous": true,
+          "row": [
+            {
+              "d": 0,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0,
+              "active_frames": 8
+            },
+            {
+              "d": 0.1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.005,
+              "active_frames": 8
+            },
+            {
+              "d": 0.2,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.009,
+              "active_frames": 8
+            },
+            {
+              "d": 0.3,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.003,
+              "active_frames": 8
+            },
+            {
+              "d": 0.4,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.026,
+              "active_frames": 8
+            },
+            {
+              "d": 0.5,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.044,
+              "active_frames": 8
+            },
+            {
+              "d": 0.6,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.055,
+              "active_frames": 8
+            },
+            {
+              "d": 0.7,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.015,
+              "active_frames": 8
+            },
+            {
+              "d": 0.8,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.006,
+              "active_frames": 8
+            },
+            {
+              "d": 0.9,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0,
+              "active_frames": 8
+            },
+            {
+              "d": 1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 0.1,
+              "active_frames": 8
+            },
+            {
+              "d": 1.1,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 0.2,
+              "active_frames": 12
+            },
+            {
+              "d": 1.2,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 0.3,
+              "active_frames": 12
+            },
+            {
+              "d": 1.3,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 0.4,
+              "active_frames": 12
+            },
+            {
+              "d": 1.4,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 0.5,
+              "active_frames": 12
+            },
+            {
+              "d": 1.5,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 0.6,
+              "active_frames": 12
+            },
+            {
+              "d": 1.6,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 0.7,
+              "active_frames": 12
+            },
+            {
+              "d": 1.7,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 0.8,
+              "active_frames": 12
+            },
+            {
+              "d": 1.8,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 0.9,
+              "active_frames": 12
+            },
+            {
+              "d": 1.9,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1,
+              "active_frames": 12
+            },
+            {
+              "d": 2,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.1,
+              "active_frames": 12
+            },
+            {
+              "d": 2.1,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.2,
+              "active_frames": 12
+            },
+            {
+              "d": 2.2,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.3,
+              "active_frames": 12
+            },
+            {
+              "d": 2.3,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.4,
+              "active_frames": 12
+            },
+            {
+              "d": 2.4,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.5,
+              "active_frames": 12
+            },
+            {
+              "d": 2.5,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.6,
+              "active_frames": 12
+            },
+            {
+              "d": 2.6,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.7,
+              "active_frames": 12
+            },
+            {
+              "d": 2.7,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.8,
+              "active_frames": 12
+            },
+            {
+              "d": 2.8,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 1.9,
+              "active_frames": 12
+            },
+            {
+              "d": 2.9,
+              "hit": true,
+              "dmg": 63,
+              "min_dist_m": 2,
+              "active_frames": 12
+            },
+            {
+              "d": 3,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.1,
+              "active_frames": 8
+            },
+            {
+              "d": 3.1,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.2,
+              "active_frames": 8
+            },
+            {
+              "d": 3.2,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.3,
+              "active_frames": 8
+            },
+            {
+              "d": 3.3,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.4,
+              "active_frames": 8
+            },
+            {
+              "d": 3.4,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.5,
+              "active_frames": 8
+            },
+            {
+              "d": 3.5,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.6,
+              "active_frames": 8
+            },
+            {
+              "d": 3.6,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.7,
+              "active_frames": 8
+            },
+            {
+              "d": 3.7,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.8,
+              "active_frames": 8
+            },
+            {
+              "d": 3.8,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 2.9,
+              "active_frames": 8
+            },
+            {
+              "d": 3.9,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 3,
+              "active_frames": 8
+            },
+            {
+              "d": 4,
+              "hit": false,
+              "dmg": 0,
+              "min_dist_m": 3.1,
+              "active_frames": 8
+            }
+          ]
+        }
+      },
+      "note": "player stationary, no input, no roll. Pure geometry."
+    }
+  }
+}

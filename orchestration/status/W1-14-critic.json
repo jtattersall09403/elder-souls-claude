@@ -2,13 +2,33 @@
   "task_id": "W1-14-critic",
   "brief": "CRITIC for wave-1 piece W1-14 - Magic (seam S19)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-14.json",
-    "corpus/90-verdicts/wave1/W1-14.md"
+    "corpus/90-verdicts/wave1/W1-14.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-14/*"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read CRITIC-DOCTRINE, SCORING §0, ARBITRATION S19/S7/S21/S15, docs/PLAN.md W1-14",
-  "notes_for_successor": ""
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-14.json",
+    "corpus/90-verdicts/wave1/W1-14.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-14/ (30 files: traces, negative-evidence reports, 4 PNGs, probe sources)",
+    "corpus/25-magic/RI-MAG06-effect-behaviour-census.md (corpus extension, corpus_hole)"
+  ],
+  "findings": [
+    "HEAD does not boot: game/data/index.json references dialogue/topics/thorn.json which W1-18 commit 65275dc deleted. api-probe exits 12. All live work done in a git worktree at 75c8e3a (last W1-14 commit) with tools/node_modules symlinked.",
+    "RI-MAG01 measures GOOD. Cast census exact to the frame at all 5 classes (14/3/20, 24/4/28, 36/6/40, 52/8/60, 150/12/48). Dual cost on cast frame 1. Commitment: roll injected at relative frames 1-44 of a LIGHT cast never executes; first execution at 45 = hard_until. Zero cast i-frames across 56 injection frames. 60 casts -> one damage value (47), rng delta 1 per run (the pre-existing idle-phase draw, not the cast). Ballistics exact: 22.00/16.00/11.00/8.00 m/s, r 0.14/0.22/0.45/0.90. Menu does not pause (120 frames advanced). Focus monotonic non-increasing over 5400 frames with 27 casts + time-of-day changes + use_item; HEARTH refills to 94.",
+    "THE BIG ONE: the effect catalogue is DATA WITH ONE BEHAVIOUR. Measured across all 71 shelf spells: every enemy-side effect resolves as HP damage equal to its own magnitude, whatever the effect is. demoralise deals 111 dmg and the enemy stays AGGRO; calm_beast deals 31 and the beast stays AGGRO and in COMBAT; open_lock deals 31 to a creature; charm deals 184; corrode 310; silence 31; lock_lock 184; paralyse 12 with no buildup field anywhere on the enemy record. Self-side effects push a {effect,magnitude,remaining_f,source} row into effects_active that nothing in the simulation reads: shield and resist_element mitigate 0 of 100 damage; the_greater_mending heals 0 (hp 420->420 of 620); feather moves equip_load_pct and roll_class by 0; fortify_skill moves nothing; chameleon/invisibility/muffle/night_eye/false_face leave getStealthState() byte-identical to baseline; leap gives 0 m of altitude; wall creates no collider (solidAt unchanged); bind_lesser/bind_greater summon nothing (entity count 0->0); drain_health and absorb_health heal the caster 0.",
+    "COUNT: 5 of 55 effects function as specified (fire/frost/shock/poison damage + damage_health). 1 partial (levitate). 16 resolve only as HP damage. 33 are an unread timer.",
+    "LEVITATION FAILS RI-MAG02 M4.1 on three of four assertions. altitude_m rises to 6 m at exactly 1.5 Focus/m (that part passes) but player.pos[1] stays 0 - the character never leaves the ground. Horizontal speed while levitating measured 4.96 m/s (state SPRINT) against a bar of <=1.45 and 'strictly less than walk'; measured walk baseline 3.17 m/s. roll -> BACKSTEP, block -> BACKSTEP, parry -> PARRY_ACTIVE all execute while levitating; player.iframe goes true while levitating. Damage does end it (passes).",
+    "recall does NOT teleport. mark at [0,0,0], teleport to [60,0,60], recall RITUAL runs 210 frames to cast_release + effect_apply, player position after: [60,0,60]. hist_sight completes and writes 0 journal entries.",
+    "Enemy casting does not exist. cst_sap_speaker aggroed for 400 frames only ever enters REPOSITION; zero cast events. RI-MAG01 M7 = 0 fail-closed.",
+    "Spellmaking WORKS and is the strongest thing in the piece. 5 of 6 unauthored tuples made (the 6th refused for a per-effect range legality, not a whitelist), priced by the published formula, attunable, castable, and present in saveState(). A 3-effect custom spell cast at a dummy applied all three effect_apply records and 148 damage = the exact sum of the three magnitudes.",
+    "Spell VFX renders nothing. drawCalls/triangles identical (8/1208) at idle, at the cast release frame and 10 frames into projectile flight; identical again 20 s later where RI-MAG05 L4/L7 require a residue decal. RI-MAG05 both axes 0 fail-closed.",
+    "No quest runtime at the W1-14 commit (getQuestState()._declared_incomplete says so). RI-MAG04 M6 (10 magic resolutions played through) unmeasurable = 0. Static census passes: 24 magic quests, 27 distinct effects, top share 13.3%, all four schools, 0 lockouts, 100% gated.",
+    "AR-3: of X1-X7 I could demonstrate 0. X1 (calm/demoralise ends a fight without a corpse) measured to fail; X4 (feather moves the roll cliff) measured to fail; X2/X3/X5 need the quest runtime; X6's disposition delta is computed by getXulHesh() but getQuestState().dispositions stays {}.",
+    "Casting grants no skill progress: 60 casts at Sorcery 20 leave Sorcery 20 (RI-PRG03 Cost Gate).",
+    "3 of 71 shelf spells cannot be cast by any character: call_the_deep_drowned (185 Focus at rod), the_still_water (594), the_long_stillness (156) against a maximum pool of 124. bind_greater has no castable carrier."
+  ],
+  "next_step": "none — verdict emitted, schema-valid, ledger and publish run",
+  "notes_for_successor": "VERDICT: FAIL 2.7/10 vs a 7.0 gate. RI-MAG01 7, RI-MAG02 2, RI-MAG03 2, RI-MAG04 2, RI-MAG05 0, RI-PRG03 3, RI-QST05 2. AR-1 pass, AR-2 pass, AR-3 seam-sterile in practice (0 of 7 declared crossings demonstrable, 3 measured to fail). Biggest gap GAP-W1-magic-effects-no-behaviour: 5 of 55 effects do what their record says; 16 resolve only as HP damage equal to their magnitude; 33 are an unread timer. Filed RI-MAG06 (the effect-behaviour census) because no instrument in 25-magic asked whether an effect does anything. Worktree at scratchpad/w1-14 is still checked out at 75c8e3a — `git worktree remove --force <path>` to clean up. Pre-existing, NOT mine: corpus/90-verdicts/wave1/W1-01.json is VOID (two artifact PNGs do not exist)."
 }

@@ -1,0 +1,1949 @@
+{
+  "network": {
+    "present": true,
+    "modes": [
+      "barge",
+      "packet",
+      "poler",
+      "rootspeak",
+      "rootway"
+    ],
+    "mode_detail": {
+      "barge": {
+        "name": "The poled barge",
+        "operator": "The Wet Ledger (Gideon, Blackwood and the south); independent lukiul polers elsewhere",
+        "medium": "river and channel",
+        "primary": true,
+        "schedule": "departs 06:00 / 10:00 / 14:00 / 18:00 game clock",
+        "blocked_by": [
+          "storm weather (service suspended 1 game day)"
+        ],
+        "canon": "CF-C012"
+      },
+      "packet": {
+        "name": "The coastal packet",
+        "operator": "independent captains out of Lilmoth harbour",
+        "medium": "open coast",
+        "schedule": "departs 07:00 / 15:00",
+        "blocked_by": [
+          "storm weather"
+        ]
+      },
+      "rootway": {
+        "name": "The Rootway",
+        "operator": "root-post keepers (Hist-tenders)",
+        "medium": "Hist root-tunnel, following the road graph exactly",
+        "schedule": "on demand",
+        "blocked_by": [
+          "night: the roots close 20:00–05:00",
+          "plot severance of a named root leg"
+        ],
+        "note": "the silt-strider analogue (RI-WLD03, RI-WLD05 #22)"
+      },
+      "poler": {
+        "name": "The tide-poler",
+        "operator": "any villager with a punt",
+        "medium": "shallow channel",
+        "schedule": "hailed on demand",
+        "blocked_by": [
+          "tide state high or rising",
+          "disposition < 30 (refusal)"
+        ],
+        "hop_tier_only": true
+      },
+      "rootspeak": {
+        "name": "Root-speaking",
+        "operator": "Xul-Aneekh Hist-speakers",
+        "medium": "the deep root",
+        "schedule": "on demand",
+        "gate": "Xul-Aneekh rank >= 3 (>= 5 for the Wayshrine of the Ninth Root)",
+        "blocked_by": [
+          "Rootward Tide crisis stage >= 3",
+          "joining the Wet Ledger"
+        ],
+        "side_cost": "Fatigue −25% for 2 game-hours",
+        "note": "the guild-guide analogue; a star centred on Helstrom, five destinations, no more"
+      }
+    },
+    "counts": {
+      "modes": 5,
+      "stations": 26,
+      "services": 68,
+      "lines": 17,
+      "settlement_stations": 8,
+      "quays": 7
+    },
+    "stations": [
+      {
+        "id": "archon",
+        "name": "Archon",
+        "kind": "settlement",
+        "x": 3785,
+        "z": 3823.5,
+        "region": "crimson-coast",
+        "modes": [
+          "barge",
+          "packet",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          3799,
+          3823.5,
+          3.42
+        ]
+      },
+      {
+        "id": "blackrose",
+        "name": "Blackrose",
+        "kind": "settlement",
+        "x": 1905.5,
+        "z": 4450,
+        "region": "western-rootlands",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          1919.5,
+          4450,
+          2.68
+        ]
+      },
+      {
+        "id": "bloodmarl-isle",
+        "name": "Bloodmarl Isle",
+        "kind": "landmark",
+        "x": 4520,
+        "z": 2805,
+        "region": "crimson-coast",
+        "modes": [
+          "packet"
+        ],
+        "quay": true,
+        "arrive_at": [
+          4534,
+          2805,
+          0.85
+        ]
+      },
+      {
+        "id": "bone-ladder",
+        "name": "Bone Ladder",
+        "kind": "minor",
+        "x": 637.4,
+        "z": 4380,
+        "region": "stone-wastes",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          651.4,
+          4380,
+          3.59
+        ]
+      },
+      {
+        "id": "clayfast",
+        "name": "Clayfast",
+        "kind": "minor",
+        "x": 3718.5,
+        "z": 2787.5,
+        "region": "crimson-coast",
+        "modes": [
+          "rootway"
+        ],
+        "quay": false,
+        "arrive_at": [
+          3732.5,
+          2787.5,
+          6.52
+        ]
+      },
+      {
+        "id": "gideon",
+        "name": "Gideon",
+        "kind": "settlement",
+        "x": 439,
+        "z": 2913.5,
+        "region": "blackwood",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          453,
+          2913.5,
+          2.72
+        ]
+      },
+      {
+        "id": "helstrom",
+        "name": "Helstrom",
+        "kind": "settlement",
+        "x": 2262.5,
+        "z": 2773.5,
+        "region": "stone-forest",
+        "modes": [
+          "barge",
+          "poler",
+          "rootspeak",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          2276.5,
+          2773.5,
+          27.22
+        ]
+      },
+      {
+        "id": "hollow-reeds",
+        "name": "Hollow-Reeds",
+        "kind": "minor",
+        "x": 544,
+        "z": 3652,
+        "region": "marauders-coast",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          558,
+          3652,
+          1.53
+        ]
+      },
+      {
+        "id": "ixtaxh-tzil",
+        "name": "Ixtaxh-Tzil",
+        "kind": "minor",
+        "x": 2988.6,
+        "z": 929.8,
+        "region": "stone-forest",
+        "modes": [
+          "rootspeak",
+          "rootway"
+        ],
+        "quay": false,
+        "arrive_at": [
+          3002.6,
+          929.8,
+          34.91
+        ]
+      },
+      {
+        "id": "kiln-camp",
+        "name": "Kiln Camp",
+        "kind": "minor",
+        "x": 3489.8,
+        "z": 3534.9,
+        "region": "eastern-rootlands",
+        "modes": [
+          "rootway"
+        ],
+        "quay": false,
+        "arrive_at": [
+          3503.8,
+          3534.9,
+          2.45
+        ]
+      },
+      {
+        "id": "lilmoth",
+        "name": "Lilmoth",
+        "kind": "settlement",
+        "x": 2766.5,
+        "z": 5027.5,
+        "region": "western-rootlands",
+        "modes": [
+          "barge",
+          "packet",
+          "poler",
+          "rootspeak",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          2780.5,
+          5027.5,
+          1.92
+        ]
+      },
+      {
+        "id": "mudwater-landing",
+        "name": "Mudwater Landing",
+        "kind": "minor",
+        "x": 1909,
+        "z": 4121,
+        "region": "western-rootlands",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          1923,
+          4121,
+          2.75
+        ]
+      },
+      {
+        "id": "nine-mud",
+        "name": "Nine-Mud",
+        "kind": "minor",
+        "x": 2293.3,
+        "z": 1461.3,
+        "region": "stone-forest",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          2307.3,
+          1461.3,
+          97.03
+        ]
+      },
+      {
+        "id": "rootway-post",
+        "name": "Rootway Post",
+        "kind": "minor",
+        "x": 1617.4,
+        "z": 2732.8,
+        "region": "blackwood",
+        "modes": [
+          "rootway"
+        ],
+        "quay": false,
+        "arrive_at": [
+          1630.92,
+          2736.42,
+          45.89
+        ]
+      },
+      {
+        "id": "salt-egg-camp",
+        "name": "Salt-Egg Camp",
+        "kind": "minor",
+        "x": 1163.5,
+        "z": 4625,
+        "region": "stone-wastes",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          1177.5,
+          4625,
+          7.55
+        ]
+      },
+      {
+        "id": "soulrest",
+        "name": "Soulrest",
+        "kind": "settlement",
+        "x": 610.5,
+        "z": 4877,
+        "region": "stone-wastes",
+        "modes": [
+          "barge",
+          "packet",
+          "poler",
+          "rootspeak",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          624.5,
+          4877,
+          7.93
+        ]
+      },
+      {
+        "id": "stilt-row",
+        "name": "Stilt-Row",
+        "kind": "minor",
+        "x": 2274.7,
+        "z": 4830.1,
+        "region": "western-rootlands",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          2288.7,
+          4830.1,
+          3.15
+        ]
+      },
+      {
+        "id": "stormhold",
+        "name": "Stormhold",
+        "kind": "settlement",
+        "x": 2171.5,
+        "z": 761,
+        "region": "salt-hills",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          2185.5,
+          761,
+          141.1
+        ]
+      },
+      {
+        "id": "sunken-barrow",
+        "name": "Sunken Barrow",
+        "kind": "minor",
+        "x": 2224,
+        "z": 3550.5,
+        "region": "deep-marshes",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          2238,
+          3550.5,
+          4.51
+        ]
+      },
+      {
+        "id": "tenmarch-bridge",
+        "name": "Tenmarch Bridge",
+        "kind": "minor",
+        "x": 990.6,
+        "z": 2931.3,
+        "region": "blackwood",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          1004.6,
+          2931.3,
+          2.68
+        ]
+      },
+      {
+        "id": "the-red-wells",
+        "name": "The Red Wells",
+        "kind": "minor",
+        "x": 3909.5,
+        "z": 1749.5,
+        "region": "clay-moor",
+        "modes": [
+          "rootway"
+        ],
+        "quay": false,
+        "arrive_at": [
+          3923.5,
+          1749.5,
+          29.67
+        ]
+      },
+      {
+        "id": "the-weeping-ford",
+        "name": "The Weeping Ford",
+        "kind": "minor",
+        "x": 2129.5,
+        "z": 2206.5,
+        "region": "stone-forest",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          2143.5,
+          2206.5,
+          159.16
+        ]
+      },
+      {
+        "id": "thorn",
+        "name": "Thorn",
+        "kind": "settlement",
+        "x": 3820,
+        "z": 859,
+        "region": "thornmarsh",
+        "modes": [
+          "rootway"
+        ],
+        "quay": false,
+        "arrive_at": [
+          3834,
+          859,
+          13.31
+        ]
+      },
+      {
+        "id": "tideway-shrine",
+        "name": "Tideway Shrine",
+        "kind": "minor",
+        "x": 3207,
+        "z": 4367.4,
+        "region": "eastern-rootlands",
+        "modes": [
+          "barge",
+          "poler",
+          "rootway"
+        ],
+        "quay": true,
+        "arrive_at": [
+          3221,
+          4367.4,
+          2.63
+        ]
+      },
+      {
+        "id": "wayshrine-of-the-ninth-root",
+        "name": "Wayshrine of the Ninth Root",
+        "kind": "landmark",
+        "x": 2567,
+        "z": 1790,
+        "region": "stone-forest",
+        "modes": [
+          "rootspeak"
+        ],
+        "quay": false,
+        "arrive_at": [
+          2581,
+          1790,
+          35.06
+        ]
+      },
+      {
+        "id": "xal-ithix",
+        "name": "Xal-Ithix",
+        "kind": "minor",
+        "x": 2938,
+        "z": 3347.5,
+        "region": "deep-marshes",
+        "modes": [
+          "rootspeak",
+          "rootway"
+        ],
+        "quay": false,
+        "arrive_at": [
+          2952,
+          3347.5,
+          2.43
+        ]
+      }
+    ],
+    "services": [
+      {
+        "id": "svc-001-rootway-stormhold-ixtaxh-tzil",
+        "mode": "rootway",
+        "from": "stormhold",
+        "to": "ixtaxh-tzil",
+        "fare_gold": 15,
+        "game_min": 53.6,
+        "route_m": 1254.9,
+        "requires_walked": "stormhold-thorn",
+        "route_points": 25
+      },
+      {
+        "id": "svc-002-rootway-ixtaxh-tzil-thorn",
+        "mode": "rootway",
+        "from": "ixtaxh-tzil",
+        "to": "thorn",
+        "fare_gold": 15,
+        "game_min": 53.6,
+        "route_m": 1362.5,
+        "requires_walked": "stormhold-thorn",
+        "route_points": 25
+      },
+      {
+        "id": "svc-003-rootway-stormhold-nine-mud",
+        "mode": "rootway",
+        "from": "stormhold",
+        "to": "nine-mud",
+        "fare_gold": 13,
+        "game_min": 49.1,
+        "route_m": 954.7,
+        "requires_walked": "stormhold-thorn",
+        "route_points": 25
+      },
+      {
+        "id": "svc-004-rootway-nine-mud-the-weeping-ford",
+        "mode": "rootway",
+        "from": "nine-mud",
+        "to": "the-weeping-ford",
+        "fare_gold": 14,
+        "game_min": 52.7,
+        "route_m": 890.3,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-005-rootway-the-weeping-ford-helstrom",
+        "mode": "rootway",
+        "from": "the-weeping-ford",
+        "to": "helstrom",
+        "fare_gold": 10,
+        "game_min": 40.2,
+        "route_m": 881.4,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-006-barge-stormhold-nine-mud",
+        "mode": "barge",
+        "from": "stormhold",
+        "to": "nine-mud",
+        "fare_gold": 12,
+        "game_min": 84,
+        "route_m": 954.7,
+        "requires_walked": "stormhold-thorn",
+        "route_points": 25
+      },
+      {
+        "id": "svc-007-poler-stormhold-nine-mud",
+        "mode": "poler",
+        "from": "stormhold",
+        "to": "nine-mud",
+        "fare_gold": 15,
+        "game_min": 126,
+        "route_m": 954.7,
+        "requires_walked": "stormhold-thorn",
+        "route_points": 25
+      },
+      {
+        "id": "svc-008-barge-nine-mud-the-weeping-ford",
+        "mode": "barge",
+        "from": "nine-mud",
+        "to": "the-weeping-ford",
+        "fare_gold": 13,
+        "game_min": 90.1,
+        "route_m": 890.3,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-009-poler-nine-mud-the-weeping-ford",
+        "mode": "poler",
+        "from": "nine-mud",
+        "to": "the-weeping-ford",
+        "fare_gold": 17,
+        "game_min": 135.2,
+        "route_m": 890.3,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-010-barge-the-weeping-ford-helstrom",
+        "mode": "barge",
+        "from": "the-weeping-ford",
+        "to": "helstrom",
+        "fare_gold": 9,
+        "game_min": 68.8,
+        "route_m": 881.4,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-011-poler-the-weeping-ford-helstrom",
+        "mode": "poler",
+        "from": "the-weeping-ford",
+        "to": "helstrom",
+        "fare_gold": 11,
+        "game_min": 103.2,
+        "route_m": 881.4,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-012-rootway-helstrom-xal-ithix",
+        "mode": "rootway",
+        "from": "helstrom",
+        "to": "xal-ithix",
+        "fare_gold": 17,
+        "game_min": 59.1,
+        "route_m": 1278.3,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-013-rootway-xal-ithix-kiln-camp",
+        "mode": "rootway",
+        "from": "xal-ithix",
+        "to": "kiln-camp",
+        "fare_gold": 10,
+        "game_min": 38.9,
+        "route_m": 1538.2,
+        "requires_walked": "helstrom-archon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-014-rootway-kiln-camp-archon",
+        "mode": "rootway",
+        "from": "kiln-camp",
+        "to": "archon",
+        "fare_gold": 7,
+        "game_min": 27.5,
+        "route_m": 1324,
+        "requires_walked": "archon-thorn",
+        "route_points": 25
+      },
+      {
+        "id": "svc-015-rootway-helstrom-sunken-barrow",
+        "mode": "rootway",
+        "from": "helstrom",
+        "to": "sunken-barrow",
+        "fare_gold": 15,
+        "game_min": 53.7,
+        "route_m": 1800.7,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-016-rootway-sunken-barrow-mudwater-landing",
+        "mode": "rootway",
+        "from": "sunken-barrow",
+        "to": "mudwater-landing",
+        "fare_gold": 11,
+        "game_min": 45,
+        "route_m": 937.8,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-017-rootway-mudwater-landing-blackrose",
+        "mode": "rootway",
+        "from": "mudwater-landing",
+        "to": "blackrose",
+        "fare_gold": 6,
+        "game_min": 22.7,
+        "route_m": 1473,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-018-barge-helstrom-sunken-barrow",
+        "mode": "barge",
+        "from": "helstrom",
+        "to": "sunken-barrow",
+        "fare_gold": 14,
+        "game_min": 91.9,
+        "route_m": 1800.7,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-019-poler-helstrom-sunken-barrow",
+        "mode": "poler",
+        "from": "helstrom",
+        "to": "sunken-barrow",
+        "fare_gold": 17,
+        "game_min": 137.9,
+        "route_m": 1800.7,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-020-barge-sunken-barrow-mudwater-landing",
+        "mode": "barge",
+        "from": "sunken-barrow",
+        "to": "mudwater-landing",
+        "fare_gold": 10,
+        "game_min": 77,
+        "route_m": 937.8,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-021-poler-sunken-barrow-mudwater-landing",
+        "mode": "poler",
+        "from": "sunken-barrow",
+        "to": "mudwater-landing",
+        "fare_gold": 13,
+        "game_min": 115.4,
+        "route_m": 937.8,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-022-barge-mudwater-landing-blackrose",
+        "mode": "barge",
+        "from": "mudwater-landing",
+        "to": "blackrose",
+        "fare_gold": 5,
+        "game_min": 38.9,
+        "route_m": 1473,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-023-poler-mudwater-landing-blackrose",
+        "mode": "poler",
+        "from": "mudwater-landing",
+        "to": "blackrose",
+        "fare_gold": 6,
+        "game_min": 58.3,
+        "route_m": 1473,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-024-rootway-helstrom-rootway-post",
+        "mode": "rootway",
+        "from": "helstrom",
+        "to": "rootway-post",
+        "fare_gold": 10,
+        "game_min": 40,
+        "route_m": 965.5,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-025-rootway-rootway-post-tenmarch-bridge",
+        "mode": "rootway",
+        "from": "rootway-post",
+        "to": "tenmarch-bridge",
+        "fare_gold": 10,
+        "game_min": 40.7,
+        "route_m": 892,
+        "requires_walked": "helstrom-gideon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-026-rootway-tenmarch-bridge-gideon",
+        "mode": "rootway",
+        "from": "tenmarch-bridge",
+        "to": "gideon",
+        "fare_gold": 9,
+        "game_min": 34.1,
+        "route_m": 2067,
+        "requires_walked": "helstrom-gideon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-027-barge-helstrom-tenmarch-bridge",
+        "mode": "barge",
+        "from": "helstrom",
+        "to": "tenmarch-bridge",
+        "fare_gold": 24,
+        "game_min": 135.8,
+        "route_m": 1449.9,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-028-poler-helstrom-tenmarch-bridge",
+        "mode": "poler",
+        "from": "helstrom",
+        "to": "tenmarch-bridge",
+        "fare_gold": 25,
+        "game_min": 177.8,
+        "route_m": 1449.9,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-029-barge-tenmarch-bridge-gideon",
+        "mode": "barge",
+        "from": "tenmarch-bridge",
+        "to": "gideon",
+        "fare_gold": 8,
+        "game_min": 58.4,
+        "route_m": 2067,
+        "requires_walked": "helstrom-gideon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-030-poler-tenmarch-bridge-gideon",
+        "mode": "poler",
+        "from": "tenmarch-bridge",
+        "to": "gideon",
+        "fare_gold": 9,
+        "game_min": 87.7,
+        "route_m": 2067,
+        "requires_walked": "helstrom-gideon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-031-rootway-gideon-hollow-reeds",
+        "mode": "rootway",
+        "from": "gideon",
+        "to": "hollow-reeds",
+        "fare_gold": 12,
+        "game_min": 46.2,
+        "route_m": 1682.7,
+        "requires_walked": "helstrom-gideon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-032-rootway-hollow-reeds-bone-ladder",
+        "mode": "rootway",
+        "from": "hollow-reeds",
+        "to": "bone-ladder",
+        "fare_gold": 11,
+        "game_min": 45.4,
+        "route_m": 1391.2,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-033-rootway-bone-ladder-soulrest",
+        "mode": "rootway",
+        "from": "bone-ladder",
+        "to": "soulrest",
+        "fare_gold": 8,
+        "game_min": 30.8,
+        "route_m": 1044.1,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-034-barge-gideon-hollow-reeds",
+        "mode": "barge",
+        "from": "gideon",
+        "to": "hollow-reeds",
+        "fare_gold": 11,
+        "game_min": 79,
+        "route_m": 1682.7,
+        "requires_walked": "helstrom-gideon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-035-poler-gideon-hollow-reeds",
+        "mode": "poler",
+        "from": "gideon",
+        "to": "hollow-reeds",
+        "fare_gold": 13,
+        "game_min": 118.6,
+        "route_m": 1682.7,
+        "requires_walked": "helstrom-gideon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-036-barge-hollow-reeds-bone-ladder",
+        "mode": "barge",
+        "from": "hollow-reeds",
+        "to": "bone-ladder",
+        "fare_gold": 10,
+        "game_min": 77.8,
+        "route_m": 1391.2,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-037-poler-hollow-reeds-bone-ladder",
+        "mode": "poler",
+        "from": "hollow-reeds",
+        "to": "bone-ladder",
+        "fare_gold": 13,
+        "game_min": 116.7,
+        "route_m": 1391.2,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-038-barge-bone-ladder-soulrest",
+        "mode": "barge",
+        "from": "bone-ladder",
+        "to": "soulrest",
+        "fare_gold": 7,
+        "game_min": 52.7,
+        "route_m": 1044.1,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-039-poler-bone-ladder-soulrest",
+        "mode": "poler",
+        "from": "bone-ladder",
+        "to": "soulrest",
+        "fare_gold": 9,
+        "game_min": 79.1,
+        "route_m": 1044.1,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-040-rootway-soulrest-salt-egg-camp",
+        "mode": "rootway",
+        "from": "soulrest",
+        "to": "salt-egg-camp",
+        "fare_gold": 10,
+        "game_min": 39,
+        "route_m": 1108.5,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-041-rootway-salt-egg-camp-blackrose",
+        "mode": "rootway",
+        "from": "salt-egg-camp",
+        "to": "blackrose",
+        "fare_gold": 13,
+        "game_min": 49,
+        "route_m": 1746.8,
+        "requires_walked": "soulrest-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-042-barge-soulrest-salt-egg-camp",
+        "mode": "barge",
+        "from": "soulrest",
+        "to": "salt-egg-camp",
+        "fare_gold": 9,
+        "game_min": 66.8,
+        "route_m": 1108.5,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-043-poler-soulrest-salt-egg-camp",
+        "mode": "poler",
+        "from": "soulrest",
+        "to": "salt-egg-camp",
+        "fare_gold": 11,
+        "game_min": 100.2,
+        "route_m": 1108.5,
+        "requires_walked": "gideon-soulrest",
+        "route_points": 25
+      },
+      {
+        "id": "svc-044-barge-salt-egg-camp-blackrose",
+        "mode": "barge",
+        "from": "salt-egg-camp",
+        "to": "blackrose",
+        "fare_gold": 12,
+        "game_min": 83.9,
+        "route_m": 1746.8,
+        "requires_walked": "soulrest-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-045-poler-salt-egg-camp-blackrose",
+        "mode": "poler",
+        "from": "salt-egg-camp",
+        "to": "blackrose",
+        "fare_gold": 15,
+        "game_min": 125.8,
+        "route_m": 1746.8,
+        "requires_walked": "soulrest-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-046-rootway-blackrose-stilt-row",
+        "mode": "rootway",
+        "from": "blackrose",
+        "to": "stilt-row",
+        "fare_gold": 9,
+        "game_min": 36.6,
+        "route_m": 1629.7,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-047-rootway-stilt-row-lilmoth",
+        "mode": "rootway",
+        "from": "stilt-row",
+        "to": "lilmoth",
+        "fare_gold": 9,
+        "game_min": 36.6,
+        "route_m": 1029.2,
+        "requires_walked": "blackrose-lilmoth",
+        "route_points": 25
+      },
+      {
+        "id": "svc-048-barge-blackrose-stilt-row",
+        "mode": "barge",
+        "from": "blackrose",
+        "to": "stilt-row",
+        "fare_gold": 8,
+        "game_min": 62.6,
+        "route_m": 1629.7,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-049-poler-blackrose-stilt-row",
+        "mode": "poler",
+        "from": "blackrose",
+        "to": "stilt-row",
+        "fare_gold": 10,
+        "game_min": 93.9,
+        "route_m": 1629.7,
+        "requires_walked": "helstrom-blackrose",
+        "route_points": 25
+      },
+      {
+        "id": "svc-050-barge-stilt-row-lilmoth",
+        "mode": "barge",
+        "from": "stilt-row",
+        "to": "lilmoth",
+        "fare_gold": 8,
+        "game_min": 62.6,
+        "route_m": 1029.2,
+        "requires_walked": "blackrose-lilmoth",
+        "route_points": 25
+      },
+      {
+        "id": "svc-051-poler-stilt-row-lilmoth",
+        "mode": "poler",
+        "from": "stilt-row",
+        "to": "lilmoth",
+        "fare_gold": 10,
+        "game_min": 93.9,
+        "route_m": 1029.2,
+        "requires_walked": "blackrose-lilmoth",
+        "route_points": 25
+      },
+      {
+        "id": "svc-052-rootway-archon-clayfast",
+        "mode": "rootway",
+        "from": "archon",
+        "to": "clayfast",
+        "fare_gold": 23,
+        "game_min": 71.7,
+        "route_m": 1555.6,
+        "requires_walked": "helstrom-archon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-053-rootway-clayfast-the-red-wells",
+        "mode": "rootway",
+        "from": "clayfast",
+        "to": "the-red-wells",
+        "fare_gold": 24,
+        "game_min": 72.9,
+        "route_m": 1360.6,
+        "requires_walked": "archon-thorn",
+        "route_points": 25
+      },
+      {
+        "id": "svc-054-rootway-the-red-wells-thorn",
+        "mode": "rootway",
+        "from": "the-red-wells",
+        "to": "thorn",
+        "fare_gold": 19,
+        "game_min": 61.8,
+        "route_m": 1656.8,
+        "requires_walked": "archon-thorn",
+        "route_points": 25
+      },
+      {
+        "id": "svc-055-rootway-lilmoth-tideway-shrine",
+        "mode": "rootway",
+        "from": "lilmoth",
+        "to": "tideway-shrine",
+        "fare_gold": 18,
+        "game_min": 60.5,
+        "route_m": 1880.8,
+        "requires_walked": "blackrose-lilmoth",
+        "route_points": 25
+      },
+      {
+        "id": "svc-056-rootway-tideway-shrine-archon",
+        "mode": "rootway",
+        "from": "tideway-shrine",
+        "to": "archon",
+        "fare_gold": 18,
+        "game_min": 60.5,
+        "route_m": 1714.6,
+        "requires_walked": "lilmoth-archon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-057-barge-lilmoth-tideway-shrine",
+        "mode": "barge",
+        "from": "lilmoth",
+        "to": "tideway-shrine",
+        "fare_gold": 17,
+        "game_min": 103.5,
+        "route_m": 1880.8,
+        "requires_walked": "blackrose-lilmoth",
+        "route_points": 25
+      },
+      {
+        "id": "svc-058-poler-lilmoth-tideway-shrine",
+        "mode": "poler",
+        "from": "lilmoth",
+        "to": "tideway-shrine",
+        "fare_gold": 21,
+        "game_min": 155.2,
+        "route_m": 1880.8,
+        "requires_walked": "blackrose-lilmoth",
+        "route_points": 25
+      },
+      {
+        "id": "svc-059-barge-tideway-shrine-archon",
+        "mode": "barge",
+        "from": "tideway-shrine",
+        "to": "archon",
+        "fare_gold": 17,
+        "game_min": 103.5,
+        "route_m": 1714.6,
+        "requires_walked": "lilmoth-archon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-060-poler-tideway-shrine-archon",
+        "mode": "poler",
+        "from": "tideway-shrine",
+        "to": "archon",
+        "fare_gold": 21,
+        "game_min": 155.2,
+        "route_m": 1714.6,
+        "requires_walked": "lilmoth-archon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-061-packet-lilmoth-soulrest",
+        "mode": "packet",
+        "from": "lilmoth",
+        "to": "soulrest",
+        "fare_gold": 58,
+        "game_min": 138.1,
+        "route_m": 3106.6,
+        "requires_walked": "blackrose-lilmoth",
+        "route_points": 25
+      },
+      {
+        "id": "svc-062-packet-lilmoth-archon",
+        "mode": "packet",
+        "from": "lilmoth",
+        "to": "archon",
+        "fare_gold": 55,
+        "game_min": 131.4,
+        "route_m": 2250.3,
+        "requires_walked": "lilmoth-archon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-063-packet-archon-bloodmarl-isle",
+        "mode": "packet",
+        "from": "archon",
+        "to": "bloodmarl-isle",
+        "fare_gold": 30,
+        "game_min": 83.7,
+        "route_m": 1739,
+        "requires_walked": "helstrom-archon",
+        "route_points": 25
+      },
+      {
+        "id": "svc-064-rootspeak-helstrom-soulrest",
+        "mode": "rootspeak",
+        "from": "helstrom",
+        "to": "soulrest",
+        "fare_gold": 38,
+        "game_min": 20,
+        "route_m": 3199.6,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-065-rootspeak-helstrom-lilmoth",
+        "mode": "rootspeak",
+        "from": "helstrom",
+        "to": "lilmoth",
+        "fare_gold": 36,
+        "game_min": 20,
+        "route_m": 3293.7,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-066-rootspeak-helstrom-ixtaxh-tzil",
+        "mode": "rootspeak",
+        "from": "helstrom",
+        "to": "ixtaxh-tzil",
+        "fare_gold": 36,
+        "game_min": 20,
+        "route_m": 2264.8,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-067-rootspeak-helstrom-xal-ithix",
+        "mode": "rootspeak",
+        "from": "helstrom",
+        "to": "xal-ithix",
+        "fare_gold": 10,
+        "game_min": 20,
+        "route_m": 1278.3,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      },
+      {
+        "id": "svc-068-rootspeak-helstrom-wayshrine-of-the-ninth-root",
+        "mode": "rootspeak",
+        "from": "helstrom",
+        "to": "wayshrine-of-the-ninth-root",
+        "fare_gold": 14,
+        "game_min": 20,
+        "route_m": 1335.9,
+        "requires_walked": "stormhold-helstrom",
+        "route_points": 25
+      }
+    ],
+    "lines": [
+      {
+        "line_id": "RW-STO-THO",
+        "name": "The Rootway: Stormhold – Thorn",
+        "mode": "rootway",
+        "stations": [
+          "stormhold",
+          "ixtaxh-tzil",
+          "thorn"
+        ],
+        "hops": [
+          "svc-001-rootway-stormhold-ixtaxh-tzil",
+          "svc-002-rootway-ixtaxh-tzil-thorn"
+        ],
+        "line_ticket_gold": 30
+      },
+      {
+        "line_id": "RW-STO-HEL",
+        "name": "The Rootway: Stormhold – Helstrom",
+        "mode": "rootway",
+        "stations": [
+          "stormhold",
+          "nine-mud",
+          "the-weeping-ford",
+          "helstrom"
+        ],
+        "hops": [
+          "svc-003-rootway-stormhold-nine-mud",
+          "svc-004-rootway-nine-mud-the-weeping-ford",
+          "svc-005-rootway-the-weeping-ford-helstrom"
+        ],
+        "line_ticket_gold": 37
+      },
+      {
+        "line_id": "BG-STO-HEL",
+        "name": "Barge line: Stormhold – Helstrom",
+        "mode": "barge",
+        "stations": [
+          "stormhold",
+          "nine-mud",
+          "the-weeping-ford",
+          "helstrom"
+        ],
+        "hops": [
+          "svc-006-barge-stormhold-nine-mud",
+          "svc-008-barge-nine-mud-the-weeping-ford",
+          "svc-010-barge-the-weeping-ford-helstrom"
+        ],
+        "line_ticket_gold": 34
+      },
+      {
+        "line_id": "RW-HEL-ARC",
+        "name": "The Rootway: Helstrom – Archon",
+        "mode": "rootway",
+        "stations": [
+          "helstrom",
+          "xal-ithix",
+          "kiln-camp",
+          "archon"
+        ],
+        "hops": [
+          "svc-012-rootway-helstrom-xal-ithix",
+          "svc-013-rootway-xal-ithix-kiln-camp",
+          "svc-014-rootway-kiln-camp-archon"
+        ],
+        "line_ticket_gold": 34
+      },
+      {
+        "line_id": "RW-HEL-BLA",
+        "name": "The Rootway: Helstrom – Blackrose",
+        "mode": "rootway",
+        "stations": [
+          "helstrom",
+          "sunken-barrow",
+          "mudwater-landing",
+          "blackrose"
+        ],
+        "hops": [
+          "svc-015-rootway-helstrom-sunken-barrow",
+          "svc-016-rootway-sunken-barrow-mudwater-landing",
+          "svc-017-rootway-mudwater-landing-blackrose"
+        ],
+        "line_ticket_gold": 32
+      },
+      {
+        "line_id": "BG-HEL-BLA",
+        "name": "Barge line: Helstrom – Blackrose",
+        "mode": "barge",
+        "stations": [
+          "helstrom",
+          "sunken-barrow",
+          "mudwater-landing",
+          "blackrose"
+        ],
+        "hops": [
+          "svc-018-barge-helstrom-sunken-barrow",
+          "svc-020-barge-sunken-barrow-mudwater-landing",
+          "svc-022-barge-mudwater-landing-blackrose"
+        ],
+        "line_ticket_gold": 29
+      },
+      {
+        "line_id": "RW-HEL-GID",
+        "name": "The Rootway: Helstrom – Gideon",
+        "mode": "rootway",
+        "stations": [
+          "helstrom",
+          "rootway-post",
+          "tenmarch-bridge",
+          "gideon"
+        ],
+        "hops": [
+          "svc-024-rootway-helstrom-rootway-post",
+          "svc-025-rootway-rootway-post-tenmarch-bridge",
+          "svc-026-rootway-tenmarch-bridge-gideon"
+        ],
+        "line_ticket_gold": 29
+      },
+      {
+        "line_id": "BG-HEL-GID",
+        "name": "Barge line: Helstrom – Gideon",
+        "mode": "barge",
+        "stations": [
+          "helstrom",
+          "tenmarch-bridge",
+          "gideon"
+        ],
+        "hops": [
+          "svc-027-barge-helstrom-tenmarch-bridge",
+          "svc-029-barge-tenmarch-bridge-gideon"
+        ],
+        "line_ticket_gold": 32
+      },
+      {
+        "line_id": "RW-GID-SOU",
+        "name": "The Rootway: Gideon – Soulrest",
+        "mode": "rootway",
+        "stations": [
+          "gideon",
+          "hollow-reeds",
+          "bone-ladder",
+          "soulrest"
+        ],
+        "hops": [
+          "svc-031-rootway-gideon-hollow-reeds",
+          "svc-032-rootway-hollow-reeds-bone-ladder",
+          "svc-033-rootway-bone-ladder-soulrest"
+        ],
+        "line_ticket_gold": 31
+      },
+      {
+        "line_id": "BG-GID-SOU",
+        "name": "Barge line: Gideon – Soulrest",
+        "mode": "barge",
+        "stations": [
+          "gideon",
+          "hollow-reeds",
+          "bone-ladder",
+          "soulrest"
+        ],
+        "hops": [
+          "svc-034-barge-gideon-hollow-reeds",
+          "svc-036-barge-hollow-reeds-bone-ladder",
+          "svc-038-barge-bone-ladder-soulrest"
+        ],
+        "line_ticket_gold": 28
+      },
+      {
+        "line_id": "RW-SOU-BLA",
+        "name": "The Rootway: Soulrest – Blackrose",
+        "mode": "rootway",
+        "stations": [
+          "soulrest",
+          "salt-egg-camp",
+          "blackrose"
+        ],
+        "hops": [
+          "svc-040-rootway-soulrest-salt-egg-camp",
+          "svc-041-rootway-salt-egg-camp-blackrose"
+        ],
+        "line_ticket_gold": 23
+      },
+      {
+        "line_id": "BG-SOU-BLA",
+        "name": "Barge line: Soulrest – Blackrose",
+        "mode": "barge",
+        "stations": [
+          "soulrest",
+          "salt-egg-camp",
+          "blackrose"
+        ],
+        "hops": [
+          "svc-042-barge-soulrest-salt-egg-camp",
+          "svc-044-barge-salt-egg-camp-blackrose"
+        ],
+        "line_ticket_gold": 21
+      },
+      {
+        "line_id": "RW-BLA-LIL",
+        "name": "The Rootway: Blackrose – Lilmoth",
+        "mode": "rootway",
+        "stations": [
+          "blackrose",
+          "stilt-row",
+          "lilmoth"
+        ],
+        "hops": [
+          "svc-046-rootway-blackrose-stilt-row",
+          "svc-047-rootway-stilt-row-lilmoth"
+        ],
+        "line_ticket_gold": 18
+      },
+      {
+        "line_id": "BG-BLA-LIL",
+        "name": "Barge line: Blackrose – Lilmoth",
+        "mode": "barge",
+        "stations": [
+          "blackrose",
+          "stilt-row",
+          "lilmoth"
+        ],
+        "hops": [
+          "svc-048-barge-blackrose-stilt-row",
+          "svc-050-barge-stilt-row-lilmoth"
+        ],
+        "line_ticket_gold": 16
+      },
+      {
+        "line_id": "RW-ARC-THO",
+        "name": "The Rootway: Archon – Thorn",
+        "mode": "rootway",
+        "stations": [
+          "archon",
+          "clayfast",
+          "the-red-wells",
+          "thorn"
+        ],
+        "hops": [
+          "svc-052-rootway-archon-clayfast",
+          "svc-053-rootway-clayfast-the-red-wells",
+          "svc-054-rootway-the-red-wells-thorn"
+        ],
+        "line_ticket_gold": 66
+      },
+      {
+        "line_id": "RW-LIL-ARC",
+        "name": "The Rootway: Lilmoth – Archon",
+        "mode": "rootway",
+        "stations": [
+          "lilmoth",
+          "tideway-shrine",
+          "archon"
+        ],
+        "hops": [
+          "svc-055-rootway-lilmoth-tideway-shrine",
+          "svc-056-rootway-tideway-shrine-archon"
+        ],
+        "line_ticket_gold": 36
+      },
+      {
+        "line_id": "BG-LIL-ARC",
+        "name": "Barge line: Lilmoth – Archon",
+        "mode": "barge",
+        "stations": [
+          "lilmoth",
+          "tideway-shrine",
+          "archon"
+        ],
+        "hops": [
+          "svc-057-barge-lilmoth-tideway-shrine",
+          "svc-059-barge-tideway-shrine-archon"
+        ],
+        "line_ticket_gold": 34
+      }
+    ],
+    "tariff": {
+      "schema": "elder-souls/tariff@1",
+      "generator": "tools/world/build-travel.mjs",
+      "derived_from": [
+        "corpus/50-world/travel-network.json",
+        "corpus/50-world/world-scale.json",
+        "game/data/world/roads.json"
+      ],
+      "form": "piecewise-linear in route metres, continuous and monotonic, decelerating",
+      "anchors_from_RI_PRG05": [
+        [
+          1000,
+          12,
+          "short hop within region"
+        ],
+        [
+          2500,
+          45,
+          "regional crossing"
+        ],
+        [
+          6900,
+          90,
+          "cross-map"
+        ]
+      ],
+      "pieces": [
+        {
+          "m_max": 1000,
+          "gold": "12 * m/1000"
+        },
+        {
+          "m_max": 2500,
+          "gold": "12 + 33*(m-1000)/1500"
+        },
+        {
+          "m_max": null,
+          "gold": "45 + 45*(m-2500)/4400"
+        }
+      ],
+      "floor_gold": 6,
+      "mode_multiplier": {
+        "barge": 0.8,
+        "poler": 1,
+        "rootway": 1,
+        "packet": 1.3,
+        "rootspeak": 0.6
+      },
+      "faction_multipliers": {
+        "Wet Ledger member": "x0.60 on barge and packet only",
+        "Ninth Cohort transit warrant": "x0.00 on rootway and barge between Stormhold, Gideon and Blackrose only",
+        "Xul-Aneekh rank>=3": "the only way to buy rootspeak at all; x0.60 already folded into the mode multiplier"
+      },
+      "barter": "NOT applicable. Fares are posted, never bartered; Disposition and Mercantile do not move them. Disposition < 30 makes a poler or barge-master REFUSE the fare outright (CF-C012 \"refusable\") — the social lever is access, not price.",
+      "note": "Piecewise-linear in route metres, continuous and monotonic, from RI-PRG05 §2 anchors (1000 m = 12 g, 2500 m = 45 g, 6900 m = 90 g). Fares are posted, never bartered."
+    },
+    "unresolved_endpoints": []
+  },
+  "stations": [
+    "archon",
+    "blackrose",
+    "bloodmarl-isle",
+    "bone-ladder",
+    "clayfast",
+    "gideon",
+    "helstrom",
+    "hollow-reeds",
+    "ixtaxh-tzil",
+    "kiln-camp",
+    "lilmoth",
+    "mudwater-landing",
+    "nine-mud",
+    "rootway-post",
+    "salt-egg-camp",
+    "soulrest",
+    "stilt-row",
+    "stormhold",
+    "sunken-barrow",
+    "tenmarch-bridge",
+    "the-red-wells",
+    "the-weeping-ford",
+    "thorn",
+    "tideway-shrine",
+    "wayshrine-of-the-ninth-root",
+    "xal-ithix"
+  ],
+  "n_services": 68,
+  "boards": [
+    {
+      "id": "svc-001-rootway-stormhold-ixtaxh-tzil",
+      "quote": {
+        "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+        "mode": "rootway",
+        "from": "stormhold",
+        "to": "ixtaxh-tzil",
+        "fare_gold": 15,
+        "fare_gold_modelled": 18,
+        "game_min": 53.6,
+        "route_m": 1254.9,
+        "requires_walked": "stormhold-thorn",
+        "walked": false,
+        "gold": 0,
+        "purchasable": false,
+        "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+      },
+      "board": {
+        "boarded": false,
+        "refused": true,
+        "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+        "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+        "mode": "rootway",
+        "from": "stormhold",
+        "to": "ixtaxh-tzil",
+        "fare_gold": 15,
+        "fare_gold_modelled": 18,
+        "game_min": 53.6,
+        "route_m": 1254.9,
+        "requires_walked": "stormhold-thorn",
+        "walked": false,
+        "gold": 0,
+        "purchasable": false,
+        "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+      },
+      "ride": {
+        "__err": "travelRide: no ride is in progress"
+      },
+      "state": {
+        "present": true,
+        "legs_walked": [],
+        "leg_progress_m": {},
+        "gold": 0,
+        "purchasable": [],
+        "refused": 68,
+        "riding": null,
+        "rides_taken": 0,
+        "log": []
+      }
+    },
+    {
+      "id": "svc-002-rootway-ixtaxh-tzil-thorn",
+      "quote": {
+        "service": "svc-002-rootway-ixtaxh-tzil-thorn",
+        "mode": "rootway",
+        "from": "ixtaxh-tzil",
+        "to": "thorn",
+        "fare_gold": 15,
+        "fare_gold_modelled": 20,
+        "game_min": 53.6,
+        "route_m": 1362.5,
+        "requires_walked": "stormhold-thorn",
+        "walked": false,
+        "gold": 0,
+        "purchasable": false,
+        "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+      },
+      "board": {
+        "boarded": false,
+        "refused": true,
+        "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+        "service": "svc-002-rootway-ixtaxh-tzil-thorn",
+        "mode": "rootway",
+        "from": "ixtaxh-tzil",
+        "to": "thorn",
+        "fare_gold": 15,
+        "fare_gold_modelled": 20,
+        "game_min": 53.6,
+        "route_m": 1362.5,
+        "requires_walked": "stormhold-thorn",
+        "walked": false,
+        "gold": 0,
+        "purchasable": false,
+        "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+      },
+      "ride": {
+        "__err": "travelRide: no ride is in progress"
+      },
+      "state": {
+        "present": true,
+        "legs_walked": [],
+        "leg_progress_m": {},
+        "gold": 0,
+        "purchasable": [],
+        "refused": 68,
+        "riding": null,
+        "rides_taken": 0,
+        "log": []
+      }
+    },
+    {
+      "id": "svc-003-rootway-stormhold-nine-mud",
+      "quote": {
+        "service": "svc-003-rootway-stormhold-nine-mud",
+        "mode": "rootway",
+        "from": "stormhold",
+        "to": "nine-mud",
+        "fare_gold": 13,
+        "fare_gold_modelled": 11,
+        "game_min": 49.1,
+        "route_m": 954.7,
+        "requires_walked": "stormhold-thorn",
+        "walked": false,
+        "gold": 0,
+        "purchasable": false,
+        "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+      },
+      "board": {
+        "boarded": false,
+        "refused": true,
+        "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+        "service": "svc-003-rootway-stormhold-nine-mud",
+        "mode": "rootway",
+        "from": "stormhold",
+        "to": "nine-mud",
+        "fare_gold": 13,
+        "fare_gold_modelled": 11,
+        "game_min": 49.1,
+        "route_m": 954.7,
+        "requires_walked": "stormhold-thorn",
+        "walked": false,
+        "gold": 0,
+        "purchasable": false,
+        "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+      },
+      "ride": {
+        "__err": "travelRide: no ride is in progress"
+      },
+      "state": {
+        "present": true,
+        "legs_walked": [],
+        "leg_progress_m": {},
+        "gold": 0,
+        "purchasable": [],
+        "refused": 68,
+        "riding": null,
+        "rides_taken": 0,
+        "log": []
+      }
+    }
+  ],
+  "soul_priced": [
+    "\"cost_souls\":\"all souls currently carried"
+  ],
+  "creation_gold_terms": [
+    "cost_gold\":250",
+    "cost_gold\":250"
+  ],
+  "encounter": {
+    "encounter": "dres-raid-party",
+    "race": "saxhleel",
+    "opening": {
+      "opening": "hostile",
+      "aggro_at_m": 28,
+      "net_behaviour": "capture",
+      "parley_offer": false,
+      "on_player_defeat": "capture-transport-archon",
+      "source": "race_behaviour"
+    },
+    "on_player_defeat": "capture-transport-archon",
+    "parley": {
+      "kind": "purchase",
+      "grounds": [
+        "gold",
+        "faction",
+        "name"
+      ],
+      "race_independent_route": "name",
+      "true_name_topic": "the-sallow-wife",
+      "note": "S13 / RI-CHR02 method 11: every parley must have at least one route that is not disposition-gated, or a race term alone can close every non-lethal exit. Here that route is knowledge — the name of the ship — and it is available to a Saxhleel at disposition 0."
+    },
+    "members": [
+      {
+        "eid": "dres-raid-party-infantry-0",
+        "role": "infantry",
+        "statblock": "inf_trash",
+        "archetype": "INFANTRY",
+        "moveset": "enemy:inf_trash",
+        "hp": 412,
+        "hp_max": 412,
+        "poise_max": 32,
+        "alert_state": "IDLE",
+        "aggroed": false,
+        "hailed": false,
+        "dist_m": 32.14
+      },
+      {
+        "eid": "dres-raid-party-infantry-1",
+        "role": "infantry",
+        "statblock": "inf_trash",
+        "archetype": "INFANTRY",
+        "moveset": "enemy:inf_trash",
+        "hp": 412,
+        "hp_max": 412,
+        "poise_max": 32,
+        "alert_state": "IDLE",
+        "aggroed": false,
+        "hailed": false,
+        "dist_m": 32.14
+      },
+      {
+        "eid": "dres-raid-party-infantry-2",
+        "role": "infantry",
+        "statblock": "inf_trash",
+        "archetype": "INFANTRY",
+        "moveset": "enemy:inf_trash",
+        "hp": 412,
+        "hp_max": 412,
+        "poise_max": 32,
+        "alert_state": "IDLE",
+        "aggroed": false,
+        "hailed": false,
+        "dist_m": 34.421
+      },
+      {
+        "eid": "dres-raid-party-infantry-3",
+        "role": "infantry",
+        "statblock": "inf_trash",
+        "archetype": "INFANTRY",
+        "moveset": "enemy:inf_trash",
+        "hp": 412,
+        "hp_max": 412,
+        "poise_max": 32,
+        "alert_state": "IDLE",
+        "aggroed": false,
+        "hailed": false,
+        "dist_m": 34.421
+      },
+      {
+        "eid": "dres-raid-party-net-thrower-0",
+        "role": "net-thrower",
+        "statblock": "inf_trash",
+        "archetype": "INFANTRY",
+        "moveset": "enemy:inf_trash",
+        "hp": 412,
+        "hp_max": 412,
+        "poise_max": 32,
+        "alert_state": "IDLE",
+        "aggroed": false,
+        "hailed": false,
+        "dist_m": 36.374
+      },
+      {
+        "eid": "dres-raid-party-net-thrower-1",
+        "role": "net-thrower",
+        "statblock": "inf_trash",
+        "archetype": "INFANTRY",
+        "moveset": "enemy:inf_trash",
+        "hp": 412,
+        "hp_max": 412,
+        "poise_max": 32,
+        "alert_state": "IDLE",
+        "aggroed": false,
+        "hailed": false,
+        "dist_m": 36.374
+      }
+    ]
+  },
+  "parley_verbs": [],
+  "ui_verbs": [
+    "uiOpen",
+    "uiClose",
+    "arrestTopics"
+  ]
+}

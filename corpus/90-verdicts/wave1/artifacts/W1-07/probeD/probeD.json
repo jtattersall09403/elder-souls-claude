@@ -1,0 +1,485 @@
+{
+  "url": "http://127.0.0.1:36227/game/index.html",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "runs": {
+    "blades25": {
+      "character_skills": {
+        "blades": 25,
+        "axes-maces": 15,
+        "polearms": 5,
+        "greatweapons": 5,
+        "marksman": 15,
+        "claw-fang": 5,
+        "shieldcraft": 25,
+        "sorcery": 15,
+        "root-speech": 5,
+        "warding": 5,
+        "veiling": 10,
+        "alchemy": 5,
+        "athletics": 25,
+        "acrobatics": 5,
+        "survival": 15,
+        "sneak": 5,
+        "security": 5,
+        "mercantile": 5,
+        "speechcraft": 5
+      },
+      "foe": {
+        "eid": "E1",
+        "archetype": "INFANTRY",
+        "pos": [
+          0,
+          0,
+          4.2
+        ],
+        "hp": 412
+      },
+      "event_type_counts": {
+        "ACTION_START": 1,
+        "attack_start": 1,
+        "WHIFF": 1,
+        "whiff": 1
+      },
+      "hit_events": [],
+      "hit_frames": [],
+      "combat_trace_len": 2400,
+      "combat_trace_sample": [
+        {
+          "t": "F",
+          "f": 0,
+          "i": [
+            0,
+            0,
+            0
+          ],
+          "p": [
+            "IDLE",
+            "idle",
+            1,
+            120,
+            620,
+            0,
+            0
+          ],
+          "e": [
+            [
+              "IDLE",
+              "e_idle",
+              41,
+              412,
+              0,
+              32,
+              100,
+              180,
+              4.2
+            ]
+          ],
+          "x": {
+            "p_poise": 48,
+            "p_exhausted": 0,
+            "p_tier": "LIGHT",
+            "p_yaw": 0,
+            "p_pos": [
+              0,
+              0,
+              0
+            ],
+            "p_regen_blocked": 0,
+            "p_guard": 0,
+            "lock": null,
+            "both_framed": 1,
+            "sockets": [
+              0.1184,
+              0.9586,
+              0.4,
+              -0.0416,
+              0.3914,
+              1.1452
+            ],
+            "estus": 5
+          }
+        },
+        {
+          "t": "F",
+          "f": 1,
+          "i": [
+            0,
+            0,
+            0
+          ],
+          "p": [
+            "IDLE",
+            "idle",
+            2,
+            120,
+            620,
+            0,
+            0
+          ],
+          "e": [
+            [
+              "IDLE",
+              "e_idle",
+              42,
+              412,
+              0,
+              32,
+              100,
+              180,
+              4.2
+            ]
+          ],
+          "x": {
+            "p_poise": 48,
+            "p_exhausted": 0,
+            "p_tier": "LIGHT",
+            "p_yaw": 0,
+            "p_pos": [
+              0,
+              0,
+              0
+            ],
+            "p_regen_blocked": 0,
+            "p_guard": 0,
+            "lock": null,
+            "both_framed": 1,
+            "sockets": [
+              0.1184,
+              0.9584,
+              0.4,
+              -0.0415,
+              0.3911,
+              1.145
+            ],
+            "estus": 5
+          }
+        },
+        {
+          "t": "F",
+          "f": 2,
+          "i": [
+            0,
+            0,
+            0
+          ],
+          "p": [
+            "IDLE",
+            "idle",
+            3,
+            120,
+            620,
+            0,
+            0
+          ],
+          "e": [
+            [
+              "IDLE",
+              "e_idle",
+              43,
+              412,
+              0,
+              32,
+              100,
+              180,
+              4.2
+            ]
+          ],
+          "x": {
+            "p_poise": 48,
+            "p_exhausted": 0,
+            "p_tier": "LIGHT",
+            "p_yaw": 0,
+            "p_pos": [
+              0,
+              0,
+              0
+            ],
+            "p_regen_blocked": 0,
+            "p_guard": 0,
+            "lock": null,
+            "both_framed": 1,
+            "sockets": [
+              0.1185,
+              0.9581,
+              0.3999,
+              -0.0413,
+              0.3906,
+              1.1448
+            ],
+            "estus": 5
+          }
+        }
+      ],
+      "skills_after": {
+        "blades": 25,
+        "axes-maces": 15,
+        "polearms": 5,
+        "greatweapons": 5,
+        "marksman": 15,
+        "claw-fang": 5,
+        "shieldcraft": 25,
+        "sorcery": 15,
+        "root-speech": 5,
+        "warding": 5,
+        "veiling": 10,
+        "alchemy": 5,
+        "athletics": 25,
+        "acrobatics": 5,
+        "survival": 15,
+        "sneak": 5,
+        "security": 5,
+        "mercantile": 5,
+        "speechcraft": 5
+      },
+      "skills_changed": false
+    },
+    "blades5": {
+      "character_skills": {
+        "blades": 5,
+        "axes-maces": 5,
+        "polearms": 5,
+        "greatweapons": 5,
+        "marksman": 5,
+        "claw-fang": 5,
+        "shieldcraft": 5,
+        "sorcery": 25,
+        "root-speech": 5,
+        "warding": 25,
+        "veiling": 15,
+        "alchemy": 25,
+        "athletics": 5,
+        "acrobatics": 5,
+        "survival": 5,
+        "sneak": 5,
+        "security": 5,
+        "mercantile": 5,
+        "speechcraft": 15
+      },
+      "foe": {
+        "eid": "E1",
+        "archetype": "INFANTRY",
+        "pos": [
+          0,
+          0,
+          4.2
+        ],
+        "hp": 412
+      },
+      "event_type_counts": {
+        "ACTION_START": 1,
+        "attack_start": 1,
+        "WHIFF": 1,
+        "whiff": 1
+      },
+      "hit_events": [],
+      "hit_frames": [],
+      "combat_trace_len": 2400,
+      "combat_trace_sample": [
+        {
+          "t": "F",
+          "f": 0,
+          "i": [
+            0,
+            0,
+            0
+          ],
+          "p": [
+            "IDLE",
+            "idle",
+            1,
+            120,
+            620,
+            0,
+            0
+          ],
+          "e": [
+            [
+              "IDLE",
+              "e_idle",
+              41,
+              412,
+              0,
+              32,
+              100,
+              180,
+              4.2
+            ]
+          ],
+          "x": {
+            "p_poise": 48,
+            "p_exhausted": 0,
+            "p_tier": "LIGHT",
+            "p_yaw": 0,
+            "p_pos": [
+              0,
+              0,
+              0
+            ],
+            "p_regen_blocked": 0,
+            "p_guard": 0,
+            "lock": null,
+            "both_framed": 1,
+            "sockets": [
+              0.1184,
+              0.9586,
+              0.4,
+              -0.0416,
+              0.3914,
+              1.1452
+            ],
+            "estus": 5
+          }
+        },
+        {
+          "t": "F",
+          "f": 1,
+          "i": [
+            0,
+            0,
+            0
+          ],
+          "p": [
+            "IDLE",
+            "idle",
+            2,
+            120,
+            620,
+            0,
+            0
+          ],
+          "e": [
+            [
+              "IDLE",
+              "e_idle",
+              42,
+              412,
+              0,
+              32,
+              100,
+              180,
+              4.2
+            ]
+          ],
+          "x": {
+            "p_poise": 48,
+            "p_exhausted": 0,
+            "p_tier": "LIGHT",
+            "p_yaw": 0,
+            "p_pos": [
+              0,
+              0,
+              0
+            ],
+            "p_regen_blocked": 0,
+            "p_guard": 0,
+            "lock": null,
+            "both_framed": 1,
+            "sockets": [
+              0.1184,
+              0.9584,
+              0.4,
+              -0.0415,
+              0.3911,
+              1.145
+            ],
+            "estus": 5
+          }
+        },
+        {
+          "t": "F",
+          "f": 2,
+          "i": [
+            0,
+            0,
+            0
+          ],
+          "p": [
+            "IDLE",
+            "idle",
+            3,
+            120,
+            620,
+            0,
+            0
+          ],
+          "e": [
+            [
+              "IDLE",
+              "e_idle",
+              43,
+              412,
+              0,
+              32,
+              100,
+              180,
+              4.2
+            ]
+          ],
+          "x": {
+            "p_poise": 48,
+            "p_exhausted": 0,
+            "p_tier": "LIGHT",
+            "p_yaw": 0,
+            "p_pos": [
+              0,
+              0,
+              0
+            ],
+            "p_regen_blocked": 0,
+            "p_guard": 0,
+            "lock": null,
+            "both_framed": 1,
+            "sockets": [
+              0.1185,
+              0.9581,
+              0.3999,
+              -0.0413,
+              0.3906,
+              1.1448
+            ],
+            "estus": 5
+          }
+        }
+      ],
+      "skills_after": {
+        "blades": 5,
+        "axes-maces": 5,
+        "polearms": 5,
+        "greatweapons": 5,
+        "marksman": 5,
+        "claw-fang": 5,
+        "shieldcraft": 5,
+        "sorcery": 25,
+        "root-speech": 5,
+        "warding": 25,
+        "veiling": 15,
+        "alchemy": 25,
+        "athletics": 5,
+        "acrobatics": 5,
+        "survival": 5,
+        "sneak": 5,
+        "security": 5,
+        "mercantile": 5,
+        "speechcraft": 15
+      },
+      "skills_changed": false
+    }
+  },
+  "comparison": {
+    "hit_frames_identical": true,
+    "damages_25": [],
+    "damages_5": []
+  },
+  "page_errors": []
+}

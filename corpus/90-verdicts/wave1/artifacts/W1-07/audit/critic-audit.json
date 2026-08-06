@@ -1,0 +1,294 @@
+{
+  "tool": "critic-w1-07-audit",
+  "root": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/wt-head",
+  "results": [
+    {
+      "id": "PRG02-m1-ten-attributes",
+      "ok": true,
+      "measured": "10 attributes: strength, endurance, agility, speed, vigour, willpower, intellect, hist-bond, personality, luck",
+      "expected": "exactly 10"
+    },
+    {
+      "id": "PRG02-m1-effects",
+      "ok": true,
+      "measured": "10/10 with non-empty effects",
+      "expected": "all 10"
+    },
+    {
+      "id": "PRG02-m2-out-of-fight>=7",
+      "ok": true,
+      "measured": "10/10 attributes with >=1 out_of_fight effect",
+      "expected": ">= 7"
+    },
+    {
+      "id": "PRG02-m2-exactly-2-no-in-fight",
+      "ok": true,
+      "measured": "2 attributes with zero in_fight effects: speed, personality",
+      "expected": "exactly 2 (speed, personality)"
+    },
+    {
+      "id": "PRG03-m1-nineteen",
+      "ok": true,
+      "measured": "19 skills",
+      "expected": "exactly 19"
+    },
+    {
+      "id": "PRG03-m1-governed",
+      "ok": true,
+      "measured": "19/19 with a governing attribute from the ten",
+      "expected": "all"
+    },
+    {
+      "id": "PRG03-m1-gated",
+      "ok": true,
+      "measured": "19/19 with a non-empty gates list",
+      "expected": "all — a skill that unlocks nothing is decoration"
+    },
+    {
+      "id": "PRG03-m2-curve-declared",
+      "ok": true,
+      "measured": "progression curve in skills.json: progressToNext(s) = round(1.6*s + 6)",
+      "expected": "round(1.6s + 6)"
+    },
+    {
+      "id": "CHR02-m1-ten-races",
+      "ok": true,
+      "measured": "10 races",
+      "expected": "exactly 10"
+    },
+    {
+      "id": "CHR02-m1-sum-12",
+      "ok": true,
+      "measured": "10/10 sum to +12; offenders: none",
+      "expected": "all == 12"
+    },
+    {
+      "id": "CHR02-m1-distinct-skillsets",
+      "ok": false,
+      "measured": "9/10 distinct skill sets",
+      "expected": "all distinct"
+    },
+    {
+      "id": "CHR02-m1-4-skills",
+      "ok": true,
+      "measured": "races with < 4 skills raised: none",
+      "expected": "none"
+    },
+    {
+      "id": "CHR02-m1-ability",
+      "ok": true,
+      "measured": "races with no ability: none",
+      "expected": "none"
+    },
+    {
+      "id": "CHR02-m2-12x10",
+      "ok": true,
+      "measured": "12 groups x 10 races, nulls: 0",
+      "expected": "12 x 10, no nulls"
+    },
+    {
+      "id": "CHR02-m2-sigma",
+      "ok": true,
+      "measured": "sigma over 120 cells = 9.894 (mean -3.41, range -40..14)",
+      "expected": ">= 9.0"
+    },
+    {
+      "id": "CHR02-m2-range",
+      "ok": true,
+      "measured": "range -40 .. 14",
+      "expected": "within [-40, +14]"
+    },
+    {
+      "id": "CHR02-m2-rows-distinct",
+      "ok": true,
+      "measured": "12/12 distinct rows",
+      "expected": "all distinct"
+    },
+    {
+      "id": "CHR02-m2-cols-distinct",
+      "ok": true,
+      "measured": "10/10 distinct columns",
+      "expected": "all distinct"
+    },
+    {
+      "id": "CHR02-m2-neutral-row",
+      "ok": true,
+      "measured": "all-zero rows: RG-COURT",
+      "expected": ">= 1 (RG-COURT)"
+    },
+    {
+      "id": "CHR02-m3-aggregate-gap",
+      "ok": true,
+      "measured": "mean Saxhleel - Dunmer over 12 groups = 11.750",
+      "expected": ">= 8 (RI-DLG04 §E rule 5 floor, per AMENDMENT-W1-07-02)"
+    },
+    {
+      "id": "CHR01-m2-112",
+      "ok": true,
+      "measured": "140 pairs checked; offenders: none",
+      "expected": "every pair == 112"
+    },
+    {
+      "id": "CHR01-m2-class-net-zero",
+      "ok": true,
+      "measured": "classes violating net-zero/<=4/<=4-attrs: none",
+      "expected": "none"
+    },
+    {
+      "id": "CHR01-m4-14-classes",
+      "ok": true,
+      "measured": "14 named classes",
+      "expected": "14"
+    },
+    {
+      "id": "CHR01-m4-unique-skillsets",
+      "ok": true,
+      "measured": "14/14 unique 5-skill sets",
+      "expected": "14/14"
+    },
+    {
+      "id": "CHR01-m3-5to10",
+      "ok": true,
+      "measured": "140 pairs; out of [5,10]: none",
+      "expected": "all in [5,10]"
+    },
+    {
+      "id": "CHR01-m3-max25",
+      "ok": true,
+      "measured": "pairs with a skill > 25: none",
+      "expected": "none"
+    },
+    {
+      "id": "CHR01-m3-all19-reachable",
+      "ok": false,
+      "measured": "skills never above baseline in any of the 150 pairs: polearms",
+      "expected": "none"
+    },
+    {
+      "id": "CHR01-m4-12-questions",
+      "ok": true,
+      "measured": "12 questions",
+      "expected": "12"
+    },
+    {
+      "id": "CHR01-m4-purity",
+      "ok": true,
+      "measured": "stat-token hits in question prose: none (0 total)",
+      "expected": "zero"
+    },
+    {
+      "id": "CHR01-m4-every-skill-5-answers",
+      "ok": true,
+      "measured": "skills appearing in < 5 answers: none",
+      "expected": "none"
+    },
+    {
+      "id": "CHR01-m5-axes",
+      "ok": true,
+      "measured": "10 races x 6 class families (fighter,thief,social,scout,mage,root) x 3 birthsign families (given,withheld,turned) x 3 upbringing classes = 540",
+      "expected": "10 x 6 x 3 x 3 = 540"
+    },
+    {
+      "id": "CHR03-m1-nine-signs",
+      "ok": true,
+      "measured": "9 signs",
+      "expected": "exactly 9"
+    },
+    {
+      "id": "CHR03-m1-3-per-family",
+      "ok": true,
+      "measured": "{\"given\":3,\"withheld\":3,\"turned\":3}",
+      "expected": "3 given / 3 withheld / 3 turned"
+    },
+    {
+      "id": "CHR03-m1-no-imperial-names",
+      "ok": true,
+      "measured": "Imperial sign names in the roster: none",
+      "expected": "zero"
+    },
+    {
+      "id": "CHR03-m1-imperial-13-in-world",
+      "ok": true,
+      "measured": "1 book/dialogue files mentioning an Imperial sign name",
+      "expected": "> 0 — they exist in-world as a wrong system"
+    },
+    {
+      "id": "CHR03-m2-drawback-count",
+      "ok": true,
+      "measured": "2 mechanical + 4 conditional; classification: [{\"id\":\"raj-xul\",\"kind\":\"none\"},{\"id\":\"xan-kheel\",\"kind\":\"none\"},{\"id\":\"deek-xul\",\"kind\":\"none\"},{\"id\":\"nu-ixtu\",\"kind\":\"mechanical\"},{\"id\":\"teekh-nuvei\",\"kind\":\"mechanical\"},{\"id\":\"nu-shanei\",\"kind\":\"conditional\"},{\"id\":\"vastei-nu\",\"kind\":\"conditional\"},{\"id\":\"kaal-kaal\",\"kind\":\"conditional\"},{\"id\":\"shuja-vei\",\"kind\":\"conditional\"}]",
+      "expected": ">= 2 mechanical (target 3 + 3)"
+    },
+    {
+      "id": "CHR01-m8-no-class-gate",
+      "ok": true,
+      "measured": "requires_class / class_min hits in quests|dialogue|items|world: 0",
+      "expected": "zero"
+    },
+    {
+      "id": "CHR01-m8-caste-topics-present",
+      "ok": false,
+      "measured": "0 dialogue/npc files mentioning 'caste'",
+      "expected": "3 caste topics on >= 25 NPCs each"
+    },
+    {
+      "id": "CHR02-m4-npc-coverage",
+      "ok": true,
+      "measured": "5/5 NPCs across 2 files carry a reaction_group",
+      "expected": "100%"
+    },
+    {
+      "id": "CHR02-m4-population",
+      "ok": false,
+      "measured": "5 NPC records shipped; group shares {\"RG-DEEP\":2,\"RG-LUKIUL\":1,\"RG-LEDGER\":1,\"RG-EMPIRE\":1}",
+      "expected": "enough NPCs for the +-4pt population-share assertion to mean anything"
+    },
+    {
+      "id": "CHR02-m5-1500-greetings",
+      "ok": false,
+      "measured": "0 greeting lines (dir ABSENT)",
+      "expected": ">= 1,500 across >= 250 of 300 cells"
+    },
+    {
+      "id": "CHR02-m5-90-race-topics",
+      "ok": false,
+      "measured": "0 race-filtered topic records (0 forbids)",
+      "expected": ">= 90, >= 30 forbids"
+    },
+    {
+      "id": "CHR02-m5-60-slavery-lines",
+      "ok": false,
+      "measured": "8 slavery-vocabulary hits in dialogue",
+      "expected": ">= 60 lines, >= 12 to a Dunmer player"
+    },
+    {
+      "id": "tool-build-viability.mjs",
+      "ok": false,
+      "measured": "tools/analysis/build-viability.mjs ABSENT",
+      "expected": "required by a method assigned to this piece"
+    },
+    {
+      "id": "tool-content-stats.mjs",
+      "ok": true,
+      "measured": "tools/analysis/content-stats.mjs exists",
+      "expected": "required by a method assigned to this piece"
+    },
+    {
+      "id": "tool-journey-run.mjs",
+      "ok": false,
+      "measured": "tools/journey/journey-run.mjs ABSENT",
+      "expected": "required by a method assigned to this piece"
+    },
+    {
+      "id": "tool-beat-extract.mjs",
+      "ok": false,
+      "measured": "tools/journey/beat-extract.mjs ABSENT",
+      "expected": "required by a method assigned to this piece"
+    },
+    {
+      "id": "tool-gamepad-shim.mjs",
+      "ok": false,
+      "measured": "tools/journey/gamepad-shim.mjs ABSENT",
+      "expected": "required by a method assigned to this piece"
+    }
+  ]
+}

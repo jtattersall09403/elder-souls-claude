@@ -1,0 +1,182 @@
+{
+ "souls": {
+  "s0": 0,
+  "s1": 0,
+  "s2": 0,
+  "t1": {
+   "trapped": true,
+   "grade": "greater",
+   "xul_hesh": 1
+  },
+  "t2": {
+   "trapped": true,
+   "grade": "common",
+   "xul_hesh": 2
+  },
+  "t3": {
+   "trapped": false,
+   "reason": "npc_souls_cannot_be_trapped"
+  },
+  "xul": 2,
+  "gems": 2
+ },
+ "xul": {
+  "xul_hesh": 17,
+  "argonian_disposition_delta": -20.4,
+  "deep_kin_closed": true,
+  "enchanting_interest_open": true,
+  "visible_taint": true,
+  "affects_combat": false,
+  "ui_explains_penalty": false
+ },
+ "disp_after": {},
+ "ench_ring_t2": {
+  "ok": true,
+  "problems": [],
+  "focus_base": 7,
+  "points": 18,
+  "capacity": 60,
+  "enchanter_ceiling": 90,
+  "gold": 0,
+  "charge_pool": 400,
+  "charge_per_activation": 28,
+  "adds_sale_value": 0
+ },
+ "ench_over": {
+  "ok": false,
+  "problems": [
+   "73 points does not fit a ring (capacity 60)"
+  ],
+  "focus_base": 29,
+  "points": 73,
+  "capacity": 60,
+  "enchanter_ceiling": 90,
+  "gold": 0,
+  "charge_pool": 400,
+  "charge_per_activation": 116,
+  "adds_sale_value": 0
+ },
+ "ench_constant_petty": {
+  "ok": false,
+  "problems": [
+   "180 points does not fit a medium_armour (capacity 75)",
+   "180 points exceeds Yourself's ceiling of 90",
+   "a constant enchantment needs a greater or grand soul; you offered petty"
+  ],
+  "focus_base": 10,
+  "points": 180,
+  "capacity": 75,
+  "enchanter_ceiling": 90,
+  "gold": 0,
+  "charge_pool": 80,
+  "charge_per_activation": 0,
+  "adds_sale_value": 0
+ },
+ "gate": {
+  "at44": {
+   "refused": false,
+   "notes": [],
+   "effects": [
+    {
+     "effect": "levitate",
+     "magnitude": 1,
+     "duration_s": 60,
+     "area_r_m": 0
+    }
+   ],
+   "range": "self",
+   "class": "LIGHT",
+   "schools": [
+    "warding"
+   ],
+   "focus_base": 25,
+   "band_tier": 2,
+   "tier": 4,
+   "skill_req": 65,
+   "focus_cost": 25,
+   "gold": 1894,
+   "castable_now": true,
+   "attunable_now": false,
+   "over_reservoir": false
+  },
+  "at45": {
+   "refused": false,
+   "notes": [],
+   "effects": [
+    {
+     "effect": "levitate",
+     "magnitude": 1,
+     "duration_s": 60,
+     "area_r_m": 0
+    }
+   ],
+   "range": "self",
+   "class": "LIGHT",
+   "schools": [
+    "warding"
+   ],
+   "focus_base": 25,
+   "band_tier": 2,
+   "tier": 4,
+   "skill_req": 65,
+   "focus_cost": 25,
+   "gold": 1894,
+   "castable_now": true,
+   "attunable_now": false,
+   "over_reservoir": false
+  },
+  "at64": {
+   "refused": false,
+   "notes": [],
+   "effects": [
+    {
+     "effect": "levitate",
+     "magnitude": 1,
+     "duration_s": 60,
+     "area_r_m": 0
+    }
+   ],
+   "range": "self",
+   "class": "LIGHT",
+   "schools": [
+    "warding"
+   ],
+   "focus_base": 25,
+   "band_tier": 2,
+   "tier": 4,
+   "skill_req": 65,
+   "focus_cost": 25,
+   "gold": 1894,
+   "castable_now": true,
+   "attunable_now": false,
+   "over_reservoir": false
+  },
+  "at65": {
+   "refused": false,
+   "notes": [],
+   "effects": [
+    {
+     "effect": "levitate",
+     "magnitude": 1,
+     "duration_s": 60,
+     "area_r_m": 0
+    }
+   ],
+   "range": "self",
+   "class": "LIGHT",
+   "schools": [
+    "warding"
+   ],
+   "focus_base": 25,
+   "band_tier": 2,
+   "tier": 4,
+   "skill_req": 65,
+   "focus_cost": 25,
+   "gold": 1894,
+   "castable_now": true,
+   "attunable_now": true,
+   "over_reservoir": false
+  }
+ },
+ "gold_after": 200000
+}

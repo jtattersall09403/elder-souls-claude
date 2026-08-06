@@ -1,0 +1,608 @@
+{
+ "jump_by_tier": [
+  {
+   "tier": "LIGHT",
+   "declared_tier": "LIGHT",
+   "states": [
+    "IDLE",
+    "JUMP_RISE",
+    "JUMP_AIR",
+    "JUMP_LAND"
+   ],
+   "state_frames": [
+    [
+     "IDLE",
+     1
+    ],
+    [
+     "JUMP_RISE",
+     8
+    ],
+    [
+     "JUMP_AIR",
+     26
+    ],
+    [
+     "JUMP_LAND",
+     12
+    ],
+    [
+     "IDLE",
+     43
+    ]
+   ],
+   "max_y_m": 0.6181,
+   "stamina_before": 120,
+   "stamina_min": 102,
+   "stamina_spent": 18
+  },
+  {
+   "tier": "MEDIUM",
+   "declared_tier": "MEDIUM",
+   "states": [
+    "IDLE",
+    "JUMP_RISE",
+    "JUMP_AIR",
+    "JUMP_LAND"
+   ],
+   "state_frames": [
+    [
+     "IDLE",
+     1
+    ],
+    [
+     "JUMP_RISE",
+     8
+    ],
+    [
+     "JUMP_AIR",
+     26
+    ],
+    [
+     "JUMP_LAND",
+     12
+    ],
+    [
+     "IDLE",
+     43
+    ]
+   ],
+   "max_y_m": 0.6181,
+   "stamina_before": 120,
+   "stamina_min": 102,
+   "stamina_spent": 18
+  },
+  {
+   "tier": "HEAVY",
+   "declared_tier": "HEAVY",
+   "states": [
+    "IDLE",
+    "JUMP_RISE",
+    "JUMP_AIR",
+    "JUMP_LAND"
+   ],
+   "state_frames": [
+    [
+     "IDLE",
+     1
+    ],
+    [
+     "JUMP_RISE",
+     8
+    ],
+    [
+     "JUMP_AIR",
+     26
+    ],
+    [
+     "JUMP_LAND",
+     12
+    ],
+    [
+     "IDLE",
+     43
+    ]
+   ],
+   "max_y_m": 0.6181,
+   "stamina_before": 120,
+   "stamina_min": 102,
+   "stamina_spent": 18
+  },
+  {
+   "tier": "OVERLOADED",
+   "declared_tier": "OVERLOADED",
+   "states": [
+    "IDLE",
+    "JUMP_RISE",
+    "JUMP_AIR",
+    "JUMP_LAND"
+   ],
+   "state_frames": [
+    [
+     "IDLE",
+     1
+    ],
+    [
+     "JUMP_RISE",
+     8
+    ],
+    [
+     "JUMP_AIR",
+     26
+    ],
+    [
+     "JUMP_LAND",
+     12
+    ],
+    [
+     "IDLE",
+     43
+    ]
+   ],
+   "max_y_m": 0.6181,
+   "stamina_before": 120,
+   "stamina_min": 102,
+   "stamina_spent": 18
+  }
+ ],
+ "jump_detail": {
+  "stamina_before": 120,
+  "stamina_min": 102,
+  "spent": 18,
+  "state_frames": [
+   [
+    "IDLE",
+    1
+   ],
+   [
+    "JUMP_RISE",
+    8
+   ],
+   [
+    "JUMP_AIR",
+    26
+   ],
+   [
+    "JUMP_LAND",
+    12
+   ],
+   [
+    "IDLE",
+    43
+   ]
+  ],
+  "apex_m": 0.6181,
+  "apex_frame": 26,
+  "y_at_end": 0,
+  "iframes_any": false
+ },
+ "jump_attack": [
+  {
+   "case": "rising",
+   "press_at_anim_frame": 12,
+   "tier": "LIGHT",
+   "attack_started": false,
+   "move": null,
+   "states": [
+    "IDLE",
+    "JUMP_RISE",
+    "JUMP_AIR",
+    "JUMP_LAND"
+   ]
+  },
+  {
+   "case": "descending",
+   "press_at_anim_frame": 32,
+   "tier": "LIGHT",
+   "attack_started": true,
+   "move": {
+    "id": "light_jump",
+    "startup": 31,
+    "active": 13,
+    "recovery": 48,
+    "total": 92,
+    "iframes": null
+   },
+   "states": [
+    "IDLE",
+    "JUMP_RISE",
+    "JUMP_AIR",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ]
+  },
+  {
+   "case": "descending_overloaded",
+   "press_at_anim_frame": 32,
+   "tier": "OVERLOADED",
+   "attack_started": false,
+   "move": null,
+   "states": [
+    "IDLE",
+    "JUMP_RISE",
+    "JUMP_AIR",
+    "JUMP_LAND"
+   ]
+  }
+ ],
+ "jump_attack_frames": {
+  "move": {
+   "id": "light_jump",
+   "startup": 31,
+   "active": 13,
+   "recovery": 48,
+   "total": 92,
+   "iframes": null
+  },
+  "stamina_spent": 26,
+  "expected": {
+   "startup": 31,
+   "active": 13,
+   "recovery": 48,
+   "stamina": 26
+  }
+ },
+ "stance": {
+  "from": "straight-sword",
+  "to": "straight-sword:two_handed",
+  "two_handed": true,
+  "state_frames": [
+   [
+    "IDLE",
+    1
+   ],
+   [
+    "STANCE_SWITCH",
+    36
+   ],
+   [
+    "IDLE",
+    43
+   ]
+  ],
+  "stamina_after": 120
+ },
+ "stance_uncancellable": {
+  "states": [
+   "IDLE",
+   "STANCE_SWITCH",
+   "RUN"
+  ],
+  "state_frames": [
+   [
+    "IDLE",
+    1
+   ],
+   [
+    "STANCE_SWITCH",
+    36
+   ],
+   [
+    "RUN",
+    43
+   ]
+  ]
+ },
+ "stance_illegal_from_attack": {
+  "states": [
+   "IDLE",
+   "ATK_STARTUP",
+   "ATK_ACTIVE",
+   "ATK_RECOVER"
+  ],
+  "two_handed": false
+ },
+ "two_handed_offhand": {
+  "two_handed": true,
+  "states": [
+   "IDLE",
+   "STANCE_SWITCH"
+  ]
+ },
+ "two_hand_divergence": [
+  {
+   "weapon": "dagger",
+   "one_hand": {
+    "anim": "dagger_r1",
+    "move": {
+     "id": "light",
+     "startup": 12,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "iframes": null
+    },
+    "stamina": 12,
+    "arc_sweep_deg": 82,
+    "weapon": "dagger"
+   },
+   "two_hand": {
+    "anim": "dagger_2h_r1",
+    "move": {
+     "id": "light",
+     "startup": 12,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "iframes": null
+    },
+    "stamina": 14,
+    "arc_sweep_deg": 231.5,
+    "weapon": "dagger:two_handed"
+   },
+   "anim_differs": true,
+   "arc_delta_deg": 149.5,
+   "frames_identical": true,
+   "stamina_ratio": 1.167
+  },
+  {
+   "weapon": "straight-sword",
+   "one_hand": {
+    "anim": "straight_sword_r1",
+    "move": {
+     "id": "light",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "iframes": null
+    },
+    "stamina": 20,
+    "arc_sweep_deg": 268.2,
+    "weapon": "straight-sword"
+   },
+   "two_hand": {
+    "anim": "straight_sword_2h_r1",
+    "move": {
+     "id": "light",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "iframes": null
+    },
+    "stamina": 23,
+    "arc_sweep_deg": 232.4,
+    "weapon": "straight-sword:two_handed"
+   },
+   "anim_differs": true,
+   "arc_delta_deg": -35.8,
+   "frames_identical": true,
+   "stamina_ratio": 1.15
+  },
+  {
+   "weapon": "spear",
+   "one_hand": {
+    "anim": "spear_r1",
+    "move": {
+     "id": "light",
+     "startup": 28,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "iframes": null
+    },
+    "stamina": 18,
+    "arc_sweep_deg": 97.3,
+    "weapon": "spear"
+   },
+   "two_hand": {
+    "anim": "spear_2h_r1",
+    "move": {
+     "id": "light",
+     "startup": 28,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "iframes": null
+    },
+    "stamina": 21,
+    "arc_sweep_deg": 194.2,
+    "weapon": "spear:two_handed"
+   },
+   "anim_differs": true,
+   "arc_delta_deg": 96.9,
+   "frames_identical": true,
+   "stamina_ratio": 1.167
+  },
+  {
+   "weapon": "axe",
+   "one_hand": {
+    "anim": "axe_r1",
+    "move": {
+     "id": "light",
+     "startup": 32,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "iframes": null
+    },
+    "stamina": 24,
+    "arc_sweep_deg": 211.9,
+    "weapon": "axe"
+   },
+   "two_hand": {
+    "anim": "axe_2h_r1",
+    "move": {
+     "id": "light",
+     "startup": 32,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "iframes": null
+    },
+    "stamina": 28,
+    "arc_sweep_deg": 202.9,
+    "weapon": "axe:two_handed"
+   },
+   "anim_differs": true,
+   "arc_delta_deg": -9,
+   "frames_identical": true,
+   "stamina_ratio": 1.167
+  },
+  {
+   "weapon": "halberd",
+   "one_hand": {
+    "anim": "halberd_r1",
+    "move": {
+     "id": "light",
+     "startup": 38,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "iframes": null
+    },
+    "stamina": 28,
+    "arc_sweep_deg": 185.5,
+    "weapon": "halberd"
+   },
+   "two_hand": {
+    "anim": "halberd_2h_r1",
+    "move": {
+     "id": "light",
+     "startup": 38,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "iframes": null
+    },
+    "stamina": 32,
+    "arc_sweep_deg": 232.5,
+    "weapon": "halberd:two_handed"
+   },
+   "anim_differs": true,
+   "arc_delta_deg": 47,
+   "frames_identical": true,
+   "stamina_ratio": 1.143
+  },
+  {
+   "weapon": "greatsword",
+   "one_hand": {
+    "anim": "greatsword_r1",
+    "move": {
+     "id": "light",
+     "startup": 44,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "iframes": null
+    },
+    "stamina": 32,
+    "arc_sweep_deg": 290.6,
+    "weapon": "greatsword"
+   },
+   "two_hand": {
+    "anim": "greatsword_2h_r1",
+    "move": {
+     "id": "light",
+     "startup": 44,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "iframes": null
+    },
+    "stamina": 37,
+    "arc_sweep_deg": 231,
+    "weapon": "greatsword:two_handed"
+   },
+   "anim_differs": true,
+   "arc_delta_deg": -59.6,
+   "frames_identical": true,
+   "stamina_ratio": 1.156
+  },
+  {
+   "weapon": "ultra-greatsword",
+   "one_hand": {
+    "anim": "ultra_greatsword_r1",
+    "move": {
+     "id": "light",
+     "startup": 58,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "iframes": null
+    },
+    "stamina": 42,
+    "arc_sweep_deg": 220.4,
+    "weapon": "ultra-greatsword"
+   },
+   "two_hand": {
+    "anim": "ultra_greatsword_2h_r1",
+    "move": {
+     "id": "light",
+     "startup": 58,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "iframes": null
+    },
+    "stamina": 48,
+    "arc_sweep_deg": 312.9,
+    "weapon": "ultra-greatsword:two_handed"
+   },
+   "anim_differs": true,
+   "arc_delta_deg": 92.5,
+   "frames_identical": true,
+   "stamina_ratio": 1.143
+  }
+ ],
+ "swap_right": {
+  "from": "straight-sword",
+  "to": "ultra-greatsword",
+  "state_frames": [
+   [
+    "IDLE",
+    1
+   ],
+   [
+    "SWAP",
+    24
+   ],
+   [
+    "IDLE",
+    35
+   ]
+  ]
+ },
+ "swap_left": {
+  "from": "marsh_oak_medium",
+  "to": "naga_tower",
+  "state_frames": [
+   [
+    "IDLE",
+    1
+   ],
+   [
+    "SWAP",
+    24
+   ],
+   [
+    "IDLE",
+    35
+   ]
+  ]
+ },
+ "swap_is_not_a_heal": {
+  "stamina_before": 90.15,
+  "stamina_after": 90.15,
+  "restored": false
+ },
+ "menu_does_not_pause": {
+  "menu": {
+   "open": true,
+   "pauses_simulation": false
+  },
+  "frames_advanced": 200,
+  "enemy_states_while_open": [
+   "IDLE",
+   "ATK_WINDUP",
+   "ATK_ACTIVE",
+   "ATK_RECOVER",
+   "REPOSITION"
+  ],
+  "player_hp_5": 620,
+  "player_hp_200": 524,
+  "player_damaged_while_menu_open": true
+ }
+}

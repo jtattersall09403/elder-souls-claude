@@ -1,0 +1,128 @@
+{
+  "rows": [
+    {
+      "k": "orsimer/marsh-knight",
+      "vigour": 18,
+      "endurance": 19,
+      "willpower": 11,
+      "hp_max": 620,
+      "stamina_max": 120,
+      "focus_max": 94
+    },
+    {
+      "k": "bosmer/wet-foot",
+      "vigour": 6,
+      "endurance": 10,
+      "willpower": 10,
+      "hp_max": 620,
+      "stamina_max": 120,
+      "focus_max": 94
+    },
+    {
+      "k": "nord/marsh-knight",
+      "vigour": 17,
+      "endurance": 18,
+      "willpower": 10,
+      "hp_max": 620,
+      "stamina_max": 120,
+      "focus_max": 94
+    },
+    {
+      "k": "breton/sap-reader",
+      "vigour": 10,
+      "endurance": 6,
+      "willpower": 18,
+      "hp_max": 620,
+      "stamina_max": 120,
+      "focus_max": 94
+    }
+  ],
+  "kaal": null,
+  "setCharacter_keys": null,
+  "kaal_second_birthsign": {
+    "birthsign": "kaal-kaal",
+    "second": null,
+    "focus_max": 94
+  },
+  "kaal_birthsign_second": {
+    "birthsign": "kaal-kaal",
+    "second": "nu-ixtu",
+    "focus_max": 94
+  },
+  "kaal_second": {
+    "birthsign": "kaal-kaal",
+    "second": "nu-ixtu",
+    "focus_max": 94
+  },
+  "dry_well": {
+    "willpower": 18,
+    "focus_max": 94,
+    "drawbacks": [
+      {
+        "sign": "nu-ixtu",
+        "scale": 1,
+        "drawback": {
+          "kind": "mechanical",
+          "removes_system": "focus_regeneration",
+          "summary": "You have no Focus regeneration of any kind. Ever.",
+          "detail": "Not passive, not from resting, not from Fatigue, not from ENDURANCE. Focus is refilled only by absorption and by consumables. This is the Atronach, ported to our Focus economy and not softened: a Dry Well character who walks into a room with no casters in it has whatever Focus they walked in with.",
+          "assertion": "player.focus is monotonically non-increasing across all frames except on `absorb` and `item` events."
+        }
+      },
+      {
+        "sign": "nu-ixtu",
+        "scale": 1,
+        "drawback": {
+          "kind": "mechanical",
+          "removes_system": "focus_regeneration",
+          "summary": "You have no Focus regeneration of any kind. Ever.",
+          "detail": "Not passive, not from resting, not from Fatigue, not from ENDURANCE. Focus is refilled only by absorption and by consumables. This is the Atronach, ported to our Focus economy and not softened: a Dry Well character who walks into a room with no casters in it has whatever Focus they walked in with.",
+          "assertion": "player.focus is monotonically non-increasing across all frames except on `absorb` and `item` events."
+        },
+        "via": "kaal-kaal",
+        "note": "FULL magnitude. RI-CHR03 method 9."
+      }
+    ],
+    "powers": [
+      {
+        "sign": "nu-ixtu",
+        "scale": 1,
+        "power": {
+          "summary": "Max Focus x1.60. You absorb 55% of the magnitude of any spell effect that lands on you, as Focus.",
+          "effects": [
+            {
+              "kind": "focus_max_multiplier",
+              "value": 1.6
+            },
+            {
+              "kind": "spell_absorption",
+              "value": 0.55
+            }
+          ]
+        }
+      },
+      {
+        "sign": "nu-ixtu",
+        "scale": 0.5,
+        "power": {
+          "summary": "Max Focus x1.60. You absorb 55% of the magnitude of any spell effect that lands on you, as Focus.",
+          "effects": [
+            {
+              "kind": "focus_max_multiplier",
+              "value": 1.6
+            },
+            {
+              "kind": "spell_absorption",
+              "value": 0.55
+            }
+          ]
+        },
+        "via": "kaal-kaal"
+      }
+    ]
+  },
+  "control": {
+    "willpower": 18,
+    "focus_max": 94
+  }
+}

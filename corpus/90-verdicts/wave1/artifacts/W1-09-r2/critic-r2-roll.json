@@ -1,0 +1,1286 @@
+{
+  "generated": "2026-08-06T20:36:05.682Z",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "probes": {
+    "roll": {
+      "note": "roll pressed at lead k before the enemy hitbox goes live; the roll direction is varied",
+      "cases": [
+        {
+          "dir": "forward",
+          "press_f": 40,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 1.526,
+          "min_dist_m": 0.088,
+          "survived_by": "displacement-only"
+        },
+        {
+          "dir": "forward",
+          "press_f": 42,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 1.183,
+          "min_dist_m": 0.118,
+          "survived_by": "displacement-only"
+        },
+        {
+          "dir": "forward",
+          "press_f": 44,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 2,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 0.962,
+          "min_dist_m": 0.102,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 46,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 4,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 0.835,
+          "min_dist_m": 0.08,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 48,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 6,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 0.42,
+          "min_dist_m": 0.066,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 50,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 8,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 0.061,
+          "min_dist_m": 0.061,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 52,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 0.345,
+          "min_dist_m": 0.172,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 54,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 0.502,
+          "min_dist_m": 0.1,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 56,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 0.953,
+          "min_dist_m": 0.074,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 58,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 1.445,
+          "min_dist_m": 0.122,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 60,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 1.704,
+          "min_dist_m": 0.009,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 62,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 1.84,
+          "min_dist_m": 0.029,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 64,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 2.182,
+          "min_dist_m": 0.088,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 66,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 2.533,
+          "min_dist_m": 0.099,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 68,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 2.695,
+          "min_dist_m": 0.099,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 70,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 8,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.018,
+          "min_dist_m": 0.1,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "forward",
+          "press_f": 72,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 6,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.163,
+          "min_dist_m": 0.1,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 74,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 4,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.101,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 76,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.347,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 78,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.4,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 80,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.347,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 82,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 1,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.05,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 84,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.104,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 86,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.105,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 88,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.106,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 90,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.108,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 92,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.109,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 94,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.109,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 96,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.11,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 98,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.111,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "forward",
+          "press_f": 100,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 0.111,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 40,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 7.942,
+          "min_dist_m": 3.544,
+          "survived_by": "displacement-only"
+        },
+        {
+          "dir": "back",
+          "press_f": 42,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 7.599,
+          "min_dist_m": 3.542,
+          "survived_by": "displacement-only"
+        },
+        {
+          "dir": "back",
+          "press_f": 44,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 2,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 7.378,
+          "min_dist_m": 3.541,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 46,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 4,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 7.251,
+          "min_dist_m": 3.54,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 48,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 6,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 6.836,
+          "min_dist_m": 3.538,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 50,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 8,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 6.355,
+          "min_dist_m": 3.528,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 52,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 6.071,
+          "min_dist_m": 3.509,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 54,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.914,
+          "min_dist_m": 3.484,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 56,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.463,
+          "min_dist_m": 3.454,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 58,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.971,
+          "min_dist_m": 3.42,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 60,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.712,
+          "min_dist_m": 3.385,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 62,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.576,
+          "min_dist_m": 3.35,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 64,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.234,
+          "min_dist_m": 3.315,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 66,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.883,
+          "min_dist_m": 3.284,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 68,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.721,
+          "min_dist_m": 3.256,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 70,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 8,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.398,
+          "min_dist_m": 3.235,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 72,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 6,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.253,
+          "min_dist_m": 3.057,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "back",
+          "press_f": 74,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 4,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.774,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 76,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.437,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 78,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.4,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 80,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.437,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 82,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 1,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.52,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 84,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.519,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 86,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.461,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 88,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.423,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 90,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.412,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 92,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.412,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 94,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.411,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 96,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.41,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 98,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.409,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "back",
+          "press_f": 100,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.408,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 40,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.636,
+          "min_dist_m": 3.542,
+          "survived_by": "displacement-only"
+        },
+        {
+          "dir": "left",
+          "press_f": 42,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.365,
+          "min_dist_m": 3.541,
+          "survived_by": "displacement-only"
+        },
+        {
+          "dir": "left",
+          "press_f": 44,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 2,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.195,
+          "min_dist_m": 3.54,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 46,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 4,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.102,
+          "min_dist_m": 3.529,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 48,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 6,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.792,
+          "min_dist_m": 3.507,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 50,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 8,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.453,
+          "min_dist_m": 3.475,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 52,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.266,
+          "min_dist_m": 3.441,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 54,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.169,
+          "min_dist_m": 3.406,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 56,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.901,
+          "min_dist_m": 3.371,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 58,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.646,
+          "min_dist_m": 3.339,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 60,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.532,
+          "min_dist_m": 3.309,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 62,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.478,
+          "min_dist_m": 3.116,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 64,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.363,
+          "min_dist_m": 2.96,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 66,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.277,
+          "min_dist_m": 2.901,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 68,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.25,
+          "min_dist_m": 2.775,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 70,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 8,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.22,
+          "min_dist_m": 2.646,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 72,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 6,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.574,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "left",
+          "press_f": 74,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 4,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.533,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 76,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.4,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 78,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.4,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 80,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.4,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 82,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 1,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.463,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 84,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.426,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 86,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.413,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 88,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.412,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 90,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.412,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 92,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.412,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 94,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.411,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 96,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.41,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 98,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.409,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "left",
+          "press_f": 100,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.408,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 40,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.636,
+          "min_dist_m": 3.542,
+          "survived_by": "displacement-only"
+        },
+        {
+          "dir": "right",
+          "press_f": 42,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.365,
+          "min_dist_m": 3.541,
+          "survived_by": "displacement-only"
+        },
+        {
+          "dir": "right",
+          "press_f": 44,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 2,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.195,
+          "min_dist_m": 3.54,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 46,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 4,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 5.102,
+          "min_dist_m": 3.529,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 48,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 6,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.792,
+          "min_dist_m": 3.507,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 50,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 8,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.453,
+          "min_dist_m": 3.475,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 52,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.266,
+          "min_dist_m": 3.441,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 54,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 4.169,
+          "min_dist_m": 3.406,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 56,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.901,
+          "min_dist_m": 3.371,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 58,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.646,
+          "min_dist_m": 3.339,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 60,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.532,
+          "min_dist_m": 3.309,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 62,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.478,
+          "min_dist_m": 3.116,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 64,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.363,
+          "min_dist_m": 2.96,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 66,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.277,
+          "min_dist_m": 2.901,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 68,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 10,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.25,
+          "min_dist_m": 2.775,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 70,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 8,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.22,
+          "min_dist_m": 2.646,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 72,
+          "hit": false,
+          "invuln_frames_during_enemy_active": 6,
+          "enemy_active_frames": 10,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.574,
+          "survived_by": "invulnerable-during-active"
+        },
+        {
+          "dir": "right",
+          "press_f": 74,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 4,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.533,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 76,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.4,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 78,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.4,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 80,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.4,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 82,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 1,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.463,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 84,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.426,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 86,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.413,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 88,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.412,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 90,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.412,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 92,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.412,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 94,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.411,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 96,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.41,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 98,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.409,
+          "survived_by": "nothing (hit)"
+        },
+        {
+          "dir": "right",
+          "press_f": 100,
+          "hit": true,
+          "invuln_frames_during_enemy_active": 0,
+          "enemy_active_frames": 15,
+          "dist_at_first_active_m": 3.216,
+          "min_dist_m": 2.408,
+          "survived_by": "nothing (hit)"
+        }
+      ],
+      "hit_distance_used_m": 3.6,
+      "control_no_roll_hit": true,
+      "summary": {
+        "forward": {
+          "hit": 15,
+          "invuln": 14,
+          "displacement": 2
+        },
+        "back": {
+          "hit": 14,
+          "invuln": 15,
+          "displacement": 2
+        },
+        "left": {
+          "hit": 14,
+          "invuln": 15,
+          "displacement": 2
+        },
+        "right": {
+          "hit": 14,
+          "invuln": 15,
+          "displacement": 2
+        }
+      }
+    }
+  }
+}

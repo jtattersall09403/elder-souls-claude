@@ -1,0 +1,192 @@
+{
+ "leech": {
+  "hp0": 412,
+  "hp1": 102,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@26",
+   "effect_apply:drain_health@26",
+   "effect_apply:drain_health@27",
+   "effect_apply:drain_health@28",
+   "effect_apply:drain_health@29",
+   "effect_apply:drain_health@30"
+  ],
+  "active": [
+   "drain_health",
+   "drain_health",
+   "drain_health",
+   "drain_health",
+   "drain_health"
+  ]
+ },
+ "sap_thief": {
+  "hp0": 412,
+  "hp1": 212,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@26",
+   "effect_apply:absorb_health@26",
+   "effect_apply:absorb_health@27",
+   "effect_apply:absorb_health@28",
+   "effect_apply:absorb_health@29",
+   "effect_apply:absorb_health@30"
+  ],
+  "active": []
+ },
+ "verdigris": {
+  "hp0": 412,
+  "hp1": 102,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@26",
+   "effect_apply:corrode@26",
+   "effect_apply:corrode@27",
+   "effect_apply:corrode@28",
+   "effect_apply:corrode@29",
+   "effect_apply:corrode@30"
+  ],
+  "active": []
+ },
+ "rime_touch": {
+  "hp0": 412,
+  "hp1": 244,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@16",
+   "effect_apply:frost_damage@16",
+   "effect_apply:frost_damage@17",
+   "effect_apply:frost_damage@18",
+   "effect_apply:frost_damage@19"
+  ],
+  "active": []
+ },
+ "wamasu_arc": {
+  "hp0": 412,
+  "hp1": 318,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@26",
+   "effect_apply:shock_damage@46"
+  ],
+  "active": []
+ },
+ "charm": {
+  "hp0": 412,
+  "hp1": 228,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@16",
+   "effect_apply:charm@16",
+   "effect_apply:charm@17",
+   "effect_apply:charm@18",
+   "effect_apply:charm@19"
+  ],
+  "active": [
+   "charm",
+   "charm",
+   "charm",
+   "charm"
+  ]
+ },
+ "make_it_whole": {
+  "hp0": 412,
+  "hp1": 412,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@26",
+   "effect_apply:mend_item@26",
+   "effect_apply:mend_item@27",
+   "effect_apply:mend_item@28",
+   "effect_apply:mend_item@29",
+   "effect_apply:mend_item@30"
+  ],
+  "active": []
+ },
+ "seal": {
+  "hp0": 412,
+  "hp1": 228,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@16",
+   "effect_apply:lock_lock@16",
+   "effect_apply:lock_lock@17",
+   "effect_apply:lock_lock@18",
+   "effect_apply:lock_lock@19"
+  ],
+  "active": []
+ },
+ "loosen_the_joint": {
+  "hp0": 412,
+  "hp1": 412,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@16",
+   "effect_apply:cure_paralysis@16",
+   "effect_apply:cure_paralysis@17",
+   "effect_apply:cure_paralysis@18",
+   "effect_apply:cure_paralysis@19"
+  ],
+  "active": []
+ },
+ "spring_the_trap": {
+  "hp0": 412,
+  "hp1": 407,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "cast_release@16",
+   "effect_apply:ward_trap@18"
+  ],
+  "active": []
+ },
+ "long_hand": {
+  "hp0": 412,
+  "hp1": 412,
+  "php0": 620,
+  "php1": 620,
+  "ev": [
+   "cast_start@2",
+   "focus_spend@2",
+   "effect_apply:telekinesis@16",
+   "cast_release@16"
+  ],
+  "active": [
+   "telekinesis"
+  ]
+ },
+ "soul_trap_kill": {
+  "gems0": 0,
+  "gems1": 0,
+  "xul": 0,
+  "enemy_hp": 226
+ }
+}

@@ -1,0 +1,9 @@
+- «person» in «place»: "They will take the other one off you at the writ house. Tell me the one they cannot." — records «field»
+- «person» in «place»: "Go up. The light is bad but it is light. When you are done at the desk, come back down here if I am still here." — records «field»
+- «person» in «place»: "Altmer. — No, of course not, you are not tall enough and you are not smug enough. Dunmer. I will write Dunmer." — records «field»
+- «person» in «place»: "And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat you differently for it and I have watched for eleven years." — records «field»
+- «person» in «place»: "Where were you a child? Answer in the name of a water, not a country." — records «field»
+- «person» in «place»: "And the name they will use." — records «field»
+- «person» in «place»: "Profession. There are three ways to do this and I do not care which, and neither does the box." — records «field»
+- «person» in «place»: "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked." — records «field»
+- «person» in «place»: "Which tide were you drawn on?" — records «field»

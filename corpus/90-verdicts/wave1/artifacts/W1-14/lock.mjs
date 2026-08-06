@@ -1,0 +1,22 @@
+import { launchGame } from '/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/w1-14/tools/lib/browser.mjs';
+import fs from 'node:fs';
+const h = await launchGame({});
+const out = await h.page.evaluate(async () => {
+  const H = window.__HARNESS; await H.ready();
+  const R={};
+  H.setSeed(1337);H.loadState('arena_flat');H.setRenderRate(0);H.setWillpower(99);H.setCatalyst('rod');
+  H.setMagicSkills({sorcery:100,root_speech:100,warding:100,veiling:100});H.hearthRest();H.setAttuned(['the_greater_opening']);
+  const safe=(f)=>{try{return f();}catch(e){return 'ERR:'+String(e.message).slice(0,160);}};
+  R.begin = safe(()=>H.lockBegin('t3'));
+  R.state0 = safe(()=>H.lockState());
+  H.magicEventsDrain();
+  H.queueInputs([{f:2,press:['light']},{f:4,release:['light']}]);
+  H.stepFrames(200);
+  R.state1 = safe(()=>H.lockState());
+  R.ev = H.magicEventsDrain().map(e=>e.kind+(e.effect?':'+e.effect:''));
+  R.gate = safe(()=>H.lockGate('t3'));
+  return R;
+});
+fs.writeFileSync('/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/critic/lock.json', JSON.stringify(out,null,1));
+console.log(JSON.stringify(out,null,1).slice(0,3000));
+await h.close();

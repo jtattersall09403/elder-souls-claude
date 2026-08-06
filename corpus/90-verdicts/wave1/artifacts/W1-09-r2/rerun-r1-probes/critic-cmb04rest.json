@@ -1,0 +1,169 @@
+{
+  "m7": [
+    {
+      "render_rate": 0,
+      "offsets": [
+        1.1,
+        1.11,
+        1.115,
+        1.12,
+        1.125,
+        1.13,
+        1.14
+      ],
+      "vector": "1111111"
+    },
+    {
+      "render_rate": 30,
+      "offsets": [
+        1.1,
+        1.11,
+        1.115,
+        1.12,
+        1.125,
+        1.13,
+        1.14
+      ],
+      "vector": "1111111"
+    },
+    {
+      "render_rate": 144,
+      "offsets": [
+        1.1,
+        1.11,
+        1.115,
+        1.12,
+        1.125,
+        1.13,
+        1.14
+      ],
+      "vector": "1111111"
+    }
+  ],
+  "m1": [
+    {
+      "hurtbox": "head",
+      "min_m": 0.069947,
+      "variation_m": 0.00009,
+      "world_travel_m": 7.349
+    },
+    {
+      "hurtbox": "torso_upper",
+      "min_m": 0.109957,
+      "variation_m": 0.000088,
+      "world_travel_m": 6.361
+    },
+    {
+      "hurtbox": "torso_lower",
+      "min_m": 0.099966,
+      "variation_m": 0.00008,
+      "world_travel_m": 5.829
+    },
+    {
+      "hurtbox": "pelvis",
+      "min_m": 0.06,
+      "variation_m": 0,
+      "world_travel_m": 5.718
+    },
+    {
+      "hurtbox": "upper_arm_l",
+      "min_m": 0.129961,
+      "variation_m": 0.000085,
+      "world_travel_m": 6.101
+    },
+    {
+      "hurtbox": "upper_arm_r",
+      "min_m": 0.129959,
+      "variation_m": 0.000082,
+      "world_travel_m": 6.191
+    },
+    {
+      "hurtbox": "forearm_l",
+      "min_m": 0.12495,
+      "variation_m": 0.000082,
+      "world_travel_m": 6.192
+    },
+    {
+      "hurtbox": "forearm_r",
+      "min_m": 0.124957,
+      "variation_m": 0.000093,
+      "world_travel_m": 6.281
+    },
+    {
+      "hurtbox": "thigh_l",
+      "min_m": 0.199952,
+      "variation_m": 0.000074,
+      "world_travel_m": 5.544
+    },
+    {
+      "hurtbox": "thigh_r",
+      "min_m": 0.199953,
+      "variation_m": 0.000081,
+      "world_travel_m": 5.545
+    },
+    {
+      "hurtbox": "shin_l",
+      "min_m": 0.189968,
+      "variation_m": 0.00008,
+      "world_travel_m": 5.718
+    },
+    {
+      "hurtbox": "shin_r",
+      "min_m": 0.189961,
+      "variation_m": 0.000081,
+      "world_travel_m": 5.784
+    }
+  ],
+  "m1_distinct_poses": 56,
+  "m1_frames": 56,
+  "m5_single": [
+    {
+      "f": 60,
+      "dmg": 294
+    }
+  ],
+  "m5_chain": [
+    {
+      "f": 28,
+      "dmg": 118
+    },
+    {
+      "f": 171,
+      "dmg": 118
+    }
+  ],
+  "m6": {
+    "block_0deg": [
+      {
+        "f": 74,
+        "dS": 36.48,
+        "dHP": 5.76,
+        "st": "BLOCK_HOLD"
+      }
+    ],
+    "block_45deg": [
+      {
+        "f": 74,
+        "dS": 36.48,
+        "dHP": 5.76,
+        "st": "BLOCK_HOLD"
+      }
+    ],
+    "block_75deg": [
+      {
+        "f": 74,
+        "dS": 0,
+        "dHP": 96,
+        "st": "BLOCK_HOLD"
+      }
+    ],
+    "iframe_plus_block": [
+      {
+        "f": 62,
+        "dS": 22,
+        "dHP": 0,
+        "st": "ROLL_STARTUP"
+      }
+    ]
+  }
+}

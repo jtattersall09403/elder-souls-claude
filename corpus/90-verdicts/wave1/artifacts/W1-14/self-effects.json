@@ -1,0 +1,201 @@
+{
+ "feather": {
+  "before": {
+   "eq": 24,
+   "roll": "LIGHT",
+   "burden": 0,
+   "tier": "UNBURDENED"
+  },
+  "after": {
+   "eq": 24,
+   "roll": "LIGHT",
+   "burden": 0,
+   "tier": "UNBURDENED"
+  },
+  "effects": [
+   {
+    "effect": "feather",
+    "magnitude": 46.32,
+    "remaining_f": 1696,
+    "source": "feather"
+   }
+  ]
+ },
+ "restore_health": {
+  "hp0": 620,
+  "hp1": 420,
+  "ev": []
+ },
+ "resist_element": {
+  "no_buff": 0,
+  "with_buff": 0,
+  "active": [
+   {
+    "effect": "resist_element",
+    "magnitude": 69.48,
+    "remaining_f": 1696,
+    "source": "thick_skin"
+   }
+  ]
+ },
+ "shield": {
+  "no_buff": 0,
+  "with_buff": 0,
+  "active": [
+   {
+    "effect": "shield",
+    "magnitude": 46.32,
+    "remaining_f": 1706,
+    "source": "stone_skin"
+   }
+  ]
+ },
+ "levitate": {
+  "s0": {
+   "alt": 0,
+   "focus": 103,
+   "lev": true,
+   "air": true
+  },
+  "p0": [
+   0,
+   0,
+   0.154
+  ],
+  "samples": [
+   {
+    "f": 81,
+    "alt": 0,
+    "focus": 103,
+    "pos": [
+     0,
+     0,
+     0.154
+    ],
+    "state": "IDLE"
+   },
+   {
+    "f": 131,
+    "alt": 0,
+    "focus": 103,
+    "pos": [
+     0,
+     0,
+     2.820667
+    ],
+    "state": "RUN"
+   },
+   {
+    "f": 181,
+    "alt": 0,
+    "focus": 103,
+    "pos": [
+     0,
+     0,
+     5.487333
+    ],
+    "state": "RUN"
+   },
+   {
+    "f": 231,
+    "alt": 0,
+    "focus": 103,
+    "pos": [
+     0,
+     0,
+     8.154
+    ],
+    "state": "RUN"
+   },
+   {
+    "f": 281,
+    "alt": 0,
+    "focus": 103,
+    "pos": [
+     0,
+     0,
+     10.820667
+    ],
+    "state": "RUN"
+   },
+   {
+    "f": 331,
+    "alt": 0,
+    "focus": 103,
+    "pos": [
+     0,
+     0,
+     13.487333
+    ],
+    "state": "RUN"
+   }
+  ]
+ },
+ "chameleon": {
+  "active": [
+   {
+    "effect": "chameleon",
+    "magnitude": 80,
+    "remaining_f": 7098,
+    "source": "the_deep_chameleon"
+   }
+  ],
+  "vis": null
+ },
+ "detect_life": {
+  "active": [
+   {
+    "effect": "detect_life",
+    "magnitude": 38.6,
+    "remaining_f": 1686,
+    "source": "warm_smudges"
+   }
+  ],
+  "quest": [
+   "active",
+   "completed",
+   "journal",
+   "flags",
+   "topicsKnown",
+   "dispositions",
+   "factions",
+   "crime",
+   "_declared_incomplete"
+  ]
+ },
+ "invisibility": {
+  "before": [
+   "invisibility"
+  ],
+  "after": [
+   "invisibility"
+  ]
+ },
+ "fortify_skill": {
+  "active": [
+   {
+    "effect": "fortify_skill",
+    "magnitude": 46.32,
+    "remaining_f": 3506,
+    "source": "sure_hand"
+   }
+  ],
+  "skills": null,
+  "playerSkills": {
+   "vigour": 10,
+   "endurance": 20,
+   "strength": 12,
+   "dexterity": 12,
+   "intelligence": 10,
+   "faith": 10
+  }
+ },
+ "effect_shape": [
+  {
+   "effect": "feather",
+   "magnitude": 46.32,
+   "remaining_f": 1756,
+   "source": "feather"
+  }
+ ]
+}

@@ -1,0 +1,186 @@
+== RI-PRG02 — the sheet
+PASS  PRG02-m1-ten-attributes
+        measured: 10 attributes: strength, endurance, agility, speed, vigour, willpower, intellect, hist-bond, personality, luck
+        expected: exactly 10
+PASS  PRG02-m1-effects
+        measured: 10/10 with non-empty effects
+        expected: all 10
+  effect classification sample: [{"id":"strength","inF":1,"outF":1,"in_fight":"STR-scaling damage; shield stability; heavy-weapon requirement","out_of_fight":"Max equip load (RI-PRG07); carry capacity for loot; forcing doors and chests"},{"id":"endurance","inF":1,"outF":1,"in_fight":"Max stamina; stamina regen rate; poise floor","out_of_fight":"Max Fatigue (S4 second bar); recovery from Fatigue-0"},{"id":"agility","inF":1,"outF":1,"in_fight":"AGI-scaling damage; bow draw speed; roll distance","out_of_fight":"Lockpick tier ceiling; pickpocket; trap disarm"}]
+PASS  PRG02-m2-out-of-fight>=7
+        measured: 10/10 attributes with >=1 out_of_fight effect
+        expected: >= 7
+PASS  PRG02-m2-exactly-2-no-in-fight
+        measured: 2 attributes with zero in_fight effects: speed, personality
+        expected: exactly 2 (speed, personality)
+
+== RI-PRG03 — the 19 skills
+PASS  PRG03-m1-nineteen
+        measured: 19 skills
+        expected: exactly 19
+PASS  PRG03-m1-governed
+        measured: 19/19 with a governing attribute from the ten
+        expected: all
+PASS  PRG03-m1-gated
+        measured: 19/19 with a non-empty gates list
+        expected: all — a skill that unlocks nothing is decoration
+PASS  PRG03-m2-curve-declared
+        measured: progression curve in skills.json: progressToNext(s) = round(1.6*s + 6)
+        expected: round(1.6s + 6)
+
+== RI-CHR02 method 1 — race table conformance
+PASS  CHR02-m1-ten-races
+        measured: 10 races
+        expected: exactly 10
+PASS  CHR02-m1-sum-12
+        measured: 10/10 sum to +12; offenders: none
+        expected: all == 12
+FAIL  CHR02-m1-distinct-skillsets
+        measured: 9/10 distinct skill sets
+        expected: all distinct
+PASS  CHR02-m1-4-skills
+        measured: races with < 4 skills raised: none
+        expected: none
+PASS  CHR02-m1-ability
+        measured: races with no ability: none
+        expected: none
+
+== RI-CHR02 method 2 — the matrix
+PASS  CHR02-m2-12x10
+        measured: 12 groups x 10 races, nulls: 0
+        expected: 12 x 10, no nulls
+PASS  CHR02-m2-sigma
+        measured: sigma over 120 cells = 9.894 (mean -3.41, range -40..14)
+        expected: >= 9.0
+PASS  CHR02-m2-range
+        measured: range -40 .. 14
+        expected: within [-40, +14]
+PASS  CHR02-m2-rows-distinct
+        measured: 12/12 distinct rows
+        expected: all distinct
+PASS  CHR02-m2-cols-distinct
+        measured: 10/10 distinct columns
+        expected: all distinct
+PASS  CHR02-m2-neutral-row
+        measured: all-zero rows: RG-COURT
+        expected: >= 1 (RG-COURT)
+PASS  CHR02-m3-aggregate-gap
+        measured: mean Saxhleel - Dunmer over 12 groups = 11.750
+        expected: >= 8 (RI-DLG04 §E rule 5 floor, per AMENDMENT-W1-07-02)
+
+== RI-CHR01 method 2 — 112 points for every race x class
+PASS  CHR01-m2-112
+        measured: 140 pairs checked; offenders: none
+        expected: every pair == 112
+PASS  CHR01-m2-class-net-zero
+        measured: classes violating net-zero/<=4/<=4-attrs: none
+        expected: none
+PASS  CHR01-m4-14-classes
+        measured: 14 named classes
+        expected: 14
+PASS  CHR01-m4-unique-skillsets
+        measured: 14/14 unique 5-skill sets
+        expected: 14/14
+
+== RI-CHR01 method 3 — skill composition over all 150 pairs
+PASS  CHR01-m3-5to10
+        measured: 140 pairs; out of [5,10]: none
+        expected: all in [5,10]
+PASS  CHR01-m3-max25
+        measured: pairs with a skill > 25: none
+        expected: none
+FAIL  CHR01-m3-all19-reachable
+        measured: skills never above baseline in any of the 150 pairs: polearms
+        expected: none
+
+== RI-CHR01 method 4 — questionnaire purity
+PASS  CHR01-m4-12-questions
+        measured: 12 questions
+        expected: 12
+PASS  CHR01-m4-purity
+        measured: stat-token hits in question prose: none (0 total)
+        expected: zero
+PASS  CHR01-m4-every-skill-5-answers
+        measured: skills appearing in < 5 answers: none
+        expected: none
+
+== RI-CHR01 method 5 — 540 signatures
+PASS  CHR01-m5-axes
+        measured: 10 races x 6 class families (fighter,thief,social,scout,mage,root) x 3 birthsign families (given,withheld,turned) x 3 upbringing classes = 540
+        expected: 10 x 6 x 3 x 3 = 540
+
+== RI-CHR03 method 1 — cosmology
+PASS  CHR03-m1-nine-signs
+        measured: 9 signs
+        expected: exactly 9
+PASS  CHR03-m1-3-per-family
+        measured: {"given":3,"withheld":3,"turned":3}
+        expected: 3 given / 3 withheld / 3 turned
+PASS  CHR03-m1-no-imperial-names
+        measured: Imperial sign names in the roster: none
+        expected: zero
+PASS  CHR03-m1-imperial-13-in-world
+        measured: 1 book/dialogue files mentioning an Imperial sign name
+        expected: > 0 — they exist in-world as a wrong system
+
+== RI-CHR03 method 2 — drawback census
+PASS  CHR03-m2-drawback-count
+        measured: 2 mechanical + 4 conditional; classification: [{"id":"raj-xul","kind":"none"},{"id":"xan-kheel","kind":"none"},{"id":"deek-xul","kind":"none"},{"id":"nu-ixtu","kind":"mechanical"},{"id":"teekh-nuvei","kind":"mechanical"},{"id":"nu-shanei","kind":"conditional"},{"id":"vastei-nu","kind":"conditional"},{"id":"kaal-kaal","kind":"conditional"},{"id":"shuja-vei","kind":"conditional"}]
+        expected: >= 2 mechanical (target 3 + 3)
+
+== RI-CHR01 §6 — the five prohibitions
+PASS  CHR01-m8-no-class-gate
+        measured: requires_class / class_min hits in quests|dialogue|items|world: 0
+        expected: zero
+FAIL  CHR01-m8-caste-topics-present
+        measured: 0 dialogue/npc files mentioning 'caste'
+        expected: 3 caste topics on >= 25 NPCs each
+
+== RI-CHR02 method 4 — NPC reaction_group coverage
+PASS  CHR02-m4-npc-coverage
+        measured: 5/5 NPCs across 2 files carry a reaction_group
+        expected: 100%
+FAIL  CHR02-m4-population
+        measured: 5 NPC records shipped; group shares {"RG-DEEP":2,"RG-LUKIUL":1,"RG-LEDGER":1,"RG-EMPIRE":1}
+        expected: enough NPCs for the +-4pt population-share assertion to mean anything
+
+== RI-CHR02 method 5 — dialogue volume
+FAIL  CHR02-m5-1500-greetings
+        measured: 0 greeting lines (dir ABSENT)
+        expected: >= 1,500 across >= 250 of 300 cells
+FAIL  CHR02-m5-90-race-topics
+        measured: 0 race-filtered topic records (0 forbids)
+        expected: >= 90, >= 30 forbids
+FAIL  CHR02-m5-60-slavery-lines
+        measured: 8 slavery-vocabulary hits in dialogue
+        expected: >= 60 lines, >= 12 to a Dunmer player
+
+== tooling the methods require
+FAIL  tool-build-viability.mjs
+        measured: tools/analysis/build-viability.mjs ABSENT
+        expected: required by a method assigned to this piece
+PASS  tool-content-stats.mjs
+        measured: tools/analysis/content-stats.mjs exists
+        expected: required by a method assigned to this piece
+FAIL  tool-journey-run.mjs
+        measured: tools/journey/journey-run.mjs ABSENT
+        expected: required by a method assigned to this piece
+FAIL  tool-beat-extract.mjs
+        measured: tools/journey/beat-extract.mjs ABSENT
+        expected: required by a method assigned to this piece
+FAIL  tool-gamepad-shim.mjs
+        measured: tools/journey/gamepad-shim.mjs ABSENT
+        expected: required by a method assigned to this piece
+
+== summary
+37/48 assertions pass
+FAIL  CHR02-m1-distinct-skillsets: 9/10 distinct skill sets
+FAIL  CHR01-m3-all19-reachable: skills never above baseline in any of the 150 pairs: polearms
+FAIL  CHR01-m8-caste-topics-present: 0 dialogue/npc files mentioning 'caste'
+FAIL  CHR02-m4-population: 5 NPC records shipped; group shares {"RG-DEEP":2,"RG-LUKIUL":1,"RG-LEDGER":1,"RG-EMPIRE":1}
+FAIL  CHR02-m5-1500-greetings: 0 greeting lines (dir ABSENT)
+FAIL  CHR02-m5-90-race-topics: 0 race-filtered topic records (0 forbids)
+FAIL  CHR02-m5-60-slavery-lines: 8 slavery-vocabulary hits in dialogue
+FAIL  tool-build-viability.mjs: tools/analysis/build-viability.mjs ABSENT
+FAIL  tool-journey-run.mjs: tools/journey/journey-run.mjs ABSENT
+FAIL  tool-beat-extract.mjs: tools/journey/beat-extract.mjs ABSENT
+FAIL  tool-gamepad-shim.mjs: tools/journey/gamepad-shim.mjs ABSENT

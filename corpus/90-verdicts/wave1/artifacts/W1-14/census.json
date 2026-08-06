@@ -1,0 +1,5481 @@
+[
+ {
+  "spell": "spark_dart",
+  "cls": "CANTRIP",
+  "effects": [
+   "shock_damage"
+  ],
+  "attuned": [
+   "spark_dart"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "spark_dart",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 3,
+     "stamina_spent": 10,
+     "focus_after": 121,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "spark_dart",
+    "detail": {
+     "amount": 3,
+     "focus_after": 121
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "spark_dart",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 30,
+    "kind": "effect_apply",
+    "effect": "shock_damage",
+    "spell": "spark_dart",
+    "detail": {
+     "magnitude": 47.24,
+     "duration_f": 0,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 365,
+  "focus0": 124,
+  "focus1": 121,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "ember_spit",
+  "cls": "CANTRIP",
+  "effects": [
+   "fire_damage"
+  ],
+  "attuned": [
+   "ember_spit"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "ember_spit",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 2,
+     "stamina_spent": 10,
+     "focus_after": 122,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "ember_spit",
+    "detail": {
+     "amount": 2,
+     "focus_after": 122
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "ember_spit",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 30,
+    "kind": "effect_apply",
+    "effect": "fire_damage",
+    "spell": "ember_spit",
+    "detail": {
+     "magnitude": 33.35,
+     "duration_f": 0,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 379,
+  "focus0": 124,
+  "focus1": 122,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "rime_touch",
+  "cls": "CANTRIP",
+  "effects": [
+   "frost_damage"
+  ],
+  "attuned": [
+   "rime_touch"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "rime_touch",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 2,
+     "stamina_spent": 10,
+     "focus_after": 122,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "rime_touch",
+    "detail": {
+     "amount": 2,
+     "focus_after": 122
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "rime_touch",
+    "detail": {
+     "geometry_kind": "contact",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 122,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "marshfire",
+  "cls": "LIGHT",
+  "effects": [
+   "fire_damage"
+  ],
+  "attuned": [
+   "marshfire"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "marshfire",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 17,
+     "stamina_spent": 16,
+     "focus_after": 107,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "marshfire",
+    "detail": {
+     "amount": 17,
+     "focus_after": 107
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "marshfire",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "fire_damage",
+    "spell": "marshfire",
+    "detail": {
+     "magnitude": 83.37,
+     "duration_f": 1800,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "fire_damage"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 329,
+  "focus0": 124,
+  "focus1": 107,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "saltrime",
+  "cls": "LIGHT",
+  "effects": [
+   "frost_damage"
+  ],
+  "attuned": [
+   "saltrime"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "saltrime",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 12,
+     "stamina_spent": 16,
+     "focus_after": 112,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "saltrime",
+    "detail": {
+     "amount": 12,
+     "focus_after": 112
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "saltrime",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "frost_damage",
+    "spell": "saltrime",
+    "detail": {
+     "magnitude": 68.24,
+     "duration_f": 720,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "frost_damage"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 344,
+  "focus0": 124,
+  "focus1": 112,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "wamasu_arc",
+  "cls": "LIGHT",
+  "effects": [
+   "shock_damage"
+  ],
+  "attuned": [
+   "wamasu_arc"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "wamasu_arc",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 13,
+     "stamina_spent": 16,
+     "focus_after": 111,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "wamasu_arc",
+    "detail": {
+     "amount": 13,
+     "focus_after": 111
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "wamasu_arc",
+    "detail": {
+     "geometry_kind": "volume",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 111,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "rot_bloom",
+  "cls": "LIGHT",
+  "effects": [
+   "poison_damage"
+  ],
+  "attuned": [
+   "rot_bloom"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "rot_bloom",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 8,
+     "stamina_spent": 16,
+     "focus_after": 116,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "rot_bloom",
+    "detail": {
+     "amount": 8,
+     "focus_after": 116
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "rot_bloom",
+    "detail": {
+     "geometry_kind": "volume",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 46,
+    "kind": "effect_apply",
+    "effect": "poison_damage",
+    "spell": "rot_bloom",
+    "detail": {
+     "magnitude": 22.23,
+     "duration_f": 1200,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "poison_damage"
+  ],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 390,
+  "focus0": 124,
+  "focus1": 116,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "the_unmaking",
+  "cls": "HEAVY",
+  "effects": [
+   "damage_health"
+  ],
+  "attuned": [
+   "the_unmaking"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_unmaking",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 54,
+     "stamina_spent": 24,
+     "focus_after": 70,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_unmaking",
+    "detail": {
+     "amount": 54,
+     "focus_after": 70
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_unmaking",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 65,
+    "kind": "effect_apply",
+    "effect": "damage_health",
+    "spell": "the_unmaking",
+    "detail": {
+     "magnitude": 135.86,
+     "duration_f": 0,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 276,
+  "focus0": 124,
+  "focus1": 70,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "leech",
+  "cls": "LIGHT",
+  "effects": [
+   "drain_health"
+  ],
+  "attuned": [
+   "leech"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "leech",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 12,
+     "stamina_spent": 16,
+     "focus_after": 112,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "leech",
+    "detail": {
+     "amount": 12,
+     "focus_after": 112
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "leech",
+    "detail": {
+     "geometry_kind": "contact",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 112,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "sap_thief",
+  "cls": "LIGHT",
+  "effects": [
+   "absorb_health"
+  ],
+  "attuned": [
+   "sap_thief"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "sap_thief",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 12,
+     "stamina_spent": 16,
+     "focus_after": 112,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "sap_thief",
+    "detail": {
+     "amount": 12,
+     "focus_after": 112
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "sap_thief",
+    "detail": {
+     "geometry_kind": "contact",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 112,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "root_theft",
+  "cls": "LIGHT",
+  "effects": [
+   "soul_trap"
+  ],
+  "attuned": [
+   "root_theft"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "root_theft",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 19,
+     "stamina_spent": 16,
+     "focus_after": 105,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "root_theft",
+    "detail": {
+     "amount": 19,
+     "focus_after": 105
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "root_theft",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "soul_trap",
+    "spell": "root_theft",
+    "detail": {
+     "magnitude": 30.88,
+     "duration_f": 1200,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "soul_trap"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 381,
+  "focus0": 124,
+  "focus1": 105,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "shell_splitter",
+  "cls": "HEAVY",
+  "effects": [
+   "shatter"
+  ],
+  "attuned": [
+   "shell_splitter"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "shell_splitter",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 26,
+     "stamina_spent": 24,
+     "focus_after": 98,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "shell_splitter",
+    "detail": {
+     "amount": 26,
+     "focus_after": 98
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "shell_splitter",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 65,
+    "kind": "effect_apply",
+    "effect": "shatter",
+    "spell": "shell_splitter",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 0,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 366,
+  "focus0": 124,
+  "focus1": 98,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "verdigris",
+  "cls": "LIGHT",
+  "effects": [
+   "corrode"
+  ],
+  "attuned": [
+   "verdigris"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "verdigris",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 9,
+     "stamina_spent": 16,
+     "focus_after": 115,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "verdigris",
+    "detail": {
+     "amount": 9,
+     "focus_after": 115
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "verdigris",
+    "detail": {
+     "geometry_kind": "contact",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 115,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "call_the_drowned",
+  "cls": "HEAVY",
+  "effects": [
+   "bind_lesser"
+  ],
+  "attuned": [
+   "call_the_drowned"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "call_the_drowned",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 33,
+     "stamina_spent": 24,
+     "focus_after": 91,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "call_the_drowned",
+    "detail": {
+     "amount": 33,
+     "focus_after": 91
+    }
+   },
+   {
+    "f": 38,
+    "kind": "effect_apply",
+    "effect": "bind_lesser",
+    "spell": "call_the_drowned",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "call_the_drowned",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "bind_lesser"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 91,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "call_the_deep_drowned",
+  "cls": "GREAT",
+  "effects": [
+   "bind_greater"
+  ],
+  "attuned": [
+   "call_the_deep_drowned"
+  ],
+  "events": [],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "sap_blade",
+  "cls": "LIGHT",
+  "effects": [
+   "bound_weapon"
+  ],
+  "attuned": [
+   "sap_blade"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "sap_blade",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 13,
+     "stamina_spent": 16,
+     "focus_after": 111,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "sap_blade",
+    "detail": {
+     "amount": 13,
+     "focus_after": 111
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "bound_weapon",
+    "spell": "sap_blade",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "sap_blade",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "bound_weapon"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 111,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "long_hand",
+  "cls": "CANTRIP",
+  "effects": [
+   "telekinesis"
+  ],
+  "attuned": [
+   "long_hand"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "long_hand",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 5,
+     "stamina_spent": 10,
+     "focus_after": 119,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "long_hand",
+    "detail": {
+     "amount": 5,
+     "focus_after": 119
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "telekinesis",
+    "spell": "long_hand",
+    "detail": {
+     "magnitude": 38.6,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "long_hand",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "telekinesis"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 119,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "kiln_breath",
+  "cls": "HEAVY",
+  "effects": [
+   "fire_damage"
+  ],
+  "attuned": [
+   "kiln_breath"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "kiln_breath",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 84,
+     "stamina_spent": 24,
+     "focus_after": 40,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "kiln_breath",
+    "detail": {
+     "amount": 84,
+     "focus_after": 40
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "kiln_breath",
+    "detail": {
+     "geometry_kind": "volume",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 58,
+    "kind": "effect_apply",
+    "effect": "fire_damage",
+    "spell": "kiln_breath",
+    "detail": {
+     "magnitude": 111.16,
+     "duration_f": 1200,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "fire_damage"
+  ],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 301,
+  "focus0": 124,
+  "focus1": 40,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_still_water",
+  "cls": "GREAT",
+  "effects": [
+   "frost_damage",
+   "shock_damage"
+  ],
+  "attuned": [
+   "the_still_water"
+  ],
+  "events": [],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_drowning",
+  "cls": "GREAT",
+  "effects": [
+   "damage_health"
+  ],
+  "attuned": [
+   "the_drowning"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_drowning",
+    "detail": {
+     "class": "GREAT",
+     "focus_spent": 63,
+     "stamina_spent": 34,
+     "focus_after": 61,
+     "tc_frame": 34
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_drowning",
+    "detail": {
+     "amount": 63,
+     "focus_after": 61
+    }
+   },
+   {
+    "f": 54,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_drowning",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 88,
+    "kind": "effect_apply",
+    "effect": "damage_health",
+    "spell": "the_drowning",
+    "detail": {
+     "magnitude": 92.63,
+     "duration_f": 0,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 319,
+  "focus0": 124,
+  "focus1": 61,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.054
+  ]
+ },
+ {
+  "spell": "mend_flesh",
+  "cls": "CANTRIP",
+  "effects": [
+   "restore_health"
+  ],
+  "attuned": [
+   "mend_flesh"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "mend_flesh",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 4,
+     "stamina_spent": 10,
+     "focus_after": 120,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "mend_flesh",
+    "detail": {
+     "amount": 4,
+     "focus_after": 120
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "restore_health",
+    "spell": "mend_flesh",
+    "detail": {
+     "magnitude": 33.97,
+     "duration_f": 0,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "mend_flesh",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 120,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_greater_mending",
+  "cls": "LIGHT",
+  "effects": [
+   "restore_health"
+  ],
+  "attuned": [
+   "the_greater_mending"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_greater_mending",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 16,
+     "stamina_spent": 16,
+     "focus_after": 108,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_greater_mending",
+    "detail": {
+     "amount": 16,
+     "focus_after": 108
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "restore_health",
+    "spell": "the_greater_mending",
+    "detail": {
+     "magnitude": 61.76,
+     "duration_f": 0,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_greater_mending",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 108,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "clean_blood",
+  "cls": "CANTRIP",
+  "effects": [
+   "cure_disease"
+  ],
+  "attuned": [
+   "clean_blood"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "clean_blood",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 1,
+     "stamina_spent": 10,
+     "focus_after": 123,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "clean_blood",
+    "detail": {
+     "amount": 1,
+     "focus_after": 123
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "cure_disease",
+    "spell": "clean_blood",
+    "detail": {
+     "magnitude": 4.63,
+     "duration_f": 0,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "clean_blood",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 123,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "draw_the_sting",
+  "cls": "CANTRIP",
+  "effects": [
+   "cure_poison"
+  ],
+  "attuned": [
+   "draw_the_sting"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "draw_the_sting",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 1,
+     "stamina_spent": 10,
+     "focus_after": 123,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "draw_the_sting",
+    "detail": {
+     "amount": 1,
+     "focus_after": 123
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "cure_poison",
+    "spell": "draw_the_sting",
+    "detail": {
+     "magnitude": 4.63,
+     "duration_f": 0,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "draw_the_sting",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 123,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "loosen_the_joint",
+  "cls": "CANTRIP",
+  "effects": [
+   "cure_paralysis"
+  ],
+  "attuned": [
+   "loosen_the_joint"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "loosen_the_joint",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 1,
+     "stamina_spent": 10,
+     "focus_after": 123,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "loosen_the_joint",
+    "detail": {
+     "amount": 1,
+     "focus_after": 123
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "loosen_the_joint",
+    "detail": {
+     "geometry_kind": "contact",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 123,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "put_it_back",
+  "cls": "LIGHT",
+  "effects": [
+   "restore_attribute"
+  ],
+  "attuned": [
+   "put_it_back"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "put_it_back",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 6,
+     "stamina_spent": 16,
+     "focus_after": 118,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "put_it_back",
+    "detail": {
+     "amount": 6,
+     "focus_after": 118
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "restore_attribute",
+    "spell": "put_it_back",
+    "detail": {
+     "magnitude": 30.88,
+     "duration_f": 0,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "put_it_back",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 118,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "the_strong_arm",
+  "cls": "LIGHT",
+  "effects": [
+   "fortify_attribute"
+  ],
+  "attuned": [
+   "the_strong_arm"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_strong_arm",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 16,
+     "stamina_spent": 16,
+     "focus_after": 108,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_strong_arm",
+    "detail": {
+     "amount": 16,
+     "focus_after": 108
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "fortify_attribute",
+    "spell": "the_strong_arm",
+    "detail": {
+     "magnitude": 18.53,
+     "duration_f": 3600,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_strong_arm",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "fortify_attribute"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 108,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "sure_hand",
+  "cls": "LIGHT",
+  "effects": [
+   "fortify_skill"
+  ],
+  "attuned": [
+   "sure_hand"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "sure_hand",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 27,
+     "stamina_spent": 16,
+     "focus_after": 97,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "sure_hand",
+    "detail": {
+     "amount": 27,
+     "focus_after": 97
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "fortify_skill",
+    "spell": "sure_hand",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 3600,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "sure_hand",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "fortify_skill"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 97,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "thick_skin",
+  "cls": "CANTRIP",
+  "effects": [
+   "resist_element"
+  ],
+  "attuned": [
+   "thick_skin"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "thick_skin",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 3,
+     "stamina_spent": 10,
+     "focus_after": 121,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "thick_skin",
+    "detail": {
+     "amount": 3,
+     "focus_after": 121
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "resist_element",
+    "spell": "thick_skin",
+    "detail": {
+     "magnitude": 69.48,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "thick_skin",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "resist_element"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 121,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "clean_lungs",
+  "cls": "CANTRIP",
+  "effects": [
+   "resist_disease"
+  ],
+  "attuned": [
+   "clean_lungs"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "clean_lungs",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 4,
+     "stamina_spent": 10,
+     "focus_after": 120,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "clean_lungs",
+    "detail": {
+     "amount": 4,
+     "focus_after": 120
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "resist_disease",
+    "spell": "clean_lungs",
+    "detail": {
+     "magnitude": 69.48,
+     "duration_f": 3600,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "clean_lungs",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "resist_disease"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 120,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_hists_patience",
+  "cls": "GREAT",
+  "effects": [
+   "sap_ward"
+  ],
+  "attuned": [
+   "the_hists_patience"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_hists_patience",
+    "detail": {
+     "class": "GREAT",
+     "focus_spent": 4,
+     "stamina_spent": 34,
+     "focus_after": 120,
+     "tc_frame": 34
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_hists_patience",
+    "detail": {
+     "amount": 4,
+     "focus_after": 120
+    }
+   },
+   {
+    "f": 54,
+    "kind": "effect_apply",
+    "effect": "sap_ward",
+    "spell": "the_hists_patience",
+    "detail": {
+     "magnitude": 1.54,
+     "duration_f": 0,
+     "target": "self"
+    }
+   },
+   {
+    "f": 54,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_hists_patience",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 120,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.054
+  ]
+ },
+ {
+  "spell": "ask_the_dead",
+  "cls": "RITUAL",
+  "effects": [
+   "speak_to_the_dead"
+  ],
+  "attuned": [
+   "ask_the_dead"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "ask_the_dead",
+    "detail": {
+     "class": "RITUAL",
+     "focus_spent": 16,
+     "stamina_spent": 0,
+     "focus_after": 108,
+     "tc_frame": 98
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "ask_the_dead",
+    "detail": {
+     "amount": 16,
+     "focus_after": 108
+    }
+   },
+   {
+    "f": 25,
+    "kind": "cast_interrupt",
+    "effect": null,
+    "spell": "ask_the_dead",
+    "detail": {
+     "cause": "combat",
+     "ritual_abort": true,
+     "focus_refunded": 16,
+     "focus_after": 124
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "hist_sight",
+  "cls": "RITUAL",
+  "effects": [
+   "hist_sight"
+  ],
+  "attuned": [
+   "hist_sight"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "hist_sight",
+    "detail": {
+     "class": "RITUAL",
+     "focus_spent": 9,
+     "stamina_spent": 0,
+     "focus_after": 115,
+     "tc_frame": 98
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "hist_sight",
+    "detail": {
+     "amount": 9,
+     "focus_after": 115
+    }
+   },
+   {
+    "f": 25,
+    "kind": "cast_interrupt",
+    "effect": null,
+    "spell": "hist_sight",
+    "detail": {
+     "cause": "combat",
+     "ritual_abort": true,
+     "focus_refunded": 9,
+     "focus_after": 124
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "make_it_whole",
+  "cls": "LIGHT",
+  "effects": [
+   "mend_item"
+  ],
+  "attuned": [
+   "make_it_whole"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "make_it_whole",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 13,
+     "stamina_spent": 16,
+     "focus_after": 111,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "make_it_whole",
+    "detail": {
+     "amount": 13,
+     "focus_after": 111
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "make_it_whole",
+    "detail": {
+     "geometry_kind": "contact",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 111,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "still_the_beast",
+  "cls": "LIGHT",
+  "effects": [
+   "calm_beast"
+  ],
+  "attuned": [
+   "still_the_beast"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "still_the_beast",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 16,
+     "stamina_spent": 16,
+     "focus_after": 108,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "still_the_beast",
+    "detail": {
+     "amount": 16,
+     "focus_after": 108
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "still_the_beast",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "calm_beast",
+    "spell": "still_the_beast",
+    "detail": {
+     "magnitude": 30.88,
+     "duration_f": 1200,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "calm_beast"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 381,
+  "focus0": 124,
+  "focus1": 108,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "the_long_stillness",
+  "cls": "HEAVY",
+  "effects": [
+   "calm_beast"
+  ],
+  "attuned": [
+   "the_long_stillness"
+  ],
+  "events": [],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "sap_and_salt",
+  "cls": "LIGHT",
+  "effects": [
+   "restore_health",
+   "cure_poison",
+   "resist_disease"
+  ],
+  "attuned": [
+   "sap_and_salt"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "sap_and_salt",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 17,
+     "stamina_spent": 16,
+     "focus_after": 107,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "sap_and_salt",
+    "detail": {
+     "amount": 17,
+     "focus_after": 107
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "restore_health",
+    "spell": "sap_and_salt",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 0,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "cure_poison",
+    "spell": "sap_and_salt",
+    "detail": {
+     "magnitude": 3.09,
+     "duration_f": 0,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "resist_disease",
+    "spell": "sap_and_salt",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 3600,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "sap_and_salt",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "resist_disease"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 107,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "open",
+  "cls": "CANTRIP",
+  "effects": [
+   "open_lock"
+  ],
+  "attuned": [
+   "open"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "open",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 3,
+     "stamina_spent": 10,
+     "focus_after": 121,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "open",
+    "detail": {
+     "amount": 3,
+     "focus_after": 121
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "open",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 30,
+    "kind": "effect_apply",
+    "effect": "open_lock",
+    "spell": "open",
+    "detail": {
+     "magnitude": 30.88,
+     "duration_f": 0,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 381,
+  "focus0": 124,
+  "focus1": 121,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_greater_opening",
+  "cls": "LIGHT",
+  "effects": [
+   "open_lock"
+  ],
+  "attuned": [
+   "the_greater_opening"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_greater_opening",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 19,
+     "stamina_spent": 16,
+     "focus_after": 105,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_greater_opening",
+    "detail": {
+     "amount": 19,
+     "focus_after": 105
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_greater_opening",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "open_lock",
+    "spell": "the_greater_opening",
+    "detail": {
+     "magnitude": 92.63,
+     "duration_f": 0,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 319,
+  "focus0": 124,
+  "focus1": 105,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "seal",
+  "cls": "CANTRIP",
+  "effects": [
+   "lock_lock"
+  ],
+  "attuned": [
+   "seal"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "seal",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 3,
+     "stamina_spent": 10,
+     "focus_after": 121,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "seal",
+    "detail": {
+     "amount": 3,
+     "focus_after": 121
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "seal",
+    "detail": {
+     "geometry_kind": "contact",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 121,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "spring_the_trap",
+  "cls": "CANTRIP",
+  "effects": [
+   "ward_trap"
+  ],
+  "attuned": [
+   "spring_the_trap"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "spring_the_trap",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 1,
+     "stamina_spent": 10,
+     "focus_after": 123,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "spring_the_trap",
+    "detail": {
+     "amount": 1,
+     "focus_after": 123
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "spring_the_trap",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 30,
+    "kind": "effect_apply",
+    "effect": "ward_trap",
+    "spell": "spring_the_trap",
+    "detail": {
+     "magnitude": 4.63,
+     "duration_f": 0,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 407,
+  "focus0": 124,
+  "focus1": 123,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "skin_of_air",
+  "cls": "LIGHT",
+  "effects": [
+   "buoyancy"
+  ],
+  "attuned": [
+   "skin_of_air"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "skin_of_air",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 9,
+     "stamina_spent": 16,
+     "focus_after": 115,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "skin_of_air",
+    "detail": {
+     "amount": 9,
+     "focus_after": 115
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "buoyancy",
+    "spell": "skin_of_air",
+    "detail": {
+     "magnitude": 1.54,
+     "duration_f": 7200,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "skin_of_air",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "buoyancy"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 115,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "gill_speech",
+  "cls": "CANTRIP",
+  "effects": [
+   "breathe_water"
+  ],
+  "attuned": [
+   "gill_speech"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "gill_speech",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 4,
+     "stamina_spent": 10,
+     "focus_after": 120,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "gill_speech",
+    "detail": {
+     "amount": 4,
+     "focus_after": 120
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "breathe_water",
+    "spell": "gill_speech",
+    "detail": {
+     "magnitude": 1.54,
+     "duration_f": 10800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "gill_speech",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "breathe_water"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 120,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "feather",
+  "cls": "CANTRIP",
+  "effects": [
+   "feather"
+  ],
+  "attuned": [
+   "feather"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "feather",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 7,
+     "stamina_spent": 10,
+     "focus_after": 117,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "feather",
+    "detail": {
+     "amount": 7,
+     "focus_after": 117
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "feather",
+    "spell": "feather",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "feather",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "feather"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 117,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "burden",
+  "cls": "LIGHT",
+  "effects": [
+   "burden"
+  ],
+  "attuned": [
+   "burden"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "burden",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 24,
+     "stamina_spent": 16,
+     "focus_after": 100,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "burden",
+    "detail": {
+     "amount": 24,
+     "focus_after": 100
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "burden",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "burden",
+    "spell": "burden",
+    "detail": {
+     "magnitude": 61.76,
+     "duration_f": 1200,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "burden"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 350,
+  "focus0": 124,
+  "focus1": 100,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "slowfall",
+  "cls": "CANTRIP",
+  "effects": [
+   "slowfall"
+  ],
+  "attuned": [
+   "slowfall"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "slowfall",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 1,
+     "stamina_spent": 10,
+     "focus_after": 123,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "slowfall",
+    "detail": {
+     "amount": 1,
+     "focus_after": 123
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "slowfall",
+    "spell": "slowfall",
+    "detail": {
+     "magnitude": 1.54,
+     "duration_f": 1200,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "slowfall",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "slowfall"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 123,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_long_slowfall",
+  "cls": "LIGHT",
+  "effects": [
+   "slowfall"
+  ],
+  "attuned": [
+   "the_long_slowfall"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_long_slowfall",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 8,
+     "stamina_spent": 16,
+     "focus_after": 116,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_long_slowfall",
+    "detail": {
+     "amount": 8,
+     "focus_after": 116
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "slowfall",
+    "spell": "the_long_slowfall",
+    "detail": {
+     "magnitude": 1.54,
+     "duration_f": 5400,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_long_slowfall",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "slowfall"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 116,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "levitate",
+  "cls": "LIGHT",
+  "effects": [
+   "levitate"
+  ],
+  "attuned": [
+   "levitate"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "levitate",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 21,
+     "stamina_spent": 16,
+     "focus_after": 103,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "levitate",
+    "detail": {
+     "amount": 21,
+     "focus_after": 103
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "levitate",
+    "spell": "levitate",
+    "detail": {
+     "magnitude": 1.54,
+     "duration_f": 3600,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "levitate_begin",
+    "effect": null,
+    "spell": null,
+    "detail": {
+     "duration_f": 3600,
+     "drift_mps": 1.4,
+     "climb_mps": 0.8
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "levitate",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "levitate"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 103,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": true,
+  "airborne": true,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "the_short_hop",
+  "cls": "CANTRIP",
+  "effects": [
+   "levitate"
+  ],
+  "attuned": [
+   "the_short_hop"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_short_hop",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 4,
+     "stamina_spent": 10,
+     "focus_after": 120,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_short_hop",
+    "detail": {
+     "amount": 4,
+     "focus_after": 120
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "levitate",
+    "spell": "the_short_hop",
+    "detail": {
+     "magnitude": 1.54,
+     "duration_f": 900,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "levitate_begin",
+    "effect": null,
+    "spell": null,
+    "detail": {
+     "duration_f": 900,
+     "drift_mps": 1.4,
+     "climb_mps": 0.8
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_short_hop",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "levitate"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 120,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": true,
+  "airborne": true,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_long_flight",
+  "cls": "HEAVY",
+  "effects": [
+   "levitate"
+  ],
+  "attuned": [
+   "the_long_flight"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_long_flight",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 115,
+     "stamina_spent": 24,
+     "focus_after": 9,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_long_flight",
+    "detail": {
+     "amount": 115,
+     "focus_after": 9
+    }
+   },
+   {
+    "f": 38,
+    "kind": "effect_apply",
+    "effect": "levitate",
+    "spell": "the_long_flight",
+    "detail": {
+     "magnitude": 1.54,
+     "duration_f": 10800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 38,
+    "kind": "levitate_begin",
+    "effect": null,
+    "spell": null,
+    "detail": {
+     "duration_f": 10800,
+     "drift_mps": 1.4,
+     "climb_mps": 0.8
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_long_flight",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "levitate"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 9,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": true,
+  "airborne": true,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "leap",
+  "cls": "CANTRIP",
+  "effects": [
+   "leap"
+  ],
+  "attuned": [
+   "leap"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "leap",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 2,
+     "stamina_spent": 10,
+     "focus_after": 122,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "leap",
+    "detail": {
+     "amount": 2,
+     "focus_after": 122
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "leap",
+    "spell": "leap",
+    "detail": {
+     "magnitude": 18.53,
+     "duration_f": 180,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "leap",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 195,
+    "kind": "effect_expire",
+    "effect": "leap",
+    "spell": null,
+    "detail": {
+     "source": "leap"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "leap"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 122,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "stone_skin",
+  "cls": "LIGHT",
+  "effects": [
+   "shield"
+  ],
+  "attuned": [
+   "stone_skin"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "stone_skin",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 15,
+     "stamina_spent": 16,
+     "focus_after": 109,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "stone_skin",
+    "detail": {
+     "amount": 15,
+     "focus_after": 109
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "shield",
+    "spell": "stone_skin",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "stone_skin",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "shield"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 109,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "the_broken_wall",
+  "cls": "HEAVY",
+  "effects": [
+   "wall"
+  ],
+  "attuned": [
+   "the_broken_wall"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_broken_wall",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 87,
+     "stamina_spent": 24,
+     "focus_after": 37,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_broken_wall",
+    "detail": {
+     "amount": 87,
+     "focus_after": 37
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_broken_wall",
+    "detail": {
+     "geometry_kind": "volume",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 58,
+    "kind": "effect_apply",
+    "effect": "wall",
+    "spell": "the_broken_wall",
+    "detail": {
+     "magnitude": 64.84,
+     "duration_f": 1200,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "wall"
+  ],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 347,
+  "focus0": 124,
+  "focus1": 37,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "mark",
+  "cls": "RITUAL",
+  "effects": [
+   "mark"
+  ],
+  "attuned": [
+   "mark"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "mark",
+    "detail": {
+     "class": "RITUAL",
+     "focus_spent": 1,
+     "stamina_spent": 0,
+     "focus_after": 123,
+     "tc_frame": 98
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "mark",
+    "detail": {
+     "amount": 1,
+     "focus_after": 123
+    }
+   },
+   {
+    "f": 25,
+    "kind": "cast_interrupt",
+    "effect": null,
+    "spell": "mark",
+    "detail": {
+     "cause": "combat",
+     "ritual_abort": true,
+     "focus_refunded": 1,
+     "focus_after": 124
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "recall",
+  "cls": "RITUAL",
+  "effects": [
+   "recall"
+  ],
+  "attuned": [
+   "recall"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "recall",
+    "detail": {
+     "class": "RITUAL",
+     "focus_spent": 23,
+     "stamina_spent": 0,
+     "focus_after": 101,
+     "tc_frame": 98
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "recall",
+    "detail": {
+     "amount": 23,
+     "focus_after": 101
+    }
+   },
+   {
+    "f": 25,
+    "kind": "cast_interrupt",
+    "effect": null,
+    "spell": "recall",
+    "detail": {
+     "cause": "combat",
+     "ritual_abort": true,
+     "focus_refunded": 23,
+     "focus_after": 124
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "intervention_root",
+  "cls": "RITUAL",
+  "effects": [
+   "intervention"
+  ],
+  "attuned": [
+   "intervention_root"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "intervention_root",
+    "detail": {
+     "class": "RITUAL",
+     "focus_spent": 12,
+     "stamina_spent": 0,
+     "focus_after": 112,
+     "tc_frame": 98
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "intervention_root",
+    "detail": {
+     "amount": 12,
+     "focus_after": 112
+    }
+   },
+   {
+    "f": 25,
+    "kind": "cast_interrupt",
+    "effect": null,
+    "spell": "intervention_root",
+    "detail": {
+     "cause": "combat",
+     "ritual_abort": true,
+     "focus_refunded": 12,
+     "focus_after": 124
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "intervention_imperial",
+  "cls": "RITUAL",
+  "effects": [
+   "intervention"
+  ],
+  "attuned": [
+   "intervention_imperial"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "intervention_imperial",
+    "detail": {
+     "class": "RITUAL",
+     "focus_spent": 6,
+     "stamina_spent": 0,
+     "focus_after": 118,
+     "tc_frame": 98
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "intervention_imperial",
+    "detail": {
+     "amount": 6,
+     "focus_after": 118
+    }
+   },
+   {
+    "f": 25,
+    "kind": "cast_interrupt",
+    "effect": null,
+    "spell": "intervention_imperial",
+    "detail": {
+     "cause": "combat",
+     "ritual_abort": true,
+     "focus_refunded": 6,
+     "focus_after": 124
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 124,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_water_film",
+  "cls": "LIGHT",
+  "effects": [
+   "invisibility"
+  ],
+  "attuned": [
+   "the_water_film"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_water_film",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 20,
+     "stamina_spent": 16,
+     "focus_after": 104,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_water_film",
+    "detail": {
+     "amount": 20,
+     "focus_after": 104
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "invisibility",
+    "spell": "the_water_film",
+    "detail": {
+     "magnitude": 30.88,
+     "duration_f": 1200,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_water_film",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "invisibility"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 104,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "chameleon",
+  "cls": "LIGHT",
+  "effects": [
+   "chameleon"
+  ],
+  "attuned": [
+   "chameleon"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "chameleon",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 19,
+     "stamina_spent": 16,
+     "focus_after": 105,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "chameleon",
+    "detail": {
+     "amount": 19,
+     "focus_after": 105
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "chameleon",
+    "spell": "chameleon",
+    "detail": {
+     "magnitude": 80,
+     "duration_f": 3600,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "chameleon",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "chameleon"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 105,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "the_deep_chameleon",
+  "cls": "HEAVY",
+  "effects": [
+   "chameleon"
+  ],
+  "attuned": [
+   "the_deep_chameleon"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_deep_chameleon",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 71,
+     "stamina_spent": 24,
+     "focus_after": 53,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_deep_chameleon",
+    "detail": {
+     "amount": 71,
+     "focus_after": 53
+    }
+   },
+   {
+    "f": 38,
+    "kind": "effect_apply",
+    "effect": "chameleon",
+    "spell": "the_deep_chameleon",
+    "detail": {
+     "magnitude": 80,
+     "duration_f": 7200,
+     "target": "self"
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_deep_chameleon",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "chameleon"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 53,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "muffle",
+  "cls": "CANTRIP",
+  "effects": [
+   "muffle"
+  ],
+  "attuned": [
+   "muffle"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "muffle",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 4,
+     "stamina_spent": 10,
+     "focus_after": 120,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "muffle",
+    "detail": {
+     "amount": 4,
+     "focus_after": 120
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "muffle",
+    "spell": "muffle",
+    "detail": {
+     "magnitude": 69.48,
+     "duration_f": 3600,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "muffle",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "muffle"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 120,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "silence",
+  "cls": "LIGHT",
+  "effects": [
+   "silence"
+  ],
+  "attuned": [
+   "silence"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "silence",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 22,
+     "stamina_spent": 16,
+     "focus_after": 102,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "silence",
+    "detail": {
+     "amount": 22,
+     "focus_after": 102
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "silence",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "silence",
+    "spell": "silence",
+    "detail": {
+     "magnitude": 30.88,
+     "duration_f": 1200,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "silence"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 381,
+  "focus0": 124,
+  "focus1": 102,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "night_eye",
+  "cls": "CANTRIP",
+  "effects": [
+   "night_eye"
+  ],
+  "attuned": [
+   "night_eye"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "night_eye",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 3,
+     "stamina_spent": 10,
+     "focus_after": 121,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "night_eye",
+    "detail": {
+     "amount": 3,
+     "focus_after": 121
+    }
+   },
+   {
+    "f": 16,
+    "kind": "effect_apply",
+    "effect": "night_eye",
+    "spell": "night_eye",
+    "detail": {
+     "magnitude": 92.63,
+     "duration_f": 3600,
+     "target": "self"
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "night_eye",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "night_eye"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 121,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "warm_smudges",
+  "cls": "LIGHT",
+  "effects": [
+   "detect_life"
+  ],
+  "attuned": [
+   "warm_smudges"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "warm_smudges",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 12,
+     "stamina_spent": 16,
+     "focus_after": 112,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "warm_smudges",
+    "detail": {
+     "amount": 12,
+     "focus_after": 112
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "detect_life",
+    "spell": "warm_smudges",
+    "detail": {
+     "magnitude": 38.6,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "warm_smudges",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "detect_life"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 112,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "the_key_sense",
+  "cls": "LIGHT",
+  "effects": [
+   "detect_key"
+  ],
+  "attuned": [
+   "the_key_sense"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_key_sense",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 12,
+     "stamina_spent": 16,
+     "focus_after": 112,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_key_sense",
+    "detail": {
+     "amount": 12,
+     "focus_after": 112
+    }
+   },
+   {
+    "f": 26,
+    "kind": "effect_apply",
+    "effect": "detect_key",
+    "spell": "the_key_sense",
+    "detail": {
+     "magnitude": 38.6,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_key_sense",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "detect_key"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 112,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "charm",
+  "cls": "CANTRIP",
+  "effects": [
+   "charm"
+  ],
+  "attuned": [
+   "charm"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "charm",
+    "detail": {
+     "class": "CANTRIP",
+     "focus_spent": 5,
+     "stamina_spent": 10,
+     "focus_after": 119,
+     "tc_frame": 10
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "charm",
+    "detail": {
+     "amount": 5,
+     "focus_after": 119
+    }
+   },
+   {
+    "f": 16,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "charm",
+    "detail": {
+     "geometry_kind": "contact",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [],
+  "maxProj": 0,
+  "maxVol": 1,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 119,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_grey_fuzz",
+  "cls": "HEAVY",
+  "effects": [
+   "paralyse"
+  ],
+  "attuned": [
+   "the_grey_fuzz"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_grey_fuzz",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 32,
+     "stamina_spent": 24,
+     "focus_after": 92,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_grey_fuzz",
+    "detail": {
+     "amount": 32,
+     "focus_after": 92
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_grey_fuzz",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 65,
+    "kind": "effect_apply",
+    "effect": "paralyse",
+    "spell": "the_grey_fuzz",
+    "detail": {
+     "magnitude": 12.35,
+     "duration_f": 480,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "paralyse"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 400,
+  "focus0": 124,
+  "focus1": 92,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "demoralise",
+  "cls": "LIGHT",
+  "effects": [
+   "demoralise"
+  ],
+  "attuned": [
+   "demoralise"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "demoralise",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 17,
+     "stamina_spent": 16,
+     "focus_after": 107,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "demoralise",
+    "detail": {
+     "amount": 17,
+     "focus_after": 107
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "demoralise",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "demoralise",
+    "spell": "demoralise",
+    "detail": {
+     "magnitude": 111.16,
+     "duration_f": 1200,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "demoralise"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 301,
+  "focus0": 124,
+  "focus1": 107,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "frenzy",
+  "cls": "LIGHT",
+  "effects": [
+   "frenzy"
+  ],
+  "attuned": [
+   "frenzy"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "frenzy",
+    "detail": {
+     "class": "LIGHT",
+     "focus_spent": 27,
+     "stamina_spent": 16,
+     "focus_after": 97,
+     "tc_frame": 16
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "frenzy",
+    "detail": {
+     "amount": 27,
+     "focus_after": 97
+    }
+   },
+   {
+    "f": 26,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "frenzy",
+    "detail": {
+     "geometry_kind": "projectile",
+     "aim_yaw": 0
+    }
+   },
+   {
+    "f": 45,
+    "kind": "effect_apply",
+    "effect": "frenzy",
+    "spell": "frenzy",
+    "detail": {
+     "magnitude": 111.16,
+     "duration_f": 1800,
+     "target": "e0"
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "frenzy"
+  ],
+  "maxProj": 1,
+  "maxVol": 0,
+  "maxRes": 1,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 301,
+  "focus0": 124,
+  "focus1": 97,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0.154
+  ]
+ },
+ {
+  "spell": "false_face",
+  "cls": "HEAVY",
+  "effects": [
+   "false_face"
+  ],
+  "attuned": [
+   "false_face"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "false_face",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 78,
+     "stamina_spent": 24,
+     "focus_after": 46,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "false_face",
+    "detail": {
+     "amount": 78,
+     "focus_after": 46
+    }
+   },
+   {
+    "f": 38,
+    "kind": "effect_apply",
+    "effect": "false_face",
+    "spell": "false_face",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "false_face",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "false_face"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 46,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ },
+ {
+  "spell": "the_borrowed_scale",
+  "cls": "HEAVY",
+  "effects": [
+   "false_face",
+   "muffle"
+  ],
+  "attuned": [
+   "the_borrowed_scale"
+  ],
+  "events": [
+   {
+    "f": 2,
+    "kind": "cast_start",
+    "effect": null,
+    "spell": "the_borrowed_scale",
+    "detail": {
+     "class": "HEAVY",
+     "focus_spent": 92,
+     "stamina_spent": 24,
+     "focus_after": 32,
+     "tc_frame": 24
+    }
+   },
+   {
+    "f": 2,
+    "kind": "focus_spend",
+    "effect": null,
+    "spell": "the_borrowed_scale",
+    "detail": {
+     "amount": 92,
+     "focus_after": 32
+    }
+   },
+   {
+    "f": 38,
+    "kind": "effect_apply",
+    "effect": "false_face",
+    "spell": "the_borrowed_scale",
+    "detail": {
+     "magnitude": 46.32,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 38,
+    "kind": "effect_apply",
+    "effect": "muffle",
+    "spell": "the_borrowed_scale",
+    "detail": {
+     "magnitude": 69.48,
+     "duration_f": 1800,
+     "target": "self"
+    }
+   },
+   {
+    "f": 38,
+    "kind": "cast_release",
+    "effect": null,
+    "spell": "the_borrowed_scale",
+    "detail": {
+     "geometry_kind": "none",
+     "aim_yaw": 0
+    }
+   }
+  ],
+  "effects_active_seen": [
+   "false_face",
+   "muffle"
+  ],
+  "maxProj": 0,
+  "maxVol": 0,
+  "maxRes": 0,
+  "enemy_hp0": 412,
+  "enemy_hp_min": 412,
+  "focus0": 124,
+  "focus1": 32,
+  "hp0": 620,
+  "hp1": 620,
+  "levitating": false,
+  "airborne": false,
+  "altitude": 0,
+  "pos0": [
+   0,
+   0,
+   0
+  ],
+  "pos1": [
+   0,
+   0,
+   0
+  ]
+ }
+]

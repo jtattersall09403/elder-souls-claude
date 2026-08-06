@@ -2,7 +2,7 @@
   "task_id": "W1-07-critic",
   "brief": "critic for wave-1 piece W1-07 - Character creation",
   "started": "wave-1",
-  "state": "researching",
+  "state": "complete",
   "commit": "65275dcd5fca9b1bf21e16999c8295fb109b6353",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-07.json",
@@ -10,10 +10,17 @@
     "corpus/90-verdicts/wave1/artifacts/W1-07/*"
   ],
   "outputs_written": [
-    "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/*.png (21)",
-    "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/*",
-    "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
+    "corpus/90-verdicts/wave1/W1-07.json (schema-valid)",
+    "corpus/90-verdicts/wave1/W1-07.md",
+    "corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md (corpus_extended, harness_gap)",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/{probeA.json,shots/*.png x21}",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/{saxhleel,dunmer,khajiit}/trace.jsonl.gz + critic-rerun.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/{probeB,probeC,probeD,probeE,probeF,probeG}/*.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.{txt,json}",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/control-duel/*",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/blind/{pack,pack.reveal,ours-beats.md,ref-beats.md}",
+    "tools/harness/critic-w1-07{a,b,c,d,e,f,g}.mjs",
+    "tools/analysis/critic-w1-07-audit.mjs"
   ],
   "findings": [
     "BUILD DOES NOT BOOT AT HEAD: game/data/index.json line 1411 references dialogue/topics/thorn.json which does not exist at HEAD (added by W1-18 commit 65275dc). window.__HARNESS.ready() throws. Measured in a clean git worktree at HEAD with that one index entry removed; recorded as method_deviation. Not W1-07's fault but it is the state of the repo.",
@@ -25,8 +32,14 @@
     "AR-3 is sterile in the fight: across all three 1,800-frame runs the player takes ZERO damage and the raid party never closes (distance frozen at 18.20 m from f900 to f1800). After the Saxhleel AGGRO event the enemies sit in REPOSITION for 1,657 frames. Nothing attacks. The race difference is real only in the alert-state trace channel + one parley_offer line.",
     "getEncounterState('dres-raid-party') reports race:'saxhleel' for dunmer, khajiit AND nord after setCharacter+loadState in the same session. The encounter's race binding is latched at first spawn and is not re-derived on state reload.",
     "RI-CHR02 method 7 FAILS its par clause: getPriceQuote for a Dunmer with mercantile=100, personality=60 returns buyMult 1.264 - identical to the untrained Dunmer. The item requires [0.98, 1.05]. The price model has the race surcharge and no RI-PRG05 disposition/Mercantile term at all, so 'race is a handicap you can pay down' has no paying-down.",
-    "Three of the four states RI-CHR02's methods name do not exist: helstrom-market (m7), stormhold-street (m9), rootlands-well-graph (RI-CHR03 m3). Only writ-house and wld-dres-raid-road exist. getReaction/getPriceQuote/getGuardTerms are pure oracle functions exposed to the harness; no NPC, merchant or guard in the running build consumes them - writ-house loads with 0 entities."
+    "Three of the four states RI-CHR02's methods name do not exist: helstrom-market (m7), stormhold-street (m9), rootlands-well-graph (RI-CHR03 m3). Only writ-house and wld-dres-raid-road exist. getReaction/getPriceQuote/getGuardTerms are pure oracle functions exposed to the harness; no NPC, merchant or guard in the running build consumes them - writ-house loads with 0 entities.",
+    "VIGOUR/ENDURANCE/WILLPOWER are not wired to derived stats: VIG 6 and VIG 18 both give hp_max 620; END 6 and 19 both give stamina_max 120; WIL 10 and 18 both give focus_max 94. RI-PRG02 \u00a73's whole curve set is absent.",
+    "Skills do not improve by use: 3,600 frames, 46 attack_start, 4 HIT, 1 enemy DEATH, and every one of the 19 skills is byte-identical to its creation value. souls 0 and level 1 after the kill, so neither RI-PRG02 stream runs.",
+    "The Dry Well is indistinguishable from a no-drawback sign: focus 94 flat for 3,600 frames for both nu-ixtu and raj-xul, focus_locked true for everyone, and focus_max 94 with and without the sign's x1.60.",
+    "Kaal-Kaal DOES compose correctly (power at scale 0.5, drawback at scale 1.0) - the single most likely bug in RI-CHR03 and the build got it right. Key is birthsign_second; second_birthsign is silently dropped.",
+    "Blind pick on RI-JRN01 landed on OURS on the text alone (the Warden-Scribe's writing is genuinely Morrowind-register); \u00a72.5 re-run moved to the pixel layer and reversed it to reference-wins-on-review.",
+    "VERDICT: FAIL, 1.5/10. Items: CHR01=2 CHR02=3 CHR03=1 PRG02=2 PRG03=1 JRN01=0. AR-1 pass, AR-2 fail (B3)."
   ],
-  "next_step": "probe C: does anything ever attack (AR-3 who-attacks-you); then RI-CHR03 Dry Well monotonicity; RI-PRG02/03 sheet + skills-by-use + S3 purity",
-  "notes_for_successor": "Worktree at $SCRATCH/wt-head is a clean HEAD with the thorn.json index entry removed so the game boots. Run probes from there."
+  "next_step": "none - verdict emitted, ledger regenerated, publish run",
+  "notes_for_successor": "The build did NOT boot at HEAD (index.json references a missing dialogue/topics/thorn.json). I measured in a throwaway git worktree with that one index entry removed; that worktree has been deleted. Anyone re-running my probes must do the same or wait for the index to be fixed. My seven probe scripts live in tools/harness/critic-w1-07*.mjs and the offline audit in tools/analysis/critic-w1-07-audit.mjs; they are the reproduction instructions."
 }
