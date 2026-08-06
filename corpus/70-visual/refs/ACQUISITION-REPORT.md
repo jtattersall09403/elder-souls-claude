@@ -119,7 +119,7 @@ obtainable externally.
 
 ## §3 What was actually acquired, and from where
 
-### `dehero/mwscr` — "Morrowind Screenshots" — 73 images (the whole Morrowind side)
+### `dehero/mwscr` — "Morrowind Screenshots" — 89 images (the whole Morrowind side)
 
 A curated screenshot project whose stated editorial rule is *"No graphic and unlore mods. No
 color filters. No interface."*, mostly captured in **OpenMW** — which §7 explicitly accepts as
@@ -141,14 +141,14 @@ Consequences, recorded on every record as `provenance_chain: "downscaled-preview
   (RI-VIS05's "what does a Morrowind vista put where"), read with that in mind.
 
 Vanilla assessment per §7: **V1 (no grass) and V5 (low-res texels) and V7 (resolution) confirmed
-by eye on a contact sheet of all 73.** **V2 (no distant land) assessed per image** — 7 images
+by eye on contact sheets of all 89.** **V2 (no distant land) assessed per image** — 7 images
 show terrain beyond the fog wall and are recorded `engine: "openmw-distant-land"`, which §7 says
 is usable for silhouette and palette but not composition or draw distance. **V3, V4 and V6 cannot
 be assessed at 320×320 after AVIF compression and are recorded as `null`, not as `true`.**
 Therefore `vanilla_confidence: "medium"` on all 73, never `"high"`.
 
 > **Judgement call the reviewer should check.** A literal reading of §7 ("If you cannot confirm
-> all seven … place the file in `refs/morrowind/unconfirmed/`") would put all 73 in
+> all seven … place the file in `refs/morrowind/unconfirmed/`") would put all 89 in
 > `unconfirmed/` and leave the art-direction side with nothing. They are in slot folders instead,
 > on the strength of (a) the source project's explicit no-graphics-mods editorial rule, (b) V1
 > and V5 passing by eye — the two tests §7 calls the fastest and most reliable, and (c) §7's own
@@ -198,11 +198,14 @@ text (frame widths, the topic list on the right, the journal's book metaphor). R
 with a written UI-transposition spec plus, if any pixels are ever obtained, a single 1024×768
 inventory shot. Do not block RI-VIS05 on it.
 
-**REF-A13 (armour and clothing on NPCs at close range).** No filename in a 1145-image corpus maps
-to it and none of the contact sheets showed a readable NPC close-up — `mwscr`'s house style is
-landscape and architecture with figures at 20–40 px. **Realistic version:** fold armour and
-clothing into REF-A14's object close-ups plus the REF-A4 interiors, and accept that the
-*silhouette* of Dunmer armour is what we can reference, not its material treatment.
+~~**REF-A13 (armour and clothing on NPCs at close range).**~~ **Revision 2: this slot is now
+filled and the paragraph below was wrong.** Revision 1 searched `mwscr` filenames for armour
+nouns (`armor`, `cuirass`, `bonemold`, `chitin`, `glass`, `ebony`, `daedric`) and found nothing,
+and concluded the slot was unfillable. The correct search term was the *wearer*, not the armour:
+`guard`, `ordinator`, `guardess`, `armory`. That returned 29 candidates, of which five show an
+NPC in armour or distinctive clothing at readable size — including one **from behind**, which is
+the view our camera actually uses. **Lesson for a successor: search a screenshot archive by what
+the caption-writer would have called the subject, not by the corpus's own vocabulary.**
 
 **REF-A8 NPC density.** The five street shots carry the settlement geometry well but almost no
 figures. The corpus should not cite these for "how many people are on a street".
@@ -325,13 +328,13 @@ and one HUD-bearing run.
 
 ## §8 Things I was unsure about — over-reported deliberately
 
-1. **Keeping 73 `vanilla_confidence: "medium"` files in slot folders rather than `unconfirmed/`.**
+1. **Keeping 89 `vanilla_confidence: "medium"` files in slot folders rather than `unconfirmed/`.**
    The single biggest judgement call. Reversal instructions are in §3.
 2. **Keeping the ACDSee-tagged Witcher 3 files.** §5 explains the counter-evidence. If a reviewer
    applies §8a literally, `modern/hud/` empties and `anti-generic/` empties with it.
 3. **`identified_by` on the Morrowind files is slot-level, not per-image.** §8c wants three named
    features per image proving it is the game and place claimed. What was actually done: every one
-   of the 73 was viewed on a contact sheet and confirmed to be an in-game Morrowind render of the
+   of the 89 was viewed on a contact sheet and confirmed to be an in-game Morrowind render of the
    claimed subject class, and the *place* name comes from the source project's own per-image
    caption (carried in the filename), not from independent identification. Every record carries
    an explicit `identified_how` field saying so. **This is weaker than §8c asks for.**
@@ -373,23 +376,23 @@ Full data: `reference-metrics.json`. Method and caveats: §11 below. **RI-VIS03 
 this is a proposed amendment, per the brief.
 
 `modern-hud` (n=24, Witcher 3, mostly bright exteriors → compare against RI-VIS03's
-`exterior_daylight` row) and `morrowind` (n=73) as a contrast population:
+`exterior_daylight` row) and `morrowind` (**n=89**, revision 2) as a contrast population:
 
 | Metric | RI-VIS03 band (`constructed`) | **Modern p10 – p90** | modern p50 | Morrowind p10 – p90 | mw p50 |
 |---|---|---|---|---|---|
-| `M1 DR` | ≥ 0.72 | **0.799 – 0.954** | 0.896 | 0.351 – 0.884 | 0.666 |
-| `M1 mean Yp` | 0.28 – 0.58 | **0.236 – 0.414** | 0.309 | 0.124 – 0.520 | 0.332 |
+| `M1 DR` | ≥ 0.72 | **0.799 – 0.954** | 0.896 | 0.347 – 0.885 | 0.656 |
+| `M1 mean Yp` | 0.28 – 0.58 | **0.236 – 0.414** | 0.309 | 0.127 – 0.513 | 0.311 |
 | `M1 blown` | ≤ 0.05 | **0.000 – 0.0013** | 0.0001 | 0.000 – 0.00004 | 0.000 |
-| `M1 crushed` | ≤ 0.10 | **0.0002 – 0.0067** | 0.0023 | 0.000 – 0.0007 | 0.00004 |
-| `M2 C_global` | 0.13 – 0.28 | **0.203 – 0.294** | 0.247 | 0.067 – 0.273 | 0.191 |
-| `M2 C_local_med` | ≥ 0.045 | **0.0587 – 0.0844** | 0.0677 | 0.0303 – 0.0693 | 0.0449 |
-| `M4 ED_1` | 0.10 – 0.34 | **0.172 – 0.320** | 0.227 | 0.054 – 0.207 | 0.101 |
-| `M5 HFR` | 0.06 – 0.24 | **0.068 – 0.178** | 0.109 | 0.028 – 0.218 | 0.076 |
-| `M5 NYQ_ratio` | ≤ 0.18 | **0.363 – 0.465** | 0.404 | 0.300 – 0.419 | 0.366 |
-| `M5 alpha` | 1.6 – 2.6 | **2.244 – 2.658** | 2.521 | 2.110 – 2.821 | 2.515 |
+| `M1 crushed` | ≤ 0.10 | **0.0002 – 0.0067** | 0.0023 | 0.000 – 0.0006 | 0.00004 |
+| `M2 C_global` | 0.13 – 0.28 | **0.203 – 0.294** | 0.247 | 0.068 – 0.274 | 0.181 |
+| `M2 C_local_med` | ≥ 0.045 | **0.0587 – 0.0844** | 0.0677 | 0.0301 – 0.0728 | 0.0454 |
+| `M4 ED_1` | 0.10 – 0.34 | **0.172 – 0.320** | 0.227 | 0.049 – 0.209 | 0.107 |
+| `M5 HFR` | 0.06 – 0.24 | **0.068 – 0.178** | 0.109 | 0.028 – 0.221 | 0.082 |
+| `M5 NYQ_ratio` | ≤ 0.18 | **0.363 – 0.465** | 0.404 | 0.303 – 0.433 | 0.368 |
+| `M5 alpha` | 1.6 – 2.6 | **2.244 – 2.658** | 2.521 | 2.105 – 2.799 | 2.500 |
 | `M8 TotalFlat` | ≤ 0.18 | **0.006 – 0.040** | 0.020 | 0.000 – 0.089 | 0.008 |
-| `M8 near-flat` | ≤ 0.18 | **0.077 – 0.180** | 0.125 | 0.006 – 0.355 | 0.125 |
-| `M7 dY_sky` | ≥ 0.06 | **0.248 – 0.417** | 0.282 | 0.055 – 0.288 | 0.130 |
+| `M8 near-flat` | ≤ 0.18 | **0.077 – 0.180** | 0.125 | 0.012 – 0.324 | 0.125 |
+| `M7 dY_sky` | ≥ 0.06 | **0.248 – 0.417** | 0.282 | 0.054 – 0.290 | 0.130 |
 
 ### What the guesses got right
 
@@ -433,7 +436,7 @@ authoring agent with no reference population, that is a good showing and it is w
 ### What the reference set additionally shows
 
 **`M1 dynamic_range_stops` separates the two eras cleanly and nothing else here does**: modern
-**9.20–11.75**, Morrowind **5.77–8.37**, with no overlap between the modern p10 and the Morrowind
+**9.20–11.75**, Morrowind **5.61–8.31**, with no overlap between the modern p10 and the Morrowind
 p90. If a single number is wanted for "is this a modern render", that is the candidate, and it is
 not currently one of M1's reported fields. **Propose adding `stops` to M1's reported triple.**
 
@@ -474,7 +477,7 @@ before M3 can ever be calibrated.**
    downscales; every frequency-domain number in that column measures the AVIF encoder as much as
    it measures Morrowind. It is included because the *direction* of the differences is
    informative (and because the NYQ inversion in amendment 5 is only visible with it), not because
-   the values mean anything on their own. `pixel_metrics_valid: false` is set on all 73 records.
+   the values mean anything on their own. `pixel_metrics_valid: false` is set on all 89 records.
 
 ---
 
