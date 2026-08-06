@@ -1,24 +1,26 @@
 {
-  "task_id": "image-acquisition-modern",
-  "brief": "inline (task prompt) — fill modern/ half of corpus/70-visual/refs per docs/REFERENCE-IMAGE-REQUEST.md",
-  "started": "wave-N (2026-08-06)",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/70-visual/refs/modern/exterior_daylight/ (12)",
-    "corpus/70-visual/refs/modern/exterior_lowlight/ (12)",
-    "corpus/70-visual/refs/modern/material_closeup/ (8)",
-    "corpus/70-visual/refs/modern/interior_darkemissive/ (10)",
-    "corpus/70-visual/refs/modern/character_closeup/ (9 more)",
-    "corpus/70-visual/refs/modern/combat/ (8)",
-    "corpus/70-visual/refs/video/ (V1,V2 required; V3,V4 wanted)",
-    "corpus/70-visual/refs/context/ (4 ESO Shadowfen/Murkmire)",
-    "corpus/70-visual/refs/MANIFEST.json (extended)",
-    "corpus/70-visual/refs/ACQUISITION-REPORT.md (updated)"
-  ],
-  "outputs_written": [],
-  "findings": [
-    "Predecessor (image-acquisition.json) filled morrowind/ side: 89 images, 18/19 slots, all from dehero/mwscr. Concluded modern side unobtainable under old policy proxy — that conclusion is STALE, proxy removed."
-  ],
-  "next_step": "read docs/REFERENCE-IMAGE-REQUEST.md fully, then ACQUISITION-REPORT.md §6 dead ends",
-  "notes_for_successor": ""
+ "task_id": "image-acquisition-modern",
+ "brief": "inline (task prompt) \u2014 fill modern/ half of corpus/70-visual/refs per docs/REFERENCE-IMAGE-REQUEST.md",
+ "started": "wave-N (2026-08-06)",
+ "state": "researching",
+ "outputs_expected": [
+  "corpus/70-visual/refs/morrowind/REF-A12/ (OpenMW MyGUI layout+skin XML, README.md)",
+  "corpus/70-visual/refs/_provenance.json (REF-A12 blocks appended)",
+  "corpus/70-visual/refs/MANIFEST.json (regenerated)",
+  "tools/refs/merge-manifest.mjs"
+ ],
+ "outputs_written": [],
+ "findings": [
+  "Predecessor (image-acquisition.json) filled morrowind/ side: 89 images, 18/19 slots, all from dehero/mwscr. Concluded modern side unobtainable under old policy proxy \u2014 that conclusion is STALE, proxy removed.",
+  "NETWORK CONFIRMED OPEN: steamcommunity.com 200, upload.wikimedia.org, i.imgur.com, youtube.com, flickr, reddit all reachable. images.nexusmods.com 403.",
+  "STEAM PIPELINE WORKS: listing https://steamcommunity.com/app/<appid>/screenshots/?p=N&browsefilter=toprated gives sharedfiles/filedetails/?id=NNN links. Detail page needs `curl --compressed` (gzip) else binary garbage. Detail page yields: ActualMedia img src -> strip ?query to get ORIGINAL bytes at https://images.steamusercontent.com/ugc/<a>/<b>/ ; plus detailsStatRight fields = size, date posted, WxH; apphub_AppName = game.",
+  "Sample Elden Ring original: 3840x1608 JPEG, 6.97 bits/px = high quality, NOT recompressed. But ultrawide -> reject per \u00a76. Must filter aspect ~16:9.",
+  "App IDs: Elden Ring 1245620, Skyrim SE 489830, RDR2 1174180, Witcher 3 292030, ESO 306130.",
+  "yt-dlp installs via pip (2026.7.4). NO ffmpeg in container -> cannot merge DASH streams or trim; must use progressive/single-file formats for video/.",
+  "STAND-DOWN (coordinator, mid-task): acquisition of refs/modern, refs/video, refs/context handed to external Codex agent with unrestricted internet. This task WROTE NOTHING under corpus/70-visual/refs/ before standing down \u2014 zero files created, modified or deleted anywhere in the repo except this status file. No merge de-duplication is needed on account of this task. All acquisition work lived in the scratchpad only.",
+  "Steam search endpoint quirk banked for whoever resumes acquisition: /workshop/browse/?appid=X&section=screenshots&searchtext=Q works ONLY for apps with no Steam Workshop (Elden Ring 1245620 -> 21 hits). For apps that HAVE a workshop (Witcher 3 292030, Skyrim SE 489830) that URL renders the mod workshop and yields zero screenshots. Universal endpoint that works for all: https://steamcommunity.com/app/<appid>/screenshots/?p=N&browsefilter=toprated&searchText=Q (11 results/page, paginate with p).",
+  "Steam detail-page scraper + original-bytes fetcher written and verified at scratchpad/steam.py; ~/harvest.py drives it. Not committed (out of scope after stand-down) but the mechanics are described in the finding above."
+ ],
+ "next_step": "JOB 1: clone OpenMW --depth 1, extract resources/mygui -> refs/morrowind/REF-A12/",
+ "notes_for_successor": "Acquisition is Codex-owned. Do not write under refs/modern, refs/video, refs/context."
 }

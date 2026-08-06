@@ -29,13 +29,21 @@ It MUST open with this YAML front-matter block:
 id: RI-CMB03
 title: Roll i-frame and recovery windows
 kind: number | structure | trace | image | text | graph   # pick exactly one
-side: souls | morrowind | modern-fidelity | neutral
+side: souls | morrowind | modern-fidelity | neutral | split   # `split` AMENDED wave 0 — see below
 judges: [combat.dodge, combat.stamina]        # game subsystem paths this item judges
 provenance: measured | derived | canonical-recall | constructed | community-data
 confidence: high | medium | low
 blind_pair: yes | no        # can a critic be shown ours vs theirs unlabeled?
 ---
 ```
+
+> **AMENDED wave 0 (corpus-audit): `side: split` added to the enum.** `split` was already a
+> first-class value in `subsystems.json`'s `arb_legend`, and ARBITRATION §2 carries five SPLIT
+> seam rulings (S2, S11, S13, S16, S19). An item whose whole subject *is* a seam —
+> `RI-STL01`, where sneaking hands over to the fight — had no honest value to declare and was
+> failing front-matter validation for being accurate. Use `split` **only** when the item cites
+> the specific seam ruling it documents; it is not a way to avoid choosing a side.
+> `tools/corpus-index.mjs` accepts it as of the same wave.
 
 Then these sections, in this order, all mandatory:
 

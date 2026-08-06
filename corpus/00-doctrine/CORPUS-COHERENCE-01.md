@@ -209,3 +209,98 @@ oversight. §B and §C are unchanged for the same reason.
 **Closes:** queue item **B5**; the brief's §1 dialogue-scope clause.
 
 ---
+
+## 4. `subsystems.json` and `INDEX.md` — index integrity restored
+
+**Before:** `node tools/corpus-index.mjs --check` reported **148 errors**, of which **147 were
+orphan `judges:` paths** across **134 distinct path spellings**. An item with an unresolvable
+`judges:` path **judges nothing** — it does not appear against any subsystem in INDEX.md §2, so
+the orchestrator never hands it to a critic, and nothing in the toolchain noticed, because
+`--check` only gated on whether INDEX.md was stale.
+
+**After:** **0 errors, 0 unresolved paths.** 323 canonical paths (was 200), 125 reference items,
+**309 paths judged**, 14 holes — all 14 pre-existing; every path registered by this audit is
+judged by at least one item.
+
+### 4a. Paths registered — 123 across eight new roots
+
+| Root | Paths | Source | Critic |
+|---|---:|---|---|
+| `weapon.*` | 20 | authored here from the six `RI-WPN*` items' front-matter | **`critic.weapons`** (new) |
+| `magic.*` | 20 | `corpus/25-magic/subsystems-patch.proposed.json`, applied verbatim | **`critic.magic`** (new) + `critic.combat` for `magic.casting.*` |
+| `journey.*` / `input.*` / `platform.*` | 28 | `corpus/88-journeys/paths-requested.json`, applied verbatim | **`critic.journey`** (new) |
+| `experience.*` | 15 | authored here from `RI-EXP01–06` | **`critic.experience`** (new) |
+| `character.*` | 10 | authored here from `RI-CHR01–03` | `critic.progression` (+`critic.dialogue` for `character.race.dialogue`) |
+| `stealth.*` | 9 | authored here from `RI-STL01–02` | **`critic.stealth`** (new) |
+| `crime.*` | 9 | authored here from `RI-CRM01–02`, `RI-CHR02` | `critic.stealth` |
+| `composition.*` | 6 | authored here from `RI-CMP01–03` | `critic.experience` |
+| `world.*` additions | 5 | `world.traversal.stations`, `world.traversal.schedule`, `world.npc.schedule`, `world.ecology.behaviour`, `world.ambient.events` | `critic.world` |
+| `lore.*` addition | 1 | `lore.religion.metaphysics` | `critic.lore` |
+
+Every appended record carries a `registered: "wave-0 corpus-audit…"` field naming where it came
+from, so a later reader can tell a path an agent requested from one this audit invented.
+`subsystems.json` went to `version: 2`; nothing was renamed or removed — the file is append-only
+and stayed that way.
+
+**Two agents had already done this work properly** and their files were applied unchanged:
+the journeys agent's `paths-requested.json` and the magic agent's
+`subsystems-patch.proposed.json` were both pre-formatted in `subsystems.json`'s exact record
+shape. That is the pattern other agents should copy.
+
+### 4b. Dead `judges:` paths fixed to canonical spellings (not aliased)
+
+The brief called for these to be **fixed**, not papered over with new aliases — an alias would
+have left the wrong spelling in the item forever.
+
+| Item | Dead | Fixed to |
+|---|---|---|
+| `RI-CMB08` (healing, 3,155 words — **all four paths were dead**) | `combat.player.heal`, `combat.resource.charges`, `progression.restsite.refill`, `combat.encounter.pacing` | `combat.heal.charges`, `progression.bonfire.function`, `combat.encounter.placement`, + `combat.enemy.punish` (the heal-read punish window §, previously unjudged) |
+| `RI-WLD08` (**the corpus's best liveness instrument, 5 of 7 dead**) | `world.npc-schedules`, `world.ecology`, `world.ambient-events`, `npc.behaviour`, `audio.ambient` | `world.npc.schedule`, `world.ecology.behaviour`, `world.ambient.events` (three **new** paths — nothing canonical covered schedules, ecology or ambient events), `world.npc.population`, `audio.ambience.region` |
+| `RI-LOR05` (8 dead of 12) | `lore.religion`, `lore.metaphysics`, `progression.souls`, `progression.levelling`, `progression.estus`, `combat.death`, `combat.respawn`, `ui.terminology` | `lore.religion.hist`, `lore.religion.metaphysics` (**new**), `progression.souls.economy`, `progression.level.curve`, `combat.heal.charges`, `combat.death.corpserun`, `combat.death.worldreset`, `coherence.naming.consistency` |
+| `RI-LOR06` (8 dead of 8 — **it judged nothing at all**) | `lore.canon`, `lore.coherence`, `books.content`, `dialogue.claims`, `quests.main`, `quests.factions`, `world.settlements`, `critic.method` | `lore.canon.registry`, `coherence.lore.consistency`, `lore.book.unreliability`, `dialogue.topics.truth`, `quests.lore.hooks`, `quests.faction.escalation`, `world.settlement.anatomy`, `process.critic.discipline` |
+| `RI-TRV01` | — | **added** `world.traversal.stations`, `world.traversal.schedule` (its §2 and §6 already specify both; the paths did not exist) |
+
+### 4c. `side: split` — the validator was wrong, not the item
+
+`RI-STL01` declared `side: split` and failed front-matter validation, because
+CORPUS-CONTRACT §2's enum is `souls | morrowind | modern-fidelity | neutral`.
+
+**Ruling: amend the contract and the validator, not the item.** `split` is *already* a
+first-class value in `subsystems.json`'s `arb_legend`, and ARBITRATION §2 carries **five SPLIT
+seam rulings** (S2, S11, S13, S16, S19). `RI-STL01`'s entire subject is the seam where sneaking
+hands over to the fight; forcing it to pick `souls` or `morrowind` would have made it
+misdeclare itself to every critic that reads it. The contract now documents `split` with a
+usage constraint — it may only be used by an item that cites the specific seam ruling it
+documents — so it cannot become a way to avoid choosing a side.
+
+### 4d. `--check` is now a blocking gate
+
+`tools/corpus-index.mjs --check` previously exited 1 **only** if `INDEX.md` was stale; it
+printed 148 errors to stdout and exited 0. That is precisely how 147 orphan paths accumulated
+without anyone noticing. It now exits 1 on **any error-level problem**, and `--strict`
+additionally fails on corpus holes. Two new checks were added, both specified in `RI-MTH05`:
+
+- **C3 — "judges nothing".** An item whose entire `judges:` list fails to resolve is now an
+  error in its own right, named as such. `RI-LOR06` was in exactly this state and looked
+  perfectly healthy in the item inventory.
+- **C4 — shared-constant registry integrity.** `constants.json` must parse, every constant
+  must have exactly one owner, and every owner and named consumer must be a reference item
+  that exists.
+
+### 4e. Decisions deliberately *not* made
+
+- **No `camera.*` root.** The queue listed "`camera.*` (8) + the camera agent's critic
+  assignment". `RI-CAM01`–`RI-CAM07` all judge existing `combat.camera.behaviour`,
+  `combat.lockon.*`, `render.*` and `ui.*` paths, and **indexed cleanly with zero orphans**.
+  Registering 8 unused `camera.*` paths would have created **8 new corpus holes** and blocked
+  builders on subsystems no item judges — strictly worse than the status quo. If the camera
+  area later wants its own root, the items must move their `judges:` at the same time.
+- **206 legacy aliases left in use.** They all resolve, `subsystems.json` documents aliases as
+  a deliberate migration aid, `INDEX.md` §4a lists every one with its user, and `--check` does
+  not gate on them. Rewriting front-matter across 60+ items for zero semantic change is churn
+  with real risk of introducing the very orphans this section just removed. Recorded as
+  outstanding, not silently dropped.
+- **The 14 remaining holes were not filled.** All 14 pre-date this audit. Filling a hole means
+  writing a reference item, which is authorship, not coherence repair.
+
+---

@@ -14,8 +14,15 @@
  *
  * Usage
  *   node tools/corpus-index.mjs            regenerate
- *   node tools/corpus-index.mjs --check    do not write; exit 1 if INDEX.md is stale
- *   node tools/corpus-index.mjs --strict   exit 1 if there are holes or invalid front-matter
+ *   node tools/corpus-index.mjs --check    THE CI GATE. exit 1 if INDEX.md is stale OR any
+ *                                          error-level problem exists (bad front-matter,
+ *                                          orphan `judges:` path, item judging nothing,
+ *                                          broken shared-constant registry). Does not write.
+ *   node tools/corpus-index.mjs --strict   as --check, and additionally fails on corpus holes
+ *
+ * --check became blocking in wave 0 (corpus-audit) to close BAR-CRITIQUE-01 G7. It used to
+ * report errors on stdout and exit 0, which is why 147 orphan paths accumulated unnoticed.
+ * The property it enforces is specified as a reference item: corpus/80-methods/RI-MTH05.
  *
  * Run it after ANY reference item is added, edited, or has its `judges:` changed,
  * and once at the start of every wave.
@@ -36,7 +43,9 @@ const CHECK_ONLY = args.has('--check');
 const STRICT = args.has('--strict');
 
 const VALID_KIND = ['number', 'structure', 'trace', 'image', 'text', 'graph'];
-const VALID_SIDE = ['souls', 'morrowind', 'modern-fidelity', 'neutral'];
+// `split` added wave 0 (corpus-audit): it is already a first-class value in subsystems.json's
+// arb_legend and ARBITRATION §2 carries five SPLIT seam rulings. See CORPUS-CONTRACT §2.
+const VALID_SIDE = ['souls', 'morrowind', 'modern-fidelity', 'neutral', 'split'];
 const VALID_PROV = ['measured', 'derived', 'canonical-recall', 'constructed', 'community-data'];
 const VALID_CONF = ['high', 'medium', 'low'];
 const VALID_BLIND = ['yes', 'no'];
@@ -236,6 +245,57 @@ const roots = [...new Set(subsystems.map((s) => s.path.split('.')[0]))];
 const dupIds = [...items.reduce((m, it) => m.set(it.id, (m.get(it.id) || 0) + 1), new Map())]
   .filter(([, n]) => n > 1).map(([id]) => id);
 for (const id of dupIds) problems.push({ file: '(multiple)', level: 'error', message: `duplicate reference item id ${id}` });
+
+// ------------------------------------------- corpus coherence checks (RI-MTH05)
+// Added wave 0 (corpus-audit). Each corresponds to a numbered check in
+// corpus/80-methods/RI-MTH05-corpus-coherence.md.
+
+// C3 — an item whose `judges:` list resolves to nothing judges nothing, and is invisible to
+// the critic hand-off in §2 even though it looks fine in the inventory.
+for (const it of items) {
+  if (it.judges.length === 0) {
+    problems.push({ file: it.path, level: 'error', message: `judges nothing: every path in \`judges:\` failed to resolve, so this item is invisible to the critic hand-off (RI-MTH05 C3)` });
+  }
+}
+
+// C4 — the shared-constant registry must be well formed and single-owner.
+const CONSTANTS_FILE = join(CORPUS, '00-doctrine', 'constants.json');
+const knownIds = new Set(items.map((i) => i.id));
+let constants = null;
+if (!existsSync(CONSTANTS_FILE)) {
+  problems.push({ file: 'corpus/00-doctrine/constants.json', level: 'error', message: 'missing shared-constant registry (RI-MTH05 C4)' });
+} else {
+  try {
+    constants = JSON.parse(readFileSync(CONSTANTS_FILE, 'utf8'));
+  } catch (e) {
+    problems.push({ file: 'corpus/00-doctrine/constants.json', level: 'error', message: `unparseable: ${e.message} (RI-MTH05 C4)` });
+  }
+}
+if (constants) {
+  const seenConst = new Set();
+  for (const c of constants.constants || []) {
+    const where = 'corpus/00-doctrine/constants.json';
+    if (!c.id) { problems.push({ file: where, level: 'error', message: 'constant with no id (RI-MTH05 C4)' }); continue; }
+    if (seenConst.has(c.id)) problems.push({ file: where, level: 'error', message: `constant \`${c.id}\` declared twice — a constant has exactly one owner (RI-MTH05 C4)` });
+    seenConst.add(c.id);
+    if (!c.owner) {
+      problems.push({ file: where, level: 'error', message: `constant \`${c.id}\` has no owner (RI-MTH05 C4)` });
+    } else if (!knownIds.has(c.owner)) {
+      problems.push({ file: where, level: 'error', message: `constant \`${c.id}\` is owned by \`${c.owner}\`, which is not a reference item id (RI-MTH05 C4)` });
+    }
+    for (const cons of c.consumers || []) {
+      const m = String(cons).match(/^(RI-[A-Z]{2,3}\d{2})/);
+      if (m && !knownIds.has(m[1])) {
+        problems.push({ file: where, level: 'error', message: `constant \`${c.id}\` names consumer \`${m[1]}\`, which is not a reference item id (RI-MTH05 C4)` });
+      }
+    }
+  }
+  for (const d of constants.deliberate_divergences || []) {
+    if (d.item && !knownIds.has(d.item)) {
+      problems.push({ file: 'corpus/00-doctrine/constants.json', level: 'error', message: `deliberate divergence names \`${d.item}\`, which is not a reference item id (RI-MTH05 C4)` });
+    }
+  }
+}
 
 // ------------------------------------------------------------------ render
 
@@ -442,16 +502,20 @@ L.push('that referenced it), then regenerate.');
 L.push('');
 
 const out = L.join('\n');
+const errorCount = problems.filter((p) => p.level === 'error').length;
+let gateFailed = false;
 
-if (CHECK_ONLY) {
+if (CHECK_ONLY || STRICT) {
   const existing = existsSync(OUT_FILE) ? readFileSync(OUT_FILE, 'utf8') : '';
   const strip = (s) => s.replace(/^Generated: .*$/m, '');
   if (strip(existing) !== strip(out)) {
     console.error('INDEX.md is STALE. Run: node tools/corpus-index.mjs');
-    process.exit(1);
+    gateFailed = true;
+  } else {
+    console.log('INDEX.md is up to date.');
   }
-  console.log('INDEX.md is up to date.');
-} else {
+}
+if (!CHECK_ONLY && !STRICT) {
   writeFileSync(OUT_FILE, out);
   console.log(`Wrote ${rel(OUT_FILE)}`);
 }
@@ -470,4 +534,18 @@ if (holes.length) {
 }
 for (const p of problems) console.log(`  [${p.level}] ${p.file}: ${p.message}`);
 
-if (STRICT && (holes.length || problems.some((p) => p.level === 'error'))) process.exit(1);
+// ------------------------------------------------------------------ the gate
+// Wave 0 (corpus-audit): --check is now BLOCKING on error-level problems, not only on a
+// stale index. See RI-MTH05. --strict additionally blocks on corpus holes.
+if (CHECK_ONLY || STRICT) {
+  if (errorCount) {
+    console.error(`\nCORPUS COHERENCE GATE FAILED: ${errorCount} error(s). See RI-MTH05.`);
+    gateFailed = true;
+  }
+  if (STRICT && holes.length) {
+    console.error(`\n--strict: ${holes.length} corpus hole(s).`);
+    gateFailed = true;
+  }
+  if (gateFailed) process.exit(1);
+  console.log('\nCORPUS COHERENCE GATE PASSED.');
+}
