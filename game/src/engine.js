@@ -967,6 +967,13 @@ export class Engine {
       perspective_modes: PERSPECTIVE_MODES.slice(),
       declared_file: 'game/data/camera/rig.json',
       cells: [...this.cells.keys()].sort(),
+      // The authored fixture metadata a probe needs in order to *place* the character in a
+      // cell at all: the cells are not part of the province heightfield, so `teleport(x,z)`
+      // without a y drops the character 41 m below `cam-flat-plain`'s floor plane.
+      cells_meta: [...this.cells.values()].map((c) => ({
+        id: c.id, class: c.meta.class, title: c.meta.title, ground_y: c.meta.ground_y,
+        shapes: c.shapes.length, spine_points: (c.meta.spine || []).length, declared: c.meta.declared || null,
+      })).sort((a, b) => (a.id < b.id ? -1 : 1)),
       cell: this.sim.cellId || null,
     };
   }
