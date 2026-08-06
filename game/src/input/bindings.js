@@ -27,6 +27,7 @@ export const DEFAULT_BINDINGS = {
   menu: ['Escape', 'KeyM'],
   // W1-15 / AM-W1-15-01. RI-STL01's blocking dependency. Both slots were unbound.
   crouch: ['KeyC', 'KeyZ'],
+  spell_cycle: ['KeyR'],
 };
 
 export const MOVE_BINDINGS = {

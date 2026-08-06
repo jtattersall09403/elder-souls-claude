@@ -91,8 +91,15 @@ const doc = { schema: 'critic/visual-dispersion@1', measured_at: new Date().toIS
 {
   const dir = 'reports/region-shots';
   const answers = JSON.parse(execFileSync('cat', [join(dir, 'ANSWERS.json')]).toString());
-  const items = answers.shots.map((s) => ({ file: join(dir, s.frame), region: s.region, d: descriptor(join(dir, s.frame)) }));
-  doc.populations.ours = analyse('ours (13 regions x 3)', items);
+  const items = answers.shots.map((s) => ({ file: join(dir, s.frame), region: s.region, pass: s.pass || 'day', d: descriptor(join(dir, s.frame)) }));
+  doc.populations.ours = analyse(`ours (${new Set(items.map((i) => i.region)).size} regions x ${items.length / new Set(items.map((i) => i.region)).size})`, items);
+  // RI-WLD04 M17 step 6 requires the sample repeated at night and in each region's worst weather,
+  // with night accuracy >= 70% required — "a region that is only identifiable in clear daylight is
+  // half-built". A pooled number hides which pass is carrying it, so each pass is analysed alone.
+  for (const p of [...new Set(items.map((i) => i.pass))]) {
+    const sub = items.filter((i) => i.pass === p);
+    if (sub.length >= 13) doc.populations[`ours_${p}`] = analyse(`ours ${p}`, sub);
+  }
 }
 // morrowind
 {

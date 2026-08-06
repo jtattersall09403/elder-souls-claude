@@ -148,7 +148,11 @@ export class CombatBody {
     const d = m.clip.rootDeltaAt(f);
     this.lastRootDelta = d;
     if (d !== 0) {
-      const bearing = (m.kind === 'roll' || m.kind === 'backstep') ? this.rollDirDeg : this.yaw;
+      // A cast latches its travel direction at frame 1 exactly as a roll does: RI-MAG01 §B's
+      // cast-walk speeds are root-track properties, and a caster who could re-steer a
+      // committed cast mid-clip would be adding controller velocity to root motion, which
+      // RI-CMB01 §C rule 5 forbids for every other committed action in the game.
+      const bearing = (m.kind === 'roll' || m.kind === 'backstep' || m.kind === 'cast') ? this.rollDirDeg : this.yaw;
       const rad = bearing * Math.PI / 180;
       this.pos[0] += Math.sin(rad) * d;
       this.pos[2] += Math.cos(rad) * d;

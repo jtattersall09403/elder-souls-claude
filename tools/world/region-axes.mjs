@@ -188,7 +188,7 @@ for (const r of regions) {
 }
 
 // ---- rendered pixels, if a shot pack is present ----------------------------------------------------
-let rendered = null;
+let rendered = null, renderedPass = null;
 if (existsSync(join(ROOT, shotsDir, 'ANSWERS.json'))) {
   const ans = rd(join(shotsDir, 'ANSWERS.json'));
   const GH = 4, W = 64, H = 36;
@@ -203,12 +203,21 @@ if (existsSync(join(ROOT, shotsDir, 'ANSWERS.json'))) {
     }
     return acc.flatMap((c) => [c[0] / c[3], c[1] / c[3], c[2] / c[3]]);
   };
+  // One capture condition at a time. Pooling day, night and worst-weather frames into a single
+  // per-region mean averages a region's identity against its own weather and makes every region
+  // converge on the same grey — which is a fact about the pooling, not about the world. The day
+  // pass is the fixed condition; the night pass is measured on its own by
+  // `critic-visual-dispersion.mjs`, where M17 step 6's >= 70% night bar lives.
   rendered = {};
+  const passes = new Set(ans.shots.map((s) => s.pass || 'day'));
+  const usePass = passes.has('day') ? 'day' : [...passes][0];
   for (const s of ans.shots) {
+    if ((s.pass || 'day') !== usePass) continue;
     const f = join(ROOT, shotsDir, s.frame);
     if (!existsSync(f)) continue;
     (rendered[s.region] = rendered[s.region] || []).push(strip(f));
   }
+  renderedPass = usePass;
   for (const k of Object.keys(rendered)) {
     const arr = rendered[k];
     rendered[k] = arr[0].map((_, i) => +(arr.reduce((a, v) => a + v[i], 0) / arr.length).toFixed(2));
@@ -295,7 +304,7 @@ const doc = {
   dropped_axes: DROPPED,
   bar: { axes_available: available, must_differ_on: BAR },
   per_region: measured,
-  rendered_present: !!rendered,
+  rendered_present: !!rendered, rendered_capture_pass: renderedPass,
   axis_pair_counts: axisCounts,
   min_axes_differing: minAxes, min_pair: minPair,
   pairs_below_bar: pairs.filter((p) => p.axes_differing < BAR).map((p) => `${p.a}/${p.b} (${p.axes_differing})`),

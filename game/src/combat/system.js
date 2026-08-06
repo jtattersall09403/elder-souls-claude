@@ -56,6 +56,7 @@ export class CombatSystem {
     this._playerLoadout = Object.assign({}, loadout, { weapon: loadout.weapon || 'straight-sword', shield: shieldId });
     this.player = body;
     this.playerCtl = new PlayerController(body, d, this.lock);
+    this.playerCtl.magic = this.magic || null;   // seam S19: set by the engine at boot
     this.playerCtl.flaskLevel = loadout.flaskLevel || 0;
     this.playerCtl.estus = loadout.estus !== undefined ? loadout.estus : d.flask.charges.at_game_start;
     this.bodies = [body];

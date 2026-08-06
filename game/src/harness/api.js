@@ -23,7 +23,9 @@ import { canonicalise, stateDiff, leafPaths } from '../core/canonical.js';
 import { VOLATILE_PATHS } from '../save/state.js';
 import { installWeaponsHarness } from './weapons.js';
 
-export const HARNESS_VERSION = 1;
+// W1-14: RI-MAG01's harness amendments are ADDITIONS, so the contract moves 1 -> 2 exactly as
+// that item's provenance note requires. Everything `@1` emitted is still emitted, unchanged.
+export const HARNESS_VERSION = 2;
 
 export function installHarness(engine, bootPromise) {
   const H = {
@@ -173,7 +175,17 @@ export function installHarness(engine, bootPromise) {
 
     // ---- queries ----------------------------------------------------------------------------
     listEntities() { return engine.listEntities(); },
-    getPlayerStats() { return engine.getPlayerStats(); },
+    getPlayerStats() {
+      const st = engine.getPlayerStats();
+      // RI-MAG01 harness amendment 5: extend getPlayerStats() with effects_active.
+      if (engine.magic) {
+        const m = engine.magic.report(engine.sim.frame);
+        st.focus = m.focus; st.focus_max = m.focus_max; st.focus_locked = m.focus_locked;
+        st.attuned = m.attuned; st.effects_active = m.effects_active;
+        st.levitating = m.levitating; st.airborne = m.airborne; st.altitude_m = m.altitude_m;
+      }
+      return st;
+    },
     getWorldStats() { return engine.getWorldStats(); },
     getQuestState() { return engine.getQuestState(); },
 
@@ -354,6 +366,68 @@ export function installHarness(engine, bootPromise) {
         birthsigns: d.birthsigns, reactions: d.reactions, creation: d.creation,
         questions: d.creationQuestions, encounters: d.encounters,
       };
+    },
+
+    // ================= W1-14 magic (seam S19) ==================================================
+    // The extensions RI-MAG01 §Provenance → "Harness amendments requested" asks for, verbatim.
+    // Without them M1-M4 and M7 score 0, fail-closed (HARNESS §5).
+
+    /** Pin a loadout without walking to a HEARTH. Returns what was actually attuned. */
+    setAttuned(spellIds) { return engine.magic.setAttuned(spellIds); },
+    /** Equip a catalyst in the right hand. Casting requires one; `null` unequips. */
+    setCatalyst(id) { return engine.magic.setCatalyst(id === undefined ? null : id); },
+    /** WILLPOWER drives the Focus pool and the attuned-slot count (RI-MAG01 §A). */
+    setWillpower(n) { return engine.magic.setWillpower(Number(n)); },
+    setMagicSkills(patch) { Object.assign(engine.magic.skills, patch || {}); return { ...engine.magic.skills }; },
+
+    /** Everything a critic needs about the reservoir, the loadout and every live effect. */
+    getMagicState() { return engine.magic.report(engine.sim.frame); },
+    /** Drain the magic event stream: cast_start, cast_release, cast_interrupt, focus_spend, effect_apply, effect_expire. */
+    magicEventsDrain() { return engine.magic.drainEvents(); },
+
+    /** The two — and only two — things in this project that raise Focus. */
+    hearthRest() { return { focus: engine.magic.hearthRest(), note: 'RI-MAG01 §A: the reservoir refills here and nowhere else.' }; },
+
+    /** The catalogue, the shipped shelf and the cast class table, for offline recomputation. */
+    getMagicData() {
+      return {
+        effects: engine.data.magic.effects,
+        spells: engine.data.magic.spells,
+        cast_classes: engine.data.magic['cast-classes'],
+        cast_clips: engine.data.magic['cast-clips'],
+        enchanting: engine.data.magic.enchanting,
+        vfx: engine.data.magic.vfx,
+        spell_movesets: engine.data.spellMovesets,
+      };
+    },
+
+    /** Price an ARBITRARY coordinate in the parameter space. There is no whitelist to consult. */
+    quoteSpell(spec) { return engine.magic.quoteSpell(spec); },
+    /** Commission it. RI-MAG03 M1's headline test drives this 20 times with unauthored tuples. */
+    makeSpell(spec, name) { return engine.magic.makeSpell(spec, name); },
+    /** Buying a spell teaches you its effects — the spellmaking knowledge gate. */
+    learnSpell(id) { return engine.magic.learnSpell(id); },
+    /** Enchanting arithmetic: points, capacity, soul-grade gate, gold, charge. */
+    enchantQuote(spec) { return engine.magic.enchantQuote(spec); },
+    /** SG-5's anti-farm downgrade and SG-6's xul_hesh counter, both observable. */
+    trapSoul(instanceId, grade, isSpeaker) { return engine.magic.trapSoul(engine.sim.frame, String(instanceId), String(grade), !!isSpeaker); },
+    getXulHesh() { return engine.magic.xulHeshConsequences(); },
+    /** `recall`'s magnitude is COMPUTED at cast time, never authored (RI-MAG02 §G). */
+    recallQuote(markX, markZ) {
+      const b = engine.combat.player;
+      return engine.magic.recallCost([b.pos[0], b.pos[1], b.pos[2]], [Number(markX), 0, Number(markZ)]);
+    },
+    /** Levitation: begin, and read the metered ascent. No fence exists to report. */
+    setLevitating(on) {
+      if (on) engine.magic._beginLevitation(engine.sim.frame, 3600);
+      else engine.magic._endLevitation(engine.sim.frame, 'harness');
+      return engine.magic.report(engine.sim.frame);
+    },
+    damagePlayer(n) {
+      const b = engine.combat.player;
+      b.hp = Math.max(0, b.hp - Number(n));
+      engine.magic.onDamaged(engine.sim.frame);
+      return { hp: b.hp, magic: engine.magic.report(engine.sim.frame) };
     },
 
     // ---- honest gaps ------------------------------------------------------------------------

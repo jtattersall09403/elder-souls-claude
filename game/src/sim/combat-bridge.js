@@ -56,6 +56,35 @@ export function stepCombat(sim, input, combat, bus) {
   }
 
   combat.step(frame, input, sim.camera, bus, sim);
+
+  // Seam S19. Spell geometry advances INSIDE the armed determinism guard, in the same slot the
+  // weapon resolver runs in, so a projectile is swept per fixed step exactly as a blade is and
+  // a `Math.random()` anywhere beneath it throws rather than desynchronising a trace.
+  if (combat.magic) {
+    const M = combat.magic;
+    const targets = combat.bodies.filter((b) => b.side === 'E');
+    M.step(frame, targets, (target, spell, contact) => {
+      // Damage is DETERMINISTIC — a magnitude times a scaling coefficient, never a range and
+      // never a roll (RI-MAG01 §E rules 1-4). Poise damage and status buildup are integers.
+      let dmg = 0;
+      for (const t of spell.effects) {
+        const e = M.effects[t.effect];
+        if (e.utility_class === null || e.geometry !== 'none') dmg += Math.round(M.outputOf(t.effect, t.magnitude, M.wil));
+      }
+      if (dmg > 0) {
+        target.hp -= dmg;
+        if (target.hp <= 0) { target.hp = 0; target.dead = true; }
+      }
+      M.applyEffects(frame, spell, target, M.wil);
+      const ev = bus.emit(frame, 'spell_hit');
+      ev.spell = spell.id; ev.target = target.id; ev.dmg = dmg; ev.kind = contact.kind;
+      ev.status = M.statusBuildupOf(spell);
+    });
+    // RI-MAG02 §F2: the levitation altitude meter. `climb` is the jump button held while
+    // AIRBORNE; there is no other way to gain altitude and there is no altitude clamp.
+    if (M.levitating) M.stepLevitation(frame, (input.held & BIT.jump) ? 1 : ((input.held & BIT.crouch) ? -1 : 0));
+  }
+
   mirror(sim, combat);
 }
 
@@ -91,6 +120,29 @@ export function mirror(sim, combat) {
   p.moveData = b.move;
   p.swingSeq = b.swingSeq;
   p.hitboxes.length = 0;
+  // Spell geometry is reported through the SAME hitbox channel a weapon is (HARNESS §5, with
+  // `kind` gaining "projectile" and "volume" per RI-MAG01's harness amendment 3). A critic
+  // recomputing the sweep offline reads one array, not two.
+  if (combat.magic) {
+    const M = combat.magic;
+    for (const h of M.hitboxRecords(combat.frame)) p.hitboxes.push(h);
+    const c = M.cast;
+    p.focus = Math.round(M.focus * 1e4) / 1e4;
+    p.focusMax = M.focusMax;
+    p.focusLocked = true;
+    p.attuned = M.attuned;
+    p.cast = c ? {
+      spell: c.spellId, class: c.class,
+      phase: b.move && b.move.kind === 'cast' ? phaseOf(b) : null,
+      anim_frame: b.move && b.move.kind === 'cast' ? b.animFrame : null,
+      tc_frame: c.tcFrame, aim_latched: !!c.latched,
+      focus_spent: c.focusSpent, stamina_spent: c.staminaSpent, released: !!c.released,
+    } : null;
+    p.effectsActive = M.active;
+    p.levitating = M.levitating;
+    p.airborne = M.airborne;
+    p.altitudeM = Math.round(M.altitude * 1e3) / 1e3;
+  }
   if (b.hitboxActive && b.move) {
     p.hitboxes.push({
       id: `wpn_${b.move.id}`, owner: 'player', kind: 'capsule',

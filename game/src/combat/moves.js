@@ -22,10 +22,24 @@ export const PLAYER_STATE_ENUM = [
   // --- declared extensions, see STATE_ENUM_EXTENSIONS ---
   'PARLEY_STARTUP', 'PARLEY_ACTIVE', 'PARLEY_RECOVER',
   'JUMP_RISE', 'JUMP_AIR', 'JUMP_LAND', 'STANCE_SWITCH', 'SWAP',
+  // --- W1-14, seam S19: casting is an action in the fight and needs states in the same
+  //     vocabulary as every other committed action. Declared, never smuggled.
+  'CAST_WINDUP', 'CAST_RELEASE', 'CAST_RECOVER', 'AIRBORNE',
 ];
 
 export const STATE_ENUM_EXTENSIONS = {
   added: ['PARLEY_STARTUP', 'PARLEY_ACTIVE', 'PARLEY_RECOVER'],
+  added_wave1_magic: {
+    states: ['CAST_WINDUP', 'CAST_RELEASE', 'CAST_RECOVER', 'AIRBORNE'],
+    why:
+      'Seam S19: inside the fight, casting is a Souls action with a startup you cannot take ' +
+      'back, an active window in which geometry exists in the world, and a recovery tail. ' +
+      "RI-MAG01 §B gives it frame data on exactly ES-CAST/1's terms and RI-MAG01 M1 reads " +
+      '`player.cast.phase` per frame, which requires the phases to be states rather than a ' +
+      'flag. `AIRBORNE` is RI-MAG02 §F3: a levitating caster can neither attack, cast (except ' +
+      '`slowfall`), block, roll nor parry, and has no i-frames of any kind — a state, not a ' +
+      'set of denials scattered across the input handler.',
+  },
   why:
     "RI-CMB07 §A's player state enum is closed and fail-closed, and it predates the wave-0 " +
     'amendment to ARBITRATION §1 / seam S13 (drift ID-01) which makes a non-lethal exit from a ' +

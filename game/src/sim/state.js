@@ -65,6 +65,10 @@ export function makePlayer() {
     estus: PLAYER_CONST.estus_max,
     lockOn: null,
     hitboxes: [],
+    // Seam S19 view fields, refreshed from MagicSystem by sim/combat-bridge.js `mirror()`.
+    // They are a VIEW: MagicSystem is the authority, exactly as CombatBody is for the fight.
+    focus: 0, focusMax: 0, focusLocked: true, attuned: [], cast: null,
+    effectsActive: [], levitating: false, airborne: false, altitudeM: 0,
     moveDirDeg: 0,              // RI-CAM02: requested field, the world-space travel bearing
     speedMps: 0,
     equipLoadPct: 24.0,

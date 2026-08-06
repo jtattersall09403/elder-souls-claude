@@ -9,6 +9,7 @@ import { SimState, quantiseColdState, PLAYER_CONST } from './sim/state.js';
 import { EventBus } from './sim/events.js';
 import { stepOnce } from './sim/step.js';
 import { CombatSystem } from './combat/system.js';
+import { MagicSystem } from './sim/magic/system.js';
 import { combatMeta, combatFrame } from './combat/trace.js';
 import { mirror } from './sim/combat-bridge.js';
 import { makeRecord } from './sim/record.js';
@@ -88,6 +89,7 @@ export class Engine {
     this.sim.input = this.input;
     this.data = null;
     this.combat = null;
+    this.magic = null;
     this.combatTrace = null;
     this.renderer = null;
     this.real = null;
@@ -335,6 +337,24 @@ export class Engine {
    */
   _buildCombat(loadout) {
     this.combat = new CombatSystem(this._combatData());
+    // Seam S19. The MagicSystem is built with the fight and handed to the fight, because
+    // casting is an action IN the fight and RI-MAG01 gives it the same commitment machinery
+    // every swing has. Everything it owns outside the fight — the catalogue, spellmaking,
+    // enchanting, the gem economy — hangs off the same object, so there is exactly one place
+    // where "the same spell" means the same thing on both sides of the boundary.
+    this.magic = new MagicSystem({
+      effects: this.data.magic.effects,
+      spells: this.data.magic.spells,
+      castClasses: this.data.magic['cast-classes'],
+      castClips: this.data.magic['cast-clips'],
+      enchanting: this.data.magic.enchanting,
+      vfx: this.data.magic.vfx,
+    });
+    this.combat.magic = this.magic;
+    this.sim.magic = this.magic;
+    if (loadout.willpower !== undefined) this.magic.setWillpower(loadout.willpower);
+    if (loadout.catalyst) this.magic.setCatalyst(loadout.catalyst);
+    if (loadout.attuned) this.magic.setAttuned(loadout.attuned);
     const b = this.combat.createPlayer(loadout);
     // The combat body is the AUTHORITY and `sim.player` is a view (sim/combat-bridge.js). A
     // scripted route therefore has to write the body, not the view, or `mirror()` undoes it on
@@ -2264,7 +2284,7 @@ async function loadData(onBytes) {
     return JSON.parse(text);
   };
   const index = await fetchJson('index.json');
-  const out = { index, enemies: {}, npcs: {}, interiors: {}, settlements: {}, states: {}, topics: {}, quests: {}, books: {}, items: {}, combat: {}, movesets: {}, weapons: {}, weaponMovesets: {} };
+  const out = { index, enemies: {}, npcs: {}, interiors: {}, settlements: {}, states: {}, topics: {}, quests: {}, books: {}, items: {}, combat: {}, movesets: {}, weapons: {}, weaponMovesets: {}, spellMovesets: {} };
   const bucketFor = (path) => {
     if (path.startsWith('combat/enemies/')) return 'enemies';
     if (path.startsWith('npcs/')) return 'npcs';
@@ -2295,12 +2315,17 @@ async function loadData(onBytes) {
     else if (entry.path === 'camera/cells.json') out.cameraCells = doc;
     else if (entry.path === 'camera/rig.json') out.cameraRig = doc;
     else if (entry.path === 'camera/targets.json') out.cameraTargets = doc;
+    else if (entry.path.startsWith('magic/')) {
+      out.magic = out.magic || {};
+      out.magic[entry.path.slice('magic/'.length).replace(/\.json$/, '')] = doc;
+    }
     else if (entry.path === 'save-manifest.json') out.saveManifest = doc;
     else if (entry.path === 'combat/input.json') out.input = doc;
     // W1-09's seven class-spine files (loaded as `movesets` by system.js / moves.js) live under
     // combat/spine/. W1-10's 87 per-weapon movesets own combat/movesets/ and validate against
     // corpus/12-weapons/moveset.schema.json, which the spine files predate and do not.
     else if (entry.path.startsWith('combat/spine/')) out.movesets[doc.id] = doc;
+    else if (entry.path.startsWith('combat/movesets/') && doc.spell_id) out.spellMovesets[doc.spell_id] = doc;
     else if (entry.path.startsWith('combat/movesets/')) out.weaponMovesets[doc.weapon_id] = doc;
     else if (entry.path.startsWith('weapons/')) out.weapons[entry.path.slice('weapons/'.length).replace(/\.json$/, '')] = doc;
     else if (entry.path.startsWith('combat/')) out.combat[entry.path.slice('combat/'.length).replace(/\.json$/, '')] = doc;

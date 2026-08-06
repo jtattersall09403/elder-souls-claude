@@ -85,6 +85,19 @@ export function makeRecord(sim, input, bus, opts, perf) {
       equip_load_pct: r2(p.equipLoadPct),
       roll_class: p.rollClass,
       hitboxes: opts.hitboxes === false ? [] : p.hitboxes.map(cloneHitbox),
+      // ---- seam S19, RI-MAG01's harness amendment 2 -------------------------------------
+      // `focus_locked` is true everywhere but a HEARTH: RI-MAG01 §A rules that Focus is
+      // refilled ONLY by a rest and a respawn, and M3 asserts monotonic non-increase across a
+      // 20-minute trace. Emitting the flag every frame is what makes that assertion cheap.
+      focus: p.focus === undefined ? null : r4(p.focus),
+      focus_max: p.focusMax === undefined ? null : p.focusMax,
+      focus_locked: p.focusLocked === undefined ? null : p.focusLocked,
+      attuned: p.attuned ? p.attuned.slice() : [],
+      cast: p.cast || null,
+      effects_active: p.effectsActive ? p.effectsActive.map((a) => ({ effect: a.effect, magnitude: r2(a.magnitude), remaining_f: a.remaining_f, source: a.source })) : [],
+      levitating: !!p.levitating,
+      airborne: !!p.airborne,
+      altitude_m: p.altitudeM === undefined ? 0 : r3(p.altitudeM),
     },
     // The `camera` channel. Every field below is named by a method in RI-CAM01..07; the
     // items say in as many words that without it "every check scores 0, fail-closed".
@@ -228,6 +241,16 @@ function cloneHitbox(h) {
     a: [r4(h.a[0]), r4(h.a[1]), r4(h.a[2])],
     b: [r4(h.b[0]), r4(h.b[1]), r4(h.b[2])],
     r: h.r, active_f: h.active_f, dmg: h.dmg, poise_dmg: h.poise_dmg, hits: h.hits.slice(),
+    // RI-MAG01 harness amendment 3: `kind` gains "projectile" and "volume", and the optional
+    // fields a critic needs to recompute a sweep or check AP-M2/AP-M3 offline. They are
+    // present only on spell geometry, so a weapon record is byte-identical to what W1-09 emits.
+    ...(h.spell === undefined ? {} : {
+      spell: h.spell, speed_mps: h.speed_mps, turn_rate_dps: h.turn_rate_dps,
+      travel_f: h.travel_f, ticks_every_f: h.ticks_every_f,
+      decal_spawn_f: h.decal_spawn_f, decal_r: h.decal_r,
+      prev_a: h.prev_a ? [r4(h.prev_a[0]), r4(h.prev_a[1]), r4(h.prev_a[2])] : undefined,
+      prev_b: h.prev_b ? [r4(h.prev_b[0]), r4(h.prev_b[1]), r4(h.prev_b[2])] : undefined,
+    }),
   };
 }
 

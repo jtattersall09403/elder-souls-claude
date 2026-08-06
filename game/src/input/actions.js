@@ -27,6 +27,12 @@ export const ACTIONS = [
   'light', 'heavy', 'roll', 'block', 'parry', 'sprint', 'jump',
   'use_item', 'interact', 'lock_on', 'two_hand', 'swap_right', 'swap_left', 'menu',
   'crouch',
+  // AM-W1-14-02 (HARNESS §4 amendment, requested verbatim by RI-MAG01 §C): ONE new verb.
+  // Casting itself reuses `light` and `heavy` with a catalyst equipped, exactly the Souls
+  // mapping; `spell_cycle` only rotates among ALREADY-ATTUNED spells and is free — 0 stamina,
+  // 0 focus, 6 f@60, cancellable. It exists so that nobody ever needs a spell WHEEL, which
+  // would be a menu that pauses the fight and would kill seam S14. Attuning is a HEARTH action.
+  'spell_cycle',
 ];
 
 /** action -> bit index. Held/pressed/released are bitmasks so the pipeline allocates nothing. */

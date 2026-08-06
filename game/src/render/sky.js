@@ -158,14 +158,30 @@ export class Sky {
     else this.sun.target.position.set(0, 0, 0);
     this.sun.target.updateMatrixWorld();
 
-    this.hemi.intensity = w.ambient * Math.max(0.10, day * 0.9 + 0.10);
-    this.hemi.color.copy(hor);
+    // ---- night ---------------------------------------------------------------------------------
+    // `RI-WLD04` M17 step 6: the sample is repeated at night and **night accuracy >= 70% is
+    // required** — "a region that is only identifiable in clear daylight is half-built". Measured
+    // on the shipped build, the thirteen regions scored **28.2%** at 01:00, with a mean
+    // inter-centroid distance of 15.25 against 99.51 by day: at `day = 0` the ambient term fell to
+    // 10% and the region's own fog hue was multiplied by 0.34, so every region rendered as the same
+    // near-black. Two changes, both of them art direction rather than exposure:
+    //
+    //   * the night ambient takes the REGION's hue instead of the sky horizon's, so what little
+    //     light there is carries region identity — a marsh under two moons is green-black, a salt
+    //     pan is blue-white, a kiln moor is ember-red;
+    //   * the floors rise (ambient 0.10 -> 0.30, fog 0.34 -> 0.62). Morrowind's nights are dark and
+    //     READABLE; a frame a judge cannot classify is not a dark frame, it is a missing frame.
+    const night = 1 - Math.max(0, Math.min(1, day * 2.2));
+    const regionNight = regionFog ? new THREE.Color(regionFog.colour) : hor.clone();
+    this.hemi.intensity = w.ambient * Math.max(0.30, day * 0.9 + 0.10);
+    this.hemi.color.copy(hor).lerp(regionNight, night * 0.85);
+    this.hemi.groundColor.setRGB(0.227, 0.208, 0.153).lerp(regionNight, night * 0.55);
 
     if (regionFog) {
       // The region owns the hue and the extinction; the weather multiplies the extinction and
       // tints toward the sky, so "Blackwood in rain" is Blackwood, wetter — not generic rain.
       const rc = new THREE.Color(regionFog.colour);
-      this.scene.fog.color.copy(rc).lerp(hor, 0.34).multiplyScalar(lerp(0.34, 1.0, day));
+      this.scene.fog.color.copy(rc).lerp(hor, 0.34 * (1 - night * 0.7)).multiplyScalar(lerp(0.62, 1.0, day));
       this.scene.fog.density = regionFog.extinction * (1 + w.fogDensity / 0.0026 * 0.22);
     } else {
       this.scene.fog.density = w.fogDensity;

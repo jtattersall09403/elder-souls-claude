@@ -134,6 +134,8 @@ export class PlayerController {
         if (b.animFrame + 1 === m.resolution_frame) this._resolveParley(frame, ctx);
       } else if (m.kind === 'crit') {
         if (b.animFrame + 1 === m.damage_frame) this._critDamage(frame, ctx);
+      } else if (m.kind === 'cast') {
+        this._castTick(frame, input, ctx);
       }
       b.advance(frame);
     } else {
@@ -192,6 +194,22 @@ export class PlayerController {
       this._tryStart(bit, frame, input, ctx, { jumping: true });
       return;
     }
+    // RI-MAG01 §C: a cast is hard-committed through startup, through active, AND through the
+    // first ceil(0.60 × recovery) frames of recovery — HARSHER than RI-CMB02 §D's 0.45 for a
+    // weapon, deliberately, because the caster is already spending the fight at range with the
+    // spacing advantage and the recovery tail is what the range costs. After `hard_until` the
+    // ONLY thing that may interrupt it is a dodge. Nothing else, at any class, ever.
+    if (bit === BIT.roll && m.kind === 'cast' && nextFrame > m.hard_until) {
+      if (this.magic) this.magic.endCast();
+      this._tryStart(bit, frame, input, ctx, { cancelledFrom: m.id, atFrame: nextFrame });
+      return;
+    }
+    // A `RITUAL` aborts on ANY movement input (RI-MAG01 §B). This is one of the three abort
+    // causes that make "no recall out of a fight" true without a flag anywhere saying so.
+    if (m.kind === 'cast' && m.cast_class === 'RITUAL' && this.magic && this.magic.cast && this.magic.cast.abortable) {
+      const moving = Math.hypot(input.moveX, input.moveY) > 1e-6 || (pressed & (BIT.roll | BIT.sprint | BIT.jump));
+      if (moving) { this.magic.abortRitual(frame, 'movement'); b.endMove(); b.actionableAt = frame; return; }
+    }
     // heal has its own dodge-cancel window (RI-CMB08 §C)
     if (bit === BIT.roll && m.kind === 'heal' && nextFrame >= m.dodge_cancel_from) {
       this._tryStart(bit, frame, input, ctx, { cancelledFrom: 'heal' });
@@ -234,6 +252,15 @@ export class PlayerController {
       e.dir_deg = round2(dir.dirDeg); e.facing_deg = round2(b.yaw);
       e.iframes = m.iframes; e.total = m.total; e.stam_after = round1(b.stamina);
       if (opts && opts.cancelledFrom) e.cancelled_from = opts.cancelledFrom;
+      return;
+    }
+
+    // Seam S19 / RI-MAG01 §C: casting is the `light` button (quick cast) and the `heavy` button
+    // (the spell's heavy variant) WITH A CATALYST EQUIPPED IN THE RIGHT HAND — exactly the Souls
+    // mapping, and it needs no new verb. With no catalyst in hand these are a sword swing and
+    // nothing about the weapon path changes.
+    if ((bit === BIT.light || bit === BIT.heavy) && this.magic && this.magic.hasCatalyst) {
+      this._tryCast(bit, frame, input, ctx);
       return;
     }
 
@@ -340,6 +367,17 @@ export class PlayerController {
       return;
     }
 
+    // RI-MAG01 §C: the ONLY new verb magic asks for. It rotates among already-attuned spells,
+    // costs nothing, and exists so that nobody ever builds a spell wheel that pauses the fight.
+    if (bit === BIT.spell_cycle) {
+      if (!this.magic || this.magic.attuned.length < 2) { const e = emit(frame, 'INPUT_DROPPED'); e.button = 'spell_cycle'; e.reason = 'nothing_to_cycle'; return; }
+      const a = this.magic.attuned;
+      a.push(a.shift());
+      const e = emit(frame, 'SPELL_CYCLE');
+      e.spell = a[0]; e.attuned = a.slice(); e.stamina_cost = 0; e.focus_cost = 0;
+      return;
+    }
+
     if (bit === BIT.interact) {
       const m = b.moves.parley;
       const tgt = ctx.lockedBody || this._nearestParleyable(ctx);
@@ -372,6 +410,65 @@ export class PlayerController {
     e.total = 0; e.stance = b.twoHanded ? 'two_hand' : 'one_hand';
     e.weapon = b.moves._movesetId; e.shield = b.shieldId;
     this._derived.clear();
+  }
+
+  /**
+   * RI-MAG01 §B's drop rules and §D's charge rule, in the order they are written there.
+   * Every failure DROPS the input — no partial cast, no debt, no queue, and it does not fire
+   * later. That is RI-CMB01 rule 7's idiom and casting gets no exemption from it.
+   */
+  _tryCast(bit, frame, input, ctx) {
+    const b = this.b, M = this.magic, emit = ctx.emit;
+    const spellId = M.attuned[0];
+    if (!spellId) { const e = emit(frame, 'INPUT_DROPPED'); e.button = 'cast'; e.reason = 'nothing_attuned'; return; }
+    const reason = M.castDropReason(spellId, b.stamina);
+    if (reason) {
+      M.stats.drops++;
+      const e = emit(frame, 'INPUT_DROPPED');
+      e.button = 'cast'; e.reason = reason; e.spell = spellId;
+      if (reason === 'no_focus') { e.have = M.focus; e.need = M.costOf(M.spellOf(spellId)); }
+      if (reason === 'no_stamina') { e.have = round1(b.stamina); e.need = M.classes[M.spellOf(spellId).class].stamina; }
+      this.dropReason = reason;
+      return;
+    }
+    const m = M.moveFor(spellId);
+    b.begin(m, frame, { dirDeg: this._stickBearing(input, ctx) === null ? b.yaw : this._stickBearing(input, ctx) });
+    // BOTH resources, on frame 1. Stamina goes through the same `spend()` every swing uses, so
+    // it re-arms RI-CMB03 §A's 42-frame regen delay — the assertion RI-MAG01 M2 exists for, and
+    // the single thing that stops "cast, roll, cast" being the correct play forever.
+    if (m.stamina) b.spend(m.stamina, frame, this.d);
+    const cast = M.beginCast(frame, spellId, b.yaw, 0);
+    const e = emit(frame, 'ACTION_START');
+    e.mv = 'CAST'; e.tag = 'cast'; e.spell = spellId; e.cast_class = m.cast_class;
+    e.startup = m.startup; e.active = m.active; e.recovery = m.recovery; e.total = m.total;
+    e.Ps = m.startup + 1; e.tc = m.tc_frame; e.hard_until = m.hard_until;
+    e.focus_spent = cast.focusSpent; e.focus_after = M.focus;
+    e.stam_after = round1(b.stamina);
+    if (m.hyperarmour_window) e.ha_window = m.hyperarmour_window;
+  }
+
+  /** One frame of a committed cast: aim until Tc, release on startup+1, nothing else. */
+  _castTick(frame, input, ctx) {
+    const b = this.b, m = b.move, M = this.magic;
+    if (!M || !M.cast) return;
+    const nf = b.animFrame + 1;
+    if (nf <= m.tc_frame) {
+      // Before Tc the aim may move, capped at 120 deg/s with a 100 deg budget — the IDENTICAL
+      // ceiling RI-AI02 §C gives a boss's standard move. The player must predict a rolling boss
+      // exactly as the boss must predict a rolling player.
+      const want = ctx.lockedBody
+        ? bearingDeg(ctx.lockedBody.pos[0] - b.pos[0], ctx.lockedBody.pos[2] - b.pos[2])
+        : ctx.cameraYawDeg;
+      M.updateAim(nf, want);
+      b.yaw = M.cast.aimYaw;
+    } else if (!M.cast.latched) {
+      M.cast.latched = true;
+    }
+    if (nf === m.startup + 1 && !M.cast.released) {
+      const socket = [b.pos[0], b.pos[1] + 1.30, b.pos[2]];
+      M.release(frame, socket);
+    }
+    if (nf >= m.total) M.endCast();
   }
 
   _afford(m, frame, name, emit) {
