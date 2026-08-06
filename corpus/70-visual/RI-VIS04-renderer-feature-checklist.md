@@ -212,8 +212,17 @@ that fires · **MIN BAR** = the minimum acceptable configuration.
 - **TELL:** a flat blue/green semi-transparent plane. The same colour and brightness
   everywhere. No reflection of the sky, the trees, or the moon. A hard geometric line where
   the water plane intersects the terrain. No motion, or a single sine-wave vertex wobble.
-  This is our most likely and most damaging single failure because Black Marsh is *made of
-  standing water*.
+  This is our most likely and most damaging single failure **in the regions that have water** —
+  the Rootlands, the Deep Marshes, Thornmarsh, Blackwood and the two coasts.
+  ~~because Black Marsh is *made of standing water*.~~
+  *(AMENDED wave 0 (rebase-s22), ARBITRATION seam **S24**: Black Marsh is the name, not the
+  terrain. `RI-WLD10` §7 has five regions with a tide and eight without, and the Clay Moor with
+  no standing water at all. Water fidelity is still the highest-stakes single feature, because
+  the starting region is a fen and it is the first thing anyone sees — but a capture from Valus
+  Ridge, the Stone Wastes, the Stone Forest, the Clay Moor or the Salt Hills has no water plane
+  to judge, and M12 must be reported as `N/A — region has no water` there rather than scored 0
+  or quietly skipped. **Two seas, Topal Bay and the Padomaic, must not share one water
+  material.**)*
 - **DETECT:** M12, all five sub-metrics. `FresnelDelta < 0.02` and `ReflCorr < 0.15` together
   are conclusive.
 - **METRIC:** M12 (all), M8 `LargestFlat` (a water plane is usually the largest flat region).
@@ -397,8 +406,13 @@ sky nominally-as-a-colour), `cap = 3` (no tonemapping, water is a plane), `FEATU
   creates a flat region that fires M8. Guard: a repo-wide grep is part of §14's cross-check,
   and a shipped `MeshBasicMaterial` on anything other than UI or a debug gizmo is a defect.
 - **The foliage compromise.** Crossed quads are cheap and instancing is work, so foliage
-  stays as quads "for now" through five waves. Black Marsh is 70% vegetation; this is the
-  feature most likely to be permanently deferred and most damaging when it is.
+  stays as quads "for now" through five waves. ~~Black Marsh is 70% vegetation~~ **the vegetated
+  regions are dense enough that this is the feature most likely to be permanently deferred and
+  most damaging when it is** — and the *arid* regions punish the opposite failure, since a
+  quad-billboard reads worst of all against open sky with nothing to hide behind.
+  *(AMENDED wave 0 (rebase-s22), S24: "70% vegetation" is a province-wide claim the map does not
+  support — the Stone Wastes, the Clay Moor and the Salt Hills are not vegetated, and the Stone
+  Forest's growth is petrified. Per-region foliage density belongs to `regions.json`.)*
 - **Water deferred because it's hard.** Planar reflections need a second render pass and
   someone will decide that's a week-four problem. The starting region is a fen. The very
   first screenshot anyone ever sees of this game will be mostly water.

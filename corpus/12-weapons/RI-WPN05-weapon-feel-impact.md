@@ -43,24 +43,33 @@ stagger and poise, and RI-CMB04 owns whether the hit happened at all.
 
 ### A. `ES-HITSTOP/1` — attacker hitstop frames, by weight tier × material
 
-At 60 Hz. **Attacker hitstop** freezes the attacking character's animation clock; **victim
-hitstop** freezes the victim's. Both are frame counts, both are integers, and neither is a
-time in seconds.
+At 60 Hz — all cells `f@60`. **Attacker hitstop** freezes the attacking character's animation
+clock; **victim hitstop** freezes the victim's. Both are frame counts, both are integers, and
+neither is a time in seconds.
 
-| Weight tier | Classes | flesh | chitin | stone | metal | shield | wood | water |
-|---|---|---|---|---|---|---|---|---|
-| light | DGR FST CSW TSW SSW | **2** | 3 | 5 | 4 | 4 | 2 | 1 |
-| medium | SPR AXE MCE WHP HLB | **4** | 5 | 8 | 6 | 7 | 3 | 1 |
-| heavy | GSW CGS GHM | **6** | 8 | 11 | 9 | 10 | 5 | 2 |
-| ultra | UGS | **8** | 10 | 14 | 12 | 13 | 6 | 2 |
-| ranged | BOW | **1** | 2 | 3 | 2 | 3 | 1 | 1 |
+> **REBASED — AMENDED wave 0 (rebase-s22), ARBITRATION seam S22.** Hitstop is **slot frame
+> data** and S22 names `RI-WPN01`–`RI-WPN06` wholesale, so both grids are **doubled**. The
+> reasoning is the same as for the attack tables: these counts were authored *beside* an
+> animation table that was itself half its intended wall-clock length, and a hitstop that stays
+> at 2 f while the swing it punctuates goes from 21 f to 42 f is proportionally halved — the
+> impact would read as a stutter rather than a stop. At the rebased values the light row is
+> 4 f@60 = 67 ms and the ultra row is 16 f@60 = 267 ms, which is the range real Souls impacts
+> occupy. **Knockback distances (metres) and every §B material multiplier are unchanged.**
+
+| Weight tier | Classes | flesh | chitin | stone | metal | shield | wood | water | **Was (flesh…water)** |
+|---|---|---|---|---|---|---|---|---|---|
+| light | DGR FST CSW TSW SSW | **4** | 6 | 10 | 8 | 8 | 4 | 2 | ~~2/3/5/4/4/2/1~~ |
+| medium | SPR AXE MCE WHP HLB | **8** | 10 | 16 | 12 | 14 | 6 | 2 | ~~4/5/8/6/7/3/1~~ |
+| heavy | GSW CGS GHM | **12** | 16 | 22 | 18 | 20 | 10 | 4 | ~~6/8/11/9/10/5/2~~ |
+| ultra | UGS | **16** | 20 | 28 | 24 | 26 | 12 | 4 | ~~8/10/14/12/13/6/2~~ |
+| ranged | BOW | **2** | 4 | 6 | 4 | 6 | 2 | 2 | ~~1/2/3/2/3/1/1~~ |
 
 Victim hitstop:
 
 | Material | Victim hitstop | Reading |
 |---|---|---|
-| flesh, wood | attacker + 2 | The target absorbs it — it flinches harder than you do |
-| chitin | attacker + 1 | |
+| flesh, wood | attacker + **4** ~~+ 2~~ | The target absorbs it — it flinches harder than you do |
+| chitin | attacker + **2** ~~+ 1~~ | |
 | water | 0 | Nothing to freeze |
 | **stone, metal, shield** | **0** | **The target does not move. You do.** This asymmetry is what a bounce *is*: the attacker eats every frame of the stop and the target is unmoved. It is the whole reason the stone row has the largest numbers. |
 
@@ -75,7 +84,7 @@ Knockback applied to the victim on a non-staggering hit, along the attack's forw
 
 **Deflection.** A non-blunt attack (`shape ∉ {smash}`) landing on `stone` with
 `poise_damage < 30` produces a `deflect` event instead of a hit: **zero damage**, attacker
-hitstop ×1.5 (rounded up), **+8 f appended to the attacker's recovery**, a spark decal, and
+hitstop ×1.5 (rounded up), **+16 f@60** ~~+8 f~~ **appended to the attacker's recovery**, a spark decal, and
 no victim reaction at all. `MCE` and `GHM` bypass deflection entirely, which is the mechanical
 reason those classes exist (RI-WPN02 §C). Deflection is deterministic — it is a function of
 `shape`, `poise_damage` and the target's material, with no random component anywhere
@@ -113,10 +122,10 @@ encounter.
 
 | Channel | Rule | Owner |
 |---|---|---|
-| Camera shake | A decaying impulse on the **spring arm**, never on the world: amplitude `0.25° × tier_index` (light 1 … ultra 4), decay over `hitstop + 4` frames, zero net rotation | RI-CAM06 is authoritative; this item only requests the magnitude |
+| Camera shake | A decaying impulse on the **spring arm**, never on the world: amplitude `0.25° × tier_index` (light 1 … ultra 4) *(degrees — unchanged)*, decay over **`hitstop + 8`** ~~`hitstop + 4`~~ frames, zero net rotation | RI-CAM06 is authoritative; this item only requests the magnitude |
 | Decal | Per material: blood spray (flesh), chip (chitin), spark + dust (stone/metal/shield), splinter (wood), splash (water). One decal per hit, never per active frame | this item |
 | VFX | Impact burst scaled to `poise_damage`, not to damage | this item |
-| Weapon trail | Present during active frames, persisting **6 f** past the last active frame | this item |
+| Weapon trail | Present during active frames, persisting **12 f@60** ~~6 f~~ past the last active frame | this item |
 | Audio | Per (tier × material) sample bank | **RI-AUD01** — deferred, and this item scores 0 on any audio claim |
 | Damage number | **None.** No floating combat text, ever | RI-UI (AR-2: this is a Souls fight, not an ARPG) |
 
@@ -135,9 +144,9 @@ landing a hit becomes safer than missing one.
 
 | Property | Requirement |
 |---|---|
-| Hitstop on whiff | **0 frames**, always |
+| Hitstop on whiff | **0 frames**, always *(zero is unit-invariant)* |
 | Camera shake on whiff | none |
-| Weapon trail on whiff | present, persisting 6 f past active — the trail is how you see what you missed with |
+| Weapon trail on whiff | present, persisting **12 f@60** ~~6 f~~ past active — the trail is how you see what you missed with |
 | Follow-through | the tip continues along the swing arc for ≥20% of recovery frames before reversing (§E) |
 | Recovery on whiff | exactly the `recovery_f` in RI-WPN02 §B / RI-WPN04 §A, unchanged |
 | Stamina on whiff | full cost, deducted on frame 1 (RI-CMB02 §D.6) |
@@ -178,7 +187,7 @@ ILS = correctly recovered cells / 35
 | **`attacker_hitstop == 0` on every cell** | **HARD FAIL** | Hitstop was never built. `ILS` is undefined and reports as 0. |
 
 Supporting requirement: within each tier row of §A, the span `max − min` of attacker hitstop
-must be ≥ 4 f for medium, heavy and ultra, and attacker hitstop must be **monotone
+must be **≥ 8 f@60** ~~≥ 4 f~~ for medium, heavy and ultra, and attacker hitstop must be **monotone
 non-decreasing** down the tier column for every material. Those two constraints are what make
 `ILS` achievable without inventing separate feedback channels.
 
@@ -208,10 +217,10 @@ and read damage.
 
 **M3 — Deflection.** Land TSW (thrust, `poise_damage` 12), SSW (slash, 22) and MCE (strike,
 32) on `stone`.
-- **PASS** if TSW and SSW deflect (zero damage, +8 f recovery, `deflect` event) and MCE does
+- **PASS** if TSW and SSW deflect (zero damage, **+16 f@60** recovery, `deflect` event) and MCE does
   not.
 - **FAIL** if deflection is probabilistic in any way.
-- **FAIL** if the deflect's added recovery is not exactly 8 f.
+- **FAIL** if the deflect's added recovery is not exactly **16 f@60** ~~8 f~~.
 
 **M4 — Whiff arithmetic.** For each of the 15 classes: land one `r1.1` on a flesh dummy, then
 throw the identical input at empty air.
@@ -235,7 +244,9 @@ labels; classify by nearest neighbour in the normalised triple space; compute `I
 - Apply §F thresholds. **HARD FAIL** on `ILS < 0.40`.
 - Then repeat as a **blind human-equivalent test**: present the critic with 10 unlabelled
   8-frame image sequences captured at the moment of impact (`screenshot()` at
-  `hit_frame + k`, k ∈ [0,7]) and ask it to name the material and the weapon weight. Record
+  `hit_frame + 2k`, k ∈ [0,7] — **AMENDED wave 0 (rebase-s22): every-other-frame sampling, so
+  the 8-image window still spans a whole rebased hitstop**) and ask it to name the material and
+  the weapon weight. Record
   the blind accuracy separately; if the nearest-neighbour `ILS` passes and the blind test
   fails, the feedback is legible to a classifier and not to a player, and the blind result
   wins.
@@ -255,7 +266,7 @@ labels; classify by nearest neighbour in the normalised triple space; compute `I
    stall heuristic in M1 is a fallback, not a substitute.
 2. **`player.weapon_tip: [x,y,z]`** — the tip bone's world position, per frame. §E cannot be
    measured any other way, and reconstructing it from the hitbox capsule's `b` endpoint is
-   only valid while the hitbox is active (10 of 60 frames).
+   only valid while the hitbox is active (**20 of 120 f@60** ~~10 of 60~~).
 3. **`impact` event type** in the `events[]` vocabulary:
    `{"f":221,"type":"impact","material":"chitin","tier":"heavy","hitstop_f":8,"knockback_m":0.25,"deflect":false,"decal":"chip"}`.
    The existing `hit` event carries no material and no feedback data.
@@ -272,7 +283,7 @@ labels; classify by nearest neighbour in the normalised triple space; compute `I
 |---|---|---|
 | M1 hitstop census | 25 | All 35 attacker cells and 35 victim cells exact |
 | M2 material multipliers | 15 | All 18 cells exact; every statblock has a material; zero variance |
-| M3 deflection | 10 | Deterministic, correct bypass, exactly +8 f |
+| M3 deflection | 10 | Deterministic, correct bypass, exactly **+16 f@60** |
 | M4 whiff arithmetic | 15 | `hit − whiff == hitstop` for all 15 classes |
 | M5 mass census | 20 | Every class inside its §E bands; no piecewise-linear tip curves |
 | M6 `ILS` | 15 | `ILS ≥ 0.80` and the blind test agrees |
@@ -315,7 +326,8 @@ records the pick before the reveal.
    contact frame at constant speed, HP drops, and the weapon passes through the target like
    it is passing through fog. This is the whole of G5 and it is a hard fail here.
 2. **Hitstop as `setTimeout(80)`.** Built, felt, and frame-rate coupled. At 144 Hz it is
-   twelve frames; at 30 Hz it is two. Every number in §A becomes unmeasurable, and it will be
+   twelve frames; at 30 Hz it is two. *(And the sibling failure S22 caught: a frame count with
+   no framerate written next to it.)* Every number in §A becomes unmeasurable, and it will be
    defended on the grounds that it "feels right on my machine".
 3. **One hitstop value for everything.** `HITSTOP_FRAMES = 4`. Cheap, better than nothing,
    and it makes a dagger and an ultra greatsword feel identical at the exact moment the
@@ -359,7 +371,10 @@ deflection rule, anticipation fraction and threshold in §A–§F is **defined f
 Unlike frame data, feel numbers have no community measurement tradition to lean on: there is
 no published hitstop table for any FromSoftware title, and the values here are set by the
 internal logic of the tables (monotone in tier, spanning ≥4 f per row so `ILS` is achievable)
-rather than by observation. A future wave that measures real hitstop from video frame analysis
+rather than by observation. **AMENDED wave 0 (rebase-s22): §A's two grids and §C/§D's trail,
+shake and deflect frames are doubled under seam S22; the material multipliers, knockback metres
+and every §E ratio are untouched, because none of them is a frame count.** A future wave that
+measures real hitstop from video frame analysis
 should overwrite §A and this note should be updated to `derived`.
 
 Grounding is `canonical-recall`, confidence **medium**, of the following observed properties

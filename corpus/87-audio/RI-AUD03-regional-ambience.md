@@ -14,7 +14,10 @@ blind_pair: yes
 > RI-VIS05, done with the eyes shut. Souls has no authority here. A Souls-style approach to
 > ambience (near-total silence outside boss arenas, so that the world reads as a mausoleum)
 > would be **AR-2 leakage** — a Souls convention contaminating the world — and is a fail.
-> Black Marsh is *loud*. It is a swamp full of animals.
+> Black Marsh is *loud* — **where it is loud.** The wetlands are full of animals; Valus Ridge is
+> wind and rockfall and hackwing screams; the Deep Marshes' identity is partly that there is
+> *nothing* calling. **Absence is a layer (§A R1), and silence in a dry region is a design
+> statement, not a Souls-style mausoleum.** *(AMENDED wave 0 (rebase-s22), seam S24.)*
 
 ## The bar
 
@@ -22,7 +25,18 @@ Morrowind's regions were identifiable before you looked up. The Ashlands' wind, 
 Coast's frogs and dripping, the Ascadian Isles' birds, the West Gash's dry rustle — each was a
 different *place* rather than a different volume of the same place. That is the property being
 transposed, and it is stricter than it sounds: it means the ambience is not "a swamp loop",
-because Black Marsh is thirteen regions and twelve of them are swamps.
+because **Black Marsh is thirteen regions and most of them are not swamps at all.**
+~~and twelve of them are swamps~~
+
+> **AMENDED wave 0 (rebase-s22), ARBITRATION seam **S24**.** The struck clause was the one
+> globally-swampy sentence in an item whose own §B table is *exemplary* on this point — it quotes
+> `regions.json` verbatim for all thirteen and has wind-through-rock-flutes on Valus Ridge, salt
+> rime on the Salt Hills and kiln-crack on the Clay Moor. The sentence and the table disagreed,
+> and the table is right: `RI-WLD10` §7 records **five regions with a tide and eight without**,
+> two with no standing water at all. The bar the sentence was reaching for is unchanged and is
+> if anything easier to state correctly — **thirteen regions, thirteen base drones, and a
+> listener who cannot tell a mountain from a mire has been given one ambience with the reverb
+> changed.**
 
 The bar is a blind test that mirrors RI-VIS07 exactly. **Twenty seconds of ambience, no label,
 no music, no footsteps: name the region.** If a listener cannot separate Blackwood from the

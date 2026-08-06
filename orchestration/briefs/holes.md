@@ -66,7 +66,19 @@ against `corpus/60-lore/data/blackmarsh-canon.json` (which now holds 194 real pl
 
 ## The one to get right
 
-**`world.water.marsh`.** Our entire world is standing water, and there is currently no bar for what
+> **CORRECTED wave 0 (rebase-s22), ARBITRATION seam **S24**.** ~~"Our entire world is standing
+> water"~~ **is false and was an orchestrator misstatement.** Black Marsh is the *name*, not the
+> terrain: `corpus/50-world/black-marsh-map-source.jpg` and `corpus/50-world/regions.json` define
+> **thirteen** regions — mountains at Valus Ridge, the arid Stone Wastes, Blackwood jungle, the
+> petrified Stone Forest, the dry Clay Moor, the red Crimson Coast, the two Rootlands, the Hive,
+> the Deep Marshes, Marauder's Coast, the Salt Hills, and two different seas. `RI-WLD10` §7 (the
+> item this brief commissioned, which caught the error itself) records **five regions with a tide
+> and eight without**, and two with a water-class index of exactly **0.00**. Water is a property
+> of *some* regions. Any agent reading this brief must treat the sentence below as scoped to the
+> wetland regions.
+
+**`world.water.marsh`.** ~~Our entire world is standing water~~ **Several of our thirteen regions
+are wetland — and several emphatically are not** — and there is currently no bar for what
 water *is* — how deep it gets, what wading does to movement and stamina, whether you can fight in
 it, whether it hides you, what swimming costs, how tides change routes (RI-TRV01 already has a
 high-tide-only barge run and a walking tideway that is its inverse), and what it looks like. Give

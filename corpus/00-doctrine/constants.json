@@ -215,7 +215,7 @@
       "value": 60,
       "unit": "Hz",
       "owner": "RI-CMB02",
-      "note": "Every frame count in the corpus is at 60 fps (ARBITRATION section 1, I-frame accounting).",
+      "note": "Every frame count in the corpus is at 60 fps (ARBITRATION section 1, I-frame accounting). AMENDED wave 0 (rebase-s22): under seam S22 every frame figure must also SAY SO - write f@60. A bare frame count is now a defect, because the corpus already lost a factor of two to one that was copied across a 30 Hz/60 Hz boundary.",
       "consumers": [
         "all combat.* items",
         "RI-WPN01..06",
@@ -227,13 +227,87 @@
     {
       "id": "combat.min_startup_frames",
       "value": 6,
-      "unit": "frames",
+      "unit": "frames @60 Hz (f@60) = 100 ms",
       "owner": "RI-CMB02",
-      "note": "Section E floor on any player attack. Amended wave 0 to state that section C's contextual multipliers CLAMP to it rather than pass through it - see CORPUS-COHERENCE-01 section 4.",
+      "note": "Section E floor on any player attack. Amended wave 0 to state that section C's contextual multipliers CLAMP to it rather than pass through it - see CORPUS-COHERENCE-01 section 4. AMENDED wave 0 (rebase-s22): DELIBERATELY NOT REBASED under seam S22. It is a human reaction-time bar with its wall-clock value stated in the row itself, not a Souls tick count, and reaction time did not change when the animation tables were corrected. Consequence: with the base rows doubled the floor no longer binds any class - the smallest contextual product is now DGR roll.r1 at 7 f@60 - so DGR and FST keep the contextual speed advantage the clamp used to confiscate. The clamp stays as a guard.",
       "consumers": [
         "RI-WPN01",
         "RI-WPN04",
         "RI-MAG01"
+      ]
+    },
+    {
+      "id": "world.water_band_boundaries_m",
+      "value": [
+        0.2,
+        0.5,
+        0.95,
+        1.4
+      ],
+      "unit": "m of water above the ground plane, at the character's foot position",
+      "owner": "RI-WLD10",
+      "owner_file": "corpus/50-world/RI-WLD10-the-water-model.md",
+      "note": "The four boundaries of ES-WATER/1's six bands: W1 FILM / W2 SHIN / W3 WADE / W4 DEEP / W5 SWIM. Placed on anatomical landmarks (ankle, knee, hip, chest) for a 1.80 m reference body, because the player's only depth readout is their own silhouette (seam S18). Band hysteresis 0.03 m.",
+      "consumers": [
+        "RI-WLD10 sections 1-6",
+        "RI-WLD11 (hazard depth gates)",
+        "RI-TRV01 (tideway passability)",
+        "RI-WLD07 (Drowned Xanmeer tide gate)"
+      ]
+    },
+    {
+      "id": "world.tide_mean_range_m",
+      "value": 1.2,
+      "unit": "m peak-to-trough at the Padomaic reference coast",
+      "owner": "RI-WLD10",
+      "note": "Spring x1.35, neap x0.65 (moon phases owned by RI-WLD08). Topal Bay x0.55 = 0.66 m mean. EXACTLY ZERO outside the five tidal regions. Tuned so a tide moves the shoreline two to three whole bands - see world.water_band_boundaries_m.",
+      "also_fixed_by": "RI-WLD08 owns the 12-real-minute four-state cycle; this constant is the amplitude only",
+      "consumers": [
+        "RI-TRV01 (the tideway inversion)",
+        "RI-WLD07 (Drowned Xanmeer)",
+        "RI-WLD08",
+        "RI-WLD11"
+      ]
+    },
+    {
+      "id": "world.water_coverage_index",
+      "value": 0.294,
+      "band": [
+        0.22,
+        0.42
+      ],
+      "unit": "area-weighted fraction of walkable surface at >= W1 at mean tide",
+      "owner": "RI-WLD10",
+      "derivation": "Sum over the 13 regions.json regions of area_km2 x per-region WCI, divided by 14.52 km^2. Computed by corpus/80-methods/m-wld10-water-census.mjs.",
+      "note": "THE S24 NUMBER. Below 0.22 this is not a marsh; above 0.42 the world is a puddle. Accompanied by the harder bars: spread >= 0.55, >= 4 regions at WCI <= 0.05, >= 2 at exactly 0.00, <= 3 at >= 0.60.",
+      "consumers": [
+        "RI-WLD04 (region identity)",
+        "RI-WLD07 (elevation census cross-check)",
+        "RI-WLD11"
+      ]
+    },
+    {
+      "id": "world.breath_base_s",
+      "value": 40,
+      "unit": "seconds of breath at Endurance 10",
+      "owner": "RI-WLD10",
+      "note": "+2.0 s per point of Endurance above 10, capped at 100 s. Endurance 20 -> 60 s. Drowning costs 2% of max HP per second so it is not a stat check. Infinite for the amphibious races (RI-CHR02).",
+      "consumers": [
+        "RI-CHR02 (amphibious clause)",
+        "RI-WLD11",
+        "RI-MAG02 (water breathing effect duration comparison)"
+      ]
+    },
+    {
+      "id": "world.arena_max_water_band",
+      "value": "W2",
+      "unit": "deepest water band permitted inside a boss arena or scripted encounter volume, at ANY tide state",
+      "owner": "RI-WLD10",
+      "note": "Proposed seam S25. A Souls arena is a floor. Water may change where you fight and what it costs to be there; it may never change a frame number. At most 2 of the 8 loop dungeons may contain a W3+ traversal segment and none may contain a W3+ arena.",
+      "consumers": [
+        "RI-AI06 (boss arenas)",
+        "RI-AI07 (encounter volumes)",
+        "RI-WLD07 (loop dungeons)"
       ]
     },
     {
@@ -270,21 +344,34 @@
       "owner": "RI-CMB01",
       "note": "THE UNIT FINDING. Souls community frame counts - DS1, DS3 and Elden Ring alike - are quoted in 1/30-second ticks. A Souls figure of N frames is 2N of ours. Verified arithmetically: DS3's Carthus Bloodring raises i-frames 'from 12 (.4 sec) to 16 (.533 sec)', and 12/0.4s = 30 fps exactly (PROVENANCE-UPGRADE-02-SOULS section 0).",
       "conversion": "ours_frames = 2 x souls_ticks",
-      "open_design_question": "Our combat currently runs at ~2x Souls wall-clock speed because Souls tick counts were adopted as 60 Hz frame counts without rebasing. Every RATIO is preserved, so no internal check detects it. DECLARED but NOT REBASED by the wave-0 audit: rebasing is a design decision about how the game should feel, not a coherence repair. See CORPUS-COHERENCE-01.md section 9.",
+      "open_design_question": "RESOLVED wave 0 by ARBITRATION seam S22 / orchestrator ruling R1: REBASE. Applied wave 0 by task `rebase-s22`. Was: 'Our combat currently runs at ~2x Souls wall-clock speed because Souls tick counts were adopted as 60 Hz frame counts without rebasing.' Every frame figure in RI-CMB01, RI-CMB02, RI-CMB05, RI-CMB08, RI-AI02, RI-AI03, RI-WPN01-06 and RI-CAM04 is now doubled and states its unit as f@60. RI-CMB03 is deliberately excluded (its 42 f pause was derived from 0.70 s and was already correct). The RI-CMB07 exemplar trace is INVALIDATED and awaits regeneration. Full record: corpus/00-doctrine/REBASE-S22-REPORT.md.",
       "consumers": [
         "RI-CMB01",
         "RI-CMB02",
         "RI-CMB05",
         "RI-CMB08",
         "RI-CMB07 (exemplar trace)"
-      ]
+      ],
+      "status": "applied",
+      "unit_discipline": "S22: a frame count with no stated framerate is a DEFECT. Write f@60 for our frames and t@30 for a Souls community tick.",
+      "not_rebased": [
+        "RI-CMB03 42 f regen pause (0.70 s) - protected by S22 itself",
+        "RI-CMB02 min_startup_frames 6 f = 100 ms - human reaction-time bar, not an animation length",
+        "RI-CMB01 input/combo buffer 8 f = 133 ms - wall-clock allowance for human input error",
+        "RI-CMB05 poise regen delay 90 f = 1.500 s and rate 20/s",
+        "RI-AI02 absolute windup floor 12 f = 200 ms (its severity rows DID rebase)",
+        "RI-AI03 t_reach - locomotion time over unchanged distance at unchanged m/s",
+        "RI-CAM04 45 deg global yaw cap and all deg/s rates",
+        "every ratio, fraction, percentage, stamina cost, damage figure, metre and degree in the corpus"
+      ],
+      "known_open": "RI-CMB03 SS-D GUARD_BREAK (40 f, riposte f6-f34) is an animation length that S22's exclusion does not reason about; leaving it produces a stagger/guard-break inversion. Flagged in RI-CMB03, RI-CMB05 SS-D and REBASE-S22-REPORT.md SS-7. Doctrine owner's call."
     },
     {
       "id": "combat.equipload_tiers",
       "value": "30/70/100",
       "unit": "% of max equip load, 4 tiers",
       "owner": "RI-CMB01",
-      "note": "LIGHT <=30, MEDIUM <=70, HEAVY <=100, OVERLOADED/Immobilised >100. i-frames 13/11/5/0, roll distance 5.20/4.40/2.60/1.10 m, roll stamina 22/26/34/40. Ruled wave 0 over RI-PRG07's competing 5-tier 30/55/80/100 ladder: equip load changing roll type, distance and recovery is INSIDE THE FIGHT (ARBITRATION section 1) and combat.dodge.equipload is a combat path.",
+      "note": "LIGHT <=30, MEDIUM <=70, HEAVY <=100, OVERLOADED/Immobilised >100. i-frames 26/22/10/0 f@60, roll totals 52/60/88/120 f@60, roll distance 5.20/4.40/2.60/1.10 m, roll stamina 22/26/34/40. AMENDED wave 0 (rebase-s22): the i-frame counts were 13/11/5/0 and the totals 26/30/44/60 before seam S22 doubled them; the breakpoints, distances and stamina costs are unchanged, being neither frame data nor tick-derived. Ruled wave 0 over RI-PRG07's competing 5-tier 30/55/80/100 ladder: equip load changing roll type, distance and recovery is INSIDE THE FIGHT (ARBITRATION section 1) and combat.dodge.equipload is a combat path.",
       "consumers": [
         "RI-PRG07 (restates, does not set; keeps BURDEN and the fall-damage column)",
         "RI-CMB03",

@@ -46,63 +46,75 @@ at a Hist-stump (the rest-site / bonfire analogue owned by `corpus/20-progressio
 ### B. Heal curve
 
 Healing is a **percentage of maximum HP**, so a flask that mattered at level 20 still matters
-at level 80. It is applied as a **ramp over 31 frames**, not as a lump.
+at level 80. It is applied as a **ramp over 62 f@60**, not as a lump.
+*(AMENDED wave 0 (rebase-s22), seam S22: was 31 frames. The **percentages and HP totals are
+unchanged** — they are not frame data; only the number of frames the same total is spread over
+has doubled, which halves the per-frame column.)*
 
-| Flask level | Heal % of max HP | HP at 620 max (the RI-CMB07 exemplar build) | HP per frame over the 31-frame ramp |
+| Flask level | Heal % of max HP | HP at 620 max (the RI-CMB07 exemplar build) | HP per frame over the **62 f@60** ramp ~~31-frame~~ |
 |---|---|---|---|
-| +0 | **40.0%** | **248** | 8.00 |
-| +1 | 43.2% | 268 | 8.65 |
-| +2 | 46.4% | 288 | 9.29 |
-| +3 | 49.6% | 308 | 9.94 |
-| +4 | 52.8% | 327 | 10.55 |
-| +5 | 56.0% | 347 | 11.19 |
-| +6 | 59.2% | 367 | 11.84 |
-| +7 | 62.4% | 387 | 12.48 |
-| +8 | 65.6% | 407 | 13.13 |
-| +9 | 68.8% | 427 | 13.77 |
-| +10 | **72.0%** | **446** | 14.39 |
+| +0 | **40.0%** | **248** | **4.00** ~~8.00~~ |
+| +1 | 43.2% | 268 | **4.32** ~~8.65~~ |
+| +2 | 46.4% | 288 | **4.65** ~~9.29~~ |
+| +3 | 49.6% | 308 | **4.97** ~~9.94~~ |
+| +4 | 52.8% | 327 | **5.27** ~~10.55~~ |
+| +5 | 56.0% | 347 | **5.60** ~~11.19~~ |
+| +6 | 59.2% | 367 | **5.92** ~~11.84~~ |
+| +7 | 62.4% | 387 | **6.24** ~~12.48~~ |
+| +8 | 65.6% | 407 | **6.56** ~~13.13~~ |
+| +9 | 68.8% | 427 | **6.89** ~~13.77~~ |
+| +10 | **72.0%** | **446** | **7.19** ~~14.39~~ |
 
 `heal_pct = 0.400 + 0.032 × flask_level`. Overheal above max HP is discarded.
 
 ### C. Drink animation — the commitment contract (BINDING)
 
-Total **65 frames (1.083 s)** at 60 Hz, identical at every flask level, for every build,
-with every weapon, one- or two-handed, shield up or down.
+**REBASED — AMENDED wave 0 (rebase-s22), seam S22.** Total **130 f@60 (2.167 s)** ~~65 frames
+(1.083 s)~~ at 60 Hz, identical at every flask level, for every build, with every weapon, one-
+or two-handed, shield up or down.
 
-| Phase | Frames | What happens |
-|---|---|---|
-| `HEAL_STARTUP` | **1 – 21** | Flask raised. Charge is consumed **on frame 1**. No healing yet. |
-| `HEAL_ACTIVE` | **22 – 52** | Healing applied at `total_heal / 31` per frame. **31 frames.** |
-| `HEAL_RECOVER` | **53 – 65** | Flask lowered. No healing. |
+| Phase | Frames | **Was** | What happens |
+|---|---|---|---|
+| `HEAL_STARTUP` | **1 – 42** | ~~1 – 21~~ | Flask raised. Charge is consumed **on frame 1**. No healing yet. |
+| `HEAL_ACTIVE` | **43 – 104** | ~~22 – 52~~ | Healing applied at `total_heal / 62` per frame. **62 f@60.** |
+| `HEAL_RECOVER` | **105 – 130** | ~~53 – 65~~ | Flask lowered. No healing. |
 
 | Rule | Value |
 |---|---|
 | Charge consumed on | frame **1**, unconditionally, refunded **never** |
-| Cancellable by any input | frames 1–58: **no**. Frames 59–65: dodge only, no refund |
-| Movement during frames 1–52 | walk at **0.35×** base speed; no run, no sprint, no roll |
-| Turn rate during frames 1–52 | ≤ **90 °/s** |
+| Cancellable by any input | frames **1–116**: **no**. Frames **117–130**: dodge only, no refund ~~1–58 / 59–65~~ |
+| Movement during frames **1–104** | walk at **0.35×** base speed; no run, no sprint, no roll ~~1–52~~ |
+| Turn rate during frames **1–104** | ≤ **90 °/s** — a rate in degrees per second, **not rebased** ~~frames 1–52~~ |
 | Lock-on | retained; camera unaffected |
 | Poise / hyperarmour during the drink | **none** — the player has their normal poise pool and no hyperarmour window |
-| Stamina regeneration during the drink | the 42-frame delay **is** re-armed on frame 1, as for any action; regeneration then proceeds normally at 0.75/frame for the rest of the drink |
-| If interrupted on frames 1–21 | stagger per RI-CMB05 §B; **charge lost, 0 HP restored** |
-| If interrupted on frames 22–52 | stagger; **charge lost, HP restored so far is kept** |
-| If interrupted on frames 53–65 | stagger; heal was already complete |
+| Stamina regeneration during the drink | the **42 f@60** delay **is** re-armed on frame 1, as for any action; regeneration then proceeds normally at 0.75/frame for the rest of the drink. **Neither figure is rebased** — RI-CMB03 is scoped out of S22 |
+| If interrupted on frames **1–42** | stagger per RI-CMB05 §B; **charge lost, 0 HP restored** ~~1–21~~ |
+| If interrupted on frames **43–104** | stagger; **charge lost, HP restored so far is kept** ~~22–52~~ |
+| If interrupted on frames **105–130** | stagger; heal was already complete ~~53–65~~ |
 | Enemy `AVOID`/reposition AI during the player's drink | governed by RI-AI01; the enemy is **not** made passive |
 
-**`heal_secure_frames = 52`.** This is the derived number that makes healing computable: the
-player must be untouchable for 52 frames from the press to bank the full heal (frames 53–65
-are free to be interrupted). It is the figure to compare against RI-AI03's `P_safe`. An enemy
-move offering `P_safe ≥ 60` therefore affords a full heal with 8 frames of reaction slack —
-which is exactly why RI-AI03 requires every ELITE and BOSS to own at least one such move, and
-why that requirement and this number must be amended together.
+**`heal_secure_frames = 104 f@60`** ~~52~~ **— AMENDED wave 0 (rebase-s22).** This is the
+derived number that makes healing computable: the player must be untouchable for 104 frames
+from the press to bank the full heal (frames 105–130 are free to be interrupted). It is the
+figure to compare against RI-AI03's `P_safe`. An enemy move offering **`P_safe ≥ 120 f@60`**
+~~≥ 60~~ therefore affords a full heal with **16 frames** ~~8~~ of reaction slack — which is
+exactly why RI-AI03 requires every ELITE and BOSS to own at least one such move, and why that
+requirement and this number must be amended together. **They have been, in this sweep:**
+RI-AI03 §C's heal-window row now reads `P_safe ≥ 120 f@60`.
 
-**Worked, from the RI-CMB07 exemplar.** At frame 2860 the Hist-Marked Champion commits to
+~~**Worked, from the RI-CMB07 exemplar.** At frame 2860 the Hist-Marked Champion commits to
 `A5`, a 70-frame windup great slam with a 78-frame recovery. Its hitbox is live on 2930–2937.
-The player rolls at 2924 and drinks on **2952** — 14 frames into the recovery. `HEAL_ACTIVE`
-runs 2973–3003; the animation ends on 3016; the enemy's recovery ends on 3015. The player
-declined the punish and took the heal instead, and the trace records that decision as an
-unused punish window. That is the intended shape of the decision, and it is why row 27 of
-RI-CMB07 §D is 0.778 rather than 1.000.
+The player rolls at 2924 and drinks on 2952 — 14 frames into the recovery. `HEAL_ACTIVE`
+runs 2973–3003; the animation ends on 3016; the enemy's recovery ends on 3015.~~
+
+> **INVALIDATED — AMENDED wave 0 (rebase-s22).** Every frame index in that worked example comes
+> from the RI-CMB07 exemplar trace, which seam S22 invalidates. **Do not cite it.** The *shape*
+> of the decision it illustrated survives and is the thing a regenerated exemplar must
+> reproduce: the player declined a punish window to take a heal, which is why row 27 of
+> RI-CMB07 §D is 0.778 rather than 1.000. At the rebased numbers the enemy move it describes is
+> a **140 f@60 windup with a 156 f@60 recovery**, and `heal_secure_frames = 104` still fits
+> inside it — but the arithmetic must be re-run against a regenerated trace, not patched here.
+> See `RI-CMB07` §0 and `REBASE-S22-REPORT.md` §4.
 
 ### D. Rest sites (the healing half only)
 
@@ -131,8 +143,8 @@ On death: charges restored to maximum at the respawn point, with the rest of S6'
 | Buying flask charges, or any in-combat healing, with gold | ARBITRATION S15 — gold is the only currency, and it buys nothing that shortcuts a fight |
 | Healing spells with no animation commitment | Any in-fight heal obeys §C's contract or does not exist |
 | Flask charges as a difficulty setting | |
-| Enemies healing without the same commitment | An enemy that heals must use a ≥ 52-frame committed, interruptible animation and must lose the heal when interrupted |
-| Any speed-up ring, buff, or stat reducing the 65 frames | Frame counts are invariant (RI-CMB02 §D.7) |
+| Enemies healing without the same commitment | An enemy that heals must use a **≥ 104 f@60** ~~52-frame~~ committed, interruptible animation and must lose the heal when interrupted |
+| Any speed-up ring, buff, or stat reducing the **130 f@60** ~~65 frames~~ | Frame counts are invariant (RI-CMB02 §D.7) |
 
 **Proposed seam ruling ~~S16~~ — NUMBER WITHDRAWN, wave 0 (corpus-audit): S16 was taken by the
 dungeon census (8 loops / 82 caves) before this proposal was written. Same class of collision as
@@ -169,10 +181,10 @@ Harness: headless Node + Three.js, fixed 60 Hz, seeded, scripted inputs, emittin
 `es-combat-trace/1` (RI-CMB07) with `ESTUS_START` events and per-frame `p.hp`, `p.state`.
 
 **M1 — Animation census.** From full HP−300, drink once with the enemy disabled.
-- **FAIL** if total is not exactly **65** frames.
-- **FAIL** if `HEAL_STARTUP` is not frames 1–21, `HEAL_ACTIVE` not 22–52, `HEAL_RECOVER`
+- **FAIL** if total is not exactly **130 f@60** ~~65~~ frames.
+- **FAIL** if `HEAL_STARTUP` is not frames **1–42**, `HEAL_ACTIVE` not **43–104**, `HEAL_RECOVER`
   not 53–65.
-- **FAIL** if HP increases on any frame outside 22–52.
+- **FAIL** if HP increases on any frame outside **43–104**.
 - **FAIL** if HP increases as a single step rather than 31 approximately equal increments;
   require `max(Δhp) − min(Δhp) ≤ 1` across the ramp.
 - Repeat with a dagger, an ultra greatsword, two-handed, shield up, at `LIGHT` and at
@@ -198,10 +210,10 @@ again, item, two-hand} on every frame `k ∈ [1, 65]` of the drink, in separate 
 - **FAIL** if the count is not 5,4,3,2,1,0 read from `ESTUS_START.left`.
 - **FAIL** if the 6th input produces any animation at all (it must be dropped, not played
   with no effect).
-- Interrupt a drink on frame 10: **FAIL** unless the charge is gone and HP is unchanged.
-- Interrupt on frame 37: **FAIL** unless the charge is gone and HP gained is
-  `round(total × 16/31)` ±2 (frames 22–37 inclusive).
-- Interrupt on frame 60: **FAIL** unless the full heal was banked.
+- Interrupt a drink on frame **20**: **FAIL** unless the charge is gone and HP is unchanged.
+- Interrupt on frame **74**: **FAIL** unless the charge is gone and HP gained is
+  `round(total × 32/62)` ±2 (frames **43–74** inclusive). *(AMENDED wave 0 (rebase-s22).)*
+- Interrupt on frame **120**: **FAIL** unless the full heal was banked.
 
 **M5 — Refill and non-refill.** Rest at a Hist-stump: **FAIL** unless charges, HP and stamina
 are at maximum. Then, without resting, attempt every other refill vector the build offers —
@@ -220,7 +232,7 @@ alchemical healing item and to cast any healing spell.
   critic **files this as a finding against this item** and does not silently pass it.
 
 **M8 — Window arithmetic.** For every enemy in the roster (RI-AI05), compute
-`max(P_safe)` from RI-AI03's M2 and compare against `heal_secure_frames = 52`.
+`max(P_safe)` from RI-AI03's M2 and compare against `heal_secure_frames = 104 f@60`.
 - **FAIL** if any ELITE or BOSS has `max(P_safe) < 52` — that enemy is unhealable-against and
   the fight is a damage race by construction.
 - Report the list of moves per enemy that afford a full heal. This list is a design artifact
@@ -230,7 +242,7 @@ alchemical healing item and to cast any healing spell.
 
 | Check | Weight | Pass condition |
 |---|---|---|
-| M1 animation census | 20 | 65 f, three phases exact, 31-frame ramp, invariant across builds |
+| M1 animation census | 20 | **130 f@60**, three phases exact, **62 f@60** ramp, invariant across builds |
 | M2 heal curve | 10 | All 33 cells within ±1 HP; overheal discarded |
 | M3 commitment probe | 25 | No cancel ≤ 58, dodge-only after, no refund, movement clamped |
 | M4 charge accounting | 20 | Consumed on frame 1, partial heals exact, 6th drink dropped |
@@ -261,7 +273,7 @@ happening.
 
 1. **The instant heal.** `hp += 250; charges--` on button press. Zero frames, zero risk,
    zero decision. It is one line and it removes the second-most-important choice in the game.
-   M1 catches it, but the more dangerous version is the *nearly* instant heal — a 20-frame
+   M1 catches it, but the more dangerous version is the *nearly* instant heal — a 40-frame
    animation that feels responsive and is never a read.
 2. **Cancel-and-refund.** An input queue that treats the drink like any other animation, so
    pressing roll aborts it and the charge comes back. The player now drinks speculatively
@@ -307,24 +319,32 @@ happening.
 >    FromSoftware figures, which is why the Souls verification pass was cheap here; the point is
 >    now made explicitly about the heal curve.)
 >
-> **Also outstanding under seam S22 (rebase):** the drink animation frames are upstream-recalled
-> tick counts adopted as 60 Hz frames and must be doubled. Not applied by the audit — see
-> `CORPUS-COHERENCE-01.md` §12. Source: `PROVENANCE-UPGRADE-02-SOULS.md` §5.
+> ~~**Also outstanding under seam S22 (rebase):** the drink animation frames are
+> upstream-recalled tick counts adopted as 60 Hz frames and must be doubled. Not applied by the
+> audit — see `CORPUS-COHERENCE-01.md` §12.~~ Source: `PROVENANCE-UPGRADE-02-SOULS.md` §5.
+>
+> **CLOSED — AMENDED wave 0 (rebase-s22).** Applied: 65 f → **130 f@60**, phases 21/31/13 →
+> **42/62/26**, `heal_secure_frames` 52 → **104**. The design shape the provenance note
+> describes — *"a drink animation on the order of one second"* — was itself stated in the wrong
+> unit and is now **on the order of two seconds (2.167 s)**, which is what the recalled
+> upstream tick count actually meant. Nothing in the heal *curve* moved: percentages, HP totals
+> and charge counts are not frame data.
 
 `confidence: medium`, split by section.
 
 - **`canonical-recall`, confidence medium:** the design shape — a finite, rest-refilled
-  healing flask; a drink animation on the order of one second that cannot be aborted once
+  healing flask; a drink animation on the order of ~~one second~~ **two seconds** (S22,
+  rebase-s22) that cannot be aborted once
   committed; movement allowed but slowed during the drink; the charge spent regardless of
   outcome; upgradeable both in count and in potency; no passive regeneration anywhere in the
   game; healing as the primary read-the-enemy decision. No community frame data was consulted
   and none is cited. In particular, the real Estus Flask's frame data is **not** reproduced
-  here and 65 frames should not be attributed to it.
+  here and ~~65 frames~~ **130 f@60** should not be attributed to it.
 - **`constructed`, confidence high, and binding:** every number. The 5/15 charge counts, the
   +0…+10 flask levels and the `0.400 + 0.032 × level` curve, the 65-frame animation and its
   21/31/13 phase split, the frame-1 charge consumption, the 59–65 dodge-only tail, the 0.35×
   movement and 90 °/s turn clamps, the interruption rules, and all of §F.
-- **`derived`:** `heal_secure_frames = 52`, computed from §C's phase split. It is the number
+- **`derived`:** `heal_secure_frames = **104 f@60**` ~~52~~ *(AMENDED wave 0 (rebase-s22))*, computed from §C's phase split. It is the number
   that couples this item to RI-AI03's `P_safe ≥ 60` heal-window requirement and to RI-CMB07's
   punish-usage statistic. If §C's phases change, M8 and RI-AI03's §C table must both be
   revisited.

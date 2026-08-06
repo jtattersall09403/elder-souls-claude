@@ -60,7 +60,7 @@ static analyser validates against.
 | 13 | `jump.r1` | `light`, `AIRBORNE` + `descending` | null | **M** | RI-CMB02 §C: startup ×1.30, poise dmg ×1.80. |
 | 14 | `jump.r2` | `heavy`, `AIRBORNE` + `descending` | null | O | |
 | 15 | `plunge` | `light`\|`heavy`, `AIRBORNE`, fall height ≥ 3.0 m, target below | null | **M** | Shared between stances; one clip per weapon is sufficient. |
-| 16 | `guard.counter` | `light` within 20 f of `BLOCK_SUCCESS` | null | **M** | The shield's offensive verb. Answers TURTLE. RI-WPN06 §C. |
+| 16 | `guard.counter` | `light` within **40 f@60** ~~20 f~~ of `BLOCK_SUCCESS` | null | **M** | The shield's offensive verb. Answers TURTLE. RI-WPN06 §C. ⚠ `RI-CMB02` §C says 24 f@60 — pre-existing collision, rebased on both sides, flagged not resolved (`REBASE-S22-REPORT.md` §7). |
 | 17 | `guardbreak` | `light` + `forward` modifier, `IDLE` | null | **M** | Kick / shield-bash / thrust-through / shoulder. **The TURTLE answer RI-AI05 §7 demands ship in the kit.** |
 | 18 | `art.1` | `heavy` + `two_hand` held (see §D on the input) | null | **M** | Weapon art / skill. One per weapon minimum. |
 | 19 | `art.2` | as `art.1`, second charge | null | O | |
@@ -95,7 +95,7 @@ Every slot object MUST carry, at minimum:
 | `anim_owner` | weapon_id | Who owns the clip. `anim_owner == weapon_id` ⇒ this clip is unique to this weapon. |
 | `trigger` | `{button, modifier, state_window}` | Buttons drawn from HARNESS.md §4's closed set only. |
 | `chains_to` | slot id \| null | Explicit chain graph. A chain that is implicit in code is unmeasurable. |
-| `startup_f`, `active_f`, `recovery_f` | int | The frame contract. Tolerance ±0 f against the reference tables. |
+| `startup_f`, `active_f`, `recovery_f` | int | The frame contract, **`f@60`**. Tolerance ±0 f against the reference tables. **AMENDED wave 0 (rebase-s22): those tables (`RI-CMB02` §A/§B, `RI-WPN02` §B, `RI-WPN04` §A) are all rebased under seam S22; a moveset authored against the pre-rebase numbers is now wrong by a factor of two. Every frame field in a `moveset.json` must be read as 60 Hz — a bare frame count with no framerate is a defect (S22).** |
 | `charge_max_f` | int | Non-zero only on `r2.charged`, `2h.r2.charged`, `bow.aimed`. |
 | `stamina` | number | RI-CMB03 owns the economy; this is the per-slot draw. |
 | `motion_value` | number | RI-CMB02/RI-WPN02 own the values. |
@@ -130,7 +130,8 @@ Binding rules:
    whole risk/reward: you are committing to eat a hit in order to break something's poise.
 2. **Charge cannot be cancelled**, only released. A charge abandoned by releasing early
    still fires the attack. There is no "let go and go back to neutral".
-3. **`charge_max_f` is 1–30 frames**, per RI-CMB02 §C's `+1…+30 f charge` row, and the ramp
+3. **`charge_max_f` is 1–60 f@60** ~~1–30 frames~~ *(AMENDED wave 0 (rebase-s22))*, per
+   RI-CMB02 §C's rebased `+1…+60 f` charge row, and the ramp
    endpoints are ×1.30 motion value and ×1.50 poise damage, matching that row exactly.
 4. **Charging is the intended TURTLE answer alongside `guardbreak`** — RI-AI05 §7 requires
    the shield-enemy's answer to ship in the player's kit, and this is half of it.
@@ -147,8 +148,8 @@ a design freedom.
 |---|---|---|
 | `r1.*`, `run.r1`, `roll.r1`, `backstep.r1`, `jump.r1` | `light` + state | State disambiguates; the button never changes. |
 | `r2.*`, `run.r2`, `roll.r2`, `jump.r2` | `heavy` + state | |
-| `guardbreak` | `light` while `move` vector magnitude ≥ 0.9 forward **and** the last 8 frames had no `light` press | The Souls kick. **No new button.** Deliberately awkward, exactly as upstream. |
-| `guard.counter` | `light` within 20 f of a `BLOCK_SUCCESS` event | |
+| `guardbreak` | `light` while `move` vector magnitude ≥ 0.9 forward **and** the last **8 f@60** had no `light` press *(the input buffer; **not rebased** — `RI-CMB01` §C.6)* | The Souls kick. **No new button.** Deliberately awkward, exactly as upstream. |
+| `guard.counter` | `light` within **40 f@60** ~~20 f~~ of a `BLOCK_SUCCESS` event | ⚠ see the collision note in the slot table |
 | `art.1` / `art.2` | `heavy` while `two_hand` is **held** (not toggled) | Requires the harness to distinguish held from tapped `two_hand`; see the amendment request in §Comparison method. |
 | `parry` | `parry` | Already in the closed set. |
 | `plunge` | `light` or `heavy` while `AIRBORNE` and a valid target is below | |
@@ -202,7 +203,7 @@ H.traceStart(); H.stepFrames(240); const t = H.traceStop();
 ```
 From the trace, read the `player.anim` string on the first frame of `phase == 'windup'`
 after the press, and `startup/active/recovery` exactly as RI-CMB02 M1 computes them.
-- **FAIL** the slot if no attack starts within 12 frames of the trigger.
+- **FAIL** the slot if no attack starts within **24 f@60** ~~12 frames~~ of the trigger. *(AMENDED wave 0 (rebase-s22): a tolerance measured against rebased animation lengths.)*
 - **FAIL** the slot if the observed `player.anim` ≠ the declared `anim`.
 - **FAIL** the slot if any of `startup/active/recovery` differs from the declared value by
   ≥ 1 frame.
@@ -265,7 +266,7 @@ Requested as amendments to HARNESS.md, listed here so the request is on the reco
 | Check | Weight | Pass condition |
 |---|---|---|
 | M1 schema + slot census | 20 | Every melee weapon has all 25 mandatory slots, valid against the schema |
-| M2 slot reachability | 25 | Every slot reachable, correct clip, correct frames |
+| M2 slot reachability | 25 | Every slot reachable, correct clip, correct frames (against the **rebased** tables) |
 | M3 alias detection | 15 | ≥18 distinct clips per weapon; no contextual slot aliased to `r1.1` |
 | M4 charge contract | 15 | Monotone lerp ramp, correct hyperarmour onset, single stamina deduction |
 | M5 answer matrix | 15 | Every archetype answered before it appears; ≥9 verbs |
@@ -294,7 +295,7 @@ Max 100.
 - `agreement < 1.00` in M6.
 - Any archetype with no answer, or whose answer arrives after its first appearance.
 - Charge cancellable by any input (AR-1: attack commitment).
-- Any slot whose frame data is authored in seconds rather than frames.
+- Any slot whose frame data is authored in seconds rather than frames, **or in frames with no framerate stated (S22)**.
 
 **Blind pair:** hand the critic two `weapons × slots` clip-id grids with weapon names and
 clip names hashed, and ask which game's weapons have a grammar. Record the blind pick before
@@ -317,7 +318,7 @@ the reveal.
    poise, and the archetype dissolves into INFANTRY. M5 catches it at the matrix, RI-AI05 M1
    catches the consequence.
 5. **`guard.counter` folded into "attack while blocking"**, which RI-CMB02 §D.1 forbids
-   outright (no block-cancel, ever). The correct shape is a 20-frame window *after* a
+   outright (no block-cancel, ever). The correct shape is a **40 f@60** ~~20-frame~~ window *after* a
    successful block, which requires a `BLOCK_SUCCESS` event that nobody will emit unless it
    is in the trace vocabulary.
 6. **The bow is priced and never built.** RI-PRG05 already sells arrows. A gold sink with no
@@ -330,7 +331,9 @@ the reveal.
    and makes `two_hand` a damage multiplier. RI-WPN06 owns the measurement; this item's
    contribution is that eleven `2h.*` ids are in the mandatory 25, so the shortfall is
    visible as a count and not as an opinion.
-9. **Frames authored in milliseconds.** `startup: 200` meaning 200 ms. Everything in the
+9. **Frames authored in milliseconds.** `startup: 200` meaning 200 ms. **And its twin, which is
+   what actually happened to this corpus: frames authored with no framerate, then copied across a
+   30 Hz/60 Hz boundary (seam S22).** Everything in the
    corpus becomes incomparable, and it will be spotted late because the numbers still look
    plausible.
 10. **Plunging attacks omitted**, because they need fall-height detection and a target
@@ -364,6 +367,10 @@ rather than modified standard attacks
 The observation that heavier and longer-windup attacks carry higher motion values, and that
 jumping and two-handed attacks trend higher still, shaped the *ordering* constraints in
 RI-WPN02 §B but none of its values.
+
+**AMENDED wave 0 (rebase-s22).** Every frame value this item points at was doubled under seam
+S22. This item states no frame values of its own, so nothing here needed rebasing except the two
+window figures above; what changed is the *meaning* of the contract it enforces.
 
 Cross-dependencies, and who wins on a conflict: RI-CMB02 wins on frame values for its seven
 spine classes; RI-CMB01 wins on roll and backstep animation lengths (the `state_window`

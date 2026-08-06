@@ -67,44 +67,53 @@ SSW, SPR, AXE, HLB, GSW, UGS) and those cells are reproduced here **unchanged**,
 The eight new rows are this item's extension of `ES-FRAMES/1` and are marked ✚. If a cell
 here ever disagrees with RI-CMB02, RI-CMB02 wins and this file is amended.
 
-One-handed, first hit of the chain, at 60 Hz.
+One-handed, first hit of the chain, at 60 Hz — all frame counts `f@60`.
+
+> **REBASED — AMENDED wave 0 (rebase-s22), ARBITRATION seam S22.** Every frame column below is
+> **doubled**, in lockstep with `RI-CMB02` §A/§B, which owns the seven ⚓ rows. The `↩ was` note
+> at the end of each row carries the pre-rebase values. **Reach, arc sweep, motion value, poise
+> damage, stamina, max chain and root displacement are not frame data and are unchanged.**
+> Hyperarmour windows are **re-derived** through `[ceil(0.60 × startup), startup + active]`, not
+> scaled; ⚠ marks the six windows where re-derivation and a naive ×2 differ by a frame.
 
 | Code | ⚓/✚ | R1 startup | R1 total | R2 startup | R2 total | Reach (m) | **Arc sweep (°)** | MV R1 | Poise dmg R1 | Stamina R1 | Max chain | Root Δz R1 (m) | `r1.1` shape | 1h R2 hyperarmour |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| DGR | ⚓ | 6 | 21 | 14 | 39 | 1.05 | 70 | 0.72 | 8 | 12 | 4 | 0.15 | `slash_d` | none |
-| FST | ✚ | 7 | 22 | 16 | 41 | 0.90 | 45 | 0.55 | 5 | 9 | **5** | 0.10 | `smash` | none |
-| CSW | ✚ | 10 | 32 | 22 | 57 | 1.75 | 155 | 0.90 | 16 | 17 | 4 | 0.30 | `slash_h` | none |
-| TSW | ✚ | 11 | 33 | 23 | 55 | 2.20 | **10** | 0.95 | 12 | 16 | 3 | 0.65 | `thrust` | none |
-| SSW | ⚓ | 12 | 37 | 25 | 61 | 1.95 | 110 | 1.00 | 22 | 20 | 3 | 0.35 | `slash_h` | f15–f31 |
-| SPR | ⚓ | 14 | 40 | 27 | 64 | **3.10** | **8** | 1.00 | 18 | 18 | 3 | 0.55 | `thrust` | f17–f32 |
-| AXE | ⚓ | 16 | 46 | 30 | 73 | 1.80 | 130 | 1.15 | 28 | 24 | 3 | 0.30 | `slash_d` | f18–f37 |
-| MCE | ✚ | 17 | 48 | 32 | 78 | 1.70 | 95 | 1.20 | 32 | 25 | 3 | 0.28 | `smash` | f20–f40 |
-| HLB | ⚓ | 19 | 54 | 34 | 84 | 2.85 | 145 | 1.25 | 34 | 28 | 3 | 0.45 | `sweep` | f21–f42 |
-| WHP | ✚ | 20 | 54 | 30 | 74 | **3.60** | 200 | 0.80 | **6** | 22 | 3 | 0.20 | `lash` | none |
-| GSW | ⚓ | 22 | 63 | 40 | 98 | 2.60 | 175 | 1.45 | 42 | 32 | 3 | 0.85 | `slash_d` | f24–f50 |
-| CGS | ✚ | 24 | 68 | 44 | 107 | 2.75 | **340** | 1.35 | 38 | 34 | **2** | 0.70 | `spin` | f27–f55 |
-| GHM | ✚ | 26 | 74 | 48 | 116 | 2.30 | 120 | 1.60 | **52** | 38 | **2** | 0.60 | `smash` | f29–f58 |
-| UGS | ⚓ | 29 | 83 | 52 | 126 | 2.95 | 210 | 1.75 | 58 | 42 | 3 | **1.40** | `slash_v` | f32–f64 |
-| BOW | ✚ | *draw 24* | 46 | *aimed 24+45* | 118 | **22.0** proj. | 0 | 0.85 / 1.35 | 4 | 14 | 1 | 0.00 | `shoot` | none |
+| DGR | ⚓ | **12** | **42** | **28** | **78** | 1.05 | 70 | 0.72 | 8 | 12 | 4 | 0.15 | `slash_d` | none |  ↩ *was 6/21/14/39*
+| FST | ✚ | **14** | **44** | **32** | **82** | 0.90 | 45 | 0.55 | 5 | 9 | **5** | 0.10 | `smash` | none |  ↩ *was 7/22/16/41*
+| CSW | ✚ | **20** | **64** | **44** | **114** | 1.75 | 155 | 0.90 | 16 | 17 | 4 | 0.30 | `slash_h` | none |  ↩ *was 10/32/22/57*
+| TSW | ✚ | **22** | **66** | **46** | **110** | 2.20 | **10** | 0.95 | 12 | 16 | 3 | 0.65 | `thrust` | none |  ↩ *was 11/33/23/55*
+| SSW | ⚓ | **24** | **74** | **50** | **122** | 1.95 | 110 | 1.00 | 22 | 20 | 3 | 0.35 | `slash_h` | **f30–f62** |  ↩ *was 12/37/25/61, HA f15–f31*
+| SPR | ⚓ | **28** | **80** | **54** | **128** | **3.10** | **8** | 1.00 | 18 | 18 | 3 | 0.55 | `thrust` | **f33–f64** ⚠ |  ↩ *was 14/40/27/64, HA f17–f32*
+| AXE | ⚓ | **32** | **92** | **60** | **146** | 1.80 | 130 | 1.15 | 28 | 24 | 3 | 0.30 | `slash_d` | **f36–f74** |  ↩ *was 16/46/30/73, HA f18–f37*
+| MCE | ✚ | **34** | **96** | **64** | **156** | 1.70 | 95 | 1.20 | 32 | 25 | 3 | 0.28 | `smash` | **f39–f80** ⚠ |  ↩ *was 17/48/32/78, HA f20–f40*
+| HLB | ⚓ | **38** | **108** | **68** | **168** | 2.85 | 145 | 1.25 | 34 | 28 | 3 | 0.45 | `sweep` | **f41–f84** ⚠ |  ↩ *was 19/54/34/84, HA f21–f42*
+| WHP | ✚ | **40** | **108** | **60** | **148** | **3.60** | 200 | 0.80 | **6** | 22 | 3 | 0.20 | `lash` | none |  ↩ *was 20/54/30/74*
+| GSW | ⚓ | **44** | **126** | **80** | **196** | 2.60 | 175 | 1.45 | 42 | 32 | 3 | 0.85 | `slash_d` | **f48–f100** |  ↩ *was 22/63/40/98, HA f24–f50*
+| CGS | ✚ | **48** | **136** | **88** | **214** | 2.75 | **340** | 1.35 | 38 | 34 | **2** | 0.70 | `spin` | **f53–f110** ⚠ |  ↩ *was 24/68/44/107, HA f27–f55*
+| GHM | ✚ | **52** | **148** | **96** | **232** | 2.30 | 120 | 1.60 | **52** | 38 | **2** | 0.60 | `smash` | **f58–f116** |  ↩ *was 26/74/48/116, HA f29–f58*
+| UGS | ⚓ | **58** | **166** | **104** | **252** | 2.95 | 210 | 1.75 | 58 | 42 | 3 | **1.40** | `slash_v` | **f63–f128** ⚠ |  ↩ *was 29/83/52/126, HA f32–f64*
+| BOW | ✚ | *draw* **48** | **92** | *aimed* **48+90** | **236** | **22.0** proj. | 0 | 0.85 / 1.35 | 4 | 14 | 1 | 0.00 | `shoot` | none |  ↩ *was draw 24 / 46 / aimed 24+45 / 118*
 
 Derived constraints that must hold after any retune (recomputed by the critic, never trusted):
 
 | Quantity | Requirement | Rationale |
 |---|---|---|
-| `recovery / startup`, R1, every melee class | ≥ **1.40** | RI-CMB02 §E, extended to fifteen |
-| `recovery / startup`, R2, every melee class | ≥ **1.15** | RI-CMB02 §E |
-| `active / total`, every row | ≤ **0.16** | RI-CMB02 §E |
-| R2 startup − R1 startup, every melee class | ≥ **8 f** | RI-CMB02 §E |
-| R1 startup spread across the 14 melee classes | ≥ **23 f** (FST 7 → UGS 29 is 22; DGR 6 → UGS 29 is 23) | RI-CMB02 §E |
-| Arc sweep spread | ≥ **300°** (SPR 8 → CGS 340) | Geometry must be an axis, not a footnote |
+| `recovery / startup`, R1, every melee class | ≥ **1.40** *(ratio — invariant under S22)* | RI-CMB02 §E, extended to fifteen |
+| `recovery / startup`, R2, every melee class | ≥ **1.15** *(ratio — invariant under S22)* | RI-CMB02 §E |
+| `active / total`, every row | ≤ **0.16** *(ratio — invariant under S22)* | RI-CMB02 §E |
+| R2 startup − R1 startup, every melee class | ≥ **16 f@60** ~~8 f~~ | RI-CMB02 §E (rebased). Verified: smallest is DGR at 16 |
+| R1 startup spread across the 14 melee classes | ≥ **46 f@60** ~~23 f~~ (FST 14 → UGS 58 is 44; **DGR 12 → UGS 58 is 46**) | RI-CMB02 §E (rebased). The spread is carried by DGR, exactly as before — the constraint is met on the nose, exactly as before |
+| Arc sweep spread | ≥ **300°** (SPR 8 → CGS 340) *(degrees — not frame data, unchanged under S22)* | Geometry must be an axis, not a footnote |
 | Reach spread, melee | ≥ **2.5 m** (FST 0.90 → WHP 3.60) | Spacing must be a build decision |
 | Classes with 1h R2 hyperarmour | between **5 and 9** of 14 | Universal hyperarmour deletes the trade decision; none deletes heavy weapons |
 | Distinct `r1.1` shapes across the roster | ≥ **6** of the 10 enum values | Fourteen classes all slashing is one class |
 
 **⚠ Adjacent-startup rule, amended in scope.** RI-CMB02 §E requires ≥2 f of R1 startup
 between *adjacent* classes. At seven classes that is a good separability proxy. At fifteen it
-is arithmetically hostile — the 6→29 f window cannot hold fourteen classes at ≥2 f apart
-without inflating the spread past readability. **This item therefore declares that RI-CMB02
+is arithmetically hostile — the ~~6→29 f~~ **12→58 f@60** window cannot hold fourteen classes at
+~~≥2 f~~ **≥4 f@60** apart without inflating the spread past readability. *(AMENDED wave 0
+(rebase-s22): the impossibility is a statement about ratios of separations and survives the
+rebase intact — 14 gaps of ≥4 f need 56 f of range and there are 46.)* **This item therefore declares that RI-CMB02
 §E's adjacent-startup rule binds the seven-class spine only**, and that separability for the
 extended roster is carried by §D's fingerprint distance instead, which measures the thing the
 rule was a proxy for. This is an amendment request against RI-CMB02, recorded in the reply of
@@ -128,7 +137,7 @@ rule against the spine seven and report the extension separately.
 | CGS | `spin` shape: 340° means the hitbox passes **behind** the player. `max_chain 2`; the second hit is a full 360°. |
 | GHM | Highest poise damage in the game. `guardbreak` variant is `shoulder`, not `kick`. |
 | UGS | Largest root lunge (1.40 m R1, 1.90 m R2). Two-handing is effectively mandatory: 1h requires Strength ≥ a threshold owned by RI-PRG02. |
-| BOW | `bow.quick` fires from the hip in 18 f with MV 0.85; `bow.aimed` draws for up to 45 f to MV 1.60 and enters a shoulder-cam (RI-CAM04 owns the camera behaviour of aimed fire). Consumes `ammo`. No `guardbreak`. |
+| BOW | `bow.quick` fires from the hip in **36 f@60** ~~18 f~~ with MV 0.85; `bow.aimed` draws for up to **90 f@60** ~~45 f~~ to MV 1.60 and enters a shoulder-cam (RI-CAM04 owns the camera behaviour of aimed fire). Consumes `ammo`. No `guardbreak`. |
 
 ### D. The headline measurable — behavioural fingerprint distance
 
@@ -195,7 +204,9 @@ fixture at region-entry level (fixture pinning per BAR-CRITIQUE-01 W8):
 ```js
 await H.setSeed(1337); await H.loadState('wpn-dummy-arena');
 // A: frame census — single R1, single R2, from idle, one-handed
-// B: mash probe — 'light' every 4 frames for 300 frames (chain length + termination)
+// B: mash probe — 'light' every 8 frames for 600 frames (chain length + termination)
+//    [AMENDED wave 0 (rebase-s22): was every 4 frames for 300; the probe must outlast the
+//     rebased UGS R2 at 252 f@60]
 // C: reach sweep — teleport to 0.6 m, step out in 0.05 m increments, single R1 each,
 //    record the largest distance at which an `events[].type == 'hit'` fires
 // D: arc sweep — read every hitbox record across the active window, compute the total

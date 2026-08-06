@@ -2,7 +2,7 @@
   "task_id": "holes",
   "brief": "orchestration/briefs/holes.md",
   "started": "wave-0",
-  "state": "writing",
+  "state": "complete",
   "outputs_expected": [
     "corpus/50-world/RI-WLD10-the-water-model.md (world.water.marsh)",
     "corpus/80-methods/m-wld10-water-census.mjs",
@@ -17,7 +17,24 @@
     "corpus/30-quests/RI-QST09-irreversibility.md (quests.resolution.exclusive + quests.state.persistence)",
     "corpus/60-lore/RI-LOR07-canon-conformance.md (lore.canon.argonian + lore.canon.geography)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/50-world/RI-WLD10-the-water-model.md",
+    "corpus/80-methods/m-wld10-water-census.mjs",
+    "corpus/50-world/RI-WLD11-environmental-hazards.md",
+    "corpus/80-methods/m-wld11-hazard-census.mjs",
+    "corpus/10-combat/RI-CMB09-recovery-and-exhaustion.md",
+    "corpus/10-combat/RI-CMB10-status-buildup.md",
+    "corpus/10-combat/RI-CMB11-input-latency.md",
+    "corpus/20-progression/RI-PRG09-affliction-economy.md",
+    "corpus/30-quests/RI-QST09-irreversibility.md",
+    "corpus/50-world/RI-WLD12-region-borders.md",
+    "corpus/50-world/RI-WLD13-interior-exterior-continuity.md",
+    "corpus/50-world/RI-WLD14-built-alienness.md",
+    "corpus/60-lore/RI-LOR07-canon-conformance.md",
+    "corpus/00-doctrine/ACCEPTED-HOLES.md",
+    "corpus/00-doctrine/constants.json (5 new constants owned by RI-WLD10)",
+    "corpus/00-doctrine/INDEX.md (regenerated)"
+  ],
   "findings": [
     "corpus-index --check confirms 14 holes exactly as briefed; 323 subsystem paths, 126 reference items, 309 judged, 0 unresolved.",
     "subsystems.json gives each hole an arb side + area + critic: combat.dodge.recovery/stamina.exhaustion/input.latency = souls/10-combat/critic.combat; combat.status.buildup = split(S11); progression.affliction.economy = morrowind/20-progression; quests.* = morrowind/30-quests; world.* = morrowind/50-world/critic.world; lore.canon.* = morrowind/60-lore/critic.lore.",
@@ -33,8 +50,17 @@
     "CONSTRAINT: RI-WLD08 owns the tide cycle (12 real minutes, 4 states, moon-driven). NOBODY owns the tidal RANGE in metres - RI-WLD10 will own it.",
     "CONFLICT: seam S22 (rebase all combat durations by doubling upstream 1/30 s tick counts) is in ARBITRATION.md but NO combat item has applied it. RI-CMB01 explicitly says 'this audit declared the unit; it did not rebase the numbers' and calls 13/11/5/0 binding. Precedence order puts the seam ruling above the item, so new combat items must be written post-rebase and must say so. Propose amending RI-CMB01/02/05/08 in the reply.",
     "tools/harness/viewpoints.json already has VP06-water-surface (fidelity, grazing angle, 16:00 clear). No tide-state variants.",
-    "UESP Morrowind:Diseases gives the full common-disease table with names, drain effects, vectors and prose descriptions - primary material for progression.affliction.economy."
+    "UESP Morrowind:Diseases gives the full common-disease table with names, drain effects, vectors and prose descriptions - primary material for progression.affliction.economy.",
+    "S24 SCOPE CORRECTION received mid-task from coordinator: Black Marsh is the NAME not the terrain; water is regional. RI-WLD10 written accordingly with a per-region water profile over all 13 regions.json regions and a two-sided census that FAILS a globally-swampy world.",
+    "RI-WLD10 M47 implemented as corpus/80-methods/m-wld10-water-census.mjs and VERIFIED RUNNING: --reference passes all 8 bars (area-weighted WCI 0.294, spread 0.86, 5 dry regions, 2 bone-dry, 2 drowned, 11 classes, 5 tidal); with no game/data/world/water.json it exits 10 per HARNESS.md exit-code contract.",
+    "RI-WLD10 proposes seam S25 ('water at the waterline': water changes WHERE you fight and what it costs, never a frame number; boss-arena ceiling W2). NOT written into ARBITRATION.md - proposed in the item and to be reported in the reply, because S24 was just added there by user direction.",
+    "ALL 14 HOLES CLOSED with reference items; ZERO accepted holes. node tools/corpus-index.mjs --strict now exits 0: 323 paths, 137 items, 323 judged, 0 holes, 0 errors, 0 warns.",
+    "MID-TASK RACE RESOLVED: a concurrent `rebase-s22` agent amended RI-CMB01/02/03/05/08 while RI-CMB09 was being written. RI-CMB09's independently-derived rebased ladder (52/60/88/120 total, 26/22/10/0 i-frames, backstep 42/60/80) matches RI-CMB01's amended table EXACTLY. Two figures are excluded from the rebase by their owners and RI-CMB09/RI-CMB11 were corrected to honour them: the 8 f@60 input buffer (RI-CMB01 C6) and RI-CMB02 sect E's 6 f@60 startup floor.",
+    "STILL OPEN, not resolved by this task: RI-CMB03 sect D's GUARD_BREAK duration := 40 frames and riposte_window 6..34 are flagged there as rebase candidates (80 f, 11..68) but not fixed. RI-CMB09 deliberately cites guard break without restating a duration so it is unaffected either way.",
+    "CANON GAP FOUND (RI-LOR07 P3): the Onkobra River - 'running eastward from Topal Bay... deep into Black Marsh, to the very dark heart of the province' (Lore:The Argonian Account, Book 3) - is the one named river of Black Marsh in the fiction and OUR MAP DOES NOT HAVE IT. Cheapest canon win available in the world area.",
+    "CANON CONFIRMED: Topal Bay is west, Padomaic east, Helstrom is the 'impenetrable center of the Province' (PGE3 Argonia), Gideon is ruled by the Archeins - 'pompous, assimilated, slaver kleptocrats' (Argonian Account Bk4) - so Argonian collaborators are canon. Only 4 of our 8 settlements (Lilmoth, Stormhold, Blackrose, Helstrom) have real pages in the vendored extract; Gideon/Soulrest/Archon/Thorn rest on passing references (19/5/11/65 hits).",
+    "REGISTRY DEFECT REPORTED not repaired: blackmarsh-canon.json's cross_check already records CF-045 contradicted - the Knahaten Flu ran 43 years, 2E 560 to 2E 603, not 41 years to 2E 601. Belongs to canon-facts.json's owner."
   ],
-  "next_step": "write corpus/50-world/RI-WLD10-the-water-model.md in full, then its method script",
-  "notes_for_successor": "Plan: 12 outputs listed in outputs_expected, covering all 14 holes (CMB09 covers 2, QST09 covers 2, LOR07 covers 2). Method-number convention: 50-world uses a CONTINUOUS M-series across RI-WLD01..08 ending at M46, so new world items start at M47. Combat items restart M1 per item. Regenerate INDEX.md with `node tools/corpus-index.mjs` when done and re-run --check."
+  "next_step": "none - task complete",
+  "notes_for_successor": "All 14 holes closed by 11 reference items + 2 runnable method scripts + ACCEPTED-HOLES.md (empty register). Highest-value follow-ups, in order: (1) apply proposed seam S25 'water at the waterline' to ARBITRATION.md sect 2 - NOT applied by this task because S24 was being added there by user direction at the same time; (2) settle RI-CMB03's GUARD_BREAK rebase; (3) add the Onkobra River to the map; (4) HARNESS.md amendments requested by RI-WLD10 sect 12, RI-CMB09 sect 6, RI-CMB10 sect 6, RI-CMB11 sect 5 - without them ~half of those items' checks are fail-closed 0; (5) calibrate RI-WLD14's mesh metrics against a real Morrowind mesh export; (6) compute RI-QST09's X1 45% exclusivity bar against corpus/30-quests/data/morrowind-quest-census.json."
 }

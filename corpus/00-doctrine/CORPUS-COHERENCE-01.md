@@ -1010,7 +1010,17 @@ it; `constants.json` registers `combat.sim_step_hz` (60) and `combat.souls_tick_
 conversion. `RI-CMB05` and `RI-CMB08` carry an explicit note that their windows are outstanding
 under S22.
 
-**NOT applied — and this is the single largest outstanding item in the corpus.** The mechanical
+> **APPLIED wave 0 by task `rebase-s22` — AMENDED wave 0 (rebase-s22).** The whole scope table
+> below has been executed as one sweep, exactly as this audit specified it must be. Fourteen
+> reference items were rebased, `RI-CMB03` was left alone by ruling, the `RI-CMB07` exemplar and
+> its three data files are marked `INVALIDATED`, and every touched frame figure now states its
+> unit as `f@60`. Four figures were **re-derived rather than scaled** (hyperarmour windows, `Ps`,
+> the `P_safe` floor, the CAM04 steering bands) and seven were **deliberately not rebased** as
+> wall-clock human bars. Four consequences the ruling did not anticipate are recorded. Full
+> ledger: `corpus/00-doctrine/REBASE-S22-REPORT.md`. **This section's "NOT applied" is now
+> historical and is preserved below for the record.**
+
+~~**NOT applied — and this is the single largest outstanding item in the corpus.**~~ The mechanical
 rebase itself was not performed, on the judgement that **a half-applied rebase is strictly worse
 than none**: doubling `RI-CMB01`'s roll ladder while `RI-CMB02`'s attack table stays unrebased
 would create a fresh, live contradiction between the two most load-bearing combat items, and the
@@ -1079,7 +1089,12 @@ population by `side` would pull five *deliberately generic-fantasy* anchors into
 exist to be measured against. And two mwscr images are filed under two slots each, so REF-A18 and
 REF-A19 are 4 images, not 5.
 
-### R7 / seam S24 — biome diversity. **NOT APPLIED — a content sweep, recorded.**
+### R7 / seam S24 — biome diversity. ~~**NOT APPLIED — a content sweep, recorded.**~~ **APPLIED wave 0 by task `rebase-s22`.**
+
+> **AMENDED wave 0 (rebase-s22).** The sweep was run with the map and `regions.json` open. Its
+> findings — which files assumed a globally swampy world, which were already correctly
+> region-scoped and were therefore left alone, and what was corrected — are recorded in
+> `corpus/00-doctrine/REBASE-S22-REPORT.md` §6. The original scoping note is preserved below.
 
 Black Marsh is the *name*, not the terrain: thirteen regions, mountains through petrified forest
 through two different seas, and **water, tides and wetland belong to specific regions, never to

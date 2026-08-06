@@ -9,6 +9,62 @@ confidence: high
 blind_pair: yes
 ---
 
+## 0. STATUS: the exemplar is INVALIDATED — AMENDED wave 0 (rebase-s22)
+
+> **ARBITRATION seam S22 (the 30 Hz → 60 Hz rebase) invalidates the exemplar fight and every
+> statistic derived from it. The ruling accepts that cost explicitly.** The four artifact files
+> each carry an `INVALIDATED` block in their `META` record, so a harness that loads one fails
+> loudly rather than silently comparing against a wrong fixture.
+>
+> **What is still binding, and it is most of this item:** `es-combat-trace/1` and
+> `es-combat-scenario/1` — the record types, the field layouts, the closed state and event
+> enums, the segment encoding and its expansion rule, the RI-AI01 join, and the *definitions* of
+> all 29 statistics. **None of that is frame data.** M0 and M4 are unaffected. What is
+> invalidated is the exemplar *fixture* (§B, §C, and the `Exemplar` column of §D), M1's Mode-A
+> replay, and — less obviously, and this is the part the ruling did not anticipate — **eight of
+> §D's Mode-B bands**, because a time-base rebase is not neutral on rates.
+>
+> ### Why a mechanical ×2 of the trace is the wrong repair
+>
+> The obvious "regeneration" is to dilate the whole timeline `f → 2f`. **It produces a wrong
+> artifact, and specifically it produces one that is wrong in the exact place this exemplar
+> exists to be right.** Three things do not dilate:
+>
+> 1. **Stamina.** Regeneration is 45/s and the post-spend delay is 42 f@60, and `RI-CMB03` is
+>    deliberately excluded from S22. A doubled timeline is twice as long in wall-clock, so it
+>    regenerates **twice as much stamina**. Rows 15–19 and 28 — the stamina economy, the whole
+>    point of the failure beat in §C — would all be wrong, and the single dropped input that row
+>    28 requires might not happen at all.
+> 2. **Locomotion.** Walking speed is 2.0 m/s (`RI-WLD01`, seam S17) over an unchanged arena, so
+>    approach and spacing cost the *same* number of frames as before while every animation
+>    around them doubled.
+> 3. **The `GUARD_BREAK` in §C.** It is 40 f in `RI-CMB03` §D and S22 leaves it alone, so it does
+>    **not** double while the medium stagger next to it does (22 → 44 f@60). §C's eight lines are
+>    a worked demonstration of exactly that interaction.
+>
+> **Regeneration therefore means re-running the authored input script against the rebased
+> constants — not scaling the output.** The scenario file carries a `regeneration_worklist` for
+> whoever does it. This sweep did not do it: a hand-authored 3550-frame fight re-evaluated by
+> hand against ~40 changed constants is a fresh authoring job, and producing a plausible-looking
+> trace that had not actually been simulated would be worse than producing none. **Recorded as
+> invalidated, loudly, rather than left stale in place** — which is the disposition S22 and
+> orchestrator ruling R1 both permit.
+>
+> ### The gap ledger
+>
+> `corpus/90-verdicts/GAP-LEDGER.{json,md}` is a **generated** file — `tools/gap-ledger.mjs`
+> builds it from verdicts' `biggest_gap`, and hand-editing it is forbidden by its own header.
+> There are no verdicts yet (`verdicts read: 0`), so this gap cannot be filed there without
+> fabricating a verdict, which `SCORING.md` §5 exists to prevent. It is therefore filed in the
+> two places that *are* hand-authored and are read before any builder starts: this block, and
+> `corpus/00-doctrine/REBASE-S22-REPORT.md` §4. **The first critic to touch `combat.trace` must
+> open this as its `biggest_gap`, at which point the ledger will pick it up automatically.**
+>
+> **Acceptance condition for closing it:** a regenerated `RI-CMB07-exemplar-trace.segments.jsonl`
+> whose `META` carries no `INVALIDATED` block, whose player constants match `RI-CMB01` §B and
+> `RI-CMB02` §A/§B as rebased, and whose 29 statistics are recomputed into §D with the Mode-B
+> bands re-derived per the classification table below.
+
 ## The bar
 
 Everything else in `corpus/10-combat/` is a number in isolation. This item is the number
@@ -23,7 +79,8 @@ attack about 24 times and roll about 16; their i-frame windows open on average 4
 before the enemy's weapon goes live, with a standard deviation under 2; their stamina bar
 touches zero exactly once and lives above 90% for barely a quarter of the fight; they take
 the punish on four windows out of five and deliberately decline the rest; and one of the
-declines is because they spent a 78-frame recovery drinking instead.** That paragraph is a
+declines is because they spent a ~~78-frame~~ **156 f@60** recovery drinking instead.** That
+paragraph is a
 statistical fingerprint, and this item makes it computable.
 
 A build that satisfies every frame count in CMB01–06 and produces a trace whose statistics
@@ -31,7 +88,7 @@ look like a hack-and-slash game has failed. This is the item that catches that.
 
 ## The reference artifact
 
-Four files, all in `corpus/10-combat/`:
+Four files, all in `corpus/10-combat/`. **All four are INVALIDATED by seam S22 — see §0.**
 
 | File | Records | What it is |
 |---|---|---|
@@ -146,7 +203,13 @@ Hard consistency check, run by every critic touching either stream: for every fr
 enemy `k`, and `F.p.stamina` must equal the RI-AI01 record's embedded `player.stamina`.
 Any disagreement fails **both** items.
 
-### B. Excerpt — the canonical exchange (frames 159–203, abridged)
+### B. Excerpt — the canonical exchange (frames 159–203, abridged) — **INVALIDATED (§0)**
+
+> **AMENDED wave 0 (rebase-s22): every frame index below is pre-rebase and must not be cited.**
+> What survives, and what a regenerated excerpt must still demonstrate, is the single line the
+> section exists for: `p[5] == 1` and `e[4] == 1` on the *same frame* resolving to
+> `IFRAME_NEGATE` rather than `HIT`. That is a statement about the trace format and the
+> i-frame model, not about any particular frame number.
 
 Enemy `A1` overhead chop: windup 34 f, hitbox live on frames 166–170, recovery 171–208.
 The player rolls on 160; i-frames run 162–174; the chop is negated on its first active frame;
@@ -172,7 +235,14 @@ on the *same frame*, and the result is `IFRAME_NEGATE` rather than `HIT`. That s
 the difference between a Souls game and everything else, and it is the thing the trace format
 exists to make provable.
 
-### C. Excerpt — the failure beat (frames 1010–1040, abridged)
+### C. Excerpt — the failure beat (frames 1010–1040, abridged) — **INVALIDATED (§0)**
+
+> **AMENDED wave 0 (rebase-s22).** Do not cite these indices. This excerpt is the *most*
+> affected of the four artifacts, because it is a worked demonstration of three systems
+> interacting and **S22 moves them by different amounts**: the medium stagger doubles (22 →
+> 44 f@60), the guard break does **not** (40 f, `RI-CMB03` scoped out), and the 42 f regen delay
+> does not either. The "44 frames at exactly 0.0 stamina" it narrates is a *consequence* of that
+> interaction and will come out differently. See the inversion flagged in `RI-CMB03` §D.
 
 The player over-committed: a four-hit punish left **11.1** stamina. They raise the guard
 against `A2`'s first swing. The block costs `96 × (1 − 0.62) = 36.5`. It is more than they
@@ -203,24 +273,57 @@ Computed from `RI-CMB07-exemplar-trace.segments.jsonl`. Fight length **3550 fram
 (free-play) comparison; Mode-A (scenario replay) tolerances are given in §E and are far
 tighter.
 
+> **AMENDED wave 0 (rebase-s22). The `Exemplar` column is INVALIDATED (§0). The Mode-B bands
+> are NOT uniformly invalid — they split three ways, and the split is the useful finding.**
+>
+> | Kind | Rows | Under S22 | Disposition |
+> |---|---|---|---|
+> | **Ratios and fractions** — of frames, of swings, of attacks | 4, 6, 11, 12, 13, 15, 17, 18, 19, 22, 23, 24, 27 | **invariant** under a uniform time-base change: numerator and denominator move together | **bands stand, unchanged and still binding** |
+> | **Absolute counts and amounts** — hits, HP, charges, guard breaks | 3, 10, 14, 20, 21, 28, 29 | unaffected: nothing about them is a duration | **bands stand** |
+> | **Durations, rates and frame deltas** | 1, 2, 5, 7, 8, 9, 16, 25 | **not invariant** — a per-minute rate *halves*, a frame delta *doubles*, a duration in seconds *doubles* | **bands re-derived below** |
+>
+> **This is the thing the ruling did not anticipate.** S22 says the exemplar trace is
+> invalidated and must be regenerated. It does not say that the *acceptance bands* — which are
+> not part of the exemplar, and which a critic would reasonably keep — are themselves partly
+> unit-bearing. Left alone, they would have silently failed a **correct** rebased build: at half
+> the action rate the exemplar's own 24.34 attacks/min becomes 12.17, which is **below the
+> 14–34 band it defines**, and its 59.17 s duration becomes 118 s, **above the 35–110 s band**.
+> A regenerated exemplar would have failed its own item.
+>
+> | # | Statistic | Old band | **Rebased band** | Why |
+> |---|---|---|---|---|
+> | 1 | Fight duration | 35 – 110 s | **70 – 220 s** | every action takes twice as long; the same *number* of actions spans twice the wall clock |
+> | 2 | Attack animations started / min | 14 – 34 | **7 – 17** | a rate: halves |
+> | 5 | Rolls / min | 8 – 26 | **4 – 13** | a rate: halves |
+> | 7 | Roll timing Δ, mean (frames) | −8.0 – −1.0 | **−16.0 – −2.0** | a frame delta: doubles |
+> | 8 | Roll timing Δ, standard deviation | ≤ 4.0 | **≤ 8.0** | a frame delta: doubles |
+> | 9 | Roll timing Δ, range | within [−12, +4] | **within [−24, +8]** | a frame delta: doubles |
+> | 16 | Frames at exactly 0 stamina | 10 – 300 | **20 – 600** *(provisional)* | a frame count spanning wall-clock that the stamina system did **not** rebase — must be re-measured, not assumed |
+> | 25 | Longest unbroken committed run | 90 – 260 f (1.5 – 4.3 s) | **180 – 520 f@60 (3.0 – 8.7 s)** | a committed run is a chain of animations: doubles |
+>
+> **Row 22 (committed-frame ratio, 0.34 – 0.56) is untouched and remains the single most
+> diagnostic number in this corpus.** That it survives a factor-of-two error in every frame
+> count unchanged is precisely why the error went undetected for a wave — and is also why the
+> row is worth what the item claims: it measures the *shape* of play, not its tempo.
+
 | # | Statistic | Exemplar | Mode-B band |
 |---|---|---|---|
-| 1 | Fight duration | 59.17 s | 35 – 110 s |
-| 2 | **Attack animations started / min** | **24.34** | 14 – 34 |
+| 1 | Fight duration | 59.17 s | ~~35 – 110 s~~ → **70 – 220 s** |
+| 2 | **Attack animations started / min** | **24.34** | ~~14 – 34~~ → **7 – 17** |
 | 3 | Hits landed | 22 | — |
 | 4 | Whiff rate (attacks that hit nothing) | 0.083 | 0.03 – 0.25 |
-| 5 | **Rolls / min** | **16.23** | 8 – 26 |
+| 5 | **Rolls / min** | **16.23** | ~~8 – 26~~ → **4 – 13** |
 | 6 | Dodge rolls (within 20 f of an enemy hitbox) | 14 of 16 | ≥ 0.70 of all rolls |
-| 7 | **Roll timing Δ, mean** (i-frame-window start − enemy hitbox activation frame) | **−4.36 f** | −8.0 – −1.0 |
-| 8 | Roll timing Δ, standard deviation | **1.54 f** | ≤ 4.0 |
-| 9 | Roll timing Δ, range | −8 … −2 | all within [−12, +4] |
+| 7 | **Roll timing Δ, mean** (i-frame-window start − enemy hitbox activation frame) | **−4.36 f** | ~~−8.0 – −1.0~~ → **−16.0 – −2.0** |
+| 8 | Roll timing Δ, standard deviation | **1.54 f** | ~~≤ 4.0~~ → **≤ 8.0** |
+| 9 | Roll timing Δ, range | −8 … −2 | ~~[−12, +4]~~ → all within **[−24, +8]** |
 | 10 | Enemy swings faced | 23 | — |
 | 11 | Swings negated by i-frames | 14 (60.9%) | 0.40 – 0.80 |
 | 12 | Swings blocked | 4 (17.4%) | 0.00 – 0.35 |
 | 13 | Swings taken | 5 (21.7%) | 0.05 – 0.35 |
 | 14 | Damage taken | 576 (93% of max HP) | 0.4 – 1.6 × max HP |
 | 15 | **Stamina floor** | **0.0 (0.0% of max)** | ≤ 15% of max |
-| 16 | Frames at exactly 0 stamina | 44 | 10 – 300 |
+| 16 | Frames at exactly 0 stamina | 44 | ~~10 – 300~~ → **20 – 600** *(provisional)* |
 | 17 | % frames below 25% stamina | 5.10% | 3% – 20% |
 | 18 | % frames above 90% stamina | 25.4% | 12% – 45% |
 | 19 | Mean stamina | 81.0 / 120 (67.5%) | 55% – 80% |
@@ -229,7 +332,7 @@ tighter.
 | 22 | **Committed-frame ratio** (`ATK_*`+`ROLL_*`+`HEAL_*`+`STAGGER`+`GUARD_BREAK`+`CRIT_ATTACK`) | **0.448** | **0.34 – 0.56** |
 | 23 | Block-hold ratio | 0.019 | 0.00 – 0.20 |
 | 24 | Free-frame ratio (`IDLE`/`WALK`/`RUN`/`SPRINT`) | 0.532 | 0.28 – 0.62 |
-| 25 | Longest unbroken committed run | 174 f (2.90 s) | 90 – 260 f |
+| 25 | Longest unbroken committed run | 174 f (2.90 s) | ~~90 – 260 f~~ → **180 – 520 f@60** |
 | 26 | Punish windows offered by the enemy | 18 | — |
 | 27 | **Punish-window usage rate** (hit landed inside `[w0,w1]`) | **0.778** | 0.50 – 0.95 |
 | 28 | Inputs dropped for insufficient stamina | 1 | **≥ 1** |
@@ -250,8 +353,8 @@ probe.**
 
 **How to read row 27 against row 26.** 18 windows, 14 taken. The four declined were: one
 where the player held 11 stamina and could not afford the swing, one where they were mid-stagger, one where a backstab
-landed 10 frames after the window closed (greed, punished by nothing this time), and one
-where they spent the enemy's 78-frame recovery drinking. A usage rate of 1.00 is not better;
+landed ~~10 frames~~ **20 f@60** after the window closed (greed, punished by nothing this time), and one
+where they spent the enemy's ~~78-frame~~ **156 f@60** recovery drinking. A usage rate of 1.00 is not better;
 it means the enemy's windows are too generous or the player has no resource pressure.
 
 ## Comparison method
@@ -386,14 +489,21 @@ move ids) and a 54-input player script were written by hand and then evaluated d
 against the constants in RI-CMB01 (`LIGHT` roll: 26 f, i-frames 3–15, 22 stamina), RI-CMB02
 (straight sword R1: 12/5/20, 20 stamina, 118 damage; R2: 25/6/30, 34 stamina), RI-CMB03
 (120 max stamina, 45/s, 42-frame delay, stability 0.62, guard break at zero), RI-CMB05
-(22-frame medium stagger), and RI-CMB08 (65-frame drink, 248 heal). Every number in §D is a
+(22-frame medium stagger), and RI-CMB08 (65-frame drink, 248 heal).
+
+> **AMENDED wave 0 (rebase-s22): every one of those constants except RI-CMB03's has changed.**
+> The rebased set is `LIGHT` roll **52 f@60, i-frames f5–f30**, 22 stamina; straight sword R1
+> **24/10/40**, R2 **50/12/60**; medium stagger **44 f@60**; drink **130 f@60**. RI-CMB03 is
+> unchanged by ruling. That is the regeneration input; see §0. Every number in §D is a
 *consequence* of those constants plus the authored script — none was chosen to make the table
 look good, and several (the 0.778 punish usage, the single guard break, the 5 hits taken) are
 deliberately imperfect play, because a flawless exemplar produces unreachable bands.
 
 This means the exemplar is **brittle by design**: change any constant in CMB01–03, 05 or 08
 and this artifact must be regenerated, or Mode A will fail for the wrong reason. That coupling
-is the point. It is what makes the eight items in this directory one system rather than eight
+is the point. **It has now been exercised: seam S22 changed most of them at once, and the
+artifact is duly invalidated (§0). The brittleness worked — it is the reason the invalidation is
+visible rather than silent.** It is what makes the eight items in this directory one system rather than eight
 opinions.
 
 Grounding is `canonical-recall`, confidence **medium**, for the *shapes* the bands encode: that

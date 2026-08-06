@@ -296,6 +296,25 @@ as well as an upper one.
    | `character_closeup` | REF-M6 |
    | `xanmeer_vista` | REF-M7 |
    | `combat_midfight` | REF-M6 + REF-M2 |
+
+   > **⚠ S24 COVERAGE NOTE — AMENDED wave 0 (rebase-s22), ARBITRATION seam S24. Flagged, not
+   > changed.** Six of the eight capture slots are wetland or interior (`exterior_marsh_dusk`,
+   > `exterior_marsh_noon`, `water_edge`, `foliage_dense`, `interior_rootway`,
+   > `xanmeer_vista`), so **no capture in this set exercises the dry and high half of the
+   > world** — Valus Ridge's open-sky cliff silhouettes and cloud-below-the-player, the Stone
+   > Wastes' and Clay Moor's hard-shadow arid rock, the Salt Hills' rime, the Stone Forest's
+   > mineral response. Those are *different fidelity problems*: aerial perspective over long
+   > uninterrupted sightlines, hard sun with no canopy diffusion, and dry-matte materials with
+   > no wet-line and no subsurface to flatter them.
+   >
+   > **Deliberately not changed by this sweep, and why.** This item's job is to pin *fidelity*
+   > references to real published shots, each with a hand-written "what to look at" clause list.
+   > Adding capture slots without adding the matching REF-M entries — which means finding,
+   > citing and analysing new source imagery — would leave dangling pairs and would be
+   > manufacturing an edit rather than making one. **The gap is real and belongs to this item:
+   > at least one arid/high-altitude reference (long-sightline aerial perspective, hard shadow,
+   > dry matte) and a matching `exterior_ridge_noon` capture slot.** Recorded in
+   > `REBASE-S22-REPORT.md` §6.
 3. **Walk the "what to look at" list** for the paired reference, item by item, and for each
    numbered clause record `PRESENT / PARTIAL / ABSENT` on our shot with the pixel region
    cited (e.g. "clause 2 water Fresnel: ABSENT — water is uniform 0.42 alpha across the

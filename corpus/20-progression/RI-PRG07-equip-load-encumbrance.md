@@ -206,7 +206,7 @@ costs them Light. Those two facts are the whole tuning target for the 30% breakp
 | Situation | Equip Load | Burden |
 |---|---|---|
 | Wearing plate, empty bag | Heavy → 5 i-frames (retiered wave 0) | Unburdened → normal walking |
-| Wearing robes, bag full of loot | Light → 13 i-frames | Overladen → 0.72× speed, no sprint, easily spotted |
+| Wearing robes, bag full of loot | Light → **26 i-frames @60** ~~13~~ *(AMENDED wave 0 (rebase-s22): `RI-CMB01` owns this figure under seam S23 and it was doubled under seam S22; this item restates, it does not set)* | Overladen → 0.72× speed, no sprint, easily spotted |
 | Wearing plate, bag full of loot | Heavy | Overladen |
 | Any of the above, **in combat** | applies | **suppressed entirely** |
 

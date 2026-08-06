@@ -40,6 +40,25 @@ player learns the bar by being denied.
 > **Not affected by seam S22 (the 30 Hz rebase):** this item derived its 42-frame regen pause
 > from a figure denominated in **seconds** (0.70 s at 60 Hz), which is the one place in the
 > corpus the conversion was done correctly. **Do not double it.**
+>
+> **AMENDED wave 0 (rebase-s22) — NO NUMBER IN THIS ITEM WAS CHANGED, and one is flagged.**
+> The S22 rebase sweep touched `RI-CMB01`, `RI-CMB02`, `RI-CMB05`, `RI-CMB08`, `RI-AI02`,
+> `RI-AI03`, `RI-WPN01`–`RI-WPN06` and `RI-CAM04`. This item was **deliberately left alone**,
+> as S22 and orchestrator ruling R1 both require. The 42 f (0.70 s) pause, the 45/s regen, the
+> 0.75/frame slope, every stamina cost and the whole §C block formula stand exactly as written:
+> rates per second and quantities of stamina are unit-invariant under a frame-base correction.
+>
+> **The one figure that is flagged, not fixed: §D's `GUARD_BREAK`.** Its `duration := 40 frames`
+> and `riposte_window := frames 6..34` are **animation lengths**, not seconds-derived figures —
+> they are not the protected 42 f, and S22's exclusion of this item does not reason about them.
+> Because everything around them doubled, a real inversion now exists: a **medium stagger is
+> 44 f@60** (`RI-CMB05` §B, rebased) while a **guard break is 40 f@60**, so shattering the
+> player's guard punishes them *less* than poking them out of poise — which contradicts this
+> item's own §D claim that "zero *on a block* is catastrophic". Overriding an explicit exclusion
+> in a seam ruling is the doctrine owner's call, not a unit correction, so this sweep recorded
+> it instead of acting on it. **Recommendation, for the doctrine owner: rebase §D to
+> `duration := 80 f@60` and `riposte_window := frames 11..68`.** Filed in
+> `corpus/00-doctrine/REBASE-S22-REPORT.md` §7.
 
 ## The reference artifact
 
@@ -140,6 +159,14 @@ zero *on a block* is catastrophic — is the whole tension of shield play.
 
 These are distribution targets measured over the RI-CMB07 exemplar and are the numbers a
 critic diffs against. They are consequences of §A–§D, not independent knobs.
+
+> **AMENDED wave 0 (rebase-s22): the `Exemplar value` column is provisional until RI-CMB07 is
+> regenerated.** Seam S22 invalidated the exemplar trace. The **acceptance bands are unaffected
+> and remain binding** — every one of them is a *percentage* or a *count*, and both are
+> invariant under a time-base rebase — **except `Frames at exactly 0 stamina`, whose band is a
+> frame count and must be read as `≥ 20 and ≤ 600 f@60`** once a rebased exemplar exists. The
+> single exemplar cell in the same row (44) is likewise unusable until regeneration. Nothing in
+> §A–§D changed; see the S22 note at the top of this item.
 
 | Statistic | Exemplar value | Acceptance band |
 |---|---|---|

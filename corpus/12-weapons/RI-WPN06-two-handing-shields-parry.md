@@ -46,11 +46,11 @@ load, and RI-PRG02 owns stat requirements.
 | Property | Value |
 |---|---|
 | Input | `two_hand` (HARNESS.md §4 closed set), **tapped** |
-| Animation | **18 frames**, a distinct clip per weapon class, root-locked |
+| Animation | **36 f@60 (600 ms)** ~~18 frames~~, a distinct clip per weapon class, root-locked — **REBASED, AMENDED wave 0 (rebase-s22), seam S22** |
 | Legal from | `IDLE`, `WALK`, `RUN` only |
 | **Illegal from** | any `ATTACK` phase, `ROLL`, `BACKSTEP`, `AIRBORNE`, `STAGGER`, `GUARD_BREAK`, `HEAL` |
-| Cancellable | no — 18 frames of commitment, same rules as an attack (RI-CMB02 §D) |
-| Buffered | yes, by the standard 8-frame buffer |
+| Cancellable | no — **36 f@60** ~~18 frames~~ of commitment, same rules as an attack (RI-CMB02 §D) |
+| Buffered | yes, by the standard **8 f@60** buffer *(**not** rebased — RI-CMB01 §C.6)* |
 | Stamina | 0 |
 | Effective Strength for requirement checks | **×1.50** while two-handed (RI-PRG02 owns the stat) |
 | Offhand item | stowed; `block`, `parry` and `off.*` become unavailable for the whole duration |
@@ -68,7 +68,7 @@ run.r2 roll.r1 backstep.r1 jump.r1 guard.counter art.1` and their `2h.` counterp
 A slot DIVERGES if:
     anim(2h.X) != anim(X)                                  # a genuinely different clip
   AND at least one of:
-    |startup/active/recovery delta|  >= 3 f
+    |startup/active/recovery delta|  >= 6 f@60      [rebase-s22: was >= 3 f]
     shape(2h.X)        != shape(X)
     chains_to(2h.X)    != chains_to(X)
     hyperarmour.enabled differs
@@ -137,11 +137,11 @@ verbatim. What this item adds is the taxonomy, the guard angle, and who is allow
 
 | Shield class | Guard angle (± from forward) | Parry-capable | Parry window (RI-CMB05 §D) | Own slots |
 |---|---|---|---|---|
-| Buckler | ±50° | **yes** | 34 f animation, active **f5–f13** (9 f) | `shield.bash` |
-| Small shield | ±60° | **yes** | 34 f animation, active **f5–f13** (9 f) | `shield.bash` |
-| Medium / kite shield | ±75° | **yes** | 40 f animation, active **f8–f14** (7 f) | `shield.bash` |
+| Buckler | ±50° | **yes** | **68 f@60** animation, active **f9–f26** (18 f@60) ~~34 f, f5–f13 (9 f)~~ | `shield.bash` |
+| Small shield | ±60° | **yes** | **68 f@60** animation, active **f9–f26** (18 f@60) ~~34 f, f5–f13 (9 f)~~ | `shield.bash` |
+| Medium / kite shield | ±75° | **yes** | **80 f@60** animation, active **f15–f28** (14 f@60) ~~40 f, f8–f14 (7 f)~~ | `shield.bash` |
 | Greatshield | ±95° | **no — cannot parry, ever** | — | `shield.bash`, `shield.charge` |
-| Dedicated parry tool (parry dagger, and DGR / TSW / CSW held in the offhand) | n/a — no block | **yes** | 32 f animation, active **f3–f14** (12 f) | — |
+| Dedicated parry tool (parry dagger, and DGR / TSW / CSW held in the offhand) | n/a — no block | **yes** | **64 f@60** animation, active **f5–f28** (24 f@60) ~~32 f, f3–f14 (12 f)~~ | — |
 
 **Guard angle** is this item's addition: an attack whose incoming direction lies outside the
 angle is **not blocked at all** — full damage, full poise damage, no stamina cost, as though
@@ -162,7 +162,7 @@ implicitly.
 |---|---|---|---|
 | `shield.bash` | `light` + forward, shield raised | 22 / 4 / 26 | The `guardbreak` variant for O1. Poise damage 24, motion value 0.35 — it exists to break a guard, not to deal damage. |
 | `shield.charge` | `sprint` + `light`, greatshield only, two-handed grip on the shield | 30 / 8 / 34 | Root Δz 2.60 m. Carries hyperarmour f18–f38. The greatshield's reason to exist. |
-| `guard.counter` | `light` within 20 f of `BLOCK_SUCCESS` | per RI-WPN04 §A multipliers | Weapon slot, not shield slot; unavailable in O2 and O3. |
+| `guard.counter` | `light` within **40 f@60** ~~20 f~~ of `BLOCK_SUCCESS` | per RI-WPN04 §A multipliers | Weapon slot, not shield slot; unavailable in O2 and O3. ⚠ `RI-CMB02` §C says 24 f@60 — pre-existing collision, flagged not resolved. |
 
 ## Comparison method
 
@@ -195,7 +195,7 @@ for (const cfg of ['o1_sword_shield','o2_dual','o3_twohand']) {
 **M3 — Stance switch commitment.** Inject `two_hand` on every frame `k` of an attack, a roll,
 a backstep, a stagger and a heal, in separate runs.
 - **FAIL** if the stance ever changes during any of those states.
-- **FAIL** if the switch animation is not exactly 18 f.
+- **FAIL** if the switch animation is not exactly **36 f@60** ~~18 f~~.
 - **FAIL** if the switch is cancellable.
 - **FAIL** if two-handing changes any *frame count* on a **non-diverging** slot (the ×1.15
   multipliers in RI-CMB02 §C are stamina, motion value and poise damage only).
@@ -212,7 +212,7 @@ forward; land one attack from each with each shield class.
 
 **M5 — Parry eligibility.** For each offhand item, attempt a parry against a parryable enemy
 attack.
-- **PASS** if exactly the items in §D can parry, with exactly RI-CMB05's windows.
+- **PASS** if exactly the items in §D can parry, with exactly RI-CMB05's windows (**both rebased under S22 and verified identical: f9–f26, f5–f28, f15–f28**).
 - **HARD FAIL** if a greatshield parries.
 - **FAIL** if any parry window differs from RI-CMB05 §D by ≥1 f. (This is a cross-item
   agreement check, not a re-measurement: RI-CMB05's own method owns the numbers.)
@@ -225,7 +225,7 @@ root displacement and the hyperarmour window.
 
 **M7 — Dual-wield chain.** In O2, drive `off.r1.1 → off.r1.2 → off.r2` and confirm the chain
 graph, then confirm that the main-hand chain and the offhand chain cannot be interleaved
-faster than the 8-frame buffer allows.
+faster than the **8 f@60** buffer allows *(buffer not rebased — RI-CMB01 §C.6)*.
 - **FAIL** if both hands can attack simultaneously.
 - **FAIL** if the offhand chain has no independent clips (RI-WPN03's `UNQ` applies to `off.*`
   slots too).
@@ -250,7 +250,7 @@ faster than the 8-frame buffer allows.
 |---|---|---|
 | M1 `TDV` census | 30 | Median `TDV ≥ 0.60`; ≥2 exclusive slots per class; ≥4 classes change chain length |
 | M2 configuration verb probe | 15 | ≥4 verbs difference each pair; no block/guard-counter in O2/O3 |
-| M3 stance commitment | 15 | 18 f, uncancellable, illegal from every listed state |
+| M3 stance commitment | 15 | **36 f@60**, uncancellable, illegal from every listed state |
 | M4 guard angle | 15 | Every bearing × every shield class exact |
 | M5 parry eligibility | 15 | Exactly the §D set, exactly RI-CMB05's windows |
 | M6 shield slots | 5 | Frames exact; bash MV ≤ 0.40; charge greatshield-only |
@@ -325,6 +325,12 @@ weapon. If it says yes, `TDV` is a fiction regardless of what M1 computed.
     either is built.
 
 ## Provenance note
+
+**AMENDED wave 0 (rebase-s22), ARBITRATION seam S22.** The stance-switch animation (18 → **36
+f@60**), the `TDV` frame-delta clause (≥3 → **≥6 f@60**), the parry animation lengths and active
+windows (copied from `RI-CMB05` §D, rebased there), the shield-slot frame data and the
+guard-counter window are all **doubled**. Block angles (degrees), stability and absorption
+fractions, and stamina costs are **not** frame data and are unchanged.
 
 `provenance: constructed`, confidence **high**. The stance-switch frame count, the `TDV`
 metric and its thresholds, the exclusive-slot and chain-length-change requirements, the five

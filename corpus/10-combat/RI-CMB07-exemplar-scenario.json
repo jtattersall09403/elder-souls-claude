@@ -1,5 +1,29 @@
 {
  "schema": "es-combat-scenario/1",
+ "INVALIDATED": {
+  "status": "INVALIDATED",
+  "invalidated_by": "ARBITRATION seam S22 (30 Hz -> 60 Hz rebase), applied wave 0 by task `rebase-s22`",
+  "reason": "This scenario's `moveset` blocks and `enemy.actions` frame indices are stated in the pre-rebase unit. It is the INPUT the exemplar must be regenerated from, so it is left numerically untouched rather than half-converted - a partially rebased scenario is exactly the fresh contradiction seam S22 was held back to avoid.",
+  "do_not": "Do NOT mechanically dilate this trace f -> 2f. The dilation is NOT uniform: stamina regeneration is 45/s and the regen delay is 42 f@60, and RI-CMB03 is deliberately excluded from S22, so a doubled timeline regenerates twice as much stamina and the whole stamina economy - the thing this exemplar exists to demonstrate - comes out wrong. Locomotion time (t_reach) is likewise unchanged. Regeneration requires re-running the authored input script against the rebased constants, not scaling the output.",
+  "regenerate_from": "RI-CMB07-exemplar-scenario.json, after that scenario's own moveset/enemy blocks are rebased",
+  "see": [
+   "corpus/00-doctrine/REBASE-S22-REPORT.md",
+   "corpus/00-doctrine/ARBITRATION.md seam S22",
+   "corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md section 0"
+  ],
+  "regeneration_worklist": [
+   "player.moveset.R1 12/5/37 -> 24/10/74 (startup/active/total, f@60)",
+   "player.moveset.R2 25/6/61 -> 50/12/122, ha [15,31] -> [30,62]",
+   "player.moveset.ROLL total 26, iframes [3,15] -> total 52, iframes [5,30]",
+   "player.moveset backstep total 21, iframes [3,6] -> total 42, iframes [5,12]",
+   "player Estus drink 65 f (21/31/13) -> 130 f (42/62/26); heal_secure_frames 52 -> 104",
+   "every enemy move's windup/active/recovery -> x2 (RI-AI02 SS-F rebased)",
+   "medium stagger 22 -> 44; guard break 40 -> UNCHANGED (RI-CMB03 is scoped out of S22 - see the inversion flagged in RI-CMB03 and RI-CMB05 SS-D)",
+   "stamina costs, damage, poise damage, hp pools, distances and shield stability: UNCHANGED",
+   "stamina regen 45/s and the 42 f delay: UNCHANGED - which is why the timeline cannot simply be doubled",
+   "duration_frames 3600: re-derive from the re-run, do not assume 7200 - see RI-CMB07 section 0 on why the RATE bands moved"
+  ]
+ },
  "fps": 60,
  "duration_frames": 3600,
  "seed": 0,

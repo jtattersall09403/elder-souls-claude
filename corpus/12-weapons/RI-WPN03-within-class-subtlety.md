@@ -80,10 +80,17 @@ other weapon in class   ->  baseline_ref: <baseline weapon_id>
 
 An override is one of two kinds, and both count:
 
+> **AMENDED wave 0 (rebase-s22), ARBITRATION seam S22.** This item states few frame figures of
+> its own — it defines *divergence* thresholds against `RI-WPN02`/`RI-CMB02` frame data, which
+> S22 doubled. **The frame-valued thresholds here are separation bars and are doubled with it;
+> the arc-sweep degrees, reach metres, root-displacement metres and every ratio are unchanged.**
+> Each rebased cell is marked inline.
+
+
 | Kind | What changes | Cost to author | Counts toward |
 |---|---|---|---|
 | **Clip override** | `anim` points at a new clip with `anim_owner == this weapon` | high (an animator makes a clip) | `UNQ` and `DEV` |
-| **Parameter override** | same clip, but ≥1 of: `startup_f`/`active_f`/`recovery_f` differing by ≥3 f; a different `shape`; a different `chains_to`; `hyperarmour.enabled` flipped; `arc_sweep_deg` differing by ≥25°; `root_dz_m` differing by ≥0.15 m | low | `DEV` only |
+| **Parameter override** | same clip, but ≥1 of: `startup_f`/`active_f`/`recovery_f` differing by **≥6 f@60** ~~≥3 f~~ *(AMENDED wave 0 (rebase-s22): a separation bar against rebased frame data)*; a different `shape`; a different `chains_to`; `hyperarmour.enabled` flipped; `arc_sweep_deg` differing by ≥25°; `root_dz_m` differing by ≥0.15 m | low | `DEV` only |
 
 A change to `motion_value`, `poise_damage`, `stamina`, damage type or scaling is **not an
 override**. Those are the numbers; this item is about everything else. A weapon whose only
@@ -162,12 +169,12 @@ eighty-seven-weapon roster.
 |---|---|---|---|---|---|
 | Imperial garrison sword | *null* | 3 | — | — | The baseline. Its `r1.*` is the reference rhythm for the whole game. |
 | Kothringi bronze sword | garrison | 1 | 4 | 1 | `r1.3` is a rising cut (`slash_v`, arc 95°) rather than horizontal: catches a rolling enemy the baseline whiffs. |
-| Marsh-guard shortsword | garrison | 1 | 5 | 1 | 2 f faster on every `r1.*`, 0.15 m less reach, `r1.4` legal — the closest thing to a dagger that is still a straight sword. |
+| Marsh-guard shortsword | garrison | 1 | 5 | 1 | **4 f@60** ~~2 f~~ faster on every `r1.*`, 0.15 m less reach, `r1.4` legal — the closest thing to a dagger that is still a straight sword. |
 | Barsaebic warblade | garrison | 2 | 6 | 2 | `r2` is a two-hit thrust-then-slash (`multi_hit: 2`); `2h.r2` gains hyperarmour the class otherwise lacks. |
 | **Oath of the Drowned** *(signature)* | garrison | **7** | 9 | 3 | An entirely authored 1h chain: `r1.1` thrust, `r1.2` horizontal, `r1.3` overhead — the only straight sword that opens with a thrust, so it fights inside a shield. |
-| **Hist-sap blade** *(signature)* | garrison | **6** | 8 | 2 | `art.1` is a committed 62 f lunge; `roll.r1` is a spinning low cut with 340° arc that no other SSW has. |
+| **Hist-sap blade** *(signature)* | garrison | **6** | 8 | 2 | `art.1` is a committed **124 f@60** ~~62 f~~ lunge; `roll.r1` is a spinning low cut with 340° arc (unchanged — degrees) that no other SSW has. |
 | Fen-warden's sword | garrison | 1 | 4 | 1 | Longest SSW at 2.15 m; `run.r1` is a leaping thrust with root Δz 1.30 m. |
-| Rusted levy sword | garrison | 1 | 4 | 1 | Slower recovery on every slot (+4 f), heavier hitstop tier — the "bad" sword that is genuinely different rather than genuinely worse. |
+| Rusted levy sword | garrison | 1 | 4 | 1 | Slower recovery on every slot (**+8 f@60** ~~+4 f~~), heavier hitstop tier — the "bad" sword that is genuinely different rather than genuinely worse. |
 
 Class totals: `UNQ` sum 22 across 8 weapons (mean 2.75), `CLIPS(SSW)/N(SSW)` = 22 + 25
 shared ÷ 8 = **5.9** (well above 1.6), 2 signature weapons, `VEC` all distinct.

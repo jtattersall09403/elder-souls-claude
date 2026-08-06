@@ -343,8 +343,12 @@ CHARACTER FIDELITY = 0.  Also: C4 reported to combat critic as candidate AR-1.
 - **The trace is never emitted**, so §C is unassessable, and the critic writes "animation
   looks acceptable". Guard: no trace → DYNAMIC = 0, stated as a hard rule.
 - **Everything is judged on flat ground.** C8 (foot IK) and half of C3 only fail on slopes and
-  stairs. Black Marsh is mangrove roots, boardwalks and ziggurat steps — the worst possible
-  terrain for a character with no IK. The three locomotion scenarios exist to force this.
+  stairs. Black Marsh is mangrove roots, boardwalks and ziggurat steps **in some regions and
+  cliff paths, scree, fired-clay crack networks and salt terraces in others** — either way the
+  worst possible terrain for a character with no IK, and the *dry* regions are the harsher test
+  because there is no water surface to hide a floating foot. The three locomotion scenarios exist
+  to force this. *(AMENDED wave 0 (rebase-s22), ARBITRATION seam **S24**: thirteen regions, not
+  one; `corpus/50-world/regions.json`.)*
 - **Mixamo-shaped characters.** Free rigs and free animations get used, they are humanoid,
   generic, and they animate like stock footage. This is a *fidelity* pass and an
   **art-direction** disaster (RI-VIS05 §D4, RI-VIS07 will name it) — and the split means

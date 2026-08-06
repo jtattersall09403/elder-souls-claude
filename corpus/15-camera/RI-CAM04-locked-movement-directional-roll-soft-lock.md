@@ -44,7 +44,7 @@ makes an automatic fail when an *enemy* commits it. The player does not get an e
 | Locked, roll, `\|stick\| ≥ 0.5` | **target-relative**, latched frame 1, quantised to 8 × 45° bins | held on target for the whole roll |
 | Locked, roll, `\|stick\| < 0.5` | backstep, directly away | held on target |
 | Locked, sprinting | camera-relative; faces travel | lock retained, camera still framed |
-| Locked, sprint released | target-relative within 6 frames | re-faces at ≤ 720 °/s |
+| Locked, sprint released | target-relative within **6 f@60 (100 ms)** — a responsiveness bar in wall-clock, **not rebased** | re-faces at ≤ 720 °/s (rate, unchanged) |
 
 Movement multipliers **[CMB06 §C]**: forward 1.00, diag-fwd 0.92, lateral 0.85, diag-back
 0.78, backward 0.70. Roll distance is **not** direction-modified.
@@ -84,6 +84,8 @@ Additional clip requirements:
   the *world* displacement; this measures the *clip*).
 - All nine share the frame table of RI-CMB01 §B for the character's equip-load tier — same
   startup, same i-frames, same recovery, same total, per tier. **±0 frames** across directions.
+  *(AMENDED wave 0 (rebase-s22): that table is now `LIGHT` 4/26/22/52, `MEDIUM` 4/22/34/60,
+  `HEAVY` 6/10/72/88, `OVERLOADED` 120 f stumble — all `f@60`.)*
 - `HEAVY` and `OVERLOADED` tiers use the same nine clip *ids* with different timing scales
   (RI-CMB01 §B); they are not a reduced set.
 
@@ -95,7 +97,7 @@ Per frame, with `speed > 0.3 m/s`, classify:
 err        = signed_angle(player_facing, direction_to_target)     # degrees
 travel_err = signed_angle(player_facing, velocity_horizontal)     # degrees
 class      = STRAFE  if |travel_err| > 30 and |err| <= 12
-             TURN    if |yaw_rate| > 5 deg/frame
+             TURN    if |yaw_rate| > 5 deg/frame   [a rate at 60 Hz -- not rebased]
              FORWARD if |travel_err| <= 30
              BACKPEDAL if |travel_err| > 150
 ```
@@ -111,14 +113,37 @@ class      = STRAFE  if |travel_err| > 30 and |err| <= 12
 ### D. The player tracking cutoff — reconciling RI-CMB06 §D with RI-AI02 §C
 
 RI-CMB06 §D gives the player a three-band schedule expressed as fractions of startup.
-RI-AI02 §C gives enemies a hard rule `Tc ≤ W − 4` and a *total yaw budget*. Both apply to
-the player. The reconciliation, which is binding and replaces neither file's law but
+RI-AI02 §C gives enemies a hard rule **`Tc ≤ W − 8`** ~~`Tc ≤ W − 4`~~ and a *total yaw budget*.
+Both apply to the player.
+
+> **REBASED — AMENDED wave 0 (rebase-s22), ARBITRATION seam S22.** Only one input to this
+> section moved: **`W`, the attack startup, doubled** (`RI-CMB02` §A/§B). Everything else here is
+> already unit-correct and is deliberately untouched:
+>
+> | Figure | Class | Under S22 |
+> |---|---|---|
+> | `W` | frame count from `RI-CMB02` | **×2** |
+> | `b1 = ceil(0.40 W)`, `Tc = min(floor(0.80 W), W − 8)` | **derived** | **re-derived, not scaled** — `ceil`/`floor` do not commute with doubling, and the `− 4` term is a separation that becomes `− 8` |
+> | 180 °/s and 45 °/s ceilings | **angular rates** | **NOT rebased.** `180 °/s ÷ 60 Hz = 3.00 °/frame` was and remains correct |
+> | the 45.0° **GLOBAL CAP** | **degrees** | **NOT rebased** |
+> | soft-lock envelope 4.0 m / ±30° | metres and degrees | unchanged |
+>
+> **The consequence is large and is recorded rather than tuned away.** The steering *rate* is
+> unchanged and the windup is twice as long, so the *uncapped* yaw budget roughly doubles — and
+> the 45° cap, which used to bind only three of fourteen rows, now binds **ten of fourteen**.
+> That is arguably correct (a 400 ms windup gives the player more real time to correct, and the
+> enemy is still moving at an unchanged m/s), and the cap is doing exactly the job §D says it
+> exists for. But it means the *per-class* budget column has largely collapsed into a single
+> value, so the table now discriminates between classes far less than it did. **This is a design
+> question the S22 ruling did not raise, and it is filed in `REBASE-S22-REPORT.md` §7 rather
+> than answered here.** The obvious alternatives — lowering the band-1 rate, or raising the cap
+> — are both retunes, not unit corrections. The reconciliation, which is binding and replaces neither file's law but
 composes them:
 
 ```
 W    = attack startup in frames (RI-CMB02 §A/§B, after §C modifiers, round-half-up)
 b1   = ceil(0.40 * W)                       # end of the fast band  [CMB06 convention]
-Tc   = min( floor(0.80 * W), W - 4 )        # cutoff  [CMB06 fraction, AI02 hard rule]
+Tc   = min( floor(0.80 * W), W - 8 )        # cutoff  [CMB06 fraction, AI02 hard rule, rebased]
 frame 1            : instant snap to target (locked) or soft-lock target (unlocked) [CMB06 §D]
 frames 2 .. b1     : <= 180 deg/s  = 3.00 deg/frame
 frames b1+1 .. Tc  : <=  45 deg/s  = 0.75 deg/frame
@@ -129,41 +154,60 @@ GLOBAL CAP: total post-snap yaw over the whole attack <= 45.0 deg, whichever bin
 
 **Per-class table (R1, one-handed, first hit of the chain).** `W` from RI-CMB02 §A.
 
-| Class | `W` | `b1` | `Tc` | Band-1 frames (°) | Band-2 frames (°) | Budget | Capped |
-|---|---|---|---|---|---|---|---|
-| Dagger | 6 | 3 | **2** | 2–2 (3.00°) | — | 3.00° | 3.00° |
-| Straight sword | 12 | 5 | **8** | 2–5 (12.00°) | 6–8 (2.25°) | 14.25° | 14.25° |
-| Spear | 14 | 6 | **10** | 2–6 (15.00°) | 7–10 (3.00°) | 18.00° | 18.00° |
-| Axe | 16 | 7 | **12** | 2–7 (18.00°) | 8–12 (3.75°) | 21.75° | 21.75° |
-| Halberd | 19 | 8 | **15** | 2–8 (21.00°) | 9–15 (5.25°) | 26.25° | 26.25° |
-| Greatsword | 22 | 9 | **17** | 2–9 (24.00°) | 10–17 (6.00°) | 30.00° | 30.00° |
-| Ultra greatsword | 29 | 12 | **23** | 2–12 (33.00°) | 13–23 (8.25°) | 41.25° | 41.25° |
+**REBASED and re-derived — AMENDED wave 0 (rebase-s22).**
 
-The ultra greatsword row reproduces RI-CMB06 §D's worked example (33° / 8.3° / 41.3°) to
-within rounding. That is the consistency check on this table, not a coincidence.
+| Class | `W` (f@60) | `b1` | `Tc` | Band-1 frames (°) | Band-2 frames (°) | Budget | Capped at 45° |
+|---|---|---|---|---|---|---|---|
+| Dagger | 12 | 5 | **4** | 2–4 (9.00°) | — | 9.00° | 9.00° |
+| Straight sword | 24 | 10 | **16** | 2–10 (27.00°) | 11–16 (4.50°) | 31.50° | 31.50° |
+| Spear | 28 | 12 | **20** | 2–12 (33.00°) | 13–20 (6.00°) | 39.00° | 39.00° |
+| Axe | 32 | 13 | **24** | 2–13 (36.00°) | 14–24 (8.25°) | 44.25° | 44.25° |
+| Halberd | 38 | 16 | **30** | 2–16 (45.00°) | 17–30 (10.50°) | 55.50° | **45.00°** |
+| Greatsword | 44 | 18 | **35** | 2–18 (51.00°) | 19–35 (12.75°) | 63.75° | **45.00°** |
+| Ultra greatsword | 58 | 24 | **46** | 2–24 (69.00°) | 25–46 (16.50°) | 85.50° | **45.00°** |
+
+~~Pre-rebase: Dagger 6/3/2, 3.00°; SSW 12/5/8, 14.25°; SPR 14/6/10, 18.00°; AXE 16/7/12,
+21.75°; HLB 19/8/15, 26.25°; GSW 22/9/17, 30.00°; UGS 29/12/23, 41.25°. No R1 row was capped.~~
+
+~~The ultra greatsword row reproduces RI-CMB06 §D's worked example (33° / 8.3° / 41.3°) to
+within rounding. That is the consistency check on this table, not a coincidence.~~
+
+> **The RI-CMB06 cross-check is broken by the rebase and must be re-established there.**
+> `RI-CMB06` §D's worked example (33° / 8.3° / 41.3°) was computed against the *pre-rebase* UGS
+> `W = 29`. At `W = 58` the uncapped figures are 69° / 16.5° / 85.5°, capped to 45°. **`RI-CMB06`
+> is not in S22's rebase list and was not touched by this sweep**, so its worked example now
+> disagrees with this table. Filed in `REBASE-S22-REPORT.md` §7 as an item the ruling did not
+> name; `RI-CMB06` §D needs the same amendment.
 
 **Per-class table (R2, one-handed, uncharged).** `W` from RI-CMB02 §B.
 
-| Class | `W` | `b1` | `Tc` | Band-1 (°) | Band-2 (°) | Budget | **Capped at 45°** |
+**REBASED and re-derived — AMENDED wave 0 (rebase-s22).**
+
+| Class | `W` (f@60) | `b1` | `Tc` | Band-1 (°) | Band-2 (°) | Budget | **Capped at 45°** |
 |---|---|---|---|---|---|---|---|
-| Dagger | 14 | 6 | **10** | 15.00° | 3.00° | 18.00° | 18.00° |
-| Straight sword | 25 | 10 | **20** | 27.00° | 7.50° | 34.50° | 34.50° |
-| Spear | 27 | 11 | **21** | 30.00° | 7.50° | 37.50° | 37.50° |
-| Axe | 30 | 12 | **24** | 33.00° | 9.00° | 42.00° | 42.00° |
-| Halberd | 34 | 14 | **27** | 39.00° | 9.75° | 48.75° | **45.00°** |
-| Greatsword | 40 | 16 | **32** | 45.00° | 12.00° | 57.00° | **45.00°** |
-| Ultra greatsword | 52 | 21 | **41** | 60.00° | 15.00° | 75.00° | **45.00°** |
+| Dagger | 28 | 12 | **20** | 33.00° | 6.00° | 39.00° | 39.00° |
+| Straight sword | 50 | 20 | **40** | 57.00° | 15.00° | 72.00° | **45.00°** |
+| Spear | 54 | 22 | **43** | 63.00° | 15.75° | 78.75° | **45.00°** |
+| Axe | 60 | 24 | **48** | 69.00° | 18.00° | 87.00° | **45.00°** |
+| Halberd | 68 | 28 | **54** | 81.00° | 19.50° | 100.50° | **45.00°** |
+| Greatsword | 80 | 32 | **64** | 93.00° | 24.00° | 117.00° | **45.00°** |
+| Ultra greatsword | 104 | 42 | **83** | 123.00° | 30.75° | 153.75° | **45.00°** |
+
+~~Pre-rebase: DGR 14/6/10, 18.00°; SSW 25/10/20, 34.50°; SPR 27/11/21, 37.50°; AXE 30/12/24,
+42.00°; HLB 34/14/27 capped; GSW 40/16/32 capped; UGS 52/21/41 capped. Three of seven capped.~~
 
 **Why the 45° cap exists.** Without it, a heavy weapon's long windup buys *more* correction,
 which inverts the whole risk model: the slowest attacks would be the most forgiving. The cap
 also makes the player **stricter than any enemy in the game** — RI-AI02 §C allows trash 60°,
-elites 90°, bosses 100°, and designated tracking moves 180°. That asymmetry is deliberate:
+elites 90°, bosses 100°, and designated tracking moves 180°, **all of which are degree budgets
+and are unchanged by S22**. That asymmetry is deliberate:
 the player has a camera, a lock-on, and a stick; the enemy has neither.
 
 **Modifiers.** Rolling / running / jump attacks scale `W` per RI-CMB02 §C; `b1`, `Tc` and
 the bands are recomputed from the modified `W`, not scaled. Two-handing does not change `W`
-and therefore does not change any cell. Charged R2 charge frames are inserted *after*
-startup and are **frozen** (0 °/s) throughout — a charge is not a free aim.
+and therefore does not change any cell. Charged R2 charge frames (**up to +60 f@60** after the
+S22 rebase, ~~+30 f~~) are inserted *after* startup and are **frozen** (0 °/s) throughout — a
+charge is not a free aim.
 
 **Steering targets.** Steering is toward the target's **current** position each frame,
 rate-limited **[CMB06 §D]**. It is never a `slerp` with a fixed alpha and never a `lookAt`.
@@ -219,7 +263,7 @@ each direction, then approach/retreat for 300 each, on flat ground and on a 20°
 2. `Tc_measured` = the last frame (relative to attack start) with `|yaw_rate| > 2.0 °/s`,
    using RI-AI02 §A's definition verbatim.
 3. `budget_measured` = `Σ |Δyaw|` over frames 2..end.
-- **FAIL** if `Tc_measured ≠ Tc` for any row (**±0 frames**).
+- **FAIL** if `Tc_measured ≠ Tc` for any row (**±0 frames**), against the **rebased** §D tables.
 - **FAIL** if `budget_measured` exceeds the row's capped budget by > 2.0°.
 - **FAIL** if `|yaw_rate|` exceeds 3.00 °/frame in band 1 or 0.75 °/frame in band 2.
 - **FAIL** if any frame with `phase ∈ {active, recovery}` has `|yaw_rate| > 2.0 °/s`
@@ -234,11 +278,11 @@ each direction, then approach/retreat for 300 each, on flat ground and on a 20°
 with the target strafing at 6 m/s.
 - **FAIL** if `Σ|Δyaw| > 0.5°` over any of those animations.
 
-**M5 — Charged R2.** Hold the heavy attack to full charge (+30 f) with a strafing target.
+**M5 — Charged R2.** Hold the heavy attack to full charge (**+60 f@60** ~~+30 f~~) with a strafing target.
 - **FAIL** if any yaw change occurs during the charge frames.
 
-**M6 — Sprint handoff.** Locked, sprint for 120 frames, release.
-- **FAIL** if the character has not returned to target-relative strafing within 6 frames
+**M6 — Sprint handoff.** Locked, sprint for 240 f@60 ~~120 frames~~, release.
+- **FAIL** if the character has not returned to target-relative strafing within 6 f@60 *(not rebased — see §B)*
   **[CMB06 §C]**, or if the return exceeds 720 °/s, or if the lock breaks.
 
 ## Scoring
@@ -250,7 +294,7 @@ with the target strafing at 6 m/s.
 | M3 tracking cutoff | **30** | `Tc` exact for all 14 rows, budgets within 2°, zero yaw in active/recovery |
 | M4 frozen states | 10 | No steering in roll/heal/stagger/critical |
 | M5 charged R2 | 5 | No steering during charge |
-| M6 sprint handoff | 5 | 6-frame return, lock retained |
+| M6 sprint handoff | 5 | 6 f@60 return, lock retained |
 
 Score = sum of passed weights, 0–100.
 
@@ -295,7 +339,7 @@ bound with `W` is the tell. Record the pick before the reveal.
    gives a different `Tc` per weapon by accident, and is unmeasurable.
 8. **Scaling `Tc` with the attack modifiers instead of recomputing it.** A rolling attack has
    `W × 0.60`; scaling `Tc` by 0.60 gives a different (and always larger) value than
-   recomputing `min(floor(0.80 W'), W' − 4)`. Off by 1–3 frames per class, invisible except
+   recomputing `min(floor(0.80 W'), W' − 8)`. Off by 1–3 frames per class, invisible except
    in M3's modifier pass.
 9. **No global budget cap**, so an ultra greatsword R2 quietly gets 75° of correction and
    becomes the *easiest* weapon to land. Nobody notices until the balance pass, by which time
@@ -318,7 +362,8 @@ bound with `W` is the tell. Record the pick before the reveal.
 - **[AI02] law** (`Tc` definition as the last frame with `yaw_rate_dps > 2.0`, the hard rule
   `Tc ≤ W − 4`, anti-patterns AP2 and AP3) is `constructed` by RI-AI02 and adopted
   **verbatim and binding**, applied to the player.
-- **[CMB01] / [CMB02]** supply the roll frame tables and the startup values `W`. The §D
+- **[CMB01] / [CMB02]** supply the roll frame tables and the startup values `W`, **both rebased
+  under seam S22 wave 0; every `W` in §D is doubled and every derived cell re-derived**. The §D
   tables are **`derived`** from those files' numbers by the formulas stated in §D. A critic
   must recompute them rather than quote them; if RI-CMB02 §A/§B ever changes, every cell in
   §D changes with it and this file must be amended in the same commit.

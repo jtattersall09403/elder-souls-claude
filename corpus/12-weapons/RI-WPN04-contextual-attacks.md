@@ -54,27 +54,60 @@ RI-CMB02 §C, which has no backstep row and no guard-counter row.
 attack, and RI-CMB02 §C's ×0.60 rolling multiplier applied to the dagger's 6 f base yields 4.
 **That is an internal contradiction in RI-CMB02** and it is reported as such (see the
 provenance note). This item resolves it by applying the §E floor after the multiplier: any
-derived startup below 6 is clamped to 6. The clamp binds for **DGR and FST only**, on their
-rolling, running and backstep slots.
+derived startup below 6 is clamped to 6. ~~The clamp binds for **DGR and FST only**, on their
+rolling, running and backstep slots.~~
 
-Startup / active / recovery, one-handed, at 60 Hz. Clamped cells are marked ⌊6⌋.
+> **AMENDED wave 0 (rebase-s22), ARBITRATION seam S22 — the clamp no longer binds anything, and
+> DGR and FST get their speed advantage back.** The floor is **6 f@60 = 100 ms** and is
+> **NOT rebased** (it is a human reaction-time bar, not an animation length — see `RI-CMB02` §C's
+> boxed note). The base rows it multiplies **are** rebased, so the smallest product in the table
+> is now `DGR roll.r1` at `round(12 × 0.60) = 7 f@60`, and `FST roll.r1` at
+> `round(14 × 0.60) = 8 f@60`. **Nothing clamps.** Every ⌊6⌋ marker is therefore removed, and the
+> two fastest classes keep the contextual speed the clamp was confiscating — a strictly better
+> outcome than the one the pre-rebase amendment had to settle for. The clamp stays in the
+> derivation as a guard against future retuning.
+
+**REBASED — AMENDED wave 0 (rebase-s22).** Startup / active / recovery, one-handed, at 60 Hz —
+all cells `f@60`, **re-derived** by applying the (unchanged, dimensionless) §A multipliers to the
+**rebased** `RI-WPN02` §B base rows, with `round-half-up` applied once to each product. They are
+*not* the old cells doubled: rounding does not commute with scaling, so several cells differ from
+a naive ×2 by one frame.
 
 | Class | `r1.1` (base) | `roll.r1` | `run.r1` | `backstep.r1` | `jump.r1` |
 |---|---|---|---|---|---|
-| DGR | 6 / 3 / 12 | ⌊6⌋ / 3 / 13 | ⌊6⌋ / 3 / 12 | ⌊6⌋ / 3 / 11 | 8 / 4 / 14 |
-| FST | 7 / 2 / 13 | ⌊6⌋ / 2 / 14 | ⌊6⌋ / 2 / 13 | ⌊6⌋ / 2 / 12 | 9 / 3 / 16 |
-| CSW | 10 / 5 / 17 | 6 / 5 / 19 | 7 / 5 / 17 | 7 / 5 / 16 | 13 / 6 / 20 |
-| TSW | 11 / 4 / 18 | 7 / 4 / 20 | 8 / 4 / 18 | 7 / 4 / 17 | 14 / 5 / 22 |
-| SSW | 12 / 5 / 20 | 7 / 5 / 22 | 8 / 5 / 20 | 8 / 5 / 19 | 16 / 6 / 24 |
-| SPR | 14 / 4 / 22 | 8 / 4 / 24 | 10 / 4 / 22 | 9 / 4 / 21 | 18 / 5 / 26 |
-| AXE | 16 / 6 / 24 | 10 / 6 / 26 | 11 / 6 / 24 | 10 / 6 / 23 | 21 / 8 / 29 |
-| MCE | 17 / 6 / 25 | 10 / 6 / 28 | 12 / 6 / 25 | 11 / 6 / 24 | 22 / 8 / 30 |
-| HLB | 19 / 7 / 28 | 11 / 7 / 31 | 13 / 7 / 28 | 12 / 7 / 27 | 25 / 9 / 34 |
-| WHP | 20 / 5 / 29 | 12 / 5 / 32 | 14 / 5 / 29 | 13 / 5 / 28 | 26 / 6 / 35 |
-| GSW | 22 / 8 / 33 | 13 / 8 / 36 | 15 / 8 / 33 | 14 / 8 / 31 | 29 / 10 / 40 |
-| CGS | 24 / 9 / 35 | 14 / 9 / 39 | 17 / 9 / 35 | 16 / 9 / 33 | 31 / 11 / 42 |
-| GHM | 26 / 8 / 40 | 16 / 8 / 44 | 18 / 8 / 40 | 17 / 8 / 38 | 34 / 10 / 48 |
-| UGS | 29 / 10 / 44 | 17 / 10 / 48 | 20 / 10 / 44 | 19 / 10 / 42 | 38 / 13 / 53 |
+| DGR | `12 / 6 / 24` | 7 / 6 / 26 | 8 / 6 / 24 | 8 / 6 / 23 | 16 / 8 / 29 |
+| FST | `14 / 4 / 26` | 8 / 4 / 29 | 10 / 4 / 26 | 9 / 4 / 25 | 18 / 5 / 31 |
+| CSW | `20 / 10 / 34` | 12 / 10 / 37 | 14 / 10 / 34 | 13 / 10 / 32 | 26 / 13 / 41 |
+| TSW | `22 / 8 / 36` | 13 / 8 / 40 | 15 / 8 / 36 | 14 / 8 / 34 | 29 / 10 / 43 |
+| SSW | `24 / 10 / 40` | 14 / 10 / 44 | 17 / 10 / 40 | 16 / 10 / 38 | 31 / 13 / 48 |
+| SPR | `28 / 8 / 44` | 17 / 8 / 48 | 20 / 8 / 44 | 18 / 8 / 42 | 36 / 10 / 53 |
+| AXE | `32 / 12 / 48` | 19 / 12 / 53 | 22 / 12 / 48 | 21 / 12 / 46 | 42 / 15 / 58 |
+| MCE | `34 / 12 / 50` | 20 / 12 / 55 | 24 / 12 / 50 | 22 / 12 / 48 | 44 / 15 / 60 |
+| HLB | `38 / 14 / 56` | 23 / 14 / 62 | 27 / 14 / 56 | 25 / 14 / 53 | 49 / 18 / 67 |
+| WHP | `40 / 10 / 58` | 24 / 10 / 64 | 28 / 10 / 58 | 26 / 10 / 55 | 52 / 13 / 70 |
+| GSW | `44 / 16 / 66` | 26 / 16 / 73 | 31 / 16 / 66 | 29 / 16 / 63 | 57 / 20 / 79 |
+| CGS | `48 / 18 / 70` | 29 / 18 / 77 | 34 / 18 / 70 | 31 / 18 / 67 | 62 / 23 / 84 |
+| GHM | `52 / 16 / 80` | 31 / 16 / 88 | 36 / 16 / 80 | 34 / 16 / 76 | 68 / 20 / 96 |
+| UGS | `58 / 20 / 88` | 35 / 20 / 97 | 41 / 20 / 88 | 38 / 20 / 84 | 75 / 25 / 106 |
+
+~~Pre-rebase table (all cells exactly half, and ⌊6⌋ clamps on DGR and FST):~~
+
+~~| Class | `r1.1` (base) | `roll.r1` | `run.r1` | `backstep.r1` | `jump.r1` |~~
+~~|---|---|---|---|---|---|~~
+~~| DGR | 6 / 3 / 12 | ⌊6⌋ / 3 / 13 | ⌊6⌋ / 3 / 12 | ⌊6⌋ / 3 / 11 | 8 / 4 / 14 |~~
+~~| FST | 7 / 2 / 13 | ⌊6⌋ / 2 / 14 | ⌊6⌋ / 2 / 13 | ⌊6⌋ / 2 / 12 | 9 / 3 / 16 |~~
+~~| CSW | 10 / 5 / 17 | 6 / 5 / 19 | 7 / 5 / 17 | 7 / 5 / 16 | 13 / 6 / 20 |~~
+~~| TSW | 11 / 4 / 18 | 7 / 4 / 20 | 8 / 4 / 18 | 7 / 4 / 17 | 14 / 5 / 22 |~~
+~~| SSW | 12 / 5 / 20 | 7 / 5 / 22 | 8 / 5 / 20 | 8 / 5 / 19 | 16 / 6 / 24 |~~
+~~| SPR | 14 / 4 / 22 | 8 / 4 / 24 | 10 / 4 / 22 | 9 / 4 / 21 | 18 / 5 / 26 |~~
+~~| AXE | 16 / 6 / 24 | 10 / 6 / 26 | 11 / 6 / 24 | 10 / 6 / 23 | 21 / 8 / 29 |~~
+~~| MCE | 17 / 6 / 25 | 10 / 6 / 28 | 12 / 6 / 25 | 11 / 6 / 24 | 22 / 8 / 30 |~~
+~~| HLB | 19 / 7 / 28 | 11 / 7 / 31 | 13 / 7 / 28 | 12 / 7 / 27 | 25 / 9 / 34 |~~
+~~| WHP | 20 / 5 / 29 | 12 / 5 / 32 | 14 / 5 / 29 | 13 / 5 / 28 | 26 / 6 / 35 |~~
+~~| GSW | 22 / 8 / 33 | 13 / 8 / 36 | 15 / 8 / 33 | 14 / 8 / 31 | 29 / 10 / 40 |~~
+~~| CGS | 24 / 9 / 35 | 14 / 9 / 39 | 17 / 9 / 35 | 16 / 9 / 33 | 31 / 11 / 42 |~~
+~~| GHM | 26 / 8 / 40 | 16 / 8 / 44 | 18 / 8 / 40 | 17 / 8 / 38 | 34 / 10 / 48 |~~
+~~| UGS | 29 / 10 / 44 | 17 / 10 / 48 | 20 / 10 / 44 | 19 / 10 / 42 | 38 / 13 / 53 |~~
 
 BOW substitutes `bow.roll` (draw 14 / release / 22 recovery, MV 0.60) for all four and has no
 `jump` variant. `guard.counter` frames are derived by the §A multiplier from each class's
@@ -91,27 +124,28 @@ A contextual slot is reachable **only** from its state, **only** inside its wind
 
 | Slot | State | Window | Notes |
 |---|---|---|---|
-| `roll.r1` / `roll.r2` | `ROLL`, tier `LIGHT` | **f16–f26** (11 f) | The roll's recovery frames. RI-CMB01 §B. |
-| | `ROLL`, tier `MEDIUM` | **f14–f29** (16 f) | Recovery is f14–f30; capped at 16 f. |
-| | `ROLL`, tier `HEAVY` | **f9–f24** (16 f) | Recovery is f9–f44; capped at 16 f. **The cap exists so that fat-rolling does not buy the most generous rolling-attack window in the game** — otherwise the heaviest equip load would be rewarded with a 36-frame input window, which inverts RI-CMB01's whole equip-load design. |
+| `roll.r1` / `roll.r2` | `ROLL`, tier `LIGHT` | **f31–f52** (22 f@60) ~~f16–f26 (11 f)~~ | The roll's recovery frames. RI-CMB01 §B, rebased. |
+| | `ROLL`, tier `MEDIUM` | **f27–f58** (32 f@60) ~~f14–f29 (16 f)~~ | Recovery is f27–f60; capped at **32 f@60** ~~16 f~~. |
+| | `ROLL`, tier `HEAVY` | **f17–f48** (32 f@60) ~~f9–f24 (16 f)~~ | Recovery is f17–f88; capped at **32 f@60**. **The cap exists so that fat-rolling does not buy the most generous rolling-attack window in the game** — otherwise the heaviest equip load would be rewarded with a **72-frame** ~~36-frame~~ input window, which inverts RI-CMB01's whole equip-load design. |
 | | `ROLL`, tier `OVERLOADED` | **none** | No rolling attack at all. |
-| `backstep.r1` | `BACKSTEP`, `LIGHT`/`MEDIUM` | **f7–f21** (15 f) | Backstep total is 21 f; the window is its entire recovery. |
-| | `BACKSTEP`, `HEAVY` | **f4–f19** (16 f) | Capped, same rationale. |
+| `backstep.r1` | `BACKSTEP`, `LIGHT`/`MEDIUM` | **f13–f42** (30 f@60) ~~f7–f21 (15 f)~~ | Backstep total is **42 f@60**; the window is its entire recovery. |
+| | `BACKSTEP`, `HEAVY` | **f7–f38** (32 f@60) ~~f4–f19 (16 f)~~ | Capped, same rationale. |
 | | `BACKSTEP`, `OVERLOADED` | **none** | |
-| `run.r1` / `run.r2` | `SPRINT` | held **≥12 consecutive frames**, plus an 8 f grace after sprint release | The grace exists because the player releases sprint as they commit; without it the running attack is unreliable and players stop using it. |
+| `run.r1` / `run.r2` | `SPRINT` | held **≥24 consecutive f@60** ~~≥12~~, plus an **8 f@60 grace** after sprint release | The sprint-hold requirement is an animation-scale figure and rebases; **the grace does not** — it is the `RI-CMB01` §C.6 input buffer, a wall-clock allowance for human input error, which S22 leaves at 8 f@60 (133 ms). |
 | | `SPRINT`, `OVERLOADED` | **none** | |
 | `jump.r1` / `jump.r2` | `AIRBORNE` **and** `vel_y < 0` | any descending frame | **No rising jump attacks.** Forbidden entirely at `OVERLOADED` (RI-CMB02 §C). |
 | `plunge` | `AIRBORNE`, fall height ≥ **3.0 m**, a valid target inside a 2.0 m radius cylinder below | any descending frame | Takes precedence over `jump.r1` when both are legal. |
-| `guard.counter` | within **20 f** of a `BLOCK_SUCCESS` event | 20 f | Requires the `BLOCK_SUCCESS` event to exist in the trace vocabulary — see the harness request. |
-| `guardbreak` | `IDLE`, `move` forward magnitude ≥ 0.9, no `light` press in the previous 8 f | — | The only contextual slot reachable from idle, and the awkward input is deliberate. |
+| `guard.counter` | within **40 f@60** ~~20 f~~ of a `BLOCK_SUCCESS` event | 40 f@60 | Requires the `BLOCK_SUCCESS` event to exist in the trace vocabulary — see the harness request. ⚠ **`RI-CMB02` §C states this window as 24 f@60 (was 12 f) — a pre-existing contradiction, not caused by the rebase, doubled faithfully on both sides and flagged rather than silently resolved. See `RI-CMB02` §C and `REBASE-S22-REPORT.md` §7.** |
+| `guardbreak` | `IDLE`, `move` forward magnitude ≥ 0.9, no `light` press in the previous **8 f@60** (the input buffer; **not rebased**) | — | The only contextual slot reachable from idle, and the awkward input is deliberate. |
 
-**Buffer interaction (binding).** The combo buffer is 8 frames wide and holds exactly one
-action (RI-CMB02 §D.5, RI-CMB01 §C.6). Therefore:
+**Buffer interaction (binding).** The combo buffer is **8 f@60 (133 ms)** wide and holds exactly
+one action (RI-CMB02 §D.5, RI-CMB01 §C.6). **S22 does not rebase it** — see RI-CMB01 §C.6 for the
+reasoning. Therefore:
 
 1. A `light` press within 8 frames **before** a window opens is buffered and fires the
    contextual slot on the window's first frame.
 2. A `light` press earlier than that is **dropped**, not stored. Mashing light through a
-   roll's i-frames produces exactly one rolling attack, on frame 16, not a queue.
+   roll's i-frames produces exactly one rolling attack, on frame **31** ~~16~~, not a queue.
 3. A `light` press after a window closes produces the standard `r1.1` once the state ends —
    correctly, and this is the *only* legal path from a contextual state to the standard
    attack. It must be distinguishable in the trace by *when* the attack starts.
@@ -130,11 +164,11 @@ weapon authors are aiming at the same thing.
 | `roll.r2` | The same, but breaking poise (classes with arc ≥ 120° only) | A4, A9 | Trades reach for a poise event |
 | `run.r1` | Close 2× the root distance while attacking | A5, A8 | The only way to attack a retreating or ranged enemy without arriving in neutral |
 | `run.r2` | Gap-close *through* an attack (heavy classes carry hyperarmour into it) | A4, A5 | Accepts a hit to arrive |
-| `backstep.r1` | Whiff-punish while staying square to the target | A3, A10 | 4 i-frames instead of 13, ×1.40 root recovery — a **read**, not a panic button. This is the slot that separates good players from rolling. |
+| `backstep.r1` | Whiff-punish while staying square to the target | A3, A10 | **8 i-frames instead of 26** ~~4 instead of 13~~, ×1.40 root recovery — a **read**, not a panic button. This is the slot that separates good players from rolling. |
 | `jump.r1` | Poise damage ×1.80 | A2, A4, A9 | The cheapest poise break in the kit; costs a fixed landing spot |
 | `jump.r2` | Poise damage on a class that cannot charge | A4 | |
 | `plunge` | Open an encounter from above, unanswerable | A6, A9 | The level-design verb; RI-WLD07 owns the geometry that makes it possible |
-| `guard.counter` | Convert a block into offence within 20 f | A1, A2, A4 | The shield's only offensive line; ×1.60 poise damage |
+| `guard.counter` | Convert a block into offence within **40 f@60** ~~20 f~~ | A1, A2, A4 | The shield's only offensive line; ×1.60 poise damage |
 | `guardbreak` | Strip a raised guard | **A2 TURTLE** | RI-AI05 §7 requires this to ship before TURTLE's first appearance |
 
 Every contextual slot must be the **strictly better** choice in at least one measurable
@@ -193,16 +227,16 @@ every hitbox record. Run T1–T5.
 **M2 — Window probe.** For each weapon × contextual slot, inject the `light` press at every
 frame `k` of the enclosing state, in separate runs, and record which slot fired.
 - Build `Wgrid[slot][k] ∈ {none, contextual, standard, buffered}`.
-- **FAIL** if `contextual` appears outside §B's window by even one frame.
+- **FAIL** if `contextual` appears outside §B's (rebased) window by even one frame.
 - **FAIL** if `buffered` appears earlier than 8 frames before the window opens.
-- **FAIL** if mashing `light` every 2 frames through a whole roll produces more than one
+- **FAIL** if mashing `light` every 4 frames through a whole roll produces more than one
   attack.
 - **FAIL** if a press at 3 stamina produces a standard attack instead of nothing.
 - The `Wgrid` is this item's second diagnostic artifact and belongs in the verdict.
 
 **M3 — Equip-load window conformance.** Repeat M2 at each of the four RI-CMB01 tiers.
 - **FAIL** if `OVERLOADED` produces any contextual attack.
-- **FAIL** if `HEAVY`'s rolling-attack window exceeds 16 f (the fat-roll inversion).
+- **FAIL** if `HEAVY`'s rolling-attack window exceeds **32 f@60** ~~16 f~~ (the fat-roll inversion).
 - **FAIL** if any window varies with anything other than the tier.
 
 **M4 — Aerial rules.** Drive `jump.r1` on the ascending half of a jump and on the descending
@@ -250,8 +284,8 @@ data and the M1 measurement.
 | Check | Weight | Pass condition |
 |---|---|---|
 | M1 contextual census / `CFS` | 30 | `CFS = 1.00`; every T5 cell exact |
-| M2 window probe | 25 | Windows exact to the frame; buffer 8 f; no multi-fire; stamina drops the input |
-| M3 equip-load conformance | 10 | Four tiers exact; `OVERLOADED` produces nothing; `HEAVY` capped at 16 f |
+| M2 window probe | 25 | Windows exact to the frame; buffer 8 f@60; no multi-fire; stamina drops the input |
+| M3 equip-load conformance | 10 | Four tiers exact; `OVERLOADED` produces nothing; `HEAVY` capped at **32 f@60** |
 | M4 aerial rules | 10 | No rising jump attack; plunge gated on height and target; root-track landing |
 | M5 situational superiority | 15 | Every slot strictly better on its own metric in ≥70% of trials |
 | M6 declared-vs-observed | 10 | 100% agreement |
@@ -305,7 +339,7 @@ If it cannot separate them, T3 has already failed and the blind test is confirma
    rolling attack, including during i-frames, because bounding the window is fiddly. The
    input stops being a skill; roll-attack becomes strictly better than attack; the game
    collapses into one verb. M2's `Wgrid` is the artifact that shows it in one glance.
-5. **Fat-roll gets the best window.** Nobody caps the `HEAVY` tier's 36-frame recovery, so
+5. **Fat-roll gets the best window.** Nobody caps the `HEAVY` tier's **72-frame** ~~36-frame~~ recovery, so
    the heaviest build has a three-times-wider input window than the lightest. The equip-load
    design in RI-CMB01 inverts silently and the tuning conversation that follows is about
    damage numbers.
@@ -324,7 +358,9 @@ If it cannot separate them, T3 has already failed and the blind test is confirma
    enemy. `CFS` passes at 1.00 and the game plays as if none of them exist. M5 is the only
    check that catches it, it is the most expensive check in the item, and it is the one most
    likely to be skipped.
-10. **The 6-frame floor is applied inconsistently.** DGR and FST are the only classes it
+10. **The 6-frame floor is applied inconsistently.** *(AMENDED wave 0 (rebase-s22): after the
+    S22 rebase the floor binds nothing, so this failure mode is now dormant rather than live.
+    Left in place because a future retune could wake it.)* DGR and FST are the only classes it
     binds, so it will be implemented as a special case, forgotten in the two-handed table,
     and produce a 4-frame dagger rolling attack that is unreactable — violating RI-CMB02 §E's
     stated rationale ("below this the attack is unreactable and un-trade-able") in the one

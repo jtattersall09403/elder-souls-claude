@@ -40,24 +40,41 @@ re-issued mid-animation deletes the entire risk model.
 > numbers in the same column with no unit stated, and §B's design rationale then rested on the
 > comparison. That false equivalence is what this warning removes.
 >
-> **The corpus-wide consequence, stated plainly: our combat currently runs at roughly double
-> Souls wall-clock speed while looking correct on paper.** Every *ratio* is preserved — §E's
+> ~~**The corpus-wide consequence, stated plainly: our combat currently runs at roughly double
+> Souls wall-clock speed while looking correct on paper.**~~ Every *ratio* is preserved — §E's
 > derived table is healthy, our LIGHT roll is invulnerable for 0.500 of its animation against
-> DS1's fast-roll 0.458 — so the discrepancy survives every internal consistency check, every
-> blind pair over frame vectors, and every M-check in every method script. It surfaces only
-> when a human plays it.
+> DS1's fast-roll 0.458 — so the discrepancy survived every internal consistency check, every
+> blind pair over frame vectors, and every M-check in every method script. It surfaced only
+> when a human played it.
 >
-> **This audit declared the unit; it did not rebase the numbers.** Rebasing (doubling every
-> frame count inherited from Souls recall, across RI-CMB01, RI-CMB02, RI-CMB05 and RI-CMB08,
-> and regenerating the RI-CMB07 exemplar trace) is a **design decision about how the game
-> should feel**, not a coherence repair, and it must be settled by a wave that can play the
-> result. It is registered as an **open design question** in `CORPUS-COHERENCE-01.md` §9 and
-> `constants.json` (`combat.souls_tick_hz`). **What is no longer acceptable, and is fixed here,
-> is the status quo in which the two units shared a table with nothing said.**
+> ~~**This audit declared the unit; it did not rebase the numbers.**~~ ~~Rebasing … must be
+> settled by a wave that can play the result.~~ **REBASE APPLIED — AMENDED wave 0
+> (rebase-s22).** The orchestrator ruled **REBASE** (`ORCHESTRATOR-RULINGS.md` R1, now
+> ARBITRATION seam **S22**), superseding the audit's *declare-only* position recorded in
+> `CORPUS-COHERENCE-01.md` §9a. **Every frame count in §B, §C, §D and §E below has been
+> doubled**, so that the durations they describe are correct in wall-clock at 60 Hz. The
+> superseded values are kept in the `Was` columns and struck-through text below; nothing is
+> deleted. Applied across `RI-CMB01`, `RI-CMB02`, `RI-CMB05`, `RI-CMB08`, `RI-AI02`, `RI-AI03`,
+> `RI-WPN01`–`RI-WPN06` and `RI-CAM04` as one sweep — see
+> `corpus/00-doctrine/REBASE-S22-REPORT.md`.
+>
+> **The unit is now stated on every figure: `f@60` means frames at our 60 Hz simulation step;
+> `t@30` means a Souls community tick. A frame count with no stated framerate is a defect
+> (S22).**
+>
+> Sanity check after the rebase, against `corpus/10-combat/data/souls-frame-data.json`:
+>
+> | | Upstream | Ours, before | Ours, after |
+> |---|---|---|---|
+> | Light-roll i-frames | DS3 13 t@30 = **433 ms** | 13 f@60 = 217 ms | **26 f@60 = 433 ms** |
+> | Light-roll total | DS1 fast 24 t@30 = **800 ms** | 26 f@60 = 433 ms | **52 f@60 = 867 ms** |
+> | Medium-roll total | DS1 33 t@30 = **1100 ms** | 30 f@60 = 500 ms | **60 f@60 = 1000 ms** |
+> | Fat-roll total | DS1 48 t@30 = **1600 ms** | 44 f@60 = 733 ms | **88 f@60 = 1467 ms** |
 >
 > Note that `RI-CMB03` got this right in the one place it worked from a figure denominated in
-> seconds: it took the measured 0.70 s regen pause and correctly wrote **42 frames at 60 Hz**.
-> The error is confined to figures recalled as *frame counts* rather than as durations.
+> seconds: it took the measured 0.70 s regen pause and correctly wrote **42 f@60**. The error
+> was confined to figures recalled as *frame counts* rather than as durations, and **`RI-CMB03`
+> is therefore excluded from the rebase** — see S22 and R1.
 
 | Property | Dark Souls 1 (PTDE/Remastered) **@30 fps ticks** | Dark Souls 3 **@30 fps ticks** |
 |---|---|---|
@@ -79,13 +96,20 @@ a real recovery tail, a stamina cost you can run out of). Frames are at a fixed 
 simulation step. Frame indices are 1-based and inclusive.
 
 > **AMENDED wave 0 (corpus-audit): "fewer i-frames than DS3" is true only if the units are
-> ignored.** At 30 fps ticks DS3's 13 i-frames are 433 ms; our 13 are 217 ms at 60 Hz. In
-> *duration* we are far stingier than either game — about half of DS1's. The design intent
-> ("stingy i-frames, real recovery, a stamina cost") is satisfied and then some; what is
-> **not** established is that 217 ms is the right number rather than an artefact of adopting
-> tick counts as frame counts. **This item's numbers are binding as written** — a build must
-> implement 13/11/5/0 at 60 Hz — and the question of whether the whole ladder should double is
-> an open design question, not a licence for a builder to improvise. See §A's unit warning.
+> ignored.** At 30 fps ticks DS3's 13 i-frames are 433 ms; our 13 were 217 ms at 60 Hz. In
+> *duration* we were far stingier than either game — about half of DS1's. ~~what is **not**
+> established is that 217 ms is the right number rather than an artefact of adopting tick
+> counts as frame counts.~~
+>
+> **AMENDED wave 0 (rebase-s22): it was an artefact, and it is now corrected.** Under seam
+> **S22** the ladder is rebased by doubling: `26 / 22 / 10 / 0` i-frames at 60 Hz. Our light
+> roll's 26 f@60 = **433 ms** is now *exactly* DS3's 13 t@30, and §B's stated design intent
+> ("DS3's breakpoints with DS1's stinginess") has to be re-read: at 26 i-frames we are **no
+> longer stingier than DS3 on the light roll** — we match it, and we buy our stinginess back
+> in the `MEDIUM` and `HEAVY` rows (22 and 10 against DS3's flat 13/13/12 t@30 = 26/26/24 f@60)
+> and in the recovery tail. That is a real design change caused by the unit fix, and it is
+> recorded rather than papered over. **This item's numbers are binding as written** — a build
+> must implement **26/22/10/0 at 60 Hz** — and a builder may not improvise around them.
 >
 > **This item owns the equip-load ladder inside the fight, tier boundaries included**
 > (ARBITRATION seam **S23**). `RI-PRG07` owns out-of-fight encumbrance and may keep finer
@@ -93,28 +117,34 @@ simulation step. Frame indices are 1-based and inclusive.
 >
 > **UNDECLARED BLEND, now declared (orchestrator ruling R5).** This item pairs **DS3's 30/70
 > breakpoints** with **DS1's tier-DURATION model**. In DS3, light and medium rolls are the same
-> length and the light roll buys *distance* only; our 26 f / 30 f / 44 f ladder makes duration
-> scale with tier, which is DS1's model. That is defensible — it makes the tier legible from the
-> animation alone — but it is a third blend on top of the two §B already names, and it was not
-> stated. It is now.
+> length and the light roll buys *distance* only; our ~~26 f / 30 f / 44 f~~ **52 / 60 / 88 f@60**
+> ladder makes duration scale with tier, which is DS1's model. That is defensible — it makes the
+> tier legible from the animation alone — but it is a third blend on top of the two §B already
+> names, and it was not stated. It is now.
 
-| Tier | Equip load | Startup (vulnerable) | **i-frames** | Recovery (vulnerable) | Total | Stamina | Ground distance | Speed of animation |
-|---|---|---|---|---|---|---|---|---|
-| `LIGHT` | ≤ **30.00%** | f1–f2 (2) | **f3–f15 (13)** | f16–f26 (11) | **26 f (433 ms)** | **22** | 5.20 m | 1.00× |
-| `MEDIUM` | 30.01–**70.00%** | f1–f2 (2) | **f3–f13 (11)** | f14–f30 (17) | **30 f (500 ms)** | **26** | 4.40 m | 1.00× |
-| `HEAVY` (fat roll) | 70.01–**100.00%** | f1–f3 (3) | **f4–f8 (5)** | f9–f44 (36) | **44 f (733 ms)** | **34** | 2.60 m | 0.72× |
-| `OVERLOADED` | > 100.00% | — | **0** | — | **60 f** stumble | **40** | 1.10 m | 0.55× |
+**`ES-ROLL/1`, REBASED — AMENDED wave 0 (rebase-s22), seam S22.** Every frame column below is
+**doubled** from the pre-rebase table, which is preserved in the `Was` column. Frame windows are
+mapped `[a,b] → [2a−1, 2b]`, which preserves 1-based inclusive indexing and doubles the length
+exactly. **Stamina costs, ground distances and animation speed multipliers are NOT frame data
+and are unchanged.**
+
+| Tier | Equip load | Startup (vulnerable) | **i-frames** | Recovery (vulnerable) | Total | **Was (total / i-f)** | Stamina | Ground distance | Speed of animation |
+|---|---|---|---|---|---|---|---|---|---|
+| `LIGHT` | ≤ **30.00%** | f1–f4 (4 f@60) | **f5–f30 (26 f@60)** | f31–f52 (22 f@60) | **52 f@60 (867 ms)** | ~~26 f / 13~~ | **22** | 5.20 m | 1.00× |
+| `MEDIUM` | 30.01–**70.00%** | f1–f4 (4 f@60) | **f5–f26 (22 f@60)** | f27–f60 (34 f@60) | **60 f@60 (1000 ms)** | ~~30 f / 11~~ | **26** | 4.40 m | 1.00× |
+| `HEAVY` (fat roll) | 70.01–**100.00%** | f1–f6 (6 f@60) | **f7–f16 (10 f@60)** | f17–f88 (72 f@60) | **88 f@60 (1467 ms)** | ~~44 f / 5~~ | **34** | 2.60 m | 0.72× |
+| `OVERLOADED` | > 100.00% | — | **0** | — | **120 f@60** stumble (2000 ms) | ~~60 f / 0~~ | **40** | 1.10 m | 0.55× |
 
 Backstep (dodge input with no directional input):
 
-| Tier | Startup | i-frames | Recovery | Total | Stamina | Distance |
-|---|---|---|---|---|---|---|
-| `LIGHT` / `MEDIUM` | f1–f2 | **f3–f6 (4)** | f7–f21 | 21 f | 14 | 2.30 m |
-| `HEAVY` | f1–f3 | **0** | f4–f30 | 30 f | 20 | 1.60 m |
-| `OVERLOADED` | — | 0 | — | 40 f | 26 | 0.70 m |
+| Tier | Startup | i-frames | Recovery | Total | **Was (total / i-f)** | Stamina | Distance |
+|---|---|---|---|---|---|---|---|
+| `LIGHT` / `MEDIUM` | f1–f4 | **f5–f12 (8 f@60)** | f13–f42 | 42 f@60 (700 ms) | ~~21 f / 4~~ | 14 | 2.30 m |
+| `HEAVY` | f1–f6 | **0** | f7–f60 | 60 f@60 (1000 ms) | ~~30 f / 0~~ | 20 | 1.60 m |
+| `OVERLOADED` | — | 0 | — | 80 f@60 (1333 ms) | ~~40 f / 0~~ | 26 | 0.70 m |
 
-**The fat-roll threshold is 70.00%.** At 70.00% the player has 11 i-frames and a 30-frame
-roll. At 70.01% they have 5 i-frames and a 44-frame roll. This discontinuity is deliberate
+**The fat-roll threshold is 70.00%.** At 70.00% the player has 22 i-frames and a 60-frame
+roll. At 70.01% they have 10 i-frames and an 88-frame roll. This discontinuity is deliberate
 and must be audible/visible: the roll animation changes clip, the footfall gains a thud, and
 the equip-load readout in the menu changes colour. `OVERLOADED` additionally forbids
 sprinting and jump-attacks.
@@ -133,14 +163,25 @@ sprinting and jump-attacks.
    outcome. There is no roll→roll cancel, no roll→attack cancel, no turning mid-roll beyond
    the direction chosen at frame 1.
 4. **Direction is latched at frame 1** from the movement-stick vector at the moment of the
-   press (under lock-on, see RI-CMB06). Stick movement during frames 2–26 is ignored.
+   press (under lock-on, see RI-CMB06). Stick movement during frames 2–52 (`LIGHT`) is ignored.
+   *(AMENDED wave 0 (rebase-s22): was "frames 2–26".)*
 5. **Root motion is authoritative.** The 5.20 m of a `LIGHT` roll comes from the animation
    clip's root track, not from `velocity × dt`. The character controller consumes the root
    delta and resolves it against collision; it never adds its own translation.
-6. **Input buffer = 8 frames.** A dodge press during the last 8 frames of any animation is
-   stored and fires on the first frame the character is actionable. A press earlier than
+6. **Input buffer = 8 f@60 (133 ms).** A dodge press during the last 8 frames of any animation
+   is stored and fires on the first frame the character is actionable. A press earlier than
    that is **dropped**, not queued. Exactly one action may be buffered at a time; a later
    press overwrites the buffer.
+   > **NOT REBASED — AMENDED wave 0 (rebase-s22), and this is a judgement, not an oversight.**
+   > The buffer is a **wall-clock allowance for human input error**, not an animation length:
+   > it exists because a player presses a few tens of milliseconds before they are actionable.
+   > That error does not change because our animations got longer, so 8 f@60 = **133 ms** is
+   > already the physically correct figure and doubling it to 267 ms would be inventing a more
+   > forgiving game under cover of a unit fix. Recorded here because the buffer's *relative*
+   > generosity does halve (8 f against a 52-frame roll rather than a 26-frame one), which is a
+   > real consequence a later wave may wish to revisit with hands on the controller. Same
+   > reasoning as `RI-CMB02` §E's 6 f@60 = 100 ms startup floor. S22's list does not name the
+   > buffer.
 7. **Insufficient stamina drops the input.** If `stamina < cost` on the frame the roll would
    start, nothing happens — no partial roll, no queued roll, no debt. (See RI-CMB03; this is
    the rule that produces the `no_stamina` drops in the RI-CMB07 exemplar.)
@@ -166,18 +207,28 @@ stateDiagram-v2
     ROLL_IFRAME --> ROLL_IFRAME: enemy hitbox overlap -> IFRAME_NEGATE
 ```
 
-Note the two `HITSTUN` edges and the absence of a third. Being hit on frames 1–2 or 16–26 of
-a `LIGHT` roll is the entire cost model of dodging.
+Note the two `HITSTUN` edges and the absence of a third. Being hit on frames 1–4 or 31–52 of
+a `LIGHT` roll is the entire cost model of dodging. *(AMENDED wave 0 (rebase-s22): was
+"frames 1–2 or 16–26".)*
 
 ### E. Derived quantities a critic should recompute rather than trust
 
-| Quantity | `LIGHT` | `MEDIUM` | `HEAVY` |
-|---|---|---|---|
-| Invulnerable fraction of animation | 13/26 = **0.500** | 11/30 = **0.367** | 5/44 = **0.114** |
-| Vulnerable frames after i-frames end | 11 | 17 | 36 |
-| Max rolls on a full 120 bar (no regen) | 5 | 4 | 3 |
-| Widest enemy active window fully negated | 13 f | 11 f | 5 f |
-| Rolls/second if chained back-to-back | 2.31 | 2.00 | 1.36 |
+**AMENDED wave 0 (rebase-s22).** Every row below is **re-derived from the rebased §B table,
+not scaled** — which matters, because the rows behave differently: the fractions are
+*invariant* (both terms doubled), the frame counts *double*, the stamina row is *unchanged*
+(stamina is not frame data), and `rolls/second` **halves**. Anyone who "rebased" this table by
+multiplying every cell by 2 would have got three of five rows wrong.
+
+| Quantity | `LIGHT` | `MEDIUM` | `HEAVY` | Behaviour under S22 |
+|---|---|---|---|---|
+| Invulnerable fraction of animation | 26/52 = **0.500** | 22/60 = **0.367** | 10/88 = **0.114** | **invariant** (ratio) |
+| Vulnerable frames after i-frames end | 22 f@60 | 34 f@60 | 72 f@60 | ×2 |
+| Max rolls on a full 120 bar (no regen) | 5 | 4 | 3 | **unchanged** (stamina, not frames) |
+| Widest enemy active window fully negated | 26 f@60 | 22 f@60 | 10 f@60 | ×2 |
+| Rolls/second if chained back-to-back | **1.15** | **1.00** | **0.68** | **÷2** — a rate, not a count |
+
+~~Pre-rebase: 13/26, 11/30, 5/44; 11/17/36 vulnerable; 13/11/5 negated; 2.31/2.00/1.36 rolls per
+second.~~
 
 Tolerances for all frame counts in §B: **±0 frames**. These are integers in a fixed-step
 simulation; "close enough" is not a category. Distances: **±0.15 m**. Stamina costs: **±0**.
@@ -202,7 +253,8 @@ JSONL defined in RI-CMB07.
 - **FAIL** if `total` varies by more than 0 frames across the 8 directions.
 
 **M2 — I-frame boundary probe (the real test).** For each tier, for each offset
-`k ∈ [−6, +34]` relative to the dodge press:
+`k ∈ [−12, +96]` relative to the dodge press *(AMENDED wave 0 (rebase-s22): was `[−6, +34]`;
+the sweep must span the longest total, now 88 f@60 for `HEAVY`, with margin)*:
 1. Reset to a seeded state, player at fixed distance, enemy scripted to activate a 1-frame
    hitbox exactly on frame `press + k`.
 2. Run 60 frames. Record `hit = (player hp decreased)`.
@@ -271,12 +323,16 @@ a learnable dodge. If the critic picks ours, re-run with the tolerance halved an
 Written in advance, pessimistically. A naive browser Three.js implementation will do these:
 
 1. **The boolean-flag roll.** `isRolling = true` on press, `false` on animation end, and
-   damage skipped whenever `isRolling`. Result: 26 i-frames instead of 13, a roll that
+   damage skipped whenever `isRolling`. Result: 52 i-frames instead of 26, a roll that
    beats everything, and a game with no dodge skill. This is the single most likely failure
    and M2 exists to catch it.
-2. **The seconds-based window.** `if (rollTime > 0.05 && rollTime < 0.25)` — which drifts
-   with frame rate, gives 13 i-frames at 60 Hz and 26 at 120 Hz, and is untestable. Every
-   number in this item is a frame count for exactly this reason.
+2. **The seconds-based window.** `if (rollTime > 0.067 && rollTime < 0.50)` — which drifts
+   with frame rate, gives 26 i-frames at 60 Hz and 52 at 120 Hz, and is untestable. Every
+   number in this item is a frame count **with its framerate stated** for exactly this reason
+   (S22). *(AMENDED wave 0 (rebase-s22).)*
+   **The sibling failure, and the one that actually happened to this corpus:** a frame count
+   with the framerate *omitted*, copied across a unit boundary. That is what S22 exists to
+   forbid, and it cost the whole combat area a factor of two.
 3. **The skate.** `mesh.position.add(dir.multiplyScalar(speed * dt))` with a roll animation
    playing on top. The feet slide, the roll covers the wrong distance, and the distance
    changes with frame rate. Three.js's `AnimationMixer` does not apply root motion by
@@ -321,5 +377,8 @@ Written in advance, pessimistically. A naive browser Three.js implementation wil
 - §B, §C, §D, §E (`ES-ROLL/1`, all rules, all derived values): `provenance: constructed`,
   confidence **high**. We defined these. They are binding precisely because we can measure
   them exactly, which is more than can be said for any recalled number. The `LIGHT` tier
-  values (13 i-frames, 26 f total, 22 stamina) are the ones used by the RI-CMB07 exemplar
-  trace and any change here invalidates that artifact.
+  values (~~13 i-frames, 26 f total~~ **26 i-frames, 52 f@60 total**, 22 stamina) are the ones
+  used by the RI-CMB07 exemplar trace and any change here invalidates that artifact.
+- **AMENDED wave 0 (rebase-s22).** The S22 rebase changed exactly that, so **the RI-CMB07
+  exemplar is invalidated** and is marked as such in its own item and in the four exemplar
+  files. See `corpus/00-doctrine/REBASE-S22-REPORT.md` §4.

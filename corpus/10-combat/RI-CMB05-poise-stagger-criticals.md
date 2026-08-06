@@ -44,8 +44,8 @@ if poise_health <= 0:  STAGGER, and poise_health := poise_health_max after the s
 | Player base poise health (naked) | **20** | |
 | Player `armour_poise` range | **0 – 72** | Sum of four armour pieces; heaviest full set = 72 |
 | `poise_resist` cap | **0.60** | Reached at `armour_poise` 72 |
-| Poise regeneration delay | **90 frames (1.500 s)** after the last poise damage taken | |
-| Poise regeneration rate | **20.0 / second** | Linear, flat |
+| Poise regeneration delay | **90 f@60 (1.500 s)** after the last poise damage taken | **NOT rebased (S22)** — authored as a duration, like `RI-CMB03`'s 42 f (0.70 s). 1.5 s of no-poise-damage is a wall-clock condition on the *player's* behaviour, not an animation length, so the unit fix does not touch it |
+| Poise regeneration rate | **20.0 / second** | Linear, flat. **NOT rebased** — a per-second rate is unit-invariant under a frame-base correction |
 | Poise reset on stagger | full, on the frame the stagger animation ends | Prevents stagger-lock chains |
 | Poise while rolling / i-framed | irrelevant | `IFRAME_NEGATE` fires before poise (RI-CMB04 §E) |
 | Poise while blocking successfully | **poise damage = 0** | A block that does not break guard never staggers |
@@ -60,12 +60,22 @@ Champion carries **28**.
 Stagger length is a function of the **poise damage of the blow that broke the pool**, not of
 the damage dealt. A dagger that breaks poise staggers briefly; an ultra greatsword flattens.
 
-| Tier | Poise damage of the breaking hit | Stagger frames | Additional |
-|---|---|---|---|
-| Light | 1 – 19 | **16** | |
-| Medium | 20 – 39 | **22** | |
-| Heavy | 40 – 69 | **32** | pushback 0.6 m |
-| Massive | ≥ 70 | **48** | knockdown, +30 f getup, 8 f of i-frames on the getup |
+> **REBASED — AMENDED wave 0 (rebase-s22), ARBITRATION seam S22.** Stagger lengths, critical
+> animation lengths, parry windows and hyperarmour windows are all **doubled**; the poise pool
+> arithmetic, the poise-damage thresholds, the regeneration rate and the regeneration *delay*
+> are **not** (see the note in §A). Pre-rebase values are struck through. All frame counts are
+> `f@60`.
+
+| Tier | Poise damage of the breaking hit | Stagger frames | **Was** | Additional |
+|---|---|---|---|---|
+| Light | 1 – 19 | **32 f@60 (533 ms)** | ~~16~~ | |
+| Medium | 20 – 39 | **44 f@60 (733 ms)** | ~~22~~ | |
+| Heavy | 40 – 69 | **64 f@60 (1067 ms)** | ~~32~~ | pushback 0.6 m |
+| Massive | ≥ 70 | **96 f@60 (1600 ms)** | ~~48~~ | knockdown, **+60 f@60** getup, **16 f@60** of i-frames on the getup ~~+30 f / 8 f~~ |
+
+**The poise-damage thresholds (1–19 / 20–39 / 40–69 / ≥70) are NOT rebased.** Poise damage is
+not a frame count; it is a quantity of a pool, and it is unchanged in §A and in `RI-CMB02`'s
+`Poise dmg` columns. Only the *lengths* of the animations those thresholds select move.
 
 During stagger: no input is accepted, stamina regeneration is 0, the target is fully
 vulnerable, and the hurtboxes continue to follow the stagger animation's skeleton (RI-CMB04
@@ -73,24 +83,36 @@ vulnerable, and the hurtboxes continue to follow the stagger animation's skeleto
 staggered takes damage from subsequent hits but the stagger timer does not restart. This is
 what prevents infinite stunlock and it is a rule, not an optimisation.
 
-The RI-CMB07 exemplar contains three medium staggers (22 f each) from enemy attacks with
+~~The RI-CMB07 exemplar contains three medium staggers (22 f each) from enemy attacks with
 poise damage 32, 32 and 20, plus one 40-frame guard break, totalling 110 frames of player
-hitstun in 59 seconds — **3.1% of the fight**.
+hitstun in 59 seconds — 3.1% of the fight.~~
+
+> **INVALIDATED — AMENDED wave 0 (rebase-s22).** The RI-CMB07 exemplar trace is invalidated by
+> seam S22 (the ruling accepts that cost explicitly) and cannot be cited as evidence for any
+> frame figure until it is regenerated. See `RI-CMB07` §0 and `REBASE-S22-REPORT.md` §4. For
+> orientation only: at the rebased 44 f@60 medium stagger, three medium staggers plus one
+> guard break is **172 f** of hitstun, and the fight itself is longer, so the *fraction* is the
+> figure that a regenerated exemplar must re-establish — not the frame total.
 
 ### C. Hyperarmour
 
 A declared frame window on heavy attacks (RI-CMB02 §B) during which the attacker swaps their
 normal poise pool for a **weapon-class hyperarmour pool**:
 
-| Class | HA pool, 1-handed | HA pool, 2-handed | Window (from RI-CMB02 §B) |
-|---|---|---|---|
-| Dagger | — | — | none, ever |
-| Straight sword | 22 | 29 | R2 f15–f31 |
-| Spear | 20 | 26 | R2 f17–f32 |
-| Axe | 30 | 39 | R2 f18–f37; **R1 f10–f22 when 2-handed only** |
-| Halberd | 36 | 47 | R2 f21–f42 |
-| Greatsword | 46 | 60 | R2 f24–f50; **R1 f14–f30 when 2-handed only** |
-| Ultra greatsword | 62 | 81 | R2 f32–f64; **R1 f18–f39 when 2-handed only** |
+**AMENDED wave 0 (rebase-s22).** The **HA pool sizes are poise quantities and are unchanged.**
+The **windows are frame data and are re-derived** from `RI-CMB02` §B's rebased startups through
+`[ceil(0.60 × startup), startup + active]`. ⚠ marks the four windows where re-derivation and a
+naive ×2 disagree, because `ceil()` does not commute with doubling.
+
+| Class | HA pool, 1-handed | HA pool, 2-handed | Window (from RI-CMB02 §B) | **Was** |
+|---|---|---|---|---|
+| Dagger | — | — | none, ever | — |
+| Straight sword | 22 | 29 | R2 **f30–f62** | ~~f15–f31~~ |
+| Spear | 20 | 26 | R2 **⚠ f33–f64** | ~~f17–f32~~ |
+| Axe | 30 | 39 | R2 **f36–f74**; **R1 f20–f44 when 2-handed only** | ~~f18–f37 / f10–f22~~ |
+| Halberd | 36 | 47 | R2 **⚠ f41–f84** | ~~f21–f42~~ |
+| Greatsword | 46 | 60 | R2 **f48–f100**; **R1 ⚠ f27–f60 when 2-handed only** | ~~f24–f50 / f14–f30~~ |
+| Ultra greatsword | 62 | 81 | R2 **⚠ f63–f128**; **R1 ⚠ f35–f78 when 2-handed only** | ~~f32–f64 / f18–f39~~ |
 
 Rules:
 
@@ -120,39 +142,63 @@ Criticals are geometry plus state. There is no chance component anywhere.
 | Attacker facing | target within **±45°** of attacker's forward |
 | Target state | not `IFRAME`, not in a hyperarmour window, not already in a critical, not `DEAD` |
 | Input | light attack (R1) while all of the above hold on the same frame |
-| Animation length | **62 frames** |
-| Attacker invulnerable | frames **8–54** |
-| Damage applied on | frame **30** |
+| Animation length | **124 f@60 (2067 ms)** ~~62 frames~~ |
+| Attacker invulnerable | frames **15–108** ~~8–54~~ |
+| Damage applied on | frame **60** ~~30~~ |
 | Stamina | 24 |
 | Damage | `weapon_ar × crit_multiplier` (dagger 1.40, straight sword 1.10, greatsword 1.05, UGS 1.00) |
-| Target on completion | released into a 24-frame getup, 6 f of i-frames at its end |
+| Target on completion | released into a **48 f@60** getup, **12 f@60** of i-frames at its end ~~24-frame / 6 f~~ |
 
-The attacker is vulnerable on frames 1–7 and 55–62. In a group fight this is the cost of
-greed, and it must be real.
+The attacker is vulnerable on frames **1–14 and 109–124**. In a group fight this is the cost of
+greed, and it must be real. *(AMENDED wave 0 (rebase-s22): was frames 1–7 and 55–62. The
+geometric conditions — ±35°, 1.20 m, ±45° — are angles and distances, not frames, and are
+unchanged.)*
 
 **Parry**
 
+**AMENDED wave 0 (rebase-s22).** Windows map `[a,b] → [2a−1, 2b]`, which preserves 1-based
+inclusive indexing and doubles the length exactly. Stamina costs are unchanged.
+
 | Property | Buckler / small shield | Dedicated parry tool | Medium shield | Greatshield |
 |---|---|---|---|---|
-| Animation length | 34 f | 32 f | 40 f | — (cannot parry) |
-| **Active parry window** | f5–f13 (**9 f**) | f3–f14 (**12 f**) | f8–f14 (**7 f**) | — |
-| Whiff recovery | 21 f, no i-frames | 18 f | 26 f | — |
+| Animation length | **68 f@60** ~~34 f~~ | **64 f@60** ~~32 f~~ | **80 f@60** ~~40 f~~ | — (cannot parry) |
+| **Active parry window** | **f9–f26 (18 f@60, 300 ms)** ~~f5–f13 (9 f)~~ | **f5–f28 (24 f@60, 400 ms)** ~~f3–f14 (12 f)~~ | **f15–f28 (14 f@60, 233 ms)** ~~f8–f14 (7 f)~~ | — |
+| Whiff recovery | **42 f@60**, no i-frames ~~21 f~~ | **36 f@60** ~~18 f~~ | **52 f@60** ~~26 f~~ | — |
 | Stamina | 22 | 22 | 26 | — |
 
-A parried target enters `PARRIED` for **28 frames**, is fully vulnerable, and is riposte-able
-for frames **4–26** of that state. Unparryable attacks are declared per-move in the statblock
-and must be a minority of any enemy's moveset.
+**Sanity check against upstream** (`corpus/10-combat/data/souls-frame-data.json`): the corpus's
+recalled Souls parry window of 8–12 t@30 is **267–400 ms**. Our rebased windows are
+**233–400 ms**. Before the rebase they were 117–200 ms — half. The rebase lands us on the
+upstream figure.
+
+A parried target enters `PARRIED` for **56 f@60** ~~28 frames~~, is fully vulnerable, and is
+riposte-able for frames **7–52** ~~4–26~~ of that state. Unparryable attacks are declared
+per-move in the statblock and must be a minority of any enemy's moveset.
 
 **Riposte**
 
 | Property | Value |
 |---|---|
-| Available on target state | `PARRIED` f4–f26, or `GUARD_BREAK` f6–f34 (RI-CMB03 §D) |
-| Animation length | **78 frames** |
-| Attacker invulnerable | frames **10–68** |
-| Damage applied on | frame **40** |
+| Available on target state | `PARRIED` **f7–f52** ~~f4–f26~~, or `GUARD_BREAK` **f6–f34, UNCHANGED** (RI-CMB03 §D — see the warning below) |
+| Animation length | **156 f@60 (2600 ms)** ~~78 frames~~ |
+| Attacker invulnerable | frames **19–136** ~~10–68~~ |
+| Damage applied on | frame **80** ~~40~~ |
 | Stamina | 28 |
 | Damage | backstab damage × **1.50** |
+
+> **⚠ SEAM LEFT OPEN BY S22 — AMENDED wave 0 (rebase-s22), flagged not fixed.** `GUARD_BREAK`
+> is owned by `RI-CMB03` §D, and **S22 scopes `RI-CMB03` out of the rebase entirely** ("do not
+> double the 42-frame regen pause"). But `RI-CMB03`'s guard-break *duration* (40 f) and its
+> riposte window (f6–f34) are **animation lengths**, not seconds-derived figures — they are not
+> the protected 42 f, and the ruling does not address them. Leaving them produces a real
+> inversion: after the rebase a **medium stagger is 44 f@60 and a guard break is 40 f@60**, so
+> having your guard shattered now punishes you *less* than being poked out of your poise, which
+> reverses the whole point of §B and of `RI-CMB03` §D's "zero on a block is catastrophic".
+>
+> This sweep **did not act on it**, because overriding an explicit exclusion in a seam ruling is
+> the doctrine owner's call and not a unit correction. It is filed in `REBASE-S22-REPORT.md` §7
+> as the single thing the ruling did not anticipate, with the recommendation that `RI-CMB03`
+> §D's 40 f and f6–f34 be rebased to **80 f@60** and **f11–f68** by a doctrine amendment.
 
 ### E. Trade arithmetic (the derived check)
 
@@ -185,12 +231,12 @@ stagger.
   the pool but whose sum exceeds it; a threshold model will not stagger.
 
 **M2 — Poise regeneration.** Deplete the pool to 50%, then idle.
-- **FAIL** if regeneration begins before frame 90 or after frame 91.
+- **FAIL** if regeneration begins before frame 90 or after frame 91. *(90 f@60; not rebased — see §A.)*
 - **FAIL** if the rate differs from 20/s by more than 2%.
 - Land a hit at frame 60 of the delay: **FAIL** unless the delay re-arms to a full 90.
 
 **M3 — Stagger length census.** For each tier in §B, land a breaking hit of that tier.
-- **FAIL** if the stagger frame count differs from §B by ≥1.
+- **FAIL** if the stagger frame count differs from §B (rebased: 32/44/64/96 f@60) by ≥1.
 - Land a second hit during the stagger: **FAIL** if the stagger timer restarts or extends.
 - **FAIL** if any input is accepted during stagger.
 - **FAIL** if poise does not reset to full on the stagger's final frame.
@@ -211,9 +257,9 @@ at radii 0.6, 1.0, 1.2, 1.4 m; inject R1 at each pose.
 - **FAIL** if the `true` region is not exactly the ±35° / ≤1.20 m sector, within one grid
   cell.
 - **FAIL** if any backstab succeeds against a target inside a hyperarmour window or i-frames.
-- **FAIL** if the attacker takes damage from a third party during frames 8–54, or fails to
-  take damage during frames 1–7 or 55–62.
-- **FAIL** if damage lands on any frame other than 30.
+- **FAIL** if the attacker takes damage from a third party during frames **15–108**, or fails to
+  take damage during frames **1–14 or 109–124**. *(AMENDED wave 0 (rebase-s22).)*
+- **FAIL** if damage lands on any frame other than **60**. *(AMENDED wave 0 (rebase-s22).)*
 
 **M6 — Parry window probe.** For each shield type, for each offset `k` between the parry
 press and the incoming hitbox activation, `k ∈ [−20, +30]`:
@@ -232,10 +278,10 @@ press and the incoming hitbox activation, `k ∈ [−20, +30]`:
 | Check | Weight | Pass condition |
 |---|---|---|
 | M1 pool arithmetic | 20 | All §E rows, pool not threshold |
-| M2 poise regeneration | 10 | 90 f delay, 20/s, re-arms |
+| M2 poise regeneration | 10 | 90 f@60 delay, 20/s, re-arms (neither rebased) |
 | M3 stagger census | 15 | Exact lengths, no restart, no input, resets |
 | M4 hyperarmour probe | 20 | Windows exact, damage unaffected |
-| M5 backstab geometry | 15 | Sector exact, invuln frames exact |
+| M5 backstab geometry | 15 | Sector exact, invuln frames exact (f15–f108 @60) |
 | M6 parry window | 10 | Windows exact, no whiff i-frames |
 | M7 riposte gating | 5 | Both windows exact |
 | M8 no dice | 5 | Zero variance |
@@ -306,9 +352,15 @@ upstream behaviour this item imitates is itself contested in the community.
 > [Poise — Elden Ring Wiki (Fextralife)](https://eldenring.wiki.fextralife.com/Poise).
 > Source: `PROVENANCE-UPGRADE-02-SOULS.md` §4; recorded in `CORPUS-COHERENCE-01.md` §9c.
 >
-> **Also outstanding under seam S22 (rebase):** the parry windows and critical animation lengths
-> below are upstream-recalled *tick* counts adopted as 60 Hz frames and must be doubled. Not
-> applied by the audit — see `CORPUS-COHERENCE-01.md` §12.
+> ~~**Also outstanding under seam S22 (rebase):** the parry windows and critical animation
+> lengths below are upstream-recalled *tick* counts adopted as 60 Hz frames and must be doubled.
+> Not applied by the audit — see `CORPUS-COHERENCE-01.md` §12.~~
+>
+> **CLOSED — AMENDED wave 0 (rebase-s22).** Applied. §B's stagger tiers, §C's hyperarmour
+> windows, and §D's backstab, parry, `PARRIED` and riposte figures are all rebased above; §A's
+> poise pool, thresholds, rate and 90 f (1.500 s) delay are deliberately **not** rebased, for
+> the reasons stated inline. The one figure this item consumes and could not rebase is
+> `RI-CMB03` §D's `GUARD_BREAK`, which S22 scopes out — flagged in §D.
 
 - **`community-data`, confidence low–medium** (**attribution amended — see above; the pool half
   is Elden Ring, not DS3**)**:** the existence and rough shape of the model — that poise health

@@ -26,7 +26,31 @@ fail of the piece regardless of any other score.
 
 ## The reference artifact
 
-### A. Attack anatomy (60 fps, frames)
+### A. Attack anatomy (60 fps, frames — all counts `f@60`)
+
+> **REBASED — AMENDED wave 0 (rebase-s22), ARBITRATION seam S22.** Enemy timings in this item
+> were authored against the **unrebased player numbers**, so they move with them. The
+> orchestrator's brief asked for each figure to be classified as an *independent bar* (rebase)
+> or a *derived ratio* (may be unchanged). §B is **not homogeneous** and the classification is
+> given per column, in the table's own header row. The short version:
+>
+> | Figure | Class | Under S22 |
+> |---|---|---|
+> | `Min W` per severity, S1–S7 | **independent bar authored beside the player table** — the windup that makes an attack of that severity readable *and answerable with a roll*, and the roll now takes twice as long | **×2** |
+> | The **12 f absolute floor** | **wall-clock human bar** — its own provenance note derives it as "at 60 fps, 12 frames is 200 ms, at the edge of simple visual reaction time" | **NOT rebased — stays 12 f@60 = 200 ms** |
+> | `Min W (ms)` column | derived from `Min W` | recomputed |
+> | Target W band | independent bar | **×2** |
+> | `Min f_sil` | independent bar (frames of animation before the pose is readable) | **×2** |
+> | `Max Tc` as a **fraction of W** | **ratio — invariant** | unchanged |
+> | `Tc ≤ W − 4` | separation between two rebased frame counts | **×2 → `Tc ≤ W − 8`** |
+> | §C yaw rate ceilings (°/s) and yaw budgets (°) | **degrees, and degrees per second** | **NOT rebased** |
+> | §D pose-distance threshold 0.35 | dimensionless | unchanged |
+>
+> **The floor and the S0 row now separate.** Before the rebase both were 12 f. `S0`'s minimum
+> is a *design* bar and doubles to 24 f@60; the *absolute* floor is a *human* bar and stays at
+> 12 f@60. That is not an inconsistency — it is the two bars finally being distinguishable,
+> and it means the floor has become what it always claimed to be: a backstop that no legitimate
+> attack in the game comes near.
 
 ```
  |<---------- windup W ---------->|<-- active A -->|<------- recovery Rc ------->|
@@ -51,23 +75,27 @@ Severity is defined by damage as a fraction of a **reference player HP pool** fo
 region the enemy belongs to (RI-AI05 assigns regions). Percentages are of that pool, not
 of current HP.
 
-| Severity | Damage (% ref HP) | Min W (frames) | Min W (ms) | Target W band | Min f_sil | Max Tc (as fraction of W) |
-|---|---|---|---|---|---|---|
-| S0 Chip | < 8% | 12 | 200 | 12–18 | ≤ 6 | 0.75·W |
-| S1 Standard | 8–18% | 16 | 267 | 16–26 | ≤ 8 | 0.70·W |
-| S2 Heavy | 18–35% | 24 | 400 | 24–38 | ≤ 10 | 0.65·W |
-| S3 Devastating | 35–60% | 34 | 567 | 34–52 | ≤ 12 | 0.60·W |
-| S4 Lethal (one-shot potential) | > 60% | 45 | 750 | 45–75 | ≤ 14 | 0.55·W |
-| S5 Grab / instant-death | any (grab) | 40 | 667 | 40–60 | ≤ 12 | 0.50·W |
-| S6 Ranged projectile | any | 24 | 400 | 24–40 | ≤ 10 | 0.70·W (aim lock at Tc) |
-| S7 Delayed / bait variant | any | base W + 12 to +30 | — | see RI-AI04 | ≤ 10 | 0.50·W |
+| Severity | Damage (% ref HP) | Min W (f@60) **×2** | **Was** | Min W (ms) *derived* | Target W band **×2** | Min f_sil **×2** | Max Tc (fraction of W) *ratio, unchanged* |
+|---|---|---|---|---|---|---|---|
+| S0 Chip | < 8% | **24** | ~~12~~ | **400** | **24–36** | ≤ **12** | 0.75·W |
+| S1 Standard | 8–18% | **32** | ~~16~~ | **533** | **32–52** | ≤ **16** | 0.70·W |
+| S2 Heavy | 18–35% | **48** | ~~24~~ | **800** | **48–76** | ≤ **20** | 0.65·W |
+| S3 Devastating | 35–60% | **68** | ~~34~~ | **1133** | **68–104** | ≤ **24** | 0.60·W |
+| S4 Lethal (one-shot potential) | > 60% | **90** | ~~45~~ | **1500** | **90–150** | ≤ **28** | 0.55·W |
+| S5 Grab / instant-death | any (grab) | **80** | ~~40~~ | **1333** | **80–120** | ≤ **24** | 0.50·W |
+| S6 Ranged projectile | any | **48** | ~~24~~ | **800** | **48–80** | ≤ **20** | 0.70·W (aim lock at Tc) |
+| S7 Delayed / bait variant | any | base W **+24 to +60** ~~+12 to +30~~ | | — | see RI-AI04 | ≤ **20** | 0.50·W |
 
 Hard floor across **all** attacks in the game, no exceptions, including bosses in phase 3
-and including gap-closers: **W ≥ 12 frames (200 ms)**.
+and including gap-closers: **W ≥ 12 f@60 (200 ms)** — **NOT rebased**, see the classification
+table in §A. It is a reaction-time bar, and reaction time did not change when our animation
+table did.
 
-Additional hard rule: **Tc must terminate at least 4 frames before `active` begins.**
-`Tc ≤ W − 4`. This guarantees a non-tracking commit window in every attack, which is what
-makes a dodge *into* the swing possible.
+Additional hard rule: **Tc must terminate at least 8 frames before `active` begins.**
+**`Tc ≤ W − 8`** ~~`Tc ≤ W − 4`~~ *(AMENDED wave 0 (rebase-s22): a separation between two
+rebased frame counts, so it doubles or the guarantee silently halves.)* This guarantees a
+non-tracking commit window in every attack, which is what makes a dodge *into* the swing
+possible.
 
 ### C. Tracking rate ceilings during the tracking window (f0 → Tc)
 
@@ -106,29 +134,32 @@ and the audio "makes it readable", the item still fails. Deaf-player readability
 
 | # | Anti-pattern | Trace signature |
 |---|---|---|
-| AP1 | Instant attack (`W < 12`) | any attack instance with windup frame count < 12 |
+| AP1 | Instant attack (`W < 12 f@60`) | any attack instance with windup frame count < 12. **Floor not rebased** (S22) — see §A |
 | AP2 | Tracking through the full swing | `yaw_rate_dps > 2` on any frame with `phase ∈ {active, recovery}` |
-| AP3 | Tracking cutoff too late | `Tc > W − 4` |
+| AP3 | Tracking cutoff too late | `Tc > W − 8` *(rebased)* |
 | AP4 | Silhouette collision | `D(m1,m2,f_sil) < 0.35` for any pair |
 | AP5 | Windup that does not scale with damage | S3/S4 attack with `W` below its row's minimum |
 | AP6 | Teleport/blink into range with no travel telegraph | position delta > 1.2 m in a single frame |
 | AP7 | Hitbox before pose (the "hit lands before the sword moves") | `hit_active == true` while animation pose distance from idle < 0.15 |
-| AP8 | Hitbox after pose (lingering invisible hitbox) | `hit_active == true` on any frame > 6 f after weapon returns within 0.15 of idle |
+| AP8 | Hitbox after pose (lingering invisible hitbox) | `hit_active == true` on any frame > **12 f@60** ~~6 f~~ after weapon returns within 0.15 of idle |
 | AP9 | Damage without a hitbox (proximity damage) | player `hp` decrease on a frame where no enemy has `hit_active == true` |
-| AP10 | Windup animation shared with a non-attack (feint indistinguishable from a step) | move whose first 12 f have `D` < 0.35 to a locomotion clip |
-| AP11 | Attack that begins outside the player's field of view with no audio pre-tell | COMMIT entered while enemy is outside a ±60° cone from player facing AND no audio event ≥ 12 f before `active` |
-| AP12 | Variable windup with no visual difference | same `anim` id showing windup-length stdev > 3 f across instances (randomised timing masquerading as a delay-bait; see RI-AI04 — legitimate delays must be *separate seeded variants with distinct poses*) |
+| AP10 | Windup animation shared with a non-attack (feint indistinguishable from a step) | move whose first **24 f@60** ~~12 f~~ have `D` < 0.35 to a locomotion clip |
+| AP11 | Attack that begins outside the player's field of view with no audio pre-tell | COMMIT entered while enemy is outside a ±60° cone from player facing AND no audio event ≥ **24 f@60** ~~12 f~~ before `active` |
+| AP12 | Variable windup with no visual difference | same `anim` id showing windup-length stdev > **6 f@60** ~~3 f~~ across instances (randomised timing masquerading as a delay-bait; see RI-AI04 — legitimate delays must be *separate seeded variants with distinct poses*) |
 
 ### F. Worked reference: `INFANTRY` (spear-and-shield Naga levy) moveset telegraphs
 
-| Move | Severity | W | A | Rc | Tc | f_sil | Tell (silhouette) |
-|---|---|---|---|---|---|---|---|
-| Thrust | S1 | 18 | 3 | 26 | 12 | 6 | spear draws back past hip, shoulder squares |
-| Thrust (delayed variant) | S7 | 30 | 3 | 26 | 14 | 6 | identical draw, then a visible 12 f *hold* at full cock |
-| Overhead chop | S2 | 26 | 4 | 34 | 16 | 8 | weapon above head, off-hand shield drops |
-| Shield bash | S0 | 14 | 3 | 20 | 10 | 5 | shield arm cocks across chest |
-| Step-back thrust | S1 | 22 | 3 | 24 | 14 | 7 | rear foot plants first, torso pulls back |
-| Charge (gap-closer) | S2 | 30 (18 lean + 12 run) | 5 | 40 | 24 (travel only) | 8 | full-body forward lean before any translation |
+**AMENDED wave 0 (rebase-s22): every column below is doubled.** `Tc` is re-checked against the
+rebased `Tc ≤ W − 8` rule; all six moves still satisfy it.
+
+| Move | Severity | W | A | Rc | Tc | f_sil | **Was (W/A/Rc/Tc/f_sil)** | Tell (silhouette) |
+|---|---|---|---|---|---|---|---|---|
+| Thrust | S1 | 36 | 6 | 52 | 24 | 12 | ~~18/3/26/12/6~~ | spear draws back past hip, shoulder squares |
+| Thrust (delayed variant) | S7 | 60 | 6 | 52 | 28 | 12 | ~~30/3/26/14/6~~ | identical draw, then a visible **24 f@60** *hold* at full cock |
+| Overhead chop | S2 | 52 | 8 | 68 | 32 | 16 | ~~26/4/34/16/8~~ | weapon above head, off-hand shield drops |
+| Shield bash | S0 | 28 | 6 | 40 | 20 | 10 | ~~14/3/20/10/5~~ | shield arm cocks across chest |
+| Step-back thrust | S1 | 44 | 6 | 48 | 28 | 14 | ~~22/3/24/14/7~~ | rear foot plants first, torso pulls back |
+| Charge (gap-closer) | S2 | 60 (36 lean + 24 run) | 10 | 80 | 48 (travel only) | 16 | ~~30 (18+12)/5/40/24/8~~ | full-body forward lean before any translation |
 
 Total moveset: 6 moves. Pairwise minimum `D` at `f_sil` in this reference set: 0.41
 (between Thrust and Step-back thrust — the closest pair, deliberately kept above bar by
@@ -148,11 +179,13 @@ instances per move** (use forced-move injection if the harness supports it; othe
 extend the run until coverage is met, and report coverage).
 For each instance compute `W` = count of `phase == "windup"` frames.
 - Report per move: median W, min W, stdev W, and its declared severity.
-- **PASS** if, for every move, `min W ≥ 12` and `median W ≥` the §B row minimum for its
-  severity, and `stdev W ≤ 3` unless the move is a declared S7 variant.
-- **FAIL** if any single instance has `W < 12`. Binary.
+- **PASS** if, for every move, `min W ≥ 12 f@60` (the un-rebased human floor) and
+  `median W ≥` the §B row minimum for its severity (rebased), and `stdev W ≤ 6 f@60`
+  ~~≤ 3~~ unless the move is a declared S7 variant.
+- **FAIL** if any single instance has `W < 12 f@60`. Binary. *(Floor not rebased — §A.)*
 - **Headline number: median windup frames across all sampled attacks of an archetype;
-  fail if < 14.**
+  fail if < 28 f@60** ~~< 14~~. *(AMENDED wave 0 (rebase-s22): this one **is** a bar against our
+  own rebased table, not against the human, so it doubles.)*
 
 **M2 — Tracking cutoff.**
 Scripted player: after the enemy enters COMMIT, strafe laterally at full speed for the
@@ -160,7 +193,7 @@ remainder of the attack. Repeat 30× per move.
 - Compute `Tc` = last frame with `yaw_rate_dps > 2.0`, relative to f0.
 - Compute `residual_aim_error` = angle between enemy facing at first active frame and the
   bearing to the player at that frame.
-- **PASS** if `Tc ≤ W − 4` in 100% of instances, `Tc / W ≤` the §B row cap in ≥ 90%, and
+- **PASS** if **`Tc ≤ W − 8`** in 100% of instances, `Tc / W ≤` the §B row cap in ≥ 90%, and
   the median `residual_aim_error` across strafing trials is **≥ 25°** (i.e. strafing
   actually makes the enemy miss).
 - **FAIL** if median `residual_aim_error < 10°` — the attack is homing.
@@ -198,11 +231,15 @@ Across the whole roster, plot `median W` against declared severity tier.
 **M7 — Reaction-budget sanity (cross-check with the frame-data item).**
 The frame-data agent owns the player's roll startup `R_s` (frames from input to first
 i-frame) and the input latency budget `L`. For every move, compute
-`reaction_budget = W − Tc_min_response` where `Tc_min_response = R_s + L + 6` (6 f of
-human recognition allowance).
-- **PASS** if `reaction_budget ≥ 0` for 100% of moves and `≥ 6 f` for ≥ 80% of moves.
-- If the frame-data item is unavailable, use `R_s = 4`, `L = 3` as placeholders and flag
-  the check as provisional.
+`reaction_budget = W − Tc_min_response` where `Tc_min_response = R_s + L + 6` (6 f@60 = 100 ms
+of human recognition allowance — **NOT rebased**, same class of figure as the 12 f floor).
+- **PASS** if `reaction_budget ≥ 0` for 100% of moves and `≥ 12 f@60` ~~≥ 6 f~~ for ≥ 80% of
+  moves. *(AMENDED wave 0 (rebase-s22): the **slack** required against our own rebased windups
+  doubles; the human **recognition allowance** inside `Tc_min_response` does not.)*
+- **`R_s` is now 4 f@60** — `RI-CMB01`'s rebased `LIGHT` roll is vulnerable on f1–f4 and
+  invulnerable from f5, so the placeholder `R_s = 4` is, by coincidence, still correct after the
+  rebase; `L = 3` is an input-latency budget in wall-clock and does not move. Flag the check as
+  provisional only if the frame-data item is unavailable.
 
 ## Scoring
 
@@ -289,8 +326,15 @@ pose, not randomised timing.
 
 The 12-frame absolute floor is a constructed decision derived from a reaction budget
 argument, not a recalled value: at 60 fps, 12 frames is 200 ms, which is at the edge of
-simple visual reaction time for an alerted human, and the doctrine deliberately reserves
-that floor for chip-damage moves only.
+simple visual reaction time for an alerted human, ~~and the doctrine deliberately reserves
+that floor for chip-damage moves only~~.
+
+> **AMENDED wave 0 (rebase-s22).** That paragraph is the reason the floor **survives seam S22
+> unchanged** while every other frame figure in this item doubles: it is the only number here
+> that was derived from a **wall-clock** argument at the correct framerate rather than
+> transplanted from the player tables. The struck clause is no longer true — after the rebase
+> `S0 Chip` requires 24 f@60, so **no severity row sits on the floor any more** and the floor is
+> a pure backstop. That is the correct outcome, not a drafting accident.
 
 Cross-dependency: `## Comparison method` M7 depends on the frame-data reference item for
 player roll startup and input latency. That item is authoritative on player frames; this
