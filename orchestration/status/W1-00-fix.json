@@ -22,7 +22,15 @@
     "tools/harness/determinism.mjs \u2014 R4 drops rng.seed + fails on prng_never_drawn; R5 re-bases all 3 absolute frame indices; R9 sweeps 5 seeds",
     "tools/harness/seed-sweep.mjs \u2014 NEW: 20 seeds x 2 states round trip + 19 seed pairs R4",
     "tools/harness/scenarios/mth-warmup-noenemy.json \u2014 NEW: the critic's arena_flat-no-enemy R5 counter-example, permanently runnable",
-    "tools/lib/run.mjs \u2014 calls reanchorFreeRunning after warm-up; manifest.window_reanchor"
+    "tools/lib/run.mjs \u2014 calls reanchorFreeRunning after warm-up; manifest.window_reanchor",
+    "tools/platform/alloc-probe.mjs \u2014 NEW: RI-PLT01 M4/P4, self-testing CDP sampling probe (the item named it; it was absent)",
+    "game/src/core/loop.js \u2014 inFixedStep() step-depth counter; Float64Array timing",
+    "game/src/sim/record.js \u2014 makeRecord() THROWS if called inside the fixed step",
+    "corpus/80-methods/RI-MTH02-...md \u2014 AM-W1-00-C1 applied to R4/M3/Scoring; AM-W1-00-02 applied to R5/M5",
+    "orchestration/amendments/AM-W1-00-02-...md \u2014 NEW, replaces AM-W1-00-01",
+    "orchestration/amendments/AM-W1-00-01-...md \u2014 marked WITHDRAWN with the three conceded defects",
+    "orchestration/amendments/AM-W1-00-C1-...md \u2014 marked APPLIED with post-adoption measurements",
+    "Math.hypot -> Math.sqrt in every sim hot path (camera/entities/player/record)"
   ],
   "findings": [
     "BASELINE (pre-fix) determinism.mjs: 8/9 rungs pass, R5 fails on ['enemies[].anim_frame','enemies[].state_entered_f']. R4 reported PASS at frames_differing_pct 100 with rng.draws==0. Baseline text: scratchpad/baseline-det.txt",
@@ -37,8 +45,12 @@
     "seed-sweep B: 19/19 seed pairs pass R4, min 100% frames differing, min max(rng.draws)=1.",
     "determinism ladder now 9/9 on cmb-duel-infantry INCLUDING R5 with anim_frame compared (not excluded).",
     "On mth-warmup-noenemy (critic's counter-example) R5 PASSES and R4 correctly FAILS with reason prng_never_drawn \u2014 the discriminator is not a rubber stamp.",
-    "First seeded-phase attempt gave only 4.7% (just under the 5% bar) because stagger recovery reset animFrame to 0, erasing the seeded phase after 168 frames. Fixed by resuming at e.animPhase0."
+    "First seeded-phase attempt gave only 4.7% (just under the 5% bar) because stagger recovery reset animFrame to 0, erasing the seeded phase after 168 frames. Fixed by resuming at e.animPhase0.",
+    "ALLOC: CDP HeapProfiler.startSampling defaults includeObjectsCollectedByMinor/MajorGC to FALSE, so it reports SURVIVORS only. Measured: 100k escaping {a,b,c} literals read as 7,572 B (0.08 B each) with defaults vs 2,934,752 B (29.3 B each, correct) with the flags. A traced run reading 5 B/step actually allocates 815 B/step. alloc-probe.mjs now self-tests and refuses to measure if the profiler is blind.",
+    "ALLOC RESULT: simulation-path allocation is 0 B at BOTH 60,000 and 120,000 steps in F1 swamp_canopy, F5 dungeon_primary and F4 arena_flat+6. Literal zero, slope zero. Was 0.78-1.73 B/step.",
+    "Sites fixed: Math.hypot (variadic, allocates) -> Math.sqrt; loop stepMsSamples [] .push -> Float64Array ring; perf.simMsSamples [] -> Float64Array ring; stats.lastStepMs/stepMsTotal object doubles -> Float64Array.",
+    "TRACE RECORD: moved from Engine._step (the FixedLoop.stepOnce callback) to Engine._afterStep, called after stepOnce returns. makeRecord() now THROWS if loop.inFixedStep(). With --trace the record costs ~816 B/step and 0 B of it is on the step stack."
   ],
-  "next_step": "allocation: measure with CDP sampling profiler, drive to 0 B/step for F1/F5",
+  "next_step": "HARNESS.md docs, GAP-LEDGER close, RI-PLT03/RI-CAM02 items, doctrine gate",
   "notes_for_successor": "Fresh remediation builder. Did not write the original. Env works: node tools/harness/smoke.mjs ok, determinism.mjs takes ~3min."
 }

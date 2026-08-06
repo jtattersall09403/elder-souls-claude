@@ -31,8 +31,8 @@ corpus, and that is why this item can void a wave on its own.
 | R1 | **Run-to-run** identical | same scenario, same seed, two runs, same process | `body_sha256` equal — zero tolerance |
 | R2 | **Process-to-process** identical | as R1 but two separate `node` invocations | `body_sha256` equal — zero tolerance |
 | R3 | **Batch-invariant** | `stepFrames(3600)` once vs `stepFrames(300)` × 12 | `body_sha256` equal — zero tolerance |
-| R4 | **Seed-sensitive** | same scenario, seeds 1337 vs 4242 | `body_sha256` **differs**, and ≥ 5% of frames differ in at least one field |
-| R5 | **Warm-up-invariant** | warm-up 30 vs 90 frames, script frames relative | scripted-window records identical after re-basing `f` |
+| R4 | **Seed-sensitive** | same scenario, seeds 1337 vs 4242 | `body_sha256` **differs**; and after **dropping `rng.seed` and any other field that is a pure function of the seed input**, ≥ 5% of frames still differ in at least one field; **and** `max(rng.draws) > 0` in both runs |
+| R5 | **Warm-up-invariant** | warm-up 30 vs 90 frames, script frames relative | scripted-window records identical after re-basing **every absolute frame index** — `f`, `events[].f`, `enemies[].state_entered_f` — and normalising a re-based index that lands before the window to `"pre-window"`. Nothing is excluded from the comparison |
 | R6 | **Load-order-invariant** | `loadState` → `setSeed` vs `setSeed` → `loadState` | documented which is authoritative; the documented order reproduces |
 | R7 | **Wall-clock-invariant** | insert a 3 s host sleep between two `stepFrames` calls | `body_sha256` unchanged |
 | R8 | **Resolution-invariant (sim)** | run at 1920×1080 and 640×360 | sim fields identical; only pixels differ |
@@ -106,13 +106,43 @@ differ, **and** at least 5% of frames must differ in at least one field. A seed 
 changes nothing means the PRNG is not actually wired into the AI, and every "randomised"
 behaviour in `corpus/10-combat/` is a lie.
 
+The frame-difference count is taken **excluding `rng.seed`**. A run whose only seed-dependent
+field is the seed itself has not passed this rung, it has passed a tautology. Additionally
+report `max(rng.draws)`: a scenario in which the PRNG is never drawn from cannot demonstrate
+seed sensitivity at all, and the rung scores 0 with the reason `prng_never_drawn`.
+
+> **Applied amendment `AM-W1-00-C1`** (filed by the critic of wave-1 piece `W1-00`,
+> `crit-w1-00-h7q2`; reason `sharper_discriminator`; adopted in the W1-00 remediation). The
+> rung as originally written counted a frame as differing if ANY field differed, and
+> `rng.seed` is a pure function of the independent variable — so it guaranteed a 100%
+> frame-difference rate for *any* build, including one with no PRNG at all. It did exactly
+> that: the W1-00 build reported `frames_differing_pct: 100` on a trace whose `rng.draws` was
+> **0 on all 3,600 frames**, and this item's own `## How we lose` #8 predicted it. No
+> threshold moves: the 5% figure, the 3-point weight and the hard-fail clause are unchanged.
+> Implemented in `tools/harness/determinism.mjs` (R4) and swept in
+> `tools/harness/seed-sweep.mjs`.
+
 **M4 — R7 wall-clock invariance.** Run `cmb-spacing-hold` normally; then run it again with
 a harness that sleeps 3 s between chunks (`--chunk 300` plus a host-side delay, or simply
 run under heavy load). Hashes must match.
 
 **M5 — R5 warm-up invariance.** Run `cmb-duel-infantry` with `warmupFrames` 30 and 90
-(edit a scenario copy). Re-base `f` by subtracting the first frame index in each, drop the
-`rng.draws` field, and compare the remaining records. They must be identical.
+(edit a scenario copy). Re-base **every absolute frame index** by subtracting the first
+frame index in each — the trace carries three, not one: `f`, `events[].f` and
+`enemies[].state_entered_f` — drop the `rng.draws` field, and compare the remaining records.
+They must be identical. A re-based index that lands **before** the window opened normalises
+to the sentinel `"pre-window"`: that it happened before the window is the only
+warm-up-independent fact about it, and its exact index is a warm-up artefact by construction.
+
+**Nothing else is excluded.** In particular `enemies[].anim_frame` is compared. A build whose
+entities have free-running animation satisfies this rung by re-anchoring those clocks at the
+frame the scripted window opens — a change to the **fixture**, declared and printed by the
+run report — and not by omitting the field from the comparison.
+
+> **Applied amendment `AM-W1-00-02`**, which withdraws and replaces `AM-W1-00-01`. See
+> `orchestration/amendments/AM-W1-00-02-mth02-r5-absolute-frame-indices.md`. R5 failed on
+> `arena_flat` **with no enemy at all**, on `events[].f` alone, which is a defect in the
+> rung's re-basing instruction and has nothing to do with idle animations.
 
 **M6 — R8 resolution invariance.** Run at `--width 1920 --height 1080` and
 `--width 640 --height 360`. `body_sha256` must match: the simulation must not know the
@@ -134,7 +164,7 @@ has somewhere to start.
 | R1 run-to-run | 4 | binary |
 | R2 process-to-process | 4 | binary |
 | R3 batch invariance | 3 | binary |
-| R4 seed sensitivity | 3 | binary + the 5% frame-difference clause |
+| R4 seed sensitivity | 3 | binary + the 5% frame-difference clause, taken excluding `rng.seed`, plus `max(rng.draws) > 0` (`AM-W1-00-C1`) |
 | R5 warm-up invariance | 2 | binary |
 | R6 documented load order | 1 | binary |
 | R7 wall-clock invariance | 3 | binary |

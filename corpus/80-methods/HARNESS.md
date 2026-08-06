@@ -124,6 +124,13 @@ window.__HARNESS = {
   queueInputs(script: InputEvent[]): number,  // frames are RELATIVE to the current frame
   clearInputs(): true,
 
+  // ---- scenario contract -----------------------------------------------------
+  reanchorFreeRunning(): {          // called ONCE, after warm-up, before queueInputs()
+    frame, seed, entities: [{eid, anim_len, seeded_phase,
+                             anim_frame: [before, after],
+                             state_entered_f: [before, after]}]
+  },
+
   // ---- observation -----------------------------------------------------------
   snapshot(): FrameRecord,          // the current frame as a §5 record
   traceStart(opts?): string,        // begin recording one FrameRecord per simulated frame
@@ -163,7 +170,7 @@ window.__HARNESS = {
 | **Mandatory** | `version`, `stepFrames`, `queueInputs`, `snapshot`, `traceStart`, `traceStop`, `setSeed` | tools exit `11`; **no combat item is scoreable** |
 | **Mandatory for visual items** | `camera`, `setTimeOfDay`, `setWeather` | fidelity items score 0, fail-closed |
 | **Mandatory for world/quest items** | `loadState`, `teleport`, `getWorldStats`, `getQuestState` | those items score 0, fail-closed |
-| **Strongly expected** | `ready`, `getBuildInfo`, `traceDrain`, `spawn`, `despawn`, `aggro`, `lockOn`, `listAnchors` | degraded runs, longer scenarios, weaker provenance |
+| **Strongly expected** | `ready`, `getBuildInfo`, `traceDrain`, `spawn`, `despawn`, `aggro`, `lockOn`, `listAnchors`, `reanchorFreeRunning` | degraded runs, longer scenarios, weaker provenance; without `reanchorFreeRunning` a build with free-running entity animation cannot satisfy `RI-MTH02` R5 |
 | **Optional** | `saveState`, `setUIVisible`, `screenshot`, `listEntities`, `getPlayerStats` | tooling routes around them |
 
 ### What a critic can and cannot measure through this seam
@@ -203,12 +210,40 @@ The tooling (`tools/lib/scenario.mjs`) normalises all sugar before it reaches th
 the game only ever sees `{f, press?, release?, move?, look?}`. An unknown button is a
 tooling error, not a silent no-op.
 
+**The event shape is closed and `queueInputs` is fail-closed on it, not only on the button
+name.** `{f, press?, release?, move?, look?}` and nothing else; an unrecognised KEY throws,
+naming the key and, if it is scenario sugar, saying where the sugar is expanded. Accepting
+`{f:0, tap:'light'}` and returning a count of 1 for an event that will never fire is
+fail-quiet where `RI-MTH01` M6 asks for fail-closed, and it cost the W1-00 critic four
+measurements whose attack inputs were silently dropped (`W1-00` verdict §8.1).
+
 **The closed button set** — the game must accept exactly these names and reject others:
 
 ```
 light  heavy  roll  block  parry  sprint  jump
 use_item  interact  lock_on  two_hand  swap_right  swap_left  menu
 ```
+
+### The scripted window and `reanchorFreeRunning()`
+
+A scenario runs `setSeed` → `loadState` → setup ops → **warm-up** → `reanchorFreeRunning()`
+→ `queueInputs` → `traceStart`. The re-anchor call is part of the contract, not an
+optimisation, and `RI-MTH02` R5 is why.
+
+R5 requires a 30-frame and a 90-frame warm-up to produce identical scripted windows. Any
+entity with a free-running clock defeats that by construction: after 60 more frames of
+idling, a 48-frame idle loop is at a different phase. `reanchorFreeRunning()` resets those
+clocks to the frame the window opens —
+
+* `anim_frame` → the entity's **seeded** idle-loop phase offset, so the re-anchor stays
+  seed-sensitive and `RI-MTH02` R4 still sees the seed;
+* `state_entered_f` → the window origin, when the state was entered before the window.
+
+It **mutates the simulation**, and the trace then reports the phase the simulation is
+genuinely in. That is the difference between a fixture normalisation and falsifying a trace
+field, which `RI-MTH04` forbids. It returns exactly what it changed and every run report
+prints it (`manifest.window_reanchor`, and the R5 rung's `window_reanchor` evidence), so the
+change is auditable and a critic can revert the fixture and watch R5 fail again.
 
 ---
 

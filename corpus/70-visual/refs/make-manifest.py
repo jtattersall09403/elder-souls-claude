@@ -207,6 +207,26 @@ def block_score_rel(bs, mean_lum):
     return round(1.0 + (bs - 1.0) * (max(mean_lum, L_FLOOR) / L_REF), 6)
 
 
+def upscale_test_rel(u, mean_lum):
+    """`upscale_test` has the same exposure confound and it was never noticed.
+
+    §8a rejects a file with `upscale_test < 0.004` — too little detail survives a 2/3
+    down/up round trip, so the image was upscaled from something smaller. But the statistic
+    is a mean absolute *luminance* difference, and luminance differences shrink with
+    exposure. Same image, same encoder, only brightness varied:
+
+        mean_luminance  105.1     52.3     31.1     18.4
+        upscale_test  0.010409 0.005330 0.003262 0.002013   <- 5x swing, PASS -> FAIL twice
+        upscale_test_rel 0.01268 0.01305 0.01345 0.01401   <- ~10% residual
+
+    The relation is very nearly proportional, so the same normalisation applies. A dark
+    frame was being called an upscale for being dark. Proposed as amendment A19.
+    """
+    if u is None or mean_lum is None:
+        return None
+    return round(u * (L_REF / max(mean_lum, L_FLOOR)), 6)
+
+
 # ------------------------------------------------------------------- HUD / overlay probes
 # `has_hud` was a folder constant in three folders and the critic measured 29 of 93 souls
 # frames with literally no HUD. This makes it an observation. The rule is the critic's:
@@ -350,6 +370,7 @@ def analyse(path):
 
     rec['mean_luminance'] = round(ImageStat.Stat(im.convert('L')).mean[0], 4)
     rec['block_score_rel'] = block_score_rel(rec['block_score'], rec['mean_luminance'])
+    rec['upscale_test_rel'] = upscale_test_rel(rec['upscale_test'], rec['mean_luminance'])
 
     probe = hud_probes(im)
     rec['hud_probe'] = probe
@@ -461,8 +482,16 @@ def walk():
 
 
 def main():
-    computed = walk()
     cpath = os.path.join(HERE, '_computed.json')
+    if '--join-only' in sys.argv:
+        # Rebuild MANIFEST.json from the existing _computed.json without re-walking the
+        # pixels. Legitimate only when the media bytes have not changed and a *provenance*
+        # judgement has -- e.g. a re-score. It cannot invent a computed field, so a new
+        # metric still needs a full run.
+        computed = json.load(open(cpath))
+        print('join-only: reusing _computed.json (%d records)' % len(computed), file=sys.stderr)
+        return join(computed)
+    computed = walk()
     if '--check' in sys.argv:
         old = json.load(open(cpath)) if os.path.exists(cpath) else {}
         # Compare complete records, not only hashes: changing an algorithm must make
@@ -474,7 +503,10 @@ def main():
         print('ok: %d files, no drift' % len(computed))
         return 0
     json.dump(computed, open(cpath, 'w'), indent=1, sort_keys=True)
+    return join(computed)
 
+
+def join(computed):
     ppath = os.path.join(HERE, '_provenance.json')
     prov = json.load(open(ppath)) if os.path.exists(ppath) else {}
     records = []

@@ -59,8 +59,12 @@ export class FixedLoop {
       rendersTotal: 0,
       catchupDroppedMs: 0,
       catchupClamps: 0,
-      lastStepMs: 0,
-      stepMsTotal: 0,
+      // Two doubles that are written on EVERY step. Held in a Float64Array rather than as
+      // object fields: a double written into a plain-object field is a tagged slot in V8 and
+      // a write can mint a HeapNumber, which is per-step allocation in the one loop
+      // RI-PLT01 P4 requires to be allocation-free. A Float64Array slot is raw storage.
+      //   [0] = last step duration ms, [1] = cumulative step duration ms
+      timing: new Float64Array(2),
       // Pre-allocated ring. A plain [] with .push() re-allocates its backing store as it
       // grows, which is a per-step allocation in the one loop RI-PLT01 P4 requires to be
       // allocation-free — it was one of the sites the W1-00 critic's sampling profile named.
@@ -168,12 +172,18 @@ export class FixedLoop {
     const t1 = wallNow();
     const s = this.stats;
     s.simStepsTotal++;
-    s.lastStepMs = t1 - t0;
-    s.stepMsTotal += s.lastStepMs;
-    s.stepMsSamples[s.stepMsHead] = s.lastStepMs;
+    s.timing[0] = t1 - t0;
+    s.timing[1] += s.timing[0];
+    s.stepMsSamples[s.stepMsHead] = s.timing[0];
     s.stepMsHead = (s.stepMsHead + 1) % STEP_SAMPLES;
     if (s.stepMsCount < STEP_SAMPLES) s.stepMsCount++;
   }
+
+  /** Duration of the most recent fixed step, ms. */
+  get lastStepMs() { return this.stats.timing[0]; }
+
+  /** Cumulative fixed-step duration, ms. Used to time a batch without timing the batcher. */
+  get stepMsTotal() { return this.stats.timing[1]; }
 
   /** The step-time ring as a plain array, newest last. Allocates — callers are non-sim. */
   stepMsWindow() {

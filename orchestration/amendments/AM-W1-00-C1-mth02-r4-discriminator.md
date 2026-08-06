@@ -1,9 +1,23 @@
 # Proposed amendment AM-W1-00-C1 — `RI-MTH02` rung R4's frame-difference clause is defeated by one trace field
 
 **Filed by:** critic of wave-1 piece **W1-00** (`crit-w1-00-h7q2`).
-**Status:** proposed. **Not applied.** The item wins until it is amended; this verdict scores R4
-against the hard-fail clause's own words (*"R4 fails (seed changes nothing)"*) and records the
-literal tolerance as met.
+**Status: APPLIED.** Adopted by the W1-00 remediation builder into
+`corpus/80-methods/RI-MTH02-determinism-reproducibility.md` §A rung R4, `## Comparison method`
+M3 and `## Scoring`, and implemented in `tools/harness/determinism.mjs` (R4) and
+`tools/harness/seed-sweep.mjs`. It moves no threshold.
+
+*Original status when filed: proposed, not applied. The item wins until it is amended; the
+W1-00 verdict scored R4 against the hard-fail clause's own words (*"R4 fails (seed changes
+nothing)"*) and recorded the literal tolerance as met.*
+
+**Post-adoption measurement.** On the remediated build the sharpened rung passes on merit and
+the discriminator is demonstrably not a rubber stamp:
+
+| Scenario | frames differing excluding `rng.seed` | `max(rng.draws)` | R4 |
+|---|---|---|---|
+| `cmb-duel-infantry`, 3600 frames, seeds 1337 vs 4242 | **100.0%** (was 0.0%) | 1, 1 (was 0, 0) | PASS |
+| `mth-warmup-noenemy` (no entity exists) | 0.0% | 0, 0 | **FAIL, reason `prng_never_drawn`** |
+| `tools/harness/seed-sweep.mjs`, 19 seed pairs | min **100%** | min **1** | 19/19 PASS |
 **Reason:** `sharper_discriminator`.
 **Affects:** `corpus/80-methods/RI-MTH02-determinism-reproducibility.md` §A rung R4,
 `## Comparison method` M3, and the 3 points R4 carries in `## Scoring`.

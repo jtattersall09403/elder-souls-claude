@@ -1202,3 +1202,210 @@ than easier. Statistics derived from it must be recorded as `derived` with that 
 `REF-A3` (Telvanni) was the one slot §15.6 reported with no full-frame re-acquisition. The
 Sadrith Mora frames acquired for Azura's Coast are grown Telvanni mushroom towers at full frame,
 so the gap is closed as a side effect of the region search.
+
+---
+
+# §17 — Revision 7: reference builder, round 2 (agent `ref-builder-r2`, 2026-08-06)
+
+Round 2 was spent almost entirely on **instruments, not acquisition**, because that is where
+`ACQUISITION-CRITIQUE-R2.md` put the value: four of its top six work items cost zero bytes of
+bandwidth. Two catalogue numbers that the whole project was quoting were wrong, and one
+"IMPOSSIBLE" was an instrument claim that turned out to be false.
+
+**Two of the critic's findings were already stale when it wrote them** and were verified against
+disk before any work was done, rather than redone:
+
+- **A7 is delivered.** `REF-A21-regions` 39, `REF-A22-intraregion` 6, `REF-A23-ground` 11, all
+  nine Vvardenfell regions above the floor of four. **The A7 sets are defined by the
+  `a21_member` field, not by the folder** — 24 qualifying files sit in `REF-A1`, `REF-A5`,
+  `REF-A8`, `REF-A9`, `REF-A11`, `REF-A19`, `REF-A22` and `REF-A23`. Any dispersion tool that
+  selects on the directory will miss them and skew every centroid. This is now written into
+  amendment A10 so it cannot be lost again.
+- **`video/` is not empty.** Two clips were cut from the archive.org longplay, and the concurrent
+  temporal agent has since added more; the 3.17 GB source is catalogued with a verified sha256
+  rather than vendored.
+
+## 17.1 `block_score` — the diagnosis was wrong and the fix is four lines
+
+Round 1 said the two dark profiles were blocked by Steam re-encoding, and round 2 was about to be
+spent chasing lossless sources. **The critic refuted that and it was right to.** `jpeg_quality_est`
+has a median of **100.0 in every Steam folder**; the files are not re-encoded. `block_score` is a
+ratio whose *denominator is the scene's own detail*, so it rises as a picture darkens for
+identical encoder damage — and `interior_darkemissive` is the profile *defined by* darkness.
+
+Reproduced independently before changing anything, one image, one encoder, q=95 fixed, only
+brightness varied:
+
+| | | | | |
+|---|---:|---:|---:|---:|
+| `mean_luminance` | 105.1 | 52.3 | 31.1 | 18.4 |
+| `block_score` | 1.031 | 1.101 | 1.192 | **1.308** |
+| `(block_score − 1) × L` | 3.22 | 5.28 | 5.95 | 5.66 |
+
+The excess above 1 is inversely proportional to luminance, so **`block_score_rel = 1 +
+(block_score − 1) × (mean_luminance / 128)`** divides the confound out. Same four treatments:
+**1.025 / 1.041 / 1.047 / 1.044** — spread 0.019 against 0.277, a **15× reduction**. Controls:
+a lossless PNG of the same frame at the same four exposures scores 0.989–1.000, so the null stays
+exposure-independent; and a quality sweep still discriminates at both exposures, with the bright
+and dark curves now agreeing instead of diverging by 0.6. Full statement and the proposed §8a
+replacement text: **amendment A9**. `block_score` itself is unchanged and still recorded, so
+nothing earlier is silently rewritten.
+
+## 17.2 `metrics_valid_for` — one flag was answering two questions
+
+`pixel_metrics_valid` conflated *"may this set a `[p10,p90]` fidelity band?"* with *"may this be
+measured for art direction?"* A7's dispersion is an art-direction measurement over files that are
+**all** `pixel_metrics_valid: false`, so its input set was either empty or the entire corpus,
+with 199 `heavily_recompressed` files unfiltered and no flag to filter on. Two of A7's six metric
+components — edge density and colour entropy — are exactly what blocking corrupts.
+
+Each record now carries a **computed** `metrics_valid_for` list with six values —
+`fidelity-bands`, `art-direction`, `dispersion`, `ui-fidelity`, `behaviour`,
+`subject-reference` — each with its own gate, derived at join time so it cannot be hand-edited.
+Every measurement in the project now has a defined population, and the two validities can carry
+different encode thresholds (fidelity 1.15, dispersion 1.30) instead of sharing one. **Amendment
+A10.**
+
+## 17.3 The folder constants
+
+**`has_hud` was typed once per folder in three folders and is now an observation.** Contact
+sheets of the top-left 42%×17% of all 93 souls stills, reviewed by eye:
+
+| | count |
+|---|---:|
+| combat HUD bar stack present | **56** |
+| menu screen (title, options, equipment, storage ×2, inventory ×2, status) | **9** |
+| no UI of any kind | **28** |
+
+So **`has_hud` goes `true` → `false` on 70 files** — 37 souls stills plus all 33 `REF-A12b`
+menu-mode captures, where Morrowind replaces the HUD with the menu windows. This corroborates
+critic **F14** (it measured 29 with zero HUD pixels; the eye finds 28 with no UI at all) and
+**F19** (`ui-combat/` is 11 of 12 non-combat, not 8 of 12). `RI-UIX01`'s real population is
+**56 across the axis, 1 of the 12 files in the folder named for it** — not 93.
+
+**A caution worth recording.** The critic's chroma detector — `max−min > 55`, `max > 70`,
+fraction ≥ 0.012 in the top-left box — is calibrated on the DS3 bar stack and **does not
+generalise**: a bonfire fills the box at 1.000 and a blue sky at 0.444, so its high end is scene
+content, not HUD. It is computed and recorded as `hud_probe` for audit, but on this corpus the
+eye is the instrument and the probe is the corroboration. Saying so is cheaper than being wrong
+by 0.5 on 40 files.
+
+**`side` and `game`.** `side` carried both `morrowind-art` and `morrowind-art-direction`, so every
+per-side query silently returned one or the other; 146 records normalised. `game` carried three
+strings for Morrowind, making a naive distinct-games count report 3 for a one-game side; 493
+records normalised, and a `game_canonical` slug is now on 865 records so a machine query cannot
+be fooled by casing. The one qualifier that carried real information — "interface as reproduced
+by OpenMW" — moved to its own `interface_source` field rather than being deleted.
+
+**`REF-M*` slots.** 20 records assigned a real slot by reading each record's `depicts` against
+§5a's slot description, 3 recorded as `substituted_for` where the slot's exact game-and-place was
+unobtainable but the measurement is served, and **the six genuinely unfilled slots are now listed
+by name** in the `_UNFILLED-REF-M-SLOTS` register with the reason each is empty: **`REF-M1`**
+(ER Liurnia at dusk), **`REF-M2`** (ER forest interior), **`REF-M7`** (Skyrim LOD vista),
+**`REF-M9`** (W3 Crookback Bog), **`REF-M10`** (Skyrim Hjaalmarch — the slot closest to our own
+subject and the one whose absence costs most), **`REF-M11`** (ER Swamp of Aeonia).
+
+## 17.4 The ghost record, and what `--check` now means
+
+`_local: true` was doing three jobs at once: *on disk but not re-fetchable verbatim*,
+*catalogued but deliberately not vendored*, and *documentation-only id record*. That is why the
+pass count could not distinguish a file that is present and verifying from one that was never
+downloaded. Every record now carries an explicit **`acquisition_state`**:
+`vendored-verifying` | `vendored-local-derived` | `catalogued-not-vendored` |
+`unfilled-slot-register`. `MANIFEST.json` lists `catalogued_not_vendored` records in a **separate
+top-level array from `records`**, so they cannot be counted as coverage, and the manifest's
+`counts` block reports `countable_media` (files on disk minus superseded crops) beside
+`files_on_disk` with a note saying which one may be quoted.
+
+## 17.5 `souls-behaviour/anim/` — the temporal axis exists, and it is finer than the bar asked for
+
+Built by **moving**, never copying and never re-encoding, every animated sequence out of the
+stills folders into `souls-behaviour/anim/{ds1-boss-moves, attacks, telegraph, impact, stance,
+death, arena}/`. Bytes are untouched, every `expected_sha256` is unchanged, and
+`acquire.py --check` passes on all of them.
+
+| | |
+|---|---:|
+| animated sequences | **208** |
+| carrying both `frame_count` and `duration_s` | **207** |
+| **named-move sequences with frame metadata** | **177** |
+| distinct named moves | **129** |
+| decoded frames | **19,735** |
+| games | Dark Souls 183, Elden Ring 18, Dark Souls III 7 |
+
+**The temporal resolution is better than the critic's estimate, and the reason matters.** The
+critic derived ±70 ms from the API's total duration, because Fandom's WebP transcode strips
+per-frame delays. The temporal agent found `?format=original`, which serves the **original GIF
+bytes with delays intact** — so the measured `temporal_resolution_ms` is a **median of 40.0 ms**
+(170 of 200 at exactly 40 ms = 25 fps), min 30, max 100. `RI-WPN01`–`04`'s windup / active /
+recovery fractions are measurable at ±40 ms, not ±70 ms.
+
+## 17.6 The three IMPOSSIBLE items, written down with the bar lowered
+
+This is the step rounds 1 and 2 both skipped. Full replacement text is in **`ACQUISITION-SPEC-AMENDMENTS.md`
+Part 2, A12–A14**; no reference item owned by another agent was edited.
+
+| # | Accepted IMPOSSIBLE | The bar it replaces |
+|---|---|---|
+| **A12** | Cell-by-cell validation of `RI-WPN05` §A's 5×7 hitstop grid against real footage. Nothing published states a hitstop figure for any FromSoftware title, and filling 35 cells needs a controlled capture in a game we do not own | **Ordering at ±40 ms** from the per-move GIFs, **a ±16.7 ms spot check** from `video/`, and existence-and-asymmetry as `canonical-recall`. §A stays `constructed`; **no critic may score it as failing for want of a reference**, and it becomes `derived` only if a wave measures ≥3 cells of one tier row at ≤16.7 ms |
+| **A13** | `REF-A12` as images. OpenMW's MyGUI layout data is a *different artifact*, not a degraded one | The image expectation is **deleted, not failed**. `REF-A12` is a complete text asset; every pixel-level UI question moves to `REF-A12b` (33 files, 11 sub-kinds, 8 resolutions). MyGUI's constants are corroboration, never ground truth |
+| **A14** | A true dolly capture for `RI-VIS03` **M11** (LOD pop). Wiki GIFs are fixed-camera 210×118; the `video/` clips at 854×480 / 806 kbps put a small geometric event inside the codec noise floor | **M11's band becomes `derived`, confidence low**, and is re-stated as a **regression** bar — our build against our previous build, not against a reference `[p10,p90]`. The static half (far plane, and the M4 cross-check for a short draw distance hidden by fog) is unaffected. Named unrun search: register a free `gamersyde.com` account and read the JS-injected direct MP4 URLs |
+
+**A12's IMPOSSIBLE is narrower than the critic's.** It said frame-exact calibration is impossible
+because the instrument tops out at 70 ms. That is false: `video/V4-combat__dsr-longplay-t13990.mp4`
+is `r_frame_rate 2997/50` = **59.94 fps**, 2,404 frames over 40.07 s, and motion-bracketed freeze
+detection over it (a high-motion frame → a run of near-zero inter-frame difference → motion
+resuming) does run and does return events. **The instrument resolves one 60 Hz frame.** What fails
+is *sample size* — a 40-second window contains 3 candidate events, and 35 tier×material cells need
+a controlled capture. That is a real IMPOSSIBLE and it is a different one, so the bar it justifies
+is different too.
+
+## 17.7 The critic's rulings, applied
+
+- **Ruling 1 — the ACDSee promotion: upheld, and the weight qualified.** Amendment **A15** adds
+  the series-weighting rule (one interval-run series counts as one location, capped at
+  `1/locations` of band mass for the content-sensitive bands only), recorded on all 24 records.
+  **But eyes on all 24 correct the finding that motivated it.** F16 says the 24 are one location
+  because all 24 share one `depicts` string. The *pixels* are one continuous session traversing
+  **Novigrad → Oxenfurt → a lakeside village → White Orchard — six distinct locations in four
+  named places.** The identical `depicts` was a catalogue artefact. The Novigrad overlap with
+  `anti-generic/`'s negative anchor is real and covers roughly a third of the series, not all of
+  it. Each record now carries its own `depicts_location`, so the weighting rule can be applied
+  per location rather than to the series as a block.
+- **Ruling 2 — three-valued vanilla tests: upheld, V8 added.** Amendment **A16** defines
+  **V8 — UI chrome matches vanilla Morrowind** (bevel, panel fill, typeface), required on every
+  `ui_overlay_kind: menu` capture, with `REF-A12`'s MyGUI anchors as corroboration and not ground
+  truth. Flagged on all 33 `REF-A12b` records.
+- **Ruling 3 — the `one-host` split: applied exactly as the critic scoped it.** The 24 Witcher 3
+  frames are **re-labelled, not removed** — `github-mirror-stated-provenance`, because they are a
+  GitHub mirror with a stated capture provenance and were never Steam. That leaves **12 genuinely
+  weakly-corroborated band-setting records** (5 `combat`, 4 `material_closeup`, 2
+  `interior_darkemissive`, 1 `REF-M6`) for a round-3 pass: read the printed Steam date, or drop
+  `fidelity-bands` from their `metrics_valid_for` while keeping them for composition.
+- **F17 / R2C-10, done by eye rather than in bulk, as instructed.** All 24 W3 frames reviewed:
+  **20 are back or three-quarter-rear and are cross-filed to `REF-M6` by field**, 4 are not
+  (`t0007` — the side profile the critic verified — plus three more). `REF-M6`'s effective
+  population goes from 2 to 22. All 24 also gain a `subject_frame_fraction_band` of `0.40–0.70`,
+  which is **the first time `REF-M6`'s 40–70% clause has been checked against any file** (R2C-18).
+- **F19 / R2C-19**: the 9 menu screens in `ui-combat/` now carry `serves: [REF-M22, RI-UIX06]`
+  and a note excluding them from `RI-UIX01`.
+- **F24 / R2C-24, checked against the item rather than assumed:** `RI-VIS07` §B **already lists
+  "Elden Ring" and "Dark Souls"** among its FAIL answers. The remaining work is to name **ESO**
+  explicitly in that row (amendment A18), and that has been done on the corpus side — the
+  `admissibility_note` `context/` carries is now on all 301 `souls-behaviour` records.
+
+## 17.8 What round 3 should do, and what it should not
+
+**Should:** the 12 weakly-corroborated band-setting records (A17); the lock-on reticle and
+status-buildup search (R2C-08 — apps 374320/1245620, `searchText=lock on`, `bleed`, `frostbite`,
+`scarlet rot`); `REF-A3` Telvanni full-frame (R2C-11); `context/` root tunnels and a real stepped
+xanmeer via `elderscrolls.fandom.com/api.php` (R2C-20); read the in-frame clock and weather off
+the 24 W3 frames into `capture_time_of_day` / `capture_weather` (R2C-21 — **not done this round**,
+and it is a one-pass annotation, not an acquisition).
+
+**Should not:** chase a lossless source for a whole profile (A9 makes it unnecessary — and
+`deadendthrills.com` is art-directed photo mode, which is a real cost in an anti-curation
+profile); search for a screenshot of a Morrowind window mid-drag (R2C-22, closed); re-test any
+route in `TEMPORAL-ACQUISITION.md` or `ACQUISITION-CRITIQUE-R1-code.md`; and **do not quote
+`files_on_disk` as a coverage number** — quote `countable_media` or a `metrics_valid_for` count,
+both of which the manifest now computes for you.

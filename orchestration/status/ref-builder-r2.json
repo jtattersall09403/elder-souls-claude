@@ -11,8 +11,11 @@
   "corpus/70-visual/refs/MANIFEST.json (regenerated)"
  ],
  "outputs_written": [
-  "corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md (Part 2: A9-A18 proposed, incl. the three IMPOSSIBLE acceptances A12/A13/A14 with replacement bar text)",
-  "corpus/70-visual/refs/make-manifest.py (mean_luminance, block_score_rel, hud probes, metrics_valid_for, acquisition_state, honest counts block)"
+  "corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md (Part 2: A9-A18, incl. A12/A13/A14 = the three IMPOSSIBLE acceptances with exact replacement bar text)",
+  "corpus/70-visual/refs/make-manifest.py (mean_luminance, block_score_rel, hud_probe, metrics_valid_for, acquisition_state, honest counts block, animated-media skip)",
+  "corpus/70-visual/refs/_provenance.json (has_hud eye-verified on 131; 70 true->false; side/game normalised; 20 REF-M slots assigned + 6 unfilled by name; 24 W3 relabelled+weighted; 20 cross-filed to REF-M6; 9 cutscene portraits excluded; acquisition_state on all)",
+  "corpus/70-visual/refs/souls-behaviour/anim/ (208 sequences MOVED not copied; 177 named-move with frame metadata; 129 distinct moves; 19,735 frames)",
+  "corpus/70-visual/refs/ACQUISITION-REPORT.md s17"
  ],
  "findings": [
   "block_score EXPOSURE FIX VALIDATED. Controlled experiment on modern/exterior_daylight/run-w3nextgen-t0007.jpg (2560x1440), one encoder, q=95 constant, only luminance varied: raw block_score 1.031 (L=105.1) -> 1.101 (L=52.3) -> 1.192 (L=31.1) -> 1.308 (L=18.4). The excess above 1 is very nearly inversely proportional to mean luminance ((bs-1)*L = 3.2, 5.3, 6.0, 5.7). Therefore block_score_rel = 1 + (block_score - 1) * (mean_luminance / 128) removes the confound: same four treatments give 1.025, 1.041, 1.047, 1.044 -- spread 0.019 vs 0.277, a ~15x reduction. Lossless PNG control at the same four exposures gives rel 0.989/0.997/0.999/1.000, so the null is exposure-independent. Quality sweep still discriminates: bright q95/85/70/50/30 -> rel 1.025/1.144/1.291/1.456/1.706; dark(x0.18) -> 1.044/1.118/1.222/1.340/1.578. L_ref=128 is mid-grey of the 8-bit range, chosen as a principled anchor not a fit.",
@@ -25,8 +28,12 @@
   "WIKI GIF TIMING IS BETTER THAN THE CRITIC THOUGHT: the temporal agent fetched ORIGINAL GIF bytes (?format=original) so per-frame delays survive. gif_mean_frame_delay_ms median = 40.0 (170 of 200 files at exactly 40 ms = 25 fps); min 30, max 100. So RI-WPN01-04 windup/active/recovery fractions are measurable at +/-40 ms, not the +/-70 ms the critic derived from the WebP transcode. 18,447 decoded frames, 126 distinct named moves, 26 subjects.",
   "HUD BY EYE (contact sheets of the top-left 42%x17% of all 93 souls stills): 56 have a combat HUD bar stack, 9 are menus (title/options/equipment/storage x2/inventory x2/status), 28 have no UI at all. So has_hud goes true->false on 37 of 93. Corroborates critic F14 (29 zero-HUD; I measure 28 with no UI) and F19 (ui-combat is 11 of 12 non-combat: 9 menus + 2 none).",
   "The critic's chroma HUD detector (max-min>55, max>70, frac>=0.012 in the top-left box) does NOT generalise: a bonfire fills the box at 1.000 and a blue sky at 0.444, so its high end is scene content not HUD. Recorded as corroboration only; the eye is the instrument.",
-  "RI-VIS07 sec B ALREADY lists 'Elden Ring' and 'Dark Souls' in its FAIL answer examples (corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md line 98). F24 is largely pre-discharged; only ESO is genuinely missing from the row."
+  "RI-VIS07 sec B ALREADY lists 'Elden Ring' and 'Dark Souls' in its FAIL answer examples (corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md line 98). F24 is largely pre-discharged; only ESO is genuinely missing from the row.",
+  "CORRECTS CRITIC F16: the 24 Witcher 3 interval-run frames are NOT one location. Eyes on all 24 (contact sheet) show one continuous session traversing Novigrad -> Oxenfurt -> a lakeside village -> White Orchard = 6 distinct locations in 4 named places. The identical `depicts` string was a catalogue artefact. Novigrad (the anti-generic negative anchor) is about a third of the series, not all of it. Each record now carries depicts_location.",
+  "20 of the 24 W3 frames are back/three-quarter-rear and cross-file to REF-M6; 4 are not (t0007 side profile as the critic verified, plus 3 more). REF-M6 population 2 -> 22.",
+  "RI-VIS07 sec B already lists Elden Ring and Dark Souls as FAIL answers; only ESO is missing.",
+  "acquire.py --check = 640/640 OK after the anim/ move (paths changed, bytes and sha256 did not)."
  ],
- "next_step": "provenance load-modify-write: has_hud/ui_overlay_kind/has_hud_basis, side+game normalisation, acquisition_state; then anim/ once the temporal agent stops writing; then full make-manifest run",
+ "next_step": "finish make-manifest walk; report re-scored exterior_lowlight / interior_darkemissive counts; final commit",
  "notes_for_successor": "Two critic findings are stale: A7 delivered (a21_member field, not folder); video/ non-empty. A concurrent temporal agent is writing _provenance.json -> ALWAYS load-modify-write."
 }

@@ -5,9 +5,6 @@
 import { rng } from './core/rng.js';
 import { installGuards, wallNow, violations } from './core/guards.js';
 import { FixedLoop, FIXED_HZ, STEP_MS } from './core/loop.js';
-
-/** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
-const PERF_SAMPLES = 20000;
 import { SimState } from './sim/state.js';
 import { EventBus } from './sim/events.js';
 import { stepOnce } from './sim/step.js';
@@ -21,6 +18,9 @@ import { SaveStore } from './save/store.js';
 import { buildSave, applySave, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
 import { exportSave, importSave } from './save/exchange.js';
 import { canonicalise } from './core/canonical.js';
+
+/** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
+const PERF_SAMPLES = 20000;
 
 export const BUILD = {
   name: 'elder-souls',
@@ -262,9 +262,9 @@ export class Engine {
     // Sim time is accumulated by FixedLoop.stepOnce() around the step ALONE, so the trace
     // record built in _afterStep() is outside both the step and its timing window and
     // cannot inflate simMs (RI-PLT01 M3's "measure the simulation, not the instrument").
-    const t0 = this.loop.stats.stepMsTotal;
+    const t0 = this.loop.stepMsTotal;
     for (let i = 0; i < k; i++) { this.loop.stepOnce(); this._afterStep(); }
-    this.perf.lastSimMs = k ? (this.loop.stats.stepMsTotal - t0) / k : 0;
+    this.perf.lastSimMs = k ? (this.loop.stepMsTotal - t0) / k : 0;
     if (k) this.perf.pushSimMs(this.perf.lastSimMs);
     if (this.loop.renderRateHz !== 0) this.loop.renderNow();
     return { frame: this.sim.frame, t_ms: +(this.sim.frame * STEP_MS).toFixed(3) };

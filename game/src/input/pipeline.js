@@ -28,6 +28,11 @@ import { ACTIONS, BIT, bitOf, maskToNames } from './actions.js';
 
 export const BUFFER_FRAMES = 8;      // f@60 — RI-CMB09 §1, excluded from the S22 rebase.
 
+/** The CLOSED set of keys a HARNESS.md §4 scripted input event may carry. */
+export const QUEUE_INPUT_KEYS = new Set(['f', 'press', 'release', 'move', 'look']);
+/** Scenario-file sugar, expanded by tools/lib/scenario.mjs. Never reaches queueInputs(). */
+export const SCENARIO_SUGAR_KEYS = new Set(['tap', 'hold', 'until']);
+
 export class InputPipeline {
   constructor() {
     // Latched state consumed by the current sim step.
@@ -81,6 +86,25 @@ export class InputPipeline {
     for (const e of script) {
       if (!e || typeof e !== 'object') throw new Error('queueInputs: each event must be an object');
       if (!Number.isInteger(e.f) || e.f < 0) throw new Error(`queueInputs: event frame must be a non-negative integer (got ${JSON.stringify(e.f)})`);
+      // FAIL-CLOSED on the event SHAPE, not just on the button name. An unknown button
+      // already threw; an unknown *key* used to be accepted and silently do nothing, and
+      // `queueInputs` returned a count for it. The W1-00 critic lost four measurements to
+      // that: probes 3, 6, 8 and 10 all ran with their attack inputs quietly dropped
+      // (verdict §8.1). `RI-MTH01` M6 asks for fail-closed and this was fail-quiet.
+      //
+      // `tap` / `hold` / `until` are SCENARIO sugar, expanded host-side by
+      // tools/lib/scenario.mjs into press/release before they ever reach here. Naming them
+      // in the error is the difference between a two-minute fix and an afternoon.
+      for (const k of Object.keys(e)) {
+        if (QUEUE_INPUT_KEYS.has(k)) continue;
+        const sugar = SCENARIO_SUGAR_KEYS.has(k)
+          ? ` '${k}' is scenario-file sugar, expanded by tools/lib/scenario.mjs into press/release; queueInputs() takes the expanded form.`
+          : '';
+        throw new Error(
+          `queueInputs: unrecognised event key '${k}'. HARNESS.md §4 events are ` +
+          `{f, press?, release?, move?, look?} and nothing else.${sugar} ` +
+          'Accepting it and doing nothing would report a count for an input that will never fire.');
+      }
       for (const b of e.press || []) bitOf(b);      // throws on an unknown button
       for (const b of e.release || []) bitOf(b);
       if (e.move && (!Array.isArray(e.move) || e.move.length !== 2)) throw new Error('queueInputs: move must be [x,y]');

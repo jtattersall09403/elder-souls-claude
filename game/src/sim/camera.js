@@ -31,8 +31,22 @@ export const CAMERA_CONST = {
   pivot_height_m: 1.55,
   arm_length_m: 3.60,
   fov_deg: 60,
-  pitch_min_deg: -70,
-  pitch_max_deg: 60,
+  // RI-CAM02 §B, binding, and it is a HARD gate: `p100(|pitch|)` must never exceed these on
+  // any frame of any run in the corpus. The build shipped [-70, +60], which is not the
+  // corpus's band; the W1-00 critic reported the reachable range rather than scoring it,
+  // because M2's stated FAIL conditions are upper bounds and a WIDER clamp does not trip
+  // them until something actually reaches -70. It would have, the first time a mouse swipe
+  // arrived. Clamped after integration, never elastic, never creeping.
+  pitch_min_deg: -55.0,
+  pitch_max_deg: 38.0,
+  // RI-CAM02 §B: under lock the framing law derives pitch and is clamped to a STRICTLY
+  // narrower band (RI-CAM03 §C).
+  pitch_min_locked_deg: -50.0,
+  pitch_max_locked_deg: 32.0,
+  // RI-CAM02 §A: a single swipe cannot exceed this; the excess is DISCARDED, not
+  // accumulated, so a 400 px flick cannot spin the camera through two revolutions.
+  look_cap_yaw_deg_per_frame: 30.0,
+  look_cap_pitch_deg_per_frame: 20.0,
   shake_half_life_frames: 4.8,      // 0.080 s at 60 Hz — RI-CAM06 §G
   shake_max_deg: 0.90,
   shake_max_frames: 12,
@@ -61,10 +75,21 @@ export function stepCamera(sim) {
   c.hitstop = false;
 
   // 1:1 manual look, applied on the frame the input arrives. No smoothing, no easing.
-  sim.input.lookXConsumed = sim.input.lookX;
-  sim.input.lookYConsumed = sim.input.lookY;
-  c.yaw = norm360(c.yaw + sim.input.lookX);
-  c.pitch = clamp(c.pitch - sim.input.lookY, CAMERA_CONST.pitch_min_deg, CAMERA_CONST.pitch_max_deg);
+  // The per-frame cap (RI-CAM02 §A) is applied BEFORE integration and the surplus is
+  // dropped rather than carried, so `lookConsumed` in the trace is what the camera actually
+  // used and a critic can difference it against the injected value.
+  const dx = clamp(sim.input.lookX, -CAMERA_CONST.look_cap_yaw_deg_per_frame, CAMERA_CONST.look_cap_yaw_deg_per_frame);
+  const dy = clamp(sim.input.lookY, -CAMERA_CONST.look_cap_pitch_deg_per_frame, CAMERA_CONST.look_cap_pitch_deg_per_frame);
+  sim.input.lookXConsumed = dx;
+  sim.input.lookYConsumed = dy;
+  c.yaw = norm360(c.yaw + dx);
+  // Clamped AFTER integration, to the band the lock state selects. No bounce, no creep:
+  // with zero look input `c.pitch - 0` is `c.pitch` and clamp() is idempotent at the pin.
+  const locked = sim.player.lockOn !== null && sim.player.lockOn !== undefined;
+  c.pitch = clamp(
+    c.pitch - dy,
+    locked ? CAMERA_CONST.pitch_min_locked_deg : CAMERA_CONST.pitch_min_deg,
+    locked ? CAMERA_CONST.pitch_max_locked_deg : CAMERA_CONST.pitch_max_deg);
   sim.input.lookX = 0;
   sim.input.lookY = 0;
 
