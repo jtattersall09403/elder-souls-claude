@@ -1,0 +1,24 @@
+{
+  "task_id": "image-acquisition-modern",
+  "brief": "inline (task prompt) — fill modern/ half of corpus/70-visual/refs per docs/REFERENCE-IMAGE-REQUEST.md",
+  "started": "wave-N (2026-08-06)",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/70-visual/refs/modern/exterior_daylight/ (12)",
+    "corpus/70-visual/refs/modern/exterior_lowlight/ (12)",
+    "corpus/70-visual/refs/modern/material_closeup/ (8)",
+    "corpus/70-visual/refs/modern/interior_darkemissive/ (10)",
+    "corpus/70-visual/refs/modern/character_closeup/ (9 more)",
+    "corpus/70-visual/refs/modern/combat/ (8)",
+    "corpus/70-visual/refs/video/ (V1,V2 required; V3,V4 wanted)",
+    "corpus/70-visual/refs/context/ (4 ESO Shadowfen/Murkmire)",
+    "corpus/70-visual/refs/MANIFEST.json (extended)",
+    "corpus/70-visual/refs/ACQUISITION-REPORT.md (updated)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "Predecessor (image-acquisition.json) filled morrowind/ side: 89 images, 18/19 slots, all from dehero/mwscr. Concluded modern side unobtainable under old policy proxy — that conclusion is STALE, proxy removed."
+  ],
+  "next_step": "read docs/REFERENCE-IMAGE-REQUEST.md fully, then ACQUISITION-REPORT.md §6 dead ends",
+  "notes_for_successor": ""
+}
