@@ -89,17 +89,17 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
       // covers where the ATTACKER went. It exists only on frames where the root actually
       // moved, so an attack with no root motion has no body hazard at all and this can never
       // degenerate into a proximity test (hitgeometry.json §body_hazard.not_a_distance_check).
-      if (A.lastRootDelta !== 0 && A.rig.hazardParts.length) {
-        for (let ti = 0; ti < A.rig.hazardParts.length; ti++) {
-          const T = A.rig.hazardParts[ti];
-          sweptAABB(T.pa, T.pb, T.a, T.b, T.r, PAD, _bmin, _bmax);
-          for (let hi = 0; hi < B.rig.hurtboxes.length; hi++) {
-            const H = B.rig.hurtboxes[hi];
-            if (!aabbVsCapsule(_bmin, _bmax, H.a, H.b, H.r)) continue;
-            const s = sweepCapsuleVsCapsule(T.pa, T.pb, T.a, T.b, T.r, H.a, H.b, H.r, SUBSTEPS);
-            if (s < 0) continue;
-            // The weapon wins ties: a swing that connects is a swing, not a shoulder-check.
-            if (bestSub < 0 || s < bestSub) { bestSub = s; bestHb = H; bestVia = T.id; }
+      if (A.lastRootDelta !== 0 && A.rig.bodyCap && B.rig.bodyCap) {
+        const T = A.rig.bodyCap, U = B.rig.bodyCap;
+        const tr = A.bodyRadius, ur = B.bodyRadius;
+        sweptAABB(T.pa, T.pb, T.a, T.b, tr, PAD, _bmin, _bmax);
+        if (aabbVsCapsule(_bmin, _bmax, U.a, U.b, ur)) {
+          const s = sweepCapsuleVsCapsule(T.pa, T.pb, T.a, T.b, tr, U.a, U.b, ur, SUBSTEPS);
+          // The weapon wins ties: a swing that connects is a swing, not a shoulder-check.
+          if (s >= 0 && (bestSub < 0 || s < bestSub)) {
+            bestSub = s;
+            bestHb = B.rig.hurtboxes.find((h) => h.id === B.rig.bodyHazardPart) || B.rig.hurtboxes[0];
+            bestVia = 'body';
           }
         }
       }
@@ -148,6 +148,22 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
           const g = emit(frame, 'GUARD_BREAK');
           g.who = B.id; g.frames = gbm.total; g.cause = 'stamina_exhausted_on_block';
           g.riposte_window = gbm.riposte_window;
+        }
+        // RI-WPN04 §B and RI-WPN06 §E both ask for a `BLOCK_SUCCESS` event distinct from `BLOCK`,
+        // and RI-WPN04's harness request 4 is explicit: "`guard.counter` is unmeasurable without
+        // it." A block that BREAKS the guard is not a success — you are open, not ahead — so the
+        // event fires only on the branch that kept the shield up. `open_until_f` is the 40 f@60
+        // window RI-WPN01 §A slot 16 / RI-WPN04 §B give the guard counter.
+        if (!res.guard_broken) {
+          B.blockSuccessFrame = frame;
+          B.blockSuccessShield = B.shieldId || null;
+          const bs = emit(frame, 'BLOCK_SUCCESS');
+          bs.src = A.id; bs.dst = B.id; bs.atk = A.move.id;
+          bs.blocked_attack = A.move.slot || A.move.id;
+          bs.shield = B.shieldId || null; bs.shield_class = B.shield && B.shield.class;
+          bs.stam_left = round1(res.stamina_after);
+          bs.guard_counter_open_f = 40;
+          bs.block_angle_deg = round1(angleDelta(B.yaw, incoming));
         }
         if (B.hp <= 0) killed(B, A, frame, emit);
         sim.hitstopUntil = frame + (A.move.hitstop_frames || 0);

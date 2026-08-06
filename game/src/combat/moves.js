@@ -160,7 +160,7 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
         socket_a: s.hitbox.bone_a,
         socket_b: s.hitbox.bone_b,
         hitstop_f_table: s.hitstop_f || null,
-        hitstop_frames: (s.hitstop_f || (opts && opts.hitstopByTier) || {}).flesh || 6,
+        hitstop_frames: (s.hitstop_f || lib.classes.hitstop.attacker[moveset.weight_tier] || {}).flesh || 6,
         root_dz_m: s.root_dz_m,
         reach_m_declared: moveset.reach_m,
         two_handed: slotId.startsWith('2h.'),
@@ -308,7 +308,7 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
       out[id] = {
         id, slot: id, kind: 'attack',
         anim: `shield_${id.split('.')[1]}_${sh.class}`,
-        clip: new Clip(`shield_${id.split('.')[1]}_${sh.class}`, arch.guardbreak_shove || arch.crit_thrust,
+        clip: new Clip(`shield_${id.split('.')[1]}_${sh.class}`, arch.crit_thrust,
           { startup: f[0], active: f[1], total: f[0] + f[1] + f[2] }, 0.9, root),
         startup: f[0], Ps: f[0] + 1, active: f[1], recovery: f[2], total: f[0] + f[1] + f[2],
         charge_max_f: 0, chains_to: null, chain_index: 1,
@@ -327,7 +327,7 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
       extraSlots.push(id);
     };
     mkShield('shield.bash', [22, 4, 26], 0.35, 24, 0.55, null);
-    if (sh.class === 'greatshield') mkShield('shield.charge', [30, 20, 40], 0.40, 40, 2.20, [18, 50]);
+    if (sh.class === 'great' || sh.class === 'greatshield') mkShield('shield.charge', [30, 20, 40], 0.40, 40, 2.20, [18, 50]);
   }
 
   // ---- criticals (RI-CMB05 §D) ------------------------------------------------------------

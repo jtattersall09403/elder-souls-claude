@@ -136,9 +136,11 @@ export function civStateFor(data, suspicion) {
  * table gives 1.03 s to AGGRO at 97.5/s, which is 100/97.5 exactly — net-of-decay would be
  * 100/(97.5-12) = 1.17 s and the table would be wrong. Filling and decaying are alternatives.
  */
-export function stepCivilian(data, civ, perSecond) {
+export function stepCivilian(data, civ, perSecond, ceiling) {
   const before = civ.civ_state;
-  if (perSecond > 0) civ.suspicion = Math.min(data.civilian.thresholds.ALARM, civ.suspicion + perSecond / HZ);
+  const cap = ceiling === undefined || ceiling === null ? data.civilian.thresholds.ALARM : ceiling;
+  if (perSecond > 0 && civ.suspicion >= cap) { /* held at the channel's ceiling; neither fills nor decays */ }
+  else if (perSecond > 0) civ.suspicion = Math.min(cap, civ.suspicion + perSecond / HZ);
   else civ.suspicion = Math.max(0, civ.suspicion - data.civilian.decay_per_s / HZ);
   civ.civ_state = civStateFor(data, civ.suspicion);
   return civ.civ_state === before ? null : civ.civ_state;

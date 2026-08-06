@@ -5,22 +5,21 @@
  "corpus_item": "RI-MAG02 §D (cost, tiers, prices), RI-MAG01 §B (classes, frames), RI-MAG03 §A (commission markup)",
  "note": "The authored part of every record below is ONLY `effects` + `range` + `class`. focus_base, tier, skill_req, focus_cost, gold_price, commission_price, frames and geometry are all COMPUTED by game/src/sim/magic/cost.js and game/data/magic/cast-classes.json. RI-MAG02 M2 recomputes them and asserts an exact match; running the same code is the point, because the alternative is a second implementation that can silently disagree with the game.",
  "census": {
-  "spells": 71,
+  "spells": 72,
   "by_tier": {
    "1": 17,
-   "2": 28,
-   "3": 16,
-   "4": 9,
-   "5": 1
+   "2": 30,
+   "3": 17,
+   "4": 8
   },
   "by_school": {
    "sorcery": 20,
-   "root_speech": 17,
+   "root_speech": 18,
    "warding": 20,
    "veiling": 14
   },
   "by_class": {
-   "CANTRIP": 21,
+   "CANTRIP": 22,
    "LIGHT": 29,
    "HEAVY": 11,
    "GREAT": 4,
@@ -30,14 +29,14 @@
   "effects_referenced": 55,
   "effects_in_catalogue": 55,
   "effects_unreferenced": [],
-  "purchasable": 47,
-  "shelf_gold_total": 19808,
-  "all_spells_gold_total": 101495
+  "purchasable": 49,
+  "shelf_gold_total": 20754,
+  "all_spells_gold_total": 75203
  },
  "shelf_rule": {
   "ceiling_g": 1050,
   "derivation": "RI-PRG05 §4: R2 holds a 4,200 g merchant pool across 4 merchants ⇒ a float of 1,050 g each, and R2 is where the spellwrights are. A merchant cannot hold stock dearer than their own float. Spells above the ceiling are commissioned (RI-MAG03 §A, 1.6× + 150 g) or hand-placed (S12).",
-  "measured_shelf_total_g": 19808,
+  "measured_shelf_total_g": 20754,
   "ri_mag03_m8_target_g": 28000,
   "ri_mag03_m8_line_note": "The magic LINE is the shelf plus the enchanting services; tools/analysis/magic-audit.mjs computes the service half as one representative 40-point commission at each of the 7 paid enchanters (8,324 g).",
   "ri_mag03_m8_band_g": [
@@ -53,7 +52,7 @@
   "claim": "RI-MAG02 asks RI-PRG05 to pin the magic line at '≈28,000 g across 60 purchasable spells (tier mix 26/18/10/5/1)'. The total and the mix are arithmetically incompatible under RI-MAG02 §D's own gold formula.",
   "arithmetic": "round(3.9 × focus_base^1.75) at each band's CHEAPEST legal focus_base — 1, 13, 31, 66, 121 — gives 4 / 347 / 1,588 / 5,960 / 17,216 g. The cheapest possible 26/18/10/5/1 shelf is therefore 26×4 + 18×347 + 10×1,588 + 5×5,960 + 1×17,216 = 69,246 g, which is 2.47× the 28,000 target. At RI-PRG05 §2's published band prices (220 / 900 / 3,400) plus RI-MAG02's own derived tier-4 8,350 and tier-5 22,200 it is 119,870 g — 78% of RI-PRG05's entire 152,900 g discretionary menu. No choice of magnitudes closes the gap, because the floor is set by the band boundaries, not by the authoring.",
   "requested": "Strike the tier mix from the clause and keep the 28,000 g total. The mix that actually satisfies the total is bottom-heavy, which is also the correct game design: a shop stocks cantrips and journeyman spells, and the powerful spells are commissioned or found.",
-  "resolution_shipped": "The shelf is defined by affordability rather than by tier (see `shelf_rule`), which lands at 19808 g against the 28,000 g target. All 70 spells ship and are castable; the dear ones are commissioned or hand-placed.",
+  "resolution_shipped": "The shelf is defined by affordability rather than by tier (see `shelf_rule`), which lands at 20754 g against the 28,000 g target. All 70 spells ship and are castable; the dear ones are commissioned or hand-placed.",
   "honesty_note": "Filed rather than silently satisfied, and filed narrowly. Two prior amendments in this project were rejected as unearned; this one is a closed-form arithmetic contradiction that a reader can check in one line of node."
  },
  "cost_model": {
@@ -853,26 +852,26 @@
    "effects": [
     {
      "effect": "bind_greater",
-     "magnitude": 30,
-     "duration_s": 30,
+     "magnitude": 20,
+     "duration_s": 12,
      "area_r_m": 0
     }
    ],
-   "focus_base": 42,
-   "band_tier": 3,
+   "focus_base": 23,
+   "band_tier": 2,
    "tier": 4,
    "tier_bound_by": "effect_min_tier",
    "skill_req": 65,
    "focus_cost": {
-    "great_staff": 148,
-    "rod": 185,
-    "enchanted_weapon": 213,
-    "none": 250
+    "great_staff": 81,
+    "rod": 102,
+    "enchanted_weapon": 117,
+    "none": 137
    },
    "stamina": 34,
-   "gold_price": 2702,
-   "commission_price": 4473,
-   "purchasable": false,
+   "gold_price": 942,
+   "commission_price": 1657,
+   "purchasable": true,
    "geometry": {
     "kind": "none"
    },
@@ -888,7 +887,7 @@
    },
    "moveset": "spell-call_the_deep_drowned",
    "in_fight": true,
-   "notes": null
+   "notes": "RETUNED wave-1 round 2. At magnitude 30 for 30 s this cost 185 Focus against a maximum reachable pool of 124, so `bind_greater` had NO castable carrier anywhere in the game — RI-MAG06 M1 NOT_OBSERVED, and a shelf defect rather than a balance one. The GREAT-class multiplier is 4.40, so the tuple, not the class, had to move."
   },
   {
    "id": "sap_blade",
@@ -1055,36 +1054,36 @@
    "effects": [
     {
      "effect": "frost_damage",
-     "magnitude": 60,
-     "duration_s": 20,
-     "area_r_m": 6
+     "magnitude": 22,
+     "duration_s": 5,
+     "area_r_m": 3
     },
     {
      "effect": "shock_damage",
-     "magnitude": 40,
+     "magnitude": 16,
      "duration_s": 0,
-     "area_r_m": 6
+     "area_r_m": 3
     }
    ],
-   "focus_base": 135,
-   "band_tier": 5,
-   "tier": 5,
+   "focus_base": 28,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 85,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 476,
-    "rod": 594,
-    "enchanted_weapon": 684,
-    "none": 802
+    "great_staff": 99,
+    "rod": 124,
+    "enchanted_weapon": 142,
+    "none": 167
    },
    "stamina": 34,
-   "gold_price": 20852,
-   "commission_price": 33513,
+   "gold_price": 1329,
+   "commission_price": 2276,
    "purchasable": false,
    "geometry": {
     "kind": "volume",
     "shape": "sphere",
-    "radius_m": 6,
+    "radius_m": 3,
     "active_f": 6,
     "ticks_every_f": 12,
     "decal_lead_f": 20,
@@ -1102,7 +1101,7 @@
    },
    "moveset": "spell-the_still_water",
    "in_fight": true,
-   "notes": null
+   "notes": "RETUNED wave-1 round 2: 594 Focus against a reachable pool of 124. A spell nobody in the game can cast is not a high-end spell, it is an unreachable row."
   },
   {
    "id": "the_drowning",
@@ -1362,6 +1361,55 @@
    ],
    "school": "root_speech",
    "class": "CANTRIP",
+   "range": "self",
+   "effects": [
+    {
+     "effect": "cure_paralysis",
+     "magnitude": 1,
+     "duration_s": 0,
+     "area_r_m": 0
+    }
+   ],
+   "focus_base": 1,
+   "band_tier": 1,
+   "tier": 2,
+   "tier_bound_by": "effect_min_tier",
+   "skill_req": 25,
+   "focus_cost": {
+    "great_staff": 1,
+    "rod": 1,
+    "enchanted_weapon": 1,
+    "none": 1
+   },
+   "stamina": 10,
+   "gold_price": 4,
+   "commission_price": 156,
+   "purchasable": true,
+   "geometry": {
+    "kind": "none"
+   },
+   "frames": {
+    "startup": 14,
+    "active": 3,
+    "recovery": 20,
+    "total": 37,
+    "Ps": 15,
+    "Tc": 10,
+    "hard_until": 29,
+    "unit": "f@60"
+   },
+   "moveset": "spell-loosen_the_joint",
+   "in_fight": true,
+   "notes": "RANGE CHANGED wave-1 round 2: at `touch` this spell had no castable carrier for its own effect — a contact spell with no body in front of it resolves on nothing, so the one thing you cast to un-freeze YOURSELF could only ever be cast on somebody else. RI-MAG06 M1 records that as NOT_OBSERVED and calls it a defect in the shelf."
+  },
+  {
+   "id": "loosen_the_joint_touch",
+   "name": "Loosen the Joint (Touch)",
+   "schools": [
+    "root_speech"
+   ],
+   "school": "root_speech",
+   "class": "CANTRIP",
    "range": "touch",
    "effects": [
     {
@@ -1401,9 +1449,9 @@
     "hard_until": 29,
     "unit": "f@60"
    },
-   "moveset": "spell-loosen_the_joint",
+   "moveset": "spell-loosen_the_joint_touch",
    "in_fight": true,
-   "notes": null
+   "notes": "The other half: the version you use on the person the wamasu got."
   },
   {
    "id": "put_it_back",
@@ -1914,30 +1962,30 @@
    "effects": [
     {
      "effect": "calm_beast",
-     "magnitude": 30,
-     "duration_s": 30,
-     "area_r_m": 4
+     "magnitude": 20,
+     "duration_s": 15,
+     "area_r_m": 3
     }
    ],
-   "focus_base": 74,
-   "band_tier": 4,
-   "tier": 4,
+   "focus_base": 38,
+   "band_tier": 3,
+   "tier": 3,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 65,
+   "skill_req": 45,
    "focus_cost": {
-    "great_staff": 125,
-    "rod": 156,
-    "enchanted_weapon": 179,
-    "none": 210
+    "great_staff": 64,
+    "rod": 80,
+    "enchanted_weapon": 92,
+    "none": 108
    },
    "stamina": 24,
-   "gold_price": 7281,
-   "commission_price": 11800,
+   "gold_price": 2268,
+   "commission_price": 3779,
    "purchasable": false,
    "geometry": {
     "kind": "volume",
     "shape": "sphere",
-    "radius_m": 4,
+    "radius_m": 3,
     "active_f": 6,
     "ticks_every_f": 12,
     "decal_lead_f": 20,
@@ -1955,7 +2003,7 @@
    },
    "moveset": "spell-the_long_stillness",
    "in_fight": true,
-   "notes": null
+   "notes": "RETUNED wave-1 round 2: 156 Focus against a reachable pool of 124."
   },
   {
    "id": "sap_and_salt",

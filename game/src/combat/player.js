@@ -38,6 +38,14 @@ export class PlayerController {
     this.healBanked = 0;
     this._derived = new Map();
     this.dropReason = null;
+    // ---- W1-10 slot dispatch state ----------------------------------------------------------
+    this.lib = null;                     // MovesetLibrary, set by CombatSystem.createPlayer
+    this.chainFrom = null;               // the slot the last attack ended on (chain successor key)
+    this.sprintHeldF = 0;                // consecutive SPRINT frames — RI-WPN04 §B needs >= 24
+    this.sprintReleasedAt = -9999;       // + the 8 f@60 grace after release
+    this.twoHandHeldF = 0;               // two_hand HELD frames, for art.1 vs art.2
+    this.lastLightPress = -9999;         // guardbreak's "no light press in the last 8 f@60"
+    this.chargeHeld = 0;
     // RI-CAM02 §C's turn-in-place clip, owned by W1-06.
     this.turnInPlace = 0;
     this.turnInPlaceStep = 0;
@@ -55,6 +63,18 @@ export class PlayerController {
     const b = this.b;
     const emit = ctx.emit;
     b.tier = this.tier();
+
+    // ---- W1-10 per-frame context the slot resolver reads ------------------------------------
+    // Held-frame counters and the guard-counter clock. They are counted HERE, once, so that
+    // `resolveSlot` is a pure function of an observable state and a critic can reconstruct every
+    // one of them from the trace.
+    if (b.state === 'SPRINT') { this.sprintHeldF++; this.sprintReleasedAt = -9999; }
+    else if (this.sprintHeldF > 0) { this.sprintReleasedAt = frame; this.sprintHeldF = 0; }
+    this.twoHandHeldF = (input.held & BIT.two_hand) ? this.twoHandHeldF + 1 : 0;
+    if (b.blockSuccessFrame !== undefined && b.blockSuccessFrame > this.lastBlockFrame) {
+      this.lastBlockFrame = b.blockSuccessFrame;
+    }
+    if (frame > this.chainUntil) this.chainFrom = null;
 
     if (b.dead) { b.poseDead(frame); return; }
 
@@ -86,7 +106,14 @@ export class PlayerController {
       if (ended.kind === 'stagger' || ended.kind === 'guard_break') {
         b.regenBlockUntil = Math.max(b.regenBlockUntil, frame + this.d.stamina.regen.delay_frames_after_any_spend);
       }
-      if (ended.kind === 'attack') { this.chainIndex = Math.min(2, this.chainIndex + 1); this.chainUntil = frame + 24; }
+      if (ended.kind === 'attack') {
+        this.chainIndex = Math.min(2, this.chainIndex + 1);
+        this.chainUntil = frame + 24;
+        // The successor a buffered `light` will reach. RI-WPN01 §B's `chains_to` is the graph and
+        // this is the only thing that walks it — "a chain that is implicit in code is
+        // unmeasurable", so the slot id is carried explicitly and reported in the trace.
+        this.chainFrom = ended.slot || null;
+      }
       // RI-WPN06 §A: the grip changes when the 36 f@60 animation ENDS, not when it starts.
       // Committing on the press would make the switch free, which is the hard fail §A names.
       if (ended.kind === 'stance' || ended.kind === 'swap') this._commitLoadout(frame, ended, ctx);
@@ -124,6 +151,7 @@ export class PlayerController {
       const m = b.move;
       // soft-lock steering, before the pose is evaluated (RI-CMB06 §D)
       if (m.kind === 'attack') {
+        this._chargeTick(frame, input, ctx);
         const tgt = ctx.lockedBody || this._softLockTarget(ctx);
         this.lock.steerDuringAttack(b, tgt, b.animFrame + 1, m.startup);
       } else if (m.kind === 'roll' || m.kind === 'backstep') {
@@ -188,23 +216,21 @@ export class PlayerController {
       this._tryStart(bit, frame, input, ctx, { cancelledFrom: m.id, atFrame: nextFrame });
       return;
     }
-    // RI-WPN04 §B: a jump attack is legal from AIRBORNE and vel_y < 0 only — "no rising jump
-    // attacks" — and RI-CMB01 §B / RI-CMB02 §C forbid it entirely at OVERLOADED.
-    if (m.kind === 'jump' && (bit === BIT.light || bit === BIT.heavy)) {
-      if (nextFrame < m.attack_from) {
-        input.droppedInputs++;
-        const e = ctx.emit(frame, 'INPUT_DROPPED');
-        e.button = nameOfBit(bit); e.reason = 'jump_rising'; e.anim_frame = nextFrame;
-        e.legal_from = m.attack_from;
-        return;
-      }
-      if (this.tier() === 'OVERLOADED') {
-        input.droppedInputs++;
-        const e = ctx.emit(frame, 'INPUT_DROPPED');
-        e.button = nameOfBit(bit); e.reason = 'overloaded_no_jump_attack';
-        return;
-      }
-      this._tryStart(bit, frame, input, ctx, { jumping: true });
+    // ---- W1-10: a contextual attack out of a COMMITTED state ---------------------------------
+    //
+    // This is the branch that did not exist. A roll, a backstep and a jump are committed moves,
+    // so every `light` pressed inside one used to reach the generic "not actionable" path and be
+    // dropped or buffered into the standing attack once the state ended. RI-WPN04 §B says those
+    // states are exactly where the contextual slots live, and their windows are INSIDE the
+    // enclosing animation. The press is therefore resolved against the enclosing state, and
+    // `resolveSlot` — not this function — decides whether the window is open.
+    //
+    // Nothing is relaxed by this: outside the window `resolveSlot` returns null, and the press is
+    // buffered only if the window opens within 8 f@60 (rule 1) and DROPPED otherwise (rule 2).
+    // An attack is still uninterruptible by an attack: `m.kind === 'attack'` is not in this list.
+    if ((m.kind === 'roll' || m.kind === 'backstep' || m.kind === 'jump')
+        && (bit === BIT.light || bit === BIT.heavy)) {
+      this._attack(bit, frame, input, ctx, {});
       return;
     }
     // RI-MAG01 §C: a cast is hard-committed through startup, through active, AND through the
@@ -315,17 +341,7 @@ export class PlayerController {
           }
         }
       }
-      const base = b.moves[bit === BIT.light ? 'light' : 'heavy'];
-      const m = this._contextualVariant(base, frame, opts);
-      if (!this._afford(m, frame, m.id, emit)) return;
-      b.begin(m, frame, {});
-      this._spend(m, frame);
-      const e = emit(frame, 'ACTION_START');
-      e.mv = bit === BIT.light ? 'R1' : 'R2'; e.tag = m.tag || 'attack';
-      e.startup = m.startup; e.active = m.active; e.recovery = m.recovery; e.total = m.total;
-      e.Ps = m.startup + 1; e.stam_after = round1(b.stamina);
-      if (m.hyperarmour_window) e.ha_window = m.hyperarmour_window;
-      return;
+      return this._attack(bit, frame, input, ctx, opts);
     }
 
     if (bit === BIT.parry) {
@@ -538,46 +554,211 @@ export class PlayerController {
     this.b.spend(m.stamina, frame, this.d);
   }
 
-  /**
-   * RI-CMB02 §C's contextual attacks, derived from the base row by the item's own multipliers
-   * with the item's own rounding rule and the 6 f@60 clamp. Cached per (base, modifier).
-   */
-  _contextualVariant(base, frame, opts) {
+  // ---- THE slot dispatch --------------------------------------------------------------------
+  //
+  // W1-10, and the single reason this piece exists. What used to be here was
+  // `_contextualVariant()`: it took the standing light attack and MULTIPLIED its frame counts by
+  // a modifier row, so a rolling attack was `r1.1` with different numbers and the same clip. That
+  // is RI-WPN04's named fake — "a contextual slot that is wired up, appears in the data, appears
+  // in the menus, and silently plays the standard light attack" — and it is deleted.
+  //
+  // Every attack button now goes through `MovesetLibrary.resolveSlot()`, which returns a SLOT ID
+  // or NULL. If it returns null the input is DROPPED (or buffered, inside the 8 f@60 window) and
+  // loudly reported with the reason. There is no branch anywhere below that reaches `r1.1`
+  // because a window was missed — RI-WPN04 §B rule 2.
+
+  /** The RI-WPN04 §B state a button press is being resolved against, and the frame inside it. */
+  _slotCtx(frame, input, ctx, opts) {
     const b = this.b;
-    let mod = null, tag = null;
-    if (opts && opts.cancelledFrom) { /* attack out of a cancel is a plain attack */ }
-    if (opts && opts.jumping) { mod = 'jump'; tag = 'jump'; }
-    else if (b.state === 'ROLL_RECOVER' || (opts && opts.rolling)) { mod = 'rolling'; tag = 'rolling'; }
-    else if (b.state === 'SPRINT') { mod = 'running'; tag = 'running'; }
-    else if (frame - this.lastBlockFrame <= this.d.frames.modifiers.guard_counter.window_after_block_f) { mod = 'guard_counter'; tag = 'guard_counter'; }
-    else if (base.id === 'light' && this.chainIndex === 1) { mod = 'chain_hit_2'; tag = 'chain2'; }
-    else if (base.id === 'light' && this.chainIndex === 2) { mod = 'chain_hit_3'; tag = 'chain3'; }
-    if (!mod) return base;
-    const key = `${base.anim}:${mod}`;
-    if (this._derived.has(key)) return this._derived.get(key);
-    const M = this.d.frames.modifiers[mod];
-    const FLOOR = this.d.frames.min_startup_frames;
-    const startup = Math.max(FLOOR, Math.round(base.startup * (M.startup || 1)));
-    const active = Math.round(base.active * (M.active || 1));
-    const recovery = Math.round(base.recovery * (M.recovery || 1));
-    const v = Object.assign({}, base, {
-      id: `${base.id}_${mod}`,
-      tag,
-      startup, active, recovery,
-      total: startup + active + recovery,
-      Ps: startup + 1,
-      stamina: Math.round(base.stamina * (M.stamina || 1)),
-      motion_value: +(base.motion_value * (M.motion_value || 1)).toFixed(4),
-      poise_damage: Math.round(base.poise_damage * (M.poise_damage || 1)),
-      root_dz_m: base.root_dz_m * (M.root_dz_mult || 1),
-      hard_until: startup + active + Math.ceil(0.45 * recovery),
-      clamped: startup === FLOOR && Math.round(base.startup * (M.startup || 1)) < FLOOR,
-      modifier: mod,
-    });
-    v.clip = new base.clip.constructor(`${base.anim}_${mod}`, base.clip.arch,
-      { startup, active, total: v.total }, base.clip.amplitude, v.root_dz_m);
-    this._derived.set(key, v);
-    return v;
+    const m = b.move;
+    const W = this.lib ? this.lib.classes.contextual_windows : null;
+    const tier = this.tier();
+    const nf = m ? b.animFrame + 1 : 0;
+    let state = 'IDLE';
+    let stateFrame = 0;
+    let descending = false;
+    let fall = 0;
+    if (m && m.kind === 'roll') { state = 'ROLL'; stateFrame = nf; }
+    else if (m && m.kind === 'backstep') { state = 'BACKSTEP'; stateFrame = nf; }
+    else if (m && m.kind === 'jump') {
+      state = 'AIRBORNE'; stateFrame = nf;
+      descending = nf >= m.attack_from;
+      fall = descending ? m.apex_m * Math.min(1, (nf - m.attack_from) / Math.max(1, m.active / 2)) : 0;
+    } else if (m && m.kind === 'attack') { state = 'ATTACK_RECOVERY'; stateFrame = nf; }
+    else if (W && frame - this.lastBlockFrame <= W.guard_counter_f) {
+      state = 'BLOCK_SUCCESS'; stateFrame = frame - this.lastBlockFrame;
+    } else if (b.state === 'SPRINT' || (this.sprintReleasedAt >= 0 && frame - this.sprintReleasedAt <= (W ? W.sprint_grace_f : 8))) {
+      state = 'SPRINT'; stateFrame = this.sprintHeldF;
+    } else if (b.guardRaised) { state = 'BLOCK_HOLD'; }
+    // A chain link is reached by a press BUFFERED in the previous link's recovery, so by the time
+    // it is resolved the previous move has already retired. `chainFrom` carries it across that
+    // boundary — RI-CMB02 §D forbids acting inside the hard part of recovery, so this is the only
+    // route a chain can legally take and the trace shows the successor starting on the frame the
+    // predecessor ends.
+    let chainFrom = null;
+    if (state === 'ATTACK_RECOVERY') chainFrom = m.slot || null;
+    else if (state === 'IDLE' && this.chainFrom && frame <= this.chainUntil) { state = 'ATTACK_RECOVERY'; chainFrom = this.chainFrom; }
+    const mag = Math.hypot(input.moveX, input.moveY);
+    return {
+      state,
+      state_frame: stateFrame,
+      roll_tier: tier,
+      stance: b.twoHanded ? 'two_hand' : 'one_hand',
+      offhand_shield: !b.twoHanded && !!b.shield,
+      blocked_with_shield: !!b.blockSuccessShield,
+      extra_slots: b.moves._extraSlots || [],
+      descending,
+      fall_height_m: fall,
+      target_below: this._targetBelow(ctx),
+      sprint_held_f: this.sprintHeldF,
+      forward_mag: input.moveY > 0 ? mag : 0,
+      light_pressed_within_buffer: frame - this.lastLightPress <= 8,
+      heavy_held: false,
+      two_hand_held: (input.held & BIT.two_hand) !== 0,
+      held_frames: this.twoHandHeldF,
+      chain_from: chainFrom,
+      chain_frame: stateFrame,
+      opts,
+    };
+  }
+
+  _targetBelow(ctx) {
+    for (const t of ctx.bodies || []) {
+      if (t === this.b || t.dead || t.side === this.b.side) continue;
+      const d = Math.hypot(t.pos[0] - this.b.pos[0], t.pos[2] - this.b.pos[2]);
+      if (d <= (this.lib ? this.lib.classes.contextual_windows.plunge_target_radius_m : 2.0)) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Resolve one attack press and start the slot it names, or drop the input.
+   * `bit` is `light`, `heavy` or `parry`.
+   */
+  _attack(bit, frame, input, ctx, opts) {
+    const b = this.b;
+    const emit = ctx.emit;
+    const button = bit === BIT.light ? 'light' : bit === BIT.heavy ? 'heavy' : 'parry';
+    if (bit === BIT.light) this.lastLightPress = frame;
+
+    if (!this.lib || !b.moves._slotIds || !b.moves._slotIds.length) {
+      // The seven-class spine path. It survives only so that a build with the weapon data
+      // absent still runs; it has no contextual slots and says so rather than faking them.
+      const m = b.moves[bit === BIT.light ? 'light' : 'heavy'];
+      if (!m || !this._afford(m, frame, m.id, emit)) return;
+      b.begin(m, frame, {});
+      this._spend(m, frame);
+      const e = emit(frame, 'ACTION_START');
+      e.mv = bit === BIT.light ? 'R1' : 'R2'; e.tag = 'attack'; e.anim_slot = m.slot || m.id;
+      e.startup = m.startup; e.active = m.active; e.recovery = m.recovery; e.total = m.total;
+      e.Ps = m.startup + 1; e.stam_after = round1(b.stamina);
+      return;
+    }
+
+    const sctx = this._slotCtx(frame, input, ctx, opts);
+    const r = this.lib.resolveSlot(b.weaponId, button, sctx);
+    if (!r.slot) {
+      // RI-WPN04 §B rule 1: a press within 8 f@60 BEFORE a contextual window opens is buffered
+      // and fires on the window's first frame. Rule 2: anything earlier is DROPPED, not stored.
+      const opensIn = this._framesUntilWindow(sctx, button);
+      if (opensIn !== null && opensIn > 0 && opensIn <= (this.lib.classes.contextual_windows.buffer_f || 8)) {
+        input.tryBuffer(bit, frame, opensIn);
+        const e = emit(frame, 'INPUT_BUFFERED');
+        e.button = button; e.frames_left = opensIn; e.for_slot = r.reason;
+        return;
+      }
+      input.droppedInputs++;
+      const e = emit(frame, 'INPUT_DROPPED');
+      e.button = button; e.reason = r.reason; e.state = sctx.state; e.state_frame = sctx.state_frame;
+      e.roll_tier = sctx.roll_tier;
+      this.dropReason = r.reason;
+      return;
+    }
+    const m = b.moves[r.slot];
+    if (!m) {
+      input.droppedInputs++;
+      const e = emit(frame, 'INPUT_DROPPED');
+      e.button = button; e.reason = `slot_not_built:${r.slot}`;
+      return;
+    }
+    if (!this._afford(m, frame, r.slot, emit)) return;
+    // A contextual attack out of a committed dodge REPLACES the dodge; it does not queue behind
+    // it. The i-frames end where the attack begins, which is what makes the window a decision.
+    b.move = null;
+    b.begin(m, frame, {});
+    this._spend(m, frame);
+    this.chainFrom = null;
+    const e = emit(frame, 'ACTION_START');
+    e.mv = button === 'light' ? 'R1' : button === 'heavy' ? 'R2' : 'PARRY';
+    e.tag = 'attack'; e.anim_slot = r.slot; e.anim = m.anim; e.reason = r.reason;
+    e.from_state = sctx.state; e.from_state_frame = sctx.state_frame; e.roll_tier = sctx.roll_tier;
+    e.stance = sctx.stance;
+    e.startup = m.startup; e.active = m.active; e.recovery = m.recovery; e.total = m.total;
+    e.Ps = m.startup + 1; e.stam_after = round1(b.stamina);
+    e.shape = m.shape; e.arc_sweep_deg = m.arc_sweep_deg; e.chains_to = m.chains_to;
+    if (m.hyperarmour_window) e.ha_window = m.hyperarmour_window;
+    if (m.charge_max_f) e.charge_max_f = m.charge_max_f;
+  }
+
+  /**
+   * RI-WPN01 §C, the charge contract. `r2` and `r2.charged` are DIFFERENT SLOTS with different
+   * clips, and which one you get is decided by whether you were still holding the button when the
+   * windup ran out — the Souls input, and the only one that does not require the game to know the
+   * future on the press frame. Once the hold begins the attack cannot be cancelled, only released
+   * (rule 2), and over-holding past `charge_max_f` fires at full rather than aborting (rule 3).
+   */
+  _chargeTick(frame, input, ctx) {
+    const b = this.b;
+    const m = b.move;
+    const nf = b.animFrame + 1;
+    if (m.charge_max_f) {
+      // Already in a charged slot: count the hold and release early if the button came up.
+      const holdStart = m.startup - m.charge_max_f;
+      if (nf > holdStart && nf <= m.startup) {
+        this.chargeHeld = nf - holdStart;
+        if (!(input.held & BIT.heavy)) {
+          // Released early: skip the remainder of the hold. The attack still FIRES (rule 2).
+          b.animFrame = m.startup;
+          const e = ctx.emit(frame, 'CHARGE_RELEASE');
+          e.slot = m.slot; e.charge_f = this.chargeHeld; e.charge_max_f = m.charge_max_f;
+          e.at_full = this.chargeHeld >= m.charge_max_f;
+          e.motion_value = this._chargedMV(m, this.chargeHeld);
+        }
+      }
+      return;
+    }
+    if (!/(^|\.)r2$/.test(m.slot || '') || nf !== m.startup) return;
+    if (!(input.held & BIT.heavy)) return;
+    const chargedId = (m.slot === '2h.r2' ? '2h.' : '') + 'r2.charged';
+    const cm = b.moves[chargedId];
+    if (!cm) return;
+    if (!canAfford(b, Math.max(0, cm.stamina - m.stamina))) return;
+    // Same swing, held. The clip, the frames and the ramp are the charged slot's own.
+    b.move = cm;
+    b.animFrame = cm.startup - cm.charge_max_f;
+    this.chargeHeld = 0;
+    const e = ctx.emit(frame, 'ACTION_START');
+    e.mv = 'R2'; e.tag = 'attack'; e.anim_slot = chargedId; e.anim = cm.anim;
+    e.reason = 'r2.charged'; e.startup = cm.startup; e.active = cm.active;
+    e.recovery = cm.recovery; e.total = cm.total; e.Ps = cm.startup + 1;
+    e.charge_max_f = cm.charge_max_f; e.stam_after = round1(b.stamina);
+    if (cm.hyperarmour_window) e.ha_window = cm.hyperarmour_window;
+  }
+
+  /** RI-WPN01 §C: a LERP, never a step. */
+  _chargedMV(m, c) {
+    const r = m.charge_ramp || { motion_value_at_full: 1.3 };
+    const t = m.charge_max_f ? Math.min(1, c / m.charge_max_f) : 0;
+    return +(m.motion_value * (1 + (r.motion_value_at_full - 1) * t)).toFixed(4);
+  }
+
+  /** How many frames until this state's contextual window opens, or null if it is not a window. */
+  _framesUntilWindow(sctx, button) {
+    const W = this.lib.classes.contextual_windows;
+    const win = sctx.state === 'ROLL' ? W.roll[sctx.roll_tier]
+      : sctx.state === 'BACKSTEP' ? W.backstep[sctx.roll_tier] : null;
+    if (!win) return null;
+    return win[0] - sctx.state_frame;
   }
 
   // ---- locomotion ---------------------------------------------------------------------------

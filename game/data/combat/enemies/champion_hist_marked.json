@@ -99,6 +99,8 @@
   "provenance": {
     "identity": "The RI-CMB07 exemplar's opponent. 2876 HP is the exemplar's own figure, which is not frame data and therefore survives the S22 invalidation.",
     "frame_data": "PROVISIONAL. Enemy windup and punish-window design is RI-AI02/RI-AI03 and wave-1 piece W1-12. All values f@60.",
-    "poise": "48 rather than RI-CMB05 \u00a7A's cited 28: the corpus figure predates this build's poise-pool arithmetic (poise_health_max = 20 + armour_poise), under which 28 would mean armour_poise 8 and a champion that a single straight-sword R1 (22 poise damage, resisted to 22) staggers every other swing. 48 gives it 28 of armour poise and two swings of standing. Flagged as a divergence rather than silently adopted."
-  }
+    "poise": "48 rather than RI-CMB05 §A's cited 28: the corpus figure predates this build's poise-pool arithmetic (poise_health_max = 20 + armour_poise), under which 28 would mean armour_poise 8 and a champion that a single straight-sword R1 (22 poise damage, resisted to 22) staggers every other swing. 48 gives it 28 of armour poise and two swings of standing. Flagged as a divergence rather than silently adopted."
+  },
+  "armour_rating": 55,
+  "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
 }

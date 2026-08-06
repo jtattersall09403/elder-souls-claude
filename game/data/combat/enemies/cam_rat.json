@@ -27,7 +27,9 @@
   },
   "attacks": {},
   "parley": null,
-  "note": "A stationary framing fixture for RI-CAM03 M2's 40-pose pitch sweep and M1's on-screen fractions. Collision height 0.6 m \u2014 the row of RI-CAM03 \u00a7D's worked table this dummy IS. It has no attacks and no AI; the camera is the thing under test, not the fight.",
-  "parley_note": "parley: null \u2014 a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_mindless` rather than silently doing nothing.",
-  "height_m": 0.6
+  "note": "A stationary framing fixture for RI-CAM03 M2's 40-pose pitch sweep and M1's on-screen fractions. Collision height 0.6 m — the row of RI-CAM03 §D's worked table this dummy IS. It has no attacks and no AI; the camera is the thing under test, not the fight.",
+  "parley_note": "parley: null — a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_mindless` rather than silently doing nothing.",
+  "height_m": 0.6,
+  "armour_rating": 6,
+  "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
 }

@@ -95,11 +95,18 @@ export class CombatBody {
     this.charmedUntil = 0;
     this.frenziedUntil = 0;
     this.frenzyTarget = null;
+    this.jumpApexMult = 1;            // `leap` scales the jump arc's apex
 
     this._loopFrame = 0;
     this._locomotionMoveDir = 0;
     this.lastRootDelta = 0;
     this.rollDirDeg = 0;
+
+    // clips.json §cross_fade — declared in data, read once, never a magic number here.
+    this.crossFadeFrames = (cfg.clips && cfg.clips.phase_parameterisation
+      && cfg.clips.phase_parameterisation.cross_fade
+      && cfg.clips.phase_parameterisation.cross_fade.frames) || 0;
+    this._blendAnim = this.anim;
   }
 
   // ---- committed actions ------------------------------------------------------------------
@@ -159,7 +166,10 @@ export class CombatBody {
     // offset. `max_y = 0.0000 over 90 frames` was the W1-09 verdict's evidence that jump did
     // not exist; `pos[1]` is what that probe reads, so that is what moves.
     if (m.kind === 'jump') {
-      this.pos[1] = Math.max(0, m.clip.rootOffsetYAt(f) * m.apex_m);
+      // `jumpApexMult` is seam S19's `leap`: RI-MAG06 §B judges it by "`pos[1]` peak strictly
+      // greater than the unbuffed jump", so it has to scale the SAME root-motion arc the
+      // unbuffed jump uses rather than adding a second vertical of its own. Default 1.
+      this.pos[1] = Math.max(0, m.clip.rootOffsetYAt(f) * m.apex_m * (this.jumpApexMult || 1));
       this.airborne = f >= m.airborne[0] && f <= m.airborne[1];
     } else if (this.airborne) { this.airborne = false; this.pos[1] = 0; }
 
@@ -324,6 +334,17 @@ export class CombatBody {
   evaluateRig(rootDy) {
     this.prevA[0] = this.socketA[0]; this.prevA[1] = this.socketA[1]; this.prevA[2] = this.socketA[2];
     this.prevB[0] = this.socketB[0]; this.prevB[1] = this.socketB[1]; this.prevB[2] = this.socketB[2];
+    // clips.json §cross_fade. Every consumer of this rig — bones, hurtboxes, weapon sockets,
+    // the sweep, the renderer — reads the pose AFTER the blend, so there is exactly one pose
+    // per frame and no way for the hitbox and the model to disagree about which one it is.
+    // The trigger is `anim` changing, which is the one thing every transition has in common:
+    // a roll entered from a run, a chained attack entered from the previous recovery, a
+    // stagger entered from anywhere, a locomotion loop resumed after a move retires.
+    if (this.anim !== this._blendAnim) {
+      this.rig.beginCrossFade(this.crossFadeFrames);
+      this._blendAnim = this.anim;
+    }
+    this.rig.applyCrossFade();
     const w = this.moves._weapon;
     this.rig.evaluate(this.pos, this.yaw, rootDy || 0, w.socket_a_dist_m, w.socket_b_dist_m);
     this.socketA[0] = this.rig.socketA[0]; this.socketA[1] = this.rig.socketA[1]; this.socketA[2] = this.rig.socketA[2];
@@ -336,16 +357,14 @@ export class CombatBody {
   }
 
   /**
-   * RI-CMB04 §A step 5's second clause — "resolve collision" — applied as a pure horizontal
-   * translation of THIS frame's already-evaluated pose. See Rig.translate() for why the
-   * previous pose is left alone.
+   * The body-separation push. Runs at the TOP of the step, before this frame's root motion and
+   * before the rig is evaluated, so it moves `pos` and nothing else: the controller re-evaluates
+   * the whole rig from `pos` later in the same step. See CombatSystem.step() for why it is here
+   * and not between root motion and the sweep.
    */
   displace(dx, dz) {
     if (dx === 0 && dz === 0) return;
     this.pos[0] += dx; this.pos[2] += dz;
-    this.rig.translate(dx, dz);
-    this.socketA[0] += dx; this.socketA[2] += dz;
-    this.socketB[0] += dx; this.socketB[2] += dz;
   }
 
   // ---- per-frame upkeep --------------------------------------------------------------------

@@ -16,41 +16,239 @@
     "across a save, and a critic can see it in the save rather than only in a probe."
   ],
   "locks": [
-    { "id": "warded_ledger_door", "tier": 3, "locked": true, "pos": [0, 0, 8], "zone": "arena_flat", "opens": "ledger_room", "prose": "A collar of black lacquer set into swamp-oak, three wards deep." },
-    { "id": "ledger_strongbox", "tier": 2, "locked": true, "pos": [3, 0, 9], "zone": "arena_flat", "opens": "strongbox", "prose": "A strongbox with a Rootkeeper seal, still wet." },
-    { "id": "cistern_grate", "tier": 1, "locked": true, "pos": [-6, 0, 4], "zone": "arena_flat", "opens": "cistern_shortcut", "prose": "A grate whose collar has rusted almost through." },
-    { "id": "hall_side_door", "tier": 4, "locked": true, "pos": [8, 0, -3], "zone": "arena_flat", "opens": "hall_interior", "prose": "Four wards. Nobody picks this; you either have the key or you have Warding." },
-    { "id": "drowned_road_sluice", "tier": 5, "locked": true, "pos": [-9, 0, -7], "zone": "arena_flat", "opens": "sluice_channel", "prose": "The sluice-gate collar. Five wards, and the fifth is not a ward at all." }
+    {
+      "id": "warded_ledger_door",
+      "tier": 3,
+      "locked": true,
+      "pos": [
+        0,
+        0,
+        7.4
+      ],
+      "zone": "arena_flat",
+      "opens": "ledger_room",
+      "prose": "A collar of black lacquer set into swamp-oak, three wards deep."
+    },
+    {
+      "id": "ledger_strongbox",
+      "tier": 2,
+      "locked": true,
+      "pos": [
+        2.0,
+        0,
+        6.6
+      ],
+      "zone": "arena_flat",
+      "opens": "strongbox",
+      "prose": "A strongbox with a Rootkeeper seal, still wet."
+    },
+    {
+      "id": "cistern_grate",
+      "tier": 1,
+      "locked": true,
+      "pos": [
+        -2.4,
+        0,
+        5.6
+      ],
+      "zone": "arena_flat",
+      "opens": "cistern_shortcut",
+      "prose": "A grate whose collar has rusted almost through."
+    },
+    {
+      "id": "hall_side_door",
+      "tier": 4,
+      "locked": true,
+      "pos": [
+        3.2,
+        0,
+        4.2
+      ],
+      "zone": "arena_flat",
+      "opens": "hall_interior",
+      "prose": "Four wards. Nobody picks this; you either have the key or you have Warding."
+    },
+    {
+      "id": "drowned_road_sluice",
+      "tier": 5,
+      "locked": true,
+      "pos": [
+        -3.6,
+        0,
+        3.4
+      ],
+      "zone": "arena_flat",
+      "opens": "sluice_channel",
+      "prose": "The sluice-gate collar. Five wards, and the fifth is not a ward at all."
+    },
+    {
+      "id": "customs_loft_door",
+      "tier": 2,
+      "locked": false,
+      "pos": [
+        1.2,
+        0,
+        5.0
+      ],
+      "zone": "arena_flat",
+      "opens": "customs_loft",
+      "prose": "Standing open, the way a door is when somebody left in a hurry.",
+      "_why_unlocked": "`lock_lock` (RI-MAG06 §B: \"the lock's state changes\") needs a lock that is OPEN before it can close one. A ward set with every door in the world already bolted is a verb with no object, and it measured NOT_OBSERVED for exactly that reason."
+    }
   ],
   "traps": [
-    { "id": "ledger_threshold_ward", "kind": "sap_ward", "armed": true, "pos": [0, 0, 7.2], "damage": 180, "prose": "A bead of sap on the threshold, holding a tension it should not have." },
-    { "id": "strongbox_needle", "kind": "needle", "armed": true, "pos": [3, 0, 8.6], "damage": 60, "prose": "A needle behind the lip of the lid." },
-    { "id": "sluice_pressure_plate", "kind": "collapse", "armed": true, "pos": [-9, 0, -6.4], "damage": 240, "prose": "The board under the sluice sits a finger too high." }
+    {
+      "id": "ledger_threshold_ward",
+      "kind": "sap_ward",
+      "armed": true,
+      "pos": [
+        0,
+        0,
+        6.8
+      ],
+      "damage": 180,
+      "prose": "A bead of sap on the threshold, holding a tension it should not have."
+    },
+    {
+      "id": "strongbox_needle",
+      "kind": "needle",
+      "armed": true,
+      "pos": [
+        2.0,
+        0,
+        6.0
+      ],
+      "damage": 60,
+      "prose": "A needle behind the lip of the lid."
+    },
+    {
+      "id": "sluice_pressure_plate",
+      "kind": "collapse",
+      "armed": true,
+      "pos": [
+        -3.6,
+        0,
+        3.0
+      ],
+      "damage": 240,
+      "prose": "The board under the sluice sits a finger too high."
+    }
   ],
   "breakables": [
-    { "id": "cistern_wall_bricks", "hardness": 25, "pos": [-6, 0, 5.5], "opens_shortcut": "cistern_shortcut", "intact": true, "prose": "Brick gone soft with a century of standing water." },
-    { "id": "root_barrier", "hardness": 45, "pos": [5, 0, 11], "opens_shortcut": "root_gallery", "intact": true, "prose": "A knot of hist-root grown across the gallery mouth." },
-    { "id": "ossuary_lid", "hardness": 20, "pos": [2, 0, -8], "opens_shortcut": null, "intact": true, "prose": "A stone lid, cracked once already." }
+    {
+      "id": "cistern_wall_bricks",
+      "hardness": 25,
+      "pos": [
+        -2.4,
+        0,
+        6.4
+      ],
+      "opens_shortcut": "cistern_shortcut",
+      "intact": true,
+      "prose": "Brick gone soft with a century of standing water."
+    },
+    {
+      "id": "root_barrier",
+      "hardness": 45,
+      "pos": [
+        2.6,
+        0,
+        7.2
+      ],
+      "opens_shortcut": "root_gallery",
+      "intact": true,
+      "prose": "A knot of hist-root grown across the gallery mouth."
+    },
+    {
+      "id": "ossuary_lid",
+      "hardness": 20,
+      "pos": [
+        1.0,
+        0,
+        -4.0
+      ],
+      "opens_shortcut": null,
+      "intact": true,
+      "prose": "A stone lid, cracked once already."
+    }
   ],
   "items": [
-    { "id": "marsh_shortsword", "condition_pct": 44, "prose": "Notched to the spine." },
-    { "id": "ward_collar_picks", "condition_pct": 61, "prose": "Two picks left with any spring in them." },
-    { "id": "ruined_censer", "condition_pct": 4, "prose": "Past mending. RI-MAG06 §B: mend_item refuses below 10%." },
-    { "id": "lacquer_shield", "condition_pct": 78 }
+    {
+      "id": "marsh_shortsword",
+      "condition_pct": 44,
+      "prose": "Notched to the spine."
+    },
+    {
+      "id": "ward_collar_picks",
+      "condition_pct": 61,
+      "prose": "Two picks left with any spring in them."
+    },
+    {
+      "id": "ruined_censer",
+      "condition_pct": 4,
+      "prose": "Past mending. RI-MAG06 §B: mend_item refuses below 10%."
+    },
+    {
+      "id": "lacquer_shield",
+      "condition_pct": 78
+    }
   ],
   "keys": [
-    { "id": "ledger_room_key", "pos": [4.5, 0, -2], "opens": "warded_ledger_door", "prose": "On a hook behind the counter, where nobody looks." },
-    { "id": "sluice_key", "pos": [-12, 0, -11], "opens": "drowned_road_sluice", "prose": "In the silt under the third piling." },
-    { "id": "hall_side_key", "pos": [11, 0, 2], "opens": "hall_side_door" }
+    {
+      "id": "ledger_room_key",
+      "pos": [
+        4.5,
+        0,
+        -2
+      ],
+      "opens": "warded_ledger_door",
+      "prose": "On a hook behind the counter, where nobody looks."
+    },
+    {
+      "id": "sluice_key",
+      "pos": [
+        -12,
+        0,
+        -11
+      ],
+      "opens": "drowned_road_sluice",
+      "prose": "In the silt under the third piling."
+    },
+    {
+      "id": "hall_side_key",
+      "pos": [
+        11,
+        0,
+        2
+      ],
+      "opens": "hall_side_door"
+    }
   ],
   "shrines": [
-    { "id": "rootkeeper_shrine_thornmarsh", "pos": [-40, 0, 20], "faction": "rootkeepers" },
-    { "id": "chapel_gideon", "pos": [60, 0, -55], "faction": "nine_divines" }
+    {
+      "id": "rootkeeper_shrine_thornmarsh",
+      "pos": [
+        -40,
+        0,
+        20
+      ],
+      "faction": "rootkeepers"
+    },
+    {
+      "id": "chapel_gideon",
+      "pos": [
+        60,
+        0,
+        -55
+      ],
+      "faction": "nine_divines"
+    }
   ],
   "testimony": {
     "_default": "the_drowned_road_rumour",
     "E0": "who_paid_the_ferryman",
     "E1": "the_ledger_was_altered",
     "beast_slitherfang": "the_nest_is_downstream"
-  }
+  },
+  "_placement_note": "Coordinates are inside `arena_flat`, within the reach declared in game/src/sim/magic/apply.js §WORLD_REACH_M of a spell cast forward from the origin. A verb whose objects are all out of reach measures NOT_OBSERVED and is indistinguishable from a verb that does not work — which is the whole failure RI-MAG06 exists to catch, so the objects are placed where a probe and a player can both actually reach them."
 }

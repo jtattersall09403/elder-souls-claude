@@ -75,11 +75,11 @@ const SHELF = [
   { id: 'shell_splitter', name: 'Shell-Splitter', cls: 'HEAVY', range: 'projectile', fx: [E('shatter', 30)] },
   { id: 'verdigris', name: 'Verdigris', cls: 'LIGHT', range: 'touch', fx: [E('corrode', 40)] },
   { id: 'call_the_drowned', name: 'Call the Drowned', cls: 'HEAVY', range: 'self', fx: [E('bind_lesser', 30, 30)] },
-  { id: 'call_the_deep_drowned', name: 'Call the Deep-Drowned', cls: 'GREAT', range: 'self', fx: [E('bind_greater', 30, 30)] },
+  { id: 'call_the_deep_drowned', name: 'Call the Deep-Drowned', cls: 'GREAT', range: 'self', fx: [E('bind_greater', 20, 12)], note: 'RETUNED wave-1 round 2. At magnitude 30 for 30 s this cost 185 Focus against a maximum reachable pool of 124, so `bind_greater` had NO castable carrier anywhere in the game — RI-MAG06 M1 NOT_OBSERVED, and a shelf defect rather than a balance one. The GREAT-class multiplier is 4.40, so the tuple, not the class, had to move.' },
   { id: 'sap_blade', name: 'Sap-Blade', cls: 'LIGHT', range: 'self', fx: [E('bound_weapon', 30, 30)], note: 'MB-6: an early-game power spike with no upgrade path.' },
   { id: 'long_hand', name: 'Long Hand', cls: 'CANTRIP', range: 'self', fx: [E('telekinesis', 25, 30)], note: 'MB-4: theft through geometry, 25 m of reach.' },
   { id: 'kiln_breath', name: 'Kiln-Breath', cls: 'HEAVY', range: 'area_at_range', fx: [E('fire_damage', 40, 20, 5)] },
-  { id: 'the_still_water', name: 'The Still Water', cls: 'GREAT', range: 'area_at_range', fx: [E('frost_damage', 60, 20, 6), E('shock_damage', 40, 0, 6)] },
+  { id: 'the_still_water', name: 'The Still Water', cls: 'GREAT', range: 'area_at_range', fx: [E('frost_damage', 22, 5, 3), E('shock_damage', 16, 0, 3)], note: 'RETUNED wave-1 round 2: 594 Focus against a reachable pool of 124. A spell nobody in the game can cast is not a high-end spell, it is an unreachable row.' },
   { id: 'the_drowning', name: 'The Drowning', cls: 'GREAT', range: 'projectile', fx: [E('damage_health', 30)], note: 'The one GREAT-class projectile on the shelf. RI-MAG01 §E declares GREAT ballistics — 8.0 m/s, r 0.90 m, no tracking, 90 f@60 of dodge window at 12 m — and a class whose ballistics no shipped spell uses is a table nobody can check.' },
 
   // ---- Root-Speech ---------------------------------------------------------------------------
@@ -87,7 +87,8 @@ const SHELF = [
   { id: 'the_greater_mending', name: 'The Greater Mending', cls: 'LIGHT', range: 'self', fx: [E('restore_health', 40)] },
   { id: 'clean_blood', name: 'Clean Blood', cls: 'CANTRIP', range: 'self', fx: [E('cure_disease', 3)] },
   { id: 'draw_the_sting', name: 'Draw the Sting', cls: 'CANTRIP', range: 'self', fx: [E('cure_poison', 3)] },
-  { id: 'loosen_the_joint', name: 'Loosen the Joint', cls: 'CANTRIP', range: 'touch', fx: [E('cure_paralysis', 1)] },
+  { id: 'loosen_the_joint', name: 'Loosen the Joint', cls: 'CANTRIP', range: 'self', fx: [E('cure_paralysis', 1)], note: 'RANGE CHANGED wave-1 round 2: at `touch` this spell had no castable carrier for its own effect — a contact spell with no body in front of it resolves on nothing, so the one thing you cast to un-freeze YOURSELF could only ever be cast on somebody else. RI-MAG06 M1 records that as NOT_OBSERVED and calls it a defect in the shelf.' },
+  { id: 'loosen_the_joint_touch', name: 'Loosen the Joint (Touch)', cls: 'CANTRIP', range: 'touch', fx: [E('cure_paralysis', 1)], note: 'The other half: the version you use on the person the wamasu got.' },
   { id: 'put_it_back', name: 'Put It Back', cls: 'LIGHT', range: 'self', fx: [E('restore_attribute', 20)] },
   { id: 'the_strong_arm', name: 'The Strong Arm', cls: 'LIGHT', range: 'self', fx: [E('fortify_attribute', 12, 60)] },
   { id: 'sure_hand', name: 'Sure Hand', cls: 'LIGHT', range: 'self', fx: [E('fortify_skill', 30, 60)], note: 'MB-2 / RI-EXP06 B-02: opens a seal you have no business opening.' },
@@ -98,7 +99,7 @@ const SHELF = [
   { id: 'hist_sight', name: 'Hist-Sight', cls: 'RITUAL', range: 'self', fx: [E('hist_sight', 3, 60)], note: 'Emits ONE prose journal line. No marker, no arrow — an AR-2 automatic fail if it ever does.' },
   { id: 'make_it_whole', name: 'Make It Whole', cls: 'LIGHT', range: 'touch', fx: [E('mend_item', 30)] },
   { id: 'still_the_beast', name: 'Still the Beast', cls: 'LIGHT', range: 'target', fx: [E('calm_beast', 20, 20)], note: 'X1 / MB-10: a fight that ends with no corpse.' },
-  { id: 'the_long_stillness', name: 'The Long Stillness', cls: 'HEAVY', range: 'area_at_range', fx: [E('calm_beast', 30, 30, 4)] },
+  { id: 'the_long_stillness', name: 'The Long Stillness', cls: 'HEAVY', range: 'area_at_range', fx: [E('calm_beast', 20, 15, 3)], note: 'RETUNED wave-1 round 2: 156 Focus against a reachable pool of 124.' },
   { id: 'sap_and_salt', name: 'Sap and Salt', cls: 'LIGHT', range: 'self', fx: [E('restore_health', 30), E('cure_poison', 2), E('resist_disease', 10, 60)], note: 'Three effects: the shape spellmaking exists to let a player build.' },
 
   // ---- Warding -------------------------------------------------------------------------------

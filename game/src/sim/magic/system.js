@@ -114,6 +114,7 @@ export class MagicSystem {
     this.fall = { terminalMps: 18, defaultTerminalMps: 18, damageEnabled: true, velMps: 0, peakY: 0 };
     this.water = { buoyant: false, breathes: false, drowning: false, drownF: 1800, drownMaxF: 1800, swimDenied: true, depthM: 0 };
     this.peakY = 0;
+    this.contactAt = null;
     this.drift = { mps: 0, capMps: this.lev.horizontal_drift_mps };
     // Effects the player has ACTUALLY CAST, ever. This — not `knownEffects` — is what the
     // quest resolution gate reads (sim/quest/machine.js `context()`), because RI-MAG06's whole
@@ -130,6 +131,22 @@ export class MagicSystem {
   bindWorld(w) {
     this.w = w;
     if (w && w.magicWorld) this.loadWorldData(w.magicWorld);
+    // A rebuilt fight gets a NEW MagicSystem, so `this.active` is empty and every lease it held
+    // is gone — but the CONSUMING SYSTEMS are not rebuilt with it, and a term the previous
+    // system's handler wrote is still sitting in them. Left alone, that makes a probe's second
+    // run start with 80% chameleon and a 69% muffle already applied, which is exactly the
+    // stale-baseline failure that makes a paired read meaningless. Clearing them here is the
+    // undo the destroyed leases can no longer run.
+    // The attribute baseline `restore_attribute` restores TOWARDS. Captured here, at the
+    // character's undamaged values, because capturing it lazily on the first drain captures the
+    // already-drained numbers and makes "restore" a no-op — which is how that row measured
+    // NOT_OBSERVED on the first census run.
+    if (w && w.sim) this.attrBase = { ...w.sim.progression.attributes };
+    const p = w && w.sim && w.sim.stealth ? w.sim.stealth.p : null;
+    if (p) {
+      p.magicChameleonPct = 0; p.magicInvisible = false; p.magicMufflePct = 0;
+      p.magicLightBonus = 0; p.magicDisguise = false;
+    }
     return this;
   }
 
@@ -174,11 +191,20 @@ export class MagicSystem {
     };
   }
 
-  /** Squared planar distance from the caster to a world point. Used by the world-verb handlers. */
+  /**
+   * Squared planar distance from THE POINT THE SPELL RESOLVED AT to a world object.
+   *
+   * This is the caster's position only for a spell with no geometry. For a projectile, a volume
+   * or a touch spell it is where the geometry made contact — which is the difference between
+   * `open` opening the door you aimed at and `open` opening nothing because the door is 8 m away
+   * and the caster is standing at the origin. The round-1 verdict's `open` measured 31 hp to a
+   * creature; a verb that resolves at the caster instead of at its target is the same mistake
+   * one layer down.
+   */
   dist2(pos) {
-    const b = this.w && this.w.combat ? this.w.combat.player : null;
-    if (!b || !pos) return Infinity;
-    const dx = pos[0] - b.pos[0], dz = pos[2] - b.pos[2];
+    const at = this.contactAt || (this.w && this.w.combat && this.w.combat.player ? this.w.combat.player.pos : null);
+    if (!at || !pos) return Infinity;
+    const dx = pos[0] - at[0], dz = pos[2] - at[2];
     return dx * dx + dz * dz;
   }
 
@@ -759,6 +785,9 @@ export class MagicSystem {
   }
 
   _applySelf(frame, spell) { return this.applyEffects(frame, spell, null, this.wil); }
+
+  /** The world point the geometry resolved at, set by the bridge for the duration of one apply. */
+  setContactPoint(at) { this.contactAt = at ? [at[0], at[1], at[2]] : null; }
 
   /**
    * RI-MAG02 §H / S11: status arrives as a FIXED INTEGER OF BUILDUP PER CONTACT on the

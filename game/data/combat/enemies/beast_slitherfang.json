@@ -56,8 +56,10 @@
   },
   "parley": null,
   "provenance": {
-    "parley": "parley: null, DELIBERATELY. Seam S13: 'Beasts and mindless things are exempt \u2014 they have no parley and Souls owns them entirely.' The exemption is a declaration, not an omission: the input is dropped with a named reason and a PARLEY_EXEMPT event, so a critic can tell a designed exemption from a forgotten one.",
-    "winded": "RI-CMB09 \u00a74 enemy symmetry: beasts have no stamina bar and instead go WINDED after >= 3 attacks in 6 s, with the same tell and the same x0.50 poise, for 75 f@60.",
+    "parley": "parley: null, DELIBERATELY. Seam S13: 'Beasts and mindless things are exempt — they have no parley and Souls owns them entirely.' The exemption is a declaration, not an omission: the input is dropped with a named reason and a PARLEY_EXEMPT event, so a critic can tell a designed exemption from a forgotten one.",
+    "winded": "RI-CMB09 §4 enemy symmetry: beasts have no stamina bar and instead go WINDED after >= 3 attacks in 6 s, with the same tell and the same x0.50 poise, for 75 f@60.",
     "frame_data": "PROVISIONAL. Owner RI-AI05 / wave-1 piece W1-12."
-  }
+  },
+  "armour_rating": 18,
+  "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
 }

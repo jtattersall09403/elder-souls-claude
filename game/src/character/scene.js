@@ -109,9 +109,15 @@ export class CensusSurface {
    */
   sync(state, censusObj) {
     const wasNode = this.node;
+    // DRAWN and TAKES-INPUT are different things, and conflating them was a bug worth naming:
+    // at `hold.out` the census hands control back and Jeeh-Ei's last line stays on the vellum
+    // while you get up off the bunk and walk out. If the surface ate the stick there, the
+    // player could never leave the hold — which is exactly RI-JRN01 O6's walk.
     this.open = !!state && !state.done;
+    this.takesInput = !!(state && !state.done && state.input && !state.paused);
     this.node = state && state.node ? state.node : null;
     if (!this.open) { this.options = []; return this; }
+    if (!this.takesInput) { this.options = []; if (this.node !== wasNode) { this.sel = 0; this.picked = []; this.typed = ''; } return this; }
 
     const kind = state.input ? state.input.kind : null;
     if (this.node !== wasNode) { this.sel = 0; this.picked = []; this.typed = ''; }
@@ -175,7 +181,7 @@ export class CensusSurface {
    * @returns {null|object} what was committed this frame, for the trace
    */
   step(input, state, answer) {
-    if (!this.open || !state || !state.input) { this.axisHeld = 0; this.axisFrames = 0; return null; }
+    if (!this.takesInput || !state || !state.input) { this.axisHeld = 0; this.axisFrames = 0; return null; }
 
     // --- move the caret. Analogue stick, D-pad or WASD; all three arrive as moveY.
     const y = input.moveY || 0;
@@ -228,7 +234,7 @@ export class CensusSurface {
 
   /** Text typed on a real keyboard. Not a button; not part of the closed action set. */
   typeChar(ch) {
-    if (!this.open) return this.typed;
+    if (!this.takesInput) return this.typed;
     if (ch === '\b') { this.typed = this.typed.slice(0, -1); return this.typed; }
     if (this.typed.length >= 40) return this.typed;
     this.typed += ch;

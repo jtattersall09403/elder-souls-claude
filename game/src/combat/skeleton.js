@@ -104,6 +104,19 @@ export class Rig {
     this.ry = new Float64Array(this.bones.length);
     this.rz = new Float64Array(this.bones.length);
 
+    // clips.json §cross_fade. `fromR*` is the pose the actor was ACTUALLY in when the
+    // transition happened; `lastR*` is last frame's final (post-blend) pose, which is what
+    // `fromR*` is captured from. Both are allocated once — the fixed step allocates nothing.
+    this.fromRx = new Float64Array(this.bones.length);
+    this.fromRy = new Float64Array(this.bones.length);
+    this.fromRz = new Float64Array(this.bones.length);
+    this.lastRx = new Float64Array(this.bones.length);
+    this.lastRy = new Float64Array(this.bones.length);
+    this.lastRz = new Float64Array(this.bones.length);
+    this.blendLeft = 0;
+    this.blendLen = 0;
+    this._hasLastPose = false;
+
     // Hurtboxes, built once, positions rewritten each frame (RI-CMB04 §D).
     this.hurtboxes = hitGeometry.hurtboxes.parts.map((part) => ({
       id: part.id,
@@ -121,9 +134,6 @@ export class Rig {
       pa: [0, 0, 0],
       pb: [0, 0, 0],
     }));
-    // The trunk capsules S26's body hazard sweeps, resolved once at construction so the
-    // resolver iterates a small dense array instead of filtering by id every frame.
-    this.hazardParts = [];
     this._hasPrevHurt = false;
     for (const h of this.hurtboxes) {
       if (h.boneIdx === undefined) {
@@ -132,14 +142,23 @@ export class Rig {
       if (!h.axis) throw new Error(`skeleton.json hurtbox_axes is missing '${h.id}'.`);
     }
 
-    const hazardIds = (hitGeometry.body_hazard && hitGeometry.body_hazard.parts) || [];
-    for (const id of hazardIds) {
-      const h = this.hurtboxes.find((x) => x.id === id);
-      if (!h) {
-        throw new Error(`hitgeometry.json body_hazard names part '${id}', which §hurtboxes does not declare. ` +
-          'S26 requires the attacker\'s root translation to be covered; a hazard part that does not exist covers nothing.');
+    // S26's body hazard capsule: the actor's COLLISION capsule, positioned on the animated
+    // trunk. Same volume as §bodies uses to push, so a push can never happen without the hit
+    // that caused it (hitgeometry.json §body_hazard._why_that_capsule_and_that_radius).
+    const bh = hitGeometry.body_hazard;
+    if (bh && bh.capsule) {
+      const fi = this.index.get(bh.capsule.from_bone);
+      const ti = this.index.get(bh.capsule.to_bone);
+      if (fi === undefined || ti === undefined) {
+        throw new Error(`hitgeometry.json body_hazard.capsule names bones '${bh.capsule.from_bone}'/'${bh.capsule.to_bone}', ` +
+          'which skeleton.json does not both declare. S26 requires the root translation to be covered; ' +
+          'a capsule between bones that do not exist covers nothing.');
       }
-      this.hazardParts.push(h);
+      this.bodyCap = { fromIdx: fi, toIdx: ti, a: [0, 0, 0], b: [0, 0, 0], pa: [0, 0, 0], pb: [0, 0, 0] };
+      this.bodyHazardPart = bh.struck_part || 'torso_upper';
+    } else {
+      this.bodyCap = null;
+      this.bodyHazardPart = null;
     }
 
     this.gripIdx = this.index.get(skeletonData.weapon.grip_bone);
@@ -215,6 +234,15 @@ export class Rig {
     // and the weapon is rigidly parented to the grip hand, so the sockets are a rigid offset
     // in the hand's world frame. A weapon whose hitbox does not move when the hand moves is
     // not a weapon.
+    if (this.bodyCap) {
+      const c = this.bodyCap;
+      c.pa[0] = c.a[0]; c.pa[1] = c.a[1]; c.pa[2] = c.a[2];
+      c.pb[0] = c.b[0]; c.pb[1] = c.b[1]; c.pb[2] = c.b[2];
+      const fm = this.world[c.fromIdx], tm = this.world[c.toIdx];
+      c.a[0] = fm[9]; c.a[1] = fm[10]; c.a[2] = fm[11];
+      c.b[0] = tm[9]; c.b[1] = tm[10]; c.b[2] = tm[11];
+    }
+
     // First evaluation of this rig: there is no previous pose, so `prev` IS `now`. A zero-length
     // sweep is exactly right — the actor has not moved yet.
     if (!this._hasPrevHurt) {
@@ -222,6 +250,11 @@ export class Rig {
         const h = this.hurtboxes[k];
         h.pa[0] = h.a[0]; h.pa[1] = h.a[1]; h.pa[2] = h.a[2];
         h.pb[0] = h.b[0]; h.pb[1] = h.b[1]; h.pb[2] = h.b[2];
+      }
+      if (this.bodyCap) {
+        const c = this.bodyCap;
+        c.pa[0] = c.a[0]; c.pa[1] = c.a[1]; c.pa[2] = c.a[2];
+        c.pb[0] = c.b[0]; c.pb[1] = c.b[1]; c.pb[2] = c.b[2];
       }
       this._hasPrevHurt = true;
     }
@@ -237,24 +270,40 @@ export class Rig {
   }
 
   /**
-   * Translate THIS frame's evaluated world pose — every bone, every hurtbox, both weapon
-   * sockets — without re-running the pose. Used by the step-5 collision resolve, which is a
-   * pure translation and therefore exactly representable this way; re-calling `evaluate()`
-   * would roll the previous pose forward a second time and destroy the sweep's history.
-   *
-   * `pa`/`pb` and the body's `prevA`/`prevB` are deliberately NOT touched: the previous frame
-   * really did happen where it happened, and a sweep that hid the push would hide the very
-   * displacement the push caused.
+   * clips.json §cross_fade. Start blending FROM the pose the actor is currently holding —
+   * captured before this frame's clip overwrote it — over `frames` frames.
    */
-  translate(dx, dz) {
-    if (dx === 0 && dz === 0) return;
-    for (let i = 0; i < this.world.length; i++) { this.world[i][9] += dx; this.world[i][11] += dz; }
-    for (let k = 0; k < this.hurtboxes.length; k++) {
-      const h = this.hurtboxes[k];
-      h.a[0] += dx; h.a[2] += dz; h.b[0] += dx; h.b[2] += dz;
+  beginCrossFade(frames) {
+    if (!this._hasLastPose || frames <= 0) return;
+    this.fromRx.set(this.lastRx);
+    this.fromRy.set(this.lastRy);
+    this.fromRz.set(this.lastRz);
+    this.blendLen = frames;
+    this.blendLeft = frames;
+  }
+
+  /**
+   * Mix this frame's freshly-sampled pose with the outgoing one and record the result as the
+   * pose the actor is now holding. Called once per frame, after the clip has been applied and
+   * BEFORE `evaluate()`, so every downstream consumer — bones, hurtboxes, weapon sockets, the
+   * sweep — sees the same single blended pose.
+   */
+  applyCrossFade() {
+    if (this.blendLeft > 0) {
+      // weight on the OUTGOING pose: 1 on the frame before the transition, 0 when the blend ends
+      const u = this.blendLeft / (this.blendLen + 1);
+      const w = u * u * (3 - 2 * u);
+      for (let i = 0; i < this.rx.length; i++) {
+        this.rx[i] += (this.fromRx[i] - this.rx[i]) * w;
+        this.ry[i] += (this.fromRy[i] - this.ry[i]) * w;
+        this.rz[i] += (this.fromRz[i] - this.rz[i]) * w;
+      }
+      this.blendLeft--;
     }
-    this.socketA[0] += dx; this.socketA[2] += dz;
-    this.socketB[0] += dx; this.socketB[2] += dz;
+    this.lastRx.set(this.rx);
+    this.lastRy.set(this.ry);
+    this.lastRz.set(this.rz);
+    this._hasLastPose = true;
   }
 
   /** Zero every joint — the rest pose. */

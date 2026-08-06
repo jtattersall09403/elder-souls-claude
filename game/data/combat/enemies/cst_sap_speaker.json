@@ -17,9 +17,14 @@
   "reads_exhaustion": true,
   "soul_grade": "common",
   "weapon": {
-    "radius_m": 0.085, "socket_a_dist_m": 0.28, "socket_b_dist_m": 1.05,
-    "attack_rating": 96, "socket_a": "wpn_guard", "socket_b": "wpn_tip",
-    "capsule_length_m": 0.8, "length_m": 1.05
+    "radius_m": 0.085,
+    "socket_a_dist_m": 0.28,
+    "socket_b_dist_m": 1.05,
+    "attack_rating": 96,
+    "socket_a": "wpn_guard",
+    "socket_b": "wpn_tip",
+    "capsule_length_m": 0.8,
+    "length_m": 1.05
   },
   "_declared_incomplete": {
     "owner": "W1-14 (this piece) declares it; enemy DECISION-MAKING is RI-AI01..07 / wave-1 piece W1-12",
@@ -34,53 +39,124 @@
   },
   "attacks": {
     "staff_jab": {
-      "anim": "e_staff_jab", "archetype": "thrust",
-      "startup": 40, "active": 8, "recovery": 52,
-      "poise_damage": 18, "motion_value": 0.5, "stamina": 16,
-      "root_dz_m": 0.7, "hitstop_frames": 5, "hitbox_radius_m": 0.085, "amplitude": 0.9,
+      "anim": "e_staff_jab",
+      "archetype": "thrust",
+      "startup": 40,
+      "active": 8,
+      "recovery": 52,
+      "poise_damage": 18,
+      "motion_value": 0.5,
+      "stamina": 16,
+      "root_dz_m": 0.7,
+      "hitstop_frames": 5,
+      "hitbox_radius_m": 0.085,
+      "amplitude": 0.9,
       "note": "RI-MAG01 §F: 'The caster is also a fighter.' A caster whose only behaviour is back-away-and-cast converts every fight into a chase. This is the required melee move."
     },
     "shoulder_turn": {
-      "anim": "e_shoulder_turn", "archetype": "sweep_wide",
-      "startup": 26, "active": 6, "recovery": 34,
-      "poise_damage": 12, "motion_value": 0.3, "stamina": 12,
-      "root_dz_m": 1.6, "hitstop_frames": 4, "hitbox_radius_m": 0.085, "amplitude": 0.7,
-      "reposition": true, "reposition_kind": "advance",
+      "anim": "e_shoulder_turn",
+      "archetype": "sweep_wide",
+      "startup": 26,
+      "active": 6,
+      "recovery": 34,
+      "poise_damage": 12,
+      "motion_value": 0.3,
+      "stamina": 12,
+      "root_dz_m": 1.6,
+      "hitstop_frames": 4,
+      "hitbox_radius_m": 0.085,
+      "amplitude": 0.7,
+      "reposition": true,
+      "reposition_kind": "advance",
       "note": "The required NON-RETREAT reposition: it closes 1.6 m and it hits on the way. A caster that only backs away is a bad enemy."
     }
   },
   "spells": {
     "sap_dart": {
-      "spell": "spark_dart", "class": "CANTRIP",
-      "windup_f": 14, "active_f": 3, "recovery_f": 20,
-      "severity": "S3", "min_windup_required_f": 12,
+      "spell": "spark_dart",
+      "class": "CANTRIP",
+      "windup_f": 14,
+      "active_f": 3,
+      "recovery_f": 20,
+      "severity": "S3",
+      "min_windup_required_f": 12,
       "silhouette": "cast_point + sorcery hand shape — one hand snapped forward from the hip, elbow locked",
-      "geometry": { "kind": "projectile", "speed_mps": 22.0, "radius_m": 0.14, "turn_rate_dps": 0, "tracking_cutoff": null, "lifetime_s": 1.5 },
-      "design_range_m": 12, "min_dodge_window_f": 33,
-      "ap_checks": { "AP-M1_hitscan": false, "AP-M3_homing": false, "AP-M4_instant_status": false }
+      "geometry": {
+        "kind": "projectile",
+        "speed_mps": 22.0,
+        "radius_m": 0.14,
+        "turn_rate_dps": 0,
+        "tracking_cutoff": null,
+        "lifetime_s": 1.5
+      },
+      "design_range_m": 12,
+      "min_dodge_window_f": 33,
+      "ap_checks": {
+        "AP-M1_hitscan": false,
+        "AP-M3_homing": false,
+        "AP-M4_instant_status": false
+      }
     },
     "sap_bolt": {
-      "spell": "marshfire", "class": "LIGHT",
-      "windup_f": 24, "active_f": 4, "recovery_f": 28,
-      "severity": "S6", "min_windup_required_f": 24,
+      "spell": "marshfire",
+      "class": "LIGHT",
+      "windup_f": 24,
+      "active_f": 4,
+      "recovery_f": 28,
+      "severity": "S6",
+      "min_windup_required_f": 24,
       "silhouette": "cast_draw + sorcery hand shape — the catalyst drawn ACROSS the centreline, which no other move in this kit does",
-      "geometry": { "kind": "projectile", "speed_mps": 16.0, "radius_m": 0.22, "turn_rate_dps": 60, "tracking_cutoff": 0.35, "lifetime_s": 2.5 },
-      "design_range_m": 14, "min_dodge_window_f": 52,
-      "ap_checks": { "AP-M1_hitscan": false, "AP-M3_homing": false, "AP-M4_instant_status": false }
+      "geometry": {
+        "kind": "projectile",
+        "speed_mps": 16.0,
+        "radius_m": 0.22,
+        "turn_rate_dps": 60,
+        "tracking_cutoff": 0.35,
+        "lifetime_s": 2.5
+      },
+      "design_range_m": 14,
+      "min_dodge_window_f": 52,
+      "ap_checks": {
+        "AP-M1_hitscan": false,
+        "AP-M3_homing": false,
+        "AP-M4_instant_status": false
+      }
     },
     "the_still_ground": {
-      "spell": "rot_bloom", "class": "HEAVY",
-      "windup_f": 36, "active_f": 6, "recovery_f": 40,
-      "severity": "S6", "min_windup_required_f": 24,
+      "spell": "rot_bloom",
+      "class": "HEAVY",
+      "windup_f": 36,
+      "active_f": 6,
+      "recovery_f": 40,
+      "severity": "S6",
+      "min_windup_required_f": 24,
       "silhouette": "cast_gather + sorcery hand shape — HEAD DOWN, both arms low and wide, the only move in this kit that lowers the head",
-      "geometry": { "kind": "volume", "shape": "sphere", "radius_m": 3.0, "decal_lead_f": 20, "active_f": 6, "ticks_every_f": 12, "decal_footprint_ratio": 1.0 },
-      "design_range_m": 9, "min_dodge_window_f": 20,
-      "ap_checks": { "AP-M2_untelegraphed_aoe": false, "AP-M4_instant_status": false },
-      "status": { "kind": "rot", "per_contact": 8, "note": "A fixed integer of buildup on S11's meter per contact. Never a coin flip." }
+      "geometry": {
+        "kind": "volume",
+        "shape": "sphere",
+        "radius_m": 3.0,
+        "decal_lead_f": 20,
+        "active_f": 6,
+        "ticks_every_f": 12,
+        "decal_footprint_ratio": 1.0
+      },
+      "design_range_m": 9,
+      "min_dodge_window_f": 20,
+      "ap_checks": {
+        "AP-M2_untelegraphed_aoe": false,
+        "AP-M4_instant_status": false
+      },
+      "status": {
+        "kind": "rot",
+        "per_contact": 8,
+        "note": "A fixed integer of buildup on S11's meter per contact. Never a coin flip."
+      }
     }
   },
   "silhouette_distinctness": {
     "rule": "RI-AI02 §D / AP-M6: two spells in one caster's kit may not share a windup silhouette and be distinguished only by particle colour.",
     "how": "The three spells are three different CLASSES, so they are three different class archetypes in game/data/magic/cast-clips.json: cast_point (arm forward, head level, still walking), cast_draw (arms across the centreline, torso rotated), cast_gather (head DOWN, arms low and wide, feet planted). The differences are in the spine, the neck and the shoulders — measurable off the bone transforms with the particles switched off."
-  }
+  },
+  "armour_rating": 14,
+  "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
 }

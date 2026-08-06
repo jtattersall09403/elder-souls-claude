@@ -22,6 +22,14 @@
   },
   "interpolation": "smoothstep (3u^2 - 2u^3) between adjacent keys, clamped outside the key range. Deterministic, allocation-free, and NON-LINEAR, which is what makes the per-frame root delta a speed curve rather than a translate (RI-CMB01 M3, RI-CMB02 M3).",
   "not_a_reskin": "RI-CMB02's automatic-fail list forbids 'a single attack animation shared by all weapon classes with the numbers swapped'. Classes therefore select DIFFERENT pose archetypes (cut_diagonal / thrust / chop_overhead / sweep_wide), with per-class amplitude and stance, on top of their own frame counts. The archetype assignment is in each moveset file.",
+  "cross_fade": {
+    "_source": "The W1-09 round-2 verdict, \u00a76: \"Poses are instantiated, never blended, at every state boundary.\" Worst measured single-frame weapon-socket displacement over five fights: RUN\u2192ROLL_STARTUP 2.528 m (74 occurrences), SPRINT\u2192ROLL_STARTUP 2.521 m, ATK_RECOVER\u2192ATK_STARTUP 2.293 m (65 occurrences, inside ONE chained attack), against a declared straight-sword per-frame tip travel of 0.308 m. 152 m/s of pose discontinuity.",
+    "_why_the_termination_rule_was_not_enough": "\u00a7termination_rule made the ATTACK\u2192IDLE boundary continuous by pinning every archetype's phase-3.0 pose to the idle stance. That fixes exactly one of the boundaries, the one where the outgoing clip ENDS. It cannot fix a boundary an INTERRUPTION creates \u2014 a roll entered from a run, a chained attack entered from the middle of the previous recovery, a stagger entered from anywhere \u2014 because the outgoing pose there is whatever frame it happened to be on. Only a cross-fade can.",
+    "frames": 10,
+    "curve": "smoothstep on the remaining weight, so the blend leaves the old pose gently and arrives on the new one gently",
+    "what_it_blends": "the per-bone Euler pose, and nothing else. Root motion, animation frame counts, hitbox activation windows, i-frame windows and state boundaries are untouched and are still integer frame windows; a cross-fade that moved any of those would be a cancel (RI-CMB02 \u00a7D) wearing a blend.",
+    "hurtboxes_follow": "Hurtboxes and weapon sockets are rebuilt from the BLENDED pose, because that is the pose the character is in. A hitbox that used the un-blended pose while the model showed the blended one would be RI-CMB04 'how we lose' #6 with extra steps."
+  },
   "termination_rule": "BINDING. Every non-looping archetype whose clip can be followed by free locomotion must have, at phase 3.0, exactly the value the `idle_ready` stance layer holds for that bone (0 where idle_ready is silent). The attack/idle boundary is then continuous by construction. Before this rule, a straight-sword R1 moved its tip 1.42 m and a halberd R1 2.54 m in the single frame the move retired — 85 to 152 m/s of pose discontinuity, W1-09 verdict §2.5."
  },
  "archetypes": {

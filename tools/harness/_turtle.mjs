@@ -19,6 +19,7 @@ for (const d of DS) {
   const a = new NodeArena({ loadout: { weapon: 'straight-sword' } });
   a.player.pos[0] = 0; a.player.pos[2] = d; a.player.yaw = 180; a.player.evaluateRig(0);
   a.spawn('E1', 'champion_hist_marked', 0, 0, 0);
+  if (process.argv.includes('--nosep')) a.cs.resolveBodyCollision = () => {};
   a.lockOn('E1');
   a.script('E1', enemyLoop(80));
   // mash light every 8 frames, forever

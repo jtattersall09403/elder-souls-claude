@@ -25,6 +25,8 @@ import { installWeaponsHarness } from './weapons.js';
 // W1-14 round 2: the RI-MAG06 registry, so `getEffectConsumerMap()` reports the build's own
 // declaration rather than a second list that could drift from it.
 import { HANDLERS as MAGIC_HANDLERS, DAMAGE_EFFECTS as MAGIC_DAMAGE_EFFECTS } from '../sim/magic/apply.js';
+import { mitigate } from '../combat/resolve.js';
+import { mirror as mirrorView } from '../sim/combat-bridge.js';
 
 // W1-14: RI-MAG01's harness amendments are ADDITIONS, so the contract moves 1 -> 2 exactly as
 // that item's provenance note requires. Everything `@1` emitted is still emitted, unchanged.
@@ -405,6 +407,9 @@ export function installHarness(engine, bootPromise) {
       return engine.real.pushGamepadState(state === undefined ? null : state);
     },
 
+    /** AR-3: was the player captured, and what did it cost? */
+    getCaptureState() { return engine.getCaptureState(); },
+
     /** Poll whatever pad is actually attached. Returns null when there is none. */
     gamepadPoll() {
       if (!engine.real) throw new Error('gamepadPoll(): no real input path on this engine');
@@ -593,6 +598,19 @@ export function installHarness(engine, bootPromise) {
       engine.sim.quest.afflictions.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
       return engine.sim.quest.afflictions.map((a) => ({ id: a.id, kind: a.kind }));
     },
+    /**
+     * Set base attributes directly. RI-MAG06 §B's `restore_attribute` row reads
+     * `getPlayerStats().attributes` and asserts it "rises, clamped at max" — which needs a
+     * DRAINED attribute to rise from, and nothing in wave 1 drains one.
+     */
+    setAttributes(patch) {
+      const A = engine.sim.progression.attributes;
+      for (const k of Object.keys(patch || {})) {
+        if (!(k in A)) throw new Error(`setAttributes: unknown attribute ${JSON.stringify(k)}; known: ${Object.keys(A).join(', ')}`);
+        A[k] = Number(patch[k]);
+      }
+      return { ...A };
+    },
     /** Kill an entity outright, so a death-triggered consumer (`soul_trap`) has a death to read. */
     killEntity(eid) {
       const b = engine.combat.bodyOf(String(eid));
@@ -610,14 +628,29 @@ export function installHarness(engine, bootPromise) {
      */
     damagePlayer(n, opts) {
       const b = engine.combat.player;
-      b.hp = Math.max(0, b.hp - Number(n));
+      const raw = Number(n);
+      // RI-MAG06 §B judges every mitigation effect by "the damage taken from an identical
+      // scripted hit". A scripted hit that bypassed `shield` and the two resists would make
+      // that read structurally impossible, so it goes through the SAME mitigate() the weapon
+      // resolver uses. Both numbers are returned: `raw` is what was asked for, `applied` is
+      // what the body took, and the difference is the effect.
+      const applied = mitigate(b, raw);
+      b.hp = Math.max(0, b.hp - applied);
       if (b.hp <= 0) b.dead = true;
       if (!opts || opts.stagger !== false) {
         const sm = b.moves._stagger && (b.moves._stagger.medium || b.moves._stagger[Object.keys(b.moves._stagger)[0]]);
         if (sm) b.queueReaction(sm, engine.sim.frame);
       }
       engine.magic.onDamaged(engine.sim.frame);
-      return { hp: b.hp, magic: engine.magic.report(engine.sim.frame) };
+      // The view is refreshed here rather than on the next step, so a probe that reads
+      // getPlayerStats() immediately after this call sees the hit it just scripted.
+      mirrorView(engine.sim, engine.combat);
+      return {
+        hp: b.hp, raw, applied: Math.round(applied * 1000) / 1000,
+        mitigation: Math.round((b.mitigation === undefined ? 1 : b.mitigation) * 1e4) / 1e4,
+        ward_charges: b.wardCharges || 0,
+        magic: engine.magic.report(engine.sim.frame),
+      };
     },
 
     // ================= W1-15 — stealth, theft, crime and justice ==============================

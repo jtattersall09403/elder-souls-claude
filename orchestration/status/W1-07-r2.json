@@ -2,14 +2,14 @@
   "task_id": "W1-07-r2",
   "brief": "W1-07 round 2 at ULTRACODE. Round 1 scored 1.5/10. Close GAP-W1-creation-is-an-api-not-a-scene and the five other named gaps.",
   "started": "wave-2",
-  "state": "researching",
-  "gap": "GAP-W1-creation-is-an-api-not-a-scene — 19 census nodes produce 20 byte-identical PNGs; 0 entities; no UI layer of any kind exists in the build.",
+  "state": "building",
+  "gap": "GAP-W1-creation-is-an-api-not-a-scene \u2014 19 census nodes produce 20 byte-identical PNGs; 0 entities; no UI layer of any kind exists in the build.",
   "plan": [
     "P0 instrumentation: a UI layer drawn INTO the WebGL canvas (canvas.toDataURL is the screenshot path, so a DOM overlay would not be captured by __HARNESS.screenshot). Orthographic overlay scene + 2D-canvas texture.",
     "P1 the scene: writ-house interior geometry + barge hold, jeeh-ei and warden-scribe-tuleeh-ma as real entities, camera in the interior, helstrom-market / stormhold-street / rootlands-well-graph states.",
     "P2 gamepad: a real gamepad path in input/real.js + tools/journey/gamepad-shim.mjs, census completable on stick+buttons alone.",
-    "P3 derivation: hp_max/stamina_max/focus_max from VIG/END/WIL per RI-PRG02 §3; birthsign powers and drawbacks applied to the live sim.",
-    "P4 skills by use: RI-PRG03 §3 point table wired to combat events with the §4 Cost Gate.",
+    "P3 derivation: hp_max/stamina_max/focus_max from VIG/END/WIL per RI-PRG02 \u00a73; birthsign powers and drawbacks applied to the live sim.",
+    "P4 skills by use: RI-PRG03 \u00a73 point table wired to combat events with the \u00a74 Cost Gate.",
     "P5 AR-3: find why encounter members never attack.",
     "P6 race in the world: requires.race/forbids.race on topics, greeting-line volume, getPriceQuote derives Mercantile+PERSONALITY from the character."
   ],
@@ -21,6 +21,27 @@
     "No gamepad code exists anywhere in game/src.",
     "tools/journey/ does not exist; A-JRN1's journey-run.mjs, beat-extract.mjs, gamepad-shim.mjs have never been written, which is why RI-JRN01 scored 0 fail-closed."
   ],
-  "outputs_written": [],
-  "next_step": "read birthsigns.json, encounters.json, combat enemy AI, then build the UI layer"
+  "outputs_written": [
+    "game/src/render/ui.js (the dialogue surface, drawn INTO the WebGL canvas)",
+    "game/src/render/places.js (barge hold, Writ House, helstrom-market, stormhold-street, rootlands-well)",
+    "game/src/character/scene.js (placement, cast, the closed-action-set surface driver)",
+    "game/src/character/derive.js (RI-PRG02 curves, RI-CHR03 birthsign terms, RI-PRG03 use table + Cost Gate)",
+    "game/src/character/skilluse.js (progress banked from the events the fight emits)",
+    "game/src/sim/npc.js (people as simulation objects)",
+    "game/data/dialogue/creation-names.json (the ledger of names \u2014 gamepad parity for text nodes)",
+    "game/src/render/renderer.js, scene.js (npc/prop meshes, UI composite, draw-call accounting)",
+    "game/src/engine.js (census placement, derived pools, hearth rest, capture, props, harness verbs)",
+    "game/src/character/encounter.js (the engagement director: approach, attack, nets, capture)",
+    "game/src/input/{bindings,real,pipeline}.js (gamepad standard mapping, text entry, consumeUI)",
+    "game/src/sim/{state,step,events,combat-bridge}.js"
+  ],
+  "next_step": "AR-3 rerun; then race-gated dialogue volume and getPriceQuote wiring; then regression runs",
+  "measured": {
+    "distinct_screenshot_hashes": "19 of 19 across the 19 census nodes at 1920x1080 (bar: >= 15). Round 1: 1 of 20.",
+    "entities_per_node": "1 NPC in the barge hold (jeeh-ei) + 2 takeable objects; 2 NPCs in the Writ House. speaker_entity resolves at every node.",
+    "panel_area": "0.136-0.336 of frame area; cap 0.42 of frame HEIGHT. M5 ceiling is 0.55 of area.",
+    "gamepad_only": "creation completed with 16 A-presses and D-pad only; the walk out of the hold done on the left stick.",
+    "hp_max": "VIG 6 -> 196, 10 -> 300, 18 -> 508, 27 -> 742, 40 -> 924, 99 -> 1122 (RI-PRG02 anchors exact).",
+    "focus": "nu-ixtu (Dry Well) WIL 11: focus_max 53 vs base 33 (x1.60); focus_restores_at_hearth false."
+  }
 }

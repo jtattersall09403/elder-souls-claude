@@ -9,6 +9,12 @@
 export const EVENT_TYPES = new Set([
   // HARNESS.md §5
   'attack_start', 'hit', 'block', 'parry', 'riposte', 'backstab', 'stagger', 'death',
+  // W1-10, by the same amendment clause §5 grants. RI-WPN04 §B harness request 4 and RI-WPN06
+  // §E both ask for it by name: a block that KEPT the guard up, distinct from `block`, carrying
+  // the blocked attack's slot id. `guard.counter` is unmeasurable without it, and the whole
+  // BLOCK row of the Wgrid is unmeasurable with it absent. `charge_release` is RI-WPN01 §C's
+  // "released, not cancelled" — the frame the hold ended and what the ramp paid.
+  'block_success', 'charge_release',
   'roll_start', 'iframe_dodge', 'stamina_spend', 'heal', 'bonfire_rest', 'level_up',
   'spawn', 'despawn', 'enemy_state', 'quest_stage', 'journal', 'topic', 'item', 'load',
   // A-JRN7
@@ -39,6 +45,10 @@ export const EVENT_TYPES = new Set([
   'skill_use',
   // W1-07: the sheet's derived pools changed (creation, an earned attribute point, a rest).
   'pools_derived',
+  // W1-07 AR-3: the net is a mechanism, not a word in a trace field. `net_throw` is the
+  // throw, `restrain_begin`/`restrain_end` are what it does to you, and `capture` is the
+  // outcome that is NOT a death.
+  'net_throw', 'restrain_begin', 'restrain_end', 'capture',
   // ---------------------------------------------------------------------------------------
   // RI-CMB07 §A's CLOSED event-kind set, for the SECOND stream (`es-combat-trace/1`).
   //
@@ -55,6 +65,11 @@ export const EVENT_TYPES = new Set([
   'INPUT_DROPPED', 'INPUT_BUFFERED', 'EXHAUSTED_ENTER', 'EXHAUSTED_EXIT', 'WINDED',
   'PARLEY_ACCEPT', 'PARLEY_REFUSE', 'PARLEY_EXEMPT',
   'SPELL_CYCLE',
+  // W1-10, RI-CMB07 §A's UPPER_SNAKE stream. `BLOCK_SUCCESS` is RI-WPN04 §B harness request 4
+  // and RI-WPN06 §E's shared request — a block that KEPT the guard up, without which
+  // `guard.counter` cannot be measured at all. `CHARGE_RELEASE` is RI-WPN01 §C's "released,
+  // not cancelled": the frame the hold ended, the frames held, and the ramped motion value.
+  'BLOCK_SUCCESS', 'CHARGE_RELEASE',
   // ---------------------------------------------------------------------------------------
   // W1-14 / seam S19. RI-MAG01's harness amendment 4 asks for exactly these six lower_snake
   // kinds, and they are ADDITIONS: `elder-souls/trace@1` -> `@2`, nothing removed. They stay

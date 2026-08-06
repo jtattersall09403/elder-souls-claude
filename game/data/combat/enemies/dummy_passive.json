@@ -28,5 +28,7 @@
   "attacks": {},
   "parley": null,
   "note": "A post. It does nothing, which is exactly what a post does. It carries the full 12-capsule hurtbox rig, so it is the fixture RI-CMB04 M2/M3's lateral-offset sweeps are run against.",
-  "parley_note": "parley: null \u2014 a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_mindless` rather than silently doing nothing."
+  "parley_note": "parley: null — a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_mindless` rather than silently doing nothing.",
+  "armour_rating": 0,
+  "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
 }

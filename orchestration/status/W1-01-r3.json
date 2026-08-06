@@ -2,7 +2,7 @@
   "task_id": "W1-01-r3",
   "brief": "ULTRACODE dispatch on W1-01 (world: province terrain, regions, roads, the crossing) after r1 3.1/10 and r2 3.5/10",
   "started": "wave-1 round 3",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "13 ONLY-HERE elements as walkable geometry",
     "colour-invariant region separability (day AND night)",
@@ -13,7 +13,15 @@
     "CONSUMPTION proof for every model shipped"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read both verdicts in full, run the 11 critic probes to establish baseline",
+  "findings": [
+    "BASELINE CONFIRMED (probe critic-w1-01-r2-loco.mjs re-run at HEAD): L1 70.63 deg walked at full stick, state WALK; L2 150 m drop HP unchanged; L3 8.28 m water -> 1.1 m/s but stamina 120->120.",
+    "game/data/combat/hitgeometry.json was transiently invalid JSON (another agent mid-edit) and broke every harness probe; it self-resolved. Concurrent-agent breakage of the shared tree is a recurring hazard for probes.",
+    "hazards.json IS loaded by engine.js:3117 into data.hazards and read by NOTHING else -> RI-MTH07 CONSUMPTION failure, same class as deck_spans.",
+    "engine.camera(pose): unknown keys like {yaw,pitch,arm} fall through to the override branch and freeze the camera at cur.pos/cur.look. Needs a closed key vocabulary that throws.",
+    "field.heightAt() is the single ground surface for collision, mesh, audits. Signature landforms must go through it. _applyRoads blends ground to deck over hw..3.2*hw - that IS the earth berm the critic measured.",
+    "engine._settleWorld() (engine.js:1330) snaps p.pos[1] = field.heightAt() every frame with no vertical integration at all -> that is why there is no fall and no max slope.",
+    "13 ONLY-HERE ids live in tools/world/build-regions.mjs only_here:{id,instances} and are copied into regions.json; nothing places them."
+  ],
+  "next_step": "write game/src/world/signature.js + tools/world/build-signatures.mjs",
   "notes_for_successor": ""
 }

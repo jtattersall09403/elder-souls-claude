@@ -17,9 +17,44 @@
 'use strict';
 
 import { derivedDisposition } from './reaction.js';
+import { bearingDeg, angleDelta } from '../combat/geometry.js';
 
 /** Distance at which a non-hostile raid party hails you and offers the purchase. */
 export const HAIL_RANGE_M = 24.0;
+
+/**
+ * THE ENGAGEMENT CONSTANTS, and the reason they are one table rather than ten fields.
+ *
+ * Round-1's verdict: "Across all three 1,800-frame runs the player takes zero damage and the
+ * party never closes: distance to the lead raider is frozen at 18.20 m from f900 to f1800.
+ * After the Saxhleel AGGRO the six raiders sit in `REPOSITION` for 1,657 consecutive frames
+ * ... 0 `attack_start` events; the net-throwers never throw a net."
+ *
+ * The cause was not this module: `game/src/combat/enemy.js` implements `hold_ground` (turn to
+ * face, never move, never attack) and `scripted` (execute a scenario's action list). Enemy
+ * DECISION-MAKING is RI-AI01..07 / wave-1 piece W1-12 and is correctly refused there. But an
+ * encounter whose entire claim is "race decides whether this becomes a fight" is unmeasurable
+ * if the fight cannot happen at all, so W1-07 owns the behaviour of ITS OWN encounter members
+ * and nothing else: a raid party closes, swings, and throws nets.
+ *
+ * **The AR-1 discipline is unchanged and is what makes this legal.** Every number below is a
+ * CONSTANT — it is not indexed by race, it cannot be indexed by race, and the same table runs
+ * for a Saxhleel and a Khajiit. Race decides `opening`, `aggro_at_m`, `parley_offer` and
+ * `on_player_defeat`; it does not decide how hard anybody hits, how fast they close, or which
+ * move they pick. The statblock is `game/data/combat/enemies/inf_trash.json` for all ten races.
+ */
+export const ENGAGE = {
+  advance_mps: 2.20,           // a jog under armour, not a sprint
+  engage_range_m: 2.30,        // inside a chop's 2.4 m reach
+  disengage_range_m: 2.80,     // hysteresis, so nobody vibrates on the boundary
+  attack_cadence_f: 78,        // f@60 between one member's attacks; the roster rotates
+  party_stagger_f: 26,         // f@60 offset per member, so six raiders are not one raider
+  net_range_m: 9.0,
+  net_cadence_f: 300,
+  net_hold_f: 180,             // f@60 a landed net holds you
+  net_hit_radius_m: 1.6,
+  rotation: ['chop', 'thrust', 'combo_a', 'combo_b'],
+};
 
 export function encounterById(data, id) {
   const e = data.encounters.encounters.find((x) => x.id === id);
@@ -68,6 +103,44 @@ export function stepEncounters(sim, combat, bus, data) {
   const ch = sim.character;
   if (!ch || !ch.race) return;
   const p = sim.player;
+  // The net you are already in. It is a real restraint: locomotion is zero while it holds,
+  // which is visible in the trace as `speed_mps: 0` and not as a string in an event field.
+  if (sim.nettedUntil && sim.frame >= sim.nettedUntil) {
+    sim.nettedUntil = 0;
+    const ev = bus.emit(sim.frame, 'restrain_end'); ev.who = 'player'; ev.kind = 'net';
+  }
+
+  // ---- what a defeat actually IS -----------------------------------------------------------
+  // Round 1: "`capture` and `kill` are strings in a trace event's `net_behaviour` field. There
+  // is no capture, no net, no transport to Archon's holds, and no fight." A defeat now branches
+  // the world: a `death` respawns you at a well with your tithe on the ground where you fell;
+  // a `capture-transport-archon` does not kill you at all — it takes the writ, takes the purse,
+  // and puts you somewhere else. Two different states, and a save can tell them apart.
+  const pb = combat && combat.player;
+  if (pb && pb.hp <= 0 && !sim.encounterDefeatResolved) {
+    const live = sim.entities.find((x) => x.encounterId && x.hp > 0);
+    if (live) {
+      sim.encounterDefeatResolved = true;
+      const enc = encounterById(data, live.encounterId);
+      const outcome = openingFor(data, enc, ch).on_player_defeat;
+      if (outcome === 'capture-transport-archon') {
+        pb.hp = Math.max(1, Math.round(pb.hpMax * 0.25));
+        pb.dead = false; pb.state = 'IDLE'; pb.move = null;
+        sim.captured = { by: live.encounterId, frame: sim.frame, destination: 'archon-hold', writ_confiscated: true };
+        const ev = bus.emit(sim.frame, 'capture');
+        ev.encounter = live.encounterId; ev.by = live.eid; ev.destination = 'archon-hold';
+        ev.outcome = outcome; ev.died = false; ev.hp_after = pb.hp;
+        ev.taken = ['stamped-writ', 'gold'];
+        ev.because = `race=${ch.race}: this party sells people, and you are one of the kinds they sell`;
+        sim.captureRequest = { encounter: live.encounterId };
+      } else {
+        const ev = bus.emit(sim.frame, 'death_flag');
+        ev.who = 'player'; ev.encounter = live.encounterId; ev.outcome = outcome; ev.died = true;
+        ev.because = `race=${ch.race}: this party is not selling, so this is the other thing`;
+      }
+    }
+  }
+  if (pb && pb.hp > 0) sim.encounterDefeatResolved = false;
   for (let i = 0; i < sim.entities.length; i++) {
     const e = sim.entities[i];
     if (!e.encounterId) continue;
@@ -92,6 +165,9 @@ export function stepEncounters(sim, combat, bus, data) {
       ev.net_behaviour = rule.net_behaviour;
     }
 
+    // ---- the fight, once it is a fight ---------------------------------------------------
+    if (e.encAggroed) engageMember(sim, combat, bus, e, enc, rule, dist, dx, dz);
+
     if ((rule.opening === 'hail') && !e.encHailed && e.encounterRole === 'infantry' && e.encLeader && dist <= HAIL_RANGE_M) {
       e.encHailed = true;
       const ev = bus.emit(sim.frame, 'parley_offer');
@@ -103,6 +179,103 @@ export function stepEncounters(sim, combat, bus, data) {
     }
   }
 }
+
+/**
+ * One aggroed raider's frame. Approach, then swing; or, for a net-thrower, approach to net
+ * range and throw.
+ *
+ * Nothing here reads `character.race`. It reads `e.encAggroed`, which race decided, and then
+ * behaves identically for everybody — which is AR-1's whole ruling written as code.
+ */
+function engageMember(sim, combat, bus, e, enc, rule, dist, dx, dz) {
+  const b = combat.bodyOf(e.eid);
+  const ctl = combat.enemies.get(e.eid);
+  if (!b || b.dead || b.yielded) return;
+  // Committed to an animation: an approach that overrode a swing would delete commitment,
+  // which is the one thing seam S1 does not allow anybody to do.
+  if (b.move) return;
+  if (sim.frame < b.parriedUntil) return;
+
+  const order = e.encOrder === undefined ? (e.encOrder = orderOf(e)) : e.encOrder;
+  const isNetter = e.encounterRole === 'net-thrower';
+  const want = isNetter ? ENGAGE.net_range_m : ENGAGE.engage_range_m;
+
+  // Face the player, at the controller's own turn rate.
+  const bearing = bearingDeg(dx, dz);
+  const maxStep = 240 / 60;
+  let t = angleDelta(b.yaw, bearing);
+  if (t > maxStep) t = maxStep; else if (t < -maxStep) t = -maxStep;
+  b.yaw = norm360(b.yaw + t);
+
+  if (dist > want) {
+    // Close. Straight-line advance at a constant speed, with a per-member lateral offset so
+    // six of them arrive as a line rather than as a stack.
+    const step = ENGAGE.advance_mps / 60;
+    const ux = dx / (dist || 1), uz = dz / (dist || 1);
+    const lateral = ((order % 3) - 1) * 0.55;
+    b.pos[0] += ux * step - uz * lateral * step * 0.5;
+    b.pos[2] += uz * step + ux * lateral * step * 0.5;
+    b.state = 'REPOSITION';
+    b.speedMps = ENGAGE.advance_mps;
+    return;
+  }
+  b.speedMps = 0;
+
+  if (isNetter) {
+    if (sim.nettedUntil > sim.frame) return;
+    const due = e.encNextNetF === undefined ? sim.frame + order * ENGAGE.party_stagger_f : e.encNextNetF;
+    if (sim.frame < due) { e.encNextNetF = due; b.state = 'REPOSITION'; return; }
+    e.encNextNetF = sim.frame + ENGAGE.net_cadence_f;
+    const hit = dist <= ENGAGE.net_range_m;
+    const ev = bus.emit(sim.frame, 'net_throw');
+    ev.eid = e.eid; ev.encounter = enc.id; ev.dist_m = round3(dist); ev.hit = hit;
+    ev.net_behaviour = rule.net_behaviour;
+    if (hit) {
+      sim.nettedUntil = sim.frame + ENGAGE.net_hold_f;
+      sim.netThrownBy = e.eid;
+      sim.netEncounter = enc.id;
+      const r = bus.emit(sim.frame, 'restrain_begin');
+      r.who = 'player'; r.kind = 'net'; r.frames = ENGAGE.net_hold_f; r.by = e.eid;
+      r.consequence = rule.net_behaviour === 'capture'
+        ? 'held for the wagon: a capture ends this encounter in a Dres hold, not at a sapwell'
+        : 'held to be finished: the net is a prelude to a kill';
+    }
+    return;
+  }
+
+  const due = e.encNextAtkF === undefined ? sim.frame + order * ENGAGE.party_stagger_f : e.encNextAtkF;
+  if (sim.frame < due) { e.encNextAtkF = due; b.state = 'REPOSITION'; return; }
+  const rot = ENGAGE.rotation.filter((id) => b.moves[id]);
+  if (!rot.length) return;
+  const mv = b.moves[rot[(e.encSwing = (e.encSwing || 0) + 1) % rot.length]];
+  if (mv.stamina && b.stamina < mv.stamina) {
+    e.encNextAtkF = sim.frame + 30;
+    const d = bus.emit(sim.frame, 'input_dropped_no_stamina');
+    d.who = e.eid; d.button = mv.id; d.have = round3(b.stamina); d.need = mv.stamina;
+    return;
+  }
+  b.begin(mv, sim.frame, {});
+  if (mv.stamina) b.spend(mv.stamina, sim.frame, combat.d);
+  if (ctl) ctl._noteAttack(sim.frame);
+  e.encNextAtkF = sim.frame + ENGAGE.attack_cadence_f;
+  // Both vocabularies, exactly as game/src/combat/system.js emits them for a scripted enemy,
+  // so an existing critic tool reads this fight the same way it reads the control duel.
+  const a = bus.emit(sim.frame, 'ACTION_START');
+  a.who = e.eid; a.mv = mv.id; a.tag = 'enemy_attack';
+  a.startup = mv.startup; a.active = mv.active; a.recovery = mv.recovery; a.total = mv.total;
+  a.punish_window = mv.punish_window; a.stam_after = round3(b.stamina);
+  const a2 = bus.emit(sim.frame, 'attack_start');
+  a2.eid = e.eid; a2.move = mv.id; a2.encounter = enc.id; a2.role = e.encounterRole;
+  a2.dist_m = round3(dist); a2.startup = mv.startup; a2.active = mv.active; a2.recovery = mv.recovery;
+}
+
+/** A stable per-member index, so the party's cadence is deterministic and offset. */
+function orderOf(e) {
+  const m = /-(\d+)$/.exec(e.eid);
+  return m ? Number(m[1]) : 0;
+}
+
+function norm360(a) { a %= 360; return a < 0 ? a + 360 : a; }
 
 /** What a defeat means here. Read by the death handler; race-conditioned, moveset-blind. */
 export function defeatOutcome(data, encounterId, character) {

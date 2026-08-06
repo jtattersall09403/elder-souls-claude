@@ -37,11 +37,13 @@
       "root_dz_m": 0.0,
       "hitstop_frames": 0,
       "hitbox_radius_m": 8.0,
-      "note": "A ONE-FRAME hitbox with an 8 m radius. RI-CMB01 M2 asks for exactly this: 'enemy scripted to activate a 1-frame hitbox exactly on frame press + k'. The radius is deliberately large so that GEOMETRY is never the variable \u2014 the only thing that can decide hit/no-hit is whether the player's i-frame window was open on that frame, which is what M2 measures. poise_damage is 0 so a stagger cannot confound the run, and the damage is small so the player survives the whole sweep."
+      "note": "A ONE-FRAME hitbox with an 8 m radius. RI-CMB01 M2 asks for exactly this: 'enemy scripted to activate a 1-frame hitbox exactly on frame press + k'. The radius is deliberately large so that GEOMETRY is never the variable — the only thing that can decide hit/no-hit is whether the player's i-frame window was open on that frame, which is what M2 measures. poise_damage is 0 so a stagger cannot confound the run, and the damage is small so the player survives the whole sweep."
     }
   },
   "parley": null,
   "provenance": {
     "what": "A MEASUREMENT FIXTURE, not a game enemy. It never appears in a scenario a player could reach, and it is declared here rather than special-cased in the probe so that the number a critic reads (8.0 m) is inspectable in the data tree instead of buried in a tool."
-  }
+  },
+  "armour_rating": 0,
+  "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
 }

@@ -86,7 +86,20 @@ export class WorldField {
       .map((s) => ({ x: s.x, z: s.z, r: s.r_flat, ref: s })), 400);
     this.roads = null;
     this.roadGrid = null;
+    this.sig = null;
     this.tidePhase = 0;                        // 0..1 through the 12-minute cycle
+  }
+
+  /**
+   * Attach the thirteen ONLY-HERE elements (`RI-WLD04` M19). Seven of the thirteen are LANDFORM:
+   * once attached, `heightAt` returns the crater floor, the comb tread, the petrified crown and
+   * the root causeway, so the one surface the collision, the mesh, the slope histogram and every
+   * audit read is the surface with the province's signature features in it. Detaching this is
+   * exactly the RI-MTH07 perturbation: the ground goes flat and the frames change.
+   */
+  setSignatures(sig) {
+    this.sig = sig || null;
+    return sig;
   }
 
   /** Attach the road network; roads carve a corridor into the ground (`RI-WLD01` §4). */
@@ -143,7 +156,24 @@ export class WorldField {
         this._bilinear(this.terrU, x, z, 1 / 255));
     h = this._applySites(x, z, h);
     h = this._applyRoads(x, z, h);
+    // The ONLY-HERE landform goes on LAST and it is not blended with the road, because a crater
+    // and a viaduct in the same 20 m is a defect in the placement, not a case to average. The
+    // builder keeps every instance clear of the road corridor, and this assertion is that rule
+    // expressed as arithmetic rather than as a comment.
+    if (this.sig) h += this.sig.groundDelta(x, z);
     return h;
+  }
+
+  /** The ground WITHOUT the signature landform — the natural province, for the audits that need
+   *  to say how much of the shape is a feature and how much is the terrain under it. */
+  naturalHeightAt(x, z) {
+    let h = this.baseAt(x, z)
+      + detailAt(x, z,
+        this._bilinear(this.reliefU, x, z, this.reliefUnit),
+        this._bilinear(this.ridgeU, x, z, 1 / 255),
+        this._bilinear(this.terrU, x, z, 1 / 255));
+    h = this._applySites(x, z, h);
+    return this._applyRoads(x, z, h);
   }
 
   /**

@@ -18,6 +18,7 @@ import { MagicSystem } from './sim/magic/system.js';
 import { QuestBook } from './sim/quest/defs.js';
 import { FactionGates } from './sim/quest/gate.js';
 import { QuestEngine } from './sim/quest/machine.js';
+import { Journal } from './sim/quest/journal.js';
 import { combatMeta, combatFrame } from './combat/trace.js';
 import { mirror } from './sim/combat-bridge.js';
 import { makeRecord } from './sim/record.js';
@@ -167,6 +168,11 @@ export class Engine {
     // renderer builds its meshes from the same field, so the surface you collide with and the
     // surface you see are the same surface by construction.
     this.field = new WorldField(this.data.terrain, this.data.regions, this.data.water);
+    // The thirteen ONLY-HERE elements, attached BEFORE the renderer reads the field, so the
+    // ground the meshes are built from already has the craters, the comb treads, the petrified
+    // crowns and the root causeways in it (RI-WLD04 M19; verdict W1-01 r2 §4 measured 0 of 13).
+    this.signatures = this.data.signatures ? new SignatureField(this.data.signatures) : null;
+    this.field.setSignatures(this.signatures);
     this.renderer.setWorld(this.field, this.data.roads);
     // The camera's collision set. Built once from game/data/camera/cells.json and then
     // selected per named state; the sim step only ever reads it.
@@ -257,6 +263,13 @@ export class Engine {
       skeleton: d.combat.skeleton,
       clips: d.combat.clips,
       movesets: d.movesets,
+      // W1-10: the 87-weapon roster, the class table and the clip registry are what the FIGHT
+      // reads now. `movesets` (the seven spine files) stays in the shape only so that anything
+      // still holding a spine id can be aliased; CombatSystem reads it nowhere else.
+      weaponMovesets: d.weaponMovesets,
+      weaponClasses: d.weapons && d.weapons.classes,
+      clipRegistry: d.weapons && d.weapons['clip-registry'],
+      offhand: d.weapons && d.weapons.offhand,
       locomotion: {
         walk_mps: PLAYER_CONST.walk_mps,
         jog_mps: PLAYER_CONST.jog_mps,
@@ -315,6 +328,12 @@ export class Engine {
     }
     const sim = this.sim;
     sim.reset(rng.seed, name);
+    // `SimState.reset()` replaces `sim.quest` wholesale, so a QuestEngine built at boot is left
+    // holding the PREVIOUS state object and its Journal is left holding the previous entries
+    // array. Every write after the first `loadState()` then lands in a detached array that
+    // nothing reports — which is exactly what `hist_sight` measured as UNREAD_TIMER: the effect
+    // wrote a journal line, correctly, into a journal nobody could read.
+    this._rebindQuestRuntime();
     if (patch.env) Object.assign(sim.env, {
       timeOfDay: patch.env.timeOfDay ?? sim.env.timeOfDay,
       weather: patch.env.weather ?? sim.env.weather,
@@ -807,6 +826,43 @@ export class Engine {
     return { eid, taken: true, item: o.item, name: o.name };
   }
 
+  /**
+   * A capture, resolved. Not a death: the purse and the writ change hands, and you wake up
+   * somewhere you did not walk to. Applied after the step because it moves the camera.
+   */
+  _resolveCapture() {
+    const req = this.sim.captureRequest;
+    this.sim.captureRequest = null;
+    if (!req) return;
+    const goldBefore = this.combat.world.gold || 0;
+    this.combat.world.gold = 0;
+    this.sim.progression.gold = 0;
+    const writIdx = this.sim.inventory.findIndex((i) => i.id === 'stamped-writ');
+    if (writIdx >= 0) this.sim.inventory.splice(writIdx, 1);
+    this.sim.nettedUntil = 0;
+    this.sim.env.interior = 'barge-hold';
+    this._applyCell();
+    const p = this.sim.player;
+    p.pos[0] = 0.3; p.pos[1] = 0; p.pos[2] = -1.2; p.yaw = 329;
+    const b = this.combat.player;
+    b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2]; b.yaw = p.yaw;
+    this.sim.camera.yaw = 351; this.sim.camera.pitch = -4;
+    for (const e of this.sim.entities.slice()) if (e.encounterId) this.despawn(e.eid);
+    this._settleCamera();
+    mirror(this.sim, this.combat);
+    const ev = this.bus.emit(this.sim.frame, 'load');
+    ev.state = 'archon-hold'; ev.because = 'capture'; ev.gold_taken = goldBefore; ev.writ_taken = writIdx >= 0;
+    quantiseColdState(this.sim);
+    return true;
+  }
+
+  /** Was the player captured, and what did it cost? Not a string in a trace field. */
+  getCaptureState() {
+    return this.sim.captured
+      ? { ...this.sim.captured, gold: this.combat.world.gold, has_writ: this.sim.inventory.some((i) => i.id === 'stamped-writ') }
+      : { captured: false };
+  }
+
   _takePropPending() {
     const id = this._propPending;
     this._propPending = null;
@@ -876,9 +932,21 @@ export class Engine {
    * frame's events.
    */
   _censusStep(input) {
-    if (!this.censusSurface || !this.censusSurface.open) {
+    if (!this.censusSurface || !this.censusSurface.takesInput) {
       // Not in a conversation: `interact` reaches for whatever is in front of you. The take
       // itself is deferred out of the step for the same reason a census commit is.
+      // The door out of the hold. RI-JRN01 O6: control precedes definition, and the way from
+      // "somebody asked me my hatch-name" to "somebody is writing me down" is a WALK — up the
+      // companionway, down the gangplank, into the Writ House. Reaching the ladder is the
+      // transition; nothing has to be pressed, and nothing is explained.
+      if (this.census && this.census.paused && !this._censusEnterPending) {
+        const p = this.sim.player;
+        if (p.pos[2] >= 4.2 && Math.abs(p.pos[0]) <= 1.6) {
+          this._censusEnterPending = true;
+          const ev = this.bus.emit(this.sim.frame, 'surface_exit');
+          ev.surface = 'barge-hold'; ev.to = 'writ-house'; ev.by = 'walked';
+        }
+      }
       if (!this._propPending && input.pressedName('interact')) {
         const p = this.sim.player;
         let best = null, bestD = Infinity;
@@ -914,7 +982,7 @@ export class Engine {
 
   /** Keyboard text entry. Not a button, so not part of HARNESS.md §4's closed action set. */
   _censusTypeChar(ch) {
-    if (!this.censusSurface || !this.censusSurface.open) return null;
+    if (!this.censusSurface || !this.censusSurface.takesInput) return null;
     const st = this.census.state();
     if (!st.input || st.input.kind !== 'text') return null;
     const typed = this.censusSurface.typeChar(ch);
@@ -974,6 +1042,7 @@ export class Engine {
         text_chars: ui ? ui.text_chars : 0,
         opaque_area_frac: ui ? ui.opaque_area_frac : 0,
         panel_height_frac: ui ? ui.panel_height_frac : 0,
+        takes_input: !!(this.censusSurface && this.censusSurface.takesInput),
         selected_index: this.censusSurface ? this.censusSurface.sel : 0,
         option_count: ui ? ui.option_count : 0,
         picked: this.censusSurface ? this.censusSurface.picked.slice() : [],
@@ -1059,9 +1128,17 @@ export class Engine {
 
   getPriceQuote(q = {}) {
     const ch = this.sim.character;
+    // The Mercantile and PERSONALITY terms come from the CHARACTER unless the caller states
+    // them. Round 1 required the caller to supply the 0.80 by hand, which meant the item's
+    // "the best social build reaches par, not advantage" clause held only when a critic fed
+    // it the answer.
     return priceQuote(this.chData, {
       group: q.group, race: q.race || (ch && ch.race), upbringing: q.upbringing || (ch && ch.upbringing),
-      basePrice: q.base_price ?? 60, skillBuyMult: q.skill_buy_mult ?? 1.0, skillSellMult: q.skill_sell_mult ?? 1.0,
+      basePrice: q.base_price ?? 60,
+      skillBuyMult: q.skill_buy_mult, skillSellMult: q.skill_sell_mult,
+      skills: q.skills || this.sim.progression.skills,
+      attributes: q.attributes || this.sim.progression.attributes,
+      disposition: q.disposition,
     });
   }
 
@@ -1293,6 +1370,8 @@ export class Engine {
     // here, rather than every frame.
     if (this.sim._poolsDirty) this.applyDerivedPools({ refill: false, why: 'earned_attribute' });
     if (this._propPending) this._takePropPending();
+    if (this._censusEnterPending) { this._censusEnterPending = false; this.censusEnter(); }
+    if (this.sim.captureRequest) this._resolveCapture();
     this._travelTick();
     if (this.trace) {
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
@@ -1366,6 +1445,13 @@ export class Engine {
     for (const e of this.sim.entities) {
       if (!e.hp || e.hp <= 0) continue;
       if (e.archetype === 'player') continue;
+      // A body that has YIELDED is not hostile intent, whatever made it yield — a parley
+      // (seam S13), `calm_beast`, `demoralise` or `charm` (seam S19). RI-MAG06 §B's row for
+      // the four control verbs reads `in_combat`, and a fight that "ends" while `in_combat`
+      // stays true has not ended; it has gone quiet. ARBITRATION §1's right to disengage is
+      // the same right whichever verb bought it.
+      const b = this.combat && this.combat.bodyOf(e.eid);
+      if (b && (b.yielded || b.dead)) continue;
       if (Math.hypot(e.pos[0] - p.pos[0], e.pos[2] - p.pos[2]) <= 30) return true;
     }
     return false;
@@ -2670,10 +2756,28 @@ export class Engine {
    * this method chooses which entry, it never composes one, which is the rule
    * game/src/sim/quest/journal.js exists to make structurally impossible to break.
    */
+  /** Re-point the quest runtime at the live `sim.quest` after a state load. */
+  _rebindQuestRuntime() {
+    if (!this.questEngine) return null;
+    this.questEngine.sim = this.sim;
+    this.questEngine.journal = new Journal(this.sim.quest.journal);
+    return true;
+  }
+
   histSightWrite(frame) {
     const qe = this.questEngine;
     if (!qe) return null;
-    const order = (this.data.quests && this.data.quests['magic-utility-quests'] && this.data.quests['magic-utility-quests'].hist_sight_order) || [];
+    let order = (this.data.quests && this.data.quests['magic-utility-quests'] && this.data.quests['magic-utility-quests'].hist_sight_order) || [];
+    // No authored order: the Hist shows you the oldest thing it can still see, which in data
+    // terms is the first quest with an unwritten opening entry. A spell that writes nothing
+    // because a table is missing is the `UNREAD_TIMER` failure with extra steps.
+    if (!order.length) {
+      order = this.questBook.ids.map((id) => {
+        const q = this.questBook.get(id);
+        const first = (q.journal || []).filter((e) => e.state === 'active' && e.index >= 10).map((e) => e.index).sort((a, b) => a - b)[0];
+        return first == null ? null : { quest: id, index: first };
+      }).filter(Boolean);
+    }
     for (const ref of order) {
       const q = qe.book.has(ref.quest) ? qe.book.get(ref.quest) : null;
       if (!q) continue;
@@ -2722,7 +2826,17 @@ export class Engine {
     return { V: STL_DET.visibility(d, q), raw, clamped: raw !== STL_DET.visibility(d, q), gamma: d.visibility.light_exponent };
   }
 
-  soundRadiusFor(q) { return STL_DET.soundRadius(this.sim.stealth.d.detection, q); }
+  /**
+   * The sound radius for a hypothetical motion. `muffle`'s consuming system: RI-MAG06 §B names
+   * `sound_r_m`, and the live per-frame value is 0 whenever the character is standing still, so
+   * a census that only ever reads the standing value can never see the effect. This applies the
+   * same live term the per-frame computation does, and reports it, so the paired read is real.
+   */
+  soundRadiusFor(q) {
+    const base = STL_DET.soundRadius(this.sim.stealth.d.detection, q);
+    const pct = this.sim.stealth.p.magicMufflePct || 0;
+    return pct ? Math.round(base * (1 - Math.min(90, pct) / 100) * 1e6) / 1e6 : base;
+  }
 
   isStealthOpener(q) {
     const st = this.sim.stealth;
@@ -2997,6 +3111,45 @@ export class Engine {
       equip_load_pct: p.equipLoadPct, roll_class: p.rollClass,
       burden_ratio: +(p.burdenRatio || 0).toFixed(6), burden_tier: burdenTierOf(p.burdenRatio || 0).id,
       in_combat: this.inCombat(),
+      // ---- W1-10: the `equipped` block the weapons critic asked for --------------------------
+      // "No `equipped` block on getPlayerStats()" was one of the nine methods scored 0
+      // fail-closed. It reports what is IN THE PLAYER'S HANDS right now, read off the combat
+      // body rather than off the loadout that was requested, so a stance switch that has not
+      // committed yet cannot be mistaken for one that has.
+      equipped: this.equippedReport(),
+    };
+  }
+
+  /** What the player is actually holding, and every verb it makes reachable. */
+  equippedReport() {
+    const c = this.combat;
+    const b = c && c.player;
+    if (!b) return null;
+    const moves = b.moves || {};
+    const lib = c.lib;
+    const ms = lib && b.weaponId ? lib.movesets[b.weaponId] : null;
+    const pre = b.twoHanded ? '2h.' : '';
+    const reachable = (moves._slotIds || [])
+      .filter((k) => (b.twoHanded ? !k.startsWith('off.') : !k.startsWith('2h.')))
+      .concat(moves._extraSlots || [])
+      .sort();
+    return {
+      weapon_id: b.weaponId || null,
+      weapon_name: ms ? ms.name : null,
+      weapon_class: b.weaponClass || null,
+      weight_tier: ms ? ms.weight_tier : null,
+      reach_m: ms ? ms.reach_m : null,
+      attack_rating: moves._weapon ? moves._weapon.attack_rating : null,
+      stance: b.twoHanded ? 'two_hand' : 'one_hand',
+      offhand: b.offhandConfig || null,
+      offhand_kind: b.offhandKind || null,
+      shield: b.shieldId || null,
+      shield_class: b.shield ? b.shield.class : null,
+      guard_angle_deg: b.shield ? (b.shield.guard_angle_deg || null) : null,
+      slots_declared: (moves._slotIds || []).length,
+      slots_reachable_in_this_configuration: reachable,
+      chain_root: pre + 'r1.1',
+      distinct_clips: new Set((moves._slotIds || []).map((k) => moves[k] && moves[k].anim)).size,
     };
   }
 
@@ -3080,6 +3233,7 @@ async function loadData(onBytes) {
     else if (entry.path === 'world/terrain.json') out.terrain = doc;
     else if (entry.path === 'world/water.json') out.water = doc;
     else if (entry.path === 'world/roads.json') out.roads = doc;
+    else if (entry.path === 'world/signatures.json') out.signatures = doc;
     else if (entry.path.startsWith('world/travel/')) {
       out.travel = out.travel || {};
       out.travel[entry.path.slice('world/travel/'.length).replace(/\.json$/, '')] = doc;

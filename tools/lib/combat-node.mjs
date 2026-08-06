@@ -48,7 +48,31 @@ export function loadCombatData(root = GAME_DATA) {
     const doc = readJson(path.join(root, 'combat/enemies', f));
     enemies[doc.id] = doc;
   }
+  // W1-10's 87-weapon roster, class table and clip registry. The FIGHT reads these — see
+  // Engine._combatData(). Loading them here is what keeps this arena the same game.
+  const weaponMovesets = {}, spellMovesets = {};
+  const msDir = path.join(root, 'combat/movesets');
+  if (fs.existsSync(msDir)) {
+    for (const f of fs.readdirSync(msDir)) {
+      if (!f.endsWith('.json')) continue;
+      const doc = readJson(path.join(msDir, f));
+      if (doc.spell_id) spellMovesets[doc.spell_id] = doc;
+      else if (doc.weapon_id) weaponMovesets[doc.weapon_id] = doc;
+    }
+  }
+  const weapons = {};
+  const wDir = path.join(root, 'weapons');
+  if (fs.existsSync(wDir)) {
+    for (const f of fs.readdirSync(wDir)) {
+      if (!f.endsWith('.json')) continue;
+      weapons[f.replace(/\.json$/, '')] = readJson(path.join(wDir, f));
+    }
+  }
   return {
+    weaponMovesets,
+    weaponClasses: weapons.classes,
+    clipRegistry: weapons['clip-registry'],
+    offhand: weapons.offhand,
     frames: combat.frames, roll: combat.roll, stamina: combat.stamina, poise: combat.poise,
     hitgeometry: combat.hitgeometry, lockon: combat.lockon, flask: combat.flask,
     parley: combat.parley, skeleton: combat.skeleton, clips: combat.clips,
@@ -77,6 +101,11 @@ export class NodeArena {
     this.input = new InputPipeline();
     this.input.reset(0);
     this.player = this.cs.createPlayer(opts.loadout || { weapon: 'straight-sword' });
+    // W1-10's MovesetLibrary path reads `player.weaponId`, which only `rebuildPlayerLoadout()`
+    // assigns; `createPlayer()` does not. In the browser the boot sequence happens to call
+    // setLoadout() and paper over it. Calling it here keeps this arena on the same code path
+    // rather than assigning the field behind the system's back.
+    if (this.cs.lib && this.player.weaponId === undefined) this.cs.rebuildPlayerLoadout({});
   }
 
   spawn(id, statId, x, z, yaw) {

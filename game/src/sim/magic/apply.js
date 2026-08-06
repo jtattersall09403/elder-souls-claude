@@ -42,6 +42,16 @@ export const RESIST_CLAMP_PCT = 85;
 export const ROLL_CLIFF_PCT = [30.0, 70.0];
 
 /**
+ * How far from the point the spell RESOLVED AT a world verb reaches, squared, in metres.
+ * These are the radii inside which `open`, `seal`, `spring the trap` and `shell-splitter` find
+ * something to act on. They are declared here rather than buried as literals because a critic
+ * checking "why did `open` not open that door" needs one number to check, and because a verb
+ * whose reach is a magic constant in three places will grow a fourth.
+ */
+export const WORLD_REACH_M = { lock: 8, trap: 8, breakable: 10 };
+const WORLD_REACH_M2 = { lock: 64, trap: 64, breakable: 100 };
+
+/**
  * S11 Souls half: status arrives as a fixed integer of buildup per contact and procs at a
  * threshold. Never 0 -> applied in one frame, never a coin flip. Thresholds are per kind and
  * live here because no other piece owns a meter yet; RI-CMB10 may claim them later.
@@ -122,9 +132,13 @@ export function addBuildup(M, frame, body, kind, amount) {
     st[kind] = 0;
     procced = true;
     if (kind === 'paralysis') { body.paralysedUntil = frame + cfg.proc_frames; }
-    M._emit(frame, 'status_proc', { kind, on: body.id, proc: cfg.proc, until_f: frame + cfg.proc_frames, threshold: cfg.threshold });
+    // `status_kind`, not `kind`: `_emit(frame, kind, fields)` spreads `fields` over the record,
+    // so a field literally called `kind` overwrites the event's own type and the event arrives
+    // on the stream as `{kind: 'fire'}` instead of `{kind: 'status_proc'}`. That cost a census
+    // run: the meter was moving correctly and nothing downstream could see it.
+    M._emit(frame, 'status_proc', { status_kind: kind, on: body.id, proc: cfg.proc, until_f: frame + cfg.proc_frames, threshold: cfg.threshold });
   }
-  M._emit(frame, 'status_buildup', { kind, on: body.id, before: prev, after: st[kind], per_contact: Math.max(0, amount | 0), threshold: cfg.threshold, procced });
+  M._emit(frame, 'status_buildup', { status_kind: kind, on: body.id, before: prev, after: st[kind], per_contact: Math.max(0, amount | 0), threshold: cfg.threshold, procced });
   return { kind, before: prev, after: st[kind], procced };
 }
 
@@ -303,12 +317,15 @@ function h_slowfall(M, frame, rec) {
 
 function h_leap(M, frame, rec) {
   const b = self(M);
-  const before = { jump_apex_m: r3(M.jumpApexMult), pos_y_peak: b ? r3(M.peakY) : null };
+  const before = { jump_apex_mult: r3(M.jumpApexMult), pos_y_peak: b ? r3(M.peakY) : null };
   // Multiplies the jump arc's apex. The jump move's root motion is `rootOffsetYAt(f) * apex_m`
-  // (combat/actor.js), so this is the same number the unbuffed jump uses, scaled.
+  // (combat/actor.js), so this is the same number the unbuffed jump uses, scaled — and it is
+  // written on the BODY, because the body is what evaluates the arc. Writing it only on the
+  // MagicSystem is how this measured `apex_mult: 2.54` with an unchanged 0.578 m peak.
   M.jumpApexMult = 1 + rec.magnitude / 12;
-  rec._undo = () => { M.jumpApexMult = 1; };
-  return moved('jump apex -> pos[1] peak', before, { jump_apex_m: r3(M.jumpApexMult) });
+  if (b) b.jumpApexMult = M.jumpApexMult;
+  rec._undo = () => { M.jumpApexMult = 1; if (b) b.jumpApexMult = 1; };
+  return moved('jump apex -> pos[1] peak', before, { jump_apex_mult: r3(M.jumpApexMult) });
 }
 
 function h_buoyancy(M, frame, rec) {
@@ -449,7 +466,7 @@ function h_open_lock(M, frame, rec, target) {
   const opened = [];
   for (const l of M.world.locks.values()) {
     if (!l.locked) continue;
-    if (M.dist2(l.pos) > 36) continue;          // 6 m — the spell has to reach the door
+    if (M.dist2(l.pos) > WORLD_REACH_M2.lock) continue;
     if (l.tier * 20 > req) { M._emit(frame, 'lock_refused', { lock: l.id, tier: l.tier, needs_magnitude: l.tier * 20, had: r2(req) }); continue; }
     l.locked = false;
     opened.push(l.id);
@@ -466,7 +483,7 @@ function h_lock_lock(M, frame, rec) {
   const locked = [];
   for (const l of M.world.locks.values()) {
     if (l.locked) continue;
-    if (M.dist2(l.pos) > 36) continue;
+    if (M.dist2(l.pos) > WORLD_REACH_M2.lock) continue;
     l.locked = true;
     l.tier = Math.max(l.tier, Math.min(5, Math.ceil(rec.magnitude / 20)));
     locked.push(l.id);
@@ -483,7 +500,7 @@ function h_ward_trap(M, frame, rec) {
   const disarmed = [];
   for (const t of M.world.traps.values()) {
     if (!t.armed) continue;
-    if (M.dist2(t.pos) > 36) continue;
+    if (M.dist2(t.pos) > WORLD_REACH_M2.trap) continue;
     t.armed = false;
     disarmed.push(t.id);
     M._emit(frame, 'trap_disarmed', { trap: t.id, kind: t.kind });
@@ -497,7 +514,7 @@ function h_shatter(M, frame, rec, target) {
   const broken = [];
   for (const b of M.world.breakables.values()) {
     if (!b.intact) continue;
-    if (M.dist2(b.pos) > 64) continue;
+    if (M.dist2(b.pos) > WORLD_REACH_M2.breakable) continue;
     if (b.hardness > rec.magnitude) { M._emit(frame, 'shatter_refused', { object: b.id, hardness: b.hardness, had: r2(rec.magnitude) }); continue; }
     b.intact = false;
     broken.push(b.id);

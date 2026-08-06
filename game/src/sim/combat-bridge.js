@@ -90,7 +90,9 @@ export function stepCombat(sim, input, combat, bus) {
         target.hp -= dmg;
         if (target.hp <= 0) { target.hp = 0; target.dead = true; }
       }
+      M.setContactPoint(contact.at);
       M.applyEffects(frame, spell, target, M.wil);
+      M.setContactPoint(null);
       const ev = bus.emit(frame, 'spell_hit');
       ev.spell = spell.id; ev.target = target.id; ev.dmg = dmg; ev.kind = contact.kind;
       ev.status = M.statusBuildupOf(spell);
@@ -139,6 +141,32 @@ export function mirror(sim, combat) {
   p.lockOn = combat.lock.target;
   p.move = b.move ? b.move.id : null;
   p.moveData = b.move;
+  // ---- W1-10: the four fields WEAPON-CRITIC.md §3.1 says the piece is unmeasurable without ----
+  // "if the harness is missing player.anim_slot, player.hitstop_f, player.weapon_tip or the
+  // impact / block_success events, the affected checks score 0, fail-closed." All four now exist.
+  //   anim_slot   the RI-WPN01 §A slot id the current animation IS — the field that distinguishes
+  //               "the rolling attack fired" from "a light attack fired that looks like one".
+  //   hitstop_f   the attacker hitstop this move would deal into flesh, and the live hold.
+  //   weapon_tip  the weapon capsule's far socket in world space, every frame, so RI-WPN05 §E's
+  //               tip speed is a measurement rather than a declaration.
+  const mv = b.move;
+  p.animSlot = mv && mv.slot ? mv.slot : null;
+  p.weaponId = b.weaponId || null;
+  p.weaponClass = b.weaponClass || null;
+  p.stance = b.twoHanded ? 'two_hand' : 'one_hand';
+  p.offhandKind = b.offhandKind || null;
+  p.offhandConfig = b.offhandConfig || null;
+  p.rollTier = b.tier;
+  p.hitstopF = mv ? (mv.hitstop_frames || 0) : 0;
+  p.hitstopHeld = !!b.hitstop;
+  p.weaponTip = [r4(b.socketB[0]), r4(b.socketB[1]), r4(b.socketB[2])];
+  p.weaponGuard = [r4(b.socketA[0]), r4(b.socketA[1]), r4(b.socketA[2])];
+  p.chargeF = combat.playerCtl ? combat.playerCtl.chargeHeld : 0;
+  p.chargeMaxF = mv && mv.charge_max_f ? mv.charge_max_f : 0;
+  p.chainsTo = mv && mv.chains_to ? mv.chains_to : null;
+  p.blockAngleDeg = b.shield && b.guardRaised ? (b.shield.guard_angle_deg || 60) : null;
+  p.blockSuccessF = b.blockSuccessFrame === undefined ? null : b.blockSuccessFrame;
+  p.guardRaised = !!b.guardRaised;
   p.swingSeq = b.swingSeq;
   p.hitboxes.length = 0;
   // Spell geometry is reported through the SAME hitbox channel a weapon is (HARNESS §5, with
@@ -151,6 +179,10 @@ export function mirror(sim, combat) {
     p.focus = Math.round(M.focus * 1e4) / 1e4;
     p.focusMax = M.focusMax;
     p.focusLocked = true;
+    // RI-CHR03 / AMENDMENT-W1-07-03: RI-MAG01 §A already forbids Focus regeneration for
+    // everyone, so `focusLocked` is true for everyone. The Dry Well takes away the ONE thing
+    // §A leaves — the refill at a HEARTH — and that is a separate, measurable field.
+    p.focusRestoresAtHearth = M.focusRestoresAtHearth !== false;
     p.attuned = M.attuned;
     p.cast = c ? {
       spell: c.spellId, class: c.class,

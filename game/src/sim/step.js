@@ -23,6 +23,14 @@ import { stepEncounters } from '../character/encounter.js';
 import { stepNPCs } from './npc.js';
 import { stepSkillUse } from '../character/skilluse.js';
 
+/**
+ * What a Dres net takes away. Movement is zeroed by `consumeUI` itself; these are the actions
+ * a person in a net cannot perform. Attacking is deliberately NOT on the list: you can still
+ * swing at whoever is holding the rope, which is what makes the net a fight rather than a
+ * cutscene.
+ */
+const NETTED_DENIED = ['roll', 'sprint', 'jump'];
+
 export function stepOnce(sim, input, combat, bus) {
   armSim();
   try {
@@ -36,6 +44,10 @@ export function stepOnce(sim, input, combat, bus) {
     // surface is open it eats `move`, `interact` and `block`, so walking a birthsign list
     // does not also walk the body across the room.
     if (sim.censusDriver) sim.censusDriver(input);
+    // W1-07 AR-3: a net that holds you. The restraint is applied to the LATCH, before the
+    // fight reads it, so `speed_mps` in the trace really is 0 and the roll really is denied
+    // — rather than a `net_behaviour: "capture"` string in an event nobody acts on.
+    if (sim.nettedUntil > sim.frame) input.consumeUI(NETTED_DENIED);
     // W1-09 owns steps 1-9 of RI-CMB04 §A's per-frame order; the bridge mirrors the result
     // into the W1-00 state the save, the renderer and elder-souls/trace@1 read.
     stepCombat(sim, input, combat, bus);
