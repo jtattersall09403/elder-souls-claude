@@ -152,8 +152,8 @@
    "chains_to": "r2.follow",
    "chain_index": 1,
    "startup_f": 76,
-   "active_f": 17,
-   "recovery_f": 94,
+   "active_f": 20,
+   "recovery_f": 91,
    "stamina": 54,
    "motion_value": 2.25,
    "poise_damage": 78,
@@ -163,7 +163,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 46,
-    "to_f": 93,
+    "to_f": 96,
     "poise_multiplier": 1.7
    },
    "hitbox": {
@@ -193,8 +193,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 76,
-   "active_f": 17,
-   "recovery_f": 94,
+   "active_f": 20,
+   "recovery_f": 91,
    "charge_max_f": 50,
    "charge_ramp": {
     "motion_value_at_full": 1.3,
@@ -210,7 +210,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 46,
-    "to_f": 93,
+    "to_f": 96,
     "poise_multiplier": 1.7
    },
    "hitbox": {
@@ -240,8 +240,8 @@
    "chains_to": null,
    "chain_index": 2,
    "startup_f": 58,
-   "active_f": 17,
-   "recovery_f": 97,
+   "active_f": 20,
+   "recovery_f": 94,
    "stamina": 48,
    "motion_value": 2.03,
    "poise_damage": 67,
@@ -320,8 +320,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 52,
-   "active_f": 17,
-   "recovery_f": 92,
+   "active_f": 20,
+   "recovery_f": 89,
    "stamina": 60,
    "motion_value": 2.36,
    "poise_damage": 85,
@@ -331,7 +331,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 32,
-    "to_f": 69,
+    "to_f": 72,
     "poise_multiplier": 1.7
    },
    "hitbox": {
@@ -653,8 +653,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 88,
-   "active_f": 22,
-   "recovery_f": 114,
+   "active_f": 26,
+   "recovery_f": 110,
    "stamina": 61,
    "motion_value": 2.54,
    "poise_damage": 84,
@@ -822,8 +822,8 @@
    "chains_to": "2h.r2.follow",
    "chain_index": 1,
    "startup_f": 84,
-   "active_f": 20,
-   "recovery_f": 102,
+   "active_f": 23,
+   "recovery_f": 99,
    "stamina": 62,
    "motion_value": 2.58,
    "poise_damage": 101,
@@ -833,7 +833,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 51,
-    "to_f": 104,
+    "to_f": 107,
     "poise_multiplier": 1.7
    },
    "hitbox": {
@@ -866,8 +866,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 84,
-   "active_f": 20,
-   "recovery_f": 102,
+   "active_f": 23,
+   "recovery_f": 99,
    "charge_max_f": 50,
    "charge_ramp": {
     "motion_value_at_full": 1.3,
@@ -883,7 +883,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 51,
-    "to_f": 104,
+    "to_f": 107,
     "poise_multiplier": 1.7
    },
    "hitbox": {
@@ -901,6 +901,48 @@
    "answers": [
     "TURTLE",
     "POISE_MONSTER"
+   ]
+  },
+  "2h.r2.follow": {
+   "anim": "clip_claymore_2h_r2_follow",
+   "anim_owner": "lin_claymore",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 64,
+   "active_f": 23,
+   "recovery_f": 103,
+   "stamina": 55,
+   "motion_value": 2.33,
+   "poise_damage": 87,
+   "root_dz_m": 1.281,
+   "arc_sweep_deg": 236,
+   "shape": "sweep",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip",
+    "multi_hit": 1
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
    ]
   },
   "2h.run.r1": {
@@ -958,8 +1000,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 58,
-   "active_f": 20,
-   "recovery_f": 100,
+   "active_f": 23,
+   "recovery_f": 97,
    "stamina": 69,
    "motion_value": 2.71,
    "poise_damage": 111,
@@ -969,7 +1011,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 35,
-    "to_f": 78,
+    "to_f": 81,
     "poise_multiplier": 1.7
    },
    "hitbox": {
@@ -1180,8 +1222,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 97,
-   "active_f": 25,
-   "recovery_f": 124,
+   "active_f": 30,
+   "recovery_f": 119,
    "stamina": 70,
    "motion_value": 2.92,
    "poise_damage": 109,
@@ -1221,8 +1263,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 90,
-   "active_f": 20,
-   "recovery_f": 108,
+   "active_f": 24,
+   "recovery_f": 104,
    "stamina": 62,
    "motion_value": 2.71,
    "poise_damage": 101,
@@ -1232,7 +1274,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 54,
-    "to_f": 110,
+    "to_f": 114,
     "poise_multiplier": 1.7
    },
    "hitbox": {
@@ -1265,8 +1307,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 90,
-   "active_f": 20,
-   "recovery_f": 108,
+   "active_f": 24,
+   "recovery_f": 104,
    "stamina": 62,
    "motion_value": 2.71,
    "poise_damage": 101,
@@ -1276,7 +1318,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 54,
-    "to_f": 110,
+    "to_f": 114,
     "poise_multiplier": 1.7
    },
    "hitbox": {
@@ -1297,5 +1339,5 @@
    ]
   }
  },
- "notes": "Hands further apart and six frames faster: it sweeps where the memorial blade chops, and it travels further with the blow.\n\nLineage: claymore — Imported Nord pattern: a flatter, wider swing with the hands further apart, and it travels further with the blow.\nMandatory slots present: 25/25. Total slots: 30.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "Hands further apart and six frames faster: it sweeps where the memorial blade chops, and it travels further with the blow.\n\nLineage: claymore — Imported Nord pattern: a flatter, wider swing with the hands further apart, and it travels further with the blow.\nMandatory slots present: 25/25. Total slots: 31.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

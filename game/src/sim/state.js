@@ -250,6 +250,11 @@ export function quantiseSaveGrid(sim) {
     e.yaw = q6(e.yaw); e.yawRate = q6(e.yawRate); e.speed = q6(e.speed);
     e.hp = q6(e.hp); e.poise = q6(e.poise);
   }
+  for (let i = 0; i < sim.npcs.length; i++) {
+    const n = sim.npcs[i];
+    n.pos[0] = q6(n.pos[0]); n.pos[1] = q6(n.pos[1]); n.pos[2] = q6(n.pos[2]);
+    n.yaw = q6(n.yaw);
+  }
 }
 
 /** The rest of the grid, for the containers no fixed step touches. May allocate. */
@@ -307,6 +312,10 @@ export class SimState {
     // null for an authored cell that generates nothing. Drawn by Engine._drawWorldSeed().
     this.worldSeed = null;
     this.entities = [];         // kept sorted by eid — HARNESS.md D7
+    // W1-07. People, as opposed to combat entities: a name, a race, an upbringing, a
+    // disposition and a list of topics, with no statblock and no hitbox (sim/npc.js).
+    // Kept sorted by eid for the same reason `entities` is.
+    this.npcs = [];
     this.nextEid = 0;
     this.events = [];           // cleared each step; pooled by sim/events.js
     this.hitstopUntil = 0;
@@ -335,6 +344,18 @@ export class SimState {
 
   findEntity(eid) {
     for (let i = 0; i < this.entities.length; i++) if (this.entities[i].eid === eid) return this.entities[i];
+    return null;
+  }
+
+  addNPC(n) {
+    let i = 0;
+    while (i < this.npcs.length && this.npcs[i].eid < n.eid) i++;
+    this.npcs.splice(i, 0, n);
+    return n;
+  }
+
+  findNPC(eid) {
+    for (let i = 0; i < this.npcs.length; i++) if (this.npcs[i].eid === eid) return this.npcs[i];
     return null;
   }
 }

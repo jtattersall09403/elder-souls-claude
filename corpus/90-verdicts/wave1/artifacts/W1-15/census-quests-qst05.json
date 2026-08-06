@@ -1,0 +1,83 @@
+{
+ "schema": "elder-souls/critic-census@1",
+ "item": "RI-QST05",
+ "note": "the item's jq census, run over both trees",
+ "at_W1-15_commit_140d3c6": {
+  "files": [
+   "magic-utility.json",
+   "the-boards.json"
+  ],
+  "n_quests": 24,
+  "PACIFIST_ALL_pct": 100.0,
+  "NONVIOLENT_OPTION_pct": 100.0,
+  "VIOLENCE_MANDATORY_pct": 0.0,
+  "VERB_SPREAD_pct": 42.1,
+  "verb_dist": {
+   "magic_utility": 24,
+   "bribe": 4,
+   "steal": 2,
+   "persuade": 7,
+   "wait": 5,
+   "trade": 6,
+   "lore_knowledge": 4,
+   "sneak": 4,
+   "intimidate": 1
+  },
+  "GATED_pct": 96.5,
+  "KNOWLEDGE_KEYS_pct": 45.8,
+  "sneak_resolutions": 4,
+  "steal_resolutions": 2,
+  "targets": {
+   "PACIFIST_ALL": 45,
+   "NONVIOLENT_OPTION": 70,
+   "VERB_SPREAD_max": 40,
+   "GATED": 80,
+   "KNOWLEDGE_KEYS": 25,
+   "sneak_min": 10,
+   "steal_min": 10,
+   "SNEAK_QUESTS_RI_STL01": 22
+  }
+ },
+ "at_HEAD_65275dc": {
+  "files": [
+   "blackmarsh-coast.json",
+   "blackmarsh-core.json",
+   "closure-registry.json",
+   "magic-utility.json",
+   "the-boards.json"
+  ],
+  "n_quests": 33,
+  "PACIFIST_ALL_pct": 100.0,
+  "NONVIOLENT_OPTION_pct": 100.0,
+  "VIOLENCE_MANDATORY_pct": 0.0,
+  "VERB_SPREAD_pct": 28.2,
+  "verb_dist": {
+   "confess": 6,
+   "sneak": 6,
+   "trade": 12,
+   "lore_knowledge": 6,
+   "refuse": 3,
+   "steal": 3,
+   "intimidate": 3,
+   "betray": 3,
+   "persuade": 9,
+   "wait": 6,
+   "magic_utility": 24,
+   "bribe": 4
+  },
+  "GATED_pct": 87.1,
+  "KNOWLEDGE_KEYS_pct": 60.6,
+  "sneak_resolutions": 6,
+  "steal_resolutions": 3,
+  "targets": {
+   "PACIFIST_ALL": 45,
+   "NONVIOLENT_OPTION": 70,
+   "VERB_SPREAD_max": 40,
+   "GATED": 80,
+   "KNOWLEDGE_KEYS": 25,
+   "sneak_min": 10,
+   "steal_min": 10,
+   "SNEAK_QUESTS_RI_STL01": 22
+  }
+ }
+}

@@ -15,6 +15,23 @@ const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 import { buildScene, makeActor, terrainHeight } from './scene.js';
 import { Sky, WEATHER } from './sky.js';
 import { Province } from '../world/province.js';
+import { UILayer } from './ui.js';
+
+// Skin tints so the people in a room are people rather than six copies of one silhouette.
+// Keyed by the `race` field on the NPC record; unknown races fall back to the first.
+const RACE_TINT = {
+  saxhleel: [0x4f6141, 0x3d5136],
+  naga: [0x3f5a46, 0x2f4436],
+  imperial: [0xb9a189, 0x5a4a38],
+  dunmer: [0x6b5a63, 0x3a2f3c],
+  altmer: [0xc4c096, 0x6a6a44],
+  bosmer: [0x9c8a63, 0x4d4429],
+  breton: [0xc0a98c, 0x4a4258],
+  nord: [0xc8b096, 0x53503f],
+  orsimer: [0x7d8a63, 0x3f4a30],
+  khajiit: [0xa3855a, 0x5c452a],
+  redguard: [0x8a6547, 0x3c4a4e],
+};
 
 export class Renderer {
   constructor(canvas, seed) {
@@ -49,6 +66,9 @@ export class Renderer {
     // Stone Forest, which is 1.6 km away. A 900 m far plane is a 900 m world.
     this.camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 6400);
     this.enemyMeshes = new Map();
+    this.npcMeshes = new Map();
+    // The dialogue surface. Drawn INTO this canvas, not into the DOM — see render/ui.js.
+    this.ui = new UILayer(canvas.width, canvas.height);
     this.uiVisible = true;
     this.lastStats = { drawCalls: 0, triangles: 0, programs: 0, geometries: 0, textures: 0 };
     this._look = new THREE.Vector3();
@@ -87,6 +107,7 @@ export class Renderer {
     this.mats = built.mats;
     this.sky = new Sky(this.scene);
     this.enemyMeshes.clear();          // re-created against the new scene by syncEntities()
+    this.npcMeshes.clear();
     // The province is authored, not generated, so a seed change must not rebuild it — but the
     // scene graph it was attached to has just been replaced, so it is re-parented.
     if (this.province) { old.remove(this.province.group); this.scene.add(this.province.group); this.cells.province = this.province.group; }
@@ -99,6 +120,7 @@ export class Renderer {
     this.three.setSize(w, h, false);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
+    this.ui.setSize(w, h);
     return { width: w, height: h };
   }
 
@@ -182,6 +204,43 @@ export class Renderer {
   }
 
   /**
+   * The people. W1-07's round-1 verdict: "`writ-house` — the piece's own interior —
+   * instantiates 0 entities. There is no NPC whose disposition could be derived." These are
+   * that, drawn: one actor per record in `sim.npcs`, tinted by race and scaled by build, so
+   * the Warden-Scribe behind the desk is an object in the scene graph.
+   */
+  syncNPCs(sim) {
+    const npcs = sim.npcs || [];
+    const seen = new Set();
+    for (const n of npcs) {
+      seen.add(n.eid);
+      let mesh = this.npcMeshes.get(n.eid);
+      if (!mesh) {
+        const tint = RACE_TINT[n.race] || RACE_TINT.saxhleel;
+        mesh = makeActor(this.mats, tint[1]);
+        // The skin material on makeActor is shared; give each person their own so a Dunmer
+        // and an Imperial standing in the same room are not the same colour.
+        for (const child of mesh.children) {
+          if (child.material === this.mats.skin) {
+            child.material = this.mats.skin.clone();
+            child.material.color.setHex(tint[0]);
+          }
+        }
+        mesh.scale.setScalar(n.height_scale || 1);
+        mesh.name = 'npc:' + n.eid;
+        this.scene.add(mesh);
+        this.npcMeshes.set(n.eid, mesh);
+      }
+      mesh.position.set(n.pos[0], n.pos[1], n.pos[2]);
+      mesh.rotation.y = (n.yaw * Math.PI) / 180;
+      mesh.visible = n.visible !== false;
+    }
+    for (const [eid, mesh] of this.npcMeshes) {
+      if (!seen.has(eid)) { this.scene.remove(mesh); this.npcMeshes.delete(eid); }
+    }
+  }
+
+  /**
    * Draw the current simulation state.
    * @param {SimState} sim
    */
@@ -191,6 +250,7 @@ export class Renderer {
     this.playerMesh.rotation.y = (sim.player.yaw * Math.PI) / 180;
     this.playerMesh.visible = !c.override;    // a posed camera is usually inside the character
     this.syncEntities(sim);
+    this.syncNPCs(sim);
 
     this.camera.position.set(c.pos[0], c.pos[1], c.pos[2]);
     this._look.set(c.pivot[0], c.pivot[1], c.pivot[2]);
@@ -213,6 +273,11 @@ export class Renderer {
 
     this.three.info.reset();
     this.three.render(this.scene, this.camera);
+    // The dialogue surface is composited over the 3D pass, in the same canvas, before the
+    // counters are read — RI-PLT01 "How we lose" #11 is exactly about a snapshot taken
+    // before the UI pass.
+    this.ui.setVisible(this.uiVisible);
+    this.ui.render(this.three);
     // Read the counters AFTER the present, not before (RI-PLT01 "How we lose" #11).
     const info = this.three.info;
     this.lastStats = {

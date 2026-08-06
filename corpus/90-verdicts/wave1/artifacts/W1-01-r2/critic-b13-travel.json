@@ -1,0 +1,470 @@
+{
+ "schema": "critic/w1-01-r2-b13@1",
+ "measured_at": "2026-08-06T20:50:21.563Z",
+ "note": "AR-2 B13 + B2: board every modality from a settlement, verify station arrival, gold price, in-world time, walked-it-once gate.",
+ "walks": [
+  {
+   "leg": "stormhold-thorn",
+   "minutes": 11.38,
+   "path_m": 2185
+  },
+  {
+   "leg": "stormhold-helstrom",
+   "minutes": 14.98,
+   "path_m": 2876.1
+  },
+  {
+   "leg": "blackrose-lilmoth",
+   "minutes": 7.492,
+   "path_m": 1438.4
+  },
+  {
+   "leg": "helstrom-blackrose",
+   "minutes": 12.099,
+   "path_m": 2323
+  }
+ ],
+ "result": {
+  "state": {
+   "present": true,
+   "legs_walked": [
+    "blackrose-lilmoth",
+    "helstrom-blackrose",
+    "stormhold-helstrom",
+    "stormhold-thorn"
+   ],
+   "leg_progress_m": {
+    "stormhold-thorn": 2210.5,
+    "archon-thorn": 25,
+    "stormhold-helstrom": 2947.4,
+    "helstrom-blackrose": 2434.8,
+    "blackrose-lilmoth": 1479
+   },
+   "gold": 5000,
+   "purchasable": [
+    "svc-001-rootway-stormhold-ixtaxh-tzil",
+    "svc-002-rootway-ixtaxh-tzil-thorn",
+    "svc-003-rootway-stormhold-nine-mud",
+    "svc-004-rootway-nine-mud-the-weeping-ford",
+    "svc-005-rootway-the-weeping-ford-helstrom",
+    "svc-006-barge-stormhold-nine-mud",
+    "svc-007-poler-stormhold-nine-mud",
+    "svc-008-barge-nine-mud-the-weeping-ford",
+    "svc-009-poler-nine-mud-the-weeping-ford",
+    "svc-010-barge-the-weeping-ford-helstrom",
+    "svc-011-poler-the-weeping-ford-helstrom",
+    "svc-012-rootway-helstrom-xal-ithix",
+    "svc-015-rootway-helstrom-sunken-barrow",
+    "svc-016-rootway-sunken-barrow-mudwater-landing",
+    "svc-017-rootway-mudwater-landing-blackrose",
+    "svc-018-barge-helstrom-sunken-barrow",
+    "svc-019-poler-helstrom-sunken-barrow",
+    "svc-020-barge-sunken-barrow-mudwater-landing",
+    "svc-021-poler-sunken-barrow-mudwater-landing",
+    "svc-022-barge-mudwater-landing-blackrose",
+    "svc-023-poler-mudwater-landing-blackrose",
+    "svc-024-rootway-helstrom-rootway-post",
+    "svc-027-barge-helstrom-tenmarch-bridge",
+    "svc-028-poler-helstrom-tenmarch-bridge",
+    "svc-046-rootway-blackrose-stilt-row",
+    "svc-047-rootway-stilt-row-lilmoth",
+    "svc-048-barge-blackrose-stilt-row",
+    "svc-049-poler-blackrose-stilt-row",
+    "svc-050-barge-stilt-row-lilmoth",
+    "svc-051-poler-stilt-row-lilmoth",
+    "svc-055-rootway-lilmoth-tideway-shrine",
+    "svc-057-barge-lilmoth-tideway-shrine",
+    "svc-058-poler-lilmoth-tideway-shrine",
+    "svc-061-packet-lilmoth-soulrest",
+    "svc-064-rootspeak-helstrom-soulrest",
+    "svc-065-rootspeak-helstrom-lilmoth",
+    "svc-066-rootspeak-helstrom-ixtaxh-tzil",
+    "svc-067-rootspeak-helstrom-xal-ithix",
+    "svc-068-rootspeak-helstrom-wayshrine-of-the-ninth-root"
+   ],
+   "refused": 29,
+   "riding": null,
+   "rides_taken": 0,
+   "log": []
+  },
+  "modes_boardable": [
+   "rootway",
+   "barge",
+   "poler",
+   "packet",
+   "rootspeak"
+  ],
+  "rows": [
+   {
+    "mode": "rootway",
+    "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+    "from": "stormhold",
+    "to": "ixtaxh-tzil",
+    "board": {
+     "boarded": true,
+     "done": true,
+     "frames": 10756,
+     "gold_spent": 15
+    },
+    "ride": {
+     "done": true,
+     "game_min": 53.6
+    },
+    "gold": [
+     5000,
+     4985
+    ],
+    "end_pos": [
+     3002.6,
+     929.8
+    ],
+    "dest_station": {
+     "id": "ixtaxh-tzil",
+     "pos": [
+      2988.6,
+      929.8
+     ],
+     "arrive_at": [
+      3002.6,
+      929.8,
+      34.91
+     ]
+    },
+    "dist_to_dest_station_m": 14,
+    "moved_m": 848.1
+   },
+   {
+    "mode": "barge",
+    "service": "svc-006-barge-stormhold-nine-mud",
+    "from": "stormhold",
+    "to": "nine-mud",
+    "board": {
+     "boarded": true,
+     "done": true,
+     "frames": 14321,
+     "gold_spent": 12
+    },
+    "ride": {
+     "done": true,
+     "game_min": 84
+    },
+    "gold": [
+     4985,
+     4973
+    ],
+    "end_pos": [
+     2307.3,
+     1461.3
+    ],
+    "dest_station": {
+     "id": "nine-mud",
+     "pos": [
+      2293.3,
+      1461.3
+     ],
+     "arrive_at": [
+      2307.3,
+      1461.3,
+      97.03
+     ]
+    },
+    "dist_to_dest_station_m": 14,
+    "moved_m": 713.3
+   },
+   {
+    "mode": "poler",
+    "service": "svc-007-poler-stormhold-nine-mud",
+    "from": "stormhold",
+    "to": "nine-mud",
+    "board": {
+     "boarded": true,
+     "done": true,
+     "frames": 20458,
+     "gold_spent": 15
+    },
+    "ride": {
+     "done": true,
+     "game_min": 126
+    },
+    "gold": [
+     4973,
+     4958
+    ],
+    "end_pos": [
+     2307.3,
+     1461.3
+    ],
+    "dest_station": {
+     "id": "nine-mud",
+     "pos": [
+      2293.3,
+      1461.3
+     ],
+     "arrive_at": [
+      2307.3,
+      1461.3,
+      97.03
+     ]
+    },
+    "dist_to_dest_station_m": 14,
+    "moved_m": 713.3
+   },
+   {
+    "mode": "packet",
+    "service": "svc-061-packet-lilmoth-soulrest",
+    "from": "lilmoth",
+    "to": "soulrest",
+    "board": {
+     "boarded": true,
+     "done": true,
+     "frames": 31066,
+     "gold_spent": 58
+    },
+    "ride": {
+     "done": true,
+     "game_min": 138.1
+    },
+    "gold": [
+     4958,
+     4900
+    ],
+    "end_pos": [
+     624.5,
+     4877
+    ],
+    "dest_station": {
+     "id": "soulrest",
+     "pos": [
+      610.5,
+      4877
+     ],
+     "arrive_at": [
+      624.5,
+      4877,
+      7.93
+     ]
+    },
+    "dist_to_dest_station_m": 14,
+    "moved_m": 2147.2
+   },
+   {
+    "mode": "rootspeak",
+    "service": "svc-064-rootspeak-helstrom-soulrest",
+    "from": "helstrom",
+    "to": "soulrest",
+    "board": {
+     "boarded": true,
+     "done": true,
+     "frames": 4799,
+     "gold_spent": 38
+    },
+    "ride": {
+     "done": true,
+     "game_min": 20
+    },
+    "gold": [
+     4900,
+     4862
+    ],
+    "end_pos": [
+     624.5,
+     4877
+    ],
+    "dest_station": {
+     "id": "soulrest",
+     "pos": [
+      610.5,
+      4877
+     ],
+     "arrive_at": [
+      624.5,
+      4877,
+      7.93
+     ]
+    },
+    "dist_to_dest_station_m": 14,
+    "moved_m": 2665.9
+   }
+  ],
+  "final_state": {
+   "present": true,
+   "legs_walked": [
+    "blackrose-lilmoth",
+    "helstrom-blackrose",
+    "stormhold-helstrom",
+    "stormhold-thorn"
+   ],
+   "leg_progress_m": {
+    "stormhold-thorn": 2210.5,
+    "archon-thorn": 25,
+    "stormhold-helstrom": 2947.4,
+    "helstrom-blackrose": 2434.8,
+    "blackrose-lilmoth": 1479,
+    "soulrest-blackrose": 75,
+    "gideon-soulrest": 200
+   },
+   "gold": 4862,
+   "purchasable": [
+    "svc-001-rootway-stormhold-ixtaxh-tzil",
+    "svc-002-rootway-ixtaxh-tzil-thorn",
+    "svc-003-rootway-stormhold-nine-mud",
+    "svc-004-rootway-nine-mud-the-weeping-ford",
+    "svc-005-rootway-the-weeping-ford-helstrom",
+    "svc-006-barge-stormhold-nine-mud",
+    "svc-007-poler-stormhold-nine-mud",
+    "svc-008-barge-nine-mud-the-weeping-ford",
+    "svc-009-poler-nine-mud-the-weeping-ford",
+    "svc-010-barge-the-weeping-ford-helstrom",
+    "svc-011-poler-the-weeping-ford-helstrom",
+    "svc-012-rootway-helstrom-xal-ithix",
+    "svc-015-rootway-helstrom-sunken-barrow",
+    "svc-016-rootway-sunken-barrow-mudwater-landing",
+    "svc-017-rootway-mudwater-landing-blackrose",
+    "svc-018-barge-helstrom-sunken-barrow",
+    "svc-019-poler-helstrom-sunken-barrow",
+    "svc-020-barge-sunken-barrow-mudwater-landing",
+    "svc-021-poler-sunken-barrow-mudwater-landing",
+    "svc-022-barge-mudwater-landing-blackrose",
+    "svc-023-poler-mudwater-landing-blackrose",
+    "svc-024-rootway-helstrom-rootway-post",
+    "svc-027-barge-helstrom-tenmarch-bridge",
+    "svc-028-poler-helstrom-tenmarch-bridge",
+    "svc-046-rootway-blackrose-stilt-row",
+    "svc-047-rootway-stilt-row-lilmoth",
+    "svc-048-barge-blackrose-stilt-row",
+    "svc-049-poler-blackrose-stilt-row",
+    "svc-050-barge-stilt-row-lilmoth",
+    "svc-051-poler-stilt-row-lilmoth",
+    "svc-055-rootway-lilmoth-tideway-shrine",
+    "svc-057-barge-lilmoth-tideway-shrine",
+    "svc-058-poler-lilmoth-tideway-shrine",
+    "svc-061-packet-lilmoth-soulrest",
+    "svc-064-rootspeak-helstrom-soulrest",
+    "svc-065-rootspeak-helstrom-lilmoth",
+    "svc-066-rootspeak-helstrom-ixtaxh-tzil",
+    "svc-067-rootspeak-helstrom-xal-ithix",
+    "svc-068-rootspeak-helstrom-wayshrine-of-the-ninth-root"
+   ],
+   "refused": 29,
+   "riding": null,
+   "rides_taken": 5,
+   "log": [
+    {
+     "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+     "mode": "rootway",
+     "gold_spent": 15,
+     "game_min": 53.6,
+     "frames": 10756,
+     "max_frame_delta_m": 0.17,
+     "arrival": {
+      "station": "ixtaxh-tzil",
+      "at": [
+       3002.6,
+       929.8
+      ],
+      "marker": [
+       3002.6,
+       929.8,
+       34.91
+      ],
+      "offset_m": 0,
+      "depth_m": 0,
+      "volume_tags": []
+     }
+    },
+    {
+     "service": "svc-006-barge-stormhold-nine-mud",
+     "mode": "barge",
+     "gold_spent": 12,
+     "game_min": 84,
+     "frames": 14321,
+     "max_frame_delta_m": 0.095,
+     "arrival": {
+      "station": "nine-mud",
+      "at": [
+       2307.3,
+       1461.3
+      ],
+      "marker": [
+       2307.3,
+       1461.3,
+       97.03
+      ],
+      "offset_m": 0,
+      "depth_m": 0,
+      "volume_tags": []
+     }
+    },
+    {
+     "service": "svc-007-poler-stormhold-nine-mud",
+     "mode": "poler",
+     "gold_spent": 15,
+     "game_min": 126,
+     "frames": 20458,
+     "max_frame_delta_m": 0.079,
+     "arrival": {
+      "station": "nine-mud",
+      "at": [
+       2307.3,
+       1461.3
+      ],
+      "marker": [
+       2307.3,
+       1461.3,
+       97.03
+      ],
+      "offset_m": 0,
+      "depth_m": 0,
+      "volume_tags": []
+     }
+    },
+    {
+     "service": "svc-061-packet-lilmoth-soulrest",
+     "mode": "packet",
+     "gold_spent": 58,
+     "game_min": 138.1,
+     "frames": 31066,
+     "max_frame_delta_m": 0.142,
+     "arrival": {
+      "station": "soulrest",
+      "at": [
+       624.5,
+       4877
+      ],
+      "marker": [
+       624.5,
+       4877,
+       7.93
+      ],
+      "offset_m": 0,
+      "depth_m": 0,
+      "volume_tags": []
+     }
+    },
+    {
+     "service": "svc-064-rootspeak-helstrom-soulrest",
+     "mode": "rootspeak",
+     "gold_spent": 38,
+     "game_min": 20,
+     "frames": 4799,
+     "max_frame_delta_m": 0.66,
+     "arrival": {
+      "station": "soulrest",
+      "at": [
+       624.5,
+       4877
+      ],
+      "marker": [
+       624.5,
+       4877,
+       7.93
+      ],
+      "offset_m": 0,
+      "depth_m": 0,
+      "volume_tags": []
+     }
+    }
+   ]
+  }
+ }
+}

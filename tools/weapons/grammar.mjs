@@ -33,7 +33,14 @@ export const CLASS_GRAMMAR = {
     run1: 'run_pass', run2: 'run_barge', roll1: 'roll_rise', roll2: null,
     back: 'backstep_step', jump1: 'jump_stomp', jump2: null, plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_kick', art: ['art_whirl', 'art_stomp'],
-    h2_exclusive: ['2h.r1.4', '2h.art.2'],
+    // NOT '2h.r1.4'. Every declared 2h exclusive deletes its one-handed twin (RI-WPN06 §B), and
+    // FST is the one class whose one-handed chain reaches r1.4 — RI-WPN02 §B publishes it at
+    // **5**, the longest in the game and the whole point of the class. Declaring 2h.r1.4
+    // exclusive therefore deleted r1.4 out of the middle of a five-link chain, leaving
+    // r1.3 → r1.4 dangling and r1.5 orphaned on all four fist weapons: the published five-link
+    // chain did not exist even on paper. FST has no one-handed roll heavy (roll2 is null), so
+    // 2h.roll.r2 is exclusive by construction and costs the class nothing it owns.
+    h2_exclusive: ['2h.roll.r2', '2h.art.2'],
     h2_chain: 3, h1_chain: 5, ha_2h_r1: false, ha_run2: false, ha_extra: [],
   },
   CSW: {
@@ -139,7 +146,13 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_cut', jump1: 'jump_fall', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_shoulder', art: ['art_whirl', 'art_lunge'],
     h2_exclusive: ['2h.r1.4', '2h.roll.r2'],
-    h2_chain: 4, h1_chain: 3, ha_2h_r1: true, ha_run2: true, ha_extra: ['2h.roll.r1'],
+    // RI-WPN02 §B publishes CGS `max_chain` **2** and §C says so again in words ("`max_chain 2`;
+    // the second hit is a full 360°"). h1_chain was 3, which is how twelve of fifteen classes
+    // collapsed onto the same value and D4 stopped being a fingerprint dimension. r1.3 is still
+    // DECLARED (RI-WPN01 §A makes it mandatory on every melee weapon) and is still reachable —
+    // see build-movesets.mjs `rewire`, which routes roll.r1 / backstep.r1 into r1.3 on a
+    // chain-2 class, so the mandatory slot is neither missing nor an orphan.
+    h2_chain: 4, h1_chain: 2, ha_2h_r1: true, ha_run2: true, ha_extra: ['2h.roll.r1'],
   },
   GHM: {
     r1: ['smash_over', 'smash_side', 'smash_pile'],
@@ -148,7 +161,8 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_cut', jump1: 'jump_stomp', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_shoulder', art: ['art_stomp', 'art_whirl'],
     h2_exclusive: ['2h.jump.r2', '2h.art.2'],
-    h2_chain: 3, h1_chain: 3, ha_2h_r1: true, ha_run2: true, ha_extra: ['jump.r1', '2h.jump.r1'],
+    // RI-WPN02 §B publishes GHM `max_chain` **2**. Same reconciliation as CGS above.
+    h2_chain: 3, h1_chain: 2, ha_2h_r1: true, ha_run2: true, ha_extra: ['jump.r1', '2h.jump.r1'],
   },
   UGS: {
     r1: ['cut_vertical', 'sweep_wide', 'cut_diagonal'],

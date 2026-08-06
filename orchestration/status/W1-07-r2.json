@@ -1,0 +1,26 @@
+{
+  "task_id": "W1-07-r2",
+  "brief": "W1-07 round 2 at ULTRACODE. Round 1 scored 1.5/10. Close GAP-W1-creation-is-an-api-not-a-scene and the five other named gaps.",
+  "started": "wave-2",
+  "state": "researching",
+  "gap": "GAP-W1-creation-is-an-api-not-a-scene — 19 census nodes produce 20 byte-identical PNGs; 0 entities; no UI layer of any kind exists in the build.",
+  "plan": [
+    "P0 instrumentation: a UI layer drawn INTO the WebGL canvas (canvas.toDataURL is the screenshot path, so a DOM overlay would not be captured by __HARNESS.screenshot). Orthographic overlay scene + 2D-canvas texture.",
+    "P1 the scene: writ-house interior geometry + barge hold, jeeh-ei and warden-scribe-tuleeh-ma as real entities, camera in the interior, helstrom-market / stormhold-street / rootlands-well-graph states.",
+    "P2 gamepad: a real gamepad path in input/real.js + tools/journey/gamepad-shim.mjs, census completable on stick+buttons alone.",
+    "P3 derivation: hp_max/stamina_max/focus_max from VIG/END/WIL per RI-PRG02 §3; birthsign powers and drawbacks applied to the live sim.",
+    "P4 skills by use: RI-PRG03 §3 point table wired to combat events with the §4 Cost Gate.",
+    "P5 AR-3: find why encounter members never attack.",
+    "P6 race in the world: requires.race/forbids.race on topics, greeting-line volume, getPriceQuote derives Mercantile+PERSONALITY from the character."
+  ],
+  "findings": [
+    "The build has NO UI layer at all. game/index.html is a bare canvas; game/src/render/ has renderer/scene/sky and nothing else. There is no DOM surface and no in-canvas surface.",
+    "__HARNESS.screenshot() = engine.renderer.screenshotDataURL() = canvas.toDataURL, which captures ONLY the WebGL canvas. The critic's probe uses page.screenshot() which would capture DOM. To satisfy both, the UI must be rendered into the WebGL canvas.",
+    "hp_max is hardcoded: game/src/combat/system.js:45 `hpMax: loadout.hpMax !== undefined ? loadout.hpMax : 620`. setCharacter never touches it. That is the whole of the RI-PRG02 finding.",
+    "focus: sim/state.js:70 focus/focusMax 0, focusLocked true by default; magic/cost.js focusMaxFor(wil) exists but the census never calls it.",
+    "No gamepad code exists anywhere in game/src.",
+    "tools/journey/ does not exist; A-JRN1's journey-run.mjs, beat-extract.mjs, gamepad-shim.mjs have never been written, which is why RI-JRN01 scored 0 fail-closed."
+  ],
+  "outputs_written": [],
+  "next_step": "read birthsigns.json, encounters.json, combat enemy AI, then build the UI layer"
+}

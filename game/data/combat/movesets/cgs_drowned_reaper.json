@@ -74,7 +74,7 @@
      "state": "ATTACK_RECOVERY"
     }
    },
-   "chains_to": "r1.3",
+   "chains_to": null,
    "chain_index": 2,
    "startup_f": 37,
    "active_f": 18,
@@ -98,7 +98,8 @@
     "dodge"
    ],
    "answers": [
-    "INFANTRY"
+    "INFANTRY",
+    "DUELIST"
    ]
   },
   "r1.3": {
@@ -136,8 +137,7 @@
     "dodge"
    ],
    "answers": [
-    "INFANTRY",
-    "DUELIST"
+    "INFANTRY"
    ]
   },
   "r2": {
@@ -363,7 +363,7 @@
      "to_f": 52
     }
    },
-   "chains_to": "r1.2",
+   "chains_to": "r1.3",
    "chain_index": 1,
    "startup_f": 29,
    "active_f": 18,
@@ -405,7 +405,7 @@
      "to_f": 42
     }
    },
-   "chains_to": "r1.2",
+   "chains_to": "r1.3",
    "chain_index": 1,
    "startup_f": 31,
    "active_f": 18,
@@ -803,7 +803,8 @@
     "two_handed"
    ],
    "answers": [
-    "INFANTRY"
+    "INFANTRY",
+    "DUELIST"
    ]
   },
   "2h.r1.3": {
@@ -847,8 +848,7 @@
     "two_handed"
    ],
    "answers": [
-    "INFANTRY",
-    "DUELIST"
+    "INFANTRY"
    ]
   },
   "2h.r2": {
@@ -943,6 +943,47 @@
    "answers": [
     "TURTLE",
     "POISE_MONSTER"
+   ]
+  },
+  "2h.r2.follow": {
+   "anim": "clip_reaper_2h_r2_follow",
+   "anim_owner": "lin_reaper",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 76,
+   "active_f": 22,
+   "recovery_f": 121,
+   "stamina": 59,
+   "motion_value": 2.17,
+   "poise_damage": 79,
+   "root_dz_m": 0.837,
+   "arc_sweep_deg": 360,
+   "shape": "spin",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
    ]
   },
   "2h.run.r1": {
@@ -1343,5 +1384,5 @@
    ]
   }
  },
- "notes": "The baseline. Three hundred and forty degrees: the hitbox passes behind you, which is the whole reason to hold it.\n\nLineage: reaper — Reaper of the drowned. The full revolution.\nMandatory slots present: 25/25. Total slots: 31.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "The baseline. Three hundred and forty degrees: the hitbox passes behind you, which is the whole reason to hold it.\n\nLineage: reaper — Reaper of the drowned. The full revolution.\nMandatory slots present: 25/25. Total slots: 32.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

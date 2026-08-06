@@ -1,0 +1,103 @@
+{
+ "schema": "elder-souls/critic-census@1",
+ "source": "game/data/world/property/*.json at 140d3c6",
+ "RI_STL02_M1_ownership": {
+  "objects": 1878,
+  "owner_key_present_pct": 100.0,
+  "owner_not_null_pct": 100.0,
+  "distinct_owners": 292,
+  "single_owner_interiors_pct": 0.0,
+  "targets": {
+   "key": 100,
+   "not_null": 92,
+   "owners": 240,
+   "single": 15
+  },
+  "top_owners": [
+   [
+    "faction:ninth-cohort",
+    73
+   ],
+   [
+    "faction:wet-ledger",
+    25
+   ],
+   [
+    "faction:drowned-court",
+    19
+   ],
+   [
+    "npc:gideon-publican-4",
+    15
+   ],
+   [
+    "npc:helstrom-publican-8",
+    14
+   ]
+  ]
+ },
+ "RI_STL02_M8_trespass": {
+  "zones": 233,
+  "target": 180,
+  "classes": {
+   "faction_interior": 32,
+   "dwelling": 74,
+   "shop_closed": 66,
+   "restricted": 30,
+   "shop_open": 9,
+   "sapwell_precinct": 4,
+   "prison": 18
+  },
+  "per_settlement": {
+   "archon": 28,
+   "blackrose": 30,
+   "gideon": 29,
+   "helstrom": 29,
+   "lilmoth": 28,
+   "soulrest": 28,
+   "stormhold": 32,
+   "thorn": 29
+  },
+  "classes_per_settlement": {
+   "thorn": 5,
+   "gideon": 5,
+   "lilmoth": 4,
+   "stormhold": 5,
+   "archon": 4,
+   "blackrose": 7,
+   "helstrom": 6,
+   "soulrest": 3
+  }
+ },
+ "RI_STL02_M5_ward_angles": {
+  "locks": 235,
+  "tiers": {
+   "3": 120,
+   "5": 11,
+   "2": 56,
+   "4": 48
+  },
+  "item_expects_tiers": {
+   "1": 410,
+   "2": 230,
+   "3": 120,
+   "4": 48,
+   "5": 11
+  },
+  "angles": 719,
+  "chi2_vs_uniform_36_bins": 226.06,
+  "df": 35,
+  "reject_uniform_at_p01_if_gt": 57.34,
+  "length_mismatches": 0
+ },
+ "RI_STL02_M6_alt_routes": {
+  "tier4_5_locks": 59,
+  "with_alt_routes": 59
+ },
+ "RI_STL01_SNUFFABLE": {
+  "lights": 817,
+  "snuffable": 584,
+  "pct": 71.5,
+  "target": 60
+ }
+}

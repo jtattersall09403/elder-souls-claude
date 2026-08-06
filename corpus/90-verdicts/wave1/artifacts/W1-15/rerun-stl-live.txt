@@ -1,0 +1,100 @@
+PASS  LIVE-BTN   the closed action set contains `crouch`
+              got 16 buttons: ...crouch, spell_cycle; crouch bound to ["KeyC","KeyZ"]
+              target present and bound — without it no stealth scenario is scriptable (RI-STL01)
+PASS  LIVE-AUD   binding audit is clean
+              got []
+              target []
+PASS  LIVE-CRO   pressing `crouch` toggles the sim state
+              got crouched false -> true
+              target false -> true
+   L along a line from a single 0.55 lamp: 0 m -> 1.000   1 m -> 0.404   2 m -> 0.162   4 m -> 0.073   9 m -> 0.047   18 m -> 0.042
+PASS  LIVE-LGT   getLightAt() returns a real falloff, not a constant
+              got 1.000 at the lamp, 0.042 at 18 m
+              target monotonic falloff
+PASS  LIVE-DRK   DARK-COVERAGE of the probe room at L <= 0.10
+              got 98.5% of 1681 samples
+              target >= 30%
+PASS  LIVE-SNF   snuffing the lamp changes L at the lamp
+              got 1.000 -> 0.040
+              target falls
+PASS  LIVE-TRC   trace player.stealth block present with RI-STL01's named fields
+              got crouched,light,V,sound_r_m,surface,in_cover,motion,sneak,context,context_weight,zone,zone_baseline_alert,lock,bounty_imperial,witnesses_pending
+              target crouched, light, V, sound_r_m, surface, in_cover
+
+   RI-STL01 §2 worked rows, computed by the LIVE build via __HARNESS.visibilityAt():
+     sprinting, torchlit, heavy, Sneak 5            V 1.3000 (raw 2.0413, CLAMPED)  fill 97.50/s  t 1.026 s (item 1.03)
+     walking, dim, medium, Sneak 5                  V 0.3373 (raw 0.3373)  fill 25.30/s  t 3.952 s (item 3.94)
+     crouched, dim, light, Sneak 45                 V 0.1576 (raw 0.1576)  fill 11.82/s  t 8.461 s (item 8.5)
+     crouched, unlit, light, Sneak 45, in cover     V 0.0500 (raw 0.0115, CLAMPED)  fill 3.75/s  t 26.667 s (item 26.7)
+     still, unlit, light, Sneak 100, in cover       V 0.0500 (raw 0.0035, CLAMPED)  fill 3.75/s  t 26.667 s (item 26.7)
+PASS  LIVE-VFO   the five worked rows against the live build
+              got worst V error 4.3e-5, worst time error 0.45%
+              target within 5% (RI-STL01 method 2)
+PASS  LIVE-CLP   both clamps fire in the live build
+              got floor: raw 3.02e-4 -> 0.05;  ceiling: raw 3.157 -> 1.3
+              target 0.05 and 1.30
+PASS  LIVE-SND   the loud and quiet ends of the live sound model
+              got dry-reed sprint at Sneak 5/heavy: 36.31 m;  mud crouch at Sneak 100/light: 0.66 m
+              target > 30 m and < 1.5 m — a 55x range that level geometry controls
+PASS  LIVE-PRP   property data reaches the running game
+              got 29 zones in Gideon, first: gideon.fisher0.r0 (dwelling, owner Sees-All-Colours the Elder, 9 objects, 1 lock)
+              target > 0 zones with owned objects
+PASS  LIVE-OWN   listOwnedObjects on one room
+              got 9 objects, 3 distinct owners, e.g. fish hook box (npc:gideon-fisher-0-sibling0, 7 g)
+              target every object owned; more than one owner in the room
+PASS  LIVE-LCK   a tier-3 ward-collar exists in the running world
+              got {"tier":3,"wards":3,"set":0,"collar_deg":0,"ward_deg":74,"delta_deg":74,"tell":false,"W_deg":20.5,"sweeps":0,"picks":12,"broken":0,"open":false,"failed":false}
+              target tier 3, 3 wards, a non-zero tolerance window
+     the live interaction: 3 presses over 153 f@60, W = 20.5 deg, 3/3 wards set, 0 picks broken
+PASS  LIVE-RNG   RNG draws across a whole live lock interaction
+              got 0 (counter 0 -> 0)
+              target 0 — the counter must not move at all (RI-STL02 method 3)
+PASS  LIVE-OPN   the collar opens under timed `interact` presses
+              got open=true, 3/3 wards
+              target open — it is an interaction, not a keypress and not a die
+     the four geometry refusals, live: "1.50 m exceeds the 1.4 m reach"; "bearing 99.0 deg is not inside the >±100 deg rear arc"; "you are moving"; "target civ_state is WATCHING, not CALM"
+PASS  LIVE-PPK   a completed pickpocket hold draws from the seeded PRNG exactly once (seam S21)
+              got T = 1.97 s = 118 f@60, draws moved by 1
+              target 1 — the die S21 keeps, and the counter that stayed at 0 through the whole lock interaction
+PASS  LIVE-PPG   all four geometry gates refuse, live, with a reason
+              got 4 refusals
+              target 4 refusals, each naming what was wrong
+PASS  LIVE-THF   taking an owned object unobserved
+              got stolen_from=npc:gideon-fisher-0-sibling0, bounty 0 -> 0
+              target flagged, and NO bounty — a crime does not create one, a report does
+PASS  LIVE-RPT   the report chain moves the bounty and the crime does not
+              got crime quote 225 g; bounty 0 before the report, 225 after
+              target 0 then 225
+PASS  LIVE-S6a   bounty after a death
+              got 225 g, ledger unchanged=true
+              target 225, unchanged — dying does not launder your crimes
+PASS  LIVE-S6b   dying to a guard mid-arrest
+              got jail
+              target jail, not the sapwell
+PASS  LIVE-SAV   the engine's own save round trip with a live bounty
+              got equal=true, diff keys 0
+              target byte-identical state hash
+PASS  LIVE-BND   the guard ladder for an Imperial with no faction (arrest 405, attack 1620)
+              got 200 g -> greeting_only; 600 g -> arrest_dialogue; 2,000 g -> attack_on_sight
+              target greeting / arrest dialogue / attack on sight
+PASS  LIVE-ARR   the arrest offers three answers and explains the one it refuses
+              got pay(refused), resist, serve — "You're 100 gold short, and I can count. Choose again."
+              target pay(refused, naming the shortfall), resist, serve
+PASS  LIVE-AR3a  Deep-Kin regard as a function of the player's Imperial bounty
+              got 0 g -> +0;  3,000 g -> +12
+              target +0 then +12 (capped)
+PASS  LIVE-AR3b  war-brood hostile_below_disposition shift at Xul-Aneekh rank 4
+              got -40 (standing key xul-aneekh:4+)
+              target -40 — the encounter table empties without one enemy statblock changing
+PASS  LIVE-SAN   no sanctioning authority is honoured in all three jurisdictions
+              got 0 universal of 4 authorities
+              target 0 — the Morag Tong problem, solved by jurisdiction
+PASS  LIVE-HUD   stealth HUD elements
+              got 0
+              target 0 — no eye icon, no bar, no hidden/detected word
+PASS  LIVE-DET   determinism guard violations across the whole probe
+              got 0
+              target 0
+
+======================================================================
+29/29 live assertions pass

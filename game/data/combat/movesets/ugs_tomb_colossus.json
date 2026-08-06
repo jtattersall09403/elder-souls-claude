@@ -150,11 +150,11 @@
      "state": "IDLE"
     }
    },
-   "chains_to": "r2.follow",
+   "chains_to": null,
    "chain_index": 1,
    "startup_f": 102,
-   "active_f": 21,
-   "recovery_f": 125,
+   "active_f": 24,
+   "recovery_f": 122,
    "stamina": 71,
    "motion_value": 2.71,
    "poise_damage": 107,
@@ -164,7 +164,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 62,
-    "to_f": 123,
+    "to_f": 126,
     "poise_multiplier": 2
    },
    "hitbox": {
@@ -194,8 +194,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 102,
-   "active_f": 21,
-   "recovery_f": 125,
+   "active_f": 24,
+   "recovery_f": 122,
    "charge_max_f": 60,
    "charge_ramp": {
     "motion_value_at_full": 1.3,
@@ -211,7 +211,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 62,
-    "to_f": 123,
+    "to_f": 126,
     "poise_multiplier": 2
    },
    "hitbox": {
@@ -282,8 +282,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 71,
-   "active_f": 21,
-   "recovery_f": 124,
+   "active_f": 24,
+   "recovery_f": 121,
    "stamina": 79,
    "motion_value": 2.85,
    "poise_damage": 118,
@@ -293,7 +293,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 43,
-    "to_f": 92,
+    "to_f": 95,
     "poise_multiplier": 2
    },
    "hitbox": {
@@ -615,8 +615,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 118,
-   "active_f": 27,
-   "recovery_f": 149,
+   "active_f": 31,
+   "recovery_f": 147,
    "stamina": 80,
    "motion_value": 3.06,
    "poise_damage": 116,
@@ -653,8 +653,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 138,
-   "active_f": 27,
-   "recovery_f": 175,
+   "active_f": 31,
+   "recovery_f": 172,
    "stamina": 90,
    "motion_value": 3.5,
    "poise_damage": 133,
@@ -664,7 +664,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 83,
-    "to_f": 165,
+    "to_f": 169,
     "poise_multiplier": 2
    },
    "hitbox": {
@@ -826,8 +826,8 @@
    "chains_to": "2h.r2.follow",
    "chain_index": 1,
    "startup_f": 112,
-   "active_f": 24,
-   "recovery_f": 135,
+   "active_f": 28,
+   "recovery_f": 132,
    "stamina": 82,
    "motion_value": 3.12,
    "poise_damage": 139,
@@ -837,7 +837,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 68,
-    "to_f": 136,
+    "to_f": 140,
     "poise_multiplier": 2
    },
    "hitbox": {
@@ -870,8 +870,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 112,
-   "active_f": 24,
-   "recovery_f": 135,
+   "active_f": 28,
+   "recovery_f": 132,
    "charge_max_f": 60,
    "charge_ramp": {
     "motion_value_at_full": 1.3,
@@ -887,7 +887,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 68,
-    "to_f": 136,
+    "to_f": 140,
     "poise_multiplier": 2
    },
    "hitbox": {
@@ -962,8 +962,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 78,
-   "active_f": 24,
-   "recovery_f": 134,
+   "active_f": 28,
+   "recovery_f": 131,
    "stamina": 90,
    "motion_value": 3.28,
    "poise_damage": 140,
@@ -973,7 +973,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 47,
-    "to_f": 102,
+    "to_f": 106,
     "poise_multiplier": 2
    },
    "hitbox": {
@@ -1190,8 +1190,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 130,
-   "active_f": 31,
-   "recovery_f": 162,
+   "active_f": 32,
+   "recovery_f": 159,
    "stamina": 90,
    "motion_value": 3.52,
    "poise_damage": 140,
@@ -1231,8 +1231,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 121,
-   "active_f": 25,
-   "recovery_f": 143,
+   "active_f": 29,
+   "recovery_f": 139,
    "stamina": 82,
    "motion_value": 3.28,
    "poise_damage": 139,
@@ -1242,7 +1242,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 73,
-    "to_f": 146,
+    "to_f": 150,
     "poise_multiplier": 2
    },
    "hitbox": {
@@ -1276,8 +1276,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 121,
-   "active_f": 25,
-   "recovery_f": 143,
+   "active_f": 29,
+   "recovery_f": 139,
    "stamina": 82,
    "motion_value": 3.28,
    "poise_damage": 139,
@@ -1287,7 +1287,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 73,
-    "to_f": 146,
+    "to_f": 150,
     "poise_multiplier": 2
    },
    "hitbox": {

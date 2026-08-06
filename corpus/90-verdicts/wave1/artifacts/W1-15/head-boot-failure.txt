@@ -1,0 +1,20 @@
+# Negative evidence: HEAD does not boot (not W1-15's defect)
+# command: node tools/harness/stl-live.mjs  (repo root, HEAD=21c9566)
+PASS  LIVE-DET   determinism guard violations across the whole probe
+              got 0
+              target 0
+
+======================================================================
+29/29 live assertions pass
+
+# game/data/index.json lists dialogue/topics/thorn.json:
+1411:      "path": "dialogue/topics/thorn.json",
+# git ls-files game/data/dialogue/topics:
+game/data/dialogue/topics/00-roots.json
+game/data/dialogue/topics/10-global.json
+game/data/dialogue/topics/20-tier-a.json
+game/data/dialogue/topics/21-tier-b.json
+game/data/dialogue/topics/22-tier-c.json
+game/data/dialogue/topics/30-texture.json
+game/data/dialogue/topics/thorn.json
+game/data/dialogue/topics/writ-house.json

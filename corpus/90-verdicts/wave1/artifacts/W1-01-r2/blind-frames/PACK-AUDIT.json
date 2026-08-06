@@ -1,0 +1,21 @@
+{
+ "schema": "critic/blind-pack-audit@1",
+ "pack": "elder-souls/region-shots@2",
+ "declared": { "shuffle_seed": 20260806, "frames_total": 117, "frames_per_pass": { "day": 39, "night": 39, "worst": 39 } },
+ "recomputed_by_critic": {
+  "spearman_frameindex_vs_regionrank": -0.0051,
+  "spearman_frameindex_vs_passrank": -0.0239,
+  "adjacent_same_region_pairs": 8,
+  "adjacent_same_region_pairs_expected_by_chance": 8.9,
+  "permutation_is_a_permutation": true,
+  "permutation_length": 117,
+  "permutation_unique_values": 117,
+  "png_files_on_disk": 117,
+  "declared_frames_missing_from_disk": 0,
+  "files_on_disk_not_declared": 0,
+  "duplicate_image_sha256": 0,
+  "frames_per_region": 9,
+  "mean_luma_by_pass": { "day": 79.99, "worst": 71.88, "night": 14.97 }
+ },
+ "verdict": "PASS. Round 1's gap on this instrument is CLOSED. The pack is 117 frames, genuinely shuffled by a recorded seed, genuinely three passes, and the night pass is genuinely dark (mean luma 15.0 against day's 80.0). Every number the pack declares about itself reproduces when recomputed from the shipped shots array and the shipped PNGs."
+}

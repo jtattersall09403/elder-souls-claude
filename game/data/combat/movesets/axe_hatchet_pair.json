@@ -157,8 +157,8 @@
    "chains_to": "r2.follow",
    "chain_index": 1,
    "startup_f": 56,
-   "active_f": 13,
-   "recovery_f": 68,
+   "active_f": 14,
+   "recovery_f": 67,
    "stamina": 41,
    "motion_value": 1.78,
    "poise_damage": 52,
@@ -168,7 +168,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 34,
-    "to_f": 69,
+    "to_f": 70,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -198,8 +198,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 56,
-   "active_f": 13,
-   "recovery_f": 68,
+   "active_f": 14,
+   "recovery_f": 67,
    "charge_max_f": 40,
    "charge_ramp": {
     "motion_value_at_full": 1.3,
@@ -215,7 +215,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 34,
-    "to_f": 69,
+    "to_f": 70,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -245,7 +245,7 @@
    "chains_to": null,
    "chain_index": 2,
    "startup_f": 43,
-   "active_f": 13,
+   "active_f": 14,
    "recovery_f": 70,
    "stamina": 36,
    "motion_value": 1.61,
@@ -324,8 +324,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 38,
-   "active_f": 13,
-   "recovery_f": 66,
+   "active_f": 14,
+   "recovery_f": 65,
    "stamina": 45,
    "motion_value": 1.87,
    "poise_damage": 57,
@@ -335,7 +335,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 23,
-    "to_f": 51,
+    "to_f": 52,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -622,8 +622,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 65,
-   "active_f": 17,
-   "recovery_f": 83,
+   "active_f": 18,
+   "recovery_f": 81,
    "stamina": 46,
    "motion_value": 2.01,
    "poise_damage": 56,
@@ -660,8 +660,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 77,
-   "active_f": 17,
-   "recovery_f": 97,
+   "active_f": 18,
+   "recovery_f": 96,
    "stamina": 53,
    "motion_value": 2.3,
    "poise_damage": 64,
@@ -671,7 +671,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 47,
-    "to_f": 94,
+    "to_f": 95,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -783,7 +783,7 @@
    "chains_to": null,
    "chain_index": 3,
    "startup_f": 43,
-   "active_f": 13,
+   "active_f": 14,
    "recovery_f": 70,
    "stamina": 22,
    "motion_value": 1.44,
@@ -945,8 +945,8 @@
    "chains_to": "2h.r2.follow",
    "chain_index": 1,
    "startup_f": 62,
-   "active_f": 15,
-   "recovery_f": 74,
+   "active_f": 16,
+   "recovery_f": 73,
    "stamina": 47,
    "motion_value": 2.05,
    "poise_damage": 68,
@@ -956,7 +956,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 38,
-    "to_f": 77,
+    "to_f": 78,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -989,8 +989,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 62,
-   "active_f": 15,
-   "recovery_f": 74,
+   "active_f": 16,
+   "recovery_f": 73,
    "charge_max_f": 40,
    "charge_ramp": {
     "motion_value_at_full": 1.3,
@@ -1006,7 +1006,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 38,
-    "to_f": 77,
+    "to_f": 78,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1024,6 +1024,47 @@
    "answers": [
     "TURTLE",
     "POISE_MONSTER"
+   ]
+  },
+  "2h.r2.follow": {
+   "anim": "clip_hatchet_2h_r2_follow",
+   "anim_owner": "lin_hatchet",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 48,
+   "active_f": 16,
+   "recovery_f": 76,
+   "stamina": 41,
+   "motion_value": 1.85,
+   "poise_damage": 59,
+   "root_dz_m": 0.491,
+   "arc_sweep_deg": 152.2,
+   "shape": "smash",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.09,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
    ]
   },
   "2h.run.r1": {
@@ -1081,8 +1122,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 42,
-   "active_f": 15,
-   "recovery_f": 72,
+   "active_f": 16,
+   "recovery_f": 71,
    "stamina": 52,
    "motion_value": 2.15,
    "poise_damage": 74,
@@ -1092,7 +1133,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 26,
-    "to_f": 57,
+    "to_f": 58,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1309,8 +1350,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 72,
-   "active_f": 20,
-   "recovery_f": 90,
+   "active_f": 21,
+   "recovery_f": 88,
    "stamina": 53,
    "motion_value": 2.31,
    "poise_damage": 73,
@@ -1350,8 +1391,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 67,
-   "active_f": 16,
-   "recovery_f": 78,
+   "active_f": 17,
+   "recovery_f": 77,
    "stamina": 47,
    "motion_value": 2.15,
    "poise_damage": 68,
@@ -1361,7 +1402,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 41,
-    "to_f": 83,
+    "to_f": 84,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1394,8 +1435,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 67,
-   "active_f": 16,
-   "recovery_f": 78,
+   "active_f": 17,
+   "recovery_f": 77,
    "stamina": 47,
    "motion_value": 2.15,
    "poise_damage": 68,
@@ -1405,7 +1446,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 41,
-    "to_f": 83,
+    "to_f": 84,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1426,5 +1467,5 @@
    ]
   }
  },
- "notes": "Held near the head: six frames faster and twenty-two centimetres shorter, it hooks a shield rim rather than splitting through it.\n\nLineage: hatchet — Short hatchets held near the head: flatter, faster, and they hook a shield rim rather than splitting it.\nMandatory slots present: 25/25. Total slots: 33.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "Held near the head: six frames faster and twenty-two centimetres shorter, it hooks a shield rim rather than splitting through it.\n\nLineage: hatchet — Short hatchets held near the head: flatter, faster, and they hook a shield rim rather than splitting it.\nMandatory slots present: 25/25. Total slots: 34.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

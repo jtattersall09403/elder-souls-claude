@@ -2,13 +2,18 @@
  "task_id": "critic-w1-09-r2",
  "brief": "Round-2 critic on W1-09 (combat core: frames, stamina, hitboxes, i-frames, commitment)",
  "started": "wave-1",
- "state": "writing",
+ "state": "complete",
  "outputs_expected": [
   "corpus/90-verdicts/wave1/W1-09-r2.json",
   "corpus/90-verdicts/wave1/W1-09-r2.md",
   "corpus/90-verdicts/wave1/artifacts/W1-09-r2/*"
  ],
- "outputs_written": [],
+ "outputs_written": [
+  "corpus/90-verdicts/wave1/W1-09-r2.json",
+  "corpus/90-verdicts/wave1/W1-09-r2.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-09-r2/ (21 files + rerun-r1-probes/ 10 files)",
+  "tools/harness/critic-w1-09-r2.mjs (reach / preach / mech / turtle / roll probes)"
+ ],
  "findings": [
   "Independent recompute of RI-CMB07 \u00a7D from the raw per-frame JSONL REPRODUCES the shipped statistics file exactly (21/24 median in band, same three rows out: 4, 11, 27). Round 1's 'shipped stats lie' pattern does NOT recur. Artifact: artifacts/W1-09-r2/critic-r2-recompute.json",
   "ROW 9 IS SILENTLY UN-BANDED. RI-CMB07 \u00a7D gives row 9 (roll timing delta range) a band 'within [-24,+8]'. The shipped statistics file computes its value ([-8,17] [-9,15] [-10,15] [-7,15] [-8,13]) and sets band:null,in_band:null. Every one of the five fights exceeds +8 on the upper end. Counting it, the result is 4 rows out of band, not 3.",
@@ -27,6 +32,6 @@
   "trace-stats.mjs (the corpus's own general trace consumer, HARNESS.md \u00a75) cannot read the exemplar: integrity fail_closed, 18 missing fields, attacks/min 0, committed 0.0%, rolls 0. The RI-AI01 \u00a7A enemy stream required by RI-CMB07 M0 is absent from the exemplar run; RI-CMB07 Scoring lists 'emitted only for the player' as an AUTOMATIC FAIL.",
   "cmb-poise: m3_heavy stagger_lengths_f is [] for greatsword and ultra-greatsword (unmeasured); m4_hyperarmour control case took zero damage so the check is vacuous; m6_parry riposted:false in all seven cases."
  ],
- "next_step": "animation frames vs 70-visual refs; AR-1/AR-2; per-item scores; write verdict",
- "notes_for_successor": ""
+ "next_step": "none \u2014 verdict emitted, schema-valid, 40/40 cited artifact paths exist",
+ "notes_for_successor": "Score 4/10, FAIL (gate 7.0). Single biggest gap GAP-W1-enemy-attacks-cannot-reach-contact-range on combat.hitbox.sweep: the enemy's swept volume does not cover its own root translation, so chop/thrust/combo_a cannot hit inside 1.2/1.6/1.1 m (== their declared root_dz_m) and a motionless mashing player kills the 2876 HP champion at 0.8-1.1 m taking zero damage. The instrument is tools/harness/critic-w1-09-r2.mjs --probe reach|turtle and it is the acceptance condition. Round 1's gap recorded partially-closed: its acceptance string is met on every clause and I verified the numbers by recomputing them from raw JSONL, but the M2 floor is met at exactly 20/24 once row 9 (which the shipped stats file un-bands and which fails 5/5) is restored, the danger is a tuned eatRate constant, and 141 of 211 enemy swings still whiff. tools/gap-ledger.mjs ignores the closure because it is same-wave; a wave-2 critic must re-record it."
 }

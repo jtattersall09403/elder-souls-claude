@@ -88,6 +88,7 @@ const WINDOWS = CLASSES.contextual_windows;
 const TIER_ORDER = ['ranged', 'light', 'medium', 'heavy', 'ultra'];
 
 const clipKey = (slot) => 'clip_' + slot.replace(/\./g, '_');
+const isBowClass = (code) => code === 'BOW';
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
 // RI-WPN02 M5: "FAIL any class whose declared shape and measured arc disagree. A weapon labelled
@@ -190,7 +191,14 @@ function resolveProfile(famName, cls, slotArcDeg, shift, wp, twoHand) {
 // 3. The class slot table
 // ---------------------------------------------------------------------------------------------
 
-function slotSpecsFor(code) {
+/**
+ * @param {string} code class code
+ * @param {number} maxChainForClass the longest one-handed chain any weapon of this class needs —
+ *        the class's own `h1_chain` widened by the largest per-weapon `d.chain` in the roster.
+ *        Slots are built up to it so a weapon that lengthens its chain has a slot to lengthen
+ *        INTO; the per-weapon chain graph is written later, in `rewire`.
+ */
+function slotSpecsFor(code, maxChainForClass) {
   const c = CLASSES.classes[code];
   const g = CLASS_GRAMMAR[code];
   const B = baseRows(c);
@@ -247,7 +255,10 @@ function slotSpecsFor(code) {
   // ---- one-handed melee -----------------------------------------------------------------------
   const chainLen = g.h1_chain;
   const chainKeys = ['r1_2', 'r1_3', 'r1_4', 'r1_5'];
-  for (let i = 1; i <= Math.min(chainLen, 5); i++) {
+  // r1.1..r1.3 are MANDATORY on every melee weapon (RI-WPN01 §A slots 1–3), including the two
+  // chain-2 classes; the chain GRAPH is what terminates at `chainLen`, not the slot table.
+  const slotsToBuild = Math.min(5, Math.max(3, maxChainForClass === undefined ? chainLen : maxChainForClass));
+  for (let i = 1; i <= slotsToBuild; i++) {
     const fam = g.r1[Math.min(i - 1, g.r1.length - 1)];
     const f = i === 1 ? B.r1 : chainFrames(B.r1, CHAINM[chainKeys[i - 2]]);
     const mvm = i === 1 ? 1 : CHAINM[chainKeys[i - 2]].mv;
@@ -383,8 +394,11 @@ function slotSpecsFor(code) {
   }
 
   // ---- two-handed mirror ----------------------------------------------------------------------
-  const h2Base = ['r1.1', 'r1.2', 'r1.3', 'r2', 'r2.charged', 'run.r1', 'run.r2', 'roll.r1',
-    'backstep.r1', 'jump.r1', 'guard.counter', 'art.1'];
+  // `r2.follow` is mirrored too. Without it `2h.r2.chains_to` pointed at a `2h.r2.follow` that
+  // was only ever created for the five classes declaring it a 2h EXCLUSIVE, so fifty of the
+  // eighty-seven weapons chained their two-handed heavy into a slot that did not exist.
+  const h2Base = ['r1.1', 'r1.2', 'r1.3', 'r2', 'r2.charged', 'r2.follow', 'run.r1', 'run.r2',
+    'roll.r1', 'backstep.r1', 'jump.r1', 'guard.counter', 'art.1'];
   const h2Extra = g.h2_exclusive;
   const h2Chain = g.h2_chain;
   // RI-WPN06 §B: 'An attack that exists ONLY two-handed is the clearest possible statement that
@@ -461,7 +475,15 @@ for (const w of ROSTER.weapons) byId.set(w.id, w);
 { const seen = {}; for (const w of ROSTER.weapons) { seen[w.class] = (seen[w.class] || 0); w._ci = seen[w.class]++; } }
 
 const classSpecs = {};
-for (const code of Object.keys(CLASSES.classes)) classSpecs[code] = slotSpecsFor(code);
+{
+  const maxChain = {};
+  for (const w of ROSTER.weapons) {
+    const base = CLASS_GRAMMAR[w.class].h1_chain;
+    const want = base + ((w.d && w.d.chain) || 0);
+    maxChain[w.class] = Math.max(maxChain[w.class] || base, want);
+  }
+  for (const code of Object.keys(CLASSES.classes)) classSpecs[code] = slotSpecsFor(code, maxChain[code]);
+}
 
 // ---- deviation-direction spreading -----------------------------------------------------------
 // RI-WPN03 §D.2's W_min >= 0.20 says no two weapons in the game are behaviourally identical. Two
@@ -551,7 +573,13 @@ for (const w of ROSTER.weapons) {
     // per-weapon chain length change (RI-WPN03: `chain` delta adds or removes r1.4 / r1.5)
     if (/^r1\.(\d)$/.test(slotId)) {
       const i = Number(slotId.slice(3));
-      if (i > chainLen1h) continue;
+      // r1.1..r1.3 are mandatory whatever the chain length; r1.4/r1.5 exist only when the
+      // weapon's chain actually reaches them (RI-WPN01 §A slot 4, RI-WPN02 §B chain column).
+      if (i > Math.max(3, chainLen1h)) continue;
+    }
+    if (/^2h\.r1\.(\d)$/.test(slotId)) {
+      const i = Number(slotId.slice(6));
+      if (i > Math.max(3, g.h2_chain + (d.chain || 0))) continue;
     }
     const famName = unq.get(slotId) || spec.fam;   // null in the roster = pose variant of the class family
     const isUnq = unq.has(slotId);
@@ -664,6 +692,37 @@ for (const w of ROSTER.weapons) {
       clipRegistry[clipId].used_by.push(w.id);
     }
   }
+
+  // ---- the chain graph, written per WEAPON rather than per class ------------------------------
+  //
+  // RI-WPN01 §B makes `chains_to` mandatory with the explicit rationale "a chain that is implicit
+  // in code is unmeasurable". A chain that points at a slot the weapon does not declare is worse
+  // than implicit: it is a measurable lie, and 82 of 87 weapons shipped one in round 1. Both
+  // halves are fixed structurally here rather than case by case.
+  //
+  //   1. the chain LENGTH is the class's `max_chain` (RI-WPN02 §B) plus this weapon's own
+  //      `d.chain` delta, so `ssw_marsh_shortsword`'s four-link chain is a real fourth link;
+  //   2. a chain-2 class still DECLARES the mandatory `r1.3` (RI-WPN01 §A slots 1–3) and
+  //      reaches it out of a dodge instead of off the second standing swing — CGS and GHM get a
+  //      third sentence, but only as a read, which is what `max_chain 2` is actually saying;
+  //   3. nothing is left dangling: the final sweep nulls any successor that does not exist.
+  const chainLen2h = g.h2_chain + (d.chain || 0);
+  const rewire = (pre, len) => {
+    for (let i = 1; i <= 5; i++) {
+      const id = `${pre}r1.${i}`;
+      if (!slots[id]) continue;
+      const nxt = `${pre}r1.${i + 1}`;
+      slots[id].chains_to = i < len && slots[nxt] ? nxt : null;
+    }
+    const entry = len >= 3 ? `${pre}r1.2` : `${pre}r1.3`;
+    for (const s of [`${pre}roll.r1`, `${pre}backstep.r1`]) {
+      if (slots[s] && slots[entry]) slots[s].chains_to = entry;
+    }
+  };
+  if (!isBowClass(w.class)) { rewire('', chainLen1h); rewire('2h.', chainLen2h); }
+  for (const s of Object.values(slots)) if (s.chains_to && !slots[s.chains_to]) s.chains_to = null;
+  const dangling = Object.entries(slots).filter(([, s]) => s.chains_to && !slots[s.chains_to]);
+  if (dangling.length) throw new Error(`${w.id}: dangling chains_to ${dangling.map(([k, s]) => `${k}->${s.chains_to}`).join(', ')}`);
 
   const isBow = w.class === 'BOW';
   const mand = isBow ? MANDATORY_BOW : MANDATORY_25;

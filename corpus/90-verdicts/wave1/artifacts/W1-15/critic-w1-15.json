@@ -1,0 +1,677 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "measurements": {
+    "RI-STL01-M2-enemy-detection": {
+      "question": "RI-STL01 method 2: spawn one INFANTRY at 8 m, record the frame of first alert_state == AGGRO",
+      "item_expects_s": {
+        "lit_sprint": 1.03,
+        "unlit_crouch_cover": 26.7
+      },
+      "runs": [
+        {
+          "id": "lit-standing-S5-heavy",
+          "tod": 12,
+          "amb": "sun_open",
+          "crouch": false,
+          "sneak": 5,
+          "load": "heavy",
+          "cover": false,
+          "dist": 8,
+          "V": 0.6669,
+          "L": 1,
+          "aggro_f": 30,
+          "aggro_s": 0.5,
+          "curve": [
+            {
+              "f": 10,
+              "alert": 40,
+              "state": "SUSPICIOUS"
+            },
+            {
+              "f": 20,
+              "alert": 80,
+              "state": "SEARCH"
+            },
+            {
+              "f": 30,
+              "alert": 100,
+              "state": "AGGRO"
+            }
+          ]
+        },
+        {
+          "id": "unlit-crouched-S100-light-cover",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 100,
+          "load": "light",
+          "cover": true,
+          "dist": 8,
+          "V": 0.05,
+          "L": 0.04,
+          "aggro_f": 30,
+          "aggro_s": 0.5,
+          "curve": [
+            {
+              "f": 10,
+              "alert": 40,
+              "state": "SUSPICIOUS"
+            },
+            {
+              "f": 20,
+              "alert": 80,
+              "state": "SEARCH"
+            },
+            {
+              "f": 30,
+              "alert": 100,
+              "state": "AGGRO"
+            }
+          ]
+        },
+        {
+          "id": "unlit-crouched-S100-at-1m",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 100,
+          "load": "light",
+          "cover": true,
+          "dist": 1,
+          "V": 0.05,
+          "L": 0.04,
+          "aggro_f": 30,
+          "aggro_s": 0.5,
+          "curve": [
+            {
+              "f": 10,
+              "alert": 40,
+              "state": "SUSPICIOUS"
+            },
+            {
+              "f": 20,
+              "alert": 80,
+              "state": "SEARCH"
+            },
+            {
+              "f": 30,
+              "alert": 100,
+              "state": "AGGRO"
+            }
+          ]
+        },
+        {
+          "id": "lit-standing-beyond-R-30m",
+          "tod": 12,
+          "amb": "sun_open",
+          "crouch": false,
+          "sneak": 5,
+          "load": "heavy",
+          "cover": false,
+          "dist": 30,
+          "V": 0.6669,
+          "L": 1,
+          "aggro_f": null,
+          "aggro_s": null,
+          "curve": [
+            {
+              "f": 10,
+              "alert": 0,
+              "state": "IDLE"
+            },
+            {
+              "f": 20,
+              "alert": 0,
+              "state": "IDLE"
+            },
+            {
+              "f": 30,
+              "alert": 0,
+              "state": "IDLE"
+            },
+            {
+              "f": 40,
+              "alert": 0,
+              "state": "IDLE"
+            }
+          ]
+        }
+      ],
+      "finding": "the INFANTRY alert meter fills at +4/frame (240/s) whenever d <= sight_radius and the player is in the cone; V, light, crouch, Sneak, cover and equip load change nothing"
+    },
+    "RI-STL01-M6-search": {
+      "question": "RI-STL01 §7 S-1..S-4: be seen, break contact, and watch the searcher",
+      "at_break": {
+        "alert": 100,
+        "state": "AGGRO",
+        "pos": [
+          0,
+          0,
+          8
+        ]
+      },
+      "timeline_first_5_s": [
+        {
+          "t_s": 1,
+          "alert": 40,
+          "state": "SUSPICIOUS",
+          "pos": [
+            0,
+            0,
+            8
+          ],
+          "speed": 0
+        },
+        {
+          "t_s": 2,
+          "alert": 0,
+          "state": "IDLE",
+          "pos": [
+            0,
+            0,
+            8
+          ],
+          "speed": 0
+        },
+        {
+          "t_s": 3,
+          "alert": 0,
+          "state": "IDLE",
+          "pos": [
+            0,
+            0,
+            8
+          ],
+          "speed": 0
+        },
+        {
+          "t_s": 4,
+          "alert": 0,
+          "state": "IDLE",
+          "pos": [
+            0,
+            0,
+            8
+          ],
+          "speed": 0
+        },
+        {
+          "t_s": 5,
+          "alert": 0,
+          "state": "IDLE",
+          "pos": [
+            0,
+            0,
+            8
+          ],
+          "speed": 0
+        }
+      ],
+      "at_24_s": {
+        "t_s": 24,
+        "alert": 0,
+        "state": "IDLE",
+        "pos": [
+          0,
+          0,
+          8
+        ],
+        "speed": 0
+      },
+      "zone_baseline_alert_after": 0
+    },
+    "RI-STL01-S6-civilian-detection-curve": {
+      "question": "RI-STL01 §6: does the civilian suspicion fill respond to light, context weight, distance, cone and raceSuspicion?",
+      "runs": [
+        {
+          "id": "unlit-crouch-S45-cover-w1.6",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 45,
+          "load": "light",
+          "cover": true,
+          "ctx": "crouched_public",
+          "race": "saxhleel",
+          "dist": 8,
+          "yaw": 180,
+          "t_watching_s": 4.33,
+          "t_challenge_s": 8.67,
+          "t_alarm_s": 12.42,
+          "last": {
+            "state": "ALARM",
+            "suspicion": 100,
+            "context_weight": 1.6,
+            "V": 0.05,
+            "L": 0.04
+          }
+        },
+        {
+          "id": "sunlit-stand-S5-w1.6",
+          "tod": 12,
+          "amb": "sun_open",
+          "crouch": false,
+          "sneak": 5,
+          "load": "medium",
+          "cover": false,
+          "ctx": "crouched_public",
+          "race": "saxhleel",
+          "dist": 8,
+          "yaw": 180,
+          "t_watching_s": 0.42,
+          "t_challenge_s": 0.83,
+          "t_alarm_s": 1.17,
+          "last": {
+            "state": "ALARM",
+            "suspicion": 100,
+            "context_weight": 1.6,
+            "V": 0.5335,
+            "L": 1
+          }
+        },
+        {
+          "id": "unlit-crouch-w0-sheathed",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 45,
+          "load": "light",
+          "cover": true,
+          "ctx": "public_street_sheathed",
+          "race": "saxhleel",
+          "dist": 8,
+          "yaw": 180,
+          "t_watching_s": null,
+          "t_challenge_s": null,
+          "t_alarm_s": null,
+          "last": {
+            "state": "CALM",
+            "suspicion": 0,
+            "context_weight": 0,
+            "V": 0.05,
+            "L": 0.04
+          }
+        },
+        {
+          "id": "unlit-crouch-w3-owned-object",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 45,
+          "load": "light",
+          "cover": true,
+          "ctx": "handling_owned_object",
+          "race": "saxhleel",
+          "dist": 8,
+          "yaw": 180,
+          "t_watching_s": 2.33,
+          "t_challenge_s": 4.67,
+          "t_alarm_s": 6.67,
+          "last": {
+            "state": "ALARM",
+            "suspicion": 100,
+            "context_weight": 3,
+            "V": 0.05,
+            "L": 0.04
+          }
+        },
+        {
+          "id": "unlit-crouch-w1.6-at-15m",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 45,
+          "load": "light",
+          "cover": true,
+          "ctx": "crouched_public",
+          "race": "saxhleel",
+          "dist": 15,
+          "yaw": 180,
+          "t_watching_s": null,
+          "t_challenge_s": null,
+          "t_alarm_s": null,
+          "last": {
+            "state": "CALM",
+            "suspicion": 20.25,
+            "context_weight": 1.6,
+            "V": 0.05,
+            "L": 0.04
+          }
+        },
+        {
+          "id": "unlit-crouch-w1.6-civ-facing-away",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 45,
+          "load": "light",
+          "cover": true,
+          "ctx": "crouched_public",
+          "race": "saxhleel",
+          "dist": 8,
+          "yaw": 0,
+          "t_watching_s": null,
+          "t_challenge_s": null,
+          "t_alarm_s": null,
+          "last": {
+            "state": "CALM",
+            "suspicion": 0,
+            "context_weight": 1.6,
+            "V": 0.05,
+            "L": 0.04
+          }
+        },
+        {
+          "id": "unlit-crouch-w1.6-player-naga",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 45,
+          "load": "light",
+          "cover": true,
+          "ctx": "crouched_public",
+          "race": "naga",
+          "dist": 8,
+          "yaw": 180,
+          "t_watching_s": 3,
+          "t_challenge_s": 5.83,
+          "t_alarm_s": 8.33,
+          "last": {
+            "state": "ALARM",
+            "suspicion": 100,
+            "context_weight": 1.6,
+            "V": 0.05,
+            "L": 0.04
+          }
+        },
+        {
+          "id": "unlit-crouch-w1.6-player-imperial",
+          "tod": 1.5,
+          "amb": "unlit",
+          "crouch": true,
+          "sneak": 45,
+          "load": "light",
+          "cover": true,
+          "ctx": "crouched_public",
+          "race": "imperial",
+          "dist": 8,
+          "yaw": 180,
+          "t_watching_s": 7.33,
+          "t_challenge_s": 14.67,
+          "t_alarm_s": null,
+          "last": {
+            "state": "CHALLENGE",
+            "suspicion": 96,
+            "context_weight": 1.6,
+            "V": 0.05,
+            "L": 0.04
+          }
+        }
+      ]
+    },
+    "RI-STL01-M3-sound": {
+      "question": "RI-STL01 §4: the sound model computes r_effective — does anything hear it?",
+      "sound_radius_loud_end_m": 36.309,
+      "continuous_movement": {
+        "civ_2m_facing_away_after_10s_of_sprinting_on_dry_reed": {
+          "eid": "sd2",
+          "group": "civilian",
+          "civ_state": "CALM",
+          "suspicion": 0,
+          "context_weight": 1.6
+        }
+      },
+      "discrete_events": {
+        "before": {
+          "eid": "sd",
+          "group": "civilian",
+          "civ_state": "CALM",
+          "suspicion": 0,
+          "context_weight": 1.6
+        },
+        "after_pick_break": {
+          "eid": "sd",
+          "group": "civilian",
+          "civ_state": "WATCHING",
+          "suspicion": 54,
+          "context_weight": 1.6
+        },
+        "after_throw_impact": {
+          "eid": "sd",
+          "group": "civilian",
+          "civ_state": "CHALLENGE",
+          "suspicion": 99,
+          "context_weight": 1.6
+        }
+      },
+      "alert_channel_field_on_enemies": false
+    },
+    "RI-CRM01-M3-witness-from-the-world": {
+      "question": "RI-CRM01 method 3: commit theft in a civilian's LOS; assert a witness event fires the same frame",
+      "civilian_at_the_moment_of_the_theft": [
+        {
+          "eid": "wit",
+          "group": "civilian",
+          "civ_state": "ALARM",
+          "suspicion": 100,
+          "context_weight": 3
+        }
+      ],
+      "takeObject": {
+        "taken": true,
+        "theft": true,
+        "scope": "personal",
+        "why": "one NPC's possession",
+        "stolen_from": "npc:gideon-fisher-0-sibling0",
+        "crime": "theft_petty",
+        "challenge": false,
+        "disposition_delta": -3.5,
+        "put_back_window_s": 0,
+        "disposition_gmst": "fDispStealing",
+        "crime_ref": 1,
+        "quote_g": 17
+      },
+      "crime_state_after": {
+        "bounty": {
+          "imperial": 0,
+          "settlement": {},
+          "interior": 0
+        },
+        "witnesses": [],
+        "crimes": [
+          {
+            "id": 1,
+            "crime_id": "theft_petty",
+            "n": 3,
+            "frame": 300,
+            "jurisdiction": "imperial",
+            "settlement": "gideon",
+            "value_g": 7,
+            "cargo_g": 0,
+            "victim": null,
+            "family": null,
+            "lawful": false,
+            "lawful_by": null,
+            "quote": 17,
+            "landed": false,
+            "suppressed": false
+          }
+        ]
+      },
+      "witnesses_pending_in_trace": 0,
+      "save_crime_block": {
+        "bounty": {},
+        "witnesses": [],
+        "stolen_registry": [],
+        "hunting": []
+      },
+      "save_inventory": [
+        {
+          "id": "eshis-knife",
+          "count": 1,
+          "condition": 1,
+          "charge": 0,
+          "stolen": false,
+          "owner_of_record": null,
+          "equipped_slot": "right",
+          "quick_slot": null
+        }
+      ]
+    },
+    "RI-STL02-M3-M4-lock": {
+      "gate_below_requirement": {
+        "offered": false,
+        "prompt": "You do not know this kind of lock.",
+        "picks_consumed": 0,
+        "shortfall": {
+          "security": 1,
+          "agility": 0
+        }
+      },
+      "gate_at_requirement": {
+        "offered": true,
+        "prompt": null,
+        "picks_consumed": 0,
+        "shortfall": null
+      },
+      "tolerance_curve": [
+        {
+          "security": 40,
+          "W": 4
+        },
+        {
+          "security": 55,
+          "W": 12.25
+        },
+        {
+          "security": 70,
+          "W": 20.5
+        },
+        {
+          "security": 100,
+          "W": 34
+        },
+        {
+          "security": 140,
+          "W": 34
+        }
+      ],
+      "item_expects_W": [
+        4,
+        12.25,
+        20.5,
+        34,
+        34
+      ]
+    },
+    "RI-STL02-M7-S21-pickpocket-die": {
+      "question": "seam S21 keeps the pickpocket roll — is it drawn, and does it matter?",
+      "rows": [
+        {
+          "sneak": 5,
+          "attempts": 60,
+          "draws": 60,
+          "events": 60,
+          "caught": 19,
+          "notice_chance": 0.356788
+        },
+        {
+          "sneak": 25,
+          "attempts": 60,
+          "draws": 60,
+          "events": 60,
+          "caught": 17,
+          "notice_chance": 0.278048
+        },
+        {
+          "sneak": 45,
+          "attempts": 60,
+          "draws": 60,
+          "events": 60,
+          "caught": 15,
+          "notice_chance": 0.209078
+        },
+        {
+          "sneak": 70,
+          "attempts": 60,
+          "draws": 60,
+          "events": 60,
+          "caught": 8,
+          "notice_chance": 0.136603
+        },
+        {
+          "sneak": 100,
+          "attempts": 60,
+          "draws": 60,
+          "events": 60,
+          "caught": 6,
+          "notice_chance": 0.069785
+        }
+      ]
+    },
+    "HARNESS-scenario-isolation": {
+      "after_reset": {
+        "bounty": {
+          "imperial": 777,
+          "settlement": {},
+          "interior": 0
+        },
+        "context": "lockpicking",
+        "civilians": [
+          {
+            "eid": "sd",
+            "group": "civilian",
+            "civ_state": "CALM",
+            "suspicion": 0,
+            "context_weight": 4
+          },
+          {
+            "eid": "sd2",
+            "group": "civilian",
+            "civ_state": "CALM",
+            "suspicion": 0,
+            "context_weight": 4
+          }
+        ]
+      },
+      "after_loadState_default": {
+        "bounty": {
+          "imperial": 777,
+          "settlement": {},
+          "interior": 0
+        },
+        "context": "lockpicking",
+        "civilians": [
+          {
+            "eid": "sd",
+            "group": "civilian",
+            "civ_state": "CALM",
+            "suspicion": 0,
+            "context_weight": 4
+          },
+          {
+            "eid": "sd2",
+            "group": "civilian",
+            "civ_state": "CALM",
+            "suspicion": 0,
+            "context_weight": 4
+          }
+        ]
+      }
+    }
+  },
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  }
+}

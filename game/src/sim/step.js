@@ -20,6 +20,7 @@ import { stepRoute } from './route.js';
 import { stepCombat } from './combat-bridge.js';
 import { stepWorldCollision } from './world-collision.js';
 import { stepEncounters } from '../character/encounter.js';
+import { stepNPCs } from './npc.js';
 
 export function stepOnce(sim, input, combat, bus) {
   armSim();
@@ -47,6 +48,14 @@ export function stepOnce(sim, input, combat, bus) {
     // so it reads the same positions the trace reports on this frame, and BEFORE the camera so
     // an aggro latch on frame N is visible in frame N's record.
     if (sim.character && sim.encounterData) stepEncounters(sim, combat, bus, sim.encounterData);
+    // W1-07: the people. After physics so a person turns to face the position the trace
+    // reports this frame, before the camera so a dialogue-facing turn is not one frame late.
+    if (sim.npcs.length) stepNPCs(sim, bus);
+    // W1-07: the dialogue surface consumes the latched input for this frame. It is inside
+    // the step because a census answer is a simulation event — it emits `creation_field`
+    // into the trace and writes the character — and because O17's gamepad path has to arrive
+    // through exactly the same latch the keyboard path does.
+    if (sim.censusDriver) sim.censusDriver(input);
     // W1-15: stealth and crime. AFTER the fight and after physics, so V, the sound radius and
     // every civilian's suspicion are computed from the same positions the trace reports on this
     // frame; BEFORE the camera, so a CHALLENGE latched on frame N appears in frame N's record.

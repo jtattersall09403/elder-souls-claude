@@ -27,6 +27,7 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+import { buildPlaces } from './places.js';
 
 // ---- deterministic value noise (integer hash; no PRNG state, no draws) ----------------
 function hash2(x, y, s) {
@@ -259,6 +260,13 @@ export function buildScene(seed) {
   // ---- dungeon: a dark stone corridor along +z (VP11) ------------------------------------------
   buildDungeon(cells.dungeon, mats);
 
+  // ---- W1-07's five rooms: the barge hold, the Writ House, and the three states the
+  // reference items name by id (helstrom-market, stormhold-street, rootlands-well-graph).
+  for (const [id, group] of Object.entries(buildPlaces(mats))) {
+    cells[id] = group;
+    scene.add(group);
+  }
+
   // ---- arena: flat ground for the combat scenarios (VP12) ---------------------------------------
   const arenaFloor = new THREE.Mesh(new THREE.CircleGeometry(30, 56).rotateX(-Math.PI / 2),
     new THREE.MeshStandardMaterial({ color: 0x494236, roughness: 0.95 }));
@@ -307,6 +315,11 @@ export function buildScene(seed) {
   anchors.material_showcase = new THREE.Vector3(0, 0.15, 1.2);
   anchors.dungeon_primary = new THREE.Vector3(0, 0, -2);
   anchors.arena_flat = new THREE.Vector3(0, 0, -5);
+  anchors.barge_hold = new THREE.Vector3(0, 0, 0);
+  anchors.writ_house = new THREE.Vector3(0, 0, -1.4);
+  anchors.helstrom_market = new THREE.Vector3(0, 0, 0);
+  anchors.stormhold_street = new THREE.Vector3(0, 0, 0);
+  anchors.rootlands_well = new THREE.Vector3(0, 0, 0);
 
   return { scene, cells, props, anchors, terrain, water, player, mats };
 }

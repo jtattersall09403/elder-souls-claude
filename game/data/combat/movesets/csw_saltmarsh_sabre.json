@@ -1048,6 +1048,48 @@
     "POISE_MONSTER"
    ]
   },
+  "2h.r2.follow": {
+   "anim": "clip_reaver_2h_r2_follow",
+   "anim_owner": "lin_reaver",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 35,
+   "active_f": 13,
+   "recovery_f": 63,
+   "stamina": 30,
+   "motion_value": 1.45,
+   "poise_damage": 34,
+   "root_dz_m": 0.532,
+   "arc_sweep_deg": 181.6,
+   "shape": "sweep",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.07,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip",
+    "multi_hit": 1
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
+   ]
+  },
   "2h.run.r1": {
    "anim": "clip_reaver_2h_run_r1",
    "anim_owner": "lin_reaver",
@@ -1433,5 +1475,5 @@
    ]
   }
  },
- "notes": "Its running attack is a lunge rather than a pass, so it closes on an archer instead of going past one.\n\nLineage: reaver — Shorter, deeper-bellied raiding blades. They chop where a sickle sweeps.\nMandatory slots present: 25/25. Total slots: 34.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "Its running attack is a lunge rather than a pass, so it closes on an archer instead of going past one.\n\nLineage: reaver — Shorter, deeper-bellied raiding blades. They chop where a sickle sweeps.\nMandatory slots present: 25/25. Total slots: 35.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

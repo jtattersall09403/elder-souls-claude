@@ -1,0 +1,333 @@
+
+=== RI-STL01 method 1 — formula conformance, 100k cases against an independent oracle ===
+
+PASS  STL01-M1a 310,272 cases, max |oracle - engine|
+            got 0.00e+0   target < 1e-6
+PASS  STL01-M1b the 0.05 floor fires
+            got 46730 cases   target > 0
+PASS  STL01-M1c the 1.30 ceiling fires
+            got 12039 cases   target > 0
+
+=== RI-STL01 method 2 — the five worked rows, driven at 60 Hz ===
+
+   sprinting, torchlit, heavy, Sneak 5            V     1.3 (item 1.3)  fill   97.5/s  t   1.033 s (item 1.03)  err 0.32%
+   walking, dim, medium, Sneak 5                  V  0.3373 (item 0.339)  fill   25.3/s  t   3.967 s (item 3.94)  err 0.68%
+   crouched, dim, light, Sneak 45                 V  0.1576 (item 0.157)  fill  11.82/s  t   8.467 s (item 8.5)  err 0.39%
+   crouched, unlit, light, Sneak 45, in cover     V    0.05 (item 0.05)  fill   3.75/s  t  26.667 s (item 26.7)  err 0.12%
+   still, unlit, light, Sneak 100, in cover       V    0.05 (item 0.05)  fill   3.75/s  t  26.667 s (item 26.7)  err 0.12%
+PASS  STL01-M2 five worked rows, time to AGGRO
+            got worst error 0.68%   target within 5%
+
+=== RI-STL01 method 3 — the 15 sound radii ===
+
+   loud end  (sprint, Sneak 5, heavy, dry reed): 36.31 m
+   quiet end (crouch, Sneak 100, light, mud):    0.66 m
+PASS  STL01-M3a 15 measured radii vs the formula
+            got worst 0.000%   target within 8%
+PASS  STL01-M3b dry-reed sprint radius at Sneak 5 / heavy
+            got 36.31 m   target > 30 m — the loud end must actually be punishing
+PASS  STL01-M3c surface term present (mud vs dry reed at one config)
+            got 2.71x   target 2.71x — geometry is stealth content
+
+=== RI-STL01 method 4 — no proximity leak ===
+
+PASS  STL01-M4 alert after 3,600 f@60 standing behind a stationary enemy at 1.0 m in the dark
+            got 0.000000   target 0 — no proximity aggro
+PASS  STL01-M4b the cone at bearing 180 deg
+            got none   target none
+
+=== RI-STL01 method 5 — OPENER-PURITY (the AR-1 assertion) ===
+
+PASS  STL01-M5a opener at Sneak 20 vs Sneak 100
+            got true vs true (identical: true)   target both true, identically
+PASS  STL01-M5b opener at Sneak 19 (below RI-PRG03's gate)
+            got false   target false — deterministic gate, no probability
+PASS  STL01-M5c the return type stealth contributes to the fight
+            got boolean   target boolean — there is no number here for a damage formula to multiply by
+PASS  STL01-M5d the rear-arc boundary at Sneak 5/20/60/100
+            got none, 101, 101, 101   target 101 deg at every skill (>±100)
+PASS  STL01-M5e opener against an AGGRO target
+            got false   target false — no re-entering stealth mid-fight
+
+=== RI-STL01 method 6 — the four search behaviours ===
+
+PASS  STL01-M6a S-1 plausible set
+            got crate-a,barrel-c   target far-e out by radius; rafter-d and stack-b out because they sit in the searcher's own cone; crate-a and barrel-c in
+PASS  STL01-M6b S-1 visits at most 3 cover volumes
+            got 2 (crate-a,barrel-c)   target 1..3
+PASS  STL01-M6c S-2 escalating radius across the 12 s window
+            got 8 -> 14 -> 20 -> 20 m   target 8 -> 14 -> 20 -> 20
+PASS  STL01-M6d S-3 raises only allies within 12 m, to 45, one hop
+            got a1 -> 45,0   target a1 to 45; a2 untouched; none reaches 50
+PASS  STL01-M6e S-4 baseline alert 60 s after a failed search
+            got 25   target 25
+PASS  STL01-M6f S-4 baseline alert 200 s after (past the 180 s hold)
+            got 0   target 0
+PASS  STL01-M6g S-4 contextWeight multiplier at 30 s
+            got 1.4   target 1.4
+PASS  STL01-M6h S-4 survives a save/load round trip
+            got 25   target 25 — it is world state (S6)
+
+=== RI-STL01 method 8 / light — DARK-COVERAGE and SNUFFABLE, measured off the field ===
+
+PASS  LGT-M8a  DARK-COVERAGE of a 3-source 40x40 m dungeon room at L <= 0.10
+            got 92.9% of 1681 samples   target >= 30%
+   L at the torch: 1.000   at 4 m: 0.083   at 9 m: 0.065   ambient: 0.043
+PASS  LGT-M8b  snuffing a lamp changes L at the lamp
+            got 1.000 -> 0.052 -> 1.000 after 90 s   target falls, then returns
+PASS  LGT-M8c  a carried torch floors L at 0.80
+            got 0.80   target 0.80
+
+=== RI-STL02 method 3 — LOCK DETERMINISM (the ruling this piece exists to make) ===
+
+PASS  STL02-M3a 100 identical input scripts at 100 different seeds
+            got 1 distinct outcome(s), open=true   target 1 — 100/100 identical
+PASS  STL02-M3b RNG draws across a whole lock interaction
+            got 0   target 0 — the counter must not move at all
+PASS  STL02-M3c Security 39 against a tier-3 lock (req 40)
+            got 100/100 refused, 0 picks consumed   target 100/100 refused, 0 picks
+PASS  STL02-M3d 100 deliberately mistimed scripts
+            got 100/100 fail, 7 picks broken   target 100/100 failures
+
+=== RI-STL02 method 4 — the tolerance curve ===
+
+   Security  40  W = 4.00 deg (want 4)   window 2.7 f@60 = 44 ms
+   Security  55  W = 12.25 deg (want 12.25)   window 8.2 f@60 = 136 ms
+   Security  70  W = 20.50 deg (want 20.5)   window 13.7 f@60 = 228 ms
+   Security 100  W = 34.00 deg (want 34)   window 22.7 f@60 = 378 ms
+PASS  STL02-M4a W at Security 40 / 55 / 70 / 100 against a tier-3 lock
+            got 4.00, 12.25, 20.50, 34.00   target 4.0, 12.25, 20.5, 34.0 +/- 0.1
+PASS  STL02-M4b the clamp holds at Security 140
+            got 34.0   target exactly 34.0
+PASS  STL02-M4c the window at the requirement, in f@60 (seam S22)
+            got 2.67 f@60   target 2.67 f@60 = 44 ms — roughly a Souls parry
+
+=== RI-STL02 method 7 / S21 — pickpocket geometry deterministic, notice die live ===
+
+PASS  STL02-M7a offered at 1.0 m, crouched, behind, still
+            got true   target true
+PASS  STL02-M7b at 1.5 m (outside the 1.4 m reach)
+            got 1.50 m exceeds the 1.4 m reach   target not offered
+PASS  STL02-M7c at bearing 99 deg (inside the rear-arc boundary)
+            got bearing 99.0 deg is not inside the >±100 deg rear arc   target not offered
+PASS  STL02-M7d while walking
+            got you are moving   target not offered
+PASS  STL02-M7e against a WATCHING target
+            got target civ_state is WATCHING, not CALM   target not offered
+PASS  STL02-M7f hold T at Sneak 5 / 45 / 100
+            got 2.53s=152f@60, 1.97s=118f@60, 1.20s=72f@60   target 2.53 / 1.97 / 1.20 s
+PASS  STL02-M7g equipped items never appear in the slot list
+            got key   target no sword
+PASS  STL02-M7h slot count and weight ceiling at AGILITY 10 / Sneak 5
+            got 1 slot, 0.5 kg   target 1 slot, 0.5 kg — you can steal a key
+PASS  STL02-M7i slot count and ceiling at AGILITY 60 / Sneak 100
+            got 6 slots, 20.5 kg   target 6 slots, 20.5 kg
+PASS  STL02-M7j same seed, same outcome
+            got true / true, rolls 0.285392 / 0.285392   target identical — RI-MTH02 untouched
+PASS  STL02-M7k draws per attempt
+            got 1   target exactly 1
+PASS  STL02-M7l 20,000 seeds at notice_chance 0.3186
+            got empirical 0.3237   target matches the declared chance
+   Sneak 5, dark (V 0.08), Naga, crouched behind a calm civilian declared 0.5286  computed 0.5286
+   Sneak 45, dim (V 0.16), Saxhleel                           declared 0.3186  computed 0.3186
+   Sneak 45, dark (V 0.08), Saxhleel                          declared 0.2091  computed 0.2091
+   Sneak 100, lit street (V 0.55), Imperial                   declared 0.2166  computed 0.2166
+   Sneak 100, dark (V 0.08), Imperial                         declared 0.0414  computed 0.0414
+   Sneak 5, bright (V 0.90), Naga, in a lit shop              declared 0.8500  computed 0.8500
+PASS  STL02-M7m the declared worked rows vs the shipping formula
+            got worst 4.6e-5   target agree
+PASS  STL02-M7n the die is LIVE at every skill level (S21 is not decoration)
+            got 4.1% .. 85.0%   target never resting on the 2% floor
+
+=== RI-CRM01 methods 1-4 — the schedule, the empty house, the report chain, S10 ===
+
+PASS  CRM01-M1a all 17 crimes quote their schedule value
+            got 17/17 exact   target exact
+PASS  CRM01-M1b crime #4 scales with value_g at 10 / 200 / 3,400 g
+            got 35, 225, 3425   target 35, 225, 3425
+PASS  CRM01-M1c settlement jurisdiction applies x0.6
+            got 135   target 135
+PASS  CRM01-M2a bounty after 20 unwitnessed thefts
+            got 0   target 0 — a crime does not create a bounty, a REPORT does
+PASS  CRM01-M2b witness records
+            got 0   target 0
+PASS  CRM01-M2c items carrying stolen_from
+            got 20/20   target 20/20
+PASS  CRM01-M2d the crime ledger survives a save/load round trip
+            got true   target byte-identical
+   guard is the witness           -> guard_witness   0 f@60 = 0.00 s
+   shout, guard at 20 m           -> shout           72 f@60 = 1.20 s
+   run to a guard at 120 m        -> run_to_guard    2118 f@60 = 35.30 s
+   no guard within 400 m          -> delayed         (no timer)
+   the interior jurisdiction      -> never           (no timer)
+PASS  CRM01-M3a all five report routes resolve
+            got guard_witness, shout, run_to_guard, delayed, never   target five distinct
+PASS  CRM01-M3b run-to-guard latency at 120 m (120 / 3.4 = 35.3 s)
+            got 35.30 s   target within 10%
+PASS  CRM01-M3c shout latency
+            got 1.200 s = 72 f@60   target 1.2 s +/- 2 frames
+PASS  CRM01-M3d bounty before the report lands
+            got 0   target 0
+PASS  CRM01-M3e bounty after the report lands
+            got 225 (delta 225)   target 225 = 25 + 200
+PASS  CRM01-M4a bounty after killing the only witness, unobserved
+            got 0   target 0 — S10 says it works, completely
+PASS  CRM01-M4b the suppressed bounty
+            got 225 g suppressed   target 225
+PASS  CRM01-M4c a permanent death_flag for the settlement
+            got 1   target 1
+PASS  CRM01-M4d bounty when a second civilian watches the killing
+            got 1450   target 1,000 + 2 x 225 = 1,450
+   crime #12 breakdown: murder 1000 + suppressed x2 450
+
+=== RI-CRM01 methods 6-10 — identification, the guard ladder, the arrest, jail, persistence ===
+
+PASS  CRM01-M6a identified at V 0.45 vs V 0.18
+            got true / false   target true / false
+PASS  CRM01-M6b bounty ratio identified : unidentified
+            got 225 : 90 = 1 : 0.40   target 1 : 0.4
+PASS  CRM01-M6c the report kind
+            got unlawful / partial   target unlawful / partial
+PASS  CRM01-M7a 10 races x 3 bounty bands land in the right behaviour band
+            got 30/30   target 30/30
+PASS  CRM01-M7b the arrest guard never draws a weapon in band 2
+            got 0   target 0
+PASS  CRM01-M7c band 3 offers a surrender parley
+            got surrender   target surrender
+PASS  CRM01-M8a PAY at bounty 800 with 1,200 gold
+            got gold -800, bounty 0, confiscate true, days 0   target -800, 0, true, 0 days
+PASS  CRM01-M8b RESIST
+            got bounty 1300, aggro r=40 m within 30 f@60   target 1,300 (800 + 500)
+PASS  CRM01-M8c SERVE at bounty 800
+            got 8 days, -4 levels from [speechcraft,speechcraft,speechcraft,speechcraft], +{"sneak":2,"security":2}   target 8 days
+PASS  CRM01-M8d PAY with 700 gold — the refusal names the shortfall
+            got You're 100 gold short, and I can count. Choose again.   target names 100 gold
+PASS  CRM01-M8e the pay topic is PRESENT and refused, never hidden
+            got true present=true   target present, refused, explained
+PASS  CRM01-M8f both escape hatches appear when earned
+            got pay,resist,serve,faction_invocation,persuade   target 5 topics: pay, resist, serve, faction_invocation, persuade
+   1,000 g -> 10 days; lost speechcraft -> speechcraft -> speechcraft -> speechcraft -> speechcraft; gained {"sneak":3,"security":2}
+PASS  CRM01-M9a a 1,000 g bounty serves 10 days
+            got 10   target 10
+PASS  CRM01-M9b levels lost (1 per 2 days)
+            got 5   target 5
+PASS  CRM01-M9c taken from the highest cell-blocked skill first
+            got speechcraft   target speechcraft (61, the highest of the six)
+PASS  CRM01-M9d Sneak +3, Security +2
+            got {"sneak":3,"security":2}   target {sneak:3, security:2}
+PASS  CRM01-M9e identical across runs (the S21 assertion: no random skill point)
+            got true   target byte-identical
+PASS  CRM01-M9f the 90-day cap
+            got 90   target 90
+PASS  CRM01-M10a bounty and blood-price after three deaths
+            got 1600 g / 900 g   target byte-identical to before
+PASS  CRM01-M10b the unreported witness is still running
+            got 1   target 1
+PASS  CRM01-M10c dying to a guard mid-arrest
+            got jail, sentence_begins=true   target jail, not the sapwell
+PASS  CRM01-M10d save/load round trip
+            got true   target byte-identical
+
+=== RI-CRM01 method 12 / RI-CRM02 methods 1, 5, 6 — faction, sanction and the AR-3 numbers ===
+
+   morag-tong           imperial .  settlement .  interior .
+   provincial-office    imperial Y  settlement .  interior .
+   ku-vastei            imperial .  settlement .  interior Y
+   wet-ledger           imperial Y  settlement .  interior .
+PASS  CRM02-M1 authorities honoured in all three jurisdictions
+            got 0   target 0 — the Morag Tong problem, solved
+PASS  CRM02-M2a a lawful execution inside Imperial jurisdiction
+            got lawful, witnesses_suppressed=false   target lawful, witnesses NOT suppressed
+PASS  CRM02-M2b collateral in the same room
+            got unlawful, crime murder_unnamed   target unlawful — a writ does not cover it
+PASS  CRM02-M2c the same target lured into settlement jurisdiction
+            got unlawful   target unlawful — it does not travel
+PASS  CRM02-M2d a Morag Tong writ in front of an Imperial guard
+            got unlawful, social_only=true   target unlawful — legally worthless in Argonia
+PASS  CRM02-M2e executing a target who has yielded, witnessed
+            got lawful=true, standing lost with 3 factions   target lawful AND costs 3 factions
+PASS  CRM02-M5a ordered faction pairs refused with a stated in-fiction reason
+            got 18   target >= 8
+PASS  CRM02-M5b max simultaneous sanctioning authorities, by exhaustive search over the join graph
+            got 2   target <= 2
+   imperial, no faction         arrest  405 (declared 405)  attack 1620  bands 1/2/3
+   imperial, ninth-cohort 5     arrest  972 (declared 972)  attack 3888  bands 1/2/3
+   imperial, xul-aneekh 4       arrest  182 (declared 182)  attack  729  bands 1/2/3
+   naga, xul-aneekh 4           arrest   45 (declared 45)  attack  178  bands 1/2/3
+   naga, ninth-cohort 5         arrest  238 (declared 238)  attack  950  bands 1/2/3
+PASS  CRM02-M6a 15 behaviour bands (5 configurations x 3 bounty multiples)
+            got 15/15   target 15/15
+PASS  CRM02-M6b arrestThreshold(Naga, Xul-Aneekh 4)
+            got 45   target 45 +/- 1
+PASS  CRM02-M6c arrestThreshold(Naga, Ninth Cohort 5)
+            got 238   target 238 +/- 2
+PASS  CRM02-M6d a single faction decision, same character
+            got 5.29x   target >= 5x
+   Deep-Kin regard vs Imperial bounty: 0g->+0  500g->+2  1000g->+4  2000g->+8  3000g->+12  6000g->+12
+PASS  CRM01-M12a Deep-Kin regard rises +2 per 500 g of Imperial bounty
+            got 0,2,4,8,12,12   target +2 per 500 g
+PASS  CRM01-M12b and is capped at +12
+            got 12   target +12
+PASS  CRM02-M7a war-brood hostile_below_disposition shift at Xul-Aneekh rank 0 vs 4
+            got 0 vs -40   target 0 vs -40
+PASS  CRM02-M7b a Dunmer at disposition 6 meeting a war-brood camp
+            got rank 0: HOSTILE;  rank 4: neutral   target hostile / neutral — the encounter table emptied without one enemy changing
+PASS  CRM02-M7c the same Dunmer at rank 0 with a 3,000 g IMPERIAL BOUNTY
+            got disposition 6 + 12 regard = 18 vs threshold 15   target neutral — a crime in Gideon changed a fight in the Stone Forest
+PASS  CRM02-M8a Ledger interceptions before refusal
+            got 4 intercept, then refused=true   target 4 then a spoken refusal
+PASS  CRM02-M8b a 2,000 g crime exceeds the Ledger ceiling
+            got 2000 g exceeds the Ledger's 1600 g ceiling   target refused
+PASS  CRM02-M8c the Ledger has no reach in Stormhold
+            got the Ledger's reach is gideon and lilmoth, not stormhold   target refused
+PASS  CRM02-M8d an intercepted report: bounty and favour owed
+            got bounty 0, favours 1   target 0 g, 1 favour — silence is never free
+PASS  CRM02-M9a killing an interior NPC: Imperial bounty
+            got 0   target 0 — no jurisdiction
+PASS  CRM02-M9b blood-price accrued (1,000 x 1.4)
+            got 1400   target 1,400
+PASS  CRM02-M9c Deep-Kin rank does not reduce it
+            got 1400   target unchanged — being one of them is not being above them
+PASS  CRM02-M9d a ku-vastei Ruling extinguishes it
+            got 1400 g cleared, remaining {}   target cleared
+
+=== RI-CRM01 method 11 — mid-fight accrual (ARBITRATION §1 as amended) ===
+
+PASS  CRM01-M11a bounty_change fires on the crime frame while the player is in a combat state
+            got f=137 state=BLOCK bounty=150   target the bounty moves on the crime frame, not at the encounter end
+PASS  CRM01-M11b crime and witness events carry the combat frame
+            got 2   target 2
+PASS  CRM01-M11c no event is deferred to the end of the encounter
+            got 0   target 0 — nothing batched
+
+=== theft, trespass and the fence economy ===
+
+PASS  THF-1    taking a personal object unobserved
+            got stolen_from=npc:ollo-vantine, crime=null   target flagged, no crime
+PASS  THF-2    a 4 g object seen only by its owner
+            got challenge=true, put-back window 8 s   target CHALLENGE, not CRIME
+PASS  THF-3    a 300 g object seen by a third party
+            got crime=theft, disposition -150   target theft, -150 (fDispStealing)
+PASS  THF-4    an unobserved public-commons object
+            got theft=false, stolen_from=null   target petty, no stolen_from
+PASS  THF-5    an object with NO owner field
+            got throws   target throws — ownership declared-and-never-read is the item's first How-we-lose
+PASS  TRS-M8a  entering a closed shop
+            got weight 2.2, escalation "CHALLENGE -> ALARM -> guard", bounty now 0   target 2.20, CHALLENGE first, 0 bounty
+PASS  TRS-M8b  entering a Legion restricted room
+            got alarm_on_sight=true, weight 3   target ALARM with no CHALLENGE
+PASS  TRS-M8c  a Nord at rootkeeper disposition 30 in a sapwell precinct
+            got refused for 24 h, bounty 0   target 24 h refusal, no bounty
+PASS  FNC-M9a  a fence refuses an item stolen from its own settlement, by name
+            got "That belongs to Marks-The-Ledger. I drink with Marks-The-Ledger. Take it elsewhere."   target refused, naming the owner
+PASS  FNC-M9b  a fence three settlements away
+            got true   target buys
+PASS  FNC-M9c  an honest merchant anywhere
+            got "I do not deal in other people's property."   target refuses
+PASS  FNC-M9d  best fence multiplier at Mercantile 100
+            got 0.6105   target [0.58, 0.62]
+PASS  FNC-M9e  fencing a unique item
+            got 1018 g now, 1700 g bounty in 3 days   target 1,700 g bounty, 3 days later
+
+======================================================================
+125/125 assertions pass

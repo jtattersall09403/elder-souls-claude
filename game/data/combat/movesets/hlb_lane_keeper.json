@@ -159,8 +159,8 @@
    "chains_to": "r2.follow",
    "chain_index": 1,
    "startup_f": 68,
-   "active_f": 15,
-   "recovery_f": 85,
+   "active_f": 16,
+   "recovery_f": 84,
    "stamina": 48,
    "motion_value": 1.94,
    "poise_damage": 63,
@@ -170,7 +170,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 41,
-    "to_f": 83,
+    "to_f": 84,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -201,8 +201,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 68,
-   "active_f": 15,
-   "recovery_f": 85,
+   "active_f": 16,
+   "recovery_f": 84,
    "charge_max_f": 40,
    "charge_ramp": {
     "motion_value_at_full": 1.3,
@@ -218,7 +218,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 41,
-    "to_f": 83,
+    "to_f": 84,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -248,8 +248,8 @@
    "chains_to": null,
    "chain_index": 2,
    "startup_f": 53,
-   "active_f": 15,
-   "recovery_f": 89,
+   "active_f": 16,
+   "recovery_f": 88,
    "stamina": 42,
    "motion_value": 1.75,
    "poise_damage": 54,
@@ -327,8 +327,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 48,
-   "active_f": 15,
-   "recovery_f": 85,
+   "active_f": 16,
+   "recovery_f": 84,
    "stamina": 52,
    "motion_value": 2.03,
    "poise_damage": 69,
@@ -619,8 +619,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 78,
-   "active_f": 20,
-   "recovery_f": 102,
+   "active_f": 21,
+   "recovery_f": 101,
    "stamina": 53,
    "motion_value": 2.19,
    "poise_damage": 68,
@@ -657,8 +657,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 92,
-   "active_f": 20,
-   "recovery_f": 119,
+   "active_f": 21,
+   "recovery_f": 118,
    "stamina": 62,
    "motion_value": 2.5,
    "poise_damage": 78,
@@ -668,7 +668,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 56,
-    "to_f": 112,
+    "to_f": 113,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -782,8 +782,8 @@
    "chains_to": null,
    "chain_index": 3,
    "startup_f": 53,
-   "active_f": 15,
-   "recovery_f": 89,
+   "active_f": 16,
+   "recovery_f": 88,
    "stamina": 25,
    "motion_value": 1.56,
    "poise_damage": 29,
@@ -947,8 +947,8 @@
    "chains_to": "2h.r2.follow",
    "chain_index": 1,
    "startup_f": 75,
-   "active_f": 17,
-   "recovery_f": 92,
+   "active_f": 18,
+   "recovery_f": 91,
    "stamina": 55,
    "motion_value": 2.23,
    "poise_damage": 82,
@@ -958,7 +958,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 45,
-    "to_f": 92,
+    "to_f": 93,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -992,8 +992,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 75,
-   "active_f": 17,
-   "recovery_f": 92,
+   "active_f": 18,
+   "recovery_f": 91,
    "charge_max_f": 40,
    "charge_ramp": {
     "motion_value_at_full": 1.3,
@@ -1009,7 +1009,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 45,
-    "to_f": 92,
+    "to_f": 93,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1027,6 +1027,47 @@
    "answers": [
     "TURTLE",
     "POISE_MONSTER"
+   ]
+  },
+  "2h.r2.follow": {
+   "anim": "clip_glaive_2h_r2_follow",
+   "anim_owner": "lin_glaive",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 58,
+   "active_f": 18,
+   "recovery_f": 95,
+   "stamina": 48,
+   "motion_value": 2.01,
+   "poise_damage": 70,
+   "root_dz_m": 0.917,
+   "arc_sweep_deg": 22.4,
+   "shape": "thrust",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.09,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
    ]
   },
   "2h.run.r1": {
@@ -1084,8 +1125,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 53,
-   "active_f": 17,
-   "recovery_f": 92,
+   "active_f": 18,
+   "recovery_f": 91,
    "stamina": 60,
    "motion_value": 2.34,
    "poise_damage": 90,
@@ -1309,8 +1350,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 86,
-   "active_f": 23,
-   "recovery_f": 110,
+   "active_f": 24,
+   "recovery_f": 109,
    "stamina": 61,
    "motion_value": 2.52,
    "poise_damage": 88,
@@ -1350,8 +1391,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 80,
-   "active_f": 18,
-   "recovery_f": 97,
+   "active_f": 19,
+   "recovery_f": 96,
    "stamina": 55,
    "motion_value": 2.34,
    "poise_damage": 82,
@@ -1361,7 +1402,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 48,
-    "to_f": 98,
+    "to_f": 99,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1394,8 +1435,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 80,
-   "active_f": 18,
-   "recovery_f": 97,
+   "active_f": 19,
+   "recovery_f": 96,
    "stamina": 55,
    "motion_value": 2.34,
    "poise_damage": 82,
@@ -1405,7 +1446,7 @@
    "hyperarmour": {
     "enabled": true,
     "from_f": 48,
-    "to_f": 98,
+    "to_f": 99,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1426,5 +1467,5 @@
    ]
   }
  },
- "notes": "SIGNATURE. Every light in the chain is a sweep at a different height. Three enemies abreast is not a problem it survives, it is the problem it was made for.\n\nLineage: glaive — A blade rather than a hook: it cuts downward through a lane instead of sweeping across one.\nMandatory slots present: 25/25. Total slots: 33.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "SIGNATURE. Every light in the chain is a sweep at a different height. Three enemies abreast is not a problem it survives, it is the problem it was made for.\n\nLineage: glaive — A blade rather than a hook: it cuts downward through a lane instead of sweeping across one.\nMandatory slots present: 25/25. Total slots: 34.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

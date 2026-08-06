@@ -1,0 +1,584 @@
+{
+ "schema": "critic/w1-01-r2-misc@1",
+ "measured_at": "2026-08-06T21:00:36.504Z",
+ "probes": {
+  "H1": [],
+  "H2": [
+   {
+    "pct": 10,
+    "set": {
+     "ratio": 0.1,
+     "tier": "UNBURDENED",
+     "move_mult_declared": 1,
+     "move_mult_applied": 1,
+     "sprint": true,
+     "fatigue_drain_mult": 1,
+     "sneak_detection_mult": 1,
+     "travel_time_mult": 1,
+     "jump": "normal",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You move freely.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    },
+    "mps": 2,
+    "burden": {
+     "ratio": 0.1,
+     "tier": "UNBURDENED",
+     "move_mult_declared": 1,
+     "move_mult_applied": 1,
+     "sprint": true,
+     "fatigue_drain_mult": 1,
+     "sneak_detection_mult": 1,
+     "travel_time_mult": 1,
+     "jump": "normal",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You move freely.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+   },
+   {
+    "pct": 45,
+    "set": {
+     "ratio": 0.45,
+     "tier": "UNBURDENED",
+     "move_mult_declared": 1,
+     "move_mult_applied": 1,
+     "sprint": true,
+     "fatigue_drain_mult": 1,
+     "sneak_detection_mult": 1,
+     "travel_time_mult": 1,
+     "jump": "normal",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You move freely.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    },
+    "mps": 2,
+    "burden": {
+     "ratio": 0.45,
+     "tier": "UNBURDENED",
+     "move_mult_declared": 1,
+     "move_mult_applied": 1,
+     "sprint": true,
+     "fatigue_drain_mult": 1,
+     "sneak_detection_mult": 1,
+     "travel_time_mult": 1,
+     "jump": "normal",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You move freely.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+   },
+   {
+    "pct": 69,
+    "set": {
+     "ratio": 0.69,
+     "tier": "LADEN",
+     "move_mult_declared": 0.9,
+     "move_mult_applied": 0.9,
+     "sprint": true,
+     "fatigue_drain_mult": 1.4,
+     "sneak_detection_mult": 1.15,
+     "travel_time_mult": 1.12,
+     "jump": "-25% height",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "The pack is heavy but you can still make time.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    },
+    "mps": 1.8,
+    "burden": {
+     "ratio": 0.69,
+     "tier": "LADEN",
+     "move_mult_declared": 0.9,
+     "move_mult_applied": 0.9,
+     "sprint": true,
+     "fatigue_drain_mult": 1.4,
+     "sneak_detection_mult": 1.15,
+     "travel_time_mult": 1.12,
+     "jump": "-25% height",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "The pack is heavy but you can still make time.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+   },
+   {
+    "pct": 85,
+    "set": {
+     "ratio": 0.85,
+     "tier": "LADEN",
+     "move_mult_declared": 0.9,
+     "move_mult_applied": 0.9,
+     "sprint": true,
+     "fatigue_drain_mult": 1.4,
+     "sneak_detection_mult": 1.15,
+     "travel_time_mult": 1.12,
+     "jump": "-25% height",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "The pack is heavy but you can still make time.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    },
+    "mps": 1.8,
+    "burden": {
+     "ratio": 0.85,
+     "tier": "LADEN",
+     "move_mult_declared": 0.9,
+     "move_mult_applied": 0.9,
+     "sprint": true,
+     "fatigue_drain_mult": 1.4,
+     "sneak_detection_mult": 1.15,
+     "travel_time_mult": 1.12,
+     "jump": "-25% height",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "The pack is heavy but you can still make time.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+   },
+   {
+    "pct": 95,
+    "set": {
+     "ratio": 0.95,
+     "tier": "OVERLADEN",
+     "move_mult_declared": 0.72,
+     "move_mult_applied": 0.72,
+     "sprint": false,
+     "fatigue_drain_mult": 2.2,
+     "sneak_detection_mult": 1.5,
+     "travel_time_mult": 1.35,
+     "jump": "none",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You are labouring under the load; you cannot run.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    },
+    "mps": 1.44,
+    "burden": {
+     "ratio": 0.95,
+     "tier": "OVERLADEN",
+     "move_mult_declared": 0.72,
+     "move_mult_applied": 0.72,
+     "sprint": false,
+     "fatigue_drain_mult": 2.2,
+     "sneak_detection_mult": 1.5,
+     "travel_time_mult": 1.35,
+     "jump": "none",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You are labouring under the load; you cannot run.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+   },
+   {
+    "pct": 101,
+    "set": {
+     "ratio": 1.01,
+     "tier": "IMMOBILE",
+     "move_mult_declared": 0,
+     "move_mult_applied": 0,
+     "sprint": false,
+     "fatigue_drain_mult": 1,
+     "sneak_detection_mult": 1,
+     "travel_time_mult": 1,
+     "jump": "none",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You are carrying more than you can move with. Put something down.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    },
+    "mps": 0,
+    "burden": {
+     "ratio": 1.01,
+     "tier": "IMMOBILE",
+     "move_mult_declared": 0,
+     "move_mult_applied": 0,
+     "sprint": false,
+     "fatigue_drain_mult": 1,
+     "sneak_detection_mult": 1,
+     "travel_time_mult": 1,
+     "jump": "none",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You are carrying more than you can move with. Put something down.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+   },
+   {
+    "pct": 120,
+    "set": {
+     "ratio": 1.2,
+     "tier": "IMMOBILE",
+     "move_mult_declared": 0,
+     "move_mult_applied": 0,
+     "sprint": false,
+     "fatigue_drain_mult": 1,
+     "sneak_detection_mult": 1,
+     "travel_time_mult": 1,
+     "jump": "none",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You are carrying more than you can move with. Put something down.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    },
+    "mps": 0,
+    "burden": {
+     "ratio": 1.2,
+     "tier": "IMMOBILE",
+     "move_mult_declared": 0,
+     "move_mult_applied": 0,
+     "sprint": false,
+     "fatigue_drain_mult": 1,
+     "sneak_detection_mult": 1,
+     "travel_time_mult": 1,
+     "jump": "none",
+     "in_combat": false,
+     "suppressed_by_combat": false,
+     "tiers": [
+      {
+       "id": "UNBURDENED",
+       "ratio_max": 0.6,
+       "move": 1
+      },
+      {
+       "id": "LADEN",
+       "ratio_max": 0.85,
+       "move": 0.9
+      },
+      {
+       "id": "OVERLADEN",
+       "ratio_max": 1,
+       "move": 0.72
+      },
+      {
+       "id": "IMMOBILE",
+       "ratio_max": null,
+       "move": 0
+      }
+     ],
+     "reason": "You are carrying more than you can move with. Put something down.",
+     "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+   }
+  ],
+  "H3_breath": {
+   "water": {
+    "depth_m": 8.28,
+    "band": "W5",
+    "substrate": "SILT",
+    "region": "western-rootlands",
+    "region_name": "Western Rootlands",
+    "sea": "topal",
+    "tidal": true,
+    "k": 1.899999976158142,
+    "ground_y": -8.21,
+    "surface_y": 0.07
+   },
+   "hp": [
+    620,
+    620
+   ],
+   "stam": [
+    120,
+    120
+   ],
+   "state": "WALK",
+   "pos": [
+    2702.7,
+    -8.209786,
+    4810.3
+   ]
+  }
+ },
+ "hazards_declared": 19
+}

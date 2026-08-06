@@ -74,7 +74,7 @@
      "state": "ATTACK_RECOVERY"
     }
    },
-   "chains_to": "r1.3",
+   "chains_to": null,
    "chain_index": 2,
    "startup_f": 37,
    "active_f": 16,
@@ -98,7 +98,8 @@
     "dodge"
    ],
    "answers": [
-    "INFANTRY"
+    "INFANTRY",
+    "DUELIST"
    ]
   },
   "r1.3": {
@@ -135,8 +136,7 @@
     "dodge"
    ],
    "answers": [
-    "INFANTRY",
-    "DUELIST"
+    "INFANTRY"
    ]
   },
   "r2": {
@@ -362,7 +362,7 @@
      "to_f": 52
     }
    },
-   "chains_to": "r1.2",
+   "chains_to": "r1.3",
    "chain_index": 1,
    "startup_f": 27,
    "active_f": 16,
@@ -404,7 +404,7 @@
      "to_f": 42
     }
    },
-   "chains_to": "r1.2",
+   "chains_to": "r1.3",
    "chain_index": 1,
    "startup_f": 30,
    "active_f": 16,
@@ -723,7 +723,8 @@
     "two_handed"
    ],
    "answers": [
-    "INFANTRY"
+    "INFANTRY",
+    "DUELIST"
    ]
   },
   "2h.r1.3": {
@@ -766,8 +767,7 @@
     "two_handed"
    ],
    "answers": [
-    "INFANTRY",
-    "DUELIST"
+    "INFANTRY"
    ]
   },
   "2h.r2": {
@@ -862,6 +862,47 @@
    "answers": [
     "TURTLE",
     "POISE_MONSTER"
+   ]
+  },
+  "2h.r2.follow": {
+   "anim": "clip_maul_2h_r2_follow",
+   "anim_owner": "lin_maul",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 79,
+   "active_f": 20,
+   "recovery_f": 128,
+   "stamina": 66,
+   "motion_value": 2.58,
+   "poise_damage": 108,
+   "root_dz_m": 1.014,
+   "arc_sweep_deg": 152.2,
+   "shape": "smash",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
    ]
   },
   "2h.run.r1": {
@@ -1261,5 +1302,5 @@
    ]
   }
  },
- "notes": "Swung round rather than dropped: six frames faster and it arrives from the side, so it cannot be walked out from under.\n\nLineage: maul — A quarry maul swung round rather than dropped: it arrives from the side and it takes the wielder with it.\nMandatory slots present: 25/25. Total slots: 29.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "Swung round rather than dropped: six frames faster and it arrives from the side, so it cannot be walked out from under.\n\nLineage: maul — A quarry maul swung round rather than dropped: it arrives from the side and it takes the wielder with it.\nMandatory slots present: 25/25. Total slots: 30.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

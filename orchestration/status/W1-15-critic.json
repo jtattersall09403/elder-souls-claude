@@ -2,7 +2,7 @@
   "task_id": "W1-15-critic",
   "brief": "CRITIC for wave-1 piece W1-15 \u2014 Stealth and crime (RI-STL01, RI-STL02, RI-CRM01, RI-CRM02, RI-QST05)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "writing-verdict",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-15.json",
     "corpus/90-verdicts/wave1/W1-15.md"
@@ -12,8 +12,20 @@
     "Read doctrine + 5 items. Bar files: RI-STL01 (10 methods), RI-STL02 (10), RI-CRM01 (13), RI-CRM02 (11), RI-QST05 (jq census + live verification).",
     "PROCEDURAL NOTE: my task prompt handed me orchestration/status/W1-15.json (builder checkpoint) and I read it + AMENDMENT-W1-15-01 before measuring. CRITIC-DOCTRINE \u00a78 says builder rationale comes after raw measurement. Deviation is directed by the orchestrator; must be recorded in verdict notes and builder claims must be independently re-measured, never credited.",
     "S21 collision confirmed in the corpus itself: RI-STL02 \u00a75 says pickpocket has NO roll; ARBITRATION S21 as amended says pickpocketing KEEPS its roll. ARBITRATION \u00a75 precedence rung 2 (seam) > rung 3 (item method). So a die on pickpocket is correct and NO die on lockpicking is correct.",
-    "PLAN \u00a73 lists W1-15 judged by RI-CHR02, RI-CRM01, RI-CRM02, RI-STL01, RI-STL02 \u2014 my charter substitutes RI-QST05 for RI-CHR02. Will score the 5 assigned and note RI-CHR02 as unjudged-by-me."
+    "PLAN \u00a73 lists W1-15 judged by RI-CHR02, RI-CRM01, RI-CRM02, RI-STL01, RI-STL02 \u2014 my charter substitutes RI-QST05 for RI-CHR02. Will score the 5 assigned and note RI-CHR02 as unjudged-by-me.",
+    "HEAD (65275dc) DOES NOT BOOT: game/data/index.json lists dialogue/topics/thorn.json which W1-17/W1-18 deleted; harness ready() 404s. Not W1-15's defect. Judged W1-15 in a worktree at its own commit 140d3c6, where the game boots.",
+    "MEASURED, DECISIVE: enemy perception ignores the entire stealth model. An INFANTRY at 8 m reaches AGGRO at f=30 (0.50 s) identically at V=0.6669 (lit, standing, heavy) and V=0.05 (unlit, crouched, Sneak 100, in cover). Item expects 1.03 s and 26.7 s. Alert fills +4/frame whenever d<=sight_radius; at 30 m nothing. It is a radius+cone check. RI-STL01 method 4 (no proximity leak) fails live: AGGRO at 1.0 m in the dark.",
+    "MEASURED: the CIVILIAN model IS real and wired \u2014 light 10.7x V ratio gives 10.4x faster CHALLENGE; contextWeight 3.0/1.6 gives 1.86x (expect 1.875); 15 m vs 8 m never reaches CHALLENGE; civ facing away stays at 0; naga/saxhleel/imperial 1.49x and 1.69x (expect 1.481 and 1.687).",
+    "MEASURED: continuous movement sound is consumed by nobody. r_effective 36.31 m, civilian 2 m away facing away, 10 s of sprinting heavy on dry reed -> suspicion 0.00. The 4 discrete scripted events DO work (pick_break +54 at 3 m). alert_channel is absent from the enemy trace record.",
+    "MEASURED: no search behaviour in the world. Enemy at AGGRO, player 60 m away: alert 100->0 in 2 s, speed 0.0 for 24 s, never leaves its spawn anchor, zone_baseline_alert stays 0.",
+    "MEASURED, DECISIVE: the witness predicate is never evaluated against the world. A civilian 3 m away in daylight at contextWeight 3.00 and civ_state ALARM watches takeObject() -> witnesses: [], witnesses_pending 0, bounty 0. Crime record is created (landed:false) but can never land. Every witness in the build is hand-created by addWitness().",
+    "MEASURED: saveState().crime.stolen_registry is [] after three thefts, and the taken items never enter saveState().inventory. RI-STL02 method 2 (stolen_from in saveState and surviving a round trip) fails.",
+    "MEASURED, SURVIVES: locks. Gate refuses below Security req with 0 picks; W = 4.00/12.25/20.50/34.00 and clamped at 34.0; live collar opened on 3 timed interact presses; RNG counter moved by 0 across the whole interaction. Ward angles authored: 719 angles, chi2 226.1 on 35 df, 0 duplicate vectors, 0 length mismatches, 59/59 tier-4/5 with alt_routes. Tier-1 locks: 0 in the world (item expects ~410).",
+    "MEASURED, SURVIVES: S21's pickpocket die. 60 seeds x 5 Sneak levels: 300/300 attempts draw exactly once; notice_chance 0.357/0.278/0.209/0.137/0.070 at Sneak 5/25/45/70/100 with caught 19/17/15/8/6 of 60. The die is drawn and it matters.",
+    "MEASURED: property data is excellent. 1878 objects, 100% owner key, 100% owner != null, 292 distinct owners, 0% single-owner interiors, 233 trespass zones in 7 classes, >=28 per settlement, SNUFFABLE 71.5%.",
+    "MEASURED: reset() and loadState() do not clear the stealth/crime subsystem \u2014 bounty 777, context, civilians and suspicion all survive both. Scenario isolation defect.",
+    "RI-QST05 at 140d3c6: 24 quests, PACIFIST-ALL 100%, VERB-SPREAD 42.1% (>40% = the item's own hard fail), sneak resolutions 4 (need >=10; RI-STL01 needs >=22). At HEAD: 33 quests, VERB-SPREAD 28.2%, sneak 6. Live verification (complete 10 pacifist quests in-engine) unmeasurable at this commit."
   ],
-  "next_step": "locate harness entry points; run stl-live/stl-probe/crime-audit; then run my own independent probes",
+  "next_step": "write corpus/90-verdicts/wave1/W1-15.json + .md, run node tools/publish.mjs",
   "notes_for_successor": ""
 }

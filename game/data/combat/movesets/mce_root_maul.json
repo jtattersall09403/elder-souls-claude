@@ -976,6 +976,47 @@
     "POISE_MONSTER"
    ]
   },
+  "2h.r2.follow": {
+   "anim": "clip_flail_2h_r2_follow",
+   "anim_owner": "lin_flail",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 58,
+   "active_f": 15,
+   "recovery_f": 95,
+   "stamina": 44,
+   "motion_value": 1.93,
+   "poise_damage": 66,
+   "root_dz_m": 0.379,
+   "arc_sweep_deg": 148.3,
+   "shape": "smash",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.09,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
+   ]
+  },
   "2h.run.r1": {
    "anim": "clip_flail_2h_run_r1",
    "anim_owner": "lin_flail",
@@ -1367,5 +1408,5 @@
    ]
   }
  },
- "notes": "Eight frames slower with a pile-driver heavy: it is a great hammer that a one-handed grip can still lift.\n\nLineage: flail — A head on a chain. It cannot be stopped once started, so the arc is wider, the follow-through longer, and it comes round the side rather than down.\nMandatory slots present: 25/25. Total slots: 32.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "Eight frames slower with a pile-driver heavy: it is a great hammer that a one-handed grip can still lift.\n\nLineage: flail — A head on a chain. It cannot be stopped once started, so the arc is wider, the follow-through longer, and it comes round the side rather than down.\nMandatory slots present: 25/25. Total slots: 33.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

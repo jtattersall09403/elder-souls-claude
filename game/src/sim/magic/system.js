@@ -23,12 +23,15 @@
 
 import { focusBase, focusCost, focusMaxFor, spellSlotsFor, skillDiscount, commissionPrice, goldPrice, tierFor } from './cost.js';
 import { buildCastMove } from './moves.js';
+import { HANDLERS, DAMAGE_EFFECTS, BUILDUP, assertRegistryComplete } from './apply.js';
 
 const DEG = Math.PI / 180;
 
 /** RI-MAG02 §H: global clamps. Morrowind's worst breakage closed by a clamp, not a removal. */
 export const CHAMELEON_CLAMP_PCT = 80;
 export const RESIST_CLAMP_PCT = 85;
+
+export { DAMAGE_EFFECTS };
 
 export class MagicSystem {
   /**
@@ -76,6 +79,129 @@ export class MagicSystem {
     this._moves = new Map();             // spellId -> the Move object, built once
     this.events = [];                    // drained by the trace
     this.stats = { casts: 0, focusSpent: 0, interrupts: 0, ritualAborts: 0, drops: 0, prngDraws: 0 };
+
+    // ---- RI-MAG06: the consuming systems --------------------------------------------------
+    //
+    // `w` is the bound world — {sim, combat, bus, engine} — set by Engine after construction.
+    // Every handler in apply.js reaches its consuming system through it, so a MagicSystem
+    // constructed for offline arithmetic (tools/analysis/*.mjs) still prices spells and simply
+    // reports `consumer: <name>, changed: false` instead of throwing.
+    this.w = null;
+    assertRegistryComplete(data.effects.effects.map((e) => e.id));
+
+    // The small registers no other piece owns yet. Each is REAL STATE that a harness call
+    // reports and a critic reads; the durable half of each (a door that stays unlocked, a
+    // shortcut that stays open, a mark that survives a save) is written through to
+    // `sim.world.*` / `sim.quest.*`, which are already on the save manifest.
+    this.world = {
+      locks: new Map(),        // id -> {id, tier, locked, pos, zone, opens}
+      traps: new Map(),        // id -> {id, kind, armed, pos}
+      breakables: new Map(),   // id -> {id, intact, hardness, pos, opens_shortcut, collisionShape}
+      items: new Map(),        // id -> {id, condition_pct}
+      keys: [],                // [{id, pos}] — what detect_key finds
+      shrines: [],             // [{id, pos}] — what intervention returns you to
+      testimony: { _default: 'the_drowned_road_rumour' },   // corpse id -> knowledge key
+    };
+    this.markers = [];                   // diegetic detect_life / detect_key smudges. NEVER HUD.
+    this.walls = [];                     // conjured collision, live in sim.cell
+    this.summons = [];                   // [{eid, kind, unfold_f, expires_f}]
+    this.soulMarks = new Map();          // body id -> {until_f, grade, speaker}
+    this.reachM = 1.6;                   // interaction reach; telekinesis raises it
+    this.baseReachM = 1.6;
+    this.jumpApexMult = 1;               // leap multiplies the jump arc's apex
+    this.boundWeapon = null;
+    this.attrBase = null;                // captured the first time anything fortifies or drains
+    this.fall = { terminalMps: 18, defaultTerminalMps: 18, damageEnabled: true, velMps: 0, peakY: 0 };
+    this.water = { buoyant: false, breathes: false, drowning: false, drownF: 1800, drownMaxF: 1800, swimDenied: true, depthM: 0 };
+    this.peakY = 0;
+    this.drift = { mps: 0, capMps: this.lev.horizontal_drift_mps };
+  }
+
+  /**
+   * Bind the consuming systems. Called once by Engine after the combat system exists.
+   * This is the line that turns 55 labels into 55 verbs: before it, `applyEffects` had nothing
+   * to write into but its own timer list, which is exactly how wave 1 shipped.
+   */
+  bindWorld(w) {
+    this.w = w;
+    if (w && w.magicWorld) this.loadWorldData(w.magicWorld);
+    return this;
+  }
+
+  /**
+   * Seed the lock/trap/breakable/item/key/shrine registers from `game/data/magic/wards.json`
+   * and from whatever the active cell declares. Idempotent: re-seeding restores the pristine
+   * state, which is what `loadState()` needs.
+   */
+  loadWorldData(doc) {
+    const W = this.world;
+    W.locks.clear(); W.traps.clear(); W.breakables.clear(); W.items.clear();
+    W.keys = []; W.shrines = []; W.testimony = { _default: 'the_drowned_road_rumour' };
+    for (const l of (doc.locks || [])) W.locks.set(l.id, { ...l, locked: l.locked !== false });
+    for (const t of (doc.traps || [])) W.traps.set(t.id, { ...t, armed: t.armed !== false });
+    for (const b of (doc.breakables || [])) W.breakables.set(b.id, { ...b, intact: b.intact !== false, collisionShape: null });
+    for (const i of (doc.items || [])) W.items.set(i.id, { ...i });
+    W.keys = (doc.keys || []).map((k) => ({ ...k, pos: k.pos.slice() }));
+    W.shrines = (doc.shrines || []).map((s) => ({ ...s, pos: s.pos.slice() }));
+    Object.assign(W.testimony, doc.testimony || {});
+    return this.worldCensus();
+  }
+
+  // ---- register readouts. Each is what RI-MAG06 §B calls "the delta that proves it". --------
+
+  lockCensus() { return { locked: [...this.world.locks.values()].filter((l) => l.locked).map((l) => l.id).sort(), unlocked: [...this.world.locks.values()].filter((l) => !l.locked).map((l) => l.id).sort() }; }
+  trapCensus() { return { armed: [...this.world.traps.values()].filter((t) => t.armed).map((t) => t.id).sort(), disarmed: [...this.world.traps.values()].filter((t) => !t.armed).map((t) => t.id).sort() }; }
+  breakableCensus() { return { intact: [...this.world.breakables.values()].filter((b) => b.intact).map((b) => b.id).sort(), broken: [...this.world.breakables.values()].filter((b) => !b.intact).map((b) => b.id).sort() }; }
+  itemCensus() { return Object.fromEntries([...this.world.items.values()].map((i) => [i.id, i.condition_pct])); }
+  wallCensus() { return { walls: this.walls.length, ids: this.walls.map((w) => w.id) }; }
+
+  worldCensus() {
+    return {
+      locks: this.lockCensus(), traps: this.trapCensus(), breakables: this.breakableCensus(),
+      items: this.itemCensus(), walls: this.wallCensus(),
+      keys: this.world.keys.length, shrines: this.world.shrines.map((s) => s.id),
+      markers: this.markers.slice(), summons: this.summons.slice(),
+      reach_m: round2(this.reachM), jump_apex_mult: round2(this.jumpApexMult),
+      bound_weapon: this.boundWeapon, soul_marks: [...this.soulMarks.keys()].sort(),
+      fall: { terminal_mps: this.fall.terminalMps, damage_enabled: this.fall.damageEnabled, peak_y_m: round2(this.peakY) },
+      water: { buoyant: this.water.buoyant, breathes: this.water.breathes, drown_f: this.water.drownF, drowning: this.water.drowning },
+      hud_elements: 0,
+    };
+  }
+
+  /** Squared planar distance from the caster to a world point. Used by the world-verb handlers. */
+  dist2(pos) {
+    const b = this.w && this.w.combat ? this.w.combat.player : null;
+    if (!b || !pos) return Infinity;
+    const dx = pos[0] - b.pos[0], dz = pos[2] - b.pos[2];
+    return dx * dx + dz * dz;
+  }
+
+  /** Remove a primitive from a live collision cell — the undo half of `wall` and `shatter`. */
+  removeShape(cell, shape) {
+    if (!cell || !shape) return false;
+    const i = cell.shapes.indexOf(shape);
+    if (i >= 0) { cell.shapes.splice(i, 1); return true; }
+    return false;
+  }
+
+  /** The one place the player is moved by magic. `mark`, `recall` and `intervention` all land here. */
+  teleportTo(frame, pos, cause, site) {
+    const b = this.w && this.w.combat ? this.w.combat.player : null;
+    if (!b) return null;
+    const from = [b.pos[0], b.pos[1], b.pos[2]];
+    b.pos[0] = pos[0]; b.pos[1] = pos[1] || 0; b.pos[2] = pos[2];
+    if (this.w.sim) { this.w.sim.player.pos[0] = b.pos[0]; this.w.sim.player.pos[1] = b.pos[1]; this.w.sim.player.pos[2] = b.pos[2]; }
+    this._emit(frame, 'teleport', { cause, site: site || null, from: from.map(round2), to: [b.pos[0], b.pos[1], b.pos[2]].map(round2) });
+    return { from, to: b.pos.slice() };
+  }
+
+  /** `false_face`'s consumer, read out as a number so a census has something to compare. */
+  disguiseSuspicionMult() {
+    const st = this.w && this.w.sim ? this.w.sim.stealth : null;
+    if (!st) return 1;
+    const r = st.d.races.guards.law_factor[st.p.race];
+    return r ? r.suspicion : 1.0;
   }
 
   // ============================================================================================
@@ -408,18 +534,111 @@ export class MagicSystem {
     }
 
     // --- active effects: integer frame countdown, never a seconds comparison.
+    //
+    // A row here is a LEASE ON A MUTATION, not a countdown. Expiry calls the handler's own
+    // `_undo`, which is why `feather` is a temporary tier change and not a permanent one, and
+    // why the with-effect and without-effect control runs RI-MAG06 M2 demands actually converge.
     for (let i = this.active.length - 1; i >= 0; i--) {
       const a = this.active[i];
       a.remaining_f--;
       if (a.remaining_f <= 0) {
-        this._emit(frame, 'effect_expire', { effect: a.effect, source: a.source });
-        if (a.effect === 'levitate') this._endLevitation(frame, 'expired');
+        if (a._undo) { try { a._undo(); } catch (e) { /* the consuming system is already gone */ } }
+        this._emit(frame, 'effect_expire', { effect: a.effect, source: a.source, undone: !!a._undo });
         this.active.splice(i, 1);
       }
     }
 
+    // --- S11 buildup meters: integer decay per frame, and proc timers that end.
+    this.stepStatus(frame, targets);
+
+    // --- control verbs whose duration has run out on the target rather than on us.
+    for (const t of targets) {
+      if (t.calmedUntil && frame >= t.calmedUntil) { t.calmedUntil = 0; t.yielded = false; }
+      if (t.fleeingUntil && frame >= t.fleeingUntil) { t.fleeingUntil = 0; t.yielded = false; }
+      if (t.charmedUntil && frame >= t.charmedUntil) { t.charmedUntil = 0; t.yielded = false; }
+      if (t.frenziedUntil && frame >= t.frenziedUntil) { t.frenziedUntil = 0; t.frenzyTarget = null; }
+      if (t.silencedUntil && frame >= t.silencedUntil) { t.silencedUntil = 0; t.silenced = false; }
+      // soul_trap: the gem fills on the target's DEATH, not on the cast (RI-MAG06 §B).
+      if (t.dead && this.soulMarks.has(t.id)) {
+        const m = this.soulMarks.get(t.id);
+        this.soulMarks.delete(t.id);
+        if (frame <= m.until_f) this.trapSoul(frame, m.instance, m.grade, m.speaker);
+      }
+    }
+
+    // --- summons whose lease has run out (the record, and the entity).
+    for (let i = this.summons.length - 1; i >= 0; i--) {
+      if (frame >= this.summons[i].expires_f) {
+        const s = this.summons[i];
+        this.summons.splice(i, 1);
+        if (s.eid && this.w && this.w.engine) { try { this.w.engine.despawn(s.eid); } catch (e) { /* gone */ } }
+      }
+    }
+
+    // --- detect_life re-samples every frame: a smudge is where the thing IS, not where it was.
+    for (const a of this.active) {
+      if (a.effect === 'detect_life') HANDLERS.detect_life(this, frame, a, null, null);
+    }
+
     // --- residue decays (RI-MAG05 L7: 20-90 s of char, rime, scorch, wet patch, spore bloom).
     for (let i = this.residues.length - 1; i >= 0; i--) if (--this.residues[i].remaining_f <= 0) this.residues.splice(i, 1);
+  }
+
+  /**
+   * S11's Souls half: the buildup meter. Fixed integer per contact, integer decay per frame,
+   * an integer threshold and a proc with a duration. The one rule the item cares about is that
+   * a status NEVER goes 0 -> applied in one frame, and the meter is what makes that structural.
+   */
+  stepStatus(frame, targets) {
+    const all = targets ? targets.slice() : [];
+    const me = this.w && this.w.combat ? this.w.combat.player : null;
+    if (me) all.push(me);
+    for (const b of all) {
+      if (b.status) {
+        for (const kind of Object.keys(b.status)) {
+          const cfg = BUILDUP[kind];
+          if (!cfg || !b.status[kind]) continue;
+          b.status[kind] = Math.max(0, b.status[kind] - cfg.decay_per_s / 60);
+        }
+      }
+      if (b.statusProc) {
+        for (const kind of Object.keys(b.statusProc)) {
+          if (frame >= b.statusProc[kind]) {
+            delete b.statusProc[kind];
+            this._emit(frame, 'status_proc_end', { kind, on: b.id });
+          }
+        }
+      }
+      // A paralysed body does not act. It is not staggered, not dead, and not invulnerable —
+      // it simply stops, which is the horror RI-MAG05 §A3 describes and the mechanic §B names.
+      if (b.paralysedUntil && frame < b.paralysedUntil) {
+        b.move = null;
+        b.hitboxActive = false;
+        b.state = 'PARALYSED';
+        b.speedMps = 0;
+      } else if (b.paralysedUntil && frame >= b.paralysedUntil) {
+        b.paralysedUntil = 0;
+        if (b.state === 'PARALYSED') b.state = 'IDLE';
+      }
+    }
+  }
+
+  /**
+   * `invisibility` breaks on attack, cast, interact, container and COMBAT (RI-MAG06 §B).
+   * Called from the places those five things happen; the effect row is dropped, its undo runs,
+   * and the break is on the event stream with its cause.
+   */
+  breakInvisibility(frame, cause) {
+    let broke = false;
+    for (let i = this.active.length - 1; i >= 0; i--) {
+      if (this.active[i].effect !== 'invisibility') continue;
+      const a = this.active[i];
+      if (a._undo) a._undo();
+      this.active.splice(i, 1);
+      broke = true;
+      this._emit(frame, 'effect_break', { effect: 'invisibility', cause, remaining_f: a.remaining_f });
+    }
+    return broke;
   }
 
   _residue(frame, spellId, at) {
@@ -447,17 +666,53 @@ export class MagicSystem {
     return raw;
   }
 
+  /**
+   * RI-MAG06, the whole item, in one method.
+   *
+   * Wave 1 pushed a timer row and emitted an `effect_apply` event, and the critic's verdict was
+   * that `effect_apply` "proves the effect was DISPATCHED, which is not the same as APPLIED".
+   * Every term now goes through its own handler in `apply.js`, the handler writes into the one
+   * system RI-MAG06 §B names for that effect, and the before/after readings the handler took
+   * ride out on the event as `consumer` / `before` / `after` / `changed`.
+   *
+   * That last part is deliberate and it is not decoration: it means the trace a critic drains
+   * carries the implementation's own claim about which system it moved, next to the reading
+   * that claim rests on. A handler that claims `stealth.V` and does not move it is now a
+   * self-contradicting event rather than a silent success.
+   */
   applyEffects(frame, spell, target, attrValue) {
     const out = [];
     for (const t of spell.effects) {
       const e = this.effects[t.effect];
       const mag = this.outputOf(t.effect, t.magnitude, attrValue === undefined ? 30 : attrValue);
-      const rec = { effect: t.effect, magnitude: mag, remaining_f: Math.round((t.duration_s || 0) * 60), source: spell.id, spell: spell.id, school: e.school };
-      if (rec.remaining_f > 0) { this.active.push(rec); }
-      this._emit(frame, 'effect_apply', { effect: t.effect, magnitude: round2(mag), duration_f: rec.remaining_f, target: target ? target.id : 'self', spell: spell.id });
+      const rec = {
+        effect: t.effect, magnitude: mag, remaining_f: Math.round((t.duration_s || 0) * 60),
+        source: spell.id, spell: spell.id, school: e.school,
+        target: target ? target.id : 'self',
+      };
+      // The handler runs BEFORE the row is pushed, so a timed effect's own `_undo` closure is
+      // attached to the row that will expire, and an instantaneous effect never leaves a row.
+      const h = HANDLERS[t.effect];
+      let census = null;
+      try {
+        census = h(this, frame, rec, target, spell);
+      } catch (err) {
+        // A handler that throws is a build defect, not a gameplay outcome. Say which one.
+        throw new Error(`magic effect handler '${t.effect}' threw while applying ${spell.id}: ${err && err.message}`);
+      }
+      if (rec.remaining_f > 0) this.active.push(rec);
+      else if (rec._undo) rec._undo();          // an instantaneous effect never holds a lease
+      this._emit(frame, 'effect_apply', {
+        effect: t.effect, magnitude: round2(mag), duration_f: rec.remaining_f,
+        target: target ? target.id : 'self', spell: spell.id,
+        // RI-MAG06's paired read, taken by the code that did the work.
+        consumer: census ? census.consumer : null,
+        before: census ? census.before : null,
+        after: census ? census.after : null,
+        changed: census ? !!census.changed : false,
+        is_damage_effect: DAMAGE_EFFECTS.has(t.effect),
+      });
       out.push(rec);
-      if (t.effect === 'levitate') this._beginLevitation(frame, rec.remaining_f);
-      if (t.effect === 'soul_trap') this.xulHesh += 0;   // increments on the TRAP, not the cast
     }
     return out;
   }
@@ -487,14 +742,21 @@ export class MagicSystem {
     this.levitating = true;
     this.airborne = true;
     this.altitude = 0;
-    this._emit(frame, 'levitate_begin', { duration_f: durationF, drift_mps: this.lev.horizontal_drift_mps, climb_mps: this.lev.climb_rate_mps });
+    this.groundY = this.w && this.w.combat && this.w.combat.player ? this.w.combat.player.pos[1] : 0;
+    this._emit(frame, 'levitate_begin', { duration_f: durationF, drift_mps: this.lev.horizontal_drift_mps, climb_mps: this.lev.climb_rate_mps, ground_y_m: round2(this.groundY) });
   }
 
+  /**
+   * Ending levitation puts the character back on the floor. Not instantly: `altitude` becomes
+   * the height it falls from, which is what makes ending it over a chasm a decision rather
+   * than a free descent — and what makes `slowfall` worth carrying alongside it.
+   */
   _endLevitation(frame, cause) {
     if (!this.levitating) return;
     this.levitating = false;
-    this.airborne = false;
-    this._emit(frame, 'levitate_end', { cause, altitude_m: round2(this.altitude) });
+    this.airborne = this.altitude > 0.05;
+    this.fall.velMps = 0;
+    this._emit(frame, 'levitate_end', { cause, altitude_m: round2(this.altitude), falling_from_m: round2(this.altitude) });
     for (let i = this.active.length - 1; i >= 0; i--) if (this.active[i].effect === 'levitate') this.active.splice(i, 1);
   }
 

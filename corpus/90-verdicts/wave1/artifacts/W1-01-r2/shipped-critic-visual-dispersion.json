@@ -1,0 +1,922 @@
+{
+  "schema": "critic/visual-dispersion@1",
+  "measured_at": "2026-08-06T19:21:40.195Z",
+  "grid": "4x4",
+  "populations": {
+    "ours": {
+      "label": "ours (13 regions x 9)",
+      "regions": 13,
+      "images": 117,
+      "loo_accuracy": 0.4359,
+      "loo_correct": 51,
+      "chance": 0.0769,
+      "mean_inter_centroid": 64.58,
+      "mean_intra_scatter": 64.25,
+      "fisher_separation": 1.005,
+      "closest_pairs": [
+        {
+          "a": "marauders-coast",
+          "b": "stone-forest",
+          "d": 25.1
+        },
+        {
+          "a": "blackwood",
+          "b": "deep-marshes",
+          "d": 28.9
+        },
+        {
+          "a": "marauders-coast",
+          "b": "salt-hills",
+          "d": 32.1
+        },
+        {
+          "a": "salt-hills",
+          "b": "thornmarsh",
+          "d": 32.2
+        },
+        {
+          "a": "marauders-coast",
+          "b": "thornmarsh",
+          "d": 32.3
+        },
+        {
+          "a": "salt-hills",
+          "b": "valus-ridge",
+          "d": 32.3
+        }
+      ],
+      "confusions": [
+        {
+          "file": "reports/region-shots/frame-003.png",
+          "truth": "western-rootlands",
+          "predicted": "hive"
+        },
+        {
+          "file": "reports/region-shots/frame-004.png",
+          "truth": "crimson-coast",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-005.png",
+          "truth": "eastern-rootlands",
+          "predicted": "western-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-008.png",
+          "truth": "stone-forest",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-009.png",
+          "truth": "stone-forest",
+          "predicted": "marauders-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-010.png",
+          "truth": "hive",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-011.png",
+          "truth": "western-rootlands",
+          "predicted": "hive"
+        },
+        {
+          "file": "reports/region-shots/frame-012.png",
+          "truth": "hive",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-013.png",
+          "truth": "stone-forest",
+          "predicted": "marauders-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-015.png",
+          "truth": "stone-forest",
+          "predicted": "marauders-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-016.png",
+          "truth": "salt-hills",
+          "predicted": "western-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-017.png",
+          "truth": "deep-marshes",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-020.png",
+          "truth": "stone-wastes",
+          "predicted": "valus-ridge"
+        },
+        {
+          "file": "reports/region-shots/frame-021.png",
+          "truth": "blackwood",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-022.png",
+          "truth": "stone-wastes",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-024.png",
+          "truth": "marauders-coast",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-025.png",
+          "truth": "salt-hills",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-026.png",
+          "truth": "crimson-coast",
+          "predicted": "clay-moor"
+        },
+        {
+          "file": "reports/region-shots/frame-028.png",
+          "truth": "marauders-coast",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-031.png",
+          "truth": "blackwood",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-033.png",
+          "truth": "marauders-coast",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-034.png",
+          "truth": "stone-forest",
+          "predicted": "marauders-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-035.png",
+          "truth": "crimson-coast",
+          "predicted": "clay-moor"
+        },
+        {
+          "file": "reports/region-shots/frame-036.png",
+          "truth": "clay-moor",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-038.png",
+          "truth": "salt-hills",
+          "predicted": "stone-forest"
+        },
+        {
+          "file": "reports/region-shots/frame-039.png",
+          "truth": "eastern-rootlands",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-040.png",
+          "truth": "marauders-coast",
+          "predicted": "valus-ridge"
+        },
+        {
+          "file": "reports/region-shots/frame-046.png",
+          "truth": "clay-moor",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-049.png",
+          "truth": "stone-forest",
+          "predicted": "marauders-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-052.png",
+          "truth": "marauders-coast",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-053.png",
+          "truth": "salt-hills",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-055.png",
+          "truth": "western-rootlands",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-056.png",
+          "truth": "blackwood",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-057.png",
+          "truth": "hive",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-058.png",
+          "truth": "deep-marshes",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-059.png",
+          "truth": "salt-hills",
+          "predicted": "western-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-060.png",
+          "truth": "valus-ridge",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-061.png",
+          "truth": "deep-marshes",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-062.png",
+          "truth": "valus-ridge",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-063.png",
+          "truth": "stone-forest",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-064.png",
+          "truth": "crimson-coast",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-065.png",
+          "truth": "valus-ridge",
+          "predicted": "stone-forest"
+        },
+        {
+          "file": "reports/region-shots/frame-070.png",
+          "truth": "salt-hills",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-075.png",
+          "truth": "valus-ridge",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-076.png",
+          "truth": "western-rootlands",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-078.png",
+          "truth": "eastern-rootlands",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-079.png",
+          "truth": "western-rootlands",
+          "predicted": "hive"
+        },
+        {
+          "file": "reports/region-shots/frame-080.png",
+          "truth": "eastern-rootlands",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-081.png",
+          "truth": "thornmarsh",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-083.png",
+          "truth": "marauders-coast",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-084.png",
+          "truth": "valus-ridge",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-086.png",
+          "truth": "stone-forest",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-087.png",
+          "truth": "blackwood",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-088.png",
+          "truth": "salt-hills",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-089.png",
+          "truth": "thornmarsh",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-090.png",
+          "truth": "clay-moor",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-091.png",
+          "truth": "stone-forest",
+          "predicted": "marauders-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-094.png",
+          "truth": "salt-hills",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-096.png",
+          "truth": "deep-marshes",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-097.png",
+          "truth": "thornmarsh",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-103.png",
+          "truth": "crimson-coast",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-106.png",
+          "truth": "stone-wastes",
+          "predicted": "valus-ridge"
+        },
+        {
+          "file": "reports/region-shots/frame-109.png",
+          "truth": "western-rootlands",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-110.png",
+          "truth": "thornmarsh",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-111.png",
+          "truth": "valus-ridge",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-116.png",
+          "truth": "thornmarsh",
+          "predicted": "stone-wastes"
+        }
+      ]
+    },
+    "ours_worst": {
+      "label": "ours worst",
+      "regions": 13,
+      "images": 39,
+      "loo_accuracy": 0.8205,
+      "loo_correct": 32,
+      "chance": 0.0769,
+      "mean_inter_centroid": 85.53,
+      "mean_intra_scatter": 24.21,
+      "fisher_separation": 3.533,
+      "closest_pairs": [
+        {
+          "a": "blackwood",
+          "b": "deep-marshes",
+          "d": 27.5
+        },
+        {
+          "a": "eastern-rootlands",
+          "b": "salt-hills",
+          "d": 38
+        },
+        {
+          "a": "thornmarsh",
+          "b": "valus-ridge",
+          "d": 38.8
+        },
+        {
+          "a": "salt-hills",
+          "b": "western-rootlands",
+          "d": 41.6
+        },
+        {
+          "a": "salt-hills",
+          "b": "thornmarsh",
+          "d": 44.9
+        },
+        {
+          "a": "marauders-coast",
+          "b": "stone-forest",
+          "d": 47.8
+        }
+      ],
+      "confusions": [
+        {
+          "file": "reports/region-shots/frame-007.png",
+          "truth": "western-rootlands",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-021.png",
+          "truth": "blackwood",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-028.png",
+          "truth": "marauders-coast",
+          "predicted": "stone-forest"
+        },
+        {
+          "file": "reports/region-shots/frame-068.png",
+          "truth": "hive",
+          "predicted": "valus-ridge"
+        },
+        {
+          "file": "reports/region-shots/frame-074.png",
+          "truth": "blackwood",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-083.png",
+          "truth": "marauders-coast",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-087.png",
+          "truth": "blackwood",
+          "predicted": "deep-marshes"
+        }
+      ]
+    },
+    "ours_day": {
+      "label": "ours day",
+      "regions": 13,
+      "images": 39,
+      "loo_accuracy": 0.7436,
+      "loo_correct": 29,
+      "chance": 0.0769,
+      "mean_inter_centroid": 99.95,
+      "mean_intra_scatter": 32.24,
+      "fisher_separation": 3.1,
+      "closest_pairs": [
+        {
+          "a": "stone-wastes",
+          "b": "valus-ridge",
+          "d": 36.9
+        },
+        {
+          "a": "marauders-coast",
+          "b": "stone-forest",
+          "d": 39.8
+        },
+        {
+          "a": "salt-hills",
+          "b": "thornmarsh",
+          "d": 47.8
+        },
+        {
+          "a": "eastern-rootlands",
+          "b": "salt-hills",
+          "d": 48.2
+        },
+        {
+          "a": "thornmarsh",
+          "b": "valus-ridge",
+          "d": 50.4
+        },
+        {
+          "a": "deep-marshes",
+          "b": "stone-forest",
+          "d": 51.6
+        }
+      ],
+      "confusions": [
+        {
+          "file": "reports/region-shots/frame-011.png",
+          "truth": "western-rootlands",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-017.png",
+          "truth": "deep-marshes",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-031.png",
+          "truth": "blackwood",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-037.png",
+          "truth": "valus-ridge",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-053.png",
+          "truth": "salt-hills",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-075.png",
+          "truth": "valus-ridge",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-082.png",
+          "truth": "marauders-coast",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-084.png",
+          "truth": "valus-ridge",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-088.png",
+          "truth": "salt-hills",
+          "predicted": "valus-ridge"
+        },
+        {
+          "file": "reports/region-shots/frame-107.png",
+          "truth": "deep-marshes",
+          "predicted": "blackwood"
+        }
+      ]
+    },
+    "ours_night": {
+      "label": "ours night",
+      "regions": 13,
+      "images": 39,
+      "loo_accuracy": 0.3333,
+      "loo_correct": 13,
+      "chance": 0.0769,
+      "mean_inter_centroid": 33.63,
+      "mean_intra_scatter": 16.92,
+      "fisher_separation": 1.987,
+      "closest_pairs": [
+        {
+          "a": "crimson-coast",
+          "b": "western-rootlands",
+          "d": 6.8
+        },
+        {
+          "a": "clay-moor",
+          "b": "crimson-coast",
+          "d": 11.4
+        },
+        {
+          "a": "clay-moor",
+          "b": "western-rootlands",
+          "d": 12.5
+        },
+        {
+          "a": "blackwood",
+          "b": "crimson-coast",
+          "d": 13.1
+        },
+        {
+          "a": "eastern-rootlands",
+          "b": "marauders-coast",
+          "d": 13.7
+        },
+        {
+          "a": "clay-moor",
+          "b": "thornmarsh",
+          "d": 14.1
+        }
+      ],
+      "confusions": [
+        {
+          "file": "reports/region-shots/frame-004.png",
+          "truth": "crimson-coast",
+          "predicted": "western-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-010.png",
+          "truth": "hive",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-024.png",
+          "truth": "marauders-coast",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-033.png",
+          "truth": "marauders-coast",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-036.png",
+          "truth": "clay-moor",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-038.png",
+          "truth": "salt-hills",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-039.png",
+          "truth": "eastern-rootlands",
+          "predicted": "marauders-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-046.png",
+          "truth": "clay-moor",
+          "predicted": "crimson-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-052.png",
+          "truth": "marauders-coast",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-055.png",
+          "truth": "western-rootlands",
+          "predicted": "crimson-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-062.png",
+          "truth": "valus-ridge",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-064.png",
+          "truth": "crimson-coast",
+          "predicted": "western-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-065.png",
+          "truth": "valus-ridge",
+          "predicted": "deep-marshes"
+        },
+        {
+          "file": "reports/region-shots/frame-070.png",
+          "truth": "salt-hills",
+          "predicted": "western-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-076.png",
+          "truth": "western-rootlands",
+          "predicted": "crimson-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-078.png",
+          "truth": "eastern-rootlands",
+          "predicted": "clay-moor"
+        },
+        {
+          "file": "reports/region-shots/frame-080.png",
+          "truth": "eastern-rootlands",
+          "predicted": "thornmarsh"
+        },
+        {
+          "file": "reports/region-shots/frame-085.png",
+          "truth": "blackwood",
+          "predicted": "crimson-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-086.png",
+          "truth": "stone-forest",
+          "predicted": "crimson-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-089.png",
+          "truth": "thornmarsh",
+          "predicted": "crimson-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-090.png",
+          "truth": "clay-moor",
+          "predicted": "crimson-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-094.png",
+          "truth": "salt-hills",
+          "predicted": "western-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-096.png",
+          "truth": "deep-marshes",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-103.png",
+          "truth": "crimson-coast",
+          "predicted": "western-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-109.png",
+          "truth": "western-rootlands",
+          "predicted": "thornmarsh"
+        },
+        {
+          "file": "reports/region-shots/frame-111.png",
+          "truth": "valus-ridge",
+          "predicted": "western-rootlands"
+        }
+      ]
+    },
+    "morrowind": {
+      "label": "morrowind REF-A21-regions",
+      "regions": 9,
+      "images": 39,
+      "loo_accuracy": 0.2564,
+      "loo_correct": 10,
+      "chance": 0.1111,
+      "mean_inter_centroid": 86.09,
+      "mean_intra_scatter": 60.74,
+      "fisher_separation": 1.417,
+      "closest_pairs": [
+        {
+          "a": "ashlands",
+          "b": "red_mountain",
+          "d": 34.2
+        },
+        {
+          "a": "bitter_coast",
+          "b": "grazelands",
+          "d": 36.3
+        },
+        {
+          "a": "sheogorad",
+          "b": "west_gash",
+          "d": 40.4
+        },
+        {
+          "a": "azuras_coast",
+          "b": "sheogorad",
+          "d": 45.6
+        },
+        {
+          "a": "grazelands",
+          "b": "sheogorad",
+          "d": 47.7
+        },
+        {
+          "a": "bitter_coast",
+          "b": "red_mountain",
+          "d": 54.2
+        }
+      ],
+      "confusions": [
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/ascadian_isles__mw-2463721269.jpg",
+          "truth": "ascadian_isles",
+          "predicted": "ashlands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/ashlands__mw-289035345.jpg",
+          "truth": "ashlands",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/azuras_coast__mw-107883636.jpg",
+          "truth": "azuras_coast",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/azuras_coast__mw-403215391.jpg",
+          "truth": "azuras_coast",
+          "predicted": "molag_amur"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/azuras_coast__mw-403215676.jpg",
+          "truth": "azuras_coast",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/bitter_coast__mw-114528470.jpg",
+          "truth": "bitter_coast",
+          "predicted": "ascadian_isles"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/bitter_coast__mw-21736767.jpg",
+          "truth": "bitter_coast",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/bitter_coast__mw-659245370.jpg",
+          "truth": "bitter_coast",
+          "predicted": "grazelands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/grazelands__mw-166396528.jpg",
+          "truth": "grazelands",
+          "predicted": "ascadian_isles"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/grazelands__mw-247233314.jpg",
+          "truth": "grazelands",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/grazelands__mw-71698586.jpg",
+          "truth": "grazelands",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/grazelands__mw-75405035.jpg",
+          "truth": "grazelands",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/molag_amur__mw-213929320.jpg",
+          "truth": "molag_amur",
+          "predicted": "west_gash"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/molag_amur__mw-283618035.jpg",
+          "truth": "molag_amur",
+          "predicted": "azuras_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/molag_amur__mw-304735356.jpg",
+          "truth": "molag_amur",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-2377740817.jpg",
+          "truth": "red_mountain",
+          "predicted": "ashlands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-283272254.jpg",
+          "truth": "red_mountain",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-283272330.jpg",
+          "truth": "red_mountain",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-289707796.jpg",
+          "truth": "red_mountain",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-406419307.jpg",
+          "truth": "red_mountain",
+          "predicted": "ashlands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-165521399.jpg",
+          "truth": "sheogorad",
+          "predicted": "azuras_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-165521565.jpg",
+          "truth": "sheogorad",
+          "predicted": "molag_amur"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-35624236.jpg",
+          "truth": "sheogorad",
+          "predicted": "west_gash"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-403075968.jpg",
+          "truth": "sheogorad",
+          "predicted": "grazelands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-403076134.jpg",
+          "truth": "sheogorad",
+          "predicted": "grazelands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-403077882.jpg",
+          "truth": "sheogorad",
+          "predicted": "azuras_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/west_gash__mw-164077747.jpg",
+          "truth": "west_gash",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/west_gash__mw-431528628.jpg",
+          "truth": "west_gash",
+          "predicted": "azuras_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/west_gash__mw-446294602.jpg",
+          "truth": "west_gash",
+          "predicted": "sheogorad"
+        }
+      ]
+    }
+  }
+}

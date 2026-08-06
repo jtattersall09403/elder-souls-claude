@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-06T20:48:44Z",
+  "generated": "2026-08-06T21:00:19Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1
   ],
-  "verdicts_read": 7,
+  "verdicts_read": 8,
   "counts": {
-    "total": 7,
-    "open": 7,
+    "total": 8,
+    "open": 8,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -20,6 +20,9 @@
     ],
     "journey.chargen.diegesis": [
       "GAP-W1-creation-is-an-api-not-a-scene"
+    ],
+    "combat.hitbox.sweep": [
+      "GAP-W1-enemy-attacks-cannot-reach-contact-range"
     ],
     "magic.effects.utility": [
       "GAP-W1-magic-effects-no-behaviour"
@@ -38,7 +41,8 @@
     ]
   },
   "warnings": [
-    "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
+    "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-09-r2.json: closure of GAP-W1-combat-exemplar-has-no-danger is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
   ],
   "load_errors": [],
   "gaps": [
@@ -114,6 +118,48 @@
         "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/18-censusAnswer-nu_ixtu.png",
         "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
         "corpus/90-verdicts/wave1/artifacts/W1-07/blind/ours-beats.md"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-enemy-attacks-cannot-reach-contact-range",
+      "subsystem_path": "combat.hitbox.sweep",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-09-r2-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-09-r2.json",
+      "piece_id": "w1-09-combat-core-r2",
+      "severity": "blocking",
+      "what": "An enemy attack's swept volume does not cover the attacker's own root translation, so it cannot hit a target standing inside its forward root travel. Measured on a stationary player against a stationary champion_hist_marked in arena_champion, sweeping 0.0-4.0 m in 0.1 m steps: the chop hits from 1.2 m to 3.6 m and misses at EVERY distance from 0.0 to 1.1 m; the thrust hits 1.6-4.0 m and misses 0.0-1.5 m; combo_a hits 1.1-2.9 m and misses 0.0-1.0 m. Those minimum distances are the attacks' declared root_dz_m of 1.2 / 1.6 / 0.9. Zeroing root_dz_m moves the inner boundary to 0.6 / 0.8 / 0.8 m, confirming the root translation is the cause (data file reverted, git clean). The player's own weapons have no such hole — dagger, straight sword, spear, greatsword and halberd all hit from 0.0 m. The consequence, measured: a player who stands completely still at 0.8-1.1 m and does nothing but mash the light attack kills the 2876-HP champion in 1153-1377 frames taking ZERO damage, while the enemy completes 44-54 frames of live hitbox and suffers zero stagger frames. This is also the mechanical cause of the exemplar's headline out-of-band row: 141 of 211 enemy swings resolve as WHIFF, and 35 swings across five fights had the player invulnerable for every active frame at 0.01-0.60 m — inside the hole, where the swing could not have connected anyway, so i-frame negation reads 0.111 against a band of 0.40-0.80.",
+      "why_it_matters": "The correct way to fight this game's boss is to walk inside it and stand still, which makes rolling, spacing, stamina and the entire i-frame system that RI-CMB01 gets exactly right decorative.",
+      "remedy": {
+        "action": "Sweep the attacker's root translation as well as its animated pose. RI-CMB04 §A's step order runs 5 (consume root motion) before 8 (sweep + query, this frame's pose vs last frame's); the sweep must interpolate the weapon socket capsule between last frame's WORLD-space pose and this frame's WORLD-space pose — root delta included — and the SUBSTEPS count must be derived from the larger of the arc travel and the root travel, not from the arc alone. A root_dz_m of 1.2 m spread over a 10-frame active window is 0.12 m per frame, which is inside one capsule radius, so the fix is a space change rather than a substep increase; verify both. Then re-derive SUBSTEPS from the measured maximum of (per-frame tip travel, per-frame root travel).",
+        "targets": [
+          "game/src/combat (step 8 of RI-CMB04 §A's step order, the sweep + query stage)",
+          "game/data/combat/hitgeometry.json (the `sweep` block and its substep rationale)",
+          "tools/harness/critic-w1-09-r2.mjs --probe reach / --probe turtle (the acceptance instrument, already written)"
+        ],
+        "acceptance": "critic-r2-reach.json shows min_hit_distance_m <= 0.35 m for chop, thrust and combo_a with root_dz_m unchanged at 1.2 / 1.6 / 0.9, and no miss at any distance between 0.0 m and the attack's outer reach; AND critic-r2-turtle.json shows a motionless mashing player at 0.8, 1.0, 1.1 and 1.5 m taking >= 0.4 x max HP; AND the RI-CMB07 exemplar's row 11 (swings negated by i-frames) reaches 0.40-0.80 on the median of five fights with the enemy whiff share below 0.35.",
+        "ref_item": "RI-CMB04",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Sweep the attacker's root translation as well as its animated pose. RI-CMB04 §A's step order runs 5 (consume root motion) before 8 (sweep + query, this frame's pose vs last frame's); the sweep must interpolate the weapon socket capsule between last frame's WORLD-space pose and this frame's WORLD-space pose — root delta included — and the SUBSTEPS count must be derived from the larger of the arc travel and the root travel, not from the arc alone. A root_dz_m of 1.2 m spread over a 10-frame active window is 0.12 m per frame, which is inside one capsule radius, so the fix is a space change rather than a substep increase; verify both. Then re-derive SUBSTEPS from the measured maximum of (per-frame tip travel, per-frame root travel).",
+      "remedy_acceptance": "critic-r2-reach.json shows min_hit_distance_m <= 0.35 m for chop, thrust and combo_a with root_dz_m unchanged at 1.2 / 1.6 / 0.9, and no miss at any distance between 0.0 m and the attack's outer reach; AND critic-r2-turtle.json shows a motionless mashing player at 0.8, 1.0, 1.1 and 1.5 m taking >= 0.4 x max HP; AND the RI-CMB07 exemplar's row 11 (swings negated by i-frames) reaches 0.40-0.80 on the median of five fights with the enemy whiff share below 0.35.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-reach.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-preach.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-mech.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-turtle.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-spacing.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

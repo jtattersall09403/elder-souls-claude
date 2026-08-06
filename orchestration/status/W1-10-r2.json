@@ -1,22 +1,23 @@
 {
   "task_id": "W1-10-r2",
-  "brief": "orchestration/briefs/W1-10*.md (round 2, ULTRACODE)",
-  "started": "wave-1 round 2",
-  "state": "researching",
-  "prior_verdict": "corpus/90-verdicts/wave1/W1-10.json (0/10, five hard fails)",
-  "outputs_expected": [
-    "game/... live wiring so all 87 roster ids are equippable",
-    "contextual slot resolution (roll/backstep/sprint/air/block) live",
-    "M6 reconcile legacy class files to game/data/combat/frames.json",
-    "chains_to dangling fixes (82/87)",
-    "matrix conformance FST/CGS/GHM",
-    "exclusive_slots 2h.r2.follow resolution",
-    "two-hand slot buildout",
-    "harness surfaces anim_slot/hitstop_f/weapon_tip/block_success",
-    "position on AMENDMENT-W1-10-CRITIC-01"
+  "brief": "round 2, ULTRACODE, after 0/10 verdict",
+  "state": "building",
+  "findings": [
+    "ROOT CAUSE 1 (equip): CombatSystem.createPlayer reads d.movesets, which engine.js:2578 fills ONLY from combat/spine/*.json (7 class files). The 87 roster movesets land in d.weaponMovesets, read only by game/src/harness/weapons.js. Fix: make the roster the runtime source and alias the 7 spine ids to their class baselines.",
+    "ROOT CAUSE 2 (CFS): player.js _contextualVariant() derives contextual attacks by MULTIPLYING the base light/heavy row. It never selects a slot. MovesetLibrary.resolveSlot() exists and is correct but is called by nobody in the runtime.",
+    "ROOT CAUSE 3 (guard.counter): PlayerController.lastBlockFrame is initialised to -9999 and NEVER assigned. There is no BLOCK_SUCCESS anywhere in game/src.",
+    "ROOT CAUSE 4 (FST chain): build-movesets.mjs deletes the one-handed twin of every declared 2h exclusive. FST declares '2h.r1.4' exclusive, so r1.4 is deleted from a 5-link chain, leaving r1.3->r1.4 dangling and r1.5 orphaned.",
+    "ROOT CAUSE 5 (50x dangling 2h.r2->2h.r2.follow): h2Base mirror list omits 'r2.follow', so 2h.r2.follow only exists for the 5 classes that declare it as a 2h exclusive (DGR TSW SSW SPR UGS = 32 weapons). The other 50 chain into a slot that is never created.",
+    "ROOT CAUSE 6 (32x dangling r2->r2.follow): for those same 5 classes the 1h r2.follow is deleted as the exclusive's twin, but r2.chains_to is not repaired.",
+    "ROOT CAUSE 7 (M6 r2 split): game/data/weapons/classes.json r2_active disagrees with game/data/combat/frames.json on 6 of 7 spine classes. DGR 7 vs 6, SPR 9 vs 10, AXE 13 vs 14, HLB 15 vs 16, GSW 17 vs 20, UGS 21 vs 24. SSW 12 agrees. frames.json (RI-CMB02) wins per RI-WPN02 B.",
+    "ROOT CAUSE 8 (matrix CGS/GHM): grammar.mjs h1_chain is 3 for CGS and GHM; classes.json/RI-WPN02 B max_chain is 2.",
+    "TENSION FOUND: RI-WPN01 A makes r1.3 mandatory on every melee weapon ('terminal for 11 of 15 classes') while RI-WPN02 B gives CGS and GHM max_chain 2. Resolved by declaring r1.3 but terminating the standing chain at r1.2 and making roll.r1/backstep.r1 chain into r1.3 for chain-2 classes -- r1.3 stays mandatory-present and reachable, chainLen(r1.1)=2.",
+    "The critic's probe C measures CFS over 5 enclosing states x 4 SPINE weapon ids (dagger, straight-sword, axe, ultra-greatsword) -- so the spine ids MUST become slot-driven or CFS stays 0 however good the roster is.",
+    "probe C's BLOCK row presses light with no forward and no incoming attack, so guard.counter (which needs BLOCK_SUCCESS) can never fire there. RI-WPN06 C row 'shield.bash = light + forward, shield raised' is the only authored verb for a raised guard.",
+    "arena_probe's only enemy is probe_pulse (ai=scripted, never attacks unless queueEnemyScript'd), so no BLOCK_SUCCESS occurs in probe C.",
+    "game boots at HEAD now: game/data/dialogue/topics/thorn.json exists; the critic's 404 repair is no longer needed. tools/harness/smoke.mjs passes.",
+    "BASELINE REPRODUCED: node tools/harness/critic-w1-10a.mjs -> equipped_ok 0/87."
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read verdict md + critic artifacts + amendment",
-  "notes_for_successor": "Round 1 authored layer (1133 clips, 87 movesets) is GOOD - do not rebuild. The gap is wiring to the running game and measuring live via window.__HARNESS."
+  "next_step": "A: generator+classes.json fixes, regenerate 87 movesets. B: runtime slot dispatch. C: harness surfaces.",
+  "notes_for_successor": "Do not rebuild the authored layer. All work is (a) tools/weapons/* + game/data/weapons/classes.json regeneration, (b) game/src/combat/{moves,player,system,moveset}.js wiring, (c) game/src/sim/record.js + harness surfaces."
 }

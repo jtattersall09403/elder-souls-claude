@@ -1,0 +1,20 @@
+>> arrestTopics gold700/bounty800 [{"id":"pay","text":"I'll pay.","available":true,"refused":true,"refusal":"You're 100 gold short, and I can count. Choose again.","shortfall_g":100},{"id":"resist","text":"I'll not.","available":true,"refused":false},{"id":"serve","text":"Take me in.","available":true,"refused":false}]
+>> answerArrest pay (insufficient) {"ok":false,"refused":true,"shortfall_g":100,"line":"You're 100 gold short, and I can count. Choose again."}
+>> answerArrest pay (sufficient) {"ok":true,"gold_delta":-800,"bounty_after":0,"confiscate_stolen":true,"guard_disposition":5,"time_passes_days":0}
+>> bounty after pay {"imperial":0,"settlement":{},"interior":0}
+>> answerArrest resist {"ok":true,"bounty_after":1300,"aggro_radius_m":40,"aggro_within_f":30}
+>> bounty after resist {"imperial":1300,"settlement":{},"interior":0}
+>> answerArrest serve {"ok":true,"days":10,"skills_after":{"athletics":5,"acrobatics":18,"mercantile":5,"speechcraft":5,"marksman":18,"survival":19,"sneak":8,"security":7},"levels_lost":5,"lost_from":["acrobatics","marksman","survival","acrobatics","marksman"],"gained":{"sneak":3,"security":2},"confiscated":["all stolen_from items","lockpicks","probes"],"returned":["weapons","armour"],"not_touched":["attributes","souls","level","equipment","journal","quest_state"],"time_passes_days":10,"released_at":null,"summary":{"levels_lost":5,"lost_from":"acrobatics,marksman,survival,acrobatics,marksman","sneak":3,"security":2},"bounty_after":0,"confiscate_stolen":true}
+>> bounty after serve {"imperial":0,"settlement":{},"interior":0}
+>> jailLedger(1000) {"days":10,"skills_after":{"athletics":42,"acrobatics":31,"mercantile":55,"speechcraft":56,"marksman":28,"survival":37,"sneak":11,"security":9},"levels_lost":5,"lost_from":["speechcraft","speechcraft","speechcraft","speechcraft","speechcraft"],"gained":{"sneak":3,"security":2},"confiscated":["all stolen_from items","lockpicks","probes"],"returned":["weapons","armour"],"not_touched":["attributes","souls","level","equipment","journal","quest_state"],"time_passes_days":10,"released_at":null,"summary":{"levels_lost":5,"lost_from":"speechcraft,speechcraft,speechcraft,speechcraft,speechcraft","sneak":3,"security":2}}
+>> jailLedger identical across seeds true
+>> guardBand @200 {"race":"imperial","standing":"none","bounty":200,"thresholds":{"base":300,"race_law":1.35,"faction_law":1,"arrest_at":405,"attack_at":1620,"suspicion":0.8},"band":1,"behaviour":"greeting_only","arrest":false,"draws_weapon":false,"parley":null}
+>> guardBand @600 {"race":"imperial","standing":"none","bounty":600,"thresholds":{"base":300,"race_law":1.35,"faction_law":1,"arrest_at":405,"attack_at":1620,"suspicion":0.8},"band":2,"behaviour":"arrest_dialogue","arrest":true,"draws_weapon":false,"parley":null}
+>> guardBand @2000 {"race":"imperial","standing":"none","bounty":2000,"thresholds":{"base":300,"race_law":1.35,"faction_law":1,"arrest_at":405,"attack_at":1620,"suspicion":0.8},"band":3,"behaviour":"attack_on_sight","arrest":false,"draws_weapon":true,"parley":"surrender"}
+>> killWitness unobserved {"suppressed":true,"suppressed_g":225,"murder_bounty":0,"doubled_g":0}
+>> bounty after {"imperial":0,"settlement":{},"interior":0}
+>> killWitness observed {"suppressed":true,"suppressed_g":225,"murder_bounty":1000,"doubled_g":450}
+>> bounty after witnessed witness-murder {"imperial":1450,"settlement":{},"interior":0}
+>> playerDeath(enemy) {"wake":"hearth","sentence_begins":false,"crime_state_unchanged":true,"bounty_after":1450}
+>> bounty after death {"imperial":1450,"settlement":{},"interior":0}
+>> playerDeath(guard mid-arrest) {"wake":"hearth","sentence_begins":false,"crime_state_unchanged":true,"bounty_after":1450}

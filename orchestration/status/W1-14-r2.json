@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-14-r2",
+  "brief": "wave-1 piece W1-14 round 2 — Magic (seam S19), ULTRACODE. Round 1 scored 2.7/10.",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "gap": "GAP-W1-magic-effects-no-behaviour — one generic applicator behind 55 labels. 5/55 function.",
+  "outputs_expected": [
+    "tools/harness/mag-census.mjs (RI-MAG06 instrument: consuming-system census)",
+    "game/src/sim/magic/apply.js (per-effect handler registry)",
+    "game/src/sim/combat-bridge.js (restrict damage accumulator to the 5 damage effects)",
+    "levitation as real locomotion (pos[1], drift cap, input drops, no i-frames)",
+    "magic VFX (RI-MAG05 PART 1 + PART 2)",
+    "quest solvability by magic (RI-MAG04 M6/M7)",
+    "spells.json economy + tracking arc + castable carriers"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "boot at HEAD, confirm api-probe passes, then write the RI-MAG06 census instrument BEFORE any feature code",
+  "notes_for_successor": ""
+}
