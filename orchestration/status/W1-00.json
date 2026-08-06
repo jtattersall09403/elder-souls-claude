@@ -2,7 +2,7 @@
   "task_id": "W1-00",
   "brief": "wave-1 piece W1-00 - Harness, determinism and persistence",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "subsystem_paths": [
     "platform.determinism.harness",
     "platform.input.pipeline",
@@ -22,7 +22,18 @@
     "tools/harness/smoke.mjs, run-headless.mjs, trace.mjs, trace-stats.mjs"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read corpus/00-doctrine/ARBITRATION.md and corpus/80-methods/HARNESS.md",
+  "findings": [
+    "HARNESS.md S3 is the API contract; tools/lib/run.mjs REQUIRED_METHODS = setSeed, stepFrames, queueInputs, snapshot, traceStart, traceStop.",
+    "tools/lib/run.mjs drives: setSeed -> loadState(scenario.state) OR reset({seed}) -> setTimeOfDay/setWeather -> setup ops -> stepFrames(warmup) -> queueInputs -> traceStart -> stepFrames(chunk) + traceDrain loop -> traceStop. Game must match this order exactly.",
+    "trace-stats.mjs REQUIRED_FRAME=[f,t_ms,player]; REQUIRED_PLAYER=[pos,state,anim,anim_frame,phase,stamina,hp,iframe]; REQUIRED_ENEMY=[eid,state,phase,pos,dist_m,hp,anim_frame]. Missing any => integrity.missing_fields.",
+    "Judging items demand harness amendments A-JRN1,3,5,6,7,8,10,11,15 (JOURNEY-CRITIC-FLEET.md S7). Without them RI-JRN03/05, RI-PLT01/03 are all 'unmeasurable = 0'. Implementing them is in scope and is the difference between 0 and a score.",
+    "RI-CAM06 requires a `camera` trace block incl. shake, mode, hitstop, roll; camera must be updated INSIDE the fixed step.",
+    "RI-PLT01 Tier-H (fps, frame times) is NOT scoreable in this container (SwiftShader). Tier-S = drawCalls, triangles, programs, materials, alloc/step, sim CPU, decoupling.",
+    "RI-JRN05: IndexedDB authoritative; localStorage banned except <=1KB pointer; write protocol = one readwrite txn over [blobs,saves,meta]; monotonic generation; A/B double buffer; digest check with gen-1 fallback.",
+    "three.js 0.180.0 vendored to game/vendor/three/ (three.module.js + three.core.js + LICENSE). npm IS reachable.",
+    "viewpoints.json anchors needed: vista_primary, swamp_canopy, settlement_primary_street, interior_firelit, water_shallows, npc_showcase, material_showcase, dungeon_primary, arena_flat.",
+    "corpus/50-world/regions.json holds 13 real regions - transcribe, do not invent."
+  ],
+  "next_step": "write game/src core (rng, guards, fixed loop), then harness API, then save, then data tree",
   "notes_for_successor": ""
 }
