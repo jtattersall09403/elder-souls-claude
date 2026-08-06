@@ -473,10 +473,16 @@ a build with zero transport services has scored a 0 as a 10 and is void.
 ## How we lose
 
 - **The most likely outcome by a distance: nobody builds it, and every check we already shipped says
-  fine.** `RI-PRG04:255` gives its top score to "no warp code path exists"; `RI-WLD01:185` still contains
+  fine.** ~~`RI-PRG04:255` gives its top score to "no warp code path exists"; `RI-WLD01:185` still contains
   the words "no fast travel"; `subsystems.json` still titles the path *"In-fiction transport network
   only; no warp-to-pin"*. A naive Three.js build that ships a walkable 14.5 km² map and nothing else
-  passes all of them. **M1's N-fail is the only thing standing between this project and shipping S7
+  passes all of them.~~ **FIXED wave 0 (corpus-audit), drift ID-09/ID-17: all four are corrected.**
+  RI-PRG04's S7 axis now scores the network's *presence* and fails in both directions; RI-WLD01:185
+  says "transport network disabled for the measurement" rather than "no fast travel"; `subsystems.json`
+  retitles the path to state the requirement; RI-WLD05 #22 no longer calls root-travel "the only fast
+  travel". A build with zero transport services now fails RI-PRG04's S7 axis as well as M1's N-fail.
+  **The residual risk is unchanged in kind and smaller in degree:** M1's N-fail is still the check that
+  matters most, and it must still be run before anything else in this file. **M1's N-fail is the only thing standing between this project and shipping S7
   inverted**, and it must be run before anything else in this file.
 - **The barge is a fade to black.** The path of least resistance in Three.js is: click keeper → `player.position.set(destX, 0, destZ)` → fade. It costs gold, it advances the clock, it obeys the walked-once rule, and it passes M1, M2, M4, M5, M7, M8 and M9. It is a warp. **Only M6 catches it**, and M6 is the most expensive check in this item, so it is the one that will be quietly dropped.
 - **Someone adds a destination list to the HEARTH shrine.** "Just between discovered HEARTHs" — `RI-PRG04:274` already names this as the most seductive S7 violation. It arrives as a quality-of-life ticket in wave 3, and it deletes the entire network in one commit, because a free warp between 19 settlement bonfires strictly dominates 68 paid services.
