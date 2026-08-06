@@ -14,7 +14,16 @@
     "corpus/96-composition/CROSS-SYSTEM-BUILDER-BRIEF.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read existing RI-EXP01/02, PLAYTHROUGH-CRITIC, ARBITRATION, CORPUS-CONTRACT, SCORING, HARNESS, subsystems.json",
+  "findings": [
+    "PLAYTHROUGH-CRITIC.md \u00a74 ALREADY answers 'how does an agent honestly report on fun': 5 reasons agents can't (no hedonic ground truth, trained agreeableness, confabulation, no scarcity, no body/ears); banned adjective list; Family A revealed preference V1-V6; Family B structural necessity S1-S6 (fail-closed asymmetry); Family C adversarial first-person C1-C6; \u00a74.5 THE SABOTAGE CONTROL SAB-N/E/P/C is the load-bearing answer (instrument validity is empirical, calibration failure => VOID not FAIL). My items must EXTEND this, not restate it: each new RI must name which sabotage detects it and its margin.",
+    "RI-EXP01 shape: front-matter + The bar (with one-sentence builder target in blockquote) + The reference artifact (\u00a7A Morrowind table, \u00a7B Dark Souls table, \u00a7C shared derivation, \u00a7D OUR binding table + derived-target metric table + partial order) + Comparison method (numbered steps, real tool paths tools/experience/*.mjs, isolation levels) + Scoring (weight table, native->ladder anchors, numbered hard fails) + How we lose (bulleted, brutal) + Provenance note (says which part is untrustworthy).",
+    "Existing tool paths referenced by EXP01/02: tools/experience/{session-run,beat-extract,beat-diff,beats-from-md,isolation-check,log-lint,recall-run,anecdote-verify}.mjs. Harness amendment A-EXP1. Session dir reports/sessions/<id>/. Segment=90 sim minutes, baton<=500 words.",
+    "existing judges paths: experience.opening.hook, experience.opening.beats (EXP01); experience.memory.anecdote, experience.memory.recall (EXP02). BAR-CRITIQUE proposes experience.permissiveness (EXP06) and coherence.systems.composition + experience.session.shape (CMP01).",
+    "BAR-CRITIQUE Rank2 (G2) numeric proposal for RI-CMP01: >=35% pairs non-none, >=8 fight-boundary-crossing cells, hard fail <4 crossing cells. Rank3 (G3) RI-EXP06: >=12 entries, >=4 systemic, >=2 producing permanent unrecoverable world state; cross-rule: no new anti-exploit hard fail without naming the register entry it does not close.",
+    "ARBITRATION AR-3 exists in \u00a73 and explicitly defers to 'the project-level floor in RI-CMP01 (cross-system payoff matrix)' \u2014 I own that floor.",
+    "SCORING: native band sets ladder ceiling (meets bar->8, below bar->6, loses->4); hard fail caps item at 2; unmeasurable->0; >=7 needs justification artifact.",
+    "PLAYTHROUGH-CRITIC \u00a72 lists DEAD triggers naming RI-EXP04 (novelty curve) and RI-EXP06 (permissiveness) hard fails \u2014 so my EXP04/EXP06 hard fails are already wave-blocking by charter."
+  ],
+  "next_step": "read BAR-CRITIQUE G1 (2.1-2.3) + wrong bar W1, RI-WLD05, subsystems.json, HARNESS.md, RI-JRN01; then write RI-EXP03 first",
   "notes_for_successor": "First action taken: status file created before any reading."
 }

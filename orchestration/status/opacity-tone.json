@@ -1,14 +1,19 @@
 {
-  "task_id": "opacity-tone",
-  "brief": "orchestration/briefs/opacity-tone.md",
-  "started": "wave-?",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/50-world/RI-WLD09-opacity-budget.md",
-    "corpus/40-dialogue/RI-DLG08-tonal-range-indifference.md"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read doctrine (ARBITRATION, CORPUS-CONTRACT, CRITIC-DOCTRINE, SCORING, subsystems.json, HARNESS.md) + RI-WLD02/05/06 + RI-DLG01..07",
-  "notes_for_successor": "Brief closes BAR-CRITIQUE-01 G11 (opacity budget) and G12 (tone existence). Must measure indifference ratio from real corpus csv.gz, not recall."
+ "task_id": "opacity-tone",
+ "brief": "orchestration/briefs/opacity-tone.md",
+ "started": "wave-?",
+ "state": "researching",
+ "outputs_expected": [
+  "corpus/50-world/RI-WLD09-opacity-budget.md",
+  "corpus/40-dialogue/RI-DLG08-tonal-range-indifference.md"
+ ],
+ "outputs_written": [],
+ "findings": [
+  "BAR-CRITIQUE-01 gap rank 11 = G11 -> RI-WLD09 (opacity budget). Proposed: register of >=15 unsignposted things, >=3 locations via unobvious route, >=2 quests needing knowledge journal never records, >=5 places world never mentions; >=60% of register undiscovered by 6h first-time player; hard fail on entries merely hidden rather than unexplained. Cross-rule: RI-WLD06 M29 scored only over quest destinations.",
+  "BAR-CRITIQUE-01 gap rank 12 = G12 -> RI-DLG08. Proposed 6 registers (deadpan, portentous, petty, cruel, absurd, bureaucratic), 18 exemplars; entropy >=2.0 bits; indifference ratio 0.45-0.75; bathos count >=6; hard fail any register >60%.",
+  "W1 (RI-WLD05): critique's own proposed change = <=12 of 30 in first 30 min, >=26 by hour 10, no 90-min window after hour 2 with zero first-time elements; delegate curve to RI-EXP04.",
+  "W2 (RI-WLD02): critique's proposed change = per-region density contract; >=12% of road km with TTNIT >3 min; >=2 regions with median TTNIT >2 min; retain D1/D2 as settled-region thresholds."
+ ],
+ "next_step": "read RI-WLD06, RI-DLG01..07, subsystems.json, HARNESS.md, SCORING.md; then measure corpus csv.gz",
+ "notes_for_successor": "Brief closes BAR-CRITIQUE-01 G11 (opacity budget) and G12 (tone existence). Must measure indifference ratio from real corpus csv.gz, not recall."
 }

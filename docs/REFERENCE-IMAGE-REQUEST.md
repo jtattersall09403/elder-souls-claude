@@ -41,8 +41,9 @@ Ten rules in priority order. Everything after elaborates them.
    `refs/morrowind/` is vanilla Morrowind 2002 only. Never mix them.
 4. **Count matters as much as correctness.** We estimate 10th/90th percentiles per scene class.
    A band cannot be estimated from one image. Hit the floors in §3 or report the folder short.
-5. **Half of each modern folder must be interval-sampled, not hand-picked** (§3). A set of
-   beautiful frames produces a bar nobody can reach, which is a bar everybody ignores.
+5. **Half of each modern *exterior and interior* folder must be interval-sampled from a native
+   screenshot series, not hand-picked, and never cut from a video** (§3). A set of beautiful frames
+   produces a bar nobody can reach, which is a bar everybody ignores.
 6. **Vanilla-only for Morrowind, tested by seven binary checks** (§7). Modded shots would replace
    our art direction with somebody else's.
 7. **Gameplay captures, not promotional shots.** Marketing renders use settings no player sees.
@@ -51,6 +52,8 @@ Ten rules in priority order. Everything after elaborates them.
    URL, licence or author. `"unknown"` is respectable.
 10. **An honestly reported empty slot is a success.** A mislabelled or modified image silently
     corrupts every future verdict that cites it.
+
+If you run out of time or budget, satisfy rules 1-5 on fewer folders rather than rules 6-10 on more. A complete, honest `exterior_daylight` is worth more than six folders at 60%. Folder priority, highest first: `exterior_daylight`, `exterior_lowlight`, `anti-generic/`, the Morrowind rows marked **core** in §5e, `material_closeup`, `interior_darkemissive`, `character_closeup`, `combat`, `video/`, the remaining Morrowind rows, `context/`.
 
 ---
 
@@ -94,6 +97,7 @@ corpus/70-visual/refs/
   MANIFEST.json
   ACQUISITION-REPORT.md
   make-manifest.py            the script that produced MANIFEST.json
+  LICENCE-NOTE.md             copyright position for every file (§9)
 ```
 
 **`corpus/70-visual/refs/anti/` is reserved for a file our own harness generates. Do not create
@@ -118,17 +122,15 @@ you happened to find — the same as having no band at all.
 | `combat` | 8 | 2 | 4 |
 | `material_closeup` | 8 | 2 | 6 |
 
-**The anti-curation rule — read this twice.** In each modern folder, **at least half** the images
-must come from an *unbiased run*: pick one continuous gameplay video or one continuous screenshot
-series and take frames at fixed intervals — every 30 seconds, or every Nth image —
-**regardless of whether the frame is attractive**. Skip a sampled frame only if it is a menu,
-cutscene, loading screen, HUD-covered, or almost entirely black. Name these
-`run-<source-slug>-t<seconds>.<ext>` and set `"sampling": "interval-run"`. The rest may be
-deliberately chosen and are marked `"sampling": "selected"`.
+**The anti-curation rule — read this twice.** It applies to three folders only: `exterior_daylight`, `exterior_lowlight` and `interior_darkemissive`. In each of those, **at least half** the images must come from an *unbiased run*: pick one continuous **native screenshot series** — a Steam screenshot showcase, an imgur or Flickr album, a gallery upload set from a single play session — and take every Nth image **regardless of whether the frame is attractive**. Skip a sampled image only if it is a menu, cutscene, loading screen, HUD-covered, or almost entirely black. Name these `run-<source-slug>-<index>.<ext>` and set `"sampling": "interval-run"`. The rest may be deliberately chosen and are marked `"sampling": "selected"`.
 
-This exists because the natural instinct — find the most beautiful shot of each place — produces
-a set of 99th-percentile frames. **We would rather have twelve ordinary frames than one
-magnificent one.**
+**Never extract a frame from a video into `refs/modern/`.** Extracting a frame means encoding a new file, which breaks §4, and every frame of a compressed video carries codec artefacts that §8a rejects. Video lives in `refs/video/` and is measured for motion only, never for texture, anti-aliasing or colour.
+
+`character_closeup`, `combat` and `material_closeup` are **exempt** from the interval-run rule: an unbiased run cannot produce a surface filling the frame or a character at 40% of frame height. Fill those three deliberately — but spread them across as many games, locations, characters and armour sets as you can. Variety is what the band needs; one game's art director is not a population.
+
+One series per folder is enough for the run half. The selected half is where the distinct-games and distinct-locations minimums get satisfied: six run frames from one game's route plus six chosen frames from two other games meets 3 games and 6 locations comfortably.
+
+This exists because the natural instinct — find the most beautiful shot of each place — produces a set of 99th-percentile frames. **We would rather have twelve ordinary frames than one magnificent one.**
 
 `refs/morrowind/` is different: it is judged on design language, not statistics. **Three to five
 images per slot**, deliberately chosen, is right.
@@ -149,6 +151,7 @@ reference — it is a measurement of the resizer.
   original" / "full size". A 4K image downscaled to 1080p *is* supersampling and will read as
   better anti-aliasing than the game actually produces.
 - **Downloading is `curl -O` or equivalent, never a screenshot of a browser window.**
+- **Record how you got it.** `"provenance_chain": "original"` if you downloaded the file from the page that first published it; `"rehosted"` if the only reachable copy was a mirror, a Reddit or imgur re-post, or a wiki upload of somebody else's screenshot. Rehosted files are kept but are not used for band calibration, so mark them honestly.
 - **No minimum resolution in `refs/morrowind/`**, and larger is not better there — a 1024×768
   vanilla shot beats a 4K modded one.
 - In `refs/modern/`, prefer native captures at whatever resolution they were taken. Record the
@@ -170,7 +173,7 @@ folder each belongs in. Several slots feed one folder — that is intended.
 |---|---|---|
 | `REF-M1` | **Elden Ring — Liurnia of the Lakes at dusk**, toward Raya Lucaria: volumetric fog over reflective water, distant silhouettes | `exterior_lowlight` |
 | `REF-M2` | **Elden Ring — forest interior** (Mistwood / Weeping Peninsula), dappled canopy light | `exterior_daylight` |
-| `REF-M3` | **Skyrim SE — The Rift in autumn**, god rays through birches. **Also get an overcast-noon Skyrim exterior** — overcast is our default weather and this slot is otherwise all dramatic sun | `exterior_daylight` |
+| `REF-M3` | **Skyrim SE — The Rift in autumn**, god rays through birches (this is a directional-light, high-chroma reference; REF-M21 is its diffuse counterpart and both are required) | `exterior_daylight` |
 | `REF-M4` | **RDR2 — Bluewater Marsh or Lagras at dawn**: standing water, cypress, mist, wet ground | `exterior_lowlight` |
 | `REF-M5` | **Elden Ring — Siofra River**, bioluminescent underground | `interior_darkemissive` |
 | `REF-M6` | **A third-person character seen FROM BEHIND, in the world** — normal over-the-shoulder gameplay view, character 40–70% of frame height, armoured or clothed, on real ground in real lighting. **Not** an equipment-menu render, not a turntable, not a front portrait. **At least half this folder must be back or three-quarter-rear views.** Our camera sits behind the player 100% of the time; the character's back is the most-looked-at surface in our game | `character_closeup` |
@@ -183,10 +186,13 @@ folder each belongs in. Several slots feed one folder — that is intended.
 | `REF-M14` | **Rain or storm exterior**: wet surface response, precipitation, reduced visibility | `exterior_lowlight` |
 | `REF-M15` | **Active melee combat**, 2+ figures, weapon effects on screen, third person | `combat` |
 | `REF-M16` | **Material close-ups** — wet stone, mud, tree bark, cloth, metal, foliage at arm's length, one surface filling the frame | `material_closeup` |
-| `REF-M17` | **A cave or ruin interior lit by a daylight shaft** | `interior_darkemissive` |
+| `REF-M17` | **A second dark interior lit by emissive sources** — a different game from REF-M5: a torchlit crypt, a forge, a lantern-lit cave, glowing fungus or lava. If a daylight shaft is the dominant light source, the shot is not a dark interior and belongs in `exterior_daylight` | `interior_darkemissive` |
 | `REF-M18` | **Spell or magic VFX during combat**: particles, emissive, distortion | `combat` |
-| `REF-M19` | **A shoreline / shallow water edge** where water meets land | `exterior_daylight` |
+| `REF-M19` | **Water at a shoreline, camera low and close to the surface**, so that one frame contains both **near water seen steeply from above** and **far water seen at a grazing angle**. Our water metric compares those two regions inside a single frame; a wide vista of a lake cannot supply it | `exterior_daylight` or `exterior_lowlight` |
 | `REF-M20` | **Heavy fog or mist**, atmospheric depth doing the work | `exterior_lowlight` |
+| `REF-M21` | **A flat, overcast, no-direct-sun exterior at midday**, any of the four games. Deliberately undramatic: no god rays, no low sun, no golden hour | Overcast noon is our declared default weather and every other exterior slot here is dramatic directional sun. Diffuse light is the hardest lighting to fake and we currently have no reference for it at all | `exterior_daylight` |
+
+**There is deliberately no REF-M8.** That ID belongs to an anti-reference our own harness generates into `refs/anti/`. Do not create it, do not write into `refs/anti/`, and do not renumber this table to close the gap — every ID here is cited by name elsewhere in our corpus.
 
 Requirements: **actual gameplay captures, not press/promotional shots** — bullshots use settings
 no player sees and would set a bar we could never honestly reach; if only a promotional image
@@ -195,20 +201,22 @@ exists, keep it and set `"promotional": true`. Prefer no HUD; HUD-bearing images
 browser is not what a player saw. No photo-mode filters, no depth-of-field or vignette effects,
 no ultrawide.
 
+If a source page or video description says an upscaler was in use (DLSS, FSR, XeSS), prefer a different image — reconstruction invents high-frequency detail, which is exactly what we measure. Either way, record `"upscaler": "dlss" | "fsr" | "xess" | "off" | "unknown"`.
+
 ### §5b `refs/video/` — short clips, motion only
 
 Some things we measure do not exist in a still: how badly distant geometry pops as the camera
 moves, whether foliage moves at more than one frequency, whether water changes frame to frame,
-whether feet stay planted when a character walks. **Get 4–8 clips, 20–60 seconds each**, highest
-bitrate and resolution available, downloaded as-is (do not re-encode, trim or convert). Cover:
+whether feet stay planted when a character walks. Download clips as-is — do not re-encode, trim or convert.
 
-- a **camera dolly / forward ride** through terrain (for LOD pop),
-- a **stationary shot of water and foliage** (for temporal variance and wind),
-- **character locomotion** — walk, run, turn, stop — in third person (for foot planting and blend),
-- **melee combat** in third person (for hitstop and animation).
+| Clip | Must contain | What we measure |
+|---|---|---|
+| `V1-dolly` | camera moving forward continuously through open landscape for >= 20 s, **no cuts**, no HUD | LOD pop-in and streaming — a cut is indistinguishable from a pop, so a montage is worthless here |
+| `V2-static` | camera **stationary** for >= 15 s looking at water and vegetation, **no cuts** | temporal variance, wind at more than one frequency, ambient particles |
+| `V3-locomotion` | third-person character walking, running, stopping and turning 180 degrees, seen from behind | foot planting, foot sliding, blend between clips |
+| `V4-combat` | >= 15 s of continuous third-person melee, no cuts | impact, hit reaction, attack commitment, effects |
 
-Prefer, in order: a publisher's or developer's own channel; Digital Foundry or a comparable
-technical channel; a high-bitrate gameplay capture. Record source URL and any stated bitrate.
+**V1 and V2 are required. V3 and V4 are wanted; skip them before you skip anything in §5a.** Name files `V1-dolly__<source-slug>.<ext>`. Prefer, in order: a publisher's or developer's own channel; Digital Foundry or a comparable technical channel; a high-bitrate gameplay capture that states its setup. Record `duration_s`, `container`, `video_codec`, `bitrate_kbps`, `fps`, `width`, `height`, `source_url`, `uploader`, `game`, and `"pixel_metrics_valid": false`.
 
 **Set `"pixel_metrics_valid": false` on every video record.** Inter-frame codecs both erase and
 manufacture high-frequency detail, so clips are usable for *motion* judgement only, never for
@@ -226,7 +234,7 @@ ourselves *away* from. Never cited as a target.
 
 ### §5d `refs/context/` — orientation only, cited by nobody
 
-**Six to ten screenshots of The Elder Scrolls Online: Shadowfen and Murkmire.** These are the only
+**Four screenshots of The Elder Scrolls Online: Shadowfen and Murkmire.** These are the only
 existing depictions of the actual region our game is set in — the stepped stone ziggurats, the
 Hist trees, Argonian villages, marsh vegetation.
 
@@ -239,14 +247,14 @@ depicted as — **and so we can deliberately not converge on it.**
 
 ### §5e `refs/morrowind/` — vanilla Morrowind only
 
-**Three to five images per slot.** No resolution minimum.
+**Two to three images per slot.** No resolution minimum. Five slots are **core** and get **four to five** because they carry design language that one or two images cannot demonstrate: **REF-A6** (creatures), **REF-A9** (Velothi stone), **REF-A10** (flora), **REF-A11** (Bitter Coast), **REF-A12** (the UI). If you are running short, fill the core five completely and report the rest thin — do not spread the shortfall evenly.
 
 | Slot | What it shows |
 |---|---|
 | `REF-A1` | Ascadian Isles or Bitter Coast **exterior vista** |
 | `REF-A2` | **Redoran architecture** — the giant crab/shell buildings (Ald'ruhn) |
 | `REF-A3` | **Telvanni architecture** — grown mushroom towers (Sadrith Mora / Tel Vos) |
-| `REF-A4` | **An interior** — Dunmer house, shop or temple: lighting and clutter |
+| `REF-A4` | **Interiors, at least two of different kinds** — a Dunmer house, shop or temple, *and* a Telvanni tower interior (grown, organic, no right angles): lighting and clutter | Interiors differ by faction and class, and that difference is the property we are copying. One interior cannot show it |
 | `REF-A5` | **Ash storm** in the Ashlands / Molag Amur |
 | `REF-A6` | **Creatures, at least four separate images**: cliff racer, netch, kwama, guar |
 | `REF-A7` | **A Dwemer ruin**, interior or exterior |
@@ -260,6 +268,8 @@ depicted as — **and so we can deliberately not converge on it.**
 | `REF-A15` | **Books, scrolls and written pages**, plus Daedric script signage |
 | `REF-A16` | **A silt strider** — the single most recognisable "not generic fantasy" object in the game |
 | `REF-A17` | **An Imperial fort or Census office interior** — the coloniser's architecture beside the natives' |
+| `REF-A18` | **A dusk or night exterior** — any region; moons and stars in frame if possible | Our palette specification declares dusk and night colour targets and every other row in this table is daylight. Nothing else in the set can anchor them |
+| `REF-A19` | **A stilted or waterside settlement** — Hla Oad, Vos, Seyda Neen's shacks, or any village built over water | Our fen villages are specified as "stilted lashed" and this is the source vocabulary. The town street in REF-A8 does not show it |
 
 ---
 
@@ -319,22 +329,33 @@ bytes, sha256, format, width, height, bit_depth, has_alpha
 bytes_per_pixel  = bytes * 8 / (width * height)
 jpeg_quality_est = estimated from quantisation tables, if JPEG
 exif_software, exif_datetime, xmp_present, c2pa_present
-nyq_ratio        = 2-D FFT of luminance; energy in radial frequency [0.45,0.50)
-                   divided by energy in [0.20,0.45). Near zero means the image was
-                   downscaled (its true detail was thrown away).
-upscale_test     = ratio of high-frequency energy to what the stated resolution
-                   implies; flags an image enlarged from a smaller original.
-block_score      = mean discontinuity across 8x8 block boundaries; high means JPEG
-                   re-encoding.
-```
+nyq_ratio        = 2-D FFT of the luminance channel; energy in radial frequency
+                   [0.45,0.50) divided by energy in [0.20,0.45). A native capture
+                   typically lands in 0.05-0.30. **Below 0.02 in refs/modern/ means the
+                   image was downscaled or blurred and its real edge detail is gone.**
+upscale_test     = box-downsample the luminance to 2/3 size, bilinear-upsample it back
+                   to the original size, take the mean absolute difference in 0..1
+                   luminance. A native capture typically lands in 0.01-0.05.
+                   **Below 0.004 means the image carries no detail at its stated
+                   resolution: it was enlarged from a smaller original.**
+block_score      = mean |horizontal gradient| across 8-pixel-aligned column boundaries
+                   divided by the same across non-aligned boundaries. Native or lightly
+                   compressed: 0.95-1.10. **Above 1.15 means JPEG block artefacts are
+                   visible in the pixels we measure.**
 
-Flag and move to `rejected/`: any file whose `exif_software` shows an editor (Photoshop,
-GIMP, ImageMagick, "Save for Web"), any with `c2pa_present` or AI-generator metadata, any with a
-`nyq_ratio` near zero in `refs/modern/`, any with a high `block_score`.
+Move to `rejected/`: any file with `upscale_test < 0.004`; any `refs/modern/` file with `nyq_ratio < 0.02`; any file with `block_score > 1.15` (unless nothing better exists for that slot, in which case keep it and set `"heavily_recompressed": true`); any file whose `exif_software` names an editor (Photoshop, GIMP, ImageMagick, "Save for Web") or a generative tool; any file with `c2pa_present` or AI-generator metadata. Record every rejection and its failing statistic in the rejection log.
 
-**8b — Source corroboration.** For each image, find the **same scene** attested on at least
-**two independent sources** (two different sites, or a site plus a video). Record
-`"corroboration": "two-hosts" | "one-host" | "none"`. Single-source images are kept but flagged.
+If your environment cannot compute one of these statistics, write `"unknown"` in the manifest, say so in the report, and do the human check instead. **Do not estimate a number you did not compute** — an invented `nyq_ratio` is worse than a missing one, because we would trust it.
+
+**8b — Source corroboration.** For every file, one of these three must be true, and you record which one in `"corroboration"`:
+
+  - `"first-party"` — the source is the publisher, the developer, the official wiki, or the game's own store page;
+  - `"two-hosts"` — you found the same image, or the same scene from the same capture, on two independent sites that are not mirrors of each other;
+  - `"pre-2023-page"` — the hosting page carries a visible date before 2023-01-01.
+
+**An image satisfying none of the three goes in `rejected/`.** This is the anti-AI-generation check and it is far more reliable than looking at the image, because a competently generated landscape looks completely correct and has no history — which is exactly what "I could only find it in one place, recently" means.
+
+For `"sampling": "interval-run"` files, corroborate the **series once** and record the same value on every frame taken from it. Do not repeat the search per frame.
 
 **8c — Identification.** For each image record `"identified_by"`: **three named features** that
 prove it is the game and place claimed — e.g. `["bald cypress with buttress roots", "Lemoyne
@@ -372,16 +393,26 @@ One record per file. Script-produced numeric fields must come from the script, n
   "bytes": 4192837,
   "width": 2560, "height": 1440, "bit_depth": 8,
   "bytes_per_pixel": 9.1,
-  "nyq_ratio": 0.031, "upscale_test": 0.98, "block_score": 0.004,
+  "nyq_ratio": 0.118, "upscale_test": 0.019, "block_score": 1.02,
   "exif_software": "none", "c2pa_present": false,
   "promotional": false, "has_hud": false, "hdr": false,
   "modded": false, "vanilla_confidence": "n/a",
   "vanilla_tests": null,
   "engine": "native",
+  "modified_by_me": false,
+  "upscaler": "unknown",
+  "photo_mode": false,
+  "aspect_mismatch": false,
+  "foreground_present": true,
+  "sky_visible": true,
   "pixel_metrics_valid": true,
   "sha256": "..."
 }
 ```
+
+**`modified_by_me` must be `false` on every record.** If it is ever `true`, say in the report exactly what you did and why — a `true` here means the file cannot be used for measurement.
+
+`"side"` is one of `"modern-fidelity"`, `"morrowind-art"`, `"anti-generic"`, `"context-neither"`, `"video"`, and **must agree with the folder the file is in**. Files in `anti-generic/` and `context/` are never cited as targets by anything: `"context-neither"` files additionally carry `"forbidden_for": ["fidelity-bands", "art-direction-judgement", "blind-pairing"]`.
 
 Filenames: `REF-M4__rdr2-bluewater-marsh-dawn.png` (double underscore separator), or
 `run-<source-slug>-t<seconds>.<ext>` for interval-sampled frames.
@@ -407,8 +438,11 @@ The report must contain, in this order:
 4. **Every image you were unsure about, and why.** Err toward over-reporting doubt.
 5. **Anything you could not do**, stated plainly.
 
-**Stop condition:** when every folder meets its floor and every slot is filled or reported, stop.
-Do not keep collecting.
+**Stop conditions — there are two.**
+
+*Completion.* When every folder meets its floor and every slot is filled or reported, stop. Do not keep collecting.
+
+*Abort.* If, after genuine effort, more than half the folders in §3 are below their floor, **stop and report rather than padding the shortfall.** Do not fill the gap with re-hosted, promotional, uncorroborated or visibly recompressed images to make the count table read PASS. A half-filled honest set is repairable — we go and get the rest. A full set with a quarter of it quietly degraded is not, because we will never know which quarter, and every band we compute on top of it will look exactly as legitimate as a real one.
 
 Commit to `claude/morrowind-souls-threejs-game-mou39v` describing what was acquired and what
 remains unfilled. **Do not modify any file outside `corpus/70-visual/refs/`.**

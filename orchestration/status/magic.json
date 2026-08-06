@@ -12,7 +12,23 @@
     "corpus/25-magic/RI-MAG05-magic-vfx.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read doctrine: ARBITRATION.md (S19, S7, S15), CORPUS-CONTRACT.md, subsystems.json, HARNESS.md",
-  "notes_for_successor": ""
+  "findings": [
+    "subsystems.json has ONE magic path only: combat.magic.casting (souls, 10-combat, critic.combat). New root magic.* must be requested in reply; taxonomy is append-only, owned by CRT.",
+    "RI-PRG02 already fixes the caster stats: WILLPOWER = max Focus (FP) + spell-slot count (slots at WIL 15/25/35/50) + status resist; INTELLECT = Sorcery scaling; HIST-BOND = Root/restoration + Hist-invocation scaling. So the resource is ALREADY named Focus/FP in the corpus -> RI-MAG01 must rule FP, not stamina, and reconcile.",
+    "RI-PRG03 fixes 4 magic skills: Sorcery(INT), Root-Speech(HIST-BOND), Warding(WIL), Veiling(WIL). Spell tiers req 0/25/45/65/85; below req a spell CANNOT BE EQUIPPED (not 'fails'). Focus cost -0.5%/skill pt above req, floored -35%. Cast that produced a measurable effect = 12 skill points; 450 casts -> skill 79.",
+    "RI-PRG03 Cost Gate: casting at a wall with no target grants ZERO progress. Focus is listed as a thing 'the world can run out of'.",
+    "Attribute soft caps: WIL soft 30 hard 50, INT soft 40 hard 60, HIST-BOND soft 40 hard 60. scalingBonus table in PRG02 \u00a74 is reusable for spell scaling.",
+    "HEARTH = the bonfire analogue (RI-PRG04). S7: HEARTH shrines are NOT part of the travel network.",
+    "RI-LOR05 \u00a73 already rules soul gems: 'xul-hesh' = root-theft, Molag Bal-patron, reads locally as poisoning a well/kidnapping. Soul-gem trade is main-quest crisis CAUSE A (real aggravation, not the true cause; C is authorially true). This is the settled ground for the S15/soul-gem ruling: gems intercept the Rootward Tide; they are NOT sap-debt and cannot be spent as souls.",
+    "RI-LOR05 \u00a77 rule 1: souls never buy an item, bribe, repair, fare or training. Rule 4: sap-taint never alters frames/hitboxes/telegraphs/damage/AI.",
+    "RI-PRG05 prices: Tier-1 spell 220g, Tier-2 900g, Tier-3 3400g. Only 3 tiers priced though PRG03 defines 5 (req 0/25/45/65/85). Tier 4/5 prices are a GAP I must fill or flag.",
+    "RI-PRG05 four un-buyables + flip invariant max(sell)=0.60 < min(buy)=0.80. Any magic that mints gold or items breaks it -> Fortify-Mercantile / enchanted-item-selling loops must be checked.",
+    "RI-CMB03: base regen 45/s = 0.75/frame flat, does NOT scale with any stat; regen delay 42 frames (0.700s) re-armed by every spend. Roll cost 22/26/34/40. Walk/turn/camera free. Stamina zero without block = inputs dropped, no stagger.",
+    "RI-AI02 telegraph law: hard floor W >= 12 frames for EVERY attack incl. ranged (S6 ranged projectile min W 24f, Tc <= 0.70W with aim lock at Tc). AP6 bans teleport/blink >1.2m in one frame. This binds enemy casters directly.",
+    "BAR-CRITIQUE-01 G4 thresholds (binding target): >=40 effects; >=12 effects with an out-of-fight use that changes traversal or quest resolution; hard fail if every effect is damage/heal or if spellmaking absent. Enchant materials never purchasable, never respawn-farmable.",
+    "BAR-CRITIQUE-01 G2/AR-3 threshold for RI-CMP01: >=35% of system pairs non-none, >=8 fight-boundary-crossing cells, hard fail below 4. RI-MAG04 is a direct contributor.",
+    "RI-EXP06 (permissiveness budget) does not exist yet; the experience agent owns it. Its rule: >=12 sanctioned breakages, >=4 systemic, >=2 producing permanent unrecoverable world state; no new anti-exploit hard fail without naming the register entry it leaves open."
+  ],
+  "next_step": "read RI-WLD05 (levitation), RI-QST05 + quest.schema.json (for MAG04), RI-VIS01 (bifurcation, for MAG05); then write RI-MAG01",
+  "notes_for_successor": "Deliverable order chosen: MAG01, MAG02(+data/effects.json), MAG03, MAG04, MAG05. Write each to disk immediately."
 }

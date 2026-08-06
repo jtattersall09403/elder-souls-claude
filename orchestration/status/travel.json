@@ -8,7 +8,14 @@
     "corpus/50-world/RI-TRV02-travel-magic.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ARBITRATION.md S7/S19, CORPUS-CONTRACT, settlements.json, world-scale.json, RI-PRG05, HARNESS.md",
+  "findings": [
+    "S7 (ARBITRATION.md L82) MANDATES the network: silt-strider analogue + boat/barge + guild-guide teleport + Mark/Recall + Intervention. Banned = warp-to-map-pin, teleport-to-objective, travel to never-visited. HEARTH shrines explicitly NOT part of travel network.",
+    "S19 (L92) reconciled: Mark/Recall/Intervention are part of the S7 network; forbidden is teleport as level-design solvent (recall out of fight, warp past unopened shortcut, intervention as escape button).",
+    "world-scale.json has `roads` (10 edges), `pairwise_road_walk_min`, `pairwise_road_metres` for the 8 settlements. Walk 2.0 m/s, jog 3.2, swim 1.1. timescale=20, real_minutes_per_game_day=72. trunk_road_network_m=25331.",
+    "Road edges: Stormhold-Thorn 2229m/18.6min causeway; Stormhold-Helstrom 2921/24.3 river road; Helstrom-Archon 2589/21.6 stone road; Helstrom-Blackrose 2485/20.7 marsh trail; Helstrom-Gideon 2378/19.8 Imperial road; Gideon-Soulrest 2562/21.4 coast road; Soulrest-Blackrose 1841/15.3 rootland track; Blackrose-Lilmoth 1503/12.5 stilt causeway; Archon-Thorn 4299/35.8 Clay Moor track; Lilmoth-Archon 2523/21.0 tideway (tide-gated).",
+    "RI-PRG05 ALREADY prices transport (S7): short hop within region 12g, regional crossing 45g, cross-map 90g. Its judges list already includes `world.transport`. R1 (early) region margin = +580g on 3,500g income. Necessary spend includes 'fares'.",
+    "16 minor settlements each sit `on_leg` between two named settlements \u2014 they are the natural intermediate stops/halts."
+  ],
+  "next_step": "read subsystems.json canonical paths, HARNESS.md, RI-WLD01/06, then design route graph",
   "notes_for_successor": ""
 }

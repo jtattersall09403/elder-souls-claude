@@ -11,8 +11,14 @@
   ],
   "outputs_written": [],
   "findings": [
-    "Disk at start: 23G avail on /, repo 39M."
+    "Disk at start: 23G avail on /, repo 39M.",
+    "NETWORK: git clone --depth 1 of arbitrary public GitHub repos WORKS. raw.githubusercontent.com works with curl -L (200 on a real path). objects.githubusercontent.com CONNECTs (404 at root) so release assets may work. BLOCKED at CONNECT (403): codeload.github.com, user-images.githubusercontent.com, staticdelivery.nexusmods.com. media.githubusercontent.com CONNECTs but 404s.",
+    "DEAD END: OpenMW/openmw source repo has only 15 images, none are game screenshots (launcher/wizard chrome only). Deleted.",
+    "LEAD: dehero/mwscr - 'Original screenshots and videos from TES III Morrowind. No third-party mods. No color filters. No interface.' Mostly captured in OpenMW = engine:openmw-vanilla-assets, acceptable per REQUEST §7. PRIME Morrowind source.",
+    "LEAD: elfhuo-github/sksebp-og.github.io - Witcher 3 Next-Gen enhancement GitHub Pages site, may hold W3 comparison shots.",
+    "TOOLING NOTE: tools/metrics/image-metrics.mjs only reads PNG (pngjs). JPEG refs must be decoded to PNG in a SCRATCH dir for measurement; originals stay byte-exact per REQUEST §4.",
+    "TOOLING NOTE: image-metrics.mjs metric names do NOT match RI-VIS03 M1-M12 exactly. Mapping: dynamic_range.stops~M1, rms_contrast.local_mean_16px~M2 (16px tiles not 32px), saturation.mean = HSV S not CIELAB C* (M3 not directly comparable), edge_density.frac_above_threshold~M4 ED_1, fft.high_band_ratio~M5 HFR but band is r>0.25 Nyq not [0.20,0.45), flat_shading.flat_tile_frac~M8, sky_gradient~M7."
   ],
-  "next_step": "read docs/REFERENCE-IMAGE-REQUEST.md and RI-VIS01/02/03/05/06",
-  "notes_for_successor": "Status file created as first action per AGENT-PROTOCOL."
+  "next_step": "clone dehero/mwscr, extract Morrowind slot images",
+  "notes_for_successor": "RI-VIS03 exterior_daylight bands to compare against: M1 DR>=0.72 meanYp 0.28-0.58; M2 C_global 0.13-0.28 C_local_med>=0.045; M3 meanC 12-32 chroma_frac>=0.55; M4 ED_1 0.10-0.34; M5 HFR 0.06-0.24 NYQ<=0.18 alpha 1.6-2.6; M8 FS>=0.035 LargestFlat<=0.06 TotalFlat<=0.18."
 }
