@@ -2,18 +2,26 @@
   "task_id": "W1-17",
   "brief": "wave-1 piece W1-17 — Dialogue and disposition",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
-    "game/data/dialogue/topics.json",
+    "game/data/dialogue/topics/*.json",
     "game/data/dialogue/greetings.json",
     "game/data/dialogue/rumours.json",
     "game/data/dialogue/persuasion-gmst.json",
     "game/data/dialogue/speakers.json",
     "game/src/sim/dialogue/*.js",
-    "tools/dialogue/*.mjs (measurement)"
+    "tools/dialogue/*.mjs"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ARBITRATION.md, SCORING.md, HARNESS.md, PLAN.md §3 for W1-17, RI-DLG01..09",
-  "notes_for_successor": ""
+  "findings": [
+    "RI-DLG01 §D targets: >=400 topic nodes, 7-10 roots, >=55 topics answerable in a mid-size settlement, >=30 topics w/ settlement-local answer, mean out-degree >=2.0, leaf frac <=50%, >=90% reachable only via another topic, max depth >=6, median depth >=3, ZERO orphans, ZERO unreachable INFOs, convergence >=20%, quest-topic frac <=15%, menu_quest_fraction <=0.30.",
+    "RI-DLG01 Greeting 0-9 priority classes; first-match-wins in authored order; filter fields: actor,race,class,faction,npcRank,cell(prefix),pcFaction,pcRank,sex,dispMin,+6 function/variable conds.",
+    "RI-DLG03 §C tier counts: Tier A 30 greetings/5 bands/>=4 per band/28 rumours/20 unique/12 act-gated; Tier B 24/5/3/20/14/8. names-the-town >=70%. cross-town rumour Jaccard <0.15. act Jaccard <=0.70. diegetic lint regex bans quest/objective/marker/coords.",
+    "RI-DLG04 all 22 GMSTs + derivedDisposition + persuasionRatings + attempt + barter formulas. d = 1-0.02*|D-50|. fDispCrimeMod=0.02 (our deviation). Bands 0-19/20-39/40-59/60-79/80-100. sigma(baseDisposition)>=12, no single value >25%.",
+    "RI-DLG06 §B: 6 archetypes with w/sent bands 16-19,10-13,7-9,12-15,7-9,16-19; global spread >=8.0; pairwise separation on w/sent 2.0 OR <=6w 15pp OR STTR 0.06; >=5 marker words at lift>=5x; address form >=1.0/1k that is <=0.3/1k in >=4 others; a regexable grammar tic.",
+    "RI-DLG09 parley: interact held, arm 1-12 (free cancel), startup 13-42 (commit, guard drops f13), offer 43-54 (parley event on f43), recovery 55-102. 102 f@60 total, 90 committed. stamina 20 on f13, regen delay 42 f@60. Routes K>F>R>G>D. Refusal: Fight+10, perm -5, cooldown 600 f@60, 2nd refusal parley_locked. YIELD persistent world flag, baseDisposition -10, souls 0, COMBAT ends.",
+    "Corpus data: corpus/40-dialogue/data/morrowind-dialogue.csv.gz cols Source,InfoId,Race,Gender,SpeakerId,FactionId,FactionRank,DialogueText. 69876 rows. Canonical scope = Source in {Morrowind,Tribunal,Bloodmoon} dedup exact text = 27875 texts / 682372 words / 24.5 w per entry."
+  ],
+  "next_step": "inspect game engine (state.js, harness, existing data: npcs, world settlements, quests, combat enemies) then build",
+  "notes_for_successor": "game/data/dialogue/{greetings,rumours}.json already exist as tiny stubs from W1-00 era; game/data/dialogue/topics/ exists. Check before overwriting."
 }

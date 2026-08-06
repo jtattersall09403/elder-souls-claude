@@ -117,6 +117,23 @@ fs.writeFileSync(path.join(outDir, 'RI-CMB07-exemplar-trace.segments.jsonl'),
   [JSON.stringify(Object.assign({}, canon.meta, { encoding: 'segment-rle', duration_frames: canon.frames_data.length, fight: canon.prof.id }))]
     .concat(segment(canon.frames_data).map((s) => JSON.stringify(s))).join('\n') + '\n');
 
+fs.writeFileSync(path.join(outDir, 'RI-CMB07-exemplar-scenario.json'), JSON.stringify({
+  schema: 'es-combat-scenario/1',
+  id: 'RI-CMB07-exemplar-regenerated',
+  regenerated: new Date().toISOString(),
+  s22: 'Authored against and re-run on the S22-REBASED constants. Not derived from the invalidated exemplar and not an f -> 2f dilation of it (RI-CMB07 §0 explains why that repair is wrong).',
+  state: 'arena_champion',
+  seed: 0,
+  mode: 'B-prime',
+  player: 'a deterministic scripted BOT, not an input list: it reads distance, the enemy animation frame, its own stamina and its own HP every frame and decides. Reproduce with tools/harness/cmb-exemplar.mjs --fights 5.',
+  enemy: 'champion_hist_marked, ai=scripted. There is no enemy AI in this build (RI-AI01..07 / W1-12).',
+  fights: runs.map((r) => ({
+    id: r.prof.id, bot_profile: r.prof, frames: r.frames,
+    enemy_actions: r.meta.enemy_schedule,
+    trace_hash: r.hash, enemy_dead: r.enemy_dead, player_hp_at_end: r.player_hp,
+  })),
+}, null, 2) + '\n');
+
 const out = {
   schema: 'es-combat-stats/1',
   unit: 'f@60',

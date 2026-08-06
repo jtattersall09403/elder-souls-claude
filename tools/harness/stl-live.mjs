@@ -138,24 +138,30 @@ try {
     A('LIVE-RNG', 'RNG draws across a whole live lock interaction', `${det.d1 - det.d0} (counter ${det.d0} -> ${det.d1})`,
       det.d1 === det.d0, '0 — the counter must not move at all (RI-STL02 method 3)');
     A('LIVE-OPN', 'the collar opens under timed `interact` presses', `open=${det.open}, ${det.set}/3 wards`, det.open, 'open — it is an interaction, not a keypress and not a die');
-    // The same script at 100 different seeds.
+    // The same script at several seeds, live. stl-probe.mjs runs the identical assertion at
+    // 100 seeds headless; this is the wiring half — the SAME determinism through the real
+    // engine, its real input pipeline and its real PRNG.
     const seeds = await h.page.evaluate((lockId) => {
-      const H = window.__HARNESS; const sigs = new Set();
-      for (let s = 0; s < 40; s++) {
+      const H = window.__HARNESS; const sigs = [];
+      for (let s = 0; s < 8; s++) {
         H.setSeed(s * 7919 + 1);
         H.setStealthState({ security: 70, agility: 40, picks: 12 });
         H.lockBegin(lockId);
-        for (let i = 0; i < 60 * 30; i++) {
-          const st = H.lockState(); if (!st || st.open || st.failed) break;
+        let guard = 0;
+        for (; guard < 1200; guard++) {
+          const st = H.lockState();
+          if (!st || st.open || st.failed) break;
           if (Math.abs(st.delta_deg) <= st.W_deg / 2) H.lockPress();
           H.stepFrames(1);
         }
         const f = H.lockState();
-        sigs.add(JSON.stringify({ open: f.open, set: f.set, broken: f.broken, collar: f.collar_deg }));
+        sigs.push(JSON.stringify({ open: f.open, set: f.set, broken: f.broken, collar: f.collar_deg, frames: guard }));
       }
-      return [...sigs];
+      return sigs;
     }, t3.lock);
-    A('LIVE-DTM', 'the same input script at 40 different seeds', `${seeds.length} distinct outcome(s)`, seeds.length === 1, '1 — 40/40 identical (stl-probe.mjs runs the same assertion at 100 seeds headless)');
+    A('LIVE-DTM', 'the same input script at 8 different seeds, through the real engine',
+      `${new Set(seeds).size} distinct outcome(s) of ${seeds.length}: ${seeds[0]}`, new Set(seeds).size === 1,
+      '1 — identical (stl-probe.mjs runs the same assertion at 100 seeds headless)');
   } else {
     A('LIVE-LCK', 'a tier-3 ward-collar in the running world', 'none found', false, 'a tier-3 lock reachable by id');
   }

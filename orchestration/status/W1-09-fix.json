@@ -1,28 +1,54 @@
 {
   "task_id": "W1-09-fix",
-  "brief": "remediation of W1-09 Combat core after critic scored 4/10 vs gate 7.0",
+  "brief": "remediation of W1-09 Combat core after the critic scored 4/10 against a gate of 7.0",
   "verdict": "corpus/90-verdicts/wave1/W1-09.md",
-  "started": "wave-1 remediation",
-  "state": "building",
-  "plan": [
-    "1. hitstun composition: reaction states must span exactly `total` world frames (gb 40, staggers 32/44/64/96)",
-    "2. parry cost 22 flat (drop undeclared parry_medium_shield 26)",
-    "3. implement jump / two_hand / swap_right / swap_left / menu",
-    "4. animation: kill the double idle pose, land attack clips on the idle pose at phase 3, redistribute arc into the active window, cap peak tip speed to RI-CMB04 B",
-    "5. regenerate RI-CMB07 exemplar with real danger, >= 5 fights",
-    "6. close what is closable on RI-CMB05/06/09/11"
+  "state": "complete",
+  "outputs_written": [
+    "game/src/combat/actor.js — queueReaction/flushReaction/setMoves; jump vertical; airborne; twoHanded",
+    "game/src/combat/system.js — pending reactions flushed at the top of the first non-hitstop step; rebuildPlayerLoadout()",
+    "game/src/combat/resolve.js — queueReaction/queueParried; the A.move.id-after-clear crash a parry probe found",
+    "game/src/combat/player.js — jump, jump attack (descending only, forbidden at OVERLOADED), stance switch, quick swap, two-handed block/parry stow",
+    "game/src/combat/moves.js — jump/stance_switch/swap moves, two-handed move table, JUMP_*/STANCE_SWITCH/SWAP declared state extensions, idle_loop base",
+    "game/src/combat/clips.js — amplitude scales the excursion from the clip's terminal pose, not the absolute angle",
+    "game/src/combat/enemy.js — idle_loop base, queueParried",
+    "game/src/sim/combat-bridge.js — `menu` as a non-pausing UI surface (AR-1 A3)",
+    "game/src/engine.js — getCombatState().menu / player.two_handed / player.airborne",
+    "game/data/combat/clips.json — 4 attack archetypes re-authored + idle_loop, jump_arc, stance_switch, quick_swap",
+    "game/data/combat/frames.json — §actions: jump, stance_switch, quick_swap, menu",
+    "game/data/combat/poise.json, stamina.json — parry 22 flat",
+    "game/data/combat/spine/*.json — a declared two-handed row per class (different archetype, amplitude, root dz)",
+    "tools/harness/anim-author.mjs — re-authors the attack archetypes and SOLVES swing/extension against RI-CMB04 §B peak tip speed and RI-CMB02 §A reach",
+    "tools/harness/anim-tune.mjs — measures the swing off clips.js/skeleton.js with no browser",
+    "tools/harness/cmb-actions.mjs — the five formerly-inert buttons",
+    "tools/harness/cmb-poise.mjs — RI-CMB05 M3-M7",
+    "tools/harness/cmb-exemplar.mjs — rewritten: a deterministic scripted BOT, 5 fights, median statistics, punish-window usage computed",
+    "reports/w1-09/exemplar/** — 5 fights + median statistics + scenario",
+    "reports/w1-09/actions.json, reports/w1-09/poise.json"
   ],
-  "findings": [
-    "REPRODUCED baseline: guard break 46 f, regen 0.75/f at f123-125 (critic-guardbreak3.json run sprint_frames=600).",
-    "ROOT CAUSE of hitstun overrun: beginReaction() sets state at the impact frame with animFrame=0, then system.js early-returns for hitstop frames, so the state spans 1 (entry) + hitstop-1 (freeze) + total. Also guardBreakUntil = impactFrame+total which now EXPIRES BEFORE the state does, so tickResources' `hitstun` flag goes false while still in GUARD_BREAK -> full-rate regen. One cause, both symptoms.",
-    "ROOT CAUSE of the 1.42-2.54 m single-frame snap at the idle boundary: poseLocomotion() applies the idle_ready LoopClip AND THEN addPose(_idlePose = the same idle_ready archetype), so the idle rig pose is 2x idle_ready. The attack clips end near 1x idle, so the transition jumps a whole idle pose.",
-    "ROOT CAUSE of recovery sweeping more than active: every attack archetype has an overshoot key at phase ~2.35-2.5 (e.g. cut_diagonal upperarm_r.rz 8@2.0 -> 56@2.4 -> 10@3.0) so |d| through recovery exceeds the active band.",
-    "FIX 1 DONE + VERIFIED: guard break now 40 f@60 exactly (was 46), no regen inside it, first regen frame 169 = end(126)+43. Staggers 64 f@60 exactly (were 70). Mechanism: CombatBody.queueReaction/flushReaction - the hitstun state begins on the first non-hitstop frame.",
-    "FIX 2 DONE: parry 22 flat (poise.json by_class.medium.stamina 26->22; stamina.json parry_medium_shield removed).",
-    "FIX 4 DONE (offline): tools/harness/anim-author.mjs re-authors the 4 attack archetypes + new idle_loop; tools/harness/anim-tune.mjs measures off clips.js/skeleton.js with no browser and reproduces the critic's numbers bit-for-bit (36.81/59.11 m/s, 615 deg, 1.42/2.54 m snaps). After: peak tip speed 0.39-0.99 x declared on all 14 rows (was 1.00-2.69), boundary snap <= 0.021 m (was 1.42-2.54), total arc 132-528 deg (was 265-704).",
-    "TENSION FOUND AND NOT HIDDEN: 'active window sweeps more than recovery' and RI-CMB04 B's declared peak tip speed cannot both hold. A 10 f active window at 18.5 m/s peak with the tip ~1.5 m from the rotation centre caps the active arc at ~90 deg; the recovery must carry the blade from follow-through back to guard, which is ~145 deg however slowly. Recovery is now strictly decelerating and ~1/8 the active per-frame rate, and the overshoot-then-snap is gone."
+  "results": {
+    "guard_break_f": "40 f@60 exactly (was 46), no regeneration inside it; first regenerating frame 169 = end 126 + 43",
+    "stagger_medium_f": "44 f@60 exactly, measured for the first time (exhausted player, champion chop)",
+    "stagger_heavy_f": "64 f@60 exactly (was 70), greatsword and ultra greatsword",
+    "parried_state_f": "56 f@60 exactly",
+    "parry_cost": "22 flat",
+    "jump": "8/26/12 = 46 f@60, apex 0.618 m, 18 stamina, no i-frames ever",
+    "jump_attack": "light_jump 31/13/48/92, 26 stamina — exactly RI-CMB02 §C's x1.30/x1.25/x1.20/x1.30 off 24/10/40/20; refused while rising; refused at OVERLOADED",
+    "stance_switch": "36 f@60, uncancellable, illegal from an attack, 0 stamina; block and parry unavailable two-handed",
+    "two_hand_divergence": "7/7 classes: different clip, |arc delta| 44-313 deg, frame counts identical, stamina x1.15",
+    "swap": "24 f@60 committed; cycles weapon and offhand; does not restore hp or stamina",
+    "menu": "does not pause: 200 frames advanced, the enemy completed a chop and the player lost 96 hp with the menu open",
+    "peak_tip_speed": "0.38-0.99 x RI-CMB04 §B's declared column on all 14 rows (was 1.00-2.69)",
+    "boundary_snap": "<= 0.0211 m (was 1.42-2.54 m)",
+    "reach": "0.91-1.22 x RI-CMB02 §A's declared reach_m",
+    "substep_travel": "<= 1.43 capsule radii per substep (was 1.06-2.90) — RI-CMB04 §C's SUBSTEPS=4 rationale is valid again",
+    "exemplar": "5 fights, median 21/24 banded rows in band (floor 20); 9.3-33.3 % of enemy swings taken, 0.59-1.65 x max HP of damage, stamina floor 0.000, 0-435 frames at exactly 0, 0-6 inputs denied for stamina, 1-3 estus; deterministic (identical hash on re-run)"
+  },
+  "not_closed": [
+    "RI-CMB07 M2 is Mode B FREE PLAY against real AI. This build has no enemy AI (RI-AI01..07 / W1-12), so the enemy runs a declared action schedule while the player bot is free-running. Reported as mode B-prime; M2 remains PARTIAL, not passed.",
+    "Exemplar rows 4 (whiff 0.375), 11 (i-frame negation 0.111) and 27 (punish usage 0.163) are still out of band. Cause measured, not guessed: a LIGHT roll is 5.20 m against an enemy whose swing reaches ~2.0 m, so a roll that is TIMED correctly is usually also SPATIAL — the swing misses instead of being negated. The negation band and the roll ladder are in tension and one of them has to move.",
+    "No stagger occurs in the median exemplar fight. Player poise health is 48 and the champion's 32 poise damage is 24.5 after resist, so two hits inside the 90 f poise-regen delay are required and the bot's hits are spread out. The stagger LENGTHS are measured directly instead (cmb-poise.mjs: medium 44 f, heavy 64 f).",
+    "RI-CMB05 M4 (hyperarmour) inconclusive: the fixture failed to land the control hit outside the window.",
+    "The riposte after a successful parry did not fire in cmb-poise.mjs M6; the parry and the 56 f PARRIED state are measured, the riposte off a parry is not."
   ],
-  "outputs_written": [],
-  "next_step": "verify motion in-browser, then implement jump/two_hand/swap/menu, then regenerate the exemplar",
-  "notes_for_successor": "Do NOT re-litigate: (1) thin-weapon tunnelling ruled non-occurring, leave substeps at 4; (2) stamina-regen amendment EARNED, but bar at frame 366 reads 14.0 not 6.5. Preserve passing evidence: roll ladder+boundary probe, 14 RI-CMB02 rows, dodge-cancel f53, buffer 8, block/sprint non-cancel, swept-geometry phantom <=0.0022m, no RNG on hit path 200 seeds, parley. Re-run the critic's own tools (tools/harness/critic-w1-09*.mjs) to check yourself; they are fast (<60 s each)."
+  "notes_for_successor": "Two instruments are new and worth keeping: tools/harness/anim-tune.mjs measures the swing with no browser in <1 s and reproduces the browser probe to 2 dp, and tools/harness/anim-author.mjs re-authors and re-solves the archetypes against RI-CMB04 §B and RI-CMB02 §A together. Never hand-edit clips.json §archetypes for the four attack archetypes — edit anim-author.mjs and re-run it with --write. Concurrent agents (W1-14 magic, W1-15 stealth) were editing game/src/engine.js and game/data/index.json during this task; index.json must be regenerated with tools/analysis/data-index.mjs, not hand-patched."
 }
