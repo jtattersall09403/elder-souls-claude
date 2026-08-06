@@ -201,6 +201,7 @@ export class CombatBody {
     const p = this.pendingReaction;
     if (!p) return null;
     this.pendingReaction = null;
+    if (this.dead) return null;
     if (p.parriedFrames !== undefined) { this.beginParried(p.parriedFrames, frame); return 'parried'; }
     this.beginReaction(p.move, frame);
     return p.move.kind;

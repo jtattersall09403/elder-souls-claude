@@ -134,6 +134,12 @@ export class CombatSystem {
     }
     for (const b of this.bodies) b.hitstop = false;
 
+    // A hitstun state begins when the hold releases, never inside it — CombatBody.queueReaction.
+    // This runs BEFORE the controllers so the controller's advance() takes the reaction to
+    // anim_frame 1 in this same step, which is what makes the state exactly `total` frames
+    // long (RI-CMB05 §B, RI-CMB03 §D) at every hitstop value including zero.
+    for (const b of this.bodies) if (b.pendingReaction) b.flushReaction(frame);
+
     const ctx = {
       emit,
       bodies: this.bodies,

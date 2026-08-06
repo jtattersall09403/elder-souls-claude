@@ -89,10 +89,11 @@
       "by_class": {
         "small":  { "animation_f": 68, "active": [9, 26],  "whiff_recovery_f": 42, "stamina": 22, "was_pre_s22": { "animation": 34, "active": [5, 13] } },
         "tool":   { "animation_f": 64, "active": [5, 28],  "whiff_recovery_f": 36, "stamina": 22, "was_pre_s22": { "animation": 32, "active": [3, 14] } },
-        "medium": { "animation_f": 80, "active": [15, 28], "whiff_recovery_f": 52, "stamina": 26, "was_pre_s22": { "animation": 40, "active": [8, 14] } },
+        "medium": { "animation_f": 80, "active": [15, 28], "whiff_recovery_f": 52, "stamina": 22, "was_pre_s22": { "animation": 40, "active": [8, 14] } },
         "great":  null
       },
-      "window_map_rule": "[a,b] -> [2a-1, 2b], which preserves 1-based inclusive indexing and doubles the length exactly.",
+      "stamina_is_flat_by_class": "RI-CMB03 \u00a7B: \"Parry attempt | 22 flat\". A per-shield-class parry cost is not authorised by any reference item; the medium shield carried 26 here and in stamina.json \u00a7costs.parry_medium_shield, so the number a player with the default loadout actually paid was 26 and not the declared 22 (W1-09 verdict \u00a72.3). Both are now 22. If a class-dependent cost is ever wanted it needs an amendment to RI-CMB03 \u00a7B first.",
+  "window_map_rule": "[a,b] -> [2a-1, 2b], which preserves 1-based inclusive indexing and doubles the length exactly.",
       "upstream_sanity_check": "The corpus's recalled Souls parry window of 8-12 t@30 is 267-400 ms. Our rebased windows are 233-400 ms. Before the rebase they were 117-200 ms — half. The rebase lands us on the upstream figure.",
       "no_partial_parry": "DS3 has a partial-parry window (a near-miss treated as a normal block). Our corpus has no analogue and this build does not invent one — declared, not silently omitted.",
       "parried_state": { "frames": 56, "riposte_window": [7, 52], "fully_vulnerable": true }

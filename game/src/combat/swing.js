@@ -57,7 +57,7 @@ const PITCH_CHAIN = [
 /** Phase of the deepest cock, by weight tier. Sets the anticipation fraction directly. */
 export const COCK_PHASE = { light: 0.45, medium: 0.50, heavy: 0.58, ultra: 0.62, ranged: 0.40 };
 /** Phase (past p=2) at which the follow-through reverses. Sets the follow-through fraction. */
-export const FOLLOW_PHASE = { light: 0.24, medium: 0.26, heavy: 0.30, ultra: 0.34, ranged: 0.20 };
+export const FOLLOW_PHASE = { light: 0.24, medium: 0.26, heavy: 0.34, ultra: 0.38, ranged: 0.20 };
 /** Root-forward overshoot at the end of the active window — the "settle" of RI-WPN05 §E. */
 const SETTLE = { light: 0.00, medium: 0.035, heavy: 0.055, ultra: 0.075, ranged: 0.0 };
 

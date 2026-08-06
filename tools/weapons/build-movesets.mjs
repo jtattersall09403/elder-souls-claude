@@ -599,7 +599,11 @@ for (const w of ROSTER.weapons) {
     const baseHa = !!spec.ha || (g.ha_extra || []).includes(slotId);
     const ha = haFlip.has(slotId) ? !baseHa : baseHa;
 
-    const capsuleLen = Math.max(0.25, reach - Math.abs(rootM) - 0.54);
+    // Blade length = reach - arm - lunge, with the LUNGE allowance capped at 0.90 m. Beyond that
+    // the derivation makes an ultra greatsword's blade (reach 2.95, lunge 1.40) shorter than a
+    // straight sword's, which is false, and it drops its peak tip speed below RI-WPN05 §E's ultra
+    // band because tip speed is angular rate times radius.
+    const capsuleLen = Math.max(0.25, reach - Math.min(Math.abs(rootM), 0.90) - 0.54);
     const slot = {
       anim: clipId,
       anim_owner: owner,

@@ -228,7 +228,7 @@ export class EnemyController {
 
   /** Called by the resolver when the player's parry window catches this enemy's active frames. */
   becomeParried(frame, frames, emit) {
-    this.b.beginParried(frames, frame);
+    this.b.queueParried(frames, frame);
     const e = emit(frame, 'PARRY');
     e.who = this.b.id; e.frames = frames;
     e.riposte_window = this.d.poise.criticals.parry.parried_state.riposte_window;

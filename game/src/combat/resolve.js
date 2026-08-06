@@ -54,7 +54,7 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
           if (d <= (A.move.reach_m_declared || 2.5) + 0.6 && front <= 70) {
             A.hitThisSwing.add(B.id);
             const frames = C.poise.criticals.parry.parried_state.frames;
-            A.beginParried(frames, frame);
+            A.queueParried(frames, frame);
             const e = emit(frame, 'PARRY');
             e.src = B.id; e.who = A.id; e.atk = A.move.id; e.parry_frame = pf;
             e.window = w; e.frames = frames;
@@ -112,7 +112,7 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
           B.stamina = 0;
           const gbm = B.moves._guardBreak;
           B.move = null;
-          B.beginReaction(gbm, frame);
+          B.queueReaction(gbm, frame);
           const g = emit(frame, 'GUARD_BREAK');
           g.who = B.id; g.frames = gbm.total; g.cause = 'stamina_exhausted_on_block';
           g.riposte_window = gbm.riposte_window;
@@ -137,9 +137,9 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
       if (pr.staggered && !B.dead) {
         // RI-CMB05 §B: a target ALREADY staggered takes damage but the timer does NOT restart.
         // This is what prevents infinite stunlock and it is a rule, not an optimisation.
-        if (frame >= B.staggerUntil) {
+        if (frame >= B.staggerUntil && !B.pendingReaction) {
           const sm = B.moves._stagger[pr.tier];
-          B.beginReaction(sm, frame);
+          B.queueReaction(sm, frame);
           B.poiseHealth = B.poiseHealthMax;   // reset on the frame the stagger ENDS is handled there
           const s = emit(frame, 'STAGGER');
           s.who = B.id; s.frames = sm.total; s.tier = pr.tier; s.cause = 'poise_broken';

@@ -21,6 +21,7 @@ import { ACTIONS } from '../input/actions.js';
 import { DEFAULT_BINDINGS, RESERVED_CONTROLS, auditBindings } from '../input/bindings.js';
 import { canonicalise, stateDiff, leafPaths } from '../core/canonical.js';
 import { VOLATILE_PATHS } from '../save/state.js';
+import { installWeaponsHarness } from './weapons.js';
 
 export const HARNESS_VERSION = 1;
 
@@ -161,6 +162,15 @@ export function installHarness(engine, bootPromise) {
     triggerCameraShake(hpFraction) { return engine.triggerCameraShake(hpFraction); },
     setUIVisible(v) { return engine.renderer.setUIVisible(v); },
 
+    // ---- weapons (W1-10) ---------------------------------------------------------------
+    // The extensions RI-WPN01 §Comparison-method, RI-WPN03 M2, RI-WPN04 M2 and RI-WPN05 M5
+    // ask for, supplied as pure functions of game/data/weapons/**. See game/src/harness/weapons.js
+    // for what is still missing and why scoring it 0 fail-closed is correct.
+    get weapons() {
+      if (!this._weapons) this._weapons = installWeaponsHarness(engine.data);
+      return this._weapons;
+    },
+
     // ---- queries ----------------------------------------------------------------------------
     listEntities() { return engine.listEntities(); },
     getPlayerStats() { return engine.getPlayerStats(); },
@@ -177,6 +187,21 @@ export function installHarness(engine, bootPromise) {
     setTide(stateOrPhase) { return engine.setTide(stateOrPhase); },
     getTide() { return engine.getTide(); },
     getRoutes() { return engine.getRoutes(); },
+
+    // ---- RI-TRV01 / AR-2 B13 — the transport network -----------------------------------------
+    // B13's fail condition is ABSENCE: `Object.keys(__HARNESS)` used to contain no travel, board,
+    // station, fare, strider, boat or barge verb, so zero modalities boarded from zero settlements.
+    getTravelNetwork() { return engine.getTravelNetwork(); },
+    getTravelState() { return engine.getTravelState(); },
+    travelQuote(serviceId) { return engine.travelQuote(String(serviceId)); },
+    travelFare(metres, mode) { return engine.travelFare(metres, mode); },
+    boardTravel(serviceId, opts) { return engine.boardTravel(String(serviceId), opts || {}); },
+    travelRide(frames) { return engine.travelRide(frames); },
+    listStations() { return engine.getTravelNetwork().stations || []; },
+
+    // ---- RI-PRG07 §3 — burden, the out-of-fight half of carrying things -----------------------
+    setBurden(arg) { return engine.setBurden(arg); },
+    getBurden() { return engine.getBurden(); },
     getProvinceStats() { return engine.getProvinceStats(); },
     walkRoute(opts) { return engine.walkRoute(opts); },
     streamAround(x, z, budget) {
