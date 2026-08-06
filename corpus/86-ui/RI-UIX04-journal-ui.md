@@ -220,6 +220,16 @@ JU12 blind judge: "BOTH — A is a notebook, B is a quest log with a diary
    passes at 7) and the screen has thrown all of it away.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 8 / 12 checks | 10 / 12 checks | 12 / 12 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; any hard fail caps the piece at 2.
+
 ## How we lose
 
 - **Grouping by quest, in an afternoon, for good reasons.** Somebody with 40 entries across 9

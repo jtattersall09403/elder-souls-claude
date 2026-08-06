@@ -470,6 +470,16 @@ direction fails). Maximum **24**.
 **Both directions are failures of equal standing.** A verdict that reports "no warping found, passes" on
 a build with zero transport services has scored a 0 as a 10 and is void.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 9 / 24 | 12 / 24 | 20 / 24 |
+
+**Aggregation (a property of this item, not of the critic):** sum over 12 checks each scored 2/1/0; any hard fail caps the item at 2.
+
 ## How we lose
 
 - **The most likely outcome by a distance: nobody builds it, and every check we already shipped says

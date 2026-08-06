@@ -160,6 +160,16 @@ Max 24 (22 without R9).
   measurement of the test machine.
 - Any harness-mode page error naming `Math.random`.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 18 / 24 | 21 / 24 | 24 / 24 |
+
+**Aggregation (a property of this item, not of the critic):** sum over the rungs, max 24 (22 without R9).
+
 ## How we lose
 
 1. **`Math.random()` in the enemy strafe reseed.** The single most likely violation,

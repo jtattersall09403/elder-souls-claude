@@ -226,6 +226,16 @@ Diagnosis (§D): "ruined stone towers" -> architecture generic; "dead trees" ->
 flora is Earth flora; "no" -> nothing novel in frame at all.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | FAIL roll-up on the worst frame (caps the ART score at 5) | n/a — the roll-up is four-valued and has no rung between FAIL and PASS | PASS roll-up on the worst frame (caps the ART score at 8); STRONG PASS imposes no cap |
+
+**Aggregation (a property of this item, not of the critic):** cap, not score — this item MODIFIES RI-VIS05's ART score and contributes no ladder number of its own. HARD FAIL caps at 2 and blocks the wave. See SCORING.md §1.2's gate-and-cap clause.
+
 ## How we lose
 
 - **We pass this test in wave 1 and never run it again.** Early builds are grey boxes and grey

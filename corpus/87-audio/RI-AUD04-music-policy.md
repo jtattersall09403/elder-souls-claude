@@ -218,6 +218,16 @@ P6 longest non-boss span: 216 000 f (the whole session)
    other game, and the boss theme is the third loop.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 5 / 8 checks | 7 / 8 checks | 8 / 8 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; any hard fail caps the piece at 2.
+
 ## How we lose
 
 - **M-X gets built on day one and is never questioned.** "Enemy aggros → combat music" is the

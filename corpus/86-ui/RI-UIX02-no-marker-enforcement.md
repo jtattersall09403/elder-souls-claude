@@ -261,6 +261,16 @@ K2 undeclared component at [948,38,24,24] -- same object
    playtesting" behind a flag whose default was flipped in wave 3.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | FAIL on K1, K2, K4, K5 or K6 (below bar, ceiling 6 — the highest honest ladder value once a marker source exists is 4) | n/a — the native verdict is binary; there is no partial-pass rung | PASS on all six detectors (removes a cap; record S8_enforced: true) |
+
+**Aggregation (a property of this item, not of the critic):** gate, not score — scored min(), pass/fail per detector, and it contributes no ladder number of its own. FAIL on K3 is an AR-2 automatic fail capped at 2. Detectors that cannot be run are unmeasurable and therefore 0. See SCORING.md §1.2's gate-and-cap clause.
+
 ## How we lose
 
 - **The detectors are never built.** By far the most likely failure of this item, and it is a

@@ -320,6 +320,16 @@ Blind pair: present the critic with two unlabelled move tables (ours, and §E) w
 names replaced by M1..Mn and tells stripped. It states which boss it believes has a rhythm,
 and which one it would rather learn, before reveal.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 41 / 62 | 48 / 62 | 56 / 62 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum — each check 0/1/2 x weight, max 62.
+
 ## How we lose
 
 1. **The boss is a big trash mob with 12× HP.** Four moves, no phases, no grab, no

@@ -261,6 +261,16 @@ pick and then the reveal. Per CORPUS-CONTRACT §6, a win for ours triggers a har
 We lose the moment a single entry reads "Go to the cave north of town — its location has
 been added to your map." That is one grep away and it is fatal.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 6 / 10 points | 8 / 10 points | 10 / 10 points |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of the 10 scoring points, behind two disqualifying gates (schema lint, prohibition grep).
+
 ## How we lose
 
 - **Objective-marker prose.** "Travel to the Ashen Barrow and retrieve the ring." Second

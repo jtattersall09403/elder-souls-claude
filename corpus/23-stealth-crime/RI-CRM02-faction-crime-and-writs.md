@@ -360,6 +360,16 @@ gains `kind: "unlawful"|"lawful"|"intercepted"`; `getCrimeState()` gains `writs[
 **Failure threshold: any axis below 6.** The jurisdictional-legality axis, the parley axis, the
 mid-fight-accrual axis and the AR-3 encounter axis are binary.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes.
+
 ## How we lose
 
 - **One authority quietly covers everything.** The likeliest failure and the one the item is

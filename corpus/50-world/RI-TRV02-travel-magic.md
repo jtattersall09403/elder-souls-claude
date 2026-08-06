@@ -334,6 +334,16 @@ Native < 10/26 ⇒ *loses outright* (ceiling 4). **Any hard fail caps the item a
 P2 also passed. **Absence cannot score as compliance.** If the spells do not exist, the correct native
 score is **0**, not 14/26 for seven solvent detectors that had nothing to detect.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 10 / 26 | 13 / 26 | 22 / 26 |
+
+**Aggregation (a property of this item, not of the critic):** sum over 13 checks each scored 2/1/0; any hard fail caps the item at 2.
+
 ## How we lose
 
 - **The spells are never built, and the corpus congratulates us.** `RI-PRG04:255` awards its top S7 score

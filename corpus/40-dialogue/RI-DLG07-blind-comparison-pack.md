@@ -322,6 +322,16 @@ A critic that reports "no gap found" has failed its own job (ARBITRATION §3). E
 this pack must end by naming **the single biggest remaining gap** in our dialogue writing,
 with the losing excerpt quoted in full and a concrete rewrite of it attached.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | professional_bet_accuracy 0.80 | professional_bet_accuracy 0.72 | professional_bet_accuracy 0.55 (chance) with judge_cannot_name_a_consistent_tell = true |
+
+**Aggregation (a property of this item, not of the critic):** band on professional_bet_accuracy — LOWER IS BETTER. ours_win_rate > 0.5 VOIDs the run (it is not a score). Any automatic fail sinks the item.
+
 ## How we lose
 
 - **We cannot fill category 4.** Three different answers to the same lore topic, from three

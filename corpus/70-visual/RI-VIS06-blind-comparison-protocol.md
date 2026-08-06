@@ -299,6 +299,16 @@ shadows"). FIDELITY capped at 5. Meanwhile B1 returns `WINNER: B` with
 `NAME THE LOSER'S SETTING: Skyrim` — ART capped at 3. Ship gate `min(3,5) = 3`. Blocked, and
 we know exactly the two things to build.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | Protocol A: ours loses all pairs at CONFIDENCE high (cap 5); Protocol B1: ours wins only at CONFIDENCE low (cap 6) | n/a — this item emits no score of its own at this rung | Protocol A: ours loses some and wins some post-escalation (cap 8); Protocol B1 win at high confidence with B2 MATCH strong (no cap) |
+
+**Aggregation (a property of this item, not of the critic):** cap, not score — this item MODIFIES RI-VIS03 (fidelity) and RI-VIS05 (art) and contributes no ladder number of its own. The row above reads as the ceiling it imposes. See SCORING.md §1.2's gate-and-cap clause.
+
 ## How we lose
 
 - **Judge-shopping.** The first blind run returns a result we dislike, so it is re-run "to

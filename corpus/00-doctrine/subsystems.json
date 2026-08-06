@@ -264,819 +264,956 @@
       "title": "Startup / active / recovery frame counts per attack",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.frames.cancel",
       "title": "What may cancel what, and when (roll-cancel, no free animation cancels)",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.dodge.iframes",
       "title": "Roll invulnerability window measured in frames at 60Hz",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.dodge.directional",
       "title": "Directional roll semantics under lock-on, including backstep",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.dodge.recovery",
       "title": "Post-roll recovery and roll-spam punishment",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.stamina.costs",
       "title": "Stamina cost table per action",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.stamina.regen",
       "title": "Regen rate and post-spend regen delay",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.stamina.block",
       "title": "Guard stamina drain, guard break, stability",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.stamina.exhaustion",
       "title": "Zero-stamina state and its punish window",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.hitbox.sweep",
       "title": "Weapon hit volumes swept along the arc across the active window",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.hitbox.hurtbox",
       "title": "Hurtboxes bound to and moving with animated bones",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.hitbox.resolution",
       "title": "Deterministic geometric hit resolution — NO to-hit roll (seam S1)",
       "arb": "split",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.damage.model",
       "title": "Damage formula, defences, absorption",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.damage.scaling",
       "title": "How stats and skills scale damage (seam S3: scaling, never to-hit)",
       "arb": "split",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.poise.player",
       "title": "Player poise / hyperarmour and stagger-out",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.poise.enemy",
       "title": "Enemy poise breaking, stagger, critical-hit opening",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.block.guard",
       "title": "Blocking, chip damage, guard angle",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.block.parry",
       "title": "Parry window, riposte, backstab",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.attack.moveset",
       "title": "Per-weapon-class moveset shape (R1/R2 chains, running, rolling)",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.attack.commitment",
       "title": "Root-motion-authoritative committed attacks; no instant turn during a swing",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.attack.charge",
       "title": "Charged heavy attacks and their risk/reward",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.attack.tracking",
       "title": "How much an attack may turn during startup, and not at all after",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.dodge.equipload",
       "title": "Equip load changing roll type, distance, and recovery",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.player.movement",
       "title": "In-fight locomotion: run, strafe, backstep, and their speeds",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.weapon.identity",
       "title": "Weapon classes feel categorically different to hold and swing",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.lockon.target",
       "title": "Hard target lock acquisition, range, break conditions",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.lockon.switch",
       "title": "Target switching between multiple hostiles",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.camera.behaviour",
       "title": "Combat camera framing, collision, and lock-on pivot",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.enemy.perception",
       "title": "Sight cone, LOS, alert ladder, cost-of-entry aggro",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.enemy.statemachine",
       "title": "Enemy AI states and legal transitions",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.enemy.movement",
       "title": "Approach, spacing bands, strafing, gap closing",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.enemy.telegraph",
       "title": "Readable windups; no untelegraphed instant attacks",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.enemy.punish",
       "title": "Punish windows both ways: enemy recovery, player heal-read",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.enemy.leash",
       "title": "De-aggro, leash return, world reset, no invulnerable walk-home",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.encounter.grouping",
       "title": "Multi-enemy token arbitration; no gang-pile, no frozen queue",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.encounter.placement",
       "title": "Hand-placed encounter composition and ambush legibility",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
+    },
+    {
+      "path": "combat.encounter.parley",
+      "title": "The mid-fight parley: a committed, punishable, non-menu action that ends a fight without a corpse, and the enemy YIELD state (seam S13, ARBITRATION section 1)",
+      "arb": "split",
+      "area": "40-dialogue",
+      "critic": "critic.combat",
+      "note": "Souls owns the frames and the commitment (AR-1); Morrowind owns the gate on disposition, reputation, rank and knowledge (RI-DLG04). Judged by RI-DLG09. Beasts and mindless things are exempt by S13 and Souls owns them entirely.",
+      "registered": "wave-0 parley (INTENT-AUDIT-02 gate B1, ND-04)",
+      "wave": 2
+    },
+    {
+      "path": "combat.encounter.exit",
+      "title": "Every fight's set of legal exits; killing is one of them and may not be the only one (ARBITRATION section 1, AR-2 B12, PACIFIST-IN-FIGHT)",
+      "arb": "morrowind",
+      "area": "40-dialogue",
+      "critic": "critic.combat",
+      "note": "The five exits are parley/yield (RI-DLG09), flee/leash (RI-AI01), calm-paralyse-soultrap (RI-MAG02), stealth break (RI-STL01) and bribe/buy-off (RI-CRM02). Judged by RI-DLG09 section D. Detected in its absence by CRITIC-DOCTRINE AR-2 B12.",
+      "registered": "wave-0 parley (INTENT-AUDIT-02 gate B1, ID-01)",
+      "wave": 1
     },
     {
       "path": "combat.boss.phases",
       "title": "Boss phase transitions and moveset expansion",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 2
     },
     {
       "path": "combat.boss.arena",
       "title": "Boss arena shape, fog gate, retry loop",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.heal.charges",
       "title": "Estus-equivalent: finite charges, animation commitment, refill at rest",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.status.buildup",
       "title": "In-fight status meters and procs (seam S11 Souls half)",
       "arb": "split",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 2
     },
     {
       "path": "combat.magic.casting",
       "title": "Spellcasting inside the fight: cast frames, commitment, resource",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.death.corpserun",
       "title": "Souls dropped on death, recoverable at the death spot, lost on second death",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.death.worldreset",
       "title": "Rest/death resets ordinary enemies; named actors never respawn (seam S5)",
       "arb": "split",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.input.buffer",
       "title": "Input buffering window and queue semantics",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.input.latency",
       "title": "Press-to-first-active-frame latency",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.feedback.hitstop",
       "title": "Hitstop, impact vfx/sfx, damage legibility",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.difficulty.lethality",
       "title": "Regions gated by lethality; NO level-scaling to the player (seam S9)",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "combat.pause.policy",
       "title": "World does not pause during combat; inventory is not a safe haven (seam S14)",
       "arb": "souls",
       "area": "10-combat",
-      "critic": "critic.combat"
+      "critic": "critic.combat",
+      "wave": 1
     },
     {
       "path": "progression.level.curve",
       "title": "Soul cost per level, single soft-cap curve, bonfire level-up (seam S2)",
       "arb": "split",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.level.attributes",
       "title": "Breadth of the stat sheet: attributes shaping build identity beyond weapon class",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.skill.usegrowth",
       "title": "Skills improve by use (seam S3)",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.skill.gating",
       "title": "Skills gate access and utility, never to-hit",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.build.identity",
       "title": "Two different builds play observably differently out of the fight, not only in it",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.souls.economy",
       "title": "Souls level you and ONLY level you (seam S15)",
       "arb": "neutral",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.gold.economy",
       "title": "Gold is the only currency: merchants, bribes, training, travel, repairs",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.merchant.barter",
       "title": "Merchant gold pools, barter, disposition-affected prices",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.bonfire.function",
       "title": "What resting does and does not do (checkpoint + level-up, never teleport)",
       "arb": "split",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.bonfire.placement",
       "title": "Spacing and siting of rest points relative to danger",
       "arb": "souls",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.equipment.upgrade",
       "title": "Weapon upgrade paths and materials",
       "arb": "souls",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 2
     },
     {
       "path": "progression.equipment.encumbrance",
       "title": "Load / equip burden and its movement consequences",
       "arb": "split",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.inventory.model",
       "title": "Inventory breadth, item weight, containers, repair",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 1
     },
     {
       "path": "progression.affliction.economy",
       "title": "Named diseases, curses, in-world causes and cures (seam S11 Morrowind half)",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 2
     },
     {
       "path": "progression.fatigue.social",
       "title": "Morrowind Fatigue survives out-of-fight, affecting disposition/persuasion (seam S4)",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 2
     },
     {
       "path": "progression.skill.social",
       "title": "Social skills (speechcraft, mercantile) and what they buy you",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 2
     },
     {
       "path": "progression.training.trainers",
       "title": "Trainers: who, what skills, what limits, paid in gold",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 2
     },
     {
       "path": "progression.crafting.alchemy",
       "title": "Ingredients, alchemy, and the crafting loop",
       "arb": "morrowind",
       "area": "20-progression",
-      "critic": "critic.progression"
+      "critic": "critic.progression",
+      "wave": 3
     },
     {
       "path": "quests.structure.stages",
       "title": "Multi-stage quests with real intermediate state",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.structure.branching",
       "title": "Branch points that survive to different endings, not cosmetic choice",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.structure.deceit",
       "title": "Quest-givers who lie, omit, or use the player",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.resolution.noncombat",
       "title": "Quests resolvable by talk, bribe, sneak, theft, or lore knowledge",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.resolution.exclusive",
       "title": "Mutually exclusive resolutions that permanently close doors",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.faction.joining",
       "title": "How you join, and that joining means something",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.faction.rankgating",
       "title": "Rank requirements on skills AND attributes",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.faction.escalation",
       "title": "Errands escalate to politics escalate to power over the faction",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 2
     },
     {
       "path": "quests.faction.rivalry",
       "title": "Faction rivalry locks: advancing here costs you there",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 2
     },
     {
       "path": "quests.faction.expulsion",
       "title": "Expulsion, disgrace, and the path back",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 2
     },
     {
       "path": "quests.mainline.prophecy",
       "title": "Main quest shape: prophecy, doubt, and earned legitimacy",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.giver.characterisation",
       "title": "Quest-givers are people with agendas, not dispensers",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.reward.shape",
       "title": "Rewards are specific, named, sometimes worse than promised",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.failure.severed",
       "title": "Killable quest NPCs; thread-of-prophecy-severed instead of game over (seam S10)",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.discovery.hooks",
       "title": "Quests found through rumour and overheard talk, not a quest board",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.state.persistence",
       "title": "Quest/faction/world flags survive death untouched (seam S6)",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.data.schema",
       "title": "The quest data schema itself: stages, conditions, flags, journal binding",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.density.count",
       "title": "How many quests exist per faction, settlement, and region",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 3
     },
     {
       "path": "quests.lore.hooks",
       "title": "Quests that hang off books, rumours, and canon rather than a giver",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.mainline.acts",
       "title": "Act structure of the main quest and its turning points",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.mainline.antagonist",
       "title": "The antagonist: presence, motive, and how the world speaks of them",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 1
     },
     {
       "path": "quests.side.texture",
       "title": "Side-quest texture: small, strange, local, non-heroic",
       "arb": "morrowind",
       "area": "30-quests",
-      "critic": "critic.quests"
+      "critic": "critic.quests",
+      "wave": 3
     },
     {
       "path": "dialogue.topics.graph",
       "title": "Topic-list dialogue with a real graph behind it",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.topics.discovery",
       "title": "Keyword discovery: topics unlock by being told about them",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.topics.filtering",
       "title": "Same topic, different answer by faction/race/rank/disposition/place",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.disposition.model",
       "title": "Disposition as a real number with real consequences",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.persuasion.mechanics",
       "title": "Admire / intimidate / taunt / bribe and their risks",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.rumour.distribution",
       "title": "Rumours differ per town and per class, and point at real content",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.voice.register",
       "title": "Prose quality and register: does it read like Morrowind or like filler",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 2
     },
     {
       "path": "dialogue.npc.identity",
       "title": "An NPC reads as a specific person with a specific position",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.greeting.variation",
       "title": "Greetings vary by state, place, and standing",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.service.merchant",
       "title": "Barter, training, repair, transport conducted through dialogue",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.combat.lockout",
       "title": "Topic lists locked during COMBAT; enemies shout, not converse (seam S13)",
       "arb": "souls",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.lore.vector",
       "title": "NPC dialogue, not item descriptions, is the primary lore vector (AR-2)",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "dialogue.density.wordcount",
       "title": "Volume of authored dialogue per NPC, settlement, and region",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 3
     },
     {
       "path": "dialogue.topics.truth",
       "title": "NPCs may be wrong or lying inside a topic answer, discoverably",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.dialogue"
+      "critic": "critic.dialogue",
+      "wave": 1
     },
     {
       "path": "journal.entry.voice",
       "title": "First-person-authored journal prose written by the character",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.journal"
+      "critic": "critic.journal",
+      "wave": 1
     },
     {
       "path": "journal.entry.numbering",
       "title": "Numbered, dated, append-only entries with stable indices",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.journal"
+      "critic": "critic.journal",
+      "wave": 1
     },
     {
       "path": "journal.entry.directions",
       "title": "Directions carried in prose: landmarks, distances, named people (seam S8)",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.journal"
+      "critic": "critic.journal",
+      "wave": 1
     },
     {
       "path": "journal.navigation.nomarkers",
       "title": "No compass markers, no objective arrows, anywhere",
       "arb": "morrowind",
       "area": "40-dialogue",
-      "critic": "critic.journal"
+      "critic": "critic.journal",
+      "wave": 1
     },
     {
       "path": "world.region.identity",
       "title": "Each region is instantly identifiable from one screenshot",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.region.transition",
       "title": "Borders between regions read as a change, not a texture swap",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.region.gating",
       "title": "Region access gated by lethality and knowledge, not by level checks",
       "arb": "souls",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.map.scale",
       "title": "Absolute world size and the time it takes to cross",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.map.legibility",
       "title": "Navigable by landmark and memory; the map is a drawing, not a GPS",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.density.handplacement",
       "title": "Hand-placed density: things per 100m that reward walking",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.settlement.anatomy",
       "title": "What a settlement contains and how it is laid out",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.interior.named",
       "title": "Named interiors with owners, contents, and reasons to exist",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.interior.continuity",
       "title": "Interiors match their exteriors in size, orientation, and light",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.dungeon.design",
       "title": "Dungeon and interior layout: loops, shortcuts, unlocks, and dead ends",
       "arb": "souls",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 2
     },
     {
       "path": "world.traversal.time",
       "title": "Traversal time budgets between named places",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.traversal.transport",
@@ -1084,511 +1221,584 @@
       "arb": "morrowind",
       "area": "50-world",
       "critic": "critic.world",
-      "retitled": "wave-0 corpus-audit, drift ID-17: was 'In-fiction transport network only; no warp-to-pin (seam S7)', which reads as a prohibition and let a build with no network at all pass. Path unchanged (renaming a path orphans every verdict that cited it); only the title moved."
+      "retitled": "wave-0 corpus-audit, drift ID-17: was 'In-fiction transport network only; no warp-to-pin (seam S7)', which reads as a prohibition and let a build with no network at all pass. Path unchanged (renaming a path orphans every verdict that cited it); only the title moved.",
+      "wave": 1
     },
     {
       "path": "world.wayfinding.directions",
       "title": "Getting there from prose directions actually works",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.strangeness.flora",
       "title": "Alien plant life that is not a European forest",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 3
     },
     {
       "path": "world.strangeness.fauna",
       "title": "Alien animals and their behaviour in the world",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 3
     },
     {
       "path": "world.strangeness.architecture",
       "title": "Buildings that could not be anywhere else",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.strangeness.budget",
       "title": "Overall strangeness budget: how alien the world reads per hour of play",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.hazard.environment",
       "title": "Swamp, blight, drowning, disease vectors as world hazards",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.water.marsh",
       "title": "Black Marsh specifically: water, tide, mud, depth, and its cost to cross",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.weather.systems",
       "title": "Weather: rain, storm, mist, and what it changes in play",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.loot.placement",
       "title": "Hand-placed, named, weird loot; no procedural drop tables (seam S12)",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.npc.population",
       "title": "Who lives here, in what numbers, doing what",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.persistence.state",
       "title": "Dropped, moved, and taken things stay that way",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.traversal.roads",
       "title": "Roads, boardwalks and paths as the readable skeleton of the map",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.traversal.locomotion",
       "title": "Player movement speeds out of the fight, which set every traversal budget",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.terrain.form",
       "title": "Terrain shape, elevation, and how it channels movement",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.verticality.layout",
       "title": "Vertical level design: what you can see, climb, fall from, and drop into",
       "arb": "souls",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.time.daynight",
       "title": "Time of day, its length, and what actually changes with it",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.property.ownership",
       "title": "Owned things, theft, witnesses, and consequence",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.locks.security",
       "title": "Locks, security ratings, picking, and the alternatives to picking",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "world.faction.presence",
       "title": "Which factions hold which places, visibly, on the ground",
       "arb": "morrowind",
       "area": "50-world",
-      "critic": "critic.world"
+      "critic": "critic.world",
+      "wave": 1
     },
     {
       "path": "lore.canon.registry",
       "title": "The canon-facts registry itself, including the `disputed` flag",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 1
     },
     {
       "path": "lore.canon.argonian",
       "title": "Argonian culture, Hist, naming, biology, outsider perception",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 1
     },
     {
       "path": "lore.canon.geography",
       "title": "Black Marsh geography and place-names against canon",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 1
     },
     {
       "path": "lore.canon.history",
       "title": "Deep-time history and its visible residue",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 1
     },
     {
       "path": "lore.book.structure",
       "title": "In-world books: length, form, authorial voice",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 3
     },
     {
       "path": "lore.book.unreliability",
       "title": "Sources contradict each other on purpose and are traceable to a bias",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 3
     },
     {
       "path": "lore.naming.conventions",
       "title": "Names of people, places, and things obey a consistent phonology",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 1
     },
     {
       "path": "lore.religion.hist",
       "title": "The Hist as an actual force in the world, not decoration",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 1
     },
     {
       "path": "lore.canon.factions",
       "title": "Who holds power, in canon: factions, politics, and their era",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 1
     },
     {
       "path": "lore.canon.prophecy",
       "title": "Prophecy as a lore object: its text, its readers, and their disagreement",
       "arb": "morrowind",
       "area": "60-lore",
-      "critic": "critic.lore"
+      "critic": "critic.lore",
+      "wave": 1
     },
     {
       "path": "render.fidelity.lighting",
       "title": "Direct/indirect lighting quality vs modern references",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.shadows",
       "title": "Shadow resolution, contact hardening, acne/peter-panning",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.materials",
       "title": "PBR material response, roughness variation, no plastic look",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.atmosphere",
       "title": "Fog, haze, aerial perspective, volumetrics",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.vegetation",
       "title": "Plant density, variation, wind response, LOD transitions",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.water",
       "title": "Water surface, refraction, shoreline, and underwater",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 1
     },
     {
       "path": "render.fidelity.character",
       "title": "Character and creature mesh/texture quality up close",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 1
     },
     {
       "path": "render.fidelity.animation",
       "title": "Animation quality: weight, blending, foot contact",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.postprocess",
       "title": "Tonemapping, exposure, AA, bloom discipline",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.streaming",
       "title": "Draw distance, LOD popping, load-in visibility",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.ao",
       "title": "Ambient occlusion: contact darkening and grounding",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.ibl",
       "title": "Image-based / sky lighting and indirect response",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.sky",
       "title": "Sky model, sun/moon, cloud, and its coupling to scene light",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.fidelity.vfx",
       "title": "Particle and effect quality: fire, spray, spell, blood, dust",
       "arb": "modern-fidelity",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 4
     },
     {
       "path": "render.process.bifurcation",
       "title": "The judging process itself: axis declared, references not crossed (ARBITRATION §4)",
       "arb": "neutral",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 1
     },
     {
       "path": "render.process.measurement",
       "title": "How a visual number is taken: capture protocol, poses, repeatability",
       "arb": "neutral",
       "area": "70-visual",
-      "critic": "critic.fidelity"
+      "critic": "critic.fidelity",
+      "wave": 1
     },
     {
       "path": "render.art.palette",
       "title": "Colour identity per region against Morrowind's palette discipline",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "render.art.silhouette",
       "title": "Readable, strange silhouettes for creatures and buildings",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "render.art.architecture",
       "title": "A coherent invented architectural language",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "render.art.creature",
       "title": "Creature design that is not a generic bestiary",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "render.art.composition",
       "title": "Vista framing and landmark placement in the frame",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "render.art.weirdness",
       "title": "The dream-logic strangeness budget per screen",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "render.art.mood",
       "title": "Mood and atmosphere as an art choice: oppression, damp, quiet menace",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "render.art.flora",
       "title": "Plant design language: shapes that could not be a European forest",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "render.art.materials",
       "title": "Material identity as an art choice: chitin, resin, wet wood, bone",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.artdirection"
+      "critic": "critic.artdirection",
+      "wave": 4
     },
     {
       "path": "audio.combat.impact",
       "title": "Hit, block, parry, and death sound design",
       "arb": "souls",
       "area": "70-visual",
-      "critic": "critic.audio"
+      "critic": "critic.audio",
+      "wave": 1
     },
     {
       "path": "audio.ambience.region",
       "title": "Region ambience that identifies a place with eyes closed",
       "arb": "morrowind",
       "area": "70-visual",
-      "critic": "critic.audio"
+      "critic": "critic.audio",
+      "wave": 1
     },
     {
       "path": "audio.music.policy",
       "title": "Where music plays and where silence is correct",
       "arb": "souls",
       "area": "70-visual",
-      "critic": "critic.audio"
+      "critic": "critic.audio",
+      "wave": 3
     },
     {
       "path": "audio.voice.policy",
       "title": "Voiced greetings vs written dialogue; consistency of the choice",
       "arb": "morrowind",
       "area": "70-visual",
-      "critic": "critic.audio"
+      "critic": "critic.audio",
+      "wave": 3
     },
     {
       "path": "ui.hud.combat",
       "title": "Health/stamina/charges HUD legibility under pressure",
       "arb": "souls",
       "area": "70-visual",
-      "critic": "critic.ui"
+      "critic": "critic.ui",
+      "wave": 1
     },
     {
       "path": "ui.hud.minimalism",
       "title": "No compass, no markers, no quest arrows on screen (AR-2)",
       "arb": "morrowind",
       "area": "70-visual",
-      "critic": "critic.ui"
+      "critic": "critic.ui",
+      "wave": 1
     },
     {
       "path": "ui.menu.inventory",
       "title": "Inventory screen structure and information density",
       "arb": "morrowind",
       "area": "70-visual",
-      "critic": "critic.ui"
+      "critic": "critic.ui",
+      "wave": 1
     },
     {
       "path": "ui.menu.journal",
       "title": "Journal presentation, topic index, quest filtering",
       "arb": "morrowind",
       "area": "70-visual",
-      "critic": "critic.ui"
+      "critic": "critic.ui",
+      "wave": 1
     },
     {
       "path": "ui.dialogue.presentation",
       "title": "Dialogue window: topic list, hyperlinked keywords, portrait, prose",
       "arb": "morrowind",
       "area": "70-visual",
-      "critic": "critic.ui"
+      "critic": "critic.ui",
+      "wave": 1
     },
     {
       "path": "ui.style.diegesis",
       "title": "UI art belongs to the world rather than to a UI kit",
       "arb": "art-direction",
       "area": "70-visual",
-      "critic": "critic.ui"
+      "critic": "critic.ui",
+      "wave": 1
     },
     {
       "path": "ui.menu.levelup",
       "title": "The level-up screen: what it shows, what it costs, where it lives",
       "arb": "split",
       "area": "70-visual",
-      "critic": "critic.ui"
+      "critic": "critic.ui",
+      "wave": 1
     },
     {
       "path": "ui.menu.books",
       "title": "Reading a book in-game: presentation, pagination, legibility",
       "arb": "morrowind",
       "area": "70-visual",
-      "critic": "critic.ui"
+      "critic": "critic.ui",
+      "wave": 3
     },
     {
       "path": "platform.perf.framerate",
       "title": "Frame time budget and stability in a real browser",
       "arb": "neutral",
       "area": "80-methods",
-      "critic": "critic.platform"
+      "critic": "critic.platform",
+      "wave": 1
     },
     {
       "path": "platform.perf.memory",
       "title": "Heap and GPU memory ceilings, leak-free over a session",
       "arb": "neutral",
       "area": "80-methods",
-      "critic": "critic.platform"
+      "critic": "critic.platform",
+      "wave": 2
     },
     {
       "path": "platform.load.streaming",
       "title": "Initial load time and in-session streaming hitches",
       "arb": "neutral",
       "area": "80-methods",
-      "critic": "critic.platform"
+      "critic": "critic.platform",
+      "wave": 2
     },
     {
       "path": "platform.input.pipeline",
       "title": "Browser input path: pointer lock, key repeat, dropped inputs",
       "arb": "neutral",
       "area": "80-methods",
-      "critic": "critic.platform"
+      "critic": "critic.platform",
+      "wave": 1
     },
     {
       "path": "platform.save.persistence",
       "title": "Save/load fidelity of world, quest, and faction state",
       "arb": "morrowind",
       "area": "80-methods",
-      "critic": "critic.platform"
+      "critic": "critic.platform",
+      "wave": 1
     },
     {
       "path": "platform.determinism.harness",
       "title": "Seeded, fixed-step headless runs that a critic can reproduce",
       "arb": "neutral",
       "area": "80-methods",
-      "critic": "critic.platform"
+      "critic": "critic.platform",
+      "wave": 1
     },
     {
       "path": "coherence.tone.crossregion",
@@ -1596,7 +1806,8 @@
       "arb": "morrowind",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C1 (tone and register) + traversal T1/T2"
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C1 (tone and register) + traversal T1/T2",
+      "wave": 1
     },
     {
       "path": "coherence.faction.crossref",
@@ -1604,7 +1815,8 @@
       "arb": "morrowind",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C2 (factions acknowledge each other) + traversal T3"
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C2 (factions acknowledge each other) + traversal T3",
+      "wave": 1
     },
     {
       "path": "coherence.lore.consistency",
@@ -1612,7 +1824,8 @@
       "arb": "morrowind",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C3 (lore consistency) + traversal T5"
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C3 (lore consistency) + traversal T5",
+      "wave": 1
     },
     {
       "path": "coherence.difficulty.continuity",
@@ -1620,7 +1833,8 @@
       "arb": "souls",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C4 (difficulty continuity) + traversal T7"
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C4 (difficulty continuity) + traversal T7",
+      "wave": 1
     },
     {
       "path": "coherence.systems.composition",
@@ -1628,7 +1842,8 @@
       "arb": "neutral",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C5 (systems still compose) + traversal T6"
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C5 (systems still compose) + traversal T6",
+      "wave": 1
     },
     {
       "path": "coherence.naming.consistency",
@@ -1636,7 +1851,8 @@
       "arb": "morrowind",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C1.5 / C5.5 + traversal T5"
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C1.5 / C5.5 + traversal T5",
+      "wave": 1
     },
     {
       "path": "coherence.economy.balance",
@@ -1644,7 +1860,8 @@
       "arb": "morrowind",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C5.3 + traversal T1/T4"
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C5.3 + traversal T1/T4",
+      "wave": 1
     },
     {
       "path": "coherence.progression.pacing",
@@ -1652,7 +1869,8 @@
       "arb": "neutral",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C4.2 + traversal T1/T7"
+      "judged_by_doctrine": "COHERENCE-AGENT.md §3 C4.2 + traversal T1/T7",
+      "wave": 1
     },
     {
       "path": "process.critic.discipline",
@@ -1660,7 +1878,8 @@
       "arb": "neutral",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "CRITIC-DOCTRINE.md §1-§8 + SCORING.md §4 anti-inflation audit"
+      "judged_by_doctrine": "CRITIC-DOCTRINE.md §1-§8 + SCORING.md §4 anti-inflation audit",
+      "wave": 0
     },
     {
       "path": "process.verdict.format",
@@ -1668,7 +1887,8 @@
       "arb": "neutral",
       "area": "00-doctrine",
       "critic": "critic.coherence",
-      "judged_by_doctrine": "VERDICT-SCHEMA.md §3 + tools/verdict-validate.mjs"
+      "judged_by_doctrine": "VERDICT-SCHEMA.md §3 + tools/verdict-validate.mjs",
+      "wave": 0
     },
     {
       "path": "magic.casting.frames",
@@ -1676,7 +1896,8 @@
       "arb": "souls",
       "area": "25-magic",
       "critic": "critic.combat",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.casting.resource",
@@ -1684,7 +1905,8 @@
       "arb": "split",
       "area": "25-magic",
       "critic": "critic.combat",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.casting.commitment",
@@ -1692,7 +1914,8 @@
       "arb": "souls",
       "area": "25-magic",
       "critic": "critic.combat",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.casting.geometry",
@@ -1700,7 +1923,8 @@
       "arb": "souls",
       "area": "25-magic",
       "critic": "critic.combat",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.casting.enemy",
@@ -1708,7 +1932,8 @@
       "arb": "souls",
       "area": "25-magic",
       "critic": "critic.combat",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.effects.catalogue",
@@ -1716,7 +1941,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.magic",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.effects.parameters",
@@ -1724,7 +1950,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.magic",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.effects.utility",
@@ -1732,7 +1959,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.magic",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.effects.traversal",
@@ -1740,7 +1968,8 @@
       "arb": "split",
       "area": "25-magic",
       "critic": "critic.magic",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.effects.teleport",
@@ -1748,7 +1977,8 @@
       "arb": "split",
       "area": "25-magic",
       "critic": "critic.world",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.spellmaking.combination",
@@ -1756,7 +1986,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.magic",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 2
     },
     {
       "path": "magic.spellmaking.cost",
@@ -1764,7 +1995,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.magic",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 2
     },
     {
       "path": "magic.enchanting.items",
@@ -1772,7 +2004,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.magic",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 2
     },
     {
       "path": "magic.enchanting.soulgems",
@@ -1780,7 +2013,8 @@
       "arb": "split",
       "area": "25-magic",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 2
     },
     {
       "path": "magic.gating.skills",
@@ -1788,7 +2022,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.economy.prices",
@@ -1796,7 +2031,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 2
     },
     {
       "path": "magic.quests.solutions",
@@ -1804,7 +2040,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.quests",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.vfx.artdirection",
@@ -1812,7 +2049,8 @@
       "arb": "art-direction",
       "area": "25-magic",
       "critic": "critic.artdirection",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.vfx.fidelity",
@@ -1820,7 +2058,8 @@
       "arb": "modern-fidelity",
       "area": "25-magic",
       "critic": "critic.fidelity",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "magic.diegesis.lore",
@@ -1828,7 +2067,8 @@
       "arb": "morrowind",
       "area": "25-magic",
       "critic": "critic.lore",
-      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)",
+      "wave": 1
     },
     {
       "path": "journey.firstlaunch.flow",
@@ -1836,7 +2076,8 @@
       "arb": "morrowind",
       "area": "88-journeys",
       "critic": "critic.journey",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.chargen.diegesis",
@@ -1844,7 +2085,8 @@
       "arb": "morrowind",
       "area": "88-journeys",
       "critic": "critic.journey",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.onboarding.explanation",
@@ -1852,7 +2094,8 @@
       "arb": "morrowind",
       "area": "88-journeys",
       "critic": "critic.journey",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.firsthour.interaction",
@@ -1860,7 +2103,8 @@
       "arb": "neutral",
       "area": "88-journeys",
       "critic": "critic.ui",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.firsthour.competence",
@@ -1868,7 +2112,8 @@
       "arb": "neutral",
       "area": "88-journeys",
       "critic": "critic.ui",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.save.roundtrip",
@@ -1877,7 +2122,8 @@
       "area": "88-journeys",
       "critic": "critic.platform",
       "note": "Correctness is binary. arb is neutral because neither reference game rules on browser persistence; the item defines the bar outright.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.death.recovery",
@@ -1886,7 +2132,8 @@
       "area": "88-journeys",
       "critic": "critic.combat",
       "note": "Judged under seam S6 (ARBITRATION.md): the loss loop is Souls, the persistence of quest/journal/faction state across death is Morrowind. combat.death.corpserun and combat.death.worldreset keep ownership of the rules; this path owns the end-to-end run.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.quest.unmarked",
@@ -1894,7 +2141,8 @@
       "arb": "morrowind",
       "area": "88-journeys",
       "critic": "critic.quests",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.reentry.orientation",
@@ -1902,7 +2150,8 @@
       "arb": "morrowind",
       "area": "88-journeys",
       "critic": "critic.journal",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.process.fleet",
@@ -1912,7 +2161,8 @@
       "critic": "critic.journey",
       "judged_by_doctrine": "JOURNEY-CRITIC-FLEET.md §1-§3, §5, §6",
       "note": "Judged by a doctrine document rather than by a reference item, following the pattern subsystems.json already uses for COHERENCE-AGENT.md and CRITIC-DOCTRINE.md. NOT a corpus hole.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "journey.process.naive",
@@ -1922,7 +2172,8 @@
       "critic": "critic.journey",
       "judged_by_doctrine": "JOURNEY-CRITIC-FLEET.md §4 (I1-I8, rules F6-F8)",
       "note": "Some journeys can only be judged by an agent that has not read the corpus. This path exists so that a violated isolation is a scoreable defect rather than a procedural footnote.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.action.set",
@@ -1931,7 +2182,8 @@
       "area": "88-journeys",
       "critic": "critic.platform",
       "note": "The 14 action names are fixed by HARNESS.md §4 and may not be extended without a harness amendment.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.desktop.pointerlock",
@@ -1939,7 +2191,8 @@
       "arb": "neutral",
       "area": "88-journeys",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.desktop.keyboard",
@@ -1947,7 +2200,8 @@
       "arb": "neutral",
       "area": "88-journeys",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.rebinding.model",
@@ -1955,7 +2209,8 @@
       "arb": "neutral",
       "area": "88-journeys",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.discoverability",
@@ -1964,7 +2219,8 @@
       "area": "88-journeys",
       "critic": "critic.ui",
       "note": "Scored primarily by the naive-agent pass (JOURNEY-CRITIC-FLEET.md §4). The instrumented pass cannot measure this at all — an agent that has read the corpus already knows the binding.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.modality.parity",
@@ -1972,7 +2228,8 @@
       "arb": "neutral",
       "area": "88-journeys",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.gamepad.mapping",
@@ -1980,7 +2237,8 @@
       "arb": "souls",
       "area": "88-journeys",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.gamepad.analog",
@@ -1988,7 +2246,8 @@
       "arb": "souls",
       "area": "88-journeys",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.gamepad.lifecycle",
@@ -1996,7 +2255,8 @@
       "arb": "neutral",
       "area": "88-journeys",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "input.touch.fallback",
@@ -2004,7 +2264,8 @@
       "arb": "neutral",
       "area": "88-journeys",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "platform.mobile.viewport",
@@ -2012,7 +2273,8 @@
       "arb": "neutral",
       "area": "85-platform",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 2
     },
     {
       "path": "platform.save.storage",
@@ -2021,7 +2283,8 @@
       "area": "85-platform",
       "critic": "critic.platform",
       "note": "Distinct from platform.save.persistence, which owns WHAT survives. This path owns WHERE it lives and what happens when the browser takes it away.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "platform.perf.simtime",
@@ -2030,7 +2293,8 @@
       "area": "85-platform",
       "critic": "critic.platform",
       "note": "Separated from platform.perf.framerate because it is measurable on a software rasteriser and frame rate is not (RI-PLT01 §A, Tier-S vs Tier-H).",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "platform.perf.allocation",
@@ -2039,7 +2303,8 @@
       "area": "85-platform",
       "critic": "critic.platform",
       "note": "Per-frame allocation. Session-scale heap growth is platform.perf.memory and belongs to RI-PLT02; the two failures have different causes and are deliberately separate paths.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 2
     },
     {
       "path": "platform.asset.budget",
@@ -2047,7 +2312,8 @@
       "arb": "neutral",
       "area": "85-platform",
       "critic": "critic.platform",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 2
     },
     {
       "path": "platform.load.ttfp",
@@ -2056,7 +2322,8 @@
       "area": "85-platform",
       "critic": "critic.platform",
       "note": "RI-JRN01 O5 (`T_control`) resolves here and is not redefined there.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
     },
     {
       "path": "platform.load.hitches",
@@ -2065,7 +2332,8 @@
       "area": "85-platform",
       "critic": "critic.platform",
       "note": "RI-PLT01 M12 (no frame over 100 ms) excludes declared load boundaries; this path owns the definition of that exclusion, so the two items cannot each assume the other bounds it.",
-      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 2
     },
     {
       "path": "weapon.moveset.slots",
@@ -2073,7 +2341,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.moveset.schema",
@@ -2081,7 +2350,8 @@
       "arb": "neutral",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.charge.heavy",
@@ -2089,7 +2359,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.moveset.answers",
@@ -2097,7 +2368,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.class.taxonomy",
@@ -2105,7 +2377,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.class.differentiation",
@@ -2113,7 +2386,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "weapon.class.reach",
@@ -2121,7 +2395,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.identity.withinclass",
@@ -2129,7 +2404,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "weapon.animation.reuse",
@@ -2137,7 +2413,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "weapon.context.rolling",
@@ -2145,7 +2422,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.context.running",
@@ -2153,7 +2431,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.context.backstep",
@@ -2161,7 +2440,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.context.aerial",
@@ -2169,7 +2449,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "weapon.feel.hitstop",
@@ -2177,7 +2458,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.feel.material",
@@ -2185,7 +2467,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.feel.mass",
@@ -2193,7 +2476,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.feel.whiff",
@@ -2201,7 +2485,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.stance.twohand",
@@ -2209,7 +2494,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.offhand.config",
@@ -2217,7 +2503,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "weapon.shield.taxonomy",
@@ -2225,7 +2512,8 @@
       "arb": "souls",
       "area": "12-weapons",
       "critic": "critic.weapons",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.creation.flow",
@@ -2233,7 +2521,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.creation.identity",
@@ -2241,7 +2530,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.creation.irreversibility",
@@ -2249,7 +2539,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.class.custom",
@@ -2257,7 +2548,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.race.profile",
@@ -2265,7 +2557,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.race.reaction",
@@ -2273,7 +2566,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.race.dialogue",
@@ -2281,7 +2575,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.dialogue",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.race.access",
@@ -2289,7 +2584,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.birthsign.powers",
@@ -2297,7 +2593,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "character.birthsign.drawback",
@@ -2305,7 +2602,8 @@
       "arb": "morrowind",
       "area": "22-character",
       "critic": "critic.progression",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.detection.model",
@@ -2313,7 +2611,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.sneak.state",
@@ -2321,7 +2620,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.npc.search",
@@ -2329,7 +2629,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.opener.seam",
@@ -2337,7 +2638,8 @@
       "arb": "split",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.theft.ownership",
@@ -2345,7 +2647,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.theft.pickpocket",
@@ -2353,7 +2656,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.lock.picking",
@@ -2361,7 +2665,8 @@
       "arb": "split",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.trespass.zones",
@@ -2369,7 +2674,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "stealth.fence.economy",
@@ -2377,7 +2683,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "crime.witness.model",
@@ -2385,7 +2692,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "crime.bounty.schedule",
@@ -2393,7 +2701,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "crime.guard.response",
@@ -2401,7 +2710,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "crime.arrest.interaction",
@@ -2409,7 +2719,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "crime.jail.consequence",
@@ -2417,7 +2728,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "crime.persistence.death",
@@ -2425,7 +2737,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "crime.faction.standing",
@@ -2433,7 +2746,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "crime.faction.sanctioned",
@@ -2441,7 +2755,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "crime.faction.writ",
@@ -2449,7 +2764,8 @@
       "arb": "morrowind",
       "area": "23-stealth-crime",
       "critic": "critic.stealth",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "experience.opening.hook",
@@ -2457,7 +2773,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.opening.beats",
@@ -2465,7 +2782,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.memory.anecdote",
@@ -2473,7 +2791,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.memory.recall",
@@ -2481,7 +2800,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.session.shape",
@@ -2489,7 +2809,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.session.pacing",
@@ -2497,7 +2818,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "experience.session.sag",
@@ -2505,7 +2827,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "experience.novelty.curve",
@@ -2513,7 +2836,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "experience.novelty.decay",
@@ -2521,7 +2845,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "experience.novelty.longtail",
@@ -2529,7 +2854,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 3
     },
     {
       "path": "experience.ending.landing",
@@ -2537,7 +2863,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.ending.aftermath",
@@ -2545,7 +2872,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.ending.pointofnoreturn",
@@ -2553,7 +2881,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.permissiveness.register",
@@ -2561,7 +2890,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "experience.permissiveness.durability",
@@ -2569,7 +2899,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "composition.matrix.coverage",
@@ -2577,7 +2908,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "composition.seam.crossings",
@@ -2585,7 +2917,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "composition.emergence.fuzzing",
@@ -2593,7 +2926,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "composition.emergence.degeneracy",
@@ -2601,7 +2935,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "composition.build.identity",
@@ -2609,7 +2944,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "composition.build.viability",
@@ -2617,7 +2953,8 @@
       "arb": "neutral",
       "area": "95-experience",
       "critic": "critic.experience",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 2
     },
     {
       "path": "world.traversal.stations",
@@ -2625,7 +2962,8 @@
       "arb": "morrowind",
       "area": "50-world",
       "critic": "critic.world",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "world.traversal.schedule",
@@ -2633,7 +2971,8 @@
       "arb": "morrowind",
       "area": "50-world",
       "critic": "critic.world",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "world.npc.schedule",
@@ -2641,7 +2980,8 @@
       "arb": "morrowind",
       "area": "50-world",
       "critic": "critic.world",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     },
     {
       "path": "world.ecology.behaviour",
@@ -2649,7 +2989,8 @@
       "arb": "morrowind",
       "area": "50-world",
       "critic": "critic.world",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 3
     },
     {
       "path": "world.ambient.events",
@@ -2657,7 +2998,8 @@
       "arb": "morrowind",
       "area": "50-world",
       "critic": "critic.world",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 3
     },
     {
       "path": "lore.religion.metaphysics",
@@ -2665,7 +3007,8 @@
       "arb": "morrowind",
       "area": "60-lore",
       "critic": "critic.lore",
-      "registered": "wave-0 corpus-audit"
+      "registered": "wave-0 corpus-audit",
+      "wave": 1
     }
   ],
   "judged_by_doctrine_note": "Some subsystem paths are judged by a doctrine document rather than by a reference item. They are NOT corpus holes: the named document carries the bar, the method, and the evidence requirement. Everything else must have an RI."

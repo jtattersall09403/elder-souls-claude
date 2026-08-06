@@ -248,6 +248,7 @@ Run all that can be run for this piece. Each has a concrete method and a concret
 | B9 | **Unkillable NPCs** | Attack a quest-critical NPC. | Essential-NPC invulnerability or a game-over. Expected: death + "thread of prophecy severed" warning + a harder but completable world. Seam S10. |
 | B10 | **Death eating world state** | Advance a quest, gain faction rank, drop an item, then die and respawn. Diff journal, faction standing, world flags, dropped item. | Any rollback. Seam S6. |
 | B11 | **Silent world** | Walk a settlement for 3 minutes; count distinct rumours heard/available and how many differ from the previous settlement. | Identical rumour set across towns. |
+| **B12** | **No exit but death** — the *inverse* leak, added wave 0 (`parley`, gate **B1**), INTENT-AUDIT-01/02 **ID-01** + **ND-04** | Take the first authored instance in this piece of each of **five encounter classes** — (1) ordinary humanoid, (2) faction patrol, (3) animal / mindless, (4) quest-critical NPC, (5) humanoid boss — and for each: enter `COMBAT` (`__HARNESS.aggro()`), then attempt to end the encounter with **`deaths == 0`** using **every** non-violent verb the build offers, in this order — **(a)** parley: hold `interact` on the target, `RI-DLG09` §A; **(b)** flee past `L_hard`, `RI-AI01`; **(c)** calm / paralyse / soul-trap-without-kill, `RI-MAG02`; **(d)** return to `HIDDEN` until every hostile de-aggros, `RI-STL01`; **(e)** bribe / buy-off at the ×1.5 in-combat premium, `RI-CRM02` §3. Record per class: the exits attempted, the exit that succeeded, the frame `COMBAT` ended, and the death count. Then **re-run class (1) after landing a hit first** and verify an exit still exists once you have drawn blood. Finally read `PACIFIST-IN-FIGHT` for this piece's data (`RI-DLG09` §D, step 2). | **Zero of the five classes exits non-violently → AR-2 fail.** So does any one of: **`PACIFIST-IN-FIGHT` < 15%** or **== 0**; any hostile with `speech: true` and no `parley` block (seam **S13**: *"a humanoid faction NPC with no parley path is a defect"*); a `YIELD` state that expires on a timer or that leaves `COMBAT` active after the last hostile has yielded; a class whose only exit is fleeing, when **EXIT-SPREAD > 70%** across the piece. **B12 and A10 are a pair and must be run together**, exactly as B2 and B13 are: **A10** fails a parley built as a browsable topic list, **B12** fails a world that has no parley at all. `ARBITRATION.md` §1: *"Killing is one exit from a fight. A build in which it is the only exit has failed the brief, regardless of how good the combat feels."* |
 | **B13** | **Travel that does not exist** — the *inverse* leak, added wave 0 (corpus-audit), INTENT-AUDIT-01 **ID-17** | From three different settlements, board **each** transport modality: pay in gold, ride, and verify (a) you arrived at a **station**, not at an objective, (b) in-world time advanced, (c) the destination was one you had already visited. | **No modality boards → AR-2 fail.** Seam S7 *mandates* the network; it does not merely permit it. Every other travel check in this doctrine tests only for the **absence** of warping, so a build that shipped no transport at all passed all of them. B2 and B13 are a **pair** and must be run together: B2 fails a network that has become a map-pin menu, B13 fails a world that has no network. |
 
 > **AMENDED wave 0 (corpus-audit) — every travel check in the corpus is now two-directional.**
@@ -255,6 +256,28 @@ Run all that can be run for this piece. Each has a concrete method and a concret
 > exists. Read alone it rewards a build with no travel at all, which is seam S7 inverted. B13
 > is its counterpart. The same pairing is applied in `RI-PRG04`'s S7 scoring axis, `RI-TRV01`
 > M1's N-fail/W-fail, and COHERENCE-AGENT T6. See `CORPUS-COHERENCE-01.md` §8.
+
+> **ADDED wave 0 (`parley`, intent-audit gate B1) — B12, and why it was missing.**
+> `ARBITRATION.md` §1 and seam **S13** were amended after INTENT-AUDIT-**01** to preserve
+> fleeing, yielding, parley, bribery and non-lethal outcomes *during* a fight. **The ruling
+> moved and its enforcement did not.** INTENT-AUDIT-**02** found B10, B11 and B13 in this table
+> and no B12, so *"a build where every fight ends in a corpse violates §1 and nothing detects
+> it"* — the charter's **stalled correction** pattern occurring inside the drift it was named
+> for. B12 closes it.
+>
+> The symmetry is the point and it is worth stating plainly. **A10** stops the world leaking
+> *into* the fight — you may not open a topic list mid-swing. Until now **nothing stopped the
+> fight from eating the world** — every AR-2 check above tests for a Souls convention that is
+> *present* and wrong, none tested for a Morrowind verb that is *absent*. That is the same
+> one-directional error B13 was written to fix one seam over, and it is why B12 is written
+> two-directionally: it fails a build with no non-violent exit **and** (through its pairing with
+> A10) a build whose non-violent exit is a menu.
+>
+> Instruments: `RI-DLG09` (the parley's input, frames, gate ladder, `YIELD` state and the
+> `PACIFIST-IN-FIGHT` floor), `RI-CRM02` §3 (the price of striking a yielded target),
+> `RI-CRM01` §4 (the guard surrender), `RI-AI01` (leash), `RI-MAG02` (S19 utility effects),
+> `RI-STL01` (stealth break). Subsystem paths: `combat.encounter.parley`,
+> `combat.encounter.exit`.
 
 ---
 

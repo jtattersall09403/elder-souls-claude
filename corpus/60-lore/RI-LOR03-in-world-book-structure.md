@@ -548,6 +548,16 @@ the surface. No book in our game corrects §7. An Argonian NPC, asked, will.)*
 
 **Failure threshold: below 3.** A 2 ships a wiki with a walking simulator attached.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 2 / 5 | 3 / 5 | 5 / 5 |
+
+**Aggregation (a property of this item, not of the critic):** band on the 0-5 native scale.
+
 ## How we lose
 
 1. **Three sentences of exposition.** The default failure. A "book" that is one paragraph telling the

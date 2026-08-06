@@ -249,6 +249,16 @@ or clears on rest, death or load; any contracted by a dice roll; the Sap acquiri
 with no in-world text (**AR-2** — item descriptions or a menu tooltip replacing NPC dialogue as the
 lore vector); afflictions invisible on the character.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 70 / 100 | 80 / 100 | 92 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100.
+
 ## How we lose
 
 1. **Diseases become damage over time.** The single most likely failure, because it is what every

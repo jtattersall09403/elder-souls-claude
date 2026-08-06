@@ -203,6 +203,16 @@ from shipping. Score ≤2 on canon fidelity requires a re-write, not a patch.
 "the Hist forgets a name after nine generations" is Bethesda's or ours, and therefore cannot judge
 whether our world is coherent or merely confused.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 2 / 5 on the worst axis | 3 / 5 on the worst axis | 5 / 5 on the worst axis |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes across the three axes, never the mean; any axis at 0 fails the wave's lore gate.
+
 ## How we lose
 
 Written pessimistically and in advance:

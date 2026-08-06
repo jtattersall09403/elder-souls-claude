@@ -186,6 +186,16 @@ the reveal. **We lose if our median rank is below Morrowind's.**
 | 2 | NPCs stand still; creatures idle in spawn circles; one weather state per region |
 | **0 — WE LOSE** | Any of: any observation point with 0 ambient events in 10 min; <50% NPCs scheduled in any named settlement; player-absent ecology log is empty; ≥6 regions whose weather has no mechanical effect; day/night ΔE ≤25 |
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **The diorama.** NPCs standing at fixed posts forever, creatures idling in a 6 m circle, weather as a

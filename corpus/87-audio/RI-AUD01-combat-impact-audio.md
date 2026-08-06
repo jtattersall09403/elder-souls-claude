@@ -228,6 +228,16 @@ Diagnosis: one "sword.wav" fires from the swing animation. The game has one
 combat sound and it plays whether or not anything was hit.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 6 / 9 checks | 7 / 9 checks | 9 / 9 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; any hard fail caps the piece at 2.
+
 ## How we lose
 
 - **One `sword.wav`.** The single most likely outcome. Impact audio is added late, from a

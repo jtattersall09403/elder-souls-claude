@@ -227,6 +227,16 @@ direction, has committed a hard error and its verdict is void.
 > (element 29 excluded as permanently unmeasurable — see §2). The hour-10 and hour-18
 > completions are measured by `RI-EXP04` LT5, not here.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **The generic swamp.** Cypress trees, Spanish moss, green fog, a wooden shack on stilts, a crocodile.

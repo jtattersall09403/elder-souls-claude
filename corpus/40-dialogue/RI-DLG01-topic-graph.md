@@ -311,6 +311,16 @@ below" column is the hard floor.
 We lose if the graph is wide and flat: 200 topics, all depth 1, mean out-degree 0.3,
 every quest hanging directly off a greeting. That is a menu.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 8 / 13 rows | 10 / 13 rows | 12 / 13 rows |
+
+**Aggregation (a property of this item, not of the critic):** count of passing §D rows, gated — any hard-floor breach, orphan, unreachable INFO, combat-lockout breach or menu_quest_fraction > 0.30 fails the item outright regardless of count.
+
 ## How we lose
 
 - **The star graph.** Every NPC's greeting lists every topic they can answer, so depth is

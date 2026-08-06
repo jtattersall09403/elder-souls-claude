@@ -361,6 +361,16 @@ And in the draft verdict, deleted before submission:
   "the soft text suits the wet-parchment look" -> CC-7. Verdict would be void.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 5 / 7 checks on the worse side | 6 / 7 checks on the worse side | 7 / 7 checks on the worse side |
+
+**Aggregation (a property of this item, not of the critic):** min over the two independent native scales, which are never combined; any hard fail on a side caps that side at 2.
+
 ## How we lose
 
 - **CC-7, exactly as written.** Someone measures 4.1 px stem transitions at DPR 2, looks at the

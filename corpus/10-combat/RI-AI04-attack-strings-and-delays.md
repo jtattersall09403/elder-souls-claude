@@ -289,6 +289,16 @@ Each 0/1/2 × weight. Max 52.
 Blind pair: two unlabelled string-graph DOT renderings (ours, and §E). The critic states
 which grammar it believes it could learn in ten deaths, before reveal.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 34 / 52 | 40 / 52 | 47 / 52 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum — each check 0/1/2 x weight, max 52.
+
 ## How we lose
 
 1. **There are no strings.** Each attack is chosen independently by

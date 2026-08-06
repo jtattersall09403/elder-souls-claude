@@ -1,0 +1,22 @@
+{
+  "name": "elder-souls",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Morrowind's world and Dark Souls' combat, in Black Marsh, in a browser. The corpus is the spec; tools/ is the instrument.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "gate": "node tools/corpus-index.mjs --check",
+    "gate:strict": "node tools/corpus-index.mjs --strict",
+    "index": "node tools/corpus-index.mjs",
+    "ledger": "node tools/gap-ledger.mjs",
+    "verdicts": "node tools/verdict-validate.mjs --all",
+    "metrics:selftest": "node tools/metrics/self-test.mjs",
+    "progress": "node tools/progress.mjs",
+    "doctrine": "npm run gate:strict && npm run ledger && npm run verdicts",
+    "ci": "npm run gate:strict && npm run metrics:selftest && npm run verdicts",
+    "hooks:install": "git config core.hooksPath .githooks && echo 'hooks installed: .githooks/pre-commit'"
+  }
+}

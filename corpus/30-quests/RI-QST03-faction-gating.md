@@ -198,6 +198,16 @@ Requirement tables live in `game/src/data/factions/*.json`; quests in `game/src/
 **Hard fails:** any rank row referencing character level or souls; any faction whose quests award zero
 reputation; single-save reachability of 100%; no expulsion path at all.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **Level gating by accident.** Someone will implement "you must be level 12 for rank 5" because it is

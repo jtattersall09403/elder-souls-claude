@@ -135,6 +135,32 @@ Balmora fails at 0.30; and `jel-phonotactics.py`, which rejected *Saxhleel*.
 **M8 — CI.** `--check` is wired as a blocking gate. It must run on any change to
 `corpus/**/RI-*.md`, `subsystems.json`, `constants.json` or `tools/corpus-index.mjs`.
 
+> **AMENDED wave-1-prep — BAR-CRITIQUE-02 N5 / C3.** When this was written it was false.
+> There was no `.github/`, no root `package.json` and no git hook anywhere in the repository,
+> so nothing ran the gate at all, while this line told every reader it did. The critic was
+> right to call it the false-enforcement pattern of W5. It is now true, and here is where:
+>
+> | Where | File | What it runs |
+> |---|---|---|
+> | CI (blocking) | `.github/workflows/corpus-gate.yml` | `--strict`, then a step that **deliberately breaks an item and asserts the gate rejects it**, then the image-metrics self-test, `verdict-validate --all`, and the gap ledger. Runs on every push and every pull request. |
+> | Pre-commit | `.githooks/pre-commit` | regenerates `INDEX.md` if stale, stages it, then `--check`. Fires only when the commit touches an `RI-*.md`, `subsystems.json`, `constants.json` or the tool itself. Install with `npm run hooks:install`. |
+> | By hand | root `package.json` | `npm run gate` / `npm run gate:strict` / `npm run ci`. |
+>
+> **M8 is now itself checkable**, and a critic must check it rather than take this sentence on
+> trust: `.github/workflows/corpus-gate.yml` exists, contains `corpus-index.mjs --strict`, and
+> contains **no** `continue-on-error` and no `|| true` on a gate step. Hard fail 4 below is
+> about that file.
+
+**M9 — C6, the native→ladder anchor row (added wave-1-prep, BAR-CRITIQUE-02 C1).** Every
+reference item's `## Scoring` section must contain an anchor block binding native values to
+ladder **4, 6 and 8**, in one of the three forms `SCORING.md` §1.2a recognises. Absent ⇒
+error, and the item is `unmeasurable ⇒ 0` under §1.1. `--check` prints
+`ladder anchors : N/137`.
+
+This check exists because the rule it enforces was mandatory, fail-closed and **invisible**
+for a whole wave: 109 of 137 items never carried the row, and the corpus reported itself
+healthy the entire time. A rule with no instrument is a rule nobody follows.
+
 ## Scoring
 
 Coherence is not a quality dimension and does not enter the ladder as one. It is a
@@ -157,11 +183,14 @@ Native-band anchors, per SCORING.md §1.2, for a critic that must nonetheless re
 
 **Hard fails regardless of anything else:**
 
-1. Any C1–C4 error at the start of a wave.
+1. Any C1–C4 or **C6** error at the start of a wave.
 2. A path judged **only** by a protocol or process document (§C false mapping).
 3. A shared constant with two definitions and no recorded divergence.
-4. `--check` made non-blocking, or the gate removed from CI. The gate being advisory is the
-   precise condition that let 147 orphan paths accumulate; restoring it is not a refactor.
+4. `--check` made non-blocking, or the gate removed from CI — `continue-on-error`, `|| true`,
+   a deleted workflow, or a gate step downgraded to advisory. The gate being advisory is the
+   precise condition that let 147 orphan paths accumulate **and** that let a mandatory,
+   fail-closed scoring rule go unmet by 109 of 137 items for an entire wave; restoring it is
+   not a refactor.
 5. A bar that the reference artifact itself fails, once demonstrated (M7).
 
 ## How we lose

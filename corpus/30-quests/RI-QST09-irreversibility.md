@@ -260,6 +260,16 @@ load.
 - A completed quest becoming active again, or a journal index being renumbered.
 - Any "undo" mechanism for an exclusive resolution beyond the ≤ 2 declared redemption paths.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 75 / 100 | 85 / 100 | 93 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100 (we-lose floor 75).
+
 ## How we lose
 
 1. **Reload-on-load reconstruction.** The world is rebuilt from quest definitions on load and the

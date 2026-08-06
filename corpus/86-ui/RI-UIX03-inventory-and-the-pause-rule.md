@@ -235,6 +235,16 @@ M-E1 level-up screen shows "Gold: 4,120"                   -> S15 HARD FAIL
    dialogue to put it in.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 9 / 13 checks | 11 / 13 checks | 13 / 13 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; any hard fail caps the piece at 2.
+
 ## How we lose
 
 - **The pause is implemented once, for the whole game.** `if (menuOpen) return;` at the top of

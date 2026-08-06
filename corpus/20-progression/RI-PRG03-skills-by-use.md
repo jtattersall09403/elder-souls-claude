@@ -297,6 +297,16 @@ attempt* the move; the frame data decides whether the attempt worked.
 
 **Failure threshold: any axis below 6.** The S1-purity axis is binary — it has no 6.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes.
+
 ## How we lose
 
 - **Skill sneaks into the hit test.** The likeliest form is not a to-hit roll, which

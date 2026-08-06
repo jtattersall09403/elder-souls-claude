@@ -1,0 +1,91 @@
+name: corpus gate
+
+# THE BLOCKING GATE asserted by corpus/80-methods/RI-MTH05 M8.
+#
+# BAR-CRITIQUE-02 N5 found that M8 said `--check` "is wired as a blocking gate" while there
+# was no `.github/`, no root `package.json` and no git hook anywhere in the repository. This
+# file is the thing that makes the sentence true. RI-MTH05 hard fail 4 — "`--check` made
+# non-blocking, or the gate removed from CI" — is about this file. Do not add
+# `continue-on-error`, do not add `|| true`, and do not make any step advisory.
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: corpus-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: corpus coherence + metrics self-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # --strict = --check plus a hard fail on any corpus hole. It covers:
+      #   C1 front-matter, C2 index staleness, C3 items that judge nothing,
+      #   C4 the shared-constant registry, C6 the native→ladder anchor row,
+      #   orphaned `judges:` paths, and holes.
+      - name: corpus coherence gate (RI-MTH05 C1-C6)
+        run: node tools/corpus-index.mjs --strict
+
+      # The gate must be able to fail, or it is decoration. This step deliberately
+      # corrupts a reference item in the checkout, asserts the gate rejects it, and
+      # restores it. RI-MTH05 M7: a bar the instrument cannot fail is not a bar.
+      - name: prove the gate can fail
+        run: |
+          set -euo pipefail
+          probe=corpus/80-methods/RI-ZZ99-gate-probe.md
+          cat > "$probe" <<'PROBE'
+          ---
+          id: RI-ZZ99
+          title: deliberately broken probe — deleted by the same CI step that writes it
+          kind: number
+          side: neutral
+          judges: [this.path.does.not.exist]
+          provenance: constructed
+          confidence: low
+          blind_pair: no
+          ---
+          ## The bar
+          ## The reference artifact
+          ## Comparison method
+          ## Scoring
+          ## How we lose
+          ## Provenance note
+          PROBE
+          sed -i 's/^          //' "$probe"
+          if node tools/corpus-index.mjs --check > /tmp/gate.log 2>&1; then
+            echo "FATAL: the gate passed an item with an unresolvable judges: path and no"
+            echo "ladder anchor row. It is not a gate. See RI-MTH05 hard fail 4."
+            cat /tmp/gate.log
+            rm -f "$probe"
+            exit 1
+          fi
+          echo "ok: the gate rejected a deliberately broken item."
+          rm -f "$probe"
+          git diff --exit-code
+
+      - name: install measurement dependencies
+        working-directory: tools
+        run: npm ci --ignore-scripts || npm install --ignore-scripts
+
+      - name: image-metrics self-test (METRICS-IMPLEMENTATION-01)
+        run: node tools/metrics/self-test.mjs
+
+      - name: verdict schema validation
+        run: node tools/verdict-validate.mjs --all
+
+      - name: gap ledger
+        run: node tools/gap-ledger.mjs

@@ -204,6 +204,16 @@ U8 night_deepmarsh: bar vs background 1.4:1
    stamina bar is decorative, and at night you cannot see it at all.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 7 / 10 checks | 8 / 10 checks | 10 / 10 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; any hard fail caps the piece at 2.
+
 ## How we lose
 
 - **The stamina bar is tweened for feel.** It will look better. It will be added by someone who

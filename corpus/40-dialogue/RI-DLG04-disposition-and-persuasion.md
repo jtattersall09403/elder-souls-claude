@@ -297,6 +297,16 @@ disqualifying: a wrong formula, a dead verb, or an unusable system fails the ite
 "We lose" is: a disposition bar that goes up when you click Admire, is displayed in the
 dialogue window, and gates precisely nothing.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 5 / 8 checks | 7 / 8 checks | 8 / 8 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; checks 1, 3 and 8 are individually disqualifying.
+
 ## How we lose
 
 - **Disposition as a cosmetic number.** It renders, it moves, and no filter anywhere reads

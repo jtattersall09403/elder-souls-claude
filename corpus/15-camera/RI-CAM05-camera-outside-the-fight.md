@@ -289,6 +289,16 @@ during exploration, matched for time of day and weather. Discriminating question
 first: *which five are the combat shots?* If the critic sorts them correctly at better than
 chance, the camera is doing something different in the fight and §A has failed.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 70 / 100 | 80 / 100 | 92 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100.
+
 ## How we lose
 
 1. **The first-person toggle left in "because it's an Elder Scrolls game".** Someone will

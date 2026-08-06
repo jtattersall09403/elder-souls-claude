@@ -188,6 +188,16 @@ Score 0–10, computed as the mean of six sub-scores, then hard-gated.
 
 "We lose" = score < 6, or any hard fail.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** mean of the six sub-scores, then hard-gated (a gate breach caps the item regardless of the mean).
+
 ## How we lose
 
 Written pessimistically, in advance. These are the specific shapes our questlines will drift into:

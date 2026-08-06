@@ -226,6 +226,16 @@ from the shipped sheet, this item has failed regardless of every number above.
 **Failure threshold: any axis below 6.** The six-characters axis is the item's reason for
 existing; it cannot be traded against numerical accuracy elsewhere.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes.
+
 ## How we lose
 
 - **All ten stats are damage stats with different names.** The single most likely failure.

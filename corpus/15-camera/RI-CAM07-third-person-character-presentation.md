@@ -247,6 +247,16 @@ screen for ten hours?* **Blind pair, art direction:** two 32 px silhouette sheet
 Morrowind-transposition reference from RI-VIS05, with the same question RI-VIS06 §3 poses.
 Two separate packs, two separate picks, recorded separately.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 70 / 100 on the worse set | 80 / 100 on the worse set | 92 / 100 on the worse set |
+
+**Aggregation (a property of this item, not of the critic):** min over the two independent 0-100 sets (fidelity, art direction) — never averaged.
+
 ## How we lose
 
 1. **The capsule with a mesh dragged behind it.** The character controller is a

@@ -202,6 +202,16 @@ feel, a bit rough around the edges but that suits the style." That sentence cont
 fused score (CC-5), an art claim with no swatch (CC-6), and the cardinal sin (CC-3). It is
 worth zero and the wave ships blind.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 7 / 10 | 10 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band on the protocol-conformance table; this item's native scale has no 5, 6, 8 or 9 rung — the defined rungs are 10, 7, 4 and 0.
+
 ## How we lose
 
 - **The cardinal sin, in its natural habitat.** A build lands with untextured flat-shaded

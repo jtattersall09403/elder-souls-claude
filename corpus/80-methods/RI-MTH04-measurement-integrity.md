@@ -191,6 +191,16 @@ Max 30.
 re-derive. Everything downstream — which subsystem gets the next wave, whether the
 arbitration rule is holding — is then being steered by fiction.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 24 / 30 | 27 / 30 | 30 / 30 |
+
+**Aggregation (a property of this item, not of the critic):** sum over the checks, max 30; at or below 17 the verdict is deleted as fabricated.
+
 ## How we lose
 
 1. **The game does not exist yet and the critic writes a verdict anyway.** The tools exit

@@ -277,6 +277,16 @@ Blind pair: give the critic ten unlabelled 90-second behaviour fingerprints (our
 with ten generated from §B. It clusters them into roles without labels; if our ten collapse
 into fewer than six clusters, we lose.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 29 / 44 | 34 / 44 | 40 / 44 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum — each check 0/1/2 x weight, max 44.
+
 ## How we lose
 
 1. **Reskin roster.** Ten enemy models, one behaviour tree, HP and damage varied by a

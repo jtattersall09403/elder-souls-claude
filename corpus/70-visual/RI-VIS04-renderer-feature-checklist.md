@@ -386,6 +386,16 @@ FEATURE SCORE = min(raw, cap)
 sky nominally-as-a-colour), `cap = 3` (no tonemapping, water is a plane), `FEATURE SCORE =
 2`. Every remaining hour of art production is spent on a pipeline that cannot display it.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min(raw, cap) where cap is the lowest 'blocks score above' value among absent features.
+
 ## How we lose
 
 - **Art before pipeline.** We model a beautiful xanmeer and render it with no tonemapping, no

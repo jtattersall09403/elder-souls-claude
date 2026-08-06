@@ -305,6 +305,16 @@ Blind pair: present the critic with two unlabelled per-move PWR tables (ours, an
 generated from §B/§E) with move names stripped to M1..Mn. It picks which enemy it would
 rather fight, and which it believes is learnable, before reveal.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 24 / 36 | 28 / 36 | 33 / 36 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum — each check 0/1/2 x weight, max 36.
+
 ## How we lose
 
 1. **No recovery at all.** The attack animation ends and the state machine returns

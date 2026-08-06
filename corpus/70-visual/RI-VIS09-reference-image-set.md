@@ -286,6 +286,16 @@ compliance check that any wave can run in under a minute.
 RI-VIS03 hard-fails a verdict reported as a bare number. A citation that cannot be resolved is
 indistinguishable from a remembered image, which is the exact condition this item exists to end.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | n/a — register/compliance item | n/a — register/compliance item | all five compliance checks pass (the only non-failing state) |
+
+**Aggregation (a property of this item, not of the critic):** gate, not score — any single failure is a hard fail for the visual area of that wave. Contributes no ladder number of its own. See SCORING.md §1.2's gate-and-cap clause.
+
 ## How we lose
 
 ### §6 Failure modes this item is meant to prevent

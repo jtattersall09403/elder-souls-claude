@@ -93,6 +93,55 @@ the item itself calls 12/18 "below bar". Instead:
 >   "edits not made", for why filling in 126 items' anchor rows is authorship rather than
 >   coherence repair, and for the ledger entry tracking it.
 
+### 1.2a AMENDED wave-1-prep — BAR-CRITIQUE-02 **C1 / N1**. The row is now enforced.
+
+The W7 amendment above was live for an entire wave and **109 of 137 items never carried an
+anchor row**, because nothing could see whether they did. Every one of them was
+`unmeasurable ⇒ 0` as written, including `RI-QST06` (the main quest), all six `86-ui` items
+and `RI-UIX02` (the AR-2 enforcement point). That is exactly the false-enforcement pattern
+W5 named: a mandatory, fail-closed rule with no instrument behind it.
+
+Three things change, and **no threshold anywhere in the corpus changes**:
+
+1. **The anchor block is machine-checked.** `node tools/corpus-index.mjs --check` now fails
+   with an **error** on any reference item whose `## Scoring` section contains no anchor
+   block. It is check **C6** of `RI-MTH05`. `--check` reports `ladder anchors : N/137`.
+
+2. **Three forms satisfy the rule** (the corpus had independently invented the second and
+   third, and reconciling 109 items to a single orientation would have been churn with no
+   measurement value):
+
+   - **Form A — the mandated row.** Preferred for new items.
+
+     ```
+     | Ladder | 4 | 6 | 8 |
+     |---|---|---|---|
+     | Native | <native that maps to 4> | <…to 6> | <…to 8> |
+     ```
+
+   - **Form B — a transposed or band table with a column titled `Ladder` (or
+     `Ladder ceiling`) whose values cover 4, 6 and 8.** The `12-weapons` and `88-journeys`
+     forms.
+   - **Form C — a prose anchor line** binding native values to ladder 4, 6 **and** 8, e.g.
+     *"native 55 → ladder 4; native 75 → ladder 6; native 88 → ladder 8"*.
+
+   **A verdict-band table on its own is not an anchor block.** It fixes a *ceiling* under
+   step 1 above; it does not say which native score is a 6 rather than a 4. That distinction
+   is the whole point of the row, and it is why "102 items are substantively compliant" was
+   not good enough.
+
+3. **Gate and cap items.** A few items emit no score of their own: they either gate the wave
+   (`RI-UIX02`, `RI-VIS09`, `RI-MTH05`) or cap another item's score (`RI-VIS06`, `RI-VIS07`).
+   These still carry the row — a reader must be able to see *at the item* that it contributes
+   no ladder number — but a cell may read `n/a` where the item's native scale genuinely has
+   no rung at that ladder position, and the aggregation line must say `gate` or `cap` and
+   name what it gates or caps. **`n/a` is only admissible for a declared gate/cap item.** An
+   ordinary scored item with `n/a` in its row is the same failure as having no row.
+
+Every item's aggregation rule (`weighted-sum`, `min-over-axes`, `band`, `count-of-checks`,
+`gate`, `cap`) is stated immediately under its row. §3's choice of aggregation applies only
+to combining *items*, never to computing one.
+
 ---
 
 ## 2. Worked calibration examples

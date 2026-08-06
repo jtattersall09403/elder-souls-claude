@@ -471,6 +471,16 @@ street. Every asset individually defensible; the whole thing indistinguishable f
 other games. Palette conformance 0.31, ForbiddenHits 0.11, silhouette audit returns
 "UNASSIGNED ×7", Skyrim test returns "Skyrim, the marsh bit near Morthal". ART = 0.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 on the worst component | 6 / 10 on the worst component | 8 / 10 on the worst component |
+
+**Aggregation (a property of this item, not of the critic):** min over the six components, never the mean.
+
 ## How we lose
 
 - **The green trap.** Someone tints the terrain green because swamps are green, and the whole

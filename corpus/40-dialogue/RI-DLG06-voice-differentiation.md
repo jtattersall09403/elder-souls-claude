@@ -251,6 +251,16 @@ hard fail. The blind archetype test and the classifier test are individually dis
 if a human cannot tell our NPCs apart and a linear model cannot either, nothing else in this
 file matters.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 5 / 9 checks | 7 / 9 checks | 9 / 9 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; the blind archetype test and the classifier test are individually disqualifying.
+
 ## How we lose
 
 - **One voice, six nameplates.** The default failure. Every NPC speaks in the same

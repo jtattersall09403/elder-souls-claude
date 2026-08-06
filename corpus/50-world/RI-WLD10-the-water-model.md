@@ -593,6 +593,16 @@ Score = sum of passed weights, 0–100.
 no labels — one ours, one generated from §2 and from Morrowind captures — and ask which describes a
 province and which describes an effect. If the critic picks ours, halve the tolerances and re-run.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 75 / 100 | 82 / 100 | 91 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100 (we-lose floor 75).
+
 ## How we lose
 
 Written pessimistically, in advance.

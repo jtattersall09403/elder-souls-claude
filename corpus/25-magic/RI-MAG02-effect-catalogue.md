@@ -442,6 +442,16 @@ has failed its reason for existing.
 should be read twice: **deleting the effect and fencing the effect score identically — zero.**
 The sterile answer is not the safe answer here.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes.
+
 ## How we lose
 
 - **Thirty authored spells.** The most likely failure by a very large margin, because it is

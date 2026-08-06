@@ -162,6 +162,16 @@ every service in §4. **Pass: every service reachable within 25 walk-minutes fro
 | 2 | Settlements exist with interiors but no services, no schedules, no faction geometry |
 | **0 — WE LOSE** | Any of: enterable % <50 in any named settlement; a named settlement with fewer than 5 named interiors; two settlements sharing >30% of building meshes (M14); M13 ≤3/8; a settlement with zero named NPCs |
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **Five identical huts and a well.** The canonical failure. A "village" that is one mesh instanced ten

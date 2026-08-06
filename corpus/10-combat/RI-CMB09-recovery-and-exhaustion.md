@@ -268,6 +268,16 @@ the window. For every beast: assert `WINDED` after ≥ 3 attacks in 6 s.
 - Any of it done with `setTimeout`, seconds, or `deltaTime` rather than integer frames (`HARNESS.md`
   R2/D4).
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 70 / 100 | 80 / 100 | 92 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100.
+
 ## How we lose
 
 1. **The rebase never happens.** `RI-CMB01` still prints 13/11/5/0 and a builder implements it

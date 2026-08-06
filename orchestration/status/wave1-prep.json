@@ -2,7 +2,7 @@
   "task_id": "wave1-prep",
   "brief": "inline (clear BAR-CRITIQUE-02 carry-forward conditions C1, C3, C14/G14, +C2 if budget)",
   "started": "wave-1-prep",
-  "state": "researching",
+  "state": "writing",
   "outputs_expected": [
     "C1: ladder mapping row added to 35 items",
     "C1: tools/corpus-index.mjs ladder-row check",
@@ -11,12 +11,25 @@
     "C2: corpus/00-doctrine/CONTENT-BUDGET.md",
     "corpus/00-doctrine/CORPUS-COHERENCE-02.md edit log"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "C1: 109 ladder anchor rows inserted (all 137 items now carry one)",
+    "C1: tools/corpus-index.mjs check C6 + `ladder anchors` counter",
+    "C1: SCORING.md 1.2a amendment (three recognised forms + gate/cap clause)",
+    "C14: package.json (root)",
+    "C14: .github/workflows/corpus-gate.yml",
+    "C14: .githooks/pre-commit",
+    "C14: RI-MTH05 M8 amended + new M9 (C6) + hard fail 4 sharpened"
+  ],
   "findings": [
     "SCORING.md 1.2 mandated form is `| Ladder | 4 | 6 | 8 |` + `| Native | ... |`. ZERO items use that exact orientation. The 6 weapons items use a TRANSPOSED table `| Ladder | Native score |` with rows 4/6/8 - the critic counted those as 'verbatim'.",
     "Substantively-compliant forms found in corpus: (A) transposed weapons table; (B) band table with a `Ladder ceiling` column containing 8/6/4; (C) prose line 'native X -> ladder 4; native Y -> ladder 6; native Z -> ladder 8'. RI-MTH05 uses a gate table plus a Native|Ladder anchor table.",
-    "Plan: amend SCORING.md 1.2 to accept any block that binds ladder anchors 4,6,8 to native values (the critic's own cheaper option in N1), implement a detector in corpus-index.mjs (check C6) accepting forms A/B/C, and add the mandated Form-A row to every item the detector fails."
+    "Plan: amend SCORING.md 1.2 to accept any block that binds ladder anchors 4,6,8 to native values (the critic's own cheaper option in N1), implement a detector in corpus-index.mjs (check C6) accepting forms A/B/C, and add the mandated Form-A row to every item the detector fails.",
+    "MEASURED: the critic's '35 items with no mapping' undercounts. Under a machine-checkable definition (an explicit block binding native values to ladder 4, 6 AND 8), only 28 of 137 items qualified: the 6 weapons items, RI-MTH05, RI-PLT01-03, RI-AUD02, all 8 RI-JRN, RI-CMP01-03, RI-EXP01-06. 109 items had no anchor block. The other 74 the critic counted as 'substantively compliant' carry a verdict-BAND table, which fixes a ceiling but does not say which native score is a 6 rather than a 4.",
+    "109 anchor rows added, derived from each item's own bands. Conventions used: ladder 4 = lowest native in the below-bar band; 6 = midpoint of that band; 8 = comfortably inside meets-the-bar. Matches the only in-corpus precedents (RI-WPN01 65/78/92 against bands >=88 / 65-87 / <65; RI-EXP01 55/75/88; RI-JRN01 50/75/92).",
+    "5 items genuinely have no scale to map and are declared gate/cap items: RI-UIX02 (binary gate), RI-VIS09 (register/compliance), RI-VIS06 (caps RI-VIS03/05), RI-VIS07 (caps RI-VIS05 ART), plus RI-MTH05 which already declared itself a gate. Their rows carry `n/a` at the rungs their native scale does not have; SCORING.md 1.2a clause 3 makes that admissible only for declared gate/cap items.",
+    "RI-VIS01 has a native scale with rungs 10/7/4/0 only - no 5, 6, 8 or 9. Its anchor row is 4 / 7 / 10 and says so.",
+    "CONCURRENCY: another agent added corpus/40-dialogue/RI-DLG09-the-parley.md mid-task (corpus is now 138 items). The new C6 check caught it immediately with no anchor row - the gate worked on its first real encounter with drift. Anchor row added (4/6/8, weighted mean of seven axes)."
   ],
-  "next_step": "write detector, enumerate failing items",
+  "next_step": "C3: rewrite docs/PLAN.md",
   "notes_for_successor": ""
 }

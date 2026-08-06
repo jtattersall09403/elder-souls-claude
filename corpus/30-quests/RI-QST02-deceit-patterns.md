@@ -297,6 +297,16 @@ Run against `game/src/data/quests/*.json` after schema validation (see RI-QST04)
   `jq -s 'map(select(.deceit != null and (.resolutions|length) < 2) | .id)'` and treat a non-empty
   result as fail.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band — the score is read off the band table, not computed.
+
 ## How we lose
 
 - **Twist-as-decoration.** We mark quests `deceit: {...}` and write a nice paragraph, but the quest has

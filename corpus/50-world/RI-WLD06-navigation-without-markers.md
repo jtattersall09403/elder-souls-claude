@@ -152,6 +152,16 @@ our entries are judged less followable than Morrowind's on median.**
 | 2 | M29 3–4/10; the world is navigable only by wandering |
 | **0 — WE LOSE** | Any of: M31 finds any marker/arrow/minimap/auto-path (automatic fail, AR-2); M29 ≤2/10; M30 coverage <100%; >3 signposts pointing the wrong way; fog-on sightline pass rate <80% |
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **We delete markers and add nothing.** The cheapest possible failure: strip the compass, ship a flat

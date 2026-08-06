@@ -212,6 +212,16 @@ check in a real browser and record their results **in this item's verdict**, att
   (`HARNESS.md` D3/D4) — timestamps may be *recorded* on edges for attribution and may never
   *determine* a sim outcome.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 75 / 100 | 84 / 100 | 93 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100 (this item's we-lose floor is 75, not 70).
+
 ## How we lose
 
 1. **The uniform one-frame lie.** Inputs polled after the update. Everything is 16.7 ms late,

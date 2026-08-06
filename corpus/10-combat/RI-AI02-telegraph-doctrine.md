@@ -267,6 +267,16 @@ Each scored 0/1/2 × weight. Max 36.
 - Median `residual_aim_error < 10°` on M2 (homing attacks).
 - Pose dump unavailable → M3/M4 score 0 (this alone drops us to "below bar" at best).
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 24 / 36 | 28 / 36 | 33 / 36 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum — each check 0/1/2 x weight, max 36.
+
 ## How we lose
 
 1. **The animation *is* the attack, and it is 8 frames long.** A cheap Mixamo swing clip

@@ -254,6 +254,16 @@ More than one-third of Tier B/C settlements marginal-or-worse also fails it.
 shared greeting pool with the town name substituted in, and a verdict that reports "3,000
 words of settlement dialogue" by counting the shared pool three times.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | Marginal — floor ≤ W_local < target, no hard rule broken | Pass — W_local ≥ target, all five hard rules pass | Exceeds — W_local ≥ 1.25 × target, all five hard rules pass, filler ≤ 10% |
+
+**Aggregation (a property of this item, not of the critic):** band, evaluated per settlement then min-over-settlements; any hard rule broken is Fail regardless of W_local.
+
 ## How we lose
 
 - **Counting shared text once per settlement.** The single most likely way this number gets

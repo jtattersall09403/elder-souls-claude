@@ -188,6 +188,16 @@ hazard inside a boss arena or a HEARTH radius; a hazard that scales with player 
 a hazard the player only learns about by dying to it with no tell to have read; a hazard that damages
 only the player (**H9**).
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 70 / 100 | 80 / 100 | 92 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100.
+
 ## How we lose
 
 - **The red vignette.** A trigger volume, a damage tick, a screen effect, no tell, no counter. It is

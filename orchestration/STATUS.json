@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-06T09:53:59.482Z",
+  "generated": "2026-08-06T10:44:43.101Z",
   "complete": 14,
   "total": 16,
   "tasks": [
@@ -163,15 +163,14 @@
     {
       "id": "holes",
       "title": "Close the last 14 corpus holes",
-      "state": "started-nothing-written",
-      "done": 0,
+      "state": "partial",
+      "done": 1,
       "expected": 2,
       "missing": [
-        "corpus/50-world/RI-WTR01*",
-        "corpus/00-doctrine/ACCEPTED-HOLES.md"
+        "corpus/50-world/RI-WTR01*"
       ],
-      "next_step": "write corpus/50-world/RI-WLD10-the-water-model.md in full, then its method script",
-      "findings": 15
+      "next_step": "none - task complete",
+      "findings": 24
     }
   ]
 }

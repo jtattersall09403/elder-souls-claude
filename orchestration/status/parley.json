@@ -1,17 +1,34 @@
 {
   "task_id": "parley",
-  "brief": "intent-audit gate B1: finish the stalled parley correction (ID-01 partial, ND-04)",
+  "brief": "intent-audit gate B1: finish the stalled parley correction (INTENT-AUDIT-02 ID-01 partial, ND-04)",
   "started": "gate-B1",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
-    "corpus/40-dialogue/RI-DLG09-*.md (or 23-stealth-crime/RI-PRL01)",
+    "corpus/40-dialogue/RI-DLG09-the-parley.md",
     "corpus/00-doctrine/CRITIC-DOCTRINE.md AR-2 check B12",
     "PACIFIST-IN-FIGHT metric",
     "proposed amendment to RI-QST05 (do not edit)",
-    "proposed amendment to RI-JRN02 M-I11 (do not edit)"
+    "proposed amendment to RI-JRN02 M-I11/HF7 (do not edit)"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read INTENT-AUDIT-02.md, INTENT-AUDIT-CHARTER.md §6, ARBITRATION.md §1, CRITIC-DOCTRINE.md, S13/S14/S22, RI-CMB02, RI-CRM02, RI-DLG04, RI-QST05, RI-JRN02",
-  "notes_for_successor": ""
+  "outputs_written": [
+    "corpus/40-dialogue/RI-DLG09-the-parley.md",
+    "corpus/00-doctrine/CRITIC-DOCTRINE.md (AR-2 B12 + amendment note)",
+    "corpus/00-doctrine/subsystems.json (+2 paths: combat.encounter.parley, combat.encounter.exit)",
+    "corpus/00-doctrine/INDEX.md (regenerated)",
+    "docs/progress.html (regenerated)"
+  ],
+  "findings": [
+    "PLACEMENT: corpus/40-dialogue/RI-DLG09-the-parley.md, not 23-stealth-crime/RI-PRL01. (a) S13 is a dialogue seam and its Souls half already lives at dialogue.combat.lockout, area 40-dialogue, critic.dialogue - splitting a SPLIT seam across two areas puts its halves under critics who never read each other. (b) The gate is disposition/reputation/rank/knowledge = RI-DLG04's formulas, same area. (c) RI-CRM02 s3 already PRICES striking a yielded target, so 23-stealth-crime is the consumer, not the owner. (d) 'RI-PRL01' invents an area prefix with no directory under CORPUS-CONTRACT s1/s2.",
+    "INPUT: `interact`, HELD. No fifteenth action - HARNESS.md s4 fixes the button set at 14 and RI-JRN03 sA makes it closed. Satisfies Rule A1 (every modality) and A3 (no chord) for free.",
+    "FRAMES (ES-PARLEY/1): arm 1-12 f@60 (free cancel), startup 13-42 (30 f@60, guard drops f13), offer 43-54 (12 f@60, `parley` event on f43), recovery 55-102 (48 f@60). Total 102 f@60 = 1700 ms, of which 90 f@60 committed and defenceless. Stamina 20 on f13, re-arms the 42 f@60 regen delay, never refunded. 0 poise, no hyperarmour, no i-frames, 0 m root displacement. Enemy punish window 90 f@60 = 3.1x RI-AI03's 29 f@60 floor and 1.5x its 60 f@60 'big punish'. Sits between RI-CMB02's straight-sword light (74 f@60) and heavy (122 f@60).",
+    "GATE LADDER: precedence K(nowledge) > F(action rank) > R(eputation) > G(old, x1.5 in-combat premium per RI-CRM02 s3) > D(isposition, default min 40 = RI-DLG04 Neutral band). First satisfied route fires; the player never browses. fDispWeaponDrawn -5 and fDispAttacking -10 both apply mid-fight, so swinging first makes parley 15 points harder. Refusal: Fight +10, permChange -5, 600 f@60 cooldown, second refusal locks the encounter.",
+    "S21 vs S1 COLLISION RULED: a parley's failure is permanent so S21 wants a roll, but S1/AR-1 A1 bans dice inside the fight. Resolution: the die is thrown OUTSIDE the fight (RI-DLG04's rolled persuasion sets disposition); the parley reads the resulting number against an authored threshold. No Math.random() at the resolution frame => A1's own tell is clean. Check P13 enforces it. Flagged in the item's provenance note as needing ratification into ARBITRATION.md - it touches two seams and this item lacks that authority.",
+    "PACIFIST-IN-FIGHT lives in RI-DLG09 sD, NOT RI-QST05: different population (encounters vs quest records), different critic (needs the combat harness), and the charter's stalled-correction lesson says the metric must sit next to the thing it measures. Headline floor >= 35%, hard fail < 15% (the audit's own B1 figure), == 0 automatic fail. Segments: speech-capable >= 70%, beast >= 25%, humanoid bosses 100%. Plus PARLEY-COVERAGE 100%, PARLEY-REACHABLE >= 60%, YIELD-RATE >= 70%, EXIT-SPREAD <= 50% (hard fail > 70%, which is what catches 'we shipped fleeing and called it done'), PARLEY-COST 90 f@60 +/-2.",
+    "B12 added to CRITIC-DOCTRINE s4.2 between B11 and B13, in B10/B11/B13 form. Five encounter classes x five exits, deaths == 0, re-run class 1 after landing a hit. Tell: zero classes exit non-violently -> AR-2 fail; also PACIFIST-IN-FIGHT < 15% or == 0, any speech:true with no parley block, a YIELD that times out or leaves COMBAT active, EXIT-SPREAD > 70%. B12 and A10 declared a PAIR that must be run together, mirroring B2/B13.",
+    "TWO NEW SUBSYSTEM PATHS registered (taxonomy 323 -> 325, holes still 0 because RI-DLG09 judges both): combat.encounter.parley (arb split, area 40-dialogue, critic.combat) and combat.encounter.exit (arb morrowind, area 40-dialogue, critic.combat). grep parley subsystems.json was empty before this pass, which was ND-04's 'no subsystem path, so nothing in INDEX.md routes it to a critic'.",
+    "PROPOSED, NOT APPLIED (in RI-DLG09 sF): F.1 RI-JRN02 M-I11 loses its parley carve-out entirely (the parley is an action, not a surface) and HF7 with it, plus a new M-I15 so removing the carve-out does not delete the parley. F.2 RI-QST05 cites PACIFIST-IN-FIGHT as its post-aggro half with an unmeasurable-implies-0 clause mirroring its existing W6 dependency. F.3 ARBITRATION S13 gains audit 01's missing sentence. F.4 HARNESS.md s5 needs a `yield` trace event alongside A-EXP2's `parley`. F.5 HARNESS.md s7 layout should name game/data/combat/encounters/**.json.",
+    "CONCURRENT WORK OBSERVED: task wave1-prep is editing ~110 items in parallel (ladder anchor rows, tools/corpus-index.mjs C6 check). It auto-injected a placeholder anchor row into RI-DLG09; I replaced it with substantive native values (weighted sum /100 -> 40/60/80). Do not read the large `git status` as this task's footprint - mine is 5 files."
+  ],
+  "next_step": "none - gate B1 deliverables complete; node tools/corpus-index.mjs --strict exits 0 (325 paths, 138 items, 0 holes, 0 error, 0 warn), tools/progress.mjs regenerated",
+  "notes_for_successor": "The four proposed amendments in RI-DLG09 sF are owned by other items and were deliberately not applied. The one that matters most is F.1: until RI-JRN02's M-I11/HF7 carve-out is removed, the corpus still contains both readings of the parley and one of them auto-fails under A10. F.3 (S13's missing sentence) is the doctrine half of the same thing. The S21/S1 ruling in sC also wants ratification into ARBITRATION.md."
 }

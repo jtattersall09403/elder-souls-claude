@@ -221,6 +221,16 @@ because density, region identity and navigation are all measured *per minute of 
 | 2 | Settlements present but >150 m from table; coordinate table not used |
 | **0 — WE LOSE** | Any of: the world is a single flat heightmap with settlement props on it; the crossing is <20 min (a courtyard pretending to be a province); the crossing is >75 min *and* M3 shows sustained sub-1.6 m/s movement (slow walking sold as scale); the coordinate table was ignored and settlements are placed by eye |
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band, and a gate — a failing scale score invalidates every other world score.
+
 ## How we lose
 
 - **The empty heightmap.** 14.5 km² of Perlin noise with 8 clusters of boxes on it. Technically 4.8 km

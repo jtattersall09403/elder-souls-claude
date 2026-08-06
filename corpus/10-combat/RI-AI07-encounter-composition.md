@@ -326,6 +326,16 @@ Blind pair: give the critic two unlabelled loop tables (ours, and §G) with arch
 replaced by role letters and positions replaced by path-distance and `d_rev`. It states
 which loop it believes was authored beat-by-beat and which was sprinkled, before reveal.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 40 / 60 | 46 / 60 | 54 / 60 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum — each check 0/1/2 x weight, max 60.
+
 ## How we lose
 
 1. **Enemies scattered by a spawner.** A radius, a count, and `Math.random()` positions.

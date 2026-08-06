@@ -165,6 +165,16 @@ This item scores the **protocol**, not the artifacts. Per pack:
 - A critic reports a blind result for an item whose front-matter says `blind_pair: no`.
 - The verdict reports the blind pick but not the reveal, or vice versa.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 75% of applicable points | 88% of applicable points | 100% of applicable points |
+
+**Aggregation (a property of this item, not of the critic):** percentage of applicable points; below 75% the blind result is inadmissible and the item it served falls back to non-blind scoring.
+
 ## How we lose
 
 1. **The critic peeks.** The single most likely failure: an agent with filesystem access

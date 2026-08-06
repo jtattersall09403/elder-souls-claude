@@ -180,6 +180,16 @@ by > 5° (N2); an interior with its own time of day; an interior whose water lev
 the exterior's; a loading screen at a loop-dungeon entrance; an orphan interior with no exterior
 record; interior geometry derived from the exterior at load time (which makes every check vacuous).
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 75 / 100 | 85 / 100 | 93 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100 (we-lose floor 75).
+
 ## How we lose
 
 1. **The door that turns you.** Interiors authored in their own local space with the entrance at the

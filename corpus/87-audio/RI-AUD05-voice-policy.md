@@ -264,6 +264,16 @@ VO-1 grep: game/data/dialogue/topics/lilmoth.json:88  "Yesss, land-strider..."
    and the writing has compensated by spelling the hiss.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 5 / 8 checks | 7 / 8 checks | 8 / 8 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; any hard fail caps the piece at 2.
+
 ## How we lose
 
 - **Silence, defended as policy.** The most likely outcome by a distance. "No VO" is read as

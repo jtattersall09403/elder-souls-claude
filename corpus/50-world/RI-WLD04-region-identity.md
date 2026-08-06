@@ -131,6 +131,16 @@ level-scaling component**. Any level-scaling found is an AR-1/S9 violation and f
 | 2 | M17 15–21/39; regions differ mainly by tint and fog |
 | **0 — WE LOSE** | Any of: M17 <15/39 (chance is 3/39); M18 finds any pair differing on ≤3 axes; two regions share an ONLY-HERE element; a level-scaling component exists on any enemy |
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **Regions that differ only in fog colour.** The named failure from the brief. One terrain material,

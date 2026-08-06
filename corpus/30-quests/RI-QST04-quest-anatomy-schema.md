@@ -301,6 +301,16 @@ file with the wave number and rationale, per CORPUS-CONTRACT §5. Ad-hoc fields 
 missing (that is a quest that requires a marker, an AR-2 violation); any branch or `requires_knowing`
 pointing at a non-existent id (a branch that cannot be taken is not a branch).
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **The schema becomes a formality.** Every quest gets one resolution, zero branches, `can_fail: false`,

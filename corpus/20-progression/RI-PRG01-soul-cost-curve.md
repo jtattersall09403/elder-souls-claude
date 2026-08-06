@@ -153,6 +153,16 @@ Score 0–10 per axis, take the minimum; the item's verdict is the minimum score
 **Failure threshold: any axis below 6.** Axis 5 has no partial credit — a single place
 where souls buy a thing fails the whole progression area, not just this item, per AR-2.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes — the item's score is the lowest axis, never the mean.
+
 ## How we lose
 
 - **The curve goes linear or near-linear.** The likeliest failure: a builder writes

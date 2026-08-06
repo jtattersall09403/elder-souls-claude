@@ -217,6 +217,16 @@ D1, D2 and D13 are computed over **settled-region** road kilometres only (amende
 | 2 | TTNIT median >75 s but POIs exist |
 | **0 — WE LOSE** | Any of: M7 flags >5/60 (scatter tagged as POI); **D3 < 9 over non-void road kilometres** (fewer than 9 POIs per km of settled road — amended wave 0, W2); D12 fails at >20% of points (you can stand somewhere and see nothing worth walking to); the total named-location count is below the fail floor of 276 (A+B); **V5 < 6% — a world with no negative space anywhere is as broken as one with no density, and this clause is what makes that failable** |
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** weighted mean of D1-D13 plus V5/V6, each 0/1/2, then banded.
+
 ## How we lose
 
 - **"Dense" meaning trees.** 400,000 instanced palms and 12 things to do. This is the default failure of

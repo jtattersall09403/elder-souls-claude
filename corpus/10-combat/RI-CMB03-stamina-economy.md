@@ -263,6 +263,16 @@ our build; compute the §E statistics from our trace; diff against the exemplar 
 **Blind pair:** two stamina-vs-frame plots for the same 60-second input script, unlabelled.
 Ask the critic which one belongs to a game where spacing matters. Record the blind pick.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 70 / 100 | 80 / 100 | 92 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100.
+
 ## How we lose
 
 1. **Regen with no delay.** The single most likely error: `stamina += rate * dt` every frame

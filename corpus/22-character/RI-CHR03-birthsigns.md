@@ -219,6 +219,16 @@ appears on the character sheet has failed (`RI-CHR01` §6.5).
 **Failure threshold: any axis below 6.** The cosmology axis and the drawback-reality axis are
 binary.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes.
+
 ## How we lose
 
 - **The Imperial thirteen get shipped with new names.** The Warrior becomes "The Iron Tide",

@@ -160,6 +160,16 @@ Executable by a fresh agent with only this file and the game data directory.
 **Failure threshold: below 3 blocks the wave.** A 2 is the likeliest real score and the most dangerous,
 because a generic-politics build *looks* finished.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 2 / 5 | 3 / 5 | 5 / 5 |
+
+**Aggregation (a property of this item, not of the critic):** band on the 0-5 native scale.
+
 ## How we lose
 
 1. **A timeless province.** No date, no current events, no sense that anything happened last month. The

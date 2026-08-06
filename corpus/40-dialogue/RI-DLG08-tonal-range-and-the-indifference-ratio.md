@@ -384,6 +384,16 @@ The lint and the good-bad test are **individually disqualifying**. A build that 
 this game, and prose that a blind judge sorts into the bad pile is not saved by any number
 above it.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** weighted mean of the check groups, each 0/1/2, then banded.
+
 ## How we lose
 
 - **Everyone is pleased to see you.** The single most likely failure and the reason this

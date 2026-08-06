@@ -665,6 +665,16 @@ M10 R_aerial 0.94 FAIL      M12 FresnelDelta 0.00, ReflCorr 0.02 → blue plane
 => shot score 0, FIDELITY capped 2
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band on the computed score, then MINIMUM across shots, not mean (RI-VIS01 §E).
+
 ## How we lose
 
 - **The harness is never built.** RI-VIS03 becomes a beautiful unexecuted document and the

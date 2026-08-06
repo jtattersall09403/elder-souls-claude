@@ -175,6 +175,16 @@ twice or also present in world loot; UNIQUE-FRACTION < 25%; zero `property` rewa
 resolutions paying < 0.5 × the unique-reward rate of violent ones (which would make the pacifist route
 in RI-QST05 a punishment).
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **Gold as the default.** Gold is one integer and needs no art, no name, no placement, and no lore.

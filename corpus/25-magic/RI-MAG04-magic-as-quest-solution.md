@@ -249,6 +249,16 @@ a build that cannot be finished without magic has broken RI-PRG03's no-lockout r
 non-caster; and **M7 (AR-3)**, because the census is satisfiable by a data file and AR-3 is the
 failure no per-subsystem excellence detects.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes.
+
 ## How we lose
 
 - **Magic is added to the combat branch and nowhere else.** The default. Every quest gets a

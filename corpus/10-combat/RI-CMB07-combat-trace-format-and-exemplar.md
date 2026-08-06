@@ -439,6 +439,16 @@ labels, and ask which is the Souls fight. Record the blind pick before the revea
 critic picks ours, re-run M2 with a *worse* bot player and re-examine — a bot that plays
 better than the exemplar can produce a prettier fingerprint from a broken engine.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 70 / 100 | 80 / 100 | 92 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100.
+
 ## How we lose
 
 1. **No trace at all.** The most likely outcome by far. Telemetry is the first thing cut and

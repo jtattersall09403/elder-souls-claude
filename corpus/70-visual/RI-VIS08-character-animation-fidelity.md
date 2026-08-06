@@ -332,6 +332,16 @@ DYNAMIC: C1 pose_rate 9/s FAIL, hold_ratio 0.44 FAIL
 CHARACTER FIDELITY = 0.  Also: C4 reported to combat critic as candidate AR-1.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **Foot sliding forever.** Locomotion is built as "move the capsule at N m/s and play a run

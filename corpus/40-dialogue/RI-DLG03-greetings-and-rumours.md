@@ -231,6 +231,16 @@ PASS; 4–5 = MARGINAL with a named remediation; ≤ 3 = FAIL.
 town in the game, and quests that are handed to you the moment you talk to the right person
 because the right person is the only person with a greeting.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 3 / 8 dimensions | 5 / 8 dimensions | 7 / 8 dimensions |
+
+**Aggregation (a property of this item, not of the critic):** count of passing dimensions; any automatic fail sinks the item regardless of count.
+
 ## How we lose
 
 - **Rumours identical in every town.** The most likely failure and the most damaging. Step

@@ -278,6 +278,16 @@ direction carries it" **voids the verdict and fails the piece.**
 **Failure threshold: `min(ART, FIDELITY) < 6`.** And the meta-failure: **a verdict that reports
 one number for magic VFX is void** (CC-5), scores 0 on RI-VIS01, and the wave is re-judged.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 on the worse scale | 6 / 10 on the worse scale | 8 / 10 on the worse scale |
+
+**Aggregation (a property of this item, not of the critic):** min over the two independent 0-10 scales (art direction, fidelity) — never averaged.
+
 ## How we lose
 
 - **The cardinal sin, in its natural habitat.** The build lands with flat additive sprites. A

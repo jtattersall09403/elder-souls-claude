@@ -253,6 +253,16 @@ Blind pair protocol: give the critic two anonymised 60 s `dist_m` + `state` time
 (ours, and a reference series generated from the tables in §C/§D). It must pick which one
 "feels like a Souls enemy negotiating distance" before reveal.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 12 / 18 | 14 / 18 | 17 / 18 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum — each check 0/1/2 x weight, max 18.
+
 ## How we lose
 
 Concrete, expected failure modes of a naive Three.js enemy:

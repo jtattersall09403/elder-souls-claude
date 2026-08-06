@@ -197,6 +197,16 @@ than the first, the `found`/`overheard` layer is not doing its job regardless of
 **Hard fails:** `weird` < 5%; non-`given` discovery < 25%; any quest without `directions`; any settlement
 with fewer than 2 side quests; a single `task_kind` above 35%.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **Fetch and kill eat everything.** They are the two quest types that need no new systems. Every other

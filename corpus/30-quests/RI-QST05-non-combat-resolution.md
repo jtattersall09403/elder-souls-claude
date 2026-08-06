@@ -223,6 +223,16 @@ and crime system** (see the dependency below).
 >
 > Full reasoning: `CORPUS-COHERENCE-01.md` §7.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band. PACIFIST-ALL is unmeasurable (and therefore 0) if RI-STL01/02 and RI-CRM01 are unbuilt — W6.
+
 ## How we lose
 
 - **Speechcraft solves everything.** One `persuade` resolution bolted onto every quest, no requirement

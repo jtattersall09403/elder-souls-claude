@@ -248,6 +248,16 @@ for the same scripted 180° reversal at run speed — one from our build, one ge
 §C's law — unlabelled, and ask: *which of these is a character with mass?* A series that
 goes 180 → 0 in one frame is the tell. Record the pick before the reveal.
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 70 / 100 | 80 / 100 | 92 / 100 |
+
+**Aggregation (a property of this item, not of the critic):** weighted-sum of passed check weights, max 100.
+
 ## How we lose
 
 1. **`facing = facing_target` every frame.** One line, and the character becomes a cursor.

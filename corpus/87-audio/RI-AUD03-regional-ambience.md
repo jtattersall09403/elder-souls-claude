@@ -244,6 +244,16 @@ Judge, Stone Wastes: THE PLACE: a swamp at night.  [identical]
 => The world has one region. Capped at 2.
 ```
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 6 checks | 5 / 6 checks | 6 / 6 checks |
+
+**Aggregation (a property of this item, not of the critic):** count of passing checks; any hard fail caps the piece at 2.
+
 ## How we lose
 
 - **One swamp loop.** Black Marsh is a swamp, a swamp loop exists in every asset library, and

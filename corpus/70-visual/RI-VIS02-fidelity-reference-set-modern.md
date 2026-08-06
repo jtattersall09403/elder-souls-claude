@@ -348,6 +348,16 @@ the *minimum* across paired shots as the FIDELITY score).
 - A clause recorded `PRESENT` without a cited pixel region.
 - Any Morrowind reference introduced (CC-1).
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band, per paired shot, then min across shots (RI-VIS01 §E).
+
 ## How we lose
 
 - **The 200-metre world.** We hide a tiny draw distance behind dense fog, call it

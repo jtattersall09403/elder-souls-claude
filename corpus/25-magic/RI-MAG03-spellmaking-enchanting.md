@@ -411,6 +411,16 @@ discretionary menu, and **re-run RI-PRG05 method 1** with magic included. **Asse
 be traded against the others: the **S15 firewall** (which is what makes the system legal) and
 the **breakage register** (which is what makes it worth having).
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes.
+
 ## How we lose
 
 - **Spellmaking ships as a spell *shop*.** The most likely failure. The UI lists authored

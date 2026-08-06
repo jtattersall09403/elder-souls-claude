@@ -143,6 +143,16 @@ a level-scaling component (S9). **Any hit fails the piece.**
 | 2 | Dungeons exist as linear corridors with a boss at the end; no shortcuts |
 | **0 — WE LOSE** | Any of: <5 loop-dungeons; zero working shortcuts anywhere; <120 total interiors; terrain elevation range <150 m; M39 finds a procedural loot table or a level-scaled enemy; interior playtime <15% |
 
+**Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
+Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
+**No threshold in this item was changed.**
+
+| Ladder | 4 | 6 | 8 |
+|---|---|---|---|
+| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+
+**Aggregation (a property of this item, not of the critic):** band.
+
 ## How we lose
 
 - **The flat marsh.** Black Marsh is a *swamp*, so the terrain ships at ±8 m across 14.5 km². The world

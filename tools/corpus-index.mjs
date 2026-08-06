@@ -17,7 +17,8 @@
  *   node tools/corpus-index.mjs --check    THE CI GATE. exit 1 if INDEX.md is stale OR any
  *                                          error-level problem exists (bad front-matter,
  *                                          orphan `judges:` path, item judging nothing,
- *                                          broken shared-constant registry). Does not write.
+ *                                          broken shared-constant registry, missing
+ *                                          native→ladder anchor row). Does not write.
  *   node tools/corpus-index.mjs --strict   as --check, and additionally fails on corpus holes
  *
  * --check became blocking in wave 0 (corpus-audit) to close BAR-CRITIQUE-01 G7. It used to
@@ -111,6 +112,63 @@ function parseFrontMatter(text) {
 
 const unquote = (s) => s.replace(/^["']|["']$/g, '');
 
+// ------------------------------------------------------- C6: the ladder anchor row
+// Added wave-1-prep to close BAR-CRITIQUE-02 C1 / N1. `SCORING.md` §1.2 makes a per-item
+// native→ladder mapping MANDATORY and fail-closed ("an item with no ladder row is
+// `unmeasurable` and scores 0"). The rule was live for an entire wave and 109 of 137 items
+// never carried it, because nothing could see it. This is the thing that sees it.
+//
+// Three forms are recognised; §1.2 lists the same three:
+//   A  the mandated row      | Ladder | 4 | 6 | 8 |  /  | Native | … | … | … |
+//   B  a transposed table with a `Ladder`-titled column whose values cover 4, 6 and 8
+//      (the `12-weapons` form, and the `Native | Band | Ladder ceiling` form)
+//   C  a prose anchor line binding native values to ladder 4, 6 and 8
+// A verdict-band table alone is NOT an anchor block: it fixes a ceiling, not an anchor.
+
+function scoringSection(text) {
+  const start = text.search(/^##\s+Scoring\s*$/m);
+  if (start === -1) return null;
+  const rest = text.slice(start);
+  const next = rest.slice(3).search(/^##\s+/m);
+  return next === -1 ? rest : rest.slice(0, next + 3);
+}
+
+const tableCells = (line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((s) => s.trim());
+const bare = (s) => s.replace(/[`*_]/g, '').trim();
+
+function ladderAnchorForm(section) {
+  if (!section) return null;
+  const lines = section.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    if (!/^\s*\|/.test(lines[i])) continue;
+    const head = tableCells(lines[i]).map(bare);
+    let j = i + 1;
+    if (!(j < lines.length && /^\s*\|[\s:|-]+\|\s*$/.test(lines[j]))) continue;
+    const rows = []; j++;
+    while (j < lines.length && /^\s*\|/.test(lines[j])) { rows.push(tableCells(lines[j]).map(bare)); j++; }
+    // Form A — the mandated row.
+    if (/^ladder$/i.test(head[0]) && head.slice(1, 4).join(',') === '4,6,8') {
+      const nat = rows.find((r) => /^native/i.test(r[0]));
+      if (nat && nat.slice(1, 4).every((c) => c && c.length)) return 'A';
+    }
+    // Form B — a ladder-titled column covering 4, 6 and 8.
+    const li = head.findIndex((h) => /ladder/i.test(h));
+    if (li !== -1 && rows.length) {
+      const vals = new Set();
+      for (const r of rows) { const c = r[li]; if (c === undefined) continue; for (const n of c.matchAll(/\d+/g)) vals.add(Number(n[0])); }
+      if ([4, 6, 8].every((v) => vals.has(v))) return 'B';
+    }
+    i = j - 1;
+  }
+  // Form C — prose anchors.
+  const prose = section.replace(/\n/g, ' ');
+  const got = new Set();
+  for (const m of prose.matchAll(/(?:→|->)\s*(?:ladder\s*)?\*{0,2}(\d{1,2})/gi)) got.add(Number(m[1]));
+  for (const m of prose.matchAll(/ladder\s*\*{0,2}(\d{1,2})\*{0,2}/gi)) got.add(Number(m[1]));
+  if ([4, 6, 8].every((v) => got.has(v))) return 'C';
+  return null;
+}
+
 // Pull the "## Comparison method" section and derive the Method column.
 function deriveMethod(text, kind) {
   const start = text.search(/^##\s+Comparison method\s*$/m);
@@ -198,6 +256,14 @@ for (const file of riFiles) {
     }
   }
   const method = deriveMethod(text, data.kind);
+  const anchorForm = ladderAnchorForm(scoringSection(text));
+  if (!anchorForm) {
+    problems.push({
+      file: path,
+      level: 'error',
+      message: 'no native→ladder anchor row in `## Scoring` — SCORING.md §1.2 makes it mandatory and fail-closed, so this item is `unmeasurable` and scores 0 (RI-MTH05 C6)',
+    });
+  }
   const rawJudges = Array.isArray(data.judges) ? data.judges : [];
   const label = `${data.id || '(no id)'} (${path})`;
   const judges = [];
@@ -225,6 +291,7 @@ for (const file of riFiles) {
     path,
     area: path.split('/')[1] || '',
     method: method.summary,
+    anchorForm,
   });
 }
 
@@ -255,6 +322,20 @@ for (const id of dupIds) problems.push({ file: '(multiple)', level: 'error', mes
 for (const it of items) {
   if (it.judges.length === 0) {
     problems.push({ file: it.path, level: 'error', message: `judges nothing: every path in \`judges:\` failed to resolve, so this item is invisible to the critic hand-off (RI-MTH05 C3)` });
+  }
+}
+
+// C7 — every subsystem path carries a wave assignment (added wave-1-prep, BAR-CRITIQUE-02 C3).
+// "Not built yet" must be a DECLARED state, not a surprise at scoring time. `wave` is the wave
+// in which a builder FIRST owns the path; later waves deepen it and never introduce it.
+// docs/PLAN.md §4 is the human-readable form of the same assignment.
+for (const s of subsystems) {
+  if (s.wave === undefined || s.wave === null || !Number.isInteger(s.wave)) {
+    problems.push({
+      file: 'corpus/00-doctrine/subsystems.json',
+      level: 'error',
+      message: `subsystem \`${s.path}\` has no integer \`wave\` assignment — assign the wave it is first built in (see docs/PLAN.md §4) so "not built yet" is declared rather than discovered at scoring time (RI-MTH05 C7)`,
+    });
   }
 }
 
@@ -526,6 +607,12 @@ console.log(`  judged          : ${covered}`);
 console.log(`  CORPUS HOLES    : ${holes.length}`);
 console.log(`  legacy aliases  : ${aliasUses.size} in use`);
 console.log(`  unresolved paths: ${unresolved.length}`);
+console.log(`  ladder anchors  : ${items.filter((i) => i.anchorForm).length}/${items.length} items carry a native→ladder row (C6)`);
+{
+  const w = {};
+  for (const s of subsystems) w[s.wave === undefined ? '?' : s.wave] = (w[s.wave === undefined ? '?' : s.wave] || 0) + 1;
+  console.log(`  wave assignment : ${Object.keys(w).sort().map((k) => `w${k}=${w[k]}`).join(' ')} (C7)`);
+}
 console.log(`  problems        : ${problems.filter((p) => p.level === 'error').length} error, ${problems.filter((p) => p.level === 'warn').length} warn`);
 
 if (holes.length) {
