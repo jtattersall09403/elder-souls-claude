@@ -17,7 +17,17 @@
     "corpus/85-platform/RI-PLT03-load-and-hitches.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read RI-JRN01, CORPUS-CONTRACT, ARBITRATION, HARNESS, subsystems.json",
+  "findings": [
+    "RI-JRN01 exists and is the shape template: front-matter (id,title,kind,side,judges,provenance,confidence,blind_pair) + blockquote division-of-labour note + 6 mandatory sections. It cites corpus/88-journeys/paths-requested.json which DOES NOT EXIST YET -> I must create it.",
+    "RI-JRN01 already declares harness amendments A-JRN1 (real input mode, first_input/first_control events, UI-text stream), A-JRN2 (gamepad shim), A-JRN4 (viewport/orientation). I must keep numbering consistent and extend (A-JRN3, A-JRN5...).",
+    "HARNESS.md \u00a71: SwiftShader software renderer; 'Do not write a reference item that scores FPS on this machine' \u2014 hard constraint for RI-PLT01. getWorldStats() exposes drawCalls, triangles, textureMB only.",
+    "HARNESS.md closed button set (14): light heavy roll block parry sprint jump use_item interact lock_on two_hand swap_right swap_left menu. Gamepad map must map onto exactly these.",
+    "HARNESS API has saveState()/loadState() listed as OPTIONAL tier \u2014 RI-JRN05 must request promotion to mandatory.",
+    "subsystems.json existing platform.* paths: platform.perf.framerate, platform.perf.memory, platform.load.streaming, platform.input.pipeline, platform.save.persistence, platform.determinism.harness. NO journey.* or input.* paths exist -> all journey.*/input.* are NEW and must be listed in reply + paths-requested.json.",
+    "BAR-CRITIQUE-01 Rank 13 = G13: proposes RI-PLT01 judging [platform.perf.framerate, platform.perf.memory], thresholds p50<=16.7ms, p99<=33ms, 0 frames >100ms, heap slope <=2MB/min over 60min, hard fail = sim coupled to render. CRITIC-DOCTRINE \u00a72.4.3 bans 'good for a browser game' unless a platform.* item sets the budget.",
+    "ARBITRATION S18 third-person always; S15 gold only currency; S6 death=Souls corpse run but quest/journal/faction state persists (Morrowind owns save-state semantics) -> directly binding on RI-JRN05 and RI-JRN06.",
+    "SCORING.md \u00a71.2: native band sets ladder ceiling; unmeasurable=0 fail-closed."
+  ],
+  "next_step": "WebSearch GameSir X2s Type-C Gamepad API mapping; then write RI-JRN02 first",
   "notes_for_successor": ""
 }

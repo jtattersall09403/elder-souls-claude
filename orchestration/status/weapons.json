@@ -5,16 +5,23 @@
   "state": "researching",
   "outputs_expected": [
     "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md",
+    "corpus/12-weapons/moveset.schema.json",
     "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
     "corpus/12-weapons/RI-WPN03-within-class-subtlety.md",
     "corpus/12-weapons/RI-WPN04-contextual-attacks.md",
     "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
     "corpus/12-weapons/RI-WPN06-two-handing-shields-parry.md",
-    "corpus/12-weapons/WEAPON-CRITIC.md",
-    "corpus/12-weapons/schema/moveset.schema.json"
+    "corpus/12-weapons/WEAPON-CRITIC.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read doctrine (ARBITRATION, CORPUS-CONTRACT, CRITIC-DOCTRINE, SCORING, subsystems.json), HARNESS.md, RI-CMB02/03/05/06, RI-CAM04, RI-AI05, BAR-CRITIQUE-01 G9/W8",
-  "notes_for_successor": ""
+  "findings": [
+    "RI-CMB02 owns 7 classes x {R1,R2} frame data (dagger/straight sword/spear/axe/halberd/greatsword/ultra greatsword) + modifier table §C incl. rolling/running/jump attack multipliers. MUST cite, not restate. Pinned cells: straight sword R1 Ps=13, R2 Ps=26.",
+    "RI-CMB02 §C already gives multipliers for rolling (x0.60 startup), running (x0.70), jump (x1.30). RI-WPN04 must ADD per-class absolute frames + input windows + tactical role, consistent with those multipliers.",
+    "RI-AI05 M1 statistical method = z-normalised feature vector per entity, pairwise Euclidean distance, min pairwise distance is the headline; PASS >= 1.8, hard FAIL < 1.0. Reuse this shape for RI-WPN02.",
+    "subsystems.json v1 has NO weapon.* root. Existing near paths: combat.attack.moveset, combat.attack.charge (hole the brief says RI-WPN01 closes), combat.weapon.identity, combat.feedback.hitstop, combat.block.parry, combat.block.guard. New weapon.* paths must be requested in reply.",
+    "HARNESS.md §7 already mandates game/data/combat/movesets/<id>.json with per-move frame data — RI-WPN01's JSON schema serialises to exactly that path.",
+    "HARNESS.md closed button set includes two_hand, swap_right, swap_left, parry, block — sufficient for RI-WPN06 scripting. No 'kick' button exists (kick must be a forward+heavy modifier or a new button = harness amendment)."
+  ],
+  "next_step": "read RI-CMB03/05/06, RI-CAM04, BAR-CRITIQUE-01 G9/W8, CRITIC-DOCTRINE, SCORING, PLAYTHROUGH-CRITIC; then WebSearch moveset taxonomy; then write RI-WPN01",
+  "notes_for_successor": "Directory corpus/12-weapons/ created. Follow RI-AI05 as the structural template — it is the closest sibling item in style and rigour."
 }

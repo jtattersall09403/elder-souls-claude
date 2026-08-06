@@ -1,0 +1,18 @@
+{
+  "task_id": "image-acquisition",
+  "brief": "orchestration/briefs/image-acquisition.md",
+  "started": "wave-?",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/70-visual/refs/MANIFEST.json",
+    "corpus/70-visual/refs/ACQUISITION-REPORT.md",
+    "corpus/70-visual/refs/reference-metrics.json",
+    "corpus/70-visual/RI-VIS09-reference-image-set.md"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "Disk at start: 23G avail on /, repo 39M."
+  ],
+  "next_step": "read docs/REFERENCE-IMAGE-REQUEST.md and RI-VIS01/02/03/05/06",
+  "notes_for_successor": "Status file created as first action per AGENT-PROTOCOL."
+}

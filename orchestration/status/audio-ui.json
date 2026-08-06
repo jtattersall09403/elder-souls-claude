@@ -17,7 +17,13 @@
     "corpus/86-ui/RI-UIX06-diegesis-ui-style.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read doctrine: ARBITRATION.md, CORPUS-CONTRACT.md, SCORING.md, CRITIC-DOCTRINE.md, subsystems.json, HARNESS.md, RI-VIS01",
+  "findings": [
+    "All 12 canonical paths (audio.combat.impact, audio.ambience.region, audio.music.policy, audio.voice.policy, ui.hud.combat, ui.hud.minimalism, ui.menu.inventory, ui.menu.journal, ui.menu.levelup, ui.menu.books, ui.dialogue.presentation, ui.style.diegesis) EXIST in corpus/00-doctrine/subsystems.json. No new paths needed.",
+    "subsystems.json records area='70-visual' for all audio.* and ui.* paths, but brief directs corpus/87-audio/ and corpus/86-ui/. Dir mismatch is cosmetic (INDEX generator scans corpus/**/RI-*.md); flag in reply.",
+    "arb values from subsystems.json: audio.combat.impact=souls, audio.ambience.region=morrowind, audio.music.policy=souls(!), audio.voice.policy=morrowind, ui.hud.combat=souls, ui.hud.minimalism=morrowind, ui.menu.*=morrowind, ui.menu.levelup=split, ui.style.diegesis=art-direction.",
+    "HARNESS.md sec.3 explicitly lists AUDIO under 'Cannot, and must not be claimed'. So RI-AUD* MUST file a harness amendment request (audioLog) and state unimplemented audio scores 0.",
+    "RI-VIS01 is at corpus/70-visual/RI-VIS01-bifurcation-protocol.md (not -art-direction-vs-fidelity.md)."
+  ],
+  "next_step": "read RI-VIS01 bifurcation, RI-VIS07 could-this-be-skyrim, regions.json, then write RI-AUD01",
   "notes_for_successor": ""
 }
