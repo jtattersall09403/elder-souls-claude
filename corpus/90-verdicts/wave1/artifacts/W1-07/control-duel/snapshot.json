@@ -1,0 +1,205 @@
+{
+  "f": 3630,
+  "t_ms": 60500,
+  "input": {
+    "move": [
+      0,
+      0
+    ],
+    "look": [
+      0,
+      0
+    ],
+    "held": [],
+    "pressed": [],
+    "dispatch_lag": 0,
+    "buffered": null,
+    "catchup_steps": 1
+  },
+  "player": {
+    "pos": [
+      8.7777,
+      0,
+      9.1024
+    ],
+    "yaw_deg": 254.28,
+    "move_dir_deg": 254.28,
+    "state": "IDLE",
+    "anim": "idle",
+    "anim_frame": 41,
+    "anim_len": 1,
+    "phase": "none",
+    "speed_mps": 0,
+    "stamina": 120,
+    "stamina_max": 120,
+    "stamina_regen_blocked": false,
+    "hp": 620,
+    "hp_max": 620,
+    "poise_cur": 48,
+    "poise_max": 48,
+    "iframe": false,
+    "iframe_kind": null,
+    "grounded": true,
+    "estus": 4,
+    "locked_on": null,
+    "equip_load_pct": 24,
+    "roll_class": "LIGHT",
+    "hitboxes": [],
+    "focus": 94,
+    "focus_max": 94,
+    "focus_locked": true,
+    "attuned": [
+      "spark_dart",
+      "slowfall"
+    ],
+    "cast": null,
+    "effects_active": [],
+    "levitating": false,
+    "airborne": false,
+    "altitude_m": 0,
+    "stealth": {
+      "crouched": false,
+      "light": 1,
+      "V": 0.5335,
+      "sound_r_m": 0,
+      "surface": "earth",
+      "in_cover": false,
+      "motion": "still",
+      "sneak": 5,
+      "context": "public_street_sheathed",
+      "context_weight": 0,
+      "zone": null,
+      "zone_baseline_alert": 0,
+      "lock": null,
+      "bounty_imperial": 0,
+      "witnesses_pending": 0
+    }
+  },
+  "civilians": [],
+  "camera": {
+    "pos": [
+      10.8594,
+      4.1126,
+      10.1247
+    ],
+    "pivot": [
+      8.7777,
+      1.55,
+      9.1024
+    ],
+    "yaw_deg": 254.2774,
+    "pitch_deg": -50,
+    "roll_deg": 0,
+    "fov_deg": 50,
+    "near_m": 0.1,
+    "far_m": 1200,
+    "dist_m": 3.4291,
+    "mode": "free",
+    "arm_len_m": 3.4291,
+    "arm_desired_m": 3.4291,
+    "arm_cast_m": 3.4291,
+    "arm_hit": false,
+    "arm_penetration_guard": false,
+    "arm_clear_frames": 0,
+    "shoulder": [
+      0.42,
+      0.1
+    ],
+    "char_opacity": 1,
+    "shake": [
+      0,
+      0
+    ],
+    "hitstop": false,
+    "clip_through": false,
+    "lock_on": null,
+    "lock_target": null,
+    "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+        0,
+        0
+      ],
+      "target_ndc": [
+        0,
+        0
+      ],
+      "target_head_ndc": [
+        0,
+        0
+      ]
+    },
+    "contain_arm_m": 0,
+    "contain_pitch_deg": 0,
+    "lock_dist_m": 0.7122,
+    "lock_height_m": 1.9,
+    "recentre_frames": 0,
+    "recentre_active": false,
+    "cell": null
+  },
+  "enemies": [
+    {
+      "eid": "e0",
+      "statblock": "inf_trash",
+      "moveset": "enemy:inf_trash",
+      "encounter": null,
+      "encounter_role": null,
+      "archetype": "INFANTRY",
+      "tier": "trash",
+      "state": "DEAD",
+      "state_entered_f": 1229,
+      "prev_state": "REPOSITION",
+      "anim": "e_idle",
+      "anim_frame": 48,
+      "anim_len": 44,
+      "phase": "none",
+      "hit_active": false,
+      "hitboxes": [],
+      "pos": [
+        0,
+        0,
+        7
+      ],
+      "yaw_deg": 122.32,
+      "yaw_rate_dps": 0,
+      "speed_mps": 0,
+      "target": "player",
+      "dist_m": 9.026,
+      "los": true,
+      "in_sight_cone": true,
+      "alert": 100,
+      "alert_state": "AGGRO",
+      "attack_token": false,
+      "hp": 0,
+      "hp_max": 412,
+      "poise_cur": 32,
+      "poise_max": 32,
+      "stagger": false,
+      "spawn_anchor": [
+        0,
+        0,
+        7
+      ],
+      "leash_dist_m": 0,
+      "ai": "scripted"
+    }
+  ],
+  "events": [],
+  "rng": {
+    "draws": 1,
+    "seed": 1337
+  },
+  "env": {
+    "time_of_day": 12,
+    "weather": "clear",
+    "region": "arena",
+    "interior": null
+  }
+}

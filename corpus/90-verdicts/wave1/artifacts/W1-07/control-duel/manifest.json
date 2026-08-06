@@ -1,0 +1,74 @@
+{
+  "schema": "elder-souls/run-manifest@1",
+  "run_id": "20260806T202342Z-cmb-duel-infantry-s1337-fc2ef8",
+  "ok": true,
+  "scenario": "cmb-duel-infantry",
+  "scenario_title": "60s duel: player vs one INFANTRY trash enemy on flat ground, scripted aggressive play.",
+  "seed": 1337,
+  "frames_requested": 3600,
+  "frames_traced": 3600,
+  "warmup_frames": 30,
+  "window_reanchor": {
+    "frame": 30,
+    "seed": 1337,
+    "entities": [
+      {
+        "eid": "e0",
+        "anim_len": 48,
+        "seeded_phase": 40,
+        "anim_frame": [
+          22,
+          40
+        ],
+        "state_entered_f": [
+          24,
+          30
+        ]
+      }
+    ]
+  },
+  "character_override": null,
+  "character": null,
+  "fixed_step_hz": 60,
+  "trace": {
+    "path": "trace.jsonl",
+    "records": 3600,
+    "body_sha256": "aeb3a0331fa2ea90ab1ce460f942810af0ded42857321625daf9dd044d90d228"
+  },
+  "url": "http://127.0.0.1:41037/game/index.html",
+  "harness_version": 2,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "git": {
+    "commit": "65275dcd5fca9b1bf21e16999c8295fb109b6353",
+    "branch": "HEAD",
+    "dirty": true
+  },
+  "data": {
+    "files": 293,
+    "sha256": "957c499d147d876a4def064717a16e5da45b7a1e8e58fef33fcb49c7ebc395c0"
+  },
+  "started_at": "2026-08-06T20:23:42.432Z",
+  "ended_at": "2026-08-06T20:23:53.468Z",
+  "wall_ms": 11036,
+  "page_errors": [],
+  "console_errors": [],
+  "node": "v22.22.2",
+  "tool_argv": [
+    "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/wt-head/tools/harness/run-headless.mjs",
+    "--scenario",
+    "cmb-duel-infantry",
+    "--out",
+    "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/control-duel"
+  ]
+}

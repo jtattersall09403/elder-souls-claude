@@ -13,9 +13,9 @@ The critic on W1-01 sampled water depth at every point of all ten road legs, at 
 which nobody had done before. At low tide, 1,364 m of the 25,221 m trunk network sits above knee
 depth and 574 m above chest depth, almost all of it on one leg: Stormhold–Helstrom carries 538 m
 over the knee and 502 m over the chest, and at its worst the road is 65.64 m below the water. The
-player walks it in state `WALK` at 2.0 m/s, 620 of 620 health, stamina untouched. The
-water is inert — no swim, no wading band, no breath clock — which the builder declared honestly as
-another piece's work rather than faking.
+player walks it in state `WALK` at 2.0 m/s, 620 of 620 health, stamina untouched. The water is
+inert — no swim, no wading band, no breath clock — which the builder declared honestly as another
+piece's unbuilt work rather than faking it.
 
 :::compare Ours on the trunk road in The Stone Forest, ground at 69.66 m under a water surface at
 135.30 m; ours on the Lilmoth–Archon tideway, the one leg meant to sit at the waterline; and
@@ -28,8 +28,8 @@ REF-A11, where Morrowind carries a route over standing water rather than under i
 The first image is not underexposed. That is the entire frame: sixty-five metres of water between
 the camera and the sky, with the top of the character's head a slightly darker smudge at the bottom.
 
-The verdict's diagnosis was routing. Roads are laid by A\* — a shortest-path search that crosses a
-grid of cells always taking the cheapest one next — and it costed slope but not depth, so the flat
+The verdict's diagnosis was routing. Roads are laid by `A*` — a shortest-path search that crosses a
+grid of cells always taking the cheapest one next — and it priced slope but not depth, so the flat
 bed of a flooded gorge looked like ideal road-building country.
 
 Half right, and the other half is better. The natural ground at the deepest point is 154.01 m, and

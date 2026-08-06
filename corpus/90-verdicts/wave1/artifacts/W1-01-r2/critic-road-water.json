@@ -1,0 +1,750 @@
+{
+ "schema": "elder-souls/road-water@1",
+ "method": "RI-WLD01 M2b ROAD ABOVE WATER (verdict W1-01 §8)",
+ "measured_at": "2026-08-06T20:24:26.635Z",
+ "rule": "no non-tideway trunk road point may exceed 0.60 m (W2) at any of the four tide phases",
+ "tides": {
+  "RISING": [
+   {
+    "id": "stormhold-thorn",
+    "tide_gated": false,
+    "total_m": 2210.5,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2210.5,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "stormhold-helstrom",
+    "tide_gated": false,
+    "total_m": 2947.4,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2947.4,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-archon",
+    "tide_gated": false,
+    "total_m": 2545.7,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2545.7,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-blackrose",
+    "tide_gated": false,
+    "total_m": 2434.8,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2434.8,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-gideon",
+    "tide_gated": false,
+    "total_m": 2366.6,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2366.6,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "gideon-soulrest",
+    "tide_gated": false,
+    "total_m": 2532.9,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2532.9,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "soulrest-blackrose",
+    "tide_gated": false,
+    "total_m": 1801.6,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 1801.6,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "blackrose-lilmoth",
+    "tide_gated": false,
+    "total_m": 1479,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 1479,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "archon-thorn",
+    "tide_gated": false,
+    "total_m": 4269.5,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 4269.5,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "lilmoth-archon",
+    "tide_gated": true,
+    "total_m": 2511.7,
+    "max_depth_m": 0.976,
+    "deepest_at": [
+     3189.05,
+     4718.58
+    ],
+    "over_shin_m": 1936.8,
+    "over_knee_m": 1769.7,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 522.3,
+     "W1": 52.7,
+     "W2": 167,
+     "W3": 1767.3,
+     "W4": 2.4,
+     "W5": 0
+    }
+   }
+  ],
+  "HIGH": [
+   {
+    "id": "stormhold-thorn",
+    "tide_gated": false,
+    "total_m": 2210.5,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2210.5,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "stormhold-helstrom",
+    "tide_gated": false,
+    "total_m": 2947.4,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2947.4,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-archon",
+    "tide_gated": false,
+    "total_m": 2545.7,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2545.7,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-blackrose",
+    "tide_gated": false,
+    "total_m": 2434.8,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2434.8,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-gideon",
+    "tide_gated": false,
+    "total_m": 2366.6,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2366.6,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "gideon-soulrest",
+    "tide_gated": false,
+    "total_m": 2532.9,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2532.9,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "soulrest-blackrose",
+    "tide_gated": false,
+    "total_m": 1801.6,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 1801.6,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "blackrose-lilmoth",
+    "tide_gated": false,
+    "total_m": 1479,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 1479,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "archon-thorn",
+    "tide_gated": false,
+    "total_m": 4269.5,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 4269.5,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "lilmoth-archon",
+    "tide_gated": true,
+    "total_m": 2511.7,
+    "max_depth_m": 1.456,
+    "deepest_at": [
+     2900.37,
+     4858.63
+    ],
+    "over_shin_m": 1983.5,
+    "over_knee_m": 1869.1,
+    "over_chest_m": 103.9,
+    "band_metres": {
+     "W0": 510.3,
+     "W1": 17.9,
+     "W2": 114.4,
+     "W3": 1109.4,
+     "W4": 655.9,
+     "W5": 103.9
+    }
+   }
+  ],
+  "FALLING": [
+   {
+    "id": "stormhold-thorn",
+    "tide_gated": false,
+    "total_m": 2210.5,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2210.5,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "stormhold-helstrom",
+    "tide_gated": false,
+    "total_m": 2947.4,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2947.4,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-archon",
+    "tide_gated": false,
+    "total_m": 2545.7,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2545.7,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-blackrose",
+    "tide_gated": false,
+    "total_m": 2434.8,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2434.8,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-gideon",
+    "tide_gated": false,
+    "total_m": 2366.6,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2366.6,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "gideon-soulrest",
+    "tide_gated": false,
+    "total_m": 2532.9,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2532.9,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "soulrest-blackrose",
+    "tide_gated": false,
+    "total_m": 1801.6,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 1801.6,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "blackrose-lilmoth",
+    "tide_gated": false,
+    "total_m": 1479,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 1479,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "archon-thorn",
+    "tide_gated": false,
+    "total_m": 4269.5,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 4269.5,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "lilmoth-archon",
+    "tide_gated": true,
+    "total_m": 2511.7,
+    "max_depth_m": 0.976,
+    "deepest_at": [
+     3189.05,
+     4718.58
+    ],
+    "over_shin_m": 1936.8,
+    "over_knee_m": 1769.7,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 522.3,
+     "W1": 52.7,
+     "W2": 167,
+     "W3": 1767.3,
+     "W4": 2.4,
+     "W5": 0
+    }
+   }
+  ],
+  "LOW": [
+   {
+    "id": "stormhold-thorn",
+    "tide_gated": false,
+    "total_m": 2210.5,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2210.5,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "stormhold-helstrom",
+    "tide_gated": false,
+    "total_m": 2947.4,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2947.4,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-archon",
+    "tide_gated": false,
+    "total_m": 2545.7,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2545.7,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-blackrose",
+    "tide_gated": false,
+    "total_m": 2434.8,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2434.8,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "helstrom-gideon",
+    "tide_gated": false,
+    "total_m": 2366.6,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2366.6,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "gideon-soulrest",
+    "tide_gated": false,
+    "total_m": 2532.9,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 2532.9,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "soulrest-blackrose",
+    "tide_gated": false,
+    "total_m": 1801.6,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 1801.6,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "blackrose-lilmoth",
+    "tide_gated": false,
+    "total_m": 1479,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 1479,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "archon-thorn",
+    "tide_gated": false,
+    "total_m": 4269.5,
+    "max_depth_m": 0,
+    "deepest_at": null,
+    "over_shin_m": 0,
+    "over_knee_m": 0,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 4269.5,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   {
+    "id": "lilmoth-archon",
+    "tide_gated": true,
+    "total_m": 2511.7,
+    "max_depth_m": 0.976,
+    "deepest_at": [
+     3189.05,
+     4718.58
+    ],
+    "over_shin_m": 1745.7,
+    "over_knee_m": 1064.6,
+    "over_chest_m": 0,
+    "band_metres": {
+     "W0": 607.8,
+     "W1": 158.2,
+     "W2": 681.1,
+     "W3": 1062.2,
+     "W4": 2.4,
+     "W5": 0
+    }
+   }
+  ]
+ },
+ "offenders": [],
+ "ok": true
+}

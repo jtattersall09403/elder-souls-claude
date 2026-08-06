@@ -96,6 +96,10 @@ const posts = [];
 if (existsSync(P('docs', 'blog'))) {
   for (const f of readdirSync(P('docs', 'blog')).filter(f => f.endsWith('.md'))) {
     const [fm, body] = frontMatter(readFileSync(P('docs', 'blog', f), 'utf8'));
+    // A post is a file with front matter. Bookkeeping that lives alongside the posts —
+    // COVERED.md, notes, anything a writing agent leaves behind — has none, and was
+    // otherwise being published verbatim as a post of its own.
+    if (!fm.title) continue;
     posts.push({
       slug: basename(f, '.md'),
       title: fm.title || basename(f, '.md'),
@@ -151,7 +155,10 @@ nav button[aria-selected=true]{background:var(--bg);color:var(--gold);border-col
 .post figure.cmp{background:none;border:none;border-radius:0;margin:26px 0}
 .cmp-row{display:grid;gap:8px}
 .cmp-cell{display:block;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;text-decoration:none}
-.cmp-cell img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#0d0b09}
+/* contain, not cover: comparison images come in whatever aspect the source game shipped
+   (a 320x320 reference next to a 1920x1080 capture), and cropping one to match the other
+   would quietly remove the part being compared. Letterboxing is the honest option. */
+.cmp-cell img{width:100%;display:block;aspect-ratio:16/9;object-fit:contain;background:#0d0b09}
 .cmp-cell span{display:block;font-size:11px;color:var(--dim);padding:7px 10px;line-height:1.45}
 .cmp-cell:hover{border-color:var(--gold)}
 .post figure.cmp figcaption{padding:10px 2px 0;font-size:11.5px;line-height:1.6}
