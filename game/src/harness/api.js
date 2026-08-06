@@ -207,6 +207,8 @@ export function installHarness(engine, bootPromise) {
     signatureAudit() { return engine.signatureAudit(); },
     // RI-WLD07 max walkable slope + the fall; RI-WLD10 bands, stamina, breath, mire; S25 denial.
     getTraversalReport() { return engine.getTraversalReport(); },
+    // RI-WLD11: the hazards live at the player's position, their telegraph state and their cost.
+    getHazardReport() { return engine.getHazardReport(); },
     getRegionSignature(x, z) { return engine.getRegionSignature(x, z); },
     setTide(stateOrPhase) { return engine.setTide(stateOrPhase); },
     getTide() { return engine.getTide(); },

@@ -69,6 +69,43 @@ whole session's budget for that area, and the next agent starts from zero. An ag
 having written four of six items and a good status file costs almost nothing — its successor
 finishes in a fraction of the time.
 
+## Driving the game from a probe — read this before you write a stepping loop
+
+Found by the W1-15 round-2 builder after it had cost several rounds of wall clock, and almost
+certainly costing others the same:
+
+`Engine.stepFrames()` ends with `if (loop.renderRateHz !== 0) loop.renderNow()`. So a probe that
+steps **one frame at a time** renders one full SwiftShader frame per *simulation* frame. Measured:
+600 bare simulation frames cost **71 ms**; the same 600 driven one at a time with the renderer live
+never returned and killed the page.
+
+**Before any stepping loop:**
+
+```js
+await page.evaluate(() => window.__HARNESS.setRenderRate(0));   // then step freely
+```
+
+and launch at `--width 320 --height 240` unless you are actually capturing screenshots. Turn
+rendering back on only for the frames you photograph.
+
+Also: `tools/lib/combat-node.mjs` runs the combat modules headless in bare Node — no engine, no
+browser, roughly 500× faster — and reproduces the browser's numbers exactly. Use it to iterate,
+then confirm your headline findings in the browser. Do not publish a number that has only ever
+been seen outside the browser.
+
+## Two failure modes that have each cost a full round
+
+1. **The verdict may name a dead call site.** The W1-15 round-1 verdict named `sim/entities.js`
+   as the place to fix. `stepEntities()` is not called from `sim/step.js` at all — the live code
+   was in `combat/enemy.js`. Patching the named file would have changed nothing observable and the
+   piece would have returned a third time at the same measurement. **Confirm the code you are about
+   to change actually runs**, by perturbing it and watching the world, before you change it. Two
+  parallel implementations of the same system is how this build came to have one good detection
+   model and one broken one at the same time.
+2. **A probe that cannot fail is worse than no probe.** Several wave-1 probes passed against
+   disconnected models, empty result lists and vacuous controls. Before trusting your own
+   instrument, break the thing it measures on purpose and confirm the instrument goes red.
+
 ## Network access (updated mid-wave)
 
 **Outbound internet is now unrestricted.** Earlier agents worked under a policy proxy that

@@ -2,7 +2,7 @@
   "task_id": "W1-15-r2",
   "brief": "round-2 ULTRACODE rebuild of W1-15 stealth/crime \u2014 close GAP-W1-stealth-crime-model-not-coupled-to-the-world",
   "started": "wave-1 round 2",
-  "state": "building",
+  "state": "complete",
   "tier": "ultracode",
   "verdict_round1": "corpus/90-verdicts/wave1/W1-15.json (FAIL 2/10)",
   "outputs_expected": [
@@ -30,7 +30,11 @@
     "game/data/quests/*.json \u2014 12 authored sneak/steal routes with journal entries; VERB-SPREAD 28.2% -> 24.7%, sneak 6 -> 13 quests, steal 3 -> 8",
     "corpus/00-doctrine/AMENDMENT-W1-15-01.md \u00a75 \u00a76 \u2014 the RI-AI01/RI-STL01 fill-curve conflict; SNEAK-QUESTS as a ratio",
     "tools/harness/w1-15-coupling.mjs (NEW) \u2014 RI-MTH07 coupling probe, entity-side observables only",
-    "reports/W1-15-ROUND2.md \u2014 the round-2 builder report"
+    "reports/W1-15-ROUND2.md \u2014 the round-2 builder report",
+    "reports/w1-15-coupling.json + reports/w1-15-coupling-run.txt \u2014 15 RI-MTH07 blocks, no errors",
+    "reports/w1-15-r2-regression.json \u2014 the S21/opener/HUD regression set",
+    "reports/W1-15-live-run-r2.txt \u2014 stl-live 29/29",
+    "game/src/sim/events.js \u2014 report_route and guard_band added to the closed vocabulary"
   ],
   "findings": [
     "R1 defect A: entities.js stepEntities() hold_ground branch does `e.alert = min(100, e.alert+4)` \u2014 flat, never multiplies by sim.stealth.p.V. This is the coupling-0 call site.",
@@ -63,8 +67,22 @@
     "MEASURED: RI-CRM01 method 3 with ZERO addWitness() calls \u2014 witness on the crime frame, reported=false, bounty 0 until the report; 120 m guard -> run_to_guard, latency 2065 f, bounty 17 g at 34.5 s (item 35.3 s, 2.3%); 20 m -> shout latency 72 f = 1.200 s exactly; no guard -> delayed, bounty 0.",
     "MEASURED: stolen_registry after a theft = ['gideon.fisher0.r0.0'] in getCrimeState AND in saveState().crime.stolen_registry; the inventory row carries stolen:true, owner_of_record:'npc:gideon-fisher-0-sibling0'.",
     "sim.entities is kept in EID order (HARNESS.md D7), not spawn order. perceptionState()[0] is the alphabetically-first eid \u2014 a probe must address by eid.",
-    "events.js closed vocabulary extended with `report_route` and `guard_band` (A-JRN7 permits extension by amendment)."
+    "events.js closed vocabulary extended with `report_route` and `guard_band` (A-JRN7 permits extension by amendment).",
+    "REGRESSION CHECK CLEAN: stl-probe 125/125, crime-audit 37/37, stl-live 29/29, lock tolerance + gate + 0 RNG draws unchanged, pickpocket 1 draw per hold, isStealthOpener gate 19/20 unchanged, hud_elements 0.",
+    "MEASURED: bribe = 34 g (2x the 17 g quote) -> bounty 0; talk-down -> bounty 0; let-go -> bounty 17. All against a witness the world created.",
+    "MEASURED: S13 \u2014 a band-3 guard_legion at 3 m, aggro'd, goes REPOSITION -> YIELDED at full HP on one `interact` press.",
+    "NOT CLOSED (deliberate): 0 tier-1 locks. build-property.mjs places 235 locks total so the tier bands consume the ranking before tier 1. Fixing it regenerates the 1,878-object property tree while other builders are in the tree; the round-1 verdict filed it under 'not work for the next builder'.",
+    "NOT CLOSED (out of scope): RI-STL01 \u00a79's bypass census (REGION-BYPASS, R5-BYPASS, DUNGEON-ROUTE, CAVE-CROUCH) needs the world W1-01/W1-03/W1-12 own. RI-QST05's live ten-quest playthrough needs quest progression, which does not exist at this commit."
   ],
-  "next_step": "collect reports/w1-15-coupling.json and fold the measured numbers into the report",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 handed to a fresh-context critic",
+  "notes_for_successor": "The one thing worth carrying forward for EVERY agent in this project: Engine.stepFrames() ends with `if (loop.renderRateHz !== 0) loop.renderNow()`, so a probe that steps one frame at a time renders one SwiftShader frame per simulation frame. 600 bare sim frames cost 71 ms; 600 driven one-at-a-time with the renderer live never returned. Call H.setRenderRate(0) before any stepping loop, and pass --width 320 --height 240 unless you are screenshotting. This cost this dispatch several rounds of wall clock.",
+  "final_check": {
+    "boot": "OK, 0 page errors",
+    "check-data": "324 indexed files, all present",
+    "corpus gate": "PASSED",
+    "stl-probe": "125/125",
+    "crime-audit": "37/37",
+    "stl-live": "29/29",
+    "w1-15-coupling": "15 blocks, no errors, no page errors"
+  }
 }

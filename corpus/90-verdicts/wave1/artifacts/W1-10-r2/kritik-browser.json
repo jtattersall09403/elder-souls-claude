@@ -1,0 +1,960 @@
+{
+ "generated": "2026-08-06T22:18:24.501Z",
+ "instrument": "kritik-browser.mjs (critic-authored)",
+ "booted_at_head_without_repair": true,
+ "page_errors": [],
+ "build": {
+  "name": "elder-souls",
+  "version": "0.2.0-w1-09",
+  "commit": null,
+  "builtAt": null,
+  "harnessVersion": 2,
+  "fixedStepHz": 60,
+  "dataRoot": "game/data",
+  "piece": "W1-09 — combat core (on W1-00’s harness)",
+  "threeVersion": "180",
+  "dataFiles": 324
+ },
+ "B1": {
+  "attempted": 87,
+  "setLoadout_ok": 87,
+  "live_id_matches_requested": 0,
+  "live_reach_matches_declared": 87,
+  "distinct_live_reach_values": 86,
+  "rejected": 0,
+  "distinct_errors": [],
+  "classes_with_zero_equippable": [],
+  "rows": [
+   {
+    "weapon_id": "axe_bog_cleaver",
+    "class": "AXE",
+    "declared_reach": 1.794,
+    "ok": true,
+    "equipped": {
+     "reach": 1.794
+    }
+   },
+   {
+    "weapon_id": "axe_hatchet_pair",
+    "class": "AXE",
+    "declared_reach": 1.795,
+    "ok": true,
+    "equipped": {
+     "reach": 1.795
+    }
+   },
+   {
+    "weapon_id": "axe_kings_bite",
+    "class": "AXE",
+    "declared_reach": 1.639,
+    "ok": true,
+    "equipped": {
+     "reach": 1.639
+    }
+   },
+   {
+    "weapon_id": "axe_ridge_axe",
+    "class": "AXE",
+    "declared_reach": 2.005,
+    "ok": true,
+    "equipped": {
+     "reach": 2.005
+    }
+   },
+   {
+    "weapon_id": "axe_shell_reaper",
+    "class": "AXE",
+    "declared_reach": 1.675,
+    "ok": true,
+    "equipped": {
+     "reach": 1.675
+    }
+   },
+   {
+    "weapon_id": "axe_shell_splitter",
+    "class": "AXE",
+    "declared_reach": 1.8,
+    "ok": true,
+    "equipped": {
+     "reach": 1.8
+    }
+   },
+   {
+    "weapon_id": "bow_chitin_recurve",
+    "class": "BOW",
+    "declared_reach": 1.552,
+    "ok": true,
+    "equipped": {
+     "reach": 1.552
+    }
+   },
+   {
+    "weapon_id": "bow_horn_sinew",
+    "class": "BOW",
+    "declared_reach": 1.6,
+    "ok": true,
+    "equipped": {
+     "reach": 1.6
+    }
+   },
+   {
+    "weapon_id": "bow_kings_horn",
+    "class": "BOW",
+    "declared_reach": 1.802,
+    "ok": true,
+    "equipped": {
+     "reach": 1.802
+    }
+   },
+   {
+    "weapon_id": "bow_marsh_longbow",
+    "class": "BOW",
+    "declared_reach": 1.813,
+    "ok": true,
+    "equipped": {
+     "reach": 1.813
+    }
+   },
+   {
+    "weapon_id": "bow_reed_shortbow",
+    "class": "BOW",
+    "declared_reach": 1.275,
+    "ok": true,
+    "equipped": {
+     "reach": 1.275
+    }
+   },
+   {
+    "weapon_id": "cgs_drowned_reaper",
+    "class": "CGS",
+    "declared_reach": 2.75,
+    "ok": true,
+    "equipped": {
+     "reach": 2.75
+    }
+   },
+   {
+    "weapon_id": "cgs_harvest_edge",
+    "class": "CGS",
+    "declared_reach": 2.835,
+    "ok": true,
+    "equipped": {
+     "reach": 2.835
+    }
+   },
+   {
+    "weapon_id": "cgs_kings_crescent",
+    "class": "CGS",
+    "declared_reach": 2.652,
+    "ok": true,
+    "equipped": {
+     "reach": 2.652
+    }
+   },
+   {
+    "weapon_id": "cgs_mire_scythe",
+    "class": "CGS",
+    "declared_reach": 2.854,
+    "ok": true,
+    "equipped": {
+     "reach": 2.854
+    }
+   },
+   {
+    "weapon_id": "cgs_tide_falx",
+    "class": "CGS",
+    "declared_reach": 2.648,
+    "ok": true,
+    "equipped": {
+     "reach": 2.648
+    }
+   },
+   {
+    "weapon_id": "csw_drowned_kris",
+    "class": "CSW",
+    "declared_reach": 1.52,
+    "ok": true,
+    "equipped": {
+     "reach": 1.52
+    }
+   },
+   {
+    "weapon_id": "csw_mangrove_hook",
+    "class": "CSW",
+    "declared_reach": 1.902,
+    "ok": true,
+    "equipped": {
+     "reach": 1.902
+    }
+   },
+   {
+    "weapon_id": "csw_naga_sickle",
+    "class": "CSW",
+    "declared_reach": 1.75,
+    "ok": true,
+    "equipped": {
+     "reach": 1.75
+    }
+   },
+   {
+    "weapon_id": "csw_reaver_blade",
+    "class": "CSW",
+    "declared_reach": 1.679,
+    "ok": true,
+    "equipped": {
+     "reach": 1.679
+    }
+   },
+   {
+    "weapon_id": "csw_saltmarsh_sabre",
+    "class": "CSW",
+    "declared_reach": 1.823,
+    "ok": true,
+    "equipped": {
+     "reach": 1.823
+    }
+   },
+   {
+    "weapon_id": "csw_tide_falchion",
+    "class": "CSW",
+    "declared_reach": 1.784,
+    "ok": true,
+    "equipped": {
+     "reach": 1.784
+    }
+   },
+   {
+    "weapon_id": "dgr_bone_awl",
+    "class": "DGR",
+    "declared_reach": 0.867,
+    "ok": true,
+    "equipped": {
+     "reach": 0.867
+    }
+   },
+   {
+    "weapon_id": "dgr_hist_barb",
+    "class": "DGR",
+    "declared_reach": 0.891,
+    "ok": true,
+    "equipped": {
+     "reach": 0.891
+    }
+   },
+   {
+    "weapon_id": "dgr_kings_needle",
+    "class": "DGR",
+    "declared_reach": 1.222,
+    "ok": true,
+    "equipped": {
+     "reach": 1.222
+    }
+   },
+   {
+    "weapon_id": "dgr_reed_dirk",
+    "class": "DGR",
+    "declared_reach": 1.194,
+    "ok": true,
+    "equipped": {
+     "reach": 1.194
+    }
+   },
+   {
+    "weapon_id": "dgr_shell_knife",
+    "class": "DGR",
+    "declared_reach": 1.05,
+    "ok": true,
+    "equipped": {
+     "reach": 1.05
+    }
+   },
+   {
+    "weapon_id": "dgr_thornfang",
+    "class": "DGR",
+    "declared_reach": 1.138,
+    "ok": true,
+    "equipped": {
+     "reach": 1.138
+    }
+   },
+   {
+    "weapon_id": "fst_hist_talon",
+    "class": "FST",
+    "declared_reach": 0.99,
+    "ok": true,
+    "equipped": {
+     "reach": 0.99
+    }
+   },
+   {
+    "weapon_id": "fst_marsh_claw",
+    "class": "FST",
+    "declared_reach": 1.011,
+    "ok": true,
+    "equipped": {
+     "reach": 1.011
+    }
+   },
+   {
+    "weapon_id": "fst_quarry_caestus",
+    "class": "FST",
+    "declared_reach": 0.771,
+    "ok": true,
+    "equipped": {
+     "reach": 0.771
+    }
+   },
+   {
+    "weapon_id": "fst_wrapped_fists",
+    "class": "FST",
+    "declared_reach": 0.9,
+    "ok": true,
+    "equipped": {
+     "reach": 0.9
+    }
+   },
+   {
+    "weapon_id": "ghm_bog_maul",
+    "class": "GHM",
+    "declared_reach": 2.148,
+    "ok": true,
+    "equipped": {
+     "reach": 2.148
+    }
+   },
+   {
+    "weapon_id": "ghm_kings_ruin",
+    "class": "GHM",
+    "declared_reach": 2.238,
+    "ok": true,
+    "equipped": {
+     "reach": 2.238
+    }
+   },
+   {
+    "weapon_id": "ghm_pile_driver",
+    "class": "GHM",
+    "declared_reach": 2.3,
+    "ok": true,
+    "equipped": {
+     "reach": 2.3
+    }
+   },
+   {
+    "weapon_id": "ghm_root_hammer",
+    "class": "GHM",
+    "declared_reach": 2.435,
+    "ok": true,
+    "equipped": {
+     "reach": 2.435
+    }
+   },
+   {
+    "weapon_id": "ghm_stone_breaker",
+    "class": "GHM",
+    "declared_reach": 2.363,
+    "ok": true,
+    "equipped": {
+     "reach": 2.363
+    }
+   },
+   {
+    "weapon_id": "gsw_drowned_greatblade",
+    "class": "GSW",
+    "declared_reach": 2.741,
+    "ok": true,
+    "equipped": {
+     "reach": 2.741
+    }
+   },
+   {
+    "weapon_id": "gsw_fen_claymore",
+    "class": "GSW",
+    "declared_reach": 2.515,
+    "ok": true,
+    "equipped": {
+     "reach": 2.515
+    }
+   },
+   {
+    "weapon_id": "gsw_hist_greatblade",
+    "class": "GSW",
+    "declared_reach": 2.594,
+    "ok": true,
+    "equipped": {
+     "reach": 2.594
+    }
+   },
+   {
+    "weapon_id": "gsw_memorial_blade",
+    "class": "GSW",
+    "declared_reach": 2.6,
+    "ok": true,
+    "equipped": {
+     "reach": 2.6
+    }
+   },
+   {
+    "weapon_id": "gsw_oath_of_ash",
+    "class": "GSW",
+    "declared_reach": 2.86,
+    "ok": true,
+    "equipped": {
+     "reach": 2.86
+    }
+   },
+   {
+    "weapon_id": "gsw_reed_bastard",
+    "class": "GSW",
+    "declared_reach": 2.385,
+    "ok": true,
+    "equipped": {
+     "reach": 2.385
+    }
+   },
+   {
+    "weapon_id": "gsw_saltwind",
+    "class": "GSW",
+    "declared_reach": 2.572,
+    "ok": true,
+    "equipped": {
+     "reach": 2.572
+    }
+   },
+   {
+    "weapon_id": "gsw_tomb_guard",
+    "class": "GSW",
+    "declared_reach": 2.624,
+    "ok": true,
+    "equipped": {
+     "reach": 2.624
+    }
+   },
+   {
+    "weapon_id": "hlb_fen_hook",
+    "class": "HLB",
+    "declared_reach": 2.865,
+    "ok": true,
+    "equipped": {
+     "reach": 2.865
+    }
+   },
+   {
+    "weapon_id": "hlb_garrison_bill",
+    "class": "HLB",
+    "declared_reach": 2.85,
+    "ok": true,
+    "equipped": {
+     "reach": 2.85
+    }
+   },
+   {
+    "weapon_id": "hlb_lane_keeper",
+    "class": "HLB",
+    "declared_reach": 2.931,
+    "ok": true,
+    "equipped": {
+     "reach": 2.931
+    }
+   },
+   {
+    "weapon_id": "hlb_marsh_glaive",
+    "class": "HLB",
+    "declared_reach": 2.802,
+    "ok": true,
+    "equipped": {
+     "reach": 2.802
+    }
+   },
+   {
+    "weapon_id": "hlb_reed_partisan",
+    "class": "HLB",
+    "declared_reach": 2.875,
+    "ok": true,
+    "equipped": {
+     "reach": 2.875
+    }
+   },
+   {
+    "weapon_id": "hlb_saltcutter",
+    "class": "HLB",
+    "declared_reach": 2.839,
+    "ok": true,
+    "equipped": {
+     "reach": 2.839
+    }
+   },
+   {
+    "weapon_id": "mce_bog_iron_mace",
+    "class": "MCE",
+    "declared_reach": 1.7,
+    "ok": true,
+    "equipped": {
+     "reach": 1.7
+    }
+   },
+   {
+    "weapon_id": "mce_bone_hammer",
+    "class": "MCE",
+    "declared_reach": 1.79,
+    "ok": true,
+    "equipped": {
+     "reach": 1.79
+    }
+   },
+   {
+    "weapon_id": "mce_chain_flail",
+    "class": "MCE",
+    "declared_reach": 1.882,
+    "ok": true,
+    "equipped": {
+     "reach": 1.882
+    }
+   },
+   {
+    "weapon_id": "mce_pilgrim_club",
+    "class": "MCE",
+    "declared_reach": 1.619,
+    "ok": true,
+    "equipped": {
+     "reach": 1.619
+    }
+   },
+   {
+    "weapon_id": "mce_root_maul",
+    "class": "MCE",
+    "declared_reach": 1.665,
+    "ok": true,
+    "equipped": {
+     "reach": 1.665
+    }
+   },
+   {
+    "weapon_id": "mce_stone_answer",
+    "class": "MCE",
+    "declared_reach": 1.495,
+    "ok": true,
+    "equipped": {
+     "reach": 1.495
+    }
+   },
+   {
+    "weapon_id": "spr_drowned_harpoon",
+    "class": "SPR",
+    "declared_reach": 3.283,
+    "ok": true,
+    "equipped": {
+     "reach": 3.283
+    }
+   },
+   {
+    "weapon_id": "spr_fishers_gig",
+    "class": "SPR",
+    "declared_reach": 3.1,
+    "ok": true,
+    "equipped": {
+     "reach": 3.1
+    }
+   },
+   {
+    "weapon_id": "spr_marsh_lance",
+    "class": "SPR",
+    "declared_reach": 3.168,
+    "ok": true,
+    "equipped": {
+     "reach": 3.168
+    }
+   },
+   {
+    "weapon_id": "spr_mire_trident",
+    "class": "SPR",
+    "declared_reach": 3.216,
+    "ok": true,
+    "equipped": {
+     "reach": 3.216
+    }
+   },
+   {
+    "weapon_id": "spr_reed_gig",
+    "class": "SPR",
+    "declared_reach": 2.924,
+    "ok": true,
+    "equipped": {
+     "reach": 2.924
+    }
+   },
+   {
+    "weapon_id": "spr_root_pike",
+    "class": "SPR",
+    "declared_reach": 3.148,
+    "ok": true,
+    "equipped": {
+     "reach": 3.148
+    }
+   },
+   {
+    "weapon_id": "spr_xanmeer_sting",
+    "class": "SPR",
+    "declared_reach": 2.937,
+    "ok": true,
+    "equipped": {
+     "reach": 2.937
+    }
+   },
+   {
+    "weapon_id": "ssw_barsaebic_warblade",
+    "class": "SSW",
+    "declared_reach": 2.069,
+    "ok": true,
+    "equipped": {
+     "reach": 2.069
+    }
+   },
+   {
+    "weapon_id": "ssw_fen_wardens",
+    "class": "SSW",
+    "declared_reach": 2.136,
+    "ok": true,
+    "equipped": {
+     "reach": 2.136
+    }
+   },
+   {
+    "weapon_id": "ssw_garrison_sword",
+    "class": "SSW",
+    "declared_reach": 1.95,
+    "ok": true,
+    "equipped": {
+     "reach": 1.95
+    }
+   },
+   {
+    "weapon_id": "ssw_hist_sap_blade",
+    "class": "SSW",
+    "declared_reach": 1.805,
+    "ok": true,
+    "equipped": {
+     "reach": 1.805
+    }
+   },
+   {
+    "weapon_id": "ssw_kothringi_bronze",
+    "class": "SSW",
+    "declared_reach": 1.841,
+    "ok": true,
+    "equipped": {
+     "reach": 1.841
+    }
+   },
+   {
+    "weapon_id": "ssw_marsh_shortsword",
+    "class": "SSW",
+    "declared_reach": 1.911,
+    "ok": true,
+    "equipped": {
+     "reach": 1.911
+    }
+   },
+   {
+    "weapon_id": "ssw_oath_of_drowned",
+    "class": "SSW",
+    "declared_reach": 1.809,
+    "ok": true,
+    "equipped": {
+     "reach": 1.809
+    }
+   },
+   {
+    "weapon_id": "ssw_rusted_levy",
+    "class": "SSW",
+    "declared_reach": 2.024,
+    "ok": true,
+    "equipped": {
+     "reach": 2.024
+    }
+   },
+   {
+    "weapon_id": "tsw_bog_rapier",
+    "class": "TSW",
+    "declared_reach": 2.087,
+    "ok": true,
+    "equipped": {
+     "reach": 2.087
+    }
+   },
+   {
+    "weapon_id": "tsw_duelling_pick",
+    "class": "TSW",
+    "declared_reach": 2.262,
+    "ok": true,
+    "equipped": {
+     "reach": 2.262
+    }
+   },
+   {
+    "weapon_id": "tsw_oath_of_salt",
+    "class": "TSW",
+    "declared_reach": 2.302,
+    "ok": true,
+    "equipped": {
+     "reach": 2.302
+    }
+   },
+   {
+    "weapon_id": "tsw_reed_estoc",
+    "class": "TSW",
+    "declared_reach": 2.238,
+    "ok": true,
+    "equipped": {
+     "reach": 2.238
+    }
+   },
+   {
+    "weapon_id": "tsw_xanmeer_needle",
+    "class": "TSW",
+    "declared_reach": 2.2,
+    "ok": true,
+    "equipped": {
+     "reach": 2.2
+    }
+   },
+   {
+    "weapon_id": "ugs_drowned_slab",
+    "class": "UGS",
+    "declared_reach": 3.033,
+    "ok": true,
+    "equipped": {
+     "reach": 3.033
+    }
+   },
+   {
+    "weapon_id": "ugs_fen_zwei",
+    "class": "UGS",
+    "declared_reach": 2.894,
+    "ok": true,
+    "equipped": {
+     "reach": 2.894
+    }
+   },
+   {
+    "weapon_id": "ugs_golem_sword",
+    "class": "UGS",
+    "declared_reach": 2.95,
+    "ok": true,
+    "equipped": {
+     "reach": 2.95
+    }
+   },
+   {
+    "weapon_id": "ugs_oath_of_root",
+    "class": "UGS",
+    "declared_reach": 2.78,
+    "ok": true,
+    "equipped": {
+     "reach": 2.78
+    }
+   },
+   {
+    "weapon_id": "ugs_saltiron_greatsword",
+    "class": "UGS",
+    "declared_reach": 3.142,
+    "ok": true,
+    "equipped": {
+     "reach": 3.142
+    }
+   },
+   {
+    "weapon_id": "ugs_tomb_colossus",
+    "class": "UGS",
+    "declared_reach": 2.852,
+    "ok": true,
+    "equipped": {
+     "reach": 2.852
+    }
+   },
+   {
+    "weapon_id": "whp_hide_lash",
+    "class": "WHP",
+    "declared_reach": 3.6,
+    "ok": true,
+    "equipped": {
+     "reach": 3.6
+    }
+   },
+   {
+    "weapon_id": "whp_hist_bindings",
+    "class": "WHP",
+    "declared_reach": 3.781,
+    "ok": true,
+    "equipped": {
+     "reach": 3.781
+    }
+   },
+   {
+    "weapon_id": "whp_root_tendril",
+    "class": "WHP",
+    "declared_reach": 3.696,
+    "ok": true,
+    "equipped": {
+     "reach": 3.696
+    }
+   },
+   {
+    "weapon_id": "whp_salt_scourge",
+    "class": "WHP",
+    "declared_reach": 3.421,
+    "ok": true,
+    "equipped": {
+     "reach": 3.421
+    }
+   }
+  ]
+ },
+ "B2": {
+  "total": 20,
+  "contextual": 0,
+  "CFS_live_browser": 0,
+  "rows": [
+   {
+    "weapon": "dagger",
+    "state": "ROLL",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "dagger",
+    "state": "BACKSTEP",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "dagger",
+    "state": "SPRINT",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "dagger",
+    "state": "AIRBORNE",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "dagger",
+    "state": "BLOCK",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "straight-sword",
+    "state": "ROLL",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "straight-sword",
+    "state": "BACKSTEP",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "straight-sword",
+    "state": "SPRINT",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "straight-sword",
+    "state": "AIRBORNE",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "straight-sword",
+    "state": "BLOCK",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "axe",
+    "state": "ROLL",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "axe",
+    "state": "BACKSTEP",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "axe",
+    "state": "SPRINT",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "axe",
+    "state": "AIRBORNE",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "axe",
+    "state": "BLOCK",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "ultra-greatsword",
+    "state": "ROLL",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "ultra-greatsword",
+    "state": "BACKSTEP",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "ultra-greatsword",
+    "state": "SPRINT",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "ultra-greatsword",
+    "state": "AIRBORNE",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   },
+   {
+    "weapon": "ultra-greatsword",
+    "state": "BLOCK",
+    "baseline": null,
+    "slot": null,
+    "drop": "nothing-fired"
+   }
+  ]
+ }
+}

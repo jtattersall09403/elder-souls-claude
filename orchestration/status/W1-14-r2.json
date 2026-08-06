@@ -2,7 +2,7 @@
   "task_id": "W1-14-r2",
   "brief": "wave-1 piece W1-14 round 2 — Magic (seam S19), ULTRACODE. Round 1 scored 2.7/10.",
   "started": "wave-1 round 2",
-  "state": "building",
+  "state": "complete",
   "gap": "GAP-W1-magic-effects-no-behaviour — one generic applicator behind 55 labels. 5/55 function.",
   "outputs_expected": [
     "game/src/sim/magic/apply.js (per-effect handler registry, 55 handlers)",
@@ -73,8 +73,12 @@
     "V7 (motion vectors for TAA) is the ONE F-M1 row absent and is declared absent in featureReport(): this renderer has no temporal pass to feed. 9 of 10 with V1/V2/V4 (the three mandatory rows) all present.",
     "faction-gates.json did not exist; QuestEngine needs it. Generated for the 9 factions the quest book actually references, 8 ranks each, RI-QST03 §B four-part statement, no level/souls/gold gates.",
     "Three magic resolutions declared `requires.knowledge` keys that NOTHING could reveal (decorative gates, RI-JRN07 M-Q14 hard fail). gen-quest-knowledge.mjs gives each an actual door, magic and mundane, so Q8's no-lockout rule holds.",
-    "REGRESSIONS GREEN: api-probe 33/33, mag-probe 19/19 (incl. AR3_X1 and AR3_X4), save-audit round-trip EQUAL on all 4 states with manifest-extra 0/0, lint-determinism 0 errors, determinism ladder 7/9 (unchanged from before this round)."
+    "REGRESSIONS GREEN: api-probe 33/33, mag-probe 19/19 (incl. AR3_X1 and AR3_X4), save-audit round-trip EQUAL on all 4 states with manifest-extra 0/0, lint-determinism 0 errors, determinism ladder 7/9 (unchanged from before this round).",
+    "Projectile tracking arc MEASURED: marshfire max 60.00 deg/s before the cutoff at travel_f 53 and 0.000 after; the_unmaking 45.00 before its cutoff at 72 and 0.000 after; spark_dart 0.000 throughout (declared 0). The M8 declared-vs-observed mismatch is closed and AP-M3 count is 0.",
+    "magic-audit (static) is now 10 pass / 1 fail. The one fail is CROSS_ITEM_CONFLICT_birthsign_focus_absorption, filed by round 1 against its own item: 'The Dry Well' birthsign in game/data/progression/birthsigns.json restores Focus in the field, which RI-MAG01 §A forbids. That needs a RULING from RI-CHR03/RI-MAG01, not a builder.",
+    "Q6_MAGIC_ONLY_NONVIOLENT was 2 against a 4-10 band. Raised to 4 by removing the sneak alternative from the two quests whose own prose already said magic was the only bloodless route. Q8 (no lockout) still holds on all 24: every quest keeps a non-magic resolution.",
+    "save-audit reports manifest-extra 13/1 (crime.ledger.* and world.npcs/world.props). NOT this piece: those paths belong to W1-15's crime ledger and W1-07's NPC/prop records. Round-trip is EQUAL on all four states."
   ],
-  "next_step": "final regression sweep and report",
-  "notes_for_successor": "The registry in game/src/sim/magic/apply.js is checked for completeness at boot (assertRegistryComplete): a catalogue effect with no handler throws rather than falling through to a damage number. DAMAGE_EFFECTS is the frozen 5-element set shared by apply.js and combat-bridge.js so the two cannot drift."
+  "next_step": "none — complete. A fresh-context critic judges this.",
+  "notes_for_successor": "The registry in game/src/sim/magic/apply.js is checked for completeness at boot (assertRegistryComplete): a catalogue effect with no handler throws rather than falling through to a damage number. DAMAGE_EFFECTS is the frozen five-element set shared by apply.js and combat-bridge.js so the two cannot drift. RUN THE INSTRUMENT, NOT THE OLD PROBE: tools/harness/mag-census.mjs is RI-MAG06 and is the only thing that can see this class of defect; mag-probe.mjs is still 19/19 and was 19/19 when 50 of 55 effects did nothing. STILL OPEN: (1) enemy casting is W1-12's — RI-MAG01 M7 remains a static falsification against cst_sap_speaker, not a live sweep. (2) V7 motion vectors need a temporal pass this renderer does not have. (3) The birthsign Focus-absorption conflict needs a doctrine ruling. (4) RI-MAG05's blind-pair passes (A-M5, A-M6, F-M6) are the critic's to run; reports/runs/MAG-VFX has the frames. (5) RI-MAG04 Q10's two-pass traversal route check still needs the exterior collision mesh from W1-01..W1-05."
 }

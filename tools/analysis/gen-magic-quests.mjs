@@ -152,8 +152,12 @@ const Q = [
     hook: 'Jeen wants to know how many are living in the hollow under the east root. Nobody who goes in comes back saying a number.',
     fx: ['detect_life'], school: 'veiling', req: { skills: { veiling: 25 } },
     magic: 'Eleven warm smudges, and one of them is very large and has not moved in a long time. I did not go in.',
+    // Q6 (RI-MAG04): 4-10 quests whose ONLY bloodless route is magic. The fiction already said
+    // so here — you cannot count what you cannot see, and counting them by torchlight wakes the
+    // large one — so the sneak route came out rather than a magic route going in. Two resolutions
+    // is the same shape Q-MAG-12 and Q-MAG-22 already carry, and Q8 still holds: a non-magic
+    // resolution exists, it just costs eleven lives.
     alts: [
-      ['sneak', { skills: { sneak: 65 } }, 'You can count them from the lip if you are patient and low.'],
       ['combat', null, 'I counted them by killing them, which is a count Jeen did not want.'],
     ] },
   // ---- S6 SURVIVAL ----------------------------------------------------------------------------
@@ -199,8 +203,10 @@ const Q = [
     hook: 'What Tesh wants is in a room with four of them in it, and she does not want four bodies in a room she has to explain.',
     fx: ['paralyse', 'slowfall'], school: 'veiling', req: { skills: { veiling: 65 }, },
     magic: 'I stilled the room, walked through it, and went out of the far door, which opens onto nine metres of nothing and then the wharf. They were still standing when I left and I did not take anything else.',
+    // Q6, the second of the pair. Tesh's whole complaint is that she does not want four bodies
+    // in a room she has to explain; the only way to cross that room and leave everyone standing
+    // is to still it. Sneak past four of them with one lamp is not a route, it is a wish.
     alts: [
-      ['sneak', { skills: { sneak: 70 } }, 'Four of them, one lamp, and a long way to the far door.'],
       ['combat', null, 'Four bodies in a room Tesh has to explain.'],
     ] },
   { id: 'mag_the_door_that_stays_shut', t: 'The Door That Stays Shut', cat: 'side', shape: 'S7', kind: 'escort', stakes: 5,

@@ -38,6 +38,7 @@ import { WEATHER } from './render/sky.js';
 import { WorldField } from './world/field.js';
 import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
 import { Traversal } from './sim/traversal.js';
+import { Hazards } from './sim/hazards.js';
 import { SaveStore } from './save/store.js';
 import { buildSave, applySave, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
 import { exportSave, importSave } from './save/exchange.js';
@@ -180,6 +181,14 @@ export class Engine {
     // S25 denial ladder, the per-band stamina drain, the breath clock, the mire counter.
     this.traversal = new Traversal(this.data.traversal, this.field);
     this.traversal.attach(this.signatures);
+    // The nineteen hazards, wired to the world that has to fire them. `hazards.json` was loaded
+    // and read by nothing; round 2 stood 60 s in each of the thirteen regions and measured
+    // hp 620 -> 620 in all thirteen. Eleven of the nineteen are anchored on the ONLY-HERE geometry
+    // the region already owns, so the thing that makes a region legible is also the thing that
+    // makes it dangerous.
+    this.hazards = this.data.hazards
+      ? new Hazards(this.data.hazards, this.field, this.signatures, this.data.regions.regions)
+      : null;
     this.renderer.setWorld(this.field, this.data.roads);
     // The camera's collision set. Built once from game/data/camera/cells.json and then
     // selected per named state; the sim step only ever reads it.
@@ -1462,6 +1471,9 @@ export class Engine {
     const b = this.combat && this.combat.player;
     if (b) { b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2]; }
     this._prevX = p.pos[0]; this._prevZ = p.pos[2];
+
+    // RI-WLD11. After physics, so a hazard reads the position the trace reports on this frame.
+    if (this.hazards) this.hazards.step(this.sim, this.bus, this.combat && this.combat.player);
   }
 
   /**
@@ -2577,6 +2589,12 @@ export class Engine {
   getTraversalReport() {
     if (!this.traversal) throw new Error('getTraversalReport: no province is loaded');
     return this.traversal.report();
+  }
+
+  /** RI-WLD11: which hazards are live where you are standing, and what they have cost. */
+  getHazardReport() {
+    if (!this.hazards) throw new Error('getHazardReport: no province is loaded');
+    return this.hazards.report(this.sim);
   }
 
   /** M19 as a table: is each region's element present >= 8 times in its own region and 0 elsewhere? */

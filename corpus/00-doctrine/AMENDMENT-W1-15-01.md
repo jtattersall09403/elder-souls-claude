@@ -273,6 +273,19 @@ almost nothing, exactly as the round-1 verdict said. `questVerbCensus()` therefo
 `meaningful: false` with the denominator attached, and will keep returning it until the tree
 passes 90 quests. A build should not be able to quote that number without the sample size.
 
+## §4b — Two more event types, both because the build now derives what it used to be handed
+
+`AM-W1-15-02`'s list is extended by two, under `HARNESS.md` §5's own "closed vocabulary,
+**extensible by amendment**":
+
+| event | why it must exist |
+|---|---|
+| `report_route` | Which of `RI-CRM01` §3a's five routes a witness took, which guard they are running at, and the latency in `f@60`. Without it a critic sees a bounty appear and cannot tell a 1.2 s shout from a 35.3 s run — the distinction method 3 spends three of its five assertions on. |
+| `guard_band` | `RI-CRM01` §4's ladder as an **observed transition** rather than a lookup: which band a guard who can see you is in, whether their weapon is drawn, and which parley is open. Round 1 had no guard entity to emit it, which is why the ladder was verifiable only as arithmetic on a number `setBounty()` wrote. |
+
+Both are emitted by `game/src/sim/stealth/system.js` and both carry the eid of the person the
+event is about, so they join to `civilians[]` in the same frame record.
+
 ## §7 — `RI-STL01` method 6's S-2 distance assertion is unreachable jointly with S-1's 8 m cap
 
 ### The claim

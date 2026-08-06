@@ -299,6 +299,15 @@ export class Renderer {
       regionFog = { colour: r.fog.colour, extinction: r.fog.extinction_per_m };
     }
     this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog);
+      // The province's own night lamps, driven off the same sun elevation the sky is: at 01:00 the
+      // welkynd pillars, the kiln flues, the comb cells and the drifting jellies are what a region
+      // is legible BY. RI-WLD04 M17 step 6: "a region that is only identifiable in clear daylight
+      // is half-built."
+      if (this.province) {
+        const elev = Math.sin(((sim.env.timeOfDay - 6) / 24) * Math.PI * 2);
+        this.province.setNightFactor(1 - Math.max(0, Math.min(1, elev * 1.6 + 0.28)) * 1.6);
+      }
+
     this.sky.followCamera(this.camera);
 
     // ---- seam S19: spell VFX -----------------------------------------------------------------

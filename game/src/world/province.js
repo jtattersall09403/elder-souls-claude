@@ -19,6 +19,8 @@ const WATER_SEG = 24;
 const RADIUS = 2;                 // 5 x 5 tiles resident => 1.5 km of detailed ground
 const FAR_SEG_X = 96, FAR_SEG_Z = 110;
 const MAX_INSTANCES = { canopy: 700, under: 2600, rock: 420 };
+const MAX_SIG_LIGHTS = 6;         // the region's own lamps at night (RI-WLD04 M17 step 6)
+const SIG_LIGHT_RANGE = 220;
 
 const c3 = (hex) => new THREE.Color(hex);
 
@@ -32,6 +34,8 @@ export class Province {
     this.queue = [];
     this.built = 0;
     this.focus = [0, 0];
+    this.nightFactor = 0;
+    this.sigLights = null;
 
     this.mats = {
       ground: new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.94, metalness: 0.0 }),
@@ -107,6 +111,7 @@ export class Province {
   /** Ask for the tiles around (x, z); returns the number still queued. */
   request(x, z) {
     this.focus = [x, z];
+    if (this.nightFactor > 0) this.updateSignatureLights(x, z);
     const tx0 = Math.floor(x / TILE_M), tz0 = Math.floor(z / TILE_M);
     const want = new Set();
     for (let dz = -RADIUS; dz <= RADIUS; dz++) {
@@ -355,6 +360,68 @@ export class Province {
       mk(deckParts, this.spanMats.deck, 'road-deck');
       if (pierParts.length) mk(pierParts, this.spanMats.pier, 'road-piers');
     }
+  }
+
+  /**
+   * Night light from the region's own signature elements.
+   *
+   * `RI-WLD04` M17 step 6 requires the regions to be identifiable at night, and the round-2
+   * measurement was `ours_night` LOO 33.3% against a 70% bar — "half of the world had never been
+   * measured; it was measured, and it failed by a factor of two." An emissive material makes the
+   * OBJECT glow; it does not light anything around it, so a welkynd pillar in Blackwood at 01:00
+   * was a blue dot in a black frame. These are the lamps: six of the thirteen regions own a light
+   * source of their own colour — welkynd blue, kiln ember, comb amber, jelly green, voriplasm
+   * violet, hull-fire orange — and what they light is that region's own ground and its own props.
+   *
+   * Bounded at MAX_SIG_LIGHTS and re-pointed at the nearest instances as the player moves, so the
+   * cost is a constant regardless of how many instances a region declares.
+   */
+  updateSignatureLights(x, z) {
+    const sig = this.field.sig;
+    if (!sig) return 0;
+    if (!this.sigLights) {
+      this.sigLights = [];
+      for (let i = 0; i < MAX_SIG_LIGHTS; i++) {
+        const l = new THREE.PointLight(0xffffff, 0, 1);
+        l.name = `signature-light-${i}`;
+        l.visible = false;
+        this.group.add(l);
+        this.sigLights.push(l);
+      }
+    }
+    const near = [];
+    for (const it of sig.items) {
+      const K = SIGNATURE_KINDS[it.kind];
+      if (!K.glow) continue;
+      const d = Math.hypot(it.x - x, it.z - z);
+      if (d > SIG_LIGHT_RANGE) continue;
+      near.push({ it, K, d });
+    }
+    near.sort((a, b) => a.d - b.d);
+    for (let i = 0; i < this.sigLights.length; i++) {
+      const l = this.sigLights[i];
+      const n = near[i];
+      if (!n) { l.visible = false; l.intensity = 0; continue; }
+      const gy = n.it.kind === 'swamp_jelly_canopy'
+        ? (this.field.waterSurfaceAt(n.it.x, n.it.z) ?? this.field.heightAt(n.it.x, n.it.z)) + n.it.hover
+        : this.field.heightAt(n.it.x, n.it.z) + n.it.h * 0.8;
+      l.position.set(n.it.x, gy, n.it.z);
+      l.color.set(n.K.glow_hex || '#FFFFFF');
+      l.distance = SIG_LIGHT_RANGE * 0.55;
+      l.decay = 1.6;
+      l.intensity = n.K.glow * this.nightFactor * 260;
+      l.visible = l.intensity > 0.01;
+    }
+    return near.length;
+  }
+
+  /** 0 by day, 1 at night. The renderer sets it from the same sun elevation the sky uses. */
+  setNightFactor(v) {
+    const n = Math.max(0, Math.min(1, v));
+    if (n === this.nightFactor) return n;
+    this.nightFactor = n;
+    if (this.sigLights) this.updateSignatureLights(this.focus[0], this.focus[1]);
+    return n;
   }
 
   _sigGeo(kind) {

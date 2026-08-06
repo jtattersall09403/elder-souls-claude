@@ -1,0 +1,310 @@
+{
+ "generated": "2026-08-06T22:17:06.167Z",
+ "results": [
+  {
+   "name": "moveset slot r1.1 startup_f 24 -> 60",
+   "expectation": "attack starts later, hit lands later",
+   "changed": true,
+   "before": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   },
+   "after": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 60,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 68,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   }
+  },
+  {
+   "name": "moveset slot r1.1 motion_value x0.25",
+   "expectation": "damage falls",
+   "changed": true,
+   "before": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   },
+   "after": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 30
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99969.5,
+    "dmg_total": 29.5
+   }
+  },
+  {
+   "name": "moveset slot r1.1 anim -> another registry clip",
+   "expectation": "a different clip plays",
+   "changed": true,
+   "before": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   },
+   "after": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_garrison_roll_r1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 30,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   }
+  },
+  {
+   "name": "clip-registry capsule_length_m of r1.1 clip 1.05 -> 0.20",
+   "expectation": "the swing no longer reaches 1.2 m",
+   "changed": true,
+   "before": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   },
+   "after": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [],
+    "hp0": 99999,
+    "hp": 99999,
+    "dmg_total": 0
+   }
+  },
+  {
+   "name": "clip-registry profile arc_deg of r1.1 clip -> 5 deg",
+   "expectation": "the arc collapses, hit timing/geometry changes",
+   "changed": true,
+   "before": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   },
+   "after": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [],
+    "hp0": 99999,
+    "hp": 99999,
+    "dmg_total": 0
+   }
+  },
+  {
+   "name": "moveset r1.1 chains_to r1.2 -> null",
+   "expectation": "the chain stops after one link",
+   "changed": false,
+   "before": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   },
+   "after": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   }
+  },
+  {
+   "name": "moveset slot r1.1 root_dz_m -> 0",
+   "expectation": "the attacker no longer steps in",
+   "changed": false,
+   "before": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   },
+   "after": {
+    "start": {
+     "f": 3,
+     "slot": "r1.1",
+     "anim": "clip_w_ssw_garrison_sword_r1_1",
+     "startup": 24,
+     "active": 10,
+     "recovery": 40,
+     "arc": 110
+    },
+    "hits": [
+     {
+      "f": 32,
+      "dmg": 118
+     }
+    ],
+    "hp0": 99999,
+    "hp": 99881,
+    "dmg_total": 118
+   }
+  }
+ ]
+}

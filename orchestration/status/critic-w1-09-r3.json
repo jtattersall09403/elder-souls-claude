@@ -1,15 +1,26 @@
 {
-  "task_id": "critic-w1-09-r3",
-  "brief": "CRITIC round 3 on W1-09 combat core",
-  "started": "wave-1",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/90-verdicts/wave1/W1-09-r3.json",
-    "corpus/90-verdicts/wave1/W1-09-r3.md",
-    "corpus/90-verdicts/wave1/artifacts/W1-09-r3/**"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read reference items RI-CMB01..11, RI-AI01..03; build independent reach instrument",
-  "notes_for_successor": ""
+ "task_id": "critic-w1-09-r3",
+ "brief": "CRITIC round 3 on W1-09 combat core",
+ "started": "wave-1",
+ "state": "measuring",
+ "outputs_expected": [
+  "corpus/90-verdicts/wave1/W1-09-r3.json",
+  "corpus/90-verdicts/wave1/W1-09-r3.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-09-r3/**"
+ ],
+ "outputs_written": [],
+ "findings": [
+  "NODE ARENA VERIFIED: tools/lib/combat-node.mjs reproduces the browser exactly. My own browser probe (critic-w1-09-r3.mjs --probe reach, headless Chromium, arena_champion, E1 respawned with explicit yaw) gives min/max/interior-gaps identical to the node arena for 4 enemy attacks and 4 player weapons. Safe to use node for volume, browser for headline.",
+  "THE ROUND-2 CRITIC PROBE IS NOW STALE, NOT A FINDING: critic-w1-09-r2.mjs --probe reach reports chop/thrust/combo_a hit at NO distance 0-4 m on this build, because Engine.setEntityPos() ignores opts.yaw and round 3 removed the enemy yaw snap. Re-spawn with spawn(...,{yaw}) instead.",
+  "S26 ZERO-ROOT GUARD HOLDS: with root_dz_m overridden to 0 on every enemy attack, body hits = 0 at every distance and no hit at 0 m. The body hazard is NOT a proximity check.",
+  "BUT THE WEAPON HOLE IS UNTOUCHED. Ablation with body_hazard deleted from hitgeometry.json: chop min 1.2, thrust 1.6, combo_a 1.1, combo_b 1.2 — round 2 numbers exactly. Every hit inside those radii is via:body, and a body hit deals the WEAPON DAMAGE (chop 96 at 0.05 m via body == 96 at 3.65 m via weapon).",
+  "BODY SEPARATION IS INERT FOR REACH: with radii zeroed, every hit set is identical. It removes no hit and adds none.",
+  "MEASURED CONTACT DISTANCE AT MIN PLACEMENT = 0.5987 m in BOTH node and browser for all 4 attacks. The advertised 0.05 m is a PLACEMENT distance; separation shoves the target to the 0.6 m boundary before the blow lands. Max target push during one chop = 1.625 m.",
+  "TURTLE STILL WINS. My own cadence (attacks back-to-back at each move total): the mashing turtle kills the 2876-HP champion at every stand distance 0.0-2.6 m. At 0.0 m it takes 12.1% damage in 40.3 s. cmb-reach never tests 0.0 or 0.2 m.",
+  "INTERIOR GAPS: spear 1.20-1.25, halberd 1.15-1.30 sit exactly at the seam between the body corridor outer edge (1.15/1.10) and the weapon band inner edge (1.30/1.35). Builder attribution to W1-10 is half right: with body_hazard deleted the spear/halberd weapon-only min is 1.30/1.35, so the roster does have an inner hole — but the GAP is produced by the two-band architecture.",
+  "cmb-reach.mjs --verify DOES NOT EXIST. Both cmb-reach.mjs:37 and combat-node.mjs:12 assert it checks node-vs-browser; the flag is silently ignored (exit 0).",
+  "A2 dice: 60 identical scripted hits, one damage value (63), stdev 0."
+ ],
+ "next_step": "browser turtle + yaw; then exemplar recompute, greed-scale 0, transition snaps, parry, poise probes, trace-stats, AR checks",
+ "notes_for_successor": ""
 }
