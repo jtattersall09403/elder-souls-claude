@@ -317,9 +317,29 @@ async function runProbe(name) {
     // =====================================================================================
     if (name === 'clip') {
       // RI-CAM01 M3 — THE HARD GATE. Σ clip_through == 0 over all four routes.
+      // RI-CAM01 M2b: report the WORLD POSITION of the worst run, "so the remedy is an edit to
+      // a specific piece of geometry rather than a wish". A count alone is not actionable.
       const per = {};
       for (const cell of [...ROUTES, 'cam-boss-arena', 'cam-stair', 'cam-rig-pinch']) {
-        const { all } = walkRoute(cell);
+        const { all, perPass } = walkRoute(cell);
+        // Longest consecutive run, and where it happened, per pass.
+        let worst = { len: 0, yaw: null, pivot: null, arm: null, pitch: null };
+        const hotspots = [];
+        for (const pass of perPass) {
+          let run = 0;
+          for (let i = 0; i < pass.rows.length; i++) {
+            if (pass.rows[i].clip_through) {
+              run++;
+              if (run > worst.len) {
+                worst = { len: run, yaw: pass.yaw, pivot: pass.rows[i].pivot.slice(),
+                  arm: pass.rows[i].arm_len_m, pitch: pass.rows[i].pitch_deg };
+              }
+            } else {
+              if (run >= 8) hotspots.push({ yaw: pass.yaw, frames: run, pivot_xz: [pass.rows[i - 1].pivot[0], pass.rows[i - 1].pivot[2]], pivot_y: pass.rows[i - 1].pivot[1], arm: pass.rows[i - 1].arm_len_m });
+              run = 0;
+            }
+          }
+        }
         // Independently re-derive the boolean: the camera origin must not be inside solid, and
         // the near-plane corner sphere must clear it. `solidAt` is the same predicate.
         let indep = 0;
@@ -327,8 +347,15 @@ async function runProbe(name) {
           const c = all[i];
           if (H.solidAt(c.pos[0], c.pos[1], c.pos[2]).solid) indep++;
         }
-        per[cell] = { frames: all.length, clip_frames: all.filter((c) => c.clip_through).length, independent_origin_solid: indep, sampled: Math.ceil(all.length / Math.max(1, Math.floor(all.length / 200))) };
-        R.report.push(`${cell}: ${all.length} frames, Σclip_through=${per[cell].clip_frames}, independent origin-in-solid=${indep}`);
+        per[cell] = {
+          frames: all.length, clip_frames: all.filter((c) => c.clip_through).length,
+          independent_origin_solid: indep,
+          longest_run_frames: worst.len,
+          longest_run_at: worst.pivot ? { pivot: worst.pivot.map((v) => Math.round(v * 100) / 100), camera_yaw: worst.yaw, arm_len_m: worst.arm, pitch_deg: worst.pitch } : null,
+          hotspots: hotspots.slice(0, 12),
+          distinct_hotspots: hotspots.length,
+        };
+        R.report.push(`${cell}: ${all.length} frames, Σclip_through=${per[cell].clip_frames}, origin-in-solid=${indep}, longest run ${worst.len} f` + (worst.pivot ? ` at pivot [${worst.pivot.map((v) => Math.round(v * 10) / 10).join(', ')}] yaw ${worst.yaw}° arm ${worst.arm} m` : ''));
       }
       R.routes = per;
       const total = Object.values(per).reduce((n, v) => n + v.clip_frames, 0);
