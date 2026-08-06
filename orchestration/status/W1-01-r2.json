@@ -2,13 +2,18 @@
   "task_id": "W1-01-r2",
   "brief": "critic round 2 on W1-01 (world: province terrain, regions, roads, the crossing)",
   "started": "wave-1-r2",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-01-r2.json",
     "corpus/90-verdicts/wave1/W1-01-r2.md",
     "corpus/90-verdicts/wave1/artifacts/W1-01-r2/"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-01-r2.json",
+    "corpus/90-verdicts/wave1/W1-01-r2.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ (23 artifacts incl. 16 frames)",
+    "tools/world/critic-w1-01-r2-{road,shots,loco,misc,props,travel,b13,dispersion,structure,cutfill,hazfire}.mjs"
+  ],
   "findings": [
     "BUILD BREAK (not W1-01's): game/data/index.json lists dialogue/topics/thorn.json which W1-18 (65275dc) deleted. Engine._boot throws 'data file missing' and the game does not boot at all. Restored from 65275dc^ into the worktree to measure; MUST delete again before finishing.",
     "W1-01.json (round 1) is confirmed VOID: node tools/verdict-validate.mjs reports 2 missing artifacts reports/region-shots/frame-01.png and frame-39.png.",
@@ -16,8 +21,19 @@
     "Crossing re-measures 55.356 min / 6642.1 m / mean 1.9998 m/s / 0.009% below 1.6. S17 satisfied; the hour is still distance.",
     "BUT the fix is an EARTH EMBANKMENT: independent cut/fill probe (nat field vs road field) gives max fill 17.52 m (stormhold-helstrom @2240.3,1340.2), max cut 3.62 m (exceeds the tool's own 3.5 pass bar), 2537 sampled shoulder points above 40 deg, worst shoulder slope 70.6 deg. 1498 m of trunk has |offset| > 6 m.",
     "roads.json declares 21 'deck_spans' (11 viaducts up to 16 m on stormhold-helstrom, 2494 m total) but NOTHING reads deck_spans in game/src \u2014 grep finds it only in tools/world/build-roads.mjs. The viaducts are JSON labels; the built world is solid fill.",
-    "ROAD GRADE: stormhold-helstrom (leg 1 of THE CROSSING) has a segment rising 19.63 m over 11.99 m horizontal = grade 1.637 = 58.6 deg. 638 m of trunk above 30% grade, 2231 m above 12%. Declared MAX_GRADE was 0.12."
+    "ROAD GRADE: stormhold-helstrom (leg 1 of THE CROSSING) has a segment rising 19.63 m over 11.99 m horizontal = grade 1.637 = 58.6 deg. 638 m of trunk above 30% grade, 2231 m above 12%. Declared MAX_GRADE was 0.12.",
+    "RESOLUTION of Fisher 3.01->1.005: pooled-condition artefact. Same instrument split by pass: ours_day 3.10/74.4%, ours_worst 3.53/82.0%, ours_night 1.99/33.3%. Matched design (9 regions x 3 imgs, 200 draws, both sides, equal chance): ours_day 3.087+/-0.322 LOO 77.5% vs morrowind 1.614+/-0.113 LOO 24.2%. A7 PASSES. ours_pooled 1.536+/-0.312 is statistically indistinguishable from morrowind. The real finding is ours_night 33.3% vs M17 step 6 requiring >=70%.",
+    "INSTRUMENT DEFECT: 4x4 mean CIELAB is satisfied by a colour grade. Structure-only control (Sobel edge + luminance layout, colour+exposure removed): ours_day LOO 74.4%->30.8%, Fisher 3.10->1.77; morrowind 25.6%->17.9%. Two-thirds of our separability is tint.",
+    "HUMAN M17 (partial, 8 frames): 4/8. Three misses are Stone Wastes frames all called Marauders Coast; fourth is Deep Marshes rendered as a green lawn.",
+    "M19 = 0/13. All only_here instance counts are integer literals in tools/world/build-regions.mjs; nothing places them. All 13 regions share the identical prop schema canopy+under+rock. textureMB 0, atlasCount 0, 17 materials, entitiesLive 0.",
+    "ROAD FIX HOLDS: 0 offences, 4 tides x 10 legs, recomputed from terrain. Crossing 55.356 min / 6642.1 m / 1.9998 m/s. Old drowned point now dry land at 157.48 m.",
+    "NEW: no maximum walkable slope (70.63 deg walked at full stick, +10.28 m in 5 s, state WALK) and no fall (150 m drop, HP 620->620). The flood fill says 40 deg is impassable.",
+    "AR-2 B13 now PASSES: 5 modalities board, pay gold 15/12/15/58/38, ride 713-2666 m, arrive 14 m from the station. Walked-it-once gate genuinely refuses (68 refused fresh; 39 purchasable after 4 legs).",
+    "RI-PRG07 closed: burden 0.60/0.85/1.00 with 1.0/0.9/0.72/0 multipliers, 0.0000 m/s above 1.00.",
+    "RI-WLD10 half-closed: band speeds 2.0/1.87/1.70/1.10 m/s. But 60 s in 8.28 m water = HP 620->620, stam 120->120, state WALK. No breath, no swim state, no stamina charge (S25).",
+    "RI-WLD11 still 0: 19 hazards, 13 regions x 60 s stand, none fire.",
+    "HARNESS DEFECT: __HARNESS.camera({yaw,pitch,arm}) is silently accepted and freezes the camera instead of throwing. Six of my first-pass frames came from one stale position."
   ],
-  "next_step": "probe the 58.6-deg ramp with the live capsule; capture frames; blind pack audit; visual dispersion like-for-like",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 verdict emitted and schema-valid",
+  "notes_for_successor": "The gap ledger ignores my closure of GAP-W1-world-trunk-road-below-the-waterline because it is the same wave that opened it; the closure is recorded in the verdict and should be applied by wave 2. game/data/index.json still lists a deleted dialogue/topics/thorn.json and the game will not boot until W1-18 fixes it."
 }

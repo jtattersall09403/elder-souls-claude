@@ -2,24 +2,26 @@
   "task_id": "W1-09-r3",
   "brief": "ULTRACODE escalation dispatch — combat core round 3",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "escalation": {
     "trigger": "EFFORT-POLICY trigger 1 — two consecutive critic rounds at 4/10",
     "gap": "GAP-W1-enemy-attacks-cannot-reach-contact-range (combat.hitbox.sweep)",
     "governing_ruling": "corpus/00-doctrine/ARBITRATION.md S26"
   },
-  "outputs_expected": [
-    "swept-hull hit resolution covering root translation (S26)",
-    "transition cross-fade blending",
-    "row 9 band restored and met",
-    "exemplar danger without tuned eatRate",
-    "parry riposte",
-    "poise probe m3_heavy/m4_hyperarmour de-vacuum-ed",
-    "harness hook to vary attack root motion",
-    "RI-AI01 trace stream from exemplar"
+  "findings": [
+    "THE CRITIC'S MECHANISM WAS WRONG, ITS OBSERVATION WAS RIGHT. r2 remedy said 'interpolate the socket capsule between last frame's world pose and this frame's world pose, root delta included'. That was ALREADY true: CombatBody.evaluateRig() double-buffers sockets in world space and advance() applies root motion to pos[] BEFORE evaluating the rig. Measured per frame at d=0.8: at the champion's first active frame (af=69) the enemy root is at z=0.384 and its weapon capsule spans z=[1.34,2.57] — the blade near end is 0.95 m IN FRONT of its own root, and the root travels a further 0.79 m during the active window. The blade is ahead of the target for every active frame and the attacker walks through it. The uncovered volume is the corridor the ATTACKER'S BODY sweeps, which nothing tested on either side.",
+    "FIX (S26): hitgeometry.json §body_hazard declares the trunk parts (pelvis, torso_lower, torso_upper, head). skeleton.js double-buffers every hurtbox capsule (pa/pb). resolve.js step 8b sweeps the attacker's OWN trunk capsules prev-pose -> now-pose against the target's hurtboxes, with the identical closed-form routine, ONLY on frames where A.lastRootDelta != 0. Zero root motion = no body hazard = no proximity component, so it cannot degenerate into RI-CMB04 'how we lose' #1.",
+    "MEASURED AFTER FIX (node arena, 0.1 m steps 0..4 m): chop min 0.0 max 3.6 (was 1.2/3.6); thrust 0.1/4.0 (was 1.6/4.0); combo_a 0.0/2.9 (was 1.1/2.9); combo_b 0.0/3.5. All contiguous, no interior gap.",
+    "TURTLE TEST after fix: stationary mashing player takes 234-384 of 620 at d=0.4..2.6 (was 0 at 0.8-1.1).",
+    "tools/lib/combat-node.mjs — the combat modules run headless in bare Node (no Chromium, no engine.js). Reproduces the browser reach numbers to the digit. 574 fights in ~2 s instead of ~20 min.",
+    "HAZARD: the working tree is shared with a concurrent builder; HEAD was transiently unbootable (game/src/character/derive.js missing for ~30 s). game/src/combat/{actor,moves,player}.js and engine.js are being edited by that agent."
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "survey game/ combat source; locate hit resolution + sweep code",
+  "outputs_written": [
+    "game/data/combat/hitgeometry.json (body_hazard)",
+    "game/src/combat/skeleton.js (hurtbox double-buffer, hazardParts)",
+    "game/src/combat/resolve.js (step 8b, e.via)",
+    "tools/lib/combat-node.mjs"
+  ],
+  "next_step": "body separation (RI-AI01 minimum standoff), then row 9 band, exemplar eatRate, transition blending, parry riposte, poise probes, RI-AI01 stream",
   "notes_for_successor": ""
 }
