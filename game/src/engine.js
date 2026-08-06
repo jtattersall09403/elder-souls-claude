@@ -5,11 +5,14 @@
 import { rng } from './core/rng.js';
 import { installGuards, wallNow, violations } from './core/guards.js';
 import { FixedLoop, FIXED_HZ, STEP_MS } from './core/loop.js';
+
+/** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
+const PERF_SAMPLES = 20000;
 import { SimState } from './sim/state.js';
 import { EventBus } from './sim/events.js';
 import { stepOnce } from './sim/step.js';
 import { makeRecord } from './sim/record.js';
-import { makeEntity } from './sim/entities.js';
+import { makeEntity, reanchorFreeRunning } from './sim/entities.js';
 import { InputPipeline } from './input/pipeline.js';
 import { RealInput } from './input/real.js';
 import { Renderer } from './render/renderer.js';
@@ -44,8 +47,23 @@ export class Engine {
     this.tracePerf = false;
     this.readyPromise = null;
     this.readyResolved = false;
+    // Pre-allocated ring, for the same reason as FixedLoop's: a growing [] is a per-call
+    // allocation and getPerfStats() must not be the thing that makes the loop allocate.
     this.perf = {
-      simMsSamples: [], allocSamples: [], lastSimMs: 0, saveWrites: 0, lastSaveMs: 0,
+      simMsRing: new Float64Array(PERF_SAMPLES), simMsCount: 0, simMsHead: 0,
+      lastSimMs: 0, saveWrites: 0, lastSaveMs: 0,
+      pushSimMs(v) {
+        this.simMsRing[this.simMsHead] = v;
+        this.simMsHead = (this.simMsHead + 1) % PERF_SAMPLES;
+        if (this.simMsCount < PERF_SAMPLES) this.simMsCount++;
+      },
+      simMsWindow() {
+        const out = new Array(this.simMsCount);
+        for (let i = 0; i < this.simMsCount; i++) {
+          out[i] = this.simMsRing[(this.simMsHead - this.simMsCount + i + PERF_SAMPLES * 2) % PERF_SAMPLES];
+        }
+        return out;
+      },
     };
     this.loadState_ = { phase: 'boot', bytesFetched: 0, requestsInFlight: 0, regionsResident: [], prefetchQueue: [] };
     this.boundaries = [];
@@ -53,6 +71,9 @@ export class Engine {
     this.navigationStart = wallNow();
 
     this.loop = new FixedLoop(() => this._step(), () => this._render());
+    // rAF-driven stepping ('play') needs the same post-step observation stepFrames() does,
+    // and it must land OUTSIDE FixedLoop.stepOnce(), not inside it.
+    this.loop.afterStep = () => this._afterStep();
   }
 
   // ---- boot ---------------------------------------------------------------------------
@@ -200,12 +221,30 @@ export class Engine {
 
   // ---- stepping -------------------------------------------------------------------------
 
+  /**
+   * ONE fixed simulation step and nothing else.
+   *
+   * The trace record is deliberately NOT built here. It used to be, and although it sat
+   * outside `armSim()`, it sat *inside* `FixedLoop.stepOnce()` — so a CDP sampling heap
+   * profile showed `makeRecord <- _step <- stepOnce <- stepFrames` and the sim step
+   * allocated 2,220 B/step whenever tracing was on. `RI-PLT01` §C.3 says the record "is
+   * built OUTSIDE the sim step"; it now is, in `_afterStep()`, called by the two things that
+   * advance the sim (`stepFrames` and the rAF accumulator) AFTER `stepOnce()` has returned
+   * and after its timing window has closed.
+   */
   _step() {
     stepOnce(this.sim, this.input, this.moves, this.bus);
+  }
+
+  /**
+   * Everything that observes a step, run strictly after the step has finished: the trace
+   * record, and the first-control stamp. Never on the sim-step stack, never inside
+   * `stepOnce`'s timing window, so `perf.lastSimMs` and every allocation profile taken over
+   * `stepFrames` describe the simulation and not the instrument.
+   */
+  _afterStep() {
     if (this.firstControlAt === null && this.sim.frame > 0) this.firstControlAt = wallNow();
     if (this.trace) {
-      // Built OUTSIDE the guarded step: the record allocates, the step does not
-      // (RI-PLT01 P4 excludes the trace record by name).
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
     }
   }
@@ -220,12 +259,13 @@ export class Engine {
     if (!Number.isFinite(k) || !Number.isInteger(k) || k < 0) {
       throw new Error(`stepFrames(${JSON.stringify(n)}): n must be a non-negative integer`);
     }
-    const t0 = wallNow();
-    for (let i = 0; i < k; i++) this.loop.stepOnce();
-    const t1 = wallNow();
-    this.perf.lastSimMs = k ? (t1 - t0) / k : 0;
-    if (k) this.perf.simMsSamples.push(this.perf.lastSimMs);
-    if (this.perf.simMsSamples.length > 20000) this.perf.simMsSamples.splice(0, 10000);
+    // Sim time is accumulated by FixedLoop.stepOnce() around the step ALONE, so the trace
+    // record built in _afterStep() is outside both the step and its timing window and
+    // cannot inflate simMs (RI-PLT01 M3's "measure the simulation, not the instrument").
+    const t0 = this.loop.stats.stepMsTotal;
+    for (let i = 0; i < k; i++) { this.loop.stepOnce(); this._afterStep(); }
+    this.perf.lastSimMs = k ? (this.loop.stats.stepMsTotal - t0) / k : 0;
+    if (k) this.perf.pushSimMs(this.perf.lastSimMs);
     if (this.loop.renderRateHz !== 0) this.loop.renderNow();
     return { frame: this.sim.frame, t_ms: +(this.sim.frame * STEP_MS).toFixed(3) };
   }
@@ -321,6 +361,23 @@ export class Engine {
       yaw_deg: c.yaw, pitch_deg: c.pitch, roll_deg: 0,
       overridden: !!c.override,
     };
+  }
+
+  /**
+   * Scenario contract: open a scripted window on a warm-up-independent world.
+   *
+   * A harness caller invokes this once, after warm-up and before `queueInputs()`. It
+   * re-anchors free-running per-entity clocks (seeded idle phase, pre-window state-entry
+   * frame) to the window origin, and RETURNS what it changed so the run report can print it.
+   *
+   * `RI-MTH02` R5 asks that a 30-frame and a 90-frame warm-up produce identical scripted
+   * windows. Without this, they cannot: a 48-frame idle loop is at a different phase after
+   * 60 more frames of idling. The two ways out that `AM-W1-00-01` offered were "delete the
+   * idle loop" and "lie about the phase in the trace"; this is the third the W1-00 critic
+   * named and the amendment did not rebut. It changes the fixture, not the record.
+   */
+  reanchorFreeRunning() {
+    return { frame: this.sim.frame, seed: rng.seed, entities: reanchorFreeRunning(this.sim) };
   }
 
   // ---- trace ------------------------------------------------------------------------------

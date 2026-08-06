@@ -84,6 +84,10 @@ export function installHarness(engine, bootPromise) {
 
     // ---- observation --------------------------------------------------------------------
     snapshot(opts) { return engine.snapshot(opts); },
+    // Scenario contract (RI-MTH02 R5, AM-W1-00-02): re-anchor free-running per-entity
+    // clocks at the frame the scripted window opens. Called after warm-up, before
+    // queueInputs(). Returns exactly what it changed, for the run report.
+    reanchorFreeRunning() { return engine.reanchorFreeRunning(); },
     traceStart(opts) { return engine.traceStart(opts); },
     traceDrain() { return engine.traceDrain(); },
     traceStop() { return engine.traceStop(); },

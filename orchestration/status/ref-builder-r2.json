@@ -1,17 +1,32 @@
 {
-  "task_id": "ref-builder-r2",
-  "brief": "inline (round 2 reference builder; spec = corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.md)",
-  "started": "wave-1 round 2",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/70-visual/refs/reference-metrics.json (block_score exposure-relative, metrics_valid_for, has_hud/slot/side/game per-file)",
-    "corpus/70-visual/refs/_provenance.json (ghost records removed / catalogued-not-vendored distinguished)",
-    "corpus/70-visual/refs/souls-behaviour/anim/ (>=20 named-move sequences with frame_count+duration_s)",
-    "corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md (A9+ : RI-VIS03 exposure-relative, 3 IMPOSSIBLE lowered bars, V8 UI-chrome vanilla test)",
-    "corpus/70-visual/refs/MANIFEST.json (regenerated)"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read ACQUISITION-CRITIQUE-R2.md + .json, AMENDMENTS, REPORT s16, TEMPORAL-ACQUISITION",
-  "notes_for_successor": "Two critic findings are stale: A7 delivered (a21_member field, not folder); video/ non-empty. A concurrent temporal agent is writing _provenance.json -> ALWAYS load-modify-write."
+ "task_id": "ref-builder-r2",
+ "brief": "inline (round 2 reference builder; spec = corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.md)",
+ "started": "wave-1 round 2",
+ "state": "building",
+ "outputs_expected": [
+  "corpus/70-visual/refs/reference-metrics.json (block_score exposure-relative, metrics_valid_for, has_hud/slot/side/game per-file)",
+  "corpus/70-visual/refs/_provenance.json (ghost records removed / catalogued-not-vendored distinguished)",
+  "corpus/70-visual/refs/souls-behaviour/anim/ (>=20 named-move sequences with frame_count+duration_s)",
+  "corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md (A9+ : RI-VIS03 exposure-relative, 3 IMPOSSIBLE lowered bars, V8 UI-chrome vanilla test)",
+  "corpus/70-visual/refs/MANIFEST.json (regenerated)"
+ ],
+ "outputs_written": [
+  "corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md (Part 2: A9-A18 proposed, incl. the three IMPOSSIBLE acceptances A12/A13/A14 with replacement bar text)",
+  "corpus/70-visual/refs/make-manifest.py (mean_luminance, block_score_rel, hud probes, metrics_valid_for, acquisition_state, honest counts block)"
+ ],
+ "findings": [
+  "block_score EXPOSURE FIX VALIDATED. Controlled experiment on modern/exterior_daylight/run-w3nextgen-t0007.jpg (2560x1440), one encoder, q=95 constant, only luminance varied: raw block_score 1.031 (L=105.1) -> 1.101 (L=52.3) -> 1.192 (L=31.1) -> 1.308 (L=18.4). The excess above 1 is very nearly inversely proportional to mean luminance ((bs-1)*L = 3.2, 5.3, 6.0, 5.7). Therefore block_score_rel = 1 + (block_score - 1) * (mean_luminance / 128) removes the confound: same four treatments give 1.025, 1.041, 1.047, 1.044 -- spread 0.019 vs 0.277, a ~15x reduction. Lossless PNG control at the same four exposures gives rel 0.989/0.997/0.999/1.000, so the null is exposure-independent. Quality sweep still discriminates: bright q95/85/70/50/30 -> rel 1.025/1.144/1.291/1.456/1.706; dark(x0.18) -> 1.044/1.118/1.222/1.340/1.578. L_ref=128 is mid-grey of the 8-bit range, chosen as a principled anchor not a fit.",
+  "STALE CRITIC FINDINGS CONFIRMED STALE: A7 delivered (REF-A21-regions 39 files, REF-A22-intraregion 6, REF-A23-ground 11; a21_member:true on 24 files spread across REF-A1/A5/A8/A9/A11/A19/A22/A23 -- NOT a folder). video/ holds 2 cut clips (2.36MB + 3.95MB) plus a CATALOGUED-NOT-DOWNLOADED record for the 3.17GB source. acquire.py --check has 0 fetchable-but-missing records.",
+  "CONCURRENT temporal agent has already vendored 200 wiki GIFs (378MB of a 400MB budget -- only 22MB headroom, DO NOT download more GIFs) and has already written frame_count (200 records), duration_s, gif_duration_ms, gif_mean_frame_delay_ms, move, boss_or_subject. What is missing for the critic's condition 1 is the anim/ DIRECTORY: the GIFs sit in telegraph/ds1-moves (170) and scattered in attacks/stance/impact/death/arena/telegraph (30).",
+  "side has 4 values incl. the duplicate pair morrowind-art (150) / morrowind-art-direction (127). game has 'The Elder Scrolls III: Morrowind' (150) + '...(2002)' (89) + '...(2002), interface as reproduced by OpenMW' (38); also 'DARK SOULS' (176) vs 'DARK SOULS III' (97) are genuinely different games, and 'Elden Ring' (52) vs 'ELDEN RING' (34) is a duplicate pair.",
+  "has_hud in provenance: 301 True / 398 False / 92 None across 791 records.",
+  "make-manifest.py timing: block_score 0.5s + FFT 0.2s per 1920x1080 file, pure Python, no numpy in container. Full walk over ~660 media files is roughly 8-12 minutes.",
+  "HITSTOP INSTRUMENT: video/V4-combat__dsr-longplay-t13990.mp4 is r_frame_rate 2997/50 = 59.94 fps, 854x480, 2404 frames over 40.07s. So 16.7 ms resolution EXISTS -- the critic's 'frame-exact is IMPOSSIBLE' is an instrument claim that is false; what fails is SAMPLE SIZE. Motion-bracketed freeze detection (high-motion frame -> run of near-zero inter-frame MAD -> motion resumes) over the clip yields only 3 candidate hitstop events, all 1 frame. Enough for a spot check, not for 35 tier x material cells.",
+  "WIKI GIF TIMING IS BETTER THAN THE CRITIC THOUGHT: the temporal agent fetched ORIGINAL GIF bytes (?format=original) so per-frame delays survive. gif_mean_frame_delay_ms median = 40.0 (170 of 200 files at exactly 40 ms = 25 fps); min 30, max 100. So RI-WPN01-04 windup/active/recovery fractions are measurable at +/-40 ms, not the +/-70 ms the critic derived from the WebP transcode. 18,447 decoded frames, 126 distinct named moves, 26 subjects.",
+  "HUD BY EYE (contact sheets of the top-left 42%x17% of all 93 souls stills): 56 have a combat HUD bar stack, 9 are menus (title/options/equipment/storage x2/inventory x2/status), 28 have no UI at all. So has_hud goes true->false on 37 of 93. Corroborates critic F14 (29 zero-HUD; I measure 28 with no UI) and F19 (ui-combat is 11 of 12 non-combat: 9 menus + 2 none).",
+  "The critic's chroma HUD detector (max-min>55, max>70, frac>=0.012 in the top-left box) does NOT generalise: a bonfire fills the box at 1.000 and a blue sky at 0.444, so its high end is scene content not HUD. Recorded as corroboration only; the eye is the instrument.",
+  "RI-VIS07 sec B ALREADY lists 'Elden Ring' and 'Dark Souls' in its FAIL answer examples (corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md line 98). F24 is largely pre-discharged; only ESO is genuinely missing from the row."
+ ],
+ "next_step": "provenance load-modify-write: has_hud/ui_overlay_kind/has_hud_basis, side+game normalisation, acquisition_state; then anim/ once the temporal agent stops writing; then full make-manifest run",
+ "notes_for_successor": "Two critic findings are stale: A7 delivered (a21_member field, not folder); video/ non-empty. A concurrent temporal agent is writing _provenance.json -> ALWAYS load-modify-write."
 }

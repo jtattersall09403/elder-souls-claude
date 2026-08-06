@@ -2,7 +2,7 @@
   "task_id": "W1-00-fix",
   "brief": "remediation of wave-1 piece W1-00 after critic verdict 3/10 (threshold 6.0)",
   "started": "wave-1-remediation",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "fix: PRNG actually drawn from in-step (GAP-W1-platform-prng-never-drawn)",
     "fix: tools/harness/determinism.mjs R4 excludes .rng.seed + fails when max(rng.draws)==0",
@@ -12,8 +12,33 @@
     "fix: RI-PLT03 / RI-CAM02 closable items",
     "fix/refile: AM-W1-00-01-mth02-r5 amendment (self-misdiagnosing)"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read verdict corpus/90-verdicts/wave1/W1-00.md + .json and the two amendments",
-  "notes_for_successor": "Fresh remediation builder. Did not write the original."
+  "outputs_written": [
+    "game/src/core/rng.js \u2014 _raw() stores words >>>0; saveRngState() emits uint32 (HARD FAIL 2 FIXED)",
+    "game/src/sim/entities.js \u2014 seeded idle phase drawn IN-STEP via rng.int(); reanchorFreeRunning(); stagger recovery returns to the seeded phase (HARD FAIL 1 FIXED)",
+    "game/src/engine.js \u2014 _afterStep() builds the trace record outside the step; perf ring buffer; reanchorFreeRunning() harness method",
+    "game/src/core/loop.js \u2014 afterStep hook; Float64Array step-time ring (was a growing [])",
+    "game/src/save/state.js \u2014 world.entities[].anim_phase0 saved/restored",
+    "game/src/harness/api.js \u2014 __HARNESS.reanchorFreeRunning()",
+    "tools/harness/determinism.mjs \u2014 R4 drops rng.seed + fails on prng_never_drawn; R5 re-bases all 3 absolute frame indices; R9 sweeps 5 seeds",
+    "tools/harness/seed-sweep.mjs \u2014 NEW: 20 seeds x 2 states round trip + 19 seed pairs R4",
+    "tools/harness/scenarios/mth-warmup-noenemy.json \u2014 NEW: the critic's arena_flat-no-enemy R5 counter-example, permanently runnable",
+    "tools/lib/run.mjs \u2014 calls reanchorFreeRunning after warm-up; manifest.window_reanchor"
+  ],
+  "findings": [
+    "BASELINE (pre-fix) determinism.mjs: 8/9 rungs pass, R5 fails on ['enemies[].anim_frame','enemies[].state_entered_f']. R4 reported PASS at frames_differing_pct 100 with rng.draws==0. Baseline text: scratchpad/baseline-det.txt",
+    "ROOT CAUSE of round-trip: rng._raw() stored a,b,c,d as SIGNED int32 (| ^ << all yield signed); loadRngState() normalised with >>>0. Verified offline over 207 seeds x 2000 draws: 207/207 seeds hold a negative word at some point; only 1337 and 60606 are all-positive immediately after reseed \u2014 exactly the critic's two passing seeds.",
+    "PROOF the >>>0 fix is stream-preserving: 0 value mismatches across 207 seeds x 2000 draws (scratchpad/rng-check.mjs).",
+    "inf_trash idle_anim_frames = 48; dummy_passive = 1.",
+    "R5 decomposition (own analysis): state_entered_f differs because LATER transitions are window-relative (offset by the warm-up delta) while the FIRST transition is warm-up-absolute. A single subtraction cannot fix both; a 'pre-window' sentinel for negative re-based indices fixes both. anim_frame is fixed by a scenario-contract re-anchor (critic's own option 3), NOT by exclusion.",
+    "makeRecord IS called from Engine._step, which is the FixedLoop.step callback invoked inside FixedLoop.stepOnce()'s timed window -> the critic's stack makeRecord<-_step<-stepOnce<-stepFrames is correct.",
+    "save-manifest treats world.entities as ONE leaf path (leafPaths stops at arrays), so adding a per-entity field does not break RI-JRN05 M4.",
+    "PROVEN HARD FAIL 2: seed-sweep.mjs against the PRE-FIX rng gives 36/40 first-trip mismatches, passing seeds exactly [1337, 60606] \u2014 identical to the verdict. POST-FIX 0/40 mismatches, 40/40 words uint32.",
+    "PROVEN HARD FAIL 1: cmb-duel-infantry 3600 frames seeds 1337 vs 4242 -> 100.0% of frames differ in enemies[].anim_frame (a field other than .rng.seed), max(rng.draws)=1 in both. Was 0.0% / draws 0.",
+    "seed-sweep B: 19/19 seed pairs pass R4, min 100% frames differing, min max(rng.draws)=1.",
+    "determinism ladder now 9/9 on cmb-duel-infantry INCLUDING R5 with anim_frame compared (not excluded).",
+    "On mth-warmup-noenemy (critic's counter-example) R5 PASSES and R4 correctly FAILS with reason prng_never_drawn \u2014 the discriminator is not a rubber stamp.",
+    "First seeded-phase attempt gave only 4.7% (just under the 5% bar) because stagger recovery reset animFrame to 0, erasing the seeded phase after 168 frames. Fixed by resuming at e.animPhase0."
+  ],
+  "next_step": "allocation: measure with CDP sampling profiler, drive to 0 B/step for F1/F5",
+  "notes_for_successor": "Fresh remediation builder. Did not write the original. Env works: node tools/harness/smoke.mjs ok, determinism.mjs takes ~3min."
 }

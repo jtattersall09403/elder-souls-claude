@@ -87,6 +87,14 @@ export async function runScenario(handle, scenario, opts = {}) {
   // 4. warmup (settle physics/anim) — traced separately so it can be excluded.
   if (scenario.warmupFrames > 0) await handle.h('stepFrames', scenario.warmupFrames);
 
+  // 4b. Scenario contract (AM-W1-00-02): the scripted window opens on a warm-up-independent
+  // world. Free-running per-entity clocks — the seeded idle-loop phase, and a state-entry
+  // frame index from before the window — are re-anchored to the window origin, and exactly
+  // what changed is recorded in the manifest. This is a FIXTURE normalisation: it moves the
+  // simulation, and the trace then reports the simulation truthfully. Older builds without
+  // the method simply record `null`.
+  const reanchor = await handle.hOpt('reanchorFreeRunning');
+
   // 5. inputs + trace.
   await handle.h('queueInputs', scenario.inputs);
   const tracePath = path.join(dir, 'trace.jsonl');
@@ -142,6 +150,7 @@ export async function runScenario(handle, scenario, opts = {}) {
     frames_requested: frames,
     frames_traced: records,
     warmup_frames: scenario.warmupFrames,
+    window_reanchor: reanchor || null,
     fixed_step_hz: 60,
     trace: wantTrace ? { path: path.relative(dir, tracePath), records, body_sha256: traceDigest } : null,
     url: handle.url,

@@ -37,6 +37,21 @@ export class Rng {
     return this.seed;
   }
 
+  /**
+   * The four state words are held **unsigned** (`>>> 0`), and that is load-bearing rather
+   * than cosmetic. `|0` and `^` and `<<` all yield SIGNED int32 in JS, so a naive sfc32
+   * stores words that are sometimes negative; `loadRngState()` normalises with `>>> 0`, so
+   * the live copy and the round-tripped copy held the same BITS in two different
+   * REPRESENTATIONS (-339423194 vs 3955544102) and `getStateHash()` differed before and
+   * after a load — for every seed with a negative word, i.e. ~90% of them. Seed 1337, the
+   * corpus default, happens to have four positive words, which is why a single-seed test
+   * could not see it (RI-JRN05 M1 / HF1; verdict W1-00 §3.2).
+   *
+   * Normalising here rather than at the boundary is deliberate: it makes the invariant
+   * "state words are uint32, always" true at every instant, so there is no second place a
+   * signed word can leak out. `>>> 0` is bit-preserving, so the output stream is unchanged
+   * — asserted by `assertStreamIdentity()` below and by RI-MTH02 R1/R2 hashes.
+   */
   _raw() {
     let a = this.a, b = this.b, c = this.c, d = this.d;
     const t = (a + b | 0) + d | 0;
@@ -45,7 +60,7 @@ export class Rng {
     b = c + (c << 3) | 0;
     c = (c << 21) | (c >>> 11);
     c = c + t | 0;
-    this.a = a; this.b = b; this.c = c; this.d = d;
+    this.a = a >>> 0; this.b = b >>> 0; this.c = c >>> 0; this.d = d >>> 0;
     return t >>> 0;
   }
 
@@ -58,8 +73,19 @@ export class Rng {
   /** Float in [lo,hi). Counted. */
   range(lo, hi) { return lo + this.next() * (hi - lo); }
 
-  /** Serialise the whole stream position. Restores byte-exactly. */
-  saveRngState() { return { seed: this.seed, a: this.a, b: this.b, c: this.c, d: this.d, draws: this.draws }; }
+  /**
+   * Serialise the whole stream position. Restores byte-exactly, and — since W1-00's
+   * remediation — REPRESENTATION-exactly: the words emitted here are the same uint32 values
+   * `loadRngState()` will put back, so `saveState() -> loadState() -> getStateHash()` is
+   * stable for every seed, not only for seeds whose words happen to be positive.
+   */
+  saveRngState() {
+    return {
+      seed: this.seed >>> 0,
+      a: this.a >>> 0, b: this.b >>> 0, c: this.c >>> 0, d: this.d >>> 0,
+      draws: this.draws | 0,
+    };
+  }
 
   loadRngState(s) {
     this.seed = s.seed >>> 0;

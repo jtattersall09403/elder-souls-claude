@@ -96,9 +96,12 @@ async function run(o) {
       else if (op.op === 'despawn') H.despawn(op.eid || op.as);
     }
     if (s.warmup > 0) H.stepFrames(s.warmup);
+    // Scenario contract: the scripted window opens on a warm-up-independent world. This
+    // re-anchors free-running per-entity clocks and REPORTS what it changed (AM-W1-00-02).
+    const reanchor = H.reanchorFreeRunning();
     H.queueInputs(s.inputs);
     H.traceStart(s.trace);
-    return { frame: H.getFrame(), seed: H.getSeed() };
+    return { frame: H.getFrame(), seed: H.getSeed(), reanchor };
   }, spec);
 
   for (const n of chunks) {
@@ -114,7 +117,29 @@ async function run(o) {
 
   const h = crypto.createHash('sha256');
   for (const r of parts) h.update(JSON.stringify(r) + '\n');
-  return { hash: h.digest('hex'), records: parts, startFrame: setupRes.frame };
+  return { hash: h.digest('hex'), records: parts, startFrame: setupRes.frame, reanchor: setupRes.reanchor };
+}
+
+/**
+ * Field-level census: WHICH paths differ, not just whether any do. A verdict needs the
+ * field name. `skip` is a set of exact paths to ignore (R4 ignores `rng.seed`).
+ * Accumulates into `into` (path -> count of frames in which it differed).
+ */
+function fieldDiff(a, b, into, skip = new Set()) {
+  const walk = (x, y, p) => {
+    if (skip.has(p)) return;
+    if (x && y && typeof x === 'object' && typeof y === 'object' && !Array.isArray(x) && !Array.isArray(y)) {
+      for (const k of new Set([...Object.keys(x), ...Object.keys(y)])) walk(x[k], y[k], p ? `${p}.${k}` : k);
+      return;
+    }
+    if (Array.isArray(x) && Array.isArray(y) && x.length === y.length) {
+      for (let i = 0; i < x.length; i++) walk(x[i], y[i], `${p}[]`);
+      return;
+    }
+    if (JSON.stringify(x) !== JSON.stringify(y)) into.set(p, (into.get(p) || 0) + 1);
+  };
+  walk(a, b, '');
+  return into;
 }
 
 function rung(id, property, pass, evidence) {
@@ -147,55 +172,88 @@ try {
     { chunk_1: d1.hash, chunk_N: dN.hash, chunk_60: d60.hash, frames: d1.records.length });
 
   // ---- R4: seed sensitivity ---------------------------------------------------------------
+  // AM-W1-00-C1 (filed by the W1-00 critic, adopted here). The rung as originally written
+  // counted a frame as "differing" if ANY field differed — including `rng.seed`, which is a
+  // pure function of the independent variable and therefore differs on 100% of frames in
+  // ANY build, including one whose PRNG is never drawn from. That is exactly what this build
+  // was: `rng.draws == 0` on every frame, R4 reported PASS at 100%, and the seed reached
+  // nothing. Two changes, neither of which moves a threshold:
+  //   1. `.rng.seed` is dropped before the frame-difference count;
+  //   2. the rung fails with reason `prng_never_drawn` when max(rng.draws) == 0 in either
+  //      run — a scenario that never draws cannot demonstrate seed sensitivity at all.
   const s2 = await run({ seed: SEED2 });
+  const stripSeedEcho = (r) => {
+    // Structured clone minus the one tautological field. Everything else is compared.
+    const c = JSON.parse(JSON.stringify(r));
+    if (c.rng) delete c.rng.seed;
+    return JSON.stringify(c);
+  };
   let differing = 0;
+  const fieldsR4 = new Map();
   const n = Math.min(a.records.length, s2.records.length);
-  for (let i = 0; i < n; i++) if (JSON.stringify(a.records[i]) !== JSON.stringify(s2.records[i])) differing++;
+  for (let i = 0; i < n; i++) {
+    if (stripSeedEcho(a.records[i]) !== stripSeedEcho(s2.records[i])) {
+      differing++;
+      fieldDiff(a.records[i], s2.records[i], fieldsR4, new Set(['rng.seed']));
+    }
+  }
   const pct = n ? (differing / n) * 100 : 0;
-  rung('R4', 'seed-sensitive: different seed diverges, >=5% of frames differ',
-    a.hash !== s2.hash && pct >= 5,
-    { seed_a: SEED, hash_a: a.hash, seed_b: SEED2, hash_b: s2.hash, frames_differing_pct: +pct.toFixed(2) });
+  const maxDrawsA = a.records.reduce((m, r) => Math.max(m, (r.rng && r.rng.draws) || 0), 0);
+  const maxDrawsB = s2.records.reduce((m, r) => Math.max(m, (r.rng && r.rng.draws) || 0), 0);
+  const drawn = maxDrawsA > 0 && maxDrawsB > 0;
+  rung('R4', 'seed-sensitive: different seed diverges, >=5% of frames differ in a field OTHER than rng.seed, and the PRNG is actually drawn from',
+    a.hash !== s2.hash && pct >= 5 && drawn,
+    {
+      seed_a: SEED, hash_a: a.hash, seed_b: SEED2, hash_b: s2.hash,
+      frames_differing_pct_excluding_rng_seed: +pct.toFixed(2),
+      max_rng_draws: { [SEED]: maxDrawsA, [SEED2]: maxDrawsB },
+      reason: drawn ? undefined : 'prng_never_drawn',
+      differing_fields_excluding_rng_seed: [...fieldsR4.keys()].sort(),
+      note: 'AM-W1-00-C1: rng.seed is a pure function of the independent variable and is excluded from the count. Before this fix the same build reported 100% with max_rng_draws 0.',
+    });
 
   // ---- R5: warm-up invariance ----------------------------------------------------------------
   const w30 = await run({ warmup: 30, frames: 600 });
   const w90 = await run({ warmup: 90, frames: 600 });
-  // RI-MTH02 R5's literal procedure: "Re-base `f` by subtracting the first frame index in
-  // each, drop the `rng.draws` field, and compare the remaining records."
-  const rebaseLiteral = (recs) => {
+  // AM-W1-00-02. R5's literal procedure re-bases `f` and drops `rng.draws`. The trace
+  // carries THREE absolute frame indices, not one — `f`, `events[].f` and
+  // `enemies[].state_entered_f` — and the rung reaches only the first, so R5 failed on
+  // arena_flat with NO ENEMY AT ALL, on `events[].f` alone (W1-00 verdict §2.2). All three
+  // are named and re-based here. An index that refers to a moment BEFORE the window opened
+  // re-bases negative and is normalised to the sentinel "pre-window": "it happened before
+  // the window" is the only warm-up-independent fact about it, and the exact pre-window
+  // index is a warm-up artefact by construction.
+  //
+  // NOTHING is excluded. In particular `enemies[].anim_frame` is compared, which is what
+  // AM-W1-00-01 asked to exclude permanently; the fixture re-anchors it instead
+  // (__HARNESS.reanchorFreeRunning(), called by run() after warm-up).
+  const ABSOLUTE_FRAME_INDICES = ['f', 'events[].f', 'enemies[].state_entered_f'];
+  const rebase = (recs) => {
     const f0 = recs[0].f;
+    const norm = (v) => (typeof v === 'number' ? (v - f0 < 0 ? 'pre-window' : v - f0) : v);
     return recs.map((r) => {
       const c2 = JSON.parse(JSON.stringify(r));
-      c2.f -= f0; c2.t_ms = null; delete c2.rng;
-      for (const ev of c2.events || []) { ev.f -= f0; }
+      c2.f = norm(c2.f); c2.t_ms = null; delete c2.rng;
+      for (const ev of c2.events || []) ev.f = norm(ev.f);
+      for (const en of c2.enemies || []) en.state_entered_f = norm(en.state_entered_f);
       return c2;
     });
   };
-  const r30 = rebaseLiteral(w30.records), r90 = rebaseLiteral(w90.records);
-  // Census: WHICH fields differ, not just whether any do. A verdict needs the field name.
+  const r30 = rebase(w30.records), r90 = rebase(w90.records);
   const fieldDiffs = new Map();
-  const walk = (x, y, path) => {
-    if (x && y && typeof x === 'object' && typeof y === 'object' && !Array.isArray(x) && !Array.isArray(y)) {
-      for (const k of new Set([...Object.keys(x), ...Object.keys(y)])) walk(x[k], y[k], path ? `${path}.${k}` : k);
-      return;
-    }
-    if (Array.isArray(x) && Array.isArray(y) && x.length === y.length) {
-      for (let i = 0; i < x.length; i++) walk(x[i], y[i], `${path}[]`);
-      return;
-    }
-    if (JSON.stringify(x) !== JSON.stringify(y)) fieldDiffs.set(path, (fieldDiffs.get(path) || 0) + 1);
-  };
   const nCmp = Math.min(r30.length, r90.length);
-  for (let i = 0; i < nCmp; i++) walk(r30[i], r90[i], '');
+  for (let i = 0; i < nCmp; i++) fieldDiff(r30[i], r90[i], fieldDiffs);
   const differingFields = [...fieldDiffs.keys()].sort();
   const playerOnly = differingFields.filter((p) => p.startsWith('player') || p.startsWith('input') || p.startsWith('camera') || p.startsWith('events'));
-  rung('R5', 'warm-up-invariant: scripted-window records identical after re-basing f',
+  rung('R5', 'warm-up-invariant: scripted-window records identical after re-basing every absolute frame index',
     differingFields.length === 0, {
       warmup_30_frames: r30.length, warmup_90_frames: r90.length,
+      absolute_frame_indices_rebased: ABSOLUTE_FRAME_INDICES,
+      fields_excluded_from_the_comparison: ['rng (R5 drops rng.draws; the whole block is dropped because rng.seed is identical between the two runs anyway)'],
       differing_fields: differingFields,
       differing_fields_outside_the_enemy_block: playerOnly,
-      note: playerOnly.length === 0 && differingFields.length > 0
-        ? 'Every differing field is in the enemy block, and both are warm-up-dependent BY CONSTRUCTION: enemies[].state_entered_f is an absolute frame index that the item does not re-base, and enemies[].anim_frame is the phase of a looping idle animation, which genuinely differs when the entity has been idling for 60 more frames. See orchestration/amendments/AM-W1-00-01-mth02-r5.md.'
-        : undefined,
+      window_reanchor: w30.reanchor,
+      note: 'enemies[].anim_frame IS compared. See orchestration/amendments/AM-W1-00-02-mth02-r5-absolute-frame-indices.md, which withdraws and replaces AM-W1-00-01.',
     });
 
   // ---- R6: load order -----------------------------------------------------------------------
@@ -251,14 +309,40 @@ try {
   const cH = crypto.createHash('sha256'); for (const l of rt.controlJson) cH.update(l + '\n');
   const lH = crypto.createHash('sha256'); for (const l of rt.loadedJson) lH.update(l + '\n');
   const cd = cH.digest('hex'), ld = lH.digest('hex');
-  rung('R9', 'save round trip: state hash equal, and the next 600 frames match the control',
-    rt.hash0 === rt.hash1 && cd === ld && rt.roundTrip.diff.length === 0,
+
+  // R9 SWEEPS. This is the direct lesson of the W1-00 verdict: the round trip failed on 36
+  // of 40 seeds and this rung reported PASS, because it ran the corpus default seed 1337 —
+  // one of the only two seeds in twenty whose PRNG state words are all positive as int32.
+  // A rung that can only be checked at one seed is a rung that cannot see a seed-dependent
+  // defect, so it is checked at several. `tools/harness/seed-sweep.mjs` does the wide sweep;
+  // this is the ladder's own tripwire.
+  const R9_SEEDS = [SEED, SEED2, 104729, 112648, 4711];
+  const sweep = [];
+  for (const s of R9_SEEDS) {
+    sweep.push(await handle.page.evaluate(async (o) => {
+      const H = window.__HARNESS;
+      H.setRenderRate(0);
+      H.setSeed(o.seed); H.loadState(o.state);
+      H.stepFrames(240);
+      const h0 = H.getStateHash();
+      H.loadState(JSON.parse(JSON.stringify(H.saveState())));
+      return { seed: o.seed, equal: h0 === H.getStateHash(), before: h0, after: H.getStateHash() };
+    }, { seed: s, state: scenario.state || 'default' }));
+  }
+  const sweepFails = sweep.filter((r) => !r.equal);
+
+  rung('R9', 'save round trip: state hash equal at EVERY swept seed, and the next 600 frames match the control',
+    rt.hash0 === rt.hash1 && cd === ld && rt.roundTrip.diff.length === 0 && sweepFails.length === 0,
     {
       state_hash_before: rt.hash0, state_hash_after: rt.hash1,
       round_trip_equal: rt.roundTrip.equal, round_trip_diff_fields: rt.roundTrip.diff.length,
       round_trip_diff: rt.roundTrip.diff.slice(0, 10),
       canonical_bytes: rt.roundTrip.canonical_bytes,
       control_tail_sha256: cd, loaded_tail_sha256: ld,
+      seed_sweep: `${sweep.length - sweepFails.length}/${sweep.length} seeds hash-stable`,
+      seed_sweep_seeds: R9_SEEDS,
+      seed_sweep_failures: sweepFails,
+      wide_sweep: 'node tools/harness/seed-sweep.mjs — 20 seeds x 2 states, both trips',
     });
 
   // ---- guard report --------------------------------------------------------------------------

@@ -12,7 +12,9 @@
     "corpus/70-visual/refs/TEMPORAL-ACQUISITION.md (WIP, s0-s1 written)",
     "corpus/70-visual/refs/souls-behaviour/telegraph/ds1-moves/ (170 DS1 per-move boss animation GIFs)",
     "corpus/70-visual/refs/souls-behaviour/{attacks,stance,impact,death,arena,telegraph}/ (30 more GIFs: DS3 parries/weapon arts, ER movesets/quickstep/enemy AoW)",
-    "200 records merged into corpus/70-visual/refs/_provenance.json; acquire.py --check = 578/578 OK"
+    "200 records merged into corpus/70-visual/refs/_provenance.json; acquire.py --check = 578/578 OK",
+    "corpus/70-visual/refs/video/ (5 clips, 90.3 MB, archive.org derivatives, exact bytes)",
+    "corpus/70-visual/refs/temporal-substitutes/ (4 Steam burst series, 46 frames, 12.9 MB)"
   ],
   "findings": [
     "BREAKTHROUGH: static.wikia.nocookie.net DOES serve original GIF bytes. Append `?format=original` to the bare image path (https://static.wikia.nocookie.net/<wiki>/images/x/xx/Name.gif?format=original) -> 200, content-type image/gif, byte length EXACTLY equal to the API's imageinfo `size`. Verified on File:Artorias - Heavy Slam.gif: 605902 bytes GIF89a 210x118, vs 220726-byte animated WebP on every other variant. ACQUISITION-CRITIQUE-R1's finding 'the true GIF bytes are not obtainable' is FALSE and should be corrected. `/revision/latest?format=original` also works. Bare path, ?cb=, Accept: image/gif, vignette.wikia host, browser UA -> all still WebP.",
@@ -25,8 +27,14 @@
     "200 wiki GIFs committed = 378.0 MB, 18,447 decoded frames total. All verify byte-for-byte through acquire.py --check (578/578). GIF budget 400MB: 22MB headroom left.",
     "Fandom `list=allimages&aimime=image/gif` returns ZERO (miser mode). Must walk allimages unfiltered (500/page, ~24 pages per wiki) and filter by mime locally.",
     "`action=query&prop=fileusage&titles=File:A|File:B|...` (40 titles/request) resolves what an unlabelled wiki file depicts from the article embedding it. Identified 7 of 37 unlabelled ER GIF_20240621_*.gif files this way; the other 30 are orphaned.",
-    "DS wiki holds a COMPLETE per-move library: 190 clips at 210x118 named <Boss>-<Move> across 23 DS1 bosses. 170 vendored (<=2.6MB cap); 20 catalogued-not-downloaded (>2.6MB, 69MB) - see TEMPORAL-ACQUISITION.md."
+    "DS wiki holds a COMPLETE per-move library: 190 clips at 210x118 named <Boss>-<Move> across 23 DS1 bosses. 170 vendored (<=2.6MB cap); 20 catalogued-not-downloaded (>2.6MB, 69MB) - see TEMPORAL-ACQUISITION.md.",
+    "BEST VIDEO ROUTE: archive.org derivative .mp4 / .ia.mp4 for SHORT items. Search advancedsearch.php with sort[]=item_size asc, then /metadata/<id> to list files; many gameplay items have an h.264 derivative UNDER 40 MB that can be fetched WHOLE = exact bytes, no ffmpeg, no range extraction, full acquire.py verification. Got 5 clips / 90.3 MB this way. Do NOT chase multi-GB source uploads.",
+    "archive.org mirrors YouTube videos as items named `youtube-<videoid>` - this bypasses YouTube's bot wall entirely for anything that happens to be mirrored.",
+    "Invidious via yt-dlp WORKS but is IP-rate-limited: yewtu.be resolved 2 videos then every host (yewtu.be, invidious.nerdvpn.de, invidious.tiekoetter.com) returned the bot wall for the rest of the session. invidious.f5.si = 'Unsupported URL'; yt.chocolatemoo53.com = 403; inv.zoomerville.com API = 403; api.invidious.io lists only 12 instances, 1 api-enabled. Treat as a low-throughput route: a handful of videos per session, not a bulk one.",
+    "yt-dlp ytsearch (flat-playlist) works even when downloads are bot-walled: `yt-dlp --flat-playlist --print '%(id)s|%(duration)s|%(title)s' ytsearchN:<query>` returns IDs/titles/durations. Use it for DISCOVERY, then fetch elsewhere.",
+    "YouTube STORYBOARDS are reachable when nothing else is: player clients ios/mweb/web_embedded return ONLY storyboard formats, but `yt-dlp -f sb0` downloads them (320x180 mhtml frame grid, ~1 fps). That is a free frame strip for any YouTube video. Downloaded one as proof (270 KB for a 33 s video).",
+    "STEAM BURSTS CONFIRMED AND EYEBALLED. /app/<id>/screenshots/?browsefilter=mostrecent + group by author + sid runs. ER author 'LGZ' burst: frames 1-3 are the SAME doorway at three progressively nearer camera distances = a direct LOD-at-distance substitute. RDR2 24-frame burst contains a deer-at-dawn triple shot from three camera positions and a 2-frame hand-raised/lowered pair."
   ],
-  "next_step": "finish clip downloads via yewtu.be; then archive.org sparse-range; then substitutes",
+  "next_step": "more archive.org searches (water/LOD/souls combat), then finish TEMPORAL-ACQUISITION.md",
   "notes_for_successor": "Constraints: <=40MB/file, <=250MB total for video/. Never re-encode. pixel_metrics_valid:false on all temporal media."
 }

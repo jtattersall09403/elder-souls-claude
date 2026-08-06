@@ -116,6 +116,10 @@ export function buildSave(sim, build) {
         id: e.id, eid: e.eid, pos: vec(e.pos), yaw_deg: r6(e.yaw),
         hp: e.hp, poise: e.poise, alert: e.alert, alert_state: e.alertState,
         state: e.state, anim_frame: e.animFrame,
+        // The entity's SEEDED idle-loop phase offset (sim/entities.js). Durable, because a
+        // load that redrew it would put the loop somewhere else and the post-load tail would
+        // diverge from the control 48 frames later — RI-JRN05 M5's whole subject.
+        anim_phase0: e.animPhase0,
         anchor: vec(e.anchor),
         stagger: e.stagger, stagger_in_frames: rel(e.staggerUntil, f),
         state_entered_ago_frames: Math.max(0, f - e.stateEnteredF),
@@ -278,6 +282,7 @@ export function applySave(sim, blob, moves, statFor) {
     e.yaw = es.yaw_deg; e.hp = es.hp; e.poise = es.poise;
     e.alert = es.alert; e.alertState = es.alert_state; e.state = es.state;
     e.animFrame = es.anim_frame; e.anchor[0] = es.anchor[0]; e.anchor[1] = es.anchor[1]; e.anchor[2] = es.anchor[2];
+    e.animPhase0 = es.anim_phase0 === undefined ? -1 : es.anim_phase0;
     e.stagger = es.stagger; e.staggerUntil = f + es.stagger_in_frames;
     e.stateEnteredF = f - es.state_entered_ago_frames;
     sim.addEntity(e);

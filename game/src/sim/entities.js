@@ -16,7 +16,22 @@
 // (turns to face, never attacks). An enemy declaring any other `ai` throws on spawn rather
 // than silently behaving like a dummy, because a plausible-but-wrong enemy is worse than an
 // absent one.
+//
+// SEEDED IDLE PHASE (W1-00 remediation, GAP-W1-platform-prng-never-drawn).
+// Before this, `rng.draws` was 0 on every frame of every trace: the PRNG was reseeded
+// correctly and nothing ever drew from it, so `RI-MTH02` R4's "seeds must diverge" clause
+// was satisfied only by the trace echoing its own seed back. One simulation quantity is now
+// a real seeded draw, taken INSIDE the fixed step: each entity's idle-loop phase offset.
+//
+// Why this quantity and not an invented one: W1-00 does not own enemy AI (RI-AI01..07 /
+// W1-06 do), and inventing a seeded "AI decision" here would be exactly the fabricated
+// measurement RI-MTH04 forbids. A per-entity idle phase, on the other hand, is real, is
+// already free-running, is consumed by the simulation on every step of every run, and is
+// the field `AM-W1-00-01` wanted permanently excluded from the determinism ladder — seeding
+// it turns that argument into a measurement.
 'use strict';
+
+import { rng } from '../core/rng.js';
 
 const DEG = 180 / Math.PI;
 
@@ -41,6 +56,11 @@ export function makeEntity(stat, eid, x, z, frame) {
     anim: 'idle',
     animFrame: 0,
     animLen: stat.idle_anim_frames || 1,
+    // -1 = "not yet drawn". The draw happens on the entity's first simulated step, inside
+    // the fixed step and inside the armed determinism guard, so it is a real seeded
+    // simulation quantity rather than a set-up-time constant. Saved and restored
+    // (save/state.js world.entities[].anim_phase0) so a load reproduces the same loop.
+    animPhase0: -1,
     phase: 'none',
     hitActive: false,
     hitboxes: [],
@@ -71,6 +91,15 @@ export function stepEntities(sim, bus) {
     const e = sim.entities[i];
     const prev = e.state;
 
+    // The one seeded draw in the simulation, taken here rather than at spawn so that it is
+    // genuinely in-step: `rng.draws` rises during stepFrames(), and a critic can see the
+    // counter move in the trace. One draw per entity per lifetime; `rng.draws` is therefore
+    // a truthful count and not padding.
+    if (e.animPhase0 < 0) {
+      e.animPhase0 = rng.int(e.animLen > 1 ? e.animLen : 1);
+      e.animFrame = e.animPhase0;
+    }
+
     if (e.hp <= 0) {
       if (e.state !== 'DEAD') { e.state = 'DEAD'; e.stateEnteredF = sim.frame; }
       e.speed = 0; e.yawRate = 0; e.phase = 'none'; e.hitActive = false; e.hitboxes.length = 0;
@@ -80,7 +109,11 @@ export function stepEntities(sim, bus) {
 
     if (e.stagger) {
       e.state = 'STAGGER'; e.phase = 'hitstun'; e.animFrame++;
-      if (sim.frame >= e.staggerUntil) { e.stagger = false; e.state = 'IDLE'; e.animFrame = 0; e.phase = 'none'; }
+      // Returning to idle resumes THIS entity's idle loop, which begins at its own seeded
+      // phase anchor — not at a global 0. Resetting to 0 here erased the seeded phase the
+      // first time anything staggered, which is why seeds 1337 and 4242 re-converged after
+      // 168 frames of a 3600-frame duel and R4 came in at 4.7% instead of ~98%.
+      if (sim.frame >= e.staggerUntil) { e.stagger = false; e.state = 'IDLE'; e.animFrame = e.animPhase0 < 0 ? 0 : e.animPhase0; e.phase = 'none'; }
     } else if (e.ai === 'hold_ground') {
       const dx = p.pos[0] - e.pos[0], dz = p.pos[2] - e.pos[2];
       const d = Math.hypot(dx, dz);
@@ -113,6 +146,47 @@ export function stepEntities(sim, bus) {
       ev.eid = e.eid; ev.from = prev; ev.to = e.state;
     }
   }
+}
+
+/**
+ * Re-anchor every free-running per-entity clock to the frame the scripted window opens.
+ *
+ * This is the **scenario contract**, not the trace: it mutates the simulation and the trace
+ * then reports, truthfully, the phase the simulation is actually in. That distinction is the
+ * whole point — `AM-W1-00-01` proposed instead to *report* an animation phase the sim was
+ * not in, which is falsification under `RI-MTH04`, and the W1-00 critic rejected it. The
+ * third option the critic named and did not rebut is this one: "make the SCENARIO contract
+ * re-anchor free-running entity animation at the frame the scripted window opens, which
+ * changes the fixture rather than the trace".
+ *
+ * Two clocks are re-anchored, and both are declared and printed by the caller:
+ *   * `animFrame` -> the entity's own SEEDED phase offset (so the re-anchor is still
+ *     seed-sensitive; a different seed re-anchors to a different phase);
+ *   * `stateEnteredF` -> clamped to the window origin when the state was entered BEFORE the
+ *     window opened. "It entered this state before the window" is the only warm-up-independent
+ *     fact available; the exact pre-window frame index is a warm-up artefact by construction.
+ *
+ * Nothing here runs in normal play: it is invoked only by a harness caller opening a scripted
+ * window (`tools/lib/run.mjs`, `tools/harness/determinism.mjs`).
+ *
+ * @returns {object[]} what was re-anchored, for the run report.
+ */
+export function reanchorFreeRunning(sim) {
+  const out = [];
+  const f = sim.frame;
+  for (let i = 0; i < sim.entities.length; i++) {
+    const e = sim.entities[i];
+    if (e.animPhase0 < 0) { e.animPhase0 = rng.int(e.animLen > 1 ? e.animLen : 1); }
+    const before = { anim_frame: e.animFrame, state_entered_f: e.stateEnteredF };
+    e.animFrame = e.animPhase0;
+    if (e.stateEnteredF < f) e.stateEnteredF = f;
+    out.push({
+      eid: e.eid, anim_len: e.animLen, seeded_phase: e.animPhase0,
+      anim_frame: [before.anim_frame, e.animFrame],
+      state_entered_f: [before.state_entered_f, e.stateEnteredF],
+    });
+  }
+  return out;
 }
 
 function norm360(a) { a %= 360; return a < 0 ? a + 360 : a; }

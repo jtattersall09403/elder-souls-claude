@@ -12,6 +12,42 @@ Walks every file under refs/ and emits, per file, the fields the request says mu
                        divided by energy in [0.20,0.45)
     upscale_test     = 2/3 box-downsample + bilinear-upsample luminance MAD
     block_score      = mean discontinuity at 8px boundaries / non-boundaries
+    mean_luminance   = whole-frame mean of the 8-bit luminance plane
+    block_score_rel  = block_score made exposure-relative (see EXPOSURE below)
+    hud_probe_*      = measured saturated-overlay fraction in each corner box and
+                       in the centre box, so `has_hud` can be an observation
+
+EXPOSURE — why `block_score` alone is not a usable gate
+-------------------------------------------------------
+`block_score` is a *ratio*: mean |dI| across 8-aligned columns over mean |dI| across all
+other columns. The denominator is the scene's own detail. JPEG blocking is a roughly
+constant absolute discontinuity in code values, while scene detail scales with luminance
+(contrast is multiplicative). So for identical encoder damage the ratio rises as the
+picture gets darker, and a profile *defined by* darkness fails a threshold calibrated on
+bright scenes for no reason but its exposure.
+
+Measured, one image, one encoder, q=95 fixed, only brightness varied
+(`modern/exterior_daylight/run-w3nextgen-t0007.jpg`):
+
+    mean_luminance  105.1   52.3   31.1   18.4
+    block_score     1.031  1.101  1.192  1.308     <- spread 0.277, PASS -> FAIL
+    (bs - 1) * L      3.22   5.28   5.95   5.66     <- very nearly constant
+
+The excess above 1 is inversely proportional to mean luminance, so the confound divides
+out exactly:
+
+    block_score_rel = 1 + (block_score - 1) * (mean_luminance / 128)
+
+    block_score_rel 1.025  1.041  1.047  1.044     <- spread 0.019, ~15x reduction
+
+128 is mid-grey of the 8-bit range: a principled anchor, not a fit. `block_score_rel` is
+therefore read as *the block_score this frame would have shown had it been exposed at
+mid-grey*. A lossless PNG control at the same four exposures scores 0.989 / 0.997 / 0.999 /
+1.000, so the null stays exposure-independent; and a quality sweep still discriminates
+(bright q95/85/70/50/30 -> 1.025/1.144/1.291/1.456/1.706; the same sweep at x0.18
+brightness -> 1.044/1.118/1.222/1.340/1.578, i.e. the two curves now agree instead of
+diverging by 0.6). Proposed as amendment A9; `block_score` itself is kept unchanged
+alongside it so the change is auditable and so no earlier verdict is silently rewritten.
 
 It writes `_computed.json` next to itself. `MANIFEST.json` is `_computed.json` joined, by
 path, with the hand-authored provenance block in `_provenance.json` (source URL, game,
@@ -32,7 +68,7 @@ import json
 import os
 import sys
 
-from PIL import Image
+from PIL import Image, ImageChops, ImageStat
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SKIP_DIRS = {
@@ -154,6 +190,64 @@ def block_score(im):
     return round((aligned / n_aligned) / (other / n_other), 6)
 
 
+L_REF = 128.0          # mid-grey of the 8-bit range; the exposure block_score_rel reports at
+L_FLOOR = 16.0         # below this the normalisation would divide a real fault away
+
+
+def block_score_rel(bs, mean_lum):
+    """`block_score` restated at a reference exposure. See EXPOSURE in the module docstring.
+
+    Guard: a near-black frame has almost no detail in the denominator, so the raw ratio can
+    be large for reasons that are not encoder damage *and* the normalisation would shrink a
+    genuine fault to nothing. Luminance is therefore clamped at L_FLOOR, which makes the
+    metric conservative (it under-corrects) rather than blind at the dark end.
+    """
+    if bs is None or mean_lum is None:
+        return None
+    return round(1.0 + (bs - 1.0) * (max(mean_lum, L_FLOOR) / L_REF), 6)
+
+
+# ------------------------------------------------------------------- HUD / overlay probes
+# `has_hud` was a folder constant in three folders and the critic measured 29 of 93 souls
+# frames with literally no HUD. This makes it an observation. The rule is the critic's:
+# the fraction of pixels that are both strongly chromatic and not dark
+# (max-min > 55 and max > 70), inside a box. Their box was the DS3 HP-bar corner; all four
+# corners plus the centre are probed here so the same field works for other games' layouts
+# and so A1 clause 4 (a menu covering the *centre*) is separable from an edge HUD.
+HUD_SAT_DELTA = 55
+HUD_SAT_MAX = 70
+HUD_THRESHOLD = 0.012          # critic's calibration: below this there is no HUD
+HUD_BOXES = {
+    'tl': (0.03, 0.03, 0.35, 0.13),
+    'tr': (0.65, 0.03, 0.97, 0.13),
+    'bl': (0.03, 0.87, 0.35, 0.97),
+    'br': (0.65, 0.87, 0.97, 0.97),
+    'centre': (0.30, 0.30, 0.70, 0.70),
+}
+
+
+def hud_probes(im):
+    """Per-box fraction of strongly-chromatic, not-dark pixels. ImageChops so it runs in C:
+    the arithmetic is exactly the per-pixel rule above, not an approximation of it."""
+    r, g, b = im.convert('RGB').split()
+    mx = ImageChops.lighter(ImageChops.lighter(r, g), b)
+    mn = ImageChops.darker(ImageChops.darker(r, g), b)
+    chroma = ImageChops.subtract(mx, mn)
+    hot = ImageChops.multiply(
+        chroma.point(lambda v: 255 if v > HUD_SAT_DELTA else 0),
+        mx.point(lambda v: 255 if v > HUD_SAT_MAX else 0),
+    )
+    w, h = hot.size
+    out = {}
+    for name, (x0, y0, x1, y1) in HUD_BOXES.items():
+        left, top = int(x0 * w), int(y0 * h)
+        right, bottom = max(int(x1 * w), left + 1), max(int(y1 * h), top + 1)
+        box = hot.crop((left, top, right, bottom))
+        n = (right - left) * (bottom - top)
+        out[name] = round(box.histogram()[255] / n, 6) if n else None
+    return out
+
+
 def upscale_test(im):
     """Mean absolute luminance difference after the specified resampling round trip."""
     g = im.convert('L')
@@ -197,6 +291,10 @@ def analyse_text(path):
         'exif_software': 'none', 'exif_datetime': None,
         'xmp_present': False, 'c2pa_present': False,
         'nyq_ratio': None, 'hf_ratio': None, 'upscale_test': None, 'block_score': None,
+        'mean_luminance': None, 'block_score_rel': None,
+        'hud_probe': None, 'hud_probe_edge_max': None, 'has_hud_measured': None,
+        'ui_overlay_kind': 'none',
+        'frames': None, 'animated': False,
     }
 
 
@@ -225,6 +323,23 @@ def analyse(path):
     except Exception:
         pass
 
+    # Animated media (the A5 wiki GIFs, the cut video clips) are frame sequences, not
+    # pictures. A5 rule 3 already sets pixel_metrics_valid false on the whole axis, so the
+    # still-image battery is not merely unnecessary here, it is meaningless: it would be
+    # computed off frame 0. Record identity, geometry and the sequence length; leave the
+    # rest null, which is the honest value.
+    n_frames = int(getattr(im, 'n_frames', 1) or 1)
+    rec['frames'] = n_frames
+    rec['animated'] = n_frames > 1
+    if rec['animated']:
+        rec.update({
+            'nyq_ratio': None, 'hf_ratio': None, 'upscale_test': None, 'block_score': None,
+            'mean_luminance': None, 'block_score_rel': None,
+            'hud_probe': None, 'hud_probe_edge_max': None, 'has_hud_measured': None,
+            'ui_overlay_kind': 'not-measured-animated',
+        })
+        return rec
+
     P = fft2_power(luma_crop(im))
     b = radial_bands(P)
     denom = b['low'] + b['mid'] + b['high']
@@ -232,7 +347,99 @@ def analyse(path):
     rec['hf_ratio'] = round(b['high'] / denom, 6) if denom else None
     rec['upscale_test'] = upscale_test(im)
     rec['block_score'] = block_score(im)
+
+    rec['mean_luminance'] = round(ImageStat.Stat(im.convert('L')).mean[0], 4)
+    rec['block_score_rel'] = block_score_rel(rec['block_score'], rec['mean_luminance'])
+
+    probe = hud_probes(im)
+    rec['hud_probe'] = probe
+    edge = [v for k, v in probe.items() if k != 'centre' and v is not None]
+    rec['hud_probe_edge_max'] = round(max(edge), 6) if edge else None
+    edge_hud = rec['hud_probe_edge_max'] is not None and rec['hud_probe_edge_max'] >= HUD_THRESHOLD
+    centre_ui = probe.get('centre') is not None and probe['centre'] >= HUD_THRESHOLD
+    rec['has_hud_measured'] = bool(edge_hud)
+    rec['ui_overlay_kind'] = ('both' if edge_hud and centre_ui else
+                              'edge-hud' if edge_hud else
+                              'centre-ui' if centre_ui else 'none')
     return rec
+
+
+# --------------------------------------------------------------- metrics validity, by purpose
+# `pixel_metrics_valid` conflated two different questions: "may this file set a [p10,p90]
+# fidelity band?" and "may this file be measured for art direction?". A7's dispersion
+# computation is an art-direction measurement over files that are all
+# `pixel_metrics_valid: false`, so with one flag its input set is either empty or the whole
+# corpus. `metrics_valid_for` is a list, computed here at join time from the provenance
+# judgement plus the measured numbers, so every measurement has a defined population.
+#
+#   fidelity-bands   M1-M12, [p10,p90] calibration. The strictest gate.
+#   dispersion       A7 inter/intra-region centroids. Uses edge density and colour entropy,
+#                    which JPEG blocking corrupts, so it carries its own encode gate --
+#                    laxer than fidelity (it is a between-group comparison, not an absolute
+#                    band) but not absent.
+#   art-direction    palette, luminance distribution, sky fraction, silhouette. Robust to
+#                    mild blocking; needs a full frame, so superseded crops are excluded.
+#   ui-fidelity      RI-UIX06 F17-F19 glyph raster / scaling / compositing.
+#   behaviour        A5. Pose, timing, framing geometry. Never a fidelity or art input.
+#   subject-reference  A6. What the land and its species look like. Cited by no critic.
+BLOCK_REL_FIDELITY = 1.15      # amendment A9; was an absolute 1.15 on the raw block_score
+BLOCK_REL_DISPERSION = 1.30
+JPEG_Q_FLOOR = 80.0
+
+
+def metrics_valid_for(rel, prov, comp):
+    """Which measurements this file is a legitimate input to. Computed, never typed."""
+    out = []
+    side = prov.get('side')
+    animated = bool(comp.get('animated'))
+    superseded = bool(prov.get('superseded_by'))
+    brel = comp.get('block_score_rel')
+    jq = comp.get('jpeg_quality_est')
+    # An encode gate that is exposure-independent by construction: block_score_rel, plus
+    # the two fields that were always exposure-independent and that F13 showed already say
+    # these files are fine (median jpeg_quality_est is 100.0 in every Steam folder).
+    encode_ok_fidelity = ((brel is None or brel <= BLOCK_REL_FIDELITY)
+                          and (jq is None or jq >= JPEG_Q_FLOOR))
+    encode_ok_dispersion = ((brel is None or brel <= BLOCK_REL_DISPERSION)
+                            and (jq is None or jq >= JPEG_Q_FLOOR))
+    forbidden = set(prov.get('forbidden_for') or [])
+
+    if (prov.get('pixel_metrics_valid') and not animated and not superseded
+            and 'fidelity-bands' not in forbidden and encode_ok_fidelity):
+        out.append('fidelity-bands')
+
+    if side in ('morrowind-art', 'morrowind-art-direction') and not superseded and not animated:
+        if 'art-direction-judgement' not in forbidden:
+            out.append('art-direction')
+            if prov.get('a21_member') and encode_ok_dispersion:
+                out.append('dispersion')
+
+    if prov.get('slot') in ('REF-A12b', 'REF-M22') or (rel.startswith('modern/ui/')):
+        out.append('ui-fidelity')
+
+    if side in ('souls-behaviour', 'video'):
+        out.append('behaviour')
+
+    if side == 'subject-reference':
+        out.append('subject-reference')
+
+    return out
+
+
+# ------------------------------------------------------------------- acquisition state
+# H6: one flag (`_local`) was doing three jobs -- "on disk but not re-fetchable verbatim",
+# "catalogued but deliberately not vendored", and "documentation-only id record" -- so
+# `acquire.py --check`'s pass count could not distinguish a file that is present and
+# verifying from one that was never downloaded.
+def acquisition_state(rel, prov, on_disk):
+    if prov.get('acquisition_state'):
+        return prov['acquisition_state']
+    fetchable = all(k in prov for k in ('source_url', 'expected_bytes', 'expected_sha256'))
+    if not on_disk:
+        return 'catalogued-not-vendored'
+    if fetchable and not prov.get('_local'):
+        return 'vendored-verifying'
+    return 'vendored-local-derived'
 
 
 def walk():
@@ -273,18 +480,60 @@ def main():
     records = []
     for rel in sorted(computed):
         rec = {'path': rel}
-        rec.update(prov.get(rel, {'PROVENANCE_MISSING': True}))
+        p = prov.get(rel, {'PROVENANCE_MISSING': True})
+        rec.update(p)
         rec.update(computed[rel])
+        rec['metrics_valid_for'] = metrics_valid_for(rel, p, computed[rel])
+        rec['acquisition_state'] = acquisition_state(rel, p, True)
         records.append(rec)
+
+    # Records that describe a file we deliberately did not vendor (a 3.17 GB longplay we cut
+    # two clips from, an oversized wiki GIF). They are catalogued so the source is not lost;
+    # they are NOT media on disk and must never be counted as coverage.
+    catalogued = []
+    for rel, p in sorted(prov.items()):
+        if rel in computed or '/' not in rel:
+            continue
+        if os.path.exists(os.path.join(HERE, rel)):
+            continue
+        rec = {'path': rel}
+        rec.update(p)
+        rec['acquisition_state'] = acquisition_state(rel, p, False)
+        rec['metrics_valid_for'] = []
+        catalogued.append(rec)
+
+    tally = {}
+    for rec in records:
+        for purpose in rec['metrics_valid_for']:
+            tally[purpose] = tally.get(purpose, 0) + 1
+    superseded = sum(1 for r in records if r.get('superseded_by'))
+    animated = sum(1 for r in records if r.get('animated'))
+
     json.dump({
-        'schema': 'elder-souls/reference-manifest@1',
-        'spec': 'docs/REFERENCE-IMAGE-REQUEST.md §9',
+        'schema': 'elder-souls/reference-manifest@2',
+        'spec': 'docs/REFERENCE-IMAGE-REQUEST.md §9, as amended by ACQUISITION-SPEC-AMENDMENTS.md',
         'note': 'Numeric fields come from make-manifest.py. Provenance fields come from '
-                '_provenance.json and were entered by the acquiring agent.',
+                '_provenance.json and were entered by the acquiring agent. '
+                'metrics_valid_for and acquisition_state are derived at join time and are '
+                'not hand-editable.',
         'count': len(records),
+        'counts': {
+            'files_on_disk': len(records),
+            'animated_sequences': animated,
+            'superseded_crops_excluded_from_coverage': superseded,
+            'countable_media': len(records) - superseded,
+            'catalogued_not_vendored': len(catalogued),
+            'by_metrics_purpose': tally,
+        },
+        'counts_note': 'files_on_disk is not a coverage number. Superseded crops are files '
+                       'but not references (amendment ruling 5b#2), and every measurement '
+                       'has its own population under by_metrics_purpose. Quote those.',
         'records': records,
+        'catalogued_not_vendored': catalogued,
     }, open(os.path.join(HERE, 'MANIFEST.json'), 'w'), indent=1)
-    print('wrote MANIFEST.json (%d records)' % len(records))
+    print('wrote MANIFEST.json (%d on disk, %d catalogued-not-vendored)'
+          % (len(records), len(catalogued)))
+    print('metrics_valid_for:', json.dumps(tally, sort_keys=True))
     return 0
 
 

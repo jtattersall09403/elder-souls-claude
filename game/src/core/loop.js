@@ -20,6 +20,7 @@ import { wallNow } from './guards.js';
 export const FIXED_HZ = 60;
 export const STEP_MS = 1000 / FIXED_HZ;
 export const MAX_CATCHUP = 5;
+export const STEP_SAMPLES = 8192;
 
 export class FixedLoop {
   /**
@@ -36,6 +37,9 @@ export class FixedLoop {
     this.lastRenderMs = -1e9;
     this.rafHandle = 0;
     this.running = false;
+    // Called after each completed step, OUTSIDE the step's timing window. This is where the
+    // trace record is built (RI-PLT01 §C.3: the record is built outside the sim step).
+    this.afterStep = null;
     this.stats = {
       simStepsTotal: 0,
       rafTicks: 0,
@@ -43,7 +47,14 @@ export class FixedLoop {
       catchupDroppedMs: 0,
       catchupClamps: 0,
       lastStepMs: 0,
-      stepMsSamples: [],          // ring, bounded; see recordStepMs
+      stepMsTotal: 0,
+      // Pre-allocated ring. A plain [] with .push() re-allocates its backing store as it
+      // grows, which is a per-step allocation in the one loop RI-PLT01 P4 requires to be
+      // allocation-free — it was one of the sites the W1-00 critic's sampling profile named.
+      // A Float64Array stores raw doubles: no boxing, no growth, no garbage, ever.
+      stepMsSamples: new Float64Array(STEP_SAMPLES),
+      stepMsCount: 0,
+      stepMsHead: 0,
     };
     this._tick = this._tick.bind(this);
   }
@@ -97,6 +108,8 @@ export class FixedLoop {
       while (this.accumulatorMs >= STEP_MS && n < MAX_CATCHUP) {
         this.accumulatorMs -= STEP_MS;
         this.stepOnce();
+        // Outside stepOnce entirely: the trace record is never on the sim-step stack.
+        if (this.afterStep) this.afterStep();
         n++;
       }
       if (this.accumulatorMs >= STEP_MS) {
@@ -131,16 +144,31 @@ export class FixedLoop {
     this.render();
   }
 
-  /** One fixed step, timed. The timing read happens OUTSIDE the guarded window. */
+  /**
+   * One fixed step, timed. The timing read happens OUTSIDE the guarded window, and the
+   * sample lands in a pre-allocated Float64Array ring so the step itself allocates nothing.
+   */
   stepOnce() {
     const t0 = wallNow();
     this.step();
     const t1 = wallNow();
-    this.stats.simStepsTotal++;
-    this.stats.lastStepMs = t1 - t0;
-    const s = this.stats.stepMsSamples;
-    if (s.length >= 8192) s.length = 0;
-    s.push(this.stats.lastStepMs);
+    const s = this.stats;
+    s.simStepsTotal++;
+    s.lastStepMs = t1 - t0;
+    s.stepMsTotal += s.lastStepMs;
+    s.stepMsSamples[s.stepMsHead] = s.lastStepMs;
+    s.stepMsHead = (s.stepMsHead + 1) % STEP_SAMPLES;
+    if (s.stepMsCount < STEP_SAMPLES) s.stepMsCount++;
+  }
+
+  /** The step-time ring as a plain array, newest last. Allocates — callers are non-sim. */
+  stepMsWindow() {
+    const s = this.stats;
+    const out = new Array(s.stepMsCount);
+    for (let i = 0; i < s.stepMsCount; i++) {
+      out[i] = s.stepMsSamples[(s.stepMsHead - s.stepMsCount + i + STEP_SAMPLES * 2) % STEP_SAMPLES];
+    }
+    return out;
   }
 
   /** A-JRN11: block the main thread, to exercise the catch-up bound (RI-PLT01 M8). */
