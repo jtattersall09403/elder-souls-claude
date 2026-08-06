@@ -1,0 +1,14 @@
+{
+  "task_id": "W1-00-critic-r2",
+  "brief": "critic round 2 for wave-1 piece W1-00 (platform/engine spine)",
+  "started": "wave-1-r2",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-00-r2.json",
+    "corpus/90-verdicts/wave1/W1-00-r2.md"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read CRITIC-DOCTRINE, SCORING, VERDICT-SCHEMA, r1 verdict, remediation report",
+  "notes_for_successor": "Round 1 failed at 3/10 on two hard fails (PRNG never drawn; save round-trip 36/40). Must re-run everything myself with my own seeds."
+}
