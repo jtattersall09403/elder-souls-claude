@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-06T09:05:30.306Z",
+  "generated": "2026-08-06T09:06:07.250Z",
   "complete": 11,
   "total": 13,
   "tasks": [
@@ -60,8 +60,8 @@
       "done": 5,
       "expected": 5,
       "missing": [],
-      "next_step": "none - complete",
-      "findings": 40
+      "next_step": "none - all deliverables written and validated. Awaiting taxonomy owner (CRT) to apply subsystems-patch.proposed.json, and the amendments listed in each item.",
+      "findings": 45
     },
     {
       "id": "character-stealth-crime",
@@ -110,8 +110,8 @@
       "done": 2,
       "expected": 2,
       "missing": [],
-      "next_step": "write corpus/70-visual/RI-VIS09-reference-image-set.md, then verify corpus index / gap ledger",
-      "findings": 23
+      "next_step": "write ACQUISITION-REPORT.md then RI-VIS09, then done",
+      "findings": 26
     },
     {
       "id": "souls-verification",
@@ -123,13 +123,13 @@
         "corpus/00-doctrine/PROVENANCE-UPGRADE-02-SOULS.md",
         "corpus/10-combat/data/souls-frame-data.json"
       ],
-      "next_step": "verify DS1 stamina regen 45/s + 0.7s delay; DS3 poise formula; parry/backstab frames; estus; soul level formula DS1 vs DS3",
-      "findings": 12
+      "next_step": "search DS regen delay ~0.7s; then poise DS1 vs DS3 vs ER; parry frames; estus frames; soul level formula",
+      "findings": 17
     },
     {
       "id": "corpus-audit",
       "title": "Corpus coherence: constants, front-matter repair, wrong-bar amendments",
-      "state": "not-started",
+      "state": "started-nothing-written",
       "done": 0,
       "expected": 3,
       "missing": [
@@ -137,7 +137,7 @@
         "corpus/80-methods/RI-MTH05*",
         "corpus/00-doctrine/CORPUS-COHERENCE-01.md"
       ],
-      "next_step": null,
+      "next_step": "survey repo: tools/corpus-index.mjs, subsystems.json, ARBITRATION.md, BAR-CRITIQUE-01",
       "findings": 0
     }
   ]

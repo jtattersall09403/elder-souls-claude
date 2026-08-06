@@ -104,14 +104,17 @@ Rows are the **source** (the state that exists). Columns are the **target** (wha
 | **LVL** |.|.|.|.|m|.|.|.|.|.|.|m|/|.|**·**|**·**|.|.|.|
 | **UPG** |.|.|m|.|.|.|.|.|.|.|.|m|.|/|**·**|**M**|.|.|.|
 | **ROS** |**M**|**M**|m|m|.|m|.|**M**|**M**|.|.|m|m|m|/|m|.|**M**|t|
-| **BOS** |**T**|**M**|m|.|m|**M**|.|**T**|**T**|.|m|m|m|m|**M**|/|m|**M**|m|
+| **BOS** |**T**|**M**|m|.|m|**M**|.|**T**|**T**|.|m|m|m|m|m|/|m|**M**|m|
 | **DUN** |.|.|.|.|.|m|m|m|m|.|.|.|.|.|**M**|**M**|/|.|t|
 | **SCH** |m|m|m|m|.|m|**S**|m|m|.|.|.|.|m|**M**|**M**|.|/|t|
 | **JRN** |.|.|.|.|.|m|.|m|m|.|.|.|.|.|.|**t**|m|m|/|
 
 **Declared totals** (342 off-diagonal ordered pairs): **206 non-`none`** = **60.2%** ·
-`m` 145 · `S` 19 · `M` 39 · `T` 3 · trivial 15 · none 121.
-**Seam-crossing (`M`+`T`) = 42.** **Structural (`S`+`T`) = 22.** Declared matrix score **298**.
+`m` 146 · `S` 19 · `M` 38 · `T` 3 · trivial 15 · none 121.
+**Seam-crossing (`M`+`T`) = 41.** **Structural (`S`+`T`) = 22.** Declared matrix score **297**.
+
+**The crossings split 30 W→F / 11 F→W**, and that ratio is a declared *deficit* — see §H. Direction is
+computed from §A's definition by the tooling, never from which table in §D a cell is printed under.
 
 `RI-CMP01.cells.json` is generated from this table and §D–§F by
 `tools/composition/cells-from-md.mjs`, so the grid, the register and the probe suite cannot drift.
@@ -139,11 +142,12 @@ Rows are the **source** (the state that exists). Columns are the **target** (wha
    edges only; there is no symmetry shortcut.
 6. **The diagonal is out of scope.** Intra-system interaction is owned by that system's own items.
 
-### D. The seam-crossing register — all 42 cells (this is the `AR-3` instrument)
+### D. The seam-crossing register — all 41 cells (this is the `AR-3` instrument)
 
 Each cell names the mechanism a builder implements and the observable a probe asserts.
 
-**W→F — an out-of-fight investment changes what happens inside a fight (26 cells)**
+**W→F — an out-of-fight investment changes what happens inside a fight (26 printed here; 30 formally,
+once the four `DUN`/`SCH` rows printed below are classified by §A rather than by table)**
 
 | Cell | Mechanism | Probe observable |
 |---|---|---|
@@ -174,7 +178,8 @@ Each cell names the mechanism a builder implements and the observable a probe as
 | `EQP→BOS` | A specific item is a boss's counter: a resist, a tool, a key that opens its arena from behind | boss damage output or arena entry differs by item |
 | `UPG→BOS` | An upgrade tier threshold is what makes a specific boss's poise breakable — the cleanest progression W→F cell | `stagger` events occur at +6 and not at +3, same input script |
 
-**F→W — a fight outcome changes the world beyond souls and corpses (16 cells)**
+**F→W — a fight outcome changes the world beyond souls and corpses (15 printed here; 11 formally.
+This is the short side of the matrix and §H makes that a debt rather than a rounding note)**
 
 | Cell | Mechanism | Probe observable |
 |---|---|---|
@@ -188,7 +193,6 @@ Each cell names the mechanism a builder implements and the observable a probe as
 | `BOS→LOR` | The boss's death or parley produces the truth about something — an `RI-EXP04` N6 revision | ≥ 2 existing topics return different text |
 | `BOS→QST` | **structural.** The outcome branches the questline for hours | ≥ 2 downstream quests differ by branch |
 | `BOS→WLD` | **structural.** A gate opens, a regional hazard ends, a district repopulates | ≥ 8 observable world changes |
-| `BOS→ROS` | The boss's faction's patrols change composition afterwards | roster ids differ |
 | `BOS→SCH` | NPCs move in, or flee | ≥ 3 schedules differ |
 | `DUN→ROS` | Layout decides encounter composition and whether the player can be flanked | encounter count on route A vs route B through the same dungeon |
 | `DUN→BOS` | The arena is a system: the ledge, the plunging attack, the pillar (`RI-EXP06` B-15) | boss reachability and `plunge` availability from a named anchor |
@@ -196,8 +200,17 @@ Each cell names the mechanism a builder implements and the observable a probe as
 | `SCH→BOS` | A boss's schedule — asleep, at a rite — is an attack window | boss `alert_state` at entry differs by hour |
 
 `DUN`, `SCH`, `TOD` and `WEA` appear as sources of W→F cells because they are world-side systems whose
-targets are the fight. `DUN→ROS`/`DUN→BOS` are listed under F→W for grouping convenience; they are
-formally W→F. The probe suite classifies from §A's definition, not from this table's headings.
+targets are the fight. **`DUN→ROS`, `DUN→BOS`, `SCH→ROS` and `SCH→BOS` are printed under F→W for
+grouping convenience and are formally W→F** — which is why the printed 26/15 and the formal 30/11
+differ. The probe suite classifies from §A's definition, not from this table's headings, and the
+formal numbers are the ones §H scores.
+
+**`BOS→ROS` is deliberately *not* here.** "The boss's faction's patrols change composition afterwards"
+is fight-side source to fight-side target: it satisfies neither shape in §A, because `ROS` is not a
+world-side system. It is a real and desirable interaction, it is `mechanical`, and it scores 1 rather
+than 2 — it lives in §F's `BOS` row. It is called out because it is the single easiest cell in the
+matrix to mistake for a crossing, and a wave that meets its crossing floor partly with fight-to-fight
+cells has met nothing.
 
 ### E. The structural register — all 22 cells
 
