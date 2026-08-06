@@ -89,37 +89,55 @@ roll() {
 iframe() {
   const H = window.__HARNESS;
   const cs = () => H.getCombatState();
-  const R = { tiers: [] };
-  for (const [name, pct, kMax] of [['LIGHT',15,96],['MEDIUM',50,96],['HEAVY',85,110],['OVERLOADED',120,140]]) {
+  const R = { tiers: [], calibration: null };
+
+  // ---- calibrate: on which frame after queueEnemyScript does the pulse hitbox go active? ----
+  H.setSeed(99); H.loadState('arena_flat');
+  H.spawn('probe_pulse', 0, 1.0, { as: 'PULSE' });
+  H.stepFrames(4);
+  H.queueEnemyScript('PULSE', [{ f: 150, move: 'pulse' }]);
+  let activeAt = null, hpDropAt = null, hp0 = null;
+  for (let i = 1; i <= 260; i++) {
+    H.stepFrames(1);
+    const g = H.getHitGeometry();
+    const e = g.actors.find(a => a.id === 'PULSE');
+    const c = cs();
+    if (hp0 === null) hp0 = c.player.hp;
+    if (e && e.hitbox_active && activeAt === null) activeAt = i;
+    if (hpDropAt === null && c.player.hp < hp0) hpDropAt = i;
+  }
+  R.calibration = { pulse_scheduled_rel_f: 150, hitbox_active_rel_f: activeAt, player_hp_drop_rel_f: hpDropAt };
+  const FA = hpDropAt;   // the frame (relative to queue) on which damage lands with no dodge
+
+  for (const [name, pct, kMax] of [['LIGHT',15,100],['MEDIUM',50,100],['HEAVY',85,120],['OVERLOADED',120,140]]) {
     const Hv = [];
     for (let k = -12; k <= kMax; k++) {
+      const pressAt = FA - k;                 // roll press frame so that the pulse lands on press+k
+      if (pressAt < 2) { Hv.push({ k, hit: null, skipped: true }); continue; }
       H.setSeed(99); H.loadState('arena_flat'); H.setEquipLoad(pct);
-      const eid = H.spawn('probe_pulse', 0, 1.0, { as: 'PULSE' });
+      H.spawn('probe_pulse', 0, 1.0, { as: 'PULSE' });
       H.stepFrames(4);
-      // The pulse attack has startup 54, active 1. Fire it so the ACTIVE frame is press+k.
-      // press lands on the frame after queueInputs f=1 -> press frame = cur+1.
-      H.queueInputs([{f:0, move:[0,1]}, {f:1, press:['roll']}, {f:3, release:['roll']}]);
-      H.queueEnemyScript('PULSE', [{ f: 1 + k - 54, move: 'pulse' }]);
-      let hpBefore = null, hit = false, negate = 0, minHp = null;
-      for (let i = 0; i < 200; i++) {
+      H.queueInputs([{ f: pressAt - 1, move: [0, 1] }, { f: pressAt, press: ['roll'] }, { f: pressAt + 2, release: ['roll'] }]);
+      H.queueEnemyScript('PULSE', [{ f: 150, move: 'pulse' }]);
+      let base = null, hit = false;
+      for (let i = 1; i <= FA + 160; i++) {
         H.stepFrames(1);
         const c = cs();
-        if (hpBefore === null) hpBefore = c.player.hp;
-        if (c.player.hp < hpBefore) { hit = true; }
-        minHp = c.player.hp;
+        if (base === null) base = c.player.hp;
+        if (c.player.hp < base) { hit = true; break; }
       }
       Hv.push({ k, hit });
     }
-    // derive edges
-    const first_negated = (() => { for (let i = 1; i < Hv.length; i++) if (Hv[i-1].hit && !Hv[i].hit) return Hv[i].k; return null; })();
-    const last_negated = (() => { for (let i = 1; i < Hv.length; i++) if (!Hv[i-1].hit && Hv[i].hit) return Hv[i-1].k; return null; })();
+    const V = Hv.filter(x => !x.skipped);
     let transitions = 0;
-    for (let i = 1; i < Hv.length; i++) if (Hv[i].hit !== Hv[i-1].hit) transitions++;
-    const negated = Hv.filter(x=>!x.hit).map(x=>x.k);
-    const holes = negated.length ? negated.filter((k,i,a)=> i>0 && k !== a[i-1]+1) : [];
+    for (let i = 1; i < V.length; i++) if (V[i].hit !== V[i-1].hit) transitions++;
+    const negated = V.filter(x => !x.hit).map(x => x.k);
+    const holes = negated.filter((k,i,a) => i > 0 && k !== a[i-1] + 1);
     R.tiers.push({ tier: name, load_pct: pct, vector: Hv, transitions,
-      first_negated_k: first_negated, last_negated_k: last_negated,
-      negated_count: negated.length, holes });
+      first_negated_k: negated.length ? negated[0] : null,
+      last_negated_k: negated.length ? negated[negated.length-1] : null,
+      negated_count: negated.length, holes,
+      leaks_outside_window: negated.filter(k => k < 0) });
   }
   return R;
 },

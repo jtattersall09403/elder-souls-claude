@@ -25,23 +25,35 @@
  *  `contains()` is the same predicate `clip_through` is defined against (RI-CAM01 §D), so the
  *  ground the player stands on and the geometry the camera is tested against are by
  *  construction the same set — there is no second collision representation to drift. */
-export function groundYInCell(cell, x, z, topY, floorY) {
-  const top = topY === undefined ? 12 : topY;
+export function groundYInCell(cell, x, z, topY, floorY, hint) {
+  const top = topY === undefined ? 8 : topY;
   const floor = floorY === undefined ? -4 : floorY;
-  const STEP = 0.02;
-  let hi = top;
-  if (cell.contains(x, hi, z)) return hi;              // buried: nothing above to stand on
-  for (let y = top; y > floor; y -= STEP) {
+  // A COARSE descent then a bisection, plus a locality hint. The naive form (0.02 m steps from
+  // y = 12) evaluates up to 800 containment tests per frame against a 158-primitive mangrove
+  // cell, which is 126,000 shape tests per frame and made an eight-yaw route walk take longer
+  // than the rest of the probe suite put together. The coarse step is 0.10 m, which cannot
+  // step over any authored surface here (the thinnest is a 0.18 m stair tread on a solid
+  // riser), and the 10 halvings that follow land within 1e-4 m — an order of magnitude finer
+  // than the 0.02 m tolerance RI-CAM01 §E states for distances.
+  const COARSE = 0.10;
+  let start = top;
+  if (hint !== undefined && hint > floor && hint < top) {
+    // The route is a polyline walked at 0.075 m/frame, so the surface almost never moves more
+    // than a tread between frames: start just above where it was.
+    const probe = hint + 0.40;
+    if (probe < top && !cell.contains(x, probe, z)) start = probe;
+  }
+  if (cell.contains(x, start, z)) start = top;         // hint was wrong; fall back to the top
+  if (cell.contains(x, start, z)) return start;        // buried: nothing above to stand on
+  for (let y = start; y > floor; y -= COARSE) {
     if (cell.contains(x, y, z)) {
-      // Bisect between the last clear sample and this solid one, 8 halvings ⇒ ≤ 8e-5 m.
-      let lo = y, up = y + STEP;
-      for (let i = 0; i < 8; i++) {
+      let lo = y, up = y + COARSE;
+      for (let i = 0; i < 10; i++) {
         const mid = (lo + up) * 0.5;
         if (cell.contains(x, mid, z)) lo = mid; else up = mid;
       }
       return up;
     }
-    hi = y;
   }
   return floor;
 }
@@ -67,6 +79,7 @@ export function beginRoute(sim, o) {
     lap: 0,
     done: false,
     frames: 0,
+    lastY: undefined,
   };
   // Place the controller on the first point immediately so frame 0 is already on the route.
   applyRoute(sim);
@@ -102,7 +115,8 @@ function applyRoute(sim) {
   const p = sim.player;
   p.pos[0] = x;
   p.pos[2] = z;
-  p.pos[1] = cell ? groundYInCell(cell, x, z) : 0;
+  p.pos[1] = cell ? groundYInCell(cell, x, z, undefined, undefined, r.lastY) : 0;
+  r.lastY = p.pos[1];
   p.grounded = true;
   // The combat body is the authority (sim/combat-bridge.js); writing only the view would be
   // undone by `mirror()` on the next frame's stepCombat.

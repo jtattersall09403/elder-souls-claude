@@ -3,7 +3,14 @@
   "brief": "wave-1 piece W1-07 — Character creation (diegetic census office, 10 attrs / 19 skills, 10 races, birthsigns, custom class builder, 12x10 reaction matrix)",
   "started": "wave-1",
   "state": "complete",
-  "judged_by": ["RI-CHR01", "RI-CHR02", "RI-CHR03", "RI-PRG02", "RI-PRG03", "RI-JRN01"],
+  "judged_by": [
+    "RI-CHR01",
+    "RI-CHR02",
+    "RI-CHR03",
+    "RI-PRG02",
+    "RI-PRG03",
+    "RI-JRN01"
+  ],
   "outputs_written": [
     "game/data/progression/attributes.json",
     "game/data/progression/skills.json",
@@ -35,14 +42,17 @@
     "corpus/22-character/AMENDMENT-W1-07-01.md (applied)",
     "corpus/22-character/AMENDMENT-W1-07-02.md (applied)",
     "reports/w1-07/creation-audit.txt + .json",
-    "reports/w1-07/ar3-encounter-test.txt + .json"
+    "reports/w1-07/ar3-encounter-test.txt + .json",
+    "tools/harness/chr-probe.mjs",
+    "reports/w1-07/chr-probe.txt + .json"
   ],
   "measured": {
-    "creation_audit": "81/82 assertions PASS, 1 declared in KNOWN-GAPS.json, 0 hard failures, 0 stale declarations (3.7 s, no browser)",
+    "creation_audit": "88/89 assertions PASS across 15 sections, 1 declared in KNOWN-GAPS.json, 0 hard failures, 0 stale declarations (3.7 s, no browser)",
     "ar3_method_8": "12/12 assertions PASS over three real 1,800-frame runs: saxhleel AGGRO at 27.948 m capture / dunmer 0 AGGRO + 1 parley_offer at 23.975 m / khajiit AGGRO at 11.956 m kill; all six entities inf_trash / enemy:inf_trash / INFANTRY / trash in all three",
     "questionnaire": "12,582,912 routes enumerated (12 distinct asked-sets x 4^10), 11/14 named classes reachable, 0 purity violations, cross-checked against the shipped scorer at 4^6",
     "signatures": "540/540 constructible, 0 empty cells; 969 custom skill shapes all classified into the six families",
-    "determinism": "chr-census trace body sha256 identical run to run (df7289eb...); determinism ladder 6/9 with R4/R5/R9 failing identically on the pre-W1-07 baseline scenario mth-warmup-noenemy, i.e. inherited from W1-00, not introduced here"
+    "determinism": "chr-census trace body sha256 identical run to run (df7289eb...); determinism ladder 6/9 with R4/R5/R9 failing identically on the pre-W1-07 baseline scenario mth-warmup-noenemy, i.e. inherited from W1-00, not introduced here",
+    "live_probe": "tools/harness/chr-probe.mjs against the running game: disposition spread 74 points over the 40 race x upbringing pairs at RG-DEEP (saxhleel/interior 74 friendly to dunmer/lukiul 0 hostile); Dunmer keeps 50.5% of a Saxhleel's round trip; ONE statblock/moveset/archetype/hp/poise combination across all ten races against four distinct openings"
   },
   "findings": [
     "AMENDMENT-W1-07-01 (applied): the Imperial race row summed to 11; PER +4 -> +5.",
