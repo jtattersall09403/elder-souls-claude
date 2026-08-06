@@ -345,7 +345,16 @@ export class Engine {
     return r;
   }
 
-  snapshot() { return makeRecord(this.sim, this.input, this.bus, { enemies: true, hitboxes: true, events: true }, this._perfBlock()); }
+  /**
+   * The current frame as a §5 record. The SAME function builds the trace lines, and the
+   * shapes must not drift: RI-MTH01 "How we lose" #5. `perf` is therefore opt-in here
+   * exactly as it is opt-in on traceStart({perf:true}) — otherwise snapshot() would carry
+   * a block the trace does not and trace-stats.mjs would read two schemas.
+   */
+  snapshot(opts) {
+    const wantPerf = (opts && opts.perf) || this.tracePerf;
+    return makeRecord(this.sim, this.input, this.bus, { enemies: true, hitboxes: true, events: true }, wantPerf ? this._perfBlock() : null);
+  }
 
   // ---- perf (A-JRN5) -----------------------------------------------------------------------
 

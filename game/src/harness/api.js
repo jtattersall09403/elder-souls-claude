@@ -83,7 +83,7 @@ export function installHarness(engine, bootPromise) {
     clearInputs() { return engine.input.clearInputs(engine.sim.frame); },
 
     // ---- observation --------------------------------------------------------------------
-    snapshot() { return engine.snapshot(); },
+    snapshot(opts) { return engine.snapshot(opts); },
     traceStart(opts) { return engine.traceStart(opts); },
     traceDrain() { return engine.traceDrain(); },
     traceStop() { return engine.traceStop(); },
