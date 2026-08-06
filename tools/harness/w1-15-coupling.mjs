@@ -61,18 +61,28 @@ try {
       H.setZoneAmbient('z', c.L);
       H.setPlayerMotion(c.motion);
       H.spawn('inf_trash', 0, c.dist === undefined ? 8 : c.dist, { as: 'e1' });
-      let aggro = null, suspicious = null, V = null, L = null, chan = null, alert = 0;
+      // Coarse-then-fine: step in 20s until the meter is within one coarse chunk of 100, then
+      // one frame at a time. The reported frame is exact — the fine pass always begins at least
+      // 20 frames before the crossing, because 100 - 20*RATE_MAX bounds it — and the call count
+      // drops from 3,600 to ~120, which matters because a SwiftShader page under contention
+      // costs milliseconds per harness call.
+      let aggro = null, suspicious = null, chan = null, alert = 0;
       const curve = [];
       const budget = 3600;
-      for (let f = 0; f < budget; f++) {
-        H.stepFrames(1);
-        const s = H.snapshot();
-        const e = s.enemies[0];
-        V = s.player.stealth.V; L = s.player.stealth.light; alert = e.alert; if (e.alert_channel) chan = e.alert_channel;
-        if (f < 5 || f === 30 || f === 60) curve.push({ f: f + 1, alert: +e.alert.toFixed(2), state: e.alert_state, ch: e.alert_channel, los: e.los });
-        if (suspicious === null && e.alert_state === 'SUSPICIOUS') suspicious = f + 1;
-        if (e.alert_state === 'AGGRO') { aggro = f + 1; break; }
+      const RATE_MAX = 100 / 60;                 // the fastest fill any channel can produce per frame
+      let f = 0;
+      while (f < budget) {
+        const e0 = H.perceptionState()[0];
+        const step = (100 - e0.alert) <= 20 * RATE_MAX ? 1 : 20;
+        H.stepFrames(step); f += step;
+        const e = H.perceptionState()[0];
+        alert = e.alert; if (e.alert_channel) chan = e.alert_channel;
+        if (f <= 60) curve.push({ f, alert: +e.alert.toFixed(2), state: e.alert_state, ch: e.alert_channel, los: e.los });
+        if (suspicious === null && e.alert_state === 'SUSPICIOUS') suspicious = f;
+        if (e.alert_state === 'AGGRO') { aggro = f; break; }
       }
+      const st = H.getStealthState();
+      const V = st.V, L = st.light;
       out.push({
         id: c.id, item_V: c.item_V, item_s: c.item_s, control: !!c.control,
         V, L: +L.toFixed(4), alert_channel: chan, alert_end: +alert.toFixed(2),
@@ -113,8 +123,8 @@ try {
     // yaw 180 = looking down +z; the player at the origin is directly BEHIND it.
     H.spawn('inf_trash', 0, 1.0, { as: 'e1', yaw: 180 });
     let peak = 0, aggro = false;
-    for (let i = 0; i < 360; i++) { H.stepFrames(10); const e = H.snapshot().enemies[0]; peak = Math.max(peak, e.alert); if (e.alert_state === 'AGGRO') { aggro = true; break; } }
-    const e = H.snapshot().enemies[0];
+    for (let i = 0; i < 360; i++) { H.stepFrames(10); const e = H.perceptionState()[0]; peak = Math.max(peak, e.alert); if (e.alert_state === 'AGGRO') { aggro = true; break; } }
+    const e = H.perceptionState()[0];
     return { frames: 3600, peak_alert: +peak.toFixed(3), final_alert: +e.alert.toFixed(3), state: e.alert_state, channel: e.alert_channel, aggro };
   });
   rec('RI-STL01-M4-no-proximity-leak', {
@@ -146,20 +156,21 @@ try {
       H.setPlayerMotion(c.motion);
       H.spawn('inf_trash', 0, c.dist, { as: 'e1', yaw: 180 });   // facing AWAY
       let rise = null, chan = null, aggro = null;
-      for (let f = 0; f < 1200; f++) {
-        H.stepFrames(1);
-        const e = H.snapshot().enemies[0];
-        if (rise === null && e.alert > 0) { rise = f + 1; chan = e.alert_channel; }
-        if (e.alert_state === 'AGGRO') { aggro = f + 1; break; }
+      for (let f = 0; f < 1200; f += 5) {
+        H.stepFrames(5);
+        const e = H.perceptionState()[0];
+        if (rise === null && e.alert > 0) { rise = f + 5; chan = e.alert_channel; }
+        if (e.alert_state === 'AGGRO') { aggro = f + 5; break; }
       }
-      const s = H.snapshot();
+      const st = H.getStealthState();
+      const e = H.perceptionState()[0];
       out.push({
         id: c.id, control: !!c.control, dist_m: c.dist,
-        sound_r_m: s.player.stealth.sound_r_m,
-        audible: c.dist <= s.player.stealth.sound_r_m,
+        sound_r_m: st.sound_r_m,
+        audible: c.dist <= st.sound_r_m,
         first_rise_f: rise, channel: chan,
         aggro_s: aggro === null ? null : +(aggro / 60).toFixed(3),
-        final_alert: +s.enemies[0].alert.toFixed(2), state: s.enemies[0].alert_state,
+        final_alert: +e.alert.toFixed(2), state: e.alert_state,
       });
     }
     return out;
@@ -193,7 +204,7 @@ try {
       H.setPlayerMotion('sprint');
       H.stepFrames(600);
       const c = H.listCivilians().find((x) => x.eid === 'sd2');
-      out[q.k] = { sound_r_m: H.snapshot().player.stealth.sound_r_m, civ_state: c.civ_state, suspicion: c.suspicion, channel: c.alert_channel, los: c.los };
+      out[q.k] = { sound_r_m: H.getStealthState().sound_r_m, civ_state: c.civ_state, suspicion: c.suspicion, channel: c.alert_channel, los: c.los };
     }
     return out;
   });
@@ -217,8 +228,8 @@ try {
       if (wall) H.addOccluder({ id: 'w1', min: [-4, 0, 3.8], max: [4, 3.5, 4.2] });
       H.spawn('inf_trash', 0, 8, { as: 'e1' });
       let aggro = null;
-      for (let f = 0; f < 1800; f++) { H.stepFrames(1); const e = H.snapshot().enemies[0]; if (e.alert_state === 'AGGRO') { aggro = f + 1; break; } }
-      const e = H.snapshot().enemies[0];
+      for (let f = 0; f < 1800; f += 5) { H.stepFrames(5); const e = H.perceptionState()[0]; if (e.alert_state === 'AGGRO') { aggro = f + 5; break; } }
+      const e = H.perceptionState()[0];
       out.push({ wall, occluders: H.listOccluders().length, alert: +e.alert.toFixed(2), state: e.alert_state, channel: e.alert_channel, los: e.los, aggro_s: aggro === null ? null : +(aggro / 60).toFixed(3), los_probe: H.losBetween([0, 1.55, 8], [0, 1.35, 0]) });
     }
     return out;
@@ -262,17 +273,22 @@ try {
     H.setStealthState({ sneak: 5, load: 'heavy', surface: 'mud', inCover: false, zone: 'warehouse' });
     H.setZoneAmbient('warehouse', 1.0);
     H.setPlayerMotion('walk');
-    H.addCoverVolume({ id: 'c1', pos: [4, 0, 10], zone: 'warehouse' });
-    H.addCoverVolume({ id: 'c2', pos: [-5, 0, 9], zone: 'warehouse' });
-    H.addCoverVolume({ id: 'c3', pos: [1, 0, 13], zone: 'warehouse' });
+    // S-1's plausible set is "within 8 m of the LKP AND reachable without crossing the
+    // searcher's own cone". The searcher stands at (0, 8) looking at the origin, so the three
+    // that qualify are BEHIND the player; c4 is the out-of-range control and c5 sits squarely
+    // in the searcher's cone and must be rejected for that reason rather than for distance.
+    H.addCoverVolume({ id: 'c1', pos: [4, 0, -3], zone: 'warehouse' });
+    H.addCoverVolume({ id: 'c2', pos: [-5, 0, -2], zone: 'warehouse' });
+    H.addCoverVolume({ id: 'c3', pos: [1, 0, -6], zone: 'warehouse' });
     H.addCoverVolume({ id: 'c4', pos: [40, 0, 40], zone: 'warehouse' });   // beyond S-1's 8 m
+    H.addCoverVolume({ id: 'c5', pos: [0, 0, 5], zone: 'warehouse' });     // inside the cone
     H.addLightSource({ id: 'lamp1', pos: [2, 2, 6], intensity: 0.8, snuffable: true, zone: 'warehouse' });
     H.spawn('inf_trash', 0, 8, { as: 'es' });
     H.spawn('inf_trash', 6, 10, { as: 'ally' });                            // S-3: within 12 m
     H.spawn('inf_trash', 0, 60, { as: 'far' });                             // S-3: beyond 12 m
     // 1. be seen
     let seen = null;
-    for (let f = 0; f < 1200; f++) { H.stepFrames(1); if (H.snapshot().enemies[0].alert_state === 'AGGRO') { seen = f + 1; break; } }
+    for (let f = 0; f < 1200; f += 5) { H.stepFrames(5); if (H.perceptionState()[0].alert_state === 'AGGRO') { seen = f + 5; break; } }
     const lkp = H.snapshot().player.pos.map((n) => +n.toFixed(2));
     H.snuffLight('lamp1', 200);
     // 2. break contact, hard and far
@@ -280,19 +296,19 @@ try {
     H.setPlayerMotion('still');
     const tl = [];
     let maxSpeed = 0, maxDist = 0, searchStart = null, searchEnd = null, s3 = null;
-    for (let i = 0; i < 1800; i++) {
-      H.stepFrames(1);
-      const s = H.snapshot();
-      const e = s.enemies[0];
+    for (let i = 0; i < 1800; i += 5) {
+      H.stepFrames(5);
+      const ps = H.perceptionState();
+      const e = ps[0];
       const d = Math.hypot(e.pos[0] - lkp[0], e.pos[2] - lkp[2]);
       maxSpeed = Math.max(maxSpeed, e.speed_mps); maxDist = Math.max(maxDist, d);
       if (e.alert_state === 'SEARCH' && searchStart === null) {
-        searchStart = i + 1;
-        s3 = s.enemies.map((x) => ({ eid: x.eid, alert: +x.alert.toFixed(1), state: x.alert_state, hop: x.alert_hop }));
+        searchStart = i + 5;
+        s3 = ps.map((x) => ({ eid: x.eid, alert: +x.alert.toFixed(1), state: x.alert_state, hop: x.alert_hop }));
       }
-      if (searchStart !== null && searchEnd === null && e.alert_state === 'IDLE') searchEnd = i + 1;
-      if (i % 60 === 0 || (searchStart !== null && i < searchStart + 5)) {
-        tl.push({ t_s: +((i + 1) / 60).toFixed(2), alert: +e.alert.toFixed(1), state: e.alert_state, pos: e.pos.map((n) => +n.toFixed(2)), speed: +e.speed_mps.toFixed(2), d_from_lkp: +d.toFixed(2), target: e.search_target, band_m: e.search_radius_m });
+      if (searchStart !== null && searchEnd === null && e.alert_state === 'IDLE') searchEnd = i + 5;
+      if (i % 30 === 0 || (searchStart !== null && i < searchStart + 30)) {
+        tl.push({ t_s: +(i / 60).toFixed(2), alert: +e.alert.toFixed(1), state: e.alert_state, pos: e.pos.map((n) => +n.toFixed(2)), speed: +e.speed_mps.toFixed(2), d_from_lkp: +d.toFixed(2), target: e.search_target, band_m: e.search_radius_m });
       }
       if (searchEnd !== null && i > searchEnd + 120) break;
     }
@@ -354,11 +370,11 @@ try {
       const csAt = H.getCrimeState();
       let reportF = null;
       const bountyTl = [];
-      for (let f = 0; f < 60 * 90; f++) {
-        H.stepFrames(1);
-        const cs = H.getCrimeState();
-        if (f % 600 === 0) bountyTl.push({ t_s: +((f + 1) / 60).toFixed(1), bounty: cs.bounty.imperial });
-        if (cs.bounty.imperial > 0) { reportF = f + 1; break; }
+      for (let f = 0; f < 60 * 90; f += 6) {
+        H.stepFrames(6);
+        const b = H.getStealthState().bounty_imperial;
+        if (f % 600 === 0) bountyTl.push({ t_s: +(f / 60).toFixed(1), bounty: b });
+        if (b > 0) { reportF = f + 6; break; }
       }
       const cs = H.getCrimeState();
       const sv = H.saveState();

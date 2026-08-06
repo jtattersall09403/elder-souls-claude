@@ -120,11 +120,21 @@ export function buildSave(sim, build) {
       dispositions: sortedMap(sim.quest.dispositions),
     },
     factions: sortedMap(sim.quest.factions),
+    // W1-15 round 2. These four fields were always in the schema and were always empty: the
+    // stealth subsystem kept its own `CrimeWorld` and nothing ever copied it here, so
+    // `saveState().crime.stolen_registry` read `[]` after three thefts and `crime.bounty` read
+    // `{}` after a 1,450 g murder. `sim.stealth.mirrorToSave()` now writes `sim.quest.crime`
+    // from the live ledger every step and on every mutation, so this block is the ledger.
     crime: {
       bounty: sortedMap(sim.quest.crime.bounty),
       witnesses: [...sim.quest.crime.witnesses].sort(),
       stolen_registry: [...sim.quest.crime.stolen].sort(),
       hunting: [...sim.quest.crime.hunting].sort(),
+      // The rich ledger behind the four id lists above: the crime records, the zone memory that
+      // seam S-4 needs to survive a save, and the stolen rows with their owners and values.
+      // Declared in game/data/save-manifest.json under the Crime group.
+      ledger: sim.stealth ? sim.stealth.crime.toJSON() : null,
+      zones: sim.stealth ? sim.stealth.zones.toJSON() : {},
     },
     world: {
       // The seed the procedural world was generated from. Durable because the world IS the
@@ -139,6 +149,24 @@ export function buildSave(sim, build) {
       npcs_dead: [...sim.world.npcsDead].sort(),
       enemies_dead_until_rest: [...sim.world.enemiesDeadUntilRest].sort(),
       fog_gates_passed: [...sim.world.fogGatesPassed].sort(),
+      // W1-07: the people and the things in the room. Durable because a person's facing and a
+      // loiter clock are simulation state a reload must not forget, and because a world object
+      // you already picked up must stay picked up. Sorted by eid, like every incidental array.
+      npcs: sim.npcs.map((n) => ({
+        eid: n.eid, name: n.name, title: n.title || null, race: n.race,
+        faction: n.faction || null, reaction_group: n.reaction_group || null,
+        settlement: n.settlement || null, interior: n.interior || null,
+        behaviour: n.behaviour, base_disposition: n.base_disposition,
+        topics: n.topics.slice().sort(), services: n.services.slice().sort(),
+        pos: vec(n.pos), yaw_deg: r6(n.yaw), home_yaw_deg: r6(n.homeYaw),
+        height_scale: r6(n.height_scale), notice_radius_m: r6(n.notice_radius_m),
+        visible: !!n.visible, loiter_frames: n.loiter_frames, noticing: !!n.noticing,
+      })).sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0)),
+      props: sim.props.map((o) => ({
+        eid: o.eid, name: o.name, item: o.item, pos: vec(o.pos), yaw_deg: r6(o.yaw),
+        shape: o.shape, material: o.material, takeable: !!o.takeable, taken: !!o.taken,
+        reach_m: r6(o.reach_m),
+      })).sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0)),
       // ENTITY RECORD — the field set is enumerated in game/data/save-manifest.json under the
       // World group (`entity_record_fields`), and `getDurableFieldCensus()` checks the LIVE
       // entity object's own key set against it on every audit run. That census exists because
@@ -344,6 +372,12 @@ export function applySave(sim, blob, moves, statFor) {
   sim.quest.crime.witnesses = [...blob.crime.witnesses];
   sim.quest.crime.stolen = [...blob.crime.stolen_registry];
   sim.quest.crime.hunting = [...blob.crime.hunting];
+  // W1-15 round 2: restore the ledger the four lists above are a projection of. Order matters —
+  // `fromJSON` replaces the CrimeWorld's arrays wholesale, so anything that reads them (the
+  // guard band, the pending reports) must run after this, and everything does: they run in the
+  // fixed step and this is load time.
+  if (sim.stealth && blob.crime.ledger) sim.stealth.crime.fromJSON(blob.crime.ledger);
+  if (sim.stealth && blob.crime.zones) sim.stealth.zones.fromJSON(blob.crime.zones);
   sim.quest.flags = { ...blob.flags };
   sim.quest.afflictions = blob.afflictions.map((a) => ({ ...a }));
   sim.quest.travel.nodesVisited = [...blob.travel.nodes_visited];
@@ -359,6 +393,27 @@ export function applySave(sim, blob, moves, statFor) {
   sim.world.npcsDead = [...blob.world.npcs_dead];
   sim.world.enemiesDeadUntilRest = [...blob.world.enemies_dead_until_rest];
   sim.world.fogGatesPassed = [...blob.world.fog_gates_passed];
+
+  sim.npcs.length = 0;
+  for (const n of blob.world.npcs || []) {
+    sim.npcs.push({
+      eid: n.eid, kind: 'npc', name: n.name, title: n.title, race: n.race,
+      faction: n.faction, reaction_group: n.reaction_group, settlement: n.settlement,
+      interior: n.interior, behaviour: n.behaviour, base_disposition: n.base_disposition,
+      topics: [...n.topics], services: [...n.services],
+      pos: [...n.pos], homePos: [...n.pos], yaw: n.yaw_deg, homeYaw: n.home_yaw_deg,
+      height_scale: n.height_scale, notice_radius_m: n.notice_radius_m,
+      visible: n.visible, loiter_frames: n.loiter_frames, noticing: n.noticing, speaking: false,
+    });
+  }
+  sim.props.length = 0;
+  for (const o of blob.world.props || []) {
+    sim.props.push({
+      eid: o.eid, name: o.name, item: o.item, pos: [...o.pos], yaw: o.yaw_deg,
+      shape: o.shape, material: o.material, takeable: o.takeable, taken: o.taken,
+      reach_m: o.reach_m, readable: null,
+    });
+  }
 
   sim.entities.length = 0;
   sim.nextEid = 0;

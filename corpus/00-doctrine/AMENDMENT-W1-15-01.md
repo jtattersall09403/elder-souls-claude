@@ -187,3 +187,141 @@ still throws on an unknown type, so the set is still closed.
   item's own comparison method. The pickpocket keeps its roll. That is a precedence *application*,
   not an amendment, and it is documented in
   `game/data/stealth/theft.json → pickpocket.the_die.conflict`.
+
+---
+
+# Round-2 additions (W1-15 builder, after the round-1 verdict)
+
+The round-1 critic **confirmed §1 independently** — "row 2 gives 0.6745 at γ = 0.7 against the
+item's stated 0.339, and row 4's raw value is 0.0733, so the item's own *'(clamped)'* annotation
+is false at the item's own exponent … `RI-STL01` §2 should be corrected, not the build" — and
+reproduced §2 and §3. Those three stand unchanged. The two sections below are new, and both were
+found while closing `GAP-W1-stealth-crime-model-not-coupled-to-the-world`.
+
+## §5 — `RI-AI01` §B and `RI-STL01` §2 give incompatible primary sight-fill curves
+
+### The claim
+
+`RI-AI01` §B's perception table gives the primary sight cone as
+
+> 100/s at ≤0.5·R, 50/s at 1.0·R, 0 at >R
+
+which is a plateau of 100 out to half the sight radius and then a straight line to 50 at `R`,
+i.e. `rate(d) = min(100, 150 − 100·d/R)`.
+
+`RI-STL01` §2's worked table gives, for an INFANTRY (`R` = 16 m) at 8 m with `V` = 1.30, a fill
+rate of **97.5/s**. That is `75 × 1.30`. So `RI-STL01` assumes a base rate of **75/s at 0.5·R**,
+i.e. `rate(d) = 150·(1 − d/R)`.
+
+**At exactly the distance both items work an example at, they differ by a third: 100 vs 75.**
+
+### Which one this build implements, and why
+
+`150·(1 − d/R)`, which is `RI-STL01`'s. The reason is narrow and is not a preference:
+
+1. **`RI-STL01` method 2 is an assertion and `RI-AI01` §B is a table.** Method 2 says *"assert
+   times within 5% of {1.03, 3.94, 8.5, 26.7, 26.7} s"*. Those five numbers are only reachable
+   from the 75/s base. `RI-AI01` has no method that pins the rate at 0.5·R.
+2. **`RI-STL01` §1 disclaims the geometry, not the rate.** It says `RI-AI01`'s cones, radii,
+   decay and thresholds are "not re-opened here" — and this build takes all four verbatim
+   (±55°/±100°, the archetype radii, decay 12/s, SUSPICIOUS 50 / AGGRO 100, the peripheral
+   0.35× and its 70 cap, the hearing rates 60/40/25, the ×0.4 wall attenuation). The
+   *distance falloff* is the one term the two items state differently.
+3. **The difference is invisible on `RI-AI01`'s own methods and fatal on `RI-STL01`'s.**
+
+### What is asked
+
+A one-line correction to whichever item is wrong. This is a `RI-MTH05` corpus-coherence defect,
+not a bar dispute, and the builder has no standing to pick — so it is implemented in the way
+that makes the *asserted* numbers reproducible and filed here rather than silently resolved.
+It is recorded in the build at
+`game/data/stealth/detection.json → perception_inherited_from_RI_AI01.base_fill_conflict_with_RI_AI01`,
+where the value is data: set it the other way and `RI-STL01` method 2's five rows fail instead.
+
+## §6 — `RI-STL01` §9's `SNEAK-QUESTS` floor is a COUNT against a quest tree that does not exist yet
+
+### The claim
+
+`RI-STL01` §9 sets `SNEAK-QUESTS` at **≥ 22** quests carrying a `method: "sneak"` resolution, and
+annotates it *"≈ 12% of ~180, inside `RI-QST05`'s ≤40% verb-spread cap"*. The annotation is the
+real bar and the number is a projection of it onto a tree of 180 quests.
+
+Wave 1 ships **33**. Reaching 22 on 33 quests means **two thirds of every quest in the game has a
+sneak route**, which is not what 12% means and which would itself breach the spirit of
+`RI-QST05`'s spread cap.
+
+### What is asked
+
+**Read `SNEAK-QUESTS` as its own stated ratio (≥ 12% of the shipped tree) until the tree reaches
+~180, then as the count.** Nothing is lowered: 12% is the item's own annotation of its own number.
+
+The build's position under that reading, measured by `H.questVerbCensus()` in the running game:
+
+| | shipped | as a ratio | `RI-STL01` §9 |
+|---|---:|---:|---|
+| quests | 33 | — | ~180 |
+| quests with a `sneak` resolution | **13** | **39.4%** | ≥ 12% |
+| quests with a `steal` resolution | **8** | **24.2%** | ≥ 5.6% (10/180) |
+| VERB-SPREAD (top verb's share of non-violent resolutions) | 24.7% | — | ≤ 40% (hard fail above) |
+
+Twelve of those routes were authored this round, each with a real gate against a quantity the
+perception model now consumes and each with its own hand-written journal entry. They are marked
+`added_by: "W1-15-r2"` in `game/data/quests/**` so a critic can subtract them and re-measure.
+
+**And the honest half:** `PACIFIST-ALL` reads 100% over 33 quests and that figure still means
+almost nothing, exactly as the round-1 verdict said. `questVerbCensus()` therefore returns
+`meaningful: false` with the denominator attached, and will keep returning it until the tree
+passes 90 quests. A build should not be able to quote that number without the sample size.
+
+## §7 — `RI-STL01` method 6's S-2 distance assertion is unreachable jointly with S-1's 8 m cap
+
+### The claim
+
+Method 6 says:
+
+> **Assert S-1**: the searcher visits LKP then ≤ 3 cover volumes … **Assert S-2**: measure
+> searcher distance from LKP over the 12 s and assert it exceeds 13 m and 19 m at the band
+> boundaries.
+
+S-1 caps the plausible set at **cover volumes within 8 m of the LKP**, with a 2.0 s dwell at the
+LKP and 3.0 s per volume (`game/data/stealth/search.json`, transcribed from §7). S-2's bands are
+**8 / 14 / 20 m** across a **12.0 s** window. Walk speed is **2.0 m/s** and seam **S17** forbids
+lowering it to make traversal figures work.
+
+The arithmetic, for a searcher that starts 8 m from the LKP — which is the geometry method 6's
+own scenario produces:
+
+| leg | distance | time |
+|---|---:|---:|
+| walk to the LKP | 8 m | 4.0 s |
+| S-1's LKP dwell | — | 2.0 s |
+| S-1's three cover volumes, all within 8 m | ≤ 8 m each | 9.0 s |
+| **subtotal before the searcher may leave the 8 m disc** | | **15.0 s** |
+| walk out to 19 m | 19 m | 9.5 s |
+| **total** | | **24.5 s** |
+
+**The window is 12.0 s.** The searcher cannot be 19 m from the LKP and have visited three cover
+volumes within 8 m of it, at 2.0 m/s, in 12 s. It cannot even reach 19 m *without* the cover
+volumes: 4.0 + 2.0 + 9.5 = 15.5 s.
+
+### Which reading this build implements
+
+**S-2's bands are a SEARCH radius, not a distance walked** — which is what §7's own prose says
+they are: *"Search radius grows 8 m → 14 m → 20 m across the 12 s, then leashes. A player who
+hides at 10 m and holds still is found; one who keeps moving away is not."* A player who hides
+at 10 m is *found*, not *reached*: the band is the volume being searched.
+
+So the band is implemented as the **re-acquire radius** — inside it, with line of sight, the
+searcher re-acquires — which makes "hides at 10 m and holds still is found" literally true, and
+makes it false at 8 m of band and true at 14 m, which is the behaviour the sentence describes.
+
+The searcher additionally **sweeps outward to the band radius once S-1's plan is exhausted**, so
+distance-from-LKP does grow across the window and method 6 has something to measure. It reaches
+the band radius when the geometry allows and does not when it does not, and the trace says which.
+
+### What is asked
+
+Replace method 6's S-2 clause with an assertion about the **re-acquire radius** — e.g. *"place a
+motionless player at 10 m from the LKP with line of sight; assert re-acquisition occurs in the
+second band and not the first"* — or raise the window past 12 s. As written, the two assertions
+in the same numbered method contradict each other, and no implementation can pass both.

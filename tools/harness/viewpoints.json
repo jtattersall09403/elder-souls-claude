@@ -16,113 +16,400 @@
       "anchor": "vista_primary",
       "purpose": "fidelity",
       "note": "Long-range exterior vista: draw distance, fog, aerial perspective, silhouette layering.",
-      "camera": { "pos": [120, 22, -80], "look": [0, 6, 0], "fov": 55 },
-      "world": { "timeOfDay": 10.0, "weather": "clear" },
-      "metrics": ["dynamicRange", "edgeDensity", "fftHighBand", "saturation"]
+      "camera": {
+        "pos": [
+          120,
+          22,
+          -80
+        ],
+        "look": [
+          0,
+          6,
+          0
+        ],
+        "fov": 55
+      },
+      "world": {
+        "timeOfDay": 10,
+        "weather": "clear"
+      },
+      "metrics": [
+        "dynamicRange",
+        "edgeDensity",
+        "fftHighBand",
+        "saturation"
+      ]
     },
     {
       "id": "VP02-sky-only",
       "anchor": "vista_primary",
       "purpose": "fidelity",
       "note": "Camera pitched up so the frame is >85% sky. Sole input to the sky-gradient smoothness / banding metric.",
-      "camera": { "pos": [120, 22, -80], "look": [120, 200, -20], "fov": 55 },
-      "world": { "timeOfDay": 10.0, "weather": "clear" },
-      "metrics": ["skyGradient"]
+      "camera": {
+        "pos": [
+          120,
+          22,
+          -80
+        ],
+        "look": [
+          120,
+          200,
+          -20
+        ],
+        "fov": 55
+      },
+      "world": {
+        "timeOfDay": 10,
+        "weather": "clear"
+      },
+      "metrics": [
+        "skyGradient"
+      ]
     },
     {
       "id": "VP03-canopy-interior",
       "anchor": "swamp_canopy",
       "purpose": "fidelity",
       "note": "Under dense Hist canopy: dappled light, foliage alpha, contact shadows, depth complexity.",
-      "camera": { "pos": [8, 1.7, 12], "look": [24, 3.0, 20], "fov": 60 },
-      "world": { "timeOfDay": 13.0, "weather": "clear" },
-      "metrics": ["rmsContrast", "edgeDensity", "fftHighBand", "flatShading"]
+      "camera": {
+        "pos": [
+          8,
+          1.7,
+          12
+        ],
+        "look": [
+          24,
+          3,
+          20
+        ],
+        "fov": 60
+      },
+      "world": {
+        "timeOfDay": 13,
+        "weather": "clear"
+      },
+      "metrics": [
+        "rmsContrast",
+        "edgeDensity",
+        "fftHighBand",
+        "flatShading"
+      ]
     },
     {
       "id": "VP04-settlement-street",
       "anchor": "settlement_primary_street",
       "purpose": "art-direction",
       "note": "Eye-height street view in the flagship settlement: architecture legibility, prop density, NPC placement.",
-      "camera": { "pos": [4, 1.7, -6], "look": [4, 1.6, 18], "fov": 60 },
-      "world": { "timeOfDay": 9.0, "weather": "clear" },
-      "metrics": ["edgeDensity", "saturation", "flatShading"]
+      "camera": {
+        "pos": [
+          4,
+          1.7,
+          -6
+        ],
+        "look": [
+          4,
+          1.6,
+          18
+        ],
+        "fov": 60
+      },
+      "world": {
+        "timeOfDay": 9,
+        "weather": "clear"
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading"
+      ]
     },
     {
       "id": "VP05-interior-firelit",
       "anchor": "interior_firelit",
       "purpose": "fidelity",
       "note": "Enclosed interior lit by a single warm source: local contrast, shadow falloff, no flat ambient wash.",
-      "camera": { "pos": [0, 1.6, -3], "look": [0, 1.4, 3], "fov": 65 },
-      "world": { "timeOfDay": 21.0, "weather": "clear" },
-      "metrics": ["dynamicRange", "rmsContrast", "flatShading"]
+      "camera": {
+        "pos": [
+          0,
+          1.6,
+          -3
+        ],
+        "look": [
+          0,
+          1.4,
+          3
+        ],
+        "fov": 65
+      },
+      "world": {
+        "timeOfDay": 21,
+        "weather": "clear"
+      },
+      "metrics": [
+        "dynamicRange",
+        "rmsContrast",
+        "flatShading"
+      ]
     },
     {
       "id": "VP06-water-surface",
       "anchor": "water_shallows",
       "purpose": "fidelity",
       "note": "Standing water at grazing angle: reflection, refraction, shoreline blend, specular.",
-      "camera": { "pos": [-6, 1.4, -2], "look": [10, 0.6, 10], "fov": 60 },
-      "world": { "timeOfDay": 16.0, "weather": "clear" },
-      "metrics": ["fftHighBand", "rmsContrast", "saturation"]
+      "camera": {
+        "pos": [
+          -6,
+          1.4,
+          -2
+        ],
+        "look": [
+          10,
+          0.6,
+          10
+        ],
+        "fov": 60
+      },
+      "world": {
+        "timeOfDay": 16,
+        "weather": "clear"
+      },
+      "metrics": [
+        "fftHighBand",
+        "rmsContrast",
+        "saturation"
+      ]
     },
     {
       "id": "VP07-character-closeup",
       "anchor": "npc_showcase",
       "purpose": "fidelity",
       "note": "Framed head-and-shoulders of a named NPC: silhouette, material response, texel density.",
-      "camera": { "pos": [0, 1.65, 1.6], "look": [0, 1.6, 0], "fov": 40 },
-      "world": { "timeOfDay": 12.0, "weather": "clear" },
-      "metrics": ["edgeDensity", "fftHighBand", "flatShading", "rmsContrast"]
+      "camera": {
+        "pos": [
+          0,
+          1.65,
+          1.6
+        ],
+        "look": [
+          0,
+          1.6,
+          0
+        ],
+        "fov": 40
+      },
+      "world": {
+        "timeOfDay": 12,
+        "weather": "clear"
+      },
+      "metrics": [
+        "edgeDensity",
+        "fftHighBand",
+        "flatShading",
+        "rmsContrast"
+      ]
     },
     {
       "id": "VP08-material-closeup",
       "anchor": "material_showcase",
       "purpose": "fidelity",
       "note": "Half-metre from a wall/ground material junction: normal/roughness detail, tiling visibility.",
-      "camera": { "pos": [0, 0.9, 0.6], "look": [0, 0.5, 0], "fov": 45 },
-      "world": { "timeOfDay": 12.0, "weather": "clear" },
-      "metrics": ["fftHighBand", "flatShading", "rmsContrast"]
+      "camera": {
+        "pos": [
+          0,
+          0.9,
+          0.6
+        ],
+        "look": [
+          0,
+          0.5,
+          0
+        ],
+        "fov": 45
+      },
+      "world": {
+        "timeOfDay": 12,
+        "weather": "clear"
+      },
+      "metrics": [
+        "fftHighBand",
+        "flatShading",
+        "rmsContrast"
+      ]
     },
     {
       "id": "VP09-night-clear",
       "anchor": "vista_primary",
       "purpose": "fidelity",
       "note": "Same pose as VP01 at night. Tests that night is dark-but-readable, not a blue filter over day.",
-      "camera": { "pos": [120, 22, -80], "look": [0, 6, 0], "fov": 55 },
-      "world": { "timeOfDay": 1.0, "weather": "clear" },
-      "metrics": ["dynamicRange", "luminanceHistogram", "saturation"]
+      "camera": {
+        "pos": [
+          120,
+          22,
+          -80
+        ],
+        "look": [
+          0,
+          6,
+          0
+        ],
+        "fov": 55
+      },
+      "world": {
+        "timeOfDay": 1,
+        "weather": "clear"
+      },
+      "metrics": [
+        "dynamicRange",
+        "luminanceHistogram",
+        "saturation"
+      ]
     },
     {
       "id": "VP10-storm",
       "anchor": "vista_primary",
       "purpose": "fidelity",
       "note": "Same pose as VP01 in the region's signature bad weather.",
-      "camera": { "pos": [120, 22, -80], "look": [0, 6, 0], "fov": 55 },
-      "world": { "timeOfDay": 15.0, "weather": "storm" },
-      "metrics": ["dynamicRange", "rmsContrast", "saturation"]
+      "camera": {
+        "pos": [
+          120,
+          22,
+          -80
+        ],
+        "look": [
+          0,
+          6,
+          0
+        ],
+        "fov": 55
+      },
+      "world": {
+        "timeOfDay": 15,
+        "weather": "storm"
+      },
+      "metrics": [
+        "dynamicRange",
+        "rmsContrast",
+        "saturation"
+      ]
     },
     {
       "id": "VP11-dungeon-dark",
       "anchor": "dungeon_primary",
       "purpose": "art-direction",
       "note": "Interior ruin/dungeon with minimal light. Legibility floor: the player must still be able to navigate.",
-      "camera": { "pos": [0, 1.6, -4], "look": [0, 1.5, 6], "fov": 65 },
-      "world": { "timeOfDay": 12.0, "weather": "clear" },
-      "metrics": ["luminanceHistogram", "dynamicRange", "rmsContrast"]
+      "camera": {
+        "pos": [
+          0,
+          1.6,
+          -4
+        ],
+        "look": [
+          0,
+          1.5,
+          6
+        ],
+        "fov": 65
+      },
+      "world": {
+        "timeOfDay": 12,
+        "weather": "clear"
+      },
+      "metrics": [
+        "luminanceHistogram",
+        "dynamicRange",
+        "rmsContrast"
+      ]
     },
     {
       "id": "VP12-combat-framing",
       "anchor": "arena_flat",
       "purpose": "art-direction",
       "note": "Gameplay camera, locked on, mid-fight framing at STRIKE band. Judged for readability of the enemy's tell, not beauty.",
-      "camera": { "mode": "gameplay", "lockOn": true },
-      "world": { "timeOfDay": 12.0, "weather": "clear" },
+      "camera": {
+        "mode": "gameplay",
+        "lockOn": true
+      },
+      "world": {
+        "timeOfDay": 12,
+        "weather": "clear"
+      },
       "setup": [
-        { "op": "teleport", "x": 0, "z": 0 },
-        { "op": "spawn", "id": "inf_trash", "x": 0, "z": 3, "as": "e0" },
-        { "op": "lockOn", "target": "e0" }
+        {
+          "op": "teleport",
+          "x": 0,
+          "z": 0
+        },
+        {
+          "op": "spawn",
+          "id": "inf_trash",
+          "x": 0,
+          "z": 3,
+          "as": "e0"
+        },
+        {
+          "op": "lockOn",
+          "target": "e0"
+        }
       ],
-      "metrics": ["edgeDensity", "rmsContrast", "saturation"]
+      "metrics": [
+        "edgeDensity",
+        "rmsContrast",
+        "saturation"
+      ]
+    },
+    {
+      "id": "VP13-spell-release-combat",
+      "anchor": "arena_primary",
+      "purpose": "fidelity",
+      "note": "RI-MAG05 §B3 requests this viewpoint BY NAME: the HEAVY release frame (startup+1), gameplay camera transform, HUD off, fixed weather and time of day. M2 (local RMS contrast on a 256 px crop centred on the spell core), M5 (spectral slope on the smoke/spore crop), M8 (the flat-shading delta against the same viewpoint with no spell active) and M9 (tonemap response on the core) are all measured here, and so are VFX-SOFT and VFX-LIT.",
+      "camera": {
+        "pos": [
+          3.2,
+          1.75,
+          -4.2
+        ],
+        "look": [
+          0,
+          1.3,
+          6
+        ],
+        "fov": 55
+      },
+      "world": {
+        "timeOfDay": 14,
+        "weather": "clear"
+      },
+      "setup": {
+        "state": "arena_flat",
+        "spell": "kiln_breath",
+        "cast_on_frame": 2,
+        "capture_at": "player.phase==active",
+        "spawn": [
+          {
+            "id": "inf_trash",
+            "x": 0,
+            "z": 9
+          }
+        ]
+      },
+      "metrics": [
+        "dynamicRange",
+        "edgeDensity",
+        "fftHighBand",
+        "saturation",
+        "tonemapResponse"
+      ],
+      "vfx_lit_variants": [
+        {
+          "timeOfDay": 12
+        },
+        {
+          "timeOfDay": 0
+        },
+        {
+          "cell": "dungeon"
+        }
+      ]
     }
   ]
 }

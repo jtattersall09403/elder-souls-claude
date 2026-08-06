@@ -33,6 +33,9 @@ export const RESIST_CLAMP_PCT = 85;
 
 export { DAMAGE_EFFECTS };
 
+/** The four effects that act on a lock, a ward or a breakable rather than on a body. */
+const WORLD_VERBS = new Set(['open_lock', 'lock_lock', 'ward_trap', 'shatter']);
+
 export class MagicSystem {
   /**
    * @param {object} data {effects, spells, castClasses, enchanting}
@@ -586,7 +589,7 @@ export class MagicSystem {
       // half of why the round-1 verdict measured `open` as 31 hp to a creature: the only thing
       // the geometry could find WAS a creature. A ward, a lock and a brick wall are things you
       // aim at, so they are swept against on the same frame, by the same segment test.
-      if (!consumed && this.projectiles[i] === p) {
+      if (!consumed && this.projectiles[i] === p && this._hasWorldVerb(p.spell)) {
         const w = this._worldHit(p.prev, p.pos, p.r);
         if (w) {
           onHit(null, this.spellOf(p.spell), { kind: 'projectile', at: w.at, frame, world: w.id });
@@ -616,7 +619,7 @@ export class MagicSystem {
         }
       }
       // Same rule for a volume and a touch spell: the world is inside the sphere too.
-      if (!touched && !v.worldHit) {
+      if (!touched && !v.worldHit && this._hasWorldVerb(v.spell)) {
         const w = this._worldHit(v.centre, v.centre, v.r);
         if (w) { v.worldHit = w.id; onHit(null, this.spellOf(v.spell), { kind: v.contact ? 'contact' : 'volume', at: w.at, frame, world: w.id }); }
       }
@@ -736,6 +739,18 @@ export class MagicSystem {
    * Sorcery verb aims AT. Deterministic — iteration is over insertion order and the nearest
    * wins, with the id breaking a tie.
    */
+  /**
+   * Only a spell that CARRIES a world verb is stopped by a door. A fireball aimed past a locked
+   * grate must not be eaten by the grate — that would make scenery into cover for enemies and
+   * would be a fight-side regression bought for a utility-side feature, which is precisely the
+   * trade ARBITRATION §S19 says the fight half never has to make.
+   */
+  _hasWorldVerb(spellId) {
+    const s = this.spellOf(spellId);
+    if (!s) return false;
+    return s.effects.some((t) => WORLD_VERBS.has(t.effect));
+  }
+
   _worldHit(p0, p1, r) {
     const reach = r + 0.9;
     let best = null, bestD = Infinity;

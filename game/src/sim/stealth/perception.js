@@ -38,7 +38,24 @@ export const HZ = 60;
  * RADIUS rather than the rate, which is why `soundRadius()` lives in detection.js and this
  * table lives here.
  */
-export const HEAR_RATE_PER_S = { sprint: 60, walk: 40, crouch_move: 25, still: 0 };
+export const HEAR_RATE_FALLBACK = { sprint: 60, walk: 40, crouch_move: 25, still: 0 };
+
+/**
+ * ...and it is READ FROM `game/data/stealth/detection.json`, not from the constant above. The
+ * constant is a fallback for a data file that predates this field, and a build in which the two
+ * disagree is a build with two numbers for one quantity — which is the failure this whole file
+ * exists to undo. `detection.json` is the authority; change it there.
+ */
+function hearRate(data, motion) {
+  const t = data.perception_inherited_from_RI_AI01.hearing_rate_per_s;
+  const v = t ? t[motion] : undefined;
+  return v === undefined ? (HEAR_RATE_FALLBACK[motion] || 0) : v;
+}
+
+function wallAttenuation(data) {
+  const v = data.perception_inherited_from_RI_AI01.hearing_wall_attenuation;
+  return v === undefined ? HEARING_WALL_ATTENUATION : v;
+}
 
 /** `RI-AI01` §B: "ignores LOS, walls attenuate x0.4". */
 export const HEARING_WALL_ATTENUATION = 0.4;
@@ -165,7 +182,7 @@ export function perceiveInto(out, data, sim, obs, q) {
   let sight = 0;
   if (inSight && los) sight = DET.baseFillPerSecond(data, { V: q.V, dist, R: obs.R, cone });
   let hear = 0;
-  if (inEar) hear = (HEAR_RATE_PER_S[q.motion] || 0) * (los ? 1 : HEARING_WALL_ATTENUATION);
+  if (inEar) hear = hearRate(data, q.motion) * (los ? 1 : wallAttenuation(data));
 
   out.dist = dist;
   out.bearing_deg = bearing;
@@ -195,11 +212,12 @@ export function newPerceptOut() {
  *
  * @returns the alert value after the step.
  */
-export function stepAlert(e, per, decayPerS, baseline) {
+export function stepAlert(e, per, decayPerS, baseline, peripheralCap) {
   const floor = baseline || 0;
+  const pcap = peripheralCap === undefined ? PERIPHERAL_ALERT_CAP : peripheralCap;
   if (per.per_s > 0) {
     let cap = 100;
-    if (per.channel === 'peripheral' && e.alert < PERIPHERAL_ALERT_CAP) cap = PERIPHERAL_ALERT_CAP;
+    if (per.channel === 'peripheral' && e.alert < pcap) cap = pcap;
     else if (per.channel === 'peripheral') cap = e.alert;      // already above the cap by sight
     e.alert = Math.min(cap, e.alert + per.per_s / HZ);
     e.alertChannel = per.channel;

@@ -345,7 +345,12 @@ export class CombatBody {
       this._blendAnim = this.anim;
     }
     this.rig.applyCrossFade();
-    const w = this.moves._weapon;
+    // W1-10: the socket distances are the CURRENT MOVE's, not the weapon's, because the roster
+    // gives every slot its own clip and every clip its own capsule. `H.weapons.getClipTrack()`
+    // evaluates the same rig with the same two numbers (MovesetLibrary.socketsFor), so the
+    // declared clip track and the live weapon path are the same arithmetic — which is what
+    // RI-WPN04 §D T3/T4 compare. Falls back to the weapon block for reactions and locomotion.
+    const w = (this.move && this.move.socket_a_dist_m !== undefined) ? this.move : this.moves._weapon;
     this._lastRootDy = rootDy || 0;
     this.rig.evaluate(this.pos, this.yaw, rootDy || 0, w.socket_a_dist_m, w.socket_b_dist_m);
     this.socketA[0] = this.rig.socketA[0]; this.socketA[1] = this.rig.socketA[1]; this.socketA[2] = this.rig.socketA[2];

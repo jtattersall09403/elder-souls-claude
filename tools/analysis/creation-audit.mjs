@@ -478,26 +478,44 @@ if (run('prices')) {
   const cfgs = [['saxhleel', 'interior', 24, 54, 66], ['imperial', 'foreign-born', -26, 70, 52], ['dunmer', 'foreign-born', -44, 76, 47]];
   let ok = true;
   for (const [race, up, wantR, wantBuy, wantSell] of cfgs) {
-    const q = priceQuote(data, { group: 'RG-DEEP', race, upbringing: up, basePrice: 60 });
+    // §4b's table is the RACE SURCHARGE ALONE — the item is about race, not about Mercantile.
+    // Round 2 made `buy`/`sell` the FULL quote (RI-PRG05 §3's skill and disposition terms are
+    // now derived from the character rather than supplied by the caller), so the surcharge-only
+    // figures are read from their own fields. Both are printed, so nobody can confuse them.
+    const q = priceQuote(data, { group: 'RG-DEEP', race, upbringing: up, basePrice: 60, skillBuyMult: 1, skillSellMult: 1 });
     const near = (a, b) => Math.abs(a - b) <= Math.max(1, b * 0.03);
-    const good = q.r === wantR && near(q.buy, wantBuy) && near(q.sell, wantSell);
+    const good = q.r === wantR && near(q.buy_surcharge_only, wantBuy) && near(q.sell_surcharge_only, wantSell);
     ok = ok && good;
-    note(`${pad(race, 9)} ${pad(up, 13)} r=${pad(String(q.r), 4)} buy x${q.buyMult.toFixed(3)} = ${q.buy} g   sell x${q.sellMult.toFixed(3)} = ${q.sell} g   ${good ? '' : `EXPECTED ${wantBuy}/${wantSell}`}`);
+    note(`${pad(race, 9)} ${pad(up, 13)} r=${pad(String(q.r), 4)} buy x${q.buyMult.toFixed(3)} = ${q.buy_surcharge_only} g   sell x${q.sellMult.toFixed(3)} = ${q.sell_surcharge_only} g   ${good ? '' : `EXPECTED ${wantBuy}/${wantSell}`}`);
   }
   check('CHR02-M7-quotes', ok, 'three §4b quotes on a 60 g healing draught', 'buy {54, 70, 76} and sell {66, 52, 47} within 3%');
   // The par clause: a Dunmer with the best social build in the game reaches par, not advantage.
-  const dun = raceSurcharge(data, { group: 'RG-DEEP', race: 'dunmer', upbringing: 'foreign-born' });
-  const bestSocial = 0.80; // RI-PRG05's Mercantile-100 / PERSONALITY-60 buy multiplier
-  const eff = dun.buyMult * bestSocial;
+  // ROUND 2: the skill term is now DERIVED from the character rather than supplied by the
+  // caller. Round 1's version of this check fed the 0.80 in by hand, which is why the verdict
+  // recorded "the par clause holds only when I feed the 0.80 myself".
+  const parQ = priceQuote(data, {
+    group: 'RG-DEEP', race: 'dunmer', upbringing: 'foreign-born', basePrice: 60,
+    skills: { mercantile: { value: 100 } }, attributes: { personality: 60 },
+  });
+  const untrainedQ = priceQuote(data, {
+    group: 'RG-DEEP', race: 'dunmer', upbringing: 'foreign-born', basePrice: 60,
+    skills: { mercantile: { value: 5 } }, attributes: { personality: 10 },
+  });
+  const eff = parQ.effective_buy_mult;
+  note(`untrained Dunmer effective buy x${untrainedQ.effective_buy_mult.toFixed(4)} (${untrainedQ.buy} g); Mercantile-100/PER-60 x${eff.toFixed(4)} (${parQ.buy} g)`);
   check('CHR02-M7-par-clause', eff >= 0.98 && eff <= 1.05,
-    `Mercantile-100 / PER-60 Dunmer in the interior buys at ${dun.buyMult.toFixed(3)} x ${bestSocial} = ${eff.toFixed(4)}x`,
+    `Mercantile-100 / PER-60 Dunmer buys at surcharge x${parQ.buyMult.toFixed(3)} times a DERIVED skill term x${parQ.skill_buy_mult.toFixed(3)} = ${eff.toFixed(4)}x`,
     'in [0.98, 1.05] — the best social build reaches par with an untrained Saxhleel, never advantage');
+  check('CHR02-M7-mercantile-is-real', untrainedQ.effective_buy_mult - eff > 0.30,
+    `training Mercantile 5 -> 100 and PERSONALITY 10 -> 60 moves the same Dunmer's buy multiplier by ${(untrainedQ.effective_buy_mult - eff).toFixed(4)}`,
+    '> 0.30 — round 1 derived no Mercantile term at all, so the two were identical');
   // The round-trip figure. RI-CHR02 §4b's last column prints -44% (Dunmer) and -30%
   // (Imperial) without stating the definition, and none of the four natural readings of
   // "round trip" reproduces BOTH from the item's own multipliers — so all four are printed
   // and the assertion is made on the one thing the item unambiguously claims: that a Dunmer
   // is far worse off over a buy-and-sell-back than a Saxhleel.
   const sax = raceSurcharge(data, { group: 'RG-DEEP', race: 'saxhleel', upbringing: 'interior' });
+  const dun = raceSurcharge(data, { group: 'RG-DEEP', race: 'dunmer', upbringing: 'foreign-born' });
   const imp = raceSurcharge(data, { group: 'RG-DEEP', race: 'imperial', upbringing: 'foreign-born' });
   const readings = (x) => ({
     'vs Saxhleel (sell/buy ratio)': (x.sellMult / x.buyMult) / (sax.sellMult / sax.buyMult) - 1,

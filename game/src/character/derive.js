@@ -243,14 +243,32 @@ export function applyBirthsignToPools(pools, character) {
 /** §2: one curve for all nineteen. */
 export function progressToNext(skill) { return Math.round(1.6 * skill + 6); }
 
-/** Weapon class key (game/data/weapons/classes.json) → the skill that governs it. */
+/**
+ * Weapon class → the skill that governs it, in BOTH vocabularies the build uses.
+ *
+ * `game/data/weapons/classes.json` keys the fifteen classes as DGR/SSW/AXE/…, and W1-09's
+ * seven spine files carry `class_key` as `straight_sword`/`ultra_greatsword`/…, which is what
+ * a live body's `moves._classKey` actually is. Round 2 shipped only the first set and the
+ * first live probe came back `refused: "no skill governs weapon class 'straight_sword'"` on
+ * every one of 35 connecting hits — which is the fail-closed path working exactly as intended
+ * and is why the refusal carries the class name.
+ */
 export const CLASS_TO_SKILL = {
+  // RI-WPN02's fifteen class ids
   DGR: 'blades', SSW: 'blades', CSW: 'blades', TSW: 'blades',
   AXE: 'axes-maces', MCE: 'axes-maces', WHP: 'axes-maces',
   SPR: 'polearms', HLB: 'polearms',
   GSW: 'greatweapons', CGS: 'greatweapons', GHM: 'greatweapons', UGS: 'greatweapons',
   FST: 'claw-fang',
   BOW: 'marksman',
+  // W1-09's spine class_keys, which is what a live CombatBody reports
+  dagger: 'blades', straight_sword: 'blades', curved_sword: 'blades', thrusting_sword: 'blades',
+  axe: 'axes-maces', mace: 'axes-maces', whip: 'axes-maces',
+  spear: 'polearms', halberd: 'polearms',
+  greatsword: 'greatweapons', curved_greatsword: 'greatweapons', great_hammer: 'greatweapons',
+  ultra_greatsword: 'greatweapons',
+  fist: 'claw-fang', claw: 'claw-fang',
+  bow: 'marksman', crossbow: 'marksman',
 };
 
 /**

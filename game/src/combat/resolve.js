@@ -60,9 +60,28 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
             // `A.move.id` afterwards. It survived until a probe parried something.
             const atkId = A.move.id;
             A.queueParried(frames, frame);
+
+            // A SUCCESSFUL PARRY RELEASES THE PARRIER. RI-CMB05 M7 is the riposte, and the
+            // round-2 verdict measured `riposted: false, damage: 0` in all seven parry cases
+            // while the parry itself was frame-perfect. The reason was arithmetic, not input:
+            // a medium shield's parry animation is 80 f@60, the PARRIED state is 56 f, and the
+            // riposte window inside it is f7-f52. A parrier still committed to its own parry
+            // recovery is actionable at parry-frame 80, by which time the window has closed at
+            // 52. The payoff was unreachable for every shield class whose animation outlasts
+            // the state it creates — which is all of them.
+            //
+            // So the parry's recovery ends when the parry CONNECTS. That is the Souls
+            // behaviour (the deflect snaps into the critical) and it is also the only reading
+            // under which §D's window is a window rather than a decoration. A WHIFFED parry
+            // still pays its full `whiff_recovery_f`; nothing here shortens that, and the
+            // punish for a mistimed parry is untouched.
+            B.endMove();
+            B.actionableAt = frame;
+
             const e = emit(frame, 'PARRY');
             e.src = B.id; e.who = A.id; e.atk = atkId; e.parry_frame = pf;
             e.window = w; e.frames = frames;
+            e.parrier_released = true;
             e.riposte_window = C.poise.criticals.parry.parried_state.riposte_window;
             sim.hitstopUntil = frame + 10;
             continue;

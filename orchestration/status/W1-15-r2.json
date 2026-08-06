@@ -14,7 +14,23 @@
     "quest data: sneak/steal resolutions to clear VERB-SPREAD",
     "tools/harness/w1-15-coupling.mjs \u2014 RI-MTH07 coupling probes driven world-side"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/src/sim/stealth/perception.js (NEW) \u2014 the single perception kernel: V-scaled sight fill, RI-AI01 hearing rates, LOS against sim.cell, derived cover",
+    "game/src/sim/stealth/system.js \u2014 stepPerception(), stepSearches(), stepGuards(), deriveWitnesses(), beginReport(), stepFlight(), commitCrime(), mirrorToSave(), resetSubsystem()",
+    "game/src/combat/enemy.js \u2014 _idleBehaviour no longer fills the alert meter; it reads it",
+    "game/src/sim/record.js \u2014 enemy alert_channel, los, search_target, search_radius_m, lkp, alert_hop",
+    "game/src/sim/crime/state.js \u2014 stolenRegistry, registerStolen(), launder(), confiscateStolen(), toJSON/fromJSON",
+    "game/src/save/state.js + game/data/save-manifest.json \u2014 crime.ledger and crime.zones persisted; the four id lists are now written",
+    "game/src/engine.js \u2014 takeObject enforces ownership into inventory+registry; addOccluder/coverAt/addCoverVolume/setPlayerMotion/spawnGuard/fenceSell/questVerbCensus/losBetween; reset clears the subsystem",
+    "game/src/harness/api.js \u2014 the RI-MTH07 world-side surfaces + perceptionState()",
+    "game/data/stealth/detection.json \u2014 peripheral 0.35 (was 0.45), hearing rates, peripheral cap 70, civilian hearing scale + ceiling, the RI-AI01 base-fill conflict recorded",
+    "game/data/stealth/search.json \u2014 walk_mps 2.0 (S17)",
+    "game/data/combat/enemies/guard_legion.json (NEW) \u2014 a guard that exists, with a surrender parley",
+    "game/data/combat/enemies/inf_trash.json \u2014 sight_radius_m 14 -> 16 (RI-AI01 nominal INFANTRY)",
+    "game/data/quests/*.json \u2014 12 authored sneak/steal routes with journal entries; VERB-SPREAD 28.2% -> 24.7%, sneak 6 -> 13 quests, steal 3 -> 8",
+    "corpus/00-doctrine/AMENDMENT-W1-15-01.md \u00a75 \u00a76 \u2014 the RI-AI01/RI-STL01 fill-curve conflict; SNEAK-QUESTS as a ratio",
+    "tools/harness/w1-15-coupling.mjs (NEW) \u2014 RI-MTH07 coupling probe, entity-side observables only"
+  ],
   "findings": [
     "R1 defect A: entities.js stepEntities() hold_ground branch does `e.alert = min(100, e.alert+4)` \u2014 flat, never multiplies by sim.stealth.p.V. This is the coupling-0 call site.",
     "R1 defect B: stealth/system.js step() \u00a75 loops civilians only; no witness derivation, no sound propagation into civilians (only emitSound() discrete events).",
@@ -29,8 +45,13 @@
     "CORPUS CONFLICT FOUND: RI-AI01 \u00a7B states the primary sight rate as '100/s at <=0.5R, 50/s at 1.0R'; RI-STL01 \u00a72's worked table implies 75/s at 0.5R (97.5 = 150*1.30*0.5). Irreconcilable. Build uses RI-STL01's form (its method 2 asserts against that table). Filed for the bar critic.",
     "detection.json peripheral_rate_scale corrected 0.45 -> 0.35 (RI-AI01 \u00a7B). Added hearing_rate_per_s {60,40,25,0}, hearing_wall_attenuation 0.4, peripheral_alert_cap 70 \u2014 all RI-AI01 \u00a7B verbatim.",
     "LOS uses sim.cell.sphereCast() \u2014 the SAME static collision set the camera spring arm and player body use \u2014 plus a stealth scratch occluder cell. r=0.05 m probe (r=0 makes conservative advancement degenerate).",
-    "Stepping 1 frame at a time over the playwright bridge is far too slow (>120 s for 2 rows). Probe loops must run inside page.evaluate()."
+    "Stepping 1 frame at a time over the playwright bridge is far too slow (>120 s for 2 rows). Probe loops must run inside page.evaluate().",
+    "QuestBook enforces journal-index integrity at boot: every resolution's journal_index must exist in the quest's journal. Adding a resolution WITHOUT a journal entry breaks the boot for every agent. Fixed by authoring 12 journal entries.",
+    "snapshot() builds a whole trace record; a 3600-frame per-frame curve needs the cheap perceptionState() accessor instead (added).",
+    "VERB-SPREAD after the quest work: 24.7% (cap 40%). sneak 13 quests / 33, steal 8 / 33.",
+    "PERF: the probe at 1920x1080 under SwiftShader is ~60x slower than at 320x240 \u2014 a 3600-frame in-page loop went from >20 min to 2.9 s. Every W1-15 probe must pass --width 320 --height 240 unless it screenshots (NO-METER does, and only that one needs the full viewport).",
+    "MEASURED row 1 at the small viewport: AGGRO at f=62 vs the item's 1.03 s (61.8 f) \u2014 0.32% error, V=1.30."
   ],
-  "next_step": "rewrite w1-15-coupling.mjs with in-page loops; then search, witnesses, parley, quest verbs",
+  "next_step": "collect reports/w1-15-coupling.json; write deliverable notes",
   "notes_for_successor": ""
 }

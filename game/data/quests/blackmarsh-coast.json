@@ -1,1790 +1,1829 @@
 {
- "schema": "elder-souls/quests@1",
- "id": "blackmarsh-coast",
- "element_schema": "corpus/30-quests/quest.schema.json",
- "piece": "W1-18",
- "note": "The coast half of the W1-18 quest corpus: Archon, Soulrest, Blackrose, Stormhold, Lilmoth. Each element validates against corpus/30-quests/quest.schema.json.",
- "quests": [
-  {
-   "id": "Q-ARCH-01",
-   "title": "The Vats or the People",
-   "category": "side",
-   "faction": null,
-   "act": null,
-   "rank_gate": null,
-   "discovery": "overheard",
-   "giver": {
-    "npc_id": "dyer-sallis",
-    "location": "Archon, the vat-yard above the strand",
-    "disposition_min": 30,
-    "honest": false
-   },
-   "opens_by": {
-    "topic": "the vat cough",
-    "overheard_from": [
-     "captain-oreem",
-     "herbwife-ossa"
-    ],
-    "prerequisite_topics": []
-   },
-   "task_kind": "moral_dilemma",
-   "stakes": 7,
-   "directions": "The vat-yard is above the Archon strand, on the shelf where the road bends inland before the harbour. Follow the smell. The harvesters' huts are below it on the lichen beds, at the tide line, and you will pass the apothecary's door on the way down — it is the one with the copper hood.",
-   "journal": [
+  "schema": "elder-souls/quests@1",
+  "id": "blackmarsh-coast",
+  "element_schema": "corpus/30-quests/quest.schema.json",
+  "piece": "W1-18",
+  "note": "The coast half of the W1-18 quest corpus: Archon, Soulrest, Blackrose, Stormhold, Lilmoth. Each element validates against corpus/30-quests/quest.schema.json.",
+  "quests": [
     {
-     "index": 6,
-     "state": "active",
-     "text": "A captain in the Archon tavern said the dyers have been buying more salt than a dyer needs, and then said he had not said it.",
-     "records_belief": false
-    },
-    {
-     "index": 10,
-     "state": "active",
-     "text": "Sallis wants the harvesters off the lichen beds. He says they are stealing from the vats and that the guild has a charter for the whole strand. He offered me a price before I had said anything.",
-     "records_belief": true
-    },
-    {
-     "index": 20,
-     "state": "active",
-     "text": "The harvesters are coughing. All of them, the children too, and it is a dry cough that comes in threes. The beds they work are downstream of the vat run-off.",
-     "records_belief": false
-    },
-    {
-     "index": 25,
-     "state": "active",
-     "text": "The apothecary sells one cure and only one, and she buys the base for it from the guild, and she will not discuss the price in front of anybody.",
-     "records_belief": false
-    },
-    {
-     "index": 40,
-     "state": "branch",
-     "text": "There is a letter in the guild's own strongbox denying a thing nobody had accused them of. The salt is not for dye. It is for the run-off, to make it read clean in a jar of water. They have known for six seasons.",
-     "records_belief": false
-    },
-    {
-     "index": 50,
-     "state": "active",
-     "text": "The strand burns at low tide if it is fired from the seaward end. Oreem told me that the way you tell somebody something you want done.",
-     "records_belief": false
-    },
-    {
-     "index": 78,
-     "state": "failure",
-     "text": "The lichen took the beds and the huts with them. There was nobody left on the strand to argue about who owned it.",
-     "records_belief": false
-    },
-    {
-     "index": 90,
-     "state": "success",
-     "text": "I put the guild's own denial in front of the Imperial factor. The guild is fined, the vats are still running, and the cough is still coming in threes. The factor teaches sums now to anyone who asks.",
-     "records_belief": false
-    },
-    {
-     "index": 92,
-     "state": "success",
-     "text": "I fired the strand at low tide. The vats are gone and three families with them, gone west, and the apothecary shut her door in Frostfall because she could not get the base. The lichen is coming back where nothing has come back in a lifetime.",
-     "records_belief": false
-    },
-    {
-     "index": 94,
-     "state": "success",
-     "text": "I took nine hundred to say nothing, and I have said nothing. The harvesters do not speak to me. Not one of them, not once, not even the children, and they are very good at it.",
-     "records_belief": false
-    }
-   ],
-   "branches": [
-    {
-     "id": "br_cough",
-     "at_journal_index": 20,
-     "condition": "The player connects the cough to the run-off, or takes the guild's account of theft",
-     "leads_to": [
-      "rev_letter",
-      "res_bribe",
-      "fail_beds_lost"
-     ],
-     "irreversible": false
-    },
-    {
-     "id": "br_the_strand",
-     "at_journal_index": 40,
-     "condition": "The player has the denial and must choose the vats, the people, or the money",
-     "leads_to": [
-      "res_report",
-      "res_burn",
-      "res_bribe"
-     ],
-     "irreversible": true
-    }
-   ],
-   "resolutions": [
-    {
-     "id": "res_report",
-     "method": "confess",
-     "violence_required": false,
-     "journal_index": 90,
-     "outcome": "The guild is fined by the Imperial factor. The vats keep running, the cough keeps spreading, and the factor stays in Archon and takes pupils.",
-     "morally_better": null,
-     "requires": {
-      "skills": {
-       "speechcraft": 30
-      }
-     },
-     "requires_knowing": [
-      "rev_letter"
-     ],
-     "exclusive_with": [
-      "res_burn",
-      "res_bribe"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": 12,
-       "the_wet_ledger": -8
+      "id": "Q-ARCH-01",
+      "title": "The Vats or the People",
+      "category": "side",
+      "faction": null,
+      "act": null,
+      "rank_gate": null,
+      "discovery": "overheard",
+      "giver": {
+        "npc_id": "dyer-sallis",
+        "location": "Archon, the vat-yard above the strand",
+        "disposition_min": 30,
+        "honest": false
       },
-      "world_flags": [
-       "archon_guild_fined",
-       "archon_vats_open",
-       "archon_factor_teaches",
-       "archon_cough_continues"
-      ],
-      "locks": [
-       "Q-ARCH-03"
-      ],
-      "npc_disposition": {
-       "dyer-sallis": -40
-      }
-     }
-    },
-    {
-     "id": "res_burn",
-     "method": "sneak",
-     "violence_required": false,
-     "journal_index": 92,
-     "outcome": "The strand burns at low tide. The dye trade ends, three households leave the province, the apothecary closes for want of a base, and the lichen recovers over six in-game weeks.",
-     "morally_better": null,
-     "requires": {
-      "knowledge": [
-       "topic_the_low_tide_hour"
-      ],
-      "items": [
-       "item_pitch_flask"
-      ]
-     },
-     "requires_knowing": [
-      "rev_letter",
-      "rev_oreem"
-     ],
-     "exclusive_with": [
-      "res_report",
-      "res_bribe"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": -14,
-       "the_wet_ledger": -20,
-       "the_xul_aneekh": 10
+      "opens_by": {
+        "topic": "the vat cough",
+        "overheard_from": [
+          "captain-oreem",
+          "herbwife-ossa"
+        ],
+        "prerequisite_topics": []
       },
-      "world_flags": [
-       "archon_vats_burned",
-       "archon_apothecary_closed",
-       "archon_dye_trade_ended",
-       "archon_lichen_recovering",
-       "archon_three_households_left"
+      "task_kind": "moral_dilemma",
+      "stakes": 7,
+      "directions": "The vat-yard is above the Archon strand, on the shelf where the road bends inland before the harbour. Follow the smell. The harvesters' huts are below it on the lichen beds, at the tide line, and you will pass the apothecary's door on the way down — it is the one with the copper hood.",
+      "journal": [
+        {
+          "index": 6,
+          "state": "active",
+          "text": "A captain in the Archon tavern said the dyers have been buying more salt than a dyer needs, and then said he had not said it.",
+          "records_belief": false
+        },
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Sallis wants the harvesters off the lichen beds. He says they are stealing from the vats and that the guild has a charter for the whole strand. He offered me a price before I had said anything.",
+          "records_belief": true
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "The harvesters are coughing. All of them, the children too, and it is a dry cough that comes in threes. The beds they work are downstream of the vat run-off.",
+          "records_belief": false
+        },
+        {
+          "index": 25,
+          "state": "active",
+          "text": "The apothecary sells one cure and only one, and she buys the base for it from the guild, and she will not discuss the price in front of anybody.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "There is a letter in the guild's own strongbox denying a thing nobody had accused them of. The salt is not for dye. It is for the run-off, to make it read clean in a jar of water. They have known for six seasons.",
+          "records_belief": false
+        },
+        {
+          "index": 50,
+          "state": "active",
+          "text": "The strand burns at low tide if it is fired from the seaward end. Oreem told me that the way you tell somebody something you want done.",
+          "records_belief": false
+        },
+        {
+          "index": 78,
+          "state": "failure",
+          "text": "The lichen took the beds and the huts with them. There was nobody left on the strand to argue about who owned it.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I put the guild's own denial in front of the Imperial factor. The guild is fined, the vats are still running, and the cough is still coming in threes. The factor teaches sums now to anyone who asks.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I fired the strand at low tide. The vats are gone and three families with them, gone west, and the apothecary shut her door in Frostfall because she could not get the base. The lichen is coming back where nothing has come back in a lifetime.",
+          "records_belief": false
+        },
+        {
+          "index": 94,
+          "state": "success",
+          "text": "I took nine hundred to say nothing, and I have said nothing. The harvesters do not speak to me. Not one of them, not once, not even the children, and they are very good at it.",
+          "records_belief": false
+        }
       ],
-      "locks": [
-       "Q-ARCH-02",
-       "Q-ARCH-03"
+      "branches": [
+        {
+          "id": "br_cough",
+          "at_journal_index": 20,
+          "condition": "The player connects the cough to the run-off, or takes the guild's account of theft",
+          "leads_to": [
+            "rev_letter",
+            "res_bribe",
+            "fail_beds_lost"
+          ],
+          "irreversible": false
+        },
+        {
+          "id": "br_the_strand",
+          "at_journal_index": 40,
+          "condition": "The player has the denial and must choose the vats, the people, or the money",
+          "leads_to": [
+            "res_report",
+            "res_burn",
+            "res_bribe"
+          ],
+          "irreversible": true
+        }
       ],
-      "npc_disposition": {
-       "dyer-sallis": -100,
-       "apothecary-neen": -60
-      }
-     }
-    },
-    {
-     "id": "res_bribe",
-     "method": "trade",
-     "violence_required": false,
-     "journal_index": 94,
-     "outcome": "Nine hundred gold for silence. The vats run, the beds are cleared anyway, and every lichen-blind beggar on the coast refuses to speak to the player for the rest of the save.",
-     "morally_better": false,
-     "requires": {},
-     "exclusive_with": [
-      "res_report",
-      "res_burn"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_wet_ledger": 6,
-       "the_xul_aneekh": -18
+      "resolutions": [
+        {
+          "id": "res_report",
+          "method": "confess",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The guild is fined by the Imperial factor. The vats keep running, the cough keeps spreading, and the factor stays in Archon and takes pupils.",
+          "morally_better": null,
+          "requires": {
+            "skills": {
+              "speechcraft": 30
+            }
+          },
+          "requires_knowing": [
+            "rev_letter"
+          ],
+          "exclusive_with": [
+            "res_burn",
+            "res_bribe"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": 12,
+              "the_wet_ledger": -8
+            },
+            "world_flags": [
+              "archon_guild_fined",
+              "archon_vats_open",
+              "archon_factor_teaches",
+              "archon_cough_continues"
+            ],
+            "locks": [
+              "Q-ARCH-03"
+            ],
+            "npc_disposition": {
+              "dyer-sallis": -40
+            }
+          }
+        },
+        {
+          "id": "res_burn",
+          "method": "sneak",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The strand burns at low tide. The dye trade ends, three households leave the province, the apothecary closes for want of a base, and the lichen recovers over six in-game weeks.",
+          "morally_better": null,
+          "requires": {
+            "knowledge": [
+              "topic_the_low_tide_hour"
+            ],
+            "items": [
+              "item_pitch_flask"
+            ]
+          },
+          "requires_knowing": [
+            "rev_letter",
+            "rev_oreem"
+          ],
+          "exclusive_with": [
+            "res_report",
+            "res_bribe"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": -14,
+              "the_wet_ledger": -20,
+              "the_xul_aneekh": 10
+            },
+            "world_flags": [
+              "archon_vats_burned",
+              "archon_apothecary_closed",
+              "archon_dye_trade_ended",
+              "archon_lichen_recovering",
+              "archon_three_households_left"
+            ],
+            "locks": [
+              "Q-ARCH-02",
+              "Q-ARCH-03"
+            ],
+            "npc_disposition": {
+              "dyer-sallis": -100,
+              "apothecary-neen": -60
+            }
+          }
+        },
+        {
+          "id": "res_bribe",
+          "method": "trade",
+          "violence_required": false,
+          "journal_index": 94,
+          "outcome": "Nine hundred gold for silence. The vats run, the beds are cleared anyway, and every lichen-blind beggar on the coast refuses to speak to the player for the rest of the save.",
+          "morally_better": false,
+          "requires": {},
+          "exclusive_with": [
+            "res_report",
+            "res_burn"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_wet_ledger": 6,
+              "the_xul_aneekh": -18
+            },
+            "world_flags": [
+              "archon_silence_bought",
+              "archon_beds_cleared",
+              "archon_beggars_silent",
+              "archon_vats_open"
+            ],
+            "locks": [
+              "Q-ARCH-02"
+            ],
+            "npc_disposition": {
+              "dyer-sallis": 30
+            }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_beds_lost",
+          "cause": "Twenty days pass after journal index 10",
+          "journal_index": 78,
+          "recoverable": false,
+          "consequence": "The beds and the huts are cleared by the guild without the player. Archon's apothecary raises her price permanently and the quest closes unresolved.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D1",
+          "D3",
+          "D9"
+        ],
+        "stated_objective": "Clear thieves off a guild charter",
+        "actual_objective": "Clear witnesses off a strand the guild has been poisoning for six seasons",
+        "truth": "The salt buys a clean reading in a jar of water. The guild has known what the run-off does since before the charter.",
+        "revealed_by": [
+          {
+            "id": "rev_letter",
+            "channel": "letter",
+            "source": "item_guild_denial",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_cough",
+            "channel": "environment",
+            "source": "the cough on the lichen beds",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_oreem",
+            "channel": "eavesdrop",
+            "source": "captain-oreem",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": false
       },
-      "world_flags": [
-       "archon_silence_bought",
-       "archon_beds_cleared",
-       "archon_beggars_silent",
-       "archon_vats_open"
-      ],
-      "locks": [
-       "Q-ARCH-02"
-      ],
-      "npc_disposition": {
-       "dyer-sallis": 30
-      }
-     }
-    }
-   ],
-   "failure_states": [
-    {
-     "id": "fail_beds_lost",
-     "cause": "Twenty days pass after journal index 10",
-     "journal_index": 78,
-     "recoverable": false,
-     "consequence": "The beds and the huts are cleared by the guild without the player. Archon's apothecary raises her price permanently and the quest closes unresolved.",
-     "silent": false
-    }
-   ],
-   "can_fail": true,
-   "deceit": {
-    "patterns": [
-     "D1",
-     "D3",
-     "D9"
-    ],
-    "stated_objective": "Clear thieves off a guild charter",
-    "actual_objective": "Clear witnesses off a strand the guild has been poisoning for six seasons",
-    "truth": "The salt buys a clean reading in a jar of water. The guild has known what the run-off does since before the charter.",
-    "revealed_by": [
-     {
-      "id": "rev_letter",
-      "channel": "letter",
-      "source": "item_guild_denial",
-      "before_point_of_no_return": true
-     },
-     {
-      "id": "rev_cough",
-      "channel": "environment",
-      "source": "the cough on the lichen beds",
-      "before_point_of_no_return": true
-     },
-     {
-      "id": "rev_oreem",
-      "channel": "eavesdrop",
-      "source": "captain-oreem",
-      "before_point_of_no_return": true
-     }
-    ],
-    "never_revealed": false
-   },
-   "consequences": {
-    "faction_reputation": {
-     "the_wet_ledger": 0,
-     "the_imperial_assize": 0
-    },
-    "world_flags": [
-     "archon_strand_question_settled"
-    ]
-   },
-   "mutually_exclusive_with": [],
-   "kill_required_npcs": [],
-   "rewards": [
-    {
-     "type": "gold",
-     "unique_named": false,
-     "amount": 900,
-     "on_resolution": [
-      "res_bribe"
-     ]
-    },
-    {
-     "type": "training",
-     "unique_named": true,
-     "id": "trn_factor_sums",
-     "name": "the factor's sums",
-     "on_resolution": [
-      "res_report"
-     ]
-    },
-    {
-     "type": "access",
-     "unique_named": true,
-     "id": "access_recovered_strand",
-     "name": "the recovering strand",
-     "on_resolution": [
-      "res_burn"
-     ]
-    },
-    {
-     "type": "information",
-     "unique_named": true,
-     "id": "topic_the_clean_jar",
-     "name": "the clean jar",
-     "on_resolution": [
-      "res_report",
-      "res_burn"
-     ]
-    }
-   ],
-   "notes": "W1-18. The RI-QST09 §3 worked example, built: res_burn is a K4 closure — Archon loses its only apothecary and its dye trade, and a region's palette changes. Foreshadowed three ways before the commit at index 40."
-  },
-  {
-   "id": "Q-SOUL-02",
-   "title": "The Count of the Drowned",
-   "category": "faction",
-   "faction": "the_drowned_court",
-   "act": null,
-   "rank_gate": {
-    "faction": "the_drowned_court",
-    "min_rank": 2,
-    "min_reputation": 22
-   },
-   "discovery": "found",
-   "giver": {
-    "npc_id": "undertaker-vaskh",
-    "location": "Soulrest, the burning yard behind the customs post",
-    "disposition_min": 40,
-    "honest": true
-   },
-   "opens_by": {
-    "topic": "the tally of the dead",
-    "prerequisite_topics": [
-     "the drowned court"
-    ]
-   },
-   "task_kind": "investigation",
-   "stakes": 8,
-   "directions": "The burning yard is behind the Soulrest customs post, downwind, where the road runs out onto the flats. The Court's ledger room is under the yard, down the ramp the barrows use. The wreck they want counted is out on the flats at low water, an hour's walk past the last of the withy posts.",
-   "journal": [
-    {
-     "index": 8,
-     "state": "active",
-     "text": "There is a book in the Soulrest customs post that lists bodies burned by the Drowned Court, and the number for last season is written twice in two different hands.",
-     "records_belief": false
-    },
-    {
-     "index": 10,
-     "state": "active",
-     "text": "Vaskh says the Court's count has been wrong for two years and that she wants it counted again from the yard's own tallies, by somebody who is not of the Court.",
-     "records_belief": false
-    },
-    {
-     "index": 20,
-     "state": "active",
-     "text": "The yard's tallies and the customs book differ by four hundred and eleven. Vaskh knew the number before I said it.",
-     "records_belief": true
-    },
-    {
-     "index": 30,
-     "state": "active",
-     "text": "The missing are all from the flats and all from the same three seasons. The Court burned them. Somebody else wrote them down as never having been there.",
-     "records_belief": false
-    },
-    {
-     "index": 40,
-     "state": "branch",
-     "text": "The four hundred and eleven were leased out of Blackrose and worked the flats until they stopped. The Court has been burning the Prefect's arithmetic for two years and taking the fee for it.",
-     "records_belief": false
-    },
-    {
-     "index": 79,
-     "state": "failure",
-     "text": "The yard's tallies were burned with the season's dead. Vaskh says it was the damp. The damp does not stack paper.",
-     "records_belief": false
-    },
-    {
-     "index": 90,
-     "state": "success",
-     "text": "The count is in the Court's own ledger and sealed by three of them. It goes to Gideon by barge and I am not to be the one carrying it.",
-     "records_belief": false
-    },
-    {
-     "index": 92,
-     "state": "success",
-     "text": "I took the count to the Prefect at Blackrose instead. He read it, thanked me, and had it entered as a correction to the lease register. Nobody has died of it and nothing has changed except that I am on a list somewhere.",
-     "records_belief": false
-    },
-    {
-     "index": 96,
-     "state": "success",
-     "text": "I burned the count. Vaskh watched me do it and did not stop me. She said the tide takes what it takes and I said that was not what this was, and neither of us said anything after that.",
-     "records_belief": false
-    }
-   ],
-   "branches": [
-    {
-     "id": "br_the_number",
-     "at_journal_index": 20,
-     "condition": "The player follows the four hundred and eleven back to where they came from, or stops at the number",
-     "leads_to": [
-      "rev_lease",
-      "res_seal",
-      "fail_tallies_burned"
-     ],
-     "irreversible": false
-    },
-    {
-     "id": "br_who_gets_it",
-     "at_journal_index": 40,
-     "condition": "The count exists and must go somewhere, or nowhere",
-     "leads_to": [
-      "res_seal",
-      "res_prefect",
-      "res_burn_count"
-     ],
-     "irreversible": true
-    }
-   ],
-   "resolutions": [
-    {
-     "id": "res_seal",
-     "method": "lore_knowledge",
-     "violence_required": false,
-     "journal_index": 90,
-     "outcome": "The count is sealed into the Court's ledger and sent to Gideon. The Assize opens a file that will outlive everyone named in it.",
-     "morally_better": null,
-     "requires": {
-      "skills": {
-       "scribing": 40
+      "consequences": {
+        "faction_reputation": {
+          "the_wet_ledger": 0,
+          "the_imperial_assize": 0
+        },
+        "world_flags": [
+          "archon_strand_question_settled"
+        ]
       },
-      "knowledge": [
-       "book_the_court_and_the_tide"
-      ]
-     },
-     "requires_knowing": [
-      "rev_lease"
-     ],
-     "exclusive_with": [
-      "res_prefect",
-      "res_burn_count"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_drowned_court": 16,
-       "the_imperial_assize": 10,
-       "the_wet_ledger": -6
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 900,
+          "on_resolution": [
+            "res_bribe"
+          ]
+        },
+        {
+          "type": "training",
+          "unique_named": true,
+          "id": "trn_factor_sums",
+          "name": "the factor's sums",
+          "on_resolution": [
+            "res_report"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "access_recovered_strand",
+          "name": "the recovering strand",
+          "on_resolution": [
+            "res_burn"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_clean_jar",
+          "name": "the clean jar",
+          "on_resolution": [
+            "res_report",
+            "res_burn"
+          ]
+        }
+      ],
+      "notes": "W1-18. The RI-QST09 §3 worked example, built: res_burn is a K4 closure — Archon loses its only apothecary and its dye trade, and a region's palette changes. Foreshadowed three ways before the commit at index 40."
+    },
+    {
+      "id": "Q-SOUL-02",
+      "title": "The Count of the Drowned",
+      "category": "faction",
+      "faction": "the_drowned_court",
+      "act": null,
+      "rank_gate": {
+        "faction": "the_drowned_court",
+        "min_rank": 2,
+        "min_reputation": 22
       },
-      "world_flags": [
-       "soulrest_count_sealed",
-       "assize_lease_file_opened",
-       "blackrose_lease_under_review"
-      ],
-      "unlocks": [
-       "Q-BLAK-01"
-      ],
-      "npc_disposition": {
-       "undertaker-vaskh": 30
-      }
-     }
-    },
-    {
-     "id": "res_prefect",
-     "method": "trade",
-     "violence_required": false,
-     "journal_index": 92,
-     "outcome": "The Prefect corrects his own register before anyone else can. The lease continues, legally and now accurately, and the player is quietly known to the garrison.",
-     "morally_better": false,
-     "requires": {
-      "disposition": 50
-     },
-     "requires_knowing": [
-      "rev_lease"
-     ],
-     "exclusive_with": [
-      "res_seal",
-      "res_burn_count"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_drowned_court": -20,
-       "the_imperial_assize": 4
+      "discovery": "found",
+      "giver": {
+        "npc_id": "undertaker-vaskh",
+        "location": "Soulrest, the burning yard behind the customs post",
+        "disposition_min": 40,
+        "honest": true
       },
-      "world_flags": [
-       "blackrose_register_corrected",
-       "blackrose_lease_continues",
-       "player_known_to_the_garrison"
-      ],
-      "locks": [
-       "Q-BLAK-01",
-       "Q-SOUL-04"
-      ],
-      "npc_disposition": {
-       "undertaker-vaskh": -70
-      }
-     }
-    },
-    {
-     "id": "res_burn_count",
-     "method": "refuse",
-     "violence_required": false,
-     "journal_index": 96,
-     "outcome": "Nothing is proved and the Court keeps its fee. Vaskh never raises the topic again and the Court's higher ranks stay shut.",
-     "morally_better": null,
-     "requires": {},
-     "exclusive_with": [
-      "res_seal",
-      "res_prefect"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_drowned_court": -4
+      "opens_by": {
+        "topic": "the tally of the dead",
+        "prerequisite_topics": [
+          "the drowned court"
+        ]
       },
-      "world_flags": [
-       "soulrest_count_destroyed",
-       "blackrose_lease_continues",
-       "soulrest_court_ranks_closed"
+      "task_kind": "investigation",
+      "stakes": 8,
+      "directions": "The burning yard is behind the Soulrest customs post, downwind, where the road runs out onto the flats. The Court's ledger room is under the yard, down the ramp the barrows use. The wreck they want counted is out on the flats at low water, an hour's walk past the last of the withy posts.",
+      "journal": [
+        {
+          "index": 8,
+          "state": "active",
+          "text": "There is a book in the Soulrest customs post that lists bodies burned by the Drowned Court, and the number for last season is written twice in two different hands.",
+          "records_belief": false
+        },
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Vaskh says the Court's count has been wrong for two years and that she wants it counted again from the yard's own tallies, by somebody who is not of the Court.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "The yard's tallies and the customs book differ by four hundred and eleven. Vaskh knew the number before I said it.",
+          "records_belief": true
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "The missing are all from the flats and all from the same three seasons. The Court burned them. Somebody else wrote them down as never having been there.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "The four hundred and eleven were leased out of Blackrose and worked the flats until they stopped. The Court has been burning the Prefect's arithmetic for two years and taking the fee for it.",
+          "records_belief": false
+        },
+        {
+          "index": 79,
+          "state": "failure",
+          "text": "The yard's tallies were burned with the season's dead. Vaskh says it was the damp. The damp does not stack paper.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "The count is in the Court's own ledger and sealed by three of them. It goes to Gideon by barge and I am not to be the one carrying it.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I took the count to the Prefect at Blackrose instead. He read it, thanked me, and had it entered as a correction to the lease register. Nobody has died of it and nothing has changed except that I am on a list somewhere.",
+          "records_belief": false
+        },
+        {
+          "index": 96,
+          "state": "success",
+          "text": "I burned the count. Vaskh watched me do it and did not stop me. She said the tide takes what it takes and I said that was not what this was, and neither of us said anything after that.",
+          "records_belief": false
+        },
+        {
+          "index": 97,
+          "text": "The Drowned Court keeps its count in a ledger nobody is supposed to hold. I held it long enough to read one column. It was back on its hook before the tide turned.",
+          "state": "success"
+        }
       ],
-      "locks": [
-       "Q-SOUL-04"
+      "branches": [
+        {
+          "id": "br_the_number",
+          "at_journal_index": 20,
+          "condition": "The player follows the four hundred and eleven back to where they came from, or stops at the number",
+          "leads_to": [
+            "rev_lease",
+            "res_seal",
+            "fail_tallies_burned"
+          ],
+          "irreversible": false
+        },
+        {
+          "id": "br_who_gets_it",
+          "at_journal_index": 40,
+          "condition": "The count exists and must go somewhere, or nowhere",
+          "leads_to": [
+            "res_seal",
+            "res_prefect",
+            "res_burn_count"
+          ],
+          "irreversible": true
+        }
       ],
-      "npc_disposition": {
-       "undertaker-vaskh": -20
-      }
-     }
-    }
-   ],
-   "failure_states": [
-    {
-     "id": "fail_tallies_burned",
-     "cause": "The player raises the topic with any Blackrose NPC before journal index 40",
-     "journal_index": 79,
-     "recoverable": false,
-     "consequence": "The yard's tallies are destroyed. The count cannot be made in this save and Q-BLAK-01 never opens.",
-     "silent": true
-    }
-   ],
-   "can_fail": true,
-   "deceit": {
-    "patterns": [
-     "D11"
-    ],
-    "stated_objective": "Count the Court's dead again from the yard's own tallies",
-    "actual_objective": "Count the Court's dead again from the yard's own tallies",
-    "truth": "The four hundred and eleven missing were leased out of Blackrose and worked the flats until they stopped.",
-    "revealed_by": [
-     {
-      "id": "rev_lease",
-      "channel": "ledger",
-      "source": "item_blackrose_lease_stub",
-      "before_point_of_no_return": true
-     },
-     {
-      "id": "rev_vaskh",
-      "channel": "talk_to_target",
-      "source": "undertaker-vaskh",
-      "before_point_of_no_return": true
-     }
-    ],
-    "never_revealed": false
-   },
-   "consequences": {
-    "faction_reputation": {
-     "the_drowned_court": 0,
-     "the_imperial_assize": 0
-    },
-    "world_flags": [
-     "soulrest_count_attempted"
-    ]
-   },
-   "mutually_exclusive_with": [],
-   "kill_required_npcs": [],
-   "rewards": [
-    {
-     "type": "access",
-     "unique_named": true,
-     "id": "access_court_ledger_room",
-     "name": "the ledger room under the yard",
-     "on_resolution": [
-      "res_seal"
-     ]
-    },
-    {
-     "type": "information",
-     "unique_named": true,
-     "id": "topic_the_four_hundred_and_eleven",
-     "name": "the four hundred and eleven",
-     "on_resolution": [
-      "res_seal",
-      "res_prefect"
-     ]
-    },
-    {
-     "type": "gold",
-     "unique_named": false,
-     "amount": 500,
-     "on_resolution": [
-      "res_prefect"
-     ]
-    }
-   ],
-   "notes": "W1-18. Discovery is `found` — the quest is opened by a discrepancy in a book, not by a giver. Its silent failure is caused by the player talking to the wrong people first, which is a thing the player can do without knowing it was a mistake."
-  },
-  {
-   "id": "Q-BLAK-01",
-   "title": "The Lease",
-   "category": "main",
-   "faction": null,
-   "act": 2,
-   "rank_gate": null,
-   "discovery": "consequence",
-   "giver": {
-    "npc_id": "prefect-hallow",
-    "location": "Blackrose, the prison-fortress, the Prefect's floor",
-    "disposition_min": 20,
-    "honest": false
-   },
-   "opens_by": {
-    "topic": "the labour lease",
-    "prerequisite_quests": [
-     "Q-SOUL-02"
-    ],
-    "prerequisite_topics": [
-     "the four hundred and eleven"
-    ]
-   },
-   "task_kind": "politics",
-   "stakes": 9,
-   "directions": "Blackrose stands on the south-central road, two days from Soulrest, and you will see the walls a long time before the gate. The Prefect's floor is the top of the inner keep, up the stair from the muster yard. The lease clerks work the long room under it.",
-   "journal": [
-    {
-     "index": 10,
-     "state": "active",
-     "text": "The Prefect has heard that I can count. He wants the lease register reconciled before the Elder Council's inspection and says it is a clerk's job that a clerk cannot be trusted with.",
-     "records_belief": true
-    },
-    {
-     "index": 20,
-     "state": "active",
-     "text": "The register has three hands in it. The oldest hand records names and sentences. The newest records numbers and destinations, and one of the destinations is a Dres factor at Archon.",
-     "records_belief": false
-    },
-    {
-     "index": 30,
-     "state": "active",
-     "text": "A clerk called Meno asked me, without looking up, whether I knew what happens to the reconciled copy. Then he went back to work and would not say anything else all afternoon.",
-     "records_belief": false
-    },
-    {
-     "index": 40,
-     "state": "branch",
-     "text": "The reconciliation is not a correction. It is a fair copy with the destinations removed, and it is the copy that goes to the Council. The Prefect does not want the lease audited. He wants it laundered, and he wants an outlander's hand on it.",
-     "records_belief": false
-    },
-    {
-     "index": 50,
-     "state": "active",
-     "text": "Meno has kept the working sheets for two years in a box under the floor of the long room. He says he does not know why he kept them. I think he does.",
-     "records_belief": false
-    },
-    {
-     "index": 80,
-     "state": "failure",
-     "text": "Meno was moved to the quarry roster on a Tuesday and I have not been able to find out anything else about it.",
-     "records_belief": false
-    },
-    {
-     "index": 90,
-     "state": "success",
-     "text": "I wrote the fair copy. The Prefect read it, said it was good work, and paid me in Imperial script that spends anywhere. The lease is legal on paper now in a way it was not before.",
-     "records_belief": false
-    },
-    {
-     "index": 92,
-     "state": "success",
-     "text": "Meno's working sheets went out of Blackrose in a barrow of ash. Whatever the Council does with them, they will do it knowing where the numbers went.",
-     "records_belief": false
-    },
-    {
-     "index": 94,
-     "state": "success",
-     "text": "I gave the Prefect a fair copy and kept the sheets. He knows I have them. We were both very civil about it and I have not slept well since.",
-     "records_belief": false
-    }
-   ],
-   "branches": [
-    {
-     "id": "br_third_hand",
-     "at_journal_index": 20,
-     "condition": "The player reads the third hand in the register, or copies without reading",
-     "leads_to": [
-      "rev_destinations",
-      "res_fair_copy",
-      "fail_meno_moved"
-     ],
-     "irreversible": false
-    },
-    {
-     "id": "br_the_sheets",
-     "at_journal_index": 50,
-     "condition": "Meno's sheets exist and the player must decide where they go",
-     "leads_to": [
-      "res_fair_copy",
-      "res_smuggle",
-      "res_hold"
-     ],
-     "irreversible": true
-    }
-   ],
-   "resolutions": [
-    {
-     "id": "res_fair_copy",
-     "method": "trade",
-     "violence_required": false,
-     "journal_index": 90,
-     "outcome": "The laundered copy goes to the Council. The lease survives the inspection, Meno stays a clerk, and the Dres factor at Archon keeps his supply.",
-     "morally_better": false,
-     "requires": {
-      "skills": {
-       "scribing": 35
-      }
-     },
-     "exclusive_with": [
-      "res_smuggle",
-      "res_hold"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": 8,
-       "the_drowned_court": -16
+      "resolutions": [
+        {
+          "id": "res_seal",
+          "method": "lore_knowledge",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The count is sealed into the Court's ledger and sent to Gideon. The Assize opens a file that will outlive everyone named in it.",
+          "morally_better": null,
+          "requires": {
+            "skills": {
+              "scribing": 40
+            },
+            "knowledge": [
+              "book_the_court_and_the_tide"
+            ]
+          },
+          "requires_knowing": [
+            "rev_lease"
+          ],
+          "exclusive_with": [
+            "res_prefect",
+            "res_burn_count"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": 16,
+              "the_imperial_assize": 10,
+              "the_wet_ledger": -6
+            },
+            "world_flags": [
+              "soulrest_count_sealed",
+              "assize_lease_file_opened",
+              "blackrose_lease_under_review"
+            ],
+            "unlocks": [
+              "Q-BLAK-01"
+            ],
+            "npc_disposition": {
+              "undertaker-vaskh": 30
+            }
+          }
+        },
+        {
+          "id": "res_prefect",
+          "method": "trade",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The Prefect corrects his own register before anyone else can. The lease continues, legally and now accurately, and the player is quietly known to the garrison.",
+          "morally_better": false,
+          "requires": {
+            "disposition": 50
+          },
+          "requires_knowing": [
+            "rev_lease"
+          ],
+          "exclusive_with": [
+            "res_seal",
+            "res_burn_count"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": -20,
+              "the_imperial_assize": 4
+            },
+            "world_flags": [
+              "blackrose_register_corrected",
+              "blackrose_lease_continues",
+              "player_known_to_the_garrison"
+            ],
+            "locks": [
+              "Q-BLAK-01",
+              "Q-SOUL-04"
+            ],
+            "npc_disposition": {
+              "undertaker-vaskh": -70
+            }
+          }
+        },
+        {
+          "id": "res_burn_count",
+          "method": "refuse",
+          "violence_required": false,
+          "journal_index": 96,
+          "outcome": "Nothing is proved and the Court keeps its fee. Vaskh never raises the topic again and the Court's higher ranks stay shut.",
+          "morally_better": null,
+          "requires": {},
+          "exclusive_with": [
+            "res_seal",
+            "res_prefect"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": -4
+            },
+            "world_flags": [
+              "soulrest_count_destroyed",
+              "blackrose_lease_continues",
+              "soulrest_court_ranks_closed"
+            ],
+            "locks": [
+              "Q-SOUL-04"
+            ],
+            "npc_disposition": {
+              "undertaker-vaskh": -20
+            }
+          }
+        },
+        {
+          "id": "q_soul_02__steal",
+          "method": "steal",
+          "requires": {
+            "skills": {
+              "security": 35
+            }
+          },
+          "violence_required": false,
+          "journal_index": 97,
+          "outcome": "The Drowned Court keeps its count in a ledger nobody is supposed to hold. You hold it for as long as it takes to read a column, and then it is back on its hook.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_tallies_burned",
+          "cause": "The player raises the topic with any Blackrose NPC before journal index 40",
+          "journal_index": 79,
+          "recoverable": false,
+          "consequence": "The yard's tallies are destroyed. The count cannot be made in this save and Q-BLAK-01 never opens.",
+          "silent": true
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D11"
+        ],
+        "stated_objective": "Count the Court's dead again from the yard's own tallies",
+        "actual_objective": "Count the Court's dead again from the yard's own tallies",
+        "truth": "The four hundred and eleven missing were leased out of Blackrose and worked the flats until they stopped.",
+        "revealed_by": [
+          {
+            "id": "rev_lease",
+            "channel": "ledger",
+            "source": "item_blackrose_lease_stub",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vaskh",
+            "channel": "talk_to_target",
+            "source": "undertaker-vaskh",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": false
       },
-      "world_flags": [
-       "blackrose_lease_laundered",
-       "blackrose_inspection_passed",
-       "archon_dres_supply_continues"
-      ],
-      "locks": [
-       "Q-BLAK-03"
-      ],
-      "npc_disposition": {
-       "prefect-hallow": 35,
-       "clerk-meno": -30
-      }
-     }
-    },
-    {
-     "id": "res_smuggle",
-     "method": "steal",
-     "violence_required": false,
-     "journal_index": 92,
-     "outcome": "The working sheets reach the Elder Council. The Prefect is recalled, the lease is suspended, and four hundred people are held at Blackrose with nowhere to be sent and nothing arranged for them.",
-     "morally_better": null,
-     "requires": {
-      "skills": {
-       "sneak": 45
+      "consequences": {
+        "faction_reputation": {
+          "the_drowned_court": 0,
+          "the_imperial_assize": 0
+        },
+        "world_flags": [
+          "soulrest_count_attempted"
+        ]
       },
-      "items": [
-       "item_ash_barrow"
-      ]
-     },
-     "requires_knowing": [
-      "rev_destinations",
-      "rev_meno"
-     ],
-     "exclusive_with": [
-      "res_fair_copy",
-      "res_hold"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": -20,
-       "the_drowned_court": 20,
-       "the_xul_aneekh": 12
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "access_court_ledger_room",
+          "name": "the ledger room under the yard",
+          "on_resolution": [
+            "res_seal"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_four_hundred_and_eleven",
+          "name": "the four hundred and eleven",
+          "on_resolution": [
+            "res_seal",
+            "res_prefect"
+          ]
+        },
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 500,
+          "on_resolution": [
+            "res_prefect"
+          ]
+        }
+      ],
+      "notes": "W1-18. Discovery is `found` — the quest is opened by a discrepancy in a book, not by a giver. Its silent failure is caused by the player talking to the wrong people first, which is a thing the player can do without knowing it was a mistake."
+    },
+    {
+      "id": "Q-BLAK-01",
+      "title": "The Lease",
+      "category": "main",
+      "faction": null,
+      "act": 2,
+      "rank_gate": null,
+      "discovery": "consequence",
+      "giver": {
+        "npc_id": "prefect-hallow",
+        "location": "Blackrose, the prison-fortress, the Prefect's floor",
+        "disposition_min": 20,
+        "honest": false
       },
-      "world_flags": [
-       "blackrose_lease_suspended",
-       "blackrose_prefect_recalled",
-       "blackrose_four_hundred_held",
-       "archon_dres_supply_cut"
-      ],
-      "unlocks": [
-       "Q-BLAK-03"
-      ],
-      "locks": [
-       "Q-BLAK-02"
-      ],
-      "npc_disposition": {
-       "prefect-hallow": -100
-      }
-     }
-    },
-    {
-     "id": "res_hold",
-     "method": "intimidate",
-     "violence_required": false,
-     "journal_index": 94,
-     "outcome": "The Prefect passes his inspection and the player holds the sheets. Blackrose is open to the player and nothing about the lease changes.",
-     "morally_better": false,
-     "requires": {
-      "attributes": {
-       "personality": 45
-      }
-     },
-     "requires_knowing": [
-      "rev_destinations",
-      "rev_meno"
-     ],
-     "exclusive_with": [
-      "res_fair_copy",
-      "res_smuggle"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": 2,
-       "the_drowned_court": -4
+      "opens_by": {
+        "topic": "the labour lease",
+        "prerequisite_quests": [
+          "Q-SOUL-02"
+        ],
+        "prerequisite_topics": [
+          "the four hundred and eleven"
+        ]
       },
-      "world_flags": [
-       "blackrose_lease_laundered",
-       "player_holds_the_sheets",
-       "blackrose_keep_open_to_player"
+      "task_kind": "politics",
+      "stakes": 9,
+      "directions": "Blackrose stands on the south-central road, two days from Soulrest, and you will see the walls a long time before the gate. The Prefect's floor is the top of the inner keep, up the stair from the muster yard. The lease clerks work the long room under it.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "The Prefect has heard that I can count. He wants the lease register reconciled before the Elder Council's inspection and says it is a clerk's job that a clerk cannot be trusted with.",
+          "records_belief": true
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "The register has three hands in it. The oldest hand records names and sentences. The newest records numbers and destinations, and one of the destinations is a Dres factor at Archon.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "A clerk called Meno asked me, without looking up, whether I knew what happens to the reconciled copy. Then he went back to work and would not say anything else all afternoon.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "The reconciliation is not a correction. It is a fair copy with the destinations removed, and it is the copy that goes to the Council. The Prefect does not want the lease audited. He wants it laundered, and he wants an outlander's hand on it.",
+          "records_belief": false
+        },
+        {
+          "index": 50,
+          "state": "active",
+          "text": "Meno has kept the working sheets for two years in a box under the floor of the long room. He says he does not know why he kept them. I think he does.",
+          "records_belief": false
+        },
+        {
+          "index": 80,
+          "state": "failure",
+          "text": "Meno was moved to the quarry roster on a Tuesday and I have not been able to find out anything else about it.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I wrote the fair copy. The Prefect read it, said it was good work, and paid me in Imperial script that spends anywhere. The lease is legal on paper now in a way it was not before.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "Meno's working sheets went out of Blackrose in a barrow of ash. Whatever the Council does with them, they will do it knowing where the numbers went.",
+          "records_belief": false
+        },
+        {
+          "index": 94,
+          "state": "success",
+          "text": "I gave the Prefect a fair copy and kept the sheets. He knows I have them. We were both very civil about it and I have not slept well since.",
+          "records_belief": false
+        },
+        {
+          "index": 95,
+          "text": "The counting floor empties at the eleventh bell. I read the lease, I put it back on its shelf square to the edge as I found it, and now I know what I know.",
+          "state": "success"
+        }
       ],
-      "unlocks": [
-       "Q-BLAK-02"
+      "branches": [
+        {
+          "id": "br_third_hand",
+          "at_journal_index": 20,
+          "condition": "The player reads the third hand in the register, or copies without reading",
+          "leads_to": [
+            "rev_destinations",
+            "res_fair_copy",
+            "fail_meno_moved"
+          ],
+          "irreversible": false
+        },
+        {
+          "id": "br_the_sheets",
+          "at_journal_index": 50,
+          "condition": "Meno's sheets exist and the player must decide where they go",
+          "leads_to": [
+            "res_fair_copy",
+            "res_smuggle",
+            "res_hold"
+          ],
+          "irreversible": true
+        }
       ],
-      "npc_disposition": {
-       "prefect-hallow": -20,
-       "clerk-meno": 20
-      }
-     }
-    }
-   ],
-   "failure_states": [
-    {
-     "id": "fail_meno_moved",
-     "cause": "The player names clerk-meno to the Prefect at any point",
-     "journal_index": 80,
-     "recoverable": false,
-     "consequence": "Meno goes to the quarry roster and the working sheets are never found. Only res_fair_copy remains reachable.",
-     "silent": false
-    }
-   ],
-   "can_fail": true,
-   "deceit": {
-    "patterns": [
-     "D1",
-     "D4",
-     "D8"
-    ],
-    "stated_objective": "Reconcile a register before an inspection",
-    "actual_objective": "Put an outlander's handwriting on a laundered copy",
-    "truth": "The reconciliation removes the destinations. The destinations are Dres factors.",
-    "revealed_by": [
-     {
-      "id": "rev_destinations",
-      "channel": "ledger",
-      "source": "item_lease_register_third_hand",
-      "before_point_of_no_return": true
-     },
-     {
-      "id": "rev_meno",
-      "channel": "rival_npc",
-      "source": "clerk-meno",
-      "before_point_of_no_return": true
-     }
-    ],
-    "never_revealed": false
-   },
-   "consequences": {
-    "faction_reputation": {
-     "the_imperial_assize": 0,
-     "the_drowned_court": 0
-    },
-    "world_flags": [
-     "blackrose_inspection_held"
-    ]
-   },
-   "mutually_exclusive_with": [],
-   "kill_required_npcs": [],
-   "rewards": [
-    {
-     "type": "gold",
-     "unique_named": false,
-     "amount": 750,
-     "on_resolution": [
-      "res_fair_copy"
-     ]
-    },
-    {
-     "type": "ally",
-     "unique_named": true,
-     "id": "clerk-meno",
-     "name": "Clerk Meno",
-     "on_resolution": [
-      "res_smuggle",
-      "res_hold"
-     ]
-    },
-    {
-     "type": "property",
-     "unique_named": true,
-     "id": "prop_blackrose_cell_key",
-     "name": "the keep's under-floor room",
-     "on_resolution": [
-      "res_hold"
-     ]
-    },
-    {
-     "type": "information",
-     "unique_named": true,
-     "id": "topic_the_third_hand",
-     "name": "the third hand",
-     "on_resolution": [
-      "res_smuggle",
-      "res_hold"
-     ]
-    }
-   ],
-   "notes": "W1-18. Act II of the main line. Discovery is `consequence`: it exists only because Q-SOUL-02 was resolved a particular way, which is the cross-quest opening RI-QST09 K2 counts in the other direction."
-  },
-  {
-   "id": "Q-STRM-01",
-   "title": "The Walled Quarter",
-   "category": "side",
-   "faction": null,
-   "act": null,
-   "rank_gate": null,
-   "discovery": "environmental",
-   "giver": {
-    "npc_id": "quartermaster-sedd",
-    "location": "Stormhold, the stores gate on the inside of the north wall",
-    "disposition_min": 25,
-    "honest": true
-   },
-   "opens_by": {
-    "topic": "the old quarter",
-    "prerequisite_topics": []
-   },
-   "task_kind": "retrieval",
-   "stakes": 5,
-   "directions": "Inside the Stormhold wall, take the lane that runs behind the granary until it stops at brick. The quarter behind that brick has been shut since the Flu. The stores gate is the one door in it that the Legion uses, and Sedd holds the key on a cord.",
-   "journal": [
-    {
-     "index": 10,
-     "state": "active",
-     "text": "Sedd needs six crates of lamp oil out of the walled quarter and will not send a soldier in for them. He says the quarter is stores now and that it is perfectly safe, twice.",
-     "records_belief": true
-    },
-    {
-     "index": 20,
-     "state": "active",
-     "text": "The quarter is not stores. It is a street of houses with the doors still on them and the Legion has stacked crates in the first two rooms and gone no further.",
-     "records_belief": false
-    },
-    {
-     "index": 30,
-     "state": "active",
-     "text": "There is chalk on eleven of the doors in a hand nobody uses now, and behind one of them somebody has been sleeping. Recently.",
-     "records_belief": false
-    },
-    {
-     "index": 40,
-     "state": "branch",
-     "text": "Her name is Ossei and she has lived in the quarter since it was shut, which is thirty-one years, and she was six. She is not sick. Nobody ever came back to check whether anybody was not sick.",
-     "records_belief": false
-    },
-    {
-     "index": 82,
-     "state": "failure",
-     "text": "The stores gate was bricked while I was inside and I came out through the roof with nothing. Sedd has been reassigned to the pass road.",
-     "records_belief": false
-    },
-    {
-     "index": 90,
-     "state": "success",
-     "text": "Six crates of lamp oil, and I said nothing about the chalk. Sedd paid me and asked whether the quarter was as bad as they say, and I said it was worse.",
-     "records_belief": false
-    },
-    {
-     "index": 92,
-     "state": "success",
-     "text": "Ossei came out through the stores gate in a Legion cloak and is living in the Argonian sprawl on the outside of the wall. She has not been back to the wall since and she does not look at it.",
-     "records_belief": false
-    },
-    {
-     "index": 94,
-     "state": "success",
-     "text": "I told Sedd what was behind the chalk. The garrison went in properly for the first time in thirty-one years and found four more, and there is now a hearing about it that nobody in Stormhold wanted.",
-     "records_belief": false
-    }
-   ],
-   "branches": [
-    {
-     "id": "br_chalk",
-     "at_journal_index": 30,
-     "condition": "The player opens a chalked door or takes the crates and leaves",
-     "leads_to": [
-      "rev_ossei",
-      "res_crates_only",
-      "fail_gate_bricked"
-     ],
-     "irreversible": false
-    },
-    {
-     "id": "br_ossei",
-     "at_journal_index": 40,
-     "condition": "Ossei exists and the player decides whether anybody else learns it",
-     "leads_to": [
-      "res_crates_only",
-      "res_smuggle_out",
-      "res_tell_sedd"
-     ],
-     "irreversible": true
-    }
-   ],
-   "resolutions": [
-    {
-     "id": "res_crates_only",
-     "method": "trade",
-     "violence_required": false,
-     "journal_index": 90,
-     "outcome": "Six crates delivered, nothing said. The quarter stays shut and Ossei stays in it.",
-     "morally_better": false,
-     "requires": {},
-     "exclusive_with": [
-      "res_smuggle_out",
-      "res_tell_sedd"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": 4
+      "resolutions": [
+        {
+          "id": "res_fair_copy",
+          "method": "trade",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The laundered copy goes to the Council. The lease survives the inspection, Meno stays a clerk, and the Dres factor at Archon keeps his supply.",
+          "morally_better": false,
+          "requires": {
+            "skills": {
+              "scribing": 35
+            }
+          },
+          "exclusive_with": [
+            "res_smuggle",
+            "res_hold"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": 8,
+              "the_drowned_court": -16
+            },
+            "world_flags": [
+              "blackrose_lease_laundered",
+              "blackrose_inspection_passed",
+              "archon_dres_supply_continues"
+            ],
+            "locks": [
+              "Q-BLAK-03"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": 35,
+              "clerk-meno": -30
+            }
+          }
+        },
+        {
+          "id": "res_smuggle",
+          "method": "steal",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The working sheets reach the Elder Council. The Prefect is recalled, the lease is suspended, and four hundred people are held at Blackrose with nowhere to be sent and nothing arranged for them.",
+          "morally_better": null,
+          "requires": {
+            "skills": {
+              "sneak": 45
+            },
+            "items": [
+              "item_ash_barrow"
+            ]
+          },
+          "requires_knowing": [
+            "rev_destinations",
+            "rev_meno"
+          ],
+          "exclusive_with": [
+            "res_fair_copy",
+            "res_hold"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": -20,
+              "the_drowned_court": 20,
+              "the_xul_aneekh": 12
+            },
+            "world_flags": [
+              "blackrose_lease_suspended",
+              "blackrose_prefect_recalled",
+              "blackrose_four_hundred_held",
+              "archon_dres_supply_cut"
+            ],
+            "unlocks": [
+              "Q-BLAK-03"
+            ],
+            "locks": [
+              "Q-BLAK-02"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": -100
+            }
+          }
+        },
+        {
+          "id": "res_hold",
+          "method": "intimidate",
+          "violence_required": false,
+          "journal_index": 94,
+          "outcome": "The Prefect passes his inspection and the player holds the sheets. Blackrose is open to the player and nothing about the lease changes.",
+          "morally_better": false,
+          "requires": {
+            "attributes": {
+              "personality": 45
+            }
+          },
+          "requires_knowing": [
+            "rev_destinations",
+            "rev_meno"
+          ],
+          "exclusive_with": [
+            "res_fair_copy",
+            "res_smuggle"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": 2,
+              "the_drowned_court": -4
+            },
+            "world_flags": [
+              "blackrose_lease_laundered",
+              "player_holds_the_sheets",
+              "blackrose_keep_open_to_player"
+            ],
+            "unlocks": [
+              "Q-BLAK-02"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": -20,
+              "clerk-meno": 20
+            }
+          }
+        },
+        {
+          "id": "q_blak_01__sneak",
+          "method": "sneak",
+          "requires": {
+            "skills": {
+              "sneak": 45
+            }
+          },
+          "violence_required": false,
+          "journal_index": 95,
+          "outcome": "The lease is in the strongroom and the strongroom is behind the counting floor, and the counting floor empties at the eleventh bell. You read it, you put it back, and you know what you know.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_meno_moved",
+          "cause": "The player names clerk-meno to the Prefect at any point",
+          "journal_index": 80,
+          "recoverable": false,
+          "consequence": "Meno goes to the quarry roster and the working sheets are never found. Only res_fair_copy remains reachable.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D1",
+          "D4",
+          "D8"
+        ],
+        "stated_objective": "Reconcile a register before an inspection",
+        "actual_objective": "Put an outlander's handwriting on a laundered copy",
+        "truth": "The reconciliation removes the destinations. The destinations are Dres factors.",
+        "revealed_by": [
+          {
+            "id": "rev_destinations",
+            "channel": "ledger",
+            "source": "item_lease_register_third_hand",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_meno",
+            "channel": "rival_npc",
+            "source": "clerk-meno",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": false
       },
-      "world_flags": [
-       "stormhold_quarter_still_shut",
-       "stormhold_oil_delivered",
-       "ossei_unfound"
-      ],
-      "npc_disposition": {
-       "quartermaster-sedd": 20
-      }
-     }
-    },
-    {
-     "id": "res_smuggle_out",
-     "method": "sneak",
-     "violence_required": false,
-     "journal_index": 92,
-     "outcome": "Ossei leaves the quarter without the Legion knowing. She lives in the sprawl outside the wall and becomes a source about the Flu years that exists nowhere else.",
-     "morally_better": null,
-     "requires": {
-      "skills": {
-       "sneak": 40
-      }
-     },
-     "requires_knowing": [
-      "rev_ossei"
-     ],
-     "exclusive_with": [
-      "res_crates_only",
-      "res_tell_sedd"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": -6,
-       "the_xul_aneekh": 8
+      "consequences": {
+        "faction_reputation": {
+          "the_imperial_assize": 0,
+          "the_drowned_court": 0
+        },
+        "world_flags": [
+          "blackrose_inspection_held"
+        ]
       },
-      "world_flags": [
-       "ossei_in_the_sprawl",
-       "stormhold_quarter_still_shut",
-       "stormhold_flu_testimony_available"
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 750,
+          "on_resolution": [
+            "res_fair_copy"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "clerk-meno",
+          "name": "Clerk Meno",
+          "on_resolution": [
+            "res_smuggle",
+            "res_hold"
+          ]
+        },
+        {
+          "type": "property",
+          "unique_named": true,
+          "id": "prop_blackrose_cell_key",
+          "name": "the keep's under-floor room",
+          "on_resolution": [
+            "res_hold"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_third_hand",
+          "name": "the third hand",
+          "on_resolution": [
+            "res_smuggle",
+            "res_hold"
+          ]
+        }
       ],
-      "unlocks": [
-       "Q-STRM-03"
-      ],
-      "npc_disposition": {
-       "npc-ossei": 60
-      }
-     }
+      "notes": "W1-18. Act II of the main line. Discovery is `consequence`: it exists only because Q-SOUL-02 was resolved a particular way, which is the cross-quest opening RI-QST09 K2 counts in the other direction."
     },
     {
-     "id": "res_tell_sedd",
-     "method": "confess",
-     "violence_required": false,
-     "journal_index": 94,
-     "outcome": "The garrison enters the quarter properly and finds four more people. A hearing follows that costs Sedd his posting and reopens two streets.",
-     "morally_better": null,
-     "requires": {},
-     "requires_knowing": [
-      "rev_ossei"
-     ],
-     "exclusive_with": [
-      "res_crates_only",
-      "res_smuggle_out"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": 14,
-       "the_xul_aneekh": -10
+      "id": "Q-STRM-01",
+      "title": "The Walled Quarter",
+      "category": "side",
+      "faction": null,
+      "act": null,
+      "rank_gate": null,
+      "discovery": "environmental",
+      "giver": {
+        "npc_id": "quartermaster-sedd",
+        "location": "Stormhold, the stores gate on the inside of the north wall",
+        "disposition_min": 25,
+        "honest": true
       },
-      "world_flags": [
-       "stormhold_quarter_reopened",
-       "stormhold_hearing_called",
-       "stormhold_sedd_reassigned",
-       "ossei_in_legion_custody"
-      ],
-      "locks": [
-       "Q-STRM-03"
-      ],
-      "npc_disposition": {
-       "quartermaster-sedd": -50,
-       "npc-ossei": -40
-      }
-     }
-    }
-   ],
-   "failure_states": [
-    {
-     "id": "fail_gate_bricked",
-     "cause": "The player is inside the quarter when the garrison's monthly bricking detail arrives",
-     "journal_index": 82,
-     "recoverable": false,
-     "consequence": "Sedd is reassigned, the stores gate is sealed, and the quarter is unreachable for the rest of the save.",
-     "silent": false
-    }
-   ],
-   "can_fail": true,
-   "deceit": {
-    "patterns": [
-     "D11"
-    ],
-    "stated_objective": "Bring six crates of lamp oil out of the walled quarter",
-    "actual_objective": "Bring six crates of lamp oil out of the walled quarter",
-    "truth": "The quarter was shut with people still in it and nobody has been back to count.",
-    "revealed_by": [
-     {
-      "id": "rev_ossei",
-      "channel": "talk_to_target",
-      "source": "npc-ossei",
-      "before_point_of_no_return": true
-     },
-     {
-      "id": "rev_chalk",
-      "channel": "environment",
-      "source": "the chalk on eleven doors",
-      "before_point_of_no_return": true
-     }
-    ],
-    "never_revealed": false
-   },
-   "consequences": {
-    "faction_reputation": {
-     "the_imperial_assize": 0,
-     "the_xul_aneekh": 0
-    },
-    "world_flags": [
-     "stormhold_quarter_entered"
-    ]
-   },
-   "mutually_exclusive_with": [],
-   "kill_required_npcs": [],
-   "rewards": [
-    {
-     "type": "gold",
-     "unique_named": false,
-     "amount": 180,
-     "on_resolution": [
-      "res_crates_only",
-      "res_tell_sedd"
-     ]
-    },
-    {
-     "type": "ally",
-     "unique_named": true,
-     "id": "npc-ossei",
-     "name": "Ossei of the walled quarter",
-     "on_resolution": [
-      "res_smuggle_out"
-     ]
-    },
-    {
-     "type": "information",
-     "unique_named": true,
-     "id": "topic_the_chalk_hand",
-     "name": "the chalk hand",
-     "on_resolution": [
-      "res_smuggle_out",
-      "res_tell_sedd"
-     ]
-    }
-   ],
-   "notes": "W1-18. `discovery: environmental` — the prompt is a bricked lane, and the giver is a way in rather than the reason. Zero-kill on every path."
-  },
-  {
-   "id": "Q-LILM-01",
-   "title": "The Company Man",
-   "category": "hidden",
-   "faction": null,
-   "act": null,
-   "rank_gate": null,
-   "discovery": "found",
-   "giver": {
-    "npc_id": "harbourmistress-tesh",
-    "location": "Lilmoth, the customs house at the head of the wharf",
-    "disposition_min": 45,
-    "honest": true
-   },
-   "opens_by": {
-    "topic": "the leyawiin charter",
-    "prerequisite_topics": [
-     "the rotting quarter"
-    ]
-   },
-   "task_kind": "weird",
-   "stakes": 7,
-   "directions": "The charter is in a satchel on a body in the rotting quarter of Lilmoth, in the third courtyard past the collapsed arcade, where the water stands. Tesh's office is at the head of the wharf under the crane arm; the rootkeepers who will not speak to the Empire keep the sapwell under the old temple, further in.",
-   "journal": [
-    {
-     "index": 8,
-     "state": "active",
-     "text": "There is a body in the rotting quarter with a Leyawiin charter in its satchel and no rot on it at all. Nobody in Lilmoth has reported a body in nine years.",
-     "records_belief": false
-    },
-    {
-     "index": 10,
-     "state": "active",
-     "text": "The charter is a trading licence for a company I have not heard of, endorsed for the acquisition of botanical specimens. It names a tree.",
-     "records_belief": true
-    },
-    {
-     "index": 20,
-     "state": "active",
-     "text": "Tesh has seen three of these. She has been putting them in a drawer for two years because there is nobody in Lilmoth whose job it is to care.",
-     "records_belief": false
-    },
-    {
-     "index": 30,
-     "state": "active",
-     "text": "The rootkeepers under the old temple will not talk to me about the Empire and will talk about very little else. One of them asked whether the men with the licences had come back yet, as though I would know.",
-     "records_belief": false
-    },
-    {
-     "index": 40,
-     "state": "branch",
-     "text": "The company is not buying specimens. It is measuring a Hist and it has measured this one four times. The fourth man is the one in the courtyard, and he was not killed by the city.",
-     "records_belief": false
-    },
-    {
-     "index": 84,
-     "state": "failure",
-     "text": "The satchel and everything in it went into the water when the arcade came down further. Tesh's drawer holds three charters and no fourth.",
-     "records_belief": false
-    },
-    {
-     "index": 90,
-     "state": "success",
-     "text": "The charters went to the Assize at Gideon with a covering hand from the harbourmistress. It will be a file. It will be a file for years.",
-     "records_belief": false
-    },
-    {
-     "index": 92,
-     "state": "success",
-     "text": "I gave the charters to the rootkeepers instead. They did not thank me and they did not read them. Two days later the fifth man did not arrive, and nobody has said anything to me about that either.",
-     "records_belief": false
-    },
-    {
-     "index": 94,
-     "state": "success",
-     "text": "I sold the fourth charter back to a factor in Gideon for six hundred and he was very pleased with me. There will be a fifth man. There will probably be a sixth.",
-     "records_belief": false
-    }
-   ],
-   "branches": [
-    {
-     "id": "br_the_drawer",
-     "at_journal_index": 20,
-     "condition": "The player asks Tesh what else is in the drawer, or takes the one charter and stops",
-     "leads_to": [
-      "rev_four",
-      "res_assize",
-      "fail_satchel_lost"
-     ],
-     "irreversible": false
-    },
-    {
-     "id": "br_who_gets_the_charters",
-     "at_journal_index": 40,
-     "condition": "Four charters exist and three parties want them",
-     "leads_to": [
-      "res_assize",
-      "res_rootkeepers",
-      "res_sell"
-     ],
-     "irreversible": true
-    }
-   ],
-   "resolutions": [
-    {
-     "id": "res_assize",
-     "method": "confess",
-     "violence_required": false,
-     "journal_index": 90,
-     "outcome": "The charters are filed at Gideon. The Assize is slow, thorough and years away from acting, and the company continues.",
-     "morally_better": null,
-     "requires": {},
-     "requires_knowing": [
-      "rev_four"
-     ],
-     "exclusive_with": [
-      "res_rootkeepers",
-      "res_sell"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_imperial_assize": 12,
-       "the_wet_ledger": -4
+      "opens_by": {
+        "topic": "the old quarter",
+        "prerequisite_topics": []
       },
-      "world_flags": [
-       "lilmoth_charters_filed",
-       "company_still_measuring",
-       "assize_company_file_opened"
+      "task_kind": "retrieval",
+      "stakes": 5,
+      "directions": "Inside the Stormhold wall, take the lane that runs behind the granary until it stops at brick. The quarter behind that brick has been shut since the Flu. The stores gate is the one door in it that the Legion uses, and Sedd holds the key on a cord.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Sedd needs six crates of lamp oil out of the walled quarter and will not send a soldier in for them. He says the quarter is stores now and that it is perfectly safe, twice.",
+          "records_belief": true
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "The quarter is not stores. It is a street of houses with the doors still on them and the Legion has stacked crates in the first two rooms and gone no further.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "There is chalk on eleven of the doors in a hand nobody uses now, and behind one of them somebody has been sleeping. Recently.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "Her name is Ossei and she has lived in the quarter since it was shut, which is thirty-one years, and she was six. She is not sick. Nobody ever came back to check whether anybody was not sick.",
+          "records_belief": false
+        },
+        {
+          "index": 82,
+          "state": "failure",
+          "text": "The stores gate was bricked while I was inside and I came out through the roof with nothing. Sedd has been reassigned to the pass road.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "Six crates of lamp oil, and I said nothing about the chalk. Sedd paid me and asked whether the quarter was as bad as they say, and I said it was worse.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "Ossei came out through the stores gate in a Legion cloak and is living in the Argonian sprawl on the outside of the wall. She has not been back to the wall since and she does not look at it.",
+          "records_belief": false
+        },
+        {
+          "index": 94,
+          "state": "success",
+          "text": "I told Sedd what was behind the chalk. The garrison went in properly for the first time in thirty-one years and found four more, and there is now a hearing about it that nobody in Stormhold wanted.",
+          "records_belief": false
+        }
       ],
-      "unlocks": [
-       "Q-LILM-03"
+      "branches": [
+        {
+          "id": "br_chalk",
+          "at_journal_index": 30,
+          "condition": "The player opens a chalked door or takes the crates and leaves",
+          "leads_to": [
+            "rev_ossei",
+            "res_crates_only",
+            "fail_gate_bricked"
+          ],
+          "irreversible": false
+        },
+        {
+          "id": "br_ossei",
+          "at_journal_index": 40,
+          "condition": "Ossei exists and the player decides whether anybody else learns it",
+          "leads_to": [
+            "res_crates_only",
+            "res_smuggle_out",
+            "res_tell_sedd"
+          ],
+          "irreversible": true
+        }
       ],
-      "npc_disposition": {
-       "harbourmistress-tesh": 25
-      }
-     }
-    },
-    {
-     "id": "res_rootkeepers",
-     "method": "lore_knowledge",
-     "violence_required": false,
-     "journal_index": 92,
-     "outcome": "The rootkeepers take the charters and the fifth man does not arrive in Lilmoth. Nothing is admitted; the sapwell under the temple is opened to the player.",
-     "morally_better": null,
-     "requires": {
-      "skills": {
-       "root_speech": 45
+      "resolutions": [
+        {
+          "id": "res_crates_only",
+          "method": "trade",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "Six crates delivered, nothing said. The quarter stays shut and Ossei stays in it.",
+          "morally_better": false,
+          "requires": {},
+          "exclusive_with": [
+            "res_smuggle_out",
+            "res_tell_sedd"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": 4
+            },
+            "world_flags": [
+              "stormhold_quarter_still_shut",
+              "stormhold_oil_delivered",
+              "ossei_unfound"
+            ],
+            "npc_disposition": {
+              "quartermaster-sedd": 20
+            }
+          }
+        },
+        {
+          "id": "res_smuggle_out",
+          "method": "sneak",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "Ossei leaves the quarter without the Legion knowing. She lives in the sprawl outside the wall and becomes a source about the Flu years that exists nowhere else.",
+          "morally_better": null,
+          "requires": {
+            "skills": {
+              "sneak": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_ossei"
+          ],
+          "exclusive_with": [
+            "res_crates_only",
+            "res_tell_sedd"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": -6,
+              "the_xul_aneekh": 8
+            },
+            "world_flags": [
+              "ossei_in_the_sprawl",
+              "stormhold_quarter_still_shut",
+              "stormhold_flu_testimony_available"
+            ],
+            "unlocks": [
+              "Q-STRM-03"
+            ],
+            "npc_disposition": {
+              "npc-ossei": 60
+            }
+          }
+        },
+        {
+          "id": "res_tell_sedd",
+          "method": "confess",
+          "violence_required": false,
+          "journal_index": 94,
+          "outcome": "The garrison enters the quarter properly and finds four more people. A hearing follows that costs Sedd his posting and reopens two streets.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": [
+            "rev_ossei"
+          ],
+          "exclusive_with": [
+            "res_crates_only",
+            "res_smuggle_out"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": 14,
+              "the_xul_aneekh": -10
+            },
+            "world_flags": [
+              "stormhold_quarter_reopened",
+              "stormhold_hearing_called",
+              "stormhold_sedd_reassigned",
+              "ossei_in_legion_custody"
+            ],
+            "locks": [
+              "Q-STRM-03"
+            ],
+            "npc_disposition": {
+              "quartermaster-sedd": -50,
+              "npc-ossei": -40
+            }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_gate_bricked",
+          "cause": "The player is inside the quarter when the garrison's monthly bricking detail arrives",
+          "journal_index": 82,
+          "recoverable": false,
+          "consequence": "Sedd is reassigned, the stores gate is sealed, and the quarter is unreachable for the rest of the save.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D11"
+        ],
+        "stated_objective": "Bring six crates of lamp oil out of the walled quarter",
+        "actual_objective": "Bring six crates of lamp oil out of the walled quarter",
+        "truth": "The quarter was shut with people still in it and nobody has been back to count.",
+        "revealed_by": [
+          {
+            "id": "rev_ossei",
+            "channel": "talk_to_target",
+            "source": "npc-ossei",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_chalk",
+            "channel": "environment",
+            "source": "the chalk on eleven doors",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": false
       },
-      "knowledge": [
-       "book_the_rootless_egg"
-      ]
-     },
-     "requires_knowing": [
-      "rev_four",
-      "rev_keeper"
-     ],
-     "exclusive_with": [
-      "res_assize",
-      "res_sell"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_xul_aneekh": 16,
-       "the_imperial_assize": -10
+      "consequences": {
+        "faction_reputation": {
+          "the_imperial_assize": 0,
+          "the_xul_aneekh": 0
+        },
+        "world_flags": [
+          "stormhold_quarter_entered"
+        ]
       },
-      "world_flags": [
-       "lilmoth_charters_taken_inside",
-       "company_fifth_man_missing",
-       "lilmoth_sapwell_open",
-       "assize_lilmoth_blind"
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 180,
+          "on_resolution": [
+            "res_crates_only",
+            "res_tell_sedd"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "npc-ossei",
+          "name": "Ossei of the walled quarter",
+          "on_resolution": [
+            "res_smuggle_out"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_chalk_hand",
+          "name": "the chalk hand",
+          "on_resolution": [
+            "res_smuggle_out",
+            "res_tell_sedd"
+          ]
+        }
       ],
-      "locks": [
-       "Q-LILM-03"
-      ],
-      "kills_npc": [
-       "company-agent-fifth"
-      ]
-     }
+      "notes": "W1-18. `discovery: environmental` — the prompt is a bricked lane, and the giver is a way in rather than the reason. Zero-kill on every path."
     },
     {
-     "id": "res_sell",
-     "method": "trade",
-     "violence_required": false,
-     "journal_index": 94,
-     "outcome": "The charter goes back to the company through a Gideon factor for six hundred gold. The measuring continues and is now better informed.",
-     "morally_better": false,
-     "requires": {},
-     "exclusive_with": [
-      "res_assize",
-      "res_rootkeepers"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_wet_ledger": 10,
-       "the_xul_aneekh": -22,
-       "the_imperial_assize": -6
+      "id": "Q-LILM-01",
+      "title": "The Company Man",
+      "category": "hidden",
+      "faction": null,
+      "act": null,
+      "rank_gate": null,
+      "discovery": "found",
+      "giver": {
+        "npc_id": "harbourmistress-tesh",
+        "location": "Lilmoth, the customs house at the head of the wharf",
+        "disposition_min": 45,
+        "honest": true
       },
-      "world_flags": [
-       "lilmoth_charter_returned",
-       "company_still_measuring",
-       "company_knows_the_player",
-       "lilmoth_rootkeepers_closed"
-      ],
-      "locks": [
-       "Q-LILM-03"
-      ],
-      "npc_disposition": {
-       "harbourmistress-tesh": -50
-      }
-     }
-    }
-   ],
-   "failure_states": [
-    {
-     "id": "fail_satchel_lost",
-     "cause": "The player enters the third courtyard after the arcade has come down further (any time after journal index 30 plus eight days)",
-     "journal_index": 84,
-     "recoverable": false,
-     "consequence": "The fourth charter is lost. The quest closes with three charters and no body, and Q-LILM-03 never opens.",
-     "silent": true
-    }
-   ],
-   "can_fail": true,
-   "deceit": {
-    "patterns": [
-     "D7",
-     "D12"
-    ],
-    "stated_objective": "Identify a body and a licence",
-    "actual_objective": "Identify a body and a licence",
-    "truth": "The licences are a survey. Four men have measured the same tree and the fourth did not leave.",
-    "revealed_by": [
-     {
-      "id": "rev_four",
-      "channel": "letter",
-      "source": "item_tesh_drawer_charters",
-      "before_point_of_no_return": true
-     },
-     {
-      "id": "rev_keeper",
-      "channel": "eavesdrop",
-      "source": "rootkeeper-under-the-temple",
-      "before_point_of_no_return": true
-     }
-    ],
-    "never_revealed": true
-   },
-   "consequences": {
-    "faction_reputation": {
-     "the_xul_aneekh": 0,
-     "the_imperial_assize": 0
-    },
-    "world_flags": [
-     "lilmoth_body_found"
-    ]
-   },
-   "mutually_exclusive_with": [],
-   "kill_required_npcs": [],
-   "rewards": [
-    {
-     "type": "gold",
-     "unique_named": false,
-     "amount": 600,
-     "on_resolution": [
-      "res_sell"
-     ]
-    },
-    {
-     "type": "access",
-     "unique_named": true,
-     "id": "access_lilmoth_sapwell",
-     "name": "the sapwell under the old temple",
-     "on_resolution": [
-      "res_rootkeepers"
-     ]
-    },
-    {
-     "type": "information",
-     "unique_named": true,
-     "id": "topic_the_measuring",
-     "name": "the measuring",
-     "on_resolution": [
-      "res_assize",
-      "res_rootkeepers"
-     ]
-    }
-   ],
-   "notes": "W1-18. `category: hidden` — no giver offers it; it exists because there is a body in a courtyard nobody visits. `never_revealed: true` on one layer: the player can learn what the charters are for and can never learn who the company answers to."
-  },
-  {
-   "id": "Q-SAP-01",
-   "title": "A Phial for the Blind Man",
-   "category": "faction",
-   "faction": "the_ixtu_vakh",
-   "act": null,
-   "rank_gate": {
-    "faction": "the_ixtu_vakh",
-    "min_rank": 1,
-    "min_reputation": 10
-   },
-   "discovery": "given",
-   "giver": {
-    "npc_id": "cutter-neeth",
-    "location": "Helstrom, the room over the sap-house on the eastern track",
-    "disposition_min": 40,
-    "honest": false
-   },
-   "opens_by": {
-    "topic": "the phial",
-    "prerequisite_topics": [
-     "the sap-house"
-    ]
-   },
-   "task_kind": "delivery",
-   "stakes": 4,
-   "directions": "The sap-house is on the eastern track out of Helstrom, past the last of the roofed stalls, and the room Neeth uses is up the outside ladder. The man the phial is for keeps a stall on the Archon fish steps, below the bridge, and he is there before the second bell.",
-   "journal": [
-    {
-     "index": 10,
-     "state": "active",
-     "text": "Neeth wants a phial carried to a blind man in Archon and paid for on delivery. She says it is medicine and that the man has been waiting a long time, and she says the second part more warmly than the first.",
-     "records_belief": true
-    },
-    {
-     "index": 20,
-     "state": "active",
-     "text": "The phial is stoppered with wax and the wax has a mark on it I have seen on stoppers in the mud beside a cut sapwell.",
-     "records_belief": false
-    },
-    {
-     "index": 30,
-     "state": "active",
-     "text": "The blind man's name is Eleen and he has been buying this for two years. He says it gives him back three hours of seeing and takes a month off the far end. He has done the arithmetic and he does not want to discuss it.",
-     "records_belief": false
-    },
-    {
-     "index": 40,
-     "state": "branch",
-     "text": "It is not medicine and Neeth knows it is not. It is cut sap in a wax stopper and it is doing to Eleen exactly what it does. He knows too. Everybody in this arrangement knows except the person carrying it.",
-     "records_belief": false
-    },
-    {
-     "index": 86,
-     "state": "failure",
-     "text": "The phial broke in my pack somewhere on the Archon road and the smell stayed in everything for a week.",
-     "records_belief": false
-    },
-    {
-     "index": 90,
-     "state": "success",
-     "text": "I carried it and he paid me and I watched him look at the water for a while. Neeth pays better than the work is worth and I understand why now.",
-     "records_belief": false
-    },
-    {
-     "index": 92,
-     "state": "success",
-     "text": "I emptied the phial into the harbour and told Eleen what was in it. He was angry for a long time and then he asked me, quite calmly, what else there was. I did not have an answer.",
-     "records_belief": false
-    },
-    {
-     "index": 96,
-     "state": "success",
-     "text": "I took the phial to the Deep-Kin instead. They did not pay me. They asked where the wax mark was made, and I told them, and the sap-house on the eastern track has been shut since.",
-     "records_belief": false
-    }
-   ],
-   "branches": [
-    {
-     "id": "br_the_wax",
-     "at_journal_index": 20,
-     "condition": "The player recognises the stopper mark, or carries the phial without looking at it",
-     "leads_to": [
-      "rev_wax",
-      "res_deliver",
-      "fail_phial_broken"
-     ],
-     "irreversible": false
-    },
-    {
-     "id": "br_the_phial",
-     "at_journal_index": 40,
-     "condition": "The player knows what the phial is and Eleen knows too",
-     "leads_to": [
-      "res_deliver",
-      "res_empty",
-      "res_deep_kin"
-     ],
-     "irreversible": true
-    }
-   ],
-   "resolutions": [
-    {
-     "id": "res_deliver",
-     "method": "trade",
-     "violence_required": false,
-     "journal_index": 90,
-     "outcome": "The phial is delivered and paid for. Eleen gets three hours and loses a month; the sap-house keeps its route and the player is on it.",
-     "morally_better": false,
-     "requires": {},
-     "exclusive_with": [
-      "res_empty",
-      "res_deep_kin"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_ixtu_vakh": 12,
-       "the_xul_aneekh": -8
+      "opens_by": {
+        "topic": "the leyawiin charter",
+        "prerequisite_topics": [
+          "the rotting quarter"
+        ]
       },
-      "world_flags": [
-       "sap_route_to_archon_open",
-       "eleen_supplied",
-       "ixtu_vakh_trusts_player"
+      "task_kind": "weird",
+      "stakes": 7,
+      "directions": "The charter is in a satchel on a body in the rotting quarter of Lilmoth, in the third courtyard past the collapsed arcade, where the water stands. Tesh's office is at the head of the wharf under the crane arm; the rootkeepers who will not speak to the Empire keep the sapwell under the old temple, further in.",
+      "journal": [
+        {
+          "index": 8,
+          "state": "active",
+          "text": "There is a body in the rotting quarter with a Leyawiin charter in its satchel and no rot on it at all. Nobody in Lilmoth has reported a body in nine years.",
+          "records_belief": false
+        },
+        {
+          "index": 10,
+          "state": "active",
+          "text": "The charter is a trading licence for a company I have not heard of, endorsed for the acquisition of botanical specimens. It names a tree.",
+          "records_belief": true
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "Tesh has seen three of these. She has been putting them in a drawer for two years because there is nobody in Lilmoth whose job it is to care.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "The rootkeepers under the old temple will not talk to me about the Empire and will talk about very little else. One of them asked whether the men with the licences had come back yet, as though I would know.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "The company is not buying specimens. It is measuring a Hist and it has measured this one four times. The fourth man is the one in the courtyard, and he was not killed by the city.",
+          "records_belief": false
+        },
+        {
+          "index": 84,
+          "state": "failure",
+          "text": "The satchel and everything in it went into the water when the arcade came down further. Tesh's drawer holds three charters and no fourth.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "The charters went to the Assize at Gideon with a covering hand from the harbourmistress. It will be a file. It will be a file for years.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I gave the charters to the rootkeepers instead. They did not thank me and they did not read them. Two days later the fifth man did not arrive, and nobody has said anything to me about that either.",
+          "records_belief": false
+        },
+        {
+          "index": 94,
+          "state": "success",
+          "text": "I sold the fourth charter back to a factor in Gideon for six hundred and he was very pleased with me. There will be a fifth man. There will probably be a sixth.",
+          "records_belief": false
+        }
       ],
-      "unlocks": [
-       "Q-SAP-02"
+      "branches": [
+        {
+          "id": "br_the_drawer",
+          "at_journal_index": 20,
+          "condition": "The player asks Tesh what else is in the drawer, or takes the one charter and stops",
+          "leads_to": [
+            "rev_four",
+            "res_assize",
+            "fail_satchel_lost"
+          ],
+          "irreversible": false
+        },
+        {
+          "id": "br_who_gets_the_charters",
+          "at_journal_index": 40,
+          "condition": "Four charters exist and three parties want them",
+          "leads_to": [
+            "res_assize",
+            "res_rootkeepers",
+            "res_sell"
+          ],
+          "irreversible": true
+        }
       ],
-      "npc_disposition": {
-       "cutter-neeth": 30
-      }
-     }
-    },
-    {
-     "id": "res_empty",
-     "method": "refuse",
-     "violence_required": false,
-     "journal_index": 92,
-     "outcome": "The phial goes into the harbour and Eleen is told what it was. He stops buying, for a while, and the route continues without the player on it.",
-     "morally_better": null,
-     "requires": {},
-     "requires_knowing": [
-      "rev_wax",
-      "rev_eleen"
-     ],
-     "exclusive_with": [
-      "res_deliver",
-      "res_deep_kin"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_ixtu_vakh": -18,
-       "the_xul_aneekh": 4
+      "resolutions": [
+        {
+          "id": "res_assize",
+          "method": "confess",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The charters are filed at Gideon. The Assize is slow, thorough and years away from acting, and the company continues.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": [
+            "rev_four"
+          ],
+          "exclusive_with": [
+            "res_rootkeepers",
+            "res_sell"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_imperial_assize": 12,
+              "the_wet_ledger": -4
+            },
+            "world_flags": [
+              "lilmoth_charters_filed",
+              "company_still_measuring",
+              "assize_company_file_opened"
+            ],
+            "unlocks": [
+              "Q-LILM-03"
+            ],
+            "npc_disposition": {
+              "harbourmistress-tesh": 25
+            }
+          }
+        },
+        {
+          "id": "res_rootkeepers",
+          "method": "lore_knowledge",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The rootkeepers take the charters and the fifth man does not arrive in Lilmoth. Nothing is admitted; the sapwell under the temple is opened to the player.",
+          "morally_better": null,
+          "requires": {
+            "skills": {
+              "root_speech": 45
+            },
+            "knowledge": [
+              "book_the_rootless_egg"
+            ]
+          },
+          "requires_knowing": [
+            "rev_four",
+            "rev_keeper"
+          ],
+          "exclusive_with": [
+            "res_assize",
+            "res_sell"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_xul_aneekh": 16,
+              "the_imperial_assize": -10
+            },
+            "world_flags": [
+              "lilmoth_charters_taken_inside",
+              "company_fifth_man_missing",
+              "lilmoth_sapwell_open",
+              "assize_lilmoth_blind"
+            ],
+            "locks": [
+              "Q-LILM-03"
+            ],
+            "kills_npc": [
+              "company-agent-fifth"
+            ]
+          }
+        },
+        {
+          "id": "res_sell",
+          "method": "trade",
+          "violence_required": false,
+          "journal_index": 94,
+          "outcome": "The charter goes back to the company through a Gideon factor for six hundred gold. The measuring continues and is now better informed.",
+          "morally_better": false,
+          "requires": {},
+          "exclusive_with": [
+            "res_assize",
+            "res_rootkeepers"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_wet_ledger": 10,
+              "the_xul_aneekh": -22,
+              "the_imperial_assize": -6
+            },
+            "world_flags": [
+              "lilmoth_charter_returned",
+              "company_still_measuring",
+              "company_knows_the_player",
+              "lilmoth_rootkeepers_closed"
+            ],
+            "locks": [
+              "Q-LILM-03"
+            ],
+            "npc_disposition": {
+              "harbourmistress-tesh": -50
+            }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_satchel_lost",
+          "cause": "The player enters the third courtyard after the arcade has come down further (any time after journal index 30 plus eight days)",
+          "journal_index": 84,
+          "recoverable": false,
+          "consequence": "The fourth charter is lost. The quest closes with three charters and no body, and Q-LILM-03 never opens.",
+          "silent": true
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D7",
+          "D12"
+        ],
+        "stated_objective": "Identify a body and a licence",
+        "actual_objective": "Identify a body and a licence",
+        "truth": "The licences are a survey. Four men have measured the same tree and the fourth did not leave.",
+        "revealed_by": [
+          {
+            "id": "rev_four",
+            "channel": "letter",
+            "source": "item_tesh_drawer_charters",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_keeper",
+            "channel": "eavesdrop",
+            "source": "rootkeeper-under-the-temple",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": true
       },
-      "world_flags": [
-       "eleen_told",
-       "sap_route_to_archon_open",
-       "ixtu_vakh_closed_to_player"
-      ],
-      "locks": [
-       "Q-SAP-02"
-      ],
-      "npc_disposition": {
-       "npc-eleen": 20,
-       "cutter-neeth": -60
-      }
-     }
-    },
-    {
-     "id": "res_deep_kin",
-     "method": "betray",
-     "violence_required": false,
-     "journal_index": 96,
-     "outcome": "The Deep-Kin are given the wax mark. The sap-house on the eastern track is shut, three cutters leave Helstrom, and Archon's supply stops at the source.",
-     "morally_better": null,
-     "requires": {
-      "faction_rank": {
-       "faction": "the_xul_aneekh",
-       "min_rank": 1
-      }
-     },
-     "requires_knowing": [
-      "rev_wax"
-     ],
-     "exclusive_with": [
-      "res_deliver",
-      "res_empty"
-     ],
-     "consequences": {
-      "faction_reputation": {
-       "the_xul_aneekh": 20,
-       "the_ixtu_vakh": -40
+      "consequences": {
+        "faction_reputation": {
+          "the_xul_aneekh": 0,
+          "the_imperial_assize": 0
+        },
+        "world_flags": [
+          "lilmoth_body_found"
+        ]
       },
-      "world_flags": [
-       "helstrom_sap_house_shut",
-       "sap_route_to_archon_closed",
-       "ixtu_vakh_closed_to_player",
-       "eleen_unsupplied"
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 600,
+          "on_resolution": [
+            "res_sell"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "access_lilmoth_sapwell",
+          "name": "the sapwell under the old temple",
+          "on_resolution": [
+            "res_rootkeepers"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_measuring",
+          "name": "the measuring",
+          "on_resolution": [
+            "res_assize",
+            "res_rootkeepers"
+          ]
+        }
       ],
-      "locks": [
-       "Q-SAP-02",
-       "Q-SAP-04"
+      "notes": "W1-18. `category: hidden` — no giver offers it; it exists because there is a body in a courtyard nobody visits. `never_revealed: true` on one layer: the player can learn what the charters are for and can never learn who the company answers to."
+    },
+    {
+      "id": "Q-SAP-01",
+      "title": "A Phial for the Blind Man",
+      "category": "faction",
+      "faction": "the_ixtu_vakh",
+      "act": null,
+      "rank_gate": {
+        "faction": "the_ixtu_vakh",
+        "min_rank": 1,
+        "min_reputation": 10
+      },
+      "discovery": "given",
+      "giver": {
+        "npc_id": "cutter-neeth",
+        "location": "Helstrom, the room over the sap-house on the eastern track",
+        "disposition_min": 40,
+        "honest": false
+      },
+      "opens_by": {
+        "topic": "the phial",
+        "prerequisite_topics": [
+          "the sap-house"
+        ]
+      },
+      "task_kind": "delivery",
+      "stakes": 4,
+      "directions": "The sap-house is on the eastern track out of Helstrom, past the last of the roofed stalls, and the room Neeth uses is up the outside ladder. The man the phial is for keeps a stall on the Archon fish steps, below the bridge, and he is there before the second bell.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Neeth wants a phial carried to a blind man in Archon and paid for on delivery. She says it is medicine and that the man has been waiting a long time, and she says the second part more warmly than the first.",
+          "records_belief": true
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "The phial is stoppered with wax and the wax has a mark on it I have seen on stoppers in the mud beside a cut sapwell.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "The blind man's name is Eleen and he has been buying this for two years. He says it gives him back three hours of seeing and takes a month off the far end. He has done the arithmetic and he does not want to discuss it.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "It is not medicine and Neeth knows it is not. It is cut sap in a wax stopper and it is doing to Eleen exactly what it does. He knows too. Everybody in this arrangement knows except the person carrying it.",
+          "records_belief": false
+        },
+        {
+          "index": 86,
+          "state": "failure",
+          "text": "The phial broke in my pack somewhere on the Archon road and the smell stayed in everything for a week.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I carried it and he paid me and I watched him look at the water for a while. Neeth pays better than the work is worth and I understand why now.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I emptied the phial into the harbour and told Eleen what was in it. He was angry for a long time and then he asked me, quite calmly, what else there was. I did not have an answer.",
+          "records_belief": false
+        },
+        {
+          "index": 96,
+          "state": "success",
+          "text": "I took the phial to the Deep-Kin instead. They did not pay me. They asked where the wax mark was made, and I told them, and the sap-house on the eastern track has been shut since.",
+          "records_belief": false
+        }
       ],
-      "npc_disposition": {
-       "cutter-neeth": -100
-      }
-     }
+      "branches": [
+        {
+          "id": "br_the_wax",
+          "at_journal_index": 20,
+          "condition": "The player recognises the stopper mark, or carries the phial without looking at it",
+          "leads_to": [
+            "rev_wax",
+            "res_deliver",
+            "fail_phial_broken"
+          ],
+          "irreversible": false
+        },
+        {
+          "id": "br_the_phial",
+          "at_journal_index": 40,
+          "condition": "The player knows what the phial is and Eleen knows too",
+          "leads_to": [
+            "res_deliver",
+            "res_empty",
+            "res_deep_kin"
+          ],
+          "irreversible": true
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_deliver",
+          "method": "trade",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The phial is delivered and paid for. Eleen gets three hours and loses a month; the sap-house keeps its route and the player is on it.",
+          "morally_better": false,
+          "requires": {},
+          "exclusive_with": [
+            "res_empty",
+            "res_deep_kin"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_ixtu_vakh": 12,
+              "the_xul_aneekh": -8
+            },
+            "world_flags": [
+              "sap_route_to_archon_open",
+              "eleen_supplied",
+              "ixtu_vakh_trusts_player"
+            ],
+            "unlocks": [
+              "Q-SAP-02"
+            ],
+            "npc_disposition": {
+              "cutter-neeth": 30
+            }
+          }
+        },
+        {
+          "id": "res_empty",
+          "method": "refuse",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The phial goes into the harbour and Eleen is told what it was. He stops buying, for a while, and the route continues without the player on it.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": [
+            "rev_wax",
+            "rev_eleen"
+          ],
+          "exclusive_with": [
+            "res_deliver",
+            "res_deep_kin"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_ixtu_vakh": -18,
+              "the_xul_aneekh": 4
+            },
+            "world_flags": [
+              "eleen_told",
+              "sap_route_to_archon_open",
+              "ixtu_vakh_closed_to_player"
+            ],
+            "locks": [
+              "Q-SAP-02"
+            ],
+            "npc_disposition": {
+              "npc-eleen": 20,
+              "cutter-neeth": -60
+            }
+          }
+        },
+        {
+          "id": "res_deep_kin",
+          "method": "betray",
+          "violence_required": false,
+          "journal_index": 96,
+          "outcome": "The Deep-Kin are given the wax mark. The sap-house on the eastern track is shut, three cutters leave Helstrom, and Archon's supply stops at the source.",
+          "morally_better": null,
+          "requires": {
+            "faction_rank": {
+              "faction": "the_xul_aneekh",
+              "min_rank": 1
+            }
+          },
+          "requires_knowing": [
+            "rev_wax"
+          ],
+          "exclusive_with": [
+            "res_deliver",
+            "res_empty"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_xul_aneekh": 20,
+              "the_ixtu_vakh": -40
+            },
+            "world_flags": [
+              "helstrom_sap_house_shut",
+              "sap_route_to_archon_closed",
+              "ixtu_vakh_closed_to_player",
+              "eleen_unsupplied"
+            ],
+            "locks": [
+              "Q-SAP-02",
+              "Q-SAP-04"
+            ],
+            "npc_disposition": {
+              "cutter-neeth": -100
+            }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_phial_broken",
+          "cause": "The player takes a fall of more than four metres or is staggered in combat while carrying the phial",
+          "journal_index": 86,
+          "recoverable": true,
+          "consequence": "The phial is destroyed. Neeth will issue one more, once, at half pay.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D1",
+          "D5"
+        ],
+        "stated_objective": "Carry medicine to a man who needs it",
+        "actual_objective": "Carry cut Hist sap to an addict and make the carrier complicit in it",
+        "truth": "The wax mark is the sap-house's. Eleen has been buying for two years and knows what it costs him.",
+        "revealed_by": [
+          {
+            "id": "rev_wax",
+            "channel": "environment",
+            "source": "the stopper mark, matching the ones at the cut sapwell",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_eleen",
+            "channel": "talk_to_target",
+            "source": "npc-eleen",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": false
+      },
+      "consequences": {
+        "faction_reputation": {
+          "the_ixtu_vakh": 0,
+          "the_xul_aneekh": 0
+        },
+        "world_flags": [
+          "archon_phial_run_made"
+        ]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 150,
+          "on_resolution": [
+            "res_deliver"
+          ]
+        },
+        {
+          "type": "faction_rank",
+          "unique_named": false,
+          "on_resolution": [
+            "res_deliver"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "npc-eleen",
+          "name": "Eleen of the fish steps",
+          "on_resolution": [
+            "res_empty"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_wax_mark",
+          "name": "the wax mark",
+          "on_resolution": [
+            "res_empty",
+            "res_deep_kin"
+          ]
+        }
+      ],
+      "notes": "W1-18. A four-hundred-metre errand that is a moral problem. The deceit is D1/D5 and the truth is available on the road, before the delivery, to a player who looks at the thing they are carrying."
     }
-   ],
-   "failure_states": [
-    {
-     "id": "fail_phial_broken",
-     "cause": "The player takes a fall of more than four metres or is staggered in combat while carrying the phial",
-     "journal_index": 86,
-     "recoverable": true,
-     "consequence": "The phial is destroyed. Neeth will issue one more, once, at half pay.",
-     "silent": false
-    }
-   ],
-   "can_fail": true,
-   "deceit": {
-    "patterns": [
-     "D1",
-     "D5"
-    ],
-    "stated_objective": "Carry medicine to a man who needs it",
-    "actual_objective": "Carry cut Hist sap to an addict and make the carrier complicit in it",
-    "truth": "The wax mark is the sap-house's. Eleen has been buying for two years and knows what it costs him.",
-    "revealed_by": [
-     {
-      "id": "rev_wax",
-      "channel": "environment",
-      "source": "the stopper mark, matching the ones at the cut sapwell",
-      "before_point_of_no_return": true
-     },
-     {
-      "id": "rev_eleen",
-      "channel": "talk_to_target",
-      "source": "npc-eleen",
-      "before_point_of_no_return": true
-     }
-    ],
-    "never_revealed": false
-   },
-   "consequences": {
-    "faction_reputation": {
-     "the_ixtu_vakh": 0,
-     "the_xul_aneekh": 0
-    },
-    "world_flags": [
-     "archon_phial_run_made"
-    ]
-   },
-   "mutually_exclusive_with": [],
-   "kill_required_npcs": [],
-   "rewards": [
-    {
-     "type": "gold",
-     "unique_named": false,
-     "amount": 150,
-     "on_resolution": [
-      "res_deliver"
-     ]
-    },
-    {
-     "type": "faction_rank",
-     "unique_named": false,
-     "on_resolution": [
-      "res_deliver"
-     ]
-    },
-    {
-     "type": "ally",
-     "unique_named": true,
-     "id": "npc-eleen",
-     "name": "Eleen of the fish steps",
-     "on_resolution": [
-      "res_empty"
-     ]
-    },
-    {
-     "type": "information",
-     "unique_named": true,
-     "id": "topic_the_wax_mark",
-     "name": "the wax mark",
-     "on_resolution": [
-      "res_empty",
-      "res_deep_kin"
-     ]
-    }
-   ],
-   "notes": "W1-18. A four-hundred-metre errand that is a moral problem. The deceit is D1/D5 and the truth is available on the road, before the delivery, to a player who looks at the thing they are carrying."
-  }
- ]
+  ],
+  "w1_15_r2_note": "W1-15 round 2. Added by the piece that owns the verb: RI-STL01 §9 SNEAK-QUESTS and RI-QST05 both want sneak and steal to be ROUTES rather than flags, and until this round they could not be — the round-1 verdict recorded that a  resolution was \"a flag rather than a route, because you cannot sneak past the enemy it would route you around\". Each gate below is against a quantity the perception model now actually consumes."
 }

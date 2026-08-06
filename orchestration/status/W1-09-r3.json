@@ -2,7 +2,7 @@
   "task_id": "W1-09-r3",
   "brief": "ULTRACODE escalation dispatch \u2014 combat core round 3",
   "started": "wave-1",
-  "state": "building",
+  "state": "complete",
   "escalation": {
     "trigger": "EFFORT-POLICY trigger 1 \u2014 two consecutive critic rounds at 4/10",
     "gap": "GAP-W1-enemy-attacks-cannot-reach-contact-range (combat.hitbox.sweep)",
@@ -20,7 +20,16 @@
     "TURTLE after both: stationary mashing player DIES at every stand distance 0.4-2.6 m; champion survives with 511-774 of 2876. Was: player kills a 2876-HP boss in 19 s taking 0 damage.",
     "TRANSITION SNAPS. Three separate defects, not one. (a) poses instantiated not blended -> clips.json cross_fade, 10 f, smoothstep, applied in Rig.applyCrossFade() and triggered by `anim` changing. (b) LoopClip curves that do not close, so the pose jumps at every wrap (idle 1.293 m x624) -> closeCurve() pins the terminal key to the initial key at construction. (c) YAW SNAPS, which no pose blend can fix because they move the actor's frame: enemy.js snapped yaw to the player's bearing on the attack-start frame (3.390 m of socket, 203 m/s) and the player's facing reversed 180 deg across roll-into-attack (2.493 m). Fixed by enforcing RI-CAM02 C's bounded turn ONCE, centrally, in CombatSystem.step, with the scenario `face` override the only exemption.",
     "WORST single-frame weapon-socket displacement after all three, excluding frame 1 (rig initialisation, which is not a transition): 0.508 m SPRINT->SPRINT (root motion at 6.6 m/s + arm swing), 0.418 m champion ATK_ACTIVE (its own weapon is 1.75 m). Every state BOUNDARY is now <= 0.367 m against a declared per-frame tip travel of 0.308 m. Was 2.528 / 2.521 / 2.293 m.",
-    "PROBE BUG FOUND AND FIXED: cmb-probe.mjs `commit` compared the live move id against the literal 'light'. W1-10's roster renamed the R1 to `r1.1`, so `id !== 'light'` was true on frame 1 of the swing and EVERY cell of the RI-CMB02 M2 commitment grid read C = CANCELLED \u2014 the item's automatic-fail signature, reported for a build in which nothing was cancelled. It now reads the id off frame 1. Grid restored byte-identical to round 2's."
+    "PROBE BUG FOUND AND FIXED: cmb-probe.mjs `commit` compared the live move id against the literal 'light'. W1-10's roster renamed the R1 to `r1.1`, so `id !== 'light'` was true on frame 1 of the swing and EVERY cell of the RI-CMB02 M2 commitment grid read C = CANCELLED \u2014 the item's automatic-fail signature, reported for a build in which nothing was cancelled. It now reads the id off frame 1. Grid restored byte-identical to round 2's.",
+    "PARRY HAD NO RIPOSTE FOR AN ARITHMETIC REASON, not an input one. A medium shield's parry animation is 80 f@60, the PARRIED state it creates is 56 f, and the riposte window inside that state is f7-f52. A parrier still committed to its own parry recovery becomes actionable at parry-frame 80, by which time the window closed at 52. Unreachable for every shield class. FIX: a successful parry ENDS the parrier's move on the frame it connects (resolve.js, `B.endMove(); B.actionableAt = frame`). A WHIFFED parry still pays its full whiff_recovery_f. Measured after: riposted=true at press-lead 18 and 24, pressed at parried frame k=7 (the window's first frame), 584.1 damage. Was riposted=false, damage 0, in all seven cases.",
+    "cmb-poise probe m6_parry ALSO had two defects of its own: it pressed R1 from 1.60 m against a declared riposte range of 1.20 m, and it pressed before k=7 so it fired an ordinary R1 (damage 63) and recorded `riposted: false`. Both fixed; the probe now walks in and waits for the window.",
+    "cmb-poise m3_heavy no longer vacuous: it pressed one R1 every 200 frames against a poise pool that regenerates, so nothing ever staggered and `stagger_lengths_f: []` read as a pass. Now a chain at the weapon's cadence; measures [44] for greatsword and ultra-greatsword against a 64 f heavy spec \u2014 i.e. these weapons' poise damage lands in the MEDIUM band. That is a data question for RI-CMB05/W1-10, and the probe now says so instead of returning an empty list.",
+    "cmb-poise m4_hyperarmour control now LANDS (hp 524 of 620, hit_landed true, vacuous false) \u2014 that was S26's hole inside the hyperarmour instrument. It still does not DISCRIMINATE: neither case staggers, because the champion's chop does 32 poise damage against a 48 pool, so the player never staggers whether hyperarmour is working or not. The probe needs an exhausted player (poise halved) the way m3_medium already does. NOT CLOSED, and reported rather than papered over.",
+    "PARRY STAMINA measured at exactly 22 (poise.json declares 22, spend observed 22.00 on the press frame). The round-2 figure of 26 is not reproducible on this build.",
+    "RI-AI01 \u00a7A STREAM now emitted by the exemplar (`H.traceStart` alongside `H.combatTraceStart`), written as RI-CMB07-exemplar-F*-trace.jsonl. trace-stats.mjs reads it: 0 missing fields, 0 frame gaps. Was 18 missing fields and 1 frame gap, and RI-CMB07 M0 = 0 for it.",
+    "tools/harness/cmb-reach.mjs \u2014 the instrument S26 requires every combat critic to run, shipped with the build. Probes: enemy, player, turtle, rootdz. `--root-dz` overrides every attack's root translation on a COPY of the loaded data, which closes the harness gap the round-2 critic hit (it had to edit champion_hist_marked.json and restore it from backup).",
+    "STILL OPEN: player spear has interior hit-band gaps at 1.20-1.25 m and halberd at 1.15-1.30 m \u2014 the band between where the attacker's body corridor stops and where the blade starts. Both are W1-10 roster movesets. Reported by cmb-reach as an acceptance FAIL rather than hidden.",
+    "STILL OPEN: exemplar 18 of 25 banded rows in band against a floor of 20. Failing: 2 (attacks/min 20.4 vs <=17), 5 (rolls/min 13.2 vs <=13), 16/17 (the bar never reaches zero), 22 (committed ratio 0.646 vs <=0.56), 27 (punish usage 0.182 vs >=0.50), 28 (no stamina-denied inputs). Rows 2, 22 and 27 are one problem: the bot swings more often than it lands inside the enemy's recovery."
   ],
   "outputs_written": [
     "game/data/combat/hitgeometry.json (body_hazard)",
@@ -32,8 +41,13 @@
     "game/src/combat/clips.js (closeCurve/closeLoop)",
     "game/src/combat/enemy.js (no yaw snap on attack start)",
     "game/data/combat/clips.json (cross_fade)",
-    "tools/harness/cmb-probe.mjs (commit probe id fix)"
+    "tools/harness/cmb-probe.mjs (commit probe id fix)",
+    "tools/harness/cmb-reach.mjs",
+    "tools/harness/cmb-poise.mjs (m3_heavy/m4/m6 de-vacuumed)",
+    "tools/harness/cmb-exemplar.mjs (eatRate removed, hold band, row 9 banded, RI-AI01 stream)",
+    "reports/w1-09/cmb-reach.json",
+    "reports/w1-09/exemplar/** (5 fights, both streams)"
   ],
-  "next_step": "exemplar: row 9 band, eatRate removal, hold band, kills not timeouts; then parry riposte + stamina 22; poise probes; RI-AI01 stream; permanent reach probe + root-motion harness hook",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 handing to a fresh-context critic",
+  "notes_for_successor": "The node arena (tools/lib/combat-node.mjs) is 500x faster than the browser for geometry work and reproduces it to the digit; use it first and confirm in the browser. The working tree was shared with a concurrent W1-10/magic builder throughout and the browser harness was unbootable for minutes at a time (missing character/derive.js, quest id collisions, stealth stepPerception) \u2014 retry loops, not despair."
 }

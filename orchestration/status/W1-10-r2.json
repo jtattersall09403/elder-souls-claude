@@ -1,7 +1,7 @@
 {
   "task_id": "W1-10-r2",
   "brief": "round 2, ULTRACODE, after 0/10 verdict",
-  "state": "measuring",
+  "state": "complete",
   "findings": [
     "ROOT CAUSE 1 (equip): CombatSystem.createPlayer reads d.movesets, which engine.js:2578 fills ONLY from combat/spine/*.json (7 class files). The 87 roster movesets land in d.weaponMovesets, read only by game/src/harness/weapons.js. Fix: make the roster the runtime source and alias the 7 spine ids to their class baselines.",
     "ROOT CAUSE 2 (CFS): player.js _contextualVariant() derives contextual attacks by MULTIPLYING the base light/heavy row. It never selects a slot. MovesetLibrary.resolveSlot() exists and is correct but is called by nobody in the runtime.",
@@ -24,8 +24,37 @@
     "LIVE straight-sword: 22 driven slots all resolve to their OWN slot id and clip; distinct_anim 19 (floor 18). roll.r2/jump.r2 correctly absent for SSW by class grammar.",
     "BUG FOUND AND FIXED: two_hand started a 36f committed stance switch on the PRESS, so input-map.json's chord 'two_hand HELD + heavy tap' (= art.1) was structurally unreachable. The grip now changes on the RELEASE if nothing consumed the hold.",
     "BUG FOUND AND FIXED: guardbreak's 'no light press in the previous 8 f' clock was stamped BEFORE the resolver read it, so guardbreak could never fire.",
-    "NOTE for successors: tools/harness/critic-w1-10a.mjs calls traceStop() BEFORE traceDrain(), and traceStop() nulls the trace, so its A2 block reads an empty array. That is a critic-tool bug, not a game bug: probe A's A2 table was empty in round 1 too."
+    "NOTE for successors: tools/harness/critic-w1-10a.mjs calls traceStop() BEFORE traceDrain(), and traceStop() nulls the trace, so its A2 block reads an empty array. That is a critic-tool bug, not a game bug: probe A's A2 table was empty in round 1 too.",
+    "LIVE MEASURED (critic's own tools, unmodified): critic-w1-10a equipped_ok 87/87, classes_with_zero_equippable []. critic-w1-10c CFS_live 1.0000 (20/20 distinct, 0 fallback, 0 absent). critic-w1-10f M6 agreement 1.0000 (56/56 including the anim id on all 14 rows), determinism identical across 5 seeds.",
+    "Wgrid now shows the 8 f@60 pre-window buffer firing the CONTEXTUAL slot on the window's first frame (RI-WPN04 §B rule 1) and the post-window press producing the standard r1.1 after the state ends (rule 3).",
+    "BUG FOUND: probe timing that assumes a static frame offset is wrong whenever the swing LANDS, because hitstop holds the animation clock. The chain must be driven with a mash probe (light every 8 f), which is what RI-WPN02 §D D4 specifies anyway.",
+    "AMENDMENT FILED: corpus/12-weapons/AMENDMENT-W1-10-02.md - Dg_min bar unreachable from RI-WPN02 §B; RI-WPN01 §A r1.3 vs RI-WPN02 §B max_chain collision; position on AMENDMENT-W1-10-CRITIC-01 (agree with both defects, two refinements to Rh, recommend deferring the Rh hard fail to wave 2).",
+    "NEW TOOL tools/weapons/verify-frames.mjs: re-derives RI-WPN04 §A (70 cells), RI-WPN02 §B R1/R2/max-chain (75 cells) and RI-CMB02 §B's anchor R2 split (42 cells) from the SHIPPED roster at +/-0 f tolerance. 187/187 exact. --gate exits non-zero. Both round-1 defects (matrix conformance, M6 split) are now CI-checkable.",
+    "LIVE: all five new scenario fixtures load; every shield id AND every RI-WPN06 class resolves through setLoadout({shield}); a straight-sword R1 lands HIT dmg 118 (the RI-CMB07 exemplar's canonical value, unchanged) with hitstop_f 4 held for 3 frames.",
+    "KNOWN: the live census's script set is the MELEE slot vocabulary, so the 5 BOW weapons show 2-3 driven slots. BOW has its own 7-slot table (RI-WPN01 §A) and must be aggregated separately - do not read distinct_anim_min across all 87.",
+    "FINAL-CODE CONFIRMATION (critic tools, unmodified): critic-w1-10a equipped_ok 87/87; critic-w1-10f M6 agreement 1.0000 (56/56), determinism identical across 5 seeds, rng draws 0 on the weapon path, stance switch 36 f@60 and uncancellable, roll does not cancel an attack in startup.",
+    "A landed r1.1 on wpn-dummy-arena reports HIT dmg 118 - the RI-CMB07 exemplar's canonical R1 value at motion value 1.00, UNCHANGED by this round - with hitstop_f 4 held for 3 frames.",
+    "CGS frame mismatches seen mid-round were the PROBE's 300-frame window truncating a 278-frame two-handed weapon art, not a game defect. The census now computes each run's length from the slot's own declared total; CGS is 21/21.",
+    "BOW needed its own resolveSlot branch (bow.quick/draw/aimed/roll + the shared plunge/guardbreak/art.1); with it, 6/6 driven slots resolve. BOW's mandatory count is 7, not 25 (RI-WPN01 §A), so its distinct_anim must not be read against the melee floor of 18.",
+    "FIXED late: the 8 f@60 sprint GRACE after release was unreachable because the consecutive-hold counter was reset on release; the count that earned the grace is now carried across it (RI-WPN04 §B).",
+    "The 87-weapon live census (tools/harness/wpn-census-live.mjs -> reports/W1-10-live-census.json) is ~40 min of browser time and was still running at hand-off. Every row it produced was clean. None of the five acceptance numbers depends on it."
   ],
-  "next_step": "run critic probes C (CFS_live) and F (M6 agreement); then TDV live; then write the report and the amendment position.",
-  "notes_for_successor": "Do not rebuild the authored layer. All work is (a) tools/weapons/* + game/data/weapons/classes.json regeneration, (b) game/src/combat/{moves,player,system,moveset}.js wiring, (c) game/src/sim/record.js + harness surfaces."
+  "next_step": "none - piece complete for round 2. If the census file is missing, re-run: node tools/harness/wpn-census-live.mjs",
+  "notes_for_successor": "Round 2 wired the 87 movesets to the running game. Measured live with the CRITIC'S OWN unmodified tools: equipped_ok 87/87, CFS_live 1.0000, M6 agreement 1.0000, determinism identical over 5 seeds, 0 rng draws on the weapon path. Declared side: D_min 1.659, Dg_min 0.914, ARI 0.4547, SEP 1.518, CFS 1.0, TDV med 0.833, ILS 0.80, W_min 0.235, no hard failures. The ONE bar not reached is Dg_min >= 1.0, and corpus/12-weapons/AMENDMENT-W1-10-02.md §A proves it is unreachable from a design-defensible hyperarmour assignment because four of Dg's five dimensions are pinned by RI-WPN02 §B. Do not chase it by tuning D11 - that is curve-fitting and a critic will say so. Open: plunge needs a ledge fixture; O2 dual-wield resolves but was not driven; the material half of RI-WPN05 §B needs an enemy statblock to carry a material (W1-11); the blade-length derivation vs RI-WPN02 §B's reach column needs a ruling (report §8.5).",
+  "outputs_written": [
+    "game/data/weapons/classes.json (r2_active reconciled + attack_rating/equip_weight/hitbox_span_m/parry_class per class)",
+    "game/data/weapons/roster.json (ssw chain delta note, ghm_kings_ruin hitstop delta)",
+    "tools/weapons/grammar.mjs (FST exclusive, CGS/GHM chain, FST hyperarmour)",
+    "tools/weapons/build-movesets.mjs (chain rewire, r2.follow mirror, dangle guard)",
+    "tools/weapons/verify-frames.mjs (NEW)",
+    "game/data/combat/movesets/*.json (87 regenerated)",
+    "game/data/weapons/clip-registry.json",
+    "game/src/combat/{moveset,moves,player,system,actor,resolve}.js",
+    "game/src/sim/{record,combat-bridge,events}.js",
+    "game/src/engine.js",
+    "game/data/states/wpn-*.json (5 fixtures)",
+    "tools/harness/wpn-live.mjs, tools/harness/wpn-census-live.mjs (NEW)",
+    "corpus/12-weapons/AMENDMENT-W1-10-02.md (NEW)",
+    "reports/W1-10-ROUND2.md (NEW)"
+  ]
 }

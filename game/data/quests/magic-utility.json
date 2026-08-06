@@ -352,6 +352,11 @@
           "index": 91,
           "text": "I went in through the guard. The reliquary is worth less now that it is known to be missing, and the shrine-house has a body in it.",
           "state": "success"
+        },
+        {
+          "index": 92,
+          "text": "I put the shutter lamp out and waited for the watchman to walk his length. The bar lifts from the inside. Nobody will ever know the window was open.",
+          "state": "success"
         }
       ],
       "resolutions": [
@@ -378,6 +383,21 @@
           "journal_index": 91,
           "outcome": "I went in through the guard. The reliquary is worth less now that it is known to be missing, and the shrine-house has a body in it.",
           "morally_better": null
+        },
+        {
+          "id": "q_mag_03__sneak",
+          "method": "sneak",
+          "requires": {
+            "skills": {
+              "sneak": 40
+            },
+            "condition": "the shutter lamp snuffed"
+          },
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "You put the lamp out with a wet thumb and wait for the watchman to walk his length. The bar lifts from inside; nobody ever knows the window was open.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
         }
       ],
       "can_fail": true,
@@ -606,6 +626,11 @@
           "index": 91,
           "text": "The hackwings over the plaza have to be cleared before the west buttress can be climbed at all. It takes most of a day and there are a lot of them.",
           "state": "success"
+        },
+        {
+          "index": 92,
+          "text": "The shelf-warden keeps the survey strapped in a case. I took the case and left the strap on the peg, which will buy me a day before anyone looks twice.",
+          "state": "success"
         }
       ],
       "resolutions": [
@@ -636,6 +661,20 @@
           "journal_index": 91,
           "outcome": "The hackwings over the plaza have to be cleared before the west buttress can be climbed at all. It takes most of a day and there are a lot of them.",
           "morally_better": null
+        },
+        {
+          "id": "q_mag_05__steal",
+          "method": "steal",
+          "requires": {
+            "skills": {
+              "security": 45
+            }
+          },
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The shelf-warden keeps the survey in a strapped case and the strap is older than he is. You take the case and leave the strap.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
         }
       ],
       "can_fail": true,
@@ -1483,6 +1522,11 @@
           "index": 92,
           "text": "The guar is dead. Ossa has her racks and does not thank me.",
           "state": "success"
+        },
+        {
+          "index": 93,
+          "text": "Eleven paces, and he counts none of them. I went under the deck at the far end of his circuit and came back the same way with the thing in my coat.",
+          "state": "success"
         }
       ],
       "resolutions": [
@@ -1522,6 +1566,20 @@
           "journal_index": 92,
           "outcome": "The guar is dead. Ossa has her racks and does not thank me.",
           "morally_better": null
+        },
+        {
+          "id": "q_mag_11__sneak",
+          "method": "sneak",
+          "requires": {
+            "skills": {
+              "sneak": 35
+            }
+          },
+          "violence_required": false,
+          "journal_index": 93,
+          "outcome": "The stilt-house guard walks a circuit of eleven paces and counts none of them. You go under the deck while he is at the far end and come back the same way.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
         }
       ],
       "can_fail": true,
@@ -1715,6 +1773,11 @@
           "index": 91,
           "text": "The house sends someone to stop me asking. What he carries answers the question, and I had to take it off him.",
           "state": "success"
+        },
+        {
+          "index": 92,
+          "text": "The receipt was folded into his coat lining, which is where a man puts what he does not want found and cannot afford to lose. I did not take the purse. Let him wonder.",
+          "state": "success"
         }
       ],
       "resolutions": [
@@ -1744,6 +1807,20 @@
           "journal_index": 91,
           "outcome": "The house sends someone to stop me asking. What he carries answers the question, and I had to take it off him.",
           "morally_better": null
+        },
+        {
+          "id": "q_mag_13__steal",
+          "method": "steal",
+          "requires": {
+            "skills": {
+              "security": 50
+            }
+          },
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "His purse is on the peg with his coat. The receipt is folded into the lining, which is where a man puts a thing he does not want found and does not want lost.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
         }
       ],
       "can_fail": true,
@@ -2106,6 +2183,11 @@
           "index": 92,
           "text": "A Naga walks in and out of the flue for a hundred and fifty gold and calls it easy money.",
           "state": "success"
+        },
+        {
+          "index": 93,
+          "text": "The flues are only passable for the two hours after the kiln is banked. I went through on my belly in the dark. I have smelled of ash for a week and I would do it again.",
+          "state": "success"
         }
       ],
       "resolutions": [
@@ -2148,6 +2230,21 @@
           "journal_index": 92,
           "outcome": "A Naga walks in and out of the flue for a hundred and fifty gold and calls it easy money.",
           "morally_better": null
+        },
+        {
+          "id": "q_mag_16__sneak",
+          "method": "sneak",
+          "requires": {
+            "skills": {
+              "sneak": 50
+            },
+            "condition": "the kiln banked for the night"
+          },
+          "violence_required": false,
+          "journal_index": 93,
+          "outcome": "The flues are only warm for the two hours after the bank. You go through on your belly in the dark and come out smelling of ash for a week.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
         }
       ],
       "can_fail": true,
@@ -2817,6 +2914,11 @@
           "index": 92,
           "text": "I opened the door instead. It is dealt with and Veth has a new cellar door to buy.",
           "state": "success"
+        },
+        {
+          "index": 93,
+          "text": "I took them along the drain cut instead of the road. Longer, filthier, and nothing on the road saw either of us. They have not stopped complaining and they are alive to do it.",
+          "state": "success"
         }
       ],
       "resolutions": [
@@ -2854,6 +2956,20 @@
           "journal_index": 92,
           "outcome": "I opened the door instead. It is dealt with and Veth has a new cellar door to buy.",
           "morally_better": null
+        },
+        {
+          "id": "q_mag_21__sneak",
+          "method": "sneak",
+          "requires": {
+            "skills": {
+              "sneak": 55
+            }
+          },
+          "violence_required": false,
+          "journal_index": 93,
+          "outcome": "You take the escort along the drain cut instead of the road. It is longer, it is filthy, and nothing on the road ever sees either of you.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
         }
       ],
       "can_fail": true,
@@ -3174,6 +3290,11 @@
           "index": 92,
           "text": "I killed the thing that took it. He got it back and it was not clean.",
           "state": "success"
+        },
+        {
+          "index": 93,
+          "text": "The scribe's working copy was in the lectern drawer. A tier-four ward on a hinge nobody has oiled since it was hung — the ward held and the hinge did not.",
+          "state": "success"
         }
       ],
       "resolutions": [
@@ -3217,6 +3338,20 @@
           "journal_index": 92,
           "outcome": "I killed the thing that took it. He got it back and it was not clean.",
           "morally_better": null
+        },
+        {
+          "id": "q_mag_24__steal",
+          "method": "steal",
+          "requires": {
+            "skills": {
+              "security": 60
+            }
+          },
+          "violence_required": false,
+          "journal_index": 93,
+          "outcome": "The scribe's working copy is in the lectern drawer, and the lectern drawer is a tier-four ward with a hinge nobody has oiled since it was hung.",
+          "morally_better": null,
+          "added_by": "W1-15-r2"
         }
       ],
       "can_fail": true,
@@ -3288,5 +3423,6 @@
         }
       ]
     }
-  ]
+  ],
+  "w1_15_r2_note": "W1-15 round 2. Added by the piece that owns the verb: RI-STL01 §9 SNEAK-QUESTS and RI-QST05 both want sneak and steal to be ROUTES rather than flags, and until this round they could not be — the round-1 verdict recorded that a  resolution was \"a flag rather than a route, because you cannot sneak past the enemy it would route you around\". Each gate below is against a quantity the perception model now actually consumes."
 }

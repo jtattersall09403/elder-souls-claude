@@ -174,7 +174,7 @@ export function installHarness(engine, bootPromise) {
     // ask for, supplied as pure functions of game/data/weapons/**. See game/src/harness/weapons.js
     // for what is still missing and why scoring it 0 fail-closed is correct.
     get weapons() {
-      if (!this._weapons) this._weapons = installWeaponsHarness(engine.data);
+      if (!this._weapons) { engine.data._engine = engine; this._weapons = installWeaponsHarness(engine.data); }
       return this._weapons;
     },
 
@@ -205,6 +205,8 @@ export function installHarness(engine, bootPromise) {
     // so it reports where the thing actually is and not what it was labelled.
     getSignatures(filter) { return engine.getSignatures(filter); },
     signatureAudit() { return engine.signatureAudit(); },
+    // RI-WLD07 max walkable slope + the fall; RI-WLD10 bands, stamina, breath, mire; S25 denial.
+    getTraversalReport() { return engine.getTraversalReport(); },
     getRegionSignature(x, z) { return engine.getRegionSignature(x, z); },
     setTide(stateOrPhase) { return engine.setTide(stateOrPhase); },
     getTide() { return engine.getTide(); },
@@ -463,7 +465,12 @@ export function installHarness(engine, bootPromise) {
     magicEventsDrain() { return engine.magic.drainEvents(); },
 
     /** The two — and only two — things in this project that raise Focus. */
-    hearthRest() { return { focus: engine.magic.hearthRest(), note: 'RI-MAG01 §A: the reservoir refills here and nowhere else.' }; },
+    // W1-14 defined `hearthRest()` as the MAGIC reservoir refill; W1-07 needs the same verb to
+    // also reset RI-PRG03 §4's per-rest skill clamp and to honour RI-CHR03's Dry Well, which
+    // decides whether the refill happens at all. Two properties with one name in an object
+    // literal means the later one silently wins — which it did, and the clamp never reset. One
+    // verb now, doing both, with both items' return fields on it.
+    hearthRest() { return engine.hearthRest(); },
 
     /** The catalogue, the shipped shelf and the cast class table, for offline recomputation. */
     getMagicData() {
@@ -794,6 +801,35 @@ export function installHarness(engine, bootPromise) {
     fenceSell(fenceId, instance) { return engine.fenceSell(String(fenceId), String(instance)); },
     /** RI-QST05: the verb census over the shipped quest tree. */
     questVerbCensus() { return engine.questVerbCensus(); },
+    /**
+     * The stealth/crime event log since the last drain — `crime`, `witness`, `report`,
+     * `report_route`, `search_start`, `search_end`, `civ_state`, `sound`, `guard_band`,
+     * `stolen_registered`, `aggro`. The same events go to the trace bus; this is the path for a
+     * probe that is not tracing.
+     */
+    drainStealthEvents() { return engine.sim.stealth.drain().concat(engine.sim.stealth.crime.drain()); },
+    /**
+     * The perception state of every entity, and nothing else.
+     *
+     * `snapshot()` builds a whole `elder-souls/trace@1` frame record — every hitbox, every
+     * event, the character sheet — and a per-frame detection curve over 3,600 frames calls it
+     * 3,600 times for four numbers. This is the same numbers off the same fields, so a probe
+     * that wants a frame-exact alert curve can afford one.
+     */
+    perceptionState() {
+      return engine.sim.entities.map((e) => ({
+        eid: e.eid, alert: +e.alert.toFixed(4), alert_state: e.alertState,
+        alert_channel: e.alertChannel === undefined ? null : e.alertChannel,
+        los: e.percept_los === undefined ? null : !!e.percept_los,
+        dist_m: e.percept_dist === undefined ? null : +e.percept_dist.toFixed(3),
+        pos: [+e.pos[0].toFixed(3), +e.pos[1].toFixed(3), +e.pos[2].toFixed(3)],
+        speed_mps: +(e.speed || 0).toFixed(3),
+        search_target: e.searchTarget ? e.searchTarget.map((n) => +n.toFixed(2)) : null,
+        search_radius_m: e.searchRadius || 0,
+        alert_hop: e.alertHop || 0,
+        lkp: e.lkp ? e.lkp.map((n) => +n.toFixed(2)) : null,
+      }));
+    },
 
     /** RI-STL02: listOwnedObjects(interiorId) -> [{instance, owner, owner_scope, value_g}] */
     listOwnedObjects(zoneId) { return engine.listOwnedObjects(String(zoneId)); },

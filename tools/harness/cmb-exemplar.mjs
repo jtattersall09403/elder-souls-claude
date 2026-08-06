@@ -129,6 +129,13 @@ for (let i = 0; i < runs.length; i++) {
   const base = `RI-CMB07-exemplar-${r.prof.id}`;
   fs.writeFileSync(path.join(outDir, `${base}-frames.jsonl`),
     [JSON.stringify(r.meta)].concat(r.frames_data.map((x) => JSON.stringify(x))).join('\n') + '\n');
+  // The RI-AI01 §A / HARNESS.md §5 stream, written next to its RI-CMB07 twin and joinable on
+  // the frame index. `tools/harness/trace-stats.mjs` — the corpus's own general trace consumer
+  // — reads this file; it could not read the other one, and reported 18 missing fields.
+  if (r.harness_frames && r.harness_frames.length) {
+    fs.writeFileSync(path.join(outDir, `${base}-trace.jsonl`),
+      r.harness_frames.map((x) => JSON.stringify(x)).join('\n') + '\n');
+  }
   const segs = segment(r.frames_data);
   fs.writeFileSync(path.join(outDir, `${base}-trace.segments.jsonl`),
     [JSON.stringify(Object.assign({}, r.meta, { encoding: 'segment-rle', duration_frames: r.frames_data.length, fight: r.prof.id }))]
@@ -218,6 +225,14 @@ function RUN_ONE({ prof, cap }) {
     f += prof.gap[0] + Math.floor(rnd() * (prof.gap[1] - prof.gap[0]));
   }
   H.queueEnemyScript('E1', script);
+  // TWO STREAMS, ONE RUN — the arrangement RI-CMB07 §A already specifies and this generator
+  // did not honour. `es-combat-trace/1` is RI-CMB07's own format; `elder-souls/trace@1` is
+  // HARNESS.md §5's, and §5 says in as many words that "RI-AI01 §A defines the enemy field
+  // names and this document adopts them verbatim", which makes it the RI-AI01 §A stream that
+  // RI-CMB07 M0's last clause FAILS the item for omitting. Round 2: "the exemplar run emits
+  // only es-combat-trace/1 … so this is a one-command omission, not a missing capability.
+  // M0 = 0." Here is the command.
+  H.traceStart({ scenario: 'RI-CMB07-exemplar-' + prof.id });
   H.combatTraceStart({ scenario: 'RI-CMB07-exemplar-' + prof.id });
   const meta = H.combatTraceMeta();
   meta.scenario = 'RI-CMB07-exemplar-' + prof.id;
@@ -227,6 +242,7 @@ function RUN_ONE({ prof, cap }) {
   for (const a of meta.enemies[0].attacks) atkOf[a.id] = a;
 
   const frames = [];
+  const hframes = [];        // the HARNESS.md §5 / RI-AI01 §A stream
   let holdBlock = false;
   let mx = 0, my = 0, sprint = false;
   let toRelease = [];             // released on the NEXT frame — a tap is two frames
@@ -308,7 +324,7 @@ function RUN_ONE({ prof, cap }) {
             press.push('roll');
             mx = 0; my = 1;
             plan.done = true; dbg.rolls++;
-            punishLeft = 1 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.6 ? 1 : 0);
+            punishLeft = 2 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.6 ? 1 : 0);
           }
         }
       }
@@ -364,7 +380,7 @@ function RUN_ONE({ prof, cap }) {
       //         16 and 28 and destroyed rows 17, 19, 22, 24 and 25, because a bot walking around
       //         on an empty bar is not a fight.
       if (p.hp / p.hp_max < prof.panicHp && burnLeft === 0 && burnCd <= 0) {
-        burnLeft = 5; burnCd = 1100;
+        burnLeft = 4; burnCd = 1500;
       }
       if (burnCd > 0) burnCd--;
       // ...and then it panics and rolls clear, which is what actually empties the bar: four
@@ -439,6 +455,7 @@ function RUN_ONE({ prof, cap }) {
 
     H.stepFrames(1);
     for (const r of H.combatTraceDrain()) frames.push(r);
+    for (const r of H.traceDrain()) hframes.push(r);
     const cc = cs();
     { const ee = cc.enemies[0];
       const hb = ee && ee.state === 'ATK_ACTIVE' ? 1 : 0;
@@ -453,8 +470,11 @@ function RUN_ONE({ prof, cap }) {
   const str = frames.map((r) => r.f + r.p[0] + r.p[2] + r.p[3] + r.p[4]).join('|');
   for (let k = 0; k < str.length; k++) { h ^= str.charCodeAt(k); h = Math.imul(h, 16777619) >>> 0; }
 
+  for (const r of H.traceDrain()) hframes.push(r);
+  const htail = H.traceStop ? H.traceStop() : null;
   return {
     prof, meta, frames_data: frames, frames: frames.length, dbg,
+    harness_frames: hframes, harness_tail: htail,
     enemy_dead: fin.enemies[0] ? fin.enemies[0].dead : true,
     enemy_hp: fin.enemies[0] ? Math.round(fin.enemies[0].hp) : 0,
     player_hp: Math.round(fin.player.hp), player_dead: fin.player.hp <= 0,

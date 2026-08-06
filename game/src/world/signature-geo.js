@@ -18,6 +18,7 @@ import { SIGNATURE_KINDS } from './signature.js';
 const c3 = (hex) => new THREE.Color(hex);
 
 /** Merge a list of geometries into one, so a kind is a single instanced draw. */
+export function mergeAll(parts) { return weld(parts); }
 function weld(parts) {
   let vcount = 0, icount = 0;
   for (const g of parts) { vcount += g.attributes.position.count; icount += g.index ? g.index.count : g.attributes.position.count; }

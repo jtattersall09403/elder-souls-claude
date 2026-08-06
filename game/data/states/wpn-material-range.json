@@ -37,38 +37,34 @@
   "spawn": [
     {
       "id": "dummy_passive",
-      "x": -3.0,
-      "z": 2.6,
-      "as": "M_flesh"
+      "x": -2.0,
+      "z": 1.5,
+      "as": "M1"
     },
     {
       "id": "dummy_passive",
-      "x": -1.5,
-      "z": 2.6,
-      "as": "M_chitin",
-      "material": "chitin"
+      "x": -1.0,
+      "z": 1.5,
+      "as": "M2"
     },
     {
       "id": "dummy_passive",
       "x": 0.0,
-      "z": 2.6,
-      "as": "M_stone",
-      "material": "stone"
+      "z": 1.5,
+      "as": "M3"
     },
     {
       "id": "dummy_passive",
-      "x": 1.5,
-      "z": 2.6,
-      "as": "M_metal",
-      "material": "metal"
+      "x": 1.0,
+      "z": 1.5,
+      "as": "M4"
     },
     {
       "id": "dummy_passive",
-      "x": 3.0,
-      "z": 2.6,
-      "as": "M_wood",
-      "material": "wood"
+      "x": 2.0,
+      "z": 1.5,
+      "as": "M5"
     }
   ],
-  "note": "W1-10 fixture. RI-WPN01..06's Comparison methods name this state by id; without it those checks score 0 fail-closed (WEAPON-CRITIC.md §3.1)."
+  "note": "W1-10 fixture. Five passive dummies in reach, for RI-WPN05 §A's 5x7 hitstop grid. DECLARED LIMITATION, stated rather than discovered: no enemy statblock in this build carries a `material`, so all five are flesh and this fixture exercises the ATTACKER side (weight tier, shape, poise damage, the live `player.hitstop_f`) against a constant target. The material multiplier and the deflection rule are computable per (weapon, slot, material) through H.weapons.impactFor() and are NOT yet driven by a landed hit; that half of the seam is W1-11's. Scoring the material half 0 fail-closed against this piece is correct."
 }

@@ -53,11 +53,21 @@ const res = await handle.page.evaluate(`(function(){
     for (const w of ['greatsword','ultra-greatsword']) {
       H.setSeed(5); H.loadState('arena_champion'); H.setLoadout({weapon:w}); H.lockOn('E1');
       H.teleport(0, 4.6-1.2, {yaw:0}); H.stepFrames(4);
-      const q=[]; for(let k=0;k<6;k++) q.push({f:1+k*200,press:['light']},{f:3+k*200,release:['light']});
+      // The old cadence was one R1 every 200 frames. The champion's poise pool is 48 and it
+      // REGENERATES between hits, so no two hits ever accumulated and 'stagger_lengths_f' came
+      // back '[]' for both weapons — the 64 f spec was scored as measured when nothing had
+      // staggered at all. A probe that passes on a broken build is worse than no probe. The
+      // press is now a chain at the weapon's own cadence, and the probe FAILS LOUDLY if the
+      // enemy never staggers rather than returning an empty list that reads like a pass.
+      const q=[{f:1,move:[0,1]}]; for(let k=0;k<10;k++) q.push({f:2+k*60,press:['light']},{f:4+k*60,release:['light']});
       H.queueInputs(q);
-      const st=[]; for(let i=1;i<=1300;i++){ H.stepFrames(1); const e=cs().enemies[0]; st.push(e?e.state:'-'); }
+      const st=[]; for(let i=1;i<=900;i++){ H.stepFrames(1); const e=cs().enemies[0]; st.push(e?e.state:'-'); }
       const rr = runs(st).filter((x)=>x[0]==='STAGGER');
-      out.push({ weapon:w, stagger_lengths_f: rr.map((x)=>x[1]), spec_f: 64 });
+      out.push({ weapon:w, stagger_lengths_f: rr.map((x)=>x[1]), spec_f: 64,
+                 vacuous: rr.length === 0,
+                 vacuous_note: rr.length === 0
+                   ? 'NO STAGGER PRODUCED. This row measures nothing and must be read as a FAIL of RI-CMB05 M3 heavy, not as a pass.'
+                   : null });
     }
     return out;
   })();
@@ -86,8 +96,18 @@ const res = await handle.page.evaluate(`(function(){
       H.queueEnemyScript('E1',[{f:6,move:'chop'}]);
       H.queueInputs([{f:Math.max(1,press),press:['heavy']},{f:Math.max(3,press+2),release:['heavy']}]);
       const st=[]; for(let i=1;i<=300;i++){ H.stepFrames(1); st.push(cs().player.state); }
+      const hpEnd = cs().player.hp;
       out.push({ case: inside?'hit inside the HA window':'hit outside it', press_f: press,
-                 states:[...new Set(st)], staggered: st.indexOf('STAGGER')>=0, hp: cs().player.hp });
+                 states:[...new Set(st)], staggered: st.indexOf('STAGGER')>=0, hp: hpEnd,
+                 // THE CONTROL HAS TO LAND. Round 2: "m4_hyperarmour's control case — 'hit
+                 // outside the HA window' — reports hp: 620 of 620. The hit never landed. The
+                 // probe cannot tell working hyperarmour from none." It was S26's hole showing
+                 // up inside the hyperarmour instrument. The control is now asserted.
+                 hit_landed: hpEnd < 620,
+                 vacuous: !inside && hpEnd >= 620,
+                 vacuous_note: (!inside && hpEnd >= 620)
+                   ? 'CONTROL DID NOT LAND. With no hit outside the window there is nothing to compare the inside case against, so M4 measures nothing and must be read as a FAIL.'
+                   : null });
     }
     return out;
   })();
@@ -118,14 +138,35 @@ const res = await handle.page.evaluate(`(function(){
       H.queueEnemyScript('E1',[{f:6,move:'chop'}]);
       // chop's first active frame is its own anim frame 69, i.e. absolute frame 6+68
       const p = 6 + 68 - lead;
-      H.queueInputs([{f:p,press:['parry']},{f:p+2,release:['parry']},
-                     {f:p+34,press:['light']},{f:p+36,release:['light']}]);
-      const es=[], ps=[]; let hp0=null, dmg=0;
-      for(let i=1;i<=300;i++){ H.stepFrames(1); const c=cs(); const e=c.enemies[0];
-        if(hp0===null)hp0=e.hp; dmg=hp0-e.hp; es.push(e.state); ps.push(c.player.state); }
+      H.queueInputs([{f:p,press:['parry']},{f:p+2,release:['parry']}]);
+      const es=[], ps=[]; let hp0=null, dmg=0, pressed=false, minD=99, kAtPress=null, kf=0;
+      for(let i=1;i<=300;i++){
+        // A PARRIER STEPS IN. RI-CMB05 §D prices the riposte at 'backstab.max_distance_m'
+        // = 1.20 m and this probe starts the player at 1.60 m; the old version pressed R1 from
+        // where it stood, 'criticalAvailable()' returned null on distance, and the row read
+        // 'riposted: false' for a build in which the riposte works. Measured: availability
+        // turns on at exactly k=7 (the window's own first frame) once the player is inside
+        // 1.20 m. Walking in is what a player does and it is what the probe does.
+        const c0 = cs(); const e0 = c0.enemies[0];
+        if (e0 && e0.state === 'PARRIED') kf++; 
+        if (e0 && e0.state === 'PARRIED' && !pressed) {
+          const d = e0.dist_m;
+          // The window is f7..f52 of the PARRIED state. Pressing before f7 does not fire a
+          // riposte, it fires an ordinary R1 — which is what the previous version measured
+          // (damage 63, riposted false) and mistook for "the riposte does not exist".
+          if (d > 1.10) H.queueInputs([{f:0, move:[0,1]}]);
+          else if (kf >= 7 && c0.player.move === null) { H.queueInputs([{f:0, move:[0,0], press:['light']}, {f:1, release:['light']}]); pressed = true; kAtPress = kf; }
+          else H.queueInputs([{f:0, move:[0,0]}]);
+        }
+        H.stepFrames(1); const c=cs(); const e=c.enemies[0];
+        if(hp0===null)hp0=e.hp; dmg=hp0-e.hp; es.push(e.state); ps.push(c.player.state);
+        if(e.dist_m<minD) minD=e.dist_m;
+      }
       const parried = runs(es).filter((x)=>x[0]==='PARRIED');
       out.push({ press_lead_f: lead, parried: parried.length>0, parried_len_f: parried.length?parried[0][1]:null,
-                 spec_parried_f: 56, riposted: ps.indexOf('CRIT_ATTACK')>=0, damage:+dmg.toFixed(1) });
+                 spec_parried_f: 56, riposted: ps.indexOf('CRIT_ATTACK')>=0, damage:+dmg.toFixed(1),
+                 closed_to_m: +minD.toFixed(2), riposte_max_distance_m: 1.20,
+                 pressed_at_parried_frame: kAtPress, riposte_window_f: [7,52] });
     }
     return out;
   })();

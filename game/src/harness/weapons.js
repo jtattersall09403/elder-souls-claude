@@ -161,6 +161,22 @@ export function installWeaponsHarness(data) {
     /** The full input conjunction per slot — what the schema's `trigger` block cannot express. */
     getInputMap() { return (data.weapons && data.weapons['input-map']) || { _declared_incomplete: 'game/data/weapons/input-map.json did not load' }; },
 
-    _declared_incomplete: 'These queries are pure functions of the weapon DATA. They are one half of HARNESS.md §7.4\'s two-source rule; the other half — player.anim_slot, player.hitstop_f and player.weapon_tip inside a live trace, and the impact / block_success event types — belongs to the combat runtime (W1-09) and to W1-11, and RI-WPN01 M2 / M6 and RI-WPN05 M1 are NOT fully measurable until those land. Scoring them 0 fail-closed against this piece is correct.',
+    /**
+     * What the player is HOLDING, read off the combat body rather than off the requested
+     * loadout — so a stance switch that has not committed yet cannot be mistaken for one that
+     * has. Mirrors `getPlayerStats().equipped`.
+     */
+    getEquipped() { return data._engine ? data._engine.equippedReport() : null; },
+
+    _two_source_rule: 'These queries are pure functions of the weapon DATA — one half of '
+      + "HARNESS.md §7.4's two-source rule. AS OF W1-10 ROUND 2 THE OTHER HALF EXISTS: the live "
+      + 'trace carries player.anim_slot, player.hitstop_f, player.weapon_tip, player.stance, '
+      + 'player.roll_tier, player.charge_f and player.block_angle_deg, and the event vocabulary '
+      + 'carries block_success and charge_release. A critic must now DIFF the two rather than '
+      + 'read either alone; agreement between them is the measurement, and RI-WPN01 M6 is the '
+      + 'check that does it. The half that is still absent is the MATERIAL of what you hit: no '
+      + 'enemy statblock carries one, so impactFor() computes the 5x7 grid per (weapon, slot, '
+      + 'material) but no landed hit selects a row. That is W1-11, and scoring the material half '
+      + '0 fail-closed against this piece is correct.',
   };
 }

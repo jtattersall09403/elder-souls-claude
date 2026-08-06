@@ -144,10 +144,19 @@ export class StealthCrime {
     // collision set line of sight uses, so standing in an alcove is worth x0.80 and standing in
     // a field is not. A scenario may still force it (RI-STL01 §2's own worked table is stated in
     // terms of the flag), and when it does the trace says so.
-    if (!p.inCoverForced) {
-      const cov = PER.deriveInCover(sim, pos[0], pos[1], pos[2]);
-      p.inCover = cov.in_cover;
-      p.inCoverFraction = cov.fraction;
+    //
+    // Throttled to every 6th frame (10 Hz). Twelve sphere casts against a cell with a few
+    // hundred primitives is the most expensive thing this subsystem does, and cover is a
+    // property of where you are standing — it cannot change meaningfully inside 100 ms at
+    // 2.0 m/s. `RI-PLT01` P4/P5 are the reason this is a throttle and not a per-frame loop.
+    if (!p.inCoverForced && (f % 6 === 0 || p.inCoverFraction === undefined)) {
+      const hasGeometry = (sim.cell && sim.cell.shapes.length) || this.occluders.shapes.length;
+      if (!hasGeometry) { p.inCover = false; p.inCoverFraction = 0; }
+      else {
+        const cov = PER.deriveInCover(sim, pos[0], pos[1], pos[2]);
+        p.inCover = cov.in_cover;
+        p.inCoverFraction = cov.fraction;
+      }
     }
     // The RAW product first, then the magic terms, then the [0.05, 1.30] clamp — in that order.
     // Applying the terms after the clamp would let the 0.05 floor swallow an 80% chameleon
@@ -213,6 +222,15 @@ export class StealthCrime {
         if (bus) { const e = bus.emit(f, now === 'CHALLENGE' ? 'challenge' : now === 'ALARM' ? 'zone_alert' : 'detect'); e.eid = c.eid; e.state = now; e.channel = channel; }
       }
     }
+
+    // 6b. THE GUARD LADDER, as behaviour rather than as a lookup.
+    //
+    // Round 1: "there are no guard entities either, so `getGuardBand()` is a function of a
+    // number you set with `setBounty()`." The 17-crime schedule, the three arrest answers, the
+    // jail ledger and the S10 decision were all correct and all out of reach in play, because
+    // nothing in the world ever read the bounty. A guard who can see you now reads it, every
+    // frame, and does one of three things — greet, offer the arrest, or attack.
+    this.stepGuards(sim, bus);
 
     // 7. pending reports. A fleeing witness who reaches a guard reports; one whose latency
     // expires reports. Bounty exists at exactly one place in this build and this is it.
@@ -296,7 +314,7 @@ export class StealthCrime {
       // reading the trace can tell a scripted aggro from a perceived one.
       const body = sim._combat ? sim._combat.bodyOf(e.eid) : null;
       if (body && body.aggro) { e.alert = 100; e.alertChannel = 'scripted'; }
-      else PER.stepAlert(e, per, decay, e.alertState === 'AGGRO' ? 0 : baseline);
+      else PER.stepAlert(e, per, decay, e.alertState === 'AGGRO' ? 0 : baseline, d.perception_inherited_from_RI_AI01.peripheral_alert_cap);
 
       e.percept_dist = per.dist;
       e.percept_los = per.los;
@@ -400,7 +418,24 @@ export class StealthCrime {
       if (!e || e.hp <= 0) { s.end(f); continue; }
       if (e.alertState === 'AGGRO') { s.acquired = true; s.end(f); this.endSearch(sim, s, e, f, true, bus); continue; }
 
-      const tgt = s.targetAt(f);
+      // S-1 gives the plan; S-2 gives the band. Once the plan is exhausted the searcher SWEEPS
+      // OUT to the band radius rather than standing on the last crate, so `RI-STL01` method 6's
+      // "measure searcher distance from LKP over the 12 s" has something to measure. See
+      // AMENDMENT-W1-15-01 §7 for why that assertion's own numbers (13 m, 19 m) cannot be
+      // reached jointly with S-1's 8 m cap inside a 12 s window at S17's 2.0 m/s walk.
+      let tgt = s.targetAt(f);
+      const planDoneF = s.startFrame + (this.d.search.s1.lkp_dwell_s + s.plan.length * this.d.search.s1.per_volume_s) * PER.HZ;
+      if (f >= planDoneF) {
+        const band = s.radiusAt(f);
+        // Outward along the LKP-to-searcher axis: the direction it already came from is the
+        // direction it has already looked, so it pushes past the LKP the other way.
+        let ax = s.lkp[0] - e.pos[0], az = s.lkp[2] - e.pos[2];
+        const al = Math.hypot(ax, az) || 1;
+        s._sweep = s._sweep || [s.lkp[0] + (ax / al) * band, s.lkp[1], s.lkp[2] + (az / al) * band];
+        s._sweep[0] = s.lkp[0] + (ax / al) * band;
+        s._sweep[2] = s.lkp[2] + (az / al) * band;
+        tgt = s._sweep;
+      }
       const dx = tgt[0] - e.pos[0], dz = tgt[2] - e.pos[2];
       const d = Math.hypot(dx, dz);
       const stepM = walk / PER.HZ;
@@ -445,6 +480,56 @@ export class StealthCrime {
     e.searchTarget = null; e.searchRadius = 0;
     this.events.push({ type: 'search_end', eid: s.eid, frame, acquired, visited: s.visited.slice(), zone_baseline: z.baseline, lights_relit: relit });
     if (bus) { const ev = bus.emit(frame, 'search_end'); ev.eid = s.eid; ev.acquired = acquired; ev.visited = s.visited.slice(); ev.zone_baseline_alert = acquired ? 0 : z.baseline; ev.lights_relit = relit; }
+  }
+
+  // ---- THE GUARD LADDER — RI-CRM01 §4, as behaviour -----------------------------------------
+
+  /**
+   * `RI-CRM01` method 7: "step 600 frames in a guard's cone. Assert the three behaviours are
+   * greeting-only / arrest-dialogue-sheathed / AGGRO. Assert the arrest guard never draws a
+   * weapon in band 2, and assert a surrender parley exists in band 3."
+   *
+   * The band is computed from the live bounty and the player's own race and standing — which is
+   * seam **AR-3**, the world reaching into the fight: an Imperial bounty of 3,000 is what makes
+   * a militiaman attack a Naga on sight and merely greet an Imperial.
+   */
+  stepGuards(sim, bus) {
+    const f = sim.frame;
+    let band = null;
+    for (const g of this.civilians) {
+      if (!g.alive || g.group !== 'guard') continue;
+      if (band === null) band = this.guardBandNow();
+      const prev = g.guard_band;
+      // A guard acts on what they can see. Out of LOS or out of radius, they do nothing —
+      // which is why the arrest is something you can walk away from.
+      const engaged = g.los && g.dist !== undefined && g.dist <= g.R;
+      g.guard_band = engaged ? band.band : 0;
+      g.guard_behaviour = engaged ? band.behaviour : 'unaware';
+      g.weapon_drawn = engaged && band.band >= 3;
+      g.parley = band.parley || null;
+      if (prev !== g.guard_band) {
+        this.events.push({ type: 'guard_band', eid: g.eid, frame: f, band: g.guard_band, behaviour: g.guard_behaviour, bounty: this.crime.bounty.imperial, weapon_drawn: g.weapon_drawn, parley: g.parley });
+        if (bus) { const e = bus.emit(f, 'arrest'); e.eid = g.eid; e.band = g.guard_band; e.behaviour = g.guard_behaviour; e.weapon_drawn = g.weapon_drawn; e.parley = g.parley; }
+      }
+      // Band 3 is attack-on-sight, and an attack needs a body. If this guard has a combat
+      // entity of the same eid, it is put into AGGRO — the same meter every other perception
+      // channel writes, so a critic reading the trace sees one alert model and not two.
+      const ent = (sim.entities || []).find((x) => x.eid === g.eid);
+      if (ent && g.guard_band >= 3) {
+        ent.alert = 100; ent.alertState = 'AGGRO'; ent.alertChannel = 'bounty';
+        const ec = sim._combat ? sim._combat.enemies.get(g.eid) : null;
+        if (ec) { ec.alert = 100; ec.alertState = 'AGGRO'; }
+      }
+    }
+    this._guardBand = band;
+  }
+
+  /** The band for the player as they stand, from the live ledger. */
+  guardBandNow() {
+    const th = JUS.thresholds(this.d.races, this.d.sanction, this.d.justice, {
+      race: this.p.race, standing: SAN.standingKey(this.p.standings), authority: 'imperial_authority',
+    });
+    return { ...JUS.guardBand(this.d.justice, this.crime.bounty.imperial, th, {}), thresholds: th, bounty: this.crime.bounty.imperial };
   }
 
   // ---- THE WITNESS, DERIVED FROM THE WORLD — RI-CRM01 §2/§3 -------------------------------

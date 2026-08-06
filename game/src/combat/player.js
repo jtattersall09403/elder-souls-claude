@@ -43,6 +43,7 @@ export class PlayerController {
     this.chainFrom = null;               // the slot the last attack ended on (chain successor key)
     this.sprintHeldF = 0;                // consecutive SPRINT frames — RI-WPN04 §B needs >= 24
     this.sprintReleasedAt = -9999;       // + the 8 f@60 grace after release
+    this.sprintHeldAtRelease = 0;        // the hold count that earned the grace
     this.twoHandHeldF = 0;               // two_hand HELD frames, for art.1 vs art.2
     this.lastLightPress = -9999;         // guardbreak's "no light press in the last 8 f@60"
     this.chargeHeld = 0;
@@ -74,7 +75,7 @@ export class PlayerController {
     // `resolveSlot` is a pure function of an observable state and a critic can reconstruct every
     // one of them from the trace.
     if (b.state === 'SPRINT') { this.sprintHeldF++; this.sprintReleasedAt = -9999; }
-    else if (this.sprintHeldF > 0) { this.sprintReleasedAt = frame; this.sprintHeldF = 0; }
+    else if (this.sprintHeldF > 0) { this.sprintReleasedAt = frame; this.sprintHeldAtRelease = this.sprintHeldF; this.sprintHeldF = 0; }
     this.twoHandHeldF = (input.held & BIT.two_hand) ? this.twoHandHeldF + 1 : 0;
     if (b.blockSuccessFrame !== undefined && b.blockSuccessFrame > this.lastBlockFrame) {
       this.lastBlockFrame = b.blockSuccessFrame;
@@ -658,7 +659,11 @@ export class PlayerController {
     else if (W && frame - this.lastBlockFrame <= W.guard_counter_f) {
       state = 'BLOCK_SUCCESS'; stateFrame = frame - this.lastBlockFrame;
     } else if (b.state === 'SPRINT' || (this.sprintReleasedAt >= 0 && frame - this.sprintReleasedAt <= (W ? W.sprint_grace_f : 8))) {
-      state = 'SPRINT'; stateFrame = this.sprintHeldF;
+      // RI-WPN04 §B: "held >= 24 consecutive f@60, PLUS an 8 f@60 grace after sprint release".
+      // Inside the grace the running attack is still the one you get, so the hold count that
+      // earned it has to survive the release — resetting it made the grace unreachable.
+      state = 'SPRINT';
+      stateFrame = b.state === 'SPRINT' ? this.sprintHeldF : this.sprintHeldAtRelease;
     } else if (b.guardRaised) { state = 'BLOCK_HOLD'; }
     // A chain link is reached by a press BUFFERED in the previous link's recovery, so by the time
     // it is resolved the previous move has already retired. `chainFrom` carries it across that
@@ -680,11 +685,16 @@ export class PlayerController {
       descending,
       fall_height_m: fall,
       target_below: this._targetBelow(ctx),
-      sprint_held_f: this.sprintHeldF,
+      sprint_held_f: state === 'SPRINT' ? stateFrame : this.sprintHeldF,
       forward_mag: input.moveY > 0 ? mag : 0,
       light_pressed_within_buffer: frame - this.lastLightPress <= 8,
+      // The tap/hold discrimination happens in `_chargeTick` `HOLD_DISCRIMINATOR_F` frames after
+      // the press, not here: on the press frame a tap and a hold are the same input. So the
+      // resolver always names the TAP slot and the runtime promotes it.
       heavy_held: false,
       two_hand_held: (input.held & BIT.two_hand) !== 0,
+      off_hand_held: (input.held & BIT.swap_left) !== 0,
+      offhand_kind: b.offhandKind || null,
       held_frames: this.twoHandHeldF,
       chain_from: chainFrom,
       chain_frame: stateFrame,
@@ -735,6 +745,7 @@ export class PlayerController {
     // "two_hand held + heavy tap"). A chord that fired consumes the hold, so releasing the
     // button afterwards must not also switch the grip.
     if (r.slot && /^art\./.test(r.slot)) this.twoHandConsumed = true;
+    if (r.slot && /^off\./.test(r.slot)) this.swapLeftConsumed = true;
     if (!r.slot) {
       // RI-WPN04 §B rule 1: a press within 8 f@60 BEFORE a contextual window opens is buffered
       // and fires on the window's first frame. Rule 2: anything earlier is DROPPED, not stored.
@@ -824,7 +835,8 @@ export class PlayerController {
     // figure for `art.2`.
     const promote = /(^|\.)r2$/.test(m.slot || '') ? { at: 9, to: (m.slot === '2h.r2' ? '2h.' : '') + 'r2.charged', why: 'r2.charged' }
       : /(^|\.)art\.1$/.test(m.slot || '') ? { at: 13, to: (m.slot === '2h.art.1' ? '2h.' : '') + 'art.2', why: 'art.2' }
-        : null;
+        : m.slot === 'bow.draw' ? { at: 9, to: 'bow.aimed', why: 'bow.aimed' }
+          : null;
     if (!promote || nf !== promote.at) return;
     if (!(input.held & BIT.heavy)) return;
     const cm = b.moves[promote.to];

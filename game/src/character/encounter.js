@@ -117,6 +117,30 @@ export function stepEncounters(sim, combat, bus, data) {
   // the world: a `death` respawns you at a well with your tithe on the ground where you fell;
   // a `capture-transport-archon` does not kill you at all — it takes the writ, takes the purse,
   // and puts you somewhere else. Two different states, and a save can tell them apart.
+  // A CAPTURE is what the nets are for, so it is reachable by being netted rather than only
+  // by being killed. RI-CHR02 §4e: the Dres take Saxhleel and Naga alive because they are
+  // worth more that way, which is the whole point of the two net-throwers in the party.
+  // Three landed nets and you are not walking out of this.
+  const pb0 = combat && combat.player;
+  if (pb0 && !sim.encounterDefeatResolved && (sim.netsLanded || 0) >= 3) {
+    const liveN = sim.entities.find((x) => x.encounterId && x.hp > 0);
+    if (liveN) {
+      const encN = encounterById(data, liveN.encounterId);
+      const ruleN = openingFor(data, encN, ch);
+      if (ruleN.net_behaviour === 'capture') {
+        sim.encounterDefeatResolved = true;
+        sim.netsLanded = 0;
+        sim.captured = { by: liveN.encounterId, frame: sim.frame, destination: 'archon-hold', writ_confiscated: true, how: 'netted' };
+        const ev = bus.emit(sim.frame, 'capture');
+        ev.encounter = liveN.encounterId; ev.by = liveN.eid; ev.destination = 'archon-hold';
+        ev.outcome = ruleN.on_player_defeat; ev.died = false; ev.how = 'three nets landed';
+        ev.taken = ['stamped-writ', 'gold'];
+        ev.because = `race=${ch.race}: this party sells people, and you are one of the kinds they sell`;
+        sim.captureRequest = { encounter: liveN.encounterId };
+      }
+    }
+  }
+
   const pb = combat && combat.player;
   if (pb && pb.hp <= 0 && !sim.encounterDefeatResolved) {
     const live = sim.entities.find((x) => x.encounterId && x.hp > 0);
@@ -243,6 +267,7 @@ function engageMember(sim, combat, bus, e, enc, rule, dist, dx, dz) {
     ev.eid = e.eid; ev.encounter = enc.id; ev.dist_m = round3(dist); ev.hit = hit;
     ev.net_behaviour = rule.net_behaviour;
     if (hit) {
+      sim.netsLanded = (sim.netsLanded || 0) + 1;
       sim.nettedUntil = sim.frame + ENGAGE.net_hold_f;
       sim.netThrownBy = e.eid;
       sim.netEncounter = enc.id;

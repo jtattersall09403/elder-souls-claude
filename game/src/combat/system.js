@@ -90,7 +90,26 @@ export class CombatSystem {
         `${Object.keys(byId).concat(Object.keys(off)).join(', ')}; known classes: ${Object.keys(CLASS_TO_ID).join(', ')}.`);
     }
     const base = byId[baseId];
-    if (!o) return { id: baseId, row: base };
+    if (!o) {
+      // A shield named only by the RI-CMB03 registry still gets RI-WPN06 §D's taxonomy row, so
+      // `block_angle_deg` and parry eligibility are never null just because of which id was used.
+      const BY_CLASS = { small: 'small_reed', medium: 'kite_garrison', great: 'greatshield_xanmeer' };
+      const t = off[BY_CLASS[base.class]] || null;
+      if (!t) return { id: baseId, row: base };
+      return {
+        id: baseId,
+        row: {
+          ...base,
+          taxonomy_class: t.class,
+          guard_angle_deg: t.guard_angle_deg,
+          can_parry: base.can_parry !== undefined ? (base.can_parry && !!t.parry_capable) : !!t.parry_capable,
+          parry_anim_f: t.parry_anim_f,
+          parry_active_f: t.parry_active_f,
+          slots: t.slots || [],
+          source: 'RI-CMB03 §C (stability/absorption) + RI-WPN06 §D (angle, parry, slots), joined on shield class',
+        },
+      };
+    }
     return {
       id: key,
       row: {

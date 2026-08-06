@@ -194,6 +194,38 @@ export class MovesetLibrary {
     // down twelve frames later — the same discriminator, and the same place, as `r2.charged`.
     if (ctx.two_hand_held && button === 'heavy') return pick(pre + 'art.1', 'art');
 
+    // --- BOW ------------------------------------------------------------------------------------
+    // RI-WPN01 §A: BOW substitutes `bow.draw / bow.quick / bow.aimed / bow.roll` for the fourteen
+    // one-handed melee slots and has no two-handed stance, giving it a mandatory count of 7.
+    // RI-WPN02 §C: `bow.quick` fires from the hip in 36 f@60 at MV 0.85; `bow.aimed` draws for up
+    // to 90 f@60 to MV 1.60. It is a CLASS, not an offhand (RI-WPN06 §C O5), so it gets its own
+    // branch rather than a special case inside the melee one.
+    if (!has('r1.1') && has('bow.quick')) {
+      if (ctx.state === 'ROLL') {
+        const win = w.roll[ctx.roll_tier];
+        if (!win) return { slot: null, reason: 'roll:no-window-at-tier' };
+        if (ctx.state_frame < win[0] || ctx.state_frame > win[1]) return { slot: null, reason: 'roll:outside-window' };
+        if (button === 'light') return pick('bow.roll', 'bow.roll');
+        return { slot: null, reason: 'bow:no-heavy-from-roll' };
+      }
+      if (ctx.state === 'AIRBORNE') {
+        if (!ctx.descending) return { slot: null, reason: 'airborne:rising' };
+        if (ctx.fall_height_m >= w.plunge_min_fall_m && ctx.target_below) return pick('plunge', 'plunge');
+        return { slot: null, reason: 'bow:no-jump-attack' };
+      }
+      if (ctx.two_hand_held && button === 'heavy') return pick('art.1', 'art');
+      if (ctx.state === 'IDLE' || ctx.state === 'WALK' || ctx.state === 'RUN' || ctx.state === 'SPRINT') {
+        if (button === 'light') {
+          if (ctx.forward_mag >= w.guardbreak_forward_mag && !ctx.light_pressed_within_buffer) return pick('guardbreak', 'guardbreak');
+          return pick('bow.quick', 'bow.quick');
+        }
+        // A tap draws and looses; a HOLD becomes `bow.aimed`, promoted by the runtime after the
+        // same 8 f@60 input allowance that separates `r2` from `r2.charged`.
+        if (button === 'heavy') return pick('bow.draw', 'bow.draw');
+      }
+      return { slot: null, reason: 'bow:no-slot' };
+    }
+
     // --- airborne ----------------------------------------------------------------------------
     if (ctx.state === 'AIRBORNE') {
       if (!ctx.descending) return { slot: null, reason: 'airborne:rising' };   // no rising jump attacks
@@ -261,6 +293,20 @@ export class MovesetLibrary {
         if (button === 'light') return pick(pre + 'run.r1', 'run.r1');
         if (button === 'heavy') return pick(pre + 'run.r2', 'run.r2');
       } else return { slot: null, reason: 'sprint:not-held-long-enough' };
+    }
+
+    // --- the offhand weapon (RI-WPN06 §C O2, dual wield) ---------------------------------------
+    // input-map.json: `off.r1.1` is the chord "swap_left HELD + light tap". O2 has no shield and
+    // no guard counter — losing block is not negotiable — so this branch is reachable only when
+    // the offhand is a weapon, and it shadows the main-hand chain while the button is down.
+    if (ctx.off_hand_held && ctx.offhand_kind === 'weapon') {
+      if (button === 'light') {
+        const from = ctx.chain_from && /^off\.r1\./.test(ctx.chain_from) ? ms.slots[ctx.chain_from] : null;
+        if (from && from.chains_to && has(from.chains_to)) return { slot: from.chains_to, reason: 'off.chain' };
+        return pick('off.r1.1', 'off.r1.1');
+      }
+      if (button === 'heavy') return pick('off.r2', 'off.r2');
+      return { slot: null, reason: 'offhand:other-button' };
     }
 
     // --- chaining -----------------------------------------------------------------------------

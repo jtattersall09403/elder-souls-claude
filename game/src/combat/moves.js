@@ -101,7 +101,10 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
   const roster = !!moveset.slots;
   const lib = opts && opts.lib;
   if (roster && !lib) throw new Error('buildMoveTable: a roster moveset needs opts.lib (MovesetLibrary)');
-  const wpn = roster ? lib.weaponFor(moveset.weapon_id) : moveset.weapon;
+  // A COPY: the weapon block is cached per weapon id inside the library, and
+  // sim/magic/apply.js's bound-weapon buff writes `moves._weapon.attack_rating` in place. Handing
+  // out the cached object would make a temporary enchantment permanent and global.
+  const wpn = roster ? { ...lib.weaponFor(moveset.weapon_id) } : moveset.weapon;
   const classKey = roster ? wpn.class_key : moveset.class_key;
   const out = {};
   const socketA = wpn.socket_a_dist_m;

@@ -187,7 +187,7 @@ void main() {
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   gl_Position = projectionMatrix * mv;
   vProj = gl_Position;
-  gl_PointSize = aSize * (300.0 / max(0.001, -mv.z));
+  gl_PointSize = clamp(aSize * (135.0 / max(0.001, -mv.z)), 1.5, 62.0);
 }
 `;
 
@@ -230,10 +230,17 @@ void main() {
   // ---- actually publishing this frame, so the same sap is darker at midnight than at noon.
   vec3 lit = vTint * (uAmbient + uSun * 0.65);
   // ---- V5: HDR. A core is emitted above 1.0 and is brought back by the ACES tonemap.
-  vec3 core = vTint * (1.0 + 2.2 * uIntensity);
+  // HDR, but with headroom. M9 fails on HARD WHITE CLIPPING, and a core multiplied to 3.2x
+  // saturates all three channels before the tonemap can roll it off — the result is a flat
+  // #FFFFFF disc, which is V5's named tell rather than its satisfaction. 1.55x peak keeps the
+  // hue through the ACES shoulder.
+  vec3 core = vTint * (0.70 + 1.15 * uIntensity);
   vec3 rgb  = mix(lit, core, uEmissive);
 
-  float a = tex.a * vLife * soft * mix(0.85, 1.0, uEmissive);
+  // RI-VIS05 §C's chroma budget is spent by COVERAGE, not by peak: <= 8% of non-sky pixels
+  // above CIELAB C* = 45 (<= 14% for a GREAT release). Thin alpha and small points are how a
+  // spell stays inside it while still being the brightest thing in frame.
+  float a = tex.a * vLife * soft * mix(0.46, 0.78, uEmissive);
   gl_FragColor = vec4(rgb, a);
 }
 `;
@@ -322,12 +329,16 @@ export class SpellVFX {
     // ---- V9: residue decals, ONE InstancedMesh so 60 stains cost one draw call ---------------
     this.decalGeo = new THREE.PlaneGeometry(1, 1);
     this.decalMat = new THREE.MeshBasicMaterial({
-      map: this.tex.bloom, transparent: true, depthWrite: false,
+      map: this.tex.bloom, transparent: true, depthWrite: false, opacity: 0.72,
       polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
       side: THREE.DoubleSide,
     });
     this.decals = new THREE.InstancedMesh(this.decalGeo, this.decalMat, MAX_DECALS);
-    this.decals.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(MAX_DECALS * 3), 3);
+    // `setColorAt` allocates `instanceColor` itself and that allocation is what makes three
+    // compile USE_INSTANCING_COLOR into the material. Pre-assigning the attribute by hand
+    // skips that path and every stain renders pure white — which is both an L8 failure (a
+    // #FFFFFF core is on the forbidden-anchor list) and an M9 failure (hard white clipping).
+    this.decals.setColorAt(0, new THREE.Color(1, 1, 1));
     this.decals.count = 0;
     this.decals.frustumCulled = false;
     this.decals.renderOrder = 0;
@@ -521,8 +532,13 @@ export class SpellVFX {
     // ---- projectiles: a core, a stringing trail (L2), and scene-lit spore drift ---------------
     for (const pr of M.projectiles) {
       const pal = this.paletteFor(pr.spell);
-      this._emitCore(pr.pos[0], pr.pos[1] + 1.0, pr.pos[2], pal, 1.0, 34, 0.16, pr.spawnF);
+      this._emitCore(pr.pos[0], pr.pos[1] + 1.0, pr.pos[2], pal, 1.0, 110, 0.16, pr.spawnF);
       this._emitTrail(pr, pal);
+      // The THIRD system, and it is a floor not a flourish: RI-MAG05 §B2 requires >= 3 distinct
+      // systems per released spell ("a spell that is one sprite is a fidelity failure, not a
+      // performance saving"). This is the matter the bolt SHEDS — spore and grit falling out of
+      // the trail and taking scene light, which is also L1 in its plainest form.
+      this._emitImpact([pr.pos[0], pr.pos[1] + 0.55, pr.pos[2]], 0.42, pal, 70, pr.spawnF + 7);
     }
 
     // ---- volumes and contact: the impact system, plus the ground pool (L4) --------------------
@@ -532,7 +548,11 @@ export class SpellVFX {
       // The decal LEADS the volume by >= 20 f@60 (RI-MAG01 §E). It is drawn from `decalSpawnF`,
       // so the tell is on the floor before the sphere is dangerous — which is the whole rule.
       if (v.decalSpawnF !== null && v.decalSpawnF !== undefined) this._pushDecal(v.centre, v.decalR, pal, 1.0, v.decalSpawnF);
-      if (live) this._emitImpact(v.centre, v.r, pal, 40, v.decalSpawnF || 0);
+      if (live) {
+        this._emitCore(v.centre[0], v.centre[1] + 0.35, v.centre[2], pal, 1.0, 90, v.r * 0.55, v.decalSpawnF || 0);
+        this._emitTrailRing(v.centre, v.r, pal, v.decalSpawnF || 0);
+        this._emitImpact(v.centre, v.r, pal, 150, v.decalSpawnF || 0);
+      }
     }
 
     // ---- L7: residue. Every spell leaves a stain for 3,600 f@60, and it is finally drawn. -----
@@ -629,7 +649,7 @@ export class SpellVFX {
       const r = h1(i, seed + 1) * spread;
       const yy = (h1(i, seed + 2) - 0.5) * spread * 1.6;
       this._push(sys, x + Math.cos(a) * r, y + yy, z + Math.sin(a) * r,
-        (0.6 + h1(i, seed + 3) * 1.3) * (0.5 + intensity), 0.35 + intensity * 0.65, c);
+        (0.30 + h1(i, seed + 3) * 0.52) * (0.5 + intensity), 0.35 + intensity * 0.65, c);
     }
   }
 
@@ -647,7 +667,20 @@ export class SpellVFX {
         pr.pos[0] - dx * lag + wob,
         pr.pos[1] + 1.0 + (h1(i, pr.spawnF + 1) - 0.5) * 0.06,
         pr.pos[2] - dz * lag + wob,
-        (1.5 - t) * 0.9, (1 - t) * 0.85, c);
+        (0.62 - t * 0.36) * 0.9, (1 - t) * 0.75, c);
+    }
+  }
+
+  /** A volume's second system: beads running down the inside of the sphere (L2, wet). */
+  _emitTrailRing(centre, r, pal, seed) {
+    const sys = this.systems.trail;
+    const c = this._colour.set(pal.mid);
+    for (let i = 0; i < 90; i++) {
+      const a = h1(i, seed) * 6.28318;
+      const rr = r * (0.55 + h1(i, seed + 1) * 0.45);
+      const drop = h1(i, seed + 2);
+      this._push(sys, centre[0] + Math.cos(a) * rr, centre[1] + 1.25 - drop * 1.1, centre[2] + Math.sin(a) * rr,
+        0.38 + h1(i, seed + 3) * 0.42, 0.48 + (1 - drop) * 0.32, c);
     }
   }
 
@@ -663,7 +696,7 @@ export class SpellVFX {
         centre[0] + Math.cos(a) * rr,
         centre[1] + 0.08 + rise * 0.9,
         centre[2] + Math.sin(a) * rr,
-        1.4 + h1(i, seed + 3) * 2.2, 0.55 + rise * 0.35, c);
+        0.42 + h1(i, seed + 3) * 0.55, 0.45 + rise * 0.30, c);
     }
   }
 
@@ -677,7 +710,9 @@ export class SpellVFX {
     this._s.set(rr * 2, rr * 2, 1);
     this._m4.compose(this._v, this._q, this._s);
     this.decals.setMatrixAt(i, this._m4);
-    this._colour.set(pal.residue || pal.decay || pal.mid).multiplyScalar(alpha);
+    // The residue hue is §A2's `residue` column — char, salt bloom, scorch pit, sap bead, stone
+    // dust — and it is a SURFACE, so it is never emissive and never above 1.0.
+    this._colour.set(pal.residue || pal.decay || pal.mid).multiplyScalar(0.55 + 0.45 * alpha);
     this.decals.setColorAt(i, this._colour);
   }
 

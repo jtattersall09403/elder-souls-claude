@@ -31,7 +31,15 @@
     "tools/harness/mag-census.mjs",
     "reports/runs/MAG-CENSUS/mag-census.json",
     "game/data/combat/enemies/*.json (armour_rating)",
-    "tools/analysis/gen-spells.mjs (3 uncastable spells retuned, cure_paralysis self carrier)"
+    "tools/analysis/gen-spells.mjs (3 uncastable spells retuned, cure_paralysis self carrier)",
+    "game/src/render/spell-vfx.js (RI-MAG05 PART 1 + PART 2)",
+    "game/src/render/renderer.js (depth+colour prepass, VFX update, vfx budget in lastStats)",
+    "tools/harness/mag-quest.mjs + reports/runs/MAG-QUEST",
+    "tools/harness/mag-vfx.mjs + reports/runs/MAG-VFX",
+    "tools/analysis/gen-enchant-services.mjs + game/data/magic/enchant-services.json",
+    "tools/analysis/gen-faction-gates.mjs + game/data/quests/faction-gates.json",
+    "tools/analysis/gen-quest-knowledge.mjs (13 knowledge reveals)",
+    "tools/harness/viewpoints.json (VP13-spell-release-combat, requested by RI-MAG05 §B3)"
   ],
   "findings": [
     "ROOT CAUSE confirmed at combat-bridge.js:72 — `if (e.utility_class === null || e.geometry !== 'none') dmg += outputOf(...)`. That predicate is true for every effect with geometry, i.e. every enemy-side effect. Now closed over DAMAGE_EFFECTS (5) only.",
@@ -54,8 +62,19 @@
     "SOUL_TRAP measured: gems 0 at cast, 1 after the target's death; xul_hesh 0 -> 1. Fills on death, not on cast.",
     "FEATHER measured: 34% MEDIUM -> 0% LIGHT, crossing RI-CMB01 M5's 30.00 cliff, which does not move.",
     "BUG WORTH REMEMBERING: MagicSystem._emit(frame, kind, fields) spreads `fields`, so a field literally named `kind` overwrites the event type. addBuildup emitted {kind:'fire'} instead of {kind:'status_buildup'} and the meter was invisible to every consumer. Renamed to status_kind.",
-    "BUG WORTH REMEMBERING: SimState.reset() replaces sim.quest wholesale, so a QuestEngine built at boot keeps writing into the PREVIOUS journal array after any loadState(). Engine._rebindQuestRuntime() fixes it; hist_sight measured UNREAD_TIMER purely because of this."
+    "BUG WORTH REMEMBERING: SimState.reset() replaces sim.quest wholesale, so a QuestEngine built at boot keeps writing into the PREVIOUS journal array after any loadState(). Engine._rebindQuestRuntime() fixes it; hist_sight measured UNREAD_TIMER purely because of this.",
+    "RI-MAG04 MEASURED: M6 10/10 magic resolutions played through end to end (of 24 in the book); M7 7/7 AR-3 crossings X1..X7 demonstrated in play.",
+    "ECONOMY MEASURED: 49 purchasable spells = 20,754 g + 13 priced enchanting services = 9,046 g -> MAGIC LINE 29,800 g against RI-MAG03 M8's 28,000 +/-15% band [23,800..32,200]. Deviation +6.43%, inside the tighter +/-10% band too.",
+    "Three spells cost more Focus than the maximum reachable pool of 124 (call_the_deep_drowned 185, the_still_water 594, the_long_stillness 156). Retuned in gen-spells.mjs; 0 uncastable shelf spells remain, so bind_greater has a carrier.",
+    "cure_paralysis's only carrier was range `touch` — a contact spell with no body in front of it resolves on nothing, so the spell you cast to unfreeze YOURSELF could only be cast on somebody else. Added a `self` carrier and kept the touch one.",
+    "geometryOf placed a `target`-range AREA spell's volume at the CASTER. wamasu_arc (3 m shock burst) therefore did 0 damage to two bodies 6 m away. Fixed in both gen-spells.mjs and MagicSystem._geometryFor: only self/touch areas are centred on the caster.",
+    "Spell geometry only ever tested creature bodies, so `open` cast at a door with nobody in front of it did nothing. MagicSystem.step now sweeps projectiles and volumes against the lock/trap/breakable registers too — GATED on the spell carrying a world verb, so a fireball is not eaten by a door.",
+    "VFX MEASURED: draw-call series is now idle 21 / release 23 / inflight 23 / residue+20s 22 against the round-1 verdict's flat 8/8/8/8. At release: 3 distinct particle systems (floor 3), 356 particles (ceiling 900), 4 particle draw calls (ceiling 6), 1 residue decal (floor 1). VFX-LIT is visibly demonstrated: non-emissive particles are dramatically dimmer at midnight while the emissive core holds.",
+    "V7 (motion vectors for TAA) is the ONE F-M1 row absent and is declared absent in featureReport(): this renderer has no temporal pass to feed. 9 of 10 with V1/V2/V4 (the three mandatory rows) all present.",
+    "faction-gates.json did not exist; QuestEngine needs it. Generated for the 9 factions the quest book actually references, 8 ranks each, RI-QST03 §B four-part statement, no level/souls/gold gates.",
+    "Three magic resolutions declared `requires.knowledge` keys that NOTHING could reveal (decorative gates, RI-JRN07 M-Q14 hard fail). gen-quest-knowledge.mjs gives each an actual door, magic and mundane, so Q8's no-lockout rule holds.",
+    "REGRESSIONS GREEN: api-probe 33/33, mag-probe 19/19 (incl. AR3_X1 and AR3_X4), save-audit round-trip EQUAL on all 4 states with manifest-extra 0/0, lint-determinism 0 errors, determinism ladder 7/9 (unchanged from before this round)."
   ],
-  "next_step": "regressions, then the economy (priced enchanting services), quest-solvable-by-magic, and RI-MAG05 VFX",
+  "next_step": "final regression sweep and report",
   "notes_for_successor": "The registry in game/src/sim/magic/apply.js is checked for completeness at boot (assertRegistryComplete): a catalogue effect with no handler throws rather than falling through to a damage number. DAMAGE_EFFECTS is the frozen 5-element set shared by apply.js and combat-bridge.js so the two cannot drift."
 }

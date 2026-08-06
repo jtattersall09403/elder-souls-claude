@@ -68,8 +68,23 @@ for (const id of list) {
       '2h.jump.r1': [{ d: 4, tap: 'two_hand' }, { d: 60, tap: 'jump' }, { d: 86, tap: 'light' }],
       '2h.art.1': [{ d: 4, tap: 'two_hand' }, { d: 50, hold: 'two_hand', until: 280 }, { d: 70, tap: 'heavy' }],
     };
+    // RI-WPN01 §A: BOW substitutes `bow.*` for the fourteen one-handed melee slots and has no
+    // two-handed stance, so its mandatory count is 7, not 25. Driving it against the melee script
+    // set would report a bow as a weapon with three attacks, which is a probe defect.
+    const BOW = {
+      'bow.quick': [{ d: 4, tap: 'light' }],
+      'bow.draw': [{ d: 4, tap: 'heavy' }],
+      'bow.aimed': [{ d: 4, hold: 'heavy', until: 400 }],
+      'bow.roll': [{ d: 4, tap: 'roll', move: [0, 1] }, { d: 38, tap: 'light' }],
+      guardbreak: [{ d: 4, tap: 'light', move: [0, 1] }],
+      'art.1': [{ d: 2, hold: 'two_hand', until: 300 }, { d: 20, tap: 'heavy' }],
+    };
+    const SCRIPTS = ms.class === 'BOW' ? BOW : S;
 
-    const run = (script) => {
+    // The run must outlast the slot it is driving: a curved greatsword's two-handed weapon art is
+    // 111 + 29 + 138 = 278 frames and starts 70 frames in, so a fixed 300-frame window truncates
+    // its recovery and reports a frame mismatch that is the PROBE running out, not the game.
+    const run = (script, frames) => {
       H.setSeed(1337);
       H.loadState('arena_probe');
       H.setLoadout({ weapon: id });
@@ -88,7 +103,7 @@ for (const id of list) {
       q.sort((a, b) => a.f - b.f);
       H.queueInputs(q);
       H.traceStart({});
-      H.stepFrames(300);
+      H.stepFrames(frames || 300);
       const recs = H.traceDrain() || [];
       H.traceStop();
       const atk = recs.filter((x) => x.player && /^ATK/.test(x.player.state));
@@ -122,9 +137,12 @@ for (const id of list) {
     if (!equipped) return { equipped: false };
 
     const per = {};
-    for (const [slot, script] of Object.entries(S)) {
+    for (const [slot, script] of Object.entries(SCRIPTS)) {
       if (!has(slot) && slot !== 'art.1' && slot !== '2h.art.1') { per[slot] = { declared: false }; continue; }
-      const res = run(script);
+      const d0 = ms.slots[slot];
+      const lastPress = Math.max(...script.map((x) => x.d));
+      const need = d0 ? d0.startup_f + (d0.charge_max_f || 0) + d0.active_f + d0.recovery_f : 200;
+      const res = run(script, Math.min(900, lastPress + need + 90));
       const d = ms.slots[slot];
       // The mash entry is judged on the CHAIN it walked, not on its last link.
       if (slot === 'r1.2') {
@@ -147,8 +165,11 @@ for (const id of list) {
         };
         continue;
       }
+      const trunc = !!(res.ph && d && res.ph.startup_f === d.startup_f + (d.charge_max_f || 0)
+        && res.ph.active_f === d.active_f && res.ph.recovery_f < d.recovery_f);
       per[slot] = {
         declared: true,
+        truncated_by_probe: trunc,
         observed_slot: res.last ? res.last.slot : null,
         observed_anim: res.last ? res.last.anim : null,
         declared_anim: d ? d.anim : null,
@@ -164,9 +185,10 @@ for (const id of list) {
     }
 
     // CFS_live over the contextual slots this weapon declares (RI-WPN04 §D T1 + T2).
-    const stand = per['r1.1'] && per['r1.1'].observed_anim;
-    const CTX = ['roll.r1', 'roll.r2', 'run.r1', 'run.r2', 'backstep.r1', 'jump.r1', 'jump.r2', 'guardbreak',
-      '2h.roll.r1', '2h.run.r1', '2h.run.r2', '2h.backstep.r1', '2h.jump.r1'];
+    const stand = (per['r1.1'] || per['bow.quick'] || {}).observed_anim;
+    const CTX = ms.class === 'BOW' ? ['bow.roll', 'guardbreak']
+      : ['roll.r1', 'roll.r2', 'run.r1', 'run.r2', 'backstep.r1', 'jump.r1', 'jump.r2', 'guardbreak',
+        '2h.roll.r1', '2h.run.r1', '2h.run.r2', '2h.backstep.r1', '2h.jump.r1'];
     let inst = 0; let ok = 0; const fallback = [];
     for (const c of CTX) {
       const p = per[c];

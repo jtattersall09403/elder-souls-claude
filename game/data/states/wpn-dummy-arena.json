@@ -1,7 +1,7 @@
 {
   "schema": "elder-souls/state@1",
   "id": "wpn-dummy-arena",
-  "title": "Flat arena, the exemplar build, one passive dummy at 2.6 m and one armed sentry at 4.2 m. RI-WPN01 M2 / RI-WPN04 M5 / RI-WPN05 M1 drive against it.",
+  "title": "Flat arena, the exemplar build, a passive dummy at 1.5 m (inside every melee class's reach) and a second at 3.0 m (inside the spear's and the whip's only), plus one armed sentry at 4.2 m.",
   "env": {
     "timeOfDay": 12.0,
     "weather": "clear",
@@ -38,12 +38,18 @@
     {
       "id": "dummy_passive",
       "x": 0,
-      "z": 2.6,
+      "z": 1.5,
       "as": "D1"
     },
     {
+      "id": "dummy_passive",
+      "x": 0,
+      "z": 3.0,
+      "as": "D2"
+    },
+    {
       "id": "inf_trash",
-      "x": 2.4,
+      "x": 2.6,
       "z": 4.2,
       "as": "E1"
     }

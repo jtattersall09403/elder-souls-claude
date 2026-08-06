@@ -683,7 +683,8 @@ export class Engine {
     let focusBefore = null, focusAfter = null;
     if (this.magic) {
       focusBefore = this.magic.focus;
-      if (restores) this.magic.focus = this.magic.focusMax;
+      // RI-MAG01 §A owns the refill itself; W1-07 owns only whether it is allowed to happen.
+      if (restores) this.magic.hearthRest();
       focusAfter = this.magic.focus;
     }
     const b = this.combat && this.combat.player;
@@ -696,6 +697,7 @@ export class Engine {
       rested: true, focus_restored: restores, focus: focusAfter, focus_max: this.magic ? this.magic.focusMax : null,
       why: restores ? null : 'The Dry Well. RI-CHR03: the wells do not fill you. AMENDMENT-W1-07-03.',
       rest_clamp_reset: true,
+      note: 'RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here.',
     };
   }
 
@@ -1850,6 +1852,11 @@ export class Engine {
     }
     p.pos[1] = opts.y !== undefined ? Number(opts.y) : this.groundAt(p.pos[0], p.pos[2]);
     if (opts.yaw !== undefined) p.yaw = Number(opts.yaw);
+    // A teleport is an instrument, not a journey: the mire counter, the fall in progress and the
+    // breath clock all belong to where the body WAS. Carrying them across a teleport made a
+    // probe's second site inherit the first site's MIRED state and measure 0.21 m/s of swimming
+    // — a measurement artifact of the instrument, which is exactly what RI-MTH04 calls fabricated.
+    if (this.traversal) this.traversal.reset();
     if (this.combat && this.combat.player) {
       const b = this.combat.player;
       b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];
@@ -2531,6 +2538,16 @@ export class Engine {
     }));
   }
 
+  /**
+   * What the ground and the water are doing to the body right now, declared beside observed.
+   * HARNESS.md §7 rule 4's pair: `game/data/world/traversal.json` is the declaration, the live
+   * counters are the observation, and a critic diffs them without re-deriving either.
+   */
+  getTraversalReport() {
+    if (!this.traversal) throw new Error('getTraversalReport: no province is loaded');
+    return this.traversal.report();
+  }
+
   /** M19 as a table: is each region's element present >= 8 times in its own region and 0 elsewhere? */
   signatureAudit() {
     if (!this.signatures) throw new Error('signatureAudit: no province is loaded');
@@ -2802,6 +2819,11 @@ export class Engine {
       streaming: prov,
       drawCalls: s.drawCalls || 0,
       triangles: s.triangles || 0,
+      // RI-MAG05 §B2's budget quantities. Reported here rather than in a second call because
+      // the item's F-M5 reads `getWorldStats()` at the release frame and 20 frames later, and
+      // a budget in a different object from the draw calls it is a budget ON is a budget that
+      // gets checked against the wrong frame.
+      vfx: s.vfx || { particles: 0, systems: 0, decals: 0, meshes: 0, particleDrawCalls: 0 },
       textureMB: census.textureMB || 0,
       // A-JRN8 extensions
       programs: census.programs || 0,
@@ -3475,9 +3497,21 @@ export class Engine {
     const lib = c.lib;
     const ms = lib && b.weaponId ? lib.movesets[b.weaponId] : null;
     const pre = b.twoHanded ? '2h.' : '';
+    // RI-WPN06 §C / game/data/weapons/offhand.json: each configuration has its OWN verb list.
+    // O3 stows the offhand and swaps the whole table for `2h.*`; O2 has no block, no parry and no
+    // guard counter; O1 adds the shield's own verbs. `plunge` and `guardbreak` are stance-shared.
+    const SHARED = new Set(['plunge', 'guardbreak']);
+    const cfg = b.offhandConfig;
     const reachable = (moves._slotIds || [])
-      .filter((k) => (b.twoHanded ? !k.startsWith('off.') : !k.startsWith('2h.')))
-      .concat(moves._extraSlots || [])
+      .filter((k) => {
+        if (SHARED.has(k)) return true;
+        if (b.twoHanded) return k.startsWith('2h.');
+        if (k.startsWith('2h.')) return false;
+        if (k.startsWith('off.')) return cfg === 'o2_dual';
+        if (k === 'guard.counter' || k === 'parry') return cfg === 'o1_sword_shield';
+        return true;
+      })
+      .concat(cfg === 'o1_sword_shield' && !b.twoHanded ? (moves._extraSlots || []) : [])
       .sort();
     return {
       weapon_id: b.weaponId || null,
