@@ -8,7 +8,17 @@
     "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.json"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ACQUISITION-SPEC-AMENDMENTS.md and REFERENCE-IMAGE-REQUEST.md",
+  "findings": [
+    "PRIOR ARTEFACT COLLISION: corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md/.json ALREADY EXIST (Aug 6 11:31), written by the acq-code-loop critic (a critique of acquire.py before it had ever run). Plus ACQUISITION-CRITIQUE-R1-candidates.json with 472 verified live candidates. My brief names the same paths. I will archive the prior pair as ACQUISITION-CRITIQUE-R1-code.md/.json and NEVER touch the candidates file.",
+    "DISK TRUTH: 173 image files = 90 .avif (Morrowind, all from mwscr/dehero) + 83 .jpg (modern side). Dirs: modern/hud 28, character_closeup 12, exterior_lowlight 11, exterior_daylight 10, interior_darkemissive 8, rejected 7, anti-generic 5, modern/combat 2. Morrowind REF-A1..A19 = 89 avif over 19 slots.",
+    "REGRESSION (HIGH): _provenance.json now holds ONLY 46 records, all Elden Ring. The previous 165-record provenance (127 morrowind + 30 modern + 8 rejected) was REPLACED not merged. MANIFEST.json still holds the old 165 so the data is recoverable from it, but any consumer reading _provenance.json now sees a 46-image Elden-Ring-only corpus.",
+    "MANIFEST.json is STALE: 165 records, none of the 46 Elden Ring files. make-manifest.py was never re-run after the download. So catalogue and disk are out of sync AGAIN, in the opposite direction from last time.",
+    "ALL 46 Elden Ring records carry slot='REF-M-supplemental' \u2014 not one fills a named REF-M slot from the spec.",
+    "QUALITY: 31 of 46 have pixel_metrics_valid=false; 30 of 46 heavily_recompressed=true; 3 have corroboration='unknown' (spec 8b says those go to rejected/); ALL 46 sampling='selected' (zero interval-run frames, violating the 3 anti-curation rule).",
+    "EMPTY FOLDERS ON DISK: modern/material_closeup (0), context/ (0), video/ (0). NON-EXISTENT FOLDERS: refs/souls-behaviour/ (A5 axis, entire), refs/modern/ui/ (REF-M22, A2), refs/morrowind/REF-A12b/ (A2), refs/morrowind/REF-A20/ (A2). Four amendment-mandated destinations were never created.",
+    "ZERO Dark Souls images anywhere. ZERO Dark Souls III. ZERO Morrowind menu/UI pixels (REF-A12 is 38 OpenMW XML/layout files, no image). ZERO Morrowind loading screens.",
+    "Modern side distinct games: Elden Ring 46, Witcher 3 29, RDR2 1. Skyrim SE appears only in rejected/."
+  ],
+  "next_step": "read RI-VIS02/03/05/09, RI-UIX06, RI-CAM01/03/07, RI-WPN01-06, RI-AI02; then walk the 138 corpus items for pass-2 fresh findings",
   "notes_for_successor": "I am a critic. I build nothing. Two passes required: (1) coverage vs floors counting real files on disk, (2) fresh first-principles derivation of missing reference axes."
 }

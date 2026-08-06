@@ -309,3 +309,68 @@ I agree with the coordinator's ordering with **two changes**, both argued.
 **Files written by this critique.** `ACQUISITION-CRITIQUE-R1.md`, `ACQUISITION-CRITIQUE-R1.json`,
 `ACQUISITION-CRITIQUE-R1-candidates.json`. **`acquire.py` and `_provenance.json` were read and not
 modified.**
+
+---
+
+## 8. Addendum — the tree moved while this critique was being written
+
+Between the coverage audit above and this file being saved, a concurrent agent committed
+`2ea906a "Refs: download 46 Elden Ring images"`. Three of my findings are now stale and one new
+one is worse than anything above. **The §1 coverage table is unaffected** — the same 46 records,
+the same 15 countable images — but §2 must be read as follows.
+
+### 8.1 G01 is FIXED — verified
+
+`_provenance.json` has been rewritten into the flat path-keyed dict `load_records()` always
+expected, every record now carries `expected_bytes` and `expected_sha256`, and all 46 files are on
+disk under `refs/modern/`. Re-run just now:
+
+```
+$ python3 acquire.py --check
+[46/46] OK modern/interior_darkemissive/REF-ER__steam-neulyiaa-2776456418.jpg: 1222964 bytes, sha256 f47f742…
+ok: 46 reference files
+```
+
+The integrity mechanism works end to end and is intact. **G01 → CLOSED.** Work-list rank 0 loses its
+loader half; its hashing half is superseded by G19.
+
+### 8.2 G19 — 159 provenance records were deleted, not migrated. **BLOCKING, and it is a regression**
+
+The rewrite kept the 46 Codex records and moved **six** rejected stubs into `_provenance-local.json`.
+The other **159 records are simply gone from the working tree**: every `morrowind-art-direction`
+record (127 of them, covering the 89 files on disk and REF-A12's 38 `ui-definition` entries), all 5
+`anti-generic` records, all 24 Witcher 3 `modern/hud` records, and the remaining `rejected` entries.
+
+What went with them is not decoration. It is the **seven `vanilla_tests` booleans** that are the only
+thing standing between our art-direction axis and somebody's modlist; the `identified_by` triples
+that §8c requires; the `corroboration` values that §8b requires; and the **ACDSee `integrity_flag`
+and its measured counter-evidence**, which is the entire evidentiary basis for G07. The files are
+still on disk and still measurable; they are now undocumented, which under §9 and §10 means they
+cannot be cited.
+
+**They are fully recoverable and the builder must recover them before anything else:**
+
+```
+git show c3d8b38:corpus/70-visual/refs/_provenance.json    # 211 records, all fields intact
+```
+
+Merge those 159 back in, keyed by the destination path each file already occupies, and compute
+`expected_bytes` / `expected_sha256` locally from the bytes on disk (`make-manifest.py` already emits
+both). `_provenance-local.json`'s premise — "not consumed by `acquire.py`, which only handles
+remote-fetchable entries" — is the wrong split: a locally-present file with a known hash is exactly
+what `--check` exists to verify, and splitting the catalogue in two means `--check` reports `ok: 46`
+while silently ignoring 126 files it should be guarding. **`--check` is now passing dishonestly.**
+
+### 8.3 The rest of §2 stands
+
+The 29 globbed `raw.githubusercontent.com` URLs and the missing hashes are still unresolved — they
+were removed from the catalogue rather than fixed, which is not the same thing. G02 stays BLOCKING,
+re-scoped: expand the globs, hash the on-disk files, and fold all 159 records back in.
+
+### 8.4 Collision warning
+
+A second agent, `ref-critic-r1` (`orchestration/status/ref-critic-r1.json`), is assigned the *same*
+two output paths as this file. At the time of writing its `outputs_written` is empty. If
+`ACQUISITION-CRITIQUE-R1.md` is later found not to contain this addendum, the version described here
+was overwritten; the candidate handover in `ACQUISITION-CRITIQUE-R1-candidates.json` (472 entries) and
+the machine-readable copy at `ACQUISITION-CRITIQUE-R1-code.json` are the surviving artefacts.

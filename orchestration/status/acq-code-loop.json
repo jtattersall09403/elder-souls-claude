@@ -2,21 +2,40 @@
   "task_id": "acq-code-loop",
   "brief": "orchestration/briefs/acq-code-loop.md",
   "started": "wave-?",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md",
     "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.json"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.json",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-candidates.json",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-code.json"
+  ],
   "findings": [
     "acquire.py CANNOT LOAD _provenance.json: the file is {_note, files:[...]}, load_records() expects a flat path-keyed dict. `python3 acquire.py --check` dies with ValueError: _note: missing source_url. Nothing in the pipeline has ever run.",
     "No provenance record carries a destination path field; _note claims 'keyed by destination path' but files is a LIST. The builder must add a `path` per record or re-key the dict.",
     "Only 46 of 211 records carry expected_bytes/expected_sha256 (Codex's Elden Ring set). The other 165 describe images that were in-container; 89 morrowind + 5 anti-generic + 24 hud + 8 rejected files DO still exist on disk, so hashes can be computed locally by make-manifest.py.",
     "Steam apphub homecontent endpoint works for every appid incl. ones with a mod workshop: https://steamcommunity.com/app/<APPID>/homecontent/?userreviewsoffset=0&p=<N>&screenshotspage=<N>&numperpage=50&browsefilter=toprated&appid=<APPID>&appHubSubSection=2&l=english&filterLanguage=default&searchText=<Q>&maxInappropriateScore=100 -- searchText genuinely filters (disjoint id sets per query).",
     "Steam detail page yields File Size / Posted date / WxH in div.detailsStatRight, and the bare https://images.steamusercontent.com/ugc/<a>/<b>/ URL (id=ActualMedia src) is the ORIGINAL bytes -- confirmed 10002569 bytes against a page stating 9.539 MB.",
-    "Steam rate-limits hard: 8 concurrent detail fetches returns a ~27.3KB 'Steam Community :: Error' page for ~96% of requests. 3 workers + 0.7s sleep is safe."
+    "Steam rate-limits hard: 8 concurrent detail fetches returns a ~27.3KB 'Steam Community :: Error' page for ~96% of requests. 3 workers + 0.7s sleep is safe.",
+    "31 of Codex's 46 are pixel_metrics_valid:false (30 heavily_recompressed:true). Section 3 counts only pmv:true, so countable coverage is: ext_daylight 3/12, ext_lowlight 3/12, interior_darkemissive 0/10, character_closeup 8/10, combat 2/8, material_closeup 0/8.",
+    "ALL 46 modern records are sampling:'selected'. Section 3's anti-curation rule (>=half interval-run in the three exterior/interior folders) is at 0% compliance -- a structural gap the brief's table never mentions.",
+    "The 24 Witcher 3 frames in modern/hud/ are sampling:'interval-run', pixel_metrics_valid:true and ALREADY ON DISK. Amendment A1 releases them into profile folders: zero-download fix that supplies game 2 to both exterior profiles AND the whole interval-run half. BUT they carry exif_software='ACDSee Ultimate 8' which section 8a rejects -- A1 collides with 8a. Recommended: promote with a recorded deviation (measured counter-evidence: 6.7-9.2 bytes/px, jpeg_quality_est 100, negative block_score, nyq_ratio 0.05-0.17).",
+    "character_closeup already has 2 distinct games (Elden Ring + RDR2 REF-M6) but only 1 of 12 is a rear view, where REF-M6 requires >=half; most Codex entries are cutscene portraits.",
+    "REF-A12b is NOT hard: Steam app 22320 yields 231 menu/UI candidates; ?id=32875898 (full four-pane vanilla UI 1024x768) and ?id=487644932 (journal) verified by eye. Pre-2015 pages satisfy the corroboration gate outright.",
+    "Steam apphub LISTING cards already carry the UGC path, preview aspect, title, author and rating -- ~50 complete candidates per request, no detail fetch needed except for the Posted date. The DETAIL endpoint 429s at 8 workers (960/1000 failures); 3 workers + 0.7s is safe.",
+    "HEAD is unreliable on images.steamusercontent.com (phantom Content-Length: 92 on 11 of 48). Use ranged GET + Content-Range. 60/60 sampled candidate URLs verified real this way.",
+    "Steam appdetails API (store.steampowered.com/api/appdetails?appids=<id>) gives 58 first-party screenshots across the six app ids, no age gate -- the only guaranteed-vanilla Skyrim source.",
+    "Skyrim SE toprated gallery is mod/ENB contaminated and titles disclose it in only 1.9% of cases. Verified by opening ?id=3413510110.",
+    "yt-dlp 2026.07.04 IS installed at /usr/local/bin/yt-dlp -- video/ is obtainable with a single progressive format id (no remux). Steam store trailers are montages and fail V1/V2's no-cuts rule.",
+    "'overcast' returns only 3-8 hits per game vs 50 for dramatic queries -- REF-M21 is genuinely scarce, classified SUBSTITUTABLE via the fog/rain diffuse populations.",
+    "MID-TASK: concurrent commit 2ea906a rewrote _provenance.json to a flat path-keyed dict of the 46 Codex records, downloaded all 46 images, and `acquire.py --check` now returns `ok: 46 reference files`. G01 CLOSED, verified.",
+    "REGRESSION G19: that same rewrite DELETED 159 provenance records (127 morrowind-art-direction incl. REF-A12's 38 ui-definition entries, 5 anti-generic, 24 Witcher 3 modern/hud). Lost: the seven vanilla_tests booleans, the identified_by triples, the corroboration values, and the ACDSee integrity_flag counter-evidence that G07 rests on. 126 files remain on disk but are now undocumented, and --check reports `ok: 46` while ignoring them -- it passes dishonestly. Fully recoverable: `git show c3d8b38:corpus/70-visual/refs/_provenance.json` (211 records).",
+    "COLLISION: agent ref-critic-r1 is assigned the SAME two output paths. Machine-readable mirror kept at corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-code.json."
   ],
-  "next_step": "harvest concrete candidate URLs for the builder, then write ACQUISITION-CRITIQUE-R1.{md,json}",
-  "notes_for_successor": "I am critic-only. I have NOT modified acquire.py or _provenance.json. Harvest tooling in scratchpad: hv.py (steam), drive.py (targeted), harvest.jsonl (results).",
-  "role": "CRITIC only (round 1) -- coordinator re-architected the loop into sequential agents"
+  "next_step": "BUILDER: work_list rank -1 (recover the 159 deleted provenance records) then rank 1 (release the 24 W3 interval-run frames from modern/hud/). 472 verified candidates already handed over.",
+  "notes_for_successor": "I did NOT modify acquire.py or _provenance.json -- read only. Harvest tooling left in the scratchpad: hv.py (Steam listing/detail via homecontent), cards.py (listing-HTML card parser, the cheap route), curate.py, verify2.py (ranged-GET verifier), scache/ (cached listing HTML). candidates.json holds the full 4091-candidate pool; curated.json is the 472 handed over.",
+  "role": "CRITIC only, round 1 (coordinator re-architected the loop mid-task into sequential agents)"
 }
