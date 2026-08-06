@@ -5,16 +5,16 @@
  "corpus_item": "RI-MAG02 §D (cost, tiers, prices), RI-MAG01 §B (classes, frames), RI-MAG03 §A (commission markup)",
  "note": "The authored part of every record below is ONLY `effects` + `range` + `class`. focus_base, tier, skill_req, focus_cost, gold_price, commission_price, frames and geometry are all COMPUTED by game/src/sim/magic/cost.js and game/data/magic/cast-classes.json. RI-MAG02 M2 recomputes them and asserts an exact match; running the same code is the point, because the alternative is a second implementation that can silently disagree with the game.",
  "census": {
-  "spells": 70,
+  "spells": 71,
   "by_tier": {
    "1": 17,
-   "2": 27,
+   "2": 28,
    "3": 16,
    "4": 9,
    "5": 1
   },
   "by_school": {
-   "sorcery": 19,
+   "sorcery": 20,
    "root_speech": 17,
    "warding": 20,
    "veiling": 14
@@ -23,21 +23,21 @@
    "CANTRIP": 21,
    "LIGHT": 29,
    "HEAVY": 11,
-   "GREAT": 3,
+   "GREAT": 4,
    "RITUAL": 6
   },
   "multi_effect_spells": 3,
   "effects_referenced": 55,
   "effects_in_catalogue": 55,
   "effects_unreferenced": [],
-  "purchasable": 46,
-  "shelf_gold_total": 18936,
-  "all_spells_gold_total": 100623
+  "purchasable": 47,
+  "shelf_gold_total": 19808,
+  "all_spells_gold_total": 101495
  },
  "shelf_rule": {
   "ceiling_g": 1050,
   "derivation": "RI-PRG05 §4: R2 holds a 4,200 g merchant pool across 4 merchants ⇒ a float of 1,050 g each, and R2 is where the spellwrights are. A merchant cannot hold stock dearer than their own float. Spells above the ceiling are commissioned (RI-MAG03 §A, 1.6× + 150 g) or hand-placed (S12).",
-  "measured_shelf_total_g": 18936,
+  "measured_shelf_total_g": 19808,
   "ri_mag03_m8_target_g": 28000,
   "ri_mag03_m8_line_note": "The magic LINE is the shelf plus the enchanting services; tools/analysis/magic-audit.mjs computes the service half as one representative 40-point commission at each of the 7 paid enchanters (8,324 g).",
   "ri_mag03_m8_band_g": [
@@ -53,7 +53,7 @@
   "claim": "RI-MAG02 asks RI-PRG05 to pin the magic line at '≈28,000 g across 60 purchasable spells (tier mix 26/18/10/5/1)'. The total and the mix are arithmetically incompatible under RI-MAG02 §D's own gold formula.",
   "arithmetic": "round(3.9 × focus_base^1.75) at each band's CHEAPEST legal focus_base — 1, 13, 31, 66, 121 — gives 4 / 347 / 1,588 / 5,960 / 17,216 g. The cheapest possible 26/18/10/5/1 shelf is therefore 26×4 + 18×347 + 10×1,588 + 5×5,960 + 1×17,216 = 69,246 g, which is 2.47× the 28,000 target. At RI-PRG05 §2's published band prices (220 / 900 / 3,400) plus RI-MAG02's own derived tier-4 8,350 and tier-5 22,200 it is 119,870 g — 78% of RI-PRG05's entire 152,900 g discretionary menu. No choice of magnitudes closes the gap, because the floor is set by the band boundaries, not by the authoring.",
   "requested": "Strike the tier mix from the clause and keep the 28,000 g total. The mix that actually satisfies the total is bottom-heavy, which is also the correct game design: a shop stocks cantrips and journeyman spells, and the powerful spells are commissioned or found.",
-  "resolution_shipped": "The shelf is defined by affordability rather than by tier (see `shelf_rule`), which lands at 18936 g against the 28,000 g target. All 70 spells ship and are castable; the dear ones are commissioned or hand-placed.",
+  "resolution_shipped": "The shelf is defined by affordability rather than by tier (see `shelf_rule`), which lands at 19808 g against the 28,000 g target. All 70 spells ship and are castable; the dear ones are commissioned or hand-placed.",
   "honesty_note": "Filed rather than silently satisfied, and filed narrowly. Two prior amendments in this project were rejected as unearned; this one is a closed-form arithmetic contradiction that a reader can check in one line of node."
  },
  "cost_model": {
@@ -1103,6 +1103,60 @@
    "moveset": "spell-the_still_water",
    "in_fight": true,
    "notes": null
+  },
+  {
+   "id": "the_drowning",
+   "name": "The Drowning",
+   "schools": [
+    "sorcery"
+   ],
+   "school": "sorcery",
+   "class": "GREAT",
+   "range": "projectile",
+   "effects": [
+    {
+     "effect": "damage_health",
+     "magnitude": 30,
+     "duration_s": 0,
+     "area_r_m": 0
+    }
+   ],
+   "focus_base": 22,
+   "band_tier": 2,
+   "tier": 2,
+   "tier_bound_by": "focus_base_band",
+   "skill_req": 25,
+   "focus_cost": {
+    "great_staff": 78,
+    "rod": 97,
+    "enchanted_weapon": 112,
+    "none": 131
+   },
+   "stamina": 34,
+   "gold_price": 872,
+   "commission_price": 1545,
+   "purchasable": true,
+   "geometry": {
+    "kind": "projectile",
+    "radius_m": 0.9,
+    "speed_mps": 8,
+    "turn_rate_dps": 0,
+    "tracking_cutoff": null,
+    "lifetime_s": 5
+   },
+   "frames": {
+    "startup": 52,
+    "active": 8,
+    "recovery": 60,
+    "total": 120,
+    "Ps": 53,
+    "Tc": 34,
+    "hard_until": 96,
+    "unit": "f@60"
+   },
+   "moveset": "spell-the_drowning",
+   "in_fight": true,
+   "notes": "The one GREAT-class projectile on the shelf. RI-MAG01 §E declares GREAT ballistics — 8.0 m/s, r 0.90 m, no tracking, 90 f@60 of dodge window at 12 m — and a class whose ballistics no shipped spell uses is a table nobody can check."
   },
   {
    "id": "mend_flesh",

@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 286,
+  "file_count": 287,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -930,6 +930,13 @@
       "sha256": "ad226a60056659b0"
     },
     {
+      "path": "combat/movesets/spell-the_drowning.json",
+      "schema": "elder-souls/spell-moveset@1",
+      "id": "spell-the_drowning",
+      "bytes": 810,
+      "sha256": "0fd67bb05d3b4b11"
+    },
+    {
       "path": "combat/movesets/spell-the_greater_mending.json",
       "schema": "elder-souls/spell-moveset@1",
       "id": "spell-the_greater_mending",
@@ -1455,8 +1462,8 @@
       "path": "magic/spells.json",
       "schema": "elder-souls/magic-spells@1",
       "id": "magic-spells",
-      "bytes": 72128,
-      "sha256": "5412b88529f62319"
+      "bytes": 73373,
+      "sha256": "e9bfa5bce5a0cdf9"
     },
     {
       "path": "magic/traversal-routes.json",

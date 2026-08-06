@@ -14,7 +14,7 @@
 | `effects.json` | The **55 effects**, mirrored verbatim from `corpus/25-magic/data/effects.json`. This is the content. The named spells are not. | RI-MAG02 |
 | `cast-classes.json` | `ES-CAST/1` — five weight classes, their frames, commitment constants, ballistics, catalysts, and the levitation numbers. | RI-MAG01 |
 | `cast-clips.json` | Five class silhouettes × four school hand-shapes. AP-M6's answer: distinctness is in the bones, not the particle colour. | RI-MAG01 §F |
-| `spells.json` | 70 coordinates in the parameter space. **Only `effects` + `range` + `class` are authored**; every number is computed. | RI-MAG02 §D |
+| `spells.json` | 71 coordinates in the parameter space. **Only `effects` + `range` + `class` are authored**; every number is computed. | RI-MAG02 §D |
 | `enchanting.json` | Enchanters, capacities, soul gems, the **S15 firewall** (SG-1…SG-6) and the eleven sanctioned breakages. | RI-MAG03 |
 | `vfx.json` | The binding palette and the eight design-language rules, **with the fidelity gap declared**. | RI-MAG05 |
 | `traversal-routes.json` | Seven routes reachable only-or-most-easily by `levitate`/`slowfall`, each with its non-magic alternative. | RI-MAG04 Q10 |

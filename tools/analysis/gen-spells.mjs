@@ -80,6 +80,7 @@ const SHELF = [
   { id: 'long_hand', name: 'Long Hand', cls: 'CANTRIP', range: 'self', fx: [E('telekinesis', 25, 30)], note: 'MB-4: theft through geometry, 25 m of reach.' },
   { id: 'kiln_breath', name: 'Kiln-Breath', cls: 'HEAVY', range: 'area_at_range', fx: [E('fire_damage', 40, 20, 5)] },
   { id: 'the_still_water', name: 'The Still Water', cls: 'GREAT', range: 'area_at_range', fx: [E('frost_damage', 60, 20, 6), E('shock_damage', 40, 0, 6)] },
+  { id: 'the_drowning', name: 'The Drowning', cls: 'GREAT', range: 'projectile', fx: [E('damage_health', 30)], note: 'The one GREAT-class projectile on the shelf. RI-MAG01 §E declares GREAT ballistics — 8.0 m/s, r 0.90 m, no tracking, 90 f@60 of dodge window at 12 m — and a class whose ballistics no shipped spell uses is a table nobody can check.' },
 
   // ---- Root-Speech ---------------------------------------------------------------------------
   { id: 'mend_flesh', name: 'Mend Flesh', cls: 'CANTRIP', range: 'self', fx: [E('restore_health', 22)] },
