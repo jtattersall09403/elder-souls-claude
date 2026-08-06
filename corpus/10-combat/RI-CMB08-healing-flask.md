@@ -3,7 +3,7 @@ id: RI-CMB08
 title: Healing — the Hist-sap Flask, drink commitment frames, heal curve, and refill on rest
 kind: number
 side: souls
-judges: [combat.player.heal, combat.resource.charges, combat.animation.commitment, progression.restsite.refill, combat.encounter.pacing]
+judges: [combat.heal.charges, combat.attack.commitment, progression.bonfire.function, combat.encounter.placement, combat.enemy.punish]
 provenance: constructed
 confidence: medium
 blind_pair: yes

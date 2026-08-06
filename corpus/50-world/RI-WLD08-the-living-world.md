@@ -3,7 +3,7 @@ id: RI-WLD08
 title: The living world — schedules, ecology, ambient events, weather and time
 kind: number
 side: morrowind
-judges: [world.npc-schedules, world.ecology, world.ambient-events, world.weather, world.time, npc.behaviour, audio.ambient]
+judges: [world.npc.schedule, world.ecology.behaviour, world.ambient.events, world.weather.systems, world.time.daynight, world.npc.population, audio.ambience.region]
 provenance: constructed
 confidence: high
 blind_pair: yes

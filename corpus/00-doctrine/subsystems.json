@@ -1,6 +1,6 @@
 {
-  "$comment": "CANONICAL SUBSYSTEM PATH TAXONOMY. Owned by CRT (critic doctrine). This file is the single source of truth for the `judges:` values a reference item may claim and for the subsystem path a builder task may name. INDEX.md is GENERATED from this file + a scan of corpus/**/RI-*.md by tools/corpus-index.mjs. To add a path: append here (append-only; never renumber, never silently rename), then regenerate the index. A path that appears in an RI's `judges:` but not here is an ORPHAN and is reported by the generator.",
-  "version": 1,
+  "$comment": "CANONICAL SUBSYSTEM PATH TAXONOMY. Owned by CRT (critic doctrine). This file is the single source of truth for the `judges:` values a reference item may claim and for the subsystem path a builder task may name. INDEX.md is GENERATED from this file + a scan of corpus/**/RI-*.md by tools/corpus-index.mjs. To add a path: append here (append-only; never renumber, never silently rename), then regenerate the index. A path that appears in an RI's `judges:` but not here is an ORPHAN and is reported by the generator. | WAVE 0 AUDIT (corpus-audit): 123 paths appended across eight new roots (weapon, magic, character, stealth, crime, experience, composition, journey, input) plus world.* and lore.* additions; 5 new critic roles. Every appended record carries a `registered` field naming its source. Shared NUMBERS are registered separately in corpus/00-doctrine/constants.json - subsystems.json owns paths, constants.json owns values.",
+  "version": 2,
   "arb_legend": {
     "souls": "Inside the fight. Souls is authoritative (ARBITRATION.md §1).",
     "morrowind": "Outside the fight. Morrowind is authoritative (ARBITRATION.md §1).",
@@ -22,7 +22,12 @@
     "critic.audio": "Judges sound and music policy.",
     "critic.ui": "Judges HUD, menus, presentation, diegesis.",
     "critic.platform": "Judges frame budget, load, input latency, persistence in a real browser.",
-    "critic.coherence": "End-of-wave whole-game agent. Fixes coherence, never quality. See COHERENCE-AGENT.md."
+    "critic.coherence": "End-of-wave whole-game agent. Fixes coherence, never quality. See COHERENCE-AGENT.md.",
+    "critic.weapons": "Judges weapon classes, movesets, contextual attacks and weapon feel. Must run the moveset validator over game/data/combat/movesets/** and read frame traces, never source. Requested by the weapons agent, wave 0.",
+    "critic.magic": "Judges the effect catalogue, spellmaking, enchanting and utility magic outside the fight. Must run the static analyser over game/data/magic/** and the quest analyser over game/data/quests/**, never source. magic.casting.* stays with critic.combat - it is inside the fight and AR-1 applies. Requested by the magic agent, wave 0.",
+    "critic.journey": "Judges END-TO-END PLAYER SEQUENCES rather than subsystems: first launch, the first hour, controls, save/load, death, a quest without markers, returning after a week. Scores the seams BETWEEN subsystems, which no subsystem critic owns. Requested by the journeys agent, wave 0.",
+    "critic.experience": "Judges the played experience and system composition: opening hook, anecdote census, session shape, novelty curve, endings, permissiveness, and the cross-system payoff matrix. Bound by PLAYTHROUGH-CRITIC.md section 4 - it may not report on fun directly. Requested by the experience agent, wave 0.",
+    "critic.stealth": "Judges detection, sneak, theft, lockpicking, trespass and fencing, plus the crime loop: witnesses, bounty, guard response, arrest, jail, and faction-sanctioned crime. Requested by this audit; the character/stealth/crime agent registered 28 paths with no critic."
   },
   "aliases_note": "RECONCILIATION LAYER. Reference items written before/alongside this taxonomy used their own path spellings. Each entry maps a legacy path to its canonical path so the index still resolves. Aliases are a MIGRATION AID, not a second vocabulary: tools/corpus-index.mjs lists every item still using a legacy spelling in INDEX.md section 4, and those items' front-matter should be corrected to the canonical path when next touched. NEW reference items MUST use canonical paths only.",
   "aliases": {
@@ -1663,6 +1668,1003 @@
       "area": "00-doctrine",
       "critic": "critic.coherence",
       "judged_by_doctrine": "VERDICT-SCHEMA.md §3 + tools/verdict-validate.mjs"
+    },
+    {
+      "path": "magic.casting.frames",
+      "title": "Cast frames per spell weight class: startup/release/recovery, Ps",
+      "arb": "souls",
+      "area": "25-magic",
+      "critic": "critic.combat",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.casting.resource",
+      "title": "The dual cost: Focus as ammunition, stamina as tempo",
+      "arb": "split",
+      "area": "25-magic",
+      "critic": "critic.combat",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.casting.commitment",
+      "title": "Cast commitment, aim latch, cancel policy, interrupt cost",
+      "arb": "souls",
+      "area": "25-magic",
+      "critic": "critic.combat",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.casting.geometry",
+      "title": "Spell hitboxes: contact, projectile sweep, volume. Never dice",
+      "arb": "souls",
+      "area": "25-magic",
+      "critic": "critic.combat",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.casting.enemy",
+      "title": "Enemy casters under RI-AI02's telegraph law",
+      "arb": "souls",
+      "area": "25-magic",
+      "critic": "critic.combat",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.effects.catalogue",
+      "title": "The combinatorial effect list; breadth and school balance",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.magic",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.effects.parameters",
+      "title": "Magnitude/duration/area/range axes and their legality",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.magic",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.effects.utility",
+      "title": "Out-of-fight effects as tools: access, knowledge, social, survival",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.magic",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.effects.traversal",
+      "title": "Levitation, slowfall, water-walking, water-breathing as routes",
+      "arb": "split",
+      "area": "25-magic",
+      "critic": "critic.magic",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.effects.teleport",
+      "title": "Mark/Recall/Intervention as part of the S7 network (S19)",
+      "arb": "split",
+      "area": "25-magic",
+      "critic": "critic.world",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.spellmaking.combination",
+      "title": "Combining effects into spells no designer authored",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.magic",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.spellmaking.cost",
+      "title": "The Focus cost formula and its gold price",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.magic",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.enchanting.items",
+      "title": "Enchant kinds, capacity, charge and recharge",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.magic",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.enchanting.soulgems",
+      "title": "Soul gems against S15: the firewall and the anti-farm rule",
+      "arb": "split",
+      "area": "25-magic",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.gating.skills",
+      "title": "School skill gates on attunement, tier and enchanting",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.economy.prices",
+      "title": "Spell, spellmaking and enchanting prices against RI-PRG05",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.quests.solutions",
+      "title": "Magic as a quest resolution: census, diversity, no lockout",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.quests",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.vfx.artdirection",
+      "title": "Spell design language: organic, fungal, Hist-derived, wet",
+      "arb": "art-direction",
+      "area": "25-magic",
+      "critic": "critic.artdirection",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.vfx.fidelity",
+      "title": "Particle quality: soft, sorted, lit, resolved, budgeted",
+      "arb": "modern-fidelity",
+      "area": "25-magic",
+      "critic": "critic.fidelity",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "magic.diegesis.lore",
+      "title": "Magic's in-world account; xul-hesh and its consequences",
+      "arb": "morrowind",
+      "area": "25-magic",
+      "critic": "critic.lore",
+      "registered": "wave-0 corpus-audit (from corpus/25-magic/subsystems-patch.proposed.json)"
+    },
+    {
+      "path": "journey.firstlaunch.flow",
+      "title": "First launch to first meaningful choice as one unbroken act",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.chargen.diegesis",
+      "title": "Character creation happens inside the fiction, not in a settings menu",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.onboarding.explanation",
+      "title": "How much the game explains, and whether it is said by a person in the world",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.firsthour.interaction",
+      "title": "The first hour judged by what the hands do, not by what the story says",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.ui",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.firsthour.competence",
+      "title": "The point at which a new player becomes measurably competent, and that it arrives",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.ui",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.save.roundtrip",
+      "title": "Save, load, and an empty state diff — end to end, mid-quest, mid-dungeon",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "note": "Correctness is binary. arb is neutral because neither reference game rules on browser persistence; the item defines the bar outright.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.death.recovery",
+      "title": "Die, lose souls, respawn, run back, recover the bloodstain, as one measured sequence",
+      "arb": "souls",
+      "area": "88-journeys",
+      "critic": "critic.combat",
+      "note": "Judged under seam S6 (ARBITRATION.md): the loss loop is Souls, the persistence of quest/journal/faction state across death is Morrowind. combat.death.corpserun and combat.death.worldreset keep ownership of the rules; this path owns the end-to-end run.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.quest.unmarked",
+      "title": "A quest completed end to end with no markers, using in-game text alone",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.quests",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.reentry.orientation",
+      "title": "A returning player rebuilds their own objectives from in-game information alone",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journal",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.process.fleet",
+      "title": "The journey-critic fleet itself: one critic per journey, fresh context, evidence, aggregation",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "judged_by_doctrine": "JOURNEY-CRITIC-FLEET.md §1-§3, §5, §6",
+      "note": "Judged by a doctrine document rather than by a reference item, following the pattern subsystems.json already uses for COHERENCE-AGENT.md and CRITIC-DOCTRINE.md. NOT a corpus hole.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "journey.process.naive",
+      "title": "The enforced first-time-user protocol: isolation, pre-registration, verbatim capture, non-reuse",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "judged_by_doctrine": "JOURNEY-CRITIC-FLEET.md §4 (I1-I8, rules F6-F8)",
+      "note": "Some journeys can only be judged by an agent that has not read the corpus. This path exists so that a violated isolation is a scoreable defect rather than a procedural footnote.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.action.set",
+      "title": "The closed Souls action set exists, is complete, and is reachable on every device",
+      "arb": "souls",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "note": "The 14 action names are fixed by HARNESS.md §4 and may not be extended without a harness amendment.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.desktop.pointerlock",
+      "title": "Pointer lock acquisition, loss, recovery, and what the game does while unlocked",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.desktop.keyboard",
+      "title": "Physical-key (`code`) binding, layout independence, ghosting, modifier and focus hazards",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.rebinding.model",
+      "title": "Rebinding: coverage, conflict handling, persistence, and reset",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.discoverability",
+      "title": "Whether a player who was told nothing can find each action",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.ui",
+      "note": "Scored primarily by the naive-agent pass (JOURNEY-CRITIC-FLEET.md §4). The instrumented pass cannot measure this at all — an agent that has read the corpus already knows the binding.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.modality.parity",
+      "title": "Every action and every UI surface is reachable on keyboard+mouse, gamepad, and touch",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.gamepad.mapping",
+      "title": "Gamepad button map for the Souls action set, across standard and non-standard descriptors",
+      "arb": "souls",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.gamepad.analog",
+      "title": "Deadzones, stick response curves, and analog trigger thresholds with hysteresis",
+      "arb": "souls",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.gamepad.lifecycle",
+      "title": "Connect, hot-plug, disconnect mid-combat, resume, and held-input release",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "input.touch.fallback",
+      "title": "The no-gamepad touch path on a phone, and that it is not a second-class game",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "platform.mobile.viewport",
+      "title": "Landscape lock, safe areas, browser-chrome collapse, DPR, and orientation change",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "platform.save.storage",
+      "title": "The storage-backend ruling: IndexedDB authoritative, file export mandatory, quota and eviction",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "note": "Distinct from platform.save.persistence, which owns WHAT survives. This path owns WHERE it lives and what happens when the browser takes it away.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "platform.perf.simtime",
+      "title": "CPU cost of one fixed simulation step, measured with rendering disabled",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "note": "Separated from platform.perf.framerate because it is measurable on a software rasteriser and frame rate is not (RI-PLT01 §A, Tier-S vs Tier-H).",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "platform.perf.allocation",
+      "title": "Bytes allocated per simulation step and GC attribution to the sim loop",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "note": "Per-frame allocation. Session-scale heap growth is platform.perf.memory and belongs to RI-PLT02; the two failures have different causes and are deliberately separate paths.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "platform.asset.budget",
+      "title": "Texture, geometry, audio and download budgets for a mid-range phone",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "platform.load.ttfp",
+      "title": "Time to first playable frame, and the cost of every subsequent load boundary",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "note": "RI-JRN01 O5 (`T_control`) resolves here and is not redefined there.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "platform.load.hitches",
+      "title": "Hitch count and duration per traversal minute, and what counts as a declared load boundary",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "note": "RI-PLT01 M12 (no frame over 100 ms) excludes declared load boundaries; this path owns the definition of that exclusion, so the two items cannot each assume the other bounds it.",
+      "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)"
+    },
+    {
+      "path": "weapon.moveset.slots",
+      "title": "The 41 moveset slot ids and which are mandatory per class",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.moveset.schema",
+      "title": "moveset.schema.json as the moveset vocabulary source of truth",
+      "arb": "neutral",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.charge.heavy",
+      "title": "Charged heavy attacks: hold window, release, and the R2 payoff",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.moveset.answers",
+      "title": "Every slot answers a distinct tactical question, not a spare animation",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.class.taxonomy",
+      "title": "The 15 weapon classes and their weight tiers",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.class.differentiation",
+      "title": "Cross-class fingerprint separation D_min (PASS >= 1.6, HARD FAIL < 1.0)",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.class.reach",
+      "title": "Reach, arc and swept hitbox extent per class",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.identity.withinclass",
+      "title": "Two weapons of one class still feel different (within-class distance band)",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.animation.reuse",
+      "title": "Animation Reuse Index: sharing clips without weapons becoming the same weapon",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.context.rolling",
+      "title": "Rolling attacks: frames, input window, tactical role",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.context.running",
+      "title": "Running attacks: frames, input window, tactical role",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.context.backstep",
+      "title": "Backstep attacks and guard counters",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.context.aerial",
+      "title": "Jump and plunge attacks",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.feel.hitstop",
+      "title": "Hitstop grid: 5 weight tiers x 7 materials",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.feel.material",
+      "title": "Material response - what a hit on chitin, resin, stone or flesh reads as",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.feel.mass",
+      "title": "Perceived mass: acceleration, root motion, recovery",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.feel.whiff",
+      "title": "Whiff arithmetic - missing must cost the frames it looks like it costs",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.stance.twohand",
+      "title": "Two-handing produces a divergent moveset, not a reskin",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.offhand.config",
+      "title": "Offhand configuration: shield, second weapon, catalyst",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "weapon.shield.taxonomy",
+      "title": "Shield classes, stability, and where parry ownership sits",
+      "arb": "souls",
+      "area": "12-weapons",
+      "critic": "critic.weapons",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.creation.flow",
+      "title": "The character-creation sequence and where in the fiction it happens",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.creation.identity",
+      "title": "What creation fixes about who the player is",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.creation.irreversibility",
+      "title": "What can never be changed again, and how that is signalled at the time",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.class.custom",
+      "title": "Custom classes: favoured skills, favoured attributes, specialisation",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.race.profile",
+      "title": "Per-race attribute, skill and power profile (10 races)",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.race.reaction",
+      "title": "Race-driven NPC reaction across the 12 reaction groups",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.race.dialogue",
+      "title": "Race-filtered dialogue: what only your race is told",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.dialogue",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.race.access",
+      "title": "Doors, prices and factions a race opens or closes",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.birthsign.powers",
+      "title": "Birthsign powers and their in-fiction account",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "character.birthsign.drawback",
+      "title": "Birthsign drawbacks - a sign that only gives is not a sign",
+      "arb": "morrowind",
+      "area": "22-character",
+      "critic": "critic.progression",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.detection.model",
+      "title": "The detection model: light, distance, sound, cover, facing",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.sneak.state",
+      "title": "The sneak state itself: speed, stamina, what it costs and gives",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.npc.search",
+      "title": "NPC search behaviour after a lost contact - the alert ladder coming down",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.opener.seam",
+      "title": "The stealth opener into combat: where sneak hands over to the fight",
+      "arb": "split",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.theft.ownership",
+      "title": "Ownership: what is owned, by whom, and what taking it means",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.theft.pickpocket",
+      "title": "Pickpocketing: what is reachable, what is risked",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.lock.picking",
+      "title": "Lockpicking as a deterministic skill gate plus an execution challenge (seam S21)",
+      "arb": "split",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.trespass.zones",
+      "title": "Trespass zones: private, restricted, and what crossing one costs",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "stealth.fence.economy",
+      "title": "Fencing stolen goods: who buys, at what discount, with what risk",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.witness.model",
+      "title": "The witness model: who sees, from how far, and what they do about it",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.bounty.schedule",
+      "title": "The bounty schedule: what each crime costs",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.guard.response",
+      "title": "Guard response: challenge thresholds, pursuit, and arrest range",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.arrest.interaction",
+      "title": "The arrest interaction: pay, resist, or go quietly",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.jail.consequence",
+      "title": "Jail: time, skill loss, and what it does to the world clock",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.persistence.death",
+      "title": "Crime state persists across death (seam S6): a bounty is not paid by dying",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.faction.standing",
+      "title": "Crime and faction standing: who forgives, who never does",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.faction.sanctioned",
+      "title": "Faction-sanctioned crime: when a killing is lawful because of who you are",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "crime.faction.writ",
+      "title": "Writs: the paperwork that makes a murder legal, and what voids it",
+      "arb": "morrowind",
+      "area": "23-stealth-crime",
+      "critic": "critic.stealth",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.opening.hook",
+      "title": "The first sixty minutes: whether the game earns the second hour",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.opening.beats",
+      "title": "First-hour beat sheet and its partial order",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.memory.anecdote",
+      "title": "Verified anecdotes per hour and their class floors",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.memory.recall",
+      "title": "The baton bottleneck and terminal recall",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.session.shape",
+      "title": "The shape of a single play session, start to stopping point",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.session.pacing",
+      "title": "Pacing curve within a session: tension, release, and where each sits",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.session.sag",
+      "title": "The mid-session sag: where it is allowed to happen and how deep",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.novelty.curve",
+      "title": "The novelty curve across a full playthrough",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.novelty.decay",
+      "title": "How fast a mechanic stops surprising, and what replaces it",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.novelty.longtail",
+      "title": "Late-game novelty - the long tail after the systems are known",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.ending.landing",
+      "title": "Whether the ending lands, measured rather than asserted",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.ending.aftermath",
+      "title": "What the world is like after the ending",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.ending.pointofnoreturn",
+      "title": "The point of no return and how it is signalled before it is crossed",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.permissiveness.register",
+      "title": "The permissiveness register: what the game lets the player get away with",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "experience.permissiveness.durability",
+      "title": "Whether permissiveness survives contact with the anti-exploit rules",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "composition.matrix.coverage",
+      "title": "Cross-system payoff matrix coverage (the AR-3 project-level floor)",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "composition.seam.crossings",
+      "title": "Fight-boundary-crossing interactions: the count and their kind",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "composition.emergence.fuzzing",
+      "title": "Emergence found by fuzzing system combinations, not by hoping",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "composition.emergence.degeneracy",
+      "title": "Degenerate combinations: found, priced, and left in or removed on purpose",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "composition.build.identity",
+      "title": "Builds that play observably differently out of the same systems",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "composition.build.viability",
+      "title": "Build viability spread - no single dominant build, no dead build",
+      "arb": "neutral",
+      "area": "95-experience",
+      "critic": "critic.experience",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "world.traversal.stations",
+      "title": "Where transport stations physically sit, and the arrival rule (seam S7)",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "world.traversal.schedule",
+      "title": "Service schedules: departure times, journey duration in game-hours, and waiting",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "world.npc.schedule",
+      "title": "24-hour NPC schedules with real waypoints - shops shut, owners go home",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "world.ecology.behaviour",
+      "title": "Ecology that runs without the player: predators hunt prey, not spawn circles",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "world.ambient.events",
+      "title": "Ambient events - things that happen that the player did not cause",
+      "arb": "morrowind",
+      "area": "50-world",
+      "critic": "critic.world",
+      "registered": "wave-0 corpus-audit"
+    },
+    {
+      "path": "lore.religion.metaphysics",
+      "title": "Souls, death and the afterlife as in-fiction metaphysics that the mechanics obey",
+      "arb": "morrowind",
+      "area": "60-lore",
+      "critic": "critic.lore",
+      "registered": "wave-0 corpus-audit"
     }
   ],
   "judged_by_doctrine_note": "Some subsystem paths are judged by a doctrine document rather than by a reference item. They are NOT corpus holes: the named document carries the bar, the method, and the evidence requirement. Everything else must have an RI."
