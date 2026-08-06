@@ -264,6 +264,18 @@ const hardOn = (m, k) => !!(m && m.hard_fails || []).length && m.hard_fails.some
     `M7 dY_sky = ${val(out.metrics.M7, 'dY_sky')}, dC_sky = ${val(out.metrics.M7, 'dC_sky')}, BI = ${val(out.metrics.M7, 'BI')}; M8 FS_score = ${val(out.metrics.M8, 'FS_score')}. An instrument that only fails is as useless as one that only passes.`);
 }
 
+// ================================================================ T7b — the stage-B sky detector
+{
+  // RI-VIS03's literal sky rule requires Yp > P60(whole frame) AND contact with row 0. A sky
+  // whose zenith is darker than the frame's P60 (any dawn/dusk gradient) therefore has no
+  // candidate in row 0 and vanishes. This asserts the fallback fires AND says so.
+  const out = run(synthGoodSky(1280, 1280), 'exterior_daylight');
+  const det = out.masks.sky_detect || '';
+  assert('T7b', 'a gradient sky the literal RI-VIS03 rule cannot see is found by stage B, and the substitution is RECORDED',
+    out.masks.skyFrac > 0.35 && /STAGE B/.test(det),
+    `sky_frac = ${out.masks.skyFrac.toFixed(3)}; detector = "${det.slice(0, 150)}..." — a mask swap that is not recorded is the "masking everything" failure RI-VIS03 names.`);
+}
+
 // ================================================================ T8 — M6 catches one-light rendering
 {
   // Same albedo texture, lit two ways. (a) one white light + white ambient: shadows are just
@@ -357,6 +369,42 @@ const hardOn = (m, k) => !!(m && m.hard_fails || []).length && m.hard_fails.some
   assert('T11', 'M11 detects a single LOD pop in a real frame sequence, and only one',
     r.pops === 1 && r.worst_pop > 0.005 && r.worst_pop < 0.01,
     `pops = ${r.pops} over ${r.pairs} pairs, worst_pop = ${r.worst_pop.toFixed(5)} (a 40x40 object in a 512x512 frame = 0.0061 of the frame). Gating notes: ${r.displacement_gating.split('—')[0].trim()}`);
+}
+
+// ================================================================ T14 — M12 catches the blue plane
+{
+  const W = 1024, H = 1024, waterTop = 420;
+  const mkWater = (rippled) => {
+    _seed = 0x2002;
+    const d = blank(W, H);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      if (y < waterTop) {                                   // shore/land above the waterline
+        const t = 0.35 + 0.25 * Math.sin(x * 0.07) * Math.cos(y * 0.05) + 0.08 * (rnd() - 0.5);
+        put(d, W, x, y, Math.round(255 * t * 0.9), Math.round(255 * t), Math.round(255 * t * 0.7));
+        continue;
+      }
+      if (!rippled) { put(d, W, x, y, 40, 78, 132); continue; }        // THE BLUE PLANE
+      const depth = (y - waterTop) / (H - waterTop);
+      const ripple = 0.05 * Math.sin(x * 0.35 + y * 0.21) + 0.03 * Math.sin(x * 1.1 - y * 0.6) + 0.02 * (rnd() - 0.5);
+      // reflection of the land strip above, plus a Fresnel rise towards the far (upper) edge
+      const mirror = Math.max(0, 2 * waterTop - y - 1);
+      const refl = (d[(mirror * W + x) * 4 + 1] / 255) * (0.55 - 0.35 * depth);
+      const v = Math.max(0, Math.min(1, 0.12 + 0.30 * depth * 0 + refl + ripple + 0.10 * (1 - depth)));
+      put(d, W, x, y, Math.round(255 * v * 0.5), Math.round(255 * v * 0.8), Math.round(255 * v));
+    }
+    return { width: W, height: H, data: d };
+  };
+  const mask = new Uint8Array(W * H);
+  for (let y = waterTop; y < H; y++) for (let x = 0; x < W; x++) mask[y * W + x] = 1;
+  const plane = run(mkWater(false), 'exterior_daylight', { water: mask });
+  const real = run(mkWater(true), 'exterior_daylight', { water: mask });
+  const g = (o, k) => val(o.metrics.M12, k);
+  assert('T14', 'M12 calls a uniform blue plane a blue plane, and does not call a rippled reflective surface one',
+    plane.metrics.M12.blue_plane === true && real.metrics.M12.blue_plane !== true,
+    `blue plane: Fresnel ${g(plane, 'FresnelDelta')}, NormalEnergy ${g(plane, 'NormalEnergy')}, ShoreDelta ${g(plane, 'ShoreDelta')}, ReflCorr ${g(plane, 'ReflCorr')} -> ${plane.metrics.M12.hard_fails.length} fails. rippled: Fresnel ${g(real, 'FresnelDelta')}, NormalEnergy ${g(real, 'NormalEnergy')}, ShoreDelta ${g(real, 'ShoreDelta')}, ReflCorr ${g(real, 'ReflCorr')} -> ${real.metrics.M12.hard_fails.length} fails.`);
+  assert('T14b', 'M12 TemporalVar stays unmeasurable without a stationary sequence, even when the mask is supplied',
+    plane.metrics.M12.stats.TemporalVar.measurable === false && /stationary frames/.test(plane.metrics.M12.stats.TemporalVar.reason),
+    `"${plane.metrics.M12.stats.TemporalVar.reason.slice(0, 110)}..."`);
 }
 
 // ================================================================ T12 — determinism

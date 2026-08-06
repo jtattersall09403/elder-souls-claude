@@ -438,7 +438,9 @@ retry-ability, which is not in dispute.
 **Requested amendment:** ARBITRATION §2 currently has no seam for out-of-fight randomness.
 §3b establishes a general principle — *keep the die where failure is permanent, delete it where
 failure is a retry* — which cleanly explains why persuasion (`RI-DLG04`) keeps its roll and
-lockpicking loses its. I propose this as a new seam ruling **S20** and flag it in my reply
+lockpicking loses its. I propose this as a new seam ruling ~~**S20**~~ **— ADOPTED wave 0 as
+ARBITRATION seam S21**, not S20: S20 was already taken by era authority (Morrowind-era sources
+win over 2E/ESO). Renumbered by the corpus audit. I flag it in my reply
 rather than editing `ARBITRATION.md`.
 
 Confidence **medium**. The determinism ruling I hold with high confidence; the *calibration* of

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-06T09:19:59.028Z",
-  "complete": 12,
+  "generated": "2026-08-06T09:38:10.290Z",
+  "complete": 13,
   "total": 15,
   "tasks": [
     {
@@ -126,15 +126,14 @@
     {
       "id": "vis-metrics",
       "title": "Implement M1-M12 fidelity metrics per RI-VIS03",
-      "state": "started-nothing-written",
-      "done": 0,
+      "state": "partial",
+      "done": 1,
       "expected": 2,
       "missing": [
-        "tools/metrics/self-test.mjs",
         "corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md"
       ],
-      "next_step": "read RI-VIS03 spec + existing image-metrics.mjs",
-      "findings": 0
+      "next_step": "write tools/metrics/lib/decode.mjs then lib/vis03.mjs (M1-M10), then M11/M12, then CLI, then self-test, then doctrine doc",
+      "findings": 7
     },
     {
       "id": "image-acquisition-modern",
@@ -150,20 +149,18 @@
         "corpus/70-visual/refs/modern/combat/REF-*",
         "corpus/70-visual/refs/video/V1-*"
       ],
-      "next_step": "read docs/REFERENCE-IMAGE-REQUEST.md fully, then ACQUISITION-REPORT.md §6 dead ends",
-      "findings": 1
+      "next_step": "none - complete",
+      "findings": 19
     },
     {
       "id": "corpus-audit",
       "title": "Corpus coherence: constants, front-matter repair, wrong-bar amendments",
-      "state": "partial",
-      "done": 2,
+      "state": "complete",
+      "done": 3,
       "expected": 3,
-      "missing": [
-        "corpus/80-methods/RI-MTH05*"
-      ],
-      "next_step": "subsystems.json registration of ~134 orphan paths + critic roles; then make --check gate on errors",
-      "findings": 9
+      "missing": [],
+      "next_step": "B4 RI-CMB02 internal contradiction; B8 harness DPR; B10 two-directional travel; B11 MAG02 prices; seam propagation S20/S21; RI-VIS01 F17-F19; GAP-LEDGER + progress; finish report",
+      "findings": 15
     }
   ]
 }

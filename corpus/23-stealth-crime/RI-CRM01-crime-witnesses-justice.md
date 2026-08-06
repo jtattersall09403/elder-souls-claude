@@ -242,7 +242,7 @@ days_served = clamp( ceil(bounty / 100), 1, 90 )
 | 9,000+ | 90 (cap) | |
 
 **The skill cost, and it is deterministic — no roll** (per the `RI-STL02` §3 ruling and proposed
-seam S20, since jail is not a retryable failure):
+seam **S21** (~~S20~~ — renumbered wave 0 by the corpus audit; S20 is era authority), since jail is not a retryable failure):
 
 | Effect | Rule |
 |---|---|
@@ -254,7 +254,7 @@ seam S20, since jail is not a retryable failure):
 | **Where** | Blackrose Prison for Imperial sentences ≥ 20 days — and you come out through the town of Blackrose, which is 1,503 m from Lilmoth and probably not where you were |
 
 **The deterministic-highest-skill rule is the important detail.** Morrowind removed a *random*
-skill point, which is a die whose failure is permanent — arguably legitimate under S20 — but
+skill point, which is a die whose failure is permanent — arguably legitimate under **S21** — but
 which is also unreadable: you cannot plan around it and you cannot feel it. Taking from your
 best non-cell skill is legible, plannable, and hurts a social build far more than a fighter,
 which is the right asymmetry for a punishment administered by a society.
@@ -370,7 +370,7 @@ and `setBounty(jurisdiction, n)` for scenario setup.
 9. **Jail ledger.** Serve a 1,000 g bounty (10 days). **Assert**: bounty 0; world clock +10
    days; **−5 levels** taken from the highest of the six cell-blocked skills, one at a time,
    deterministically (re-run with a different seed and **assert an identical outcome** — this is
-   the S20 assertion); **Sneak +3, Security +2**; stolen items gone; lockpicks gone; weapons and
+   the **S21** assertion); **Sneak +3, Security +2**; stolen items gone; lockpicks gone; weapons and
    armour returned; attributes/souls/level unchanged; **assert ≥ 1 quest timer advanced** by
    scripting a 25-day sentence against a known timed quest and asserting failure.
 10. **PERSISTENCE — the S6 assertion (mandatory).** Accrue bounty 1,600 in Imperial and 900
@@ -445,7 +445,7 @@ binary.
   system and neither owner wants to be called by the crime system. Then jail is strictly better
   than paying, everyone serves every sentence, and the arrest has one answer again.
 - **The skill loss becomes random.** Morrowind's own implementation, and it will be cited as
-  precedent. It is unreadable and unplannable, and under the S20 principle it is *defensible*
+  precedent. It is unreadable and unplannable, and under the **S21** principle it is *defensible*
   (jail is not retryable) which makes it a genuinely close call — but "you lose your best social
   skill" is a punishment a player can understand, resent and plan around, and "you lost a point
   of something" is noise.

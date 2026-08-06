@@ -81,7 +81,13 @@ end to end, in play:
 - skill/attribute thresholds → what they gate, out of the fight
 - gold earned in region A → is it spendable/needed in region B
 - death → world reset of ordinary enemies **and** persistence of quest/faction/world state
-- rest → level-up + refill + respawn, and **no** teleport network
+- rest → level-up + refill + respawn, and **no** teleport network *at the HEARTH*
+- **transport → gold spent → world clock advanced → arrival at a station, verified once per
+  modality** (added wave 0, corpus-audit, INTENT-AUDIT-01 **ID-17**). The line above tests only
+  that the HEARTH is *not* a network; nothing tested that the network S7 mandates exists at all,
+  so a build with no transport passed. Both halves are now required: the HEARTH offers no
+  destinations **and** `RI-TRV01`'s five modes board, charge gold, take in-world time, and drop
+  you at a station
 - journal directions → can you actually get there from the text alone, with no markers
 
 **T7 — The difficulty profile.** Sample the first three hostile encounters in every region

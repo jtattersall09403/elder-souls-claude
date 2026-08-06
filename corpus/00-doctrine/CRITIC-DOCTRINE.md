@@ -248,6 +248,13 @@ Run all that can be run for this piece. Each has a concrete method and a concret
 | B9 | **Unkillable NPCs** | Attack a quest-critical NPC. | Essential-NPC invulnerability or a game-over. Expected: death + "thread of prophecy severed" warning + a harder but completable world. Seam S10. |
 | B10 | **Death eating world state** | Advance a quest, gain faction rank, drop an item, then die and respawn. Diff journal, faction standing, world flags, dropped item. | Any rollback. Seam S6. |
 | B11 | **Silent world** | Walk a settlement for 3 minutes; count distinct rumours heard/available and how many differ from the previous settlement. | Identical rumour set across towns. |
+| **B13** | **Travel that does not exist** — the *inverse* leak, added wave 0 (corpus-audit), INTENT-AUDIT-01 **ID-17** | From three different settlements, board **each** transport modality: pay in gold, ride, and verify (a) you arrived at a **station**, not at an objective, (b) in-world time advanced, (c) the destination was one you had already visited. | **No modality boards → AR-2 fail.** Seam S7 *mandates* the network; it does not merely permit it. Every other travel check in this doctrine tests only for the **absence** of warping, so a build that shipped no transport at all passed all of them. B2 and B13 are a **pair** and must be run together: B2 fails a network that has become a map-pin menu, B13 fails a world that has no network. |
+
+> **AMENDED wave 0 (corpus-audit) — every travel check in the corpus is now two-directional.**
+> B2 above ("bonfire warp") is one-directional by construction: it can only fire when travel
+> exists. Read alone it rewards a build with no travel at all, which is seam S7 inverted. B13
+> is its counterpart. The same pairing is applied in `RI-PRG04`'s S7 scoring axis, `RI-TRV01`
+> M1's N-fail/W-fail, and COHERENCE-AGENT T6. See `CORPUS-COHERENCE-01.md` §8.
 
 ---
 

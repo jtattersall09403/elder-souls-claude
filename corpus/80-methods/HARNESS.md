@@ -300,7 +300,8 @@ Screenshots are only comparable if the camera, the clock and the weather are pin
 
 | Property | Value | Why |
 |---|---|---|
-| Resolution | **1920×1080**, `deviceScaleFactor: 1` | fixed so edge-density and FFT metrics are commensurable |
+| Resolution (**world** viewpoint set) | **1920×1080**, `deviceScaleFactor: 1` | fixed so edge-density and FFT metrics are commensurable |
+| Resolution (**UI** viewpoint set) | **1280×720 / 1920×1080 / 2560×1440 / 3840×2160**, each at `deviceScaleFactor` **1 and 2** | UI shots are never compared against world shots, so commensurability with them is not required — and the DPR-2 capture is the one measurement that catches a `CanvasTexture` UI |
 | Format | PNG, sRGB (`--force-color-profile=srgb`) | lossless; no codec artefacts entering the metrics |
 | Camera | from `tools/harness/viewpoints.json` only | a shot at an unlisted pose is **not admissible evidence** |
 | Time of day | per-viewpoint, explicit hours | no "it looked better at sunset" |
@@ -317,6 +318,26 @@ dark dungeon, and gameplay combat framing. Each declares which metrics it feeds.
 
 Viewpoints may be **added** by amendment. Changing an existing pose invalidates every
 cross-wave comparison that used it, so poses are append-only in practice.
+
+> **AMENDED wave 0 (corpus-audit) — queue B8. UI shots form their own viewpoint set with their
+> own pinned configuration.**
+>
+> `deviceScaleFactor: 1`, applied globally, made `RI-UIX06`'s **FD2 glyph-sharpness-at-DPR-2
+> check structurally unmeasurable** — and FD2 is *the* measurement that catches a UI drawn into
+> a `CanvasTexture` at a fixed size and mapped to a quad. Such a UI passes at DPR 1 and fails
+> catastrophically at DPR 2; with DPR pinned to 1, it passes everything and ships.
+>
+> This is a real conflict, not an oversight: fidelity metrics genuinely need one fixed DPR so
+> edge-density and FFT numbers stay commensurable across waves. **Resolution: the constraint is
+> scoped to the viewpoint set it protects.** `viewpoints.json` gains a `set` field —
+> `"world"` (12 canonical poses, DPR 1, unchanged and still binding) and `"ui"`
+> (`ui-combat`, `ui-world`, `ui-screens`, `ui-book`, per `RI-UIX06` §E, captured at 4
+> resolutions × 2 DPRs = 48 shots). **A UI shot is never admissible evidence for a fidelity
+> metric and a world shot is never admissible evidence for a UI metric**, which is what makes
+> the two configurations safe to differ. Every world-shot number produced before this amendment
+> remains valid and comparable.
+>
+> See `CORPUS-COHERENCE-01.md` §8.
 
 ---
 
