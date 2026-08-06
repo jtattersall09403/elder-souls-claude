@@ -281,23 +281,36 @@ gains `kind: "unlawful"|"lawful"|"intercepted"`; `getCrimeState()` gains `writs[
      bounty == 1,600 × 0.6.**
    - Hold a warrant 15 in-game days. **Assert `writ` event `kind:"recalled"`, −1 rank-progress,
      and the target's dialogue changes.**
-3. **Parley coverage (S13, mandatory).** For all 27 sanctioned-murder targets, evaluate the
+3. **Mid-fight accrual and the yield (amended ARBITRATION §1 + S13, mandatory).** Same warrant
+   scenario, 3 civilians present. Trace the whole encounter with `traceStart()`.
+   - Fight the target down to yield. **Assert a yield state is entered, that the target's
+     `hitboxes` go inactive and stay inactive, and that a `parley` event with a buy-off offer
+     fires while `player.state` is a combat state.**
+   - Kill the yielded target with a civilian watching. **Assert 3 named factions lose standing
+     on that frame** and that the killing is still `kind:"lawful"`.
+   - Re-run and kill a bystander at a known frame *n*. **Assert `bounty_change` fires on frame
+     *n*, not on the encounter's end frame**, and that `crime` and `witness` events appear in
+     `events[]` on frames where the player is in `ATTACK`/`ROLL` states. If crime resolution is
+     deferred to the end of combat, the amended §1 is unimplemented and this axis scores 0.
+   - Flee the guard who intervenes. **Assert the guard leashes, the writ is still held, and the
+     collateral bounty is unchanged.**
+4. **Parley coverage (S13, mandatory).** For all 27 sanctioned-murder targets, evaluate the
    parley block. **Assert 27/27 have a parley** and **assert ≥ 18 have a resolution with
    `violence_required: false`.** Then harness-execute one of each of the four §3 shapes and
    **assert the stated faction cost fires.** For "Refused outright", **assert the replacement
    assassin NPC exists, and that the target's `death_flag` is set 3 quests later** by advancing
    the quest graph.
-4. **Exclusivity.** Attempt every ordered pair of faction joins. **Assert ≥ 8 pairs are refused
+5. **Exclusivity.** Attempt every ordered pair of faction joins. **Assert ≥ 8 pairs are refused
    in dialogue with a stated in-fiction reason** (not a greyed button), **assert the refusal is
    symmetric where §4 says it is**, and **assert no reachable state holds 3 sanctioning
    authorities** by exhaustive search over the join graph.
-5. **AR-3 GUARD TEST — the item's headline (mandatory).** For the 5 configurations in §5's
+6. **AR-3 GUARD TEST — the item's headline (mandatory).** For the 5 configurations in §5's
    worked table, `loadState('stormhold-street')`, `setBounty('imperial', b)` at
    `b ∈ {0.5×, 1.5×, 5×}` of each configuration's computed threshold, step 600 frames in a
    guard's cone. **Assert the observed behaviour band matches the computed threshold in 15/15
    cases**, and **assert `arrestThreshold(Naga, Xul-Aneekh 4) == 45 ± 1` and
    `arrestThreshold(Naga, Ninth Cohort 5) == 238 ± 2`** — a 5.3× spread from faction alone.
-6. **AR-3 ENCOUNTER TEST — the seam crossing (mandatory).** Run the same interior-region
+7. **AR-3 ENCOUNTER TEST — the seam crossing (mandatory).** Run the same interior-region
    traversal scenario twice with an identical seed, once at Xul-Aneekh rank 0 and once at rank 4,
    as a Dunmer:
    ```
@@ -308,22 +321,22 @@ gains `kind: "unlawful"|"lawful"|"intercepted"`; `getCrimeState()` gains `writs[
    run contains 0.** **Assert the enemy `archetype`, `moveset` and statblock ids are identical
    between the two runs** — if the enemies themselves changed, that is Morrowind reaching into
    the fight (AR-1); if nothing changed, the AR-3 claim is fraudulent. Both fail.
-7. **Report interception.** As Wet Ledger rank 3 in Gideon, commit 5 crimes of bounty ≤ 1,600 in
+8. **Report interception.** As Wet Ledger rank 3 in Gideon, commit 5 crimes of bounty ≤ 1,600 in
    front of witnesses. **Assert the first 4 produce `report` with `kind:"intercepted"` and bounty
    0, and a `favour_owed` flag each; assert the 5th produces `kind:"unlawful"` and full bounty**,
    with a spoken refusal. **Assert all 4 `favour_owed` flags have an authored call-in quest
    stage** in `game/data/quests/**` and harness-verify one fires.
-8. **Sanction does not clear blood-price.** As Xul-Aneekh rank 4, kill an interior NPC witnessed
+9. **Sanction does not clear blood-price.** As Xul-Aneekh rank 4, kill an interior NPC witnessed
    by `RG-DEEP` only. **Assert bounty 0 (no jurisdiction), `bloodprice.<family>` == 1,400, and
    that Deep-Kin rank does not reduce it.** Then obtain a ku-vastei Ruling for the same killing
    and **assert the blood-price is extinguished and any pre-existing blood-price on that family
    is too**, while Imperial bounty for a separate crime is untouched.
-9. **Hunters.** Trigger all 5 §7 rows across a scripted save. **Assert 11 named hunter NPCs
+10. **Hunters.** Trigger all 5 §7 rows across a scripted save. **Assert 11 named hunter NPCs
    exist in `listEntities()` across the playthrough, that none respawns after 3 HEARTH rests
    (S5), and that all 11 have a `parley` block (S13).** **Assert the Attainder-against-player
    duellists hunt by region** — verify they appear in ≥ 2 distinct regions, not at a trigger
    volume.
-10. **Morag Tong weakness.** As a Morag Tong contact, execute a Tong writ on a Dunmer in Gideon
+11. **Morag Tong weakness.** As a Morag Tong contact, execute a Tong writ on a Dunmer in Gideon
     in front of an Imperial guard. **Assert full bounty 1,600** — the writ is legally worthless
     in Argonia. Then repeat in front of `RG-DRES` witnesses only: **assert no report.** This
     pair is the item's answer to the problem it is named after and must be verified as a pair.
@@ -335,6 +348,7 @@ gains `kind: "unlawful"|"lawful"|"intercepted"`; `getCrimeState()` gains `writs[
 | Jurisdictional legality | 4 authorities, 0 universal, matrix exact | 3 authorities, 0 universal | any authority makes killing lawful everywhere → **the Morag Tong problem shipped** |
 | Writ limits | all 5 §2 assertions pass | 4 of 5, collateral and lock-report among them | a writ suppresses witnesses or covers collateral |
 | Parley coverage | 27/27 parley, ≥ 20 non-lethal options, all 4 shapes built | 27/27 parley, ≥ 18 non-lethal | any writ target with no parley → **S13 hard fail** |
+| **Mid-fight accrual + yield** | yield state, mid-combat parley and buy-off, 3-faction penalty for killing a yielded target, collateral bounty lands on the frame it happens | yield state exists; collateral bounty accrues during combat | crime resolved at the end of the encounter, or no yield state → **amended ARBITRATION §1 unimplemented** |
 | Refusal consequence | replacement assassin + visible target death | replacement assassin exists | refusing a writ costs nothing |
 | Exclusivity | ≥ 10 refused pairs, max 2 authorities | ≥ 8 pairs, max 2 | all factions joinable → `RI-LOR02` §8 violated |
 | **AR-3 guard numbers** | 15/15 bands, spread ≥ 5× | 15/15 bands, spread ≥ 3× | faction does not enter the threshold at all |
@@ -343,8 +357,8 @@ gains `kind: "unlawful"|"lawful"|"intercepted"`; `getCrimeState()` gains `writs[
 | Blood-price independence | verified both directions | verified | faction rank clears blood-price |
 | Hunters | 11, all parley-able, region-hunting | ≥ 8, all parley-able | writs point only one way |
 
-**Failure threshold: any axis below 6.** The jurisdictional-legality axis, the parley axis and
-the AR-3 encounter axis are binary.
+**Failure threshold: any axis below 6.** The jurisdictional-legality axis, the parley axis, the
+mid-fight-accrual axis and the AR-3 encounter axis are binary.
 
 ## How we lose
 
@@ -363,13 +377,25 @@ the AR-3 encounter axis are binary.
   is the system working, and if it is "fixed" then a writ becomes a licence for a massacre.
 - **Faction rank never reaches the guard.** `factionLawFactor` is defined in a JSON file and the
   guard's arrest check reads only race and bounty. Every number in §5 is then decorative, the
-  AR-3 claim is false, and the item passes every axis except the two that matter. Method 5 must
+  AR-3 claim is false, and the item passes every axis except the two that matter. Method 6 must
   be run as a live behavioural probe across all 15 cells, never as a formula read.
 - **The Deep-Kin camp flip is implemented by changing the enemies.** Somebody makes war-broods
   "friendly variants" with a different archetype id, or gives them a passive statblock. That is
   an AR-1 failure — the world reached into the fight and changed the fighters. The legal lever is
-  only `hostile_below_disposition` and the disposition the player carries. Method 6's moveset-identity
+  only `hostile_below_disposition` and the disposition the player carries. Method 7's moveset-identity
   assertion exists for this and for nothing else.
+- **The yield is built as a cutscene, or not at all.** The yielding state is the amended
+  ARBITRATION §1's non-lethal exit and it lives inside Souls-owned combat code, so it will either
+  be skipped ("the parley is available before you draw") or implemented as a scripted stagger the
+  player cannot interrupt. Both are wrong: it must be a real AI state the target can enter at
+  ≤ 15% HP with hitboxes going inactive, reachable in an ordinary fight the player did not plan.
+  The tell that it was skipped is that method 3's `parley` event never fires while
+  `player.state` is a combat state.
+- **Consequences are batched to the end of the encounter.** The obvious optimisation: queue crime
+  events during `COMBAT` and flush them when the encounter volume clears. It is invisible in every
+  test except one — the player kills a bystander, keeps fighting, and the writ that should already
+  be void is still honoured for the rest of the fight. Method 3 asserts the frame number for
+  exactly this reason.
 - **Sparing a target is impossible.** 27 assassination quests get built as 27 kill-quests
   because the parley, the buy-off number, the exile escort and the five substitution routes are
   four times the work of a kill trigger. `RI-QST05`'s assassin-order band would still pass at
@@ -399,7 +425,14 @@ the AR-3 encounter axis are binary.
 **Everything in this item is `constructed`**: the four authorities and their jurisdictional
 coverage, the five things a writ never does, the 27 quest counts and 67% non-lethal figure, the
 exclusivity graph, every cell of `factionLawFactor` and `factionSuspicion`, the interception
-rules, the 11 hunters, and every row of §8.
+rules, the 11 hunters, the §3 mid-fight table (the 15%-HP yield trigger, the 3-faction penalty
+for executing a yielded target, and the ×1.5 in-combat bribe premium), and every row of §8.
+
+The §3 mid-fight rulings are made under ARBITRATION §5 rung 3: §1 as amended requires non-lethal
+exits and mid-fight consequence accrual but does not say what a *sanctioned* killing does with
+either. The answers here — the writ covers the death and not the manner of it, and collateral
+voids the writ on the frame it lands — are this item's, and the arguable part is the 3-faction
+penalty, which is the only place in the corpus that prices *how* a killing was performed.
 
 Values adopted from other items, inheriting their provenance: the three jurisdictions, the
 bounty schedule, the report chain and blood-price (`RI-CRM01`, `constructed`); `raceLawFactor`,

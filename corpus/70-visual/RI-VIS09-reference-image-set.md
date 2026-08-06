@@ -60,7 +60,7 @@ it and diffs), `refs/LICENCE-NOTE.md`, `refs/ACQUISITION-REPORT.md` (the full ac
 | Item | May cite | May **not** cite |
 |---|---|---|
 | **RI-VIS02** (modern fidelity set) | `refs/modern/character_closeup/` | anything under `refs/morrowind/` |
-| **RI-VIS03** (image metrics) | `refs/reference-metrics.json` populations `modern-hud`, `modern-character_closeup` | the `morrowind` population as a *target* — it is a contrast population only |
+| **RI-VIS03** (image metrics) | `refs/reference-metrics.json` population `modern-character_closeup` as a target; population `modern-hud` **only** as evidence in a band-amendment proposal, always with its `n` and its HUD caveat | `modern-hud` as the band a render is scored against; the `morrowind` population as a *target* — it is a contrast population only |
 | **RI-VIS04** (renderer feature checklist) | `refs/modern/` for "what a shipped renderer does here" | `refs/morrowind/` |
 | **RI-VIS05** (Morrowind transposition) | all 15 filled `refs/morrowind/REF-A*` slots | anything under `refs/modern/` |
 | **RI-VIS06 Protocol A** (fidelity blind) | `refs/modern/character_closeup/` as the `--ref` side | `refs/morrowind/`, `refs/modern/hud/` |
@@ -68,9 +68,15 @@ it and diffs), `refs/LICENCE-NOTE.md`, `refs/ACQUISITION-REPORT.md` (the full ac
 | **RI-VIS07** ("could this be Skyrim?") | `refs/anti-generic/` as the thing to measure distance **from** | `refs/anti-generic/` as a target — ever |
 | **RI-VIS08** (character animation) | nothing — `refs/video/` is empty | — |
 
-**`refs/modern/hud/` is never cited in a numeric comparison by anything.** It is composition,
-framing and over-the-shoulder-camera reference for builders, and the source of the
-`anti-generic/` anchor. `REFERENCE-IMAGE-REQUEST.md` §5a is the rule; this item does not soften it.
+**No render is ever scored against `refs/modern/hud/`.** §5a of
+`REFERENCE-IMAGE-REQUEST.md` is the rule and this item does not soften it: those frames are
+composition, framing and over-the-shoulder-camera reference for builders, and the source of the
+`anti-generic/` anchor. The one thing they *may* do is inform a **proposal to amend a band** in
+RI-VIS03 — as they do in §4 — because a flawed reference population is still strictly more
+informative than a guess, and the flaw (roughly 4% of frame area is synthetic maximum-contrast
+HUD geometry, biasing M4, M8 and M2 upward) is stated wherever the numbers are used. A proposal
+is not a verdict. Nothing in `hud/` may appear on the `--ref` side of a blind pair, and no wave
+may pass or fail a render by comparing it to a HUD-bearing frame.
 
 **`refs/anti/` remains reserved** for the file our own harness generates. Nothing in this item
 writes there.

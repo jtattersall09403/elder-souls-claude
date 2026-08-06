@@ -256,6 +256,62 @@ The hard fails this item and RI-MAG02 *do* add, each with the entry it preserves
 | Fortify does not satisfy **station** gates | MB-2 — fortify still satisfies every **action** gate |
 | Focus never regenerates | MB-1, MB-10 — both remain available, both are budgeted |
 
+### E. Resolving RI-EXP06's conditional entry, and one deference
+
+RI-EXP06 landed in the same wave and two of its register entries were written against an empty
+`corpus/25-magic/`. Both are resolved here rather than left to drift.
+
+**E1 — B-08 (Enchantment self-supply) is NOT struck. It is re-based, and it survives intact.**
+
+RI-EXP06 §B-08 is *"a constant-effect enchantment supplies the magicka to cast the spell that
+fills the soul gem that pays for the next enchantment"*, marked conditional because *"whether
+soul gems exist at all is an open ruling"* and because the register may not fall below twelve
+live entries.
+
+Soul gems exist (§C). The loop exists. **Only its plumbing changes**, because RI-MAG01 §A rules
+that nothing restores Focus — so the literal "enchantment supplies the magicka" clause cannot
+stand. It does not need to:
+
+> An **`on_use` enchantment of `soul_trap`** costs **no Focus at all.** Enchanted items run on
+> **charge**, not on Focus (§B), and charge comes from gems. So: trap with the enchanted item →
+> fill a gem → spend part of that gem recharging the item and the rest funding the next
+> enchantment. **Zero Focus, zero gold, two systems meeting.** That is B-08's substance exactly,
+> and it is arguably a cleaner instance of it than the magicka version, because the loop is
+> closed entirely inside the enchantment economy.
+
+**B-08's probe `PB-08` passes unmodified** — *"enchant → trap → enchant, two rungs; assert the
+second enchantment is fundable entirely from resources produced by the first; assert no per-day,
+per-rest or per-session cap fires."* Nothing in §C caps it per day, per rest or per session.
+What bounds it instead is **SG-5's finite hand-placed greater/grand sources and the respawn
+soul-grade downgrade** — a *scarcity*, which PB-08 does not red on, not a *cap*, which it does.
+And S15 is untouched for the reason B-08 already states and §C now rules formally: sap-debt and
+gem-charge are different substances.
+
+**RI-EXP06 should amend B-08's `What it is` clause to the charge-based formulation above and
+lift the conditional.** It stays `Sys ✔` and it stays live.
+
+**E2 — B-02 (Fortify-skill stacking into a rank you have not earned): this item defers.**
+
+An earlier draft of RI-MAG02 ruled that fortified values satisfy *action* gates but never
+*station* gates — faction rank, spell-tier attunement, quest rank. **That ruling is withdrawn.**
+RI-EXP06 is the permissiveness owner, its argument is better, and its argument is that the bound
+should be a **cost**, not a **refusal**: the rank is real, the next quest is at that tier, S9
+forbids scaling it down, and RI-QST03's expulsion machinery is live. A prohibition where a
+consequence would do is exactly what the permissiveness budget exists to prevent.
+
+The amended ruling, now in `data/effects.json` under both fortify effects:
+
+> **Fortified values satisfy every gate at the instant it is evaluated**, faction rank and
+> spell-tier attunement included. **Attunement is re-evaluated against base values at every
+> HEARTH rest**, so a tier-5 spell attuned on a lapsed buff is dropped from its slot at the next
+> rest — you may carry it into the dungeon, and you may not keep it for free. Fortified skill
+> still grants **no** skill progress (RI-PRG03's Cost Gate is untouched: a fortified use consumed
+> nothing of yours).
+
+**MB-2 below is therefore the same breakage RI-EXP06 calls B-02, at a lower stake** (an action
+gate rather than a station gate), and the two entries should be read as one family. Where they
+overlap, **RI-EXP06 wins.**
+
 ## Comparison method
 
 **M1 — The unauthored-spell assertion (this item's headline test).**

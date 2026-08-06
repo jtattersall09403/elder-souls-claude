@@ -180,10 +180,16 @@ can read**:
 
 **F1 — Neutral buoyancy, not thrust. Horizontal drift 1.4 m/s.**
 Walk speed is 2.0 m/s and S17 forbids lowering it. **Levitation is therefore permanently
-slower than walking.** It is a route-opener and it can never be a time-saver, which is what
-keeps it structurally out of competition with the S7 travel network. Nobody will ever levitate
-across the map because walking is faster; they will levitate the forty metres they cannot
-climb.
+slower than walking, per metre travelled.** It is a route-opener and it can never be a
+time-saver *over open ground*, which is what keeps it structurally out of competition with the
+S7 travel network. Nobody will ever levitate across the map because walking is faster; they
+will levitate the forty metres they cannot climb.
+
+*Reconciliation with RI-EXP06 PB-03*, whose probe asserts a levitation route completes in
+**< 40% of the walked time**: that probe is about **vertical** objectives, and it still passes.
+Levitation is slower per metre and **collapses the metres**. A roof reached by 400 m of stairs
+(200 s at 2.0 m/s) is 12 m of climb (15 s at 0.8 m/s). *The straight line is what is cheap;
+the speed never is.*
 
 **F2 — Altitude is metered, and Focus never comes back.**
 Climb rate 0.8 m/s, and ascent costs an **additional 1.5 Focus per metre of net altitude
@@ -220,6 +226,15 @@ been deleted by neglect, which is the sterile outcome wearing a compliance badge
 Climbing a cliff into an R5 region at level 12 is legal, must keep working, and is
 RI-MAG03 §D **MB-1**. The region kills you (S9 gates by lethality, never by level), and your
 sap-debt stays where you dropped it. That is the cost, and it is sufficient.
+
+**The canopy is not a blocking volume.** RI-EXP06's PB-03 explicitly reds on *"a height clamp
+or an exterior blocking volume"*, and this ruling agrees with it. The canopy is **authored,
+visible, renderable tree geometry carrying the same collider every arrow and every falling body
+already uses.** It has gaps — clearings, river channels, burn scars, the xanmeer plazas — and
+you can fly up through them and over the top, which is precisely what puts you in the hackwing
+layer. It blocks nothing a physical canopy would not block, and a critic can see it in the
+frame. A canopy that is an invisible plane, or that has no gaps, is the failure this paragraph
+exists to forbid.
 
 **What is explicitly NOT a bound:** there is no `no_levitation_zone`, no altitude clamp, no
 "you cannot levitate here" message, and no invisible ceiling. A build that adds one **fails
@@ -264,7 +279,7 @@ Stormhold, Blackrose only) — so which one you carry is a faction statement. **
 goes to a HEARTH:** S7 states that HEARTH shrines are checkpoints and level-up stations and are
 not part of the travel network.
 
-### H. The nine effects most likely to be quietly ruined
+### H. The ten effects most likely to be quietly ruined
 
 Each carries a `rulings` array in `data/effects.json`. These are the ones where the obvious
 implementation breaks a different reference item:
@@ -278,6 +293,7 @@ implementation breaks a different reference item:
 | `paralyse` | Instant lock, or immunity flags on bosses | **Buildup on S11's meter**, magnitude × 4 per contact. Bosses get a raised threshold, never immunity. Nothing in this game is immune to a system. |
 | `invisibility` | Never breaks; drops aggro to IDLE | Breaks on attack, cast, interact, container, `COMBAT`. Drops a seen enemy to `SEARCH`, never `IDLE`. Never touches a hitbox. |
 | `chameleon` | Reaches 100% | **Hard clamp at 80%.** Morrowind's worst breakage, closed by a clamp rather than by removal. |
+| `fortify_attribute` / `fortify_skill` | Refuses to satisfy "important" gates | **Satisfies every gate at evaluation time, including faction rank and spell-tier attunement** (RI-EXP06 B-02 is authoritative and this item defers to it). Bounded by **consequence**: a rank so bought is real and its next quest is at that tier (S9 forbids scaling down; RI-QST03's expulsion machinery is live); an attunement so made survives until the next HEARTH rest, where attunement is re-evaluated against base values. **Nothing is refused; everything is priced.** |
 | `mend_item` | Deletes repair from the economy | Cannot repair below 10% condition (that needs a smith) and cannot restore an enchantment's charge. Repair is 27% of RI-PRG05's necessary spend and must stay a cost. |
 | `restore_health` | Becomes a free flask | A full `CANTRIP`/`LIGHT` cast with RI-MAG01 §C commitment: **slower than drinking**, cheaper in charges, and paid in Focus you cannot get back. It does not refill the tithe-gourd and is not refilled by it. |
 
@@ -364,7 +380,7 @@ spell list `game/data/magic/spells.json`.
 - Cross-reference: run RI-TRV02's teleport-as-solvent detector. A failure there is also a
   failure here.
 
-**M6 — The nine rulings (§H).** For each row, one targeted probe:
+**M6 — The §H rulings (10 probes).** For each row, one targeted probe:
 `hist_sight` → **assert zero HUD marker entities are created** and exactly one journal entry
 is appended · `detect_life` → **assert no UI-layer entity is created** · `feather`/`burden` →
 run RI-CMB01 M5's cliff sweep with the effect active and **assert the discontinuity is still
@@ -391,7 +407,7 @@ has failed its reason for existing.
 | Determinism | zero PRNG on any magic path; no magnitude ranges anywhere | same | any magnitude range, resist roll or failure chance → **automatic fail** |
 | **Levitation** | all of M4.1–M4.5 pass; zero prohibition flags; ≥ 6 routes + ≥ 3 quests | M4.1–M4.4 pass, ≥ 4 routes | levitate absent, **or** bounded by a prohibition flag/invisible ceiling — **both are the same failure and both are 0** |
 | **Teleport** | RITUAL class, all three aborts, computed magnitude, RI-TRV02 detector clean | RITUAL class + aborts | recall usable in combat, **or** teleport deleted entirely |
-| The nine rulings | 9/9 probes pass | 7/9 | any AR-2 marker (`hist_sight`, `detect_life`) → **automatic fail** |
+| The §H rulings | 10/10 probes pass | 8/10 | any AR-2 marker (`hist_sight`, `detect_life`) → **automatic fail** |
 | Economy | prices within 3% of formula and within 5% of RI-PRG05 anchors | within 8% | spell prices are ad hoc |
 
 **Failure threshold: any axis below 6.** The levitation axis has a deliberate symmetry that

@@ -3,7 +3,7 @@ id: RI-PLT03
 title: Load, streaming, and hitches — time to first playable, silent region borders, and a hitch census
 kind: number
 side: neutral
-judges: [platform.load.streaming, platform.load.hitches]
+judges: [platform.load.streaming, platform.load.ttfp, platform.load.hitches]
 provenance: constructed
 confidence: high
 blind_pair: no
