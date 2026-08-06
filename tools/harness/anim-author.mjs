@@ -113,7 +113,7 @@ const ARCH = {
       spine_02: { ry: { cock: -34, hit: 20, follow: 26 }, rz: { cock: -12, hit: 10, follow: 12 } },
       neck: { ry: { cock: 24, hit: -12, follow: -8 } },
       clavicle_r: { rz: { cock: -26, hit: 12, follow: 15 } },
-      upperarm_r: { rx: { cock: -100, hit: -50, follow: -30 }, rz: { cock: -22, hit: 16, follow: 21 } },
+      upperarm_r: { rx: { cock: -104, hit: -34, follow: -14 }, rz: { cock: -22, hit: 16, follow: 21 } },
       lowerarm_r: { rx: { cock: -40, hit: -10, follow: -18 } },
       hand_r: { rx: { cock: -14, hit: -3, follow: 4 }, rz: { cock: -10, hit: 6, follow: 7 } },
       upperarm_l: { rx: { cock: -22, hit: -32, follow: -28 }, rz: { cock: 16, hit: -6, follow: -3 } },
@@ -131,6 +131,7 @@ const ARCH = {
       'no torso twist, and the settle is LONG — the head buries low and the body is pulled back off ' +
       'it. The settle is now authored as a deceleration onto the ready pose rather than a second ' +
       'excursion.',
+    aimAtFraction: 0.45,
     cockPhase: 0.5, hitPhase: 1.5, followPhase: 2.3,
     root_forward: [[0.0, 0.0], [0.6, 0.05], [1.0, 0.32], [1.5, 0.9], [2.0, 0.99], [2.4, 1.0], [3.0, 1.0]],
     root_offset_y: [[0.0, 0.0], [1.0, 0.03], [1.6, -0.13], [2.3, -0.11], [3.0, 0.0]],
@@ -138,9 +139,9 @@ const ARCH = {
       spine_00: { rx: { cock: -14, hit: 20, follow: 25 } },
       spine_02: { rx: { cock: -10, hit: 14, follow: 17 }, ry: { cock: -14, hit: 6, follow: 8 } },
       clavicle_r: { rz: { cock: -34, hit: 4, follow: 6 } },
-      upperarm_r: { rx: { cock: -112, hit: -44, follow: -26 }, rz: { cock: -10, hit: 6, follow: 9 } },
-      lowerarm_r: { rx: { cock: -34, hit: -10, follow: -18 } },
-      hand_r: { rx: { cock: -14, hit: -2, follow: 5 } },
+      upperarm_r: { rx: { cock: -118, hit: -14, follow: 2 }, rz: { cock: -10, hit: 6, follow: 9 } },
+      lowerarm_r: { rx: { cock: -34, hit: -6, follow: -14 } },
+      hand_r: { rx: { cock: -14, hit: 2, follow: 8 } },
       upperarm_l: { rx: { cock: -30, hit: -38, follow: -32 } },
       lowerarm_l: { rx: { cock: -52, hit: -62, follow: -54 } },
       thigh_l: { rx: { cock: -12, hit: 12, follow: 16 } },
@@ -248,7 +249,8 @@ function buildArch(def, swing, ext) {
       // centreline mid-window); for a thrust it is the fully extended pose at the end of it.
       // Scaling about the wrong one is how a solve that satisfied RI-CMB04 §B's peak column
       // produced a spear whose point never came within 0.35 m of the centreline at all.
-      const aim = def.aim === 'hit' ? k.hit : (k.cock + k.hit) / 2;
+      const af = def.aim === 'hit' ? 1 : (def.aimAtFraction === undefined ? 0.5 : def.aimAtFraction);
+      const aim = k.cock + (k.hit - k.cock) * af;
       const sc = (v) => aim + (v - aim) * swing;
       let cock = sc(k.cock), hit = sc(k.hit), fol = sc(k.follow);
       // elbow/shoulder extension, added only at and after the hit pose — it lengthens the

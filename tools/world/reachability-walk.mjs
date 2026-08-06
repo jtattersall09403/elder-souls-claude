@@ -42,12 +42,19 @@ const COLS = field.cols, ROWS = field.rows, CELL = field.cell;
 // too, so the planner will happily propose a route through shin-deep water — and the walk then
 // says whether the body agrees.
 const cost = new Float32Array(COLS * ROWS);
+const PLAN_TIDE = 0.75;      // LOW. The tide is a real gate; "reachable on foot" is read at low water.
 for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
-  const px = x * CELL + CELL / 2, pz = z * CELL + CELL / 2;
-  let d = 0;
-  for (const ph of [0, 0.25, 0.5, 0.75]) d = Math.max(d, field.depthAt(px, pz, ph));
-  const sl = field.slopeAt(px, pz, 12);
-  cost[z * COLS + x] = sl > 45 || d > 1.35 ? Infinity : 1 + 0.25 * sl + 6 * d;
+  // Five probes per 25 m cell, and the BEST one wins: a 7 m causeway across a channel is a road a
+  // player walks and a cell centre cannot see. This is the one thing the flood fill got right.
+  let best = Infinity;
+  for (const [ux, uz] of [[0.5, 0.5], [0.2, 0.2], [0.8, 0.2], [0.2, 0.8], [0.8, 0.8]]) {
+    const px = x * CELL + ux * CELL, pz = z * CELL + uz * CELL;
+    const d = field.depthAt(px, pz, PLAN_TIDE);
+    const sl = field.slopeAt(px, pz, 12);
+    const c = sl > 45 || d > 1.35 ? Infinity : 1 + 0.25 * sl + 6 * d;
+    if (c < best) best = c;
+  }
+  cost[z * COLS + x] = best;
 }
 function plan(ax, az, bx, bz) {
   const s = Math.floor(az / CELL) * COLS + Math.floor(ax / CELL);
@@ -56,11 +63,20 @@ function plan(ax, az, bx, bz) {
   const prev = new Int32Array(COLS * ROWS).fill(-1);
   const closed = new Uint8Array(COLS * ROWS);
   const tx = t % COLS, tz = (t - tx) / COLS;
-  const open = [[0, s]]; g[s] = 0;
-  while (open.length) {
-    let bi = 0;
-    for (let i = 1; i < open.length; i++) if (open[i][0] < open[bi][0]) bi = i;
-    const [, cur] = open.splice(bi, 1)[0];
+  const hp = [], hv = [];
+  const push = (pri, val) => { hp.push(pri); hv.push(val); let i = hv.length - 1;
+    while (i > 0) { const q = (i - 1) >> 1; if (hp[q] <= hp[i]) break; [hp[q], hp[i]] = [hp[i], hp[q]]; [hv[q], hv[i]] = [hv[i], hv[q]]; i = q; } };
+  const pop = () => { const top = hv[0]; const lp = hp.pop(), lv = hv.pop();
+    if (hv.length) { hp[0] = lp; hv[0] = lv; let i = 0;
+      for (;;) { const l = 2 * i + 1, r = l + 1; let m = i;
+        if (l < hv.length && hp[l] < hp[m]) m = l;
+        if (r < hv.length && hp[r] < hp[m]) m = r;
+        if (m === i) break;
+        [hp[m], hp[i]] = [hp[i], hp[m]]; [hv[m], hv[i]] = [hv[i], hv[m]]; i = m; } }
+    return top; };
+  push(0, s); g[s] = 0;
+  while (hv.length) {
+    const cur = pop();
     if (closed[cur]) continue;
     closed[cur] = 1;
     if (cur === t) break;
@@ -72,7 +88,7 @@ function plan(ax, az, bx, bz) {
       const ni = nz * COLS + nx;
       if (closed[ni] || !Number.isFinite(cost[ni])) continue;
       const ng = g[cur] + CELL * (dx && dz ? Math.SQRT2 : 1) * (cost[cur] + cost[ni]) / 2;
-      if (ng < g[ni]) { g[ni] = ng; prev[ni] = cur; open.push([ng + Math.hypot(nx - tx, nz - tz) * CELL, ni]); }
+      if (ng < g[ni]) { g[ni] = ng; prev[ni] = cur; push(ng + Math.hypot(nx - tx, nz - tz) * CELL, ni); }
     }
   }
   if (prev[t] === -1 && t !== s) return null;
@@ -92,9 +108,7 @@ function targetIn(r) {
     const x = r.bounds_m.x[0] + u * (r.bounds_m.x[1] - r.bounds_m.x[0]);
     const z = r.bounds_m.z[0] + v * (r.bounds_m.z[1] - r.bounds_m.z[0]);
     if (field.regionAt(x, z).id !== r.id || !field.isLandAt(x, z)) continue;
-    let d = 0;
-    for (const ph of [0, 0.25, 0.5, 0.75]) d = Math.max(d, field.depthAt(x, z, ph));
-    if (d > 0.5 || field.slopeAt(x, z, 12) > 30) continue;
+    if (field.depthAt(x, z, PLAN_TIDE) > 0.5 || field.slopeAt(x, z, 12) > 30) continue;
     const q = Math.hypot(x - cx, z - cz);
     if (q < bd) { bd = q; best = [x, z]; }
   }

@@ -169,6 +169,9 @@ export class Engine {
     // W1-07: the data the fixed step reads for AR-3, hung on the sim so stepOnce() needs no
     // engine reference. Set before the first state is applied.
     this.sim.encounterData = this.data.character;
+    // W1-15: the stealth/crime subsystem, hung on the sim so stepOnce() needs no engine
+    // reference. Built before the first state is applied so a scenario can load into it.
+    this.sim.stealth = new StealthCrime(this.data);
     this.census = new Census(this.data.character);
     this.applyNamedState(opts.state || 'default');
     this._travelInit();
@@ -2311,6 +2314,9 @@ async function loadData(onBytes) {
       out.travel = out.travel || {};
       out.travel[entry.path.slice('world/travel/'.length).replace(/\.json$/, '')] = doc;
     }
+    else if (entry.path.startsWith('stealth/')) { out.stealth = out.stealth || {}; out.stealth[entry.path.slice('stealth/'.length).replace(/\.json$/, '')] = doc; }
+    else if (entry.path.startsWith('crime/')) { out.crime = out.crime || {}; out.crime[entry.path.slice('crime/'.length).replace(/\.json$/, '')] = doc; }
+    else if (entry.path.startsWith('world/property/')) { out.property = out.property || {}; out.property[doc.settlement] = doc; }
     else if (entry.path === 'world/hazards.json') out.hazards = doc;
     else if (entry.path === 'world/landmask.json') out.landmask = doc;
     else if (entry.path === 'camera/cells.json') out.cameraCells = doc;

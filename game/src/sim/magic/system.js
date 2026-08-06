@@ -349,7 +349,7 @@ export class MagicSystem {
   /**
    * One fixed step of every live piece of spell geometry, of every active effect, and of the
    * levitation meter. Called from the combat bridge INSIDE the armed determinism guard, so a
-   * clock read or a `Math.random()` anywhere beneath this throws rather than desynchronising.
+   * clock read or an unseeded draw anywhere beneath this throws rather than desynchronising.
    *
    * @param {number} frame
    * @param {Array} targets combat bodies, in id order (HARNESS D7)

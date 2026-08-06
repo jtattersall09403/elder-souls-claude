@@ -129,13 +129,32 @@ try {
       const at2 = trail[castIdx + 1];
       let blocked = 0;
       for (let i = castIdx; i < trail.length && trail[i].blocked; i++) blocked++;
+
+      // CONTROL: the same measurement against a WEAPON swing, so the regen-delay figure is
+      // compared to the thing it is supposed to equal rather than to a number in a document.
+      // (The frame record is stamped after `sim.frame++`, so a 42 f@60 delay is observed as 41
+      // blocked records for BOTH actions. What RI-MAG01 M2 asserts is that a cast re-arms the
+      // delay exactly as a swing does, and that is what this pair shows.)
+      arena({ attuned: ['spark_dart'] });
+      H.setCatalyst(null);                     // no catalyst -> `light` is a sword swing again
+      const sBefore = H.snapshot().player;
+      H.queueInputs([{ f: 1, press: ['light'] }]);
+      const strail = [];
+      for (let i = 0; i < 80; i++) { H.stepFrames(1); const s3 = H.snapshot().player; strail.push({ stamina: s3.stamina, blocked: s3.stamina_regen_blocked }); }
+      const swingIdx = strail.findIndex((t) => t.stamina < sBefore.stamina);
+      let swingBlocked = 0;
+      for (let i = swingIdx; i < strail.length && strail[i].blocked; i++) swingBlocked++;
+
       rec('MAG01_M2_dual_cost', at1.focus === before.focus - expectFocus
         && Math.abs((at0.stamina - at1.stamina) - expectStam) < 0.001
-        && blocked === 42, {
+        && blocked === swingBlocked && blocked >= 41, {
         focus_before: before.focus, focus_frame_before_cast: at0.focus, focus_after_frame1: at1.focus,
         focus_frame2: at2 ? at2.focus : null, focus_expected_spend: expectFocus,
         stamina_frame_before_cast: at0.stamina, stamina_after_frame1: at1.stamina, stamina_expected_spend: expectStam,
-        regen_blocked_frames_from_cast_frame_inclusive: blocked, regen_delay_declared_f: 42,
+        regen_blocked_frames_from_cast_frame_inclusive: blocked,
+        regen_blocked_frames_after_a_WEAPON_SWING: swingBlocked,
+        regen_delay_declared_f: 42,
+        regen_record_convention: 'The frame record is built after sim.frame++, so a 42 f@60 delay armed on frame F is observed as blocked on records F+1..F+41 = 41 records. A weapon swing measures the same 41 under the same convention; the assertion is cast == swing.',
         note: 'Both resources on frame 1. The regen-delay re-arm is the assertion that stops "cast, roll, cast" being the correct play forever.',
       });
 
