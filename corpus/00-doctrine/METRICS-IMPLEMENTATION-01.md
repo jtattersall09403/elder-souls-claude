@@ -316,7 +316,7 @@ n = 24 from one game, so these are **flagged, not proposed for adoption**:
 
 | Band | Measured | Comment |
 |---|---|---|
-| `M6 retention ≥ 0.60`, hard fail `< 0.30` | p10 0.250, p50 0.434; RDR2 0.266 | 5/24 + the one HUD-free frame **hard fail**. RI-VIS03 calls this "crushed blacks / no IBL" — it is firing on frames that demonstrably have IBL. Likely candidates: `≥ 0.25` with hard fail `< 0.12`. |
+| `M6 retention ≥ 0.60`, hard fail `< 0.30` | p10 0.250, p50 0.434; RDR2 0.266 | 4/24 + the one HUD-free frame **hard fail**. RI-VIS03 calls this "crushed blacks / no IBL" — it is firing on frames that demonstrably have IBL. Likely candidates: `≥ 0.25` with hard fail `< 0.12`. |
 | `M6 C_shadow ≥ 6` | p10 1.69, p50 2.44; RDR2 3.24 | 15/24 outside band. CIELAB C* in a shadowed quarter is genuinely low. Likely `≥ 1.6`. |
 | `M6 hue_offset ≥ 15°` | p10 9.96, p50 62.8 | Likely `≥ 10°`. **Keep the `< 6°` hard fail** — self-test T8 shows it cleanly separates one-light from key+fill (0.27° vs 166°). |
 | `M3 p95C ≥ 45` | p10 25.4; RDR2 16.4 | 22/24 outside. Likely `≥ 24`, and the `< 20` "dead render" hard fail probably belongs nearer `< 9` (the 2002 population's p10 is 9.3). |

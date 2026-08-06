@@ -1,7 +1,7 @@
 {
-  "generated": "2026-08-06T09:38:10.290Z",
-  "complete": 13,
-  "total": 15,
+  "generated": "2026-08-06T09:51:10.253Z",
+  "complete": 14,
+  "total": 16,
   "tasks": [
     {
       "id": "bar-critic-images-02",
@@ -126,14 +126,12 @@
     {
       "id": "vis-metrics",
       "title": "Implement M1-M12 fidelity metrics per RI-VIS03",
-      "state": "partial",
-      "done": 1,
+      "state": "complete",
+      "done": 2,
       "expected": 2,
-      "missing": [
-        "corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md"
-      ],
-      "next_step": "write tools/metrics/lib/decode.mjs then lib/vis03.mjs (M1-M10), then M11/M12, then CLI, then self-test, then doctrine doc",
-      "findings": 7
+      "missing": [],
+      "next_step": "none — task complete. Next actor: run the battery over Codex's modern set per METRICS-IMPLEMENTATION-01 §9, then write corpus/80-methods/make-anti-ref.mjs (without it every shot is capped at 6/10).",
+      "findings": 19
     },
     {
       "id": "image-acquisition-modern",
@@ -159,7 +157,20 @@
       "done": 3,
       "expected": 3,
       "missing": [],
-      "next_step": "B4 RI-CMB02 internal contradiction; B8 harness DPR; B10 two-directional travel; B11 MAG02 prices; seam propagation S20/S21; RI-VIS01 F17-F19; GAP-LEDGER + progress; finish report",
+      "next_step": "none - complete. Highest-value follow-on: the S22 rebase, in ONE commit across RI-CMB01/02/05/08, RI-AI02/03, RI-WPN01-06, RI-CAM04, NOT RI-CMB03, regenerating RI-CMB07's exemplar trace.",
+      "findings": 18
+    },
+    {
+      "id": "holes",
+      "title": "Close the last 14 corpus holes",
+      "state": "started-nothing-written",
+      "done": 0,
+      "expected": 2,
+      "missing": [
+        "corpus/50-world/RI-WTR01*",
+        "corpus/00-doctrine/ACCEPTED-HOLES.md"
+      ],
+      "next_step": "write corpus/50-world/RI-WLD10-the-water-model.md in full, then its method script",
       "findings": 15
     }
   ]
