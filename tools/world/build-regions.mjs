@@ -278,6 +278,128 @@ const PROPS = {
                          rock:  { colour: '#DCD2B8', per100m2: 0.90, scale: 2.2 } },
 };
 
+/**
+ * GROUND MICRO-RELIEF — the shape of the ordinary ground, per region.
+ *
+ * Verdict W1-01 round 2 stripped colour and exposure out of the region frames and separability
+ * fell 74.4% -> 30.8%: "two-thirds of our regional distinctness is tint". Round 3 placed the
+ * thirteen ONLY-HERE landmarks and the colour-stripped number did not move, because 840 instances
+ * over 14.31 km2 is 59 per km2 and a random frame does not contain one. What every frame IS made
+ * of is the ordinary ground — and until this table existed, the ordinary ground of all thirteen
+ * regions was one function with three scalars.
+ *
+ * `amp_m` is a STANDARD DEVIATION in metres; `weights` is a convex mixture over
+ * `game/src/world/microrelief.js MICRO_KINDS`. Both are read by `MicroField`, which is evaluated
+ * inside `field.heightAt()` — the one surface collision, the terrain mesh, the slope histogram,
+ * the water census and every audit share. Changing a number here changes the ground you stand on.
+ *
+ * Each mixture is the region's own prose, as landform:
+ *   blackwood          buttressed hardwood over standing root-water  -> root mats above wet hollows
+ *   clay-moor          fired red clay pan                            -> desiccation polygons, nothing else
+ *   crimson-coast      tide-lichen on black rock                     -> wave-cut benches and broken rock
+ *   deep-marshes       violet-black silt, the ground is an animal     -> tussocks over drowned hollows
+ *   eastern-rootlands  floating meadow over tannin-black channel      -> braided drainage, tidal runnels
+ *   hive               load-bearing wax comb                          -> comb TREADS: stepped, and cell-jointed
+ *   marauders-coast    barnacle shelf over sucking mudflat            -> a runnel field the tide combs
+ *   salt-hills         thin hill turf over limestone                  -> sheep-track terracettes, loose stone
+ *   stone-forest       petrified root-flags                           -> jointed pavement that has shattered
+ *   stone-wastes       glassed salt crust                             -> wind drift over polygonal crust
+ *   thornmarsh         ash-dusted peat                                -> peat hummocks braided with thorn root
+ *   valus-ridge        wind-holed limestone and scree                 -> talus, benched by the bedding
+ *   western-rootlands  paddy bund and root-wood road                  -> the one rectilinear landform here
+ */
+const MICRO = {
+  blackwood:           { amp_m: 0.42, weights: { rootmat: 0.60, hummock: 0.40 } },
+  'clay-moor':         { amp_m: 0.38, weights: { crack: 1.00 } },
+  'crimson-coast':     { amp_m: 0.45, weights: { terracette: 0.50, rubble: 0.50 } },
+  'deep-marshes':      { amp_m: 0.48, weights: { hummock: 0.75, rill: 0.25 } },
+  'eastern-rootlands': { amp_m: 0.42, weights: { rill: 0.60, ripple: 0.40 } },
+  hive:                { amp_m: 0.62, weights: { terracette: 0.70, crack: 0.30 } },
+  'marauders-coast':   { amp_m: 0.34, weights: { ripple: 0.70, rill: 0.30 } },
+  'salt-hills':        { amp_m: 0.55, weights: { terracette: 0.75, rubble: 0.25 } },
+  'stone-forest':      { amp_m: 0.44, weights: { crack: 0.55, rubble: 0.45 } },
+  'stone-wastes':      { amp_m: 0.44, weights: { dune: 0.55, crack: 0.45 } },
+  thornmarsh:          { amp_m: 0.44, weights: { hummock: 0.50, rootmat: 0.50 } },
+  'valus-ridge':       { amp_m: 0.55, weights: { rubble: 0.70, terracette: 0.30 } },
+  'western-rootlands': { amp_m: 0.40, weights: { bund: 0.80, ripple: 0.20 } },
+};
+
+/**
+ * PROP ARRANGEMENT, GROUND COVER AND VERTICAL STRUCTURE.
+ *
+ * The second half of the same finding. Thirteen regions shared one jittered lattice: the same
+ * point set, the same spacing statistics, the same relationship to the ground, differing only in
+ * which of seven canopy shapes and five under shapes was instanced at it. Spacing statistics
+ * carry more identity than model count — a mangrove fringe in tide-parallel lines, a gorse clump
+ * with open turf between, and a glass thorn standing alone in a salt pan are three landscapes
+ * built out of one cone.
+ *
+ * `arrangement.mode` is read by `province._scatter` and is a DENSITY FIELD, not a decoration:
+ *   scatter      the old behaviour, kept for the two regions whose plants really are uniform
+ *   clumped      thickets/copses with open ground between, at `gap_m`
+ *   rows         lineated on a bearing at `spacing_m` — a coast combed by the tide, a dyked field
+ *   drainage     gathered into the low ground and the gully lines
+ *   high-ground  only on ground the micro-relief has raised out of the water
+ *   isolated     one plant per cell of a coarse lattice: even, wide, and nothing between
+ *   fringe       banked against the waterline
+ *   maze         dense everywhere except along sinuous cut corridors
+ *
+ * `cover` is the ordinary underfoot material — the thing most of every frame is actually made of,
+ * and the layer that was missing entirely. It is instanced in CLUMPS at each lattice site so a
+ * 6.5 m lattice can carry a sub-metre ground texture without a sub-metre lattice.
+ *
+ * `canopy.h_var` / `canopy.lean_deg` / `canopy.emergent` are the vertical structure axis: whether
+ * a region's skyline is a flat ceiling, a ragged one, or a few giants over a low roof.
+ */
+const ARRANGE = {
+  blackwood:           { mode: 'high-ground', strength: 0.85, gap_m: 46 },
+  'clay-moor':         { mode: 'isolated',    strength: 1.00, gap_m: 62 },
+  'crimson-coast':     { mode: 'fringe',      strength: 0.80, gap_m: 34 },
+  'deep-marshes':      { mode: 'high-ground', strength: 0.95, gap_m: 26 },
+  'eastern-rootlands': { mode: 'drainage',    strength: 0.85, gap_m: 40 },
+  hive:                { mode: 'clumped',     strength: 0.90, gap_m: 54 },
+  'marauders-coast':   { mode: 'rows',        strength: 0.85, spacing_m: 38, bearing_deg: 24 },
+  'salt-hills':        { mode: 'clumped',     strength: 0.75, gap_m: 78 },
+  'stone-forest':      { mode: 'scatter',     strength: 0.00 },
+  'stone-wastes':      { mode: 'isolated',    strength: 1.00, gap_m: 95 },
+  thornmarsh:          { mode: 'maze',        strength: 0.95, gap_m: 58 },
+  'valus-ridge':       { mode: 'drainage',    strength: 0.70, gap_m: 52 },
+  'western-rootlands': { mode: 'rows',        strength: 0.90, spacing_m: 34, bearing_deg: 0, rectilinear: true },
+};
+
+const COVER = {
+  blackwood:           { shape: 'litter',  h: 0.10, colour: '#243522', per100m2: 15, clump: 5 },
+  'clay-moor':         { shape: 'plate',   h: 0.09, colour: '#AC6440', per100m2: 10, clump: 4 },
+  'crimson-coast':     { shape: 'cobble',  h: 0.22, colour: '#2C2629', per100m2: 12, clump: 4 },
+  'deep-marshes':      { shape: 'tussock', h: 0.45, colour: '#1F3138', per100m2: 13, clump: 4 },
+  'eastern-rootlands': { shape: 'reed',    h: 0.55, colour: '#4E7A5A', per100m2: 16, clump: 6 },
+  hive:                { shape: 'wax',     h: 0.16, colour: '#D8CC96', per100m2: 11, clump: 4 },
+  'marauders-coast':   { shape: 'shell',   h: 0.10, colour: '#9AA0A0', per100m2: 17, clump: 6 },
+  'salt-hills':        { shape: 'tuft',    h: 0.28, colour: '#7E8B58', per100m2: 19, clump: 6 },
+  'stone-forest':      { shape: 'flag',    h: 0.12, colour: '#6E7987', per100m2: 9,  clump: 3 },
+  'stone-wastes':      { shape: 'flake',   h: 0.20, colour: '#E4E2D6', per100m2: 8,  clump: 3 },
+  thornmarsh:          { shape: 'tussock', h: 0.30, colour: '#9A8570', per100m2: 14, clump: 5 },
+  'valus-ridge':       { shape: 'gravel',  h: 0.15, colour: '#B2AA96', per100m2: 21, clump: 7 },
+  'western-rootlands': { shape: 'stubble', h: 0.35, colour: '#7E9052', per100m2: 18, clump: 6 },
+};
+
+/** Vertical structure: how ragged the skyline is, and what breaks it. */
+const VERTICAL = {
+  blackwood:           { h_var: 0.30, lean_deg: 3,  emergent: { h_mult: 1.75, share: 0.06 } },
+  'clay-moor':         { h_var: 0.22, lean_deg: 6,  emergent: null },
+  'crimson-coast':     { h_var: 0.00, lean_deg: 0,  emergent: null },
+  'deep-marshes':      { h_var: 0.45, lean_deg: 11, emergent: null },
+  'eastern-rootlands': { h_var: 0.20, lean_deg: 4,  emergent: { h_mult: 2.10, share: 0.04 } },
+  hive:                { h_var: 0.35, lean_deg: 0,  emergent: null },
+  'marauders-coast':   { h_var: 0.18, lean_deg: 8,  emergent: null },
+  'salt-hills':        { h_var: 0.26, lean_deg: 5,  emergent: null },
+  'stone-forest':      { h_var: 0.55, lean_deg: 2,  emergent: { h_mult: 1.90, share: 0.05 } },
+  'stone-wastes':      { h_var: 0.30, lean_deg: 9,  emergent: null },
+  thornmarsh:          { h_var: 0.14, lean_deg: 2,  emergent: null },
+  'valus-ridge':       { h_var: 0.40, lean_deg: 14, emergent: null },
+  'western-rootlands': { h_var: 0.16, lean_deg: 0,  emergent: null },
+};
+
 /** RI-WLD10 §8 verbatim — the table the S24 census scores. */
 const WATER = {
   'clay-moor':         { wci: 0.00, class: 'arid',             deepest_band: 'W0', tidal: false, sea: null,       k: null, substrates: ['FIRM'] },
@@ -323,8 +445,13 @@ for (const [name, c] of Object.entries(corpusRegions.regions)) {
     ground: a.ground,
     fog: a.fog,
     sky: a.sky,
-    terrain: a.terrain,
-    props: PROPS[id],
+    terrain: { ...a.terrain, micro: MICRO[id] },
+    props: {
+      ...PROPS[id],
+      canopy: { ...PROPS[id].canopy, ...VERTICAL[id] },
+      arrangement: ARRANGE[id],
+      cover: COVER[id],
+    },
     water: WATER[id],
     flora: a.flora,
     fauna: a.fauna,

@@ -12,6 +12,7 @@
 'use strict';
 
 import { detailAt, noise2, clamp, smoothstep, lerp } from './noise.js';
+import { MicroField } from './microrelief.js';
 
 const BANDS = [
   { id: 'W0', name: 'DRY', min: 0.00 },
@@ -84,6 +85,11 @@ export class WorldField {
     this.siteGrid = buildBuckets(this.sites.map((s) => ({ x: s.x, z: s.z, r: s.r_falloff, ref: s })), 400);
     this.dryGrid = buildBuckets(this.sites.filter((s) => s.kind !== 'landmark')
       .map((s) => ({ x: s.x, z: s.z, r: s.r_flat, ref: s })), 400);
+    // The ordinary ground of each region, at the scale a walking player reads it. Evaluated
+    // inside `heightAt`, so it is in the collision surface, the terrain mesh, the slope
+    // histogram, the water census and every audit — the same one surface, with a per-region
+    // shape in it. See game/src/world/microrelief.js for why this is here and not in a texture.
+    this.micro = new MicroField(this.regions, (x, z) => this.regionU[this._cellIndex(x, z)]);
     this.roads = null;
     this.roadGrid = null;
     this.sig = null;
@@ -176,13 +182,25 @@ export class WorldField {
   /** The low-frequency landform, metres. */
   baseAt(x, z) { return this._bilinear(this.base, x, z, 0.1); }
 
-  /** Ground height, metres above sea level. The one surface: collision, mesh and audit read it. */
-  heightAt(x, z) {
-    let h = this.baseAt(x, z)
+  /**
+   * The natural ground before sites, roads and signature landform: the baked landform, the shared
+   * `detailAt` relief, and the region's own MICRO-RELIEF. All three of `heightAt`, `bareHeightAt`
+   * and `naturalHeightAt` go through here so there is exactly one definition of the terrain and
+   * no chance of the three drifting apart — which is how a bridge deck once ended up with a
+   * petrified bole growing through it.
+   */
+  _terrain(x, z) {
+    return this.baseAt(x, z)
       + detailAt(x, z,
         this._bilinear(this.reliefU, x, z, this.reliefUnit),
         this._bilinear(this.ridgeU, x, z, 1 / 255),
-        this._bilinear(this.terrU, x, z, 1 / 255));
+        this._bilinear(this.terrU, x, z, 1 / 255))
+      + this.micro.at(x, z);
+  }
+
+  /** Ground height, metres above sea level. The one surface: collision, mesh and audit read it. */
+  heightAt(x, z) {
+    let h = this._terrain(x, z);
     h = this._applySites(x, z, h);
     // A BRIDGE DECK IS THE TOP OF THE WORLD AT THAT POINT. It is not blended with the hill and it
     // is not added to by the signature landform: a slab with a petrified bole growing through it
@@ -218,11 +236,7 @@ export class WorldField {
   /** The ground WITHOUT the road: what is under a viaduct. Used for span clearance and for the
    *  cut/fill audit, which must measure the deck against the hill and not against itself. */
   bareHeightAt(x, z) {
-    let h = this.baseAt(x, z)
-      + detailAt(x, z,
-        this._bilinear(this.reliefU, x, z, this.reliefUnit),
-        this._bilinear(this.ridgeU, x, z, 1 / 255),
-        this._bilinear(this.terrU, x, z, 1 / 255));
+    let h = this._terrain(x, z);
     h = this._applySites(x, z, h);
     if (this.sig) h += this.sig.groundDelta(x, z);
     return h;
@@ -231,11 +245,7 @@ export class WorldField {
   /** The ground WITHOUT the signature landform — the natural province, for the audits that need
    *  to say how much of the shape is a feature and how much is the terrain under it. */
   naturalHeightAt(x, z) {
-    let h = this.baseAt(x, z)
-      + detailAt(x, z,
-        this._bilinear(this.reliefU, x, z, this.reliefUnit),
-        this._bilinear(this.ridgeU, x, z, 1 / 255),
-        this._bilinear(this.terrU, x, z, 1 / 255));
+    let h = this._terrain(x, z);
     h = this._applySites(x, z, h);
     return this._applyRoads(x, z, h);
   }

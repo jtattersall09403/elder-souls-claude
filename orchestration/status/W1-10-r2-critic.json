@@ -3,18 +3,16 @@
  "role": "critic",
  "piece": "W1-10 weapon movesets",
  "round": 2,
- "state": "writing-verdict",
+ "state": "complete",
  "outputs_expected": [
   "corpus/90-verdicts/wave1/W1-10-r2.json",
   "corpus/90-verdicts/wave1/W1-10-r2.md",
   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/"
  ],
  "outputs_written": [
-  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.{mjs,json}",
-  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.{mjs,json}",
-  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption.{mjs,json}",
-  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption2.{mjs,json}",
-  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.{mjs,json}"
+  "corpus/90-verdicts/wave1/W1-10-r2.json (schema-valid)",
+  "corpus/90-verdicts/wave1/W1-10-r2.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/ (48 files: 12 critic-authored instruments + their outputs + 15 runtime blind traces + sealed key + recorded picks)"
  ],
  "findings": [
   "INDEPENDENT (kritik-wgrid.mjs, node, critic-authored): CFS_live 1.0000, 20/20 contextual, 0 fallback, 0 absent. Each contextual instance has a DISTINCT slot id, DISTINCT clip id AND DISTINCT frame triple from the standing r1.1 baseline. Round 2's headline SURVIVES independent measurement.",
@@ -41,6 +39,6 @@
   "AR-1 PASS: 60 identical swings all deal 118, deterministic; r1.1 uncancellable by roll/two_hand/block/parry/heavy/light in startup AND active (ran its full 73 f in all 8 tests); stance switch committed. AR-2 PASS: 87 hand-authored ids, no procedural generation, no floating damage numbers. AR-3 seam_sterile TRUE: the material system is authored and unread.",
   "Blind pack observation no number asked for: over 12 traces of ~10 scripted attacks against a STATIONARY dummy at 2.2 m, hit counts are 0-4 and two traces (spr_reed_gig, ghm_stone_breaker) land nothing at all."
  ],
- "next_step": "write corpus/90-verdicts/wave1/W1-10-r2.json and .md, validate",
- "notes_for_successor": "Round 1 was 0/10: movesets unreachable from running game. Round 2 claims full remediation. Must build INDEPENDENT tools for equipped_ok, CFS_live, reach. Do not trust tools/weapons/verify-frames.mjs or tools/harness/wpn-census-live.mjs (builder-authored)."
+ "next_step": "none - verdict delivered. FAIL 2/10.",
+ "notes_for_successor": "VERDICT FAIL 2/10. Round 2's headline claims all SURVIVE independent measurement: equipped_ok 87/87 live in the browser, CFS_live 1.0000 (distinct slot id AND clip id AND frame triple on 20/20), jump.r1/backstep.r1 fire, moveset CONSUMPTION 7/7, AR-1 clean, TDV real. Round 1's gap is genuinely closed. THREE HARD FAILS elsewhere: (1) S26 contiguity -- 11 weapons across SPR/HLB/AXE have interior dead bands, confirmed node AND browser, caused by game/data/weapons/classes.json hitbox_span_m (SPR 0.70 m of hit volume on a 2.70 m capsule); the W1-09 attribution to this piece is CORRECT. (2) THE BIGGEST GAP -- the RI-WPN05 impact/material model is 5/6 INERT under perturbation; only .flesh is read (moves.js:166); materialMultiplier/deflects/knockbackFor/victimHitstopFor are imported by exactly one file, game/src/harness/weapons.js, THE HARNESS; 0 of 14 enemy statblocks declares a material. This is round 1's defect one layer down. (3) whp_hide_lash r1.1 pose teleport 1.026 m/frame. ALSO: 24 of 28 arcs outside the +/-10 deg tolerance (TSW declares 6.5 deg and sweeps 69.6 -- thrust weapons do not thrust); recovery arc exceeds active on 21 of 28 (round 1 said 7 of 14 -- worse); observed D_min 1.3934 vs declared 1.6409. Dg_min PASSES 1.598 under the bar critic's repaired 9-dim instrument -- the builder's refusal to curve-fit was CORRECT. Blind: RI-WPN02 3-trace PASSES on motion alone; RI-WPN03 M6 scores 10/12 on a runtime motion-only pack (TSW and GHM swapped one trace each) where round 1's static pack scored 12/12. NOT RUN, all scored 0 fail-closed: RI-WPN04 M5, RI-WPN06 M5, SEP, RVS, Chg_min. Two amendments proposed: RI-WPN02 D6 (arc must be MEASURED, never declared -- the same discipline S26 just gave reach) and RI-WPN05 F (ILS's nearest-neighbour classifier scores 0 by construction). New measure proposed: CR (connect rate), floor 0.95 -- the blind pack showed 0-4 hits from ~10 scripted attacks on a STATIONARY dummy at 2.2 m. All 12 instruments are in the artifacts dir and are reusable; kritik-consumption3.mjs should become a CI gate."
 }

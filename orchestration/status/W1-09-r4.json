@@ -1,0 +1,18 @@
+{
+  "task_id": "W1-09-r4",
+  "brief": "W1-09 combat core round 4 (ULTRACODE). Fix the weapon volume itself; body corridor must deal body damage.",
+  "started": "wave-1 round 4",
+  "state": "researching",
+  "outputs_expected": [
+    "game/data/combat/clips.json (weapon volume follow-through / socket path)",
+    "game/data/combat/hitgeometry.json (body_hazard own motion_value + poise)",
+    "game/src/combat/resolve.js (body damage separate from weapon)",
+    "tools/harness/cmb-reach.mjs --verify (implement or delete claim)",
+    "exemplar stamina economy rows 16/17/22/28",
+    "reports/w1-09/W1-09-R4-REPORT.md"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read r2 verdict, r3 artifacts, then the combat source",
+  "notes_for_successor": ""
+}

@@ -19,6 +19,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fbm, ridged, terrace, detailAt, noise2, clamp, smoothstep, lerp } from '../../game/src/world/noise.js';
+import { MicroField } from '../../game/src/world/microrelief.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(join(HERE, '..', '..'));
@@ -306,9 +307,17 @@ function bilinearBase(arr, x, z) {
   const i00 = z0 * COLS + x0, i10 = i00 + 1, i01 = i00 + COLS, i11 = i01 + 1;
   return lerp(lerp(arr[i00], arr[i10], tx), lerp(arr[i01], arr[i11], tx), tz);
 }
+// The region's own ground micro-relief, evaluated through the SAME class the running game
+// evaluates it through, over the SAME region raster that is baked below. If this were a second
+// implementation the water-table offsets solved here would describe a surface the game does not
+// have — which is the RI-MTH04 defect this whole file is arranged to avoid.
+const microField = new MicroField(REG, (x, z) =>
+  region[clamp(Math.floor(z / CELL), 0, ROWS - 1) * COLS + clamp(Math.floor(x / CELL), 0, COLS - 1)]);
+
 function groundAt(x, z) {
   return bilinearBase(baseH, x, z)
-    + detailAt(x, z, bilinearBase(reliefG, x, z), bilinearBase(ridgeG, x, z), bilinearBase(terrG, x, z));
+    + detailAt(x, z, bilinearBase(reliefG, x, z), bilinearBase(ridgeG, x, z), bilinearBase(terrG, x, z))
+    + microField.at(x, z);
 }
 
 // ---- solve the per-region water-table offsets ---------------------------------------------------
