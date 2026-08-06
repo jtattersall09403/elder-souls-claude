@@ -379,6 +379,10 @@
               "type": "string"
             },
             "description": "Deceit-truth ids (from deceit.revealed_by) that must have been discovered for this resolution to be available at all. This is the mechanism by which talking to the target before killing them opens a door."
+          },
+          "consequences": {
+            "$ref": "#/$defs/consequences",
+            "description": "What THIS ending does, on top of the quest-level `consequences` that every ending does. ADDED wave 1 by W1-18 as AM-QST04-W1-18-01: RI-QST09 X7 requires each exclusive pair to differ by >= 3 world_flags, a reward and >= 1 world entity, and with consequences declared only at quest level two exclusive resolutions of the same quest are IDENTICAL in the data by construction, so X7 is unmeasurable and fails closed. Purely additive - `resolutions[]` is additionalProperties:false, so every existing quest file still validates unchanged."
           }
         }
       }
@@ -514,48 +518,7 @@
       }
     },
     "consequences": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "faction_reputation": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "integer"
-          },
-          "description": "Signed reputation delta per faction id. Deltas for OTHER factions are how questlines contradict each other."
-        },
-        "npc_disposition": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "integer"
-          }
-        },
-        "unlocks": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "locks": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Quest or faction ids permanently closed by completing this quest."
-        },
-        "world_flags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "kills_npc": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
+      "$ref": "#/$defs/consequences"
     },
     "mutually_exclusive_with": {
       "type": "array",
@@ -619,6 +582,52 @@
     },
     "notes": {
       "type": "string"
+    }
+  },
+  "$defs": {
+    "consequences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "faction_reputation": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "description": "Signed reputation delta per faction id. Deltas for OTHER factions are how questlines contradict each other."
+        },
+        "npc_disposition": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "unlocks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "locks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Quest or faction ids permanently closed by completing this quest."
+        },
+        "world_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kills_npc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "allOf": [
