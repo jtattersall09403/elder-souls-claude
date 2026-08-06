@@ -18,7 +18,9 @@
     "C14: package.json (root)",
     "C14: .github/workflows/corpus-gate.yml",
     "C14: .githooks/pre-commit",
-    "C14: RI-MTH05 M8 amended + new M9 (C6) + hard fail 4 sharpened"
+    "C14: RI-MTH05 M8 amended + new M9 (C6) + hard fail 4 sharpened",
+    "C3: docs/PLAN.md rewritten - 28 wave-1 pieces covering all 250 wave-1 paths exactly once",
+    "C3: subsystems.json now carries `wave` on all 325 paths + corpus-index check C7"
   ],
   "findings": [
     "SCORING.md 1.2 mandated form is `| Ladder | 4 | 6 | 8 |` + `| Native | ... |`. ZERO items use that exact orientation. The 6 weapons items use a TRANSPOSED table `| Ladder | Native score |` with rows 4/6/8 - the critic counted those as 'verbatim'.",
@@ -28,8 +30,9 @@
     "109 anchor rows added, derived from each item's own bands. Conventions used: ladder 4 = lowest native in the below-bar band; 6 = midpoint of that band; 8 = comfortably inside meets-the-bar. Matches the only in-corpus precedents (RI-WPN01 65/78/92 against bands >=88 / 65-87 / <65; RI-EXP01 55/75/88; RI-JRN01 50/75/92).",
     "5 items genuinely have no scale to map and are declared gate/cap items: RI-UIX02 (binary gate), RI-VIS09 (register/compliance), RI-VIS06 (caps RI-VIS03/05), RI-VIS07 (caps RI-VIS05 ART), plus RI-MTH05 which already declared itself a gate. Their rows carry `n/a` at the rungs their native scale does not have; SCORING.md 1.2a clause 3 makes that admissible only for declared gate/cap items.",
     "RI-VIS01 has a native scale with rungs 10/7/4/0 only - no 5, 6, 8 or 9. Its anchor row is 4 / 7 / 10 and says so.",
-    "CONCURRENCY: another agent added corpus/40-dialogue/RI-DLG09-the-parley.md mid-task (corpus is now 138 items). The new C6 check caught it immediately with no anchor row - the gate worked on its first real encounter with drift. Anchor row added (4/6/8, weighted mean of seven axes)."
+    "CONCURRENCY: another agent added corpus/40-dialogue/RI-DLG09-the-parley.md mid-task (corpus is now 138 items). The new C6 check caught it immediately with no anchor row - the gate worked on its first real encounter with drift. Anchor row added (4/6/8, weighted mean of seven axes).",
+    "C3 MEASURED: wide-before-deep forces 250 of 325 paths (77%) into wave 1. 28 pieces cover them exactly once, no overlaps, no gaps. 125 of 138 items own at least one wave-1 path; the 13 that do not are listed in PLAN.md 5 with the wave they become scoreable."
   ],
-  "next_step": "C3: rewrite docs/PLAN.md",
+  "next_step": "C2: CONTENT-BUDGET.md, then CORPUS-COHERENCE-02.md edit log",
   "notes_for_successor": ""
 }
