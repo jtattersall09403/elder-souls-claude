@@ -15,6 +15,26 @@ authoritative — not the builder's taste, not the critic's mood.
 `COMBAT`, or the player's first attack input against a valid target) and ends when all
 hostiles within the encounter volume are dead, dormant, or de-aggroed for >5s.
 
+**But Souls' authority inside the fight is over HOW FIGHTING WORKS — not over whether the world
+still exists while you are in one.** The brief grants Souls authority "where necessary for the
+combat to feel like Souls". Frames, stamina, hitboxes, animation and enemy behaviour are
+necessary. *Deleting every non-violent verb the moment someone swings at you is not.*
+
+Morrowind therefore retains, **during** a fight:
+- **The right to disengage.** Fleeing is a legitimate, supported resolution. Enemies leash (see
+  RI-AI01); escape is not a failure state and must not be punished as one.
+- **The right to yield, parley, bribe or talk down** — for anything that can talk. See S13 as
+  amended: a fight with a *person* must have a non-lethal exit.
+- **Non-lethal outcomes**: paralysis, calm effects, soul-trap-without-kill, sneaking away,
+  surrender, driving off rather than killing.
+- **Consequences**: crime, witnesses, bounty and faction standing all keep accruing mid-fight. The
+  world does not pause because you drew a weapon.
+
+Killing is *one* exit from a fight. A build in which it is the *only* exit has failed the brief,
+regardless of how good the combat feels — and it would silently gut the ≥45% non-combat quest
+resolution bar, since a quest target who becomes unreachable the instant they aggro cannot be
+talked to. (Drift ID-01, intent audit 01.)
+
 **Inside the fight, SOULS IS AUTHORITATIVE over:**
 
 | Domain | Souls rule that wins |
@@ -40,7 +60,7 @@ hostiles within the encounter volume are dead, dormant, or de-aggroed for >5s.
 | Dialogue | Topic-list dialogue, keyword discovery, disposition, rumours that differ per town |
 | Journal | Numbered, dated, first-person-authored journal entries; no objective markers |
 | Quest structure | Multi-stage, deceit-capable, quest-giver-lies, mutually exclusive resolutions |
-| World structure | Hand-placed density, named interiors, walk-and-navigate wayfinding, no fast travel except in-fiction transport |
+| World structure | Hand-placed density, named interiors, walk-and-navigate wayfinding, **and a real in-fiction fast-travel network** (S7). Only warp-to-map-pin is banned |
 | Lore | Unreliable in-world books, contradictory accounts, deep-time history |
 | Economy | Gold as currency; merchant gold pools, barter, disposition-affected prices |
 | Strangeness | Alien flora/fauna/architecture, dream-logic, non-Tolkien fantasy |
@@ -65,11 +85,11 @@ Builders MUST NOT re-litigate; critics MUST enforce.
 | S10 | Can you kill anyone? | **MORROWIND.** Yes. Killing a quest-critical NPC produces the "thread of prophecy severed" warning and a still-completable-but-harder world state, not a game over. |
 | S11 | Poison/disease/curse | **MORROWIND** for the affliction economy (diseases with names, cures, in-world causes), **SOULS** for the in-fight status buildup meter and proc effect. |
 | S12 | Loot | **MORROWIND.** Hand-placed, named, weird. No procedural drop tables. Souls only owns the *soul* drop quantity. |
-| S13 | Dialogue during combat | **SOULS.** Enemies shout, they do not converse. Topic lists are locked while `COMBAT` is active. |
+| S13 | Dialogue during combat | **SPLIT — amended wave 0 (drift ID-01).** ~~Souls: topic lists locked while COMBAT is active.~~ **SOULS** owns the fact that the browsable topic list is unavailable mid-swing — you do not open a keyword menu while a mace is coming down, and enemies shout rather than converse. **MORROWIND** owns the requirement that a fight against anything capable of speech has a **non-lethal exit**: a distinct, fast, diegetic *parley* interaction (yield / offer gold / invoke a faction / speak a name you learned) available during combat, gated on disposition, reputation, faction rank or knowledge. It resolves the fight without a corpse. Beasts and mindless things are exempt — they have no parley and Souls owns them entirely. A humanoid faction NPC with no parley path is a **defect**. |
 | S14 | Menus/pause | **SOULS.** Inventory does not pause the world during combat. Outside combat, Morrowind-style leisure is fine. |
 | S15 | Souls as currency | **NEITHER, by decree.** Souls level you and ONLY level you. **Gold is the only currency.** Merchants, bribes, training, travel, and repairs all cost gold. Souls cannot buy an item, ever. |
 | S16 | Dungeon architecture | **SPLIT, by census.** Two kinds coexist and neither may crowd out the other. **8 Souls-loop dungeons**: interconnected, multi-strata, shortcut-unlocking, HEARTH-anchored, with a closed/open path ratio ≥1.5 — these are the set-piece descents and they obey Souls level design. **82 Morrowind caves**: flat-ish, hand-furnished, discovered by walking, often holding one secret, one story, or one corpse — these are the texture of the world and they obey Morrowind. A Souls-loop dungeon that is merely a long cave fails; a cave inflated into a shortcut puzzle fails equally. Ruling introduced by RI-WLD07, wave 0. |
-| S19 | Magic | **SPLIT.** *Inside the fight*, **SOULS**: casting is an animated, committed action with a windup the enemy can read and you cannot cancel, costs a resource on the stamina model's terms, and has no pause, no menu, no dice. *Outside the fight*, **MORROWIND, emphatically**: spellmaking, enchanting, and utility magic are first-class systems and a legitimate route through the world. Spell effects are *tools* — open this lock, cross this water, survive this air, see this hidden thing, make this Argonian like you — and quests must be solvable with them (this is a load-bearing part of the ≥45% non-combat resolution bar). Two constraints follow from other rulings and are not negotiable: utility magic may not become a teleport network (S7), and no spell may restore the roll-to-hit die (S1). Ruling added wave 0 in response to BAR-CRITIQUE-01 G4. |
+| S19 | Magic | **SPLIT.** *Inside the fight*, **SOULS**: casting is an animated, committed action with a windup the enemy can read and you cannot cancel, costs a resource on the stamina model's terms, and has no pause, no menu, no dice. *Outside the fight*, **MORROWIND, emphatically**: spellmaking, enchanting, and utility magic are first-class systems and a legitimate route through the world. Spell effects are *tools* — open this lock, cross this water, survive this air, see this hidden thing, make this Argonian like you — and quests must be solvable with them (this is a load-bearing part of the ≥45% non-combat resolution bar). Two constraints follow from other rulings and are not negotiable: the teleport effects Mark/Recall and Intervention are part of the **S7 travel network** and obey its rules — they move you between places you already know, above ground, out of combat, never into or within a dungeon, boss arena or locked area. What is forbidden is teleport as a *level-design solvent*: no recall out of a fight, no warping past a shortcut you have not opened, no intervention as an escape button. ~~Earlier wording banned utility magic from being a teleport network outright, contradicting S7; corrected wave 0, drift ID-03.~~ And no spell may restore the roll-to-hit die (S1). Ruling added wave 0 in response to BAR-CRITIQUE-01 G4. |
 | S18 | Camera and perspective | **SOULS, absolutely and everywhere.** The game is **third-person** at all times — an over-the-shoulder/behind-the-back orbital camera with a Souls collision-and-spring arm. Morrowind's first-person option does **not** survive: the player character's body, animation and silhouette are load-bearing for Souls combat (you read your own recovery frames off your own animation), so a first-person mode would break the fight. This binds outside the fight too — exploration, dialogue, menus and cutscenes are all third-person, because a perspective that changes at the combat boundary would break the seam that S-rulings exist to keep clean. Every Souls camera behaviour is in scope: spring-arm collision and pull-in, lock-on framing that keeps both combatants in frame, soft-lock steering, camera-relative movement with the character turning to face its velocity, target-switch flick, vertical clamp, auto-recentre-on-sprint, and the fixed-height pivot. Ruling added by user direction, wave 0. |
 | S17 | Where the hour comes from | **MORROWIND.** The world takes an hour to cross because it contains an hour of *distance and incident*, never because locomotion is slow. Walk speed is a Souls-side property (2.0 m/s, tuned for combat spacing) and may not be lowered to inflate traversal time. If the crossing is too short, the world grows; the player never slows down. Ruling introduced by RI-WLD01 M3, wave 0. |
 
