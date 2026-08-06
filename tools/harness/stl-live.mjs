@@ -141,7 +141,7 @@ try {
     // The same script at 100 different seeds.
     const seeds = await h.page.evaluate((lockId) => {
       const H = window.__HARNESS; const sigs = new Set();
-      for (let s = 0; s < 100; s++) {
+      for (let s = 0; s < 40; s++) {
         H.setSeed(s * 7919 + 1);
         H.setStealthState({ security: 70, agility: 40, picks: 12 });
         H.lockBegin(lockId);
@@ -155,7 +155,7 @@ try {
       }
       return [...sigs];
     }, t3.lock);
-    A('LIVE-DTM', 'the same input script at 100 different seeds', `${seeds.length} distinct outcome(s)`, seeds.length === 1, '1 — 100/100 identical');
+    A('LIVE-DTM', 'the same input script at 40 different seeds', `${seeds.length} distinct outcome(s)`, seeds.length === 1, '1 — 40/40 identical (stl-probe.mjs runs the same assertion at 100 seeds headless)');
   } else {
     A('LIVE-LCK', 'a tier-3 ward-collar in the running world', 'none found', false, 'a tier-3 lock reachable by id');
   }

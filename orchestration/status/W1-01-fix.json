@@ -2,7 +2,7 @@
   "task_id": "W1-01-fix",
   "brief": "remediation of W1-01 world shape (critic score 3.1 vs gate 7.0, AR-2/B13 fail)",
   "started": "wave-1-remediation",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "road fix (depth-costed A* or causeway) + M2-ROAD-ABOVE-WATER check over 10 legs x 4 tides",
     "re-measured canonical crossing",
@@ -28,7 +28,8 @@
     "tools/world/build-regions.mjs: Blackwood / Thornmarsh / Deep Marshes separated on landform, ground material, flora silhouette and water regime; stone-wastes vs valus-ridge lifted; corrupted fog hex fixed",
     "game/src/engine.js walkPath() + harness verb: reachability can be a walk instead of a flood fill",
     "tools/world/reachability-walk.mjs",
-    "game/src/render/sky.js: night ambient takes the REGION hue and the floors rise (M17 step 6 night identification measured 28.2% at 01:00 on the shipped build)"
+    "game/src/render/sky.js: night ambient takes the REGION hue and the floors rise (M17 step 6 night identification measured 28.2% at 01:00 on the shipped build)",
+    "reports/region-shots/SUPERSEDED-PACK.md (records that the verdict cited two frames of the void pack at transient reports/ paths; verdict-validate now reports W1-01.json VOID on them and the remediation did not fabricate replacements)"
   ],
   "findings": [
     "ROOT CAUSE of the drowned road is NOT A* routing through a lake. The natural terrain at (2187,2215) is DRY LAND at 154.01 m. The road's own elevation profile in build-roads.mjs is 69.17 m there -- an 85 m CUTTING that _applyRoads carves into the hill, which then fills with water (surface 135.30). waterSurfaceAt returns null before setRoads and 135.3 after. Same at helstrom-gideon (1652,2754): natural 48.65 m dry, roaded 33.34 m, depth 7.63 m.",
@@ -48,8 +49,14 @@
     "M18 on measured axes: min 6 of 9 (was 8 of 9 on a config file). Before the region edits the new instrument FAILED at 5 (stone-wastes/valus-ridge) -- it is capable of failing.",
     "M17 PACK REBUILT: 117 frames (39 day + 39 night + 39 worst-weather), 9 per region, sampling seed 1337, SHUFFLE SEED 20260806. Anti-ordering assertion: Spearman(frame index, region rank) = -0.0051 against a bar of 0.25; 8 adjacent same-region runs against 8 expected by chance (bar 27). The old pack was a strictly monotone block structure.",
     "Dispersion on the first rebuilt pack: day LOO 53.8% / Fisher 2.497, worst-weather LOO 87.2% / Fisher 3.404, NIGHT LOO 28.2% / inter-centroid 15.25 (vs 99.51 by day). Night is the real failure: at day=0 the ambient fell to 10% and the region fog hue was multiplied by 0.34, so every region rendered the same near-black.",
-    "Blackwood/Thornmarsh no longer appear in any closest-pair list after the separation."
+    "Blackwood/Thornmarsh no longer appear in any closest-pair list after the separation.",
+    "FINAL: crossing 55.356 min / 6642.1 m / mean 1.9998 m/s / 0.009% below 1.6 m/s (bars 52-65 min, 6300-7600 m). M2-ROAD-ABOVE-WATER PASS (0 m over-knee on all nine non-tideway legs at all four phases). M2-ROAD-CUT-AND-FILL PASS (3.0 m cut, 16.0 m fill, 21 deck spans / 2494 m). Tideway 0.976 m LOW, 1.456 m HIGH.",
+    "FINAL dispersion: day LOO 29/39 (74.4%, Fisher 3.10 vs Morrowind 1.417 -- A7 not regressed, was 3.01), worst-weather 32/39 (82.0%, Fisher 3.53), NIGHT 13/39 (33.3%). No pair confused >=4 times in the day or worst passes; night has one (crimson-coast <-> western-rootlands, 5). Blackwood/Thornmarsh is gone from every closest-pair list (was 18.9, the closest pair in the province by 2x).",
+    "FINAL locomotion: W0 2.0000 / W2 1.7000 / W3 1.3000 / W4 0.8600 / W5 1.1000 m/s; burden 2.0000/1.8000/1.4400/0.0000 at 0.60/0.85/1.00; equip load inert out of combat at all seven tiers.",
+    "FINAL travel: all 15 RI-TRV01 / B13 checks pass including the live walked-it-once gate (85% of a leg = 0 purchasable, 100% = 7) and a real 8822-frame ride, gold 500->491, max frame delta 0.117 m, arrival 0 m from the marker.",
+    "FINAL reachability: 13/13 regions entered by driving the capsule, 39.87 km walked, longest stuck run 0 frames, deepest water stood in 6.435 m.",
+    "NOT CLOSED: RI-AI05 / RI-PRG06 (no roster placed; only 3 real enemy stat blocks exist against 39 declared species), RI-WLD11 (hazards still do not fire), RI-CAM02 (camera yaw still not on getCameraRig), M36-ROAD-RELIEF 27.3% vs 30%, and M17 night identification 33.3% vs the 70% bar."
   ],
   "next_step": "recapture pack against the final world; then dispersion + reachability walk + final verification",
-  "notes_for_successor": ""
+  "notes_for_successor": "The remaining night-identification failure is the sharpest open item: at 01:00 the province has an inter-centroid distance of 33.6 against 99.95 by day. The sky.js change raised it from 15.25; closing it needs per-region emissive features (welkynd glints, kiln glow, comb light, corpse-lily) rather than more ambient. Hanging water bodies -- narrow channels whose surface stands metres above their own banks -- are an unfixed water-model defect that forces 48 m of >100% grade on stormhold-helstrom."
 }
