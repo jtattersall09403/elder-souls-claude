@@ -1,0 +1,16 @@
+{
+  "task_id": "W1-06",
+  "brief": "wave-1 piece W1-06 — Camera (third-person rig, spring arm, lock-on containment law, camera-relative movement, directional rolls, soft-lock, pitch clamps, dialogue/menu/interior camera)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "game/src/sim/camera/*.js",
+    "game/data/camera/*.json",
+    "corpus/70-visual/RI-CAM01..07 evidence / measurements",
+    "tools/camera/* harness probes"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ARBITRATION.md S18, SCORING.md, HARNESS.md, docs/PLAN.md §3 W1-06, then survey game/ engine",
+  "notes_for_successor": "Just started. Nothing built yet."
+}

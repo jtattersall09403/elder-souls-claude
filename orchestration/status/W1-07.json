@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-07",
+  "brief": "wave-1 piece W1-07 — Character creation (diegetic census office, 10 attrs / 19 skills, 10 races, birthsigns, custom class builder, 12x10 reaction matrix)",
+  "started": "wave-1",
+  "state": "researching",
+  "judged_by": ["RI-CHR01", "RI-CHR02", "RI-CHR03", "RI-PRG02", "RI-PRG03", "RI-JRN01"],
+  "outputs_expected": [
+    "game/data/character/attributes.json",
+    "game/data/character/skills.json",
+    "game/data/character/races.json",
+    "game/data/character/birthsigns.json",
+    "game/data/character/classes.json",
+    "game/data/character/reaction-matrix.json",
+    "game/data/character/census-questions.json",
+    "game/src/character/*.js",
+    "game/src/ui/census.js"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ARBITRATION.md, SCORING.md, HARNESS.md, PLAN.md §3, and the RI-CHR*/RI-PRG* reference items",
+  "notes_for_successor": ""
+}

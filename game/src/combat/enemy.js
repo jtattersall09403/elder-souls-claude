@@ -1,0 +1,235 @@
+// The enemy side of the fight.
+//
+// SCOPE, declared rather than blurred. **Enemy AI is RI-AI01–RI-AI07 and wave-1 piece W1-12.**
+// W1-09 owns how fighting WORKS, on both sides of the exchange, and it needs an opponent that
+// really swings so that i-frame negation, blocking, guard break, poise, backstab, riposte and
+// parley are things a trace can prove rather than things a builder can claim. What it does NOT
+// own is when an enemy decides to swing.
+//
+// The resolution is the one RI-CMB07 M1 already specifies for Mode-A: **a SCRIPTED attack
+// machine.** "The enemy executes its 18 scripted actions on the exact frames given; the player
+// executes the 54 scripted inputs on the exact frames given. No AI, no randomness, seed 0."
+// A scripted opponent is not an AI stub — it is the instrument the corpus asks for, and it is
+// the only opponent against which a frame-exact conformance claim means anything.
+//
+// Two behaviours ship:
+//   * `scripted`   — actions from the scenario file, on declared frames. The Mode-A instrument.
+//   * `hold_ground`— perception, turn-to-face, no attack. Inherited from W1-00 unchanged.
+// An archetype declaring anything else THROWS on spawn, exactly as W1-00 made it throw, because
+// a plausible-but-wrong enemy is worse than an absent one.
+'use strict';
+
+import { Clip, LoopClip } from './clips.js';
+import { bearingDeg, angleDelta, norm360 } from './geometry.js';
+import { applyPoiseDamage } from './rules.js';
+
+export const IMPLEMENTED_AI = new Set(['none', 'hold_ground', 'scripted']);
+
+/** Build an enemy's move table from its statblock's declared attacks. */
+export function buildEnemyMoves(stat, data, weapon) {
+  const arch = data.clips.archetypes;
+  const out = { _weapon: weapon, _movesetId: `enemy:${stat.id}`, _classKey: stat.id };
+  for (const id of Object.keys(stat.attacks || {})) {
+    const a = stat.attacks[id];
+    const total = a.startup + a.active + a.recovery;
+    out[id] = {
+      id,
+      kind: 'attack',
+      anim: a.anim || `e_${id}`,
+      clip: new Clip(a.anim || `e_${id}`, arch[a.archetype || 'cut_diagonal'],
+        { startup: a.startup, active: a.active, total }, a.amplitude || 1.0, a.root_dz_m || 0),
+      startup: a.startup,
+      Ps: a.startup + 1,
+      active: a.active,
+      recovery: a.recovery,
+      total,
+      stamina: a.stamina || 0,
+      poise_damage: a.poise_damage || 0,
+      motion_value: a.motion_value || 1.0,
+      hyperarmour_window: a.hyperarmour_window || null,
+      unblockable: !!a.unblockable,
+      hitbox: true,
+      hitbox_radius_m: a.hitbox_radius_m || weapon.radius_m,
+      hitstop_frames: a.hitstop_frames || 6,
+      root_dz_m: a.root_dz_m || 0,
+      iframes: null,
+      hard_until: total,
+      states: { startup: 'ATK_WINDUP', active: 'ATK_ACTIVE', recovery: 'ATK_RECOVER' },
+      // RI-AI03 consumes these. The enemy's recovery IS the punish window.
+      punish_window: [a.startup + a.active + 1, total],
+      source: `game/data/combat/enemies/${stat.id}.json`,
+    };
+  }
+  // reaction moves, so an enemy staggers, guard-breaks and dies like a player does
+  out._stagger = {};
+  for (const t of data.poise.stagger.tiers) {
+    out._stagger[t.tier] = {
+      id: `stagger_${t.tier}`, kind: 'stagger', anim: `e_stagger_${t.tier}`,
+      clip: new Clip(`e_stagger_${t.tier}`, arch.stagger_recoil,
+        { startup: Math.ceil(t.frames * 0.3), active: Math.ceil(t.frames * 0.3), total: t.frames }, 1.0, -t.pushback_m),
+      total: t.frames, knockdown: !!t.knockdown, pushback_m: t.pushback_m, poise_damage_range: t.poise_damage,
+      hitbox: false, iframes: null,
+      states: { startup: 'STAGGER', active: 'STAGGER', recovery: 'STAGGER' },
+      source: 'RI-CMB05 §B, applied symmetrically to enemies',
+    };
+  }
+  const gb = data.stamina.guard_break;
+  out._guardBreak = {
+    id: 'guard_break', kind: 'guard_break', anim: 'e_guard_break',
+    clip: new Clip('e_guard_break', arch.guard_break_open, { startup: 10, active: 10, total: gb.duration_f }, 1.0, -0.25),
+    total: gb.duration_f, riposte_window: gb.riposte_window, hitbox: false, iframes: null,
+    states: { startup: 'GUARD_BREAK', active: 'GUARD_BREAK', recovery: 'GUARD_BREAK' },
+    source: 'RI-CMB03 §D — "the identical rule applies to enemies"',
+  };
+  out._idle = new LoopClip('e_idle', arch.idle_ready, stat.idle_anim_frames || 96);
+  out._walk = new LoopClip('e_walk', arch.locomotion_cycle, 44);
+  out._run = out._walk; out._sprint = out._walk;
+  out._blockPose = arch.block_hold;
+  out._idlePose = arch.idle_ready;
+  out._dead = new Clip('e_dead', arch.dead_collapse, { startup: 12, active: 12, total: 48 }, 1.0, 0.4);
+  return out;
+}
+
+export class EnemyController {
+  constructor(body, stat, data) {
+    this.b = body;
+    this.stat = stat;
+    this.d = data;
+    this.script = [];            // [{f, move}] absolute frames, set by the scenario
+    this.scriptIdx = 0;
+    this.attacksInWindow = [];   // for the beast WINDED rule (RI-CMB09 §4)
+    this.winded = false;
+    this.windedUntil = 0;
+    this.alert = 0;
+    this.alertState = 'IDLE';
+  }
+
+  /** Scenario contract: enemy actions on declared frames, relative to the window origin. */
+  loadScript(script, baseFrame) {
+    this.script = (script || []).map((e) => ({ f: e.f + baseFrame, move: e.move, face: e.face }));
+    this.script.sort((a, b) => a.f - b.f);
+    this.scriptIdx = 0;
+    return this.script.length;
+  }
+
+  step(frame, ctx) {
+    const b = this.b;
+    const emit = ctx.emit;
+    if (b.dead) { b.state = 'DEAD'; b.poseDead(frame); return; }
+    if (b.yielded) {
+      b.state = 'YIELDED'; b.hitboxActive = false; b.poseLocomotion('IDLE', frame);
+      b.tickResources(frame, this.d);
+      return;
+    }
+
+    if (b.move && (b.move.kind === 'stagger' || b.move.kind === 'guard_break')) {
+      if (b.advance(frame)) b.endMove();
+      b.tickResources(frame, this.d);
+      return;
+    }
+    if (frame < b.parriedUntil) {
+      b.state = 'PARRIED'; b.animFrame++; b.hitboxActive = false;
+      b.poseLocomotion('IDLE', frame);
+      b.tickResources(frame, this.d);
+      return;
+    }
+
+    // ---- start a scripted action ------------------------------------------------------------
+    if (!b.move && this.stat.ai === 'scripted') {
+      while (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f < frame) this.scriptIdx++;
+      if (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f === frame) {
+        const ev = this.script[this.scriptIdx++];
+        if (ev.face !== undefined) b.yaw = norm360(ev.face);
+        else if (ctx.player) b.yaw = bearingDeg(ctx.player.pos[0] - b.pos[0], ctx.player.pos[2] - b.pos[2]);
+        if (ev.move === 'block') {
+          b.guardRaised = true;
+          const e = emit(frame, 'GUARD_UP'); e.who = b.id;
+        } else if (ev.move === 'unblock') {
+          b.guardRaised = false;
+        } else {
+          const m = b.moves[ev.move];
+          if (!m) {
+            throw new Error(`enemy '${b.id}' scripted move '${ev.move}' is not declared in ` +
+              `game/data/combat/enemies/${this.stat.id}.json §attacks. Known: ${Object.keys(b.moves).filter((k) => !k.startsWith('_')).join(', ')}. ` +
+              'Refusing to silently do nothing on a scripted frame — that would be a fabricated measurement (RI-MTH04).');
+          }
+          if (m.stamina && b.stamina < m.stamina) {
+            const e = emit(frame, 'INPUT_DROPPED');
+            e.who = b.id; e.button = ev.move; e.reason = 'no_stamina'; e.have = round1(b.stamina); e.need = m.stamina;
+          } else {
+            b.begin(m, frame, {});
+            if (m.stamina) b.spend(m.stamina, frame, this.d);
+            this._noteAttack(frame);
+            const e = emit(frame, 'ACTION_START');
+            e.who = b.id; e.mv = m.id; e.tag = 'enemy_attack';
+            e.startup = m.startup; e.active = m.active; e.recovery = m.recovery; e.total = m.total;
+            e.punish_window = m.punish_window; e.stam_after = round1(b.stamina);
+          }
+        }
+      }
+    }
+
+    // ---- advance ------------------------------------------------------------------------------
+    if (b.move) {
+      // RI-AI02's tracking cutoff, same schedule as the player's soft lock: an enemy that
+      // lookAt()s the player every frame makes spacing meaningless and the fight unfair.
+      if (b.move.kind === 'attack' && ctx.player) {
+        const nf = b.animFrame + 1;
+        if (nf > 1 && nf <= 0.40 * b.move.startup) this._steer(ctx.player, 180);
+        else if (nf <= 0.80 * b.move.startup) this._steer(ctx.player, 45);
+      }
+      if (b.advance(frame)) b.endMove();
+    } else {
+      this._idleBehaviour(frame, ctx);
+    }
+
+    // beasts: WINDED after >= 3 attacks in 6 s (RI-CMB09 §4 enemy symmetry)
+    if (this.stat.winded_after) {
+      const cutoff = frame - 360;
+      while (this.attacksInWindow.length && this.attacksInWindow[0] < cutoff) this.attacksInWindow.shift();
+      if (!this.winded && this.attacksInWindow.length >= this.stat.winded_after) {
+        this.winded = true;
+        this.windedUntil = frame + (this.stat.winded_frames || 75);
+        const e = emit(frame, 'WINDED'); e.who = b.id; e.frames = this.stat.winded_frames || 75;
+      } else if (this.winded && frame >= this.windedUntil) this.winded = false;
+    }
+    const ex = b.tickResources(frame, this.d);
+    if (ex) { const e = emit(frame, ex === 'enter' ? 'EXHAUSTED_ENTER' : 'EXHAUSTED_EXIT'); e.who = b.id; e.stamina = round1(b.stamina); }
+  }
+
+  _noteAttack(frame) { this.attacksInWindow.push(frame); }
+
+  _steer(target, dps) {
+    const b = this.b;
+    const want = bearingDeg(target.pos[0] - b.pos[0], target.pos[2] - b.pos[2]);
+    const maxStep = dps / 60;
+    let d = angleDelta(b.yaw, want);
+    if (d > maxStep) d = maxStep; else if (d < -maxStep) d = -maxStep;
+    b.yaw = norm360(b.yaw + d);
+  }
+
+  _idleBehaviour(frame, ctx) {
+    const b = this.b;
+    if (this.stat.ai === 'none') { b.state = 'IDLE'; b.poseLocomotion('IDLE', frame); return; }
+    const p = ctx.player;
+    const dx = p.pos[0] - b.pos[0], dz = p.pos[2] - b.pos[2];
+    const d = Math.hypot(dx, dz);
+    const facing = Math.abs(angleDelta(b.yaw, bearingDeg(dx, dz)));
+    const sees = d <= this.stat.sight_radius_m && facing <= this.stat.sight_cone_deg / 2;
+    if (sees || b.aggro) this.alert = Math.min(100, this.alert + 4); else this.alert = Math.max(0, this.alert - 1);
+    this.alertState = this.alert >= 100 ? 'AGGRO' : this.alert >= 50 ? 'SEARCH' : this.alert > 0 ? 'SUSPICIOUS' : 'IDLE';
+    if (this.alertState === 'AGGRO') { this._steer(p, 240); b.state = 'REPOSITION'; }
+    else b.state = 'IDLE';
+    b.poseLocomotion('IDLE', frame);
+  }
+
+  /** Called by the resolver when the player's parry window catches this enemy's active frames. */
+  becomeParried(frame, frames, emit) {
+    this.b.beginParried(frames, frame);
+    const e = emit(frame, 'PARRY');
+    e.who = this.b.id; e.frames = frames;
+    e.riposte_window = this.d.poise.criticals.parry.parried_state.riposte_window;
+  }
+}
+
+function round1(v) { return Math.round(v * 10) / 10; }

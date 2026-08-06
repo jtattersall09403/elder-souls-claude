@@ -5,9 +5,12 @@
 import { rng } from './core/rng.js';
 import { installGuards, wallNow, violations } from './core/guards.js';
 import { FixedLoop, FIXED_HZ, STEP_MS } from './core/loop.js';
-import { SimState, quantiseColdState } from './sim/state.js';
+import { SimState, quantiseColdState, PLAYER_CONST } from './sim/state.js';
 import { EventBus } from './sim/events.js';
 import { stepOnce } from './sim/step.js';
+import { CombatSystem } from './combat/system.js';
+import { combatMeta, combatFrame } from './combat/trace.js';
+import { mirror } from './sim/combat-bridge.js';
 import { makeRecord } from './sim/record.js';
 import { makeEntity, reanchorFreeRunning } from './sim/entities.js';
 import { InputPipeline } from './input/pipeline.js';
@@ -24,11 +27,11 @@ const PERF_SAMPLES = 20000;
 
 export const BUILD = {
   name: 'elder-souls',
-  version: '0.1.0-w1-00',
+  version: '0.2.0-w1-09',
   harnessVersion: 1,
   fixedStepHz: FIXED_HZ,
   dataRoot: 'game/data',
-  piece: 'W1-00 — harness, determinism and persistence',
+  piece: 'W1-09 — combat core (on W1-00’s harness)',
 };
 
 export class Engine {
@@ -40,6 +43,8 @@ export class Engine {
     this.bus = new EventBus();
     this.sim.input = this.input;
     this.data = null;
+    this.combat = null;
+    this.combatTrace = null;
     this.renderer = null;
     this.real = null;
     this.store = new SaveStore();
@@ -137,7 +142,31 @@ export class Engine {
 
   // ---- data --------------------------------------------------------------------------
 
-  get moves() { return this.data.moveset.moves; }
+  get moves() { return this.combat ? this.combat.player.moves : null; }
+
+  /** Every game/data/combat/*.json, plus locomotion constants, in the shape CombatSystem wants. */
+  _combatData() {
+    const d = this.data;
+    return {
+      frames: d.combat.frames,
+      roll: d.combat.roll,
+      stamina: d.combat.stamina,
+      poise: d.combat.poise,
+      hitgeometry: d.combat.hitgeometry,
+      lockon: d.combat.lockon,
+      flask: d.combat.flask,
+      parley: d.combat.parley,
+      skeleton: d.combat.skeleton,
+      clips: d.combat.clips,
+      movesets: d.movesets,
+      locomotion: {
+        walk_mps: PLAYER_CONST.walk_mps,
+        jog_mps: PLAYER_CONST.jog_mps,
+        sprint_mps: PLAYER_CONST.sprint_mps,
+        turn_rate_dps: PLAYER_CONST.turn_rate_dps,
+      },
+    };
+  }
 
   statFor(id, eid, x, z, frame) {
     const stat = this.data.enemies[id];
@@ -203,12 +232,122 @@ export class Engine {
     // groundAt() and the spawns, all of which read the generated terrain.
     sim.worldSeed = this._drawWorldSeed();
     this._applyCell();
+    // W1-09: the fight is rebuilt from the named state's loadout. The combat bodies are the
+    // authority and sim.player is a view (sim/combat-bridge.js); rebuilding here rather than
+    // patching a live system is what makes loadState() reproducible.
+    this._buildCombat(patch.loadout || {});
     for (const s of patch.spawn || []) this.spawn(s.id, s.x, s.z, { as: s.as });
     // Put the player on the ground of whatever cell the state names.
     sim.player.pos[1] = this.groundAt(sim.player.pos[0], sim.player.pos[2]);
     this._settleCamera();
     quantiseColdState(sim);
     return { ok: true, frame: sim.frame, seed: rng.seed };
+  }
+
+  /**
+   * Build the fight from a loadout. Called by applyNamedState so a named state fully
+   * determines the combat system, which is what makes a scenario reproducible.
+   */
+  _buildCombat(loadout) {
+    this.combat = new CombatSystem(this._combatData());
+    const b = this.combat.createPlayer(loadout);
+    const p = this.sim.player;
+    b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];
+    b.yaw = p.yaw;
+    if (loadout.stamina !== undefined) b.stamina = loadout.stamina;
+    if (loadout.hp !== undefined) b.hp = loadout.hp;
+    // The parley reads OUT-OF-FIGHT state. This is the AR-3 crossing and it is wired here:
+    // gold, dispositions, faction ranks and known dialogue topics all come from the same
+    // sim.quest / sim.inventory the Morrowind half of the game writes.
+    this.combat.world = {
+      gold: this.sim.progression.gold || loadout.gold || 0,
+      dispositions: this.sim.quest.dispositions,
+      factions: this.sim.quest.factions,
+      topicsKnown: this.sim.quest.topicsKnown,
+    };
+    b.evaluateRig(0);
+    mirror(this.sim, this.combat);
+    return b;
+  }
+
+  /** The equip load the fight reads. Seam S23: RI-CMB01 owns what the tier DOES in a fight;
+   *  RI-PRG07 owns encumbrance outside it and may keep finer granularity with no in-fight
+   *  effect. This setter is the seam, and it is deliberately the only way across it. */
+  setEquipLoad(pct) {
+    const v = Number(pct);
+    if (!Number.isFinite(v) || v < 0) throw new Error(`setEquipLoad(${JSON.stringify(pct)}): expected a non-negative percentage`);
+    this.combat.player.equipLoadPct = v;
+    this.combat.player.tier = this.combat.tierOf(this.combat.player);
+    this.sim.player.equipLoadPct = v;
+    this.sim.player.rollClass = this.combat.player.tier;
+    return { equip_load_pct: v, tier: this.combat.player.tier };
+  }
+
+  /** Load a scripted enemy action list — RI-CMB07 M1 Mode-A's instrument. */
+  queueEnemyScript(eid, script) {
+    const ec = this.combat.enemies.get(eid);
+    if (!ec) throw new Error(`queueEnemyScript('${eid}'): no such enemy`);
+    return ec.loadScript(script, this.sim.frame);
+  }
+
+  /** Out-of-fight state the parley reads. AR-3: this is the world reaching into the fight. */
+  setWorldKnowledge(patch) {
+    const w = this.combat.world;
+    if (patch.gold !== undefined) w.gold = Number(patch.gold);
+    if (patch.topicsKnown) { w.topicsKnown = patch.topicsKnown.slice(); this.sim.quest.topicsKnown = w.topicsKnown; }
+    if (patch.dispositions) Object.assign(w.dispositions, patch.dispositions);
+    if (patch.factions) Object.assign(w.factions, patch.factions);
+    return { gold: w.gold, topicsKnown: w.topicsKnown.slice(), dispositions: { ...w.dispositions }, factions: JSON.parse(JSON.stringify(w.factions)) };
+  }
+
+  // ---- es-combat-trace/1 (RI-CMB07) --------------------------------------------------------
+
+  combatTraceStart(opts = {}) {
+    this.combatTrace = { records: [], meta: combatMeta(this.combat, opts.scenario || this.sim.stateName, this.sim.seed) };
+    return this.combatTrace.meta.schema;
+  }
+
+  combatTraceDrain() {
+    if (!this.combatTrace) return [];
+    const r = this.combatTrace.records;
+    this.combatTrace.records = [];
+    return r;
+  }
+
+  combatTraceMeta() { return this.combatTrace ? this.combatTrace.meta : null; }
+
+  combatTraceStop() {
+    const r = this.combatTrace ? this.combatTrace.records : [];
+    this.combatTrace = null;
+    return r;
+  }
+
+  /** RI-CMB04's mandatory debug channel: every hitbox and hurtbox, world space, this frame. */
+  getHitGeometry() {
+    const out = { frame: this.sim.frame, substeps: this.combat.d.hitgeometry.sweep.substeps, actors: [] };
+    const tmp = [];
+    for (const b of this.combat.bodies) {
+      const rec = {
+        id: b.id,
+        pos: [r4c(b.pos[0]), r4c(b.pos[1]), r4c(b.pos[2])],
+        yaw_deg: r4c(b.yaw),
+        state: b.state,
+        anim: b.anim,
+        anim_frame: b.animFrame,
+        invuln: b.iframe ? 1 : 0,
+        hitbox_active: b.hitboxActive ? 1 : 0,
+        hurtboxes: b.rig.dumpHurtboxes(tmp).map((h) => ({ ...h })),
+        bones: b.rig.dumpBones([]).map((x) => ({ ...x })),
+        weapon: {
+          socket_a: b.moves._weapon.socket_a, socket_b: b.moves._weapon.socket_b,
+          r: b.move ? b.move.hitbox_radius_m : b.moves._weapon.radius_m,
+          now: [r4c(b.socketA[0]), r4c(b.socketA[1]), r4c(b.socketA[2]), r4c(b.socketB[0]), r4c(b.socketB[1]), r4c(b.socketB[2])],
+          prev: [r4c(b.prevA[0]), r4c(b.prevA[1]), r4c(b.prevA[2]), r4c(b.prevB[0]), r4c(b.prevB[1]), r4c(b.prevB[2])],
+        },
+      };
+      out.actors.push(rec);
+    }
+    return out;
   }
 
   /** Which renderable cell the current environment corresponds to. */
@@ -260,7 +399,7 @@ export class Engine {
    * and after its timing window has closed.
    */
   _step() {
-    stepOnce(this.sim, this.input, this.moves, this.bus);
+    stepOnce(this.sim, this.input, this.combat, this.bus);
   }
 
   /**
@@ -273,6 +412,10 @@ export class Engine {
     if (this.firstControlAt === null && this.sim.frame > 0) this.firstControlAt = wallNow();
     if (this.trace) {
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
+    }
+    if (this.combatTrace) {
+      const ev = this.bus.snapshotInto([]).slice();
+      this.combatTrace.records.push(combatFrame(this.combat, this.sim.frame - 1, this.input, ev, this.sim.camera));
     }
   }
 
@@ -306,6 +449,9 @@ export class Engine {
     e.pos[1] = this.groundAt(e.pos[0], e.pos[2]);
     e.anchor[1] = e.pos[1];
     this.sim.addEntity(e);
+    const body = this.combat.spawnEnemy(eid, this.data.enemies[id], e.pos[0], e.pos[2], e.yaw);
+    body.pos[1] = e.pos[1];
+    body.evaluateRig(0);
     quantiseColdState(this.sim);
     this.sim.nextEid++;
     return eid;
@@ -315,6 +461,7 @@ export class Engine {
     const i = this.sim.entities.findIndex((e) => e.eid === eid);
     if (i < 0) throw new Error(`despawn('${eid}'): no such entity`);
     this.sim.entities.splice(i, 1);
+    this.combat.despawn(eid);
     return true;
   }
 
@@ -323,11 +470,14 @@ export class Engine {
     if (!e) throw new Error(`aggro('${eid}'): no such entity`);
     e.alert = 100;
     e.alertState = 'AGGRO';
+    const ec = this.combat.enemies.get(eid);
+    if (ec) { ec.alert = 100; ec.alertState = 'AGGRO'; ec.b.aggro = true; }
     return true;
   }
 
   lockOn(eid) {
     if (eid !== null && !this.sim.findEntity(eid)) throw new Error(`lockOn('${eid}'): no such entity`);
+    this.combat.setLock(eid);
     this.sim.player.lockOn = eid;
     this.sim.camera.mode = eid ? 'locked' : 'free';
     return true;
@@ -339,6 +489,13 @@ export class Engine {
     p.pos[2] = Number(z);
     p.pos[1] = opts.y !== undefined ? Number(opts.y) : this.groundAt(p.pos[0], p.pos[2]);
     if (opts.yaw !== undefined) p.yaw = Number(opts.yaw);
+    if (this.combat && this.combat.player) {
+      const b = this.combat.player;
+      b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];
+      if (opts.yaw !== undefined) b.yaw = p.yaw;
+      b.hasPrev = false;
+      b.evaluateRig(0);
+    }
     this._settleCamera();
     quantiseColdState(this.sim);
     return true;
@@ -907,3 +1064,5 @@ async function loadData(onBytes) {
   }
   return out;
 }
+
+function r4c(v) { return Math.round(v * 1e4) / 1e4; }

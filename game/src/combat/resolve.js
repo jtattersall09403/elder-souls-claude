@@ -38,8 +38,32 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
       const B = bodies[bi];
       if (B === A || B.dead || B.yielded) continue;
       if (B.side === A.side) continue;                        // no friendly fire in wave 1
-      const key = `${A.id}#${A.swingSeq}`;
       if (A.hitThisSwing.has(B.id)) continue;                 // §E rule 3, de-dup
+
+      // ---- (0) parry, before the sweep -------------------------------------------------
+      // A parry catches the SWING, not the blade: it fires on the attacker's first active
+      // frame if the defender's declared parry window is open, the attacker is in front and
+      // in range. RI-CMB05 §D. Unparryable attacks are declared per-move in the statblock.
+      if (B.move && B.move.kind === 'parry' && !A.move.unparryable) {
+        const pf = B.animFrame;
+        const w = B.move.parry_window;
+        if (pf >= w[0] && pf <= w[1]) {
+          const dx = A.pos[0] - B.pos[0], dz = A.pos[2] - B.pos[2];
+          const d = Math.hypot(dx, dz);
+          const front = Math.abs(angleDelta(B.yaw, bearingDeg(dx, dz)));
+          if (d <= (A.move.reach_m_declared || 2.5) + 0.6 && front <= 70) {
+            A.hitThisSwing.add(B.id);
+            const frames = C.poise.criticals.parry.parried_state.frames;
+            A.beginParried(frames, frame);
+            const e = emit(frame, 'PARRY');
+            e.src = B.id; e.who = A.id; e.atk = A.move.id; e.parry_frame = pf;
+            e.window = w; e.frames = frames;
+            e.riposte_window = C.poise.criticals.parry.parried_state.riposte_window;
+            sim.hitstopUntil = frame + 10;
+            continue;
+          }
+        }
+      }
 
       // ---- step 8: sweep -------------------------------------------------------------
       let bestSub = -1, bestHb = null;

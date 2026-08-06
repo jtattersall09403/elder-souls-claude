@@ -15,18 +15,18 @@
 
 import { armSim, disarmSim } from '../core/guards.js';
 import { quantiseSaveGrid } from './state.js';
-import { stepPlayer } from './player.js';
-import { stepEntities } from './entities.js';
 import { stepCamera } from './camera.js';
+import { stepCombat } from './combat-bridge.js';
 
-export function stepOnce(sim, input, moves, bus) {
+export function stepOnce(sim, input, combat, bus) {
   armSim();
   try {
     bus.clear();
     input.latchForStep(sim.frame);
     sim.input = input;
-    stepPlayer(sim, input, moves, bus);
-    stepEntities(sim, bus);
+    // W1-09 owns steps 1-9 of RI-CMB04 §A's per-frame order; the bridge mirrors the result
+    // into the W1-00 state the save, the renderer and elder-souls/trace@1 read.
+    stepCombat(sim, input, combat, bus);
     stepCamera(sim);
     // The state the frame ends in must be a state the save can hold exactly (RI-JRN05 §C
     // rule 3 vs HF1 — see sim/state.js quantiseSaveGrid). Allocation-free.
