@@ -27,6 +27,42 @@ export const CONTEXTUAL_STATES = {
   'guard.counter': 'BLOCK_SUCCESS', '2h.guard.counter': 'BLOCK_SUCCESS',
 };
 
+/**
+ * The seven ids W1-09's class spine shipped, mapped onto the roster baseline of the same class.
+ *
+ * W1-10 round 1 shipped 87 movesets that the running game could not reach: `createPlayer()` read
+ * `game/data/combat/spine/*.json` and answered every roster id with
+ * "no moveset 'ssw_garrison_sword'. Known: axe, dagger, greatsword, ...". Rather than keep two
+ * move sources in the game and hope they agree, the spine ids are now ALIASES: `straight-sword`
+ * IS `ssw_garrison_sword`. Every scenario file, every W1-09 probe and every saved loadout keeps
+ * working, and there is exactly one attack code path in the build, so "the data says one thing
+ * and the runtime does another" is not a state this game can be in.
+ */
+export const SPINE_ALIASES = {
+  dagger: 'dgr_shell_knife',
+  'straight-sword': 'ssw_garrison_sword',
+  spear: 'spr_fishers_gig',
+  axe: 'axe_shell_splitter',
+  halberd: 'hlb_garrison_bill',
+  greatsword: 'gsw_memorial_blade',
+  'ultra-greatsword': 'ugs_golem_sword',
+};
+
+/**
+ * RI-CMB05 owns the hyperarmour pools and the crit multipliers, and publishes them for the seven
+ * spine classes only. The eight classes RI-WPN02 §A adds have no RI-CMB05 row, so each is mapped
+ * to its nearest anchor rather than given an invented number. Declared here, not smuggled.
+ */
+export const CLASS_KEY = {
+  DGR: 'dagger', FST: 'dagger', CSW: 'straight_sword', TSW: 'straight_sword',
+  SSW: 'straight_sword', SPR: 'spear', AXE: 'axe', MCE: 'axe', WHP: 'spear',
+  HLB: 'halberd', GSW: 'greatsword', CGS: 'greatsword', GHM: 'greatsword',
+  UGS: 'ultra_greatsword', BOW: 'dagger',
+};
+
+/** Distance from the grip hand to the guard, metres. RI-CMB04 §B's rig convention. */
+export const GRIP_OFFSET_M = 0.10;
+
 export class MovesetLibrary {
   /**
    * @param {object} registry game/data/weapons/clip-registry.json
@@ -38,6 +74,73 @@ export class MovesetLibrary {
     this.classes = classes;
     this.movesets = movesets;
     this._clipCache = new Map();
+  }
+
+  /** Resolve a spine alias or a roster id to a roster weapon id. Throws if neither. */
+  resolveWeaponId(id) {
+    const w = SPINE_ALIASES[id] || id;
+    if (!this.movesets[w]) {
+      throw new Error(`moveset: unknown weapon '${id}'. ${Object.keys(this.movesets).length} roster ids ` +
+        `plus the seven spine aliases (${Object.keys(SPINE_ALIASES).join(', ')}).`);
+    }
+    return w;
+  }
+
+  /**
+   * The two socket distances, in metres from the grip hand, for one slot.
+   *
+   * ONE function, used by the live hitbox in `CombatBody.evaluateRig` AND by `clipTrack`, which
+   * is what the harness reports as the declared clip. RI-WPN04 §D T4 compares them; they cannot
+   * disagree because they are the same arithmetic. `socket_b` is the clip's own blade length
+   * (`reach − lunge − arm`, from the clip registry) and `socket_a` is `hitbox_span_m` back from
+   * the tip, floored at the grip — a sword is edged over almost its whole length and an axe only
+   * at the head, which is the difference RI-WPN05 §E's tip-speed band exists to see.
+   */
+  socketsFor(weaponId, slotId) {
+    const clip = this.clipFor(weaponId, slotId);
+    const cls = this.classes.classes[this.movesets[weaponId].class];
+    const b = clip.capsuleLength;
+    const span = cls && cls.hitbox_span_m !== undefined ? cls.hitbox_span_m : b;
+    return { a: Math.max(GRIP_OFFSET_M, Math.round((b - span) * 1000) / 1000), b: Math.round(b * 1000) / 1000 };
+  }
+
+  /**
+   * The weapon block a move table needs: geometry derived from this weapon's own clips, and the
+   * four per-class numbers (`attack_rating`, `equip_weight`, `hitbox_span_m`, `parry_class`) that
+   * `game/data/weapons/classes.json` now carries. The seven anchor classes reproduce W1-09's
+   * spine values verbatim; the eight extension classes are derived and marked PROVISIONAL there.
+   */
+  weaponFor(weaponId) {
+    const key = 'W|' + weaponId;
+    let w = this._clipCache.get(key);
+    if (w) return w;
+    const ms = this.movesets[weaponId];
+    if (!ms) throw new Error(`moveset: unknown weapon '${weaponId}'`);
+    const cls = this.classes.classes[ms.class];
+    const lead = ms.slots['r1.1'] ? 'r1.1' : Object.keys(ms.slots)[0];
+    const s = this.socketsFor(weaponId, lead);
+    w = {
+      weapon_id: weaponId,
+      name: ms.name,
+      class: ms.class,
+      class_key: CLASS_KEY[ms.class] || 'straight_sword',
+      weight_tier: ms.weight_tier,
+      length_m: s.b,
+      capsule_length_m: Math.round((s.b - s.a) * 1000) / 1000,
+      radius_m: ms.slots[lead].hitbox.radius_m,
+      socket_a: ms.slots[lead].hitbox.bone_a,
+      socket_b: ms.slots[lead].hitbox.bone_b,
+      socket_a_dist_m: s.a,
+      socket_b_dist_m: s.b,
+      reach_m: ms.reach_m,
+      attack_rating: cls.attack_rating,
+      equip_weight: cls.equip_weight,
+      parry_class: cls.parry_class || null,
+      stance_default: 'one_handed',
+      source: 'game/data/combat/movesets/' + weaponId + '.json + game/data/weapons/classes.json',
+    };
+    this._clipCache.set(key, w);
+    return w;
   }
 
   /** The `Clip` for one slot of one weapon, instantiated at that slot's own frame counts. */
@@ -78,7 +181,10 @@ export class MovesetLibrary {
     if (!ms) throw new Error(`moveset: unknown weapon '${weaponId}'`);
     const w = this.classes.contextual_windows;
     const pre = ctx.stance === 'two_hand' ? '2h.' : '';
-    const has = (id) => Object.prototype.hasOwnProperty.call(ms.slots, id);
+    // `extra_slots` are verbs the LOADOUT adds rather than the weapon: RI-WPN06 §C's
+    // `shield.bash` / `shield.charge` belong to the offhand, not to the moveset document.
+    const extra = ctx.extra_slots && ctx.extra_slots.length ? new Set(ctx.extra_slots) : null;
+    const has = (id) => Object.prototype.hasOwnProperty.call(ms.slots, id) || !!(extra && extra.has(id));
     const pick = (id, reason) => (has(id) ? { slot: id, reason } : { slot: null, reason: `${reason}:absent` });
 
     // --- weapon art: heavy while two_hand is HELD. Checked first because it shadows r2. -------
@@ -116,10 +222,34 @@ export class MovesetLibrary {
     }
 
     // --- block success -> guard counter -------------------------------------------------------
+    // RI-WPN01 §A slot 16 / RI-WPN04 §B: `light` within 40 f@60 of a BLOCK_SUCCESS. The block
+    // must have been landed ONE-HANDED behind a shield (RI-WPN06 §C: O1 is the only configuration
+    // with a guard counter), but `2h.guard.counter` is reachable in the one transitional case
+    // offhand.json §o3 names — two-handing INSIDE the 40-frame window, which the 36 f@60
+    // uncancellable stance switch makes real, tight and deliberately awkward.
     if (ctx.state === 'BLOCK_SUCCESS' && button === 'light') {
       if (ctx.state_frame > w.guard_counter_f) return { slot: null, reason: 'guard_counter:expired' };
-      if (ctx.stance !== 'one_hand' || !ctx.offhand_shield) return { slot: null, reason: 'guard_counter:needs-o1' };
-      return pick('guard.counter', 'guard.counter');
+      if (!ctx.blocked_with_shield) return { slot: null, reason: 'guard_counter:needs-o1' };
+      return pick(pre + 'guard.counter', 'guard.counter');
+    }
+
+    // --- guard raised (no successful block yet) -> the guard-break verb -------------------------
+    // RI-WPN06 §C gives O1 a `shield.bash` on `light` + forward WITH THE SHIELD RAISED, and
+    // RI-WPN01 §A slot 17 gives every weapon a `guardbreak` on `light` + forward from IDLE. The
+    // `forward` modifier exists so that a kick is never mistaken for a swing you meant — with the
+    // guard already up that ambiguity does not exist, because the shield is what is in front of
+    // you and the weapon is not in a swinging posture. So `light` behind a raised guard is the
+    // shove, not the standing R1: pressing attack from behind a shield must not silently drop the
+    // shield and play `r1.1`, which is exactly the fallback RI-WPN04 exists to detect.
+    // `guardbreak` is the one slot RI-WPN04 §D T7 exempts from the no-free-contextual rule.
+    if (ctx.state === 'BLOCK_HOLD') {
+      if (button === 'light') {
+        if (ctx.offhand_shield && has('shield.bash')) return pick('shield.bash', 'shield.bash');
+        return pick('guardbreak', 'guardbreak');
+      }
+      if (button === 'heavy') return { slot: null, reason: 'block:no-heavy-from-guard' };
+      if (button === 'parry') return pick('parry', 'parry');
+      return { slot: null, reason: 'block:other-button' };
     }
 
     // --- sprint -------------------------------------------------------------------------------
@@ -224,14 +354,13 @@ export class MovesetLibrary {
    */
   clipTrack(rig, weaponId, slotId) {
     const clip = this.clipFor(weaponId, slotId);
-    const cap = clip.capsuleLength;
-    const grip = this.classes.grip_offset_m === undefined ? 0.10 : this.classes.grip_offset_m;
+    const sock = this.socketsFor(weaponId, slotId);
     const out = { clip: clip.id, frames: clip.total, root: [], a: [], b: [] };
     const pos = [0, 0, 0];
     for (let f = 1; f <= clip.total; f++) {
       pos[2] = clip.rootForwardAt(f);
       clip.applyPose(rig, f);
-      rig.evaluate(pos, 0, clip.rootOffsetYAt(f), grip, grip + cap);
+      rig.evaluate(pos, 0, clip.rootOffsetYAt(f), sock.a, sock.b);
       out.root.push([0, clip.rootOffsetYAt(f), pos[2]]);
       out.a.push([...rig.socketA]);
       out.b.push([...rig.socketB]);

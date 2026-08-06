@@ -1329,7 +1329,7 @@
   },
   "secondary_observations": [
     {
-      "what": "THE BUILD DOES NOT BOOT. game/data/index.json lists dialogue/topics/thorn.json; commit 65275dc (W1-18) deleted that file and did not update the manifest, so Engine._boot throws 'data file missing: dialogue/topics/thorn.json (404)' and every harness command in the repository fails at ready(). I restored the file from 65275dc^ into the worktree to take any measurement at all, and deleted it again before finishing, so the tree is as I found it. This belongs to W1-18, not to W1-01, but it means every reports/*.json in the tree was produced against a build that no longer starts, and no wave-1 verdict can be reproduced today without the same workaround. A manifest/disk consistency check belongs in tools/corpus-index.mjs --check or in a pre-commit hook.",
+      "what": "THE BUILD DOES NOT BOOT. game/data/index.json lists dialogue/topics/thorn.json; commit 65275dc (W1-18) deleted that file and did not update the manifest, so Engine._boot throws 'data file missing: dialogue/topics/thorn.json (404)' and every harness command in the repository fails at ready(). I restored the file from 65275dc^ into the worktree to take any measurement at all, and deleted it again before finishing, so the tree is as I found it. This belongs to W1-18, not to W1-01, but it means every reports/*.json in the tree was produced against a build that no longer starts, and no wave-1 verdict can be reproduced today without the same workaround. A manifest/disk consistency check belongs in tools/corpus-index.mjs --check or in a pre-commit hook. FIXED MID-SESSION BY ANOTHER AGENT: commit d86fc4a ('round-2 critic artifacts (W1-01-r2, W1-09-r2); restore dialogue topic thorn.json') restored the file while I was writing this verdict, and game/data/index.json now lists 306 files with 0 missing. The finding stands as a record of the state the build was in when every measurement above was taken, and as the reason a manifest/disk consistency check belongs in tools/corpus-index.mjs --check: nothing in the repository would have caught this, and it was found by a critic tripping over it.",
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-01-r2/RESTORED-thorn.json.txt"
       ],
@@ -1431,7 +1431,7 @@
   "method_deviations": [
     {
       "what": "Restored game/data/dialogue/topics/thorn.json from 65275dc^ into the worktree for the duration of the run, and deleted it afterwards.",
-      "why": "The game does not boot without it: game/data/index.json lists the file, W1-18 deleted it, and Engine._boot throws before ready() returns. No harness measurement of any kind is possible in this tree otherwise. The file is dialogue content and cannot affect terrain, water, roads, locomotion, region props or travel.",
+      "why": "The game does not boot without it: game/data/index.json lists the file, W1-18 deleted it, and Engine._boot throws before ready() returns. No harness measurement of any kind is possible in this tree otherwise. The file is dialogue content and cannot affect terrain, water, roads, locomotion, region props or travel. Commit d86fc4a restored the file permanently later in the same session, so the worktree state I created and reverted is now the tree's own state.",
       "affects_scores": false
     },
     {

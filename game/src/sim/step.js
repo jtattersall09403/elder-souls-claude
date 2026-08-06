@@ -29,6 +29,13 @@ export function stepOnce(sim, input, combat, bus) {
     bus.clear();
     input.latchForStep(sim.frame);
     sim.input = input;
+    // W1-07: the dialogue surface consumes the latched input BEFORE the fight sees it. It is
+    // inside the step because a census answer is a simulation event — it emits
+    // `creation_field` into the trace and writes the character — and because RI-JRN01 O17's
+    // gamepad path has to arrive through exactly the same latch a swing does. While the
+    // surface is open it eats `move`, `interact` and `block`, so walking a birthsign list
+    // does not also walk the body across the room.
+    if (sim.censusDriver) sim.censusDriver(input);
     // W1-09 owns steps 1-9 of RI-CMB04 §A's per-frame order; the bridge mirrors the result
     // into the W1-00 state the save, the renderer and elder-souls/trace@1 read.
     stepCombat(sim, input, combat, bus);
@@ -56,11 +63,6 @@ export function stepOnce(sim, input, combat, bus) {
     // W1-07: the people. After physics so a person turns to face the position the trace
     // reports this frame, before the camera so a dialogue-facing turn is not one frame late.
     if (sim.npcs.length) stepNPCs(sim, bus);
-    // W1-07: the dialogue surface consumes the latched input for this frame. It is inside
-    // the step because a census answer is a simulation event — it emits `creation_field`
-    // into the trace and writes the character — and because O17's gamepad path has to arrive
-    // through exactly the same latch the keyboard path does.
-    if (sim.censusDriver) sim.censusDriver(input);
     // W1-15: stealth and crime. AFTER the fight and after physics, so V, the sound radius and
     // every civilian's suspicion are computed from the same positions the trace reports on this
     // frame; BEFORE the camera, so a CHALLENGE latched on frame N appears in frame N's record.

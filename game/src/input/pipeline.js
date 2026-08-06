@@ -231,6 +231,26 @@ export class InputPipeline {
   heldNames() { return maskToNames(this.held, this._names); }
   pressedNames() { return maskToNames(this.pressed, this._names2); }
 
+  /**
+   * A UI surface has taken this frame's navigation input; the character must not also walk
+   * or swing on it. Clears the movement axes and the named actions' press/held bits for
+   * THIS step only — the next latch rebuilds them from the device as normal.
+   *
+   * This is the one place a surface is allowed to eat input, and it is deliberate: without
+   * it, walking a nine-item birthsign list on a stick would also walk the body across the
+   * Writ House while you did it.
+   */
+  consumeUI(names) {
+    this.moveX = 0; this.moveY = 0;
+    for (let i = 0; i < names.length; i++) {
+      const b = bitOf(names[i]);
+      this.pressed &= ~b;
+      this.released &= ~b;
+      this.held &= ~b;
+    }
+    return true;
+  }
+
   /** Was this action pressed on the frame currently latched? Allocation-free. */
   pressedName(name) { return (this.pressed & bitOf(name)) !== 0; }
   heldName(name) { return (this.held & bitOf(name)) !== 0; }

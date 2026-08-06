@@ -578,6 +578,31 @@ export function installHarness(engine, bootPromise) {
     /** Which effects the player has actually CAST — what the resolution gate now reads. */
     getCastEffects() { return [...engine.magic.castEffects].sort(); },
     /**
+     * Plant an affliction, so the three cure effects have something to cure. Seam S11's
+     * Morrowind half (RI-PRG09) owns where afflictions COME FROM; this is the instrument that
+     * lets RI-MAG06 §B's `cure_*` rows be a paired read rather than an assertion.
+     */
+    addAffliction(id, kind, opts) {
+      const o = opts || {};
+      const rec = {
+        id: String(id), kind: String(kind),
+        incubation_in_frames: o.incubation_f === undefined ? 0 : Number(o.incubation_f),
+        duration_in_frames: o.duration_f === undefined ? 36000 : Number(o.duration_f),
+      };
+      engine.sim.quest.afflictions.push(rec);
+      engine.sim.quest.afflictions.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+      return engine.sim.quest.afflictions.map((a) => ({ id: a.id, kind: a.kind }));
+    },
+    /** Kill an entity outright, so a death-triggered consumer (`soul_trap`) has a death to read. */
+    killEntity(eid) {
+      const b = engine.combat.bodyOf(String(eid));
+      if (!b) throw new Error(`killEntity('${eid}'): no such body`);
+      b.hp = 0; b.dead = true; b.state = 'DEAD'; b.move = null; b.hitboxActive = false;
+      const e = engine.sim.findEntity(String(eid));
+      if (e) { e.hp = 0; e.state = 'DEAD'; }
+      return { eid: String(eid), dead: true };
+    },
+    /**
      * Apply damage to the player. `opts.stagger` routes it through the SAME reaction machinery
      * a real hit uses (`CombatBody.queueReaction`), so an interrupted cast is interrupted by
      * the state machine rather than by this method — which is the only way RI-MAG01 §D's

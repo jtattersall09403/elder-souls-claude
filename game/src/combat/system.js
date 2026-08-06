@@ -51,6 +51,9 @@ export class CombatSystem {
       haPool: (d.poise.hyperarmour.pools[moveset.class_key] || {}).one_handed || 0,
     });
     body.shieldId = shieldId;
+    // RI-CMB04 §A step 5 / RI-AI01 minimum standoff. Declared in hitgeometry.json rather than
+    // baked here so a critic can read the number without reading the source.
+    body.bodyRadius = (d.hitgeometry.bodies && d.hitgeometry.bodies.player_radius_m) || 0.40;
     body.twoHanded = !!moves._twoHanded;
     body.lockable = false;
     this._playerLoadout = Object.assign({}, loadout, { weapon: loadout.weapon || 'straight-sword', shield: shieldId });
@@ -84,6 +87,8 @@ export class CombatSystem {
     });
     body.pos[0] = x; body.pos[2] = z;
     body.yaw = yaw === undefined ? 180 : yaw;
+    const bcfg = this.d.hitgeometry.bodies || {};
+    body.bodyRadius = stat.radius_m !== undefined ? stat.radius_m : (bcfg.default_enemy_radius_m || 0.40);
     body.archetype = stat.archetype;
     body.tier = stat.tier;
     body.statId = stat.id;
@@ -162,6 +167,11 @@ export class CombatSystem {
       if (ec) ec.step(frame, ctx);
     }
 
+    // step 5, second clause — "resolve collision". Every actor has now consumed its root
+    // motion for the frame, so this is the last moment at which two bodies can be separated
+    // before anything reads their geometry.
+    this.resolveBodyCollision();
+
     // steps 8–9
     sweepAndResolve(this.bodies, this.d, frame, emit, sim);
 
@@ -170,6 +180,55 @@ export class CombatSystem {
     if (brk) { const e = emit(frame, 'LOCK_BREAK'); e.reason = brk; }
     if (camera) this.lock.measureFraming(camera, this.player, this.lock.target ? this.bodyOf(this.lock.target) : null, camera.fov, 16 / 9);
 
+  }
+
+  /**
+   * RI-CMB04 §A step 5's "resolve collision", and RI-AI01 §spacing's minimum standoff.
+   *
+   * Before this existed the step-order comment said `resolve collision` and nothing did, so
+   * two characters could stand at the same point. That is not a cosmetic omission: the W1-09
+   * round-2 verdict's single biggest consequence was "the correct way to fight this game's
+   * boss is to walk inside it and stand still", and half of why that worked is that walking
+   * inside it was possible at all. RI-AI01's own check fails a build whose enemy spends more
+   * than 0.35 of its AGGRO time inside the player.
+   *
+   * Deterministic by construction: one pass, bodies in stable id order, pure float arithmetic,
+   * no RNG, no iteration-count dependence. Two bodies at exactly the same point separate along
+   * the lower-id body's facing, which is a function of the state alone.
+   */
+  resolveBodyCollision() {
+    const cfg = this.d.hitgeometry.bodies;
+    if (!cfg) return;
+    const n = this.bodies.length;
+    for (let i = 0; i < n; i++) {
+      const A = this.bodies[i];
+      if (A.dead) continue;
+      for (let j = i + 1; j < n; j++) {
+        const B = this.bodies[j];
+        if (B.dead) continue;
+        const rA = A.bodyRadius, rB = B.bodyRadius;
+        const want = rA + rB;
+        let dx = B.pos[0] - A.pos[0], dz = B.pos[2] - A.pos[2];
+        let d = Math.hypot(dx, dz);
+        if (d >= want) continue;
+        if (d < 1e-6) {
+          const rad = A.yaw * Math.PI / 180;
+          dx = Math.sin(rad); dz = Math.cos(rad); d = 1;
+        }
+        const nx = dx / d, nz = dz / d;
+        const push = want - d;
+        // Who yields. A body consuming root motion from a committed move this frame is
+        // DRIVING and does not give ground; the other takes the whole displacement.
+        const drivingA = !!(A.move && A.lastRootDelta !== 0);
+        const drivingB = !!(B.move && B.lastRootDelta !== 0);
+        let shareA;
+        if (drivingA && !drivingB) shareA = 0;
+        else if (drivingB && !drivingA) shareA = 1;
+        else shareA = rB / (rA + rB);          // the smaller body moves further
+        A.displace(-nx * push * shareA, -nz * push * shareA);
+        B.displace(nx * push * (1 - shareA), nz * push * (1 - shareA));
+      }
+    }
   }
 
   /**

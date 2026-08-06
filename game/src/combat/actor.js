@@ -335,6 +335,19 @@ export class CombatBody {
     }
   }
 
+  /**
+   * RI-CMB04 §A step 5's second clause — "resolve collision" — applied as a pure horizontal
+   * translation of THIS frame's already-evaluated pose. See Rig.translate() for why the
+   * previous pose is left alone.
+   */
+  displace(dx, dz) {
+    if (dx === 0 && dz === 0) return;
+    this.pos[0] += dx; this.pos[2] += dz;
+    this.rig.translate(dx, dz);
+    this.socketA[0] += dx; this.socketA[2] += dz;
+    this.socketB[0] += dx; this.socketB[2] += dz;
+  }
+
   // ---- per-frame upkeep --------------------------------------------------------------------
 
   tickResources(frame, C) {

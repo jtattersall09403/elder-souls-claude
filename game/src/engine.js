@@ -46,7 +46,7 @@ import { StealthCrime, DET as STL_DET, THF as STL_THF, PP as STL_PP, JUS as STL_
 import { composeCharacter, signatureOf } from './character/sheet.js';
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
-import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, placeOfNode } from './character/scene.js';
+import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACTIONS, placeOfNode } from './character/scene.js';
 import { makeNPC } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
@@ -894,6 +894,9 @@ export class Engine {
     if (this._censusPending) return;
     const st = this.census.state();
     const r = this.censusSurface.step(input, st);
+    // The conversation has the input while it is open (RI-UIX03: it does not pause the sim,
+    // it only takes the buttons).
+    input.consumeUI(CENSUS_ACTIONS);
     if (r && r.committed) {
       this._censusPending = r;
       const ev = this.bus.emit(this.sim.frame, 'input_action');

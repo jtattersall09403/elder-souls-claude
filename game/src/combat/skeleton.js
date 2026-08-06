@@ -236,6 +236,27 @@ export class Rig {
     this.socketB[2] = hm[11] + this._dir[2] * socketBDist;
   }
 
+  /**
+   * Translate THIS frame's evaluated world pose — every bone, every hurtbox, both weapon
+   * sockets — without re-running the pose. Used by the step-5 collision resolve, which is a
+   * pure translation and therefore exactly representable this way; re-calling `evaluate()`
+   * would roll the previous pose forward a second time and destroy the sweep's history.
+   *
+   * `pa`/`pb` and the body's `prevA`/`prevB` are deliberately NOT touched: the previous frame
+   * really did happen where it happened, and a sweep that hid the push would hide the very
+   * displacement the push caused.
+   */
+  translate(dx, dz) {
+    if (dx === 0 && dz === 0) return;
+    for (let i = 0; i < this.world.length; i++) { this.world[i][9] += dx; this.world[i][11] += dz; }
+    for (let k = 0; k < this.hurtboxes.length; k++) {
+      const h = this.hurtboxes[k];
+      h.a[0] += dx; h.a[2] += dz; h.b[0] += dx; h.b[2] += dz;
+    }
+    this.socketA[0] += dx; this.socketA[2] += dz;
+    this.socketB[0] += dx; this.socketB[2] += dz;
+  }
+
   /** Zero every joint — the rest pose. */
   clearPose() {
     this.rx.fill(0); this.ry.fill(0); this.rz.fill(0);

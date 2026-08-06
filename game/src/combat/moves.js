@@ -93,7 +93,16 @@ export const ENEMY_STATE_ENUM = [
  */
 export function buildMoveTable(d, moveset, shieldId, opts) {
   const arch = d.clips.archetypes;
-  const wpn = moveset.weapon;
+  // W1-10. A roster moveset (elder-souls/moveset@1, `slots`) builds its ATTACKS from the slot
+  // table; the seven-class spine documents (`moves.light` / `moves.heavy`) are gone from the
+  // runtime and their ids are aliases onto the roster baselines (moveset.js §SPINE_ALIASES).
+  // Everything below the attack block — rolls, parry, criticals, heal, parley, jump, stance,
+  // swap, the reaction states and the locomotion loops — is identical for both and is built once.
+  const roster = !!moveset.slots;
+  const lib = opts && opts.lib;
+  if (roster && !lib) throw new Error('buildMoveTable: a roster moveset needs opts.lib (MovesetLibrary)');
+  const wpn = roster ? lib.weaponFor(moveset.weapon_id) : moveset.weapon;
+  const classKey = roster ? wpn.class_key : moveset.class_key;
   const out = {};
   const socketA = wpn.socket_a_dist_m;
   const socketB = wpn.socket_b_dist_m;
@@ -103,7 +112,75 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
   // a DIFFERENT pose archetype, amplitude and root displacement — RI-WPN06 §B's divergence
   // clause — on top of RI-CMB02 §C's ×1.00 frame counts, ×1.15 stamina, ×1.15 motion value and
   // ×1.30 poise damage, plus §C's R1 hyperarmour on axe / greatsword / ultra greatsword.
-  const twoHanded = !!(opts && opts.twoHanded) && !!moveset.moves.two_handed;
+  const twoHanded = !!(opts && opts.twoHanded) && (roster ? true : !!moveset.moves.two_handed);
+  if (roster) {
+    // ---- ONE MOVE PER DECLARED SLOT ---------------------------------------------------------
+    // RI-WPN01 §B: the slot table is the declaration and the trace is the observation, and they
+    // agree because there is only one of them. `anim`, the frame triple, the arc, the shape, the
+    // root track and the hyperarmour window are read straight off the slot; nothing is derived
+    // from `r1.1` by a multiplier anywhere in this build.
+    const stanceMul = moveset.stance || {};
+    for (const [slotId, s] of Object.entries(moveset.slots)) {
+      const clip = lib.clipFor(moveset.weapon_id, slotId);
+      const sock = lib.socketsFor(moveset.weapon_id, slotId);
+      const charge = s.charge_max_f || 0;
+      const total = s.startup_f + charge + s.active_f + s.recovery_f;
+      const startup = s.startup_f + charge;
+      const ha = s.hyperarmour && s.hyperarmour.enabled ? [s.hyperarmour.from_f, s.hyperarmour.to_f] : null;
+      out[slotId] = {
+        id: slotId,
+        slot: slotId,
+        kind: 'attack',
+        anim: s.anim,
+        anim_owner: s.anim_owner,
+        archetype: (lib.registry[s.anim] && lib.registry[s.anim].family) || null,
+        clip,
+        startup,
+        Ps: startup + 1,
+        active: s.active_f,
+        recovery: s.recovery_f,
+        total,
+        charge_max_f: charge,
+        charge_ramp: s.charge_ramp || null,
+        chains_to: s.chains_to || null,
+        chain_index: s.chain_index || 1,
+        stamina: s.stamina,
+        poise_damage: s.poise_damage,
+        motion_value: s.motion_value,
+        shape: s.shape,
+        arc_sweep_deg: s.arc_sweep_deg,
+        answers: s.answers || [],
+        hyperarmour_window: ha,
+        hyperarmour_poise_multiplier: s.hyperarmour && s.hyperarmour.poise_multiplier,
+        hitbox: true,
+        hitbox_radius_m: s.hitbox.radius_m,
+        multi_hit: s.hitbox.multi_hit || 0,
+        socket_a_dist_m: sock.a,
+        socket_b_dist_m: sock.b,
+        socket_a: s.hitbox.bone_a,
+        socket_b: s.hitbox.bone_b,
+        hitstop_f_table: s.hitstop_f || null,
+        hitstop_frames: (s.hitstop_f || (opts && opts.hitstopByTier) || {}).flesh || 6,
+        root_dz_m: s.root_dz_m,
+        reach_m_declared: moveset.reach_m,
+        two_handed: slotId.startsWith('2h.'),
+        off_hand: slotId.startsWith('off.'),
+        iframes: null,
+        hard_until: startup + s.active_f + Math.ceil(0.45 * s.recovery_f),
+        dodge_cancel_from: startup + s.active_f + Math.ceil(0.45 * s.recovery_f) + 1,
+        states: { startup: 'ATK_STARTUP', active: 'ATK_ACTIVE', recovery: 'ATK_RECOVER' },
+        source: 'RI-WPN01 §B slot table, game/data/combat/movesets/' + moveset.weapon_id + '.json',
+      };
+    }
+    // W1-09 named its two attacks `light` and `heavy`, and RI-CMB02 M1's fourteen-row frame
+    // census reads them by those names. They are ALIASES onto the stance's chain root and heavy,
+    // not copies: `out.light === out['r1.1']` is an identity, so a census reading `light` and a
+    // trace reading `anim_slot: 'r1.1'` cannot report different frames.
+    const pre = twoHanded ? '2h.' : '';
+    out.light = out[pre + 'r1.1'] || out['bow.quick'] || out['r1.1'];
+    out.heavy = out[pre + 'r2'] || out['bow.aimed'] || out.r2;
+    out._stanceMul = stanceMul;
+  } else {
   for (const id of ['light', 'heavy']) {
     const base = moveset.moves[id];
     const m = twoHanded ? Object.assign({}, base, moveset.moves.two_handed[id]) : base;
@@ -140,6 +217,7 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
       states: { startup: 'ATK_STARTUP', active: 'ATK_ACTIVE', recovery: 'ATK_RECOVER' },
       source: m.source,
     };
+  }
   }
 
   // ---- rolls and backsteps, one per equip-load tier (RI-CMB01 §B) ------------------------

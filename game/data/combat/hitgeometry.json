@@ -69,6 +69,20 @@
     ]
   },
 
+  "bodies": {
+    "_source": "RI-CMB04 §A step 5 — 'consume root motion -> apply clip root delta to controller, RESOLVE COLLISION' — and RI-AI01 §spacing, 'Minimum standoff: enemy capsule may not overlap player capsule; separation force applies below 0.9 m', whose M-check FAILS a build for chase-bot if `min_dist_dwell > 0.35` because 'the enemy is standing inside the player'.",
+    "_why_it_is_here_now": "Step 5 said `resolve collision` and nothing resolved anything: two characters could occupy the same point. The W1-09 round-2 verdict's headline consequence — 'the correct way to fight this game's boss is to walk inside it and stand still' — needs BOTH halves fixed. S26's body hazard makes standing there cost you; this makes standing there impossible, which is the half Souls actually relies on.",
+    "player_radius_m": 0.40,
+    "default_enemy_radius_m": 0.40,
+    "_enemy_radius_source": "each enemy statblock's own `radius_m` (champion_hist_marked = 0.5), falling back to default_enemy_radius_m",
+    "separation": {
+      "rule": "After every actor has consumed its root motion for the frame, any pair whose horizontal centres are closer than rA + rB is pushed apart along the horizontal line between them until they exactly touch. The push is applied to the CURRENT frame's world pose only — the previous frame's pose is history and is never rewritten — so the sweep still sees the true motion the actor underwent, push included.",
+      "share": "An actor executing a committed move with non-zero root motion this frame is DRIVING and does not yield; the other actor takes the whole displacement. A charging champion shoves the player; the player does not shove the champion aside by leaning on it. If both drive or neither does, the displacement is split in inverse proportion to radius, so the smaller body moves further.",
+      "degenerate_axis": "exactly coincident centres separate along the first-listed actor's facing, which is deterministic and seed-independent",
+      "no_vertical_component": "separation is horizontal only; jumping over an enemy is not blocked by it"
+    }
+  },
+
   "body_hazard": {
     "_source": "ARBITRATION.md seam ruling S26 (wave 1), which is a POSITIVE REQUIREMENT binding on every attack, player and enemy alike: \"an attack's swept volume MUST cover the whole of the attacker's root translation during its active frames — the convex hull of the poses, not a capsule at the destination. An attack that moves the attacker forward and tests only where it ended has a hole behind it exactly as deep as it travelled.\"",
     "_what_the_defect_actually_was": "The W1-09 round-2 critic diagnosed the hole as the weapon sweep failing to include the attacker's root delta. Measured frame by frame (tools/harness/cmb-reach.mjs --probe mechanism), that is NOT what happens: CombatBody.evaluateRig() already double-buffers the weapon sockets in WORLD space, root motion is applied to pos[] before the rig is evaluated, and the per-frame swept hull therefore already spans the root delta. The hole is one level up. The champion's chop puts the near end of its weapon capsule 0.95 m in front of its own root at the first active frame and carries the root 0.79 m further forward during the active window, so the blade is ahead of a target standing at 0.8 m for every one of those frames and the attacker walks through the target untouched. The volume the ruling says must be covered — the corridor the ATTACKER'S OWN BODY sweeps — was not tested at all, by anything, on either side of the exchange.",

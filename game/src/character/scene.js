@@ -26,20 +26,23 @@
 export const CENSUS_PLACES = {
   'barge-hold': {
     interior: 'barge-hold',
+    // The body faces the person who is talking (yaw 329, the bearing to Jeeh-Ei); the CAMERA
+    // is turned 22 deg off that line, so she is beside your head rather than behind it. Seam
+    // S18 keeps the body in frame; RI-JRN01 M5 needs the interlocutor in it too.
     player_pos: [0.3, 0, -1.2],
-    player_yaw: 351,
+    player_yaw: 329,
     camera: { yaw: 351, pitch: -4 },
     name: 'The hold, two days out of Gideon',
   },
   'writ-house': {
     interior: 'writ-house',
-    // Seam S18: third person, always, and the body is in frame. The camera is turned 20 deg
-    // off the line to the speaker so the person you are answering is beside your own head
-    // rather than behind it — over-the-shoulder framing, exactly as RI-CAM05's dialogue rig
-    // wants it, and the reason RI-JRN01 M5's "is a 3D entity visible" check can pass.
-    player_pos: [0.55, 0, 0.5],
-    player_yaw: 20,
-    camera: { yaw: 20, pitch: -3 },
+    // You stand at the right-hand end of the desk and face the Warden-Scribe (bearing -25);
+    // the camera sits 15 deg to her side of that, so the desk, the ledger, the wall of
+    // eleven years of other people's reed-cases and the woman writing yours are all in
+    // frame behind the text.
+    player_pos: [1.9, 0, 0.3],
+    player_yaw: 320,
+    camera: { yaw: 350, pitch: -3 },
     name: 'The Writ House at Tidewrack',
   },
 };
@@ -53,8 +56,8 @@ export const CENSUS_CAST = {
     { id: 'jeeh-ei', pos: [-2.0, 0, 2.6], yaw: 149, behaviour: 'attend', notice_radius_m: 6.0, height_scale: 0.96 },
   ],
   'writ-house': [
-    { id: 'warden-scribe-tuleeh-ma', pos: [0, 0, 3.5], yaw: 180, behaviour: 'stand', notice_radius_m: 7.0, height_scale: 1.02 },
-    { id: 'clerk-avelia-doren', pos: [-3.7, 0, 3.0], yaw: 160, behaviour: 'stand', notice_radius_m: 4.0, height_scale: 0.98 },
+    { id: 'warden-scribe-tuleeh-ma', pos: [-1.0, 0, 3.5], yaw: 165, behaviour: 'stand', notice_radius_m: 7.0, height_scale: 1.02 },
+    { id: 'clerk-avelia-doren', pos: [-4.1, 0, 1.4], yaw: 120, behaviour: 'stand', notice_radius_m: 4.0, height_scale: 0.98 },
   ],
 };
 
@@ -70,6 +73,14 @@ export function placeOfNode(node) {
 const REPEAT_FIRST = 22;      // f@60 before a held stick starts repeating
 const REPEAT_EVERY = 7;       // f@60 between repeats thereafter
 const AXIS_DEADZONE = 0.45;
+
+/**
+ * The ONLY actions the census surface uses, and therefore the only ones it takes away from
+ * the character while it is open. Three names out of a sixteen-name closed set: a direction,
+ * a yes and a no. That is the whole control scheme of character creation, and it is why the
+ * scene completes identically on a keyboard, on a pad and under a thumb.
+ */
+export const CENSUS_ACTIONS = ['interact', 'block', 'light', 'heavy', 'roll'];
 
 export class CensusSurface {
   constructor(data) {

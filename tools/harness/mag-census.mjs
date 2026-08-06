@@ -83,7 +83,7 @@ try {
       H.setWillpower(99);
       H.setCatalyst('great_staff');
       H.setMagicSkills({ sorcery: 100, root_speech: 100, warding: 100, veiling: 100 });
-      H.setStealthState({ sneak: 40, security: 40, agility: 40, load: 'medium', surface: 'boardwalk', crouched: true });
+      H.setStealthState({ sneak: 40, security: 40, agility: 40, load: 'medium', surface: 'timber', crouched: true });
       H.setEquipLoad(24);
       H.hearthRest();
       H.magicEventsDrain();
@@ -204,7 +204,7 @@ try {
       restore_health: (r) => ({ consumer: 'caster.hp', delta: { healed: num(r.after.player.hp) - num(r.before.player.hp) }, functions: num(r.after.player.hp) > num(r.before.player.hp) }),
       restore_attribute: (r) => ({ consumer: 'progression.attributes', delta: { before: r.before.player.attributes, after: r.after.player.attributes }, functions: differs(r.before.player.attributes, r.after.player.attributes) }),
       fortify_attribute: (r) => ({ consumer: 'progression.attributes', delta: { before: r.before.player.attributes, after: r.mid ? r.mid.player.attributes : r.after.player.attributes }, functions: !!r.mid && differs(r.before.player.attributes, r.mid.player.attributes) }),
-      fortify_skill: (r) => ({ consumer: 'the gate (skills)', delta: { before: r.before.stealth, after: r.mid ? r.mid.stealth : null }, functions: !!r.mid && r.mid.stealth.V !== undefined && differs(r.before.stealth.magic, r.mid.stealth.magic) === false && r.fortifyMoved === true }),
+      fortify_skill: (r) => ({ consumer: 'the gate being probed (lockGate at tier 3)', delta: r.gate || null, functions: r.fortifyMoved === true }),
       feather: (r) => ({ consumer: 'equip_load_pct + roll_class', delta: { before: r.before.player.equip_load_pct, mid: r.mid ? r.mid.player.equip_load_pct : null, class_before: r.before.player.roll_class, class_mid: r.mid ? r.mid.player.roll_class : null }, functions: !!r.mid && r.mid.player.equip_load_pct < r.before.player.equip_load_pct }),
       burden: (r) => ({ consumer: 'equip_load_pct + roll_class (target)', delta: { status_before: null, status_mid: r.mid ? r.mid.status : null }, functions: !!r.mid && r.mid.status.some((s) => s.id !== 'P' && s.equip_load_pct > 24) }),
       levitate: (r) => ({ consumer: 'pos[1] + drift + input acceptance', delta: r.lev || null, functions: !!(r.lev && r.lev.pos_y_peak > 0.5 && r.lev.drift_ok && r.lev.denied_all && r.lev.no_iframes) }),
@@ -214,7 +214,7 @@ try {
       breathe_water: (r) => ({ consumer: 'water band drown timer', delta: { before: r.before.world.water, after: r.mid ? r.mid.world.water : null }, functions: !!r.mid && r.mid.world.water.breathes === true }),
       night_eye: (r) => ({ consumer: 'stealth perceived light', delta: { before: r.before.stealth.magic, mid: r.mid ? r.mid.stealth.magic : null }, functions: !!r.mid && r.mid.stealth.magic.night_eye_bonus > 0 && r.mid.stealth.magic.perceived_light > r.before.stealth.magic.perceived_light }),
       chameleon: (r) => ({ consumer: 'stealth.V', delta: { V_before: r.before.stealth.V, V_mid: r.mid ? r.mid.stealth.V : null, pct: r.mid ? r.mid.stealth.magic.chameleon_pct : null }, functions: !!r.mid && r.mid.stealth.V < r.before.stealth.V && r.mid.stealth.magic.chameleon_pct <= 80 }),
-      invisibility: (r) => ({ consumer: 'stealth.V + break rules', delta: { V_before: r.before.stealth.V, V_mid: r.mid ? r.mid.stealth.V : null, broke: r.broke }, functions: !!r.mid && r.mid.stealth.V < r.before.stealth.V && r.broke === true }),
+      invisibility: (r) => ({ consumer: 'stealth.V + break rules', delta: r.invis || null, functions: !!(r.invis && r.invis.v_during < r.before.stealth.V && r.invis.broke === true && r.invis.restored === true) }),
       muffle: (r) => ({ consumer: 'stealth.sound_r_m', delta: { before: r.before.stealth.sound_r_m, mid: r.mid ? r.mid.stealth.sound_r_m : null }, functions: !!r.mid && r.mid.stealth.sound_r_m < r.before.stealth.sound_r_m }),
       false_face: (r) => ({ consumer: 'stealth.race + civilian suspicion', delta: { before: r.before.stealth.race, mid: r.mid ? r.mid.stealth.race : null, disguised: r.mid ? r.mid.stealth.magic.disguised : null }, functions: !!r.mid && r.mid.stealth.magic.disguised === true }),
       detect_life: (r) => ({ consumer: 'diegetic markers, HUD count 0', delta: { markers: r.mid ? r.mid.world.markers.length : 0, hud: r.mid ? r.mid.world.hud_elements : null }, functions: !!r.mid && r.mid.world.markers.length > 0 && r.mid.world.hud_elements === 0 }),
@@ -245,8 +245,7 @@ try {
       cure_paralysis: (r) => ({ consumer: 'affliction register', delta: r.cure || null, functions: !!(r.cure && r.cure.removed) }),
       paralyse: (r) => ({ consumer: 'S11 buildup -> enemy state', delta: r.para || null, functions: !!(r.para && r.para.buildup_after_one > 0 && r.para.procced_only_after > 1 && r.para.state_stopped) }),
       silence: (r) => {
-        const a = r.after.status.find((s) => s.id !== 'P') || r.mid && r.mid.status.find((s) => s.id !== 'P');
-        const m = r.mid ? r.mid.status.find((s) => s.id !== 'P') : null;
+        const m = r.mid ? r.mid.status.find((x) => x.id !== 'P') : null;
         return { consumer: 'cast attempts (target.silenced)', delta: { silenced_mid: m ? m.silenced : null }, functions: !!(m && m.silenced) };
       },
       calm_beast: (r) => ({ consumer: 'alert_state + in_combat, zero deaths', delta: r.control || null, functions: !!(r.control && r.control.yielded && r.control.deaths === 0 && r.control.hp_fall === 0) }),
@@ -261,38 +260,235 @@ try {
 
     // =========================================================================================
     // Per-effect specialised runs. These are the ones whose consuming system needs a scripted
-    // provocation (a hit to mitigate, an affliction to cure, a death to trap, a fall to slow).
+    // PROVOCATION before there is anything to read: a hit to mitigate, an affliction to cure, a
+    // death to trap a soul from, a fall to slow. RI-MAG06 §"How we lose" names the failure this
+    // section exists to avoid — "judging the buff by the buff". Reading back
+    // `effects_active: [{effect: 'resist_element', magnitude: 69.48}]` looks exactly like a
+    // working resist; the only honest read is the damage number from an identical scripted hit.
     // =========================================================================================
-    const SPECIAL = {};
+
+    const castAndHold = (spellId, frames, opts) => {
+      const eid = arena(opts || { spawn: false });
+      H.setAttuned([spellId]);
+      H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+      for (let i = 0; i < frames; i++) H.stepFrames(1);
+      return eid;
+    };
 
     /** Mitigation: the same scripted 100-damage hit, with the buff and without. */
     const mitigationRun = (spellId) => {
       const measure = (cast) => {
-        arena({ spawn: false });
-        H.setAttuned([spellId]);
-        if (cast) {
-          H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
-          for (let i = 0; i < 120; i++) H.stepFrames(1);
-        } else {
-          for (let i = 0; i < 120; i++) H.stepFrames(1);
-        }
+        if (cast) castAndHold(spellId, 120, { spawn: false });
+        else { arena({ spawn: false }); H.setAttuned([spellId]); for (let i = 0; i < 120; i++) H.stepFrames(1); }
         const hp0 = H.getPlayerStats().hp;
         H.damagePlayer(100, { stagger: false });
-        return hp0 - H.getPlayerStats().hp;
+        return Math.round((hp0 - H.getPlayerStats().hp) * 100) / 100;
       };
-      return { without: measure(false), with: measure(true) };
+      const without = measure(false);
+      const w = measure(true);
+      return { without, with: w };
     };
 
     /** Cures: plant the affliction, then cast. */
     const cureRun = (spellId, kind) => {
       arena({ spawn: false });
       H.setAttuned([spellId]);
-      H.addAffliction({ id: `test_${kind}`, kind });
+      H.addAffliction(`test_${kind}`, kind);
       const before = (H.saveState().afflictions || []).map((a) => a.id);
       H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
       for (let i = 0; i < 120; i++) H.stepFrames(1);
       const after = (H.saveState().afflictions || []).map((a) => a.id);
       return { before, after, removed: before.length > after.length };
+    };
+
+    /**
+     * RI-MAG02 M4.1's four assertions, all of them, in one run. The wave-1 probe read the meter
+     * and never `pos[1]`, horizontal speed against a walk control, or whether the five buttons
+     * were dropped — which is exactly how a broken levitation passed 19/19.
+     */
+    const levitationRun = () => {
+      // control: how fast does this character WALK, with the stick fully forward?
+      arena({ spawn: false });
+      const wp0 = H.getPlayerStats().pos;
+      H.queueInputs([{ f: 1, move: [0, 1] }]);
+      for (let i = 0; i < 120; i++) H.stepFrames(1);
+      const wp1 = H.getPlayerStats().pos;
+      const walk = Math.hypot(wp1[0] - wp0[0], wp1[2] - wp0[2]) / 2;
+
+      // treatment: levitate, climb for 6 m, then drift.
+      const sp = 'levitate';
+      castAndHold(sp, 90, { spawn: false });
+      const f0 = H.getMagicState().focus;
+      H.queueInputs([{ f: 1, hold: ['jump'] }]);
+      let peakY = 0;
+      for (let i = 0; i < 460; i++) { H.stepFrames(1); peakY = Math.max(peakY, H.getMagicState().pos_y_m || 0); }
+      const climbed = H.getMagicState().altitude_m;
+      const f1 = H.getMagicState().focus;
+      const focusPerMetre = climbed > 0 ? (f0 - f1) / climbed : null;
+
+      // drift: stick fully forward while airborne.
+      H.clearInputs();
+      const dp0 = H.getPlayerStats().pos;
+      H.queueInputs([{ f: 1, move: [0, 1] }]);
+      let iframeSeen = false;
+      const states = new Set();
+      for (let i = 0; i < 120; i++) { H.stepFrames(1); const s = H.snapshot(); if (s.player.iframe) iframeSeen = true; states.add(s.player.state); }
+      const dp1 = H.getPlayerStats().pos;
+      const drift = Math.hypot(dp1[0] - dp0[0], dp1[2] - dp0[2]) / 2;
+
+      // the five denied buttons, injected one at a time.
+      H.clearInputs();
+      const denied = {};
+      for (const btn of ['light', 'heavy', 'block', 'roll', 'parry']) {
+        const s0 = H.snapshot().player.state;
+        H.queueInputs([{ f: 1, press: [btn] }, { f: 3, release: [btn] }]);
+        const seen = new Set();
+        for (let i = 0; i < 40; i++) { H.stepFrames(1); const s = H.snapshot(); seen.add(s.player.state); if (s.player.iframe) iframeSeen = true; }
+        denied[btn] = { stayed_airborne: [...seen].every((x) => x === 'AIRBORNE' || x === 'IDLE'), states: [...seen] };
+      }
+      const cap = D.cast_classes.levitation.horizontal_drift_mps;
+      return {
+        pos_y_peak: Math.round(peakY * 1000) / 1000,
+        altitude_m: climbed,
+        focus_per_metre: focusPerMetre === null ? null : Math.round(focusPerMetre * 1000) / 1000,
+        drift_mps: Math.round(drift * 1000) / 1000,
+        drift_cap_mps: cap,
+        walk_mps: Math.round(walk * 1000) / 1000,
+        drift_ok: drift <= cap + 0.05 && drift < walk,
+        states: [...states],
+        denied,
+        denied_all: Object.values(denied).every((d) => d.stayed_airborne),
+        no_iframes: !iframeSeen,
+      };
+    };
+
+    /** `slowfall`: a real fall, with and without, reading `pos[1]` per frame. */
+    const slowfallRun = () => {
+      const drop = (cast) => {
+        if (cast) castAndHold('slowfall', 90, { spawn: false });
+        else { arena({ spawn: false }); H.setAttuned(['slowfall']); for (let i = 0; i < 90; i++) H.stepFrames(1); }
+        H.dropFrom(30);
+        const hp0 = H.getPlayerStats().hp;
+        let maxV = 0;
+        for (let i = 0; i < 600; i++) { H.stepFrames(1); const f = H.getFallState(); maxV = Math.max(maxV, f.vel_mps); if (!f.airborne) break; }
+        return { max_v: Math.round(maxV * 100) / 100, damage: hp0 - H.getPlayerStats().hp, terminal: H.getFallState().terminal_mps };
+      };
+      const without = drop(false);
+      const w = drop(true);
+      return { without, terminal_mps: w.terminal, max_v: w.max_v, damage: w.damage, control_damage: without.damage };
+    };
+
+    /** `leap`: `pos[1]` peak after the cast, against the unbuffed jump. */
+    const leapRun = () => {
+      const jump = (cast) => {
+        if (cast) castAndHold('leap', 60, { spawn: false });
+        else { arena({ spawn: false }); H.setAttuned(['leap']); for (let i = 0; i < 60; i++) H.stepFrames(1); }
+        const mult = H.getFallState().jump_apex_mult;
+        H.queueInputs([{ f: 2, press: ['jump'] }, { f: 4, release: ['jump'] }]);
+        let peak = 0;
+        for (let i = 0; i < 90; i++) { H.stepFrames(1); peak = Math.max(peak, H.getPlayerStats().pos[1]); }
+        return { peak: Math.round(peak * 1000) / 1000, apex_mult: mult };
+      };
+      const a = jump(false), b = jump(true);
+      return { unbuffed_peak: a.peak, buffed_peak: b.peak, apex_mult: b.apex_mult, higher: b.peak > a.peak };
+    };
+
+    /** `paralyse`: buildup must cross a threshold over MULTIPLE contacts, never 0 -> applied. */
+    const paralyseRun = () => {
+      const eid = arena({ dist: 6 });
+      H.setAttuned(['the_grey_fuzz']);
+      const per = [];
+      let procAt = null, stopped = false;
+      for (let n = 1; n <= 5; n++) {
+        H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+        for (let i = 0; i < 130; i++) H.stepFrames(1);
+        const st = H.getStatusState().find((s) => s.id !== 'P');
+        per.push({ contact: n, buildup: st ? (st.buildup.paralysis || 0) : 0, paralysed: st ? st.paralysed : false });
+        if (!procAt && st && st.paralysed) procAt = n;
+        if (st && st.paralysed) stopped = H.getCombatState().enemies[0].state === 'PARALYSED';
+      }
+      const ev = H.magicEventsDrain();
+      return {
+        per_contact_series: per,
+        buildup_after_one: per[0] ? per[0].buildup : 0,
+        procced_only_after: procAt,
+        state_stopped: stopped,
+        threshold: 100,
+      };
+    };
+
+    /** The four control verbs: the fight ends, with ZERO death events and ZERO hp lost. */
+    const controlRunFor = (spellId, effect, archetype) => {
+      const eid = arena({ dist: effect === 'charm' ? 1.4 : 6, archetype: archetype || 'inf_trash' });
+      H.setAttuned([spellId]);
+      const cs0 = H.getCombatState().enemies[0];
+      const disp0 = JSON.stringify(H.getQuestState().dispositions);
+      H.combatTraceStart({});
+      H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+      for (let i = 0; i < 240; i++) H.stepFrames(1);
+      const trace = H.combatTraceDrain();
+      H.combatTraceStop();
+      const cs1 = H.getCombatState().enemies[0];
+      const snap = H.snapshot();
+      return {
+        hp_fall: cs0.hp - cs1.hp,
+        deaths: trace.filter((t) => (t.events || []).some((e) => e.k === 'DEATH' || e.kind === 'DEATH')).length,
+        yielded: !!cs1.yielded,
+        alert_state: snap.entities[0] ? snap.entities[0].alert_state : null,
+        in_combat: H.getPlayerStats().in_combat,
+        target_changed: !!(H.getStatusState().find((s) => s.id !== 'P') || {}).frenzy_target,
+        disposition_moved: JSON.stringify(H.getQuestState().dispositions) !== disp0,
+      };
+    };
+
+    /** `soul_trap`: the gem fills on the target's DEATH, and `xul_hesh` increments. */
+    const soulTrapRun = () => {
+      const eid = arena({ dist: 6 });
+      H.setAttuned(['root_theft']);
+      const g0 = H.getMagicState();
+      H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+      for (let i = 0; i < 120; i++) H.stepFrames(1);
+      // Kill it while the mark is live. The gem must fill HERE, not on the cast.
+      const mid = H.getMagicState();
+      H.killEntity(eid);
+      for (let i = 0; i < 10; i++) H.stepFrames(1);
+      const g1 = H.getMagicState();
+      return {
+        gems_before: g0.gems, gems_at_cast: mid.gems, gems_after: g1.gems,
+        xul_hesh_before: g0.xul_hesh, xul_hesh_after: g1.xul_hesh,
+        fills_on_cast: mid.gems > g0.gems,
+      };
+    };
+
+    /** `mark` then `recall`, and `intervention`: the player is SOMEWHERE ELSE. */
+    const teleportRun = (which) => {
+      arena({ spawn: false });
+      if (which === 'recall') {
+        H.setAttuned(['mark']);
+        H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+        for (let i = 0; i < 260; i++) H.stepFrames(1);
+        H.teleport(60, 60);
+        H.hearthRest();
+        H.setAttuned(['recall']);
+      } else {
+        H.teleport(20, 20);
+        H.hearthRest();
+        H.setAttuned(['intervention_root']);
+      }
+      const p0 = H.getPlayerStats().pos.slice();
+      H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+      for (let i = 0; i < 260; i++) H.stepFrames(1);
+      const p1 = H.getPlayerStats().pos.slice();
+      return { from: p0, to: p1, moved_m: Math.round(Math.hypot(p1[0] - p0[0], p1[2] - p0[2]) * 100) / 100 };
+    };
+
+    /** `invisibility` must BREAK on a cast. Cast it, then cast again, and read V. */
+    const invisibilityRun = () => {
+      castAndHold('the_water_film', 120, { spawn: false });
+      const vDuring = H.getStealthState().V;
+      const broke = H.breakInvisibility('cast');
+      const vAfter = H.getStealthState().V;
+      return { v_during: vDuring, v_after: vAfter, broke, restored: vAfter > vDuring };
     };
 
     // ---- run the census ---------------------------------------------------------------------
@@ -321,14 +517,46 @@ try {
 
       let r;
       try {
-        r = castOnce(carrier.id, opts);
+        r = castOnce(carrier.id, { ...opts, sampleEvery: 20 });
       } catch (err) {
         row.class = 'NOT_OBSERVED'; row.note = `cast threw: ${err && err.message}`; rows.push(row); continue;
       }
 
       // The mid-run read: RI-MAG06 M2 wants the system read while the effect is LIVE for a
       // timed effect (the lease), and after full duration for an instantaneous one.
-      if (r.during.length) r.mid = r.during[Math.min(2, r.during.length - 1)];
+      if (r.during.length) r.mid = r.during[Math.min(3, r.during.length - 1)];
+
+      // The provocations. Each is a SECOND run, because the thing being read does not exist
+      // until something is done to it.
+      try {
+        if (['resist_element', 'resist_disease', 'shield', 'sap_ward'].includes(e.id)) r.mitig = mitigationRun(carrier.id);
+        else if (e.id === 'cure_disease') r.cure = cureRun(carrier.id, 'disease');
+        else if (e.id === 'cure_poison') r.cure = cureRun(carrier.id, 'poison');
+        else if (e.id === 'cure_paralysis') r.cure = cureRun(carrier.id, 'paralysis');
+        else if (e.id === 'levitate') r.lev = levitationRun();
+        else if (e.id === 'slowfall') r.fall = slowfallRun();
+        else if (e.id === 'leap') r.leap = leapRun();
+        else if (e.id === 'paralyse') r.para = paralyseRun();
+        else if (e.id === 'calm_beast') r.control = controlRunFor(carrier.id, e.id, 'beast_slitherfang');
+        else if (['demoralise', 'frenzy', 'charm'].includes(e.id)) r.control = controlRunFor(carrier.id, e.id);
+        else if (e.id === 'soul_trap') r.soul = soulTrapRun();
+        else if (e.id === 'recall') r.tele = teleportRun('recall');
+        else if (e.id === 'intervention') r.tele = teleportRun('intervention');
+        else if (e.id === 'invisibility') { const iv = invisibilityRun(); r.broke = iv.broke && iv.restored; r.invis = iv; }
+        else if (e.id === 'fortify_skill') {
+          // The gate that refused at base must pass now. `security` is the number the ward
+          // collar gates on, so the paired read is `lockGate()` before and during.
+          arena({ spawn: false });
+          H.setStealthState({ security: 5, agility: 5 });
+          const g0 = H.lockGate(3).offered;
+          castAndHold(carrier.id, 90, { spawn: false });
+          const g1 = H.lockGate(3).offered;
+          r.fortifyMoved = g0 === false && g1 === true;
+          r.gate = { before: g0, during: g1 };
+        }
+      } catch (err) {
+        row.note = `provocation threw: ${err && err.message}`;
+      }
 
       // The build's own claim, off the event stream. Recorded, never trusted.
       const ap = r.events.find((x) => x.kind === 'effect_apply' && x.effect === e.id);
