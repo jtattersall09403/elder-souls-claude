@@ -1,0 +1,192 @@
+{
+  "schema": "elder-souls/crossing@1",
+  "method": "RI-WLD01 M2 + M3",
+  "measured_at": "2026-08-06T17:41:21.984Z",
+  "git": {
+    "commit": "341cd48534774797c7949922b451ee9ff00745af",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "world": {
+    "areaKm2": 14.309,
+    "worldBoundsM": {
+      "x": [
+        0,
+        4825
+      ],
+      "z": [
+        0,
+        5540
+      ]
+    },
+    "elevationRangeM": [
+      -41.8,
+      424.2
+    ],
+    "roadNetworkM": 25221.3
+  },
+  "declared": {
+    "crossing_m": 6909,
+    "crossing_walk_min": 57.6,
+    "crossing_jog_min": 36,
+    "long_way_walk_min": 79
+  },
+  "built_routes": {
+    "crossing": {
+      "settlements": [
+        "Stormhold",
+        "Helstrom",
+        "Blackrose",
+        "Lilmoth"
+      ],
+      "legs": [
+        "stormhold-helstrom",
+        "helstrom-blackrose",
+        "blackrose-lilmoth"
+      ],
+      "metres": 6860.6,
+      "walk_min": 57.17,
+      "jog_min": 35.73,
+      "note": "RI-WLD01 §5 THE CROSSING — Stormhold south gate to Lilmoth harbour steps."
+    },
+    "long_way": {
+      "settlements": [
+        "Thorn",
+        "Stormhold",
+        "Helstrom",
+        "Blackrose",
+        "Soulrest"
+      ],
+      "legs": [
+        "thorn-stormhold",
+        "stormhold-helstrom",
+        "helstrom-blackrose",
+        "blackrose-soulrest"
+      ],
+      "metres": 9428.1,
+      "walk_min": 78.57,
+      "jog_min": 49.1,
+      "note": "RI-WLD01 §5 THE LONG WAY — Thorn to Soulrest."
+    }
+  },
+  "runs": [
+    {
+      "route": "crossing",
+      "speed": "walk",
+      "done": true,
+      "frames": 203667,
+      "seconds": 3394.45,
+      "minutes": 56.574,
+      "path_m": 6788.3,
+      "declared_route_m": 6860.6,
+      "mean_speed_mps": 1.9998,
+      "min_speed_mps": 0,
+      "max_speed_mps": 3.0233,
+      "speed_samples": 33944,
+      "speed_histogram": {
+        "0-0.5": 3,
+        "0.5-1": 0,
+        "1-1.6": 1,
+        "1.6-1.9": 1,
+        "1.9-1.99": 8,
+        "1.99-2.01": 33925,
+        "2.01-2.5": 4,
+        "2.5-3": 1,
+        "3-3.3": 1,
+        "3.3-99": 0
+      },
+      "frac_samples_below_1_6": 0.00012,
+      "leg_minutes": {
+        "stormhold-helstrom": 23.987,
+        "helstrom-blackrose": 20.254,
+        "blackrose-lilmoth": 12.333
+      },
+      "region_sequence": [
+        {
+          "region": "salt-hills",
+          "frame": 1,
+          "m": 0
+        },
+        {
+          "region": "stone-forest",
+          "frame": 14668,
+          "m": 488.3
+        },
+        {
+          "region": "salt-hills",
+          "frame": 15727,
+          "m": 523.6
+        },
+        {
+          "region": "stone-forest",
+          "frame": 16397,
+          "m": 545.9
+        },
+        {
+          "region": "blackwood",
+          "frame": 96129,
+          "m": 3203.7
+        },
+        {
+          "region": "deep-marshes",
+          "frame": 97094,
+          "m": 3235.9
+        },
+        {
+          "region": "blackwood",
+          "frame": 102768,
+          "m": 3425
+        },
+        {
+          "region": "deep-marshes",
+          "frame": 114698,
+          "m": 3822.7
+        },
+        {
+          "region": "blackwood",
+          "frame": 120002,
+          "m": 3999.5
+        },
+        {
+          "region": "western-rootlands",
+          "frame": 120491,
+          "m": 4015.8
+        },
+        {
+          "region": "eastern-rootlands",
+          "frame": 185352,
+          "m": 6177.8
+        },
+        {
+          "region": "western-rootlands",
+          "frame": 194353,
+          "m": 6477.8
+        }
+      ],
+      "remaining_points": 1
+    }
+  ],
+  "checks": [
+    {
+      "id": "M2-TIME",
+      "pass": true,
+      "detail": "56.574 min walking, bar 52-65"
+    },
+    {
+      "id": "M2-DISTANCE",
+      "pass": true,
+      "detail": "6788.3 m integrated, bar 6300-7600"
+    },
+    {
+      "id": "M3-SPEED-HONESTY",
+      "pass": true,
+      "detail": "0.012% of 33944 ground-speed samples below 1.6 m/s, bar <= 8%"
+    },
+    {
+      "id": "M3-MEAN-SPEED",
+      "pass": true,
+      "detail": "mean ground speed 1.9998 m/s (walk_mps is 2.0 — the hour is distance, not friction)"
+    }
+  ],
+  "ok": true
+}

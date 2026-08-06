@@ -664,9 +664,22 @@ if (run('scene')) {
   const places = [...new Set(g.nodes.map((n) => n.place))];
   check('JRN01-every-node-has-a-place', g.nodes.every((n) => n.place), `places: ${places.join(', ')}`,
     'every node happens somewhere in the world');
-  const noLine = g.nodes.filter((n) => !n.line);
+  // Two nodes carry their text per-branch rather than in a `line` field: writ.race-observed
+  // speaks a different misreading for each of the ten races, and writ.strange-check speaks a
+  // different exchange for each of the three odd combinations. Both are MORE spoken, not less,
+  // so the check resolves the branch text instead of looking for one field.
+  const spoken = (n) => {
+    if (n.line) return true;
+    if (n.misreads) return Object.values(n.misreads).every((m) => m && m.line);
+    if (n.branches) return n.branches.every((b) => b && b.line);
+    return false;
+  };
+  const noLine = g.nodes.filter((n) => !spoken(n));
   check('JRN01-every-node-is-spoken', noLine.length === 0,
-    `${g.nodes.length - noLine.length}/${g.nodes.length} nodes carry a line of dialogue`, 'all of them');
+    `${g.nodes.length - noLine.length}/${g.nodes.length} nodes speak (18 with a line, 2 with per-branch lines: ` +
+    `${g.nodes.filter((n) => !n.line && spoken(n)).map((n) => n.id).join(', ')})` +
+    (noLine.length ? ` — silent: ${noLine.map((n) => n.id).join(', ')}` : ''),
+    'all of them');
   // The one prohibition that makes this a scene rather than a menu with a portrait on it.
   const panels = JSON.stringify(g).match(/"full_screen"\s*:\s*true/g) || [];
   check('JRN01-O8-no-full-screen', panels.length === 0,
