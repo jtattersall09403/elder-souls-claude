@@ -1,0 +1,14 @@
+{
+  "task_id": "intent-audit-02",
+  "brief": "re-run intent audit gate against repaired corpus",
+  "started": "wave-N",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/00-doctrine/INTENT-AUDIT-02.md",
+    "corpus/00-doctrine/INTENT-AUDIT-02.json"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read INTENT-AUDIT-01.md/.json and INTENT-AUDIT-CHARTER.md",
+  "notes_for_successor": "Task: re-audit 17 prior drifts, re-check clause coverage, audit S16-S25 seams, audit method vs docs/PLAN.md, hunt new drift in the 73 new items. Verdict ALIGNED or DRIFTED up front."
+}

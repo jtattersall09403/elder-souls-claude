@@ -1,0 +1,14 @@
+{
+  "task_id": "bar-critique-02",
+  "brief": "re-run BAR CRITIC gate against repaired corpus (137 items, 323 paths)",
+  "started": "wave-N",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/00-doctrine/BAR-CRITIQUE-02.md",
+    "corpus/00-doctrine/BAR-CRITIQUE-02.json"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read BAR-CRITIQUE-01.md/.json to recover the 15 gate conditions and 13 gaps",
+  "notes_for_successor": "Primary output is the 15-gate walkthrough. Judged against own prior gate conditions, not fresh opinions."
+}
