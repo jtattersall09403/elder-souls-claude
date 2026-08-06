@@ -59,14 +59,15 @@ const FIGHTS = Number(args.fights || 5);
 // that was mistimed or an attack that was still running when the weapon arrived.
 // ------------------------------------------------------------------------------------------
 const PROFILES = [
-  { id: 'F1', seed: 1009, rollLead: 9,  wobble: 5, blockRate: 0.20, greed: 0.45, staminaFloor: 26, panicHp: 0.42, spamAt: 0.30 },
-  { id: 'F2', seed: 2029, rollLead: 7,  wobble: 7, blockRate: 0.30, greed: 0.60, staminaFloor: 22, panicHp: 0.38, spamAt: 0.28 },
-  { id: 'F3', seed: 3049, rollLead: 11, wobble: 4, blockRate: 0.12, greed: 0.35, staminaFloor: 30, panicHp: 0.46, spamAt: 0.34 },
-  { id: 'F4', seed: 4079, rollLead: 8,  wobble: 8, blockRate: 0.26, greed: 0.70, staminaFloor: 20, panicHp: 0.40, spamAt: 0.26 },
-  { id: 'F5', seed: 5099, rollLead: 10, wobble: 6, blockRate: 0.16, greed: 0.50, staminaFloor: 24, panicHp: 0.44, spamAt: 0.32 },
-  { id: 'F6', seed: 6011, rollLead: 6,  wobble: 9, blockRate: 0.34, greed: 0.80, staminaFloor: 18, panicHp: 0.36, spamAt: 0.24 },
-  { id: 'F7', seed: 7013, rollLead: 12, wobble: 3, blockRate: 0.10, greed: 0.30, staminaFloor: 32, panicHp: 0.48, spamAt: 0.36 },
+  { id: 'F1', seed: 1009, rollLead: 7, wobble: 3, blockRate: 0.22, greed: 0.50, staminaFloor: 26, panicHp: 0.45, gap: [70, 110] },
+  { id: 'F2', seed: 2029, rollLead: 8, wobble: 4, blockRate: 0.30, greed: 0.65, staminaFloor: 22, panicHp: 0.40, gap: [60, 100] },
+  { id: 'F3', seed: 3049, rollLead: 6, wobble: 3, blockRate: 0.16, greed: 0.40, staminaFloor: 30, panicHp: 0.50, gap: [80, 120] },
+  { id: 'F4', seed: 4079, rollLead: 9, wobble: 4, blockRate: 0.26, greed: 0.75, staminaFloor: 20, panicHp: 0.42, gap: [65, 105] },
+  { id: 'F5', seed: 5099, rollLead: 7, wobble: 4, blockRate: 0.18, greed: 0.55, staminaFloor: 24, panicHp: 0.47, gap: [75, 115] },
+  { id: 'F6', seed: 6011, rollLead: 8, wobble: 5, blockRate: 0.34, greed: 0.85, staminaFloor: 18, panicHp: 0.38, gap: [55, 95] },
+  { id: 'F7', seed: 7013, rollLead: 6, wobble: 2, blockRate: 0.12, greed: 0.35, staminaFloor: 32, panicHp: 0.52, gap: [85, 125] },
 ];
+
 
 const handle = await launchGame(args);
 await handle.hOpt('setRenderRate', 0);
@@ -168,7 +169,7 @@ function RUN_ONE({ prof, cap }) {
     script.push({ f, move: mv });
     if (mv === 'combo_a') { script.push({ f: f + A.combo_a + 6, move: 'combo_b' }); f += A.combo_a + 6 + A.combo_b; }
     else f += A[mv];
-    f += 30 + Math.floor(rnd() * 70);
+    f += prof.gap[0] + Math.floor(rnd() * (prof.gap[1] - prof.gap[0]));
   }
   H.queueEnemyScript('E1', script);
   H.combatTraceStart({ scenario: 'RI-CMB07-exemplar-' + prof.id });
@@ -181,10 +182,10 @@ function RUN_ONE({ prof, cap }) {
 
   const frames = [];
   let holdBlock = false;
-  let mx = 0, my = 0;
+  let mx = 0, my = 0, sprint = false;
   let toRelease = [];             // released on the NEXT frame — a tap is two frames
   let plan = null, planFor = null;
-  let punishLeft = 0, tapCd = 0, spamLeft = 0, spamCd = 0;
+  let punishLeft = 0, tapCd = 0;
   const dbg = { taps: 0, rolls: 0, blocks: 0, drinks: 0, swings: [] };
   let prevEHb = 0;
 
@@ -197,6 +198,7 @@ function RUN_ONE({ prof, cap }) {
     const release = toRelease;
     toRelease = [];
     const actionable = p.move === null && p.state !== 'STAGGER' && p.state !== 'GUARD_BREAK';
+    let wantSprint = false;
 
     if (e && !e.dead && p.hp > 0) {
       const dist = e.dist_m;
@@ -205,66 +207,67 @@ function RUN_ONE({ prof, cap }) {
       const recovering = e.state === 'ATK_RECOVER';
       const em = e.move ? atkOf[e.move] : null;
 
-      // --- 1. one decision per swing, taken when the windup starts ------------------------
+      // --- 1. one decision per swing, taken on the frame the windup becomes visible --------
       if (winding && em && planFor !== e.move + ':' + (c.frame - e.anim_frame)) {
         planFor = e.move + ':' + (c.frame - e.anim_frame);
         const err = Math.round((rnd() * 2 - 1) * prof.wobble);
         plan = { kind: rnd() < prof.blockRate ? 'block' : 'roll', at: em.startup - prof.rollLead + err, em, done: false };
       }
 
-      // --- 2. answer it -------------------------------------------------------------------
+      // --- 2. answer it. The roll goes THROUGH the swing, not away from it: a LIGHT roll is
+      //        5.20 m (RI-CMB01 §B) and a chop's recovery is 76 f, so a roll backwards puts
+      //        the punish out of reach by construction. Rolling through is also what puts the
+      //        player behind the enemy, which is what makes a backstab a punish and not a trick.
       if (plan && !plan.done && (winding || active)) {
         if (plan.kind === 'block') {
-          if (!holdBlock && e.anim_frame >= plan.em.startup - 24 && actionable) { press.push('block'); holdBlock = true; dbg.blocks++; }
-          if (e.anim_frame >= plan.em.startup + plan.em.active) { plan.done = true; punishLeft = 2; }
+          if (!holdBlock && e.anim_frame >= plan.em.startup - 26 && actionable) { press.push('block'); holdBlock = true; dbg.blocks++; }
+          if (e.anim_frame >= plan.em.startup + plan.em.active) { plan.done = true; punishLeft = 1 + (rnd() < prof.greed ? 1 : 0); }
         } else if (e.anim_frame >= plan.at) {
           if (holdBlock) { release.push('block'); holdBlock = false; }
           if (actionable) {
             press.push('roll');
-            mx = (rnd() < 0.5 ? -0.7 : 0.7); my = 0.7;
+            mx = (rnd() < 0.5 ? -0.45 : 0.45); my = 0.9;
             plan.done = true; dbg.rolls++;
-            punishLeft = 1 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.55 ? 1 : 0);
+            punishLeft = 1 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.6 ? 1 : 0);
           }
         }
       }
       if (!winding && !active && !recovering) { plan = null; planFor = null; }
-      // drop the guard once the swing is over: a bot that turtles fails row 23, and holding
-      // the shield at 0.20x regen is exactly how the old exemplar would have hidden its bar
       if (holdBlock && !winding && !active) { release.push('block'); holdBlock = false; }
 
-      // --- 3. punish inside the recovery ---------------------------------------------------
-      if (recovering && punishLeft > 0 && tapCd <= 0 && actionable && !holdBlock) {
-        if (dist > 2.0) { my = 1; mx = 0; }
-        else if (p.stamina >= prof.staminaFloor) { press.push('light'); punishLeft--; tapCd = 6; dbg.taps++; mx = 0; my = 0; }
-        else { press.push('light'); punishLeft = 0; tapCd = 6; }   // the bar denies it: row 28
+      // --- 3. punish. Straight-sword R1 reaches 2.23 m on the forward axis (measured), so the
+      //        bot closes to 2.0 and swings; if the bar cannot pay, it presses anyway and the
+      //        input is DROPPED, which is row 28 and RI-CMB03 §E's mandatory ">0".
+      if (punishLeft > 0 && tapCd <= 0 && actionable && !holdBlock && !winding && !active) {
+        if (dist > 2.05) { my = 1; mx = 0; wantSprint = dist > 3.6; }
+        else { press.push('light'); punishLeft--; tapCd = 5; mx = 0; my = 0; }
       }
+      if (!recovering && !winding && !active && punishLeft > 0 && c.frame % 240 === 0) punishLeft = 0;
 
-      // --- 4. panic: at low HP the bot rolls away, which empties the bar --------------------
-      if (p.hp / p.hp_max < prof.spamAt && spamLeft === 0 && spamCd <= 0) { spamLeft = 8; spamCd = 900; }
-      if (spamLeft > 0 && actionable && !winding && !active && !press.length) {
-        press.push('roll'); mx = 0; my = -1; spamLeft--; dbg.rolls++;
-      }
-      if (spamCd > 0) spamCd--;
-
-      // --- 5. drink, and pay the whole 130-frame animation for it ---------------------------
+      // --- 4. drink. Costs the whole 130 f animation and is only taken in a real window. ----
       if (!press.length && actionable && p.estus > 0 && p.hp / p.hp_max < prof.panicHp
-          && recovering && em && e.anim_frame < em.startup + em.active + em.recovery - 120) {
-        press.push('use_item'); dbg.drinks++;
+          && recovering && em && e.anim_frame < em.startup + em.active + 20) {
+        press.push('use_item'); dbg.drinks++; punishLeft = 0;
       }
 
-      // --- 6. spacing. A bot that drifts out of reach is the old exemplar's whole problem ---
-      if (!press.length && !punishLeft) {
-        if (dist > 2.6) { my = 1; mx = 0; }
-        else if (dist < 1.6) { my = -1; mx = 0; }
+      // --- 5. spacing. The enemy is stationary between strings and advances 1.2 m inside the
+      //        chop, so 2.6-3.2 m is the band where its swing ARRIVES in reach. A bot that sits
+      //        outside that band is the old exemplar: 81 % of the enemy's swings simply missed.
+      if (!press.length && punishLeft === 0) {
+        if (dist > 3.2) { my = 1; mx = 0; wantSprint = dist > 4.4; }
+        else if (dist < 2.5) { my = -1; mx = 0; }
         else { my = 0; mx = 0; }
       }
     }
+
+    if (wantSprint && !sprint) { press.push('sprint'); sprint = true; }
+    if (!wantSprint && sprint) { release.push('sprint'); sprint = false; }
 
     const ev = { f: 0, move: [mx, my] };
     if (press.length) ev.press = press.slice();
     if (release.length) ev.release = release.slice();
     H.queueInputs([ev]);
-    for (const b of press) if (b !== 'block') toRelease.push(b);
+    for (const b of press) if (b !== 'block' && b !== 'sprint') toRelease.push(b);
     if (tapCd > 0) tapCd--;
 
     H.stepFrames(1);
@@ -340,7 +343,9 @@ function computeStats(rows, meta, prof) {
   const blockHold = rows.filter((r) => r.p[0] === 'BLOCK_HOLD' || r.p[0] === 'BLOCK_IMPACT').length;
   const attacks = of('ACTION_START').filter((e) => e.who === undefined && (e.tag === 'attack' || e.tag === 'chain2' || e.tag === 'chain3' || e.tag === 'guard_counter' || e.tag === 'rolling' || e.tag === 'running' || e.tag === 'jump'));
   const rolls = of('ACTION_START').filter((e) => e.tag === 'dodge');
-  const hits = of('HIT').filter((e) => e.src === 'P');
+  // A CRIT_HIT is a hit landed: RI-CMB05 §D's criticals are positional punishes, and row 27
+  // asks whether the punish window was USED, not which verb used it.
+  const hits = of('HIT').concat(of('CRIT_HIT')).filter((e) => e.src === 'P').sort((a, b) => a.f - b.f);
   const taken = of('HIT').filter((e) => e.dst === 'P');
   const negated = of('IFRAME_NEGATE').filter((e) => e.dst === 'P');
   const blocked = of('BLOCK').filter((e) => e.dst === 'P');

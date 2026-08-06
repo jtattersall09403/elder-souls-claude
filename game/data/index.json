@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 273,
+  "file_count": 282,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -1343,6 +1343,13 @@
       "sha256": "6992ca959267fbde"
     },
     {
+      "path": "crime/fences.json",
+      "schema": "elder-souls/crime-fences@1",
+      "id": "fences",
+      "bytes": 4205,
+      "sha256": "807394c919545332"
+    },
+    {
       "path": "crime/justice.json",
       "schema": "elder-souls/crime-justice@1",
       "id": "justice",
@@ -1865,6 +1872,62 @@
       "bytes": 16110,
       "sha256": "56d039ae14c0bb16",
       "declared_incomplete": true
+    },
+    {
+      "path": "world/property/archon.json",
+      "schema": "elder-souls/property@1",
+      "id": "property-archon",
+      "bytes": 135895,
+      "sha256": "42e344ce7887a83b"
+    },
+    {
+      "path": "world/property/blackrose.json",
+      "schema": "elder-souls/property@1",
+      "id": "property-blackrose",
+      "bytes": 144123,
+      "sha256": "7dc25069be412e1c"
+    },
+    {
+      "path": "world/property/gideon.json",
+      "schema": "elder-souls/property@1",
+      "id": "property-gideon",
+      "bytes": 142915,
+      "sha256": "c4106386c336821b"
+    },
+    {
+      "path": "world/property/helstrom.json",
+      "schema": "elder-souls/property@1",
+      "id": "property-helstrom",
+      "bytes": 147969,
+      "sha256": "a2477dacd59c0bd6"
+    },
+    {
+      "path": "world/property/lilmoth.json",
+      "schema": "elder-souls/property@1",
+      "id": "property-lilmoth",
+      "bytes": 136121,
+      "sha256": "da24db3303e051e7"
+    },
+    {
+      "path": "world/property/soulrest.json",
+      "schema": "elder-souls/property@1",
+      "id": "property-soulrest",
+      "bytes": 136289,
+      "sha256": "54bb8d76757f8c86"
+    },
+    {
+      "path": "world/property/stormhold.json",
+      "schema": "elder-souls/property@1",
+      "id": "property-stormhold",
+      "bytes": 157415,
+      "sha256": "3066572520fa42c9"
+    },
+    {
+      "path": "world/property/thorn.json",
+      "schema": "elder-souls/property@1",
+      "id": "property-thorn",
+      "bytes": 134902,
+      "sha256": "9d71ed4e40f6f122"
     },
     {
       "path": "world/regions.json",

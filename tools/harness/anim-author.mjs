@@ -205,23 +205,36 @@ const ARCH = {
 };
 
 /**
- * Build one archetype's track key lists at a given startup-blend `t`.
+ * Build one archetype's track key lists.
  *
- * The active band 1.0 -> 2.0 is authored with FOUR EVENLY SPACED KEYS carrying evenly spaced
- * values, so the angular rate through the hitbox-active window is close to constant instead of
- * a single smoothstep hump. That is the whole reason the old curves broke RI-CMB04 §B: a
- * smoothstep segment peaks at 1.5x its own mean, and the old curves put the entire cock->hit
- * excursion in ONE such segment, so the instantaneous rate at the middle of the active window
- * was ~1.5x whatever the average implied. Splitting the band lets the average carry a real
- * Souls-sized arc (RI-CMB02 §A's reach is unchanged) while the PEAK stays under the declared
- * column.
+ * Three knobs, all solved rather than tuned by eye:
  *
- * The recovery is authored front-loaded — 2.0 -> follow -> 55 % -> 88 % -> idle — so the
- * per-frame rate DECREASES monotonically across it. The blade comes to rest; it does not carry
- * on. There is no key beyond `follow` that moves away from the idle pose, which is the specific
- * defect the verdict measured (an overshoot peaking at phase 2.4 and then snapping back).
+ *   `t`     the pose on the LAST STARTUP frame, as a blend cock -> hit. FIXED at 0.32 and not
+ *           solved, because it is not free: the blade must cross the target's centreline
+ *           INSIDE the hitbox-active window, and it crosses at roughly the midpoint of
+ *           cock -> hit, so any t above 0.5 puts the crossing in the startup and the weapon
+ *           reaches nothing. That is not hypothetical — solving t against peak tip speed alone
+ *           produced t = 0.74 for `sweep_wide`, and the halberd's and ultra greatsword's R1
+ *           then measured a forward reach of 0.00 m against RI-CMB02 §A's declared 2.85 and
+ *           2.95. Peak speed is bought with `swing` instead.
+ *   `swing`  scales the whole rotational excursion about the mid-swing pose. This is what buys
+ *           the RI-CMB04 §B peak-tip-speed budget.
+ *   `ext`    degrees of elbow extension added at the hit pose. This is what buys RI-CMB02 §A's
+ *           declared reach back after `swing` has shrunk the arc.
+ *
+ * The active band 1.0 -> 2.0 carries FOUR evenly spaced keys so the angular rate through the
+ * hitbox is close to constant rather than one smoothstep hump (a smoothstep segment peaks at
+ * 1.5x its own mean, which is most of why the old curves ran at x1.00-x2.69 of the declared
+ * column). The recovery is front-loaded — 2.0 -> follow -> 55 % -> 88 % -> idle — so its
+ * per-frame rate DECREASES monotonically: the blade comes to rest, it does not carry on.
+ * Nothing after `follow` moves away from the idle pose, which is the specific defect the
+ * verdict measured (an overshoot peaking at phase 2.4 and then snapping back).
  */
-function buildArch(def, t) {
+const T_FIXED = 0.32;
+const EXT_CH = { lowerarm_r: 'rx', upperarm_r: 'rx' };
+
+function buildArch(def, swing, ext) {
+  const t = T_FIXED;
   const tracks = {};
   for (const bone of Object.keys(def.tracks)) {
     tracks[bone] = {};
@@ -229,22 +242,22 @@ function buildArch(def, t) {
       const k = def.tracks[bone][ch];
       const start = k.start !== undefined ? k.start : idleOf(bone, ch);
       const end = idleOf(bone, ch);
-      const v1 = k.cock + t * (k.hit - k.cock);          // pose on the LAST STARTUP frame
-      const v2 = k.hit;                                  // pose on the LAST ACTIVE frame
-      const lin = (u) => v1 + (v2 - v1) * u;
-      // `mid` lets a channel bulge off the linear ramp inside the active band — used for arm
-      // EXTENSION, which peaks mid-swing rather than at the end of it, so RI-CMB02 §A's
-      // declared reach is reached while the blade is still travelling.
-      const mid = k.mid !== undefined ? k.mid : lin(0.5);
-      const fol = k.follow;
+      const mid = (k.cock + k.hit) / 2;
+      const sc = (v) => mid + (v - mid) * swing;
+      let cock = sc(k.cock), hit = sc(k.hit), fol = sc(k.follow);
+      // elbow/shoulder extension, added only at and after the hit pose — it lengthens the
+      // weapon's stand-off, which is what `reach_m` in RI-CMB02 §A actually measures.
+      if (EXT_CH[bone] === ch) { hit += ext; fol += ext * 0.6; }
+      const v1 = cock + t * (hit - cock);
+      const lin = (u) => v1 + (hit - v1) * u;
       tracks[bone][ch] = [
         [0.0, r(start)],
-        [def.cockPhase, r(k.cock)],
+        [def.cockPhase, r(cock)],
         [1.0, r(v1)],
-        [1.25, r(lin(0.25) + 0.5 * (mid - lin(0.5)))],
-        [1.5, r(mid)],
-        [1.75, r(lin(0.75) + 0.5 * (mid - lin(0.5)))],
-        [2.0, r(v2)],
+        [1.25, r(lin(0.25))],
+        [1.5, r(lin(0.5))],
+        [1.75, r(lin(0.75))],
+        [2.0, r(hit)],
         [def.followPhase, r(fol)],
         [2.0 + (def.followPhase - 2.0) + 0.45 * (3.0 - def.followPhase), r(fol + 0.55 * (end - fol))],
         [2.0 + (def.followPhase - 2.0) + 0.78 * (3.0 - def.followPhase), r(fol + 0.88 * (end - fol))],
@@ -256,8 +269,7 @@ function buildArch(def, t) {
   // does not move it: a channel the archetype is silent about is written as 0 by
   // Clip.applyPose(), which is NOT the idle value, so the first and last frames of the clip
   // would differ from the idle pose by exactly that channel. That is a boundary snap with no
-  // motion in it at all — 6 degrees of shoulder is 0.27 m at a spear's tip — and it is why the
-  // spear and halberd still stepped 0.11-0.22 m after the terminal-pose rule went in.
+  // motion in it at all — 6 degrees of shoulder is 0.27 m at a spear's tip.
   for (const bone of Object.keys(IDLE)) {
     for (const ch of Object.keys(IDLE[bone])) {
       tracks[bone] = tracks[bone] || {};
@@ -266,14 +278,13 @@ function buildArch(def, t) {
   }
   return {
     note: def.note,
-    solved_startup_blend: t,
+    solved: { startup_blend: t, swing_scale: +swing.toFixed(3), elbow_extension_deg: +ext.toFixed(1) },
     solved_note:
-      'The pose on the last STARTUP frame is cock + ' + t.toFixed(3) + ' x (hit - cock); the ' +
-      'active band then runs to `hit` in four evenly spaced keys, and the recovery decelerates ' +
-      'onto the idle pose. `t` is solved by tools/harness/anim-author.mjs as the SMALLEST blend ' +
-      'at which every class using this archetype measures a peak tip speed at or under its ' +
-      'RI-CMB04 §B declared column with a 1 % margin — smallest, so that as much of the arc as ' +
-      'possible is inside the hitbox-active window rather than hidden in the windup.',
+      'Solved by tools/harness/anim-author.mjs against two of the corpus\'s own columns at once: ' +
+      'RI-CMB04 §B\'s peak_tip_speed_mps (a ceiling, measured over the ACTIVE frames only) and ' +
+      'RI-CMB02 §A\'s reach_m (a floor, measured as the furthest forward point the weapon capsule ' +
+      'occupies near the centreline during the active window). The search takes the LARGEST swing ' +
+      'and the SMALLEST elbow extension that satisfy both for every class using this archetype.',
     root_forward: def.root_forward,
     root_offset: { y: def.root_offset_y },
     tracks,
@@ -282,59 +293,82 @@ function buildArch(def, t) {
 function r(v) { return Math.round(v * 100) / 100; }
 
 // ---- the measurement the solver optimises against ---------------------------------------
-function peakRatioFor(archName, archObj) {
-  let worst = 0;
+function measureArch(archName, archObj) {
+  let worstPeak = 0, worstReach = Infinity, worstReachClass = null;
   for (const id of CLASSES) {
     const ms = spine[id];
     for (const mv of ['light', 'heavy']) {
       const base = ms.moves[mv];
-      // one-handed and two-handed both, because the two-handed rows select a different
-      // archetype and a different amplitude and are just as bound by RI-CMB04 §B's column.
       const variants = [base];
       const th = ms.moves.two_handed && ms.moves.two_handed[mv];
       if (th) variants.push(Object.assign({}, base, th));
       for (const m of variants) {
         if (m.archetype !== archName) continue;
         const clip = new Clip(m.anim, archObj, { startup: base.startup, active: base.active, total: base.total }, m.amplitude, m.root_dz_m);
-        const peak = peakActiveTip(clip, ms.weapon, base);
-        const ratio = peak / ms.weapon.peak_tip_speed_mps_declared;
-        if (ratio > worst) worst = ratio;
+        const r = trackOf(clip, ms.weapon, base);
+        const pr = r.peak / ms.weapon.peak_tip_speed_mps_declared;
+        if (pr > worstPeak) worstPeak = pr;
+        const declR = base.reach_m_declared || 1.0;
+        const rr = r.reach / declR;
+        if (rr < worstReach) { worstReach = rr; worstReachClass = id + ':' + mv + (m === base ? '' : ':2h'); }
       }
     }
   }
-  return worst;
+  return { peak: worstPeak, reach: worstReach, reachClass: worstReachClass };
 }
-function peakActiveTip(clip, w, m) {
+
+function trackOf(clip, w, m) {
   const rig = new Rig(skel, hitgeo);
   const pos = [0, 0, 0];
-  let z = 0, prev = null, peak = 0;
+  let z = 0, prev = null, peak = 0, reach = 0;
   for (let f = 1; f <= m.total; f++) {
     z += clip.rootDeltaAt(f);
     clip.applyPose(rig, f);
     pos[2] = z;
     rig.evaluate(pos, 0, clip.rootOffsetYAt(f), w.socket_a_dist_m, w.socket_b_dist_m);
-    const b = rig.socketB.slice();
-    if (prev && f > m.startup && f <= m.startup + m.active) {
-      const d = Math.hypot(b[0] - prev[0], b[1] - prev[1], b[2] - prev[2]) * 60;
-      if (d > peak) peak = d;
+    const a = rig.socketA.slice(), b = rig.socketB.slice();
+    if (f > m.startup && f <= m.startup + m.active) {
+      if (prev) {
+        const d = Math.hypot(b[0] - prev[0], b[1] - prev[1], b[2] - prev[2]) * 60;
+        if (d > peak) peak = d;
+      }
+      for (let u = 0; u <= 1.0001; u += 0.05) {
+        const px = a[0] + (b[0] - a[0]) * u, pz = a[2] + (b[2] - a[2]) * u;
+        if (Math.abs(px) <= 0.35 && pz > reach) reach = pz;
+      }
     }
     prev = b;
   }
-  return peak;
+  return { peak, reach };
 }
 
 // ---- solve ------------------------------------------------------------------------------
-const MARGIN = 0.99;      // 1 % under the declared column
+const PEAK_MAX = 0.99;     // fraction of RI-CMB04 §B's declared column
+const REACH_MIN = 0.97;    // fraction of RI-CMB02 §A's declared reach
 const solved = {};
 for (const name of Object.keys(ARCH)) {
-  let best = 0;
-  for (let t = 0; t <= 0.999; t += 0.001) {
-    const a = buildArch(ARCH[name], t);
-    if (peakRatioFor(name, a) <= MARGIN) { best = t; break; }
+  let best = null;
+  for (let ext = 0; ext <= 60 && !best; ext += 1) {
+    for (let swing = 1.30; swing >= 0.10; swing -= 0.02) {
+      const a = buildArch(ARCH[name], swing, ext);
+      const m = measureArch(name, a);
+      if (m.peak <= PEAK_MAX && m.reach >= REACH_MIN) { best = { a, m, swing, ext }; break; }
+    }
   }
-  const a = buildArch(ARCH[name], best);
-  solved[name] = a;
-  console.log(`${name.padEnd(16)} t=${best.toFixed(3)}  worst peak ratio ${peakRatioFor(name, a).toFixed(3)}`);
+  if (!best) {
+    // Report the closest achievable rather than silently shipping something that misses both.
+    let closest = null;
+    for (let ext = 0; ext <= 60; ext += 2) for (let swing = 1.30; swing >= 0.10; swing -= 0.04) {
+      const a = buildArch(ARCH[name], swing, ext);
+      const m = measureArch(name, a);
+      if (m.peak > PEAK_MAX) continue;
+      if (!closest || m.reach > closest.m.reach) closest = { a, m, swing, ext };
+    }
+    best = closest;
+    console.log(`${name.padEnd(16)} NO feasible point: best reach ${best.m.reach.toFixed(3)} of declared (worst class ${best.m.reachClass})`);
+  }
+  solved[name] = best.a;
+  console.log(`${name.padEnd(16)} swing=${best.swing.toFixed(2)} ext=${best.ext}  peak=${best.m.peak.toFixed(3)}x  reach=${best.m.reach.toFixed(3)}x (worst ${best.m.reachClass})`);
 }
 
 if (process.argv.includes('--write')) {

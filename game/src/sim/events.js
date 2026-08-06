@@ -48,6 +48,15 @@ export const EVENT_TYPES = new Set([
   'PARRY', 'RIPOSTE', 'ESTUS_START', 'ESTUS_DONE', 'DEATH',
   'INPUT_DROPPED', 'INPUT_BUFFERED', 'EXHAUSTED_ENTER', 'EXHAUSTED_EXIT', 'WINDED',
   'PARLEY_ACCEPT', 'PARLEY_REFUSE', 'PARLEY_EXEMPT',
+  'SPELL_CYCLE',
+  // ---------------------------------------------------------------------------------------
+  // W1-14 / seam S19. RI-MAG01's harness amendment 4 asks for exactly these six lower_snake
+  // kinds, and they are ADDITIONS: `elder-souls/trace@1` -> `@2`, nothing removed. They stay
+  // in the §5 vocabulary rather than the RI-CMB07 one because a cast is observable outside a
+  // fight too (a RITUAL is, by construction, only ever cast outside one).
+  'cast_start', 'cast_release', 'cast_interrupt', 'focus_spend', 'effect_apply', 'effect_expire',
+  // and the world-facing consequences the Morrowind half needs
+  'spell_hit', 'levitate_begin', 'levitate_end', 'soul_trapped', 'soul_trap_refused',
 ]);
 
 const POOL_SIZE = 128;

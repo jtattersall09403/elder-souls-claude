@@ -1,0 +1,6332 @@
+{
+ "schema": "elder-souls/property@1",
+ "id": "property-soulrest",
+ "settlement": "soulrest",
+ "jurisdiction": "settlement",
+ "source": "RI-STL02 §1 (ownership), §4 (trespass classes), §3 (ward-collar locks). Built by tools/world/build-property.mjs; the roster, palettes and classes in that file are the authored part.",
+ "households": [
+  {
+   "npc": "npc:soulrest-weaver-0",
+   "name": "Heem Salt-Hand",
+   "trade": "weaver",
+   "faction": null,
+   "quarter": "drowned-court",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-0",
+     "name": "Heem Salt-Hand",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-0-elder0",
+     "name": "Okan Sings-At-Dusk",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-weaver-0-sibling1",
+     "name": "Chun Bone-Setter",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "soulrest.weaver0.r0",
+    "soulrest.weaver0.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-weaver-1",
+   "name": "Silent-Reed Bone-Setter",
+   "trade": "weaver",
+   "faction": null,
+   "quarter": "fishery",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-1",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-1-sibling0",
+     "name": "Fastidious Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "soulrest.weaver1.r0",
+    "soulrest.weaver1.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-smith-2",
+   "name": "Hides-His-Foot the Quiet",
+   "trade": "smith",
+   "faction": null,
+   "quarter": "the-steps",
+   "residents": [
+    {
+     "npc": "npc:soulrest-smith-2",
+     "name": "Hides-His-Foot the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-smith-2-elder0",
+     "name": "Weel Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-smith-2-sibling1",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "soulrest.smith2.r0",
+    "soulrest.smith2.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-cook-3",
+   "name": "Drops-No-Stitch Slow-Rain",
+   "trade": "cook",
+   "faction": null,
+   "quarter": "drowned-court",
+   "residents": [
+    {
+     "npc": "npc:soulrest-cook-3",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-cook-3-apprentice0",
+     "name": "Llarara the Elder",
+     "role": "apprentice"
+    }
+   ],
+   "zones": [
+    "soulrest.cook3.r0",
+    "soulrest.cook3.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-cook-4",
+   "name": "Okan Sings-At-Dusk",
+   "trade": "cook",
+   "faction": null,
+   "quarter": "fishery",
+   "residents": [
+    {
+     "npc": "npc:soulrest-cook-4",
+     "name": "Okan Sings-At-Dusk",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-cook-4-child0",
+     "name": "Ahnassi Dark-Water",
+     "role": "child"
+    },
+    {
+     "npc": "npc:soulrest-cook-4-partner1",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "soulrest.cook4.r0",
+    "soulrest.cook4.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-scribe-5",
+   "name": "Llarara the Elder",
+   "trade": "scribe",
+   "faction": null,
+   "quarter": "the-steps",
+   "residents": [
+    {
+     "npc": "npc:soulrest-scribe-5",
+     "name": "Llarara the Elder",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-scribe-5-sibling0",
+     "name": "Bevene the Younger",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "soulrest.scribe5.r0",
+    "soulrest.scribe5.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-boatwright-6",
+   "name": "Dram the Quiet",
+   "trade": "boatwright",
+   "faction": null,
+   "quarter": "drowned-court",
+   "residents": [
+    {
+     "npc": "npc:soulrest-boatwright-6",
+     "name": "Dram the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-6-lodger0",
+     "name": "Ocheeva of the Boards",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-6-apprentice1",
+     "name": "Sondaale the Younger",
+     "role": "apprentice"
+    }
+   ],
+   "zones": [
+    "soulrest.boatwright6.r0",
+    "soulrest.boatwright6.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-weaver-7",
+   "name": "Bevene the Patient",
+   "trade": "weaver",
+   "faction": null,
+   "quarter": "fishery",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-7",
+     "name": "Bevene the Patient",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-7-sibling0",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "soulrest.weaver7.r0",
+    "soulrest.weaver7.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-weaver-8",
+   "name": "Ahnassi Dark-Water",
+   "trade": "weaver",
+   "faction": null,
+   "quarter": "the-steps",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-8",
+     "name": "Ahnassi Dark-Water",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-8-child0",
+     "name": "Veek Dark-Water",
+     "role": "child"
+    },
+    {
+     "npc": "npc:soulrest-weaver-8-partner1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "soulrest.weaver8.r0",
+    "soulrest.weaver8.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-boatwright-9",
+   "name": "Wanan the Shorter",
+   "trade": "boatwright",
+   "faction": null,
+   "quarter": "drowned-court",
+   "residents": [
+    {
+     "npc": "npc:soulrest-boatwright-9",
+     "name": "Wanan the Shorter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-9-apprentice0",
+     "name": "Tul Two-Skins",
+     "role": "apprentice"
+    }
+   ],
+   "zones": [
+    "soulrest.boatwright9.r0",
+    "soulrest.boatwright9.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-trader-10",
+   "name": "Fastidious Reed-Cutter",
+   "trade": "trader",
+   "faction": null,
+   "quarter": "fishery",
+   "residents": [
+    {
+     "npc": "npc:soulrest-trader-10",
+     "name": "Fastidious Reed-Cutter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-trader-10-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "soulrest.trader10.r0",
+    "soulrest.trader10.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-warder-11",
+   "name": "Meesei Wet-Foot",
+   "trade": "warder",
+   "faction": "ninth-cohort",
+   "quarter": "the-steps",
+   "residents": [
+    {
+     "npc": "npc:soulrest-warder-11",
+     "name": "Meesei Wet-Foot",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-warder-11-elder0",
+     "name": "Keeps-Her-Own Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-warder-11-sibling1",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "soulrest.warder11.r0",
+    "soulrest.warder11.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-fisher-12",
+   "name": "Falura Nine-Teeth",
+   "trade": "fisher",
+   "faction": null,
+   "quarter": "drowned-court",
+   "residents": [
+    {
+     "npc": "npc:soulrest-fisher-12",
+     "name": "Falura Nine-Teeth",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-fisher-12-partner0",
+     "name": "Tul Two-Skins",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "soulrest.fisher12.r0",
+    "soulrest.fisher12.r1"
+   ]
+  },
+  {
+   "npc": "npc:soulrest-warder-13",
+   "name": "Heem Salt-Hand",
+   "trade": "warder",
+   "faction": "ninth-cohort",
+   "quarter": "fishery",
+   "residents": [
+    {
+     "npc": "npc:soulrest-warder-13",
+     "name": "Heem Salt-Hand",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-warder-13-lodger0",
+     "name": "Veek Dark-Water",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:soulrest-warder-13-apprentice1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "apprentice"
+    }
+   ],
+   "zones": [
+    "soulrest.warder13.r0",
+    "soulrest.warder13.r1"
+   ]
+  }
+ ],
+ "zones": [
+  {
+   "id": "soulrest.weaver0.r0",
+   "name": "Heem Salt-Hand's weaver",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "dwelling",
+   "owner": "npc:soulrest-weaver-0",
+   "owner_name": "Heem Salt-Hand",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-0",
+     "name": "Heem Salt-Hand",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-0-elder0",
+     "name": "Okan Sings-At-Dusk",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-weaver-0-sibling1",
+     "name": "Chun Bone-Setter",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.weaver0.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.weaver0.r0.lamp0",
+     "pos": [
+      -0.8999999999999999,
+      1.6,
+      -4.1
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver0.r0.lamp1",
+     "pos": [
+      1,
+      1.6,
+      -4.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.weaver0.r0.0",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-0",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.1",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:soulrest-weaver-0-elder0",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.2",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-0-elder0",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.3",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:soulrest-weaver-0-sibling1",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.4",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-0-sibling1",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.5",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "npc:soulrest-weaver-0",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.6",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-0",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.7",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "npc:soulrest-weaver-0-elder0",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.8",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-0-sibling1",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:soulrest",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.weaver0.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      14,
+      178,
+      340
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.weaver0.r1",
+   "name": "Heem Salt-Hand's back room",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "dwelling",
+   "owner": "npc:soulrest-weaver-0",
+   "owner_name": "Heem Salt-Hand",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-0",
+     "name": "Heem Salt-Hand",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-0-elder0",
+     "name": "Okan Sings-At-Dusk",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-weaver-0-sibling1",
+     "name": "Chun Bone-Setter",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.weaver0.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.weaver0.r1.lamp0",
+     "pos": [
+      0.7999999999999998,
+      1.6,
+      -3.6
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver0.r1.lamp1",
+     "pos": [
+      -1.1,
+      1.6,
+      -3.5
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver0.r1.lamp2",
+     "pos": [
+      -2.4,
+      1.6,
+      -3.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.weaver0.r1.0",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:soulrest-weaver-0-elder0",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r1.1",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-0",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r1.2",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:soulrest-weaver-0",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r1.3",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-0-sibling1",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r1.4",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:soulrest-weaver-0",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r1.5",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-0-sibling1",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r1.6",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:soulrest-weaver-0-sibling1",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver0.r1.7",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-0-elder0",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.weaver0.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      120,
+      313
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.weaver1.r0",
+   "name": "Silent-Reed Bone-Setter's weaver",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "dwelling",
+   "owner": "npc:soulrest-weaver-1",
+   "owner_name": "Silent-Reed Bone-Setter",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-1",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-1-sibling0",
+     "name": "Fastidious Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.weaver1.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.weaver1.r0.lamp0",
+     "pos": [
+      2.5999999999999996,
+      1.6,
+      0.40000000000000036
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver1.r0.lamp1",
+     "pos": [
+      0.7000000000000002,
+      1.6,
+      0.5
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver1.r0.lamp2",
+     "pos": [
+      -1.2000000000000002,
+      1.6,
+      0.20000000000000018
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.weaver1.r0.0",
+     "id": "counting_stones",
+     "name": "counting stones",
+     "owner": "npc:soulrest-weaver-1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r0.1",
+     "id": "brass_mirror",
+     "name": "brass mirror",
+     "owner": "npc:soulrest-weaver-1-sibling0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 35,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r0.2",
+     "id": "sealed_crate",
+     "name": "sealed crate",
+     "owner": "npc:soulrest-weaver-1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 52,
+     "weight_kg": 8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r0.3",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-1-sibling0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r0.4",
+     "id": "counting_stones",
+     "name": "counting stones",
+     "owner": "npc:soulrest-weaver-1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r0.5",
+     "id": "brass_mirror",
+     "name": "brass mirror",
+     "owner": "npc:soulrest-weaver-1-sibling0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 35,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r0.6",
+     "id": "sealed_crate",
+     "name": "sealed crate",
+     "owner": "npc:soulrest-weaver-1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 52,
+     "weight_kg": 8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.weaver1.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      147,
+      178,
+      340
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.weaver1.r1",
+   "name": "Silent-Reed Bone-Setter's back room",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "dwelling",
+   "owner": "npc:soulrest-weaver-1",
+   "owner_name": "Silent-Reed Bone-Setter",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-1",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-1-sibling0",
+     "name": "Fastidious Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.weaver1.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.weaver1.r1.lamp0",
+     "pos": [
+      -1.7,
+      1.6,
+      -0.5
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver1.r1.lamp1",
+     "pos": [
+      0.20000000000000018,
+      1.6,
+      -0.6000000000000001
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.weaver1.r1.0",
+     "id": "brass_scale",
+     "name": "brass scale",
+     "owner": "npc:soulrest-weaver-1-sibling0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 44,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r1.1",
+     "id": "glass_bead_string",
+     "name": "glass bead string",
+     "owner": "npc:soulrest-weaver-1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r1.2",
+     "id": "tally_stick_bundle",
+     "name": "tally stick bundle",
+     "owner": "npc:soulrest-weaver-1-sibling0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r1.3",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:soulrest-weaver-1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r1.4",
+     "id": "brass_scale",
+     "name": "brass scale",
+     "owner": "npc:soulrest-weaver-1-sibling0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 44,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r1.5",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:soulrest-weaver-1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r1.6",
+     "id": "tally_stick_bundle",
+     "name": "tally stick bundle",
+     "owner": "npc:soulrest-weaver-1-sibling0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver1.r1.7",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "npc:soulrest-weaver-1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.weaver1.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      88,
+      283,
+      309
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.smith2.r0",
+   "name": "Hides-His-Foot the Quiet's smith",
+   "settlement": "soulrest",
+   "quarter": "the-steps",
+   "class": "shop_closed",
+   "owner": "npc:soulrest-smith-2",
+   "owner_name": "Hides-His-Foot the Quiet",
+   "residents": [
+    {
+     "npc": "npc:soulrest-smith-2",
+     "name": "Hides-His-Foot the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-smith-2-elder0",
+     "name": "Weel Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-smith-2-sibling1",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.smith2.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.smith2.r0.lamp0",
+     "pos": [
+      2,
+      1.6,
+      -1.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.smith2.r0.lamp1",
+     "pos": [
+      0.10000000000000009,
+      1.6,
+      -1.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.smith2.r0.lamp2",
+     "pos": [
+      -1.8,
+      1.6,
+      -2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.smith2.r0.0",
+     "id": "iron_ingot",
+     "name": "iron ingot",
+     "owner": "npc:soulrest-smith-2",
+     "owner_name": "Hides-His-Foot the Quiet",
+     "owner_scope": "personal",
+     "value_g": 30,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r0.1",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:soulrest-smith-2-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r0.2",
+     "id": "tongs",
+     "name": "tongs",
+     "owner": "npc:soulrest-smith-2-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 2.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r0.3",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:soulrest-smith-2",
+     "owner_name": "Hides-His-Foot the Quiet",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r0.4",
+     "id": "hammer",
+     "name": "hammer",
+     "owner": "npc:soulrest-smith-2-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 3.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r0.5",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:soulrest-smith-2-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r0.6",
+     "id": "bellows_handle",
+     "name": "bellows handle",
+     "owner": "npc:soulrest-smith-2",
+     "owner_name": "Hides-His-Foot the Quiet",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r0.7",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "npc:soulrest-smith-2-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.smith2.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      160,
+      328,
+      354
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.smith2.r1",
+   "name": "Hides-His-Foot the Quiet's back room",
+   "settlement": "soulrest",
+   "quarter": "the-steps",
+   "class": "shop_closed",
+   "owner": "npc:soulrest-smith-2",
+   "owner_name": "Hides-His-Foot the Quiet",
+   "residents": [
+    {
+     "npc": "npc:soulrest-smith-2",
+     "name": "Hides-His-Foot the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-smith-2-elder0",
+     "name": "Weel Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-smith-2-sibling1",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.smith2.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.smith2.r1.lamp0",
+     "pos": [
+      -2.3,
+      1.6,
+      1.2999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.smith2.r1.lamp1",
+     "pos": [
+      -0.3999999999999999,
+      1.6,
+      1.2000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.smith2.r1.0",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:soulrest-smith-2-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r1.1",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:soulrest-smith-2-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r1.2",
+     "id": "whetstone",
+     "name": "whetstone",
+     "owner": "npc:soulrest-smith-2",
+     "owner_name": "Hides-His-Foot the Quiet",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r1.3",
+     "id": "clay_pitcher",
+     "name": "clay pitcher",
+     "owner": "npc:soulrest-smith-2-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r1.4",
+     "id": "hammer",
+     "name": "hammer",
+     "owner": "npc:soulrest-smith-2-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 3.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r1.5",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:soulrest-smith-2",
+     "owner_name": "Hides-His-Foot the Quiet",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r1.6",
+     "id": "bellows_handle",
+     "name": "bellows handle",
+     "owner": "npc:soulrest-smith-2-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.smith2.r1.7",
+     "id": "clay_pitcher",
+     "name": "clay pitcher",
+     "owner": "npc:soulrest-smith-2-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.smith2.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      103,
+      134,
+      264
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.cook3.r0",
+   "name": "Drops-No-Stitch Slow-Rain's cook",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "dwelling",
+   "owner": "npc:soulrest-cook-3",
+   "owner_name": "Drops-No-Stitch Slow-Rain",
+   "residents": [
+    {
+     "npc": "npc:soulrest-cook-3",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-cook-3-apprentice0",
+     "name": "Llarara the Elder",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.cook3.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.cook3.r0.lamp0",
+     "pos": [
+      1.2000000000000002,
+      1.6,
+      0.20000000000000018
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.cook3.r0.lamp1",
+     "pos": [
+      -0.7000000000000002,
+      1.6,
+      0.2999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.cook3.r0.lamp2",
+     "pos": [
+      -2,
+      1.6,
+      0.40000000000000036
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.cook3.r0.0",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:soulrest-cook-3",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.1",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.2",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:soulrest-cook-3",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.3",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.4",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:soulrest-cook-3",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.5",
+     "id": "flin_bottle",
+     "name": "flin bottle",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.6",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:soulrest-cook-3",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.7",
+     "id": "flin_bottle",
+     "name": "flin bottle",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.8",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:soulrest-cook-3",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.9",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:soulrest",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.cook3.r0.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      57,
+      251
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.cook3.r1",
+   "name": "Drops-No-Stitch Slow-Rain's back room",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "dwelling",
+   "owner": "npc:soulrest-cook-3",
+   "owner_name": "Drops-No-Stitch Slow-Rain",
+   "residents": [
+    {
+     "npc": "npc:soulrest-cook-3",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-cook-3-apprentice0",
+     "name": "Llarara the Elder",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.cook3.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.cook3.r1.lamp0",
+     "pos": [
+      -0.8999999999999999,
+      1.6,
+      -1.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.cook3.r1.lamp1",
+     "pos": [
+      1,
+      1.6,
+      -1.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.cook3.r1.0",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r1.1",
+     "id": "greef_bottle",
+     "name": "greef bottle",
+     "owner": "npc:soulrest-cook-3",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r1.2",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r1.3",
+     "id": "greef_bottle",
+     "name": "greef bottle",
+     "owner": "npc:soulrest-cook-3",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r1.4",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r1.5",
+     "id": "greef_bottle",
+     "name": "greef bottle",
+     "owner": "npc:soulrest-cook-3",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook3.r1.6",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:soulrest-cook-3-apprentice0",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.cook3.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      192,
+      353
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.cook4.r0",
+   "name": "Okan Sings-At-Dusk's cook",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "dwelling",
+   "owner": "npc:soulrest-cook-4",
+   "owner_name": "Okan Sings-At-Dusk",
+   "residents": [
+    {
+     "npc": "npc:soulrest-cook-4",
+     "name": "Okan Sings-At-Dusk",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-cook-4-child0",
+     "name": "Ahnassi Dark-Water",
+     "role": "child"
+    },
+    {
+     "npc": "npc:soulrest-cook-4-partner1",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.cook4.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.cook4.r0.lamp0",
+     "pos": [
+      -0.2999999999999998,
+      1.6,
+      -0.8999999999999999
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.cook4.r0.lamp1",
+     "pos": [
+      1.5999999999999996,
+      1.6,
+      -1
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.cook4.r0.0",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:soulrest-cook-4-child0",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r0.1",
+     "id": "stool",
+     "name": "stool",
+     "owner": "npc:soulrest-cook-4-partner1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r0.2",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:soulrest-cook-4-partner1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r0.3",
+     "id": "stool",
+     "name": "stool",
+     "owner": "npc:soulrest-cook-4",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r0.4",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:soulrest-cook-4",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r0.5",
+     "id": "pewter_tankard",
+     "name": "pewter tankard",
+     "owner": "npc:soulrest-cook-4-child0",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r0.6",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:soulrest-cook-4-child0",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.cook4.r0.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      135,
+      298
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.cook4.r1",
+   "name": "Okan Sings-At-Dusk's back room",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "dwelling",
+   "owner": "npc:soulrest-cook-4",
+   "owner_name": "Okan Sings-At-Dusk",
+   "residents": [
+    {
+     "npc": "npc:soulrest-cook-4",
+     "name": "Okan Sings-At-Dusk",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-cook-4-child0",
+     "name": "Ahnassi Dark-Water",
+     "role": "child"
+    },
+    {
+     "npc": "npc:soulrest-cook-4-partner1",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.cook4.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.cook4.r1.lamp0",
+     "pos": [
+      -1.2000000000000002,
+      1.6,
+      -3.8
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.cook4.r1.lamp1",
+     "pos": [
+      -3.1,
+      1.6,
+      -3.7
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.cook4.r1.lamp2",
+     "pos": [
+      2.5999999999999996,
+      1.6,
+      -3.6
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.cook4.r1.0",
+     "id": "bone_handled_knife",
+     "name": "bone-handled knife",
+     "owner": "npc:soulrest-cook-4-child0",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r1.1",
+     "id": "flin_bottle",
+     "name": "flin bottle",
+     "owner": "npc:soulrest-cook-4",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r1.2",
+     "id": "bone_handled_knife",
+     "name": "bone-handled knife",
+     "owner": "npc:soulrest-cook-4",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r1.3",
+     "id": "flin_bottle",
+     "name": "flin bottle",
+     "owner": "npc:soulrest-cook-4-partner1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r1.4",
+     "id": "bone_handled_knife",
+     "name": "bone-handled knife",
+     "owner": "npc:soulrest-cook-4",
+     "owner_name": "Okan Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r1.5",
+     "id": "flin_bottle",
+     "name": "flin bottle",
+     "owner": "npc:soulrest-cook-4-partner1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r1.6",
+     "id": "bone_handled_knife",
+     "name": "bone-handled knife",
+     "owner": "npc:soulrest-cook-4-partner1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r1.7",
+     "id": "flin_bottle",
+     "name": "flin bottle",
+     "owner": "npc:soulrest-cook-4-child0",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.cook4.r1.8",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "npc:soulrest-cook-4-partner1",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.cook4.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      74,
+      237
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.scribe5.r0",
+   "name": "Llarara the Elder's scribe",
+   "settlement": "soulrest",
+   "quarter": "the-steps",
+   "class": "dwelling",
+   "owner": "npc:soulrest-scribe-5",
+   "owner_name": "Llarara the Elder",
+   "residents": [
+    {
+     "npc": "npc:soulrest-scribe-5",
+     "name": "Llarara the Elder",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-scribe-5-sibling0",
+     "name": "Bevene the Younger",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.scribe5.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.scribe5.r0.lamp0",
+     "pos": [
+      1.4000000000000004,
+      1.6,
+      -4.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.scribe5.r0.lamp1",
+     "pos": [
+      -0.5,
+      1.6,
+      -4.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.scribe5.r0.lamp2",
+     "pos": [
+      -1.8,
+      1.6,
+      -4.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.scribe5.r0.0",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r0.1",
+     "id": "wool_blanket",
+     "name": "wool blanket",
+     "owner": "npc:soulrest-scribe-5-sibling0",
+     "owner_name": "Bevene the Younger",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 1.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r0.2",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r0.3",
+     "id": "wool_blanket",
+     "name": "wool blanket",
+     "owner": "npc:soulrest-scribe-5-sibling0",
+     "owner_name": "Bevene the Younger",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 1.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r0.4",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r0.5",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:soulrest-scribe-5-sibling0",
+     "owner_name": "Bevene the Younger",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r0.6",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r0.7",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:soulrest-scribe-5-sibling0",
+     "owner_name": "Bevene the Younger",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "sealed.soulrest-deathcount.item",
+     "id": "sealed_soulrest_deathcount",
+     "name": "the Drowned Court census",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_scope": "personal",
+     "value_g": 800,
+     "weight_kg": 2,
+     "unique": true,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.scribe5.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      25,
+      58,
+      252
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    },
+    {
+     "id": "sealed.soulrest-deathcount",
+     "tier": 5,
+     "wards": 5,
+     "ward_angles": [
+      105,
+      131,
+      238,
+      266,
+      299
+     ],
+     "security_req": 80,
+     "agility_req": 50,
+     "picks_per_attempt": 3,
+     "quest_variant": true,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:soulrest-scribe-5"
+      },
+      {
+       "kind": "quest",
+       "id": "quest.sealed.soulrest-deathcount"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.scribe5.r1",
+   "name": "Llarara the Elder's back room",
+   "settlement": "soulrest",
+   "quarter": "the-steps",
+   "class": "dwelling",
+   "owner": "npc:soulrest-scribe-5",
+   "owner_name": "Llarara the Elder",
+   "residents": [
+    {
+     "npc": "npc:soulrest-scribe-5",
+     "name": "Llarara the Elder",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-scribe-5-sibling0",
+     "name": "Bevene the Younger",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.scribe5.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.scribe5.r1.lamp0",
+     "pos": [
+      1.5,
+      1.6,
+      1.9000000000000004
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.scribe5.r1.lamp1",
+     "pos": [
+      3.4000000000000004,
+      1.6,
+      1.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.scribe5.r1.0",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-scribe-5-sibling0",
+     "owner_name": "Bevene the Younger",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r1.1",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r1.2",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-scribe-5-sibling0",
+     "owner_name": "Bevene the Younger",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r1.3",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r1.4",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-scribe-5-sibling0",
+     "owner_name": "Bevene the Younger",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r1.5",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r1.6",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-scribe-5-sibling0",
+     "owner_name": "Bevene the Younger",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.scribe5.r1.7",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:soulrest-scribe-5",
+     "owner_name": "Llarara the Elder",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.scribe5.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      71,
+      239
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.boatwright6.r0",
+   "name": "Dram the Quiet's boatwright",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "shop_closed",
+   "owner": "npc:soulrest-boatwright-6",
+   "owner_name": "Dram the Quiet",
+   "residents": [
+    {
+     "npc": "npc:soulrest-boatwright-6",
+     "name": "Dram the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-6-lodger0",
+     "name": "Ocheeva of the Boards",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-6-apprentice1",
+     "name": "Sondaale the Younger",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.boatwright6.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.boatwright6.r0.lamp0",
+     "pos": [
+      2.5999999999999996,
+      1.6,
+      -3.8
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.boatwright6.r0.lamp1",
+     "pos": [
+      0.7000000000000002,
+      1.6,
+      -3.7
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.boatwright6.r0.lamp2",
+     "pos": [
+      -1.2000000000000002,
+      1.6,
+      -4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.boatwright6.r0.0",
+     "id": "net_float",
+     "name": "net float",
+     "owner": "npc:soulrest-boatwright-6",
+     "owner_name": "Dram the Quiet",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r0.1",
+     "id": "iron_ingot",
+     "name": "iron ingot",
+     "owner": "npc:soulrest-boatwright-6-apprentice1",
+     "owner_name": "Sondaale the Younger",
+     "owner_scope": "personal",
+     "value_g": 30,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r0.2",
+     "id": "tar_bucket",
+     "name": "tar bucket",
+     "owner": "npc:soulrest-boatwright-6-lodger0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r0.3",
+     "id": "tongs",
+     "name": "tongs",
+     "owner": "npc:soulrest-boatwright-6",
+     "owner_name": "Dram the Quiet",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 2.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r0.4",
+     "id": "net_float",
+     "name": "net float",
+     "owner": "npc:soulrest-boatwright-6-lodger0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r0.5",
+     "id": "leather_apron",
+     "name": "leather apron",
+     "owner": "npc:soulrest-boatwright-6",
+     "owner_name": "Dram the Quiet",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r0.6",
+     "id": "tar_bucket",
+     "name": "tar bucket",
+     "owner": "npc:soulrest-boatwright-6-apprentice1",
+     "owner_name": "Sondaale the Younger",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r0.7",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:soulrest-boatwright-6-lodger0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:soulrest",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.boatwright6.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      105,
+      266,
+      299
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.boatwright6.r1",
+   "name": "Dram the Quiet's back room",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "shop_closed",
+   "owner": "npc:soulrest-boatwright-6",
+   "owner_name": "Dram the Quiet",
+   "residents": [
+    {
+     "npc": "npc:soulrest-boatwright-6",
+     "name": "Dram the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-6-lodger0",
+     "name": "Ocheeva of the Boards",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-6-apprentice1",
+     "name": "Sondaale the Younger",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.boatwright6.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.boatwright6.r1.lamp0",
+     "pos": [
+      0.5,
+      1.6,
+      -0.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.boatwright6.r1.lamp1",
+     "pos": [
+      2.4000000000000004,
+      1.6,
+      -0.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.boatwright6.r1.0",
+     "id": "manifest_slate",
+     "name": "manifest slate",
+     "owner": "npc:soulrest-boatwright-6",
+     "owner_name": "Dram the Quiet",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r1.1",
+     "id": "hammer",
+     "name": "hammer",
+     "owner": "npc:soulrest-boatwright-6-lodger0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 3.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r1.2",
+     "id": "fish_hook_box",
+     "name": "fish hook box",
+     "owner": "npc:soulrest-boatwright-6-apprentice1",
+     "owner_name": "Sondaale the Younger",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r1.3",
+     "id": "bellows_handle",
+     "name": "bellows handle",
+     "owner": "npc:soulrest-boatwright-6",
+     "owner_name": "Dram the Quiet",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r1.4",
+     "id": "coil_of_rope",
+     "name": "coil of rope",
+     "owner": "npc:soulrest-boatwright-6-apprentice1",
+     "owner_name": "Sondaale the Younger",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 3.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r1.5",
+     "id": "leather_apron",
+     "name": "leather apron",
+     "owner": "npc:soulrest-boatwright-6",
+     "owner_name": "Dram the Quiet",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r1.6",
+     "id": "manifest_slate",
+     "name": "manifest slate",
+     "owner": "npc:soulrest-boatwright-6-lodger0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright6.r1.7",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:soulrest-boatwright-6-apprentice1",
+     "owner_name": "Sondaale the Younger",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.boatwright6.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      89,
+      284,
+      310
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.weaver7.r0",
+   "name": "Bevene the Patient's weaver",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "dwelling",
+   "owner": "npc:soulrest-weaver-7",
+   "owner_name": "Bevene the Patient",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-7",
+     "name": "Bevene the Patient",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-7-sibling0",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.weaver7.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.weaver7.r0.lamp0",
+     "pos": [
+      -1.2000000000000002,
+      1.6,
+      1.5999999999999996
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver7.r0.lamp1",
+     "pos": [
+      -3.1,
+      1.6,
+      1.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver7.r0.lamp2",
+     "pos": [
+      2.5999999999999996,
+      1.6,
+      1.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.weaver7.r0.0",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-weaver-7",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r0.1",
+     "id": "brass_mirror",
+     "name": "brass mirror",
+     "owner": "npc:soulrest-weaver-7-sibling0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 35,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r0.2",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-weaver-7",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r0.3",
+     "id": "brass_mirror",
+     "name": "brass mirror",
+     "owner": "npc:soulrest-weaver-7-sibling0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 35,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r0.4",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-weaver-7",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r0.5",
+     "id": "wool_blanket",
+     "name": "wool blanket",
+     "owner": "npc:soulrest-weaver-7-sibling0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 1.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.weaver7.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      135,
+      265,
+      298
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.weaver7.r1",
+   "name": "Bevene the Patient's back room",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "dwelling",
+   "owner": "npc:soulrest-weaver-7",
+   "owner_name": "Bevene the Patient",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-7",
+     "name": "Bevene the Patient",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-7-sibling0",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.weaver7.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.weaver7.r1.lamp0",
+     "pos": [
+      -3.1,
+      1.6,
+      -3.5
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver7.r1.lamp1",
+     "pos": [
+      -1.2000000000000002,
+      1.6,
+      -3.6
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.weaver7.r1.0",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-weaver-7-sibling0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r1.1",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:soulrest-weaver-7",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r1.2",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-weaver-7-sibling0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r1.3",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:soulrest-weaver-7",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r1.4",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-weaver-7-sibling0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r1.5",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:soulrest-weaver-7",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver7.r1.6",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-weaver-7-sibling0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.weaver7.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      192,
+      353
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.weaver8.r0",
+   "name": "Ahnassi Dark-Water's weaver",
+   "settlement": "soulrest",
+   "quarter": "the-steps",
+   "class": "dwelling",
+   "owner": "npc:soulrest-weaver-8",
+   "owner_name": "Ahnassi Dark-Water",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-8",
+     "name": "Ahnassi Dark-Water",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-8-child0",
+     "name": "Veek Dark-Water",
+     "role": "child"
+    },
+    {
+     "npc": "npc:soulrest-weaver-8-partner1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.weaver8.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.weaver8.r0.lamp0",
+     "pos": [
+      -2.5,
+      1.6,
+      -3.1
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver8.r0.lamp1",
+     "pos": [
+      -0.6000000000000001,
+      1.6,
+      -3.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.weaver8.r0.0",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-8-child0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r0.1",
+     "id": "reed_mat",
+     "name": "reed mat",
+     "owner": "npc:soulrest-weaver-8-partner1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 1.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r0.2",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-8-partner1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r0.3",
+     "id": "reed_mat",
+     "name": "reed mat",
+     "owner": "npc:soulrest-weaver-8",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 1.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r0.4",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-8",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r0.5",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:soulrest-weaver-8-child0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r0.6",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:soulrest-weaver-8-child0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.weaver8.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      11,
+      175,
+      342
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.weaver8.r1",
+   "name": "Ahnassi Dark-Water's back room",
+   "settlement": "soulrest",
+   "quarter": "the-steps",
+   "class": "dwelling",
+   "owner": "npc:soulrest-weaver-8",
+   "owner_name": "Ahnassi Dark-Water",
+   "residents": [
+    {
+     "npc": "npc:soulrest-weaver-8",
+     "name": "Ahnassi Dark-Water",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-weaver-8-child0",
+     "name": "Veek Dark-Water",
+     "role": "child"
+    },
+    {
+     "npc": "npc:soulrest-weaver-8-partner1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.weaver8.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.weaver8.r1.lamp0",
+     "pos": [
+      -3.4,
+      1.6,
+      4.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver8.r1.lamp1",
+     "pos": [
+      1.7000000000000002,
+      1.6,
+      -4.5
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.weaver8.r1.lamp2",
+     "pos": [
+      0.3999999999999999,
+      1.6,
+      -4.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.weaver8.r1.0",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:soulrest-weaver-8-partner1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r1.1",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-8",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r1.2",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:soulrest-weaver-8-child0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r1.3",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-8",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r1.4",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:soulrest-weaver-8",
+     "owner_name": "Ahnassi Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r1.5",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-8-partner1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r1.6",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:soulrest-weaver-8-partner1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.weaver8.r1.7",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:soulrest-weaver-8-child0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.weaver8.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      191,
+      357
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.boatwright9.r0",
+   "name": "Wanan the Shorter's boatwright",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "shop_closed",
+   "owner": "npc:soulrest-boatwright-9",
+   "owner_name": "Wanan the Shorter",
+   "residents": [
+    {
+     "npc": "npc:soulrest-boatwright-9",
+     "name": "Wanan the Shorter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-9-apprentice0",
+     "name": "Tul Two-Skins",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.boatwright9.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.boatwright9.r0.lamp0",
+     "pos": [
+      1.7000000000000002,
+      1.6,
+      3.9000000000000004
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.boatwright9.r0.lamp1",
+     "pos": [
+      -3.4,
+      1.6,
+      3.8000000000000007
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.boatwright9.r0.0",
+     "id": "manifest_slate",
+     "name": "manifest slate",
+     "owner": "npc:soulrest-boatwright-9-apprentice0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r0.1",
+     "id": "bellows_handle",
+     "name": "bellows handle",
+     "owner": "npc:soulrest-boatwright-9",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r0.2",
+     "id": "fish_hook_box",
+     "name": "fish hook box",
+     "owner": "npc:soulrest-boatwright-9-apprentice0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r0.3",
+     "id": "leather_apron",
+     "name": "leather apron",
+     "owner": "npc:soulrest-boatwright-9",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r0.4",
+     "id": "coil_of_rope",
+     "name": "coil of rope",
+     "owner": "npc:soulrest-boatwright-9-apprentice0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 3.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r0.5",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:soulrest-boatwright-9",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r0.6",
+     "id": "manifest_slate",
+     "name": "manifest slate",
+     "owner": "npc:soulrest-boatwright-9-apprentice0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r0.7",
+     "id": "whetstone",
+     "name": "whetstone",
+     "owner": "npc:soulrest-boatwright-9",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:soulrest",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.boatwright9.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      40,
+      74,
+      206
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.boatwright9.r1",
+   "name": "Wanan the Shorter's back room",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "shop_closed",
+   "owner": "npc:soulrest-boatwright-9",
+   "owner_name": "Wanan the Shorter",
+   "residents": [
+    {
+     "npc": "npc:soulrest-boatwright-9",
+     "name": "Wanan the Shorter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-boatwright-9-apprentice0",
+     "name": "Tul Two-Skins",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.boatwright9.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.boatwright9.r1.lamp0",
+     "pos": [
+      -1,
+      1.6,
+      -4.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.boatwright9.r1.lamp1",
+     "pos": [
+      -2.9,
+      1.6,
+      -4.1
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.boatwright9.r1.lamp2",
+     "pos": [
+      2.2,
+      1.6,
+      -4.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.boatwright9.r1.0",
+     "id": "net_float",
+     "name": "net float",
+     "owner": "npc:soulrest-boatwright-9",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r1.1",
+     "id": "tongs",
+     "name": "tongs",
+     "owner": "npc:soulrest-boatwright-9-apprentice0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 2.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r1.2",
+     "id": "tar_bucket",
+     "name": "tar bucket",
+     "owner": "npc:soulrest-boatwright-9",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r1.3",
+     "id": "hammer",
+     "name": "hammer",
+     "owner": "npc:soulrest-boatwright-9-apprentice0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 3.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r1.4",
+     "id": "net_float",
+     "name": "net float",
+     "owner": "npc:soulrest-boatwright-9",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r1.5",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:soulrest-boatwright-9-apprentice0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.boatwright9.r1.6",
+     "id": "tar_bucket",
+     "name": "tar bucket",
+     "owner": "npc:soulrest-boatwright-9",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.boatwright9.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      150,
+      176,
+      338
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.trader10.r0",
+   "name": "Fastidious Reed-Cutter's trader",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "shop_closed",
+   "owner": "npc:soulrest-trader-10",
+   "owner_name": "Fastidious Reed-Cutter",
+   "residents": [
+    {
+     "npc": "npc:soulrest-trader-10",
+     "name": "Fastidious Reed-Cutter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-trader-10-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.trader10.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.trader10.r0.lamp0",
+     "pos": [
+      0.20000000000000018,
+      1.6,
+      -1.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.trader10.r0.lamp1",
+     "pos": [
+      -1.7,
+      1.6,
+      -1.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.trader10.r0.lamp2",
+     "pos": [
+      -3,
+      1.6,
+      -1.6
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.trader10.r0.0",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-trader-10",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r0.1",
+     "id": "brass_mirror",
+     "name": "brass mirror",
+     "owner": "npc:soulrest-trader-10-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 35,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r0.2",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-trader-10",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r0.3",
+     "id": "brass_mirror",
+     "name": "brass mirror",
+     "owner": "npc:soulrest-trader-10-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 35,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r0.4",
+     "id": "coin_tray",
+     "name": "coin tray",
+     "owner": "npc:soulrest-trader-10",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r0.5",
+     "id": "wool_blanket",
+     "name": "wool blanket",
+     "owner": "npc:soulrest-trader-10-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 1.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.trader10.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      14,
+      147,
+      178
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.trader10.r1",
+   "name": "Fastidious Reed-Cutter's back room",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "shop_closed",
+   "owner": "npc:soulrest-trader-10",
+   "owner_name": "Fastidious Reed-Cutter",
+   "residents": [
+    {
+     "npc": "npc:soulrest-trader-10",
+     "name": "Fastidious Reed-Cutter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-trader-10-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.trader10.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.trader10.r1.lamp0",
+     "pos": [
+      -2.5,
+      1.6,
+      -3.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.trader10.r1.lamp1",
+     "pos": [
+      -0.6000000000000001,
+      1.6,
+      -3.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.trader10.r1.0",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-trader-10-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r1.1",
+     "id": "reed_mat",
+     "name": "reed mat",
+     "owner": "npc:soulrest-trader-10",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 1.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r1.2",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-trader-10-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r1.3",
+     "id": "reed_mat",
+     "name": "reed mat",
+     "owner": "npc:soulrest-trader-10",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 1.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r1.4",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-trader-10-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r1.5",
+     "id": "reed_mat",
+     "name": "reed mat",
+     "owner": "npc:soulrest-trader-10",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 1.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r1.6",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-trader-10-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r1.7",
+     "id": "reed_mat",
+     "name": "reed mat",
+     "owner": "npc:soulrest-trader-10",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 1.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.trader10.r1.8",
+     "id": "ledger_book",
+     "name": "ledger book",
+     "owner": "npc:soulrest-trader-10-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.trader10.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      120,
+      313
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.warder11.r0",
+   "name": "Meesei Wet-Foot's warder",
+   "settlement": "soulrest",
+   "quarter": "the-steps",
+   "class": "prison",
+   "owner": "npc:soulrest-warder-11",
+   "owner_name": "Meesei Wet-Foot",
+   "residents": [
+    {
+     "npc": "npc:soulrest-warder-11",
+     "name": "Meesei Wet-Foot",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-warder-11-elder0",
+     "name": "Keeps-Her-Own Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-warder-11-sibling1",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "faction": "ninth-cohort",
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.warder11.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.warder11.r0.lamp0",
+     "pos": [
+      1,
+      1.6,
+      0
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.warder11.r0.lamp1",
+     "pos": [
+      -0.8999999999999999,
+      1.6,
+      0.09999999999999964
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.warder11.r0.lamp2",
+     "pos": [
+      -2.8,
+      1.6,
+      -0.20000000000000018
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.warder11.r0.0",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r0.1",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:soulrest-warder-11-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r0.2",
+     "id": "oil_flask",
+     "name": "oil flask",
+     "owner": "npc:soulrest-warder-11-elder0",
+     "owner_name": "Keeps-Her-Own Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 13,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r0.3",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r0.4",
+     "id": "signal_horn",
+     "name": "signal horn",
+     "owner": "npc:soulrest-warder-11-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 47,
+     "weight_kg": 1.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r0.5",
+     "id": "bone_handled_knife",
+     "name": "bone-handled knife",
+     "owner": "npc:soulrest-warder-11-elder0",
+     "owner_name": "Keeps-Her-Own Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r0.6",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r0.7",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:soulrest-warder-11-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.warder11.r0.lock",
+     "tier": 4,
+     "wards": 4,
+     "ward_angles": [
+      41,
+      75,
+      207,
+      238
+     ],
+     "security_req": 60,
+     "agility_req": 38,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:soulrest-warder-11"
+      },
+      {
+       "kind": "window",
+       "from": "the-steps"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.warder11.r1",
+   "name": "Meesei Wet-Foot's back room",
+   "settlement": "soulrest",
+   "quarter": "the-steps",
+   "class": "prison",
+   "owner": "npc:soulrest-warder-11",
+   "owner_name": "Meesei Wet-Foot",
+   "residents": [
+    {
+     "npc": "npc:soulrest-warder-11",
+     "name": "Meesei Wet-Foot",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-warder-11-elder0",
+     "name": "Keeps-Her-Own Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:soulrest-warder-11-sibling1",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "sibling"
+    }
+   ],
+   "faction": "ninth-cohort",
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.warder11.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.warder11.r1.lamp0",
+     "pos": [
+      3.0999999999999996,
+      1.6,
+      -0.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.warder11.r1.lamp1",
+     "pos": [
+      -2,
+      1.6,
+      -0.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.warder11.r1.0",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:soulrest-warder-11-elder0",
+     "owner_name": "Keeps-Her-Own Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r1.1",
+     "id": "marsh_rice_sack",
+     "name": "marsh-rice sack",
+     "owner": "npc:soulrest-warder-11-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r1.2",
+     "id": "field_ledger",
+     "name": "field ledger",
+     "owner": "npc:soulrest-warder-11",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 21,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r1.3",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:soulrest-warder-11-elder0",
+     "owner_name": "Keeps-Her-Own Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r1.4",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:soulrest-warder-11-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r1.5",
+     "id": "marsh_rice_sack",
+     "name": "marsh-rice sack",
+     "owner": "npc:soulrest-warder-11",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r1.6",
+     "id": "field_ledger",
+     "name": "field ledger",
+     "owner": "npc:soulrest-warder-11-elder0",
+     "owner_name": "Keeps-Her-Own Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 21,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder11.r1.7",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:soulrest-warder-11-sibling1",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.warder11.r1.lock",
+     "tier": 4,
+     "wards": 4,
+     "ward_angles": [
+      27,
+      60,
+      223,
+      249
+     ],
+     "security_req": 60,
+     "agility_req": 38,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:soulrest-warder-11"
+      },
+      {
+       "kind": "window",
+       "from": "the-steps"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.fisher12.r0",
+   "name": "Falura Nine-Teeth's fisher",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "dwelling",
+   "owner": "npc:soulrest-fisher-12",
+   "owner_name": "Falura Nine-Teeth",
+   "residents": [
+    {
+     "npc": "npc:soulrest-fisher-12",
+     "name": "Falura Nine-Teeth",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-fisher-12-partner0",
+     "name": "Tul Two-Skins",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.fisher12.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.fisher12.r0.lamp0",
+     "pos": [
+      2.5,
+      1.6,
+      -3.7
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.fisher12.r0.lamp1",
+     "pos": [
+      -2.6,
+      1.6,
+      -3.8
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.fisher12.r0.0",
+     "id": "coil_of_rope",
+     "name": "coil of rope",
+     "owner": "npc:soulrest-fisher-12-partner0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 3.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r0.1",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:soulrest-fisher-12",
+     "owner_name": "Falura Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r0.2",
+     "id": "manifest_slate",
+     "name": "manifest slate",
+     "owner": "npc:soulrest-fisher-12-partner0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r0.3",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:soulrest-fisher-12",
+     "owner_name": "Falura Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r0.4",
+     "id": "fish_hook_box",
+     "name": "fish hook box",
+     "owner": "npc:soulrest-fisher-12-partner0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r0.5",
+     "id": "clay_pitcher",
+     "name": "clay pitcher",
+     "owner": "npc:soulrest-fisher-12",
+     "owner_name": "Falura Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r0.6",
+     "id": "coil_of_rope",
+     "name": "coil of rope",
+     "owner": "npc:soulrest-fisher-12-partner0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 3.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:soulrest",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.fisher12.r0.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      163,
+      326
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.fisher12.r1",
+   "name": "Falura Nine-Teeth's back room",
+   "settlement": "soulrest",
+   "quarter": "drowned-court",
+   "class": "dwelling",
+   "owner": "npc:soulrest-fisher-12",
+   "owner_name": "Falura Nine-Teeth",
+   "residents": [
+    {
+     "npc": "npc:soulrest-fisher-12",
+     "name": "Falura Nine-Teeth",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-fisher-12-partner0",
+     "name": "Tul Two-Skins",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.fisher12.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.fisher12.r1.lamp0",
+     "pos": [
+      3.4000000000000004,
+      1.6,
+      -0.40000000000000036
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.fisher12.r1.lamp1",
+     "pos": [
+      1.5,
+      1.6,
+      -0.2999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.fisher12.r1.lamp2",
+     "pos": [
+      -0.3999999999999999,
+      1.6,
+      -0.6000000000000001
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.fisher12.r1.0",
+     "id": "crate_of_salt",
+     "name": "crate of salt",
+     "owner": "npc:soulrest-fisher-12",
+     "owner_name": "Falura Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 33,
+     "weight_kg": 7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r1.1",
+     "id": "bone_handled_knife",
+     "name": "bone-handled knife",
+     "owner": "npc:soulrest-fisher-12-partner0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r1.2",
+     "id": "net_float",
+     "name": "net float",
+     "owner": "npc:soulrest-fisher-12",
+     "owner_name": "Falura Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r1.3",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:soulrest-fisher-12-partner0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r1.4",
+     "id": "crate_of_salt",
+     "name": "crate of salt",
+     "owner": "npc:soulrest-fisher-12",
+     "owner_name": "Falura Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 33,
+     "weight_kg": 7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r1.5",
+     "id": "bone_handled_knife",
+     "name": "bone-handled knife",
+     "owner": "npc:soulrest-fisher-12-partner0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r1.6",
+     "id": "net_float",
+     "name": "net float",
+     "owner": "npc:soulrest-fisher-12",
+     "owner_name": "Falura Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r1.7",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:soulrest-fisher-12-partner0",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.fisher12.r1.8",
+     "id": "crate_of_salt",
+     "name": "crate of salt",
+     "owner": "npc:soulrest-fisher-12",
+     "owner_name": "Falura Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 33,
+     "weight_kg": 7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.fisher12.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      104,
+      265,
+      298
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.warder13.r0",
+   "name": "Heem Salt-Hand's warder",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "prison",
+   "owner": "npc:soulrest-warder-13",
+   "owner_name": "Heem Salt-Hand",
+   "residents": [
+    {
+     "npc": "npc:soulrest-warder-13",
+     "name": "Heem Salt-Hand",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-warder-13-lodger0",
+     "name": "Veek Dark-Water",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:soulrest-warder-13-apprentice1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "apprentice"
+    }
+   ],
+   "faction": "ninth-cohort",
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.warder13.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.warder13.r0.lamp0",
+     "pos": [
+      3.2,
+      1.6,
+      4.199999999999999
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.warder13.r0.lamp1",
+     "pos": [
+      1.2999999999999998,
+      1.6,
+      4.300000000000001
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.warder13.r0.lamp2",
+     "pos": [
+      0,
+      1.6,
+      4.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.warder13.r0.0",
+     "id": "signal_horn",
+     "name": "signal horn",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 47,
+     "weight_kg": 1.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r0.1",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:soulrest-warder-13-apprentice1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r0.2",
+     "id": "signal_horn",
+     "name": "signal horn",
+     "owner": "npc:soulrest-warder-13-apprentice1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 47,
+     "weight_kg": 1.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r0.3",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r0.4",
+     "id": "oil_flask",
+     "name": "oil flask",
+     "owner": "npc:soulrest-warder-13-lodger0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 13,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r0.5",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:soulrest-warder-13",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r0.6",
+     "id": "oil_flask",
+     "name": "oil flask",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 13,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.warder13.r0.lock",
+     "tier": 4,
+     "wards": 4,
+     "ward_angles": [
+      103,
+      134,
+      264,
+      297
+     ],
+     "security_req": 60,
+     "agility_req": 38,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:soulrest-warder-13"
+      },
+      {
+       "kind": "window",
+       "from": "fishery"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soulrest.warder13.r1",
+   "name": "Heem Salt-Hand's back room",
+   "settlement": "soulrest",
+   "quarter": "fishery",
+   "class": "prison",
+   "owner": "npc:soulrest-warder-13",
+   "owner_name": "Heem Salt-Hand",
+   "residents": [
+    {
+     "npc": "npc:soulrest-warder-13",
+     "name": "Heem Salt-Hand",
+     "role": "head"
+    },
+    {
+     "npc": "npc:soulrest-warder-13-lodger0",
+     "name": "Veek Dark-Water",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:soulrest-warder-13-apprentice1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "apprentice"
+    }
+   ],
+   "faction": "ninth-cohort",
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "soulrest.warder13.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "soulrest.warder13.r1.lamp0",
+     "pos": [
+      2.9000000000000004,
+      1.6,
+      4.1
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "soulrest.warder13.r1.lamp1",
+     "pos": [
+      -2.2,
+      1.6,
+      4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "soulrest.warder13.r1.0",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:soulrest-warder-13-apprentice1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.1",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:soulrest-warder-13",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.2",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:soulrest-warder-13",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.3",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:soulrest-warder-13-lodger0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.4",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:soulrest-warder-13",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.5",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:soulrest-warder-13-lodger0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.6",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:soulrest-warder-13-lodger0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.7",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:soulrest-warder-13-apprentice1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.8",
+     "id": "field_ledger",
+     "name": "field ledger",
+     "owner": "npc:soulrest-warder-13",
+     "owner_name": "Heem Salt-Hand",
+     "owner_scope": "personal",
+     "value_g": 21,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "soulrest.warder13.r1.9",
+     "id": "marsh_rice_sack",
+     "name": "marsh-rice sack",
+     "owner": "npc:soulrest-warder-13-lodger0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "soulrest.warder13.r1.lock",
+     "tier": 4,
+     "wards": 4,
+     "ward_angles": [
+      161,
+      194,
+      324,
+      355
+     ],
+     "security_req": 60,
+     "agility_req": 38,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:soulrest-warder-13"
+      },
+      {
+       "kind": "window",
+       "from": "fishery"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

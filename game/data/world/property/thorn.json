@@ -1,0 +1,6389 @@
+{
+ "schema": "elder-souls/property@1",
+ "id": "property-thorn",
+ "settlement": "thorn",
+ "jurisdiction": "settlement",
+ "source": "RI-STL02 §1 (ownership), §4 (trespass classes), §3 (ward-collar locks). Built by tools/world/build-property.mjs; the roster, palettes and classes in that file are the authored part.",
+ "households": [
+  {
+   "npc": "npc:thorn-factor-0",
+   "name": "Ocheeva of the Boards",
+   "trade": "factor",
+   "faction": "wet-ledger",
+   "quarter": "rotted-hall",
+   "residents": [
+    {
+     "npc": "npc:thorn-factor-0",
+     "name": "Ocheeva of the Boards",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-factor-0-child0",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "child"
+    },
+    {
+     "npc": "npc:thorn-factor-0-partner1",
+     "name": "Bevene the Patient",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "thorn.factor0.r0",
+    "thorn.factor0.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-priest-1",
+   "name": "Drops-No-Stitch Slow-Rain",
+   "trade": "priest",
+   "faction": "drowned-court",
+   "quarter": "the-boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-priest-1",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-priest-1-sibling0",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "thorn.priest1.r0",
+    "thorn.priest1.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-priest-2",
+   "name": "Marks-The-Ledger of Nine Debts",
+   "trade": "priest",
+   "faction": "drowned-court",
+   "quarter": "sapwell",
+   "residents": [
+    {
+     "npc": "npc:thorn-priest-2",
+     "name": "Marks-The-Ledger of Nine Debts",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-priest-2-elder0",
+     "name": "Veek Dark-Water",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-priest-2-sibling1",
+     "name": "Llarara Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "thorn.priest2.r0",
+    "thorn.priest2.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-weaver-3",
+   "name": "Sedura Rope-Maker",
+   "trade": "weaver",
+   "faction": null,
+   "quarter": "rotted-hall",
+   "residents": [
+    {
+     "npc": "npc:thorn-weaver-3",
+     "name": "Sedura Rope-Maker",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-weaver-3-apprentice0",
+     "name": "Jeelus-Tei the Patient",
+     "role": "apprentice"
+    }
+   ],
+   "zones": [
+    "thorn.weaver3.r0",
+    "thorn.weaver3.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-smith-4",
+   "name": "Keeps-Her-Own of the Boards",
+   "trade": "smith",
+   "faction": null,
+   "quarter": "the-boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-4",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-4-child0",
+     "name": "Meesei Wet-Foot",
+     "role": "child"
+    },
+    {
+     "npc": "npc:thorn-smith-4-partner1",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "thorn.smith4.r0",
+    "thorn.smith4.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-weaver-5",
+   "name": "Jaraleet Reed-Cutter",
+   "trade": "weaver",
+   "faction": null,
+   "quarter": "sapwell",
+   "residents": [
+    {
+     "npc": "npc:thorn-weaver-5",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-weaver-5-apprentice0",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "apprentice"
+    }
+   ],
+   "zones": [
+    "thorn.weaver5.r0",
+    "thorn.weaver5.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-cook-6",
+   "name": "Vaman Cold-Ash",
+   "trade": "cook",
+   "faction": null,
+   "quarter": "rotted-hall",
+   "residents": [
+    {
+     "npc": "npc:thorn-cook-6",
+     "name": "Vaman Cold-Ash",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-cook-6-lodger0",
+     "name": "Ruut Cold-Ash",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:thorn-cook-6-apprentice1",
+     "name": "Sedura Rope-Maker",
+     "role": "apprentice"
+    }
+   ],
+   "zones": [
+    "thorn.cook6.r0",
+    "thorn.cook6.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-cook-7",
+   "name": "Beem-Kiune Nine-Teeth",
+   "trade": "cook",
+   "faction": null,
+   "quarter": "the-boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-cook-7",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-cook-7-partner0",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "thorn.cook7.r0",
+    "thorn.cook7.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-smith-8",
+   "name": "Hides-His-Foot the Quiet",
+   "trade": "smith",
+   "faction": null,
+   "quarter": "sapwell",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-8",
+     "name": "Hides-His-Foot the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-8-elder0",
+     "name": "Weel Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-smith-8-sibling1",
+     "name": "Ten-Tongues the Younger",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "thorn.smith8.r0",
+    "thorn.smith8.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-smith-9",
+   "name": "Tul Two-Skins",
+   "trade": "smith",
+   "faction": null,
+   "quarter": "rotted-hall",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-9",
+     "name": "Tul Two-Skins",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-9-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "thorn.smith9.r0",
+    "thorn.smith9.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-legionary-10",
+   "name": "Wanan the Shorter",
+   "trade": "legionary",
+   "faction": "ninth-cohort",
+   "quarter": "the-boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-legionary-10",
+     "name": "Wanan the Shorter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-legionary-10-partner0",
+     "name": "Fastidious Reed-Cutter",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "thorn.legionary10.r0",
+    "thorn.legionary10.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-apothecary-11",
+   "name": "Tuls Sings-At-Dusk",
+   "trade": "apothecary",
+   "faction": null,
+   "quarter": "sapwell",
+   "residents": [
+    {
+     "npc": "npc:thorn-apothecary-11",
+     "name": "Tuls Sings-At-Dusk",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-apothecary-11-elder0",
+     "name": "Veek Dark-Water",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-apothecary-11-sibling1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "zones": [
+    "thorn.apothecary11.r0",
+    "thorn.apothecary11.r1"
+   ]
+  },
+  {
+   "npc": "npc:thorn-publican-12",
+   "name": "Tul Two-Skins",
+   "trade": "publican",
+   "faction": null,
+   "quarter": "rotted-hall",
+   "residents": [
+    {
+     "npc": "npc:thorn-publican-12",
+     "name": "Tul Two-Skins",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-publican-12-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "zones": [
+    "thorn.publican12.r0",
+    "thorn.publican12.r1",
+    "thorn.publican12.r2"
+   ]
+  },
+  {
+   "npc": "npc:thorn-legionary-13",
+   "name": "Nartise Half-Moon",
+   "trade": "legionary",
+   "faction": "ninth-cohort",
+   "quarter": "the-boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-legionary-13",
+     "name": "Nartise Half-Moon",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-legionary-13-lodger0",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:thorn-legionary-13-apprentice1",
+     "name": "Three-Knives Two-Skins",
+     "role": "apprentice"
+    }
+   ],
+   "zones": [
+    "thorn.legionary13.r0",
+    "thorn.legionary13.r1"
+   ]
+  }
+ ],
+ "zones": [
+  {
+   "id": "thorn.factor0.r0",
+   "name": "Ocheeva of the Boards's factor",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "faction_interior",
+   "owner": "npc:thorn-factor-0",
+   "owner_name": "Ocheeva of the Boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-factor-0",
+     "name": "Ocheeva of the Boards",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-factor-0-child0",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "child"
+    },
+    {
+     "npc": "npc:thorn-factor-0-partner1",
+     "name": "Bevene the Patient",
+     "role": "partner"
+    }
+   ],
+   "faction": "wet-ledger",
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.factor0.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.factor0.r0.lamp0",
+     "pos": [
+      2.8,
+      1.6,
+      4.199999999999999
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.factor0.r0.lamp1",
+     "pos": [
+      0.9000000000000004,
+      1.6,
+      4.300000000000001
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.factor0.r0.lamp2",
+     "pos": [
+      -1,
+      1.6,
+      4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.factor0.r0.0",
+     "id": "counting_stones",
+     "name": "counting stones",
+     "owner": "faction:wet-ledger",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r0.1",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "npc:thorn-factor-0-child0",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r0.2",
+     "id": "sealed_crate",
+     "name": "sealed crate",
+     "owner": "npc:thorn-factor-0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 52,
+     "weight_kg": 8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r0.3",
+     "id": "oil_flask",
+     "name": "oil flask",
+     "owner": "faction:wet-ledger",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 13,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r0.4",
+     "id": "counting_stones",
+     "name": "counting stones",
+     "owner": "npc:thorn-factor-0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r0.5",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "npc:thorn-factor-0-partner1",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:thorn",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.factor0.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      149,
+      175,
+      342
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.factor0.r1",
+   "name": "Ocheeva of the Boards's back room",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "faction_interior",
+   "owner": "npc:thorn-factor-0",
+   "owner_name": "Ocheeva of the Boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-factor-0",
+     "name": "Ocheeva of the Boards",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-factor-0-child0",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "child"
+    },
+    {
+     "npc": "npc:thorn-factor-0-partner1",
+     "name": "Bevene the Patient",
+     "role": "partner"
+    }
+   ],
+   "faction": "wet-ledger",
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.factor0.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.factor0.r1.lamp0",
+     "pos": [
+      -0.2999999999999998,
+      1.6,
+      2.7
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.factor0.r1.lamp1",
+     "pos": [
+      1.5999999999999996,
+      1.6,
+      2.5999999999999996
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.factor0.r1.0",
+     "id": "brass_scale",
+     "name": "brass scale",
+     "owner": "npc:thorn-factor-0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 44,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r1.1",
+     "id": "strap_of_hide",
+     "name": "strap of hide",
+     "owner": "npc:thorn-factor-0-child0",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r1.2",
+     "id": "tally_stick_bundle",
+     "name": "tally stick bundle",
+     "owner": "npc:thorn-factor-0-partner1",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r1.3",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:thorn-factor-0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r1.4",
+     "id": "brass_scale",
+     "name": "brass scale",
+     "owner": "npc:thorn-factor-0-partner1",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 44,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r1.5",
+     "id": "field_ledger",
+     "name": "field ledger",
+     "owner": "npc:thorn-factor-0",
+     "owner_name": "Ocheeva of the Boards",
+     "owner_scope": "personal",
+     "value_g": 21,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r1.6",
+     "id": "tally_stick_bundle",
+     "name": "tally stick bundle",
+     "owner": "npc:thorn-factor-0-child0",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.factor0.r1.7",
+     "id": "strap_of_hide",
+     "name": "strap of hide",
+     "owner": "npc:thorn-factor-0-partner1",
+     "owner_name": "Bevene the Patient",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.factor0.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      40,
+      74,
+      206
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.priest1.r0",
+   "name": "Drops-No-Stitch Slow-Rain's priest",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "faction_interior",
+   "owner": "npc:thorn-priest-1",
+   "owner_name": "Drops-No-Stitch Slow-Rain",
+   "residents": [
+    {
+     "npc": "npc:thorn-priest-1",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-priest-1-sibling0",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "faction": "drowned-court",
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.priest1.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.priest1.r0.lamp0",
+     "pos": [
+      -0.7000000000000002,
+      1.6,
+      4.300000000000001
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.priest1.r0.lamp1",
+     "pos": [
+      1.2000000000000002,
+      1.6,
+      4.199999999999999
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.priest1.r0.0",
+     "id": "offering_bowl",
+     "name": "offering bowl",
+     "owner": "faction:drowned-court",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 16,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r0.1",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "npc:thorn-priest-1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r0.2",
+     "id": "offering_bowl",
+     "name": "offering bowl",
+     "owner": "npc:thorn-priest-1-sibling0",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 16,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r0.3",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "faction:drowned-court",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r0.4",
+     "id": "offering_bowl",
+     "name": "offering bowl",
+     "owner": "npc:thorn-priest-1-sibling0",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 16,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r0.5",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "npc:thorn-priest-1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r0.6",
+     "id": "offering_bowl",
+     "name": "offering bowl",
+     "owner": "faction:drowned-court",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 16,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.priest1.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      117,
+      284,
+      310
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.priest1.r1",
+   "name": "Drops-No-Stitch Slow-Rain's back room",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "faction_interior",
+   "owner": "npc:thorn-priest-1",
+   "owner_name": "Drops-No-Stitch Slow-Rain",
+   "residents": [
+    {
+     "npc": "npc:thorn-priest-1",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-priest-1-sibling0",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "faction": "drowned-court",
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.priest1.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.priest1.r1.lamp0",
+     "pos": [
+      -2,
+      1.6,
+      -0.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.priest1.r1.lamp1",
+     "pos": [
+      3.0999999999999996,
+      1.6,
+      -0.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.priest1.r1.lamp2",
+     "pos": [
+      1.7999999999999998,
+      1.6,
+      -0.6000000000000001
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.priest1.r1.0",
+     "id": "votive_candle",
+     "name": "votive candle",
+     "owner": "npc:thorn-priest-1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.1",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-priest-1-sibling0",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.2",
+     "id": "votive_candle",
+     "name": "votive candle",
+     "owner": "npc:thorn-priest-1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.3",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-priest-1-sibling0",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.4",
+     "id": "incense_block",
+     "name": "incense block",
+     "owner": "npc:thorn-priest-1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.5",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:thorn-priest-1-sibling0",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.6",
+     "id": "incense_block",
+     "name": "incense block",
+     "owner": "npc:thorn-priest-1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.7",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:thorn-priest-1-sibling0",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.8",
+     "id": "votive_candle",
+     "name": "votive candle",
+     "owner": "npc:thorn-priest-1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest1.r1.9",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-priest-1-sibling0",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.priest1.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      132,
+      267,
+      295
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.priest2.r0",
+   "name": "Marks-The-Ledger of Nine Debts's priest",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "class": "faction_interior",
+   "owner": "npc:thorn-priest-2",
+   "owner_name": "Marks-The-Ledger of Nine Debts",
+   "residents": [
+    {
+     "npc": "npc:thorn-priest-2",
+     "name": "Marks-The-Ledger of Nine Debts",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-priest-2-elder0",
+     "name": "Veek Dark-Water",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-priest-2-sibling1",
+     "name": "Llarara Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "faction": "drowned-court",
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.priest2.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.priest2.r0.lamp0",
+     "pos": [
+      -1,
+      1.6,
+      2.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.priest2.r0.lamp1",
+     "pos": [
+      -2.9,
+      1.6,
+      2.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.priest2.r0.lamp2",
+     "pos": [
+      2.8,
+      1.6,
+      2.4000000000000004
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.priest2.r0.0",
+     "id": "votive_candle",
+     "name": "votive candle",
+     "owner": "faction:drowned-court",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 3,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r0.1",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-priest-2-sibling1",
+     "owner_name": "Llarara Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r0.2",
+     "id": "votive_candle",
+     "name": "votive candle",
+     "owner": "npc:thorn-priest-2-sibling1",
+     "owner_name": "Llarara Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r0.3",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "faction:drowned-court",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r0.4",
+     "id": "incense_block",
+     "name": "incense block",
+     "owner": "npc:thorn-priest-2-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r0.5",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:thorn-priest-2",
+     "owner_name": "Marks-The-Ledger of Nine Debts",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.priest2.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      29,
+      57,
+      251
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.priest2.r1",
+   "name": "Marks-The-Ledger of Nine Debts's back room",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "class": "faction_interior",
+   "owner": "npc:thorn-priest-2",
+   "owner_name": "Marks-The-Ledger of Nine Debts",
+   "residents": [
+    {
+     "npc": "npc:thorn-priest-2",
+     "name": "Marks-The-Ledger of Nine Debts",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-priest-2-elder0",
+     "name": "Veek Dark-Water",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-priest-2-sibling1",
+     "name": "Llarara Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "faction": "drowned-court",
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.priest2.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.priest2.r1.lamp0",
+     "pos": [
+      2.7,
+      1.6,
+      -0.8999999999999999
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.priest2.r1.lamp1",
+     "pos": [
+      -2.4,
+      1.6,
+      -1
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.priest2.r1.0",
+     "id": "copied_sermon",
+     "name": "copied sermon",
+     "owner": "npc:thorn-priest-2",
+     "owner_name": "Marks-The-Ledger of Nine Debts",
+     "owner_scope": "personal",
+     "value_g": 20,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r1.1",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:thorn-priest-2-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r1.2",
+     "id": "copied_sermon",
+     "name": "copied sermon",
+     "owner": "npc:thorn-priest-2-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 20,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r1.3",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:thorn-priest-2-sibling1",
+     "owner_name": "Llarara Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r1.4",
+     "id": "copied_sermon",
+     "name": "copied sermon",
+     "owner": "npc:thorn-priest-2-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 20,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.priest2.r1.5",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:thorn-priest-2-sibling1",
+     "owner_name": "Llarara Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.priest2.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      40,
+      74,
+      237
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.weaver3.r0",
+   "name": "Sedura Rope-Maker's weaver",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "dwelling",
+   "owner": "npc:thorn-weaver-3",
+   "owner_name": "Sedura Rope-Maker",
+   "residents": [
+    {
+     "npc": "npc:thorn-weaver-3",
+     "name": "Sedura Rope-Maker",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-weaver-3-apprentice0",
+     "name": "Jeelus-Tei the Patient",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.weaver3.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.weaver3.r0.lamp0",
+     "pos": [
+      1,
+      1.6,
+      3.5999999999999996
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.weaver3.r0.lamp1",
+     "pos": [
+      -0.8999999999999999,
+      1.6,
+      3.6999999999999993
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.weaver3.r0.lamp2",
+     "pos": [
+      -2.8,
+      1.6,
+      3.4000000000000004
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.weaver3.r0.0",
+     "id": "sealed_crate",
+     "name": "sealed crate",
+     "owner": "npc:thorn-weaver-3",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 52,
+     "weight_kg": 8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r0.1",
+     "id": "common_pants",
+     "name": "common pants",
+     "owner": "npc:thorn-weaver-3-apprentice0",
+     "owner_name": "Jeelus-Tei the Patient",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r0.2",
+     "id": "counting_stones",
+     "name": "counting stones",
+     "owner": "npc:thorn-weaver-3",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r0.3",
+     "id": "wool_blanket",
+     "name": "wool blanket",
+     "owner": "npc:thorn-weaver-3-apprentice0",
+     "owner_name": "Jeelus-Tei the Patient",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 1.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r0.4",
+     "id": "sealed_crate",
+     "name": "sealed crate",
+     "owner": "npc:thorn-weaver-3",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 52,
+     "weight_kg": 8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r0.5",
+     "id": "keepsake_ring",
+     "name": "keepsake ring",
+     "owner": "npc:thorn-weaver-3-apprentice0",
+     "owner_name": "Jeelus-Tei the Patient",
+     "owner_scope": "personal",
+     "value_g": 48,
+     "weight_kg": 0.05,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:thorn",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.weaver3.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      41,
+      207,
+      238
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.weaver3.r1",
+   "name": "Sedura Rope-Maker's back room",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "dwelling",
+   "owner": "npc:thorn-weaver-3",
+   "owner_name": "Sedura Rope-Maker",
+   "residents": [
+    {
+     "npc": "npc:thorn-weaver-3",
+     "name": "Sedura Rope-Maker",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-weaver-3-apprentice0",
+     "name": "Jeelus-Tei the Patient",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.weaver3.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.weaver3.r1.lamp0",
+     "pos": [
+      -2.7,
+      1.6,
+      -0.5
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.weaver3.r1.lamp1",
+     "pos": [
+      -0.7999999999999998,
+      1.6,
+      -0.6000000000000001
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.weaver3.r1.0",
+     "id": "tally_stick_bundle",
+     "name": "tally stick bundle",
+     "owner": "npc:thorn-weaver-3-apprentice0",
+     "owner_name": "Jeelus-Tei the Patient",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r1.1",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:thorn-weaver-3",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r1.2",
+     "id": "brass_scale",
+     "name": "brass scale",
+     "owner": "npc:thorn-weaver-3-apprentice0",
+     "owner_name": "Jeelus-Tei the Patient",
+     "owner_scope": "personal",
+     "value_g": 44,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r1.3",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:thorn-weaver-3",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r1.4",
+     "id": "tally_stick_bundle",
+     "name": "tally stick bundle",
+     "owner": "npc:thorn-weaver-3-apprentice0",
+     "owner_name": "Jeelus-Tei the Patient",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver3.r1.5",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:thorn-weaver-3",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.weaver3.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      102,
+      133,
+      268
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.smith4.r0",
+   "name": "Keeps-Her-Own of the Boards's smith",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "shop_closed",
+   "owner": "npc:thorn-smith-4",
+   "owner_name": "Keeps-Her-Own of the Boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-4",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-4-child0",
+     "name": "Meesei Wet-Foot",
+     "role": "child"
+    },
+    {
+     "npc": "npc:thorn-smith-4-partner1",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.smith4.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.smith4.r0.lamp0",
+     "pos": [
+      1.2000000000000002,
+      1.6,
+      3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith4.r0.lamp1",
+     "pos": [
+      -0.7000000000000002,
+      1.6,
+      3.0999999999999996
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith4.r0.lamp2",
+     "pos": [
+      -2.6,
+      1.6,
+      2.8
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.smith4.r0.0",
+     "id": "bellows_handle",
+     "name": "bellows handle",
+     "owner": "npc:thorn-smith-4-child0",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.1",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "npc:thorn-smith-4",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.2",
+     "id": "leather_apron",
+     "name": "leather apron",
+     "owner": "npc:thorn-smith-4-partner1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.3",
+     "id": "bone_handled_knife",
+     "name": "bone-handled knife",
+     "owner": "npc:thorn-smith-4-child0",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.4",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:thorn-smith-4",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.5",
+     "id": "salt_jar",
+     "name": "salt jar",
+     "owner": "npc:thorn-smith-4-partner1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.6",
+     "id": "whetstone",
+     "name": "whetstone",
+     "owner": "npc:thorn-smith-4-child0",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.7",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-smith-4",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.8",
+     "id": "iron_ingot",
+     "name": "iron ingot",
+     "owner": "npc:thorn-smith-4-child0",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 30,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r0.9",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:thorn-smith-4",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.smith4.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      86,
+      119,
+      281
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.smith4.r1",
+   "name": "Keeps-Her-Own of the Boards's back room",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "shop_closed",
+   "owner": "npc:thorn-smith-4",
+   "owner_name": "Keeps-Her-Own of the Boards",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-4",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-4-child0",
+     "name": "Meesei Wet-Foot",
+     "role": "child"
+    },
+    {
+     "npc": "npc:thorn-smith-4-partner1",
+     "name": "Drops-No-Stitch Slow-Rain",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.smith4.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.smith4.r1.lamp0",
+     "pos": [
+      -2.9,
+      1.6,
+      -1.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith4.r1.lamp1",
+     "pos": [
+      -1,
+      1.6,
+      -1.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.smith4.r1.0",
+     "id": "leather_apron",
+     "name": "leather apron",
+     "owner": "npc:thorn-smith-4-child0",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r1.1",
+     "id": "marsh_rice_sack",
+     "name": "marsh-rice sack",
+     "owner": "npc:thorn-smith-4-partner1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r1.2",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:thorn-smith-4",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r1.3",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:thorn-smith-4-child0",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r1.4",
+     "id": "tongs",
+     "name": "tongs",
+     "owner": "npc:thorn-smith-4-partner1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 2.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r1.5",
+     "id": "marsh_rice_sack",
+     "name": "marsh-rice sack",
+     "owner": "npc:thorn-smith-4",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r1.6",
+     "id": "hammer",
+     "name": "hammer",
+     "owner": "npc:thorn-smith-4-child0",
+     "owner_name": "Meesei Wet-Foot",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 3.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith4.r1.7",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:thorn-smith-4-partner1",
+     "owner_name": "Drops-No-Stitch Slow-Rain",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.smith4.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      13,
+      146,
+      339
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.weaver5.r0",
+   "name": "Jaraleet Reed-Cutter's weaver",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "class": "dwelling",
+   "owner": "npc:thorn-weaver-5",
+   "owner_name": "Jaraleet Reed-Cutter",
+   "residents": [
+    {
+     "npc": "npc:thorn-weaver-5",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-weaver-5-apprentice0",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.weaver5.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.weaver5.r0.lamp0",
+     "pos": [
+      1,
+      1.6,
+      -3.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.weaver5.r0.lamp1",
+     "pos": [
+      -0.8999999999999999,
+      1.6,
+      -3.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.weaver5.r0.lamp2",
+     "pos": [
+      -2.2,
+      1.6,
+      -3.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.weaver5.r0.0",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:thorn-weaver-5",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r0.1",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-weaver-5-apprentice0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r0.2",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:thorn-weaver-5",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r0.3",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-weaver-5-apprentice0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r0.4",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:thorn-weaver-5",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r0.5",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-weaver-5-apprentice0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r0.6",
+     "id": "ink_pot",
+     "name": "ink pot",
+     "owner": "npc:thorn-weaver-5",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.weaver5.r0.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      195,
+      356
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.weaver5.r1",
+   "name": "Jaraleet Reed-Cutter's back room",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "class": "dwelling",
+   "owner": "npc:thorn-weaver-5",
+   "owner_name": "Jaraleet Reed-Cutter",
+   "residents": [
+    {
+     "npc": "npc:thorn-weaver-5",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-weaver-5-apprentice0",
+     "name": "Silent-Reed Bone-Setter",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.weaver5.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.weaver5.r1.lamp0",
+     "pos": [
+      -2.5,
+      1.6,
+      3.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.weaver5.r1.lamp1",
+     "pos": [
+      -0.6000000000000001,
+      1.6,
+      3.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.weaver5.r1.0",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:thorn-weaver-5-apprentice0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r1.1",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "npc:thorn-weaver-5",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r1.2",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:thorn-weaver-5-apprentice0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r1.3",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "npc:thorn-weaver-5",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r1.4",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:thorn-weaver-5-apprentice0",
+     "owner_name": "Silent-Reed Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.weaver5.r1.5",
+     "id": "glass_bead_string",
+     "name": "glass bead string",
+     "owner": "npc:thorn-weaver-5",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.weaver5.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      105,
+      131,
+      299
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.cook6.r0",
+   "name": "Vaman Cold-Ash's cook",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "dwelling",
+   "owner": "npc:thorn-cook-6",
+   "owner_name": "Vaman Cold-Ash",
+   "residents": [
+    {
+     "npc": "npc:thorn-cook-6",
+     "name": "Vaman Cold-Ash",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-cook-6-lodger0",
+     "name": "Ruut Cold-Ash",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:thorn-cook-6-apprentice1",
+     "name": "Sedura Rope-Maker",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.cook6.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.cook6.r0.lamp0",
+     "pos": [
+      1.2999999999999998,
+      1.6,
+      -3.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.cook6.r0.lamp1",
+     "pos": [
+      3.2,
+      1.6,
+      -3.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.cook6.r0.0",
+     "id": "marsh_rice_sack",
+     "name": "marsh-rice sack",
+     "owner": "npc:thorn-cook-6-apprentice1",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r0.1",
+     "id": "stool",
+     "name": "stool",
+     "owner": "npc:thorn-cook-6",
+     "owner_name": "Vaman Cold-Ash",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r0.2",
+     "id": "marsh_rice_sack",
+     "name": "marsh-rice sack",
+     "owner": "npc:thorn-cook-6",
+     "owner_name": "Vaman Cold-Ash",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r0.3",
+     "id": "stool",
+     "name": "stool",
+     "owner": "npc:thorn-cook-6-lodger0",
+     "owner_name": "Ruut Cold-Ash",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r0.4",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:thorn-cook-6-lodger0",
+     "owner_name": "Ruut Cold-Ash",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r0.5",
+     "id": "pewter_tankard",
+     "name": "pewter tankard",
+     "owner": "npc:thorn-cook-6-apprentice1",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r0.6",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:thorn-cook-6-apprentice1",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:thorn",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.cook6.r0.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      135,
+      298
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.cook6.r1",
+   "name": "Vaman Cold-Ash's back room",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "dwelling",
+   "owner": "npc:thorn-cook-6",
+   "owner_name": "Vaman Cold-Ash",
+   "residents": [
+    {
+     "npc": "npc:thorn-cook-6",
+     "name": "Vaman Cold-Ash",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-cook-6-lodger0",
+     "name": "Ruut Cold-Ash",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:thorn-cook-6-apprentice1",
+     "name": "Sedura Rope-Maker",
+     "role": "apprentice"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.cook6.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.cook6.r1.lamp0",
+     "pos": [
+      0,
+      1.6,
+      2.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.cook6.r1.lamp1",
+     "pos": [
+      -1.9,
+      1.6,
+      2.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.cook6.r1.lamp2",
+     "pos": [
+      -3.2,
+      1.6,
+      2.4000000000000004
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.cook6.r1.0",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-cook-6",
+     "owner_name": "Vaman Cold-Ash",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r1.1",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-cook-6-apprentice1",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r1.2",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-cook-6-apprentice1",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r1.3",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-cook-6-lodger0",
+     "owner_name": "Ruut Cold-Ash",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r1.4",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-cook-6-apprentice1",
+     "owner_name": "Sedura Rope-Maker",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r1.5",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-cook-6-lodger0",
+     "owner_name": "Ruut Cold-Ash",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook6.r1.6",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:thorn-cook-6-lodger0",
+     "owner_name": "Ruut Cold-Ash",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.cook6.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      193,
+      354
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.cook7.r0",
+   "name": "Beem-Kiune Nine-Teeth's cook",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "dwelling",
+   "owner": "npc:thorn-cook-7",
+   "owner_name": "Beem-Kiune Nine-Teeth",
+   "residents": [
+    {
+     "npc": "npc:thorn-cook-7",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-cook-7-partner0",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.cook7.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.cook7.r0.lamp0",
+     "pos": [
+      -0.6000000000000001,
+      1.6,
+      0.20000000000000018
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.cook7.r0.lamp1",
+     "pos": [
+      -2.5,
+      1.6,
+      0.2999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.cook7.r0.lamp2",
+     "pos": [
+      2.5999999999999996,
+      1.6,
+      0
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.cook7.r0.0",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-cook-7",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r0.1",
+     "id": "flin_bottle",
+     "name": "flin bottle",
+     "owner": "npc:thorn-cook-7-partner0",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r0.2",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:thorn-cook-7",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r0.3",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-cook-7-partner0",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r0.4",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-cook-7",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r0.5",
+     "id": "flin_bottle",
+     "name": "flin bottle",
+     "owner": "npc:thorn-cook-7-partner0",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 18,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r0.6",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:thorn-cook-7",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.cook7.r0.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      27,
+      223
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.cook7.r1",
+   "name": "Beem-Kiune Nine-Teeth's back room",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "dwelling",
+   "owner": "npc:thorn-cook-7",
+   "owner_name": "Beem-Kiune Nine-Teeth",
+   "residents": [
+    {
+     "npc": "npc:thorn-cook-7",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-cook-7-partner0",
+     "name": "Jaraleet Reed-Cutter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.cook7.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.cook7.r1.lamp0",
+     "pos": [
+      2.7,
+      1.6,
+      0.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.cook7.r1.lamp1",
+     "pos": [
+      -2.4,
+      1.6,
+      0.5999999999999996
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.cook7.r1.0",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:thorn-cook-7-partner0",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r1.1",
+     "id": "pewter_tankard",
+     "name": "pewter tankard",
+     "owner": "npc:thorn-cook-7",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r1.2",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:thorn-cook-7-partner0",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r1.3",
+     "id": "stool",
+     "name": "stool",
+     "owner": "npc:thorn-cook-7",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r1.4",
+     "id": "clay_pitcher",
+     "name": "clay pitcher",
+     "owner": "npc:thorn-cook-7-partner0",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r1.5",
+     "id": "greef_bottle",
+     "name": "greef bottle",
+     "owner": "npc:thorn-cook-7",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r1.6",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:thorn-cook-7-partner0",
+     "owner_name": "Jaraleet Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.cook7.r1.7",
+     "id": "pewter_tankard",
+     "name": "pewter tankard",
+     "owner": "npc:thorn-cook-7",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.cook7.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      41,
+      207
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.smith8.r0",
+   "name": "Hides-His-Foot the Quiet's smith",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "class": "shop_closed",
+   "owner": "npc:thorn-smith-8",
+   "owner_name": "Hides-His-Foot the Quiet",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-8",
+     "name": "Hides-His-Foot the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-8-elder0",
+     "name": "Weel Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-smith-8-sibling1",
+     "name": "Ten-Tongues the Younger",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.smith8.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.smith8.r0.lamp0",
+     "pos": [
+      -3,
+      1.6,
+      3.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith8.r0.lamp1",
+     "pos": [
+      2.0999999999999996,
+      1.6,
+      3.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith8.r0.lamp2",
+     "pos": [
+      0.20000000000000018,
+      1.6,
+      3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.smith8.r0.0",
+     "id": "tongs",
+     "name": "tongs",
+     "owner": "npc:thorn-smith-8-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 2.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r0.1",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-smith-8",
+     "owner_name": "Hides-His-Foot the Quiet",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r0.2",
+     "id": "hammer",
+     "name": "hammer",
+     "owner": "npc:thorn-smith-8-sibling1",
+     "owner_name": "Ten-Tongues the Younger",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 3.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r0.3",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:thorn-smith-8-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r0.4",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:thorn-smith-8-sibling1",
+     "owner_name": "Ten-Tongues the Younger",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r0.5",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-smith-8-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.smith8.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      102,
+      268,
+      296
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.smith8.r1",
+   "name": "Hides-His-Foot the Quiet's back room",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "class": "shop_closed",
+   "owner": "npc:thorn-smith-8",
+   "owner_name": "Hides-His-Foot the Quiet",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-8",
+     "name": "Hides-His-Foot the Quiet",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-8-elder0",
+     "name": "Weel Quick-Tally",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-smith-8-sibling1",
+     "name": "Ten-Tongues the Younger",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.smith8.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.smith8.r1.lamp0",
+     "pos": [
+      2.7,
+      1.6,
+      2.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith8.r1.lamp1",
+     "pos": [
+      -2.4,
+      1.6,
+      2.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.smith8.r1.0",
+     "id": "whetstone",
+     "name": "whetstone",
+     "owner": "npc:thorn-smith-8-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r1.1",
+     "id": "clay_pitcher",
+     "name": "clay pitcher",
+     "owner": "npc:thorn-smith-8-sibling1",
+     "owner_name": "Ten-Tongues the Younger",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r1.2",
+     "id": "iron_ingot",
+     "name": "iron ingot",
+     "owner": "npc:thorn-smith-8",
+     "owner_name": "Hides-His-Foot the Quiet",
+     "owner_scope": "personal",
+     "value_g": 30,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r1.3",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:thorn-smith-8-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r1.4",
+     "id": "tongs",
+     "name": "tongs",
+     "owner": "npc:thorn-smith-8",
+     "owner_name": "Hides-His-Foot the Quiet",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 2.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith8.r1.5",
+     "id": "marsh_rice_sack",
+     "name": "marsh-rice sack",
+     "owner": "npc:thorn-smith-8-elder0",
+     "owner_name": "Weel Quick-Tally",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.smith8.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      89,
+      284,
+      310
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.smith9.r0",
+   "name": "Tul Two-Skins's smith",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "shop_closed",
+   "owner": "npc:thorn-smith-9",
+   "owner_name": "Tul Two-Skins",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-9",
+     "name": "Tul Two-Skins",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-9-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.smith9.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.smith9.r0.lamp0",
+     "pos": [
+      1.2999999999999998,
+      1.6,
+      -1.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith9.r0.lamp1",
+     "pos": [
+      3.2,
+      1.6,
+      -1.7999999999999998
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.smith9.r0.0",
+     "id": "whetstone",
+     "name": "whetstone",
+     "owner": "npc:thorn-smith-9-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r0.1",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:thorn-smith-9",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r0.2",
+     "id": "tongs",
+     "name": "tongs",
+     "owner": "npc:thorn-smith-9-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 2.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r0.3",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:thorn-smith-9",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r0.4",
+     "id": "tongs",
+     "name": "tongs",
+     "owner": "npc:thorn-smith-9-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 17,
+     "weight_kg": 2.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r0.5",
+     "id": "clay_pitcher",
+     "name": "clay pitcher",
+     "owner": "npc:thorn-smith-9",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:thorn",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.smith9.r0.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      56,
+      250
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.smith9.r1",
+   "name": "Tul Two-Skins's back room",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "shop_closed",
+   "owner": "npc:thorn-smith-9",
+   "owner_name": "Tul Two-Skins",
+   "residents": [
+    {
+     "npc": "npc:thorn-smith-9",
+     "name": "Tul Two-Skins",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-smith-9-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.smith9.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.smith9.r1.lamp0",
+     "pos": [
+      -2.4,
+      1.6,
+      3.8000000000000007
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith9.r1.lamp1",
+     "pos": [
+      2.7,
+      1.6,
+      3.9000000000000004
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.smith9.r1.lamp2",
+     "pos": [
+      1.4000000000000004,
+      1.6,
+      4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.smith9.r1.0",
+     "id": "bellows_handle",
+     "name": "bellows handle",
+     "owner": "npc:thorn-smith-9",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.1",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-smith-9-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.2",
+     "id": "nail_keg",
+     "name": "nail keg",
+     "owner": "npc:thorn-smith-9",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 14,
+     "weight_kg": 5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.3",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-smith-9-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.4",
+     "id": "iron_ingot",
+     "name": "iron ingot",
+     "owner": "npc:thorn-smith-9",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 30,
+     "weight_kg": 4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.5",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-smith-9-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.6",
+     "id": "hammer",
+     "name": "hammer",
+     "owner": "npc:thorn-smith-9",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 3.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.7",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-smith-9-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.8",
+     "id": "leather_apron",
+     "name": "leather apron",
+     "owner": "npc:thorn-smith-9",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 2.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.smith9.r1.9",
+     "id": "smoked_eel",
+     "name": "smoked eel",
+     "owner": "npc:thorn-smith-9-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 12,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.smith9.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      75,
+      207,
+      238
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.legionary10.r0",
+   "name": "Wanan the Shorter's legionary",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "restricted",
+   "owner": "npc:thorn-legionary-10",
+   "owner_name": "Wanan the Shorter",
+   "residents": [
+    {
+     "npc": "npc:thorn-legionary-10",
+     "name": "Wanan the Shorter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-legionary-10-partner0",
+     "name": "Fastidious Reed-Cutter",
+     "role": "partner"
+    }
+   ],
+   "faction": "ninth-cohort",
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.legionary10.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 1.4,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.legionary10.r0.lamp0",
+     "pos": [
+      -2.8,
+      1.6,
+      3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.legionary10.r0.lamp1",
+     "pos": [
+      2.3,
+      1.6,
+      3.0999999999999996
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.legionary10.r0.lamp2",
+     "pos": [
+      0.3999999999999999,
+      1.6,
+      2.8
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.legionary10.r0.0",
+     "id": "signal_horn",
+     "name": "signal horn",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 47,
+     "weight_kg": 1.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.1",
+     "id": "keepsake_ring",
+     "name": "keepsake ring",
+     "owner": "npc:thorn-legionary-10-partner0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 48,
+     "weight_kg": 0.05,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.2",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "npc:thorn-legionary-10",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.3",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.4",
+     "id": "signal_horn",
+     "name": "signal horn",
+     "owner": "npc:thorn-legionary-10",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 47,
+     "weight_kg": 1.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.5",
+     "id": "keepsake_ring",
+     "name": "keepsake ring",
+     "owner": "npc:thorn-legionary-10-partner0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 48,
+     "weight_kg": 0.05,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.6",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.7",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-legionary-10-partner0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.8",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "npc:thorn-legionary-10",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r0.9",
+     "id": "wool_blanket",
+     "name": "wool blanket",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 14,
+     "weight_kg": 1.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.legionary10.r0.lock",
+     "tier": 4,
+     "wards": 4,
+     "ward_angles": [
+      27,
+      60,
+      223,
+      249
+     ],
+     "security_req": 60,
+     "agility_req": 38,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:thorn-legionary-10"
+      },
+      {
+       "kind": "window",
+       "from": "the-boards"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.legionary10.r1",
+   "name": "Wanan the Shorter's back room",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "restricted",
+   "owner": "npc:thorn-legionary-10",
+   "owner_name": "Wanan the Shorter",
+   "residents": [
+    {
+     "npc": "npc:thorn-legionary-10",
+     "name": "Wanan the Shorter",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-legionary-10-partner0",
+     "name": "Fastidious Reed-Cutter",
+     "role": "partner"
+    }
+   ],
+   "faction": "ninth-cohort",
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.legionary10.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 1.4,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.legionary10.r1.lamp0",
+     "pos": [
+      -0.10000000000000009,
+      1.6,
+      2.0999999999999996
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.legionary10.r1.lamp1",
+     "pos": [
+      1.7999999999999998,
+      1.6,
+      2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.legionary10.r1.0",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:thorn-legionary-10-partner0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.1",
+     "id": "lockbox",
+     "name": "lockbox",
+     "owner": "npc:thorn-legionary-10",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 26,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.2",
+     "id": "field_ledger",
+     "name": "field ledger",
+     "owner": "npc:thorn-legionary-10-partner0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 21,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.3",
+     "id": "reed_mat",
+     "name": "reed mat",
+     "owner": "npc:thorn-legionary-10",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 1.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.4",
+     "id": "strap_of_hide",
+     "name": "strap of hide",
+     "owner": "npc:thorn-legionary-10-partner0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.5",
+     "id": "glass_bead_string",
+     "name": "glass bead string",
+     "owner": "npc:thorn-legionary-10",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 22,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.6",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:thorn-legionary-10-partner0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.7",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:thorn-legionary-10",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.8",
+     "id": "field_ledger",
+     "name": "field ledger",
+     "owner": "npc:thorn-legionary-10-partner0",
+     "owner_name": "Fastidious Reed-Cutter",
+     "owner_scope": "personal",
+     "value_g": 21,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary10.r1.9",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "npc:thorn-legionary-10",
+     "owner_name": "Wanan the Shorter",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "sealed.thorn-hall-reliquary.item",
+     "id": "sealed_thorn_hall_reliquary",
+     "name": "the Rotted Hall reliquary",
+     "owner": "npc:thorn-legionary-10",
+     "owner_scope": "personal",
+     "value_g": 1900,
+     "weight_kg": 2,
+     "unique": true,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.legionary10.r1.lock",
+     "tier": 4,
+     "wards": 4,
+     "ward_angles": [
+      89,
+      117,
+      284,
+      310
+     ],
+     "security_req": 60,
+     "agility_req": 38,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:thorn-legionary-10"
+      },
+      {
+       "kind": "window",
+       "from": "the-boards"
+      }
+     ]
+    },
+    {
+     "id": "sealed.thorn-hall-reliquary",
+     "tier": 5,
+     "wards": 5,
+     "ward_angles": [
+      14,
+      147,
+      178,
+      281,
+      340
+     ],
+     "security_req": 80,
+     "agility_req": 50,
+     "picks_per_attempt": 3,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:thorn-legionary-10"
+      },
+      {
+       "kind": "quest",
+       "id": "quest.sealed.thorn-hall-reliquary"
+      },
+      {
+       "kind": "unbind_spell",
+       "tier": 5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.apothecary11.r0",
+   "name": "Tuls Sings-At-Dusk's apothecary",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "class": "shop_closed",
+   "owner": "npc:thorn-apothecary-11",
+   "owner_name": "Tuls Sings-At-Dusk",
+   "residents": [
+    {
+     "npc": "npc:thorn-apothecary-11",
+     "name": "Tuls Sings-At-Dusk",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-apothecary-11-elder0",
+     "name": "Veek Dark-Water",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-apothecary-11-sibling1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.apothecary11.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.apothecary11.r0.lamp0",
+     "pos": [
+      0.9000000000000004,
+      1.6,
+      2.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.apothecary11.r0.lamp1",
+     "pos": [
+      2.8,
+      1.6,
+      2.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.apothecary11.r0.0",
+     "id": "mortar",
+     "name": "mortar",
+     "owner": "npc:thorn-apothecary-11-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 28,
+     "weight_kg": 1.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.1",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:thorn-apothecary-11-sibling1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.2",
+     "id": "mortar",
+     "name": "mortar",
+     "owner": "npc:thorn-apothecary-11-sibling1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 28,
+     "weight_kg": 1.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.3",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:thorn-apothecary-11",
+     "owner_name": "Tuls Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.4",
+     "id": "mortar",
+     "name": "mortar",
+     "owner": "npc:thorn-apothecary-11-sibling1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 28,
+     "weight_kg": 1.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.5",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:thorn-apothecary-11",
+     "owner_name": "Tuls Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.6",
+     "id": "mortar",
+     "name": "mortar",
+     "owner": "npc:thorn-apothecary-11",
+     "owner_name": "Tuls Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 28,
+     "weight_kg": 1.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.7",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:thorn-apothecary-11-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.8",
+     "id": "empty_vial",
+     "name": "empty vial",
+     "owner": "npc:thorn-apothecary-11",
+     "owner_name": "Tuls Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r0.9",
+     "id": "bolt_of_cloth",
+     "name": "bolt of cloth",
+     "owner": "npc:thorn-apothecary-11-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 38,
+     "weight_kg": 2.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.apothecary11.r0.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      121,
+      283,
+      309
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.apothecary11.r1",
+   "name": "Tuls Sings-At-Dusk's back room",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "class": "shop_closed",
+   "owner": "npc:thorn-apothecary-11",
+   "owner_name": "Tuls Sings-At-Dusk",
+   "residents": [
+    {
+     "npc": "npc:thorn-apothecary-11",
+     "name": "Tuls Sings-At-Dusk",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-apothecary-11-elder0",
+     "name": "Veek Dark-Water",
+     "role": "elder"
+    },
+    {
+     "npc": "npc:thorn-apothecary-11-sibling1",
+     "name": "Beem-Kiune Nine-Teeth",
+     "role": "sibling"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.apothecary11.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.apothecary11.r1.lamp0",
+     "pos": [
+      3,
+      1.6,
+      4.199999999999999
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.apothecary11.r1.lamp1",
+     "pos": [
+      1.0999999999999996,
+      1.6,
+      4.300000000000001
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.apothecary11.r1.lamp2",
+     "pos": [
+      -0.20000000000000018,
+      1.6,
+      4.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.apothecary11.r1.0",
+     "id": "corkscrew_root",
+     "name": "corkscrew root",
+     "owner": "npc:thorn-apothecary-11-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r1.1",
+     "id": "sealed_crate",
+     "name": "sealed crate",
+     "owner": "npc:thorn-apothecary-11",
+     "owner_name": "Tuls Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 52,
+     "weight_kg": 8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r1.2",
+     "id": "corkscrew_root",
+     "name": "corkscrew root",
+     "owner": "npc:thorn-apothecary-11",
+     "owner_name": "Tuls Sings-At-Dusk",
+     "owner_scope": "personal",
+     "value_g": 19,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r1.3",
+     "id": "sealed_crate",
+     "name": "sealed crate",
+     "owner": "npc:thorn-apothecary-11-sibling1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 52,
+     "weight_kg": 8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r1.4",
+     "id": "dried_marshmerrow",
+     "name": "dried marshmerrow",
+     "owner": "npc:thorn-apothecary-11-sibling1",
+     "owner_name": "Beem-Kiune Nine-Teeth",
+     "owner_scope": "personal",
+     "value_g": 13,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r1.5",
+     "id": "sealed_crate",
+     "name": "sealed crate",
+     "owner": "npc:thorn-apothecary-11-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 52,
+     "weight_kg": 8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.apothecary11.r1.6",
+     "id": "dried_marshmerrow",
+     "name": "dried marshmerrow",
+     "owner": "npc:thorn-apothecary-11-elder0",
+     "owner_name": "Veek Dark-Water",
+     "owner_scope": "personal",
+     "value_g": 13,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.apothecary11.r1.lock",
+     "tier": 3,
+     "wards": 3,
+     "ward_angles": [
+      10,
+      148,
+      179
+     ],
+     "security_req": 40,
+     "agility_req": 26,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.publican12.r0",
+   "name": "Tul Two-Skins's publican",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "shop_open",
+   "owner": "npc:thorn-publican-12",
+   "owner_name": "Tul Two-Skins",
+   "residents": [
+    {
+     "npc": "npc:thorn-publican-12",
+     "name": "Tul Two-Skins",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-publican-12-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.publican12.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.publican12.r0.lamp0",
+     "pos": [
+      -2,
+      1.6,
+      -2.4
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.publican12.r0.lamp1",
+     "pos": [
+      3.0999999999999996,
+      1.6,
+      -2.3
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.publican12.r0.lamp2",
+     "pos": [
+      1.2000000000000002,
+      1.6,
+      -2.6
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.publican12.r0.0",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r0.1",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r0.2",
+     "id": "dice_cup",
+     "name": "dice cup",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r0.3",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r0.4",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r0.5",
+     "id": "tin_cup",
+     "name": "tin cup",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 4,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r0.6",
+     "id": "dice_cup",
+     "name": "dice cup",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r0.commons",
+     "id": "well_bucket",
+     "name": "well bucket",
+     "owner": "settlement:thorn",
+     "owner_scope": "public",
+     "value_g": 3,
+     "weight_kg": 1.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": []
+  },
+  {
+   "id": "thorn.publican12.r1",
+   "name": "Tul Two-Skins's back room",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "dwelling",
+   "owner": "npc:thorn-publican-12",
+   "owner_name": "Tul Two-Skins",
+   "residents": [
+    {
+     "npc": "npc:thorn-publican-12",
+     "name": "Tul Two-Skins",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-publican-12-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.publican12.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.publican12.r1.lamp0",
+     "pos": [
+      -0.10000000000000009,
+      1.6,
+      -2.1
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.publican12.r1.lamp1",
+     "pos": [
+      1.7999999999999998,
+      1.6,
+      -2.2
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.publican12.r1.0",
+     "id": "stool",
+     "name": "stool",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r1.1",
+     "id": "hackle_lo_leaf_bundle",
+     "name": "hackle-lo leaf bundle",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 8,
+     "weight_kg": 0.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r1.2",
+     "id": "greef_bottle",
+     "name": "greef bottle",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 15,
+     "weight_kg": 0.8,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r1.3",
+     "id": "reed_basket",
+     "name": "reed basket",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 3,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r1.4",
+     "id": "pewter_tankard",
+     "name": "pewter tankard",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 6,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r1.5",
+     "id": "clay_pitcher",
+     "name": "clay pitcher",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r1.6",
+     "id": "stool",
+     "name": "stool",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r1.7",
+     "id": "clay_bowl",
+     "name": "clay bowl",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 2,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.publican12.r1.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      162,
+      325
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.publican12.r2",
+   "name": "Tul Two-Skins's back room",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "class": "dwelling",
+   "owner": "npc:thorn-publican-12",
+   "owner_name": "Tul Two-Skins",
+   "residents": [
+    {
+     "npc": "npc:thorn-publican-12",
+     "name": "Tul Two-Skins",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-publican-12-partner0",
+     "name": "Chun Bone-Setter",
+     "role": "partner"
+    }
+   ],
+   "faction": null,
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.publican12.r2.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 0.9,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.publican12.r2.lamp0",
+     "pos": [
+      -3,
+      1.6,
+      -3.8
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.publican12.r2.lamp1",
+     "pos": [
+      2.0999999999999996,
+      1.6,
+      -3.7
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.publican12.r2.lamp2",
+     "pos": [
+      0.7999999999999998,
+      1.6,
+      -3.6
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.publican12.r2.0",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r2.1",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r2.2",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r2.3",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r2.4",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r2.5",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r2.6",
+     "id": "barrel_tap",
+     "name": "barrel tap",
+     "owner": "npc:thorn-publican-12",
+     "owner_name": "Tul Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 11,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.publican12.r2.7",
+     "id": "iron_ladle",
+     "name": "iron ladle",
+     "owner": "npc:thorn-publican-12-partner0",
+     "owner_name": "Chun Bone-Setter",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.4,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.publican12.r2.lock",
+     "tier": 2,
+     "wards": 2,
+     "ward_angles": [
+      71,
+      239
+     ],
+     "security_req": 20,
+     "agility_req": 18,
+     "picks_per_attempt": 1,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "unbind_spell",
+       "tier": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.legionary13.r0",
+   "name": "Nartise Half-Moon's legionary",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "restricted",
+   "owner": "npc:thorn-legionary-13",
+   "owner_name": "Nartise Half-Moon",
+   "residents": [
+    {
+     "npc": "npc:thorn-legionary-13",
+     "name": "Nartise Half-Moon",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-legionary-13-lodger0",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:thorn-legionary-13-apprentice1",
+     "name": "Three-Knives Two-Skins",
+     "role": "apprentice"
+    }
+   ],
+   "faction": "ninth-cohort",
+   "schedule": {
+    "open_h": 8,
+    "close_h": 19
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.legionary13.r0.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 1.4,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.legionary13.r0.lamp0",
+     "pos": [
+      -1.5,
+      1.6,
+      1.7000000000000002
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.legionary13.r0.lamp1",
+     "pos": [
+      0.3999999999999999,
+      1.6,
+      1.5999999999999996
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.legionary13.r0.0",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r0.1",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:thorn-legionary-13-lodger0",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r0.2",
+     "id": "field_ledger",
+     "name": "field ledger",
+     "owner": "npc:thorn-legionary-13-apprentice1",
+     "owner_name": "Three-Knives Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 21,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r0.3",
+     "id": "tallow_candle",
+     "name": "tallow candle",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 2,
+     "weight_kg": 0.2,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r0.4",
+     "id": "legion_ration",
+     "name": "legion ration",
+     "owner": "npc:thorn-legionary-13-lodger0",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 5,
+     "weight_kg": 0.5,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r0.5",
+     "id": "common_shirt",
+     "name": "common shirt",
+     "owner": "npc:thorn-legionary-13-apprentice1",
+     "owner_name": "Three-Knives Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 7,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r0.6",
+     "id": "field_ledger",
+     "name": "field ledger",
+     "owner": "faction:ninth-cohort",
+     "owner_name": null,
+     "owner_scope": "shared",
+     "value_g": 21,
+     "weight_kg": 0.6,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.legionary13.r0.lock",
+     "tier": 4,
+     "wards": 4,
+     "ward_angles": [
+      11,
+      149,
+      175,
+      342
+     ],
+     "security_req": 60,
+     "agility_req": 38,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:thorn-legionary-13"
+      },
+      {
+       "kind": "window",
+       "from": "the-boards"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "thorn.legionary13.r1",
+   "name": "Nartise Half-Moon's back room",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "class": "restricted",
+   "owner": "npc:thorn-legionary-13",
+   "owner_name": "Nartise Half-Moon",
+   "residents": [
+    {
+     "npc": "npc:thorn-legionary-13",
+     "name": "Nartise Half-Moon",
+     "role": "head"
+    },
+    {
+     "npc": "npc:thorn-legionary-13-lodger0",
+     "name": "Keeps-Her-Own of the Boards",
+     "role": "lodger"
+    },
+    {
+     "npc": "npc:thorn-legionary-13-apprentice1",
+     "name": "Three-Knives Two-Skins",
+     "role": "apprentice"
+    }
+   ],
+   "faction": "ninth-cohort",
+   "schedule": {
+    "open_h": null,
+    "close_h": null
+   },
+   "bounds_m": {
+    "x": [
+     -4,
+     4
+    ],
+    "y": [
+     0,
+     3.2
+    ],
+    "z": [
+     -5,
+     5
+    ]
+   },
+   "lights": [
+    {
+     "id": "thorn.legionary13.r1.hearth",
+     "pos": [
+      0,
+      0.7,
+      3.4
+     ],
+     "intensity": 1.4,
+     "snuffable": false,
+     "kind": "hearth"
+    },
+    {
+     "id": "thorn.legionary13.r1.lamp0",
+     "pos": [
+      3,
+      1.6,
+      -2.6
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.legionary13.r1.lamp1",
+     "pos": [
+      1.0999999999999996,
+      1.6,
+      -2.5
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    },
+    {
+     "id": "thorn.legionary13.r1.lamp2",
+     "pos": [
+      -0.7999999999999998,
+      1.6,
+      -2.8
+     ],
+     "intensity": 0.55,
+     "snuffable": true,
+     "kind": "oil-lamp"
+    }
+   ],
+   "contents": [
+    {
+     "instance": "thorn.legionary13.r1.0",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "npc:thorn-legionary-13-lodger0",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r1.1",
+     "id": "keepsake_ring",
+     "name": "keepsake ring",
+     "owner": "npc:thorn-legionary-13",
+     "owner_name": "Nartise Half-Moon",
+     "owner_scope": "personal",
+     "value_g": 48,
+     "weight_kg": 0.05,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r1.2",
+     "id": "oil_flask",
+     "name": "oil flask",
+     "owner": "npc:thorn-legionary-13-apprentice1",
+     "owner_name": "Three-Knives Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 13,
+     "weight_kg": 0.7,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r1.3",
+     "id": "comb_of_bone",
+     "name": "comb of bone",
+     "owner": "npc:thorn-legionary-13-lodger0",
+     "owner_name": "Keeps-Her-Own of the Boards",
+     "owner_scope": "personal",
+     "value_g": 9,
+     "weight_kg": 0.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r1.4",
+     "id": "signal_horn",
+     "name": "signal horn",
+     "owner": "npc:thorn-legionary-13",
+     "owner_name": "Nartise Half-Moon",
+     "owner_scope": "personal",
+     "value_g": 47,
+     "weight_kg": 1.3,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r1.5",
+     "id": "brass_mirror",
+     "name": "brass mirror",
+     "owner": "npc:thorn-legionary-13-apprentice1",
+     "owner_name": "Three-Knives Two-Skins",
+     "owner_scope": "personal",
+     "value_g": 35,
+     "weight_kg": 0.9,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    },
+    {
+     "instance": "thorn.legionary13.r1.6",
+     "id": "despatch_case",
+     "name": "despatch case",
+     "owner": "npc:thorn-legionary-13",
+     "owner_name": "Nartise Half-Moon",
+     "owner_scope": "personal",
+     "value_g": 34,
+     "weight_kg": 1.1,
+     "unique": false,
+     "stolen_from": null,
+     "takeable": true
+    }
+   ],
+   "locks": [
+    {
+     "id": "thorn.legionary13.r1.lock",
+     "tier": 4,
+     "wards": 4,
+     "ward_angles": [
+      88,
+      121,
+      283,
+      309
+     ],
+     "security_req": 60,
+     "agility_req": 38,
+     "picks_per_attempt": 2,
+     "quest_variant": false,
+     "alt_routes": [
+      {
+       "kind": "key_on_named_npc",
+       "who": "npc:thorn-legionary-13"
+      },
+      {
+       "kind": "window",
+       "from": "the-boards"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

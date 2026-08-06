@@ -423,9 +423,20 @@ export function installHarness(engine, bootPromise) {
       else engine.magic._endLevitation(engine.sim.frame, 'harness');
       return engine.magic.report(engine.sim.frame);
     },
-    damagePlayer(n) {
+    /**
+     * Apply damage to the player. `opts.stagger` routes it through the SAME reaction machinery
+     * a real hit uses (`CombatBody.queueReaction`), so an interrupted cast is interrupted by
+     * the state machine rather than by this method — which is the only way RI-MAG01 §D's
+     * interrupt table is measuring the game rather than measuring the probe.
+     */
+    damagePlayer(n, opts) {
       const b = engine.combat.player;
       b.hp = Math.max(0, b.hp - Number(n));
+      if (b.hp <= 0) b.dead = true;
+      if (!opts || opts.stagger !== false) {
+        const sm = b.moves._stagger && (b.moves._stagger.medium || b.moves._stagger[Object.keys(b.moves._stagger)[0]]);
+        if (sm) b.queueReaction(sm, engine.sim.frame);
+      }
       engine.magic.onDamaged(engine.sim.frame);
       return { hp: b.hp, magic: engine.magic.report(engine.sim.frame) };
     },

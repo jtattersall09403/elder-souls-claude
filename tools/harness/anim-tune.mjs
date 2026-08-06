@@ -36,12 +36,12 @@ for (const id of CLASSES) {
 if (process.argv.includes('--json')) {
   process.stdout.write(JSON.stringify(rows, null, 1) + '\n');
 } else {
-  const h = ['class', 'mv', 'decl', 'peak', 'ratio', 'st°', 'act°', 'rec°', 'tot°', 'snapIn_m', 'snapOut_m'];
+  const h = ['class', 'mv', 'decl', 'peak', 'ratio', 'st°', 'act°', 'rec°', 'tot°', 'snapIn_m', 'snapOut_m', 'reach', 'declR'];
   console.log(h.map((s, i) => s.padEnd(i === 0 ? 17 : 9)).join(''));
   for (const r of rows) {
     console.log([r.weapon, r.move, r.declared.toFixed(1), r.peak_tip_mps.toFixed(2), r.ratio.toFixed(2),
       r.angle_startup.toFixed(0), r.angle_active.toFixed(0), r.angle_recovery.toFixed(0), r.angle_total.toFixed(0),
-      r.snap_in_m.toFixed(4), r.snap_out_m.toFixed(4)]
+      r.snap_in_m.toFixed(4), r.snap_out_m.toFixed(4), r.reach_m_measured.toFixed(2), r.reach_m_declared === null ? '—' : r.reach_m_declared.toFixed(2)]
       .map((s, i) => String(s).padEnd(i === 0 ? 17 : 9)).join(''));
   }
   const bad = rows.filter((r) => r.ratio > 1.0);
@@ -82,7 +82,21 @@ function measure(weapon, mv, ms, m, clip) {
   pos[2] = z;
   track.push({ f: m.total + 1, s: idleAt(1), z });
 
-  let peak = 0, aSt = 0, aAc = 0, aRe = 0;
+  // REACH, defined the way a target experiences it: the character starts at z = 0 facing +z,
+  // the target is a capsule on the centreline, so reach is the furthest +z any point of the
+  // weapon capsule occupies during the ACTIVE window while it is still near the centreline.
+  // (Root motion is included, because RI-CMB02 §A's reach column is measured from where the
+  // player pressed the button, not from where the animation carried them.)
+  let peak = 0, aSt = 0, aAc = 0, aRe = 0, reach = 0;
+  for (const t of track) {
+    if (t.f < 1 || t.f <= m.startup || t.f > m.startup + m.active) continue;
+    for (let u = 0; u <= 1.0001; u += 0.05) {
+      const px = t.s[0][0] + (t.s[1][0] - t.s[0][0]) * u;
+      const pz = t.s[0][2] + (t.s[1][2] - t.s[0][2]) * u;
+      if (Math.abs(px) > 0.35) continue;
+      if (pz > reach) reach = pz;
+    }
+  }
   for (let i = 1; i < track.length; i++) {
     const p = track[i - 1].s, n = track[i].s;
     const tip = dist(p[1], n[1]);
@@ -101,6 +115,7 @@ function measure(weapon, mv, ms, m, clip) {
     angle_startup: +aSt.toFixed(1), angle_active: +aAc.toFixed(1), angle_recovery: +aRe.toFixed(1),
     angle_total: +(aSt + aAc + aRe).toFixed(1),
     snap_in_m: +snapIn.toFixed(4), snap_out_m: +snapOut.toFixed(4),
+    reach_m_measured: +reach.toFixed(3), reach_m_declared: m.reach_m_declared || null,
     startup: m.startup, active: m.active, recovery: m.recovery, total: m.total,
     archetype: m.archetype, amplitude: m.amplitude,
   };

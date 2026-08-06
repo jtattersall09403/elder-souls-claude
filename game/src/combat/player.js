@@ -58,6 +58,14 @@ export class PlayerController {
 
     if (b.dead) { b.poseDead(frame); return; }
 
+    // RI-MAG01 §D. If the cast's move is gone — a stagger, a guard break, a death, a parry —
+    // the cast was INTERRUPTED, and the Focus is gone with it. This is one branch rather than
+    // a hook in every reaction site, so no future reaction can be added that quietly forgets
+    // to charge the caster for a spell that never happened.
+    if (this.magic && this.magic.cast && (!b.move || b.move.kind !== 'cast')) {
+      this.magic.interrupt(frame, b.move ? b.move.kind : 'reaction');
+    }
+
     // RETIRE AT THE TOP OF THE STEP, never at the bottom of the previous one.
     //
     // A move declared `total: 52` must OCCUPY exactly 52 simulated frames and the character
@@ -69,6 +77,11 @@ export class PlayerController {
     // repeated here because it is the single easiest frame to lose.
     if (b.move && b.animFrame >= b.move.total) {
       const ended = b.move;
+      // The cast record lives for exactly `total` frames, retired at the top of the step for
+      // the same reason the move is (see the comment below): retiring it a frame early makes
+      // every cast in the game observably one frame short of its declared length, which
+      // HARNESS §7 rule 4 calls a hard fail and RI-MAG01 M1 measures to +/-0 frames.
+      if (ended.kind === 'cast' && this.magic) this.magic.endCast();
       b.endMove();
       if (ended.kind === 'stagger' || ended.kind === 'guard_break') {
         b.regenBlockUntil = Math.max(b.regenBlockUntil, frame + this.d.stamina.regen.delay_frames_after_any_spend);
@@ -203,12 +216,6 @@ export class PlayerController {
       if (this.magic) this.magic.endCast();
       this._tryStart(bit, frame, input, ctx, { cancelledFrom: m.id, atFrame: nextFrame });
       return;
-    }
-    // A `RITUAL` aborts on ANY movement input (RI-MAG01 §B). This is one of the three abort
-    // causes that make "no recall out of a fight" true without a flag anywhere saying so.
-    if (m.kind === 'cast' && m.cast_class === 'RITUAL' && this.magic && this.magic.cast && this.magic.cast.abortable) {
-      const moving = Math.hypot(input.moveX, input.moveY) > 1e-6 || (pressed & (BIT.roll | BIT.sprint | BIT.jump));
-      if (moving) { this.magic.abortRitual(frame, 'movement'); b.endMove(); b.actionableAt = frame; return; }
     }
     // heal has its own dodge-cancel window (RI-CMB08 §C)
     if (bit === BIT.roll && m.kind === 'heal' && nextFrame >= m.dodge_cancel_from) {
@@ -452,6 +459,26 @@ export class PlayerController {
     const b = this.b, m = b.move, M = this.magic;
     if (!M || !M.cast) return;
     const nf = b.animFrame + 1;
+    // RI-MAG01 §B: a `RITUAL` aborts on ANY movement input and on entering `COMBAT`. (The third
+    // cause, damage, arrives through the reaction branch at the top of step().) These three are
+    // what make "no recall out of a fight, no intervention as an escape button" TRUE — there is
+    // no `can_cast_in_combat: false` flag anywhere in this build to forget to set, and the
+    // 150 f@60 startup means nothing hostile ever lets the clock finish.
+    if (M.cast.abortable) {
+      const moved = Math.hypot(input.moveX, input.moveY) > 1e-6
+        || (input.pressed & (BIT.roll | BIT.sprint | BIT.jump)) !== 0
+        || (input.held & (BIT.sprint)) !== 0;
+      if (moved) { M.abortRitual(frame, 'movement'); b.endMove(); b.actionableAt = frame; return; }
+      if (ctx.bodies) {
+        for (const t of ctx.bodies) {
+          if (t === b || t.dead || t.side === b.side) continue;
+          const ec = ctx.enemies && ctx.enemies.get ? ctx.enemies.get(t.id) : null;
+          if ((ec && ec.alertState === 'AGGRO') || t.inCombat) {
+            M.abortRitual(frame, 'combat'); b.endMove(); b.actionableAt = frame; return;
+          }
+        }
+      }
+    }
     if (nf <= m.tc_frame) {
       // Before Tc the aim may move, capped at 120 deg/s with a 100 deg budget — the IDENTICAL
       // ceiling RI-AI02 §C gives a boss's standard move. The player must predict a rolling boss
@@ -468,7 +495,6 @@ export class PlayerController {
       const socket = [b.pos[0], b.pos[1] + 1.30, b.pos[2]];
       M.release(frame, socket);
     }
-    if (nf >= m.total) M.endCast();
   }
 
   _afford(m, frame, name, emit) {
