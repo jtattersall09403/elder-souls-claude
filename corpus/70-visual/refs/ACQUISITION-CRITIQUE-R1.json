@@ -1,0 +1,497 @@
+{
+ "round": 1,
+ "role": "critic",
+ "verdict": "INSUFFICIENT. acquire.py has never run; 31 of 46 catalogued images do not count toward any floor; the section 3 anti-curation rule is at 0% compliance; only character_closeup meets even the reduced A4 two-game minimum.",
+ "spec": "docs/REFERENCE-IMAGE-REQUEST.md section 3, as amended by corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md A1/A2/A3/A4",
+ "candidates_file": "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-candidates.json",
+ "profiles": [
+  {
+   "profile": "exterior_daylight",
+   "floor_images": 12,
+   "floor_games": 3,
+   "floor_locations": 6,
+   "catalogued": 10,
+   "countable_pixel_metrics_valid": 3,
+   "games": 1,
+   "games_list": [
+    "Elden Ring"
+   ],
+   "interval_run": 0,
+   "interval_run_required": 6,
+   "verdict": "FAIL"
+  },
+  {
+   "profile": "exterior_lowlight",
+   "floor_images": 12,
+   "floor_games": 3,
+   "floor_locations": 6,
+   "catalogued": 11,
+   "countable_pixel_metrics_valid": 3,
+   "games": 1,
+   "games_list": [
+    "Elden Ring"
+   ],
+   "interval_run": 0,
+   "interval_run_required": 6,
+   "verdict": "FAIL"
+  },
+  {
+   "profile": "interior_darkemissive",
+   "floor_images": 10,
+   "floor_games": 2,
+   "floor_locations": 5,
+   "catalogued": 8,
+   "countable_pixel_metrics_valid": 0,
+   "games": 0,
+   "games_list": [],
+   "interval_run": 0,
+   "interval_run_required": 5,
+   "verdict": "FAIL-EMPTY"
+  },
+  {
+   "profile": "character_closeup",
+   "floor_images": 10,
+   "floor_games": 2,
+   "floor_locations": 6,
+   "catalogued": 12,
+   "countable_pixel_metrics_valid": 8,
+   "games": 2,
+   "games_list": [
+    "Elden Ring",
+    "Red Dead Redemption 2"
+   ],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL",
+   "note": "meets the 2-game floor; fails count (8 of 10) and fails REF-M6's rear-view rule 1 of 12"
+  },
+  {
+   "profile": "combat",
+   "floor_images": 8,
+   "floor_games": 2,
+   "floor_locations": 4,
+   "catalogued": 2,
+   "countable_pixel_metrics_valid": 2,
+   "games": 1,
+   "games_list": [
+    "Elden Ring"
+   ],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL"
+  },
+  {
+   "profile": "material_closeup",
+   "floor_images": 8,
+   "floor_games": 2,
+   "floor_locations": 6,
+   "catalogued": 0,
+   "countable_pixel_metrics_valid": 0,
+   "games": 0,
+   "games_list": [],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL-EMPTY"
+  },
+  {
+   "profile": "modern/ui (REF-M22, amendment A2)",
+   "floor_images": null,
+   "floor_games": 2,
+   "floor_locations": null,
+   "catalogued": 0,
+   "countable_pixel_metrics_valid": 0,
+   "games": 0,
+   "games_list": [],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL-EMPTY"
+  },
+  {
+   "profile": "modern/hud",
+   "floor_images": null,
+   "floor_games": null,
+   "floor_locations": null,
+   "catalogued": 28,
+   "countable_pixel_metrics_valid": 24,
+   "games": 2,
+   "games_list": [
+    "The Witcher 3: Wild Hunt",
+    "Elden Ring"
+   ],
+   "interval_run": 24,
+   "interval_run_required": null,
+   "verdict": "MISFILED",
+   "note": "amendment A1 dissolves this folder; the 24 Witcher 3 frames are interval-run, pixel_metrics_valid, and already on disk"
+  },
+  {
+   "profile": "anti-generic",
+   "floor_images": 5,
+   "floor_games": null,
+   "floor_locations": null,
+   "catalogued": 5,
+   "countable_pixel_metrics_valid": 5,
+   "games": 1,
+   "games_list": [
+    "The Witcher 3: Wild Hunt"
+   ],
+   "interval_run": 5,
+   "interval_run_required": null,
+   "verdict": "PASS"
+  },
+  {
+   "profile": "context (ESO Shadowfen/Murkmire)",
+   "floor_images": 4,
+   "floor_games": 1,
+   "floor_locations": null,
+   "catalogued": 0,
+   "countable_pixel_metrics_valid": 0,
+   "games": 0,
+   "games_list": [],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL-EMPTY"
+  },
+  {
+   "profile": "video (V1-dolly, V2-static required)",
+   "floor_images": 2,
+   "floor_games": null,
+   "floor_locations": null,
+   "catalogued": 0,
+   "countable_pixel_metrics_valid": null,
+   "games": 0,
+   "games_list": [],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL-EMPTY"
+  },
+  {
+   "profile": "morrowind/REF-A1..A19 (excl. A12)",
+   "floor_images": null,
+   "floor_games": null,
+   "floor_locations": null,
+   "catalogued": 89,
+   "countable_pixel_metrics_valid": null,
+   "games": 1,
+   "games_list": [
+    "Morrowind (2002)"
+   ],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "PASS",
+   "note": "2-3 per slot, 4-5 on the core rows; 18 slots met"
+  },
+  {
+   "profile": "morrowind/REF-A12 (core, the UI)",
+   "floor_images": 5,
+   "floor_games": null,
+   "floor_locations": null,
+   "catalogued": 38,
+   "countable_pixel_metrics_valid": 0,
+   "games": 1,
+   "games_list": [
+    "Morrowind (2002)"
+   ],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL-NO-PIXELS",
+   "note": "all 38 records are asset_kind 'ui-definition' -- OpenMW Lua constants and MyGUI layout XML"
+  },
+  {
+   "profile": "morrowind/REF-A12b (amendment A2)",
+   "floor_images": null,
+   "floor_games": null,
+   "floor_locations": null,
+   "catalogued": 0,
+   "countable_pixel_metrics_valid": 0,
+   "games": 0,
+   "games_list": [],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL-EMPTY"
+  },
+  {
+   "profile": "morrowind/REF-A20 (amendment A2)",
+   "floor_images": null,
+   "floor_games": null,
+   "floor_locations": null,
+   "catalogued": 0,
+   "countable_pixel_metrics_valid": 0,
+   "games": 0,
+   "games_list": [],
+   "interval_run": null,
+   "interval_run_required": null,
+   "verdict": "FAIL-EMPTY"
+  }
+ ],
+ "gaps": [
+  {
+   "id": "G01",
+   "profile": "(code)",
+   "classification": "BLOCKING",
+   "why": "acquire.py load_records() expects a flat path-keyed dict; _provenance.json is {_note, files:[...]}. `python3 acquire.py --check` dies with ValueError: _note: missing source_url. No record carries a destination `path`. Nothing has ever been acquired.",
+   "specific_search": "Not a search. Code fix: read records['files'], require a new `path` field per record, skip records flagged rejected/no-url. Preserve stream->verify length->verify sha256->atomic rename exactly."
+  },
+  {
+   "id": "G02",
+   "profile": "(code)",
+   "classification": "BLOCKING",
+   "why": "165 of 211 records have no expected_bytes/expected_sha256; 29 have a shell glob in place of a URL (raw.githubusercontent.com/.../witcher3%202022-12-17%20*.jpg); 6 have no source_url at all.",
+   "specific_search": "126 of the 165 already exist on disk (89 morrowind, 5 anti-generic, 24 modern/hud, 8 rejected) -- hash them locally with make-manifest.py, no network. Expand the 29 globs by listing https://github.com/elfhuo-github/sksebp-og.github.io/tree/main/witcher3nextgen (note: api.github.com 403s unauthenticated and there is no gh CLI). Exclude the 6 stubs from load_records()."
+  },
+  {
+   "id": "G03",
+   "profile": "exterior_daylight",
+   "classification": "BLOCKING",
+   "why": "3 countable of 12; 1 distinct game. No band computable.",
+   "specific_search": "Steam apphub homecontent, browsefilter=toprated: app 489830 'the rift autumn'(95) 'whiterun'(83) 'solitude'(92) 'riften'(94) 'waterfall'(46) 'moss stone'(50); app 1174180 'bayou nwa'(50) 'heartlands'(50) 'grizzlies'(50) 'shoreline water'(50); app 292030 'white orchard'(50) 'novigrad'(47) 'toussaint'(48) 'skellige'(50) 'velen swamp'(50) 'crookback bog'(49). 99 curated candidates already handed over in ACQUISITION-CRITIQUE-R1-candidates.json."
+  },
+  {
+   "id": "G04",
+   "profile": "exterior_lowlight",
+   "classification": "BLOCKING",
+   "why": "3 countable of 12; 1 distinct game.",
+   "specific_search": "app 489830 'aurora night'(50) 'night'(64) 'rain'(100) 'fog morning'(50) 'morthal'(97); app 1174180 'night camp'(48) 'dawn mist'(50) 'rain'(49) 'saint denis'(49) 'bluewater marsh'(28); app 292030 'night'(48) 'rain storm'(49) 'fog'(50). 78 candidates handed over."
+  },
+  {
+   "id": "G05",
+   "profile": "interior_darkemissive",
+   "classification": "BLOCKING",
+   "why": "0 countable of 10 -- all 8 catalogued are pixel_metrics_valid:false. It is one of RI-VIS03's four declared profiles and has no population at all.",
+   "specific_search": "app 489830 'blackreach'(100) 'forge'(97) 'cave'(100) 'dwemer ruin interior'(48); app 1174180 'cave'(49); app 292030 'cave crypt'(49). 36 candidates handed over."
+  },
+  {
+   "id": "G06",
+   "profile": "exterior_daylight + exterior_lowlight + interior_darkemissive",
+   "classification": "SUBSTITUTABLE",
+   "why": "Section 3's anti-curation rule requires at least half of these three folders to be interval-run sampled. All 46 catalogued modern records are sampling:'selected'. Compliance is 0%.",
+   "specific_search": "No search needed. The 24 Witcher 3 frames in modern/hud/ are sampling:'interval-run', pixel_metrics_valid:true, and ALREADY ON DISK; amendment A1 releases HUD-bearing frames into their profile folders. Reclassify them. If more are needed later: any single Steam user's gallery, https://steamcommunity.com/id/<user>/screenshots/?appid=<id>&sort=oldestfirst, is a continuous native series."
+  },
+  {
+   "id": "G07",
+   "profile": "modern/hud -> exterior_*",
+   "classification": "SUBSTITUTABLE",
+   "why": "Those 24 frames carry exif_software='ACDSee Ultimate 8', which section 8a rejects outright, and their own provenance note forbids promotion out of hud/ without re-litigating the flag.",
+   "specific_search": "This critique is the re-litigation. Measured counter-evidence already in the record: 6.7-9.2 bytes/pixel, jpeg_quality_est 100, negative block_score (no 8x8 blocking), nyq_ratio 0.05-0.17 (not downscaled) -- the editor touched the container, not the pixels. Promote with has_hud:true, sampling:interval-run, integrity_flag retained verbatim, and a `deviation` field naming section 8a. The alternative is zero interval-run coverage anywhere."
+  },
+  {
+   "id": "G08",
+   "profile": "character_closeup",
+   "classification": "BLOCKING",
+   "why": "Meets the 2-game floor but only 1 of 12 is a rear or three-quarter-rear view, where REF-M6 requires at least half; most catalogued entries are cutscene portraits (Godrick grafting, Melina). Our camera is behind the player 100% of the time, so this is worse than the count shortfall.",
+   "specific_search": "app 489830 'back view'(50); app 292030 'back view'(50) 'geralt close up'(49) 'armor close'(50) 'witcher senses'(44); app 1174180 'arthur close up'(50) 'horse close'(48). 54 candidates handed over."
+  },
+  {
+   "id": "G09",
+   "profile": "combat",
+   "classification": "BLOCKING",
+   "why": "2 countable of 8; 1 distinct game. Maps onto RI-VIS03's character_closeup profile via combat_midfight, so it shares a band with G08.",
+   "specific_search": "app 489830 'combat dragon'(46) 'battle fight'(46); app 292030 'combat fight'(50); app 1174180 'combat gunfight'(31); app 1245620 'combat boss fight'(50) 'spell magic combat'(49) for REF-M18. 41 candidates handed over."
+  },
+  {
+   "id": "G10",
+   "profile": "material_closeup",
+   "classification": "BLOCKING",
+   "why": "0 of 8. Not one of RI-VIS03's four declared profiles -- it feeds the M3/M4/M5 surface bands rather than gating a profile -- which is why I rank it below interior_darkemissive.",
+   "specific_search": "app 489830 'texture close'(42) 'moss stone'(50); app 1174180 'mud ground'(48) 'tree bark'(49); app 292030 'bark tree'(50); app 1245620 'material close up'(50) 'stone texture'(50). 42 candidates handed over."
+  },
+  {
+   "id": "G11",
+   "profile": "modern/ui (REF-M22)",
+   "classification": "BLOCKING for comparison use; INFERABLE for F17's glyph metric",
+   "why": "F17's M-F17.1 measures a 10%-to-90% luminance transition across a glyph stem to a <=1.5 device px tolerance. Steam re-encodes every upload to chroma-subsampled JPEG, which smears a one-pixel stem transition by about a pixel, so a Steam screenshot cannot measure a reference UI's glyph sharpness at that tolerance. It does not need to: F17-F19 are ABSOLUTE thresholds measured on our own UI, not percentile bands drawn from a population. The reference set serves RI-UIX06's 'PERMITTED REFERENCE SET: RI-VIS02 (modern)' declaration and the blind comparison, for which JPEG is fine.",
+   "specific_search": "Acquire from Steam anyway: app 489830 'menu inventory'(25) 'skill tree'(48) 'map menu'(49); app 292030 'inventory menu'(16) 'character menu'(50); app 1245620 'equipment screen'(50) 'map menu'(40); app 1174180 'menu satchel'(50) -- 56 candidates handed over, and EVERY ONE needs eyes on it because searchText matches the title, not the image. To upgrade F17 from derived to measured, find lossless PNG: eldenring.wiki.fextralife.com and elderscrolls.fandom.com /images/ paths, Wikimedia Commons 'Category:Video game user interfaces', and Nexus Mods UI-mod pages, which post lossless before/after shots of the vanilla UI. Not yet run."
+  },
+  {
+   "id": "G12",
+   "profile": "morrowind/REF-A12b",
+   "classification": "BLOCKING",
+   "why": "Zero images. REF-A12 is a core slot per section 5e and holds 38 records of OpenMW Lua constants and MyGUI layout XML -- structure and measurements, no pixel of the original art. RI-VIS05's UI transposition rests entirely on it.",
+   "specific_search": "ALREADY RUN. Steam app 22320, homecontent toprated: 'character sheet'(50) 'map'(47) 'book reader'(50) 'inventory'(24) 'menu ui'(23) 'journal'(12) 'interface'(11) 'barter'(8) 'dialogue topic'(8) 'spellmaking'(1) = 231 candidates, 30 curated and handed over. Verified by eye: ?id=32875898 is the full four-pane vanilla UI at 1024x768 (character sheet, local map, inventory grid with paperdoll, spells/powers) and ?id=487644932 is the vanilla journal spread. Pages are pre-2015 so section 8b 'pre-2023-page' is satisfied outright, and 4:3 is correct -- section 6's 16:9 rule binds refs/modern/ only."
+  },
+  {
+   "id": "G13",
+   "profile": "morrowind/REF-A20",
+   "classification": "BLOCKING",
+   "why": "Zero loading/splash/framed-art images.",
+   "specific_search": "Steam app 22320 'loading screen' -> 45 candidates (6 curated). Plus 11 first-party Bethesda store screenshots via https://store.steampowered.com/api/appdetails?appids=22320&l=english (screenshots[].path_full, strip the ?t= cache-buster) -- corroboration 'first-party', vanilla by construction. I opened 0000009072.1920x1080.jpg: silt strider beside a stilted waterside settlement in rain, 1024x768 -- REF-A16 and REF-A19 material with the strongest provenance in the set."
+  },
+  {
+   "id": "G14",
+   "profile": "context",
+   "classification": "BLOCKING",
+   "why": "Zero of the 4 required ESO Shadowfen/Murkmire orientation shots.",
+   "specific_search": "Steam app 306130: 'hist tree'(50) 'argonian village'(50) 'murkmire'(47) 'shadowfen'(26) 'lilmoth'(8). 30 candidates handed over. Remember forbidden_for: ['fidelity-bands','art-direction-judgement','blind-pairing']."
+  },
+  {
+   "id": "G15",
+   "profile": "video",
+   "classification": "BLOCKING",
+   "why": "V1-dolly and V2-static are both required by section 5b and both are empty. Steam store trailers are cut montages and fail the 'no cuts' requirement outright, so the appdetails movies[] array is a dead end.",
+   "specific_search": "yt-dlp 2026.07.04 is installed at /usr/local/bin/yt-dlp. Download a SINGLE PROGRESSIVE format id (-f <id>, never bv*+ba, which would remux) so the CDN stream lands byte-for-byte -- section 5b's 'download clips as-is'. V1 queries: 'Elden Ring HUD off walking Limgrave no commentary', 'RDR2 first person horseback ride no HUD', 'Skyrim no HUD walk 4K'. V2: game-ambience uploads ('ambience 10 hours', 'relaxing rain'), which are by construction one static uncut shot. archive.org/advancedsearch.php also mirrors youtube-<id> movie items with direct .mp4 downloads."
+  },
+  {
+   "id": "G16",
+   "profile": "exterior_daylight (REF-M21)",
+   "classification": "SUBSTITUTABLE",
+   "why": "Measured: searchText='overcast' returns 7 hits on app 489830, 5 on 292030, 3 on 1245620, 8 on 1174180 -- against 50 for every dramatic query. Nobody uploads a boring overcast frame. This is a property of the corpus of uploads, not a search failure to retry.",
+   "specific_search": "Substitute the 'fog morning'(50 per game) and 'rain'(100) populations: both are diffuse, no-direct-sun exteriors and serve the same measurement, since REF-M21 exists because 'diffuse light is the hardest lighting to fake'. Record substituted_for:'REF-M21' and the deviation. If even that fails, INFERABLE: measure the daylight population with the directional component removed. REF-M21 is the one bar I expect to need relaxing by round 3; it does not need deleting."
+  },
+  {
+   "id": "G17",
+   "profile": "(catalogue hygiene)",
+   "classification": "BLOCKING",
+   "why": "3 of Codex's 46 carry corroboration:'unknown'. Section 8b: an image satisfying none of the three tests goes in rejected/. This is the anti-AI-generation check.",
+   "specific_search": "Fetch each source_page and read the visible Posted date from div.detailsStatRight (pace at 3 workers / 0.7s -- see dead_ends). If the date is pre-2023-01-01 set corroboration:'pre-2023-page'; otherwise move to rejected/."
+  },
+  {
+   "id": "G18",
+   "profile": "(risk, all modern profiles)",
+   "classification": "BLOCKING",
+   "why": "Skyrim SE's top-rated Steam gallery is mod/ENB territory and the titles do not say so -- only 30 of 1616 Skyrim candidates mention a mod in the title (1.9%). I opened the top 'the rift autumn' hit (?id=3413510110, 2560x1440): custom body and armour mod, replaced character, ENB colour grading, groundcover and tree mods. Catalogued as 'Skyrim SE' it would set our fidelity bar to somebody's modlist. Every catalogued modern record currently asserts modded:false with no test behind it -- the same unbacked assertion section 7 forbids on the Morrowind side.",
+   "specific_search": "Three defences in order: (1) prefer RDR2 (6 of 798 title-mod mentions) and Witcher 3 (9 of 858) as games 2 and 3; (2) take Skyrim from https://store.steampowered.com/api/appdetails?appids=489830 (8 first-party vanilla screenshots, mark promotional:true); (3) if the gallery must be used, browsefilter=mostrecent rather than toprated, because top-rated selects for beauty and beauty selects for ENB. Populate the `modded` field with an actual test, per image."
+  }
+ ],
+ "work_list": [
+  {
+   "rank": 0,
+   "work": "Fix load_records() and the record schema; give every record a `path`; hash the 126 on-disk files; expand the 29 globbed URLs; drop the 6 stubs. Preserve the integrity mechanism byte for byte.",
+   "why": "Everything else is unusable until `acquire.py --check` runs. Not in the coordinator's list; it should be first.",
+   "gaps": [
+    "G01",
+    "G02"
+   ]
+  },
+  {
+   "rank": 1,
+   "work": "Release the 24 Witcher 3 interval-run frames from modern/hud/ into exterior_daylight and exterior_lowlight per amendment A1, with the G07 deviation written down.",
+   "why": "Highest value in the project and it costs ZERO downloads -- the bytes are already on disk. Supplies a second game to both exterior profiles AND the entire interval-run half of section 3, currently at zero.",
+   "gaps": [
+    "G06",
+    "G07"
+   ]
+  },
+  {
+   "rank": 2,
+   "work": "Second and third game in exterior_daylight and exterior_lowlight -- RDR2 and Witcher 3 first, Skyrim only from first-party.",
+   "why": "Coordinator's priority 1, and right. 177 candidates handed over.",
+   "gaps": [
+    "G03",
+    "G04",
+    "G18"
+   ]
+  },
+  {
+   "rank": 3,
+   "work": "interior_darkemissive -- 0 countable, and one of RI-VIS03's four declared profiles.",
+   "why": "MY CHANGE TO THE ORDERING: promoted above material_closeup. It is at literal zero countable images and gates a named profile with its own metric relaxations (M1 relaxed hard, M7 skipped, M6+M9 tightened). material_closeup is not a declared profile at all. Empty profile beats empty folder.",
+   "gaps": [
+    "G05"
+   ]
+  },
+  {
+   "rank": 4,
+   "work": "combat (2 of 8, 1 game) and character_closeup's rear-view failure (1 of 12).",
+   "why": "One job: combat maps onto RI-VIS03's character_closeup profile via combat_midfight. The rear-view rule matters more than the count.",
+   "gaps": [
+    "G09",
+    "G08"
+   ]
+  },
+  {
+   "rank": 5,
+   "work": "material_closeup -- 0 of 8, 42 candidates across 4 games.",
+   "why": "Coordinator's priority 2, demoted one place for the reason in rank 3. Carries the M3/M4/M5 surface bands.",
+   "gaps": [
+    "G10"
+   ]
+  },
+  {
+   "rank": 6,
+   "work": "morrowind/REF-A12b -- Morrowind's menus as rendered. 30 curated, 231 available, two verified by eye.",
+   "why": "MY SECOND CHANGE: promoted above modern/ui. It turns out cheap and abundant, while its absence is the most consequential hole in the corpus -- REF-A12 is a core slot holding 38 records of OpenMW Lua and MyGUI XML and RI-VIS05's UI transposition rests on it with no pixel of the original art. Highest value per unit of effort in the list.",
+   "gaps": [
+    "G12"
+   ]
+  },
+  {
+   "rank": 7,
+   "work": "modern/ui (REF-M22) -- 56 candidates, 4 games, with the G11 honesty caveat recorded.",
+   "why": "Coordinator's priority 3, demoted one place: F17-F19 are absolute thresholds measured on our own UI, so the reference population serves comparison and sanity-checking, not band-setting. Real, but less load-bearing than the brief implies.",
+   "gaps": [
+    "G11"
+   ]
+  },
+  {
+   "rank": 8,
+   "work": "morrowind/REF-A20 (45 Steam + 11 first-party candidates) and context/ (30 candidates).",
+   "why": "Both cheap.",
+   "gaps": [
+    "G13",
+    "G14"
+   ]
+  },
+  {
+   "rank": 9,
+   "work": "video/ V1-dolly and V2-static via yt-dlp, single progressive format id.",
+   "why": "Required by section 5b but measured for motion only; pixel_metrics_valid:false regardless.",
+   "gaps": [
+    "G15"
+   ]
+  },
+  {
+   "rank": 10,
+   "work": "Resolve the 3 corroboration:'unknown' records; populate `modded` with an actual test on every modern record.",
+   "why": "Hygiene that protects everything above it.",
+   "gaps": [
+    "G17",
+    "G18"
+   ]
+  }
+ ],
+ "dead_ends": [
+  "/workshop/browse/?section=screenshots renders the MOD workshop for any app that has one and returns zero screenshots, indistinguishable from 'no results'. Confirmed by a previous agent's fossil ids.json: Elden Ring only, every other app empty. Use the apphub homecontent endpoint instead.",
+  "Steam rate-limits the DETAIL endpoint hard: 8 concurrent fetches of /sharedfiles/filedetails/?id= returned HTTP 429 and a ~27.3 KB 'Steam Community :: Error' page for 960 of 1000 requests -- and that error page is a plausible-sized 200-ish HTML body a naive cache will happily store. 3 workers with 0.7s sleep is safe. The LISTING endpoint is not rate-limited.",
+  "HEAD is useless on images.steamusercontent.com: Akamai returns Content-Length: 92 for a sizeable minority of URLs (11 of 48 in one sample) while a plain GET on the identical URL returns the real 701,272-byte JPEG. A HEAD-based liveness check would reject a quarter of a good catalogue. Use a ranged GET and read Content-Range: bytes 0-1023/<total>.",
+  "searchText matches the uploader's title and description, NOT the image. Elden Ring 'equipment screen' top hit (?id=3405289538) is a throne-room cutscene, not a menu. Every UI candidate needs eyes on it before cataloguing.",
+  "Skyrim SE's top-rated Steam gallery is mod/ENB contaminated and titles do not disclose it (1.9% mention a mod). See G18 for the three defences.",
+  "RDR2 and Witcher 3 Steam screenshots are photo-mode-heavy and section 5a bars photo-mode filters, DoF and vignette. Not fatal -- one clean RDR2 night frame (?id=3544436425) is a textbook exterior_lowlight reference -- but photo_mode must be judged per image, never assumed false.",
+  "api.github.com unauthenticated returns 403 (rate limit) and there is no gh CLI in this container. Expanding the 29 globbed sksebp-og.github.io URLs must go via raw.githubusercontent.com directory listing or the MCP GitHub tools.",
+  "en.uesp.net still 403s (its own bot protection, per AGENT-PROTOCOL). Not attempted.",
+  "Steam store trailers cannot serve video/: all are cut montages and V1/V2 both require 'no cuts' explicitly. The movies[] array in appdetails is a dead end for this purpose.",
+  "'overcast' is genuinely scarce -- 3 to 8 hits per game against 50 for dramatic queries. Not a search failure to retry; it is a property of what people upload. See G16.",
+  "The bare https://images.steamusercontent.com/ugc/<A>/<B>/ URL is the ORIGINAL; the ?imw=5000&... variant is an Akamai re-encode. Verified twice: bare returned 10,002,569 bytes against a page stating 9.539 MB, and on another file bare 701,272 vs imw=5000 672,633. Codex's choice of the bare URL was correct -- preserve it."
+ ],
+ "verification": {
+  "candidate_pool": 4091,
+  "curated_handover": 472,
+  "urls_range_get_verified": 60,
+  "urls_range_get_resolved": 60,
+  "method": "ranged GET, Content-Range total read; 10 per app id across all six app ids, seeded random sample",
+  "size_range_bytes": [
+   95428,
+   10002569
+  ],
+  "head_based_check_discarded": {
+   "checked": 48,
+   "apparently_ok": 48,
+   "phantom_92_byte_content_length": 11,
+   "note": "reported here because the discrepancy IS the finding -- see dead_ends"
+  },
+  "images_opened_and_looked_at": 6,
+  "byte_exactness_checks": 2,
+  "files_modified": [],
+  "files_written": [
+   "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md",
+   "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.json",
+   "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-candidates.json"
+  ]
+ },
+ "impossible_bars": [],
+ "bars_recommended_for_relaxation": [
+  {
+   "bar": "REF-M21 (flat, overcast, no-direct-sun midday exterior)",
+   "status": "not yet -- SUBSTITUTABLE at round 1",
+   "note": "if fog/rain diffuse substitution is rejected by a later critic, this is the bar to relax rather than delete"
+  }
+ ]
+}
