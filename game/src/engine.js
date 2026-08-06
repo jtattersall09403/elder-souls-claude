@@ -1948,6 +1948,62 @@ export class Engine {
    * Resumable: pass `chunkFrames` and call again until `done` — 57.6 minutes is 207,360 fixed
    * steps and a single call would sit past a browser automation timeout.
    */
+  /**
+   * Walk an ARBITRARY polyline with the capsule, under the same locomotion the player uses.
+   *
+   * `walkRoute` could only walk the named road routes, so the only reachability evidence this
+   * piece could produce was `scale-audit.mjs`'s grid flood fill — which verdict W1-01 §6 called
+   * "a flood fill wearing a walk's clothes", and whose own `depth <= 1.40 m` passability rule was
+   * what concealed the drowned road: a cell under 65 m of water simply dropped out of the fill
+   * while the road through it stayed a road. This is the verb that lets the claim be a walk.
+   *
+   * Returns per-segment progress plus a stuck census: a frame in which the capsule moved less than
+   * 1 cm while a full stick was held is a frame the flood fill cannot see.
+   */
+  walkPath(points, opts = {}) {
+    const o = Object.assign({ speed: 'walk', maxFrames: 400000, lookahead_m: 4.5, arrive_m: 3.0, stuckAbort: 900 }, opts);
+    if (!this.field) throw new Error('walkPath: no province is loaded');
+    if (!Array.isArray(points) || points.length < 2) throw new Error('walkPath(points): expected at least two [x, z] points');
+    const mag = o.speed === 'jog' ? 1.0 : 0.55 - 1e-9;
+    const p = this.sim.player;
+    this.teleport(points[0][0], points[0][1]);
+    p.pos[1] = this.field.heightAt(points[0][0], points[0][1]);
+    let idx = 1, frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null;
+    const visited = new Set([this.field.regionAt(p.pos[0], p.pos[2]).id]);
+    const deepest = { depth_m: 0, at: null };
+    while (frames < o.maxFrames) {
+      while (idx < points.length - 1 && Math.hypot(p.pos[0] - points[idx][0], p.pos[2] - points[idx][1]) < o.lookahead_m) idx++;
+      const t = points[idx];
+      const dx = t[0] - p.pos[0], dz = t[1] - p.pos[2];
+      const d = Math.hypot(dx, dz);
+      if (idx >= points.length - 1 && d < o.arrive_m) break;
+      const b = Math.atan2(dx, dz);
+      const cy = this.sim.camera.yaw * Math.PI / 180;
+      this.input.reset(this.sim.frame);
+      this.input.queueInputs([{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }], this.sim.frame);
+      const x0 = p.pos[0], z0 = p.pos[2];
+      this.loop.stepOnce();
+      this._afterStep();
+      const step = Math.hypot(p.pos[0] - x0, p.pos[2] - z0);
+      dist += step; frames++;
+      if (step < 0.01) { stuck++; worstStuck = Math.max(worstStuck, stuck); if (stuck >= o.stuckAbort) { aborted = 'stuck'; break; } } else stuck = 0;
+      visited.add(this.field.regionAt(p.pos[0], p.pos[2]).id);
+      const dep = this.field.depthAt(p.pos[0], p.pos[2]);
+      if (dep > deepest.depth_m) { deepest.depth_m = +dep.toFixed(3); deepest.at = [+p.pos[0].toFixed(1), +p.pos[2].toFixed(1)]; }
+    }
+    const end = [p.pos[0], p.pos[2]];
+    const target = points[points.length - 1];
+    return {
+      arrived: !aborted && Math.hypot(end[0] - target[0], end[1] - target[1]) <= Math.max(o.arrive_m, o.lookahead_m + 1),
+      aborted, frames, minutes: +(frames / 3600).toFixed(3), path_m: +dist.toFixed(1),
+      mean_speed_mps: frames ? +(dist / (frames / 60)).toFixed(4) : 0,
+      end: [+end[0].toFixed(1), +end[1].toFixed(1)], target: [+target[0].toFixed(1), +target[1].toFixed(1)],
+      offset_m: +Math.hypot(end[0] - target[0], end[1] - target[1]).toFixed(2),
+      longest_stuck_frames: worstStuck, regions_entered: [...visited].sort(),
+      deepest_water_on_the_walk: deepest,
+    };
+  }
+
   walkRoute(opts = {}) {
     const o = Object.assign({ route: 'crossing', speed: 'walk', chunkFrames: 40000, sampleEvery: 6, lookahead_m: 4.5, stream: false, restart: false }, opts);
     if (!this.field) throw new Error('walkRoute: no province is loaded');

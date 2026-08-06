@@ -204,6 +204,7 @@ export function installHarness(engine, bootPromise) {
     getBurden() { return engine.getBurden(); },
     getProvinceStats() { return engine.getProvinceStats(); },
     walkRoute(opts) { return engine.walkRoute(opts); },
+    walkPath(points, opts) { return engine.walkPath(points, opts || {}); },
     streamAround(x, z, budget) {
       if (!engine.renderer.province) throw new Error('streamAround: no province is loaded');
       const queued = engine.renderer.province.request(Number(x), Number(z));

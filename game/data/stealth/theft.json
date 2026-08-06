@@ -1,0 +1,127 @@
+{
+  "schema": "elder-souls/stealth-theft@1",
+  "id": "theft",
+  "source": "RI-STL02 §1 §2 §4 §5 §6.",
+
+  "ownership": {
+    "field_on_every_object": ["owner", "owner_scope", "value_g", "unique", "stolen_from"],
+    "scopes": [
+      { "scope": "personal", "meaning": "one NPC's possession",                    "taking_it_is": "theft, always, seen or not" },
+      { "scope": "shared",   "meaning": "a faction's or household's stock",        "taking_it_is": "theft unless you hold rank >= 2 in that faction / live there" },
+      { "scope": "public",   "meaning": "placed in a commons",                     "taking_it_is": "theft only if observed; unobserved it is petty and generates no stolen_from" },
+      { "scope": "null",     "meaning": "genuinely unowned - wilderness, ruins, corpses of hostiles, the eight Souls-loop dungeons", "taking_it_is": "free" }
+    ],
+    "coverage_targets": {
+      "takeable_objects_with_owner_key": 1.00,
+      "settlement_objects_owner_not_null": 0.92,
+      "distinct_owner_strings": 240,
+      "single_owner_interiors_max_share": 0.15
+    },
+    "single_owner_note": "The last row catches a lazy pass: owner:'settlement:gideon' on every object in Gideon is technically 100% coverage and a world where nothing belongs to a PERSON. Morrowind's fork belonged to a named Dunmer with an address."
+  },
+
+  "theft_act": {
+    "context_weight": 3.00,
+    "cases": [
+      { "situation": "taken, not observed", "result": "item enters inventory with stolen_from set. No bounty. No disposition change.", "owner_notices_at_value_g": 25, "owner_notices_when": "their next schedule tick at that location", "topic_added": "Something of mine is gone." },
+      { "situation": "taken, observed by anyone", "result": "CRIME event -> RI-CRM01", "disposition_delta_formula": "-0.5 * value_g", "disposition_gmst": "fDispStealing" },
+      { "situation": "taken, observed only by the owner, value_g < 10", "result": "CHALLENGE, not CRIME", "put_back_window_s": 8, "put_back_effect": "clears it entirely" },
+      { "situation": "owned object in your inventory, shown to its owner in barter or dialogue", "result": "unique dialogue; disposition -25; owner may demand it back or call a guard depending on RG group" }
+    ],
+    "stolen_from": {
+      "permanent": true,
+      "travels_with_the_item": true,
+      "through": ["containers", "drops", "gifting to NPCs"],
+      "cleared_by": ["fencing", "the owner's death"],
+      "owner_death_note": "deliberately a working strategy with a large cost (S10)"
+    }
+  },
+
+  "trespass": {
+    "definition": "any interior or bounded exterior volume with an owner and a schedule",
+    "is_itself_a_crime": false,
+    "generates_bounty": false,
+    "rule": "Being inside a trespass zone is not itself a crime and generates no bounty. It generates SUSPICION, and the crime is what a witness reports. Walking into an unlocked house is a SOCIAL event with an off-ramp, exactly as it is in Morrowind.",
+    "classes": [
+      { "id": "shop_open",          "name": "Shop, open hours",                   "trespass_when": "never (public)",                                  "context_weight": 0.00, "escalation": null },
+      { "id": "shop_closed",        "name": "Shop, closed",                       "trespass_when": "always",                                          "context_weight": 2.20, "escalation": "CHALLENGE -> ALARM -> guard" },
+      { "id": "dwelling",           "name": "Private dwelling",                   "trespass_when": "always, unless invited by quest flag",             "context_weight": 2.20, "escalation": "CHALLENGE -> ALARM -> guard" },
+      { "id": "faction_interior",   "name": "Faction interior",                   "trespass_when": "unless rank >= 1 in that faction",                 "context_weight": 2.20, "escalation": "CHALLENGE -> ALARM -> guard", "plus": "expulsion risk" },
+      { "id": "restricted",         "name": "Legion / Provincial Office restricted", "trespass_when": "always",                                       "context_weight": 3.00, "escalation": "ALARM on sight, no CHALLENGE" },
+      { "id": "sapwell_precinct",   "name": "Rootkeeper sapwell precinct",        "trespass_when": "non-Argonian without rootkeeper disposition >= 60","context_weight": 2.20, "escalation": "no guards; the well REFUSES you", "refusal_hours": 24, "note": "A checkpoint denied is worse than a bounty." },
+      { "id": "prison",             "name": "Blackrose Prison",                   "trespass_when": "always",                                          "context_weight": 3.00, "escalation": "capture, not bounty" }
+    ],
+    "coverage_targets": { "zones_total": 180, "zones_per_settlement": 14, "distinct_classes_per_settlement": 3 }
+  },
+
+  "pickpocket": {
+    "eligible_when": ["target civ_state == CALM", "you are crouched", "within 1.4 m", "inside the target's rear arc (>±100 deg)", "stationary"],
+    "range_m": 1.4,
+    "rear_arc_deg": 100,
+    "slot_formula": "clamp( 1 + floor((AGILITY - 10) / 8), 1, 6 )",
+    "slot_min": 1, "slot_max": 6,
+    "weight_ceiling_formula": "0.5 kg + 0.25 kg per point of Sneak above 20",
+    "hold_formula": "T = 2.60 - 0.014 * Sneak seconds, floored at 0.90 s",
+    "hold_floor_s": 0.90,
+    "suspicion_multiplier_during_T": 3.0,
+    "release_early": "nothing taken, nothing lost, no crime",
+    "equipped_items_stealable": false,
+    "equipped_note": "A guard's weapon and armour are not pickpocketable, because the alternative is a game where the answer to every Legion patrol is to undress it.",
+    "ceiling": { "sneak": 100, "agility": 60, "T_s": 1.20, "slots": 6, "weight_kg": 20.5 },
+    "floor":   { "sneak": 5,   "agility": 10, "T_s": 2.53, "slots": 1, "weight_kg": 0.5, "note": "you can steal a key, and that is the point: the lowest-skill pickpocket is still the solution to exactly one puzzle, which RI-QST05 counts" },
+
+    "the_die": {
+      "keeps_a_roll": true,
+      "draws_per_attempt": 1,
+      "drawn_at": "the completion frame of the hold, once, never per-frame",
+      "authority": "ARBITRATION §2 seam S21 as amended by intent audit 02 (ND-01): 'Pickpocketing keeps its roll (getting caught is permanent and consequential). RI-STL02 and RI-MAG03 must be reconciled to this.'",
+      "conflict": "RI-STL02 §5 says 'Same ruling, same reasons: no roll' and its method 7 asserts 100/100 identical outcomes across 100 SEEDS. ARBITRATION §2 outranks a reference item's own text under ARBITRATION §5 precedence (rung 2 beats rung 3), and S21 names RI-STL02 by id as the item that must be reconciled. The die is therefore built and RI-STL02 §5 is the superseded text.",
+      "what_stays_deterministic": ["eligibility geometry", "slot count", "weight ceiling", "hold duration T", "suspicion fill during T", "the caught-by-suspicion path"],
+      "what_the_die_decides": "notice: whether the target feels the hand, given everything the deterministic half already decided",
+      "formula": "notice_chance = clamp( 0.80 * cw_term * V_term * T_term * raceSuspicion * S_sneak , 0.02 , 0.85 )",
+      "formula_terms": {
+        "cw_term": "the target's contextWeight for a crouched actor behind them, / 1.60 (the crouched-public baseline)",
+        "V_term": "clamp( V_at_completion_frame / 0.30 , 0.35 , 2.0 ). 0.30 is RI-CRM01 §2's identification threshold, so the term reads 1.0 exactly where a witness could name you.",
+        "T_term": "T_s / 2.60 — longer hands in the pocket are more noticeable. 1.0 at Sneak 0, 0.46 at Sneak 100.",
+        "raceSuspicion": "read from game/data/progression/race-reactions.json, W1-07's table. Not restated here.",
+        "S_sneak": "max( 0.40 , 1 - 0.006 * Sneak ) — the SAME coefficient and the SAME floor as RI-STL01 §2's S term, so Sneak means one thing across the whole piece."
+      },
+      "base": 0.80,
+      "clamp": [0.02, 0.85],
+      "worked": [
+        { "label": "Sneak 5, dark (V 0.08), Naga, crouched behind a calm civilian", "sneak": 5,   "V": 0.08, "race": "naga",     "notice_chance": 0.5286 },
+        { "label": "Sneak 45, dim (V 0.16), Saxhleel",                              "sneak": 45,  "V": 0.16, "race": "saxhleel", "notice_chance": 0.3186 },
+        { "label": "Sneak 45, dark (V 0.08), Saxhleel",                             "sneak": 45,  "V": 0.08, "race": "saxhleel", "notice_chance": 0.2091 },
+        { "label": "Sneak 100, lit street (V 0.55), Imperial",                      "sneak": 100, "V": 0.55, "race": "imperial", "notice_chance": 0.2166 },
+        { "label": "Sneak 100, dark (V 0.08), Imperial",                            "sneak": 100, "V": 0.08, "race": "imperial", "notice_chance": 0.0414 },
+        { "label": "Sneak 5, bright (V 0.90), Naga, in a lit shop",                 "sneak": 5,   "V": 0.90, "race": "naga",     "notice_chance": 0.8500 }
+      ],
+      "calibration_intent": "The spread is 4.1% to 85% and the two levers that move it most are DARKNESS and SNEAK, both of which the player controls before the die is thrown. A first draft used a subtractive Sneak term and collapsed to the 2% floor by Sneak 45, which would have made the die vestigial and S21 decorative. The multiplicative form keeps the die live at every skill level, which is what a permanent-failure die is for.",
+      "failure_is_permanent": "Caught -> CRIME, bounty 100 (RI-CRM01 #6), fDispPickPocketMod -25, and the witness record cannot be un-created. There is no retry that undoes it. That is exactly S21's surviving-die criterion.",
+      "determinism_note": "The draw is from the seeded PRNG inside the fixed step. The SAME seed gives the SAME outcome, always; the RI-MTH02 determinism ladder is untouched. What differs is the outcome ACROSS seeds, which is the whole point of a die."
+    }
+  },
+
+  "fences": {
+    "count": 9,
+    "access": "Mercantile >= 25 OR an introduction from a quest OR Thieves-network rank >= 1. Never race-gated.",
+    "price_formula": "0.35 * value_g * mercantileTerm(player) * fenceGreed",
+    "base_rate": 0.35,
+    "greed_range": [0.85, 1.10],
+    "legit_sell_ceiling": 0.60,
+    "gold_pool_range": [400, 2600],
+    "gold_pool_refresh_days": 3,
+    "clears_stolen_from": true,
+    "laundered_from_retained": true,
+    "laundered_from_read_by_quests": 3,
+    "unique_items": { "buys_once": true, "rate": 0.20, "delayed_bounty_multiplier": 0.5, "delay_days": 3, "note": "named things are recognised. Fencing the Full Root Chalice is a decision, not a transaction." },
+    "refusal_rule": "A merchant refuses any item whose stolen_from resolves to an NPC in THEIR settlement, or to THEIR faction, or to any NPC whose disposition toward them is >= 60 - and says so, BY NAME. That refusal is the whole reason fences exist.",
+    "economy_targets": {
+      "baseline_lifetime_gold": 98000,
+      "casual_theft": 111000,
+      "dedicated_thief": 127000,
+      "dedicated_thief_band": [118000, 136000],
+      "failure_case_if_fences_paid_0.60": 168000
+    }
+  }
+}

@@ -31,11 +31,11 @@ const res = await handle.page.evaluate(`(function(){
     boot(); H.setEquipLoad(load);
     const s0 = cs().player.stamina;
     H.queueInputs([{f:1,press:['jump']},{f:3,release:['jump']}]);
-    const st=[], ys=[];
-    for(let i=1;i<=90;i++){ H.stepFrames(1); const c=cs(); st.push(c.player.state); ys.push(+c.player.pos[1].toFixed(4)); }
+    const st=[], ys=[], sm=[];
+    for(let i=1;i<=90;i++){ H.stepFrames(1); const c=cs(); st.push(c.player.state); ys.push(+c.player.pos[1].toFixed(4)); sm.push(c.player.stamina); }
     R.jump_by_tier.push({ tier, declared_tier: cs().player.tier, states:[...new Set(st)],
-      state_frames: countRuns(st), max_y_m: Math.max(...ys), stamina_spent: +(s0-Math.min(...[s0].concat([]))).toFixed(2),
-      stamina_after_press: null });
+      state_frames: countRuns(st), max_y_m: Math.max(...ys),
+      stamina_before: s0, stamina_min: Math.min(...sm), stamina_spent: +(s0 - Math.min(...sm)).toFixed(2) });
   }
   // exact cost + exact state lengths, LIGHT
   boot(); H.setEquipLoad(15);
@@ -43,8 +43,8 @@ const res = await handle.page.evaluate(`(function(){
   { const rows=[]; let s=null;
     for(let i=1;i<=90;i++){ H.stepFrames(1); const c=cs(); rows.push({f:i,st:c.player.state,y:+c.player.pos[1].toFixed(4),stam:c.player.stamina});
       if(s===null&&i===1) s=c.player.stamina; }
-    R.jump_detail = { stamina_at_frame1: rows[0].stam, stamina_before: 120,
-      spent: +(120-rows[0].stam).toFixed(2), state_frames: countRuns(rows.map(r=>r.st)),
+    R.jump_detail = { stamina_before: 120, stamina_min: Math.min(...rows.map(r=>r.stam)),
+      spent: +(120-Math.min(...rows.map(r=>r.stam))).toFixed(2), state_frames: countRuns(rows.map(r=>r.st)),
       apex_m: Math.max(...rows.map(r=>r.y)), apex_frame: rows.findIndex(r=>r.y===Math.max(...rows.map(x=>x.y)))+1,
       y_at_end: rows[rows.length-1].y, iframes_any: rows.some(r=>cs().player.invuln) };
   }

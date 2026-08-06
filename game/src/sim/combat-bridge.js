@@ -49,8 +49,10 @@ export function stepCombat(sim, input, combat, bus) {
   if (input.pressed & BIT.menu) {
     sim.menuOpen = !sim.menuOpen;
     if (sim.menuOpen) openUI(sim, 'menu'); else closeUI(sim);
-    const e = bus.emit(frame, 'menu_toggle');
-    e.open = sim.menuOpen; e.pauses_simulation = false;
+    // `surface_enter` / `surface_exit` are HARNESS.md §5's own A-JRN7 vocabulary for a UI
+    // surface opening and closing. No new event type is minted for this: §5's set is closed.
+    const e = bus.emit(frame, sim.menuOpen ? 'surface_enter' : 'surface_exit');
+    e.surface = 'menu'; e.pauses_simulation = false;
   }
 
   combat.step(frame, input, sim.camera, bus, sim);
