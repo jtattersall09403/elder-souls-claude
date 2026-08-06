@@ -2,7 +2,7 @@
   "task_id": "W1-14",
   "brief": "wave-1 piece W1-14 - Magic (seam S19)",
   "started": "wave-1",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "game/data/magic/effects.json",
     "game/data/magic/spells.json",
@@ -16,12 +16,23 @@
     "game/data/magic/cast-clips.json",
     "game/data/magic/spells.json",
     "game/data/magic/enchanting.json",
+    "game/data/magic/vfx.json",
+    "game/data/magic/traversal-routes.json",
+    "game/data/magic/README.md",
+    "game/data/quests/magic-utility.json",
+    "game/data/combat/enemies/cst_sap_speaker.json",
+    "game/data/combat/movesets/spell-*.json (70)",
     "game/src/sim/magic/cost.js",
     "game/src/sim/magic/system.js",
     "game/src/sim/magic/moves.js",
     "tools/analysis/gen-spells.mjs",
+    "tools/analysis/gen-magic-quests.mjs",
+    "tools/analysis/magic-audit.mjs",
     "tools/harness/mag-probe.mjs",
-    "game/data/combat/movesets/spell-*.json (70)"
+    "corpus/80-methods/HARNESS.md (AM-W1-14 amendment)",
+    "corpus/30-quests/quest.schema.json (requires.spell_effects)",
+    "reports/runs/MAG-PROBE/mag-probe.json",
+    "reports/runs/MAG-AUDIT/magic-audit.json"
   ],
   "findings": [
     "RI-MAG01: cast classes CANTRIP/LIGHT/HEAVY/GREAT/RITUAL with startup/active/recovery 14-3-20, 24-4-28, 36-6-40, 52-8-60, 150-12-48 (f@60). Ps={15,25,37,53}. Stamina 10/16/24/34/0. Focus mult 0.50/1.00/2.10/4.40/1.00.",
@@ -38,8 +49,12 @@
     "GOTCHA for successors: InputPipeline.queueInputs event frames are RELATIVE to the frame queueInputs was called on (scriptBase). Using H.getFrame()+1 silently schedules the input at 2*frame+1 and it never fires. Cost ~40 min.",
     "CORPUS DEFECT FOUND: RI-MAG02 \u00a7G's recall table (M=5/15/30/40 -> 6/26/57/77) does not reproduce from RI-MAG02 \u00a7D's own formula, which gives 6/22/53/77. Two of four rows disagree with the item's own arithmetic. Build follows the formula (M2 requires it) and reports the discrepancy.",
     "CORPUS DEFECT FOUND: RI-MAG02's requested magic line '~28,000 g across 60 purchasable spells (tier mix 26/18/10/5/1)' is arithmetically impossible: cheapest legal 26/18/10/5/1 shelf = 69,246 g. AM-W1-14-01 filed in spells.json. Resolved by an affordability shelf rule (RI-PRG05 mean merchant float 1,721 g) which lands at 29,944 g -- inside RI-MAG03 M8's band.",
-    "The frame record is stamped after sim.frame++, so a 42 f@60 regen delay reads as 41 blocked records for a cast AND for a weapon swing. Probe asserts cast == swing rather than == 42."
+    "The frame record is stamped after sim.frame++, so a 42 f@60 regen delay reads as 41 blocked records for a cast AND for a weapon swing. Probe asserts cast == swing rather than == 42.",
+    "FINAL: mag-probe 19/19 PASS (live), magic-audit 10/11 PASS (static). The one FAIL is deliberate: CROSS_ITEM_CONFLICT_birthsign_focus_absorption, filed against my own item.",
+    "Regression-clean: cmb-probe all ok, save-audit round-trips EQUAL with manifest-extra 0/0 including the new magic save group, lint-determinism 0 errors, api-probe 33/33.",
+    "Enemy casting is NOT implemented (W1-12 owns enemy action selection). RI-MAG01 M7 live sweep scores 0 fail-closed; the Sap-speaker statblock declares every AP-M number so they are statically falsifiable.",
+    "Spell VFX is data only. RI-MAG05 PART 2 (fidelity) scores 0 fail-closed."
   ],
-  "next_step": "static analyser (magic-audit.mjs) for RI-MAG02 M1/M2/M3, then quest data for RI-MAG04, then vfx.json",
-  "notes_for_successor": ""
+  "next_step": "none - complete. See notes_for_successor for the open gaps.",
+  "notes_for_successor": "OPEN GAPS, in the order I would close them: (1) enemy casting -- needs W1-12's controller; the data is ready (game/data/combat/enemies/cst_sap_speaker.json). (2) spell VFX -- vfx.json carries the binding palette and briefs; nothing renders. (3) RI-MAG04 M4's live two-pass traversal check -- needs the exterior collision mesh (W1-01..W1-05). (4) 9 of 11 breakage-register probes unrun -- each needs another piece's system. (5) The birthsign Focus-absorption conflict needs a RULING from RI-CHR03/RI-MAG01, not a builder. TWO CORPUS DEFECTS FOUND: RI-MAG02 \u00a7G's recall table (6/26/57/77) does not reproduce from RI-MAG02 \u00a7D's own formula (6/22/53/77) at two of four points; and RI-MAG02's '~28,000 g across 60 purchasable spells at tier mix 26/18/10/5/1' is impossible (cheapest such shelf 69,246 g) -- AM-W1-14-01 filed in spells.json. GOTCHA: queueInputs event frames are RELATIVE to the frame queueInputs was called on."
 }

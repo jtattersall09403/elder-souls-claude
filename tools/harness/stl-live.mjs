@@ -160,6 +160,36 @@ try {
     A('LIVE-LCK', 'a tier-3 ward-collar in the running world', 'none found', false, 'a tier-3 lock reachable by id');
   }
 
+  // ---- 5b. the pickpocket, and the ONE draw seam S21 keeps ---------------------------------
+  // The lock's "0 draws" above is only meaningful if the counter can move at all. It can, in
+  // exactly one place in this piece, and this is that place.
+  const pp = await h.page.evaluate(() => {
+    const H = window.__HARNESS;
+    H.setSeed(20250806);
+    H.setStealthState({ sneak: 45, race: 'saxhleel', crouched: true });
+    H.setCrimeContext('crouched_public');
+    const q = { targetCivState: 'CALM', dist: 1.0, bearingDeg: 180, moving: false, ownerId: 'npc:mark' };
+    const begin = H.pickpocketBegin(q);
+    const d0 = H.snapshot().rng.draws;
+    // Hold `interact` for the whole of T. Releasing early costs nothing at all.
+    H.queueInputs([{ f: 0, press: ['interact'] }]);
+    H.stepFrames(begin.need_f + 4);
+    const d1 = H.snapshot().rng.draws;
+    // The geometry gates, asked of the live build.
+    const refusals = [];
+    for (const bad of [{ dist: 1.5 }, { bearingDeg: 99 }, { moving: true }, { targetCivState: 'WATCHING' }]) {
+      try { H.pickpocketBegin({ ...q, ...bad }); refusals.push('OFFERED(' + JSON.stringify(bad) + ')'); }
+      catch (e) { refusals.push(String(e.message).replace('pickpocket not offered: ', '')); }
+    }
+    return { need_f: begin.need_f, T_s: begin.T_s, draws: d1 - d0, refusals };
+  });
+  say(`     the four geometry refusals, live: ${pp.refusals.map((r) => '"' + r + '"').join('; ')}`);
+  A('LIVE-PPK', 'a completed pickpocket hold draws from the seeded PRNG exactly once (seam S21)',
+    `T = ${pp.T_s.toFixed(2)} s = ${pp.need_f} f@60, draws moved by ${pp.draws}`, pp.draws === 1,
+    '1 — the die S21 keeps, and the counter that stayed at 0 through the whole lock interaction');
+  A('LIVE-PPG', 'all four geometry gates refuse, live, with a reason', `${pp.refusals.length} refusals`,
+    pp.refusals.length === 4 && pp.refusals.every((r) => !r.startsWith('OFFERED')), '4 refusals, each naming what was wrong');
+
   // ---- 6. the crime ledger, in the running game -------------------------------------------
   const c0 = await h.h('getCrimeState');
   const take = await h.h('takeObject', owned[0].instance, { observedBy: [] });
