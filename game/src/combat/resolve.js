@@ -98,7 +98,12 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
         continue;
       }
 
-      const dmgBase = computeDamage(A.move.motion_value || 1, A.moves._weapon.attack_rating, bestHb.damage_mult, 0);
+      // Seam S19's consuming system for `shield`, `resist_element`, `resist_disease`, `sap_ward`
+      // and `corrode`. RI-MAG06 §B: a resist is judged by the damage number from an identical
+      // scripted hit, with and without — so the mitigation has to be HERE, in the one place a
+      // damage number is computed, and not in a field only the buff itself reads. Wave 1 had a
+      // row in `effects_active` and a 100-damage hit that stayed 100 either way.
+      const dmgBase = mitigate(B, computeDamage(A.move.motion_value || 1, A.moves._weapon.attack_rating, bestHb.damage_mult, 0));
 
       // (2) block: a 60-degree half-cone from the defender's forward
       const incoming = bearingDeg(A.pos[0] - B.pos[0], A.pos[2] - B.pos[2]);
@@ -164,6 +169,21 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
     const e = emit(frame, 'WHIFF');
     e.src = A.id; e.wpn = A.move.id; e.reason = 'no_geometric_overlap'; e.swing = A.swingSeq;
   }
+}
+
+/**
+ * Apply the magic mitigation terms a body is carrying. Exactly one multiplier and one flat
+ * armour subtraction, both defaulting to the identity, so a build with no magic in it computes
+ * the same number it computed before this function existed.
+ *
+ * `wardCharges` is `sap_ward`: it eats a whole blow rather than scaling it, and it is spent.
+ */
+export function mitigate(B, dmg) {
+  if (B.wardCharges > 0) { B.wardCharges--; return 0; }
+  const m = B.mitigation === undefined ? 1 : B.mitigation;
+  const armour = B.armourRating || 0;
+  if (m === 1 && armour === 0) return dmg;
+  return Math.max(dmg > 0 ? 1 : 0, dmg * m - armour);
 }
 
 function killed(B, A, frame, emit) {

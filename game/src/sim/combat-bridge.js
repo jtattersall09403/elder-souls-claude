@@ -21,6 +21,7 @@
 import { rng } from '../core/rng.js';
 import { BIT } from '../input/actions.js';
 import { openUI, closeUI } from './camera.js';
+import { DAMAGE_EFFECTS } from './magic/apply.js';
 
 export function stepCombat(sim, input, combat, bus) {
   const frame = sim.frame;
@@ -64,14 +65,28 @@ export function stepCombat(sim, input, combat, bus) {
     const M = combat.magic;
     const targets = combat.bodies.filter((b) => b.side === 'E');
     M.step(frame, targets, (target, spell, contact) => {
-      // Damage is DETERMINISTIC — a magnitude times a scaling coefficient, never a range and
-      // never a roll (RI-MAG01 §E rules 1-4). Poise damage and status buildup are integers.
+      // ============ THE GENERIC APPLICATOR, DELETED ============
+      //
+      // Wave 1 read: `if (e.utility_class === null || e.geometry !== 'none') dmg += outputOf(...)`.
+      // That predicate is true for every effect with geometry, which is every enemy-side effect
+      // in the catalogue, which is why the W1-14 critic measured `demoralise` doing 111 hp,
+      // `open_lock` doing 31 hp TO A CREATURE, and `charm` doing 184. Sixteen effects resolved
+      // as HP damage equal to their own magnitude and RI-MAG06 calls any count above three a
+      // hard fail, because above three it is one code path rather than one mistake.
+      //
+      // The accumulator is now closed over exactly the five effects whose stated mechanical
+      // consequence IS hp loss. `DAMAGE_EFFECTS` is a frozen set in magic/apply.js next to the
+      // registry, so the two cannot drift: an effect can only be here if it is named there.
       let dmg = 0;
       for (const t of spell.effects) {
-        const e = M.effects[t.effect];
-        if (e.utility_class === null || e.geometry !== 'none') dmg += Math.round(M.outputOf(t.effect, t.magnitude, M.wil));
+        if (!DAMAGE_EFFECTS.has(t.effect)) continue;
+        dmg += Math.round(M.outputOf(t.effect, t.magnitude, M.wil));
       }
+      // Armour and mitigation are the consuming systems `corrode`, `shield` and the two resists
+      // write into, so a spell's damage reads them for the same reason a sword's does.
       if (dmg > 0) {
+        dmg = Math.max(1, Math.round(dmg * (target.mitigation === undefined ? 1 : target.mitigation) - (target.armourRating || 0)));
+        if (target.wardCharges > 0) { target.wardCharges--; dmg = 0; }
         target.hp -= dmg;
         if (target.hp <= 0) { target.hp = 0; target.dead = true; }
       }
@@ -79,10 +94,16 @@ export function stepCombat(sim, input, combat, bus) {
       const ev = bus.emit(frame, 'spell_hit');
       ev.spell = spell.id; ev.target = target.id; ev.dmg = dmg; ev.kind = contact.kind;
       ev.status = M.statusBuildupOf(spell);
+      // Declared vs applied, on the event: which of this spell's effects were allowed to be
+      // damage, and which were routed to a handler instead. A critic reading the stream can
+      // recompute `HP_DAMAGE_ONLY` without re-probing the consuming system.
+      ev.damage_effects = spell.effects.filter((t) => DAMAGE_EFFECTS.has(t.effect)).map((t) => t.effect);
+      ev.handler_effects = spell.effects.filter((t) => !DAMAGE_EFFECTS.has(t.effect)).map((t) => t.effect);
     });
     // RI-MAG02 §F2: the levitation altitude meter. `climb` is the jump button held while
     // AIRBORNE; there is no other way to gain altitude and there is no altitude clamp.
     if (M.levitating) M.stepLevitation(frame, (input.held & BIT.jump) ? 1 : ((input.held & BIT.crouch) ? -1 : 0));
+    else M.stepFall(frame, M.groundY || 0);
   }
 
   mirror(sim, combat);

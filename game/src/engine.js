@@ -38,6 +38,9 @@ import { StealthCrime, DET as STL_DET, THF as STL_THF, PP as STL_PP, JUS as STL_
 import { composeCharacter, signatureOf } from './character/sheet.js';
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
+import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, placeOfNode } from './character/scene.js';
+import { makeNPC } from './sim/npc.js';
+import { derivePools, applyBirthsignToPools, skillProgressFor, USE_EVENTS } from './character/derive.js';
 
 /** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
 const PERF_SAMPLES = 20000;
@@ -174,6 +177,12 @@ export class Engine {
     // reference. Built before the first state is applied so a scenario can load into it.
     this.sim.stealth = new StealthCrime(this.data);
     this.census = new Census(this.data.character);
+    // W1-07: the drawn half of the census. `censusSurface` holds the selection index, the
+    // in-progress picks and the typed name; `sim.censusDriver` is what sim/step.js calls so
+    // that a census answer arrives through the same latched input a swing does (RI-JRN01 O17).
+    this.censusSurface = new CensusSurface(this.data.character);
+    this.sim.censusDriver = (input) => this._censusStep(input);
+    this.real.onTextChar = (ch) => this._censusTypeChar(ch);
     this.applyNamedState(opts.state || 'default');
     this._travelInit();
     this.loadState_.phase = 'ready';
