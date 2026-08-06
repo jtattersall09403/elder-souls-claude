@@ -280,34 +280,91 @@ try {
     a.hash === small.hash, { at_1920x1080: a.hash, at_640x360: small.hash });
 
   // ---- R9: save round trip ------------------------------------------------------------------
+  // TWO holes in this rung cost the project a hard fail, and both are closed here.
+  //
+  //  1. It ran the bare named state and NEVER RAN THE SCENARIO'S SETUP, so there was no
+  //     entity in the world it round-tripped. `enemies[].prev_state` was missing from the
+  //     save; a rung with no enemy in it cannot see a missing enemy field. The scenario's
+  //     setup ops and its input script now both run, and the rung asserts that the world it
+  //     measured actually contained an entity.
+  //  2. It compared ONE sha256 of the two 600-frame tails. When those hashes differ, "they
+  //     differ" is not a finding — the FIELD NAME is. The full field census now runs on
+  //     every R9 comparison and the differing names and counts are in the evidence, pass or
+  //     fail. The round-1 verdict recorded M5 as passing on a build that diverged on 219 of
+  //     600 frames in one named field; a rung that prints the name cannot do that again.
   const rt = await handle.page.evaluate(async (s) => {
     const H = window.__HARNESS;
     H.setRenderRate(0);
-    H.setSeed(s.seed); H.loadState(s.state);
-    H.stepFrames(600);
+    const preroll = () => {
+      H.setSeed(s.seed); H.loadState(s.state);
+      // A save round trip with no entity in it cannot see a missing entity field, and that
+      // is not a hypothetical: it is why this rung passed while `enemies[].prev_state` was
+      // absent from the save. If the scenario spawns nothing, the rung spawns one itself and
+      // says so in the evidence, rather than testing an empty world and calling it a pass.
+      if (!s.setup.some((op) => op.op === 'spawn')) H.spawn('inf_trash', 0, 7, { as: 'r9probe' });
+      for (const op of s.setup) {
+        if (op.op === 'teleport') H.teleport(op.x, op.z, op.opts || {});
+        else if (op.op === 'spawn') H.spawn(op.id, op.x, op.z, { as: op.as });
+        else if (op.op === 'aggro') H.aggro(op.target || op.eid || op.as);
+        else if (op.op === 'lockOn') H.lockOn(op.target || op.eid || op.as);
+        else if (op.op === 'despawn') H.despawn(op.eid || op.as);
+      }
+      H.clearInputs(); H.queueInputs(s.inputs);
+      H.stepFrames(s.preroll);
+    };
+    // Both sides get the IDENTICAL pre-roll, so the only difference between them is the
+    // save and the load. (Round 1's version ran the pre-roll once and compared a session
+    // against its own continuation.)
+    preroll();
     const hash0 = H.getStateHash();
-    const blob = H.saveState();
-    const control = (() => {
-      H.traceStart(s.trace);
-      H.stepFrames(600);
-      const recs = H.traceStop();
-      return recs;
-    })();
-    // Fresh session from the blob, then the identical 600 frames.
+    const entitiesAtSave = H.listEntities().length;
+    const blob = JSON.parse(JSON.stringify(H.saveState()));
+    const roundTrip = H.saveRoundTrip();
+
+    preroll();
+    H.clearInputs(); H.queueInputs(s.inputs);
+    H.traceStart(s.trace); H.stepFrames(600);
+    const control = H.traceStop();
+
+    preroll();
     H.loadState(JSON.parse(JSON.stringify(blob)));
     const hash1 = H.getStateHash();
-    H.traceStart(s.trace);
-    H.stepFrames(600);
+    H.clearInputs(); H.queueInputs(s.inputs);
+    H.traceStart(s.trace); H.stepFrames(600);
     const loaded = H.traceStop();
-    return {
-      hash0, hash1, roundTrip: H.saveRoundTrip(),
-      controlJson: control.map((r) => { const c = JSON.parse(JSON.stringify(r)); c.f = null; c.t_ms = null; return JSON.stringify(c); }),
-      loadedJson: loaded.map((r) => { const c = JSON.parse(JSON.stringify(r)); c.f = null; c.t_ms = null; return JSON.stringify(c); }),
-    };
-  }, { seed: SEED, state: scenario.state || 'default', trace: scenario.trace });
 
-  const cH = crypto.createHash('sha256'); for (const l of rt.controlJson) cH.update(l + '\n');
-  const lH = crypto.createHash('sha256'); for (const l of rt.loadedJson) lH.update(l + '\n');
+    preroll();
+    const census = H.getDurableFieldCensus();
+    return { hash0, hash1, roundTrip, control, loaded, census, entitiesAtSave };
+  }, {
+    seed: SEED, state: scenario.state || 'default', trace: scenario.trace,
+    setup: scenario.setup, inputs: scenario.inputs, preroll: Math.max(30, scenario.warmupFrames || 120),
+  });
+
+  // The loaded run's frame indices are offset from the control's by the pre-roll, so the
+  // three absolute indices are re-based exactly as R5 re-bases them. NOTHING else is
+  // normalised: `rng` is compared, because a restarted draw counter is what M5 exists to
+  // catch, and `enemies[].anim_frame` is compared, because a re-drawn idle phase is what
+  // `anim_phase0` exists to prevent.
+  const rebaseTail = (recs) => {
+    const f0 = recs[0].f;
+    return recs.map((r) => {
+      const c2 = JSON.parse(JSON.stringify(r));
+      c2.f -= f0; c2.t_ms = null;
+      for (const ev of c2.events || []) if (typeof ev.f === 'number') ev.f -= f0;
+      for (const en of c2.enemies || []) {
+        if (typeof en.state_entered_f === 'number') en.state_entered_f = en.state_entered_f < f0 ? 'pre-window' : en.state_entered_f - f0;
+      }
+      return c2;
+    });
+  };
+  const ctlRecs = rebaseTail(rt.control), loadRecs = rebaseTail(rt.loaded);
+  const r9Fields = new Map();
+  const nR9 = Math.min(ctlRecs.length, loadRecs.length);
+  for (let i = 0; i < nR9; i++) fieldDiff(ctlRecs[i], loadRecs[i], r9Fields);
+  const r9Differing = [...r9Fields.entries()].sort().map(([k, v]) => `${k} (${v} frames)`);
+  const cH = crypto.createHash('sha256'); for (const r of ctlRecs) cH.update(JSON.stringify(r) + '\n');
+  const lH = crypto.createHash('sha256'); for (const r of loadRecs) lH.update(JSON.stringify(r) + '\n');
   const cd = cH.digest('hex'), ld = lH.digest('hex');
 
   // R9 SWEEPS. This is the direct lesson of the W1-00 verdict: the round trip failed on 36
@@ -331,10 +388,18 @@ try {
   }
   const sweepFails = sweep.filter((r) => !r.equal);
 
-  rung('R9', 'save round trip: state hash equal at EVERY swept seed, and the next 600 frames match the control',
-    rt.hash0 === rt.hash1 && cd === ld && rt.roundTrip.diff.length === 0 && sweepFails.length === 0,
+  rung('R9', 'save round trip: state hash equal at EVERY swept seed, and the next 600 frames match the control FIELD BY FIELD',
+    rt.hash0 === rt.hash1 && cd === ld && r9Differing.length === 0 && rt.roundTrip.diff.length === 0
+      && sweepFails.length === 0 && rt.entitiesAtSave > 0 && rt.census.ok,
     {
       state_hash_before: rt.hash0, state_hash_after: rt.hash1,
+      entities_in_the_world_at_the_save_point: rt.entitiesAtSave,
+      entity_spawned_by_the_rung: !((scenario.setup || []).some((op) => op.op === 'spawn')),
+      post_load_frames_compared: nR9,
+      post_load_differing_fields: r9Differing,
+      durable_field_census_ok: rt.census.ok,
+      durable_field_census_unaccounted: rt.census.unaccounted,
+      entity_keys_live_not_declared: rt.census.entity_keys.live_not_declared_anywhere,
       round_trip_equal: rt.roundTrip.equal, round_trip_diff_fields: rt.roundTrip.diff.length,
       round_trip_diff: rt.roundTrip.diff.slice(0, 10),
       canonical_bytes: rt.roundTrip.canonical_bytes,
@@ -343,6 +408,8 @@ try {
       seed_sweep_seeds: R9_SEEDS,
       seed_sweep_failures: sweepFails,
       wide_sweep: 'node tools/harness/seed-sweep.mjs — 20 seeds x 2 states, both trips',
+      field_level_sweep: 'node tools/journey/state-diff.mjs — RI-JRN05 M1/M2/M4/M5 across states x seeds, with the differing field names',
+      note: 'The rung runs the SCENARIO (setup ops and input script), not a bare named state: the version that reported PASS while enemies[].prev_state was missing from the save had no entity in the world it round-tripped, and compared one hash instead of the field set.',
     });
 
   // ---- guard report --------------------------------------------------------------------------

@@ -138,6 +138,12 @@ export function installHarness(engine, bootPromise) {
         },
       };
     },
+    /**
+     * Which LIVE simulation fields do not survive a save and a load. Destructive: it loads
+     * the state it saves. This is the instrument that would have caught
+     * GAP-W1-platform-save-drops-entity-prev-state — see Engine.getDurableFieldCensus().
+     */
+    getDurableFieldCensus() { return engine.getDurableFieldCensus(); },
     exportSave() { return engine.exportSave(); },
     importSave(bytes) { return engine.importSave(bytes); },
     getStorageInfo() { return engine.getStorageInfo(); },

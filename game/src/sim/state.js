@@ -70,7 +70,13 @@ export function makePlayer() {
     equipLoadPct: 24.0,
     rollClass: 'LIGHT',
     actionableAt: 0,            // frame at which the current animation releases control
-    animStamp: -1,              // identifies the current swing, so one hitbox hits once
+    // Identifies the current swing so one hitbox hits one entity once. It was the absolute
+    // frame the swing started on, which does not survive a save: loadState() resets the
+    // frame to 0, so the stamp came back negative, `anim_stamp_ago_frames` re-serialised as
+    // its own "never swung" sentinel (-1), and the round-trip hash differed — RI-JRN05 M1,
+    // invisible to every instrument that round-tripped an idle world. A monotonic counter
+    // has no frame arithmetic in it and therefore no sentinel to collide with.
+    swingSeq: 0,
   };
 }
 
@@ -148,6 +154,86 @@ export function makeQuestState() {
   };
 }
 
+/**
+ * THE SAVE GRID — RI-JRN05 §C rule 3, made an invariant of the simulation rather than a
+ * property of the serialiser.
+ *
+ * The item is explicit: floats are "rounded to 6 decimal places AT SERIALISATION and
+ * compared at that precision", because a diff that fires on the 15th decimal is a bad
+ * instrument. Taken alone that makes the save a LOSSY projection — and the same item's HF1
+ * forbids ANY post-load trace divergence. Both rules can hold at once only if the simulation
+ * never holds a float the save cannot represent, so it doesn't: every per-step float the
+ * save carries is snapped to the 1 µm grid at the bottom of the step.
+ *
+ * This was not a theoretical problem. Before it, `state-diff.mjs` on `sv1-midquest` had the
+ * state round-trip exactly at 6 dp and the 600-frame trace still diverge on
+ * `enemies[].dist_m` (2 frames) and `camera.pos` (1 frame): a 1e-7 m difference at the save
+ * point, carried 600 frames, crossing a 4-dp rounding boundary in the record. That is
+ * RI-JRN05 "how we lose" #6 — float drift — arriving by the back door the rounding rule
+ * itself opened.
+ *
+ * Allocation-free by construction (RI-PLT01 P4): fixed field list, indexed loops, no
+ * Object.keys, no closures. The containers the fixed step never mutates — inventory, skills,
+ * the bloodstain, dropped items — are snapped by `quantiseColdState()` at state-set time,
+ * where allocating is free.
+ */
+const GRID = 1e6;
+function q6(v) { return Math.round(v * GRID) / GRID; }
+
+export function quantiseSaveGrid(sim) {
+  const p = sim.player, c = sim.camera;
+  p.pos[0] = q6(p.pos[0]); p.pos[1] = q6(p.pos[1]); p.pos[2] = q6(p.pos[2]);
+  p.yaw = q6(p.yaw); p.moveDirDeg = q6(p.moveDirDeg); p.speedMps = q6(p.speedMps);
+  p.hp = q6(p.hp); p.stamina = q6(p.stamina); p.poise = q6(p.poise);
+  p.equipLoadPct = q6(p.equipLoadPct);
+  c.yaw = q6(c.yaw); c.pitch = q6(c.pitch); c.dist = q6(c.dist); c.shakeAmp = q6(c.shakeAmp);
+  sim.env.timeOfDay = q6(sim.env.timeOfDay);
+  for (let i = 0; i < sim.entities.length; i++) {
+    const e = sim.entities[i];
+    e.pos[0] = q6(e.pos[0]); e.pos[1] = q6(e.pos[1]); e.pos[2] = q6(e.pos[2]);
+    e.anchor[0] = q6(e.anchor[0]); e.anchor[1] = q6(e.anchor[1]); e.anchor[2] = q6(e.anchor[2]);
+    e.yaw = q6(e.yaw); e.yawRate = q6(e.yawRate); e.speed = q6(e.speed);
+    e.hp = q6(e.hp); e.poise = q6(e.poise);
+  }
+}
+
+/** The rest of the grid, for the containers no fixed step touches. May allocate. */
+export function quantiseColdState(sim) {
+  quantiseSaveGrid(sim);
+  for (const i of sim.inventory) { i.condition = q6(i.condition); i.charge = q6(i.charge); }
+  for (const k of Object.keys(sim.progression.skills)) {
+    sim.progression.skills[k].useProgress = q6(sim.progression.skills[k].useProgress);
+  }
+  const b = sim.quest.death.bloodstain;
+  if (b) { b.pos[0] = q6(b.pos[0]); b.pos[1] = q6(b.pos[1]); b.pos[2] = q6(b.pos[2]); }
+  for (const d of sim.world.droppedItems) { d.pos[0] = q6(d.pos[0]); d.pos[1] = q6(d.pos[1]); d.pos[2] = q6(d.pos[2]); }
+  if (sim.quest.travel.mark) {
+    const m = sim.quest.travel.mark;
+    m[0] = q6(m[0]); m[1] = q6(m[1]); m[2] = q6(m[2]);
+  }
+  // Incidental arrays are DECLARED id-sorted in game/data/save-manifest.json, so the save
+  // sorts them. A state patch that supplies them unsorted therefore left the live object in
+  // an order the round trip changed — the census caught `quest.topicsKnown` doing exactly
+  // that on sv1-midquest. Canonicalise the live copy instead of relaxing the check.
+  sim.quest.topicsKnown.sort();
+  sim.quest.completed.sort();
+  sim.quest.crime.witnesses.sort();
+  sim.quest.crime.stolen.sort();
+  sim.quest.crime.hunting.sort();
+  sim.progression.hearthsDiscovered.sort();
+  sim.quest.travel.nodesVisited.sort();
+  sim.world.containersEmptied.sort();
+  sim.world.doorsUnlocked.sort();
+  sim.world.shortcutsOpened.sort();
+  sim.world.itemsTaken.sort();
+  sim.world.npcsDead.sort();
+  sim.world.enemiesDeadUntilRest.sort();
+  sim.world.fogGatesPassed.sort();
+  sim.world.droppedItems.sort((a, b2) => (a.id < b2.id ? -1 : a.id > b2.id ? 1 : 0));
+  sim.inventory.sort((a, b2) => (a.id < b2.id ? -1 : a.id > b2.id ? 1 : 0));
+  sim.quest.afflictions.sort((a, b2) => (a.id < b2.id ? -1 : a.id > b2.id ? 1 : 0));
+}
+
 export class SimState {
   constructor() { this.reset(1337, 'default'); }
 
@@ -162,12 +248,18 @@ export class SimState {
     this.world = makeWorldMutation();
     this.progression = makeProgression();
     this.quest = makeQuestState();
+    // The world-generation seed this world was built from — durable (save `world.gen_seed`),
+    // null for an authored cell that generates nothing. Drawn by Engine._drawWorldSeed().
+    this.worldSeed = null;
     this.entities = [];         // kept sorted by eid — HARNESS.md D7
     this.nextEid = 0;
     this.events = [];           // cleared each step; pooled by sim/events.js
     this.hitstopUntil = 0;
     this.inventory = [];
-    this.identity = { name: 'Nameless', race: 'argonian', sign: 'the-shadow', profession: 'outlander' };
+    // `document` is written by the save and read back by it; without it here the live
+    // object gained a key across a round trip (undefined -> ''), which the durable-field
+    // census reports as a field that does not survive.
+    this.identity = { name: 'Nameless', race: 'argonian', sign: 'the-shadow', profession: 'outlander', document: '' };
     return { ok: true, frame: 0, seed: this.seed };
   }
 

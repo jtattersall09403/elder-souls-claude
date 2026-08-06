@@ -5,7 +5,7 @@
 import { rng } from './core/rng.js';
 import { installGuards, wallNow, violations } from './core/guards.js';
 import { FixedLoop, FIXED_HZ, STEP_MS } from './core/loop.js';
-import { SimState } from './sim/state.js';
+import { SimState, quantiseColdState } from './sim/state.js';
 import { EventBus } from './sim/events.js';
 import { stepOnce } from './sim/step.js';
 import { makeRecord } from './sim/record.js';
@@ -150,6 +150,26 @@ export class Engine {
     return makeEntity(stat, eid, x, z, frame);
   }
 
+  /**
+   * The world-generation seed for the cell this state names, DRAWN from the simulation PRNG.
+   *
+   * Two properties, both deliberate:
+   *
+   *  * it is a real draw, so `rng.draws` moves for a world with no entity in it — the case
+   *    where W1-00's round-2 critic measured 0 of 1,800 frames differing between two seeds
+   *    (verdict §9.1), because the only seeded quantity in the build belonged to entities;
+   *  * it is drawn ONLY for a procedurally generated cell. The arena, the interiors and the
+   *    dungeon are authored geometry: there is nothing in them for a seed to select, so
+   *    nothing is drawn, `rng.draws` stays 0 there, and `RI-MTH02` R4 still correctly refuses
+   *    to certify seed sensitivity on `mth-warmup-noenemy` with reason `prng_never_drawn`.
+   *    That discriminator is the one the round-2 critic proved was not a rubber stamp, and it
+   *    is not weakened here — it is left with a scenario that still exercises it.
+   */
+  _drawWorldSeed() {
+    if (this.cellFor(this.sim.env) !== 'exterior') return null;
+    return rng.int(0x7fffffff);
+  }
+
   applyNamedState(name) {
     const patch = this.data.states[name];
     if (!patch) {
@@ -179,11 +199,15 @@ export class Engine {
     if (patch.progression) Object.assign(sim.progression, JSON.parse(JSON.stringify(patch.progression)));
     if (patch.quest) deepAssign(sim.quest, JSON.parse(JSON.stringify(patch.quest)));
     if (patch.world) deepAssign(sim.world, JSON.parse(JSON.stringify(patch.world)));
+    // Drawn AFTER the env patch (the cell is not known before it) and BEFORE _applyCell(),
+    // groundAt() and the spawns, all of which read the generated terrain.
+    sim.worldSeed = this._drawWorldSeed();
     this._applyCell();
     for (const s of patch.spawn || []) this.spawn(s.id, s.x, s.z, { as: s.as });
     // Put the player on the ground of whatever cell the state names.
     sim.player.pos[1] = this.groundAt(sim.player.pos[0], sim.player.pos[2]);
     this._settleCamera();
+    quantiseColdState(sim);
     return { ok: true, frame: sim.frame, seed: rng.seed };
   }
 
@@ -202,6 +226,9 @@ export class Engine {
 
   _applyCell() {
     if (!this.renderer) return;
+    // The generated world comes first: setCell() only chooses which cell is visible, while
+    // setWorldSeed() decides what the exterior one IS, and groundAt() must agree with it.
+    if (this.sim.worldSeed !== null && this.sim.worldSeed !== undefined) this.renderer.setWorldSeed(this.sim.worldSeed);
     this.renderer.setCell(this.cellFor(this.sim.env));
     this.renderer.setProp('npcShowcase', this.sim.stateName === 'npc_showcase');
     this.renderer.setProp('materialShowcase', this.sim.stateName === 'material_showcase');
@@ -279,6 +306,7 @@ export class Engine {
     e.pos[1] = this.groundAt(e.pos[0], e.pos[2]);
     e.anchor[1] = e.pos[1];
     this.sim.addEntity(e);
+    quantiseColdState(this.sim);
     this.sim.nextEid++;
     return eid;
   }
@@ -312,6 +340,7 @@ export class Engine {
     p.pos[1] = opts.y !== undefined ? Number(opts.y) : this.groundAt(p.pos[0], p.pos[2]);
     if (opts.yaw !== undefined) p.yaw = Number(opts.yaw);
     this._settleCamera();
+    quantiseColdState(this.sim);
     return true;
   }
 
@@ -466,6 +495,12 @@ export class Engine {
     if (arg && typeof arg === 'object' && arg.meta && arg.meta.schema === 'elder-souls/save@1') {
       const r = applySave(this.sim, arg, this.moves, (id, eid, x, z, f) => this.statFor(id, eid, x, z, f));
       this._applyCell();
+      // The camera rig recomputes pivot and pos INSIDE the step (sim/camera.js), so between
+      // a load and the first step they still held makeCamera()'s defaults: a snapshot() taken
+      // straight after a load reported a camera at the world origin. One settle costs nothing
+      // and makes the loaded pose true at frame 0 as well as at frame 1.
+      this._settleCamera();
+      quantiseColdState(this.sim);
       return r;
     }
     if (arg && typeof arg === 'object' && typeof arg.state === 'string') return this.applyNamedState(arg.state);
@@ -496,6 +531,172 @@ export class Engine {
   }
 
   getSaveManifest() { return this.data.saveManifest; }
+
+  /**
+   * DURABLE FIELD CENSUS — the instrument that would have caught
+   * `GAP-W1-platform-save-drops-entity-prev-state` on the day it was written.
+   *
+   * `RI-JRN05` M4 is a set difference between the manifest and the SAVE. That check is
+   * blind to exactly the defect that hard-failed this piece, twice over:
+   *   * `world.entities` is one manifest path (an array leaf), so no path-level check can
+   *     see that an entity FIELD is missing;
+   *   * and both sides of M4 are the save, so a field that exists in the live simulation
+   *     and in the frame record but in NEITHER is invisible to it.
+   * `prev_state` was that field. It was in `sim/record.js`, in `makeEntity()`, and in no
+   * save; the round trip restored it as `null`; and 219 of 600 post-load frames differed.
+   *
+   * This runs the differential instead: deep-copy the live simulation, save, load the save
+   * back, deep-copy again, and report every live field whose value did not survive. It
+   * needs no declaration to be right — a field nobody remembered to declare still shows up.
+   *
+   * Absolute frame indices are re-based (loadState resets the frame to 0 by RI-MTH01 A07),
+   * and the re-based set is DECLARED below rather than skipped silently. Anything else that
+   * differs is reported in `unaccounted`, and `ok` is false.
+   *
+   * It is destructive by construction: it loads the state it just saved. Callers run it on
+   * a scratch session (tools/harness/save-audit.mjs does).
+   */
+  getDurableFieldCensus() {
+    // Absolute frame indices, re-based against the frame each copy was taken at. Every entry
+    // is a live-object path, and every one of them IS carried in the save as a *_in_frames /
+    // *_ago_frames offset — this list is the re-basing rule, not an exclusion list. The two
+    // rules differ and the difference is the save's own arithmetic: a `rel()` timer is
+    // stored CLAMPED at zero (an expired timer is expired, and reloading it as "expired 120
+    // frames ago" would be inventing history), while `state_entered_ago_frames` is a plain
+    // difference and re-bases plainly.
+    const FRAME_ABSOLUTE_CLAMPED = ['hitstopUntil', 'player.regenBlockUntil', 'player.actionableAt', 'camera.shakeUntil', 'entities[].staggerUntil'];
+    const FRAME_ABSOLUTE_PLAIN = ['entities[].stateEnteredF'];
+    // The manifest declares 6 dp (rules.float_precision_dp). The projection is therefore
+    // lossy by construction below that, and the census compares AT the declared precision
+    // rather than pretending the loss is not there: what it reports instead is the largest
+    // absolute delta it saw, so a critic can see how big "lossy" is (it is ~1e-7 m).
+    const DP = (this.data.saveManifest.rules && this.data.saveManifest.rules.float_precision_dp) || 6;
+    const Q = Math.pow(10, DP);
+    // Live state that is deliberately NOT durable, each with the reason. A critic can read
+    // this list and disagree with it; what it cannot do is not see it.
+    const HARNESS_SCOPED = {
+      'camera.override': '__HARNESS.camera(pose) poses the camera for a shot. It is a measurement instrument, not player state; a save that carried it would restore a debug camera into a player session. loadState() clears it, as it clears the input pipeline.',
+      'env.wallClockOffsetMs': 'A-JRN10 advanceWallClock(). Never read by the simulation and never hashed; it exists so a critic can move an in-world clock without perturbing the fixed step.',
+      'input': 'The input pipeline is a per-session device, not saved state. __HARNESS.loadState() calls input.reset(frame) explicitly so a load cannot inherit a half-buffered press from the session that wrote the save.',
+      'nextEid': 'Re-derived from the restored eids by applySave(), so a load cannot mint a colliding eid. Carried as a derivation rather than as a field.',
+    };
+
+    const clone = (o) => JSON.parse(JSON.stringify(o));
+    const shot = (sim) => ({
+      frame: sim.frame, seed: sim.seed, stateName: sim.stateName, hitstopUntil: sim.hitstopUntil,
+      worldSeed: sim.worldSeed,
+      player: clone(sim.player), camera: clone(sim.camera), env: clone(sim.env),
+      world: clone(sim.world), progression: clone(sim.progression), quest: clone(sim.quest),
+      inventory: clone(sim.inventory), identity: clone(sim.identity),
+      entities: sim.entities.map((e) => clone(e)),
+    });
+    const rebase = (s) => {
+      const f = s.frame;
+      const clamped = (v) => (typeof v !== 'number' ? v : Math.max(0, v - f));
+      const plain = (v) => (typeof v !== 'number' ? v : v - f);
+      const o = clone(s);
+      o.frame = 0;
+      o.hitstopUntil = clamped(o.hitstopUntil);
+      o.player.regenBlockUntil = clamped(o.player.regenBlockUntil);
+      o.player.actionableAt = clamped(o.player.actionableAt);
+      o.camera.shakeUntil = clamped(o.camera.shakeUntil);
+      for (const e of o.entities) { e.stateEnteredF = plain(e.stateEnteredF); e.staggerUntil = clamped(e.staggerUntil); }
+      delete o.camera.override;
+      delete o.env.wallClockOffsetMs;
+      return o;
+    };
+
+    const frameAtSave = this.sim.frame;
+    const before = shot(this.sim);
+    const blob = this.saveState();
+    this.loadState(clone(blob));
+    const after = shot(this.sim);
+
+    const unaccounted = [];
+    const lossy = [];
+    let maxDelta = 0;
+    const walk = (a, b, p) => {
+      if (a && b && typeof a === 'object' && typeof b === 'object' && !Array.isArray(a) && !Array.isArray(b)) {
+        for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) walk(a[k], b[k], p ? `${p}.${k}` : k);
+        return;
+      }
+      if (Array.isArray(a) && Array.isArray(b) && a.length === b.length) {
+        for (let i = 0; i < a.length; i++) walk(a[i], b[i], `${p}[]`);
+        return;
+      }
+      if (typeof a === 'number' && typeof b === 'number' && a !== b) {
+        const d = Math.abs(a - b);
+        if (Math.round(a * Q) === Math.round(b * Q)) return;          // identical, exactly
+        if (d <= 1 / Q) { maxDelta = Math.max(maxDelta, d); lossy.push({ path: p, before: a, after: b, delta: d }); return; }
+        unaccounted.push({ path: p, before: a, after: b });
+        return;
+      }
+      if (JSON.stringify(a) !== JSON.stringify(b)) unaccounted.push({ path: p, before: a === undefined ? null : a, after: b === undefined ? null : b });
+    };
+    walk(rebase(before), rebase(after), '');
+
+    // The entity record's three key sets, compared in both directions. A live entity is used
+    // when one exists; otherwise a template is built from a real archetype, so the census is
+    // just as sharp on a scenario that spawned nothing.
+    const world = (this.data.saveManifest.groups || []).find((g) => g.group === 'World') || {};
+    const declared = world.entity_record_fields || [];
+    const liveToSave = world.entity_field_live_to_save || {};
+    const derived = world.entity_fields_derived_from_the_archetype || [];
+    const absent = Object.keys(world.entity_fields_declared_absent || {});
+    const archetypes = Object.keys(this.data.enemies).sort();
+    const sample = this.sim.entities[0] || makeEntity(this.data.enemies[archetypes[0]], '_census', 0, 0, 0);
+    const liveKeys = Object.keys(sample).sort();
+    const savedKeys = (blob.world.entities[0] ? Object.keys(blob.world.entities[0]) : declared).slice().sort();
+    const accounted = new Set([...Object.keys(liveToSave), ...derived, ...absent]);
+    const liveNotDeclared = liveKeys.filter((k) => !accounted.has(k));
+    const declaredNotInSave = blob.world.entities[0] ? declared.filter((k) => !savedKeys.includes(k)) : [];
+    const inSaveNotDeclared = savedKeys.filter((k) => !declared.includes(k) && blob.world.entities[0]);
+    // Third direction: the live->save NAME MAP and the save-side field list must agree, so
+    // neither can drift without the other. The map is what makes the live key set checkable
+    // at all — the live object is camelCase and the save is snake_case, and `prev_state` hid
+    // in exactly that gap.
+    const mapValues = Object.values(liveToSave).slice().sort();
+    const mapDisagrees = JSON.stringify(mapValues) !== JSON.stringify(declared.slice().sort());
+    const nonEmptyDeclaredAbsent = [];
+    for (const e of this.sim.entities) {
+      for (const k of absent) {
+        const v = e[k];
+        if (Array.isArray(v) ? v.length : v !== null && v !== undefined && v !== false && v !== 0 && v !== '') {
+          nonEmptyDeclaredAbsent.push({ eid: e.eid, field: k, value: clone(v) });
+        }
+      }
+    }
+
+    const ok = unaccounted.length === 0 && liveNotDeclared.length === 0
+      && declaredNotInSave.length === 0 && inSaveNotDeclared.length === 0
+      && nonEmptyDeclaredAbsent.length === 0 && !mapDisagrees;
+    return {
+      schema: 'elder-souls/durable-census@1',
+      ok,
+      frame_at_save: frameAtSave,
+      entities_live: this.sim.entities.length,
+      entity_sample_is_template: this.sim.entities.length === 0,
+      unaccounted,
+      entity_keys: {
+        live: liveKeys,
+        saved: savedKeys,
+        declared_durable: declared,
+        declared_derived_from_archetype: derived,
+        declared_absent: absent,
+        live_not_declared_anywhere: liveNotDeclared,
+        declared_durable_not_in_save: declaredNotInSave,
+        in_save_not_declared: inSaveNotDeclared,
+        declared_absent_but_non_empty: nonEmptyDeclaredAbsent,
+        live_to_save_map_disagrees_with_field_list: mapDisagrees,
+      },
+      lossy_at_declared_precision: lossy,
+      lossy_max_abs_delta: maxDelta,
+      float_precision_dp: DP,
+      frame_absolute_fields_rebased: { clamped_at_zero: FRAME_ABSOLUTE_CLAMPED, plain_difference: FRAME_ABSOLUTE_PLAIN },
+      declared_not_durable: HARNESS_SCOPED,
+      method: 'deep-copy the live sim, saveState(), loadState() it back, deep-copy again, diff every field. Destructive: the session is left holding the reloaded state.',
+    };
+  }
 
   getStorageInfo() {
     return this.store.estimate().then((est) => ({

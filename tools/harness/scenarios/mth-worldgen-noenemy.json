@@ -1,0 +1,29 @@
+{
+  "id": "mth-worldgen-noenemy",
+  "title": "RI-MTH02 R4 / HARNESS.md D6: a GENERATED exterior with no entity of any kind, so that seed sensitivity is measured on the world rather than on an animation counter.",
+  "judges": ["platform.determinism.harness"],
+  "seed": 1337,
+  "state": "swamp_canopy",
+  "world": { "timeOfDay": 13.0, "weather": "clear" },
+  "warmupFrames": 30,
+  "frames": 1800,
+  "setup": [
+    { "op": "teleport", "x": 0, "z": 0 }
+  ],
+  "inputs": [
+    { "f": 0, "move": [0, 1] },
+    { "f": 120, "move": [0, 0] },
+    { "f": 130, "press": ["light"] },
+    { "f": 133, "release": ["light"] },
+    { "f": 200, "press": ["roll"] },
+    { "f": 203, "release": ["roll"] },
+    { "f": 300, "move": [1, 0] },
+    { "f": 420, "move": [0, 0] },
+    { "f": 600, "press": ["light"] },
+    { "f": 603, "release": ["light"] },
+    { "f": 900, "press": ["roll"] },
+    { "f": 903, "release": ["roll"] }
+  ],
+  "trace": { "shape": "frame", "enemies": true, "hitboxes": true, "events": true },
+  "note": "There is deliberately no spawn op, and the state is a PROCEDURAL exterior rather than the authored arena. HARNESS.md D6 says a seed change must visibly change the run; the W1-00 round-2 verdict measured 0 of 1,800 frames differing on a no-entity arena, because the only seeded quantity in the build was a per-entity idle phase. The world-generation seed is drawn at world build for procedurally generated cells only, so this scenario diverges between seeds with nothing alive in it, while mth-warmup-noenemy (the authored arena) still reports prng_never_drawn and keeps R4's discriminator honest."
+}

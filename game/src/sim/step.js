@@ -14,6 +14,7 @@
 'use strict';
 
 import { armSim, disarmSim } from '../core/guards.js';
+import { quantiseSaveGrid } from './state.js';
 import { stepPlayer } from './player.js';
 import { stepEntities } from './entities.js';
 import { stepCamera } from './camera.js';
@@ -27,6 +28,9 @@ export function stepOnce(sim, input, moves, bus) {
     stepPlayer(sim, input, moves, bus);
     stepEntities(sim, bus);
     stepCamera(sim);
+    // The state the frame ends in must be a state the save can hold exactly (RI-JRN05 §C
+    // rule 3 vs HF1 — see sim/state.js quantiseSaveGrid). Allocation-free.
+    quantiseSaveGrid(sim);
     sim.frame++;
   } finally {
     disarmSim();

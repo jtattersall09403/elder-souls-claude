@@ -91,7 +91,7 @@ export function stepPlayer(sim, input, moves, bus) {
         p.anim = md.anim;
         p.animFrame = 0;
         p.animLen = md.total;
-        p.animStamp = f;             // identifies this swing, so one hitbox hits once
+        p.swingSeq++;                // identifies this swing, so one hitbox hits once
         // The move occupies frames f..f+total-1; the first actionable frame is f+total.
         p.actionableAt = f + md.total;
         const e = bus.emit(f, id === 'roll' ? 'roll_start' : 'attack_start');
@@ -207,8 +207,8 @@ function resolveHits(sim, hb, md, bus) {
     const dx = e.pos[0] - sim.player.pos[0], dz = e.pos[2] - sim.player.pos[2];
     const d = Math.sqrt(dx * dx + dz * dz);
     if (d > md.reach_m + e.radius_m) continue;
-    if (e.hitById === hb.id + '@' + sim.player.animStamp) continue;
-    e.hitById = hb.id + '@' + sim.player.animStamp;
+    if (e.hitById === hb.id + '@' + sim.player.swingSeq) continue;
+    e.hitById = hb.id + '@' + sim.player.swingSeq;
     e.hp -= md.damage;
     e.poise -= md.poise_damage;
     hb.hits.push(e.eid);

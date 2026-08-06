@@ -104,6 +104,10 @@ export function buildSave(sim, build) {
       hunting: [...sim.quest.crime.hunting].sort(),
     },
     world: {
+      // The seed the procedural world was generated from. Durable because the world IS the
+      // save: reloading into a differently generated fen would move the ground under the
+      // player's saved position. `null` for an authored cell, which generates nothing.
+      gen_seed: sim.worldSeed === undefined ? null : sim.worldSeed,
       containers_emptied: [...sim.world.containersEmptied].sort(),
       doors_unlocked: [...sim.world.doorsUnlocked].sort(),
       shortcuts_opened: [...sim.world.shortcutsOpened].sort(),
@@ -112,14 +116,35 @@ export function buildSave(sim, build) {
       npcs_dead: [...sim.world.npcsDead].sort(),
       enemies_dead_until_rest: [...sim.world.enemiesDeadUntilRest].sort(),
       fog_gates_passed: [...sim.world.fogGatesPassed].sort(),
+      // ENTITY RECORD — the field set is enumerated in game/data/save-manifest.json under the
+      // World group (`entity_record_fields`), and `getDurableFieldCensus()` checks the LIVE
+      // entity object's own key set against it on every audit run. That census exists because
+      // of GAP-W1-platform-save-drops-entity-prev-state: `prev_state` was missing here, the
+      // round trip restored it as `null`, and RI-JRN05 M5's control and loaded traces differed
+      // on 219 of 600 frames — a defect that survived a whole verdict because nothing compared
+      // the two field sets. A missing field is now a loud audit failure, not a silent one.
       entities: sim.entities.map((e) => ({
         id: e.id, eid: e.eid, pos: vec(e.pos), yaw_deg: r6(e.yaw),
+        yaw_rate_dps: r6(e.yawRate), speed_mps: r6(e.speed),
         hp: e.hp, poise: e.poise, alert: e.alert, alert_state: e.alertState,
-        state: e.state, anim_frame: e.animFrame,
+        state: e.state,
+        // The state the entity was in BEFORE the current one. Durable: the first transition
+        // after a reload is taken from a predecessor, and a session that has forgotten its
+        // predecessor takes a different one — RI-JRN05 "how we lose" #5, measured.
+        prev_state: e.prevState,
+        anim: e.anim, anim_frame: e.animFrame,
         // The entity's SEEDED idle-loop phase offset (sim/entities.js). Durable, because a
         // load that redrew it would put the loop somewhere else and the post-load tail would
         // diverge from the control 48 frames later — RI-JRN05 M5's whole subject.
         anim_phase0: e.animPhase0,
+        // `phase` and `yaw_rate_dps` above survive stepEntities' two `continue` paths
+        // (hitstop and death), so a save taken during hitstop restores a stale-free value
+        // only if it is carried. `hit_by_id` is the per-swing hit-dedupe key: without it a
+        // save/load in the middle of an active hitbox lets the SAME swing hit the same
+        // entity a second time. `attack_token` and `hit_active` are wave-1-constant but are
+        // real mutable entity state and are carried rather than assumed.
+        phase: e.phase, hit_active: e.hitActive, attack_token: e.attackToken,
+        hit_by_id: e.hitById,
         anchor: vec(e.anchor),
         stagger: e.stagger, stagger_in_frames: rel(e.staggerUntil, f),
         state_entered_ago_frames: Math.max(0, f - e.stateEnteredF),
@@ -151,14 +176,32 @@ export function buildSave(sim, build) {
       camera_pitch_deg: r6(c.pitch),
       camera_dist_m: r6(c.dist),
       camera_mode: c.mode,
+      // Camera shake is rotational, seeded and decaying (sim/camera.js). `shakeYaw` and
+      // `shakePitch` are RE-DERIVED every step from these two plus the frame and the PRNG,
+      // so carrying the amplitude and the remaining frames restores the whole shake exactly.
+      // Nothing in wave 1 calls triggerShake(), so both are 0 on every save this build can
+      // write; they are carried anyway because the moment RI-CAM06's impact shake is wired
+      // up, a save during a shake would otherwise reload into a still camera.
+      camera_shake_amp_deg: r6(c.shakeAmp),
+      camera_shake_in_frames: rel(c.shakeUntil, f),
       locked_on: p.lockOn,
       // frame-relative, so the hash does not depend on when you saved
       state: p.state, anim: p.anim, anim_frame: p.animFrame, anim_len: p.animLen,
       move: p.move, phase: p.phase,
+      // Both persist ACROSS frames rather than being recomputed on every one: `move_dir_deg`
+      // is assigned only while the player is moving and keeps its last value while standing
+      // still, and `speed_mps` is not touched by the hitstop early-return. Both are in the
+      // frame record (player.move_dir_deg, player.speed_mps), so dropping them diverged the
+      // post-load trace in exactly the way `prev_state` did.
+      move_dir_deg: r6(p.moveDirDeg),
+      speed_mps: r6(p.speedMps),
       regen_block_in_frames: rel(p.regenBlockUntil, f),
       actionable_in_frames: rel(p.actionableAt, f),
       hitstop_in_frames: rel(sim.hitstopUntil, f),
-      anim_stamp_ago_frames: p.animStamp < 0 ? -1 : Math.max(0, f - p.animStamp),
+      // Not an absolute frame index and therefore not re-based: the swing counter is
+      // durable as it stands, and `enemies[].hit_by_id` refers to it, so both sides of the
+      // hit-dedupe key survive a load together. See sim/state.js for what this replaced.
+      swing_seq: p.swingSeq,
     },
     rng: rng.saveRngState(),
     flags: sortedMap(sim.quest.flags),
@@ -265,6 +308,7 @@ export function applySave(sim, blob, moves, statFor) {
   sim.quest.travel.mark = blob.travel.mark ? [...blob.travel.mark] : null;
   sim.quest.death.bloodstain = blob.death.bloodstain ? { ...blob.death.bloodstain, pos: [...blob.death.bloodstain.pos] } : null;
 
+  sim.worldSeed = blob.world.gen_seed === undefined ? null : blob.world.gen_seed;
   sim.world.containersEmptied = [...blob.world.containers_emptied];
   sim.world.doorsUnlocked = [...blob.world.doors_unlocked];
   sim.world.shortcutsOpened = [...blob.world.shortcuts_opened];
@@ -281,6 +325,10 @@ export function applySave(sim, blob, moves, statFor) {
     e.pos[1] = es.pos[1];
     e.yaw = es.yaw_deg; e.hp = es.hp; e.poise = es.poise;
     e.alert = es.alert; e.alertState = es.alert_state; e.state = es.state;
+    e.prevState = es.prev_state === undefined ? null : es.prev_state;
+    e.anim = es.anim; e.phase = es.phase;
+    e.yawRate = es.yaw_rate_dps; e.speed = es.speed_mps;
+    e.hitActive = es.hit_active; e.attackToken = es.attack_token; e.hitById = es.hit_by_id;
     e.animFrame = es.anim_frame; e.anchor[0] = es.anchor[0]; e.anchor[1] = es.anchor[1]; e.anchor[2] = es.anchor[2];
     e.animPhase0 = es.anim_phase0 === undefined ? -1 : es.anim_phase0;
     e.stagger = es.stagger; e.staggerUntil = f + es.stagger_in_frames;
@@ -305,14 +353,18 @@ export function applySave(sim, blob, moves, statFor) {
   p.moveData = blob.pose.move ? moves[blob.pose.move] || null : null;
   p.regenBlockUntil = f + blob.pose.regen_block_in_frames;
   p.actionableAt = f + blob.pose.actionable_in_frames;
-  p.animStamp = blob.pose.anim_stamp_ago_frames < 0 ? -1 : f - blob.pose.anim_stamp_ago_frames;
+  p.swingSeq = blob.pose.swing_seq;
   p.lockOn = blob.pose.locked_on;
+  p.moveDirDeg = blob.pose.move_dir_deg;
+  p.speedMps = blob.pose.speed_mps;
   sim.hitstopUntil = f + blob.pose.hitstop_in_frames;
 
   c.yaw = blob.pose.camera_yaw_deg;
   c.pitch = blob.pose.camera_pitch_deg;
   c.dist = blob.pose.camera_dist_m;
   c.mode = blob.pose.camera_mode;
+  c.shakeAmp = blob.pose.camera_shake_amp_deg;
+  c.shakeUntil = f + blob.pose.camera_shake_in_frames;
 
   rng.loadRngState(blob.rng);
   return { ok: true, frame: sim.frame, seed: rng.seed };

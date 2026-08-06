@@ -2,7 +2,7 @@
   "task_id": "W1-00-fix2",
   "brief": "escalated round-2 remediation for W1-00 (scored 4.1/10, threshold 6.0)",
   "started": "wave-1 round 2",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "fix: GAP-W1-platform-save-drops-entity-prev-state (serialise prev_state + siblings)",
     "fix: R9/M5 full-field round-trip comparison with differing field names",
@@ -11,8 +11,30 @@
     "reports/W1-00-remediation-r2.md",
     "explicit blocked-vs-movable list"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read both verdicts + remediation report + artifacts",
-  "notes_for_successor": ""
+  "outputs_written": [
+    "game/src/save/state.js",
+    "game/src/sim/state.js",
+    "game/src/sim/step.js",
+    "game/src/sim/player.js",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "game/data/save-manifest.json",
+    "game/data/index.json",
+    "tools/journey/state-diff.mjs"
+  ],
+  "findings": [
+    "ROOT CAUSE of the hard fail: game/src/save/state.js buildSave() world.entities projection omits e.prevState; applySave() therefore leaves it at makeEntity's null. record.js line 126 emits prev_state, so it shows in every trace.",
+    "WHY R9 MISSED IT: determinism.mjs R9 loads the bare named state (scenario.state) WITHOUT running scenario.setup, so no entity is ever spawned in the R9 round trip, and it compares only a sha256 of the two 600-frame tails with no field diff. Two independent holes.",
+    "ENTITY AUDIT (source read, to be confirmed by measurement): unsaved-but-stateful entity fields are prevState, phase, yawRate, speed, hitById, attackToken, anim. phase and yawRate survive the `continue` paths (hitstop, stagger) so they are genuinely stale-able; hitById is the per-swing hit-dedupe key, so a save/load mid-swing lets the SAME hitbox instance hit the same entity twice.",
+    "PLAYER AUDIT: pose omits moveDirDeg and speedMps. Both persist across frames (moveDirDeg is only assigned while moving; speedMps is not reset during hitstop), and both are in the trace record (player.move_dir_deg, player.speed_mps).",
+    "CAMERA AUDIT: pose omits shakeYaw/shakePitch/shakeUntil/shakeAmp. triggerShake() is never called in wave 1 so they cannot diverge today, but they are durable sim state.",
+    "SEED REACH: every named state in game/data/states/*.json pins env.timeOfDay and env.weather, so there is nothing unpinned in env for a seed to select. The renderer/terrain IS seeded (scene.js terrainHeight(x,z,seed)) but with a HARDCODED 1337 (engine.js: new Renderer(canvas, 1337)), independent of the sim seed - so setSeed() changes no world geometry at all. groundAt() feeds player.pos[1] and entity pos[1], which are in the trace and durable in the save (pose.pos).",
+    "HARNESS.md line 147 and its screenshot table forbid random weather transitions ('no random weather rolls'), so seeding weather is out; RI-WLD08 owns weather state machines anyway.",
+    "FIXED + PROVEN: p10-m5.mjs (the critic's own probe, unmodified) now gives control == loaded == 5d0830f9b9e3ea71... , differing_fields {}. The control hash is UNCHANGED from the failing baseline, so the loaded side moved to meet the control.",
+    "NEW instrument tools/journey/state-diff.mjs (named by RI-JRN05 line 213, previously absent): M1/M2/M4/M5 + the live-object census, 12/12 clean over 3 states x 4 seeds.",
+    "The richer pre-roll found THREE more pre-existing defects the single-hash check could not see: (a) pose.anim_stamp_ago_frames did not round-trip once the player had swung (80 -> -1, M1 hash mismatch) - replaced by a durable monotonic player.swingSeq; (b) quest.topicsKnown came back re-ordered on sv1-midquest (the save sorts declared-incidental arrays, the live state did not); (c) the 6-dp serialisation rule is LOSSY, and a 1e-7 m difference at the save point diverged the 600-frame trace on enemies[].dist_m and camera.pos - fixed by snapping the sim to the save grid at the bottom of every step (quantiseSaveGrid).",
+    "Also fixed: camera.pivot/pos held makeCamera() defaults between a load and the first step, so snapshot() straight after a load reported a camera at the world origin."
+  ],
+  "next_step": "fix determinism.mjs R9 (spawn entities + full-field diff), then alloc-probe, then seed widening",
+  "notes_for_successor": "Order: (1) prev_state + entity/player/camera audit in game/src/save/state.js + manifest + save-audit; (2) determinism.mjs R9 must spawn the scenario's entities and do a full-field diff; (3) tools/platform/alloc-probe.mjs clamp + dying-garbage self-test; (4) seed widening via world-gen seed. Prove each with a real run."
 }

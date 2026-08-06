@@ -153,8 +153,33 @@
         "world.npcs_dead",
         "world.enemies_dead_until_rest",
         "world.fog_gates_passed",
-        "world.entities"
-      ]
+        "world.entities",
+        "world.gen_seed"
+      ],
+      "entity_record_fields": [
+        "id", "eid", "pos", "yaw_deg", "yaw_rate_dps", "speed_mps",
+        "hp", "poise", "alert", "alert_state",
+        "state", "prev_state", "anim", "anim_frame", "anim_phase0",
+        "phase", "hit_active", "attack_token", "hit_by_id",
+        "anchor", "stagger", "stagger_in_frames", "state_entered_ago_frames"
+      ],
+      "entity_field_live_to_save": {
+        "id": "id", "eid": "eid", "pos": "pos", "yaw": "yaw_deg", "yawRate": "yaw_rate_dps",
+        "speed": "speed_mps", "hp": "hp", "poise": "poise", "alert": "alert",
+        "alertState": "alert_state", "state": "state", "prevState": "prev_state",
+        "anim": "anim", "animFrame": "anim_frame", "animPhase0": "anim_phase0",
+        "phase": "phase", "hitActive": "hit_active", "attackToken": "attack_token",
+        "hitById": "hit_by_id", "anchor": "anchor", "stagger": "stagger",
+        "staggerUntil": "stagger_in_frames", "stateEnteredF": "state_entered_ago_frames"
+      },
+      "entity_fields_derived_from_the_archetype": [
+        "archetype", "tier", "ai", "animLen", "hpMax", "poiseMax",
+        "radius_m", "sight_radius_m", "sight_cone_deg"
+      ],
+      "entity_fields_declared_absent": {
+        "hitboxes": "An entity's own hitboxes are produced by an attack, and no wave-1 archetype attacks (ai is 'none' or 'hold_ground'), so the array is empty on every frame this build can produce and serialising it would be untested code. getDurableFieldCensus() ASSERTS it is empty instead, and the assertion fails loudly the moment W1-06 gives an enemy a swing."
+      },
+      "note": "world.entities is ONE manifest path (an array leaf), so RI-JRN05 M4's path-level set difference cannot see inside it. That is how GAP-W1-platform-save-drops-entity-prev-state survived a verdict: prev_state was in the frame record and in the live entity and in no save, and no instrument compared those three key sets. entity_record_fields is the field-level declaration, and __HARNESS.getDurableFieldCensus() -- run by tools/harness/save-audit.mjs -- does the set difference in BOTH directions against the LIVE entity object: every own key of a live entity must appear in exactly one of entity_record_fields, entity_fields_derived_from_the_archetype or entity_fields_declared_absent, and every declared record field must be present in the save."
     },
     {
       "group": "Death state",
@@ -210,9 +235,13 @@
         "pose.regen_block_in_frames",
         "pose.actionable_in_frames",
         "pose.hitstop_in_frames",
-        "pose.anim_stamp_ago_frames"
+        "pose.swing_seq",
+        "pose.move_dir_deg",
+        "pose.speed_mps",
+        "pose.camera_shake_amp_deg",
+        "pose.camera_shake_in_frames"
       ],
-      "note": "Animation timers are stored as FRAME-RELATIVE offsets, because the current frame index is declared volatile. Storing absolute frame indices would make the round-trip hash depend on when you saved."
+      "note": "Animation timers are stored as FRAME-RELATIVE offsets, because the current frame index is declared volatile. Storing absolute frame indices would make the round-trip hash depend on when you saved. move_dir_deg and speed_mps persist ACROSS frames rather than being recomputed on each one (move_dir_deg is written only while moving; speed_mps is skipped by the hitstop early-return), and both are in the frame record, so they are durable for the same reason enemies[].prev_state is. camera_shake_amp_deg / camera_shake_in_frames are the two shake state words the per-frame shake is re-derived from; camera.override is HARNESS-SCOPED, not player state, and loadState clears it deliberately."
     },
     {
       "group": "Flags",

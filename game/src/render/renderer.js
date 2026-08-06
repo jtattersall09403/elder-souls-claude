@@ -50,6 +50,42 @@ export class Renderer {
     this.setSize(canvas.width, canvas.height);
   }
 
+  /**
+   * Rebuild the procedural world for a new generation seed — HARNESS.md §8 D6, "setSeed() is
+   * honoured for WORLD GENERATION and content selection, so a seed change visibly changes
+   * the run".
+   *
+   * Before this, the scene was built with a HARDCODED 1337 and `setSeed()` reached exactly
+   * one animation counter on one class of object: on a scenario with no entity in it, a seed
+   * change altered nothing at all, over 1,800 frames (W1-00 round-2 verdict §9.1). The
+   * terrain function was already seeded — the seed was simply never connected to it.
+   *
+   * `groundAt()` reads the same `terrainHeight()` the mesh is built from, so the rebuild has
+   * to be a real rebuild: a renderer whose collision height and whose visible ground came
+   * from different seeds would be a lie of exactly the kind this project's methods items
+   * exist to catch. Measured cost: 55-100 ms, paid only when the seed actually changes, and
+   * never inside a fixed step.
+   */
+  setWorldSeed(seed) {
+    const s = seed >>> 0;
+    if (s === this.seed) return this.seed;
+    const old = this.scene;
+    const built = buildScene(s);
+    this.seed = s;
+    this.scene = built.scene;
+    this.cells = built.cells;
+    this.props = built.props;
+    this.anchors = built.anchors;
+    this.terrain = built.terrain;
+    this.playerMesh = built.player;
+    this.mats = built.mats;
+    this.sky = new Sky(this.scene);
+    this.enemyMeshes.clear();          // re-created against the new scene by syncEntities()
+    this.setCell(this.cell);
+    disposeGraph(old);
+    return this.seed;
+  }
+
   setSize(w, h) {
     this.three.setSize(w, h, false);
     this.camera.aspect = w / h;
@@ -194,4 +230,14 @@ export class Renderer {
   weatherIds() { return Object.keys(WEATHER); }
 
   async screenshotDataURL() { return this.canvas.toDataURL('image/png'); }
+}
+
+/** Release a replaced scene graph. A rebuild per seed change must not be a leak per seed. */
+function disposeGraph(root) {
+  const seen = new Set();
+  root.traverse((o) => {
+    if (o.geometry && !seen.has(o.geometry.uuid)) { seen.add(o.geometry.uuid); o.geometry.dispose(); }
+    const mm = Array.isArray(o.material) ? o.material : o.material ? [o.material] : [];
+    for (const m of mm) if (m && !seen.has(m.uuid)) { seen.add(m.uuid); m.dispose(); }
+  });
 }
