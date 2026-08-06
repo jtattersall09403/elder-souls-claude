@@ -572,7 +572,7 @@ async function runProbe(name) {
       ];
       const per = {};
       for (const s of scenarios) {
-        fresh(); H.setCameraCell(s.cell); H.teleport(0, 0, { yaw: 0 });
+        fresh(); place(s.cell, 0, 0, 0);
         const eid = H.spawn(s.arch, 0, -s.d, { height_m: s.h });
         H.lockOn(eid); step(2);
         const rows = [];
@@ -862,8 +862,10 @@ async function runProbe(name) {
             if (st === 'rest') H.uiOpen('rest');
             step(10);
             const f0 = FR;
-            if (kind === 'tap') H.queueInputs([{ f: f0, tap: b }]);
-            else H.queueInputs([{ f: f0, hold: [b], until: f0 + 120 }]);
+            // tap = press then release next frame; hold = press, 120 frames, release.
+            H.queueInputs(kind === 'tap'
+              ? [{ f: 0, press: [b] }, { f: 1, release: [b] }]
+              : [{ f: 0, press: [b] }, { f: 120, release: [b] }]);
             const rows = collect(kind === 'tap' ? 60 : 130);
             let minArm = Infinity, minHead = Infinity;
             for (const c of rows) {
@@ -880,14 +882,25 @@ async function runProbe(name) {
           }
         }
       }
-      // Mouse-wheel / unmapped-axis sweep.
+      // Mouse-wheel sweep, as a REAL DOM wheel event on the canvas — not a made-up input key.
+      // (`queueInputs` has a closed key set and would throw on one, which is a different and
+      // weaker fact.) The wheel is bound to swap_right / swap_left in input/bindings.js; the
+      // bar is that nothing on that path can reach the arm.
       let wheelMin = Infinity;
       fresh(); place('cam-flat-plain', 0, 0); step(10);
+      const canvas = document.querySelector('canvas');
+      let wheelDelivered = 0;
       for (let notch = -60; notch <= 60; notch++) {
-        qi({ wheel: notch, zoom: notch / 60 });
+        if (canvas) {
+          canvas.dispatchEvent(new WheelEvent('wheel', { deltaY: notch === 0 ? 0 : (notch < 0 ? -120 : 120), bubbles: true, cancelable: true }));
+          wheelDelivered++;
+        }
         step(1);
         wheelMin = Math.min(wheelMin, cam().arm_len_m);
       }
+      // And the closed key set: an invented zoom axis must be REFUSED, not silently ignored.
+      let zoomRefused = false, zoomMsg = '';
+      try { H.queueInputs([{ f: 0, zoom: 1.0 }]); } catch (e) { zoomRefused = true; zoomMsg = String(e.message).slice(0, 80); }
       // The API must refuse.
       const refusals = [];
       for (const attempt of [{ mode: 'first' }, { mode: 'firstperson' }, { mode: 1 }]) {
@@ -899,7 +912,9 @@ async function runProbe(name) {
       const closed = H.listCameraModes();
       R.matrix = matrix; R.refusals = refusals;
       R.detector = {
-        probes: matrix.length, wheel_notches: 121, min_arm_over_all_probes: r4(minArmGlobal),
+        probes: matrix.length, wheel_notches: 121, wheel_events_delivered: wheelDelivered,
+        invented_zoom_axis_refused: zoomRefused, zoom_refusal: zoomMsg,
+        min_arm_over_all_probes: r4(minArmGlobal),
         min_camera_to_head_m: r4(minHeadGlobal), wheel_min_arm_m: r4(wheelMin),
         perspective_modes: modes, camera_modes_declared: closed, modes_observed: [...modesSeen].sort(),
       };
@@ -908,6 +923,7 @@ async function runProbe(name) {
       R.report.push(`listPerspectiveModes() = ${JSON.stringify(modes)}`);
       chk('arm_floor_never_breached', minArmGlobal >= 0.90 - 1e-9 && wheelMin >= 0.90 - 1e-9, `min ${r4(Math.min(minArmGlobal, wheelMin))} m over ${matrix.length} probes + the wheel sweep (any probe below 0.90 is an automatic fail of the piece)`);
       chk('camera_to_head_ge_0p35', minHeadGlobal >= 0.35 - 1e-9, `min ${r4(minHeadGlobal)} m`);
+      chk('no_zoom_axis', zoomRefused, `an invented zoom axis is refused by the closed input key set: ${zoomMsg}`);
       chk('perspective_modes_third_only', Array.isArray(modes) && modes.length === 1 && modes[0] === 'third', JSON.stringify(modes));
       chk('camera_first_throws', refusals.every((r) => r.threw), refusals.map((r) => `${r.attempt}→${r.threw ? 'threw' : 'ACCEPTED'}`).join(' '));
       chk('mode_vocabulary_closed', [...modesSeen].every((m) => closed.includes(m)), `observed ${JSON.stringify([...modesSeen].sort())} ⊆ declared ${JSON.stringify(closed)}`);
@@ -1038,7 +1054,7 @@ async function runProbe(name) {
       // --- death, including the two that clip: a corridor and a stair.
       const deaths = {};
       for (const cell of ['cam-boss-arena', 'cam-walk-cistern', 'cam-stair']) {
-        fresh(); H.setCameraCell(cell); H.teleport(0, 0, { yaw: 0 }); step(30);
+        fresh(); place(cell, 0, 0, 0); step(30);
         const pivot0 = cam().pivot.slice();
         H.deathCamera();
         const rows = collect(200);

@@ -15,7 +15,9 @@
     "game/data/camera/rig.json",
     "game/data/camera/cells.json",
     "game/data/camera/targets.json",
-    "tools/camera/gen-cells.mjs"
+    "tools/camera/gen-cells.mjs",
+    "game/src/sim/route.js",
+    "tools/camera/cam-probe.mjs"
   ],
   "findings": [
     "RI-CAM01..07 live in corpus/15-camera/. All 'constructed', extremely specific numbers.",
@@ -26,8 +28,13 @@
     "CAM03: safe_rect NDC x+-0.75 y+-0.70; onscreen_fraction(T_a)>=0.995, P_a>=0.980, T_h>=0.970 (h<6) / 0.880 (h>=6); containment arm +0.150/-0.080 m/frame, pitch +-1.50 deg/frame, arm half-life 0.250s, cap 7.50; pitch_base=clamp(-16+0.8(d-3),-16,-2); size_bias=2.20*max(0,h-2.5); k(h)=clamp((h-2.5)/4,0,0.75), A.y lerp weight 0.35+k*0.65; yaw rate clamp 7.000 deg/frame; latency: acquire 30f, reframe 22f, switch 18f, head return 24f; reticle <=24px no scaling, no off-screen arrow.",
     "CAM04: 9 roll clips (roll_f/fr/r/br/b/bl/l/fl/backstep); unlocked=snap+roll_f only; locked=hold facing+bin clip; Tc=min(floor(0.80W), W-8); b1=ceil(0.40W); band1 3.00 deg/f, band2 0.75 deg/f, then 0; GLOBAL CAP 45.0 deg; 8 locomotion clips locked; |err|<=12 deg p100, autofail >25.",
     "SUCCESSOR-2 DISCOVERY: predecessor's own finding was STALE. camera.js is NOT a 148-line stub \u2014 it is a 795-line full rewrite (containment law, spring arm, modes, shake, death, fog) COMMITTED in ed63bbf. Also committed: game/data/camera/{rig,cells,targets}.json and tools/camera/gen-cells.mjs. The status file was simply never updated.",
-    "THE REAL GAP is measurement: tools/camera/ has gen-cells.mjs only. ZERO probes exist. No m-cam0*.mjs method scripts. RI-MTH04 voids any claim without a real run, so probes are the highest-value remaining work."
+    "THE REAL GAP is measurement: tools/camera/ has gen-cells.mjs only. ZERO probes exist. No m-cam0*.mjs method scripts. RI-MTH04 voids any claim without a real run, so probes are the highest-value remaining work.",
+    "HARNESS GOTCHA (cost 40 min): queueInputs() event frames are RELATIVE to the call frame (pipeline.scriptBase), NOT absolute. Use {f:0} for 'next step'.",
+    "HARNESS GOTCHA: tap/hold/until are SCENARIO-FILE sugar expanded by tools/lib/scenario.mjs. In-page queueInputs has a CLOSED key set {f,press,release,move,look} and throws on anything else.",
+    "HARNESS GOTCHA: teleport(x,z) uses the PROVINCE heightfield. The camera cells are separate fixtures; teleport(0,0) drops the player to y=-41.3 which is under cam-flat-plain's floor plane. Must pass {y: cell.ground_y}.",
+    "look:[dx,dy] is DEGREES per frame already; look_stick:[x,y] is the raw stick that gets the deadzone/quadratic curve. Two keys because CAM02 M1 measures the curve and M3 measures the degree path.",
+    "Mouse wheel IS handled (input/real.js:91) but maps to swap_right/swap_left (bindings.js:25-26), not zoom. RI-CAM05 \u00a7F satisfied; probe dispatches real WheelEvents to prove it."
   ],
-  "next_step": "audit harness camera channel + lockon + CAM04 player side; then WRITE PROBES and run them",
+  "next_step": "run all 18 probes, fix what they show failing, commit incrementally",
   "notes_for_successor": "SUCCESSOR-2. Rig is built and committed. Priority: probes that produce real measured output for RI-CAM01..07. Then close whatever the probes show failing."
 }
