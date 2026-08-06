@@ -294,13 +294,49 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
     };
   }
 
+  // ---- the offhand's own verbs (RI-WPN06 §C) ------------------------------------------------
+  // `shield.bash` is the O1 guard-break variant: `light` + forward with the shield RAISED,
+  // 22 / 4 / 26 f@60, motion value 0.35, poise damage 24. §C's own note — "it exists to break a
+  // guard, not to deal damage" — is why the motion value is capped here rather than tuned, and
+  // RI-WPN06 M6 fails any build where it exceeds 0.40. `shield.charge` is greatshield-only.
+  // These belong to the OFFHAND, not to the moveset document, which is why they arrive here and
+  // are advertised to `resolveSlot` through `ctx.extra_slots`.
+  const extraSlots = [];
+  if (roster && shieldId && !twoHanded && d.stamina.block.shields[shieldId]) {
+    const sh = d.stamina.block.shields[shieldId];
+    const mkShield = (id, f, mv, poise, root, ha) => {
+      out[id] = {
+        id, slot: id, kind: 'attack',
+        anim: `shield_${id.split('.')[1]}_${sh.class}`,
+        clip: new Clip(`shield_${id.split('.')[1]}_${sh.class}`, arch.guardbreak_shove || arch.crit_thrust,
+          { startup: f[0], active: f[1], total: f[0] + f[1] + f[2] }, 0.9, root),
+        startup: f[0], Ps: f[0] + 1, active: f[1], recovery: f[2], total: f[0] + f[1] + f[2],
+        charge_max_f: 0, chains_to: null, chain_index: 1,
+        stamina: 16, poise_damage: poise, motion_value: mv,
+        shape: 'grab', arc_sweep_deg: 24, answers: ['TURTLE'],
+        hyperarmour_window: ha, hitbox: true, hitbox_radius_m: 0.16,
+        socket_a_dist_m: 0.05, socket_b_dist_m: 0.45,
+        socket_a: 'wpn_guard', socket_b: 'wpn_guard',
+        hitstop_frames: 8, root_dz_m: root, reach_m_declared: 1.1,
+        two_handed: false, iframes: null,
+        hard_until: f[0] + f[1] + Math.ceil(0.45 * f[2]),
+        dodge_cancel_from: f[0] + f[1] + Math.ceil(0.45 * f[2]) + 1,
+        states: { startup: 'ATK_STARTUP', active: 'ATK_ACTIVE', recovery: 'ATK_RECOVER' },
+        source: 'RI-WPN06 §C shield slot table',
+      };
+      extraSlots.push(id);
+    };
+    mkShield('shield.bash', [22, 4, 26], 0.35, 24, 0.55, null);
+    if (sh.class === 'greatshield') mkShield('shield.charge', [30, 20, 40], 0.40, 40, 2.20, [18, 50]);
+  }
+
   // ---- criticals (RI-CMB05 §D) ------------------------------------------------------------
   const bs = d.poise.criticals.backstab;
   out.backstab = critMove('backstab', bs.animation_f, bs.damage_frame, bs.attacker_invulnerable, bs.stamina,
-    bs.crit_multiplier[moveset.class_key] || 1.0, arch.crit_thrust, 'RI-CMB05 §D backstab');
+    bs.crit_multiplier[classKey] || 1.0, arch.crit_thrust, 'RI-CMB05 §D backstab');
   const rp = d.poise.criticals.riposte;
   out.riposte = critMove('riposte', rp.animation_f, rp.damage_frame, rp.attacker_invulnerable, rp.stamina,
-    (bs.crit_multiplier[moveset.class_key] || 1.0) * 1.50, arch.crit_thrust, 'RI-CMB05 §D riposte (backstab damage x 1.50)');
+    (bs.crit_multiplier[classKey] || 1.0) * 1.50, arch.crit_thrust, 'RI-CMB05 §D riposte (backstab damage x 1.50)');
 
   // ---- heal (RI-CMB08 §C) ------------------------------------------------------------------
   const fl = d.flask.animation;
@@ -461,10 +497,13 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
   out._dead = new Clip('dead', arch.dead_collapse, { startup: 12, active: 12, total: 48 }, 1.0, 0.4);
 
   out._weapon = wpn;
-  out._movesetId = moveset.id + (twoHanded ? ':two_handed' : '');
-  out._classKey = moveset.class_key;
+  out._movesetId = (roster ? moveset.weapon_id : moveset.id) + (twoHanded ? ':two_handed' : '');
+  out._classKey = classKey;
+  out._weaponClass = roster ? moveset.class : null;
   out._twoHanded = twoHanded;
-  out._hasTwoHanded = !!moveset.moves.two_handed;
+  out._hasTwoHanded = roster ? Object.keys(moveset.slots).some((k) => k.startsWith('2h.')) : !!moveset.moves.two_handed;
+  out._slotIds = roster ? Object.keys(moveset.slots) : [];
+  out._extraSlots = extraSlots;
   return out;
 
   function critMove(id, total, dmgFrame, invuln, stam, mult, archetype, source) {
