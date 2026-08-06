@@ -2,17 +2,39 @@
   "task_id": "holes",
   "brief": "orchestration/briefs/holes.md",
   "started": "wave-0",
-  "state": "researching",
+  "state": "writing",
   "outputs_expected": [
-    "TBD - reference items for 14 unjudged subsystem paths, world.water.marsh first"
+    "corpus/50-world/RI-WLD10-the-water-model.md (world.water.marsh)",
+    "corpus/80-methods/m-wld10-water-census.mjs",
+    "corpus/50-world/RI-WLD11-environmental-hazards.md (world.hazard.environment)",
+    "corpus/50-world/RI-WLD12-region-borders.md (world.region.transition)",
+    "corpus/50-world/RI-WLD13-interior-exterior-continuity.md (world.interior.continuity)",
+    "corpus/50-world/RI-WLD14-built-alienness.md (world.strangeness.architecture)",
+    "corpus/10-combat/RI-CMB09-recovery-and-exhaustion.md (combat.dodge.recovery + combat.stamina.exhaustion)",
+    "corpus/10-combat/RI-CMB10-status-buildup.md (combat.status.buildup)",
+    "corpus/10-combat/RI-CMB11-input-latency.md (combat.input.latency)",
+    "corpus/20-progression/RI-PRG09-affliction-economy.md (progression.affliction.economy)",
+    "corpus/30-quests/RI-QST09-irreversibility.md (quests.resolution.exclusive + quests.state.persistence)",
+    "corpus/60-lore/RI-LOR07-canon-conformance.md (lore.canon.argonian + lore.canon.geography)"
   ],
   "outputs_written": [],
   "findings": [
     "corpus-index --check confirms 14 holes exactly as briefed; 323 subsystem paths, 126 reference items, 309 judged, 0 unresolved.",
     "subsystems.json gives each hole an arb side + area + critic: combat.dodge.recovery/stamina.exhaustion/input.latency = souls/10-combat/critic.combat; combat.status.buildup = split(S11); progression.affliction.economy = morrowind/20-progression; quests.* = morrowind/30-quests; world.* = morrowind/50-world/critic.world; lore.canon.* = morrowind/60-lore/critic.lore.",
     "S22 binding: all combat durations rebase to 60Hz by DOUBLING upstream souls-community tick counts (which are 1/30s). Every frame figure must state its unit.",
-    "S23: RI-CMB01 owns in-fight equip-load tiers (30/55/80/100, iframes 13/11/9/7 at 1/30s -> must be restated at 60Hz)."
+    "S23: RI-CMB01 owns in-fight equip-load tiers (30/55/80/100, iframes 13/11/9/7 at 1/30s -> must be restated at 60Hz).",
+    "VERIFIED (UESP vendored extract, Morrowind:Argonian): Argonian racial = Water Breathing 120 s on self (cost 5), Resist Poison 100%, Resist Common Disease 75%, Athletics +15, no footwear. Morrowind:Water Breathing page: all CREATURES breathe underwater by default, only NPCs drown.",
+    "VERIFIED (UESP Lore:Hallgerd's Tale): a warrior 'was drowned in the Sea of Ghosts because he couldn't get his armor off' - canonical hook for the OVERLOADED-sinks rule.",
+    "VERIFIED (weather.gov Turn Around Don't Drown, fetched by curl 2026-08-06): '6 inches of fast-moving flood water can knock over an adult; 12 inches carries away most cars; 2 feet carries away SUVs'.",
+    "community-data (search summary, ScienceDirect S0960077925018193): free pedestrian speed in flood water is ~51.6% lower than on land. Also S2212095523000147: instability index +123.2% at 0.3 m depth walking against flow.",
+    "community-data (Pflugers Arch 2025, s00424-025-03130-3 / PMC12698785): shallow-water walking studied at four immersion depths knee/thigh/waist/xiphoid at 0.2-0.8 m/s; minimum cost of transport at hip depth 0.2 m/s; above knee depth the optimal speed is 'as slow as possible'. Publisher and PMC both 403 to curl/WebFetch - only the search summary is citable.",
+    "CONSTRAINT from RI-CHR02: Saxhleel and Naga are 'Amphibious - unlimited water breathing; no swim stamina drain; stand and act in deep water'. The water model MUST make those three privileges mean something, i.e. non-amphibious races must have a breath meter, a swim stamina drain, and denied actions in deep water.",
+    "CONSTRAINT: constants.json owns world.swim_speed_mps=1.1 and world.tide_wade_speed_mps=1.3 (owner RI-WLD01). 1.3 = 2.0 x 0.65, so the WADE band walk multiplier must be 0.65 to avoid a second definition.",
+    "CONSTRAINT: RI-WLD08 owns the tide cycle (12 real minutes, 4 states, moon-driven). NOBODY owns the tidal RANGE in metres - RI-WLD10 will own it.",
+    "CONFLICT: seam S22 (rebase all combat durations by doubling upstream 1/30 s tick counts) is in ARBITRATION.md but NO combat item has applied it. RI-CMB01 explicitly says 'this audit declared the unit; it did not rebase the numbers' and calls 13/11/5/0 binding. Precedence order puts the seam ruling above the item, so new combat items must be written post-rebase and must say so. Propose amending RI-CMB01/02/05/08 in the reply.",
+    "tools/harness/viewpoints.json already has VP06-water-surface (fidelity, grazing angle, 16:00 clear). No tide-state variants.",
+    "UESP Morrowind:Diseases gives the full common-disease table with names, drain effects, vectors and prose descriptions - primary material for progression.affliction.economy."
   ],
-  "next_step": "read HARNESS.md, game/data layout, RI-WLD04/05/07, RI-TRV01, RI-CMB01/03, souls-frame-data.json",
-  "notes_for_successor": "Just started. Nothing read yet."
+  "next_step": "write corpus/50-world/RI-WLD10-the-water-model.md in full, then its method script",
+  "notes_for_successor": "Plan: 12 outputs listed in outputs_expected, covering all 14 holes (CMB09 covers 2, QST09 covers 2, LOR07 covers 2). Method-number convention: 50-world uses a CONTINUOUS M-series across RI-WLD01..08 ending at M46, so new world items start at M47. Combat items restart M1 per item. Regenerate INDEX.md with `node tools/corpus-index.mjs` when done and re-run --check."
 }
