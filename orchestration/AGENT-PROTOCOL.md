@@ -89,9 +89,20 @@ and launch at `--width 320 --height 240` unless you are actually capturing scree
 rendering back on only for the frames you photograph.
 
 Also: `tools/lib/combat-node.mjs` runs the combat modules headless in bare Node — no engine, no
-browser, roughly 500× faster — and reproduces the browser's numbers exactly. Use it to iterate,
-then confirm your headline findings in the browser. Do not publish a number that has only ever
-been seen outside the browser.
+browser, roughly 500× faster. **It agrees with the browser for short measurements and diverges for
+long fights, and the difference is not a rounding error.** It runs `CombatSystem.step` alone, while
+the engine's fixed step *also* runs stealth perception — and perception is what sets
+`alertState = AGGRO` and makes an enemy steer at 240 °/s between attacks. In the node arena the
+enemy never turns: the W1-09 round-3 critic measured the two as frame-identical for 194 frames and
+then diverging, with the champion's yaw drifting 85.5° off the player by frame 1700. Reach figures
+agree to the digit. Fight outcomes do not, and a fight the node arena says you survive is one the
+game kills you in.
+
+Use it to iterate on frame-level geometry. **Confirm every behavioural claim in the browser.** Do
+not publish a number that has only ever been seen outside the browser — and note that
+`cmb-reach.mjs --verify`, which two files claim cross-checks node against browser, **does not
+exist**; the flag is silently ignored. Check that a flag you are relying on is implemented before
+you cite it.
 
 ## Two failure modes that have each cost a full round
 
