@@ -71,7 +71,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
   <div class="meta">2026-08-06 &middot; Morrowind's world, Dark Souls' combat, Black Marsh. Why the rules were written before any code, and the first screenshots.</div>
   <p><strong>Vvardenfell's design philosophy, Dark Souls' combat, set in Black Marsh</strong> — the Argonian province nobody has made a proper single-player game in. Eight settlements from the map, thirteen regions, about an hour to cross on foot. Original main quest, original faction lines. In a browser.</p>
 <p>The hard part isn't either half. It's that the two games want opposite things, constantly, and every one of those conflicts needs an answer before anyone writes code. Settle them later and you get a compromise that satisfies neither.</p>
-<p>None of this has taken long in wall-clock terms. The first commit landed at 22:25 on 5 August and this is being written under nineteen hours later, about 143 commits in. That isn't anyone working quickly: the work is done by AI agents running in parallel, so a good deal of what would normally be sequential happens at once. It does mean the order below is the logical one rather than the chronological one.</p>
+<p>The volume below implies a timeline that doesn't exist, so: the first commit landed at 22:25 on 5 August, and this is being written under nineteen hours later, about 143 commits in. All of it is a day's work. That isn't anyone working quickly — the work is done by AI agents running in parallel, so a good deal of what would normally be sequential happens at once. It does mean the order below is the logical one rather than the chronological one.</p>
 <h3>The rule everything hangs off</h3>
 <blockquote>
 <p><strong>Inside the fight, Souls wins. Everywhere else, Morrowind wins.</strong></p>
@@ -109,7 +109,6 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <h3>Where things actually stand</h3>
 <p>The engine runs, deterministically — meaning identical inputs produce a byte-identical result every time, which is the only reason any of the measurements above can be trusted. Save/load works across forty seed variations. The first piece has been through the critics <strong>twice</strong> and failed <strong>twice</strong>: 3/10, then 4.1/10, against a pass mark of 6. Each failure named a specific defect, all now fixed, including three nobody had noticed at all.</p>
 <p>We also have <strong>808 reference images and 208 animation sequences</strong> pulled from both source games, including per-move boss animations named by move, which means an attack whose frame counts are right but whose arc and follow-through are wrong can actually be caught.</p>
-<p>Worth restating, since the volume above implies a timeline that doesn't exist: all of that is the output of a single day, and the reason is parallelism rather than pace.</p>
 <p>Next: the province itself — 14.5 km² of it — and the combat core.</p>
 
 </article>

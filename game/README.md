@@ -93,3 +93,74 @@ same bytes.
 This piece ships the one neighbourhood the twelve canonical viewpoints are posed against,
 because those poses are absolute and near the origin and a viewpoint that cannot be shot is a
 fail-closed **0** for every fidelity metric it feeds.
+
+---
+
+## W1-01 — the province
+
+`game/data/world/` is now a real 4,825 × 5,540 m landmass, not a placeholder.
+
+```bash
+node tools/world/build-landmask.mjs      # coastline, colour-segmented from the map source
+node tools/world/build-regions.mjs       # 13 regions + the 9 axes RI-WLD04 M18 scores
+node tools/world/build-terrain.mjs       # the 25 m raster; SOLVES the per-region water offsets
+node tools/world/build-water-hazards.mjs # water.json + hazards.json
+node tools/world/build-roads.mjs         # the Rootway, driven onto RI-WLD01 §4's path lengths
+node tools/world/build-pois.mjs          # every named place, with its BUILT region and elevation
+```
+
+Run them in that order; each is idempotent and each output is generated — do not hand-edit
+`terrain.json`, `roads.json`, `pois.json`, `regions.json`, `water.json` or `hazards.json`.
+
+### Measuring it
+
+```bash
+node tools/world/scale-audit.mjs         # RI-WLD01 M1/M4/M5 + RI-WLD07 M36, static, no browser
+node tools/world/region-axes.mjs         # RI-WLD04 M18, all 78 pairs on 9 axes
+node tools/world/crossing.mjs            # RI-WLD01 M2/M3 — walks the crossing for real
+node tools/world/province-shots.mjs --out reports/region-shots   # RI-WLD04 M17's 39 frames
+node corpus/80-methods/m-wld10-water-census.mjs                  # RI-WLD10 M47, the S24 gate
+node corpus/80-methods/m-wld11-hazard-census.mjs                 # RI-WLD11 M57
+```
+
+### `window.__HARNESS` additions (W1-01)
+
+Additive; nothing existing changed. `RI-WLD10` §12 formally requested the first two.
+
+| Method | Returns |
+|---|---|
+| `getWaterAt(x, z)` | `{depth_m, band, substrate, region, sea, tidal, k, ground_y, surface_y}` |
+| `getTerrainAt(x, z)` | `{y, base_y, slope_deg, region, danger_tier, land, ocean, coast_dist_m, substrate, sea}` |
+| `getRegionAt(x, z)` | the region id |
+| `setTide(state\|phase)` / `getTide()` | pins the 12-minute cycle; `LOW\|RISING\|HIGH\|FALLING` or 0..1 |
+| `getRoutes()` | the ten built legs, their declared vs built lengths, and the named routes |
+| `getProvinceStats()` | bounds, elevation range, land area, per-region built area / WCI / max elevation, streaming |
+| `streamAround(x, z, budget?)` | request and build province tiles; omit `budget` to drain the queue |
+| `walkRoute(opts)` | walks a named route through the ordinary locomotion path; resumable via `chunkFrames` |
+
+`walkRoute` is `RI-WLD01` M2/M3's instrument. It does **not** move the capsule: every frame it
+computes the bearing to the next point on the built road spline, converts it to the camera-relative
+stick vector a player would hold, pushes it through `queueInputs()`, and advances the simulation by
+one fixed step. The walk band's ceiling (`mag = 0.55`) is 2.0 m/s exactly.
+
+### The two exterior cells, and why there are two
+
+`setCell('province')` is the world. `setCell('exterior')` is W1-00's 420 m procedurally generated
+neighbourhood at the world origin, reached by the state `showcase_patch` and by every state that
+sets `env.showcase`. It survives for two reasons, both structural:
+
+1. `HARNESS.md` §6 pins VP01–VP12 to **absolute** poses within 130 m of the world origin, and the
+   world origin is 250 m out in the Topal Bay. §6 also says changing a pose "invalidates every
+   cross-wave comparison that used it". So the twelve keep their subject and the province gets an
+   appended set: `tools/harness/viewpoints-province.json`.
+2. `HARNESS.md` D6 requires `setSeed()` to be honoured for **world generation**. The province is
+   hand-authored from `RI-WLD01` §3 and a seed must not move Helstrom; the generated cell is where
+   `RI-MTH02` R4 measures seed sensitivity, which is why `mth-worldgen-noenemy` runs there.
+
+### What W1-01 does not own, and does not fake
+
+`ES-WATER/1` band **speed** is applied (a retraction of the step's horizontal displacement, which
+by construction cannot reach a frame number — seam **S25**). Band **denial** (no sprint, no roll
+above W2), the water stamina drain, the breath clock, `MIRED` and the wade movesets are
+`world.water.marsh`, which is **W1-03**'s path. Settlement buildings and interiors are **W1-04**'s;
+this piece owns the ground they stand on and levels and drains it for them.
