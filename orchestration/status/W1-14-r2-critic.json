@@ -2,14 +2,29 @@
   "task_id": "W1-14-r2-critic",
   "brief": "critic round 2 for W1-14 (magic)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "measuring",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-14-r2.json",
     "corpus/90-verdicts/wave1/W1-14-r2.md",
     "corpus/90-verdicts/wave1/artifacts/W1-14-r2/"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read doctrine S19/S27/S22 + CONSUMPTION, round-1 verdict, then confirm boot",
+  "findings": [
+    "BOOT CONFIRMED: smoke.mjs 6/6, api-probe 33/33 at HEAD 4a5f13f.",
+    "55/55 SURVIVES. My own instrument (critic-w1-14-r2a.mjs, treatment-after vs control-after over a flattened world snapshot, no per-effect probe table) finds 55/55 effects move at least one world-side leaf path. GENERIC-APPLICATOR is genuinely 0/55: no non-damage effect takes hp.",
+    "BUT 55 handlers produce 33 distinct observable signatures, not 55. Collisions: {resist_element,resist_disease,shield,sap_ward} identical; {fire,frost,shock,poison,damage_health} identical; {calm_beast,demoralise}; {open_lock,lock_lock}; {bind_lesser,bind_greater}; {corrode,cure_paralysis,burden,silence,paralyse} all -> status.json only.",
+    "SINGLE BIGGEST GAP: MagicSystem.skills is a private hardcoded {sorcery:30,root_speech:30,warding:30,veiling:30} that NO gameplay path raises. Measured in 4 shipped states: 47/72 spells attunable, 25 REFUSED (all 17 tier-3 + all 8 tier-4). 40 casts, a HEARTH rest, setSkills() on the character sheet and grantSkillUse('cast_effective') all leave it at 0/1. Only H.setMagicSkills() (harness-only) moves it. Spellmaking capped at 2 effects forever.",
+    "Every magic probe in the tree (mag-probe, mag-census, mag-quest) opens its arena with setMagicSkills({...100}), which is why the gate is invisible to all of them. RI-MTH07 \u00a7C3 hand-feed failure.",
+    "MITIGATION IS KIND-BLIND. Identical scripted PHYSICAL 100 hit: baseline 100, shield 69.12, resist_element 15.0, resist_disease 15.0. A resist-DISEASE buff blunts a sword by 85%. Converse: a FIRE spell on an enemy takes 405 hp bare, 5 hp under shield(physical) and 5 hp under resist_element - identical. One multiplier, no element.",
+    "TELEPORT OUT OF A FIGHT (S19 breach). Shipped mark/recall/intervention are RITUAL, but spellmaking sets the class and nothing restricts it: a LIGHT-class Intervention cast with in_combat true moved the player 44.77 m to a shrine; a LIGHT-class Recall moved 84.74 m from [60,0,60] to the mark. S19 forbids 'no recall out of a fight, no intervention as an escape button'.",
+    "LEVITATION IS REAL. pos[1] 5.59 m, 1.5 Focus/m (124 -> 98.62 over ~17 m), drift 1.388 m/s vs a measured walk of 3.173 m/s, state AIRBORNE, all five buttons dropped at the input gate (_tryStart), iframe false on 60/60 frames, a 37-damage hit landed and ended the flight.",
+    "SKILLS-BY-USE FOR MAGIC IS ZERO. 60 casts with a live target produced 0 skill_use events; sim.progression.skills is {} in default/arena_flat/dungeon_primary and getSkillSheet() returns {}. stepSkillUse maps every spell to spell_skill 'sorcery' regardless of school.",
+    "QUEST GATE reads castEffects (cast, not owned) - confirmed in source and live. But requires.skills reads sim.progression.skills, which magic never writes and which is empty in every shipped state; the resolution only became available after H.setSkills(), a harness call.",
+    "ORPHAN REGISTERS (written by magic, read by nothing outside game/src/sim/magic/**): telekinesis->M.reachM; detect_life/detect_key->M.markers; mend_item->item condition; buoyancy/breathe_water->M.water (the real water system is engine.traversal water_band/breath_s); restore_attribute (nothing in the build lowers an attribute); cure_disease/cure_poison->sim.quest.afflictions, which only H.addAffliction() writes (hazard VECTOR diseases go to sim.player.afflictions, a different array).",
+    "STATUS PROCS: only PARALYSED is consumed (magic/system.js sets b.state). BURNING/FROSTBITE/CONCUSSED/POISONED write body.statusProc[kind] and nothing reads it.",
+    "getQuestState() still carries _declared_incomplete: 'no quest in this build can be started, advanced or completed by playing' - stale, contradicted by the working QuestEngine.",
+    "VFX IS REAL: 3 particle systems, 246 particles, decal appears at impact, draw calls 30/30/29/29/32 (night release 32 with 4 particle draw calls). Not flat."
+  ],
+  "next_step": "run regressions, economy recompute, AR checks, blind pairs; then write the verdict",
   "notes_for_successor": ""
 }

@@ -1,0 +1,852 @@
+{
+ "generated": "2026-08-06T22:46:47.770Z",
+ "ARI": {
+  "S_total": 2065,
+  "distinct_clips_C": 936,
+  "ARI": 0.4533,
+  "bands": "PASS 0.42 <= ARI <= 0.60, HARD FAIL < 0.33 (amended wave 1)",
+  "verdict": "PASS",
+  "share_histogram": {
+   "1": 316,
+   "2": 210,
+   "3": 311,
+   "4": 99
+  },
+  "clips_shared_by_more_than_4": 0,
+  "weapons_missing_mandatory": []
+ },
+ "TDV": {
+  "median": 0.2857,
+  "min": 0,
+  "zero_weapons": [
+   "axe_bog_cleaver",
+   "axe_shell_reaper",
+   "dgr_bone_awl",
+   "dgr_shell_knife",
+   "fst_quarry_caestus",
+   "fst_wrapped_fists",
+   "hlb_fen_hook",
+   "hlb_marsh_glaive",
+   "mce_pilgrim_club",
+   "spr_fishers_gig",
+   "spr_marsh_lance",
+   "spr_mire_trident",
+   "spr_reed_gig",
+   "spr_root_pike",
+   "spr_xanmeer_sting",
+   "ssw_garrison_sword",
+   "ssw_kothringi_bronze",
+   "ssw_rusted_levy",
+   "tsw_bog_rapier",
+   "tsw_oath_of_salt",
+   "tsw_reed_estoc",
+   "tsw_xanmeer_needle"
+  ],
+  "rows": [
+   {
+    "weapon": "axe_bog_cleaver",
+    "class": "AXE",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "axe_hatchet_pair",
+    "class": "AXE",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "axe_kings_bite",
+    "class": "AXE",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "axe_ridge_axe",
+    "class": "AXE",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "axe_shell_reaper",
+    "class": "AXE",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "axe_shell_splitter",
+    "class": "AXE",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "cgs_drowned_reaper",
+    "class": "CGS",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "cgs_harvest_edge",
+    "class": "CGS",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "cgs_kings_crescent",
+    "class": "CGS",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "cgs_mire_scythe",
+    "class": "CGS",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "cgs_tide_falx",
+    "class": "CGS",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "csw_drowned_kris",
+    "class": "CSW",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "csw_mangrove_hook",
+    "class": "CSW",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "csw_naga_sickle",
+    "class": "CSW",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "csw_reaver_blade",
+    "class": "CSW",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "csw_saltmarsh_sabre",
+    "class": "CSW",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "csw_tide_falchion",
+    "class": "CSW",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "dgr_bone_awl",
+    "class": "DGR",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "dgr_hist_barb",
+    "class": "DGR",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "dgr_kings_needle",
+    "class": "DGR",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "dgr_reed_dirk",
+    "class": "DGR",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "dgr_shell_knife",
+    "class": "DGR",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "dgr_thornfang",
+    "class": "DGR",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "fst_hist_talon",
+    "class": "FST",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "fst_marsh_claw",
+    "class": "FST",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "fst_quarry_caestus",
+    "class": "FST",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "fst_wrapped_fists",
+    "class": "FST",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "ghm_bog_maul",
+    "class": "GHM",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "ghm_kings_ruin",
+    "class": "GHM",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "ghm_pile_driver",
+    "class": "GHM",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "ghm_root_hammer",
+    "class": "GHM",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "ghm_stone_breaker",
+    "class": "GHM",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "gsw_drowned_greatblade",
+    "class": "GSW",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "gsw_fen_claymore",
+    "class": "GSW",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "gsw_hist_greatblade",
+    "class": "GSW",
+    "mirrored": 7,
+    "diverged": 6,
+    "TDV": 0.8571
+   },
+   {
+    "weapon": "gsw_memorial_blade",
+    "class": "GSW",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "gsw_oath_of_ash",
+    "class": "GSW",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "gsw_reed_bastard",
+    "class": "GSW",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "gsw_saltwind",
+    "class": "GSW",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "gsw_tomb_guard",
+    "class": "GSW",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "hlb_fen_hook",
+    "class": "HLB",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "hlb_garrison_bill",
+    "class": "HLB",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "hlb_lane_keeper",
+    "class": "HLB",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "hlb_marsh_glaive",
+    "class": "HLB",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "hlb_reed_partisan",
+    "class": "HLB",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "hlb_saltcutter",
+    "class": "HLB",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "mce_bog_iron_mace",
+    "class": "MCE",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "mce_bone_hammer",
+    "class": "MCE",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "mce_chain_flail",
+    "class": "MCE",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "mce_pilgrim_club",
+    "class": "MCE",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "mce_root_maul",
+    "class": "MCE",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "mce_stone_answer",
+    "class": "MCE",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "spr_drowned_harpoon",
+    "class": "SPR",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "spr_fishers_gig",
+    "class": "SPR",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "spr_marsh_lance",
+    "class": "SPR",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "spr_mire_trident",
+    "class": "SPR",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "spr_reed_gig",
+    "class": "SPR",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "spr_root_pike",
+    "class": "SPR",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "spr_xanmeer_sting",
+    "class": "SPR",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "ssw_barsaebic_warblade",
+    "class": "SSW",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "ssw_fen_wardens",
+    "class": "SSW",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "ssw_garrison_sword",
+    "class": "SSW",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "ssw_hist_sap_blade",
+    "class": "SSW",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "ssw_kothringi_bronze",
+    "class": "SSW",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "ssw_marsh_shortsword",
+    "class": "SSW",
+    "mirrored": 7,
+    "diverged": 1,
+    "TDV": 0.1429
+   },
+   {
+    "weapon": "ssw_oath_of_drowned",
+    "class": "SSW",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   },
+   {
+    "weapon": "ssw_rusted_levy",
+    "class": "SSW",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "tsw_bog_rapier",
+    "class": "TSW",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "tsw_duelling_pick",
+    "class": "TSW",
+    "mirrored": 7,
+    "diverged": 2,
+    "TDV": 0.2857
+   },
+   {
+    "weapon": "tsw_oath_of_salt",
+    "class": "TSW",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "tsw_reed_estoc",
+    "class": "TSW",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "tsw_xanmeer_needle",
+    "class": "TSW",
+    "mirrored": 7,
+    "diverged": 0,
+    "TDV": 0
+   },
+   {
+    "weapon": "ugs_drowned_slab",
+    "class": "UGS",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "ugs_fen_zwei",
+    "class": "UGS",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "ugs_golem_sword",
+    "class": "UGS",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "ugs_oath_of_root",
+    "class": "UGS",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "ugs_saltiron_greatsword",
+    "class": "UGS",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "ugs_tomb_colossus",
+    "class": "UGS",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "whp_hide_lash",
+    "class": "WHP",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "whp_hist_bindings",
+    "class": "WHP",
+    "mirrored": 7,
+    "diverged": 4,
+    "TDV": 0.5714
+   },
+   {
+    "weapon": "whp_root_tendril",
+    "class": "WHP",
+    "mirrored": 7,
+    "diverged": 5,
+    "TDV": 0.7143
+   },
+   {
+    "weapon": "whp_salt_scourge",
+    "class": "WHP",
+    "mirrored": 7,
+    "diverged": 3,
+    "TDV": 0.4286
+   }
+  ],
+  "live": [
+   {
+    "weapon": "dagger",
+    "slot": "r1.1",
+    "one": "clip_w_dgr_shell_knife_r1_1",
+    "two": "2h.r1.1",
+    "two_anim": "clip_shell_2h_r1_1",
+    "same_clip": false,
+    "max_tip_path_delta_m": 0.395
+   },
+   {
+    "weapon": "dagger",
+    "slot": "r2",
+    "one": "clip_w_dgr_shell_knife_r2",
+    "two": "2h.r2",
+    "two_anim": "clip_shell_2h_r2",
+    "same_clip": false,
+    "max_tip_path_delta_m": 0.522
+   },
+   {
+    "weapon": "straight-sword",
+    "slot": "r1.1",
+    "one": "clip_w_ssw_garrison_sword_r1_1",
+    "two": "2h.r1.1",
+    "two_anim": "clip_garrison_2h_r1_1",
+    "same_clip": false,
+    "max_tip_path_delta_m": 0.962
+   },
+   {
+    "weapon": "straight-sword",
+    "slot": "r2",
+    "one": "clip_w_ssw_garrison_sword_r2",
+    "two": "2h.r2",
+    "two_anim": "clip_garrison_2h_r2",
+    "same_clip": false,
+    "max_tip_path_delta_m": 1.453
+   },
+   {
+    "weapon": "axe",
+    "slot": "r1.1",
+    "one": "clip_w_axe_shell_splitter_r1_1",
+    "two": "2h.r1.1",
+    "two_anim": "clip_splitter_2h_r1_1",
+    "same_clip": false,
+    "max_tip_path_delta_m": 1.216
+   },
+   {
+    "weapon": "axe",
+    "slot": "r2",
+    "one": "clip_w_axe_shell_splitter_r2",
+    "two": "2h.r2",
+    "two_anim": "clip_splitter_2h_r2",
+    "same_clip": false,
+    "max_tip_path_delta_m": 1.56
+   },
+   {
+    "weapon": "ultra-greatsword",
+    "slot": "r1.1",
+    "one": "clip_w_ugs_golem_sword_r1_1",
+    "two": "2h.r1.1",
+    "two_anim": "clip_golem_2h_r1_1",
+    "same_clip": false,
+    "max_tip_path_delta_m": 2.929
+   },
+   {
+    "weapon": "ultra-greatsword",
+    "slot": "r2",
+    "one": "clip_w_ugs_golem_sword_r2",
+    "two": "2h.r2",
+    "two_anim": "clip_golem_2h_r2",
+    "same_clip": false,
+    "max_tip_path_delta_m": 3.049
+   }
+  ]
+ },
+ "ILS": {
+  "cells": 28,
+  "uniquely_legible": 13,
+  "ILS": 0.4643,
+  "grid": {
+   "light": {
+    "flesh": {
+     "hitstop_f": 4,
+     "knockback_m": 0.05,
+     "victim_hitstop_f": 8
+    },
+    "chitin": {
+     "hitstop_f": 6,
+     "knockback_m": 0.03,
+     "victim_hitstop_f": 8
+    },
+    "stone": {
+     "hitstop_f": 15,
+     "knockback_m": -0.1,
+     "victim_hitstop_f": 0
+    },
+    "metal": {
+     "hitstop_f": 8,
+     "knockback_m": -0.1,
+     "victim_hitstop_f": 8
+    },
+    "shield": {
+     "hitstop_f": 8,
+     "knockback_m": -0.1,
+     "victim_hitstop_f": 8
+    },
+    "wood": {
+     "hitstop_f": 4,
+     "knockback_m": 0.05,
+     "victim_hitstop_f": 8
+    },
+    "water": {
+     "hitstop_f": 2,
+     "knockback_m": 0,
+     "victim_hitstop_f": 2
+    }
+   },
+   "medium": {
+    "flesh": {
+     "hitstop_f": 4,
+     "knockback_m": 0.05,
+     "victim_hitstop_f": 8
+    },
+    "chitin": {
+     "hitstop_f": 6,
+     "knockback_m": 0.03,
+     "victim_hitstop_f": 8
+    },
+    "stone": {
+     "hitstop_f": 15,
+     "knockback_m": -0.1,
+     "victim_hitstop_f": 0
+    },
+    "metal": {
+     "hitstop_f": 8,
+     "knockback_m": -0.1,
+     "victim_hitstop_f": 8
+    },
+    "shield": {
+     "hitstop_f": 8,
+     "knockback_m": -0.1,
+     "victim_hitstop_f": 8
+    },
+    "wood": {
+     "hitstop_f": 4,
+     "knockback_m": 0.05,
+     "victim_hitstop_f": 8
+    },
+    "water": {
+     "hitstop_f": 2,
+     "knockback_m": 0,
+     "victim_hitstop_f": 2
+    }
+   },
+   "heavy": {
+    "flesh": {
+     "hitstop_f": 8,
+     "knockback_m": 0.15,
+     "victim_hitstop_f": 12
+    },
+    "chitin": {
+     "hitstop_f": 10,
+     "knockback_m": 0.1,
+     "victim_hitstop_f": 12
+    },
+    "stone": {
+     "hitstop_f": 24,
+     "knockback_m": -0.2,
+     "victim_hitstop_f": 0
+    },
+    "metal": {
+     "hitstop_f": 12,
+     "knockback_m": -0.2,
+     "victim_hitstop_f": 12
+    },
+    "shield": {
+     "hitstop_f": 14,
+     "knockback_m": -0.2,
+     "victim_hitstop_f": 14
+    },
+    "wood": {
+     "hitstop_f": 6,
+     "knockback_m": 0.15,
+     "victim_hitstop_f": 10
+    },
+    "water": {
+     "hitstop_f": 2,
+     "knockback_m": 0,
+     "victim_hitstop_f": 2
+    }
+   },
+   "ultra": {
+    "flesh": {
+     "hitstop_f": 16,
+     "knockback_m": 0.6,
+     "victim_hitstop_f": 20
+    },
+    "chitin": {
+     "hitstop_f": 20,
+     "knockback_m": 0.45,
+     "victim_hitstop_f": 22
+    },
+    "stone": {
+     "hitstop_f": 28,
+     "knockback_m": -0.35,
+     "victim_hitstop_f": 28
+    },
+    "metal": {
+     "hitstop_f": 24,
+     "knockback_m": -0.35,
+     "victim_hitstop_f": 24
+    },
+    "shield": {
+     "hitstop_f": 26,
+     "knockback_m": -0.35,
+     "victim_hitstop_f": 26
+    },
+    "wood": {
+     "hitstop_f": 12,
+     "knockback_m": 0.6,
+     "victim_hitstop_f": 16
+    },
+    "water": {
+     "hitstop_f": 4,
+     "knockback_m": 0,
+     "victim_hitstop_f": 4
+    }
+   }
+  },
+  "bands": "PASS >= 0.80, HARD FAIL < 0.40"
+ }
+}

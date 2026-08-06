@@ -1,0 +1,36 @@
+
+  #  statistic                                        median       IQR                  band            in band
+   1 Fight duration (s)                               150          [150,150]            [70,220]        yes
+   2 Attack animations started / min                  19.6         [19.2,20]            [7,17]          NO
+   3 Hits landed                                      41           [38,43]              —               —
+   4 Whiff rate                                       0.163        [0.14,0.229]         [0.03,0.25]     yes
+   5 Rolls / min                                      12.4         [12,13.2]            [4,13]          yes
+   6 Dodge rolls (within 20 f of an enemy hitbox)     0.903        [0.867,0.931]        [0.7,1]         yes
+   7 Roll timing delta, mean (f)                      -4.57        [-4.85,-3.52]        [-16,-2]        yes
+   8 Roll timing delta, sd                            5.12         [5.02,6.15]          [0,8]           yes
+   9 Roll timing delta, range                         [-9,20]      —                    [-24,8]         NO
+  10 Enemy swings faced                               42           [40,43]              —               —
+  11 Swings negated by i-frames                       0.575        [0.548,0.6]          [0.4,0.8]       yes
+  12 Swings blocked                                   0.05         [0.024,0.05]         [0,0.35]        yes
+  13 Swings taken                                     0.125        [0.125,0.14]         [0.05,0.35]     yes
+  14 Damage taken / max HP                            0.687        [0.653,0.716]        [0.4,1.6]       yes
+  15 Stamina floor (fraction of max)                  0.313        [0.127,0.417]        [0,0.15]        NO
+  16 Frames at exactly 0 stamina                      0            [0,0]                [20,600]        NO
+  17 % frames below 25% stamina                       0            [0,0.0127]           [0.03,0.2]      NO
+  18 % frames above 90% stamina                       0.3168       [0.314,0.3313]       [0.12,0.45]     yes
+  19 Mean stamina (fraction)                          0.8177       [0.809,0.825]        [0.55,0.8]      NO
+  20 Guard breaks suffered                            0            [0,0]                [0,3]           yes
+  21 Estus charges used                               1            [1,1]                [1,5]           yes
+  22 Committed-frame ratio                            0.609        [0.6073,0.6099]      [0.34,0.56]     NO
+  23 Block-hold ratio                                 0.0082       [0.0062,0.014]       [0,0.2]         yes
+  24 Free-frame ratio                                 0.3848       [0.3844,0.3863]      [0.28,0.62]     yes
+  25 Longest unbroken committed run (f)               245          [245,245]            [180,520]       yes
+  26 Punish windows offered by the enemy              42           [40,43]              —               —
+  27 Punish-window usage rate                         0.163        [0.159,0.225]        [0.5,0.95]      NO
+  28 Inputs dropped for insufficient stamina          0            [0,0]                [1,9999]        NO
+  29 Player hp at fight end                           463          [432,519]            —               —
+
+banded rows in band (median): 16 / 25   floor 20
+per fight: F1=15 F2=20 F3=16 F4=16 F5=16
+
+written: ../../../tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/greed0

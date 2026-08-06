@@ -1,0 +1,8929 @@
+{
+ "schema": "critic-w1-09-r3/1",
+ "generated": "2026-08-06T22:13:32.389Z",
+ "enemy": "champion_hist_marked",
+ "probes": {
+  "reach": {
+   "enemy": {
+    "chop": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 3.65,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "min_contact_distance_m": 0.471,
+     "contact_distance_at_min_placement_m": 0.599,
+     "via_histogram": {
+      "body": 22,
+      "weapon": 51
+     },
+     "max_target_push_m": 1.625,
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 0.645,
+       "target_pushed_m": 0.3,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.625,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.575,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.525,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.475,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.425,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.375,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.325,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.3,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.275,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.25,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.225,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.2,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.15,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.1,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1.05,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 1,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 0.95,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 0.9,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.599,
+       "dist_at_first_active_m": 0.599,
+       "target_pushed_m": 0.85,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.544,
+       "dist_at_first_active_m": 0.616,
+       "target_pushed_m": 0.8,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.594,
+       "dist_at_first_active_m": 0.666,
+       "target_pushed_m": 0.75,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.471,
+       "dist_at_first_active_m": 0.716,
+       "target_pushed_m": 0.7,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.766,
+       "dist_at_first_active_m": 0.766,
+       "target_pushed_m": 0.65,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.816,
+       "dist_at_first_active_m": 0.816,
+       "target_pushed_m": 0.6,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.866,
+       "dist_at_first_active_m": 0.866,
+       "target_pushed_m": 0.55,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.916,
+       "dist_at_first_active_m": 0.916,
+       "target_pushed_m": 0.5,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.966,
+       "dist_at_first_active_m": 0.966,
+       "target_pushed_m": 0.45,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.016,
+       "dist_at_first_active_m": 1.016,
+       "target_pushed_m": 0.4,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.066,
+       "dist_at_first_active_m": 1.066,
+       "target_pushed_m": 0.35,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.116,
+       "dist_at_first_active_m": 1.116,
+       "target_pushed_m": 0.3,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.166,
+       "dist_at_first_active_m": 1.166,
+       "target_pushed_m": 0.25,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.216,
+       "dist_at_first_active_m": 1.216,
+       "target_pushed_m": 0.2,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.266,
+       "dist_at_first_active_m": 1.266,
+       "target_pushed_m": 0.15,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.316,
+       "dist_at_first_active_m": 1.316,
+       "target_pushed_m": 0.1,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.366,
+       "dist_at_first_active_m": 1.366,
+       "target_pushed_m": 0.05,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.416,
+       "dist_at_first_active_m": 1.416,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.466,
+       "dist_at_first_active_m": 1.466,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.516,
+       "dist_at_first_active_m": 1.516,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.566,
+       "dist_at_first_active_m": 1.566,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.616,
+       "dist_at_first_active_m": 1.616,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.666,
+       "dist_at_first_active_m": 1.666,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.716,
+       "dist_at_first_active_m": 1.716,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.766,
+       "dist_at_first_active_m": 1.766,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.816,
+       "dist_at_first_active_m": 1.816,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.866,
+       "dist_at_first_active_m": 1.866,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.916,
+       "dist_at_first_active_m": 1.916,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.966,
+       "dist_at_first_active_m": 1.966,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.016,
+       "dist_at_first_active_m": 2.016,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.994,
+       "dist_at_first_active_m": 2.066,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.044,
+       "dist_at_first_active_m": 2.116,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.094,
+       "dist_at_first_active_m": 2.166,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.144,
+       "dist_at_first_active_m": 2.216,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.194,
+       "dist_at_first_active_m": 2.266,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.244,
+       "dist_at_first_active_m": 2.316,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.294,
+       "dist_at_first_active_m": 2.366,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.344,
+       "dist_at_first_active_m": 2.416,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.394,
+       "dist_at_first_active_m": 2.466,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.444,
+       "dist_at_first_active_m": 2.516,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.321,
+       "dist_at_first_active_m": 2.566,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.371,
+       "dist_at_first_active_m": 2.616,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.421,
+       "dist_at_first_active_m": 2.666,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.471,
+       "dist_at_first_active_m": 2.716,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.521,
+       "dist_at_first_active_m": 2.766,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.365,
+       "dist_at_first_active_m": 2.816,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.415,
+       "dist_at_first_active_m": 2.866,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.465,
+       "dist_at_first_active_m": 2.916,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.515,
+       "dist_at_first_active_m": 2.966,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.392,
+       "dist_at_first_active_m": 3.016,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.442,
+       "dist_at_first_active_m": 3.066,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.492,
+       "dist_at_first_active_m": 3.116,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.542,
+       "dist_at_first_active_m": 3.166,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.592,
+       "dist_at_first_active_m": 3.216,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.642,
+       "dist_at_first_active_m": 3.266,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.316,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.366,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.416,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.466,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.516,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.566,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.616,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    },
+    "thrust": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 4,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "min_contact_distance_m": 0.343,
+     "contact_distance_at_min_placement_m": 0.598,
+     "via_histogram": {
+      "body": 30,
+      "weapon": 50
+     },
+     "max_target_push_m": 1.069,
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 0.864,
+       "target_pushed_m": 0.3,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.069,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.019,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.969,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.919,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.869,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.819,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.769,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.744,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.719,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.694,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.669,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.644,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.594,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.544,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.494,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.444,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.394,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.344,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.294,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.244,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.194,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.144,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.606,
+       "dist_at_first_active_m": 0.606,
+       "target_pushed_m": 0.166,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.656,
+       "dist_at_first_active_m": 0.656,
+       "target_pushed_m": 0.216,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.706,
+       "dist_at_first_active_m": 0.706,
+       "target_pushed_m": 0.265,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.548,
+       "dist_at_first_active_m": 0.756,
+       "target_pushed_m": 0.315,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.806,
+       "target_pushed_m": 0.365,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.648,
+       "dist_at_first_active_m": 0.856,
+       "target_pushed_m": 0.8,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.698,
+       "dist_at_first_active_m": 0.906,
+       "target_pushed_m": 0.75,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 75,
+       "dist_at_hit_m": 0.343,
+       "dist_at_first_active_m": 0.956,
+       "target_pushed_m": 0.7,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.006,
+       "dist_at_first_active_m": 1.006,
+       "target_pushed_m": 0.65,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.056,
+       "dist_at_first_active_m": 1.056,
+       "target_pushed_m": 0.6,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.106,
+       "dist_at_first_active_m": 1.106,
+       "target_pushed_m": 0.55,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.156,
+       "dist_at_first_active_m": 1.156,
+       "target_pushed_m": 0.5,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.206,
+       "dist_at_first_active_m": 1.206,
+       "target_pushed_m": 0.45,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.256,
+       "dist_at_first_active_m": 1.256,
+       "target_pushed_m": 0.4,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.306,
+       "dist_at_first_active_m": 1.306,
+       "target_pushed_m": 0.35,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.148,
+       "dist_at_first_active_m": 1.356,
+       "target_pushed_m": 0.3,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 1.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.198,
+       "dist_at_first_active_m": 1.406,
+       "target_pushed_m": 0.25,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.248,
+       "dist_at_first_active_m": 1.456,
+       "target_pushed_m": 0.2,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.298,
+       "dist_at_first_active_m": 1.506,
+       "target_pushed_m": 0.15,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.348,
+       "dist_at_first_active_m": 1.556,
+       "target_pushed_m": 0.1,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.398,
+       "dist_at_first_active_m": 1.606,
+       "target_pushed_m": 0.05,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.448,
+       "dist_at_first_active_m": 1.656,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.498,
+       "dist_at_first_active_m": 1.706,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.143,
+       "dist_at_first_active_m": 1.756,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.193,
+       "dist_at_first_active_m": 1.806,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.243,
+       "dist_at_first_active_m": 1.856,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.293,
+       "dist_at_first_active_m": 1.906,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.343,
+       "dist_at_first_active_m": 1.956,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.393,
+       "dist_at_first_active_m": 2.006,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.443,
+       "dist_at_first_active_m": 2.056,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.493,
+       "dist_at_first_active_m": 2.106,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.543,
+       "dist_at_first_active_m": 2.156,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.593,
+       "dist_at_first_active_m": 2.206,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.643,
+       "dist_at_first_active_m": 2.256,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.42,
+       "dist_at_first_active_m": 2.306,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.47,
+       "dist_at_first_active_m": 2.356,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 2.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.52,
+       "dist_at_first_active_m": 2.406,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.57,
+       "dist_at_first_active_m": 2.456,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.62,
+       "dist_at_first_active_m": 2.506,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.67,
+       "dist_at_first_active_m": 2.556,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.72,
+       "dist_at_first_active_m": 2.606,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.749,
+       "dist_at_first_active_m": 2.656,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.799,
+       "dist_at_first_active_m": 2.706,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.849,
+       "dist_at_first_active_m": 2.756,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.899,
+       "dist_at_first_active_m": 2.806,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.949,
+       "dist_at_first_active_m": 2.856,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 1.999,
+       "dist_at_first_active_m": 2.906,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.049,
+       "dist_at_first_active_m": 2.956,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.064,
+       "dist_at_first_active_m": 3.006,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.114,
+       "dist_at_first_active_m": 3.056,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.164,
+       "dist_at_first_active_m": 3.106,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.214,
+       "dist_at_first_active_m": 3.156,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.264,
+       "dist_at_first_active_m": 3.206,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.314,
+       "dist_at_first_active_m": 3.256,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.364,
+       "dist_at_first_active_m": 3.306,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.37,
+       "dist_at_first_active_m": 3.356,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 3.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.42,
+       "dist_at_first_active_m": 3.406,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      },
+      {
+       "placed_m": 4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 75,
+       "dist_at_hit_m": 2.432,
+       "dist_at_first_active_m": 3.456,
+       "target_pushed_m": 0,
+       "hp_lost": 75
+      }
+     ]
+    },
+    "combo_a": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 2.9,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "min_contact_distance_m": 0.506,
+     "contact_distance_at_min_placement_m": 0.598,
+     "via_histogram": {
+      "body": 21,
+      "weapon": 37
+     },
+     "max_target_push_m": 1.325,
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 0.766,
+       "target_pushed_m": 0.3,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.325,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.275,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.225,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.175,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.125,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.075,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1.025,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 1,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.975,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.95,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.925,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.9,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.85,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.8,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.75,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.7,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.598,
+       "dist_at_first_active_m": 0.598,
+       "target_pushed_m": 0.65,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.603,
+       "dist_at_first_active_m": 0.603,
+       "target_pushed_m": 0.6,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.653,
+       "dist_at_first_active_m": 0.653,
+       "target_pushed_m": 0.55,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.626,
+       "dist_at_first_active_m": 0.703,
+       "target_pushed_m": 0.5,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.506,
+       "dist_at_first_active_m": 0.753,
+       "target_pushed_m": 0.45,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.803,
+       "dist_at_first_active_m": 0.803,
+       "target_pushed_m": 0.4,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.853,
+       "dist_at_first_active_m": 0.853,
+       "target_pushed_m": 0.35,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.903,
+       "dist_at_first_active_m": 0.903,
+       "target_pushed_m": 0.3,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.953,
+       "dist_at_first_active_m": 0.953,
+       "target_pushed_m": 0.25,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.003,
+       "dist_at_first_active_m": 1.003,
+       "target_pushed_m": 0.2,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.053,
+       "dist_at_first_active_m": 1.053,
+       "target_pushed_m": 0.15,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.103,
+       "dist_at_first_active_m": 1.103,
+       "target_pushed_m": 0.1,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.153,
+       "dist_at_first_active_m": 1.153,
+       "target_pushed_m": 0.05,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.203,
+       "dist_at_first_active_m": 1.203,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.253,
+       "dist_at_first_active_m": 1.253,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.303,
+       "dist_at_first_active_m": 1.303,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.353,
+       "dist_at_first_active_m": 1.353,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.403,
+       "dist_at_first_active_m": 1.403,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.453,
+       "dist_at_first_active_m": 1.453,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.503,
+       "dist_at_first_active_m": 1.503,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.553,
+       "dist_at_first_active_m": 1.553,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.603,
+       "dist_at_first_active_m": 1.603,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.653,
+       "dist_at_first_active_m": 1.653,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.703,
+       "dist_at_first_active_m": 1.703,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.753,
+       "dist_at_first_active_m": 1.753,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.803,
+       "dist_at_first_active_m": 1.803,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.853,
+       "dist_at_first_active_m": 1.853,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.903,
+       "dist_at_first_active_m": 1.903,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.953,
+       "dist_at_first_active_m": 1.953,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.003,
+       "dist_at_first_active_m": 2.003,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.053,
+       "dist_at_first_active_m": 2.053,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.103,
+       "dist_at_first_active_m": 2.103,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.153,
+       "dist_at_first_active_m": 2.153,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.203,
+       "dist_at_first_active_m": 2.203,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.253,
+       "dist_at_first_active_m": 2.253,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.303,
+       "dist_at_first_active_m": 2.303,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.353,
+       "dist_at_first_active_m": 2.353,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.403,
+       "dist_at_first_active_m": 2.403,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.453,
+       "dist_at_first_active_m": 2.453,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.503,
+       "dist_at_first_active_m": 2.503,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.476,
+       "dist_at_first_active_m": 2.553,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 2.356,
+       "dist_at_first_active_m": 2.603,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 2.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 2.653,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 2.703,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 2.753,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 2.803,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 2.853,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 2.903,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 2.953,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.003,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.053,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.103,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.153,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.203,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.253,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.303,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.353,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.403,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.453,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.503,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.553,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.603,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.653,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.703,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    },
+    "combo_b": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 3.55,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "min_contact_distance_m": 0.487,
+     "contact_distance_at_min_placement_m": 0.591,
+     "via_histogram": {
+      "body": 23,
+      "weapon": 48
+     },
+     "max_target_push_m": 1.525,
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 0.93,
+       "target_pushed_m": 0.3,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.525,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.475,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.425,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.375,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.325,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.275,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.225,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.2,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.175,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.15,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.125,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.1,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1.05,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 1,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 0.95,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 0.9,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 0.85,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 0.8,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.591,
+       "dist_at_first_active_m": 0.591,
+       "target_pushed_m": 0.75,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.626,
+       "dist_at_first_active_m": 0.626,
+       "target_pushed_m": 0.7,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.604,
+       "dist_at_first_active_m": 0.676,
+       "target_pushed_m": 0.65,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.487,
+       "dist_at_first_active_m": 0.726,
+       "target_pushed_m": 0.6,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 96,
+       "dist_at_hit_m": 0.537,
+       "dist_at_first_active_m": 0.776,
+       "target_pushed_m": 0.55,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.754,
+       "dist_at_first_active_m": 0.826,
+       "target_pushed_m": 0.5,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.876,
+       "dist_at_first_active_m": 0.876,
+       "target_pushed_m": 0.45,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.926,
+       "dist_at_first_active_m": 0.926,
+       "target_pushed_m": 0.4,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 0.976,
+       "dist_at_first_active_m": 0.976,
+       "target_pushed_m": 0.35,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.026,
+       "dist_at_first_active_m": 1.026,
+       "target_pushed_m": 0.3,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.004,
+       "dist_at_first_active_m": 1.076,
+       "target_pushed_m": 0.25,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.054,
+       "dist_at_first_active_m": 1.126,
+       "target_pushed_m": 0.2,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.104,
+       "dist_at_first_active_m": 1.176,
+       "target_pushed_m": 0.15,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.154,
+       "dist_at_first_active_m": 1.226,
+       "target_pushed_m": 0.1,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.204,
+       "dist_at_first_active_m": 1.276,
+       "target_pushed_m": 0.05,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.087,
+       "dist_at_first_active_m": 1.326,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.137,
+       "dist_at_first_active_m": 1.376,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.187,
+       "dist_at_first_active_m": 1.426,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.237,
+       "dist_at_first_active_m": 1.476,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.287,
+       "dist_at_first_active_m": 1.526,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 1.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.337,
+       "dist_at_first_active_m": 1.576,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.387,
+       "dist_at_first_active_m": 1.626,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.437,
+       "dist_at_first_active_m": 1.676,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.487,
+       "dist_at_first_active_m": 1.726,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.537,
+       "dist_at_first_active_m": 1.776,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.587,
+       "dist_at_first_active_m": 1.826,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.637,
+       "dist_at_first_active_m": 1.876,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.687,
+       "dist_at_first_active_m": 1.926,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.737,
+       "dist_at_first_active_m": 1.976,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.787,
+       "dist_at_first_active_m": 2.026,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.652,
+       "dist_at_first_active_m": 2.076,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.702,
+       "dist_at_first_active_m": 2.126,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.752,
+       "dist_at_first_active_m": 2.176,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.802,
+       "dist_at_first_active_m": 2.226,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.852,
+       "dist_at_first_active_m": 2.276,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.902,
+       "dist_at_first_active_m": 2.326,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 1.952,
+       "dist_at_first_active_m": 2.376,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.002,
+       "dist_at_first_active_m": 2.426,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.052,
+       "dist_at_first_active_m": 2.476,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.102,
+       "dist_at_first_active_m": 2.526,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 2.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.152,
+       "dist_at_first_active_m": 2.576,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.202,
+       "dist_at_first_active_m": 2.626,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.124,
+       "dist_at_first_active_m": 2.676,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.174,
+       "dist_at_first_active_m": 2.726,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.224,
+       "dist_at_first_active_m": 2.776,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.274,
+       "dist_at_first_active_m": 2.826,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.324,
+       "dist_at_first_active_m": 2.876,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.374,
+       "dist_at_first_active_m": 2.926,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.424,
+       "dist_at_first_active_m": 2.976,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.474,
+       "dist_at_first_active_m": 3.026,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.524,
+       "dist_at_first_active_m": 3.076,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.551,
+       "dist_at_first_active_m": 3.126,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 96,
+       "dist_at_hit_m": 2.58,
+       "dist_at_first_active_m": 3.176,
+       "target_pushed_m": 0,
+       "hp_lost": 96
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.226,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.276,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.326,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.376,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.426,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.476,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.526,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.576,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "dist_at_first_active_m": 3.626,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    }
+   },
+   "player": {
+    "dagger": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 0.95,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "via_histogram": {
+      "body": 14,
+      "weapon": 5
+     },
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0.312,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.575,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.525,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.475,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.425,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.375,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.325,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.275,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.25,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.225,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.2,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.175,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 0.15,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.589,
+       "target_pushed_m": 0.1,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 14,
+       "dist_at_hit_m": 0.616,
+       "target_pushed_m": 0.05,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 14,
+       "dist_at_hit_m": 0.666,
+       "target_pushed_m": 0,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 14,
+       "dist_at_hit_m": 0.716,
+       "target_pushed_m": 0,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 14,
+       "dist_at_hit_m": 0.766,
+       "target_pushed_m": 0,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 14,
+       "dist_at_hit_m": 0.804,
+       "target_pushed_m": 0,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 14,
+       "dist_at_hit_m": 0.854,
+       "target_pushed_m": 0,
+       "hp_lost": 14
+      },
+      {
+       "placed_m": 1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    },
+    "straight-sword": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 1.8,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "via_histogram": {
+      "body": 15,
+      "weapon": 21
+     },
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0.322,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.775,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.725,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.675,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.625,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.575,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.525,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.475,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.45,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.425,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.4,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.375,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.35,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.601,
+       "target_pushed_m": 0.3,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.571,
+       "target_pushed_m": 0.25,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 63,
+       "dist_at_hit_m": 0.579,
+       "target_pushed_m": 0.2,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.603,
+       "target_pushed_m": 0.15,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.653,
+       "target_pushed_m": 0.1,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.703,
+       "target_pushed_m": 0.05,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.753,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.803,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.853,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.903,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 0.953,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.003,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.053,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.103,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.153,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.203,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.244,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.294,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.344,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.394,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.444,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.494,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.544,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 63,
+       "dist_at_hit_m": 1.594,
+       "target_pushed_m": 0,
+       "hp_lost": 63
+      },
+      {
+       "placed_m": 1.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    },
+    "spear": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 1.75,
+     "contiguous": false,
+     "interior_gaps_m": [
+      1.2,
+      1.25
+     ],
+     "via_histogram": {
+      "body": 23,
+      "weapon": 10
+     },
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0.329,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.002,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.952,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.902,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.852,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.802,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.752,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.702,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.677,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.652,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.627,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.602,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.577,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.527,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.608,
+       "target_pushed_m": 0.477,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.572,
+       "target_pushed_m": 0.427,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.528,
+       "target_pushed_m": 0.377,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.578,
+       "target_pushed_m": 0.327,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.567,
+       "target_pushed_m": 0.277,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.617,
+       "target_pushed_m": 0.227,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.564,
+       "target_pushed_m": 0.177,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.614,
+       "target_pushed_m": 0.127,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.574,
+       "target_pushed_m": 0.077,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 57,
+       "dist_at_hit_m": 0.624,
+       "target_pushed_m": 0.027,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.245,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.295,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.345,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.395,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.445,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.495,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.545,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.595,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.645,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 57,
+       "dist_at_hit_m": 1.695,
+       "target_pushed_m": 0,
+       "hp_lost": 57
+      },
+      {
+       "placed_m": 1.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    },
+    "greatsword": {
+     "min_placed_m": 0,
+     "max_placed_m": 2.1,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "via_histogram": {
+      "weapon": 21,
+      "body": 22
+     },
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.628,
+       "target_pushed_m": 0.327,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.34,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.29,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.24,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.19,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.14,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.09,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.04,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 1.015,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.99,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.965,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.94,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.915,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.598,
+       "target_pushed_m": 0.865,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.562,
+       "target_pushed_m": 0.815,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.557,
+       "target_pushed_m": 0.765,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.541,
+       "target_pushed_m": 0.715,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.665,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.573,
+       "target_pushed_m": 0.615,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.559,
+       "target_pushed_m": 0.565,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.609,
+       "target_pushed_m": 0.515,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.607,
+       "target_pushed_m": 0.465,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 157,
+       "dist_at_hit_m": 0.622,
+       "target_pushed_m": 0.415,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.672,
+       "target_pushed_m": 0.365,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.722,
+       "target_pushed_m": 0.315,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.772,
+       "target_pushed_m": 0.265,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.812,
+       "target_pushed_m": 0.215,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.862,
+       "target_pushed_m": 0.165,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.912,
+       "target_pushed_m": 0.115,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.933,
+       "target_pushed_m": 0.065,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 0.983,
+       "target_pushed_m": 0.015,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.033,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.083,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.133,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.183,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.233,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.283,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.333,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.383,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 1.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.433,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.483,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 2.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.533,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 2.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 157,
+       "dist_at_hit_m": 1.522,
+       "target_pushed_m": 0,
+       "hp_lost": 157
+      },
+      {
+       "placed_m": 2.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    },
+    "halberd": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 1.9,
+     "contiguous": false,
+     "interior_gaps_m": [
+      1.15,
+      1.2,
+      1.25,
+      1.3
+     ],
+     "via_histogram": {
+      "body": 22,
+      "weapon": 12
+     },
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0.319,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.897,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.847,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.797,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.747,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.697,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.647,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.597,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.572,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.547,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.522,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.497,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.472,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.605,
+       "target_pushed_m": 0.422,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.58,
+       "target_pushed_m": 0.372,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.587,
+       "target_pushed_m": 0.322,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.595,
+       "target_pushed_m": 0.272,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.61,
+       "target_pushed_m": 0.222,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.631,
+       "target_pushed_m": 0.172,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.622,
+       "target_pushed_m": 0.122,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.626,
+       "target_pushed_m": 0.072,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.631,
+       "target_pushed_m": 0.022,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 110,
+       "dist_at_hit_m": 0.648,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.06,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.131,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.181,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.231,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.281,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.331,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.381,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.431,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.481,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.531,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.581,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 110,
+       "dist_at_hit_m": 1.631,
+       "target_pushed_m": 0,
+       "hp_lost": 110
+      },
+      {
+       "placed_m": 1.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    },
+    "ultra-greatsword": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 2.8,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "via_histogram": {
+      "body": 17,
+      "weapon": 39
+     },
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0.33,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.972,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.922,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.872,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.822,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.772,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.722,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.672,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.647,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.622,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.597,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.572,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.547,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.497,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.585,
+       "target_pushed_m": 1.447,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.595,
+       "target_pushed_m": 1.397,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.541,
+       "target_pushed_m": 1.347,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 239,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 1.297,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.564,
+       "target_pushed_m": 1.247,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.614,
+       "target_pushed_m": 1.197,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.664,
+       "target_pushed_m": 1.147,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.714,
+       "target_pushed_m": 1.097,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.678,
+       "target_pushed_m": 1.047,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.728,
+       "target_pushed_m": 0.997,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.778,
+       "target_pushed_m": 0.947,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.828,
+       "target_pushed_m": 0.897,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.878,
+       "target_pushed_m": 0.847,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.928,
+       "target_pushed_m": 0.797,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 0.978,
+       "target_pushed_m": 0.747,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.028,
+       "target_pushed_m": 0.697,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.078,
+       "target_pushed_m": 0.647,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.039,
+       "target_pushed_m": 0.597,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.089,
+       "target_pushed_m": 0.547,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.139,
+       "target_pushed_m": 0.497,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.189,
+       "target_pushed_m": 0.447,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.239,
+       "target_pushed_m": 0.397,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.289,
+       "target_pushed_m": 0.347,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.85,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.339,
+       "target_pushed_m": 0.297,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.9,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.389,
+       "target_pushed_m": 0.247,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 1.95,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.439,
+       "target_pushed_m": 0.197,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.489,
+       "target_pushed_m": 0.147,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.539,
+       "target_pushed_m": 0.097,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.589,
+       "target_pushed_m": 0.047,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.639,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.689,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.739,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.789,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.839,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.889,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.939,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 1.989,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 2.039,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 2.089,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.65,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 2.139,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.7,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 2.104,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.75,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 2.154,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 239,
+       "dist_at_hit_m": 2.204,
+       "target_pushed_m": 0,
+       "hp_lost": 239
+      },
+      {
+       "placed_m": 2.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    },
+    "axe": {
+     "min_placed_m": 0.05,
+     "max_placed_m": 1.55,
+     "contiguous": true,
+     "interior_gaps_m": [],
+     "via_histogram": {
+      "body": 19,
+      "weapon": 12
+     },
+     "row": [
+      {
+       "placed_m": 0,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0.315,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 0.05,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.74,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.1,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.69,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.15,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.64,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.2,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.59,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.25,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.54,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.3,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.49,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.35,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.44,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.4,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.415,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.45,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.39,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.5,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.365,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.55,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.34,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.6,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.591,
+       "target_pushed_m": 0.315,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.65,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.589,
+       "target_pushed_m": 0.265,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.7,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.577,
+       "target_pushed_m": 0.215,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.75,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.599,
+       "target_pushed_m": 0.165,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.8,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.632,
+       "target_pushed_m": 0.115,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.85,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.676,
+       "target_pushed_m": 0.065,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.9,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.705,
+       "target_pushed_m": 0.015,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 0.95,
+       "hit": true,
+       "via": "body",
+       "dmg": 88,
+       "dist_at_hit_m": 0.72,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 0.805,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.05,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 0.855,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.1,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 0.905,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.15,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 0.955,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 1.005,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.25,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 1.055,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.3,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 1.105,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.35,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 1.155,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 1.205,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.45,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 1.255,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.5,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 1.305,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.55,
+       "hit": true,
+       "via": "weapon",
+       "dmg": 88,
+       "dist_at_hit_m": 1.355,
+       "target_pushed_m": 0,
+       "hp_lost": 88
+      },
+      {
+       "placed_m": 1.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 1.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 2.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.05,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.1,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.15,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.2,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.25,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.3,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.35,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.45,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.5,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.55,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.6,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.65,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.7,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.75,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.8,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.85,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.9,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 3.95,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      },
+      {
+       "placed_m": 4,
+       "hit": false,
+       "via": null,
+       "dmg": null,
+       "dist_at_hit_m": null,
+       "target_pushed_m": 0,
+       "hp_lost": 0
+      }
+     ]
+    }
+   }
+  },
+  "rootdz": {
+   "root_dz=0": {
+    "chop": {
+     "min_placed_m": 0.1,
+     "max_placed_m": 2.6,
+     "via_histogram": {
+      "weapon": 26
+     },
+     "body_hits": 0,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    },
+    "thrust": {
+     "min_placed_m": 0.8,
+     "max_placed_m": 2.4,
+     "via_histogram": {
+      "weapon": 17
+     },
+     "body_hits": 0,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    },
+    "combo_a": {
+     "min_placed_m": 0.8,
+     "max_placed_m": 2.5,
+     "via_histogram": {
+      "weapon": 18
+     },
+     "body_hits": 0,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    },
+    "combo_b": {
+     "min_placed_m": 0.8,
+     "max_placed_m": 2.6,
+     "via_histogram": {
+      "weapon": 19
+     },
+     "body_hits": 0,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    }
+   },
+   "root_dz=0.3": {
+    "chop": {
+     "min_placed_m": 0,
+     "max_placed_m": 2.9,
+     "via_histogram": {
+      "body": 9,
+      "weapon": 21
+     },
+     "body_hits": 9,
+     "hit_at_0m": true,
+     "via_at_0m": "body"
+    },
+    "thrust": {
+     "min_placed_m": 0.1,
+     "max_placed_m": 2.7,
+     "via_histogram": {
+      "body": 9,
+      "weapon": 18
+     },
+     "body_hits": 9,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    },
+    "combo_a": {
+     "min_placed_m": 0.1,
+     "max_placed_m": 2.6,
+     "via_histogram": {
+      "body": 8,
+      "weapon": 18
+     },
+     "body_hits": 8,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    },
+    "combo_b": {
+     "min_placed_m": 0.1,
+     "max_placed_m": 2.8,
+     "via_histogram": {
+      "body": 8,
+      "weapon": 20
+     },
+     "body_hits": 8,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    }
+   },
+   "root_dz=1.2": {
+    "chop": {
+     "min_placed_m": 0.1,
+     "max_placed_m": 3,
+     "via_histogram": {
+      "body": 11,
+      "weapon": 19
+     },
+     "body_hits": 11,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    },
+    "thrust": {
+     "min_placed_m": 0.1,
+     "max_placed_m": 3,
+     "via_histogram": {
+      "body": 13,
+      "weapon": 17
+     },
+     "body_hits": 13,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    },
+    "combo_a": {
+     "min_placed_m": 0.1,
+     "max_placed_m": 3,
+     "via_histogram": {
+      "body": 11,
+      "weapon": 19
+     },
+     "body_hits": 11,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    },
+    "combo_b": {
+     "min_placed_m": 0.1,
+     "max_placed_m": 3,
+     "via_histogram": {
+      "body": 12,
+      "weapon": 18
+     },
+     "body_hits": 12,
+     "hit_at_0m": false,
+     "via_at_0m": null
+    }
+   }
+  },
+  "turtle": {
+   "mashing": [
+    {
+     "stand_m": 0,
+     "frames": 2418,
+     "seconds": 40.3,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 545,
+     "player_hp_max": 620,
+     "damage_fraction": 0.121,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 13,
+     "hits_on_player": 1,
+     "hits_by": {
+      "body": 1
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 0.2,
+     "frames": 3388,
+     "seconds": 56.5,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 23,
+     "player_hp_max": 620,
+     "damage_fraction": 0.963,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 15,
+     "hits_on_player": 7,
+     "hits_by": {
+      "body": 7
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 0.4,
+     "frames": 3388,
+     "seconds": 56.5,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 23,
+     "player_hp_max": 620,
+     "damage_fraction": 0.963,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 15,
+     "hits_on_player": 7,
+     "hits_by": {
+      "body": 7
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 0.6,
+     "frames": 3388,
+     "seconds": 56.5,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 23,
+     "player_hp_max": 620,
+     "damage_fraction": 0.963,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 15,
+     "hits_on_player": 7,
+     "hits_by": {
+      "body": 7
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 0.8,
+     "frames": 2369,
+     "seconds": 39.5,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 257,
+     "player_hp_max": 620,
+     "damage_fraction": 0.585,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 10,
+     "hits_on_player": 4,
+     "hits_by": {
+      "body": 4
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 1,
+     "frames": 2369,
+     "seconds": 39.5,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 257,
+     "player_hp_max": 620,
+     "damage_fraction": 0.585,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 10,
+     "hits_on_player": 4,
+     "hits_by": {
+      "body": 4
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 1.2,
+     "frames": 2369,
+     "seconds": 39.5,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 257,
+     "player_hp_max": 620,
+     "damage_fraction": 0.585,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 10,
+     "hits_on_player": 4,
+     "hits_by": {
+      "body": 4
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 1.5,
+     "frames": 3388,
+     "seconds": 56.5,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 23,
+     "player_hp_max": 620,
+     "damage_fraction": 0.963,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 15,
+     "hits_on_player": 7,
+     "hits_by": {
+      "body": 7
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 2,
+     "frames": 2677,
+     "seconds": 44.6,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 161,
+     "player_hp_max": 620,
+     "damage_fraction": 0.74,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 12,
+     "hits_on_player": 5,
+     "hits_by": {
+      "weapon": 1,
+      "body": 4
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 2.6,
+     "frames": 2649,
+     "seconds": 44.1,
+     "player_died": false,
+     "enemy_killed": true,
+     "player_hp_left": 98,
+     "player_hp_max": 620,
+     "damage_fraction": 0.842,
+     "enemy_hp_left": 0,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 12,
+     "hits_on_player": 6,
+     "hits_by": {
+      "weapon": 1,
+      "body": 5
+     },
+     "player_min_stamina": 96
+    },
+    {
+     "stand_m": 3.2,
+     "frames": 2565,
+     "seconds": 42.8,
+     "player_died": true,
+     "enemy_killed": false,
+     "player_hp_left": 0,
+     "player_hp_max": 620,
+     "damage_fraction": 1,
+     "enemy_hp_left": 517,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 13,
+     "hits_on_player": 8,
+     "hits_by": {
+      "weapon": 1,
+      "body": 7
+     },
+     "player_min_stamina": 96
+    }
+   ],
+   "passive": [
+    {
+     "passive": true,
+     "stand_m": 0.4,
+     "frames": 1416,
+     "seconds": 23.6,
+     "player_died": true,
+     "enemy_killed": false,
+     "player_hp_left": 0,
+     "player_hp_max": 620,
+     "damage_fraction": 1,
+     "enemy_hp_left": 2876,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 7,
+     "hits_on_player": 7,
+     "hits_by": {
+      "body": 7
+     },
+     "player_min_stamina": 120
+    },
+    {
+     "passive": true,
+     "stand_m": 0.8,
+     "frames": 1416,
+     "seconds": 23.6,
+     "player_died": true,
+     "enemy_killed": false,
+     "player_hp_left": 0,
+     "player_hp_max": 620,
+     "damage_fraction": 1,
+     "enemy_hp_left": 2876,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 7,
+     "hits_on_player": 7,
+     "hits_by": {
+      "body": 7
+     },
+     "player_min_stamina": 120
+    },
+    {
+     "passive": true,
+     "stand_m": 1.2,
+     "frames": 1416,
+     "seconds": 23.6,
+     "player_died": true,
+     "enemy_killed": false,
+     "player_hp_left": 0,
+     "player_hp_max": 620,
+     "damage_fraction": 1,
+     "enemy_hp_left": 2876,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 7,
+     "hits_on_player": 7,
+     "hits_by": {
+      "weapon": 1,
+      "body": 6
+     },
+     "player_min_stamina": 120
+    },
+    {
+     "passive": true,
+     "stand_m": 2,
+     "frames": 1416,
+     "seconds": 23.6,
+     "player_died": true,
+     "enemy_killed": false,
+     "player_hp_left": 0,
+     "player_hp_max": 620,
+     "damage_fraction": 1,
+     "enemy_hp_left": 2876,
+     "enemy_hp_max": 2876,
+     "enemy_swings": 7,
+     "hits_on_player": 7,
+     "hits_by": {
+      "weapon": 1,
+      "body": 6
+     },
+     "player_min_stamina": 120
+    }
+   ]
+  }
+ }
+}

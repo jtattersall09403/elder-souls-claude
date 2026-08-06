@@ -1,0 +1,99 @@
+{
+  "on_axis": {
+    "spell": "marshfire",
+    "target_at": [
+      0,
+      0,
+      14
+    ],
+    "bearing_deg": 0,
+    "declared_turn_dps": 60,
+    "declared_cutoff_f": 53,
+    "arc_readable_from_harness": false,
+    "hit": true,
+    "damage": 53,
+    "geometry": {
+      "kind": "projectile",
+      "radius_m": 0.22,
+      "speed_mps": 16,
+      "turn_rate_dps": 60,
+      "tracking_cutoff": 0.35,
+      "lifetime_s": 2.5
+    }
+  },
+  "off_axis_15": {
+    "spell": "marshfire",
+    "target_at": [
+      3.6234666314352904,
+      0,
+      13.522961568046956
+    ],
+    "bearing_deg": 15,
+    "declared_turn_dps": 60,
+    "declared_cutoff_f": 53,
+    "arc_readable_from_harness": false,
+    "hit": true,
+    "damage": 53,
+    "geometry": {
+      "kind": "projectile",
+      "radius_m": 0.22,
+      "speed_mps": 16,
+      "turn_rate_dps": 60,
+      "tracking_cutoff": 0.35,
+      "lifetime_s": 2.5
+    }
+  },
+  "off_axis_30": {
+    "spell": "marshfire",
+    "target_at": [
+      6.999999999999999,
+      0,
+      12.124355652982143
+    ],
+    "bearing_deg": 30,
+    "declared_turn_dps": 60,
+    "declared_cutoff_f": 53,
+    "arc_readable_from_harness": false,
+    "hit": false,
+    "damage": 0,
+    "geometry": {
+      "kind": "projectile",
+      "radius_m": 0.22,
+      "speed_mps": 16,
+      "turn_rate_dps": 60,
+      "tracking_cutoff": 0.35,
+      "lifetime_s": 2.5
+    }
+  },
+  "declared_zero_turn": {
+    "spell": "spark_dart",
+    "target_at": [
+      0,
+      0,
+      14
+    ],
+    "bearing_deg": 0,
+    "declared_turn_dps": 0,
+    "declared_cutoff_f": 0,
+    "arc_readable_from_harness": false,
+    "hit": true,
+    "damage": 17,
+    "geometry": {
+      "kind": "projectile",
+      "radius_m": 0.14,
+      "speed_mps": 22,
+      "turn_rate_dps": 0,
+      "tracking_cutoff": null,
+      "lifetime_s": 1.5
+    }
+  },
+  "cone_deg": null,
+  "ar1_a2_damage": {
+    "n": 30,
+    "distinct": [
+      53
+    ],
+    "mean": 53,
+    "stdev": 0
+  }
+}

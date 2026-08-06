@@ -1,15 +1,34 @@
 {
-  "task_id": "W1-15-r2-critic",
-  "brief": "critic round 2 for W1-15 stealth and crime",
-  "started": "wave-1 round 2",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/90-verdicts/wave1/W1-15-r2.json",
-    "corpus/90-verdicts/wave1/W1-15-r2.md",
-    "corpus/90-verdicts/wave1/artifacts/W1-15-r2/"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "confirm boot with tools/harness/smoke.mjs; read ARBITRATION S21/S13/S22, RI-MTH07, SCORING S0, round-1 verdict",
-  "notes_for_successor": ""
+ "task_id": "W1-15-r2-critic",
+ "brief": "critic round 2 for W1-15 stealth and crime",
+ "started": "wave-1 round 2",
+ "state": "writing",
+ "outputs_expected": [
+  "corpus/90-verdicts/wave1/W1-15-r2.json",
+  "corpus/90-verdicts/wave1/W1-15-r2.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-15-r2/"
+ ],
+ "outputs_written": [],
+ "findings": [
+  "BOOT OK: tools/harness/smoke.mjs 6/6; game boots with 0 page errors in all five critic probes.",
+  "COUPLING SURVIVES INDEPENDENT MEASUREMENT. My own instrument (kritik-perception.mjs, written from RI-STL01 not from the builder's probe) reproduces RI-STL01 \u00a72's five rows at 1.0167/3.95/8.45/26.65/26.65 s vs the item's 1.03/3.94/8.5/26.7/26.7 \u2014 worst error 1.29%. coupling |26.65-1.0167|/|26.7-1.03| = 0.9986. Round 1 was 0.00.",
+  "EACH INPUT OF V IS INDEPENDENTLY LIVE. Measured fill = 150*V*(1-d/R)*cone to 4 s.f. across L(0.04/0.35/1.0), M(still/walk/sprint), S(5/100), E(light/medium/heavy/overloaded), A(cover), d(2/8/14/15.9 m) and bearing(0/40/57/70/170 deg). Rear arc 0.000, statblock half-cone 60 deg governs over detection.json's 100 deg peripheral, peripheral scale 0.35 and its 70 cap both hold exactly.",
+  "RI-STL01 \u00a72's STATED EXPONENT IS WRONG AND THE BUILD IS RIGHT. gamma 0.7 cannot produce the item's own worked table; 1.36 produces all five rows. I derived this independently before finding it already filed in detection.json.visibility.light_exponent_defect and AMENDMENT-W1-15-01 \u00a71.",
+  "M4 no-proximity-leak CONFIRMED with a discriminator the builder did not run: 1.0 m behind a stationary enemy, still/unlit/Sneak 100 -> peak alert 0.000 over 3,600 f; the SAME position with the enemy turned round -> 7.03/s. crouch-move behind at 1 m (r_eff 0.656 m) silent; walk behind at 1 m (r_eff 1.575 m) -> AGGRO on `hearing`.",
+  "WITNESSES DERIVE WITH TWO CLEAN NULL CONTROLS: theft with nobody present -> crime null, bounty 0 after 60 s; theft with a civilian 3 m away who is turned away AND behind an occluder -> crime null, bounty 0. 120 m guard -> run_to_guard, bounty 21 g at 34.43 s; 20 m guard -> guard_witness, 0.017 s. bribe 42 g -> bounty 0.",
+  "GUARD BAND COUPLING 1: bounty 0 -> band 0, entity SUSPICIOUS via `sight`; bounty 3000 -> band 3 attack_on_sight, weapon_drawn, entity alert 100 channel `bounty`. Real AR-3 crossing.",
+  "DEFECT: S-1's PLAUSIBLE SET IS UNREACHABLE. `plan: []` and `visited: []` in every configuration measured (4 placements). plausibleSet() vetoes any volume whose LKP->volume segment crosses the searcher's own cone, and the searcher is BY CONSTRUCTION looking at the LKP, whose bearing from the searcher is 0 deg. Geometry: for a searcher at distance D looking at the LKP, a point at radius r<=8 m from the LKP subtends arccos(|sin(phi/2)|) and every sampled point near the LKP end of the segment is at ~0 deg. RI-STL01 \u00a77 S-1's headline behaviour never runs.",
+  "DEFECT: guard_legion's parley is a FREE WIN. gold_price 0 and base_disposition 35 make the GOLD ground pass unconditionally: measured, an aggro'd band-3 guard_legion at 3 m YIELDS at full HP (520/520) on one `interact`, with gold 0, stamina 120->120, bounty 3000 -> 3000, jail null. inf_trash (gold_price 180) correctly REFUSES cold and correctly ACCEPTS after learnTopic('the-drowned-ford') \u2014 so the grounds work and the guard's data value is what breaks it.",
+  "DEFECT: ctx.world.gold is never wired to any purse. getCombatState().world_knowledge.gold reads 0 with 400 g in getStealthState() and 405 g in progression after a fence sale. The GOLD parley ground is therefore unusable when priced and unconditional when priced 0.",
+  "DEFECT: guard_legion declares ai 'hold_ground', and combat/enemy.js only runs a script for ai==='scripted'. An AGGRO guard_legion at 2.0 m for 900 frames deals 0 damage and never leaves REPOSITION. RI-CRM01 \u00a74 band 3 'attack_on_sight' has no attack behind it, and the parley's 78 f commitment is unpunishable against the only enemy that carries the surrender.",
+  "DEFECT: the 12 authored quest routes are NOT in the tree. Commit 4a5f13f \u2014 the commit whose message claims them \u2014 only touched game/data/quests/magic-utility.json, net -179/+5, and the diff DELETES 6 sneak and 3 steal resolutions (q_mag_03__sneak, q_mag_05__steal, q_mag_11__sneak, q_mag_13__steal, mag_the_hollow_count__sneak, q_mag_16__sneak, mag_the_far_exit__sneak, q_mag_21__sneak, q_mag_24__steal). At 4a5f13f^ the census is sneak 13 / steal 8 / VERB-SPREAD 24.7% \u2014 the builder's exact figures. At HEAD it is sneak 7 / steal 5 / VERB-SPREAD 27.3%, confirmed live by H.questVerbCensus(). Only 5 `added_by: W1-15-r2` markers survive, all in blackmarsh-*.json.",
+  "DEFECT: 0 tier-1 locks (2:56, 3:120, 4:48, 5:11 over 235) AND a starting character (Security 5 / Agility 20) is gated out of tiers 2-5 \u2014 measured lockGate() offers tier 1 only. The ward-collar, the best thing in round 1, is unreachable in play until Security 20.",
+  "DEAD CODE STILL PRESENT: sim/entities.js stepEntities() is still exported, still contains `e.alert = min(100, e.alert+4)`, and is still called from nowhere in sim/step.js. The trap that cost round 1 a whole cycle is still lying in the tree.",
+  "NO REGRESSION on the round-1 passes: ward-collar opens a tier-3 lock in 154 f with 3 presses and rng.draws 0->0; 719 authored ward angles over 235 locks, chi2 226.1 on 35 df (mine, recomputed); pickpocket draws EXACTLY 1 per attempt (60 draws / 60 attempts) with caught 51/60 at Sneak 5 (p 0.850) and 21/60 at Sneak 50 (p 0.378), and a caught pickpocket creates a crime, a witness, a report and a 100 g bounty; Security refusal gate names the shortfall per tier.",
+  "Cover derived from geometry confirmed independently: coverAt open field 0/12 blocked A=1.00; three-walled alcove 11/12 blocked A=0.80, V 0.3373 -> 0.2699, in_cover_source derived_from_geometry.",
+  "Fence launder works with a real id (fence.lilmoth.rot-hookline): 5 g, laundered_by set, persists to save. getCrimeState() does not expose the fence roster, so the ids are undiscoverable from the harness.",
+  "PROBE BUG WORTH RECORDING FOR SUCCESSORS: setEntityPos() silently ignores opts.yaw; only spawn() honours it. And queueInputs() frame numbers are RELATIVE to the current frame, not absolute."
+ ],
+ "next_step": "write corpus/90-verdicts/wave1/W1-15-r2.json + .md, validate",
+ "notes_for_successor": ""
 }

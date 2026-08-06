@@ -1,0 +1,210 @@
+{
+ "schema": "elder-souls/critic-static@1",
+ "piece": "W1-15",
+ "round": 2,
+ "head": "93f3d2d",
+ "locks": {
+  "zones": 233,
+  "objects": 1878,
+  "locks": 235,
+  "tiers": {
+   "2": 56,
+   "3": 120,
+   "4": 48,
+   "5": 11
+  },
+  "ward_angles": 719,
+  "distinct_angles": 120,
+  "chi2": 226.1,
+  "df": 35,
+  "crit_0_05": 49.8,
+  "tier1_instances": 0,
+  "note": "A starting character (Security 5 / Agility 20) is offered tier 1 only — measured via lockGate() in kritik-regress.json — and there are no tier-1 locks in the world."
+ },
+ "sound_table": {
+  "item_left_column": {
+   "sprint": 36.2,
+   "walk": 15.5,
+   "crouch_move": 6.5
+  },
+  "built_left_column": {
+   "sprint": 36.309,
+   "walk": 15.561,
+   "crouch_move": 6.484
+  },
+  "item_right_column": {
+   "sprint": 5.5,
+   "walk": 2.4,
+   "crouch_move": 1
+  },
+  "built_right_column": {
+   "sprint": 3.675,
+   "walk": 1.575,
+   "crouch_move": 0.656
+  },
+  "finding": "RI-STL01 §4's LEFT column is reproduced exactly by §4's own formula and constants (36.31 / 15.55 / 6.48 against 36.2 / 15.5 / 6.5). Its RIGHT column is not: the item's ratios are a flat 0.393-0.400 of r_base, while E_sound(light) x S_sound(100) x surface(mud) = 0.75 x 0.50 x 0.70 = 0.2625. The build implements the formula; the item's own table cannot be produced from it. Neither round-1 nor round-2 filed this. It is a THIRD arithmetic defect in RI-STL01, alongside AMENDMENT-W1-15-01 §1 (the light exponent) and §5 (the base fill rate)."
+ },
+ "quests": {
+  "at_HEAD": {
+   "quests": 33,
+   "nonviolent_resolutions": 88,
+   "verb_spread_pct": 27.3,
+   "quests_with_sneak": 7,
+   "quests_with_steal": 5,
+   "verbs": {
+    "confess": 6,
+    "sneak": 7,
+    "trade": 12,
+    "lore_knowledge": 6,
+    "refuse": 3,
+    "steal": 5,
+    "intimidate": 3,
+    "betray": 3,
+    "persuade": 9,
+    "wait": 6,
+    "magic_utility": 24,
+    "bribe": 4
+   }
+  },
+  "at_4a5f13f_parent": {
+   "quests": 33,
+   "nonviolent_resolutions": 97,
+   "verb_spread_pct": 24.7,
+   "quests_with_sneak": 13,
+   "quests_with_steal": 8,
+   "verbs": {
+    "confess": 6,
+    "sneak": 13,
+    "trade": 12,
+    "lore_knowledge": 6,
+    "refuse": 3,
+    "steal": 8,
+    "intimidate": 3,
+    "betray": 3,
+    "persuade": 9,
+    "wait": 6,
+    "magic_utility": 24,
+    "bribe": 4
+   }
+  },
+  "round2_commit_touched": "game/data/quests/magic-utility.json | 184 +-----------------------------------\n 1 file changed, 5 insertions(+), 179 deletions(-)",
+  "deleted_by_that_commit": "9",
+  "surviving_added_by_markers": "game/data/quests/blackmarsh-core.json:3\ngame/data/quests/blackmarsh-coast.json:2",
+  "finding": "The builder reports 'sneak 6 -> 13 quests, steal 3 -> 8, VERB-SPREAD 24.7%'. Those figures are exactly reproducible at 4a5f13f^ and are NOT reproducible at HEAD. The commit that claims them touched only magic-utility.json, net -179/+5, and DELETED six `sneak` and three `steal` resolutions from it. Nine of the twelve authored routes are gone."
+ },
+ "dead_code": {
+  "entities_js_exports_stepEntities": true,
+  "entities_js_still_has_flat_fill": true,
+  "step_js_calls_stepEntities": false,
+  "finding": "The round-1 verdict named sim/entities.js as the call site to fix. It was dead then and it is dead now — but it is STILL EXPORTED and still contains the flat +4/frame meter. The second perception implementation that cost round 1 a whole cycle is still lying in the tree for the next reader."
+ },
+ "parley_roster": {
+  "roster": [
+   {
+    "id": "beast_slitherfang",
+    "archetype": "BEAST",
+    "parley": null
+   },
+   {
+    "id": "cam_boss_great",
+    "archetype": "DUMMY",
+    "parley": null
+   },
+   {
+    "id": "cam_boss_mid",
+    "archetype": "DUMMY",
+    "parley": null
+   },
+   {
+    "id": "cam_elite",
+    "archetype": "DUMMY",
+    "parley": null
+   },
+   {
+    "id": "cam_levy",
+    "archetype": "DUMMY",
+    "parley": null
+   },
+   {
+    "id": "cam_rat",
+    "archetype": "DUMMY",
+    "parley": null
+   },
+   {
+    "id": "champion_hist_marked",
+    "archetype": "INFANTRY",
+    "parley": {
+     "grounds": [
+      "name",
+      "faction",
+      "gold"
+     ],
+     "gold_price": 900,
+     "base_disposition": 10,
+     "rank_required": 6,
+     "true_name_topic": "the-drowned-ford",
+     "honour_bound": true
+    }
+   },
+   {
+    "id": "cst_sap_speaker",
+    "archetype": "CASTER",
+    "parley": null
+   },
+   {
+    "id": "drowned_greater",
+    "archetype": "INFANTRY",
+    "parley": null
+   },
+   {
+    "id": "drowned_lesser",
+    "archetype": "INFANTRY",
+    "parley": null
+   },
+   {
+    "id": "dummy_passive",
+    "archetype": "DUMMY",
+    "parley": null
+   },
+   {
+    "id": "guard_legion",
+    "archetype": "INFANTRY",
+    "parley": {
+     "grounds": [
+      "yield",
+      "gold",
+      "faction"
+     ],
+     "gold_price": 0,
+     "base_disposition": 35,
+     "rank_required": 3,
+     "true_name_topic": null,
+     "honour_bound": false
+    }
+   },
+   {
+    "id": "inf_trash",
+    "archetype": "INFANTRY",
+    "parley": {
+     "grounds": [
+      "name",
+      "faction",
+      "gold",
+      "yield"
+     ],
+     "gold_price": 180,
+     "base_disposition": 35,
+     "rank_required": 2,
+     "true_name_topic": "the-drowned-ford",
+     "honour_bound": false
+    }
+   },
+   {
+    "id": "probe_pulse",
+    "archetype": "FIXTURE",
+    "parley": null
+   }
+  ],
+  "finding": "guard_legion — the enemy this piece shipped — declares gold_price 0 with base_disposition 35. combat/parley.js testGround('GOLD') passes when gold >= price AND disposition >= 20, so 0 >= 0 and 35 >= 20 make the GOLD ground UNCONDITIONAL. inf_trash (gold_price 180) and champion_hist_marked (900, honour_bound) are gated correctly, which is how we know the mechanism is right and the datum is wrong."
+ }
+}

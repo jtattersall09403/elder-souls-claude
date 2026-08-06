@@ -1,0 +1,129 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "round": 2,
+  "part": "pickpocket",
+  "blocks": {
+    "rows": [
+      {
+        "sneak": 5,
+        "caught_of_60": 51,
+        "clean": 9,
+        "rng_draws_total": 60,
+        "draws_per_attempt": 1,
+        "sample": {
+          "beg": {
+            "need_f": 152,
+            "T_s": 2.5300000000000002
+          },
+          "ev": [
+            {
+              "type": "pickpocket",
+              "frame": 152,
+              "caught": true,
+              "notice_chance": 0.85,
+              "draws": 1
+            },
+            {
+              "type": "crime",
+              "crime": "pickpocket_caught",
+              "crime_ref": 1,
+              "frame": 152,
+              "jurisdiction": "imperial",
+              "quote_g": 100,
+              "lawful": false
+            },
+            {
+              "type": "witness",
+              "eid": "target",
+              "crime_ref": 1,
+              "frame": 152,
+              "identified": true,
+              "kind": "sight"
+            },
+            {
+              "type": "report",
+              "kind": "unlawful",
+              "crime_ref": 1,
+              "eid": "target",
+              "frame": 152,
+              "bounty_delta": 100,
+              "attributed": "player"
+            }
+          ]
+        }
+      },
+      {
+        "sneak": 50,
+        "caught_of_60": 21,
+        "clean": 39,
+        "rng_draws_total": 60,
+        "draws_per_attempt": 1,
+        "sample": {
+          "beg": {
+            "need_f": 114,
+            "T_s": 1.9
+          },
+          "ev": [
+            {
+              "type": "pickpocket",
+              "frame": 114,
+              "caught": true,
+              "notice_chance": 0.378129,
+              "draws": 1
+            },
+            {
+              "type": "crime",
+              "crime": "pickpocket_caught",
+              "crime_ref": 1,
+              "frame": 114,
+              "jurisdiction": "imperial",
+              "quote_g": 100,
+              "lawful": false
+            },
+            {
+              "type": "witness",
+              "eid": "target",
+              "crime_ref": 1,
+              "frame": 114,
+              "identified": true,
+              "kind": "sight"
+            },
+            {
+              "type": "report",
+              "kind": "unlawful",
+              "crime_ref": 1,
+              "eid": "target",
+              "frame": 114,
+              "bounty_delta": 100,
+              "attributed": "player"
+            }
+          ]
+        }
+      },
+      {
+        "sneak": 100,
+        "caught_of_60": 7,
+        "clean": 53,
+        "rng_draws_total": 60,
+        "draws_per_attempt": 1,
+        "sample": {
+          "beg": {
+            "need_f": 72,
+            "T_s": 1.2
+          },
+          "ev": [
+            {
+              "type": "pickpocket",
+              "frame": 72,
+              "caught": false,
+              "notice_chance": 0.077982,
+              "draws": 1
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "page_errors": []
+}

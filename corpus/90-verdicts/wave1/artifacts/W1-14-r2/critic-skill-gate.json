@@ -1,0 +1,146 @@
+{
+  "attunable": {
+    "default": {
+      "attunable": 47,
+      "refused": 25,
+      "total": 72,
+      "refused_by_tier": {
+        "3": 17,
+        "4": 8
+      },
+      "refused_sample": [
+        "the_unmaking(t3/req45)",
+        "sap_thief(t3/req45)",
+        "root_theft(t3/req45)",
+        "call_the_deep_drowned(t4/req65)",
+        "kiln_breath(t3/req45)",
+        "the_strong_arm(t3/req45)",
+        "sure_hand(t3/req45)",
+        "the_hists_patience(t4/req65)"
+      ],
+      "silent_drop_example": {
+        "asked": [
+          "the_unmaking"
+        ],
+        "returned": []
+      }
+    },
+    "arena_flat": {
+      "attunable": 47,
+      "refused": 25,
+      "total": 72,
+      "refused_by_tier": {
+        "3": 17,
+        "4": 8
+      },
+      "refused_sample": [
+        "the_unmaking(t3/req45)",
+        "sap_thief(t3/req45)",
+        "root_theft(t3/req45)",
+        "call_the_deep_drowned(t4/req65)",
+        "kiln_breath(t3/req45)",
+        "the_strong_arm(t3/req45)",
+        "sure_hand(t3/req45)",
+        "the_hists_patience(t4/req65)"
+      ],
+      "silent_drop_example": {
+        "asked": [
+          "the_unmaking"
+        ],
+        "returned": []
+      }
+    },
+    "dungeon_primary": {
+      "attunable": 47,
+      "refused": 25,
+      "total": 72,
+      "refused_by_tier": {
+        "3": 17,
+        "4": 8
+      },
+      "refused_sample": [
+        "the_unmaking(t3/req45)",
+        "sap_thief(t3/req45)",
+        "root_theft(t3/req45)",
+        "call_the_deep_drowned(t4/req65)",
+        "kiln_breath(t3/req45)",
+        "the_strong_arm(t3/req45)",
+        "sure_hand(t3/req45)",
+        "the_hists_patience(t4/req65)"
+      ],
+      "silent_drop_example": {
+        "asked": [
+          "the_unmaking"
+        ],
+        "returned": []
+      }
+    },
+    "helstrom-market": {
+      "attunable": 47,
+      "refused": 25,
+      "total": 72,
+      "refused_by_tier": {
+        "3": 17,
+        "4": 8
+      },
+      "refused_sample": [
+        "the_unmaking(t3/req45)",
+        "sap_thief(t3/req45)",
+        "root_theft(t3/req45)",
+        "call_the_deep_drowned(t4/req65)",
+        "kiln_breath(t3/req45)",
+        "the_strong_arm(t3/req45)",
+        "sure_hand(t3/req45)",
+        "the_hists_patience(t4/req65)"
+      ],
+      "silent_drop_example": {
+        "asked": [
+          "the_unmaking"
+        ],
+        "returned": []
+      }
+    }
+  },
+  "raising": {
+    "tier3_spell": "the_unmaking",
+    "low_spell": "spark_dart",
+    "steps": {
+      "cold": {
+        "attuned": [],
+        "quote_attunable": false
+      },
+      "after_40_casts": {
+        "attuned": [],
+        "quote_attunable": false
+      },
+      "after_hearth": {
+        "attuned": [],
+        "quote_attunable": false
+      },
+      "after_setSkills_character_sheet": {
+        "attuned": [],
+        "quote_attunable": false
+      },
+      "after_grantSkillUse": {
+        "attuned": [],
+        "quote_attunable": false
+      },
+      "after_setMagicSkills_harness_only": {
+        "attuned": [
+          "the_unmaking"
+        ],
+        "quote_attunable": true
+      }
+    }
+  },
+  "spellmaking_at_shipped_skill": {
+    "two_effects": {
+      "refused": false,
+      "reason": null
+    },
+    "three_effects": {
+      "refused": true,
+      "reason": "3 effects needs skill 50; your best relevant school is 30 (allows 2)"
+    }
+  }
+}

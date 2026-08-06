@@ -1,0 +1,456 @@
+{
+ "declared_per_frame_tip_travel_m": 0.308,
+ "declared_peak_tip_speed_mps": 18.5,
+ "fights": {
+  "F1": {
+   "worst_boundary": [
+    {
+     "f": 1836,
+     "m": 0.4561,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 169,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 5668,
+     "m": 0.4471,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 5313,
+     "m": 0.3837,
+     "from": "ROLL_STARTUP",
+     "to": "ROLL_IFRAME",
+     "anim_from": "roll_light",
+     "anim_to": "roll_light"
+    },
+    {
+     "f": 5457,
+     "m": 0.3683,
+     "from": "ROLL_STARTUP",
+     "to": "ROLL_IFRAME",
+     "anim_from": "roll_light",
+     "anim_to": "roll_light"
+    }
+   ],
+   "worst_within": [
+    {
+     "f": 5120,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 7249,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 8221,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 5121,
+     "m": 0.6516,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 7250,
+     "m": 0.6515,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    }
+   ],
+   "n_boundary": 583,
+   "n_within": 8415,
+   "boundary_over_declared": 26,
+   "within_over_declared": 379
+  },
+  "F2": {
+   "worst_boundary": [
+    {
+     "f": 6072,
+     "m": 0.7537,
+     "from": "ATK_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_guard_counter",
+     "anim_to": "shield_bash_medium"
+    },
+    {
+     "f": 6131,
+     "m": 0.5926,
+     "from": "ATK_RECOVER",
+     "to": "RUN",
+     "anim_from": "shield_bash_medium",
+     "anim_to": "run"
+    },
+    {
+     "f": 4009,
+     "m": 0.4561,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 4954,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 6933,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    }
+   ],
+   "worst_within": [
+    {
+     "f": 5589,
+     "m": 0.7102,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 5590,
+     "m": 0.7048,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 792,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 3336,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 793,
+     "m": 0.6516,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    }
+   ],
+   "n_boundary": 537,
+   "n_within": 8461,
+   "boundary_over_declared": 25,
+   "within_over_declared": 422
+  },
+  "F3": {
+   "worst_boundary": [
+    {
+     "f": 6268,
+     "m": 0.4561,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 8762,
+     "m": 0.4513,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 143,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 1379,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 1687,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    }
+   ],
+   "worst_within": [
+    {
+     "f": 674,
+     "m": 0.6594,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 675,
+     "m": 0.6516,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 2346,
+     "m": 0.64,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 3656,
+     "m": 0.64,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 8231,
+     "m": 0.64,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    }
+   ],
+   "n_boundary": 474,
+   "n_within": 8469,
+   "boundary_over_declared": 34,
+   "within_over_declared": 499
+  },
+  "F4": {
+   "worst_boundary": [
+    {
+     "f": 2534,
+     "m": 0.4561,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 4658,
+     "m": 0.4561,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 8645,
+     "m": 0.4561,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 7002,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 5544,
+     "m": 0.4458,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    }
+   ],
+   "worst_within": [
+    {
+     "f": 1345,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 5315,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 8188,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 1346,
+     "m": 0.6516,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 5316,
+     "m": 0.6516,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    }
+   ],
+   "n_boundary": 520,
+   "n_within": 8478,
+   "boundary_over_declared": 25,
+   "within_over_declared": 458
+  },
+  "F5": {
+   "worst_boundary": [
+    {
+     "f": 3995,
+     "m": 0.4561,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 608,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 2762,
+     "m": 0.4502,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 6480,
+     "m": 0.4451,
+     "from": "ROLL_RECOVER",
+     "to": "ATK_STARTUP",
+     "anim_from": "roll_light",
+     "anim_to": "clip_garrison_roll_r1"
+    },
+    {
+     "f": 8626,
+     "m": 0.3817,
+     "from": "ROLL_STARTUP",
+     "to": "ROLL_IFRAME",
+     "anim_from": "roll_light",
+     "anim_to": "roll_light"
+    }
+   ],
+   "worst_within": [
+    {
+     "f": 5951,
+     "m": 0.6595,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 5952,
+     "m": 0.6516,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 8433,
+     "m": 0.64,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 775,
+     "m": 0.6399,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    },
+    {
+     "f": 776,
+     "m": 0.6272,
+     "from": "ATK_STARTUP",
+     "to": "ATK_STARTUP",
+     "anim_from": "clip_garrison_r1_3",
+     "anim_to": "clip_garrison_r1_3"
+    }
+   ],
+   "n_boundary": 561,
+   "n_within": 8437,
+   "boundary_over_declared": 26,
+   "within_over_declared": 424
+  }
+ }
+}

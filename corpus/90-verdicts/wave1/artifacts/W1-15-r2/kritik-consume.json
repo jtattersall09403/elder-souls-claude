@@ -1,0 +1,256 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "round": 2,
+  "part": "consume",
+  "blocks": {
+    "B28-cover-derived": {
+      "open_field": {
+        "in_cover": false,
+        "blocked": 0,
+        "samples": 12,
+        "fraction": 0
+      },
+      "alcove": {
+        "in_cover": true,
+        "blocked": 11,
+        "samples": 12,
+        "fraction": 0.9166666666666666
+      },
+      "state_in_alcove": {
+        "crouched": false,
+        "light": 0.35,
+        "V": 0.2699,
+        "V_raw": 0.2699,
+        "sound_r_m": 5.85,
+        "surface": "earth",
+        "in_cover": true,
+        "motion": "walk",
+        "sneak": 5,
+        "context": "public_street_sheathed",
+        "context_weight": 0,
+        "zone": "zcv",
+        "zone_baseline_alert": 0,
+        "lock": null,
+        "bounty_imperial": 0,
+        "witnesses_pending": 0,
+        "terms": {
+          "L": 0.35,
+          "gamma": 1.36,
+          "M": 1.45,
+          "S": 0.97,
+          "E": 1,
+          "A": 0.8
+        },
+        "security": 5,
+        "agility": 20,
+        "load": "medium",
+        "race": "imperial",
+        "gold": 400,
+        "picks": 12,
+        "standings": {},
+        "crouch_refused": null,
+        "hud_elements": 0,
+        "in_cover_source": "derived_from_geometry",
+        "in_cover_fraction": 0.917,
+        "motion_forced": "walk",
+        "zone_context_multiplier": 1,
+        "lights_out": [],
+        "searches": 0,
+        "stolen_registry_n": 0,
+        "magic": {
+          "chameleon_pct": 0,
+          "invisible": false,
+          "muffle_pct": 0,
+          "night_eye_bonus": 0,
+          "perceived_light": 0.35,
+          "disguised": false
+        }
+      },
+      "state_outside": {
+        "crouched": false,
+        "light": 0.35,
+        "V": 0.3373,
+        "V_raw": 0.3373,
+        "sound_r_m": 5.85,
+        "surface": "earth",
+        "in_cover": false,
+        "motion": "walk",
+        "sneak": 5,
+        "context": "public_street_sheathed",
+        "context_weight": 0,
+        "zone": "zcv",
+        "zone_baseline_alert": 0,
+        "lock": null,
+        "bounty_imperial": 0,
+        "witnesses_pending": 0,
+        "terms": {
+          "L": 0.35,
+          "gamma": 1.36,
+          "M": 1.45,
+          "S": 0.97,
+          "E": 1,
+          "A": 1
+        },
+        "security": 5,
+        "agility": 20,
+        "load": "medium",
+        "race": "imperial",
+        "gold": 400,
+        "picks": 12,
+        "standings": {},
+        "crouch_refused": null,
+        "hud_elements": 0,
+        "in_cover_source": "derived_from_geometry",
+        "in_cover_fraction": 0,
+        "motion_forced": "walk",
+        "zone_context_multiplier": 1,
+        "lights_out": [],
+        "searches": 0,
+        "stolen_registry_n": 0,
+        "magic": {
+          "chameleon_pct": 0,
+          "invisible": false,
+          "muffle_pct": 0,
+          "night_eye_bonus": 0,
+          "perceived_light": 0.35,
+          "disguised": false
+        }
+      }
+    },
+    "B29-fence": {
+      "registry_before": [
+        {
+          "laundered_by": null,
+          "instance": "archon.priest0.r0.0",
+          "item_id": "archon.priest0.r0.0",
+          "name": "incense block",
+          "owner": "faction:drowned-court",
+          "owner_scope": "shared",
+          "value_g": 11,
+          "unique": false,
+          "settlement": "archon",
+          "frame": 0
+        }
+      ],
+      "crime_state_keys": [
+        "bounty",
+        "bloodprice",
+        "crimes",
+        "witnesses",
+        "death_flags",
+        "deaths",
+        "favours_owed",
+        "writs",
+        "hunters",
+        "jail",
+        "next_crime_id",
+        "stolen_registry",
+        "zones",
+        "standings",
+        "gold",
+        "thresholds",
+        "pending_reports",
+        "witness_checks"
+      ],
+      "fence_quote_try": "no fence \"x\"",
+      "sell_fence_gideon": "no fence \"fence_gideon\"",
+      "sell_gideon_fence": "no fence \"gideon_fence\"",
+      "sell_fence_marsh": "no fence \"fence_marsh\"",
+      "sell_fence0": "no fence \"fence0\"",
+      "registry_after": [
+        {
+          "laundered_by": null,
+          "instance": "archon.priest0.r0.0",
+          "item_id": "archon.priest0.r0.0",
+          "name": "incense block",
+          "owner": "faction:drowned-court",
+          "owner_scope": "shared",
+          "value_g": 11,
+          "unique": false,
+          "settlement": "archon",
+          "frame": 0
+        }
+      ]
+    },
+    "B30-guard-band-coupling": {
+      "runs": [
+        {
+          "bounty": 0,
+          "guard_band_events": [
+            {
+              "type": "guard_band",
+              "eid": "gq",
+              "frame": 0,
+              "band": 0,
+              "behaviour": "none",
+              "bounty": 0,
+              "weapon_drawn": false,
+              "parley": null
+            }
+          ],
+          "entity": {
+            "eid": "gq",
+            "alert": 4.8163,
+            "alert_state": "SUSPICIOUS",
+            "alert_channel": "sight",
+            "los": true,
+            "dist_m": 5,
+            "pos": [
+              0,
+              0,
+              5
+            ],
+            "speed_mps": 0,
+            "search_target": null,
+            "search_radius_m": 0,
+            "alert_hop": 0,
+            "lkp": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "bounty": 3000,
+          "guard_band_events": [
+            {
+              "type": "guard_band",
+              "eid": "gq",
+              "frame": 0,
+              "band": 3,
+              "behaviour": "attack_on_sight",
+              "bounty": 3000,
+              "weapon_drawn": true,
+              "parley": "surrender"
+            }
+          ],
+          "entity": {
+            "eid": "gq",
+            "alert": 100,
+            "alert_state": "AGGRO",
+            "alert_channel": "bounty",
+            "los": true,
+            "dist_m": 5,
+            "pos": [
+              0,
+              0,
+              5
+            ],
+            "speed_mps": 0,
+            "search_target": null,
+            "search_radius_m": 0,
+            "alert_hop": 0,
+            "lkp": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "page_errors": []
+  }
+}

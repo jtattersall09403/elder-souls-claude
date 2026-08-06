@@ -2,7 +2,7 @@
  "task_id": "critic-w1-09-r3",
  "brief": "CRITIC round 3 on W1-09 combat core",
  "started": "wave-1",
- "state": "measuring",
+ "state": "writing",
  "outputs_expected": [
   "corpus/90-verdicts/wave1/W1-09-r3.json",
   "corpus/90-verdicts/wave1/W1-09-r3.md",
@@ -19,8 +19,24 @@
   "TURTLE STILL WINS. My own cadence (attacks back-to-back at each move total): the mashing turtle kills the 2876-HP champion at every stand distance 0.0-2.6 m. At 0.0 m it takes 12.1% damage in 40.3 s. cmb-reach never tests 0.0 or 0.2 m.",
   "INTERIOR GAPS: spear 1.20-1.25, halberd 1.15-1.30 sit exactly at the seam between the body corridor outer edge (1.15/1.10) and the weapon band inner edge (1.30/1.35). Builder attribution to W1-10 is half right: with body_hazard deleted the spear/halberd weapon-only min is 1.30/1.35, so the roster does have an inner hole — but the GAP is produced by the two-band architecture.",
   "cmb-reach.mjs --verify DOES NOT EXIST. Both cmb-reach.mjs:37 and combat-node.mjs:12 assert it checks node-vs-browser; the flag is silently ignored (exit 0).",
-  "A2 dice: 60 identical scripted hits, one damage value (63), stdev 0."
+  "A2 dice: 60 identical scripted hits, one damage value (63), stdev 0.",
+  "HEADLINE DIVERGENCE: the node arena omits the engine-side per-frame work. sim/step.js stepOnce() runs stepCombat + stepWorldCollision + settleWorld + encounters + skillUse + NPCs + STEALTH + route + camera; NodeArena.step() runs CombatSystem.step alone. Consequence: EnemyController._idleBehaviour steers toward the player at 240 dps only while alertState===AGGRO, and alertState is written by sim/stealth/system.js::stepPerception(). In the node arena it is never AGGRO, so the champion never turns between attacks. Frame-by-frame diff: identical for 194 frames, then browser E1 enters REPOSITION while node stays IDLE; by 1700 frames node E1 yaw has drifted to 85.5 deg off the player.",
+  "THEREFORE THE TURTLE NUMBER IS AN INSTRUMENT ARTIFACT. cmb-reach --probe turtle (node) reports the player killing the champion at every distance taking 46-90%. The SAME configuration replayed through window.__HARNESS in headless Chromium: the player DIES at every distance 0.0-3.2 m and at 3 input phases, in 27.6-41 s, with the champion on 1565-2069 of 2876. The shipping game passes the turtle test; the shipped report says it fails; both are wrong about the other.",
+  "IN THE SHIPPING GAME 5-7 of the 8 hits that kill the turtle are via:body. The champion greatsword still cannot cut a stationary player inside 1.15 m (chop) / 1.55 (thrust) / 1.10 (combo_a) / 1.20 (combo_b) — the round-2 numbers exactly, confirmed by ablation (delete hitgeometry.body_hazard -> min reach 1.2/1.6/1.1/1.2).",
+  "A BODY CHECK DEALS THE WEAPON DAMAGE: chop 96 at 0.05 m via body == 96 at 3.65 m via weapon; thrust 75; combo_a 63.",
+  "ROW 9 IS 4 OF 5, NOT 5 OF 5. Independent recompute from raw JSONL: F1 [-9,-3] F2 [-9,-1] F3 [-9,-4] F4 [-9,-3] F5 [-8,+20]. The shipped statistics file marks F5 OUT itself; the round-3 claim of 5 of 5 contradicts its own artifact.",
+  "RI-CMB07 AUTOMATIC FAIL FIRES: its Scoring section lists row 28 == 0 as an automatic fail (no stamina economy). The shipped median row 28 is 0. Independent count of INPUT_DROPPED reason=no_stamina per fight: 0,1,0,3,0 -> median 0. Item capped at 2.",
+  "DANGER SURVIVES WITHOUT A KNOB — verified twice. --greed-scale 0: row 13 0.125, row 14 0.687, both in band. Roll jitter zeroed (wobble 0, critic patch): row 13 0.143, row 14 0.842 — identical to the shipped median. Neither greed nor the roll-lead jitter drives rows 13/14.",
+  "TRANSITION SNAPS: real 5x improvement (r2 artifact: peak tip 141.9-151.7 m/s, max 1-frame tip 2.365-2.528 m; now 39.6-45.2 m/s and 0.659-0.754 m). But the claim of 0.259 m worst transition and <=0.367 m at every boundary is NOT reproducible: worst BOUNDARY jump is 0.4561 m (ROLL_RECOVER->ATK_STARTUP) in all five fights and 0.7537 m in F2. 379-499 within-state frames per fight exceed the declared 0.308 m.",
+  "PEAK TIP SPEED IS BACK: exemplar play shows 39.57-45.22 m/s against a declared straight-sword 18.5 (x2.14-2.44), in ATK_STARTUP of clip_garrison_r1_3 (a W1-10 chain clip). cmb-probe measures the FIRST light only and reports 18.0 m/s — the probe passes the move the fight does not use. Per-substep travel 2.36 capsule radii, against RI-CMB04 §C rationale round 2 recorded as restored at 0.41-1.08.",
+  "SEPARATION IS INERT AT ITS SHIPPED RADIUS. 2617-frame fight: 585 frames (22.35%) interpenetrating, MIN CENTRE DISTANCE 0.015 m against a required 0.60 m — and zeroing both radii gives byte-identical numbers. At 0.8 m radius it does move (min 1.05 m), so it is wired; at 0.30 m it changes nothing a player could see. It also removes no hit and adds none (hit sets identical with separation on and off, 4 enemy attacks x 7 player weapons).",
+  "SUBSTEPS HAVE NO DEMONSTRATED CONSUMER: hitgeometry.sweep.substeps 4 -> 1 leaves the hit set byte-identical (36 of 71 distances, none lost, none gained), against the data file own text: reducing them to 1 changes which attacks connect.",
+  "STREAM CROSS-CHECK (RI-CMB07 M0): the two exemplar streams disagree at the same f on 8972 of 8999 frames; they agree perfectly at an offset of +1. An off-by-one in the record index, not fabricated data, but M0 says FAIL if the AI stream disagrees with F.e[] on any frame.",
+  "trace-stats reads the new stream with 0 missing fields and 0 gaps, but reports rolls=0 and punish=0/53 because it looks for player.state===ROLL and event.attacker===player while the stream writes ROLL_STARTUP/ROLL_IFRAME/ROLL_RECOVER and src/dst. Format conformance without content.",
+  "AR-1: A2 stdev 0 over 60 identical hits (one value, 63). A4 telegraphs 22/44/54/68 f@60, all >= 8. A5 no cancel before the declared window. A7 yaw rate 0.0 dps across 683 player and 686 enemy active/recovery frames.",
+  "AR-2 B12: 9 parley gate cases all correct; humanoid exits COMBAT alive; beast exempt.",
+  "CONSUMPTION: body_hazard consumed (159 -> 0 damage when deleted); cross_fade consumed (boundary jump 0.081 -> 0.684 at 0 frames, 0.088 at 30); roll iframes consumed (26 vs 2 frames, negation 1 vs 0); poise stagger frames consumed. bodies.separation and sweep.substeps have no demonstrated consumer at their shipped values."
  ],
- "next_step": "browser turtle + yaw; then exemplar recompute, greed-scale 0, transition snaps, parry, poise probes, trace-stats, AR checks",
+ "next_step": "write artifacts + verdict json/md",
  "notes_for_successor": ""
 }

@@ -1,0 +1,109 @@
+{
+  "skills_default": {
+    "before": {},
+    "after_sorcery": {},
+    "after_warding": {},
+    "sorceryCasts": 25,
+    "wardCasts": 25,
+    "ward_spell": "open",
+    "fire_spell": "ember_spit",
+    "has_character": true
+  },
+  "skills_arena_flat": {
+    "before": {},
+    "after_sorcery": {},
+    "after_warding": {},
+    "sorceryCasts": 25,
+    "wardCasts": 25,
+    "ward_spell": "open",
+    "fire_spell": "ember_spit",
+    "has_character": true
+  },
+  "skills_dungeon_primary": {
+    "before": {},
+    "after_sorcery": {},
+    "after_warding": {},
+    "sorceryCasts": 25,
+    "wardCasts": 25,
+    "ward_spell": "open",
+    "fire_spell": "ember_spit",
+    "has_character": true
+  },
+  "frames": [
+    {
+      "label": "01-windup",
+      "drawCalls": 30,
+      "triangles": 4376,
+      "vfx": {
+        "particles": 246,
+        "systems": 3,
+        "decals": 0,
+        "meshes": 0,
+        "particleDrawCalls": 3
+      }
+    },
+    {
+      "label": "02-release",
+      "drawCalls": 30,
+      "triangles": 4376,
+      "vfx": {
+        "particles": 246,
+        "systems": 3,
+        "decals": 0,
+        "meshes": 0,
+        "particleDrawCalls": 3
+      }
+    },
+    {
+      "label": "03-inflight",
+      "drawCalls": 29,
+      "triangles": 4380,
+      "vfx": {
+        "particles": 0,
+        "systems": 0,
+        "decals": 1,
+        "meshes": 0,
+        "particleDrawCalls": 1
+      }
+    },
+    {
+      "label": "04-impact",
+      "drawCalls": 29,
+      "triangles": 4380,
+      "vfx": {
+        "particles": 0,
+        "systems": 0,
+        "decals": 1,
+        "meshes": 0,
+        "particleDrawCalls": 1
+      }
+    },
+    {
+      "label": "05-residue-5s",
+      "drawCalls": 29,
+      "triangles": 4380,
+      "vfx": {
+        "particles": 0,
+        "systems": 0,
+        "decals": 1,
+        "meshes": 0,
+        "particleDrawCalls": 1
+      }
+    },
+    {
+      "label": "06-night-release",
+      "drawCalls": 32,
+      "triangles": 4380,
+      "vfx": {
+        "particles": 246,
+        "systems": 3,
+        "decals": 1,
+        "meshes": 0,
+        "particleDrawCalls": 4
+      }
+    }
+  ],
+  "spellShot": {
+    "spell": "spark_dart"
+  }
+}

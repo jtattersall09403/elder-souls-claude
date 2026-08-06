@@ -1,0 +1,169 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r2g.mjs",
+  "tests": [
+    {
+      "id": "G1-questionnaire-named-class-reach",
+      "runs": 160,
+      "roster_size": 14,
+      "roster": [
+        "salt-blade",
+        "marsh-knight",
+        "hollow-hunter",
+        "wet-foot",
+        "ledger-hand",
+        "net-cutter",
+        "deelith",
+        "reed-walker",
+        "xanmeer-delver",
+        "bone-setter",
+        "sap-reader",
+        "tide-caller",
+        "root-speaker",
+        "egg-tender"
+      ],
+      "named_classes_reached": [],
+      "named_count": 0,
+      "runs_producing_custom": 160,
+      "custom_names_sample": [
+        "Walks the country, untitled",
+        "Talks for a living, no house",
+        "Sits with the wells, no keeper's mark",
+        "Salt-road hand, untitled"
+      ],
+      "families_reached": [
+        "scout",
+        "social",
+        "root",
+        "fighter"
+      ],
+      "sample_rows": [
+        {
+          "race": "dunmer",
+          "up": "interior",
+          "class_id": "custom",
+          "class_name": "Walks the country, untitled",
+          "family": "scout",
+          "fit": null
+        },
+        {
+          "race": "saxhleel",
+          "up": "interior",
+          "class_id": "custom",
+          "class_name": "Talks for a living, no house",
+          "family": "social",
+          "fit": null
+        },
+        {
+          "race": "naga",
+          "up": "interior",
+          "class_id": "custom",
+          "class_name": "Talks for a living, no house",
+          "family": "social",
+          "fit": null
+        },
+        {
+          "race": "khajiit",
+          "up": "interior",
+          "class_id": "custom",
+          "class_name": "Walks the country, untitled",
+          "family": "scout",
+          "fit": null
+        },
+        {
+          "race": "nord",
+          "up": "interior",
+          "class_id": "custom",
+          "class_name": "Walks the country, untitled",
+          "family": "scout",
+          "fit": null
+        },
+        {
+          "race": "breton",
+          "up": "interior",
+          "class_id": "custom",
+          "class_name": "Walks the country, untitled",
+          "family": "scout",
+          "fit": null
+        },
+        {
+          "race": "imperial",
+          "up": "interior",
+          "class_id": "custom",
+          "class_name": "Sits with the wells, no keeper's mark",
+          "family": "root",
+          "fit": null
+        },
+        {
+          "race": "orsimer",
+          "up": "interior",
+          "class_id": "custom",
+          "class_name": "Walks the country, untitled",
+          "family": "scout",
+          "fit": null
+        }
+      ],
+      "bar": "RI-CHR01 scoring: >= 10 of 14 named classes questionnaire-reachable for the 10 band, >= 6 for the pass floor, < 6 = we lose"
+    },
+    {
+      "id": "G2-skills-by-use",
+      "air": {
+        "withTarget": false,
+        "kinds": {
+          "undefined": 3400
+        },
+        "blades_before": {
+          "value": 25,
+          "progress": 0,
+          "to_next": 46,
+          "governing": "agility",
+          "levels_since_rest": 0
+        },
+        "blades_after": {
+          "value": 25,
+          "progress": 0,
+          "to_next": 46,
+          "governing": "agility",
+          "levels_since_rest": 0
+        }
+      },
+      "body": {
+        "withTarget": true,
+        "kinds": {
+          "undefined": 3400
+        },
+        "blades_before": {
+          "value": 25,
+          "progress": 0,
+          "to_next": 46,
+          "governing": "agility",
+          "levels_since_rest": 0
+        },
+        "blades_after": {
+          "value": 25,
+          "progress": 0,
+          "to_next": 46,
+          "governing": "agility",
+          "levels_since_rest": 0
+        }
+      },
+      "cost_gate_zero": {
+        "ok": {
+          "refused": "cost_gate"
+        }
+      },
+      "cost_gate_one": {
+        "ok": {
+          "skill": "security",
+          "granted": 25,
+          "from": 5,
+          "value": 6,
+          "gained": 1,
+          "progress": 11,
+          "to_next": 16,
+          "attributes_granted": [],
+          "rest_clamped": false
+        }
+      }
+    }
+  ]
+}

@@ -1869,6 +1869,9 @@ export class Engine {
     // probe's second site inherit the first site's MIRED state and measure 0.21 m/s of swimming
     // — a measurement artifact of the instrument, which is exactly what RI-MTH04 calls fabricated.
     if (this.traversal) this.traversal.reset();
+    // The hazard volumes you were standing in belong to where you WERE. Carrying `spent` and the
+    // telegraph clocks across a teleport made a probe's second site inherit the first site's state.
+    if (this.hazards) this.hazards.reset();
     if (this.combat && this.combat.player) {
       const b = this.combat.player;
       b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];

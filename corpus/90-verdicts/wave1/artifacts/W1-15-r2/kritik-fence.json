@@ -1,0 +1,74 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "round": 2,
+  "part": "fence",
+  "blocks": {
+    "before": [
+      {
+        "laundered_by": null,
+        "instance": "archon.priest0.r0.0",
+        "item_id": "archon.priest0.r0.0",
+        "name": "incense block",
+        "owner": "faction:drowned-court",
+        "owner_scope": "shared",
+        "value_g": 11,
+        "unique": false,
+        "settlement": "archon",
+        "frame": 0
+      }
+    ],
+    "quote": {
+      "buys": true,
+      "price_g": 5,
+      "multiplier": 0.43631,
+      "unique": false,
+      "delayed_bounty": null,
+      "clears_stolen_from": true
+    },
+    "sell": {
+      "buys": true,
+      "price_g": 5,
+      "multiplier": 0.43631,
+      "unique": false,
+      "delayed_bounty": null,
+      "clears_stolen_from": true,
+      "laundered_from": "faction:drowned-court",
+      "sold": true,
+      "gold": 405,
+      "laundered": true
+    },
+    "after": [
+      {
+        "laundered_by": "fence.lilmoth.rot-hookline",
+        "instance": "archon.priest0.r0.0",
+        "item_id": "archon.priest0.r0.0",
+        "name": "incense block",
+        "owner": "faction:drowned-court",
+        "owner_scope": "shared",
+        "value_g": 11,
+        "unique": false,
+        "settlement": "archon",
+        "frame": 0,
+        "laundered_at_f": 0
+      }
+    ],
+    "save_after": [
+      "archon.priest0.r0.0"
+    ],
+    "unique_delayed_bounty": {
+      "buys": true,
+      "price_g": 244,
+      "multiplier": 0.271,
+      "unique": true,
+      "delayed_bounty": {
+        "g": 450,
+        "in_days": 3,
+        "settlement": null
+      },
+      "clears_stolen_from": true
+    },
+    "roster_reachable_from_harness": "no fence \"x\""
+  },
+  "page_errors": []
+}

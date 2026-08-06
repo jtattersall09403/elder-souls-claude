@@ -1,0 +1,245 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r2f.mjs",
+  "tests": [
+    {
+      "id": "F1-skills-by-use",
+      "air_swings_progress": {
+        "blades": [
+          25,
+          0
+        ],
+        "axes-maces": [
+          15,
+          0
+        ],
+        "marksman": [
+          15,
+          0
+        ],
+        "shieldcraft": [
+          25,
+          0
+        ],
+        "sorcery": [
+          15,
+          0
+        ],
+        "veiling": [
+          10,
+          0
+        ],
+        "athletics": [
+          25,
+          0
+        ],
+        "survival": [
+          15,
+          0
+        ]
+      },
+      "baseline": {
+        "blades": [
+          25,
+          0
+        ],
+        "axes-maces": [
+          15,
+          0
+        ],
+        "marksman": [
+          15,
+          0
+        ],
+        "shieldcraft": [
+          25,
+          0
+        ],
+        "sorcery": [
+          15,
+          0
+        ],
+        "veiling": [
+          10,
+          0
+        ],
+        "athletics": [
+          25,
+          0
+        ],
+        "survival": [
+          15,
+          0
+        ]
+      },
+      "hits_on_body": 0,
+      "event_kinds": {
+        "LOCK_BREAK": 1,
+        "lock_break": 1,
+        "ACTION_START": 33,
+        "attack_start": 33,
+        "WHIFF": 32,
+        "whiff": 32,
+        "INPUT_DROPPED": 42,
+        "input_dropped": 42,
+        "INPUT_BUFFERED": 10,
+        "input_buffered": 10
+      },
+      "body_progress": {
+        "blades": [
+          25,
+          0
+        ],
+        "axes-maces": [
+          15,
+          0
+        ],
+        "marksman": [
+          15,
+          0
+        ],
+        "shieldcraft": [
+          25,
+          0
+        ],
+        "sorcery": [
+          15,
+          0
+        ],
+        "veiling": [
+          10,
+          0
+        ],
+        "athletics": [
+          25,
+          0
+        ],
+        "survival": [
+          15,
+          0
+        ]
+      },
+      "body_baseline": {
+        "blades": [
+          25,
+          0
+        ],
+        "axes-maces": [
+          15,
+          0
+        ],
+        "marksman": [
+          15,
+          0
+        ],
+        "shieldcraft": [
+          25,
+          0
+        ],
+        "sorcery": [
+          15,
+          0
+        ],
+        "veiling": [
+          10,
+          0
+        ],
+        "athletics": [
+          25,
+          0
+        ],
+        "survival": [
+          15,
+          0
+        ]
+      },
+      "cost_gate_zero": {
+        "ok": {
+          "refused": "cost_gate"
+        }
+      },
+      "cost_gate_one": {
+        "ok": {
+          "skill": "security",
+          "granted": 25,
+          "from": 5,
+          "value": 6,
+          "gained": 1,
+          "progress": 11,
+          "to_next": 16,
+          "attributes_granted": [],
+          "rest_clamped": false
+        }
+      }
+    },
+    {
+      "id": "F2-questionnaire-reachable-classes",
+      "distinct_classes_reached": [
+        null
+      ],
+      "count": 1,
+      "floor": ">= 10 of 14 (RI-CHR01 §5); >= 6 is the hard-fail floor"
+    },
+    {
+      "id": "F3-title-surface",
+      "dom": {
+        "body_text": "",
+        "elements": [
+          "CANVAS",
+          "SCRIPT"
+        ]
+      },
+      "accessibility_tree": {
+        "role": "WebArea",
+        "name": "Elder Souls"
+      },
+      "getUIState": {
+        "ok": {
+          "surfaces": 0,
+          "full_screen_panels": 0,
+          "hud_elements": 0,
+          "markers": 0,
+          "open": false,
+          "panel_px": [
+            0,
+            0
+          ],
+          "frame_px": [
+            0,
+            0
+          ],
+          "opaque_area_frac": 0,
+          "panel_height_frac": 0,
+          "uniform_area_frac": 0,
+          "world_visible_behind": true,
+          "option_count": 0,
+          "options_shown": 0,
+          "selected_index": 0,
+          "text": [],
+          "text_chars": 0,
+          "world_rendered_behind": true,
+          "draw_calls": 49
+        }
+      },
+      "perspective_modes": [
+        "third"
+      ],
+      "verdict": "NO TITLE SURFACE AND NO FOCUSABLE ELEMENT EXISTS: RI-JRN01 O1/O3 and M3 are unbuilt"
+    },
+    {
+      "id": "F4-price-par-clause",
+      "untrained_effective_buy": 1.5275,
+      "trained_effective_buy": 1.0112,
+      "untrained_surcharge_only": 76,
+      "trained_surcharge_only": 76,
+      "trained_terms": {
+        "buyMult": 0.8,
+        "sellMult": 0.6,
+        "disposition": 50,
+        "mercantile": 100,
+        "personality": 60
+      },
+      "bar": "[0.98, 1.05] for the Mercantile-100 / PER-60 Dunmer (RI-CHR02 M7)",
+      "in_bar": true
+    }
+  ]
+}

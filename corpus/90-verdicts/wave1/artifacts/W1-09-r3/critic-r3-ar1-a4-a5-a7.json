@@ -1,0 +1,69 @@
+{
+ "A7": {
+  "worst_yaw_rate_dps": {
+   "p_active_recovery": 0,
+   "e_active_recovery": 0,
+   "p_any": 720,
+   "e_any": 525
+  },
+  "player_active_recovery_frames": 683,
+  "enemy_active_recovery_frames": 686
+ },
+ "A4": [
+  {
+   "move": "chop",
+   "windup_start_f": 5,
+   "first_live_f": 73,
+   "telegraph_f": 68,
+   "declared_startup": 68
+  },
+  {
+   "move": "thrust",
+   "windup_start_f": 5,
+   "first_live_f": 59,
+   "telegraph_f": 54,
+   "declared_startup": 54
+  },
+  {
+   "move": "combo_a",
+   "windup_start_f": 5,
+   "first_live_f": 49,
+   "telegraph_f": 44,
+   "declared_startup": 44
+  },
+  {
+   "move": "combo_b",
+   "windup_start_f": 5,
+   "first_live_f": 27,
+   "telegraph_f": 22,
+   "declared_startup": 22
+  }
+ ],
+ "A5": [
+  {
+   "roll_pressed_at_anim_frame": 2,
+   "attack_ended_at_sim_frame": 60,
+   "next_state": "RUN"
+  },
+  {
+   "roll_pressed_at_anim_frame": 5,
+   "attack_ended_at_sim_frame": 60,
+   "next_state": "RUN"
+  },
+  {
+   "roll_pressed_at_anim_frame": 10,
+   "attack_ended_at_sim_frame": 60,
+   "next_state": "RUN"
+  },
+  {
+   "roll_pressed_at_anim_frame": 30,
+   "attack_ended_at_sim_frame": 60,
+   "next_state": "RUN"
+  },
+  {
+   "roll_pressed_at_anim_frame": 45,
+   "attack_ended_at_sim_frame": 49,
+   "next_state": "ROLL_STARTUP"
+  }
+ ]
+}

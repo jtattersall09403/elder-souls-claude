@@ -1,0 +1,1102 @@
+{
+ "generated": "2026-08-06T22:43:58.640Z",
+ "instrument": "kritik-motion.mjs (critic-authored)",
+ "per_class": {
+  "AXE": {
+   "weapon": "axe_bog_cleaver",
+   "r1_1": {
+    "frames": 97,
+    "arc_active_deg": 72.8,
+    "arc_recovery_deg": 36.4,
+    "arc_total_deg": 285.8,
+    "root_dz_m": 0.201,
+    "peak_tip_mps": 22.33,
+    "max_pose_step_m": 0.372,
+    "distinct_keyframes": 94
+   },
+   "r2": {
+    "frames": 150,
+    "arc_active_deg": 49.7,
+    "arc_recovery_deg": 191.9,
+    "arc_total_deg": 426.5,
+    "root_dz_m": 0.411,
+    "peak_tip_mps": 17.73,
+    "max_pose_step_m": 0.295,
+    "distinct_keyframes": 142
+   },
+   "declared_arc_r1_1": 117.3,
+   "declared_shape_r1_1": "slash_d",
+   "declared_shape_r2": "slash_v",
+   "declared_root_r1_1": 0.201,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 92.5,
+   "G8_chain_shape_count": 3,
+   "G9_chain_root_ratio": 0.737
+  },
+  "CGS": {
+   "weapon": "cgs_drowned_reaper",
+   "r1_1": {
+    "frames": 136,
+    "arc_active_deg": 210.6,
+    "arc_recovery_deg": 170.6,
+    "arc_total_deg": 627.8,
+    "root_dz_m": 0.7,
+    "peak_tip_mps": 31.71,
+    "max_pose_step_m": 0.528,
+    "distinct_keyframes": 135
+   },
+   "r2": {
+    "frames": 214,
+    "arc_active_deg": 320.9,
+    "arc_recovery_deg": 346.8,
+    "arc_total_deg": 932.3,
+    "root_dz_m": 1.428,
+    "peak_tip_mps": 30.58,
+    "max_pose_step_m": 0.51,
+    "distinct_keyframes": 208
+   },
+   "declared_arc_r1_1": 340,
+   "declared_shape_r1_1": "spin",
+   "declared_shape_r2": "spin",
+   "declared_root_r1_1": 0.7,
+   "chain_observed": [
+    "r1.1",
+    "r1.2"
+   ],
+   "max_chain_len": 2,
+   "G7_chain_arc_range": 251.1,
+   "G8_chain_shape_count": 1,
+   "G9_chain_root_ratio": 0.815
+  },
+  "CSW": {
+   "weapon": "csw_drowned_kris",
+   "r1_1": {
+    "frames": 67,
+    "arc_active_deg": 113.1,
+    "arc_recovery_deg": 76.8,
+    "arc_total_deg": 398.4,
+    "root_dz_m": 0.227,
+    "peak_tip_mps": 36.79,
+    "max_pose_step_m": 0.613,
+    "distinct_keyframes": 67
+   },
+   "r2": {
+    "frames": 116,
+    "arc_active_deg": 158.7,
+    "arc_recovery_deg": 180.8,
+    "arc_total_deg": 617.2,
+    "root_dz_m": 0.641,
+    "peak_tip_mps": 17.86,
+    "max_pose_step_m": 0.298,
+    "distinct_keyframes": 110
+   },
+   "declared_arc_r1_1": 168.9,
+   "declared_shape_r1_1": "slash_h",
+   "declared_shape_r2": "spin",
+   "declared_root_r1_1": 0.227,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3",
+    "r1.4"
+   ],
+   "max_chain_len": 4,
+   "G7_chain_arc_range": 264.2,
+   "G8_chain_shape_count": 2,
+   "G9_chain_root_ratio": 0.763
+  },
+  "DGR": {
+   "weapon": "dgr_bone_awl",
+   "r1_1": {
+    "frames": 48,
+    "arc_active_deg": 18.1,
+    "arc_recovery_deg": 48.7,
+    "arc_total_deg": 134.3,
+    "root_dz_m": 0.149,
+    "peak_tip_mps": 14.29,
+    "max_pose_step_m": 0.238,
+    "distinct_keyframes": 46
+   },
+   "r2": {
+    "frames": 83,
+    "arc_active_deg": 56,
+    "arc_recovery_deg": 89.4,
+    "arc_total_deg": 199.1,
+    "root_dz_m": 0.28,
+    "peak_tip_mps": 11.47,
+    "max_pose_step_m": 0.191,
+    "distinct_keyframes": 77
+   },
+   "declared_arc_r1_1": 52.5,
+   "declared_shape_r1_1": "slash_d",
+   "declared_shape_r2": "thrust",
+   "declared_root_r1_1": 0.149,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3",
+    "r1.4"
+   ],
+   "max_chain_len": 4,
+   "G7_chain_arc_range": 348.1,
+   "G8_chain_shape_count": 4,
+   "G9_chain_root_ratio": 0.814
+  },
+  "FST": {
+   "weapon": "fst_hist_talon",
+   "r1_1": {
+    "frames": 33,
+    "arc_active_deg": 76.3,
+    "arc_recovery_deg": 99.3,
+    "arc_total_deg": 211.7,
+    "root_dz_m": 0.041,
+    "peak_tip_mps": 20.46,
+    "max_pose_step_m": 0.341,
+    "distinct_keyframes": 32
+   },
+   "r2": {
+    "frames": 72,
+    "arc_active_deg": 14.3,
+    "arc_recovery_deg": 14.9,
+    "arc_total_deg": 102.3,
+    "root_dz_m": 0.094,
+    "peak_tip_mps": 9,
+    "max_pose_step_m": 0.15,
+    "distinct_keyframes": 64
+   },
+   "declared_arc_r1_1": 53,
+   "declared_shape_r1_1": "smash",
+   "declared_shape_r2": "smash",
+   "declared_root_r1_1": 0.041,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3",
+    "r1.4",
+    "r1.5"
+   ],
+   "max_chain_len": 5,
+   "G7_chain_arc_range": 647.5,
+   "G8_chain_shape_count": 1,
+   "G9_chain_root_ratio": 0.721
+  },
+  "GHM": {
+   "weapon": "ghm_bog_maul",
+   "r1_1": {
+    "frames": 140,
+    "arc_active_deg": 174.5,
+    "arc_recovery_deg": 340.7,
+    "arc_total_deg": 739.2,
+    "root_dz_m": 0.643,
+    "peak_tip_mps": 20.87,
+    "max_pose_step_m": 0.348,
+    "distinct_keyframes": 135
+   },
+   "r2": {
+    "frames": 225,
+    "arc_active_deg": 131.3,
+    "arc_recovery_deg": 300.8,
+    "arc_total_deg": 656,
+    "root_dz_m": 0.655,
+    "peak_tip_mps": 17.74,
+    "max_pose_step_m": 0.296,
+    "distinct_keyframes": 213
+   },
+   "declared_arc_r1_1": 137.9,
+   "declared_shape_r1_1": "smash",
+   "declared_shape_r2": "smash",
+   "declared_root_r1_1": 0.643,
+   "chain_observed": [
+    "r1.1",
+    "r1.2"
+   ],
+   "max_chain_len": 2,
+   "G7_chain_arc_range": 436.3,
+   "G8_chain_shape_count": 1,
+   "G9_chain_root_ratio": 0.803
+  },
+  "GSW": {
+   "weapon": "gsw_drowned_greatblade",
+   "r1_1": {
+    "frames": 124,
+    "arc_active_deg": 99.5,
+    "arc_recovery_deg": 61.4,
+    "arc_total_deg": 364.6,
+    "root_dz_m": 0.867,
+    "peak_tip_mps": 21.86,
+    "max_pose_step_m": 0.364,
+    "distinct_keyframes": 119
+   },
+   "r2": {
+    "frames": 194,
+    "arc_active_deg": 75.7,
+    "arc_recovery_deg": 244.3,
+    "arc_total_deg": 520.7,
+    "root_dz_m": 1.462,
+    "peak_tip_mps": 19.54,
+    "max_pose_step_m": 0.326,
+    "distinct_keyframes": 189
+   },
+   "declared_arc_r1_1": 151.8,
+   "declared_shape_r1_1": "slash_d",
+   "declared_shape_r2": "slash_v",
+   "declared_root_r1_1": 0.867,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 196.7,
+   "G8_chain_shape_count": 2,
+   "G9_chain_root_ratio": 0.954
+  },
+  "HLB": {
+   "weapon": "hlb_fen_hook",
+   "r1_1": {
+    "frames": 113,
+    "arc_active_deg": 61.2,
+    "arc_recovery_deg": 47.9,
+    "arc_total_deg": 240.3,
+    "root_dz_m": 0.485,
+    "peak_tip_mps": 15.5,
+    "max_pose_step_m": 0.258,
+    "distinct_keyframes": 110
+   },
+   "r2": {
+    "frames": 172,
+    "arc_active_deg": 157.5,
+    "arc_recovery_deg": 198.6,
+    "arc_total_deg": 533.3,
+    "root_dz_m": 0.8,
+    "peak_tip_mps": 22.48,
+    "max_pose_step_m": 0.375,
+    "distinct_keyframes": 166
+   },
+   "declared_arc_r1_1": 120.6,
+   "declared_shape_r1_1": "sweep",
+   "declared_shape_r2": "sweep",
+   "declared_root_r1_1": 0.485,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 345.7,
+   "G8_chain_shape_count": 2,
+   "G9_chain_root_ratio": 1.008
+  },
+  "MCE": {
+   "weapon": "mce_bog_iron_mace",
+   "r1_1": {
+    "frames": 96,
+    "arc_active_deg": 110,
+    "arc_recovery_deg": 313,
+    "arc_total_deg": 654,
+    "root_dz_m": 0.28,
+    "peak_tip_mps": 25.37,
+    "max_pose_step_m": 0.423,
+    "distinct_keyframes": 96
+   },
+   "r2": {
+    "frames": 156,
+    "arc_active_deg": 47.2,
+    "arc_recovery_deg": 230,
+    "arc_total_deg": 477.8,
+    "root_dz_m": 0.476,
+    "peak_tip_mps": 17.55,
+    "max_pose_step_m": 0.292,
+    "distinct_keyframes": 148
+   },
+   "declared_arc_r1_1": 95,
+   "declared_shape_r1_1": "smash",
+   "declared_shape_r2": "smash",
+   "declared_root_r1_1": 0.28,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 354.1,
+   "G8_chain_shape_count": 1,
+   "G9_chain_root_ratio": 0.743
+  },
+  "SPR": {
+   "weapon": "spr_drowned_harpoon",
+   "r1_1": {
+    "frames": 77,
+    "arc_active_deg": 64.1,
+    "arc_recovery_deg": 146.9,
+    "arc_total_deg": 274.2,
+    "root_dz_m": 0.575,
+    "peak_tip_mps": 35.52,
+    "max_pose_step_m": 0.592,
+    "distinct_keyframes": 77
+   },
+   "r2": {
+    "frames": 126,
+    "arc_active_deg": 70.2,
+    "arc_recovery_deg": 102.7,
+    "arc_total_deg": 240.6,
+    "root_dz_m": 2.269,
+    "peak_tip_mps": 19.7,
+    "max_pose_step_m": 0.328,
+    "distinct_keyframes": 121
+   },
+   "declared_arc_r1_1": 19,
+   "declared_shape_r1_1": "thrust",
+   "declared_shape_r2": "thrust",
+   "declared_root_r1_1": 0.575,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 118.6,
+   "G8_chain_shape_count": 2,
+   "G9_chain_root_ratio": 0.952
+  },
+  "SSW": {
+   "weapon": "ssw_barsaebic_warblade",
+   "r1_1": {
+    "frames": 79,
+    "arc_active_deg": 68.3,
+    "arc_recovery_deg": 45,
+    "arc_total_deg": 250,
+    "root_dz_m": 0.378,
+    "peak_tip_mps": 24.94,
+    "max_pose_step_m": 0.416,
+    "distinct_keyframes": 76
+   },
+   "r2": {
+    "frames": 126,
+    "arc_active_deg": 85,
+    "arc_recovery_deg": 109.5,
+    "arc_total_deg": 265.4,
+    "root_dz_m": 0.772,
+    "peak_tip_mps": 9.48,
+    "max_pose_step_m": 0.158,
+    "distinct_keyframes": 121
+   },
+   "declared_arc_r1_1": 87.9,
+   "declared_shape_r1_1": "slash_h",
+   "declared_shape_r2": "thrust",
+   "declared_root_r1_1": 0.378,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 322.4,
+   "G8_chain_shape_count": 2,
+   "G9_chain_root_ratio": 0.851
+  },
+  "TSW": {
+   "weapon": "tsw_bog_rapier",
+   "r1_1": {
+    "frames": 55,
+    "arc_active_deg": 71.8,
+    "arc_recovery_deg": 94.4,
+    "arc_total_deg": 202.4,
+    "root_dz_m": 0.652,
+    "peak_tip_mps": 12.12,
+    "max_pose_step_m": 0.202,
+    "distinct_keyframes": 52
+   },
+   "r2": {
+    "frames": 101,
+    "arc_active_deg": 61.9,
+    "arc_recovery_deg": 57.7,
+    "arc_total_deg": 189.1,
+    "root_dz_m": 1.439,
+    "peak_tip_mps": 14.77,
+    "max_pose_step_m": 0.246,
+    "distinct_keyframes": 94
+   },
+   "declared_arc_r1_1": 6.5,
+   "declared_shape_r1_1": "thrust",
+   "declared_shape_r2": "thrust",
+   "declared_root_r1_1": 0.652,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 153.9,
+   "G8_chain_shape_count": 1,
+   "G9_chain_root_ratio": 0.911
+  },
+  "UGS": {
+   "weapon": "ugs_drowned_slab",
+   "r1_1": {
+    "frames": 171,
+    "arc_active_deg": 190,
+    "arc_recovery_deg": 336.8,
+    "arc_total_deg": 786.4,
+    "root_dz_m": 1.303,
+    "peak_tip_mps": 30.3,
+    "max_pose_step_m": 0.505,
+    "distinct_keyframes": 167
+   },
+   "r2": {
+    "frames": 256,
+    "arc_active_deg": 115.2,
+    "arc_recovery_deg": 297,
+    "arc_total_deg": 630.1,
+    "root_dz_m": 2.283,
+    "peak_tip_mps": 21.18,
+    "max_pose_step_m": 0.353,
+    "distinct_keyframes": 246
+   },
+   "declared_arc_r1_1": 197.7,
+   "declared_shape_r1_1": "slash_v",
+   "declared_shape_r2": "slash_v",
+   "declared_root_r1_1": 1.303,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 494,
+   "G8_chain_shape_count": 3,
+   "G9_chain_root_ratio": 0.48
+  },
+  "WHP": {
+   "weapon": "whp_hide_lash",
+   "r1_1": {
+    "frames": 108,
+    "arc_active_deg": 120.6,
+    "arc_recovery_deg": 181.7,
+    "arc_total_deg": 538,
+    "root_dz_m": 0.2,
+    "peak_tip_mps": 61.59,
+    "max_pose_step_m": 1.026,
+    "distinct_keyframes": 107
+   },
+   "r2": {
+    "frames": 148,
+    "arc_active_deg": 171.7,
+    "arc_recovery_deg": 289.8,
+    "arc_total_deg": 692.1,
+    "root_dz_m": 0.34,
+    "peak_tip_mps": 47.1,
+    "max_pose_step_m": 0.785,
+    "distinct_keyframes": 146
+   },
+   "declared_arc_r1_1": 200,
+   "declared_shape_r1_1": "lash",
+   "declared_shape_r2": "lash",
+   "declared_root_r1_1": 0.2,
+   "chain_observed": [
+    "r1.1",
+    "r1.2",
+    "r1.3"
+   ],
+   "max_chain_len": 3,
+   "G7_chain_arc_range": 125.9,
+   "G8_chain_shape_count": 1,
+   "G9_chain_root_ratio": 0.973
+  }
+ },
+ "per_clip": [
+  {
+   "class": "AXE",
+   "weapon": "axe_bog_cleaver",
+   "slot": "r1.1",
+   "declared_arc": 117.3,
+   "frames": 97,
+   "arc_active_deg": 72.8,
+   "arc_recovery_deg": 36.4,
+   "arc_total_deg": 285.8,
+   "root_dz_m": 0.201,
+   "peak_tip_mps": 22.33,
+   "max_pose_step_m": 0.372,
+   "distinct_keyframes": 94
+  },
+  {
+   "class": "AXE",
+   "weapon": "axe_bog_cleaver",
+   "slot": "r2",
+   "declared_arc": 78.3,
+   "frames": 150,
+   "arc_active_deg": 49.7,
+   "arc_recovery_deg": 191.9,
+   "arc_total_deg": 426.5,
+   "root_dz_m": 0.411,
+   "peak_tip_mps": 17.73,
+   "max_pose_step_m": 0.295,
+   "distinct_keyframes": 142
+  },
+  {
+   "class": "CGS",
+   "weapon": "cgs_drowned_reaper",
+   "slot": "r1.1",
+   "declared_arc": 340,
+   "frames": 136,
+   "arc_active_deg": 210.6,
+   "arc_recovery_deg": 170.6,
+   "arc_total_deg": 627.8,
+   "root_dz_m": 0.7,
+   "peak_tip_mps": 31.71,
+   "max_pose_step_m": 0.528,
+   "distinct_keyframes": 135
+  },
+  {
+   "class": "CGS",
+   "weapon": "cgs_drowned_reaper",
+   "slot": "r2",
+   "declared_arc": 360,
+   "frames": 214,
+   "arc_active_deg": 320.9,
+   "arc_recovery_deg": 346.8,
+   "arc_total_deg": 932.3,
+   "root_dz_m": 1.428,
+   "peak_tip_mps": 30.58,
+   "max_pose_step_m": 0.51,
+   "distinct_keyframes": 208
+  },
+  {
+   "class": "CSW",
+   "weapon": "csw_drowned_kris",
+   "slot": "r1.1",
+   "declared_arc": 168.9,
+   "frames": 67,
+   "arc_active_deg": 113.1,
+   "arc_recovery_deg": 76.8,
+   "arc_total_deg": 398.4,
+   "root_dz_m": 0.227,
+   "peak_tip_mps": 36.79,
+   "max_pose_step_m": 0.613,
+   "distinct_keyframes": 67
+  },
+  {
+   "class": "CSW",
+   "weapon": "csw_drowned_kris",
+   "slot": "r2",
+   "declared_arc": 305,
+   "frames": 116,
+   "arc_active_deg": 158.7,
+   "arc_recovery_deg": 180.8,
+   "arc_total_deg": 617.2,
+   "root_dz_m": 0.641,
+   "peak_tip_mps": 17.86,
+   "max_pose_step_m": 0.298,
+   "distinct_keyframes": 110
+  },
+  {
+   "class": "DGR",
+   "weapon": "dgr_bone_awl",
+   "slot": "r1.1",
+   "declared_arc": 52.5,
+   "frames": 48,
+   "arc_active_deg": 18.1,
+   "arc_recovery_deg": 48.7,
+   "arc_total_deg": 134.3,
+   "root_dz_m": 0.149,
+   "peak_tip_mps": 14.29,
+   "max_pose_step_m": 0.238,
+   "distinct_keyframes": 46
+  },
+  {
+   "class": "DGR",
+   "weapon": "dgr_bone_awl",
+   "slot": "r2",
+   "declared_arc": 19,
+   "frames": 83,
+   "arc_active_deg": 56,
+   "arc_recovery_deg": 89.4,
+   "arc_total_deg": 199.1,
+   "root_dz_m": 0.28,
+   "peak_tip_mps": 11.47,
+   "max_pose_step_m": 0.191,
+   "distinct_keyframes": 77
+  },
+  {
+   "class": "FST",
+   "weapon": "fst_hist_talon",
+   "slot": "r1.1",
+   "declared_arc": 53,
+   "frames": 33,
+   "arc_active_deg": 76.3,
+   "arc_recovery_deg": 99.3,
+   "arc_total_deg": 211.7,
+   "root_dz_m": 0.041,
+   "peak_tip_mps": 20.46,
+   "max_pose_step_m": 0.341,
+   "distinct_keyframes": 32
+  },
+  {
+   "class": "FST",
+   "weapon": "fst_hist_talon",
+   "slot": "r2",
+   "declared_arc": 68.8,
+   "frames": 72,
+   "arc_active_deg": 14.3,
+   "arc_recovery_deg": 14.9,
+   "arc_total_deg": 102.3,
+   "root_dz_m": 0.094,
+   "peak_tip_mps": 9,
+   "max_pose_step_m": 0.15,
+   "distinct_keyframes": 64
+  },
+  {
+   "class": "GHM",
+   "weapon": "ghm_bog_maul",
+   "slot": "r1.1",
+   "declared_arc": 137.9,
+   "frames": 140,
+   "arc_active_deg": 174.5,
+   "arc_recovery_deg": 340.7,
+   "arc_total_deg": 739.2,
+   "root_dz_m": 0.643,
+   "peak_tip_mps": 20.87,
+   "max_pose_step_m": 0.348,
+   "distinct_keyframes": 135
+  },
+  {
+   "class": "GHM",
+   "weapon": "ghm_bog_maul",
+   "slot": "r2",
+   "declared_arc": 83.4,
+   "frames": 225,
+   "arc_active_deg": 131.3,
+   "arc_recovery_deg": 300.8,
+   "arc_total_deg": 656,
+   "root_dz_m": 0.655,
+   "peak_tip_mps": 17.74,
+   "max_pose_step_m": 0.296,
+   "distinct_keyframes": 213
+  },
+  {
+   "class": "GSW",
+   "weapon": "gsw_drowned_greatblade",
+   "slot": "r1.1",
+   "declared_arc": 151.8,
+   "frames": 124,
+   "arc_active_deg": 99.5,
+   "arc_recovery_deg": 61.4,
+   "arc_total_deg": 364.6,
+   "root_dz_m": 0.867,
+   "peak_tip_mps": 21.86,
+   "max_pose_step_m": 0.364,
+   "distinct_keyframes": 119
+  },
+  {
+   "class": "GSW",
+   "weapon": "gsw_drowned_greatblade",
+   "slot": "r2",
+   "declared_arc": 99.3,
+   "frames": 194,
+   "arc_active_deg": 75.7,
+   "arc_recovery_deg": 244.3,
+   "arc_total_deg": 520.7,
+   "root_dz_m": 1.462,
+   "peak_tip_mps": 19.54,
+   "max_pose_step_m": 0.326,
+   "distinct_keyframes": 189
+  },
+  {
+   "class": "HLB",
+   "weapon": "hlb_fen_hook",
+   "slot": "r1.1",
+   "declared_arc": 120.6,
+   "frames": 113,
+   "arc_active_deg": 61.2,
+   "arc_recovery_deg": 47.9,
+   "arc_total_deg": 240.3,
+   "root_dz_m": 0.485,
+   "peak_tip_mps": 15.5,
+   "max_pose_step_m": 0.258,
+   "distinct_keyframes": 110
+  },
+  {
+   "class": "HLB",
+   "weapon": "hlb_fen_hook",
+   "slot": "r2",
+   "declared_arc": 129.3,
+   "frames": 172,
+   "arc_active_deg": 157.5,
+   "arc_recovery_deg": 198.6,
+   "arc_total_deg": 533.3,
+   "root_dz_m": 0.8,
+   "peak_tip_mps": 22.48,
+   "max_pose_step_m": 0.375,
+   "distinct_keyframes": 166
+  },
+  {
+   "class": "MCE",
+   "weapon": "mce_bog_iron_mace",
+   "slot": "r1.1",
+   "declared_arc": 95,
+   "frames": 96,
+   "arc_active_deg": 110,
+   "arc_recovery_deg": 313,
+   "arc_total_deg": 654,
+   "root_dz_m": 0.28,
+   "peak_tip_mps": 25.37,
+   "max_pose_step_m": 0.423,
+   "distinct_keyframes": 96
+  },
+  {
+   "class": "MCE",
+   "weapon": "mce_bog_iron_mace",
+   "slot": "r2",
+   "declared_arc": 58.9,
+   "frames": 156,
+   "arc_active_deg": 47.2,
+   "arc_recovery_deg": 230,
+   "arc_total_deg": 477.8,
+   "root_dz_m": 0.476,
+   "peak_tip_mps": 17.55,
+   "max_pose_step_m": 0.292,
+   "distinct_keyframes": 148
+  },
+  {
+   "class": "SPR",
+   "weapon": "spr_drowned_harpoon",
+   "slot": "r1.1",
+   "declared_arc": 19,
+   "frames": 77,
+   "arc_active_deg": 64.1,
+   "arc_recovery_deg": 146.9,
+   "arc_total_deg": 274.2,
+   "root_dz_m": 0.575,
+   "peak_tip_mps": 35.52,
+   "max_pose_step_m": 0.592,
+   "distinct_keyframes": 77
+  },
+  {
+   "class": "SPR",
+   "weapon": "spr_drowned_harpoon",
+   "slot": "r2",
+   "declared_arc": 19,
+   "frames": 126,
+   "arc_active_deg": 70.2,
+   "arc_recovery_deg": 102.7,
+   "arc_total_deg": 240.6,
+   "root_dz_m": 2.269,
+   "peak_tip_mps": 19.7,
+   "max_pose_step_m": 0.328,
+   "distinct_keyframes": 121
+  },
+  {
+   "class": "SSW",
+   "weapon": "ssw_barsaebic_warblade",
+   "slot": "r1.1",
+   "declared_arc": 87.9,
+   "frames": 79,
+   "arc_active_deg": 68.3,
+   "arc_recovery_deg": 45,
+   "arc_total_deg": 250,
+   "root_dz_m": 0.378,
+   "peak_tip_mps": 24.94,
+   "max_pose_step_m": 0.416,
+   "distinct_keyframes": 76
+  },
+  {
+   "class": "SSW",
+   "weapon": "ssw_barsaebic_warblade",
+   "slot": "r2",
+   "declared_arc": 19,
+   "frames": 126,
+   "arc_active_deg": 85,
+   "arc_recovery_deg": 109.5,
+   "arc_total_deg": 265.4,
+   "root_dz_m": 0.772,
+   "peak_tip_mps": 9.48,
+   "max_pose_step_m": 0.158,
+   "distinct_keyframes": 121
+  },
+  {
+   "class": "TSW",
+   "weapon": "tsw_bog_rapier",
+   "slot": "r1.1",
+   "declared_arc": 6.5,
+   "frames": 55,
+   "arc_active_deg": 71.8,
+   "arc_recovery_deg": 94.4,
+   "arc_total_deg": 202.4,
+   "root_dz_m": 0.652,
+   "peak_tip_mps": 12.12,
+   "max_pose_step_m": 0.202,
+   "distinct_keyframes": 52
+  },
+  {
+   "class": "TSW",
+   "weapon": "tsw_bog_rapier",
+   "slot": "r2",
+   "declared_arc": 14.6,
+   "frames": 101,
+   "arc_active_deg": 61.9,
+   "arc_recovery_deg": 57.7,
+   "arc_total_deg": 189.1,
+   "root_dz_m": 1.439,
+   "peak_tip_mps": 14.77,
+   "max_pose_step_m": 0.246,
+   "distinct_keyframes": 94
+  },
+  {
+   "class": "UGS",
+   "weapon": "ugs_drowned_slab",
+   "slot": "r1.1",
+   "declared_arc": 197.7,
+   "frames": 171,
+   "arc_active_deg": 190,
+   "arc_recovery_deg": 336.8,
+   "arc_total_deg": 786.4,
+   "root_dz_m": 1.303,
+   "peak_tip_mps": 30.3,
+   "max_pose_step_m": 0.505,
+   "distinct_keyframes": 167
+  },
+  {
+   "class": "UGS",
+   "weapon": "ugs_drowned_slab",
+   "slot": "r2",
+   "declared_arc": 129,
+   "frames": 256,
+   "arc_active_deg": 115.2,
+   "arc_recovery_deg": 297,
+   "arc_total_deg": 630.1,
+   "root_dz_m": 2.283,
+   "peak_tip_mps": 21.18,
+   "max_pose_step_m": 0.353,
+   "distinct_keyframes": 246
+  },
+  {
+   "class": "WHP",
+   "weapon": "whp_hide_lash",
+   "slot": "r1.1",
+   "declared_arc": 200,
+   "frames": 108,
+   "arc_active_deg": 120.6,
+   "arc_recovery_deg": 181.7,
+   "arc_total_deg": 538,
+   "root_dz_m": 0.2,
+   "peak_tip_mps": 61.59,
+   "max_pose_step_m": 1.026,
+   "distinct_keyframes": 107
+  },
+  {
+   "class": "WHP",
+   "weapon": "whp_hide_lash",
+   "slot": "r2",
+   "declared_arc": 144,
+   "frames": 148,
+   "arc_active_deg": 171.7,
+   "arc_recovery_deg": 289.8,
+   "arc_total_deg": 692.1,
+   "root_dz_m": 0.34,
+   "peak_tip_mps": 47.1,
+   "max_pose_step_m": 0.785,
+   "distinct_keyframes": 146
+  }
+ ],
+ "animation_quality": {
+  "clips_measured": 28,
+  "pose_step_over_0_25": 22,
+  "pose_teleport_over_1_0": [
+   "whp_hide_lash/r1.1=1.026"
+  ],
+  "fewer_than_3_keyframes": [],
+  "arc_error_over_10deg": [
+   {
+    "w": "axe_bog_cleaver",
+    "s": "r1.1",
+    "decl": 117.3,
+    "obs": 72.8
+   },
+   {
+    "w": "axe_bog_cleaver",
+    "s": "r2",
+    "decl": 78.3,
+    "obs": 49.7
+   },
+   {
+    "w": "cgs_drowned_reaper",
+    "s": "r1.1",
+    "decl": 340,
+    "obs": 210.6
+   },
+   {
+    "w": "cgs_drowned_reaper",
+    "s": "r2",
+    "decl": 360,
+    "obs": 320.9
+   },
+   {
+    "w": "csw_drowned_kris",
+    "s": "r1.1",
+    "decl": 168.9,
+    "obs": 113.1
+   },
+   {
+    "w": "csw_drowned_kris",
+    "s": "r2",
+    "decl": 305,
+    "obs": 158.7
+   },
+   {
+    "w": "dgr_bone_awl",
+    "s": "r1.1",
+    "decl": 52.5,
+    "obs": 18.1
+   },
+   {
+    "w": "dgr_bone_awl",
+    "s": "r2",
+    "decl": 19,
+    "obs": 56
+   },
+   {
+    "w": "fst_hist_talon",
+    "s": "r1.1",
+    "decl": 53,
+    "obs": 76.3
+   },
+   {
+    "w": "fst_hist_talon",
+    "s": "r2",
+    "decl": 68.8,
+    "obs": 14.3
+   },
+   {
+    "w": "ghm_bog_maul",
+    "s": "r1.1",
+    "decl": 137.9,
+    "obs": 174.5
+   },
+   {
+    "w": "ghm_bog_maul",
+    "s": "r2",
+    "decl": 83.4,
+    "obs": 131.3
+   },
+   {
+    "w": "gsw_drowned_greatblade",
+    "s": "r1.1",
+    "decl": 151.8,
+    "obs": 99.5
+   },
+   {
+    "w": "gsw_drowned_greatblade",
+    "s": "r2",
+    "decl": 99.3,
+    "obs": 75.7
+   },
+   {
+    "w": "hlb_fen_hook",
+    "s": "r1.1",
+    "decl": 120.6,
+    "obs": 61.2
+   },
+   {
+    "w": "hlb_fen_hook",
+    "s": "r2",
+    "decl": 129.3,
+    "obs": 157.5
+   },
+   {
+    "w": "mce_bog_iron_mace",
+    "s": "r1.1",
+    "decl": 95,
+    "obs": 110
+   },
+   {
+    "w": "mce_bog_iron_mace",
+    "s": "r2",
+    "decl": 58.9,
+    "obs": 47.2
+   },
+   {
+    "w": "spr_drowned_harpoon",
+    "s": "r1.1",
+    "decl": 19,
+    "obs": 64.1
+   },
+   {
+    "w": "spr_drowned_harpoon",
+    "s": "r2",
+    "decl": 19,
+    "obs": 70.2
+   },
+   {
+    "w": "ssw_barsaebic_warblade",
+    "s": "r1.1",
+    "decl": 87.9,
+    "obs": 68.3
+   },
+   {
+    "w": "ssw_barsaebic_warblade",
+    "s": "r2",
+    "decl": 19,
+    "obs": 85
+   },
+   {
+    "w": "tsw_bog_rapier",
+    "s": "r1.1",
+    "decl": 6.5,
+    "obs": 71.8
+   },
+   {
+    "w": "tsw_bog_rapier",
+    "s": "r2",
+    "decl": 14.6,
+    "obs": 61.9
+   },
+   {
+    "w": "ugs_drowned_slab",
+    "s": "r2",
+    "decl": 129,
+    "obs": 115.2
+   },
+   {
+    "w": "whp_hide_lash",
+    "s": "r1.1",
+    "decl": 200,
+    "obs": 120.6
+   },
+   {
+    "w": "whp_hide_lash",
+    "s": "r2",
+    "decl": 144,
+    "obs": 171.7
+   }
+  ],
+  "recovery_arc_exceeds_active": [
+   "axe_bog_cleaver/r2 rec 191.9 > act 49.7",
+   "cgs_drowned_reaper/r2 rec 346.8 > act 320.9",
+   "csw_drowned_kris/r2 rec 180.8 > act 158.7",
+   "dgr_bone_awl/r1.1 rec 48.7 > act 18.1",
+   "dgr_bone_awl/r2 rec 89.4 > act 56",
+   "fst_hist_talon/r1.1 rec 99.3 > act 76.3",
+   "fst_hist_talon/r2 rec 14.9 > act 14.3",
+   "ghm_bog_maul/r1.1 rec 340.7 > act 174.5",
+   "ghm_bog_maul/r2 rec 300.8 > act 131.3",
+   "gsw_drowned_greatblade/r2 rec 244.3 > act 75.7",
+   "hlb_fen_hook/r2 rec 198.6 > act 157.5",
+   "mce_bog_iron_mace/r1.1 rec 313 > act 110",
+   "mce_bog_iron_mace/r2 rec 230 > act 47.2",
+   "spr_drowned_harpoon/r1.1 rec 146.9 > act 64.1",
+   "spr_drowned_harpoon/r2 rec 102.7 > act 70.2",
+   "ssw_barsaebic_warblade/r2 rec 109.5 > act 85",
+   "tsw_bog_rapier/r1.1 rec 94.4 > act 71.8",
+   "ugs_drowned_slab/r1.1 rec 336.8 > act 190",
+   "ugs_drowned_slab/r2 rec 297 > act 115.2",
+   "whp_hide_lash/r1.1 rec 181.7 > act 120.6",
+   "whp_hide_lash/r2 rec 289.8 > act 171.7"
+  ],
+  "max_tip_mps": 61.59
+ }
+}

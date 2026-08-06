@@ -1,0 +1,94 @@
+{
+ "generated": "2026-08-06T22:50:45.587Z",
+ "AR1": {
+  "identical_swings": 60,
+  "distinct_damage_values": [
+   118
+  ],
+  "deterministic": true,
+  "cancel_tests": [
+   {
+    "test": "roll during startup",
+    "r1_1_ran_to": 73,
+    "completed_uncancelled": true,
+    "interrupted_by": null
+   },
+   {
+    "test": "roll during active",
+    "r1_1_ran_to": 73,
+    "completed_uncancelled": true,
+    "interrupted_by": null
+   },
+   {
+    "test": "two_hand during startup",
+    "r1_1_ran_to": 73,
+    "completed_uncancelled": true,
+    "interrupted_by": null
+   },
+   {
+    "test": "two_hand during active",
+    "r1_1_ran_to": 73,
+    "completed_uncancelled": true,
+    "interrupted_by": null
+   },
+   {
+    "test": "block during startup",
+    "r1_1_ran_to": 73,
+    "completed_uncancelled": true,
+    "interrupted_by": null
+   },
+   {
+    "test": "parry during active",
+    "r1_1_ran_to": 73,
+    "completed_uncancelled": true,
+    "interrupted_by": null
+   },
+   {
+    "test": "heavy during startup",
+    "r1_1_ran_to": 73,
+    "completed_uncancelled": true,
+    "interrupted_by": null
+   },
+   {
+    "test": "light during active",
+    "r1_1_ran_to": 73,
+    "completed_uncancelled": true,
+    "interrupted_by": null
+   }
+  ],
+  "any_cancellable": false,
+  "stance_switch": [
+   {
+    "f": 5,
+    "k": "stance_switch",
+    "kind": "stance"
+   }
+  ]
+ },
+ "AR2": {
+  "roster_size": 87,
+  "all_hand_authored_ids": true,
+  "identical_r1_1_blocks": 1,
+  "floating_damage_numbers": "none observed in any driven attack (no such event kind exists in sim/events.js)",
+  "procedural_generation": "none — 87 files on disk, each with a hand-written `name` and `notes`"
+ },
+ "AR3": {
+  "materials": [
+   "flesh",
+   "chitin",
+   "stone",
+   "metal",
+   "plant",
+   "water",
+   "wood",
+   "shield"
+  ],
+  "damage_types": 10,
+  "bypass_classes": [
+   "MCE",
+   "GHM"
+  ],
+  "enemy_statblocks_declaring_a_material": [],
+  "total_enemy_statblocks": 14
+ }
+}

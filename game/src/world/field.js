@@ -295,7 +295,12 @@ export class WorldField {
    */
   clampToDeck(px, pz, x, z) {
     if (!this.roadGrid) return null;
-    const segs = this.roadGrid.at(px, pz);
+    // Both buckets. A body pressed against the parapet sits within 0.35 m of the deck edge, and
+    // that point can fall in the NEIGHBOURING 120 m grid cell from the one the span segment was
+    // registered in — at which point the lookup came back empty, the parapet vanished and the
+    // walker leaked off the side of a 40 m viaduct after 1.75 s of pushing.
+    const a = this.roadGrid.at(px, pz), b = this.roadGrid.at(x, z);
+    const segs = a === b ? a : a.concat(b);
     for (let i = 0; i < segs.length; i++) {
       const s = segs[i];
       if (!s.span) continue;
@@ -306,12 +311,20 @@ export class WorldField {
       const d0 = Math.hypot(px - (s.ax + dx * t0), pz - (s.az + dz * t0));
       if (d0 > s.hw + 0.5) continue;                      // was not on this deck
       const t1 = ((x - s.ax) * dx + (z - s.az) * dz) / len2;
-      if (t1 < 0 || t1 > 1) return null;                  // left along the deck: that is fine
-      const cx = s.ax + dx * t1, cz = s.az + dz * t1;
+      // Outside this segment's own extent, ANOTHER segment of the same span covers the point, so
+      // this one has nothing to say. Returning here instead of continuing is what let the walker
+      // leak off the side of a 40 m viaduct: a deck is a chain of 12 m segments and the body sits
+      // on a joint every twelve metres, where t1 lands a hair outside [0, 1].
+      // A TOLERANCE, not a hard bound. A deck is a chain of 12 m segments and the body spends
+      // every twelfth metre standing exactly on a joint, where t lands a hair either side of 0 or
+      // 1 on BOTH adjoining segments — so a hard bound skipped both and the parapet had a 0.03 m
+      // hole in it once per segment. That is how the walker left a 40 m viaduct sideways.
+      if (t1 < -0.05 || t1 > 1.05) continue;
+      const tc = clamp(t1, 0, 1);
+      const cx = s.ax + dx * tc, cz = s.az + dz * tc;
       const d1 = Math.hypot(x - cx, z - cz);
       const lim = s.hw + 0.35;
-      if (d1 <= lim) return null;
-      if (d1 < 1e-6) return null;
+      if (d1 <= lim || d1 < 1e-6) continue;
       // Two spans can overlap where the road doubles back, and stepping from one onto the other is
       // not stepping off a bridge. Clamp only when the destination is on no deck at all.
       if (this._deckY(x, z) !== null) return null;

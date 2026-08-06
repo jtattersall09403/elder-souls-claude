@@ -1,0 +1,245 @@
+{
+ "m3_medium": {
+  "stamina_at_impact": 0,
+  "exhausted": true,
+  "state_runs": [
+   [
+    "IDLE",
+    80
+   ],
+   [
+    "STAGGER",
+    44
+   ],
+   [
+    "IDLE",
+    136
+   ]
+  ],
+  "spec_f": 44
+ },
+ "m3_heavy": [
+  {
+   "weapon": "greatsword",
+   "stagger_lengths_f": [
+    44
+   ],
+   "spec_f": 64,
+   "vacuous": false,
+   "vacuous_note": null
+  },
+  {
+   "weapon": "ultra-greatsword",
+   "stagger_lengths_f": [
+    44
+   ],
+   "spec_f": 64,
+   "vacuous": false,
+   "vacuous_note": null
+  }
+ ],
+ "stunlock": {
+  "enemy_state_runs": [
+   [
+    "IDLE",
+    34
+   ],
+   [
+    "REPOSITION",
+    227
+   ],
+   [
+    "STAGGER",
+    64
+   ],
+   [
+    "REPOSITION",
+    375
+   ]
+  ],
+  "hits_landed": 2
+ },
+ "m4_hyperarmour": [
+  {
+   "case": "hit inside the HA window",
+   "press_f": 29,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "staggered": false,
+   "hp": 524,
+   "hit_landed": true,
+   "vacuous": false,
+   "vacuous_note": null
+  },
+  {
+   "case": "hit outside it",
+   "press_f": -31,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "staggered": false,
+   "hp": 524,
+   "hit_landed": true,
+   "vacuous": false,
+   "vacuous_note": null
+  }
+ ],
+ "m5_backstab": [
+  {
+   "case": "behind, 0.9 m",
+   "crit": true,
+   "states": [
+    "IDLE",
+    "CRIT_ATTACK"
+   ],
+   "damage": 389.4
+  },
+  {
+   "case": "behind, 1.6 m",
+   "crit": false,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "damage": 63
+  },
+  {
+   "case": "side, 0.9 m",
+   "crit": false,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "damage": 63
+  },
+  {
+   "case": "front, 0.9 m",
+   "crit": false,
+   "states": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "damage": 63
+  }
+ ],
+ "m6_parry": [
+  {
+   "press_lead_f": 0,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0,
+   "closed_to_m": 0.53,
+   "riposte_max_distance_m": 1.2,
+   "pressed_at_parried_frame": null,
+   "riposte_window_f": [
+    7,
+    52
+   ]
+  },
+  {
+   "press_lead_f": 6,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0,
+   "closed_to_m": 0.53,
+   "riposte_max_distance_m": 1.2,
+   "pressed_at_parried_frame": null,
+   "riposte_window_f": [
+    7,
+    52
+   ]
+  },
+  {
+   "press_lead_f": 12,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0,
+   "closed_to_m": 0.53,
+   "riposte_max_distance_m": 1.2,
+   "pressed_at_parried_frame": null,
+   "riposte_window_f": [
+    7,
+    52
+   ]
+  },
+  {
+   "press_lead_f": 18,
+   "parried": true,
+   "parried_len_f": 56,
+   "spec_parried_f": 56,
+   "riposted": true,
+   "damage": 584.1,
+   "closed_to_m": 0.57,
+   "riposte_max_distance_m": 1.2,
+   "pressed_at_parried_frame": 7,
+   "riposte_window_f": [
+    7,
+    52
+   ]
+  },
+  {
+   "press_lead_f": 24,
+   "parried": true,
+   "parried_len_f": 56,
+   "spec_parried_f": 56,
+   "riposted": true,
+   "damage": 584.1,
+   "closed_to_m": 0.57,
+   "riposte_max_distance_m": 1.2,
+   "pressed_at_parried_frame": 7,
+   "riposte_window_f": [
+    7,
+    52
+   ]
+  },
+  {
+   "press_lead_f": 30,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0,
+   "closed_to_m": 0.53,
+   "riposte_max_distance_m": 1.2,
+   "pressed_at_parried_frame": null,
+   "riposte_window_f": [
+    7,
+    52
+   ]
+  },
+  {
+   "press_lead_f": 40,
+   "parried": false,
+   "parried_len_f": null,
+   "spec_parried_f": 56,
+   "riposted": false,
+   "damage": 0,
+   "closed_to_m": 0.53,
+   "riposte_max_distance_m": 1.2,
+   "pressed_at_parried_frame": null,
+   "riposte_window_f": [
+    7,
+    52
+   ]
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+{
+  "creation_data_skills": [
+    "schema",
+    "id",
+    "owner",
+    "source",
+    "provenance",
+    "base_value",
+    "cap",
+    "creation_rule",
+    "progress_formula",
+    "attribute_grant_rule",
+    "groups",
+    "skills",
+    "no_class_restriction"
+  ],
+  "setCharacter": {
+    "error": "unknown class: null"
+  },
+  "sheet_after_setCharacter": {},
+  "character": {},
+  "by_use": {
+    "sheet_before": {},
+    "sheet_after_30_sorcery": {},
+    "sheet_after_30_more_warding": {},
+    "ward_spell": "skin_of_air",
+    "fire_spell": "ember_spit",
+    "skill_use_events": [],
+    "skill_use_event_count": 0,
+    "quote_before": {
+      "skill_req": 65,
+      "attunable_now": false,
+      "focus_cost": 62
+    },
+    "quote_after": {
+      "skill_req": 65,
+      "attunable_now": false,
+      "focus_cost": 62
+    }
+  },
+  "quest_context_skills": {
+    "requires": {
+      "warding": 45,
+      "sorcery": 25
+    },
+    "open": {
+      "ok": false,
+      "reason": "the topic \"the ledger\" has not come up yet",
+      "gate": null
+    },
+    "gate": {
+      "id": "mag_the_warded_ledger__magic",
+      "method": "magic_utility",
+      "violence_required": false,
+      "available": false,
+      "why": [
+        "warding 0/45",
+        "sorcery 0/25",
+        "you cannot bring open_lock to bear",
+        "you cannot bring shatter to bear"
+      ],
+      "excludes": []
+    }
+  }
+}

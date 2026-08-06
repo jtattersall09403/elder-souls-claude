@@ -1,0 +1,32 @@
+   3 Hits landed                                      42           [42,43]              —               —
+   4 Whiff rate                                       0.189        [0.125,0.226]        [0.03,0.25]     yes
+   5 Rolls / min                                      12.4         [12.4,12.8]          [4,13]          yes
+   6 Dodge rolls (within 20 f of an enemy hitbox)     0.794        [0.774,0.875]        [0.7,1]         yes
+   7 Roll timing delta, mean (f)                      -5.89        [-5.94,-5]           [-16,-2]        yes
+   8 Roll timing delta, sd                            0.56         [0.35,0.82]          [0,8]           yes
+   9 Roll timing delta, range                         [-6,-3]      —                    [-24,8]         yes
+  10 Enemy swings faced                               42           [40,42]              —               —
+  11 Swings negated by i-frames                       0.575        [0.558,0.595]        [0.4,0.8]       yes
+  12 Swings blocked                                   0.048        [0.028,0.1]          [0,0.35]        yes
+  13 Swings taken                                     0.143        [0.143,0.186]        [0.05,0.35]     yes
+  14 Damage taken / max HP                            0.842        [0.735,0.919]        [0.4,1.6]       yes
+  15 Stamina floor (fraction of max)                  0.307        [0.301,0.31]         [0,0.15]        NO
+  16 Frames at exactly 0 stamina                      0            [0,0]                [20,600]        NO
+  17 % frames below 25% stamina                       0            [0,0]                [0.03,0.2]      NO
+  18 % frames above 90% stamina                       0.3193       [0.2759,0.3439]      [0.12,0.45]     yes
+  19 Mean stamina (fraction)                          0.8156       [0.7898,0.8264]      [0.55,0.8]      NO
+  20 Guard breaks suffered                            0            [0,0]                [0,3]           yes
+  21 Estus charges used                               1            [1,2]                [1,5]           yes
+  22 Committed-frame ratio                            0.6219       [0.6097,0.6381]      [0.34,0.56]     NO
+  23 Block-hold ratio                                 0.0083       [0.0062,0.0133]      [0,0.2]         yes
+  24 Free-frame ratio                                 0.3719       [0.3608,0.3748]      [0.28,0.62]     yes
+  25 Longest unbroken committed run (f)               244          [244,245]            [180,520]       yes
+  26 Punish windows offered by the enemy              42           [41,42]              —               —
+  27 Punish-window usage rate                         0.194        [0.114,0.214]        [0.5,0.95]      NO
+  28 Inputs dropped for insufficient stamina          0            [0,0]                [1,9999]        NO
+  29 Player hp at fight end                           408          [333,540]            —               —
+
+banded rows in band (median): 17 / 25   floor 20
+per fight: F1=17 F2=17 F3=17 F4=17 F5=16
+
+written: ../../../tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/wobble0
