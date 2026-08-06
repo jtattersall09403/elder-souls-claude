@@ -268,7 +268,11 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
   }
 
   // ---- parry (RI-CMB05 §D) ---------------------------------------------------------------
-  const parryClass = shieldId ? d.stamina.block.shields[shieldId].class : (wpn.parry_class || null);
+  // RI-WPN06 §D: a greatshield CANNOT parry, ever — "the heaviest, most stable shield also
+  // getting the most powerful defensive verb collapses the taxonomy into a stat ladder". The
+  // merged shield row carries `can_parry` and it is honoured here rather than inferred from class.
+  const shRow = (opts && opts.shieldRow) || (shieldId ? d.stamina.block.shields[shieldId] : null);
+  const parryClass = shRow ? (shRow.can_parry === false ? null : shRow.class) : (wpn.parry_class || null);
   const pd = parryClass ? d.poise.criticals.parry.by_class[parryClass] : null;
   if (pd) {
     const startup = pd.active[0] - 1;
@@ -302,8 +306,8 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
   // These belong to the OFFHAND, not to the moveset document, which is why they arrive here and
   // are advertised to `resolveSlot` through `ctx.extra_slots`.
   const extraSlots = [];
-  if (roster && shieldId && !twoHanded && d.stamina.block.shields[shieldId]) {
-    const sh = d.stamina.block.shields[shieldId];
+  if (roster && shieldId && !twoHanded && shRow) {
+    const sh = shRow;
     const mkShield = (id, f, mv, poise, root, ha) => {
       out[id] = {
         id, slot: id, kind: 'attack',
@@ -327,7 +331,7 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
       extraSlots.push(id);
     };
     mkShield('shield.bash', [22, 4, 26], 0.35, 24, 0.55, null);
-    if (sh.class === 'great' || sh.class === 'greatshield') mkShield('shield.charge', [30, 20, 40], 0.40, 40, 2.20, [18, 50]);
+    if (sh.taxonomy_class === 'greatshield' || sh.class === 'great') mkShield('shield.charge', [30, 20, 40], 0.40, 40, 2.20, [18, 50]);
   }
 
   // ---- criticals (RI-CMB05 §D) ------------------------------------------------------------

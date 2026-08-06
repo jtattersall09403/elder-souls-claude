@@ -149,3 +149,4 @@ export function playerRaceClass(race) {
 }
 
 function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+function round4(v) { return Math.round(v * 1e4) / 1e4; }

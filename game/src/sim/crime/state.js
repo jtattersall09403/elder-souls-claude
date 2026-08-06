@@ -29,6 +29,48 @@ export class CrimeWorld {
     this.jail = null;
     this.nextCrimeId = 1;
     this.log = [];                        // trace events, drained each frame
+    /**
+     * THE STOLEN REGISTRY — RI-STL02 §2 and its method 2.
+     *
+     * Round 1 set `stolen_from` on the world's own object record and nowhere else:
+     * `saveState().crime.stolen_registry` read `[]` after three thefts, the objects never
+     * entered the inventory, and fencing — the only thing in the design that CLEARS
+     * `stolen_from` — was reachable only by handing `fenceQuote()` an item a critic had built.
+     * Ownership was declared on 1,878 objects and enforced on none of them.
+     *
+     * Rows: {instance, item_id, name, owner, owner_scope, value_g, unique, settlement, frame,
+     *        laundered_by}. `laundered_by` is set by the fence and is what makes a laundered
+     *        item sellable to an honest merchant afterwards.
+     */
+    this.stolenRegistry = [];
+  }
+
+  /** Take an owned thing into the world's memory. Idempotent per instance. */
+  registerStolen(row) {
+    if (this.stolenRegistry.some((s) => s.instance === row.instance)) return null;
+    const r = { laundered_by: null, ...row };
+    this.stolenRegistry.push(r);
+    this.log.push({ type: 'stolen_registered', instance: r.instance, owner: r.owner, value_g: r.value_g, frame: r.frame });
+    return r;
+  }
+
+  /** The fence clears `stolen_from`. RI-STL02 §6: this is the only path that does. */
+  launder(instance, by, frame) {
+    const r = this.stolenRegistry.find((s) => s.instance === instance);
+    if (!r) return null;
+    r.laundered_by = by;
+    r.laundered_at_f = frame;
+    this.log.push({ type: 'laundered', instance, by, frame });
+    return r;
+  }
+
+  /** Confiscation — the jail ledger's "stolen goods gone" clause (RI-CRM01 §6). */
+  confiscateStolen(frame) {
+    const n = this.stolenRegistry.length;
+    const taken = this.stolenRegistry.map((s) => s.instance);
+    this.stolenRegistry.length = 0;
+    if (n) this.log.push({ type: 'confiscated', instances: taken, frame });
+    return taken;
   }
 
   // ---- crimes and witnesses ----------------------------------------------------------------

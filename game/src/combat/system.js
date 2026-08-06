@@ -120,7 +120,7 @@ export class CombatSystem {
     const shieldId = sh ? sh.id : null;
     const shield = sh ? sh.row : null;
     const moves = buildMoveTable(d, moveset, shieldId, {
-      twoHanded: !!loadout.twoHanded || cfg === 'o3_twohand', lib: this.lib,
+      twoHanded: !!loadout.twoHanded || cfg === 'o3_twohand', lib: this.lib, shieldRow: shield,
     });
     const endurance = loadout.endurance !== undefined ? loadout.endurance : 20;
     const body = new CombatBody('P', 'P', d.skeleton, d.hitgeometry, moves, {
@@ -129,6 +129,7 @@ export class CombatSystem {
       armourPoise: loadout.armourPoise !== undefined ? loadout.armourPoise : 28,
       equipLoadPct: loadout.equipLoadPct !== undefined ? loadout.equipLoadPct : 24.0,
       poise: d.poise,
+      clips: d.clips,
       shield,
       haPool: (d.poise.hyperarmour.pools[moves._classKey] || {}).one_handed || 0,
     });
@@ -174,6 +175,7 @@ export class CombatSystem {
       armourRating: stat.armour_rating || 0,
       equipLoadPct: 50,
       poise: this.d.poise,
+      clips: this.d.clips,
       shield: stat.shield ? this.d.stamina.block.shields[stat.shield] : null,
       haPool: stat.hyperarmour_pool || 0,
     });
@@ -363,9 +365,10 @@ export class CombatSystem {
     const moveset = this.movesetFor(L.weapon);
     // RI-WPN06 §A: two-handed, the offhand item is STOWED for the whole duration — `block`,
     // `parry` and `off.*` are unavailable and there is no shield to bash with.
-    const shieldId = L.twoHanded ? null : (L.shield || null);
-    const shield = shieldId ? d.stamina.block.shields[shieldId] : null;
-    const moves = buildMoveTable(d, moveset, shieldId, { twoHanded: !!L.twoHanded, lib: this.lib });
+    const sh = L.twoHanded || !L.shield ? null : this.shieldFor(L.shield);
+    const shieldId = sh ? sh.id : null;
+    const shield = sh ? sh.row : null;
+    const moves = buildMoveTable(d, moveset, shieldId, { twoHanded: !!L.twoHanded, lib: this.lib, shieldRow: shield });
     this.player.setMoves(moves);
     this.player.shield = shield;
     this.player.shieldId = shieldId;

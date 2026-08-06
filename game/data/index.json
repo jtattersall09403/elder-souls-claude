@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 312,
+  "file_count": 313,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -44,8 +44,8 @@
       "path": "combat/clips.json",
       "schema": "elder-souls/clips@1",
       "id": null,
-      "bytes": 75971,
-      "sha256": "4d73e93e4236e310"
+      "bytes": 77721,
+      "sha256": "926de83934add132"
     },
     {
       "path": "combat/enemies/beast_slitherfang.json",
@@ -2160,6 +2160,13 @@
       "bytes": 2161,
       "sha256": "3011cf23b15172b2",
       "declared_incomplete": true
+    },
+    {
+      "path": "world/signatures.json",
+      "schema": "elder-souls/signatures@1",
+      "id": null,
+      "bytes": 109455,
+      "sha256": "c6eed8cab16d973f"
     },
     {
       "path": "world/terrain.json",

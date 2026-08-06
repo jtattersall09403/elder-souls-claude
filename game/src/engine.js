@@ -36,6 +36,7 @@ import { RealInput } from './input/real.js';
 import { Renderer } from './render/renderer.js';
 import { WEATHER } from './render/sky.js';
 import { WorldField } from './world/field.js';
+import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
 import { SaveStore } from './save/store.js';
 import { buildSave, applySave, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
 import { exportSave, importSave } from './save/exchange.js';
