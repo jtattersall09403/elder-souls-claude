@@ -183,7 +183,11 @@ export function buildScene(seed) {
     const x = (hash2(i, 29, seed) - 0.5) * span + (near ? BASIN.x : 0);
     const z = (hash2(i, 31, seed) - 0.5) * span + (near ? BASIN.z : 0);
     const y = terrainHeight(x, z, seed);
-    if (y < -0.65 || y > 0.45) continue;
+    // Reeds belong at the waterline, not everywhere the marsh happens to be flat: a
+    // 1.7 m reed bed spread across the whole near field puts the eye-height viewpoints
+    // inside a wall of foliage.
+    if (y < -0.70 || y > 0.02) continue;
+    if (inStreetCorridor(x, z)) continue;
     q.setFromAxisAngle(up, hash2(i, 37, seed) * Math.PI);
     v.set(x, y, z); s.setScalar(0.7 + hash2(i, 41, seed) * 0.9);
     m.compose(v, q, s);
@@ -206,6 +210,8 @@ export function buildScene(seed) {
     const zz = STREET.z0 + 1.5 + i * ((STREET.z1 - STREET.z0 - 3) / 15);
     const bx = STREET.x + side * (4.4 + hash2(i, 43, seed) * 1.6);
     const w = 3.0 + hash2(i, 47, seed) * 2.0, h = 2.9 + hash2(i, 53, seed) * 2.4, d = 3.2 + hash2(i, 59, seed) * 1.8;
+    // The origin is the framing point for VP07 and VP08 and must stay clear of buildings.
+    if (Math.hypot(bx, zz) < 6.5) continue;
     const base = Math.max(walkY, terrainHeight(bx, zz, seed));
     const house = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats.wall);
     house.position.set(bx, base + h / 2 + 0.4, zz);
@@ -269,7 +275,7 @@ export function buildScene(seed) {
   // ---- showcase props ------------------------------------------------------------------------
   const showcaseNpc = makeActor(mats, 0x6d5a3a);
   showcaseNpc.position.set(0, 0.15, 0);
-  showcaseNpc.rotation.y = Math.PI;
+  showcaseNpc.rotation.y = 0;          // faces +z, which is where VP07's camera is
   props.npcShowcase.add(showcaseNpc);
 
   // VP08: half a metre from a wall/ground junction. Three materials meeting, so the metric
