@@ -415,6 +415,45 @@ remains unfilled. **Do not modify any file outside `corpus/70-visual/refs/`.**
 
 ---
 
+## §11 When you cannot find something — substitute deliberately, and tell us exactly what you did
+
+**We have no access to any of these games.** We cannot capture a frame ourselves, cannot revisit
+a location, cannot re-shoot at a different time of day. Everything here is whatever the internet
+happens to hold. So the slot list above is a statement of *what we would ideally measure*, not a
+list of things we know exist. **Expect some slots to be unfillable, and do not distort the set to
+force them.**
+
+When a slot cannot be filled as specified, apply this ladder, in order, and stop at the first rung
+that works:
+
+1. **Same requirement, different game.** The profile matters more than the title. If Elden Ring's
+   Siofra River is unobtainable, any current-generation cave lit mainly by emissive sources serves
+   `interior_darkemissive` equally well. Record `"substituted_for": "REF-M5"`.
+2. **Same requirement, different location in the same game.** Record it the same way.
+3. **Adjacent conditions.** A dusk marsh instead of a dawn marsh; overcast instead of rain. Record
+   what actually differs in `"deviation"`.
+4. **A frame extracted from video.** Only if no still exists. Mark `"provenance_chain":
+   "video-frame"` and `"pixel_metrics_valid": false` — a compressed video frame cannot be used for
+   texture or anti-aliasing statistics, only for composition, palette and design language.
+5. **Leave it empty and say so.** This is a legitimate and final answer.
+
+**What we need from you is not a full set — it is an accurate map of what exists.** For every slot
+you could not fill as written, tell us in the report: what you searched, what you found instead,
+and — most usefully — **what a realistic version of this requirement would look like given what is
+actually out there.** We will retune the measurement to the evidence available rather than keep a
+bar we can never calibrate. A test we can actually run against a real reference beats an ideal
+test with nothing behind it.
+
+Two specific cases worth flagging if you hit them:
+
+- **If a whole profile folder can only be filled with recompressed or downscaled images**, say so
+  loudly. That changes which metrics we can compute at all, and we would rather know now than
+  discover it when the numbers look strange.
+- **If Morrowind vanilla shots are overwhelmingly modded** (likely — the modding scene is large
+  and old screenshots are scarce), report the ratio you saw. If genuinely vanilla imagery is rare,
+  we will lean on the 1024×768-era screenshots that do exist and lower the resolution expectation
+  rather than accept modded shots. **Never trade vanilla-ness for image quality in that folder.**
+
 ## Above all
 
 Do not fabricate, do not generate images, do not describe an image you did not obtain, and do not
