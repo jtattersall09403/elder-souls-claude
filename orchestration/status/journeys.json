@@ -19,7 +19,8 @@
   "outputs_written": [
     "corpus/88-journeys/RI-JRN05-save-and-load.md",
     "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
-    "corpus/85-platform/RI-PLT01-frame-budget.md"
+    "corpus/85-platform/RI-PLT01-frame-budget.md",
+    "corpus/88-journeys/RI-JRN03-desktop-controls.md"
   ],
   "findings": [
     "RI-JRN01 exists and is the shape template: front-matter (id,title,kind,side,judges,provenance,confidence,blind_pair) + blockquote division-of-labour note + 6 mandatory sections. It cites corpus/88-journeys/paths-requested.json which DOES NOT EXIST YET -> I must create it.",
@@ -38,8 +39,9 @@
     "Direct WebFetch of w3c.github.io, gamesir.com, manuals.plus all returned 403 as the brief predicted; all X2s facts are from WebSearch result summaries, labelled community-data.",
     "RULING (RI-JRN05 \u00a7A): IndexedDB = sole authoritative store; localStorage BANNED for save data (allowed only as a <=1KB pointer record); file export/import MANDATORY as the eviction-proof second path; no server. Write protocol = single readwrite IDB txn over blobs+saves+meta with monotonic generation + sha256 digest + A/B double-buffered slots.",
     "BUTTON MAP DECIDED (RI-JRN04 \u00a7C): souls-default = 5:light 7:heavy(analog,charge>=0.85) 4:block(hold) 6:parry(analog) 1:roll(tap<12f)/sprint(hold>=12f) 0:interact 2:use_item 3:two_hand(hold) 10:jump 11:lock_on 14:swap_left 15:swap_right 9:menu; 12/13/8 reserved; 16 always unbound. souls-handheld profile moves jump->0, interact->3 tap / two_hand->3 hold, keeps 10 as secondary interact. Deadzones: L radial 0.14 in / 0.92 out linear; R 0.10 in, curve m^2.0; triggers T_fire 0.35 T_release 0.20 T_full 0.85 with hysteresis; read .value never .pressed.",
-    "RI-PLT01 ruling: Tier-S (software-valid, scoreable in this container) = draw calls, triangles, programs, materials, state changes, texture/geometry MB, skinned meshes, shadow lights, bytes-allocated-per-sim-step, GC counts+attribution, sim CPU time in calibrated sim_units (render disabled, +/-25% error bar), sim/render decoupling, frame-rate independence, trace determinism. Tier-H (needs real GPU + attested manifest) = fps, p50/p99/p99.9 frame time, worst-frame-in-combat<=33ms, >100ms frames, GC pause DURATION, overdraw/fill, GPU memory, shader compile stalls, compositor, thermals, input-to-photon. Tier-S weight 64 / Tier-H 36; unmeasurable Tier-H stays in denominator (rule T2) so a container-only run caps at 64 -> ladder 5."
+    "RI-PLT01 ruling: Tier-S (software-valid, scoreable in this container) = draw calls, triangles, programs, materials, state changes, texture/geometry MB, skinned meshes, shadow lights, bytes-allocated-per-sim-step, GC counts+attribution, sim CPU time in calibrated sim_units (render disabled, +/-25% error bar), sim/render decoupling, frame-rate independence, trace determinism. Tier-H (needs real GPU + attested manifest) = fps, p50/p99/p99.9 frame time, worst-frame-in-combat<=33ms, >100ms frames, GC pause DURATION, overdraw/fill, GPU memory, shader compile stalls, compositor, thermals, input-to-photon. Tier-S weight 64 / Tier-H 36; unmeasurable Tier-H stays in denominator (rule T2) so a container-only run caps at 64 -> ladder 5.",
+    "Harness amendments now referenced across items: A-JRN1 real-input mode; A-JRN2 gamepad shim at navigator.getGamepads seam; A-JRN3 save/load instrumentation; A-JRN4 viewport/orientation/safe-area; A-JRN5 per-frame perf stats; A-JRN6 getInputState/input_dropped; A-JRN7 trace event vocabulary extension; A-JRN8 getWorldStats extension; A-JRN9 forced GC + heap usage; A-JRN11 setRenderRate/stallMainThread; A-JRN12 CDP keyboard layout. (A-JRN10 reserved for wall-clock advance / RI-JRN08.)"
   ],
-  "next_step": "write RI-JRN03 (desktop controls)",
+  "next_step": "write RI-JRN02 (first hour interaction view)",
   "notes_for_successor": ""
 }

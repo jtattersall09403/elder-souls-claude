@@ -11,7 +11,10 @@
   ],
   "outputs_written": [
     "corpus/70-visual/refs/morrowind/ (73 images across 15 REF-A slots + 2 unconfirmed) - DONE",
-    "corpus/70-visual/refs/modern/hud/ (24 x Witcher 3 2560x1440 gameplay JPEGs) - DONE"
+    "corpus/70-visual/refs/modern/hud/ (24 x Witcher 3 2560x1440 gameplay JPEGs) - DONE",
+    "corpus/70-visual/refs/modern/character_closeup/ (1 RDR2)",
+    "corpus/70-visual/refs/anti-generic/ (5 W3 copies)",
+    "corpus/70-visual/refs/rejected/ (6)"
   ],
   "findings": [
     "Disk at start: 23G avail on /, repo 39M.",
@@ -30,8 +33,11 @@
     "That same repo also has se/wallpapers/*.jpg (4 Skyrim SE), and dirs for doom3/alice/bloodrayne/wolf1/hexen/tron20/avpclassic/darkforces/vtmbloodlines - all pre-current-gen, useless for the fidelity axis.",
     "DEAD ENDS probed (image census, no usable gameplay frames): InTheBottle/CSVO(23 icons), c-stew/SkyrimSE-Modlist(0), TitansBane/The-Phoenix-Flavour(clone fail/404), zesterer/openmw-shaders(1), rfuzzo/MorrowindPlusPlus(17 modded), doublemoulinet/Morrowind-Modular-Mod-Guide(19), doodlum/skyrim-community-shaders(37 UI icons), Wildlander/Wildlander(404), LivingSkyrim/LivingSkyrim(404), OpenMW/openmw.org(404), EanNewton/Awesome-Elden-Ring-Resources(1), Alaxouche/Wunduniik(3 banners), Oghma-Infinium/Ascensio(4), originalnicodr/CorgiFX(5 shader textures), gposingway/gposingway(497 shader textures), prod80/prod80-ReShade-Repository(10 LUTs), morrowind-modding.github.io(218, all tutorial UI/modded).",
     "isl-org/PhotorealismEnhancement website/img/gta = 17 GTA V web-sized frames + enhanced versions. Not fetched: GTA V is not in the reference title list and web-sized images fail 4 integrity.",
-    "GITHUB REPO SEARCH WORKS via mcp__github__search_repositories (contrary to the brief's assumption). Code search mcp__github__search_code untested for this purpose. api.github.com/search via curl still untested."
+    "GITHUB REPO SEARCH WORKS via mcp__github__search_repositories (contrary to the brief's assumption). Code search mcp__github__search_code untested for this purpose. api.github.com/search via curl still untested.",
+    "RDR2: BAAI-Agents/Cradle docs/envs/images/rdr2/ = 23 files but only ONE genuine HUD-free gameplay frame (rdr2_openended_start.jpg, 1921x1081, 6.0 bpp, Arthur from behind at Horseshoe Overlook camp) - the rest are settings menus, minimap crops, 960x540 GIFs and a results chart. Placed as REF-M6 in modern/character_closeup.",
+    "REJECTED: 4x sksebp se/wallpapers SSEBP-Wallpaper-1080p-*.jpg - genuine Skyrim SE frames but each carries a large 'SKYRIM SPECIAL EDITION / BEAUTIFICATION PROJECT' text lockup burned in; text destroys edge-density and flat-shading statistics. Also rdr2_main_storyline_start.jpg (1920x1080 at 0.35 bpp = heavily recompressed, plus HUD).",
+    "ANTI-GENERIC filled from the W3 run (5 copies, duplicate bytes of modern/hud files): crenellated castle, half-timbered Novigrad street, pitched-roof village, thatched hamlet, birch forest + green meadow. Witcher 3 is named in the corpus itself (REF-M9) as the canonical thing not to converge on."
   ],
-  "next_step": "try github code search for .htm/.html galleries linking in-repo game screenshots; fill anti-generic + context; then metrics + manifest + report + RI-VIS09",
+  "next_step": "run image-metrics over acquired set, write MANIFEST.json, make-manifest.py, LICENCE-NOTE.md, ACQUISITION-REPORT.md, RI-VIS09",
   "notes_for_successor": "RI-VIS03 exterior_daylight bands to compare against: M1 DR>=0.72 meanYp 0.28-0.58; M2 C_global 0.13-0.28 C_local_med>=0.045; M3 meanC 12-32 chroma_frac>=0.55; M4 ED_1 0.10-0.34; M5 HFR 0.06-0.24 NYQ<=0.18 alpha 1.6-2.6; M8 FS>=0.035 LargestFlat<=0.06 TotalFlat<=0.18."
 }

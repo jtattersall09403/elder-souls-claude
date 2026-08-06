@@ -487,6 +487,7 @@ that works:
    artefacts §8a rejects. For a REF-M slot, skip this rung and go straight to rung 5. Where it is
    allowed, mark `"provenance_chain": "video-frame"` and `"pixel_metrics_valid": false` — such a
    file is usable for composition, palette and design language only.
+5. **Leave it empty and say so.** This is a legitimate and final answer.
 
 **The ladder changes the subject, never the standard.** A substituted file is still subject to §4
 (exact bytes, original rather than re-host), §7 (all seven vanilla tests for anything in

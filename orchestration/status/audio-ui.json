@@ -21,7 +21,9 @@
     "corpus/87-audio/RI-AUD02-web-audio-budget.md",
     "corpus/87-audio/RI-AUD03-regional-ambience.md",
     "corpus/87-audio/RI-AUD04-music-policy.md",
-    "corpus/87-audio/RI-AUD05-voice-policy.md"
+    "corpus/87-audio/RI-AUD05-voice-policy.md",
+    "corpus/86-ui/RI-UIX01-combat-hud.md",
+    "corpus/86-ui/RI-UIX02-no-marker-enforcement.md"
   ],
   "findings": [
     "All 12 canonical paths (audio.combat.impact, audio.ambience.region, audio.music.policy, audio.voice.policy, ui.hud.combat, ui.hud.minimalism, ui.menu.inventory, ui.menu.journal, ui.menu.levelup, ui.menu.books, ui.dialogue.presentation, ui.style.diegesis) EXIST in corpus/00-doctrine/subsystems.json. No new paths needed.",
@@ -35,8 +37,9 @@
     "BUDGETS SET: audio latency = audio event frame must equal hitbox-connect frame, p99 offset <=1 frame, max <=2; ctx.baseLatency <=20ms, outputLatency <=40ms; scheduler tick <=10ms, lookahead 25-100ms; voices <=32 total /16 sfx /8 impact /6 voice /8 ambience /4 music.",
     "MEASURED: morrowind-dialogue.csv.gz = 69,876 rows / 1,866,989 words / mean 26.7 wpl -> 207 hours of VO at 150wpm. This is the hard argument that full VO is out of scope. Column is 'DialogueText' (idx 9).",
     "MEASURED: argonian-dialogue-corpus.json = 3,888 lines, 151 distinct named speakers, ZERO matches for hiss/sss/Jel/rasp/click. Morrowind never wrote Argonian accent phonetically - register is syntax ('I am Ahaht. Slave.'). Rule: hiss lives in audio, never in text.",
-    "MUSIC COVERAGE BUDGET SET: 8-20% of session wall-clock (target 12%), boss-free session 4-12%; hard fail >30% (wall-to-wall) or <4% (Souls world-policy leakage/AR-2). Ordinary-enemy combat music = exactly 0 frames. Boss music onset within +/-30 frames of fog_gate_crossed."
+    "MUSIC COVERAGE BUDGET SET: 8-20% of session wall-clock (target 12%), boss-free session 4-12%; hard fail >30% (wall-to-wall) or <4% (Souls world-policy leakage/AR-2). Ordinary-enemy combat music = exactly 0 frames. Boss music onset within +/-30 frames of fog_gate_crossed.",
+    "INDEX.md scope map: ui.hud.minimalism and ui.menu.journal were HOLES (now filled by RI-UIX02/RI-UIX04). RI-DLG05 already owns journal PROSE (voice/numbering/directions/nomarkers) -> RI-UIX04 must own only PRESENTATION. RI-WLD06 owns positive no-marker obligations (landmarks/signposts/prose) -> RI-UIX02 owns only the DETECTORS. RI-LOR03 owns book structure -> RI-UIX05 owns only reading UI. RI-PRG01/02 own level-up curve+stats -> RI-UIX06... no, RI-UIX-levelup content folds into UIX03? NOTE: brief lists ui.menu.levelup as a canonical path; assign it to RI-UIX03 (inventory) or UIX06. Decision: judge ui.menu.levelup from RI-UIX03 (menus that do not pause) is wrong -> put it on RI-UIX01? FINAL: ui.menu.levelup judged by RI-UIX03 as a menu-screen sibling."
   ],
-  "next_step": "write UI items: RI-UIX01 combat HUD, then 02 no-marker, 03 inventory, 04 journal, 05 books, 06 diegesis",
+  "next_step": "write RI-UIX03 inventory (+ui.menu.levelup), RI-UIX04 journal UI, RI-UIX05 books, RI-UIX06 diegesis+fidelity bifurcation",
   "notes_for_successor": ""
 }

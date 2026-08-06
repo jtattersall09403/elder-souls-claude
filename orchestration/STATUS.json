@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-06T08:45:04.524Z",
+  "generated": "2026-08-06T08:45:51.425Z",
   "complete": 1,
   "total": 12,
   "tasks": [
@@ -24,8 +24,8 @@
         "corpus/12-weapons/RI-WPN06*",
         "corpus/12-weapons/WEAPON-CRITIC.md"
       ],
-      "next_step": "write RI-WPN04 (contextual attacks: roll/backstep/running/jumping, fallback detector)",
-      "findings": 9
+      "next_step": "write RI-WPN05 (weapon feel: hitstop, material impact, whiff, mass)",
+      "findings": 11
     },
     {
       "id": "uesp-mining",
@@ -72,8 +72,8 @@
         "corpus/95-experience/RI-CMP03*",
         "corpus/95-experience/CROSS-SYSTEM-BUILDER-BRIEF.md"
       ],
-      "next_step": "write RI-EXP05 endings and the last hour (PONR at >=94% of run, diegetic signalling >=2 channels, 0 modal dialogs; anticlimax operationalised as LOW SPECTACLE + HIGH SPECIFICITY: cutscene<=90s, boss phases<=3, ending text cites >=3 player-specific facts; antagonist_refuted_by_game must be false; blind pair vs Vivec/Dagoth Ur + Gwyn; sabotage SAB-C margin >=70%)",
-      "findings": 14
+      "next_step": "write RI-EXP06 permissiveness budget: 15 breakages B-01..B-15 (8 systemic, 3 permanent-world-state), PB-RULE cross-rule, regression-detector hard fail (a probe that passed in a prior wave and now fails without a recorded strike)",
+      "findings": 15
     },
     {
       "id": "magic",
@@ -121,24 +121,22 @@
     {
       "id": "opacity-tone",
       "title": "The opacity budget and the tonal-range / indifference ratio",
-      "state": "started-nothing-written",
-      "done": 0,
+      "state": "partial",
+      "done": 1,
       "expected": 2,
       "missing": [
-        "corpus/50-world/RI-WLD09*",
-        "corpus/40-dialogue/RI-DLG08*"
+        "corpus/50-world/RI-WLD09*"
       ],
-      "next_step": "write corpus/40-dialogue/RI-DLG08",
+      "next_step": "write corpus/50-world/RI-WLD09 + sealed-answer register + opacity-audit.py",
       "findings": 16
     },
     {
       "id": "audio-ui",
       "title": "Audio design and user-interface corpus",
       "state": "partial",
-      "done": 5,
+      "done": 6,
       "expected": 11,
       "missing": [
-        "corpus/86-ui/RI-UIX01*",
         "corpus/86-ui/RI-UIX02*",
         "corpus/86-ui/RI-UIX03*",
         "corpus/86-ui/RI-UIX04*",
@@ -158,8 +156,8 @@
         "corpus/70-visual/refs/MANIFEST.json",
         "corpus/70-visual/refs/ACQUISITION-REPORT.md"
       ],
-      "next_step": "modern-fidelity acquisition: hunt GitHub for current-gen game screenshots",
-      "findings": 12
+      "next_step": "try github code search for .htm/.html galleries linking in-repo game screenshots; fill anti-generic + context; then metrics + manifest + report + RI-VIS09",
+      "findings": 17
     },
     {
       "id": "corpus-audit",

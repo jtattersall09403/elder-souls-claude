@@ -1,0 +1,75 @@
+{
+  "critic": "bar-critic",
+  "review": "BAR-CRITIQUE-IMAGES-04",
+  "date": "2026-08-06",
+  "artifact": "docs/REFERENCE-IMAGE-REQUEST.md",
+  "artifact_version": "v4",
+  "artifact_commit": "e602f56",
+  "artifact_lines": 521,
+  "scope": "narrow confirmation of RC15-RC21 only; gate conditions confirmed met in review 03 and not re-examined",
+  "verdict": "SUFFICIENT",
+  "rc_verification": [
+    {
+      "rank": "RC15",
+      "landed": true,
+      "evidence": "Fences at lines 80, 101, 341, 359, 390 (```json), 426 — three matched pairs, balanced document-wide. L359 is the bare ``` closing §8a's statistics block, directly after '                   visible in the pixels we measure.**' and before 'Move to `rejected/`: any file with `upscale_test < 0.004`'. §8b (L365), §8c (L375), §8d (L380) and §9's opening line (L388) are outside all code blocks and read as instructions; §9's exemplar sits in its own intended ```json fence at L390-426 and parses as valid JSON."
+    },
+    {
+      "rank": "RC16",
+      "landed": true,
+      "evidence": "§3 L142-145: '`refs/morrowind/` is different: it is judged on design language, not statistics. **Two to three images per slot** — four to five for the five rows marked **core** in §5e — deliberately chosen, is right. §5e is authoritative on those counts; this paragraph only explains why they are smaller than the modern floors.' Agrees with §5e L264. The string 'Three to five' no longer occurs anywhere in the file."
+    },
+    {
+      "rank": "RC17",
+      "landed": true,
+      "evidence": "§5a L207 is a 3-cell row in the 3-column table: '| `REF-M21` | **A flat, overcast, no-direct-sun exterior at midday**, any of the four games. Deliberately undramatic: no god rays, no low sun, no golden hour. Overcast noon is our declared default weather and every other exterior slot here is dramatic directional sun; diffuse light is the hardest lighting to fake and we currently have no reference for it at all | `exterior_daylight` |'. Cell-count sweep confirms all 20 REF-M rows are 3-cell."
+    },
+    {
+      "rank": "RC18",
+      "landed": true,
+      "evidence": "§5e L271 REF-A4 ('...lighting and clutter. Interiors differ by faction and class, and that difference is the property we are copying; one interior cannot show it |'), L285 REF-A18 ('...nothing else in the set can anchor them |'), L286 REF-A19 ('...the town street in REF-A8 does not show it |') are each 2-cell with rationale retained inline. Cell-count sweep confirms all 19 REF-A rows are 2-cell."
+    },
+    {
+      "rank": "RC19",
+      "landed": true,
+      "evidence": "§9 L432-433: 'Filenames: `REF-M4__rdr2-bluewater-marsh-dawn.png` (double underscore separator), or `run-<source-slug>-<index>.<ext>` for interval-sampled frames, exactly as named in §3.' Matches §3 L132 'Name these `run-<source-slug>-<index>.<ext>`'. The string 't<seconds>' is absent from the file."
+    },
+    {
+      "rank": "RC20",
+      "landed": true,
+      "evidence": "(a) §11 L484-485: '4. **A frame extracted from video — for `refs/morrowind/`, `anti-generic/` and `context/` only.** **Never for `refs/modern/`.**' (b) L491-497, after the ladder and before 'What we need from you is not a full set': '**The ladder changes the subject, never the standard.** A substituted file is still subject to §4 (exact bytes, original rather than re-host), §7 ... §8a ... and §8b'. (c) §3 L125-130, directly beneath the floors table and above the anti-curation paragraph: '**Only files with `\"pixel_metrics_valid\": true` count toward these floors.**' All three parts present. See splice_damage SD-A: the (a) replacement also consumed rung 5."
+    },
+    {
+      "rank": "RC21",
+      "landed": true,
+      "evidence": "§4 L165-168: 'Rehosted copies are acceptable and count toward the §3 floors provided they pass §8a — §8a is what protects calibration, and a re-host that passes it is measurement-identical to the original. Mark them honestly anyway, so we can re-check that subset first if a band later looks strange.' The prior 'not used for band calibration' clause is gone."
+    }
+  ],
+  "splice_damage": [
+    {
+      "id": "SD-A",
+      "severity": "low",
+      "gating": false,
+      "issue": "The RC20(a) replacement spanned lines 4-5 of the §11 ladder rather than line 4 alone, deleting rung 5 ('5. **Leave it empty and say so.** This is a legitimate and final answer.'). The ladder now terminates at rung 4, and two sentences added by RC20 still point at the missing rung: L487 'For a REF-M slot, skip this rung and go straight to rung 5.' and L496 'a REF-A slot that cannot be filled with vanilla Morrowind goes to rung 5, not to another title.' Non-gating because the terminal behaviour survives verbatim in §11 L499-504, rule 10 (L53-54) and §10's abort rule (L460), and because the gap authorises nothing — rung 4 still reads '**Never for `refs/modern/`**' immediately above it.",
+      "fix": "Insert as a new line immediately after L489 (end of rung 4), before the blank line preceding '**The ladder changes the subject, never the standard.**':\n\n5. **Leave it empty and say so.** This is a legitimate and final answer."
+    }
+  ],
+  "integrity_sweep": {
+    "code_fences": "6 fences, 3 matched pairs, no info string on any closing fence",
+    "tables": "all four tables well formed; every row matches its header cell count (4/4 floors, 3/3 §5a, 3/3 §5b, 2/2 §5e)",
+    "headings": "§1 through §11 plus 'Above all' in order; §5a-§5e in order; no duplicates",
+    "truncated_or_duplicated_prose": "none found; no line over 40 chars occurs twice; every spliced paragraph terminates in a complete sentence",
+    "stale_strings": "'Three to five' and 't<seconds>' both absent",
+    "manifest_exemplar": "parses as valid JSON",
+    "adjacent_contradictions": "none; §3 RC20(c) and §4 RC21 are consistent (a rehosted file passing §8a is pixel_metrics_valid true), and §8a's heavily_recompressed retention is consistent with such files not counting toward floors"
+  },
+  "optional_polish": [
+    {
+      "issue": "§10 item 1 asks for 'number delivered' against the §3 floor without restating RC20(c)'s pixel_metrics_valid restriction.",
+      "fix": "Optional: append 'counting only files with `\"pixel_metrics_valid\": true`, per §3' to the bullet. §3 already governs; this is belt-and-braces."
+    }
+  ],
+  "gate_conditions_rechecked": false,
+  "gate_conditions_note": "All 14 confirmed met in review 03; out of scope for this pass and unaffected by the RC15-RC21 edits.",
+  "ready_to_run": true
+}

@@ -302,7 +302,7 @@ The tier-1 spell every caster starts with, given in full so the shape is unambig
 | `Ps` | 15 |
 | `Tc` (aim latch) | 10 |
 | Stamina | 10 |
-| Focus (base, INT 10, Sorcery 5, rod) | `ceil(8 × 0.50 × 1.00)` = **4** |
+| Focus (RI-MAG02 §D: `shock_damage`, M = 17, instantaneous, projectile ⇒ `focus_base` 7) | `ceil(7 × 0.50 × 1.00)` = **4** |
 | Geometry | `projectile`, r = 0.14 m, 22.0 m/s, no tracking, 1.5 s lifetime |
 | Damage | 34 shock at INT 10 (RI-MAG02 §E scaling) |
 | Poise damage | 6 |
