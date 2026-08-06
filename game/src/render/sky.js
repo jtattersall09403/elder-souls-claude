@@ -78,6 +78,11 @@ export class Sky {
     this.sun.shadow.camera.top = 70;
     this.sun.shadow.camera.bottom = -70;
     this.sun.shadow.bias = -0.0009;
+    this.sun.shadow.normalBias = 0.03;
+    // Three.js does NOT recompute an orthographic shadow frustum from its properties, so
+    // this call is load-bearing: without it the shadow camera keeps its default 10x10 m
+    // box and the entire scene renders fully shadowed.
+    this.sun.shadow.camera.updateProjectionMatrix();
     scene.add(this.sun);
     scene.add(this.sun.target);
 

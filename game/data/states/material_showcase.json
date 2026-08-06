@@ -1,0 +1,26 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "material_showcase",
+  "title": "Anchor for VP08. A cut-stone wall meeting a dark plinth, moss and a plank at the origin: four materials in one frame at half a metre.",
+  "note": "Named states double as the viewpoint anchors in tools/harness/viewpoints.json: shoot.mjs calls loadState(viewpoint.anchor) before posing the camera, so every anchor id MUST be a loadable state or the viewpoint is unshootable and the metric it feeds scores 0, fail-closed (HARNESS.md §6). This state toggles the materialShowcase prop group.",
+  "env": {
+    "timeOfDay": 12.0,
+    "weather": "clear",
+    "region": "thornmarsh",
+    "interior": null
+  },
+  "player": {
+    "pos": [
+      0,
+      0,
+      5.0
+    ],
+    "yaw": 180.0
+  },
+  "camera": {
+    "yaw": 180.0,
+    "pitch": -4.0,
+    "mode": "free"
+  },
+  "spawn": []
+}

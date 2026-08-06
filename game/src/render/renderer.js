@@ -29,13 +29,16 @@ export class Renderer {
     this.three.toneMappingExposure = 1.0;
 
     const built = buildScene(seed);
+    this.seed = seed;
     this.scene = built.scene;
-    this.groups = built.groups;
+    this.cells = built.cells;
+    this.props = built.props;
     this.anchors = built.anchors;
     this.terrain = built.terrain;
     this.playerMesh = built.player;
-    this.actorMat = built.actorMat;
-    this.clothMat = built.clothMat;
+    this.mats = built.mats;
+    this.cell = 'exterior';
+    this.setCell('exterior');
 
     this.sky = new Sky(this.scene);
     this.camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 900);
@@ -54,11 +57,29 @@ export class Renderer {
     return { width: w, height: h };
   }
 
-  /** Height of the ground under (x,z), so actors stand on the terrain rather than in it. */
-  groundAt(x, z, seed, region) {
-    if (region === 'arena') return 400;
-    if (region && String(region).startsWith('interior')) return -400;
-    return terrainHeight(x, z, seed);
+  /**
+   * Which cell is drawn. Every cell is built at the world origin and switched by
+   * visibility, because the canonical viewpoints carry absolute poses near the origin
+   * (HARNESS.md §6) and a cell parked at y = -400 could never be shot at y = 1.6.
+   */
+  setCell(name) {
+    if (!this.cells[name]) throw new Error(`setCell('${name}'): unknown cell. Known: ${Object.keys(this.cells).join(', ')}`);
+    for (const k of Object.keys(this.cells)) this.cells[k].visible = (k === name);
+    this.cell = name;
+    return name;
+  }
+
+  setProp(name, visible) {
+    if (!this.props[name]) throw new Error(`setProp('${name}'): unknown prop group`);
+    this.props[name].visible = !!visible;
+    return !!visible;
+  }
+
+  /** Height of the ground under (x,z). Flat inside every non-exterior cell. */
+  groundAt(x, z, seed, cell) {
+    const c = cell || this.cell;
+    if (c !== 'exterior') return 0;
+    return terrainHeight(x, z, seed === undefined ? this.seed : seed);
   }
 
   syncEntities(sim) {
@@ -67,7 +88,7 @@ export class Renderer {
       seen.add(e.eid);
       let mesh = this.enemyMeshes.get(e.eid);
       if (!mesh) {
-        mesh = makeActor(this.actorMat, this.clothMat, e.archetype === 'DUMMY' ? 0x7a6a4a : 0x5d3b2c);
+        mesh = makeActor(this.mats, e.archetype === 'DUMMY' ? 0x7a6a4a : 0x5d3b2c);
         mesh.name = 'enemy:' + e.eid;
         this.scene.add(mesh);
         this.enemyMeshes.set(e.eid, mesh);

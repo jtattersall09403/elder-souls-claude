@@ -1,7 +1,8 @@
 {
   "schema": "elder-souls/state@1",
   "id": "default",
-  "title": "A fresh character standing on the boards east of Thorn.",
+  "title": "A fresh character on the boardwalk at the south end of the street.",
+  "note": "The renderable patch is a 420 m neighbourhood at the WORLD ORIGIN. The province coordinates in game/data/world/pois.json (Thorn at x=3820, z=859) are the map wave-1 piece W1-01 builds; this piece ships the one neighbourhood the canonical viewpoints are posed against, and says so rather than pretending the province exists.",
   "env": {
     "timeOfDay": 12.0,
     "weather": "clear",
@@ -10,9 +11,9 @@
   },
   "player": {
     "pos": [
-      3820.0,
+      4.0,
       0,
-      865.0
+      -10.0
     ],
     "yaw": 0.0
   },
@@ -21,7 +22,6 @@
     "pitch": -8.0,
     "mode": "free"
   },
-  "spawn": [],
   "inventory": [
     {
       "id": "eshis-knife",
@@ -33,5 +33,6 @@
       "slot": "right",
       "quickSlot": null
     }
-  ]
+  ],
+  "spawn": []
 }

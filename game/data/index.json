@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 25,
+  "file_count": 33,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -122,43 +122,99 @@
       "path": "states/arena_flat.json",
       "schema": "elder-souls/state@1",
       "id": "arena_flat",
-      "bytes": 456,
-      "sha256": "4c2f78cd9a84bfe0"
+      "bytes": 777,
+      "sha256": "6adef076a005f8e5"
     },
     {
       "path": "states/default.json",
       "schema": "elder-souls/state@1",
       "id": "default",
-      "bytes": 629,
-      "sha256": "25caa74002cb976f"
+      "bytes": 974,
+      "sha256": "81adcb108fa4fba9"
+    },
+    {
+      "path": "states/dungeon_primary.json",
+      "schema": "elder-souls/state@1",
+      "id": "dungeon_primary",
+      "bytes": 764,
+      "sha256": "685fcefc4dde9946"
     },
     {
       "path": "states/endgame-200q.json",
       "schema": "elder-souls/state@1",
       "id": "endgame-200q",
-      "bytes": 667818,
-      "sha256": "6c559bc40484c6cb"
+      "bytes": 667815,
+      "sha256": "3c4f91dd9e4549f4"
+    },
+    {
+      "path": "states/interior_firelit.json",
+      "schema": "elder-souls/state@1",
+      "id": "interior_firelit",
+      "bytes": 764,
+      "sha256": "98608c8951209f43"
+    },
+    {
+      "path": "states/material_showcase.json",
+      "schema": "elder-souls/state@1",
+      "id": "material_showcase",
+      "bytes": 855,
+      "sha256": "18aa6096a3508884"
+    },
+    {
+      "path": "states/npc_showcase.json",
+      "schema": "elder-souls/state@1",
+      "id": "npc_showcase",
+      "bytes": 835,
+      "sha256": "8347bcaf36456081"
+    },
+    {
+      "path": "states/settlement_primary_street.json",
+      "schema": "elder-souls/state@1",
+      "id": "settlement_primary_street",
+      "bytes": 767,
+      "sha256": "ca0d927cab0f39c5"
     },
     {
       "path": "states/sv1-midquest.json",
       "schema": "elder-souls/state@1",
       "id": "sv1-midquest",
-      "bytes": 2106,
-      "sha256": "4fe7af27b45323cb"
+      "bytes": 2101,
+      "sha256": "7c9907e4ce369b2a"
     },
     {
       "path": "states/sv5-journal-bloodstain.json",
       "schema": "elder-souls/state@1",
       "id": "sv5-journal-bloodstain",
       "bytes": 10833,
-      "sha256": "1cc6defc105ba098"
+      "sha256": "4d427031af460e54"
+    },
+    {
+      "path": "states/swamp_canopy.json",
+      "schema": "elder-souls/state@1",
+      "id": "swamp_canopy",
+      "bytes": 757,
+      "sha256": "78b37ba2b88ff074"
     },
     {
       "path": "states/thorn-hall.json",
       "schema": "elder-souls/state@1",
       "id": "thorn-hall",
-      "bytes": 440,
-      "sha256": "85d9acb0e85e5d7c"
+      "bytes": 530,
+      "sha256": "4ab0e0aab53ea8cb"
+    },
+    {
+      "path": "states/vista_primary.json",
+      "schema": "elder-souls/state@1",
+      "id": "vista_primary",
+      "bytes": 795,
+      "sha256": "87bec1d07b5758ce"
+    },
+    {
+      "path": "states/water_shallows.json",
+      "schema": "elder-souls/state@1",
+      "id": "water_shallows",
+      "bytes": 778,
+      "sha256": "eceaedfd481cf0cc"
     },
     {
       "path": "world/interiors/thorn-hall.json",

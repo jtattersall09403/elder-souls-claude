@@ -158,13 +158,32 @@ export class Engine {
     if (patch.progression) Object.assign(sim.progression, JSON.parse(JSON.stringify(patch.progression)));
     if (patch.quest) deepAssign(sim.quest, JSON.parse(JSON.stringify(patch.quest)));
     if (patch.world) deepAssign(sim.world, JSON.parse(JSON.stringify(patch.world)));
+    this._applyCell();
     for (const s of patch.spawn || []) this.spawn(s.id, s.x, s.z, { as: s.as });
     // Put the player on the ground of whatever cell the state names.
-    sim.player.pos[1] = this.renderer
-      ? this.renderer.groundAt(sim.player.pos[0], sim.player.pos[2], 1337, sim.env.interior ? 'interior' : sim.env.region)
-      : 0;
+    sim.player.pos[1] = this.groundAt(sim.player.pos[0], sim.player.pos[2]);
     this._settleCamera();
     return { ok: true, frame: sim.frame, seed: rng.seed };
+  }
+
+  /** Which renderable cell the current environment corresponds to. */
+  cellFor(env) {
+    if (env.region === 'arena') return 'arena';
+    if (env.interior === 'dungeon-primary') return 'dungeon';
+    if (env.interior) return 'interior';
+    return 'exterior';
+  }
+
+  groundAt(x, z) {
+    if (!this.renderer) return 0;
+    return this.renderer.groundAt(x, z, undefined, this.cellFor(this.sim.env));
+  }
+
+  _applyCell() {
+    if (!this.renderer) return;
+    this.renderer.setCell(this.cellFor(this.sim.env));
+    this.renderer.setProp('npcShowcase', this.sim.stateName === 'npc_showcase');
+    this.renderer.setProp('materialShowcase', this.sim.stateName === 'material_showcase');
   }
 
   _settleCamera() {
@@ -217,7 +236,7 @@ export class Engine {
     const eid = opts.as || `e${this.sim.nextEid}`;
     if (this.sim.findEntity(eid)) throw new Error(`spawn: eid '${eid}' is already in use`);
     const e = this.statFor(id, eid, Number(x), Number(z), this.sim.frame);
-    e.pos[1] = this.renderer ? this.renderer.groundAt(e.pos[0], e.pos[2], 1337, this.sim.env.interior ? 'interior' : this.sim.env.region) : 0;
+    e.pos[1] = this.groundAt(e.pos[0], e.pos[2]);
     e.anchor[1] = e.pos[1];
     this.sim.addEntity(e);
     this.sim.nextEid++;
@@ -250,8 +269,7 @@ export class Engine {
     const p = this.sim.player;
     p.pos[0] = Number(x);
     p.pos[2] = Number(z);
-    p.pos[1] = opts.y !== undefined ? Number(opts.y)
-      : (this.renderer ? this.renderer.groundAt(p.pos[0], p.pos[2], 1337, this.sim.env.interior ? 'interior' : this.sim.env.region) : 0);
+    p.pos[1] = opts.y !== undefined ? Number(opts.y) : this.groundAt(p.pos[0], p.pos[2]);
     if (opts.yaw !== undefined) p.yaw = Number(opts.yaw);
     this._settleCamera();
     return true;
@@ -380,7 +398,9 @@ export class Engine {
   loadState(arg) {
     if (typeof arg === 'string') return this.applyNamedState(arg);
     if (arg && typeof arg === 'object' && arg.meta && arg.meta.schema === 'elder-souls/save@1') {
-      return applySave(this.sim, arg, this.moves, (id, eid, x, z, f) => this.statFor(id, eid, x, z, f));
+      const r = applySave(this.sim, arg, this.moves, (id, eid, x, z, f) => this.statFor(id, eid, x, z, f));
+      this._applyCell();
+      return r;
     }
     if (arg && typeof arg === 'object' && typeof arg.state === 'string') return this.applyNamedState(arg.state);
     throw new Error('loadState: expected a named state (string) or an elder-souls/save@1 blob');

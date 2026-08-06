@@ -2,12 +2,17 @@
   "task_id": "ref-critic-r1",
   "brief": "inline: reference coverage critic, round 1",
   "started": "wave-ref-loop",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md",
     "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.json"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.json",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-souls-candidates.json (734 candidates)",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-code.md / .json (archive of the PRIOR critique that occupied this path)"
+  ],
   "findings": [
     "PRIOR ARTEFACT COLLISION: corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md/.json ALREADY EXIST (Aug 6 11:31), written by the acq-code-loop critic (a critique of acquire.py before it had ever run). Plus ACQUISITION-CRITIQUE-R1-candidates.json with 472 verified live candidates. My brief names the same paths. I will archive the prior pair as ACQUISITION-CRITIQUE-R1-code.md/.json and NEVER touch the candidates file.",
     "DISK TRUTH: 173 image files = 90 .avif (Morrowind, all from mwscr/dehero) + 83 .jpg (modern side). Dirs: modern/hud 28, character_closeup 12, exterior_lowlight 11, exterior_daylight 10, interior_darkemissive 8, rejected 7, anti-generic 5, modern/combat 2. Morrowind REF-A1..A19 = 89 avif over 19 slots.",
@@ -17,8 +22,15 @@
     "QUALITY: 31 of 46 have pixel_metrics_valid=false; 30 of 46 heavily_recompressed=true; 3 have corroboration='unknown' (spec 8b says those go to rejected/); ALL 46 sampling='selected' (zero interval-run frames, violating the 3 anti-curation rule).",
     "EMPTY FOLDERS ON DISK: modern/material_closeup (0), context/ (0), video/ (0). NON-EXISTENT FOLDERS: refs/souls-behaviour/ (A5 axis, entire), refs/modern/ui/ (REF-M22, A2), refs/morrowind/REF-A12b/ (A2), refs/morrowind/REF-A20/ (A2). Four amendment-mandated destinations were never created.",
     "ZERO Dark Souls images anywhere. ZERO Dark Souls III. ZERO Morrowind menu/UI pixels (REF-A12 is 38 OpenMW XML/layout files, no image). ZERO Morrowind loading screens.",
-    "Modern side distinct games: Elden Ring 46, Witcher 3 29, RDR2 1. Skyrim SE appears only in rejected/."
+    "Modern side distinct games: Elden Ring 46, Witcher 3 29, RDR2 1. Skyrim SE appears only in rejected/.",
+    "SEARCH DONE (do not repeat): 734 verified-live Steam candidates harvested into corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-souls-candidates.json across 12 buckets. Dark Souls Remastered 570940 + DARK SOULS III 374320 + ELDEN RING 1245620 + Morrowind 22320. 36/36 ranged-GET liveness sample returned HTTP 206.",
+    "The prior 472-candidate pool (ACQUISITION-CRITIQUE-R1-candidates.json) has TEN buckets and ZERO souls-behaviour \u2014 it was written before amendment A5 existed. My 734 are additive, not a duplicate.",
+    "HARVEST RECIPE (cheaper than the detail-page route the previous agent used): the LISTING page card already contains the bare ugc original URL. Regex the apphub_CardContentPreviewImage src, strip from '/?imw=', keep the trailing slash. No /sharedfiles/filedetails/ fetch needed, so no 429 risk. Script at scratchpad/hunt.py.",
+    "DEAD END: Morrowind 22320 searchText='spellmaking' returns 0 results. Every other Morrowind menu query returns 5-15.",
+    "CONFIRMED BY EYE: Morrowind sid 2347256727 is a genuine vanilla dialogue window (gold bevel, topic list, Barter/Goodbye, bottom-left bars). sid 3212740588 is a four-window menu-mode composite: character sheet + paperdoll inventory + world map + magic window in ONE frame \u2014 a REF-A12b flagship. DS3 sid 3670478265 is the Status screen with the character live-rendered behind it \u2014 serves REF-M22 and souls-behaviour/stance simultaneously.",
+    "CONFIRMED DEAD END REPRODUCED: DS3 searchText='fog gate' top hit (sid 1914625699) is an unrelated dark cathedral exterior, not a fog gate. Title-matching confirmed. (It is however an excellent interior_darkemissive candidate.)",
+    "VERDICT INSUFFICIENT. 20 gaps: 14 BLOCKING, 3 SUBSTITUTABLE, 2 INFERABLE, 1 IMPOSSIBLE. 11 fresh findings. Biggest fresh finding F1: ALL 89 Morrowind images are 320x320 square AVIF crops, so REF-A13/A14/A15 ('readable at close range', 'Daedric script signage') are unanswerable and REF-A1/A8/A19 have had their composition cropped away. The folder reads PASS on count. Fix: re-acquire all 19 slots full-frame from Steam app 22320 (verified serving 1152x864 / 1920x1080 native)."
   ],
-  "next_step": "read RI-VIS02/03/05/09, RI-UIX06, RI-CAM01/03/07, RI-WPN01-06, RI-AI02; then walk the 138 corpus items for pass-2 fresh findings",
-  "notes_for_successor": "I am a critic. I build nothing. Two passes required: (1) coverage vs floors counting real files on disk, (2) fresh first-principles derivation of missing reference axes."
+  "next_step": "none - critique delivered. Builder starts at work_list rank 0 (G07, zero-cost).",
+  "notes_for_successor": "I wrote no acquisition code and downloaded no committed images (scratchpad previews only, for eyeballing). Two candidate pools now exist and DO NOT OVERLAP: ACQUISITION-CRITIQUE-R1-candidates.json (472, prior agent, ten profile buckets, no Dark Souls) and ACQUISITION-CRITIQUE-R1-souls-candidates.json (734, mine, twelve buckets, Dark Souls + Morrowind menus). Harvest script at scratchpad/hunt.py uses the cheap listing-card route. Four corpus amendments are filed in section 4 of the MD and must be applied to the spec, not proceeded on informally."
 }

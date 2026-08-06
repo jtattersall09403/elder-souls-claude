@@ -1,25 +1,25 @@
 {
   "schema": "elder-souls/state@1",
-  "id": "arena_flat",
-  "title": "Flat featureless arena. The combat scenario fixtures in tools/harness/scenarios/ load this, and viewpoint VP12 anchors on it.",
+  "id": "dungeon_primary",
+  "title": "Anchor for VP11. A dark stone corridor running north, lit by one torch nine metres in.",
   "note": "Named states double as the viewpoint anchors in tools/harness/viewpoints.json: shoot.mjs calls loadState(viewpoint.anchor) before posing the camera, so every anchor id MUST be a loadable state or the viewpoint is unshootable and the metric it feeds scores 0, fail-closed (HARNESS.md §6).",
   "env": {
     "timeOfDay": 12.0,
     "weather": "clear",
-    "region": "arena",
-    "interior": null
+    "region": "thornmarsh",
+    "interior": "dungeon-primary"
   },
   "player": {
     "pos": [
       0,
       0,
-      0
+      -2.0
     ],
     "yaw": 0.0
   },
   "camera": {
     "yaw": 0.0,
-    "pitch": -8.0,
+    "pitch": -2.0,
     "mode": "free"
   },
   "spawn": []

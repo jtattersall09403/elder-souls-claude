@@ -1,518 +1,822 @@
 {
  "round": 1,
- "role": "critic",
- "verdict": "INSUFFICIENT. acquire.py has never run; 31 of 46 catalogued images do not count toward any floor; the section 3 anti-curation rule is at 0% compliance; only character_closeup meets even the reduced A4 two-game minimum.",
- "spec": "docs/REFERENCE-IMAGE-REQUEST.md section 3, as amended by corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md A1/A2/A3/A4",
- "candidates_file": "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-candidates.json",
- "profiles": [
+ "role": "reference-coverage-critic",
+ "verdict": "INSUFFICIENT. Dark Souls is at zero across the whole repository and refs/souls-behaviour/ does not exist as a directory, so the entire A5 behavioural axis and the six reference items it serves (RI-CAM01, RI-CAM03, RI-CAM07, RI-WPN01-06, RI-AI02) still have no visual reference at all. Morrowind menus are at zero pixels (REF-A12 is 38 XML files); REF-A12b, REF-A20 and modern/ui were never created. Not one of the six refs/modern/ profile floors is met on count, on distinct games, or on the section-3 anti-curation rule, and interior_darkemissive has 8 files and 0 measurable ones. And the half of the set that reads PASS does not: all 89 Morrowind images are 320x320 square crops and cannot answer the questions their own slots ask.",
+ "spec": [
+  "docs/REFERENCE-IMAGE-REQUEST.md",
+  "corpus/70-visual/refs/ACQUISITION-SPEC-AMENDMENTS.md A1-A5"
+ ],
+ "measured_at": "2026-08-06, by walking the directory tree; provenance joined from _provenance.json (138 records) falling back to MANIFEST.json (165 records). 173 images on disk.",
+ "prior_artifact_preserved": {
+  "note": "An unrelated ACQUISITION-CRITIQUE-R1.md/.json (a critique of acquire.py, written before it had run) occupied this path. Preserved verbatim as ACQUISITION-CRITIQUE-R1-code.md/.json. Its 472-candidate handover ACQUISITION-CRITIQUE-R1-candidates.json is untouched and still authoritative for its ten buckets.",
+  "files": [
+   "ACQUISITION-CRITIQUE-R1-code.md",
+   "ACQUISITION-CRITIQUE-R1-code.json",
+   "ACQUISITION-CRITIQUE-R1-candidates.json"
+  ]
+ },
+ "candidates_file": "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-souls-candidates.json",
+ "candidates_count": 734,
+ "coverage": [
   {
-   "profile": "exterior_daylight",
-   "floor_images": 12,
-   "floor_games": 3,
-   "floor_locations": 6,
-   "catalogued": 10,
-   "countable_pixel_metrics_valid": 3,
-   "games": 1,
-   "games_list": [
+   "folder": "modern/exterior_daylight",
+   "floor": "12 imgs / 3 games / 6 locations",
+   "files_on_disk": 10,
+   "countable_pmv_true": 3,
+   "distinct_games": 1,
+   "games": [
     "Elden Ring"
    ],
    "interval_run": 0,
    "interval_run_required": 6,
-   "verdict": "FAIL"
+   "verdict": "FAIL x3"
   },
   {
-   "profile": "exterior_lowlight",
-   "floor_images": 12,
-   "floor_games": 3,
-   "floor_locations": 6,
-   "catalogued": 11,
-   "countable_pixel_metrics_valid": 3,
-   "games": 1,
-   "games_list": [
+   "folder": "modern/exterior_lowlight",
+   "floor": "12 / 3 / 6",
+   "files_on_disk": 11,
+   "countable_pmv_true": 3,
+   "distinct_games": 1,
+   "games": [
     "Elden Ring"
    ],
    "interval_run": 0,
    "interval_run_required": 6,
-   "verdict": "FAIL"
+   "verdict": "FAIL x3"
   },
   {
-   "profile": "interior_darkemissive",
-   "floor_images": 10,
-   "floor_games": 2,
-   "floor_locations": 5,
-   "catalogued": 8,
-   "countable_pixel_metrics_valid": 0,
-   "games": 0,
-   "games_list": [],
+   "folder": "modern/interior_darkemissive",
+   "floor": "10 / 2 / 5",
+   "files_on_disk": 8,
+   "countable_pmv_true": 0,
+   "distinct_games": 1,
+   "games": [
+    "Elden Ring"
+   ],
    "interval_run": 0,
    "interval_run_required": 5,
-   "verdict": "FAIL-EMPTY"
+   "verdict": "FAIL - no measurable file at all"
   },
   {
-   "profile": "character_closeup",
-   "floor_images": 10,
-   "floor_games": 2,
-   "floor_locations": 6,
-   "catalogued": 12,
-   "countable_pixel_metrics_valid": 8,
-   "games": 2,
-   "games_list": [
+   "folder": "modern/character_closeup",
+   "floor": "10 / 2 / 6",
+   "files_on_disk": 12,
+   "countable_pmv_true": 8,
+   "distinct_games": 2,
+   "games": [
     "Elden Ring",
     "Red Dead Redemption 2"
    ],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "FAIL",
-   "note": "meets the 2-game floor; fails count (8 of 10) and fails REF-M6's rear-view rule 1 of 12"
+   "interval_run": "exempt",
+   "verdict": "FAIL - count met but 11 of 12 are one game and the >=half rear-view rule is unverified"
   },
   {
-   "profile": "combat",
-   "floor_images": 8,
-   "floor_games": 2,
-   "floor_locations": 4,
-   "catalogued": 2,
-   "countable_pixel_metrics_valid": 2,
-   "games": 1,
-   "games_list": [
+   "folder": "modern/combat",
+   "floor": "8 / 2 / 4",
+   "files_on_disk": 2,
+   "countable_pmv_true": 2,
+   "distinct_games": 1,
+   "games": [
     "Elden Ring"
    ],
-   "interval_run": null,
-   "interval_run_required": null,
+   "interval_run": "exempt",
    "verdict": "FAIL"
   },
   {
-   "profile": "material_closeup",
-   "floor_images": 8,
-   "floor_games": 2,
-   "floor_locations": 6,
-   "catalogued": 0,
-   "countable_pixel_metrics_valid": 0,
-   "games": 0,
-   "games_list": [],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "FAIL-EMPTY"
+   "folder": "modern/material_closeup",
+   "floor": "8 / 2 / 6",
+   "files_on_disk": 0,
+   "countable_pmv_true": 0,
+   "distinct_games": 0,
+   "games": [],
+   "interval_run": "exempt",
+   "verdict": "FAIL - empty"
   },
   {
-   "profile": "modern/ui (REF-M22, amendment A2)",
-   "floor_images": null,
-   "floor_games": 2,
-   "floor_locations": null,
-   "catalogued": 0,
-   "countable_pixel_metrics_valid": 0,
-   "games": 0,
-   "games_list": [],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "FAIL-EMPTY"
+   "folder": "modern/ui (REF-M22, A2)",
+   "floor": ">=2 games",
+   "files_on_disk": 0,
+   "countable_pmv_true": 0,
+   "distinct_games": 0,
+   "games": [],
+   "verdict": "FAIL - directory never created"
   },
   {
-   "profile": "modern/hud",
-   "floor_images": null,
-   "floor_games": null,
-   "floor_locations": null,
-   "catalogued": 28,
-   "countable_pixel_metrics_valid": 24,
-   "games": 2,
-   "games_list": [
-    "The Witcher 3: Wild Hunt",
+   "folder": "modern/hud",
+   "floor": "none - A1 dissolves this folder",
+   "files_on_disk": 28,
+   "countable_pmv_true": 24,
+   "distinct_games": 2,
+   "games": [
+    "The Witcher 3",
     "Elden Ring"
    ],
    "interval_run": 24,
-   "interval_run_required": null,
-   "verdict": "MISFILED",
-   "note": "amendment A1 dissolves this folder; the 24 Witcher 3 frames are interval-run, pixel_metrics_valid, and already on disk"
+   "verdict": "MISFILED - holds the only 24 interval-run frames in the project; see gap G07"
   },
   {
-   "profile": "anti-generic",
-   "floor_images": 5,
-   "floor_games": null,
-   "floor_locations": null,
-   "catalogued": 5,
-   "countable_pixel_metrics_valid": 5,
-   "games": 1,
-   "games_list": [
-    "The Witcher 3: Wild Hunt"
+   "folder": "morrowind/REF-A1..REF-A19 excl A12",
+   "floor": "2-3 per slot, core five 4-5",
+   "files_on_disk": 89,
+   "countable_pmv_true": 0,
+   "distinct_games": 1,
+   "games": [
+    "Morrowind"
    ],
-   "interval_run": 5,
-   "interval_run_required": null,
+   "verdict": "PASS on count, FAIL on readability - all 89 are 320x320 or 321x320 square AVIF crops. See fresh finding F1."
+  },
+  {
+   "folder": "morrowind/REF-A12",
+   "floor": "4-5 images (core)",
+   "files_on_disk": 0,
+   "non_image_files": 38,
+   "countable_pmv_true": 0,
+   "distinct_games": 0,
+   "games": [],
+   "verdict": "FAIL - the slot asks for the UI and holds no picture of it"
+  },
+  {
+   "folder": "morrowind/REF-A12b (A2)",
+   "floor": "2-3 each of 8 sub-kinds",
+   "files_on_disk": 0,
+   "countable_pmv_true": 0,
+   "distinct_games": 0,
+   "games": [],
+   "verdict": "FAIL - directory never created"
+  },
+  {
+   "folder": "morrowind/REF-A20 (A2)",
+   "floor": "loading/splash screens",
+   "files_on_disk": 0,
+   "countable_pmv_true": 0,
+   "distinct_games": 0,
+   "games": [],
+   "verdict": "FAIL - directory never created"
+  },
+  {
+   "folder": "souls-behaviour/ (A5, six subfolders)",
+   "floor": "entire third axis",
+   "files_on_disk": 0,
+   "countable_pmv_true": 0,
+   "distinct_games": 0,
+   "games": [],
+   "verdict": "FAIL - directory never created; the amendment's central deliverable does not exist"
+  },
+  {
+   "folder": "video/",
+   "floor": "V1-dolly and V2-static REQUIRED; V3/V4 wanted",
+   "files_on_disk": 0,
+   "countable_pmv_true": 0,
+   "distinct_games": 0,
+   "games": [],
+   "verdict": "FAIL - empty"
+  },
+  {
+   "folder": "context/",
+   "floor": "4 (ESO Shadowfen/Murkmire)",
+   "files_on_disk": 0,
+   "countable_pmv_true": 0,
+   "distinct_games": 0,
+   "games": [],
+   "verdict": "FAIL - empty"
+  },
+  {
+   "folder": "anti-generic/",
+   "floor": "4-6",
+   "files_on_disk": 5,
+   "countable_pmv_true": 5,
+   "distinct_games": 1,
+   "games": [
+    "The Witcher 3"
+   ],
    "verdict": "PASS"
   },
   {
-   "profile": "context (ESO Shadowfen/Murkmire)",
-   "floor_images": 4,
-   "floor_games": 1,
-   "floor_locations": null,
-   "catalogued": 0,
-   "countable_pixel_metrics_valid": 0,
-   "games": 0,
-   "games_list": [],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "FAIL-EMPTY"
+   "folder": "rejected/",
+   "floor": "n/a",
+   "files_on_disk": 8,
+   "verdict": "ok - reasons recorded"
+  }
+ ],
+ "hygiene_defects": [
+  {
+   "id": "H1",
+   "defect": "MANIFEST.json holds 165 records against 173 images on disk. Never regenerated since the 46 Elden Ring files landed. make-manifest.py is the only writer of every numeric field and must be re-run."
   },
   {
-   "profile": "video (V1-dolly, V2-static required)",
-   "floor_images": 2,
-   "floor_games": null,
-   "floor_locations": null,
-   "catalogued": 0,
-   "countable_pixel_metrics_valid": null,
-   "games": 0,
-   "games_list": [],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "FAIL-EMPTY"
+   "id": "H2",
+   "defect": "_provenance.json was reduced at 11:30 to 46 Elden-Ring-only records having previously held 165; a concurrent agent restored it to 138 mid-review. Still 35 short of disk. Provenance is being rewritten wholesale rather than merged, and tools/refs/merge-manifest.mjs exists to prevent exactly that."
   },
   {
-   "profile": "morrowind/REF-A1..A19 (excl. A12)",
-   "floor_images": null,
-   "floor_games": null,
-   "floor_locations": null,
-   "catalogued": 89,
-   "countable_pixel_metrics_valid": null,
-   "games": 1,
-   "games_list": [
-    "Morrowind (2002)"
+   "id": "H3",
+   "defect": "All 46 Elden Ring records carry slot 'REF-M-supplemental'. Not one fills a named REF-M slot, so REF-M1..REF-M21 are all still formally unfilled including the ones the images plainly satisfy."
+  },
+  {
+   "id": "H4",
+   "defect": "31 of 46 are pixel_metrics_valid:false and 30 of 46 heavily_recompressed:true. The catalogue reads 46 and measures 15; every headline count in circulation is about 3x optimistic."
+  },
+  {
+   "id": "H5",
+   "defect": "3 records are corroboration:'unknown'. Section 8b requires those go to rejected/."
+  }
+ ],
+ "fresh_findings": [
+  {
+   "id": "F1",
+   "title": "The Morrowind set is 89 square thumbnails and cannot answer the questions its own slots ask",
+   "argued_from": [
+    "RI-VIS05",
+    "REF-A13",
+    "REF-A14",
+    "REF-A15",
+    "REF-A10",
+    "REF-A6",
+    "REF-A1",
+    "REF-A8",
+    "REF-A19",
+    "RI-WLD03",
+    "RI-WLD14"
    ],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "PASS",
-   "note": "2-3 per slot, 4-5 on the core rows; 18 slots met"
+   "evidence": "All 89 are 320x320 or 321x320 per MANIFEST.json script-computed width/height. REF-A13 asks for armour 'readable at close range', REF-A14 for weapons 'close enough to read the design language', REF-A15 for 'Daedric script signage' - none is answerable at 320px. A 1:1 crop of a 4:3 frame has also discarded the composition, so REF-A1 'exterior vista', REF-A8 'settlement density and layout' and REF-A19 'stilted waterside settlement' are judged from pictures that no longer contain their subject. One REF-A15 image is already in rejected/ for precisely this reason.",
+   "why_missed": "The folder reads PASS on count. There is no resolution or framing floor on refs/morrowind/ at all; section 4's 'no minimum resolution, and larger is not better there' is correct in spirit and has been read as licence for a square thumbnail. The missing rule is not resolution - it is 'full frame, native aspect, uncropped'.",
+   "classification": "BLOCKING",
+   "gap": "R1C-02"
   },
   {
-   "profile": "morrowind/REF-A12 (core, the UI)",
-   "floor_images": 5,
-   "floor_games": null,
-   "floor_locations": null,
-   "catalogued": 38,
-   "countable_pixel_metrics_valid": 0,
-   "games": 1,
-   "games_list": [
-    "Morrowind (2002)"
+   "id": "F2",
+   "title": "A5's richest artifact is a per-move animation library and it has a name",
+   "argued_from": [
+    "RI-AI02",
+    "RI-WPN01",
+    "RI-WPN02",
+    "RI-WPN03",
+    "RI-WPN04",
+    "RI-AI06"
    ],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "FAIL-NO-PIXELS",
-   "note": "all 38 records are asset_kind 'ui-definition' -- OpenMW Lua constants and MyGUI layout XML"
+   "evidence": "darksouls.fandom.com Category:Dark Souls: Boss Attack Animations holds clips named by boss AND by individual move (Artorias - Heavy Slam, - Somersault Attack, - Overwhelming Leap, - Heavy Spin, - Heavy Thrust, - Wrath of the Abyss, - Spin Attack, - Abyss Sludge). RI-AI02's bar is legibility of one named move's windup silhouette; a per-move clip is the only artifact that isolates one.",
+   "classification": "BLOCKING",
+   "gap": "R1C-05"
   },
   {
-   "profile": "morrowind/REF-A12b (amendment A2)",
-   "floor_images": null,
-   "floor_games": null,
-   "floor_locations": null,
-   "catalogued": 0,
-   "countable_pixel_metrics_valid": 0,
-   "games": 0,
-   "games_list": [],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "FAIL-EMPTY"
+   "id": "F3",
+   "title": "The fog gate and the arena are a designed object, and A5's six subfolders do not include them",
+   "argued_from": [
+    "RI-AI06"
+   ],
+   "evidence": "RI-AI06: 'The arena is part of the moveset... a space that has a size, a shape, and a small number of legible features' and 'the loop around the fight - fog gate in, die, run back, fog gate in - is a designed object with its own budget'. A5 lists camera/attacks/telegraph/stance/impact/ui-combat. Arena is not there and neither section 5a nor 5b has an arena or fog-gate slot.",
+   "classification": "BLOCKING",
+   "gap": "R1C-06",
+   "amendment": "A5 gains a seventh subfolder, arena/"
   },
   {
-   "profile": "morrowind/REF-A20 (amendment A2)",
-   "floor_images": null,
-   "floor_games": null,
-   "floor_locations": null,
-   "catalogued": 0,
-   "countable_pixel_metrics_valid": 0,
-   "games": 0,
-   "games_list": [],
-   "interval_run": null,
-   "interval_run_required": null,
-   "verdict": "FAIL-EMPTY"
+   "id": "F4",
+   "title": "Death and respawn presentation has no reference",
+   "argued_from": [
+    "RI-JRN06",
+    "RI-PRG04"
+   ],
+   "evidence": "RI-JRN06's bar is visible events: 'control is taken for a bounded, skippable moment' and 'there is a bloodstain, visible from a distance, at the place they died - not at the nearest navmesh node, not floating in geometry'. Whether a bloodstain reads at distance is a composition-and-contrast question settleable only against an image of one. A5 has no death/ subfolder.",
+   "classification": "BLOCKING",
+   "gap": "R1C-07",
+   "amendment": "A5 gains a death/ subfolder"
+  },
+  {
+   "id": "F5",
+   "title": "Menu interaction, not static menu screens - Morrowind's real UI property is that windows are simultaneous",
+   "argued_from": [
+    "RI-UIX03",
+    "RI-UIX06",
+    "REF-A12"
+   ],
+   "evidence": "A2 and REF-M22 both frame the ask as static single screens, which loses the property that matters: Morrowind's interface is a user-arranged, resizable, simultaneous tiling. REF-A12's MyGUI XML records 'map 300x300 pinnable' as an attribute and cannot show what a pinned layout looks like. RI-UIX06 A1 requires >=6 of nine materials 'across the full UI set' and A2 that 'no element is a plain rectangle' - both judge the assembled interface. Verified: Steam sid 3212740588 is one frame holding character sheet + paperdoll inventory + world map + magic window tiled by the player.",
+   "classification": "BLOCKING",
+   "gap": "R1C-03",
+   "amendment": "A2's menu slots gain a multi-window requirement"
+  },
+  {
+   "id": "F6",
+   "title": "There is creature reference for Morrowind and for nothing else",
+   "argued_from": [
+    "RI-VIS08",
+    "RI-AI05",
+    "RI-CAM07"
+   ],
+   "evidence": "REF-A6 covers Morrowind creatures. Section 5a has no creature or enemy slot at all - REF-M6 is the player from behind. So the fidelity axis has zero reference for a non-humanoid enemy at combat distance, making RI-VIS08 section D (creature design vs creature quality seam) unjudgeable on the side that owns quality.",
+   "classification": "BLOCKING",
+   "gap": "R1C-09",
+   "amendment": "section 5a gains a creature/enemy slot"
+  },
+  {
+   "id": "F7",
+   "title": "No armour or weapon at readable scale on the modern side",
+   "argued_from": [
+    "RI-CAM07",
+    "REF-M6"
+   ],
+   "evidence": "REF-A13/A14 cover Morrowind at 320px (see F1). Section 5a covers nothing: REF-M6 is a full-body rear view at 40-70% frame height, which does not resolve a pauldron joint, a scabbard mount or a cloth-to-metal transition. RI-CAM07 section B is 'the back-surface requirement' - the back of the armour 'gets more screen-time than any other surface in the game'. Not material_closeup either, which is one surface filling the frame.",
+   "classification": "BLOCKING",
+   "gap": "R1C-10",
+   "amendment": "section 5a gains an armour-at-2m slot"
+  },
+  {
+   "id": "F8",
+   "title": "How a Souls level communicates a shortcut",
+   "argued_from": [
+    "RI-JRN06",
+    "RI-WLD07",
+    "RI-WLD06",
+    "RI-AI06"
+   ],
+   "evidence": "The visual grammar of a Souls shortcut - the one-way door seen from its wrong side, the kicked ladder, the lift reconnecting two known places - is a composition claim and nothing in the reference set is a composition.",
+   "classification": "SUBSTITUTABLE",
+   "gap": "R1C-15"
+  },
+  {
+   "id": "F9",
+   "title": "REF-M19 states a framing constraint no search query can express",
+   "argued_from": [
+    "REF-M19",
+    "RI-WLD10",
+    "REF-M6"
+   ],
+   "evidence": "REF-M19 requires one frame containing both near water seen steeply from above and far water at a grazing angle, because RI-WLD10's metric compares those two regions inside a single frame. No searchText can express that. Same for section 5a's foreground-present/sky-visible and REF-M6's >=half rear-view ratio. Not a search problem - a triage-criterion problem. Every candidate list in this repo is ordered by Steam rating, a proxy for beauty, which is the exact bias section 3's anti-curation rule exists to defeat.",
+   "classification": "INFERABLE",
+   "gap": "R1C-17"
+  },
+  {
+   "id": "F10",
+   "title": "NPC idle and conversation posture",
+   "argued_from": [
+    "RI-DLG01",
+    "RI-DLG03"
+   ],
+   "evidence": "Morrowind's NPCs face the player rigidly with no conversation staging; that is a design-language property our transposition inherits or rejects deliberately.",
+   "classification": "SUBSTITUTABLE",
+   "gap": "R1C-16"
+  },
+  {
+   "id": "F11",
+   "title": "Weather as it actually appears is genuinely scarce, and should stop being BLOCKING",
+   "argued_from": [
+    "REF-M14",
+    "REF-M20",
+    "REF-M21"
+   ],
+   "evidence": "The prior code critique established overcast returns 3-8 hits per game against ~50 for dramatic queries, and correctly called that a property of what people upload rather than a search failure.",
+   "classification": "INFERABLE",
+   "gap": "R1C-18"
   }
  ],
  "gaps": [
   {
-   "id": "G01",
-   "profile": "(code)",
-   "classification": "CLOSED (fixed by concurrent commit 2ea906a)",
-   "why": "acquire.py load_records() expects a flat path-keyed dict; _provenance.json is {_note, files:[...]}. `python3 acquire.py --check` dies with ValueError: _note: missing source_url. No record carries a destination `path`. Nothing has ever been acquired. -- SUPERSEDED: _provenance.json has since been rewritten into the flat path-keyed dict, all 46 records carry expected_bytes/expected_sha256, all 46 files are on disk, and `python3 acquire.py --check` now returns `ok: 46 reference files`. Verified.",
-   "specific_search": "Not a search. Code fix: read records['files'], require a new `path` field per record, skip records flagged rejected/no-url. Preserve stream->verify length->verify sha256->atomic rename exactly."
-  },
-  {
-   "id": "G02",
-   "profile": "(code)",
+   "id": "R1C-01",
    "classification": "BLOCKING",
-   "why": "165 of 211 records have no expected_bytes/expected_sha256; 29 have a shell glob in place of a URL (raw.githubusercontent.com/.../witcher3%202022-12-17%20*.jpg); 6 have no source_url at all. -- RE-SCOPED after commit 2ea906a: the 29 globs and the missing hashes were not fixed, the records were deleted. See G19.",
-   "specific_search": "126 of the 165 already exist on disk (89 morrowind, 5 anti-generic, 24 modern/hud, 8 rejected) -- hash them locally with make-manifest.py, no network. Expand the 29 globs by listing https://github.com/elfhuo-github/sksebp-og.github.io/tree/main/witcher3nextgen (note: api.github.com 403s unauthenticated and there is no gh CLI). Exclude the 6 stubs from load_records()."
+   "why": "refs/souls-behaviour/ does not exist. Entire A5 axis, six subfolders, zero files. RI-CAM01, RI-CAM03, RI-CAM07, RI-WPN01-06 and RI-AI02 have no visual reference of any kind.",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "endpoint": "/app/<id>/screenshots/?p=N&browsefilter=toprated&searchText=Q",
+    "app_ids": [
+     "570940 Dark Souls Remastered",
+     "374320 DARK SOULS III"
+    ],
+    "queries": [
+     "lock on",
+     "boss fight",
+     "greatsword",
+     "swing",
+     "attack",
+     "shield",
+     "armor"
+    ],
+    "status": "ALREADY RUN - 403 candidates delivered in buckets souls_behaviour_camera(67), souls_behaviour_attacks(75), souls_behaviour_stance(80), souls_ui_combat(42). Do not re-run."
+   }
   },
   {
-   "id": "G03",
-   "profile": "exterior_daylight",
+   "id": "R1C-02",
    "classification": "BLOCKING",
-   "why": "3 countable of 12; 1 distinct game. No band computable.",
-   "specific_search": "Steam apphub homecontent, browsefilter=toprated: app 489830 'the rift autumn'(95) 'whiterun'(83) 'solitude'(92) 'riften'(94) 'waterfall'(46) 'moss stone'(50); app 1174180 'bayou nwa'(50) 'heartlands'(50) 'grizzlies'(50) 'shoreline water'(50); app 292030 'white orchard'(50) 'novigrad'(47) 'toussaint'(48) 'skellige'(50) 'velen swamp'(50) 'crookback bog'(49). 99 curated candidates already handed over in ACQUISITION-CRITIQUE-R1-candidates.json."
+   "why": "All 89 Morrowind images are 320x320 square crops (F1). REF-A13/A14/A15/A10/A6 unreadable; REF-A1/A8/A19 decomposed.",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "endpoint": "/app/22320/screenshots/?p=N&browsefilter=toprated&searchText=<slot subject>",
+    "app_ids": [
+     "22320 The Elder Scrolls III: Morrowind"
+    ],
+    "queries": [
+     "one per REF-A slot subject"
+    ],
+    "verified": "Full-frame native confirmed by ranged GET: sid 3374281716 1920x1080, sid 434307874 1920x1080, sid 366393520 1152x864, sid 217602477 1152x864. Section 7 V7 passes at <=1920x1080.",
+    "action": "Re-acquire all 19 slots at full frame; mark the AVIF crops superseded."
+   }
   },
   {
-   "id": "G04",
-   "profile": "exterior_lowlight",
+   "id": "R1C-03",
    "classification": "BLOCKING",
-   "why": "3 countable of 12; 1 distinct game.",
-   "specific_search": "app 489830 'aurora night'(50) 'night'(64) 'rain'(100) 'fog morning'(50) 'morthal'(97); app 1174180 'night camp'(48) 'dawn mist'(50) 'rain'(49) 'saint denis'(49) 'bluewater marsh'(28); app 292030 'night'(48) 'rain storm'(49) 'fog'(50). 78 candidates handed over."
+   "why": "morrowind/REF-A12b/ absent - no pixel of Morrowind's UI exists. A2 calls this the highest-value art-direction acquisition left.",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "endpoint": "/app/22320/screenshots/?p=N&browsefilter=toprated&searchText=Q",
+    "app_ids": [
+     "22320"
+    ],
+    "queries": [
+     "journal",
+     "map",
+     "barter",
+     "dialogue",
+     "character sheet",
+     "book",
+     "level up"
+    ],
+    "status": "ALREADY RUN - 71 candidates in bucket morrowind_menus. Eyeballed: sid 2347256727 = vanilla dialogue window with topic list; sid 3212740588 = four-window menu-mode composite."
+   }
   },
   {
-   "id": "G05",
-   "profile": "interior_darkemissive",
+   "id": "R1C-04",
    "classification": "BLOCKING",
-   "why": "0 countable of 10 -- all 8 catalogued are pixel_metrics_valid:false. It is one of RI-VIS03's four declared profiles and has no population at all.",
-   "specific_search": "app 489830 'blackreach'(100) 'forge'(97) 'cave'(100) 'dwemer ruin interior'(48); app 1174180 'cave'(49); app 292030 'cave crypt'(49). 36 candidates handed over."
+   "why": "morrowind/REF-A20/ absent - no loading or splash screens.",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "endpoint": "/app/22320/screenshots/?p=N&browsefilter=toprated&searchText=Q",
+    "app_ids": [
+     "22320"
+    ],
+    "queries": [
+     "loading screen",
+     "main menu",
+     "title screen"
+    ],
+    "status": "ALREADY RUN - 29 candidates in bucket morrowind_loading."
+   }
   },
   {
-   "id": "G06",
-   "profile": "exterior_daylight + exterior_lowlight + interior_darkemissive",
+   "id": "R1C-05",
+   "classification": "BLOCKING",
+   "why": "No per-move attack animation clips; refs/video/ empty and V1/V2 are required (F2).",
+   "specific_search": {
+    "host": "darksouls.fandom.com",
+    "endpoint": "https://darksouls.fandom.com/api.php?action=query&list=categorymembers&cmtitle=Category:Dark%20Souls:%20Boss%20Attack%20Animations&cmlimit=500&format=json then &prop=imageinfo&iiprop=url|size|mime per file",
+    "note": "HTML /wiki/ is Cloudflare 403; api.php returns 200. Bytes arrive as animated WebP - see dead_ends.",
+    "also": [
+     "https://www.youtube.com/watch?v=iNgDzC_pOi8 DS3 all-weapon moveset showcase",
+     "https://www.gamedeveloper.com/blogs/anatomy-of-an-enemy-attack-in-dark-souls-3 attack-phase analysis, directly citable by RI-AI02"
+    ]
+   }
+  },
+  {
+   "id": "R1C-06",
+   "classification": "BLOCKING",
+   "why": "No fog gate, no boss arena framing; A5 has no arena/ subfolder (F3).",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "app_ids": [
+     "570940",
+     "374320",
+     "1245620"
+    ],
+    "queries": [
+     "fog gate",
+     "arena",
+     "cathedral",
+     "anor londo",
+     "bonfire",
+     "fog"
+    ],
+    "status": "ALREADY RUN - 59 + 79 candidates in buckets souls_arena_framing and souls_foggate. Triage by eye is MANDATORY: searchText='fog gate' on 374320 returns architecture, not fog gates (verified sid 1914625699)."
+   }
+  },
+  {
+   "id": "R1C-07",
+   "classification": "BLOCKING",
+   "why": "No death or respawn presentation, no bloodstain reference (F4).",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "app_ids": [
+     "570940",
+     "374320",
+     "1245620"
+    ],
+    "queries": [
+     "you died"
+    ],
+    "status": "ALREADY RUN - 60 candidates in bucket souls_death."
+   }
+  },
+  {
+   "id": "R1C-08",
+   "classification": "BLOCKING",
+   "why": "modern/ui/ (REF-M22) absent; RI-UIX06's F17-F19 have no reference population.",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "app_ids": [
+     "374320",
+     "1245620",
+     "489830",
+     "292030"
+    ],
+    "queries": [
+     "inventory",
+     "menu"
+    ],
+    "status": "56 candidates in the PRIOR pool bucket modern_ui_REF-M22, plus 42 in my souls_ui_combat. Flagship: DS3 sid 3670478265, status screen with live character render."
+   }
+  },
+  {
+   "id": "R1C-09",
+   "classification": "BLOCKING",
+   "why": "No creature or enemy design reference outside Morrowind (F6).",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "app_ids": [
+     "570940",
+     "374320",
+     "1245620"
+    ],
+    "queries": [
+     "dragon",
+     "enemy",
+     "boss",
+     "knight"
+    ],
+    "status": "ALREADY RUN - 79 candidates in bucket souls_creature_design."
+   }
+  },
+  {
+   "id": "R1C-10",
+   "classification": "BLOCKING",
+   "why": "No armour or weapon at readable scale on the modern side (F7).",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "app_ids": [
+     "570940",
+     "374320"
+    ],
+    "queries": [
+     "shield",
+     "armor",
+     "greatsword"
+    ],
+    "status": "ALREADY RUN - buckets souls_behaviour_stance(80) and souls_behaviour_attacks(75). Triage for single figure, 2-4 m, armour >=30% of frame."
+   }
+  },
+  {
+   "id": "R1C-11",
+   "classification": "BLOCKING",
+   "why": "interior_darkemissive holds 0 measurable files against a floor of 10; it is one of RI-VIS03's named profiles.",
+   "specific_search": {
+    "status": "PRIOR pool bucket interior_darkemissive, 36 candidates, 3 games, is authoritative. My souls_foggate bucket incidentally holds strong dark-interior frames, e.g. DS3 sid 1914625699."
+   }
+  },
+  {
+   "id": "R1C-12",
+   "classification": "BLOCKING",
+   "why": "material_closeup empty against a floor of 8/2/6.",
+   "specific_search": {
+    "status": "PRIOR pool, 42 candidates, 4 games. Already researched - download, do not search."
+   }
+  },
+  {
+   "id": "R1C-13",
+   "classification": "BLOCKING",
+   "why": "exterior_daylight and exterior_lowlight at 3 countable each, 1 game each, 0 interval-run.",
+   "specific_search": {
+    "status": "PRIOR pool: 99 and 78 candidates across 4 and 3 games. And G07 is free - do it first."
+   }
+  },
+  {
+   "id": "R1C-14",
    "classification": "SUBSTITUTABLE",
-   "why": "Section 3's anti-curation rule requires at least half of these three folders to be interval-run sampled. All 46 catalogued modern records are sampling:'selected'. Compliance is 0%.",
-   "specific_search": "No search needed. The 24 Witcher 3 frames in modern/hud/ are sampling:'interval-run', pixel_metrics_valid:true, and ALREADY ON DISK; amendment A1 releases HUD-bearing frames into their profile folders. Reclassify them. If more are needed later: any single Steam user's gallery, https://steamcommunity.com/id/<user>/screenshots/?appid=<id>&sort=oldestfirst, is a continuous native series."
+   "why": "context/ empty (4 ESO Shadowfen/Murkmire). Cited by nobody as a target.",
+   "specific_search": {
+    "status": "PRIOR pool, 30 candidates, app 306130. Do it last."
+   }
+  },
+  {
+   "id": "R1C-15",
+   "classification": "SUBSTITUTABLE",
+   "why": "No shortcut or level-connection composition reference (F8).",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "app_ids": [
+     "570940",
+     "374320"
+    ],
+    "queries": [
+     "shortcut",
+     "elevator",
+     "ladder",
+     "bonfire"
+    ],
+    "status": "ALREADY RUN - 58 candidates in bucket souls_shortcut_level."
+   }
+  },
+  {
+   "id": "R1C-16",
+   "classification": "SUBSTITUTABLE",
+   "why": "No NPC idle or conversation posture reference (F10). Largely absorbed by R1C-02's full-frame re-acquisition.",
+   "specific_search": {
+    "host": "steamcommunity.com",
+    "app_ids": [
+     "22320"
+    ],
+    "queries": [
+     "npc",
+     "talking",
+     "guard"
+    ],
+    "status": "ALREADY RUN - 35 candidates in bucket morrowind_npc_posture."
+   }
+  },
+  {
+   "id": "R1C-17",
+   "classification": "INFERABLE",
+   "why": "REF-M19's within-frame near/far water, REF-M6's rear-view ratio and section 5a's foreground/sky are framing constraints no query can express (F9).",
+   "specific_search": "NONE. Write a triage checklist the builder applies by eye to every candidate and record the pass rate. The absence of this checklist is why 173 images produced 15 measurable ones."
+  },
+  {
+   "id": "R1C-18",
+   "classification": "INFERABLE",
+   "why": "REF-M21 overcast, REF-M14 rain, REF-M20 fog are genuinely scarce - a property of what people upload, not a search failure (F11).",
+   "specific_search": "NONE. Measure the daylight population and apply known diffuse-sky and low-sun shifts, record as derived per A3. Do not keep this BLOCKING past round 2."
+  },
+  {
+   "id": "R1C-19",
+   "classification": "IMPOSSIBLE",
+   "why": "Frame-exact temporal calibration for RI-WPN05 hitstop (2f dagger vs 8f ultra greatsword) is not obtainable from any published artifact at frame accuracy.",
+   "specific_search": "NONE. Accept in writing. Community frame-data video corroborates ORDERING but not absolute frame counts. State the risk and do not let it block the A5 axis."
   },
   {
    "id": "G07",
-   "profile": "modern/hud -> exterior_*",
-   "classification": "SUBSTITUTABLE",
-   "why": "Those 24 frames carry exif_software='ACDSee Ultimate 8', which section 8a rejects outright, and their own provenance note forbids promotion out of hud/ without re-litigating the flag.",
-   "specific_search": "This critique is the re-litigation. Measured counter-evidence already in the record: 6.7-9.2 bytes/pixel, jpeg_quality_est 100, negative block_score (no 8x8 blocking), nyq_ratio 0.05-0.17 (not downscaled) -- the editor touched the container, not the pixels. Promote with has_hud:true, sampling:interval-run, integrity_flag retained verbatim, and a `deviation` field naming section 8a. The alternative is zero interval-run coverage anywhere."
-  },
-  {
-   "id": "G08",
-   "profile": "character_closeup",
-   "classification": "BLOCKING",
-   "why": "Meets the 2-game floor but only 1 of 12 is a rear or three-quarter-rear view, where REF-M6 requires at least half; most catalogued entries are cutscene portraits (Godrick grafting, Melina). Our camera is behind the player 100% of the time, so this is worse than the count shortfall.",
-   "specific_search": "app 489830 'back view'(50); app 292030 'back view'(50) 'geralt close up'(49) 'armor close'(50) 'witcher senses'(44); app 1174180 'arthur close up'(50) 'horse close'(48). 54 candidates handed over."
-  },
-  {
-   "id": "G09",
-   "profile": "combat",
-   "classification": "BLOCKING",
-   "why": "2 countable of 8; 1 distinct game. Maps onto RI-VIS03's character_closeup profile via combat_midfight, so it shares a band with G08.",
-   "specific_search": "app 489830 'combat dragon'(46) 'battle fight'(46); app 292030 'combat fight'(50); app 1174180 'combat gunfight'(31); app 1245620 'combat boss fight'(50) 'spell magic combat'(49) for REF-M18. 41 candidates handed over."
-  },
-  {
-   "id": "G10",
-   "profile": "material_closeup",
-   "classification": "BLOCKING",
-   "why": "0 of 8. Not one of RI-VIS03's four declared profiles -- it feeds the M3/M4/M5 surface bands rather than gating a profile -- which is why I rank it below interior_darkemissive.",
-   "specific_search": "app 489830 'texture close'(42) 'moss stone'(50); app 1174180 'mud ground'(48) 'tree bark'(49); app 292030 'bark tree'(50); app 1245620 'material close up'(50) 'stone texture'(50). 42 candidates handed over."
-  },
-  {
-   "id": "G11",
-   "profile": "modern/ui (REF-M22)",
-   "classification": "BLOCKING for comparison use; INFERABLE for F17's glyph metric",
-   "why": "F17's M-F17.1 measures a 10%-to-90% luminance transition across a glyph stem to a <=1.5 device px tolerance. Steam re-encodes every upload to chroma-subsampled JPEG, which smears a one-pixel stem transition by about a pixel, so a Steam screenshot cannot measure a reference UI's glyph sharpness at that tolerance. It does not need to: F17-F19 are ABSOLUTE thresholds measured on our own UI, not percentile bands drawn from a population. The reference set serves RI-UIX06's 'PERMITTED REFERENCE SET: RI-VIS02 (modern)' declaration and the blind comparison, for which JPEG is fine.",
-   "specific_search": "Acquire from Steam anyway: app 489830 'menu inventory'(25) 'skill tree'(48) 'map menu'(49); app 292030 'inventory menu'(16) 'character menu'(50); app 1245620 'equipment screen'(50) 'map menu'(40); app 1174180 'menu satchel'(50) -- 56 candidates handed over, and EVERY ONE needs eyes on it because searchText matches the title, not the image. To upgrade F17 from derived to measured, find lossless PNG: eldenring.wiki.fextralife.com and elderscrolls.fandom.com /images/ paths, Wikimedia Commons 'Category:Video game user interfaces', and Nexus Mods UI-mod pages, which post lossless before/after shots of the vanilla UI. Not yet run."
-  },
-  {
-   "id": "G12",
-   "profile": "morrowind/REF-A12b",
-   "classification": "BLOCKING",
-   "why": "Zero images. REF-A12 is a core slot per section 5e and holds 38 records of OpenMW Lua constants and MyGUI layout XML -- structure and measurements, no pixel of the original art. RI-VIS05's UI transposition rests entirely on it.",
-   "specific_search": "ALREADY RUN. Steam app 22320, homecontent toprated: 'character sheet'(50) 'map'(47) 'book reader'(50) 'inventory'(24) 'menu ui'(23) 'journal'(12) 'interface'(11) 'barter'(8) 'dialogue topic'(8) 'spellmaking'(1) = 231 candidates, 30 curated and handed over. Verified by eye: ?id=32875898 is the full four-pane vanilla UI at 1024x768 (character sheet, local map, inventory grid with paperdoll, spells/powers) and ?id=487644932 is the vanilla journal spread. Pages are pre-2015 so section 8b 'pre-2023-page' is satisfied outright, and 4:3 is correct -- section 6's 16:9 rule binds refs/modern/ only."
-  },
-  {
-   "id": "G13",
-   "profile": "morrowind/REF-A20",
-   "classification": "BLOCKING",
-   "why": "Zero loading/splash/framed-art images.",
-   "specific_search": "Steam app 22320 'loading screen' -> 45 candidates (6 curated). Plus 11 first-party Bethesda store screenshots via https://store.steampowered.com/api/appdetails?appids=22320&l=english (screenshots[].path_full, strip the ?t= cache-buster) -- corroboration 'first-party', vanilla by construction. I opened 0000009072.1920x1080.jpg: silt strider beside a stilted waterside settlement in rain, 1024x768 -- REF-A16 and REF-A19 material with the strongest provenance in the set."
-  },
-  {
-   "id": "G14",
-   "profile": "context",
-   "classification": "BLOCKING",
-   "why": "Zero of the 4 required ESO Shadowfen/Murkmire orientation shots.",
-   "specific_search": "Steam app 306130: 'hist tree'(50) 'argonian village'(50) 'murkmire'(47) 'shadowfen'(26) 'lilmoth'(8). 30 candidates handed over. Remember forbidden_for: ['fidelity-bands','art-direction-judgement','blind-pairing']."
-  },
-  {
-   "id": "G15",
-   "profile": "video",
-   "classification": "BLOCKING",
-   "why": "V1-dolly and V2-static are both required by section 5b and both are empty. Steam store trailers are cut montages and fail the 'no cuts' requirement outright, so the appdetails movies[] array is a dead end.",
-   "specific_search": "yt-dlp 2026.07.04 is installed at /usr/local/bin/yt-dlp. Download a SINGLE PROGRESSIVE format id (-f <id>, never bv*+ba, which would remux) so the CDN stream lands byte-for-byte -- section 5b's 'download clips as-is'. V1 queries: 'Elden Ring HUD off walking Limgrave no commentary', 'RDR2 first person horseback ride no HUD', 'Skyrim no HUD walk 4K'. V2: game-ambience uploads ('ambience 10 hours', 'relaxing rain'), which are by construction one static uncut shot. archive.org/advancedsearch.php also mirrors youtube-<id> movie items with direct .mp4 downloads."
-  },
-  {
-   "id": "G16",
-   "profile": "exterior_daylight (REF-M21)",
-   "classification": "SUBSTITUTABLE",
-   "why": "Measured: searchText='overcast' returns 7 hits on app 489830, 5 on 292030, 3 on 1245620, 8 on 1174180 -- against 50 for every dramatic query. Nobody uploads a boring overcast frame. This is a property of the corpus of uploads, not a search failure to retry.",
-   "specific_search": "Substitute the 'fog morning'(50 per game) and 'rain'(100) populations: both are diffuse, no-direct-sun exteriors and serve the same measurement, since REF-M21 exists because 'diffuse light is the hardest lighting to fake'. Record substituted_for:'REF-M21' and the deviation. If even that fails, INFERABLE: measure the daylight population with the directional component removed. REF-M21 is the one bar I expect to need relaxing by round 3; it does not need deleting."
-  },
-  {
-   "id": "G17",
-   "profile": "(catalogue hygiene)",
-   "classification": "BLOCKING",
-   "why": "3 of Codex's 46 carry corroboration:'unknown'. Section 8b: an image satisfying none of the three tests goes in rejected/. This is the anti-AI-generation check.",
-   "specific_search": "Fetch each source_page and read the visible Posted date from div.detailsStatRight (pace at 3 workers / 0.7s -- see dead_ends). If the date is pre-2023-01-01 set corroboration:'pre-2023-page'; otherwise move to rejected/."
-  },
-  {
-   "id": "G18",
-   "profile": "(risk, all modern profiles)",
-   "classification": "BLOCKING",
-   "why": "Skyrim SE's top-rated Steam gallery is mod/ENB territory and the titles do not say so -- only 30 of 1616 Skyrim candidates mention a mod in the title (1.9%). I opened the top 'the rift autumn' hit (?id=3413510110, 2560x1440): custom body and armour mod, replaced character, ENB colour grading, groundcover and tree mods. Catalogued as 'Skyrim SE' it would set our fidelity bar to somebody's modlist. Every catalogued modern record currently asserts modded:false with no test behind it -- the same unbacked assertion section 7 forbids on the Morrowind side.",
-   "specific_search": "Three defences in order: (1) prefer RDR2 (6 of 798 title-mod mentions) and Witcher 3 (9 of 858) as games 2 and 3; (2) take Skyrim from https://store.steampowered.com/api/appdetails?appids=489830 (8 first-party vanilla screenshots, mark promotional:true); (3) if the gallery must be used, browsefilter=mostrecent rather than toprated, because top-rated selects for beauty and beauty selects for ENB. Populate the `modded` field with an actual test, per image."
-  },
-  {
-   "id": "G19",
-   "profile": "(catalogue integrity)",
-   "classification": "BLOCKING",
-   "why": "REGRESSION introduced by concurrent commit 2ea906a. The _provenance.json rewrite kept the 46 Codex records and moved 6 rejected stubs to _provenance-local.json; the other 159 records were deleted from the working tree -- all 127 morrowind-art-direction records (89 files on disk plus REF-A12's 38 ui-definition entries), all 5 anti-generic, all 24 Witcher 3 modern/hud. Lost with them: the seven vanilla_tests booleans that are the only defence of the art-direction axis, the identified_by triples section 8c requires, the corroboration values section 8b requires, and the ACDSee integrity_flag with its measured counter-evidence -- which is the entire evidentiary basis for G07. The files remain on disk and measurable but are now undocumented, so under sections 9 and 10 they cannot be cited. Worse, `acquire.py --check` now reports `ok: 46` while silently ignoring 126 on-disk files it should be guarding: it is passing dishonestly.",
-   "specific_search": "`git show c3d8b38:corpus/70-visual/refs/_provenance.json` -- all 211 records with every field intact. Merge the 159 back, keyed by the destination path each file already occupies, and compute expected_bytes/expected_sha256 locally from the bytes on disk (make-manifest.py already emits both). Reject _provenance-local.json's split: a locally-present file with a known hash is exactly what --check exists to verify."
+   "classification": "BLOCKING (zero-cost, inherited and still open)",
+   "why": "24 Witcher 3 interval-run frames sit in modern/hud/, which A1 dissolved. They are the only interval-run frames in the project and exactly what exterior_daylight and exterior_lowlight need for section 3.",
+   "specific_search": "NONE - no download. Move the bytes, re-file profile, keep has_hud:true, record the deviation. Takes two profiles from 3 countable to ~15 and anti-curation compliance from 0% to over half."
   }
  ],
  "work_list": [
   {
-   "rank": -1,
-   "work": "Recover the 159 provenance records deleted by commit 2ea906a from `git show c3d8b38:corpus/70-visual/refs/_provenance.json`, merge them into the path-keyed _provenance.json, and hash the 126 on-disk files locally.",
-   "why": "A regression that silently un-documents 126 files and makes --check pass dishonestly. Do this before anything else; it costs no network.",
-   "gaps": [
-    "G19",
-    "G02"
-   ]
-  },
-  {
    "rank": 0,
-   "work": "(loader half CLOSED by commit 2ea906a) Remaining: expand the 29 globbed URLs; make --check fail loudly on a record with no hash rather than skipping it. Preserve the integrity mechanism byte for byte.",
-   "why": "Everything else is unusable until `acquire.py --check` runs. Not in the coordinator's list; it should be first.",
+   "work": "Release the 24 Witcher 3 interval-run frames from modern/hud/ into exterior_daylight and exterior_lowlight per A1.",
+   "why": "Zero downloads. Takes the two largest profiles from 3 countable to ~15 and section-3 anti-curation compliance from 0% to over half. Nothing else is cheaper.",
    "gaps": [
-    "G01",
-    "G02"
-   ]
-  },
-  {
-   "rank": 1,
-   "work": "Release the 24 Witcher 3 interval-run frames from modern/hud/ into exterior_daylight and exterior_lowlight per amendment A1, with the G07 deviation written down.",
-   "why": "Highest value in the project and it costs ZERO downloads -- the bytes are already on disk. Supplies a second game to both exterior profiles AND the entire interval-run half of section 3, currently at zero.",
-   "gaps": [
-    "G06",
     "G07"
    ]
   },
   {
-   "rank": 2,
-   "work": "Second and third game in exterior_daylight and exterior_lowlight -- RDR2 and Witcher 3 first, Skyrim only from first-party.",
-   "why": "Coordinator's priority 1, and right. 177 candidates handed over.",
+   "rank": 1,
+   "work": "Re-run make-manifest.py; route every provenance write through tools/refs/merge-manifest.mjs; assign real REF-M* slot ids to the 46; move the 3 corroboration:'unknown' to rejected/.",
+   "why": "Every count anyone quotes is wrong and provenance has already been destroyed once today. Do this before adding 700 more files.",
    "gaps": [
-    "G03",
-    "G04",
-    "G18"
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5"
+   ]
+  },
+  {
+   "rank": 2,
+   "work": "Write the triage checklist (F9) and apply it to both candidate pools before downloading anything.",
+   "why": "173 images produced 15 measurable ones because there was no criterion between 'found' and 'committed'. Doing this second makes every later rank cheaper.",
+   "gaps": [
+    "R1C-17"
    ]
   },
   {
    "rank": 3,
-   "work": "interior_darkemissive -- 0 countable, and one of RI-VIS03's four declared profiles.",
-   "why": "MY CHANGE TO THE ORDERING: promoted above material_closeup. It is at literal zero countable images and gates a named profile with its own metric relaxations (M1 relaxed hard, M7 skipped, M6+M9 tightened). material_closeup is not a declared profile at all. Empty profile beats empty folder.",
+   "work": "Create refs/souls-behaviour/ with arena/ and death/ added, and fill camera/ attacks/ telegraph/ stance/ impact/ ui-combat/ arena/ death/ from the 734 delivered candidates.",
+   "why": "The user's explicit ask, the whole of A5, and six reference items with no visual reference. Dark Souls is at zero and this is the only work that changes that.",
    "gaps": [
-    "G05"
+    "R1C-01",
+    "R1C-06",
+    "R1C-07",
+    "R1C-10"
    ]
   },
   {
    "rank": 4,
-   "work": "combat (2 of 8, 1 game) and character_closeup's rear-view failure (1 of 12).",
-   "why": "One job: combat maps onto RI-VIS03's character_closeup profile via combat_midfight. The rear-view rule matters more than the count.",
+   "work": "Fill morrowind/REF-A12b/ and REF-A20/ - Morrowind menus and loading screens. 100 candidates delivered, two verified by eye. Prefer multi-window menu-mode frames per F5.",
+   "why": "The user's second explicit ask. A2 calls A12b the highest-value art-direction acquisition left and it turns out cheap.",
    "gaps": [
-    "G09",
-    "G08"
+    "R1C-03",
+    "R1C-04"
    ]
   },
   {
    "rank": 5,
-   "work": "material_closeup -- 0 of 8, 42 candidates across 4 games.",
-   "why": "Coordinator's priority 2, demoted one place for the reason in rank 3. Carries the M3/M4/M5 surface bands.",
+   "work": "Re-acquire all 19 REF-A* slots at full frame from app 22320, superseding the 320x320 crops.",
+   "why": "F1 - the largest silent failure in the set. RI-VIS05 is the corpus's highest visual-signal item and is currently judged against thumbnails.",
    "gaps": [
-    "G10"
+    "R1C-02"
    ]
   },
   {
    "rank": 6,
-   "work": "morrowind/REF-A12b -- Morrowind's menus as rendered. 30 curated, 231 available, two verified by eye.",
-   "why": "MY SECOND CHANGE: promoted above modern/ui. It turns out cheap and abundant, while its absence is the most consequential hole in the corpus -- REF-A12 is a core slot holding 38 records of OpenMW Lua and MyGUI XML and RI-VIS05's UI transposition rests on it with no pixel of the original art. Highest value per unit of effort in the list.",
+   "work": "interior_darkemissive (0 countable), then material_closeup (0), then the second and third game in the two exterior profiles.",
+   "why": "Three named RI-VIS03 profiles that cannot be calibrated at all. Already researched in the prior 472 - download, do not search.",
    "gaps": [
-    "G12"
+    "R1C-11",
+    "R1C-12",
+    "R1C-13"
    ]
   },
   {
    "rank": 7,
-   "work": "modern/ui (REF-M22) -- 56 candidates, 4 games, with the G11 honesty caveat recorded.",
-   "why": "Coordinator's priority 3, demoted one place: F17-F19 are absolute thresholds measured on our own UI, so the reference population serves comparison and sanity-checking, not band-setting. Real, but less load-bearing than the brief implies.",
+   "work": "Per-move attack animations from the Dark Souls wiki API, then V1-dolly and V2-static into refs/video/.",
+   "why": "RI-AI02 and RI-WPN01-04 cannot be judged without temporal reference, and V1/V2 are marked required.",
    "gaps": [
-    "G11"
+    "R1C-05"
    ]
   },
   {
    "rank": 8,
-   "work": "morrowind/REF-A20 (45 Steam + 11 first-party candidates) and context/ (30 candidates).",
-   "why": "Both cheap.",
+   "work": "Creature/enemy design (79), shortcut composition (58), context/ ESO (30), NPC posture (35).",
+   "why": "Real gaps, lower leverage, all researched.",
    "gaps": [
-    "G13",
-    "G14"
+    "R1C-09",
+    "R1C-14",
+    "R1C-15",
+    "R1C-16"
    ]
   },
   {
    "rank": 9,
-   "work": "video/ V1-dolly and V2-static via yt-dlp, single progressive format id.",
-   "why": "Required by section 5b but measured for motion only; pixel_metrics_valid:false regardless.",
+   "work": "Write down R1C-18 as derived and R1C-19 as accepted-impossible, with the risk stated and the dependent bar lowered.",
+   "why": "A3: a gap may not stay BLOCKING past three rounds, and a bar with no obtainable reference is a permanent self-inflicted fail.",
    "gaps": [
-    "G15"
-   ]
-  },
-  {
-   "rank": 10,
-   "work": "Resolve the 3 corroboration:'unknown' records; populate `modded` with an actual test on every modern record.",
-   "why": "Hygiene that protects everything above it.",
-   "gaps": [
-    "G17",
-    "G18"
+    "R1C-18",
+    "R1C-19"
    ]
   }
+ ],
+ "corpus_amendments_required": [
+  "A5 gains two subfolders: arena/ (F3) and death/ (F4).",
+  "Section 5e gains a framing floor for refs/morrowind/: full frame, native aspect, uncropped. No existing sentence implies it, and its absence caused F1.",
+  "Section 5a gains a creature/enemy slot (F6) and an armour-at-2m slot (F7).",
+  "A2's menu slots gain a multi-window / menu-mode requirement (F5)."
  ],
  "dead_ends": [
-  "/workshop/browse/?section=screenshots renders the MOD workshop for any app that has one and returns zero screenshots, indistinguishable from 'no results'. Confirmed by a previous agent's fossil ids.json: Elden Ring only, every other app empty. Use the apphub homecontent endpoint instead.",
-  "Steam rate-limits the DETAIL endpoint hard: 8 concurrent fetches of /sharedfiles/filedetails/?id= returned HTTP 429 and a ~27.3 KB 'Steam Community :: Error' page for 960 of 1000 requests -- and that error page is a plausible-sized 200-ish HTML body a naive cache will happily store. 3 workers with 0.7s sleep is safe. The LISTING endpoint is not rate-limited.",
-  "HEAD is useless on images.steamusercontent.com: Akamai returns Content-Length: 92 for a sizeable minority of URLs (11 of 48 in one sample) while a plain GET on the identical URL returns the real 701,272-byte JPEG. A HEAD-based liveness check would reject a quarter of a good catalogue. Use a ranged GET and read Content-Range: bytes 0-1023/<total>.",
-  "searchText matches the uploader's title and description, NOT the image. Elden Ring 'equipment screen' top hit (?id=3405289538) is a throne-room cutscene, not a menu. Every UI candidate needs eyes on it before cataloguing.",
-  "Skyrim SE's top-rated Steam gallery is mod/ENB contaminated and titles do not disclose it (1.9% mention a mod). See G18 for the three defences.",
-  "RDR2 and Witcher 3 Steam screenshots are photo-mode-heavy and section 5a bars photo-mode filters, DoF and vignette. Not fatal -- one clean RDR2 night frame (?id=3544436425) is a textbook exterior_lowlight reference -- but photo_mode must be judged per image, never assumed false.",
-  "api.github.com unauthenticated returns 403 (rate limit) and there is no gh CLI in this container. Expanding the 29 globbed sksebp-og.github.io URLs must go via raw.githubusercontent.com directory listing or the MCP GitHub tools.",
-  "en.uesp.net still 403s (its own bot protection, per AGENT-PROTOCOL). Not attempted.",
-  "Steam store trailers cannot serve video/: all are cut montages and V1/V2 both require 'no cuts' explicitly. The movies[] array in appdetails is a dead end for this purpose.",
-  "'overcast' is genuinely scarce -- 3 to 8 hits per game against 50 for dramatic queries. Not a search failure to retry; it is a property of what people upload. See G16.",
-  "The bare https://images.steamusercontent.com/ugc/<A>/<B>/ URL is the ORIGINAL; the ?imw=5000&... variant is an Akamai re-encode. Verified twice: bare returned 10,002,569 bytes against a page stating 9.539 MB, and on another file bare 701,272 vs imw=5000 672,633. Codex's choice of the bare URL was correct -- preserve it."
- ],
- "verification": {
-  "candidate_pool": 4091,
-  "curated_handover": 472,
-  "urls_range_get_verified": 60,
-  "urls_range_get_resolved": 60,
-  "method": "ranged GET, Content-Range total read; 10 per app id across all six app ids, seeded random sample",
-  "size_range_bytes": [
-   95428,
-   10002569
-  ],
-  "head_based_check_discarded": {
-   "checked": 48,
-   "apparently_ok": 48,
-   "phantom_92_byte_content_length": 11,
-   "note": "reported here because the discrepancy IS the finding -- see dead_ends"
-  },
-  "images_opened_and_looked_at": 6,
-  "byte_exactness_checks": 2,
-  "files_modified": [],
-  "files_written": [
-   "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.md",
-   "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1.json",
-   "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-candidates.json"
-  ]
- },
- "impossible_bars": [],
- "bars_recommended_for_relaxation": [
   {
-   "bar": "REF-M21 (flat, overcast, no-direct-sun midday exterior)",
-   "status": "not yet -- SUBSTITUTABLE at round 1",
-   "note": "if fog/rain diffuse substitution is rejected by a later critic, this is the bar to relax rather than delete"
+   "source": "this round",
+   "dead_end": "Morrowind app 22320 searchText='spellmaking' returns 0 results. Every other Morrowind menu query returns 5-15. Spellmaking must be found another way or classified SUBSTITUTABLE against the generic magic window."
+  },
+  {
+   "source": "this round",
+   "dead_end": "darksouls.fandom.com /wiki/ URLs return HTTP 403 behind a Cloudflare interstitial. api.php returns 200 - use the MediaWiki API, not the HTML."
+  },
+  {
+   "source": "this round",
+   "dead_end": "static.wikia.nocookie.net always transcodes to animated WebP. Verified three ways (Accept: image/gif, bare path, without /revision/latest) - all returned the identical 220,726-byte WebP against a stated 605,902-byte GIF. The true GIF bytes are NOT obtainable. Acceptable on the A5 axis only, where pixel_metrics_valid is false by rule; section-4-violating anywhere else."
+  },
+  {
+   "source": "this round",
+   "dead_end": "searchText matches the uploader's TITLE, not the image - reconfirmed. DS3 searchText='fog gate' top hit sid 1914625699 is a dark cathedral exterior. Every candidate needs eyes before cataloguing."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "/workshop/browse/?section=screenshots renders the mod workshop for any app that has one and returns zero screenshots, indistinguishable from 'no results'."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "Steam rate-limits /sharedfiles/filedetails/ hard - 429s at 8 concurrent, returning a plausible-sized error page a naive cache will store."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "HEAD on images.steamusercontent.com returns a bogus Content-Length: 92 for a sizeable minority of URLs. Use a ranged GET."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "The bare ugc/<A>/<B>/ URL is the original; ?imw=5000 is an Akamai re-encode."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "Skyrim SE's top-rated Steam gallery is ENB/mod-contaminated and titles do not disclose it (1.9% mention a mod)."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "RDR2 and Witcher 3 Steam galleries are photo-mode-heavy; section 5a bars photo-mode filters, DoF and vignette. Judge photo_mode per image, never assume false."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "api.github.com unauthenticated returns 403 and there is no gh CLI in this container."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "en.uesp.net returns 403 - its own bot protection. Use the vendored extract."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "Steam store trailers are all cut montages; V1 and V2 both require 'no cuts'. The movies[] array in appdetails cannot serve refs/video/."
+  },
+  {
+   "source": "inherited",
+   "dead_end": "'overcast' returns 3-8 hits per game against ~50 for dramatic queries. Not a search failure to retry - a property of what people upload."
   }
  ],
- "addendum": {
-  "note": "The tree moved while this critique was written. Concurrent commit 2ea906a fixed G01 and introduced G19.",
-  "g01_verified_closed": "python3 acquire.py --check -> `ok: 46 reference files`",
-  "collision_warning": "Agent ref-critic-r1 (orchestration/status/ref-critic-r1.json) is assigned the SAME two output paths. Machine-readable copy of this critique also exists at corpus/70-visual/refs/ACQUISITION-CRITIQUE-R1-code.json."
- }
+ "cheaper_route_found": "The Steam LISTING page card already contains the bare ugc original URL - regex apphub_CardContentPreviewImage\" src=\"...\" and truncate at /?imw=. No detail-page fetch, so no 429 exposure. 734 candidates cost 47 listing fetches; 36 of 36 sampled originals returned HTTP 206 on a ranged GET.",
+ "what_would_make_round_2_sufficient": [
+  "refs/souls-behaviour/ exists, with arena/ and death/, holding Dark Souls and Elden Ring frames keyed to RI-CAM01, RI-CAM03, RI-CAM07, RI-WPN01-06 and RI-AI02 BY ITEM ID.",
+  "refs/morrowind/REF-A12b/ holds Morrowind's menus as pixels, including at least two multi-window menu-mode frames.",
+  "No image in refs/morrowind/ is a square crop.",
+  "MANIFEST.json, _provenance.json and the disk agree, and every REF-M* and REF-A* slot id is either filled or reported unfilled by name.",
+  "Every remaining gap is classified, and no gap is BLOCKING for a reason nobody has named a search for."
+ ]
 }
