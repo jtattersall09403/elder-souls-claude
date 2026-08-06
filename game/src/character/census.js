@@ -41,7 +41,9 @@ export class Census {
     this.flags = [];
     this.character = null;
     this.done = false;
+    this.paused = false;
     this.writ = null;
+    this._autoAdvance();
     return this.state();
   }
 
@@ -62,6 +64,8 @@ export class Census {
     if (!n) return { done: true, node: null, character: this.character, writ: this.writ, transcript: this.transcript };
     const out = {
       done: false,
+      paused: this.paused,
+      awaiting: this.paused ? 'the player walks out of the hold, down the gangplank and into the Writ House. RI-JRN01 O6.' : null,
       node: n.id,
       speaker: n.speaker,
       place: n.place,
@@ -117,8 +121,8 @@ export class Census {
     if (!n) throw new Error('census: creation is finished');
     const rec = { node: n.id, value };
 
+    if (this.paused) throw new Error('census: the scene is waiting for the player to reach the Writ House; call censusEnter() when they do');
     switch (n.id) {
-      case 'hold.wake': this._advance('hold.hatch-name'); break;
       case 'hold.hatch-name': {
         if (value === 'refuse' || value === null || value === '') {
           this.spec.hatchNameRefused = true;
@@ -130,8 +134,6 @@ export class Census {
         this._advance('hold.out');
         break;
       }
-      case 'hold.out': this._advance(null); break;
-      case 'writ.enter': this._advance('writ.race-observed'); break;
       case 'writ.race-observed': {
         if (!this.spec.race) throw new Error('census: race must be observed before the scene reaches the desk');
         this._advance('writ.sex');
@@ -239,35 +241,54 @@ export class Census {
         this._advance('writ.stamp');
         break;
       }
-      case 'writ.stamp': {
-        this._finish();
-        break;
-      }
       default: throw new Error(`census: node ${n.id} takes no answer`);
     }
     this.transcript.push(rec);
     return this.state();
   }
 
-  /** Walk the conditional nodes with no player input, so the scene never stalls on one. */
+  /**
+   * Move to `next`, then keep walking while the node in front of us needs nothing from the
+   * player: narration nodes speak, conditional nodes fire or are skipped, and the stamp node
+   * terminates. The scene only ever stops where somebody is waiting for an answer.
+   */
   _advance(next) {
     this.nodeId = next;
-    for (let guard = 0; guard < 8; guard++) {
+    this._autoAdvance();
+  }
+
+  _autoAdvance() {
+    for (let guard = 0; guard < 16; guard++) {
       const n = this.node();
-      if (!n || n.kind !== 'conditional') break;
-      if (n.branches) {
-        for (const b of n.branches) {
-          if (this._matches(b.when)) {
-            this.transcript.push({ node: b.id, line: b.line });
-            this.flags.push(b.sets_flag);
+      if (!n) return;
+      if (n.kind === 'conditional') {
+        if (n.branches) {
+          for (const b of n.branches) {
+            if (this._matches(b.when)) { this.transcript.push({ node: b.id, line: b.line }); this.flags.push(b.sets_flag); }
           }
+          this.nodeId = n.next;
+          continue;
         }
+        if (n.when && this._matches(n.when)) return;   // node applies: stop and take input
         this.nodeId = n.next;
         continue;
       }
-      if (n.when && this._matches(n.when)) break;   // node applies: stop and take input
+      if (n.hands_control_back) { this.paused = true; this.transcript.push({ node: n.id, line: n.line }); return; }
+      if (n.terminates_creation) { this._finish(); return; }
+      if (n.input) return;                              // somebody is waiting for an answer
+      this.transcript.push({ node: n.id, line: this._interpolate(n.line || '') });
       this.nodeId = n.next;
     }
+    throw new Error('census: the graph did not settle in 16 hops — a node cycle');
+  }
+
+  /** The player has walked into the Writ House. RI-JRN01 O6's >= 60 s has elapsed in play. */
+  enter() {
+    if (!this.paused) return this.state();
+    this.paused = false;
+    this.nodeId = 'writ.enter';
+    this._autoAdvance();
+    return this.state();
   }
 
   _matches(when) {
@@ -301,7 +322,8 @@ export class Census {
       throw new Error(`census: composed sheet has ${this.character.invariants.attribute_total} attribute points, not 112 — a race or class table is broken`);
     }
     this.writ = renderWrit(this.data, this.character);
-    this.transcript.push({ node: 'writ.stamp', line: this._interpolate(this.node().line), grants_item: 'stamped-writ' });
+    this.character.writ_text = this.writ.text;
+    this.transcript.push({ node: 'writ.stamp', line: this._interpolate(this.nodesById.get('writ.stamp').line), grants_item: 'stamped-writ' });
     this.done = true;
     this.nodeId = null;
   }

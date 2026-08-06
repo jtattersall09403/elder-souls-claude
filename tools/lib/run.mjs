@@ -22,6 +22,13 @@ export const SETUP_OPS = {
   setTimeOfDay: (h, o) => h.hOpt('setTimeOfDay', o.hour ?? o.value),
   setWeather: (h, o) => h.hOpt('setWeather', o.weather ?? o.value),
   camera: (h, o) => h.hOpt('camera', o.pose || o),
+  // W1-07 — character creation. `setCharacter` is how RI-CHR02 method 8's
+  // `--state "race=<r>,upbringing=..."` reaches the sim without replaying the Writ House.
+  setCharacter: (h, o) => h.h('setCharacter', o.character || o),
+  spawnEncounter: (h, o) => h.h('spawnEncounter', o.id, o.x, o.z, o.opts || {}),
+  censusBegin: (h, o) => h.h('censusBegin', o.opts || {}),
+  censusEnter: (h) => h.h('censusEnter'),
+  censusAnswer: (h, o) => h.h('censusAnswer', o.value),
 };
 
 export function newRunDir(scenarioId, seed, outArg) {

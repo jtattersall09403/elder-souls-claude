@@ -25,7 +25,11 @@ function md(src) {
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
     .replace(/`([^`]+)`/g, '<code>$1</code>');
-  const closeList = () => { if (inList) { out += '</ul>\n'; inList = false; } };
+  // List items are buffered so that hard-wrapped continuation lines (indented under a bullet)
+  // join into the same <li> instead of falling out of the list as stray paragraphs.
+  let liBuf = null;
+  const flushLi = () => { if (liBuf) { out += `<li>${inline(liBuf.join(' '))}</li>\n`; liBuf = null; } };
+  const closeList = () => { flushLi(); if (inList) { out += '</ul>\n'; inList = false; } };
   const closeQuote = () => { if (inQuote) { out += '</blockquote>\n'; inQuote = false; } };
   for (const raw of lines) {
     const l = raw.trimEnd();
@@ -36,7 +40,9 @@ function md(src) {
     closeQuote();
     const h = l.match(/^(#{1,4})\s+(.*)$/);
     if (h) { flushPara(); closeList(); out += `<h${h[1].length + 1}>${inline(h[2])}</h${h[1].length + 1}>\n`; continue; }
-    if (/^[-*]\s+/.test(l)) { flushPara(); if (!inList) { out += '<ul>\n'; inList = true; } out += `<li>${inline(l.replace(/^[-*]\s+/, ''))}</li>\n`; continue; }
+    if (/^[-*]\s+/.test(l)) { flushPara(); flushLi(); if (!inList) { out += '<ul>\n'; inList = true; } liBuf = [l.replace(/^[-*]\s+/, '')]; continue; }
+    // indented continuation of the bullet above — same <li>, not a new paragraph
+    if (inList && liBuf && /^\s+\S/.test(l)) { liBuf.push(l.trim()); continue; }
     closeList();
     // an image on its own line becomes a figure, not a paragraph
     if (/^!\[/.test(l)) { flushPara(); out += inline(l) + '\n'; continue; }

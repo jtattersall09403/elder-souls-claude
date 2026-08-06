@@ -97,9 +97,18 @@ try {
       // A frame whose eye landed inside a trunk is not a sample of the region, it is a sample of
       // one tree. Re-yaw and re-shoot rather than ship a black rectangle a judge cannot classify.
       let lum = meanLuma(file), spins = 0;
-      while (lum < 18 && spins++ < 5) {
+      let ex = p.x, ez = p.z, ey = p.y;
+      while (lum < 18 && spins++ < 8) {
+        // First re-yaw; if the eye is genuinely inside a trunk, step a few metres and try again.
         const y2 = rnd() * Math.PI * 2;
-        await handle.h('camera', { pos: eye, look: [p.x + Math.sin(y2) * 40, p.y + 1.7 - 3.0, p.z + Math.cos(y2) * 40], fov: 70 });
+        if (spins > 2) {
+          const th = rnd() * Math.PI * 2, rr = 6 + rnd() * 14;
+          ex = p.x + Math.cos(th) * rr; ez = p.z + Math.sin(th) * rr;
+          const t2 = await handle.h('getTerrainAt', ex, ez);
+          ey = t2.y;
+          await handle.h('teleport', ex, ez);
+        }
+        await handle.h('camera', { pos: [ex, ey + 1.7, ez], look: [ex + Math.sin(y2) * 40, ey + 1.7 - 3.0, ez + Math.cos(y2) * 40], fov: 70 });
         await handle.h('renderFrame');
         await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide' });
         lum = meanLuma(file);

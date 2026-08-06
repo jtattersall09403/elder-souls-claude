@@ -29,6 +29,12 @@ import { SaveStore } from './save/store.js';
 import { buildSave, applySave, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
 import { exportSave, importSave } from './save/exchange.js';
 import { canonicalise } from './core/canonical.js';
+// W1-07 — character creation. The engine owns the census SCENE (it is a place in the world,
+// with people in it); game/src/character/** owns the arithmetic and is pure.
+import { Census, renderWrit } from './character/census.js';
+import { composeCharacter, signatureOf } from './character/sheet.js';
+import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
+import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
 
 /** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
 const PERF_SAMPLES = 20000;
@@ -128,6 +134,10 @@ export class Engine {
     await this.store.open();
     await this.store.requestPersistence();
 
+    // W1-07: the data the fixed step reads for AR-3, hung on the sim so stepOnce() needs no
+    // engine reference. Set before the first state is applied.
+    this.sim.encounterData = this.data.character;
+    this.census = new Census(this.data.character);
     this.applyNamedState(opts.state || 'default');
     this.loadState_.phase = 'ready';
     this.loadState_.regionsResident = [this.sim.env.region];
@@ -270,7 +280,13 @@ export class Engine {
     // patching a live system is what makes loadState() reproducible.
     this._loadout = Object.assign({}, patch.loadout || {});
     this._buildCombat(this._loadout);
+    // W1-07: a named state may declare a fully created character and a race-conditioned
+    // encounter. This is how RI-CHR02 method 8's `--state "race=<r>,upbringing=foreign-born"`
+    // resolves without the scenario having to replay the whole Writ House scene.
+    sim.encounterData = this.data.character;
+    if (patch.character) this.setCharacter(patch.character);
     for (const s of patch.spawn || []) this.spawn(s.id, s.x, s.z, { as: s.as });
+    for (const e of patch.encounters || []) this.spawnEncounter(e.id, e.x, e.z, e);
     // Put the player on the ground of whatever cell the state names.
     sim.player.pos[1] = this.groundAt(sim.player.pos[0], sim.player.pos[2]);
     // The camera's collision cell. A named state may declare `camera_cell`; without one the
@@ -359,6 +375,212 @@ export class Engine {
     if (patch.dispositions) Object.assign(w.dispositions, patch.dispositions);
     if (patch.factions) Object.assign(w.factions, patch.factions);
     return { gold: w.gold, topicsKnown: w.topicsKnown.slice(), dispositions: { ...w.dispositions }, factions: JSON.parse(JSON.stringify(w.factions)) };
+  }
+
+  // ================= W1-07 — character creation =================================================
+
+  /** The data view game/src/character/** consumes. One object, shared with the audit tool. */
+  get chData() { return this.data.character; }
+
+  /**
+   * Compose a character directly from a spec. Used by named states and by the harness; the
+   * PLAYER's route to this is the Writ House scene, not this method (RI-JRN01 O7).
+   */
+  setCharacter(spec) {
+    const ch = composeCharacter(this.chData, {
+      race: spec.race, upbringing: spec.upbringing,
+      classId: spec.class || spec.classId || null, custom: spec.custom || null,
+      birthsign: spec.birthsign, birthsignSecond: spec.birthsign_second || spec.birthsignSecond || null,
+      givenName: spec.given_name || spec.givenName || 'Unwritten',
+      hatchName: spec.hatch_name || spec.hatchName || '',
+      hatchNameRefused: !!(spec.hatch_name_refused || spec.hatchNameRefused),
+      sex: spec.sex || 'unrecorded',
+      route: spec.route || 'named',
+    });
+    ch.flags = spec.flags ? spec.flags.slice() : [];
+    const writ = renderWrit(this.chData, ch);
+    ch.writ_text = writ.text;
+    this.sim.character = ch;
+    this.sim.identity.name = ch.given_name;
+    this.sim.identity.race = ch.race;
+    this.sim.identity.sign = ch.birthsign;
+    this.sim.identity.profession = ch.class_id;
+    this.sim.identity.document = writ.text;
+    this.sim.progression.attributes = { ...ch.attributes };
+    this.sim.progression.skills = {};
+    for (const k of Object.keys(ch.skills)) this.sim.progression.skills[k] = { value: ch.skills[k], useProgress: 0 };
+    if (!this.sim.inventory.some((i) => i.id === 'stamped-writ')) {
+      this.sim.inventory.push({ id: 'stamped-writ', count: 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
+    }
+    quantiseColdState(this.sim);
+    return this.getCharacter();
+  }
+
+  getCharacter() {
+    if (!this.sim.character) {
+      return { created: false, _why: 'RI-JRN01 O6: the player is controllable, in a body, before anything defines them. Nothing has been written down yet.' };
+    }
+    return { created: true, ...this.sim.character };
+  }
+
+  // ---- the census scene ----------------------------------------------------------------------
+
+  censusBegin(opts = {}) {
+    this.census.reset();
+    if (opts.race) this.census.observe(opts.race);
+    if (opts.at) { this.census.nodeId = opts.at; this.census.paused = false; this.census._autoAdvance(); }
+    const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
+    ev.npc = 'jeeh-ei'; ev.scene = 'census';
+    return this.census.state();
+  }
+
+  /** Answer the node in front of you. Throws on an illegal answer; nothing is swallowed. */
+  censusAnswer(value) {
+    const before = this.census.node();
+    const st = this.census.answer(value);
+    if (before && before.sets) {
+      const ev = this.bus.emit(this.sim.frame, 'creation_field');
+      ev.field = before.sets; ev.node = before.id; ev.speaker = before.speaker; ev.place = before.place;
+    }
+    if (this.census.done) this._censusFinish();
+    return st;
+  }
+
+  /** The player has walked into the Writ House. Only reachable after O6's >= 60 s of play. */
+  censusEnter() {
+    const st = this.census.enter();
+    const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
+    ev.npc = 'warden-scribe-tuleeh-ma'; ev.scene = 'census';
+    return st;
+  }
+
+  getCensusState() {
+    const st = this.census.state();
+    return {
+      ...st,
+      npc_record: st.speaker ? this._npcRecord(st.speaker) : null,
+      interior: 'writ-house',
+      routes_offered: this.chData.writHouse.nodes.find((n) => n.id === 'writ.class-routes').input.options.map((o) => o.id),
+      full_screen_panels: 0,
+    };
+  }
+
+  _npcRecord(id) {
+    const n = this.chData.npcs.npcs.find((x) => x.id === id);
+    if (!n) throw new Error(`census node names speaker '${id}', which is not a record in game/data/npcs/writ-house.json`);
+    return { id: n.id, name: n.name, settlement: n.settlement, interior: n.interior, topics: n.topics.slice() };
+  }
+
+  _censusFinish() {
+    const ch = this.census.character;
+    ch.writ_text = this.census.writ.text;
+    this.sim.character = ch;
+    this.sim.identity.name = ch.given_name;
+    this.sim.identity.race = ch.race;
+    this.sim.identity.sign = ch.birthsign;
+    this.sim.identity.profession = ch.class_id;
+    this.sim.identity.document = ch.writ_text;
+    this.sim.progression.attributes = { ...ch.attributes };
+    this.sim.progression.skills = {};
+    for (const k of Object.keys(ch.skills)) this.sim.progression.skills[k] = { value: ch.skills[k], useProgress: 0 };
+    this.sim.inventory.push({ id: 'stamped-writ', count: 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
+    const ev = this.bus.emit(this.sim.frame, 'item');
+    ev.item = 'stamped-writ'; ev.how = 'granted at the desk';
+    const ev2 = this.bus.emit(this.sim.frame, 'dialogue_close');
+    ev2.npc = 'warden-scribe-tuleeh-ma'; ev2.scene = 'census';
+    quantiseColdState(this.sim);
+    return ch;
+  }
+
+  /** The writ, as a readable object. RI-JRN01 M8 opens it and reads the answers back. */
+  readWrit() {
+    if (!this.sim.character) return null;
+    return { id: 'stamped-writ', name: 'Reed-case writ, stamped', text: this.sim.character.writ_text };
+  }
+
+  // ---- race and standing ---------------------------------------------------------------------
+
+  getReaction(q = {}) {
+    const ch = this.sim.character;
+    const race = q.race || (ch && ch.race);
+    const up = q.upbringing || (ch && ch.upbringing);
+    const sign = q.birthsign !== undefined ? q.birthsign : (ch && ch.birthsign) || null;
+    if (!race || !up) throw new Error('getReaction: no character created and no race/upbringing supplied');
+    if (q.group) {
+      return {
+        group: q.group, race, upbringing: up,
+        term: raceTerm(this.chData, q.group, race, up),
+        disposition: derivedDisposition(this.chData, { group: q.group, race, upbringing: up, baseDisposition: q.base ?? 50, otherTerms: q.other ?? 0, birthsign: sign }),
+        player_race_class: playerRaceClass(race),
+      };
+    }
+    const out = {};
+    for (const g of Object.keys(this.chData.reactions.matrix)) {
+      out[g] = derivedDisposition(this.chData, { group: g, race, upbringing: up, baseDisposition: q.base ?? 50, otherTerms: q.other ?? 0, birthsign: sign });
+    }
+    return { race, upbringing: up, by_group: out, matrix_sigma: matrixSigma(this.chData), player_race_class: playerRaceClass(race) };
+  }
+
+  getPriceQuote(q = {}) {
+    const ch = this.sim.character;
+    return priceQuote(this.chData, {
+      group: q.group, race: q.race || (ch && ch.race), upbringing: q.upbringing || (ch && ch.upbringing),
+      basePrice: q.base_price ?? 60, skillBuyMult: q.skill_buy_mult ?? 1.0, skillSellMult: q.skill_sell_mult ?? 1.0,
+    });
+  }
+
+  getGuardTerms(race) {
+    const ch = this.sim.character;
+    return guardTerms(this.chData, race || (ch && ch.race));
+  }
+
+  getRaceGap(a, b) { return meanRaceGap(this.chData, a, b); }
+
+  // ---- AR-3: race-conditioned encounters -----------------------------------------------------
+
+  /**
+   * Spawn a named encounter. Every member names an EXISTING statblock; the same statblock is
+   * used for every race, which is what makes RI-CHR02 method 8's moveset-identity assertion
+   * true by construction rather than by care.
+   */
+  spawnEncounter(id, x, z, opts = {}) {
+    const enc = encounterById(this.chData, id);
+    const eids = [];
+    let first = true;
+    for (const m of enc.members) {
+      for (let i = 0; i < m.count; i++) {
+        const off = m.spawn_offsets_m[i] || [0, 0, 0];
+        const eid = this.spawn(m.statblock, Number(x) + off[0], Number(z) + off[2], { as: `${id}-${m.role}-${i}` });
+        const e = this.sim.findEntity(eid);
+        e.encounterId = id;
+        e.encounterRole = m.role;
+        e.encLeader = first && m.role === 'infantry';
+        e.encAggroed = false;
+        e.encHailed = false;
+        if (first && m.role === 'infantry') first = false;
+        eids.push(eid);
+      }
+    }
+    return { encounter: id, eids, opening: this.sim.character ? openingFor(this.chData, enc, this.sim.character) : null };
+  }
+
+  getEncounterState(id) {
+    const enc = encounterById(this.chData, id);
+    const ch = this.sim.character;
+    const members = this.sim.entities.filter((e) => e.encounterId === id).map((e) => ({
+      eid: e.eid, role: e.encounterRole, statblock: e.id, archetype: e.archetype,
+      moveset: `enemy:${e.id}`, hp: e.hp, hp_max: e.hpMax, poise_max: e.poiseMax,
+      alert_state: e.alertState, aggroed: !!e.encAggroed, hailed: !!e.encHailed,
+      dist_m: Math.round(Math.hypot(this.sim.player.pos[0] - e.pos[0], this.sim.player.pos[2] - e.pos[2]) * 1000) / 1000,
+    }));
+    return {
+      encounter: id,
+      race: ch ? ch.race : null,
+      opening: ch ? openingFor(this.chData, enc, ch) : null,
+      on_player_defeat: ch ? defeatOutcome(this.chData, id, ch) : null,
+      parley: enc.parley || null,
+      members,
+    };
   }
 
   // ---- es-combat-trace/1 (RI-CMB07) --------------------------------------------------------

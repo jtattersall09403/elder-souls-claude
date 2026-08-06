@@ -1,0 +1,39 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "cam_cistern",
+  "title": "Sunken cistern interior. RI-CAM01 M2/M3 route 1 (the worst interior geometry in the build).",
+  "note": "A camera cell. `camera_cell` names the static collision set the spring arm casts against (game/data/camera/cells.json); without it the arm has nothing to collide with and every RI-CAM01 measurable is vacuous.",
+  "env": {
+    "timeOfDay": 12.0,
+    "weather": "clear",
+    "region": "thornmarsh",
+    "interior": "cistern"
+  },
+  "player": {
+    "pos": [
+      0,
+      0,
+      2.5
+    ],
+    "yaw": 180.0
+  },
+  "camera": {
+    "yaw": 180.0,
+    "pitch": -8.0,
+    "mode": "free"
+  },
+  "spawn": [],
+  "loadout": {
+    "weapon": "straight-sword",
+    "shield": "marsh_oak_medium",
+    "endurance": 20,
+    "hpMax": 620,
+    "armourPoise": 28,
+    "equipLoadPct": 24.0,
+    "flaskLevel": 0,
+    "estus": 5,
+    "gold": 0,
+    "_note": "The RI-CMB07 exemplar build: Endurance 20 -> 120 stamina (RI-CMB03 \u00a7A), 620 max HP, a straight sword (RI-CMB02's reference class, the one Ps=25 f@60 is pinned to), a Marsh-oak medium shield (stability 0.62 / absorption 0.94 \u2014 the shield RI-CMB03 \u00a7C's worked guard-break example uses), and 24% equip load, which is LIGHT."
+  },
+  "camera_cell": "cam-walk-cistern"
+}

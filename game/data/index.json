@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 77,
+  "file_count": 87,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -128,8 +128,8 @@
       "path": "combat/lockon.json",
       "schema": "elder-souls/lockon@1",
       "id": "ES-LOCK/1",
-      "bytes": 6002,
-      "sha256": "8129edd20b9746b1"
+      "bytes": 6792,
+      "sha256": "ee95d6a784277fa9"
     },
     {
       "path": "combat/movesets/axe.json",
@@ -380,6 +380,62 @@
       "sha256": "e5b340d8060f16e5"
     },
     {
+      "path": "states/cam_boardwalk.json",
+      "schema": "elder-souls/state@1",
+      "id": "cam_boardwalk",
+      "bytes": 1282,
+      "sha256": "ea6a8034799e881e"
+    },
+    {
+      "path": "states/cam_boss_arena.json",
+      "schema": "elder-souls/state@1",
+      "id": "cam_boss_arena",
+      "bytes": 1259,
+      "sha256": "d5a8654eca3978eb"
+    },
+    {
+      "path": "states/cam_cistern.json",
+      "schema": "elder-souls/state@1",
+      "id": "cam_cistern",
+      "bytes": 1294,
+      "sha256": "e73d90ee4e66f3d9"
+    },
+    {
+      "path": "states/cam_collision_rig.json",
+      "schema": "elder-souls/state@1",
+      "id": "cam_collision_rig",
+      "bytes": 1257,
+      "sha256": "a2c5e0bb64eac243"
+    },
+    {
+      "path": "states/cam_flat_plain.json",
+      "schema": "elder-souls/state@1",
+      "id": "cam_flat_plain",
+      "bytes": 1256,
+      "sha256": "eae82d6cfcc6ce0e"
+    },
+    {
+      "path": "states/cam_mangrove.json",
+      "schema": "elder-souls/state@1",
+      "id": "cam_mangrove",
+      "bytes": 1265,
+      "sha256": "e8a072dcee7a7989"
+    },
+    {
+      "path": "states/cam_pinch.json",
+      "schema": "elder-souls/state@1",
+      "id": "cam_pinch",
+      "bytes": 1272,
+      "sha256": "f5001633b777a9df"
+    },
+    {
+      "path": "states/cam_stair.json",
+      "schema": "elder-souls/state@1",
+      "id": "cam_stair",
+      "bytes": 1260,
+      "sha256": "e52db8c1278e0433"
+    },
+    {
       "path": "states/default.json",
       "schema": "elder-souls/state@1",
       "id": "default",
@@ -476,6 +532,20 @@
       "id": "water_shallows",
       "bytes": 1243,
       "sha256": "5b9c6b90bfdd676a"
+    },
+    {
+      "path": "states/wld-dres-raid-road.json",
+      "schema": "elder-souls/state@1",
+      "id": "wld-dres-raid-road",
+      "bytes": 1157,
+      "sha256": "5bba33605da98596"
+    },
+    {
+      "path": "states/writ-house.json",
+      "schema": "elder-souls/state@1",
+      "id": "writ-house",
+      "bytes": 837,
+      "sha256": "0a165349959df87a"
     },
     {
       "path": "world/encounters.json",

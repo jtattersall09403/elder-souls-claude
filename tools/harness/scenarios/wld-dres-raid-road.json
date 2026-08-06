@@ -1,0 +1,12 @@
+{
+  "id": "wld-dres-raid-road",
+  "title": "RI-CHR02 method 8 — the AR-3 assertion. A created character walks a salt road with a Dres raid party on it. Identical statblocks, identical movesets, three different openings and one non-fight.",
+  "seed": 1337,
+  "state": "wld-dres-raid-road",
+  "world": { "timeOfDay": 14.0, "weather": "clear" },
+  "warmupFrames": 10,
+  "frames": 1800,
+  "setup": [],
+  "inputs": [{ "f": 1, "hold": ["forward"], "until": 1800 }],
+  "trace": { "shape": "frame", "enemies": true, "hitboxes": true, "events": true }
+}

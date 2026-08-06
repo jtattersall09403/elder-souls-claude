@@ -1,0 +1,32 @@
+{
+  "id": "chr-census",
+  "title": "RI-CHR01 method 1 / RI-JRN01 M5-M8 — the Writ House scene, driven node by node. Creation happens in a room, to a named person, and ends with an object in the inventory.",
+  "seed": 1337,
+  "state": "writ-house",
+  "world": { "timeOfDay": 10.0, "weather": "overcast" },
+  "warmupFrames": 10,
+  "frames": 240,
+  "setup": [
+    { "op": "censusBegin", "opts": { "race": "dunmer" } },
+    { "op": "censusAnswer", "value": "Silence-Under-Salt" },
+    { "op": "censusEnter" },
+    { "op": "censusAnswer", "value": "correct" },
+    { "op": "censusAnswer", "value": "unrecorded" },
+    { "op": "censusAnswer", "value": "interior" },
+    { "op": "censusAnswer", "value": "Neras Athrenil" },
+    { "op": "censusAnswer", "value": "questionnaire" },
+    { "op": "censusAnswer", "value": "a" },
+    { "op": "censusAnswer", "value": "c" },
+    { "op": "censusAnswer", "value": "a" },
+    { "op": "censusAnswer", "value": "b" },
+    { "op": "censusAnswer", "value": "d" },
+    { "op": "censusAnswer", "value": "a" },
+    { "op": "censusAnswer", "value": "c" },
+    { "op": "censusAnswer", "value": "b" },
+    { "op": "censusAnswer", "value": "a" },
+    { "op": "censusAnswer", "value": "c" },
+    { "op": "censusAnswer", "value": "nu-ixtu" }
+  ],
+  "inputs": [],
+  "trace": { "shape": "frame", "enemies": false, "hitboxes": false, "events": true }
+}

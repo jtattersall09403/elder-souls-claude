@@ -38,6 +38,11 @@ export class PlayerController {
     this.healBanked = 0;
     this._derived = new Map();
     this.dropReason = null;
+    // RI-CAM02 §C's turn-in-place clip, owned by W1-06.
+    this.turnInPlace = 0;
+    this.turnInPlaceStep = 0;
+    this.turnInPlaceAnim = null;
+    this.turnInPlaceActive = false;
   }
 
   tier() { return equipTier(this.b.equipLoadPct, this.d.roll.tier_boundaries_pct); }
@@ -353,6 +358,9 @@ export class PlayerController {
     const mx = input.moveX, my = input.moveY;
     const mag = Math.hypot(mx, my);
     const wantGuard = (input.held & BIT.block) !== 0;
+    // RI-CAM02 §C classifies "stationary" from the speed the character ALREADY HAS, not the
+    // one it is about to be given, so the previous frame's value is latched here.
+    const prevSpeed = b.speedMps;
 
     // RI-CMB09 §4: at zero stamina the guard may STAY up but may not be RAISED.
     if (wantGuard && !b.guardRaised && b.exhausted) {
@@ -363,7 +371,10 @@ export class PlayerController {
     }
 
     let state = 'IDLE';
-    if (mag > 1e-6) {
+    // W1-06 / RI-CAM02 §C: the movement stick's deadzone is RADIAL and lives at 0.15. Below
+    // it the character is idle; a per-axis deadzone, or none at all, is a named failure.
+    if (mag > 0 && mag <= (this.d.locomotion.move_deadzone || 0)) { state = 'IDLE'; b.speedMps = 0; }
+    else if (mag > 1e-6) {
       const locked = ctx.lockedBody;
       const dir = this.lock.resolveDirection(b, locked, mx, my, ctx.cameraYawDeg, false);
       // RI-CMB09 §4: EXHAUSTED is walk-only. Sprint is denied and jog is denied.
@@ -384,11 +395,47 @@ export class PlayerController {
       b.pos[2] += Math.cos(dir.dirDeg / DEG) * per;
       b.speedMps = mps;
       b.moveDirDeg = dir.dirDeg;
-      const maxTurn = this.d.locomotion.turn_rate_dps / 60;
+      // ---- W1-06 / RI-CAM02 §C — THE BOUNDED-TURN LAW ------------------------------------
+      // The character's facing is NEVER assigned from the input direction. There are two
+      // ceilings and one clip:
+      //   moving (speed > 0.5 m/s) ............ ≤ 720 °/s = 12.0 °/frame, a visible arc
+      //   stationary, |err| ≤ 100° ............ ≤ 480 °/s =  8.0 °/frame
+      //   stationary, |err| >  100° ........... an 18-frame root-motion `turn_in_place`
+      // Under lock none of this applies: facing is held on the target and the character
+      // strafes, so RI-CAM04 §C's "zero TURN frames while locked" holds structurally.
+      const L = this.d.locomotion;
       let dd = angleDelta(b.yaw, dir.facingDeg);
-      if (dd > maxTurn) dd = maxTurn; else if (dd < -maxTurn) dd = -maxTurn;
-      b.yaw = norm360(b.yaw + dd);
+      if (!locked && this.turnInPlace > 0) {
+        // Mid-clip: the yaw comes from the clip's root track, not from the rate limiter, and
+        // the character does not translate (RI-VIS08 C3 measures the foot slide if it does).
+        b.pos[0] -= Math.sin(dir.dirDeg / DEG) * per;
+        b.pos[2] -= Math.cos(dir.dirDeg / DEG) * per;
+        b.speedMps = 0;
+        b.yaw = norm360(b.yaw + this.turnInPlaceStep);
+        this.turnInPlace--;
+        state = 'IDLE';
+        this.turnInPlaceActive = true;
+      } else if (!locked && prevSpeed <= 0.5 && Math.abs(dd) > (L.turn_in_place_threshold_deg || 100)) {
+        const n = L.turn_in_place_frames || 18;
+        this.turnInPlace = n - 1;
+        this.turnInPlaceStep = dd / n;
+        this.turnInPlaceAnim = dd > 0 ? 'turn_in_place_r' : 'turn_in_place_l';
+        this.turnInPlaceActive = true;
+        b.pos[0] -= Math.sin(dir.dirDeg / DEG) * per;
+        b.pos[2] -= Math.cos(dir.dirDeg / DEG) * per;
+        b.speedMps = 0;
+        b.yaw = norm360(b.yaw + this.turnInPlaceStep);
+        state = 'IDLE';
+      } else {
+        this.turnInPlaceActive = false;
+        const moving = prevSpeed > 0.5;
+        const maxTurn = (moving ? (L.turn_rate_moving_dps || 720) : (L.turn_rate_stationary_dps || 480)) / 60;
+        if (dd > maxTurn) dd = maxTurn; else if (dd < -maxTurn) dd = -maxTurn;
+        b.yaw = norm360(b.yaw + dd);
+      }
     } else {
+      this.turnInPlace = 0;
+      this.turnInPlaceActive = false;
       b.speedMps = 0;
       if (ctx.lockedBody) {
         const want = bearingDeg(ctx.lockedBody.pos[0] - b.pos[0], ctx.lockedBody.pos[2] - b.pos[2]);
@@ -402,6 +449,11 @@ export class PlayerController {
     if (b.guardRaised && state === 'IDLE') state = 'BLOCK_HOLD';
     b.state = state;
     b.poseLocomotion(state === 'BLOCK_HOLD' ? 'IDLE' : state, frame);
+    // The turn-in-place clip is named AFTER the pose, because poseLocomotion() owns `anim`
+    // for every ordinary gait and this is the one gait it does not know about.
+    if (this.turnInPlaceAnim && this.turnInPlace >= 0 && state === 'IDLE' && this.turnInPlaceActive) {
+      b.anim = this.turnInPlaceAnim;
+    }
   }
 
   _stickBearing(input, ctx) {

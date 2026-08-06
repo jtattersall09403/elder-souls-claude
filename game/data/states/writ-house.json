@@ -1,0 +1,22 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "writ-house",
+  "title": "The Writ House at Tidewrack, the moment the player steps up to the desk. RI-JRN01 O6-O10 and RI-CHR01 method 1 load this. No character is created in this state — that is the point of it.",
+  "owner": "W1-07",
+  "env": { "timeOfDay": 10.0, "weather": "overcast", "region": "coast", "interior": "writ-house" },
+  "player": { "pos": [0, 0, -1.4], "yaw": 0.0 },
+  "camera": { "yaw": 0.0, "pitch": -6.0, "mode": "free" },
+  "spawn": [],
+  "loadout": {
+    "weapon": "dagger",
+    "shield": null,
+    "endurance": 10,
+    "hpMax": 300,
+    "armourPoise": 0,
+    "equipLoadPct": 8.0,
+    "flaskLevel": 0,
+    "estus": 0,
+    "gold": 0,
+    "_note": "A prisoner off a barge. VIG 10 = 300 HP (RI-PRG02 §3), no shield, no flask, and one knife somebody did not find."
+  }
+}

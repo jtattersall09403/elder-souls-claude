@@ -34,6 +34,7 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 const which = String(args.probe || 'all');
 const handle = await launchGame(args);
+handle.page.on('console', (m) => { if (String(m.text()).startsWith('[probe]')) log(m.text()); });
 await requireMethods(handle, ['setSeed', 'loadState', 'stepFrames', 'queueInputs', 'getCombatState', 'getHitGeometry', 'setEquipLoad', 'queueEnemyScript', 'setWorldKnowledge']);
 
 const PROBES = ['roll', 'iframe', 'frames', 'commit', 'stamina', 'block', 'geometry', 'lockon', 'parley'];
@@ -67,6 +68,7 @@ function runProbe(name) {
   const step = (n) => H.stepFrames(n);
   const cs = () => H.getCombatState();
   const q = (script) => H.queueInputs(script);
+  const mark = (s) => console.log('[probe] ' + s);
 
   /** Press a button on relative frame f, release 2 frames later. */
   const tap = (f, b) => ([{ f, press: [b] }, { f: f + 2, release: [b] }]);
@@ -196,6 +198,7 @@ function runProbe(name) {
         R.rows = [];
         const classes = ['dagger', 'straight-sword', 'spear', 'axe', 'halberd', 'greatsword', 'ultra-greatsword'];
         for (const w of classes) {
+          mark('frames ' + w);
           for (const mv of ['light', 'heavy']) {
             reset('arena_flat');
             H.loadState({ state: 'arena_flat' });

@@ -1,0 +1,452 @@
+{
+  "$schema": "elder-souls/viewpoints@1",
+  "note": "W1-01 PROVINCE viewpoint set, APPENDED per HARNESS.md \u00a76 (\"viewpoints may be added by amendment\"). It does not touch tools/harness/viewpoints.json: the twelve canonical poses are absolute and sit within 130 m of the world origin, the world origin is 250 m out in the Topal Bay, and changing a pose invalidates every cross-wave comparison that used it. Those twelve keep shooting W1-00's origin neighbourhood (the `showcase` cell, reached by the state `showcase_patch` and by every anchor state that sets `env.showcase`); these shoot the province. Capture with tools/world/province-shots.mjs, which teleports, streams the tiles in, and poses the camera directly.",
+  "capture": {
+    "width": 1920,
+    "height": 1080,
+    "deviceScaleFactor": 1,
+    "format": "png",
+    "settleFrames": 24,
+    "disableUI": true,
+    "colorProfile": "srgb"
+  },
+  "viewpoints": [
+    {
+      "id": "VPP-blackwood",
+      "set": "province",
+      "anchor": "region_blackwood",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: Blackwood at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "heavy_rain"
+      },
+      "province": {
+        "teleport": [
+          1118,
+          3487.5
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-clay-moor",
+      "set": "province",
+      "anchor": "region_clay_moor",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: The Clay Moor at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "dust_devil"
+      },
+      "province": {
+        "teleport": [
+          3743,
+          2010.5
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-crimson-coast",
+      "set": "province",
+      "anchor": "region_crimson_coast",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: Crimson Coast at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "sea_squall"
+      },
+      "province": {
+        "teleport": [
+          4212,
+          2686
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-deep-marshes",
+      "set": "province",
+      "anchor": "region_deep_marshes",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: The Deep Marshes at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "fever_fog"
+      },
+      "province": {
+        "teleport": [
+          3123.5,
+          3715
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-eastern-rootlands",
+      "set": "province",
+      "anchor": "region_eastern_rootlands",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: Eastern Rootlands at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "warm_rain"
+      },
+      "province": {
+        "teleport": [
+          3232,
+          4495.5
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-hive",
+      "set": "province",
+      "anchor": "region_hive",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: The Hive at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "still"
+      },
+      "province": {
+        "teleport": [
+          1237,
+          3732.5
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-marauders-coast",
+      "set": "province",
+      "anchor": "region_marauders_coast",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: Marauder's Coast at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "sea_fog"
+      },
+      "province": {
+        "teleport": [
+          400.5,
+          4485
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-salt-hills",
+      "set": "province",
+      "anchor": "region_salt_hills",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: The Salt Hills at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "clear"
+      },
+      "province": {
+        "teleport": [
+          1982.5,
+          705
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-stone-forest",
+      "set": "province",
+      "anchor": "region_stone_forest",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: The Stone Forest at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "clear"
+      },
+      "province": {
+        "teleport": [
+          2749,
+          2252
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-stone-wastes",
+      "set": "province",
+      "anchor": "region_stone_wastes",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: Stone Wastes at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "salt_storm"
+      },
+      "province": {
+        "teleport": [
+          813.5,
+          4894.5
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-thornmarsh",
+      "set": "province",
+      "anchor": "region_thornmarsh",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: Thornmarsh at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "ashfall"
+      },
+      "province": {
+        "teleport": [
+          3522.5,
+          1090
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-valus-ridge",
+      "set": "province",
+      "anchor": "region_valus_ridge",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: Valus Ridge at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "cold_rain"
+      },
+      "province": {
+        "teleport": [
+          1209,
+          2178.5
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-western-rootlands",
+      "set": "province",
+      "anchor": "region_western_rootlands",
+      "purpose": "art-direction",
+      "note": "RI-WLD04 S24: Western Rootlands at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "world": {
+        "timeOfDay": 11,
+        "weather": "warm_rain"
+      },
+      "province": {
+        "teleport": [
+          1727,
+          4716
+        ],
+        "eye_height_m": 1.7,
+        "fov": 70
+      },
+      "metrics": [
+        "edgeDensity",
+        "saturation",
+        "flatShading",
+        "rmsContrast"
+      ]
+    },
+    {
+      "id": "VPP-vista-valus",
+      "set": "province",
+      "purpose": "art-direction",
+      "note": "the Valus Ridge from the Stone Forest floor",
+      "world": {
+        "timeOfDay": 10,
+        "weather": "clear"
+      },
+      "province": {
+        "teleport": [
+          2749,
+          2252
+        ],
+        "look_at": [
+          1209,
+          2178.5
+        ],
+        "eye_height_m": 1.75,
+        "fov": 60
+      },
+      "metrics": [
+        "dynamicRange",
+        "edgeDensity",
+        "fftHighBand",
+        "saturation"
+      ]
+    },
+    {
+      "id": "VPP-vista-crossing",
+      "set": "province",
+      "purpose": "art-direction",
+      "note": "the crossing, north out of Helstrom",
+      "world": {
+        "timeOfDay": 9,
+        "weather": "dawn_mist"
+      },
+      "province": {
+        "teleport": [
+          2262.5,
+          2773.5
+        ],
+        "look_at": [
+          2171.5,
+          761
+        ],
+        "eye_height_m": 1.75,
+        "fov": 60
+      },
+      "metrics": [
+        "dynamicRange",
+        "edgeDensity",
+        "fftHighBand",
+        "saturation"
+      ]
+    },
+    {
+      "id": "VPP-street-lilmoth",
+      "set": "province",
+      "purpose": "art-direction",
+      "note": "Lilmoth harbour steps",
+      "world": {
+        "timeOfDay": 8.5,
+        "weather": "warm_rain"
+      },
+      "province": {
+        "teleport": [
+          2766.5,
+          5027.5
+        ],
+        "look_at": [
+          2766.5,
+          4900
+        ],
+        "eye_height_m": 1.75,
+        "fov": 60
+      },
+      "metrics": [
+        "dynamicRange",
+        "edgeDensity",
+        "fftHighBand",
+        "saturation"
+      ]
+    },
+    {
+      "id": "VPP-street-stormhold",
+      "set": "province",
+      "purpose": "art-direction",
+      "note": "Stormhold, the only open sky over dry ground",
+      "world": {
+        "timeOfDay": 15,
+        "weather": "clear"
+      },
+      "province": {
+        "teleport": [
+          2171.5,
+          761
+        ],
+        "look_at": [
+          2171.5,
+          900
+        ],
+        "eye_height_m": 1.75,
+        "fov": 60
+      },
+      "metrics": [
+        "dynamicRange",
+        "edgeDensity",
+        "fftHighBand",
+        "saturation"
+      ]
+    }
+  ]
+}

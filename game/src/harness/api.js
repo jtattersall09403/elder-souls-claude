@@ -279,6 +279,48 @@ export function installHarness(engine, bootPromise) {
       };
     },
 
+    // ================= W1-07 — character creation ==============================================
+    // RI-CHR01 method 1 / RI-JRN01 M5-M8 drive the scene through these; RI-CHR02 methods 3, 7,
+    // 8 and 9 drive the matrix, the prices, the encounter and the guards.
+
+    /** The composed sheet, or {created:false} before the Writ House. */
+    getCharacter() { return engine.getCharacter(); },
+    /** Compose directly. The PLAYER's route is the scene; this is the scenario's route. */
+    setCharacter(spec) { return engine.setCharacter(spec); },
+
+    /** Open the census scene. Returns the first node: a speaker, a place, and a line. */
+    censusBegin(opts) { return engine.censusBegin(opts || {}); },
+    /** The player reached the Writ House. RI-JRN01 O6 puts >= 60 s of play before this. */
+    censusEnter() { return engine.censusEnter(); },
+    /** Answer the node in front of you. Throws on an illegal answer. */
+    censusAnswer(value) { return engine.censusAnswer(value); },
+    /** What a renderer draws and what a critic screenshots. `full_screen_panels` is 0. */
+    getCensusState() { return engine.getCensusState(); },
+    /** The object you carry out of the room (RI-JRN01 O10). */
+    readWrit() { return engine.readWrit(); },
+
+    /** Disposition with the race and upbringing terms in front of it (RI-CHR02 §4a). */
+    getReaction(q) { return engine.getReaction(q || {}); },
+    /** The standing surcharge and a quoted price (RI-CHR02 §4b). */
+    getPriceQuote(q) { return engine.getPriceQuote(q || {}); },
+    /** lawFactor, arrest and attack thresholds, suspicion (RI-CHR02 §5). */
+    getGuardTerms(race) { return engine.getGuardTerms(race); },
+
+    /** AR-3. Spawn a named encounter; every race gets the same statblocks. */
+    spawnEncounter(id, x, z, opts) { return engine.spawnEncounter(id, Number(x), Number(z), opts || {}); },
+    /** AR-3. What this encounter is doing, and what it would do to a different race. */
+    getEncounterState(id) { return engine.getEncounterState(id); },
+
+    /** The whole creation data set, for a critic who wants to recompute rather than trust. */
+    getCreationData() {
+      const d = engine.chData;
+      return {
+        attributes: d.attributes, skills: d.skills, races: d.races, classes: d.classes,
+        birthsigns: d.birthsigns, reactions: d.reactions, creation: d.creation,
+        questions: d.creationQuestions, encounters: d.encounters,
+      };
+    },
+
     // ---- honest gaps ------------------------------------------------------------------------
     /**
      * Every capability a critic might reach for that this piece does NOT implement, with
@@ -295,6 +337,7 @@ export function installHarness(engine, bootPromise) {
           'IndexedDB save with the RI-JRN05 §A write protocol, digest, A/B generations, export/import, hostility simulation',
           'deterministic sky, sun and named weather; the nine viewpoint anchors',
           'the game/data/** layout of HARNESS.md §5 with a generated index.json',
+          'W1-07: character creation as a scene — 10 attributes, 19 skills, 10 races, 9 birthsigns, 14 classes plus the custom route, the 12-question route, the 12x10 reaction matrix, the price surcharge, the guard law-factor table and the race-conditioned encounter opening',
           'W1-09: swept-capsule hit resolution over bone-attached hurtboxes, 4 substeps, no distance check and no dice (RI-CMB04)',
           'W1-09: the RI-CMB01 §B roll ladder at all four equip-load tiers, i-frames as a frame window',
           'W1-09: RI-CMB02 §A/§B frame data for all 7 classes x R1/R2 with the §D commitment rule',

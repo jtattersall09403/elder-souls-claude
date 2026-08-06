@@ -31,6 +31,10 @@ surprising discovery, a new region standing up). Roughly one post per meaningful
 
 - Posts: `docs/blog/YYYY-MM-DD-slug.md`, with front matter `title`, `date`, `summary`.
 - Screenshots: copy into `docs/shots/` and reference as `../shots/<file>.png`.
+- **Hard-wrap the markdown source** at a comfortable width. That is fine and correct: the renderer
+  joins consecutive wrapped lines into one paragraph, and joins indented continuation lines into
+  the bullet above them. Both used to be rendering bugs that put a break mid-sentence; both are
+  fixed. Do not reformat posts into single-line paragraphs to work around it.
 - Regenerate with `node tools/progress.mjs && node tools/blog.mjs`, which writes `docs/index.html`.
   GitHub Pages serves `/docs` from the working branch. **Always run both, and check the page
   actually contains your post before finishing.**
@@ -68,11 +72,57 @@ so it reads properly to someone skimming.
    Raw internal shorthand like "TTNIT median ≤45s" still needs unpacking: "you should never walk
    more than about 45 seconds without something worth stopping for."
 5. **Short paragraphs. No bullet-point soup.** Prose, mostly. Bullets only for genuine lists.
-6. **Never oversell.** If it looks like coloured blocks, say it looks like coloured blocks and
+6. **British English, always.** The author is British and the register is British. Use -ise not
+   -ize (realise, recognise, prioritised, organised), and colour, behaviour, grey, metres, maths,
+   towards, whilst-if-you-must, "learnt". Avoid Americanisms: "gotten", "off of", "different
+   than", "reached out", "a ways", "math", "z" spellings. **Exception:** `corpus/` filenames,
+   code identifiers, JSON keys and quoted source text stay exactly as they are — never
+   re-spell an identifier.
+7. **Understatement over emphasis.** This is the rule most often broken. Let the facts do the
+   work; the material is interesting and does not need selling. See the section below.
+8. **Never oversell.** If it looks like coloured blocks, say it looks like coloured blocks and
    explain why that's the expected state right now. The reader will see the picture regardless, and
    a caption that oversells destroys their trust in every other claim you make.
-7. **No corporate voice.** No "excited to share", no "journey", no "leverage". Write like a person
+9. **No corporate voice.** No "excited to share", no "journey", no "leverage". Write like a person
    explaining something they find interesting.
+10. **Compute every duration before you reference it.** Never estimate elapsed time. Run:
+
+    ```
+    git log --reverse --format='%ai' | head -1   # when the project started
+    git log -1 --format='%ai'                    # now
+    git log --oneline | wc -l                    # commits so far
+    ```
+
+    Then do the subtraction. Do not write "weeks" or "months" without having checked — an early
+    draft of the first post was titled "Six weeks of arguing before a single tree" when the
+    project was eighteen hours old, which is the kind of error that costs you the reader for
+    every other number in the post. Prefer concrete anchors — "by the second day", "in the first
+    18 hours", "143 commits in" — over vague ones. Where the volume of work implies a longer
+    timeline than the real one, say plainly that agents run in parallel, and leave it there.
+
+## Register: understated, British, dry
+
+Cut the drum roll. No "Here's the thing:", no "And that's when it hit us", no one-sentence
+paragraphs for dramatic effect, no rhetorical question the writer immediately answers, no
+throat-clearing before the point ("The pitch is simple enough to say in a sentence:" — just say
+it). Fewer superlatives: not "the single most important thing" unless it demonstrably is, and not
+"genuinely" three times in a paragraph.
+
+Dry humour is welcome; enthusiasm is suspect. The reader will find "the random number generator
+had never once been drawn from" funny without being told it is remarkable.
+
+Before and after, from the first post:
+
+| Cut | Replaced with |
+| --- | --- |
+| "The pitch is simple enough to say in a sentence: **Vvardenfell's design philosophy…**" | "**Vvardenfell's design philosophy…**" |
+| "…a compromise that satisfies neither, which is how most 'Morrowind but with good combat' projects die." | "Settle them later and you get a compromise that satisfies neither." (we have no evidence for the claim about other projects) |
+| "Not opinions. Measurements." | "Every one of them is a measurement rather than an opinion." |
+| "Everything green, nothing random." | folded into the sentence before it |
+| "Offering mercy is a real decision under pressure, punishable if you misjudge the spacing" | "Mercy is something you have to commit to at a bad moment" |
+
+General shape of it: "This turned out to be wrong" beats "This was a catastrophic failure".
+"Which is not ideal" is a perfectly good way to say something is bad.
 
 ## What to read before writing
 

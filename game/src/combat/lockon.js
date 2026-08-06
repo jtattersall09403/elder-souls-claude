@@ -105,18 +105,48 @@ export class LockOn {
   steerDuringAttack(body, targetBody, animFrame, startup) {
     if (!targetBody) return 0;
     const toTarget = bearingDeg(targetBody.pos[0] - body.pos[0], targetBody.pos[2] - body.pos[2]);
-    if (animFrame <= 1) { body.yaw = toTarget; return 0; }       // frame-1 snap, one frame only
+    if (animFrame <= 1) {                                        // frame-1 snap, one frame only
+      body.yaw = toTarget; body.steerBudgetDeg = 0; return 0;
+    }
+    // ---- W1-06 / RI-CAM04 §D — THE COMMIT CUTOFF ---------------------------------------
+    // RI-CMB06 §D gives band fractions; RI-AI02 §C gives a HARD rule, `Tc ≤ W − 8`, and a
+    // total yaw budget. Both bind the player. The reconciliation is:
+    //
+    //     b1 = ceil(0.40 W)                   end of the fast band
+    //     Tc = min(floor(0.80 W), W − 8)      the cutoff frame — FROZEN after it
+    //     GLOBAL CAP: total post-snap yaw ≤ 45.0°, whichever binds first
+    //
+    // The `W − 8` term is what stops a long windup buying more correction than a short one,
+    // and the 45° cap is what stops the slowest weapons becoming the most forgiving — the
+    // inversion of the whole risk model that RI-CAM04 "How we lose" #9 names. Without them a
+    // straight sword steered through frame 19 instead of 16 and an ultra greatsword R2 got
+    // 154° of free aim. The fractions alone are not the law.
+    const b1 = Math.ceil(0.40 * startup);
+    const Tc = Math.min(Math.floor(0.80 * startup), startup - 8);
+    if (animFrame > Tc) return 0;                                // frozen, and stays frozen
     const sch = this.C.soft_lock.steering_schedule;
-    let rateDps = 0;
-    if (animFrame <= 0.40 * startup) rateDps = sch[0].yaw_rate_dps;
-    else if (animFrame <= 0.80 * startup) rateDps = sch[1].yaw_rate_dps;
-    else rateDps = 0;
+    const rateDps = animFrame <= b1 ? sch[0].yaw_rate_dps : sch[1].yaw_rate_dps;
     if (rateDps === 0) return 0;
-    const maxStep = rateDps / 60;
+    const cap = this.C.soft_lock.global_cap_deg === undefined ? 45.0 : this.C.soft_lock.global_cap_deg;
+    const spent = body.steerBudgetDeg || 0;
+    if (spent >= cap) return 0;
+    let maxStep = rateDps / 60;
+    if (spent + maxStep > cap) maxStep = cap - spent;
     let d = angleDelta(body.yaw, toTarget);
     if (d > maxStep) d = maxStep; else if (d < -maxStep) d = -maxStep;
     body.yaw = norm360(body.yaw + d);
+    body.steerBudgetDeg = spent + Math.abs(d);
     return d;
+  }
+
+  /** The §D table, computed rather than transcribed, so a critic can diff it against the
+   *  reference item's own arithmetic without running the game. */
+  static cutoffFor(startup) {
+    return {
+      W: startup,
+      b1: Math.ceil(0.40 * startup),
+      Tc: Math.min(Math.floor(0.80 * startup), startup - 8),
+    };
   }
 
   /**
