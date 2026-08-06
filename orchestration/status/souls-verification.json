@@ -8,7 +8,12 @@
     "corpus/00-doctrine/PROVENANCE-UPGRADE-02-SOULS.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read corpus/10-combat RI-CMB01..08 and record claimed figures",
+  "findings": [
+    "RI-CMB01 is structurally honest: \u00a7A holds upstream DS1/DS3 numbers as community-data (medium), \u00a7B is an explicitly CONSTRUCTED model 'ES-ROLL/1' that openly states it blends DS3's 30%/70% breakpoints with DS1's i-frame stinginess. The blend is DECLARED, not silent. Verification target = \u00a7A cells only.",
+    "RI-CMB01 already self-corrects the commissioning brief: says DS1 breakpoints are 25%/50%, not 30%/70%. Needs external check.",
+    "RI-CMB02 is fully `constructed` and explicitly disclaims being a measurement of any FromSoft title. Nothing in \u00a7A/\u00a7B to verify against a game; only the qualitative 'grounding' claims (canonical-recall) are checkable.",
+    "RI-CMB01 \u00a7A claims: DS1 25/50/100 breakpoints, 11 iframes all DS1 rolls, 13 for ninja-flip (DWGR at <=25%); DS3 30/70/100, 13/13/12 iframes light/medium/heavy."
+  ],
+  "next_step": "read RI-CMB03,05,06,08 + PRG01/07 + CAM03; then web-verify DS1/DS3/ER roll iframes",
   "notes_for_successor": "Just started. Network is unrestricted; verify before recalling."
 }

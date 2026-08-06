@@ -1,7 +1,7 @@
 {
-  "generated": "2026-08-06T08:59:34.376Z",
-  "complete": 7,
-  "total": 12,
+  "generated": "2026-08-06T09:01:53.723Z",
+  "complete": 11,
+  "total": 13,
   "tasks": [
     {
       "id": "bar-critic-images-02",
@@ -36,37 +36,30 @@
     {
       "id": "journeys",
       "title": "User-journey corpus, journey-critic fleet, platform budget",
-      "state": "partial",
-      "done": 10,
+      "state": "complete",
+      "done": 11,
       "expected": 11,
-      "missing": [
-        "corpus/88-journeys/JOURNEY-CRITIC-FLEET.md"
-      ],
-      "next_step": "write JOURNEY-CRITIC-FLEET.md then paths-requested.json",
-      "findings": 18
+      "missing": [],
+      "next_step": "write corpus/88-journeys/JOURNEY-CRITIC-FLEET.md (charter + SS7 full A-JRN1..A-JRN14 amendment request). Five items defer their amendment request to its SS7 - it is mandatory, not optional.",
+      "findings": 21
     },
     {
       "id": "experience",
       "title": "Played-experience critic, anecdote census, cross-system composition",
-      "state": "partial",
-      "done": 6,
+      "state": "complete",
+      "done": 8,
       "expected": 8,
-      "missing": [
-        "corpus/95-experience/RI-CMP03*",
-        "corpus/95-experience/CROSS-SYSTEM-BUILDER-BRIEF.md"
-      ],
-      "next_step": "write RI-CMP03 build identity payoff (6 archetypes, full-game viability, route_divergence Jaccard >=0.40, verb-profile KL, talker acid test, blind archetype identification >=0.67) then CROSS-SYSTEM-BUILDER-BRIEF.md",
-      "findings": 18
+      "missing": [],
+      "next_step": "write CROSS-SYSTEM-BUILDER-BRIEF.md (short, handed to every builder), then a final consistency pass over front-matter + judges paths",
+      "findings": 19
     },
     {
       "id": "magic",
       "title": "Magic: casting, effect catalogue, spellmaking, enchanting, quest use",
-      "state": "partial",
-      "done": 4,
+      "state": "complete",
+      "done": 5,
       "expected": 5,
-      "missing": [
-        "corpus/25-magic/RI-MAG05*"
-      ],
+      "missing": [],
       "next_step": "write RI-MAG05 (VFX bifurcation: ART = spell design language organic/fungal/Hist/wet; FIDELITY = F16 particle quality). Then verify all six mandatory sections + front-matter on all five files.",
       "findings": 34
     },
@@ -77,8 +70,8 @@
       "done": 7,
       "expected": 7,
       "missing": [],
-      "next_step": "LAST ITEM: RI-CRM02 faction crime / sanctioned murder / writs / Morag Tong problem / membership changes guard behaviour. CRM01 DONE and exports: 17-crime bounty schedule, report chain, blood-price, 4 tracking factions, faction-invocation escape hatch (rank>=4, 3 uses). LOCK RULING MADE: no probability roll, deterministic ward-collar; proposed new seam S20 'keep the die where failure is permanent, delete it where failure is a retry' -- MUST appear in final reply as a proposed amendment. STL02 exports: stolen_from flag, 7 trespass classes, 9 fences at 0.35x, CRIME/CHALLENGE escalation feeding CRM01. STL01 exports: V visibility formula, civilian states CALM/WATCHING/CHALLENGE/ALARM, contextWeight table (STL02 owns trespass zones + owned objects), S-4 zone memory, harness extension requests (crouch button, player.stealth block, alert_channel, civilians[], getLightAt, events detect/challenge/search_start/search_end/zone_alert/light_snuffed/distraction). 22-character COMPLETE. CHR03 exports: 9 signs, families given/withheld/turned, The Unlit Water carries shadowscale-claim (feeds CRM02), The Spilled changes respawn well, Dry Well = Atronach. CHR01 DONE: 8 inputs, 14 classes + custom, 12 questionnaire dilemmas, 540 signatures (10 race x 6 class-family x 3 birthsign-family x 3 upbringing-class), birthsign families must be named Given/Withheld/Turned in CHR03 §2 and CHR03 §5 owns the one-time re-cut at the Helstrom Hist. CHR02 exports: 10 races (Saxhleel, Naga, Dunmer, Imperial, Nord, Breton, Redguard, Khajiit, Orsimer, Bosmer), 12 reaction groups RG-DEEP/ROOT/LUKIUL/NAGA/LEDGER/EMPIRE/DRES/BWC/VAKH/COURT/TOWN/OUTLAW, 4 upbringings interior/lukiul/foreign-born/blackrose (CHR01 owns upbringing), guard lawFactor+suspicion table (CRM01/STL01 consume), raceSurcharge price formula.",
-      "findings": 8
+      "next_step": "none -- task complete",
+      "findings": 11
     },
     {
       "id": "travel",
@@ -113,14 +106,25 @@
     {
       "id": "image-acquisition",
       "title": "Acquire real reference images via the one reachable channel (GitHub)",
-      "state": "partial",
-      "done": 1,
+      "state": "complete",
+      "done": 2,
+      "expected": 2,
+      "missing": [],
+      "next_step": "write corpus/70-visual/RI-VIS09-reference-image-set.md, then verify corpus index / gap ledger",
+      "findings": 23
+    },
+    {
+      "id": "souls-verification",
+      "title": "Verify the Souls combat corpus against real community frame data",
+      "state": "started-nothing-written",
+      "done": 0,
       "expected": 2,
       "missing": [
-        "corpus/70-visual/refs/ACQUISITION-REPORT.md"
+        "corpus/00-doctrine/PROVENANCE-UPGRADE-02-SOULS.md",
+        "corpus/10-combat/data/souls-frame-data.json"
       ],
-      "next_step": "SUCCESSOR-2 active: metrics+manifest confirmed DONE on disk. Remaining: LICENCE-NOTE.md, ACQUISITION-REPORT.md, RI-VIS09, band comparison vs RI-VIS03.",
-      "findings": 23
+      "next_step": "read RI-CMB03,05,06,08 + PRG01/07 + CAM03; then web-verify DS1/DS3/ER roll iframes",
+      "findings": 4
     },
     {
       "id": "corpus-audit",
