@@ -1,0 +1,28 @@
+{
+  "task_id": "W1-00",
+  "brief": "wave-1 piece W1-00 - Harness, determinism and persistence",
+  "started": "wave-1",
+  "state": "researching",
+  "subsystem_paths": [
+    "platform.determinism.harness",
+    "platform.input.pipeline",
+    "platform.perf.simtime",
+    "platform.save.persistence",
+    "platform.save.storage",
+    "platform.perf.framerate",
+    "platform.load.ttfp"
+  ],
+  "outputs_expected": [
+    "game/ (three.js skeleton, static-servable)",
+    "game/src/sim/** fixed 60Hz sim",
+    "game/src/harness/** window.__HARNESS",
+    "game/src/save/** IndexedDB persistence",
+    "game/src/input/** 14-button input",
+    "game/data/** per HARNESS.md S5",
+    "tools/harness/smoke.mjs, run-headless.mjs, trace.mjs, trace-stats.mjs"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read corpus/00-doctrine/ARBITRATION.md and corpus/80-methods/HARNESS.md",
+  "notes_for_successor": ""
+}
