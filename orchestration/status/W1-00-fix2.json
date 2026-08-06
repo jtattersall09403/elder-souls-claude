@@ -1,0 +1,18 @@
+{
+  "task_id": "W1-00-fix2",
+  "brief": "escalated round-2 remediation for W1-00 (scored 4.1/10, threshold 6.0)",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "outputs_expected": [
+    "fix: GAP-W1-platform-save-drops-entity-prev-state (serialise prev_state + siblings)",
+    "fix: R9/M5 full-field round-trip comparison with differing field names",
+    "fix: allocation instrument (remove max(0,slope) clamp, dying-garbage self-test, F1/F5 pass at 20000 steps)",
+    "fix: widen seeded quantities beyond rng.draws==1",
+    "reports/W1-00-remediation-r2.md",
+    "explicit blocked-vs-movable list"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read both verdicts + remediation report + artifacts",
+  "notes_for_successor": ""
+}
