@@ -107,6 +107,24 @@ them, and its assassin-order band (10–30% PACIFIST-ALL, with D6's "the target 
 talkable") is satisfied at **67% non-lethal-*option*** against **~22% zero-kill-completable**,
 because sparing a target usually costs the quest.
 
+**And the parley is available *during* the fight, not only before it.** ARBITRATION §1 as
+amended states that a fight must have non-lethal exits — fleeing, yielding, parley, bribery —
+and that crime, witnesses, bounty and faction standing keep accruing while it is happening. A
+sanctioned execution is the sharpest case in the game for both halves, so both are specified
+here rather than inherited:
+
+| Mid-fight event | Ruling |
+|---|---|
+| The target yields | A writ target enters a distinct yielding state at ≤ 15% HP or after 2 failed parries, offers their buy-off number, and **stops attacking**. The fight is over unless you continue it. |
+| You kill a yielding target | **Lawful under the writ, and costs standing with 3 factions if any witness saw the yield** — the Drowned Court, the rootkeepers, and the issuing authority itself, which asked for a death and not for a performance. This is the one place the corpus prices *how* you killed someone. |
+| You kill a bystander at frame *n* | The collateral bounty lands **on frame *n***, mid-swing, not at the encounter's end. The player can watch the writ stop being worth anything while the fight is still going. |
+| A guard intervenes and you flee | Leashing applies (`RI-AI01`); fleeing is a supported resolution, the writ survives, the collateral bounty does not clear, and the target is now warned. |
+| You bribe mid-fight | The buy-off route (below) is reachable from inside combat at a **×1.5 premium** — panic costs money. |
+
+**No writ execution may be built as an encounter that can only end in a corpse.** A writ target
+with no yield state is an S13 defect, and because the yield is also the frame on which the
+3-faction penalty becomes possible, it is the mechanism by which the amended §1 has teeth here.
+
 The four shapes a spared writ takes:
 
 | Shape | What happens | Faction cost |

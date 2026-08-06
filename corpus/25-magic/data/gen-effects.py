@@ -152,14 +152,14 @@ eff(id="fortify_attribute", name="Swelling", school="root_speech", weight=3.4, m
     mag_max=40, opp=1.0, dur=True, dur_max=300, area=False,
     ranges=["self","touch","target"], tier=3, geom="none",
     inf=True, outf=True, util="access", quest=True,
-    rulings=["Fortified values satisfy SKILL and ATTRIBUTE gates on actions (locks, persuasion, alchemy, traversal, carry). They NEVER satisfy faction rank thresholds, spell-tier attunement requirements, or quest rank gates - those read the BASE value. Fortify buys you an action, never a station."],
-    note="The boundary clause above is the whole ruling. See RI-MAG03 §D MB-2/MB-3.")
+    rulings=["AMENDED to reconcile with RI-EXP06 B-02, which is authoritative on permissiveness. Fortified values satisfy EVERY gate at the instant it is evaluated - action gates (locks, persuasion, alchemy, traversal, carry), faction rank thresholds, and spell-tier attunement alike. A temporary skill is still a skill.", "The bound is CONSEQUENCE, not refusal. A rank bought on a buff is REAL and persists (RI-EXP06 B-02): the next quest is at that tier, S9 forbids scaling it down, and RI-QST03's expulsion machinery is live. An attunement made on a buff is real UNTIL THE NEXT HEARTH REST, at which point attunement is re-evaluated against base values and an over-tier spell is dropped from its slot. Nothing is refused; everything is priced."],
+    note="Earlier drafts of this item forbade fortify from satisfying rank and attunement gates. That was a prohibition where RI-EXP06 requires a cost, and it is withdrawn. See RI-MAG03 §E.")
 eff(id="fortify_skill", name="Sure Hand", school="root_speech", weight=3.0, mag_unit="point",
     mag_max=50, opp=1.0, dur=True, dur_max=300, area=False,
     ranges=["self","touch","target"], tier=3, geom="none",
     inf=False, outf=True, util="access", quest=True, trav=True,
-    rulings=["Same base-vs-fortified boundary as fortify_attribute. Fortified skill does NOT grant skill progress (RI-PRG03 Cost Gate: it consumed nothing of yours)."],
-    note="Fortify Security +30 to open a tier-5 seal you have no business opening. SANCTIONED and must keep working (RI-MAG03 MB-2).")
+    rulings=["Same amended treatment as fortify_attribute: satisfies every gate at evaluation time, bounded by consequence rather than refusal (RI-EXP06 B-02).", "Fortified skill does NOT grant skill progress - RI-PRG03's Cost Gate is untouched, because a fortified use consumed nothing of yours."],
+    note="Fortify Security +30 to open a tier-5 seal you have no business opening. SANCTIONED and must keep working (RI-MAG03 MB-2, RI-EXP06 B-02/PB-02).")
 eff(id="resist_element", name="Thick Hide", school="root_speech", weight=1.7, mag_unit="point", mag_max=28, opp=3.0, dur=True, dur_max=300, area=False,
     ranges=["self","touch","target"], tier=1, geom="none",
     inf=True, outf=True, util="survival", trav=True,
@@ -434,7 +434,7 @@ data = {
         "No effect emits a HUD marker, waypoint or compass arrow. (S8, AR-2)",
         "No effect converts, yields, reduces or substitutes for sap-debt. (S15)",
         "No effect grants i-frames.",
-        "Fortified/temporary values satisfy ACTION gates, never STATION gates (faction rank, spell-tier attunement, quest rank).",
+        "Fortified/temporary values satisfy EVERY gate at evaluation time (RI-EXP06 B-02). Bounded by consequence: a rank so bought is real and its quests are at that tier; an attunement so made is dropped at the next HEARTH rest. Never by refusal.",
         "Resist and chameleon clamps (85%, 80%) are global and unstackable-past."
     ],
     "effects": E

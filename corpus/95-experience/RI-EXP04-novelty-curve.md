@@ -344,6 +344,42 @@ someone instruments a reference game, and nobody in this project can.
 
 ---
 
+## Provenance note
+
+`provenance: constructed`, `confidence: medium`.
+
+The **two-curve model** (rate decays, weight does not) is `constructed` for this project. No upstream
+source states it. Its support is the observation in §B that both reference games' heaviest novelty
+events are late and their densest are early, and the structural argument that the heaviest class —
+the revision — is *mechanically impossible* early because it operates on prior experience. That
+argument is the item's real claim and a critic is entitled to attack it.
+
+The **numbers in §B are reconstructions from memory and are the untrustworthy part.** The per-hour
+counts `9, 7, 6, 5, …` are not measurements of anything; they are an estimate of how those games
+feel to play, expressed as a series so it can be fitted. **No critic may cite them as measured, and
+no build may be failed for differing from them.** What is well supported is the ordering: Anor Londo
+is around hour ten and is a novelty peak, not a trough; Morrowind's corprus/Tel Fyr revelation is
+around hour fifteen; both games' final areas are places the player has never been. Those are
+`canonical-recall` at `confidence: high` and they are what NV5, LT2 and LT4 actually encode.
+
+The **exponent band is half-derived and half-asserted.** The upper edge (`α ≤ 0.48`) is derived
+exactly from `BAR-CRITIQUE-01`'s 3 : 1 requirement via `ratio = 10^α`. The lower edge (`α ≥ 0.25`) is
+**asserted** — it is the numeric form of "must decay rather than stay flat" and it has no derivation.
+It should be re-examined against the first `FULL` run: if our build lands at `α = 0.20` with a rising
+weight curve and a healthy long tail, the band is probably wrong and the item should be amended rather
+than the build.
+
+The **weights (2/2/1/3/2/5)** are asserted and are the most consequential asserted numbers here,
+because they set `α_w` directly. They encode a design position — that a systemic rule is worth three
+architecture vocabularies and a revision is worth five — and a critic who disagrees should file an
+amendment with a different vector rather than argue the resulting score.
+
+Until the SAB-N control in step 5 has run at least once, this item carries `calibrated: false` in the
+verdict and **may not exceed ladder 6** — per `PLAYTHROUGH-CRITIC.md` §4.5, an instrument that has
+never been shown to discriminate is an opinion with a number attached.
+
+---
+
 ## The `RI-WLD05` amendment this item requires (§H — **proposal only, not applied here**)
 
 This item does not edit `RI-WLD05`. Per `PLAYTHROUGH-CRITIC.md` §2 an experience item may not amend a
@@ -395,37 +431,3 @@ twelve; the count is what binds). The twelve that stay in the first 30 minutes a
    exclusion recorded. It is currently counted toward the 30 and toward the 15 systemic.
 
 ---
-
-## Provenance note
-
-`provenance: constructed`, `confidence: medium`.
-
-The **two-curve model** (rate decays, weight does not) is `constructed` for this project. No upstream
-source states it. Its support is the observation in §B that both reference games' heaviest novelty
-events are late and their densest are early, and the structural argument that the heaviest class —
-the revision — is *mechanically impossible* early because it operates on prior experience. That
-argument is the item's real claim and a critic is entitled to attack it.
-
-The **numbers in §B are reconstructions from memory and are the untrustworthy part.** The per-hour
-counts `9, 7, 6, 5, …` are not measurements of anything; they are an estimate of how those games
-feel to play, expressed as a series so it can be fitted. **No critic may cite them as measured, and
-no build may be failed for differing from them.** What is well supported is the ordering: Anor Londo
-is around hour ten and is a novelty peak, not a trough; Morrowind's corprus/Tel Fyr revelation is
-around hour fifteen; both games' final areas are places the player has never been. Those are
-`canonical-recall` at `confidence: high` and they are what NV5, LT2 and LT4 actually encode.
-
-The **exponent band is half-derived and half-asserted.** The upper edge (`α ≤ 0.48`) is derived
-exactly from `BAR-CRITIQUE-01`'s 3 : 1 requirement via `ratio = 10^α`. The lower edge (`α ≥ 0.25`) is
-**asserted** — it is the numeric form of "must decay rather than stay flat" and it has no derivation.
-It should be re-examined against the first `FULL` run: if our build lands at `α = 0.20` with a rising
-weight curve and a healthy long tail, the band is probably wrong and the item should be amended rather
-than the build.
-
-The **weights (2/2/1/3/2/5)** are asserted and are the most consequential asserted numbers here,
-because they set `α_w` directly. They encode a design position — that a systemic rule is worth three
-architecture vocabularies and a revision is worth five — and a critic who disagrees should file an
-amendment with a different vector rather than argue the resulting score.
-
-Until the SAB-N control in step 5 has run at least once, this item carries `calibrated: false` in the
-verdict and **may not exceed ladder 6** — per `PLAYTHROUGH-CRITIC.md` §4.5, an instrument that has
-never been shown to discriminate is an opinion with a number attached.

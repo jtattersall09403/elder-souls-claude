@@ -33,7 +33,9 @@ The corollary is the reason this item is `neutral` and not `fidelity`: **the set
 lopsided, and pretending otherwise would be worse than having no set at all.** §3 states the
 coverage honestly.
 
-## §1 What exists
+## The reference artifact
+
+### §1 What exists
 
 Root: `corpus/70-visual/refs/`. 103 files in slot folders, 8 in `rejected/`.
 
@@ -53,7 +55,7 @@ script-computed integrity fields), `refs/_computed.json` (script output alone),
 and per-population statistics), `refs/make-manifest.py` (the integrity script; `--check` re-runs
 it and diffs), `refs/LICENCE-NOTE.md`, `refs/ACQUISITION-REPORT.md` (the full account).
 
-## §2 Which corpus items consume which images
+### §2 Which corpus items consume which images
 
 | Item | May cite | May **not** cite |
 |---|---|---|
@@ -73,7 +75,7 @@ framing and over-the-shoulder-camera reference for builders, and the source of t
 **`refs/anti/` remains reserved** for the file our own harness generates. Nothing in this item
 writes there.
 
-## §3 Coverage gaps — stated up front, not buried
+### §3 Coverage gaps — stated up front, not buried
 
 1. **Five of six `modern/` profile folders are empty and the sixth holds one image.** RI-VIS03's
    `exterior_lowlight`, `interior_darkemissive`, `combat` and `material_closeup` bands have **no**
@@ -107,7 +109,9 @@ writes there.
 these; re-running `make-manifest.py` rebuilds `MANIFEST.json` over the union. **Do not hand-edit
 `MANIFEST.json`** — it is generated, and hand edits are lost on the next run.
 
-## §4 What the set already changed
+## Comparison method
+
+### §4 What the set already changed
 
 Running `tools/metrics/image-metrics.mjs` over the acquired images produced the first measured
 numbers the visual area has ever had. ACQUISITION-REPORT §10 gives the full table and the
@@ -127,7 +131,7 @@ mapping caveats. The three results that matter here:
 **RI-VIS03 has not been edited.** These are proposals, and RI-VIS03 keeps `provenance:
 constructed` until a wave adopts them.
 
-## §5 The blind procedure — the only part a blind judge may read
+### §5 The blind procedure — the only part a blind judge may read
 
 Both protocols in RI-VIS06 run through `tools/blind/make-pair.mjs`, which strips labels, assigns
 A/B under a recorded seed, and writes the reveal key **outside** the pack directory.
@@ -167,7 +171,26 @@ instruction. Until it does, a Protocol B result is not trustworthy.
 Everything else — forced choice, no ties, one named biggest gap, distrust a win — is unchanged
 from RI-VIS06 and CORPUS-CONTRACT §6.
 
-## §6 Failure modes this item is meant to prevent
+## Scoring
+
+This item is a *register*, not a scored bar in its own right; the score it carries is a
+compliance check that any wave can run in under a minute.
+
+| Check | Pass |
+|---|---|
+| `python3 corpus/70-visual/refs/make-manifest.py --check` | exits 0 — every file's sha256 still matches its record |
+| every reference cited in this wave's visual verdicts resolves to a path under `refs/` | 0 unresolvable citations |
+| every such citation obeys the routing table in §2 | 0 cross-side citations |
+| every numeric band citation names its `reference-metrics.json` population **and** that population's `n` | 0 bare bands |
+| no verdict cites a file under `modern/hud/` or `anti-generic/` as a *target* | 0 |
+
+**Any single failure is a hard fail for the visual area of that wave**, in the same way
+RI-VIS03 hard-fails a verdict reported as a bare number. A citation that cannot be resolved is
+indistinguishable from a remembered image, which is the exact condition this item exists to end.
+
+## How we lose
+
+### §6 Failure modes this item is meant to prevent
 
 - **Citing an image that does not exist.** The whole point. `MANIFEST.json` has no record without
   a file, and `make-manifest.py --check` will catch a file that changed underneath a record.
