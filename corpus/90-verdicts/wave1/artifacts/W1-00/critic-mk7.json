@@ -1,0 +1,68 @@
+{
+  "schema": "critic/w1-00-mk7@1",
+  "at": "2026-08-06T13:07:52.150Z",
+  "variants": {
+    "blur_window": {
+      "held_before": [
+        "roll",
+        "sprint"
+      ],
+      "move_before": null,
+      "held_after_1_frame": [],
+      "drift_m": 0,
+      "doc_visibility": "visible",
+      "doc_hidden": false
+    },
+    "event_only": {
+      "held_before": [
+        "roll",
+        "sprint"
+      ],
+      "move_before": null,
+      "held_after_1_frame": [
+        "roll",
+        "sprint"
+      ],
+      "drift_m": 23.25,
+      "doc_visibility": "visible",
+      "doc_hidden": false
+    },
+    "visibilityState_only": {
+      "held_before": [
+        "roll",
+        "sprint"
+      ],
+      "move_before": null,
+      "held_after_1_frame": [
+        "roll",
+        "sprint"
+      ],
+      "drift_m": 23.25,
+      "doc_visibility": "visible",
+      "doc_hidden": false
+    },
+    "both": {
+      "held_before": [
+        "roll",
+        "sprint"
+      ],
+      "move_before": null,
+      "held_after_1_frame": [],
+      "drift_m": 0,
+      "doc_visibility": "visible",
+      "doc_hidden": false
+    },
+    "pointerlockchange": {
+      "held_before": [
+        "roll",
+        "sprint"
+      ],
+      "move_before": null,
+      "held_after_1_frame": [],
+      "drift_m": 0,
+      "doc_visibility": "visible",
+      "doc_hidden": false
+    }
+  },
+  "page_errors": []
+}

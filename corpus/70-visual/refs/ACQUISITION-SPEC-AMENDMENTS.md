@@ -241,3 +241,67 @@ photograph, so the computed dispersion is an estimate from a biased sample, not 
 still enormously better than a constructed number — and the bias runs **against** us, since a
 picturesque-skewed sample will show *more* dispersion than the real game, making the floor harder
 rather than easier. Record it as `derived` with the bias stated.
+
+## A8 — Temporal reference: routes, not excuses
+
+**User direction:** *"We cannot just lower the bar. We need something."* Correct. The round-1
+builder concluded video was unobtainable because **YouTube** refuses this container and
+**archive.org**'s current-gen holdings are too large to vendor. Both are true and neither is the
+whole search space. A3's IMPOSSIBLE class requires *nothing published serves it and no inference is
+sound* — that test has not been met, because these routes were never tried.
+
+### What actually needs temporal evidence
+
+| Bar | What a still cannot show |
+|---|---|
+| `RI-VIS03` **M11** LOD pop | geometry appearing as the camera moves |
+| `RI-VIS03` **M12** water temporal variance | a surface changing frame to frame |
+| `RI-VIS04` wind | foliage moving at more than one frequency |
+| `RI-VIS08` §C animation | pose rate, jerk, foot slide, blend frames, T-pose leak |
+| **A5** attacks, telegraph, impact | windup → active → recovery as a *sequence*; hitstop |
+| `RI-CAM01`/`03`/`06` | spring-arm pull-in, lock-on reframing, shake |
+
+### Routes, in order of expected yield — all verified reachable
+
+1. **Wiki animation GIFs — the best route and already found.** Round 1 noted the Dark Souls wiki
+   hosts per-move animation clips *named by boss and move* (`Artorias - Heavy Slam`, `- Somersault
+   Attack`). HTML is Cloudflare-403 but **`darksouls.fandom.com/api.php` returns 200** (verified).
+   Use `action=query&list=allimages&aiprefix=`, filter to `.gif`/`.webm`, and pull originals from
+   `static.wikia.nocookie.net`. **A GIF is a frame sequence** — it is exactly what M11, VIS08 §C
+   and A5's attack arcs need, it is small, and it is per-move labelled, which no longplay is.
+   Also try `eldenring.fandom.com`, `darksouls3.fandom.com`, `elderscrolls.fandom.com`.
+2. **Imgur** (302, reachable). `.gifv`/`.mp4` — the Souls community posts clipped combat there
+   constantly, typically 5–20 s, which is the length the spec wants.
+3. **An Invidious/Piped instance.** `yewtu.be` returns 200. `yt-dlp` supports Invidious URLs, and
+   these proxies frequently serve where youtube.com refuses. Try several instances.
+4. **Vimeo** (200) and **Bilibili** (200) — both host game capture, both outside YouTube's bot wall.
+5. **archive.org, but pick the derivative.** The 82 GB figure is the *source* upload. Archive
+   generates lower-bitrate `.ia.mp4` derivatives; and its player supports byte-range and
+   `?start=&end=` fragment extraction. Fetch a 30-second span, not the item.
+6. **Reddit** is 403 direct, but `old.reddit.com`, `.json` endpoints and third-party mirrors often
+   are not. `v.redd.it` clips are short by construction.
+7. **GitHub** — graphics-research and video-codec repos vendor short test sequences; some are game
+   capture.
+
+### Substitutes that are genuinely sufficient, not consolation prizes
+
+Where a clip cannot be had, these measure the same property and should be recorded as
+SUBSTITUTABLE under A3 rather than treated as failure:
+
+- **Burst screenshot series.** Steam's `publishedfileid` is monotonic in time (proven: 97 dates, 0
+  violations). **Consecutive sids from the same author are frames seconds apart** — a free
+  pseudo-temporal sequence. Not frame-adjacent, so useless for jerk; genuinely useful for
+  before/after state, weather transition, and LOD at two distances.
+- **Frame strips and sprite sheets.** Community frame-data resources publish attack animations as
+  labelled strips. A strip *is* the sequence, already extracted.
+- **Two shots of the same place at different times/weather** substitutes for a transition clip.
+- **For LOD specifically**: two screenshots of the same landmark at different distances measure
+  pop-in geometry directly, and are much easier to find than a dolly.
+
+### The rule this replaces
+
+**No temporal bar may be lowered or deleted until routes 1–7 and the substitutes above have each
+been tried and recorded as failed.** A3's three-round limit still applies, but the round counter
+restarts here because the search space just widened materially. If after that a bar still has no
+evidence, then and only then does it become IMPOSSIBLE — and the acceptance must name the bar and
+the risk.

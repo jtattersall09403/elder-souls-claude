@@ -1,0 +1,260 @@
+{
+  "schema": "critic/w1-00-jrn03@1",
+  "at": "2026-08-06T13:06:14.537Z",
+  "mode": "play-instrumented",
+  "MK1": {
+    "actions": [
+      "light",
+      "heavy",
+      "roll",
+      "block",
+      "parry",
+      "sprint",
+      "jump",
+      "use_item",
+      "interact",
+      "lock_on",
+      "two_hand",
+      "swap_right",
+      "swap_left",
+      "menu"
+    ],
+    "bindings": {
+      "light": [
+        "Mouse0",
+        null
+      ],
+      "block": [
+        "Mouse2",
+        "KeyF"
+      ],
+      "parry": [
+        "Mouse1",
+        "KeyV"
+      ],
+      "heavy": [
+        "KeyR",
+        "Mouse3"
+      ],
+      "roll": [
+        "Space",
+        "Mouse4"
+      ],
+      "sprint": [
+        "ShiftLeft",
+        null
+      ],
+      "jump": [
+        "KeyX",
+        null
+      ],
+      "interact": [
+        "KeyE",
+        "Enter"
+      ],
+      "use_item": [
+        "Digit1",
+        null
+      ],
+      "lock_on": [
+        "Tab",
+        "Mouse1Hold12"
+      ],
+      "two_hand": [
+        "KeyG",
+        null
+      ],
+      "swap_right": [
+        "Digit3",
+        "WheelUp"
+      ],
+      "swap_left": [
+        "Digit4",
+        "WheelDown"
+      ],
+      "menu": [
+        "Escape",
+        "KeyM"
+      ]
+    },
+    "reserved": [
+      "Ctrl+KeyW",
+      "Ctrl+KeyR",
+      "Ctrl+KeyT",
+      "Ctrl+KeyN",
+      "Ctrl+Shift+KeyI",
+      "F5",
+      "F11",
+      "F12",
+      "AltLeft+F4"
+    ],
+    "bufferFrames": 8,
+    "catchupCap": 5
+  },
+  "MK1_routed": {
+    "light": {
+      "via": "Mouse0",
+      "skipped": "pointer/wheel binding not driven by keyboard"
+    },
+    "block": {
+      "via": "Mouse2",
+      "skipped": "pointer/wheel binding not driven by keyboard"
+    },
+    "parry": {
+      "via": "Mouse1",
+      "skipped": "pointer/wheel binding not driven by keyboard"
+    },
+    "heavy": {
+      "via": "KeyR",
+      "input_actions": [
+        "heavy"
+      ],
+      "held": [
+        "heavy"
+      ],
+      "routed": true
+    },
+    "roll": {
+      "via": "Space",
+      "input_actions": [
+        "roll"
+      ],
+      "held": [
+        "roll"
+      ],
+      "routed": true
+    },
+    "sprint": {
+      "via": "ShiftLeft",
+      "input_actions": [],
+      "held": [
+        "sprint"
+      ],
+      "routed": true
+    },
+    "jump": {
+      "via": "KeyX",
+      "input_actions": [],
+      "held": [
+        "jump"
+      ],
+      "routed": true
+    },
+    "interact": {
+      "via": "KeyE",
+      "input_actions": [],
+      "held": [
+        "interact"
+      ],
+      "routed": true
+    },
+    "use_item": {
+      "via": "Digit1",
+      "input_actions": [],
+      "held": [
+        "use_item"
+      ],
+      "routed": true
+    },
+    "lock_on": {
+      "via": "Tab",
+      "input_actions": [],
+      "held": [
+        "lock_on"
+      ],
+      "routed": true
+    },
+    "two_hand": {
+      "via": "KeyG",
+      "input_actions": [],
+      "held": [
+        "two_hand"
+      ],
+      "routed": true
+    },
+    "swap_right": {
+      "via": "Digit3",
+      "input_actions": [],
+      "held": [
+        "swap_right"
+      ],
+      "routed": true
+    },
+    "swap_left": {
+      "via": "Digit4",
+      "input_actions": [],
+      "held": [
+        "swap_left"
+      ],
+      "routed": true
+    },
+    "menu": {
+      "via": "Escape",
+      "input_actions": [],
+      "held": [
+        "menu"
+      ],
+      "routed": true
+    }
+  },
+  "MK1_summary": {
+    "keyboard_bindings_probed": 11,
+    "routed": 11
+  },
+  "MK5": {
+    "repeat_keydowns": 60,
+    "attack_starts": 1
+  },
+  "MK6_MK7": {
+    "blur": {
+      "held_before": [
+        "roll",
+        "sprint"
+      ],
+      "held_after_1_frame": [],
+      "drift_m": 0
+    },
+    "visibilitychange": {
+      "held_before": [
+        "roll",
+        "sprint"
+      ],
+      "held_after_1_frame": [
+        "roll",
+        "sprint"
+      ],
+      "drift_m": 23.25
+    }
+  },
+  "MK14": {
+    "contextmenu_prevented": true,
+    "space_prevented": true,
+    "tab_prevented": true,
+    "slash_prevented": true,
+    "backspace_prevented": true,
+    "wheel_prevented": true,
+    "arrow_prevented": true,
+    "page_scrollable": false,
+    "cursor_style": "none"
+  },
+  "MK24": {
+    "events": 3000,
+    "droppedInputs_before": 0,
+    "droppedInputs_after": 0,
+    "activeDevice": "keyboard",
+    "pointerLocked": false,
+    "hasFocus": false
+  },
+  "MK4_reserved": [
+    "Ctrl+KeyW",
+    "Ctrl+KeyR",
+    "Ctrl+KeyT",
+    "Ctrl+KeyN",
+    "Ctrl+Shift+KeyI",
+    "F5",
+    "F11",
+    "F12",
+    "AltLeft+F4"
+  ],
+  "page_errors": []
+}

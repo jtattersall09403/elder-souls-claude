@@ -1,0 +1,28 @@
+{
+  "task_id": "ref-critic-r2",
+  "brief": "inline (round-2 reference coverage critic)",
+  "started": "wave-2",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.md",
+    "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.json"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "DISK CENSUS: 449 media files on disk (359 jpg + 90 avif). MANIFEST.json holds 488 records, 450 media records. 1 ghost: video/V4-combat__...ia.mp4 is in the manifest but NOT on disk (3.3GB video deleted). H1 recurs; acquire.py --check '323 of 323 verify' is now false.",
+    "video/ is EMPTY (0 files). Zero temporal reference exists.",
+    "KILLER FINDING: block_score is confounded with scene luminance. Controlled experiment on run-w3nextgen-t0007.jpg at CONSTANT jpeg q=95: lum 161.9 -> bs 1.093; darkened to lum 28.6 -> bs 1.447. Same encoder, same settings, same content. Darkening alone moves a PASS into a FAIL. block_score = mean|dx| on 8-aligned cols / mean|dx| non-aligned; the denominator IS scene detail, so dark/smooth scenes inflate the ratio.",
+    "The builder's 'Steam re-encodes user uploads' diagnosis is REFUTED by its own computed data: jpeg_quality_est median = 100.0 in EVERY Steam-sourced folder, bytes_per_pixel 1.29-2.31. A q=95 re-encode in my test produced 0.31 bpp. Steam files are near-lossless.",
+    "Steam-sourced block_score medians rank inversely with bytes_per_pixel (scene detail): context 2.31bpp/1.05bs, attacks 2.01/1.11, daylight 1.73/1.16, lowlight 1.54/1.19, interior 1.29/1.29, REF-A18 0.53/1.33, REF-A4 0.85/1.50. The metric measures scene simplicity, not encode damage.",
+    "souls-behaviour is 91/93 DARK SOULS III + 2 Dark Souls Remastered. ZERO Elden Ring despite A5 rule 5 and despite ER being abundant in modern/. Single-game behavioural axis.",
+    "SLOT IDS: of 131 modern records, 83 slot=null, 39 REF-M-supplemental, 8 REF-M22, 1 REF-M6. Critic R1 defect H3 is UNFIXED. 20 of 21 REF-M* slots still formally unfilled.",
+    "souls-behaviour: all 93 records slot=null (but they DO cite RI-* item ids in other fields; 162 of 488 records cite an RI id).",
+    "side field has TWO names for one side: 'morrowind-art-direction' (127) and 'morrowind-art' (94). Also game label variants 'The Elder Scrolls III: Morrowind' vs '... (2002)' inflate distinct-game counts to 2 for a one-game side.",
+    "A7 has ZERO acquisition: no morrowind/REF-A21-regions, REF-A22-intraregion, REF-A23-ground directories exist.",
+    "Morrowind: 89 square crops (84 marked superseded_by), 94 full-frame. Full-frame dims 1024x768(32), 1280x960(26), 1920x1080(11), 1366x768(8)...",
+    "interval-run: 29 records total; 24 in modern/exterior_daylight, 5 mislabelled on anti-generic singletons. exterior_lowlight and interior_darkemissive still 0%.",
+    "pixel_metrics_valid = 0 across ALL of refs/morrowind/ and all of context/ and modern/ui/."
+  ],
+  "next_step": "verify luminance correlation on real corpus files; check A5 six-item coverage; check Morrowind region coverage for A7; then write critique",
+  "notes_for_successor": "Two required passes: (1) coverage against asked floors with REAL disk counts; (2) fresh first-principles findings. Must rule on builder's 3 reversible judgements + 5 filed amendments. A7 (geographical variation) has zero acquisition."
+}
