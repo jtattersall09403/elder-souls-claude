@@ -51,6 +51,9 @@ function fbm(x, z, s) {
 export const WATER_LEVEL = 0.0;
 export const BASIN = { x: -4, z: 2, r: 9.5, depth: 1.8 };
 export const STREET = { x: 4, z0: -12, z1: 20, halfWidth: 5.0 };
+// Trees are cleared well beyond the houses, not just the walkway: a settlement under a
+// closed canopy is in permanent shade and VP04 comes back black.
+const STREET_CLEARING = 13.0;
 
 /** Ground height at a point in the patch. Pure, deterministic, and shared by the sim. */
 export function terrainHeight(x, z, seed) {
@@ -69,7 +72,7 @@ export function terrainHeight(x, z, seed) {
 
 /** True inside the settlement corridor, where the canopy is cleared. */
 function inStreetCorridor(x, z) {
-  return Math.abs(x - STREET.x) < STREET.halfWidth && z > STREET.z0 - 3 && z < STREET.z1 + 3;
+  return Math.abs(x - STREET.x) < STREET_CLEARING && z > STREET.z0 - 8 && z < STREET.z1 + 8;
 }
 
 const TERRAIN_SIZE = 420;
