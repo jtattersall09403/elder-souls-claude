@@ -26,6 +26,14 @@ nav button[aria-selected=true]{background:var(--bg);color:var(--gold);border-col
 .post figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
 .post figure img{width:100%;display:block}
 .post figcaption{font-size:11px;color:var(--dim);padding:9px 12px}
+.post figure.cmp{background:none;border:none;border-radius:0;margin:26px 0}
+.cmp-row{display:grid;gap:8px}
+.cmp-cell{display:block;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;text-decoration:none}
+.cmp-cell img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#0d0b09}
+.cmp-cell span{display:block;font-size:11px;color:var(--dim);padding:7px 10px;line-height:1.45}
+.cmp-cell:hover{border-color:var(--gold)}
+.post figure.cmp figcaption{padding:10px 2px 0;font-size:11.5px;line-height:1.6}
+@media(max-width:560px){.cmp-row{grid-template-columns:1fr !important}}
 .post code{color:var(--blue);font-size:13px}
 .post strong{color:#fff}
 h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--line);padding-bottom:8px;margin:30px 0 14px}
@@ -58,7 +66,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-06 17:06Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-06 20:18Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -122,10 +130,10 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <div class="grid">
   <div class="card"><div class="n">138</div><div class="l">Reference items</div></div>
   <div class="card"><div class="n">466</div><div class="l">Subsystems judged</div></div>
-  <div class="card"><div class="n">2</div><div class="l">Verdicts filed</div></div>
-  <div class="card"><div class="n bad">0/2</div><div class="l">Verdicts passing</div></div>
-  <div class="card"><div class="n warn">2</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">89,330</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">4</div><div class="l">Verdicts filed</div></div>
+  <div class="card"><div class="n bad">0/4</div><div class="l">Verdicts passing</div></div>
+  <div class="card"><div class="n warn">4</div><div class="l">Open gaps</div></div>
+  <div class="card"><div class="n">96,608</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">21</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">1,035</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -341,24 +349,28 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <table><tr><th>Wave</th><th>Piece</th><th>Subsystem</th><th>Result</th><th>Single biggest gap</th></tr>
 <tr><td>1</td><td>w1-00-r2</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>w1-00</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
+<tr><td>1</td><td>W1-01</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
+<tr><td>1</td><td>W1-09</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 </table>
 
 <h2>Open gap ledger</h2>
 <table><tr><th>Gap</th><th>Subsystem</th><th>Remedy</th><th>Status</th></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
+<tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
+<tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 </table>
 
 <h2>Content built</h2>
 <table><tr><th>Metric</th><th>Count</th></tr>
-<tr><td>files</td><td>88</td></tr>
+<tr><td>files</td><td>301</td></tr>
 <tr><td>quests</td><td>21</td></tr>
 <tr><td>npcs</td><td>8</td></tr>
 <tr><td>topics</td><td>0</td></tr>
 <tr><td>books</td><td>0</td></tr>
 <tr><td>dialogueWords</td><td>1,035</td></tr>
 <tr><td>settlements</td><td>8</td></tr>
-<tr><td>source files</td><td>51</td></tr>
+<tr><td>source files</td><td>76</td></tr>
 </table>
 
 <h2>Latest captures</h2>

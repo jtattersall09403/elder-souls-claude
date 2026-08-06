@@ -7,7 +7,7 @@
  "generated_by": "tools/analysis/gen-magic-quests.mjs",
  "quests": [
   {
-   "id": "mag_the_warded_ledger",
+   "id": "Q-MAG-01",
    "title": "The Warded Ledger",
    "category": "faction",
    "faction": "the_dockhands",
@@ -18,11 +18,15 @@
     "honest": true
    },
    "opens_by": {
-    "topic": "the ledger"
+    "topic": "the ledger",
+    "overheard_from": [
+     "innkeeper-veth",
+     "herbwife-ossa"
+    ]
    },
    "task_kind": "theft",
    "stakes": 5,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The customs house is the long grey building at the head of the Lilmoth wharf, the one with the crane arm. The loft door is off the inside stair, past the weighing floor, and it is the only door on that landing.",
    "journal": [
     {
      "index": 10,
@@ -35,24 +39,29 @@
      "state": "active"
     },
     {
-     "index": 40,
-     "text": "The ward comes apart like a knot and the hinge pins come off with it. The ledger is where she said, and the last four pages are in a different hand.",
-     "state": "complete"
-    },
-    {
-     "index": 50,
-     "text": "The undercustomer takes four hundred and turns his back for the length of a cigarette.",
-     "state": "complete"
-    },
-    {
-     "index": 60,
-     "text": "The collar-ward gives on the third pin. Nobody hears it.",
-     "state": "complete"
-    },
-    {
      "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
+     "text": "The ward comes apart like a knot and the hinge pins come off with it. The ledger is where she said, and the last four pages are in a different hand.",
+     "state": "success"
+    },
+    {
+     "index": 91,
+     "text": "The undercustomer takes four hundred and turns his back for the length of a cigarette.",
+     "state": "success"
+    },
+    {
+     "index": 92,
+     "text": "The collar-ward gives on the third pin. Nobody hears it.",
+     "state": "success"
+    },
+    {
+     "index": 93,
      "text": "The undercustomer is not paid enough to die for a loft. He does anyway.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -70,7 +79,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "The ward comes apart like a knot and the hinge pins come off with it. The ledger is where she said, and the last four pages are in a different hand.",
      "morally_better": null
     },
@@ -82,7 +91,7 @@
       "disposition": 45
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The undercustomer takes four hundred and turns his back for the length of a cigarette.",
      "morally_better": null
     },
@@ -95,7 +104,7 @@
       }
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "The collar-ward gives on the third pin. Nobody hears it.",
      "morally_better": null
     },
@@ -103,7 +112,7 @@
      "id": "mag_the_warded_ledger__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 70,
+     "journal_index": 93,
      "outcome": "The undercustomer is not paid enough to die for a loft. He does anyway.",
      "morally_better": null
     }
@@ -113,7 +122,7 @@
     {
      "id": "mag_the_warded_ledger__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -132,13 +141,28 @@
      "harbourmistress-tesh": 8
     },
     "faction_reputation": {
-     "the_dockhands": 5
+     "the_dockhands": 5,
+     "the_imperial_assize": -4
     }
    },
-   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist. Authoring slug: mag_the_warded_ledger.",
+   "branches": [
+    {
+     "id": "Q-MAG-01__fork",
+     "at_journal_index": 30,
+     "condition": "The loft is open and the last four pages are in another hand: keep reading, take the ledger, or put it back",
+     "leads_to": [
+      "mag_the_warded_ledger__magic",
+      "mag_the_warded_ledger__bribe",
+      "mag_the_warded_ledger__steal",
+      "mag_the_warded_ledger__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_seized_hull",
+   "id": "Q-MAG-02",
    "title": "The Seized Hull",
    "category": "side",
    "discovery": "given",
@@ -152,7 +176,7 @@
    },
    "task_kind": "retrieval",
    "stakes": 4,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "Oleen keeps her yard at the south end of the Lilmoth strand, where the mud starts. The seized hull is the one careened furthest out with a customs chain through the rudder head.",
    "journal": [
     {
      "index": 10,
@@ -165,19 +189,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "Stormhold iron rots green when you ask it to. The chain came apart in my hands and left a stain on the deck that is still there.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "The customs clerk decides, out loud, that the seal was never properly lodged.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "The padlock is older than the seal on it.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -196,7 +225,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "Stormhold iron rots green when you ask it to. The chain came apart in my hands and left a stain on the deck that is still there.",
      "morally_better": null
     },
@@ -207,7 +236,7 @@
       "disposition": 60
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The customs clerk decides, out loud, that the seal was never properly lodged.",
      "morally_better": null
     },
@@ -220,7 +249,7 @@
       }
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "The padlock is older than the seal on it.",
      "morally_better": null
     }
@@ -230,7 +259,7 @@
     {
      "id": "mag_the_seized_hull__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -247,12 +276,28 @@
    "consequences": {
     "npc_disposition": {
      "shipwright-oleen": 8
+    },
+    "faction_reputation": {
+     "the_dockhands": 3
     }
    },
-   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_seized_hull.",
+   "branches": [
+    {
+     "id": "Q-MAG-02__fork",
+     "at_journal_index": 30,
+     "condition": "The chain is off: take the tools only, or take what else the hull is carrying",
+     "leads_to": [
+      "mag_the_seized_hull__magic",
+      "mag_the_seized_hull__persuade",
+      "mag_the_seized_hull__steal"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_barred_window",
+   "id": "Q-MAG-03",
    "title": "The Barred Window",
    "category": "side",
    "discovery": "given",
@@ -266,7 +311,7 @@
    },
    "task_kind": "theft",
    "stakes": 3,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "Ashul trades out of the low market in Gideon, under the timber arcade. The shrine-house is three streets north, blind wall to the street, and the barred window is the high one on the alley side.",
    "journal": [
     {
      "index": 10,
@@ -279,14 +324,19 @@
      "state": "active"
     },
     {
-     "index": 40,
-     "text": "Twenty-five metres of reach and a barred window are the same thing as an open door. The guard never turned round.",
-     "state": "complete"
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
     },
     {
-     "index": 50,
+     "index": 90,
+     "text": "Twenty-five metres of reach and a barred window are the same thing as an open door. The guard never turned round.",
+     "state": "success"
+    },
+    {
+     "index": 91,
      "text": "I went in through the guard. The reliquary is worth less now that it is known to be missing, and the shrine-house has a body in it.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -302,7 +352,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "Twenty-five metres of reach and a barred window are the same thing as an open door. The guard never turned round.",
      "morally_better": null
     },
@@ -310,7 +360,7 @@
      "id": "mag_the_barred_window__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "I went in through the guard. The reliquary is worth less now that it is known to be missing, and the shrine-house has a body in it.",
      "morally_better": null
     }
@@ -320,9 +370,10 @@
     {
      "id": "mag_the_barred_window__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
-     "consequence": "The giver stops raising the topic. Nobody explains why."
+     "consequence": "The giver stops raising the topic. Nobody explains why.",
+     "silent": true
     }
    ],
    "deceit": null,
@@ -339,10 +390,22 @@
      "fence-ashul": 8
     }
    },
-   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+   "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_the_barred_window.",
+   "branches": [
+    {
+     "id": "Q-MAG-03__fork",
+     "at_journal_index": 30,
+     "condition": "The reliquary is in reach: take it quietly, or be seen taking it",
+     "leads_to": [
+      "mag_the_barred_window__magic",
+      "mag_the_barred_window__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_drowned_wreck",
+   "id": "Q-MAG-04",
    "title": "The Drowned Wreck",
    "category": "side",
    "discovery": "given",
@@ -356,7 +419,7 @@
    },
    "task_kind": "retrieval",
    "stakes": 4,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "Ineel lives on the stilts at the Thornmarsh bar. The Saltgirl went down off the bar head, straight out from her ladder, and you can see the mast stub at low water.",
    "journal": [
     {
      "index": 10,
@@ -369,19 +432,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "Off the bar head is a nine-metre drop and then nine metres of water. I went down both of them slowly and came up with the log. It says he turned the ship around.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "The spring tide takes four metres off the bar for eleven minutes. I did not need a spell; I needed a table.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "A Naga diver goes down for me and asks for nothing, which is worse.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -398,7 +466,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "Off the bar head is a nine-metre drop and then nine metres of water. I went down both of them slowly and came up with the log. It says he turned the ship around.",
      "morally_better": null
     },
@@ -411,7 +479,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The spring tide takes four metres off the bar for eleven minutes. I did not need a spell; I needed a table.",
      "morally_better": null
     },
@@ -422,7 +490,7 @@
       "disposition": 55
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "A Naga diver goes down for me and asks for nothing, which is worse.",
      "morally_better": null
     }
@@ -432,7 +500,7 @@
     {
      "id": "mag_the_drowned_wreck__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -451,12 +519,26 @@
      "widow-ineel": 8
     }
    },
-   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_drowned_wreck.",
+   "branches": [
+    {
+     "id": "Q-MAG-04__fork",
+     "at_journal_index": 30,
+     "condition": "The log says he turned the ship around: tell her, or give her the log unread",
+     "leads_to": [
+      "mag_the_drowned_wreck__magic",
+      "mag_the_drowned_wreck__wait",
+      "mag_the_drowned_wreck__persuade"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_xanmeer_shelf",
+   "id": "Q-MAG-05",
    "title": "The Xanmeer Shelf",
    "category": "main",
+   "act": 2,
    "discovery": "given",
    "giver": {
     "npc_id": "rootkeeper-jeen",
@@ -468,7 +550,7 @@
    },
    "task_kind": "investigation",
    "stakes": 8,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The undertemple stair comes up into the Helstrom plaza. The shelf is the terrace above the west face, over the fallen stair, and the carving is on the inner wall where the roof still holds.",
    "journal": [
     {
      "index": 10,
@@ -481,14 +563,19 @@
      "state": "active"
     },
     {
-     "index": 40,
-     "text": "Twelve metres of climb cost me eighteen of sap and most of an afternoon. The carving on the shelf is not in Jel and it is not in Cyrodiilic.",
-     "state": "complete"
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
     },
     {
-     "index": 50,
+     "index": 90,
+     "text": "Twelve metres of climb cost me eighteen of sap and most of an afternoon. The carving on the shelf is not in Jel and it is not in Cyrodiilic.",
+     "state": "success"
+    },
+    {
+     "index": 91,
      "text": "The hackwings over the plaza have to be cleared before the west buttress can be climbed at all. It takes most of a day and there are a lot of them.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -508,7 +595,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "Twelve metres of climb cost me eighteen of sap and most of an afternoon. The carving on the shelf is not in Jel and it is not in Cyrodiilic.",
      "morally_better": null
     },
@@ -516,7 +603,7 @@
      "id": "mag_the_xanmeer_shelf__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The hackwings over the plaza have to be cleared before the west buttress can be climbed at all. It takes most of a day and there are a lot of them.",
      "morally_better": null
     }
@@ -526,7 +613,7 @@
     {
      "id": "mag_the_xanmeer_shelf__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -543,12 +630,27 @@
    "consequences": {
     "npc_disposition": {
      "rootkeeper-jeen": 8
+    },
+    "faction_reputation": {
+     "deep_kin": -6
     }
    },
-   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_the_xanmeer_shelf.",
+   "branches": [
+    {
+     "id": "Q-MAG-05__fork",
+     "at_journal_index": 30,
+     "condition": "The carving is in neither Jel nor Cyrodiilic: copy it, take it, or leave it where the Deep-Kin can still read it",
+     "leads_to": [
+      "mag_the_xanmeer_shelf__magic",
+      "mag_the_xanmeer_shelf__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_sunken_causeway",
+   "id": "Q-MAG-06",
    "title": "The Sunken Causeway",
    "category": "side",
    "discovery": "given",
@@ -562,7 +664,7 @@
    },
    "task_kind": "errand",
    "stakes": 3,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The causeway leaves Thorn at the gate Eshi keeps and runs on toward the Salt Hills. Follow the line of drowned posts; where the posts stop, the road has gone.",
    "journal": [
     {
      "index": 10,
@@ -575,19 +677,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I walked the causeway on top of the water it is under. It is still a road; it is simply a road below a road.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "The barge takes sixty gold and two hours and lands you at the far end anyway.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "At low spring the causeway is ankle-deep for forty minutes.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -604,7 +711,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I walked the causeway on top of the water it is under. It is still a road; it is simply a road below a road.",
      "morally_better": null
     },
@@ -615,7 +722,7 @@
       "gold": 60
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The barge takes sixty gold and two hours and lands you at the far end anyway.",
      "morally_better": null
     },
@@ -628,7 +735,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "At low spring the causeway is ankle-deep for forty minutes.",
      "morally_better": null
     }
@@ -638,7 +745,7 @@
     {
      "id": "mag_the_sunken_causeway__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -657,10 +764,23 @@
      "warden-eshi": 8
     }
    },
-   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_sunken_causeway.",
+   "branches": [
+    {
+     "id": "Q-MAG-06__fork",
+     "at_journal_index": 30,
+     "condition": "The far end is walkable: report it open, or keep it to yourself",
+     "leads_to": [
+      "mag_the_sunken_causeway__magic",
+      "mag_the_sunken_causeway__trade",
+      "mag_the_sunken_causeway__wait"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_deep_kin_conclave",
+   "id": "Q-MAG-07",
    "title": "The Deep-Kin Conclave",
    "category": "faction",
    "faction": "deep_kin",
@@ -675,7 +795,7 @@
    },
    "task_kind": "politics",
    "stakes": 7,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The hollow is a day into the Deep Marshes on the root track that leaves Helstrom by the eastern sapwell. Follow the cut roots; where the cutting stops, you are inside their ground.",
    "journal": [
     {
      "index": 10,
@@ -688,19 +808,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I wore a face that was not mine for three minutes and heard what they decided. I have not been able to stop thinking about whose face it was.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "Rank four walks in through the front of the hollow.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "Speaking a name you were given inside is the whole of the door.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -716,7 +841,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I wore a face that was not mine for three minutes and heard what they decided. I have not been able to stop thinking about whose face it was.",
      "morally_better": null
     },
@@ -730,7 +855,7 @@
       }
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "Rank four walks in through the front of the hollow.",
      "morally_better": null
     },
@@ -743,7 +868,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "Speaking a name you were given inside is the whole of the door.",
      "morally_better": null
     }
@@ -753,7 +878,7 @@
     {
      "id": "mag_the_deep_kin_conclave__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -772,13 +897,27 @@
      "xul-aneekh-speaker": 8
     },
     "faction_reputation": {
-     "deep_kin": 5
+     "deep_kin": 5,
+     "the_wet_ledger": -8
     }
    },
-   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_deep_kin_conclave.",
+   "branches": [
+    {
+     "id": "Q-MAG-07__fork",
+     "at_journal_index": 30,
+     "condition": "What the conclave decided is now known to you: carry it to the coast, or keep it",
+     "leads_to": [
+      "mag_the_deep_kin_conclave__magic",
+      "mag_the_deep_kin_conclave__persuade",
+      "mag_the_deep_kin_conclave__lore_knowledge"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_counting_house",
+   "id": "Q-MAG-08",
    "title": "The Counting House",
    "category": "side",
    "discovery": "given",
@@ -792,7 +931,7 @@
    },
    "task_kind": "theft",
    "stakes": 5,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The counting house is the tall narrow one on the Gideon market cross, with the shutters that are never open. The strongbox room is at the top of the inside stair.",
    "journal": [
     {
      "index": 10,
@@ -805,24 +944,29 @@
      "state": "active"
     },
     {
-     "index": 40,
-     "text": "The water-film held until I touched the box. It was enough; I was already past them.",
-     "state": "complete"
-    },
-    {
-     "index": 50,
-     "text": "The lamp has a blind side and the clerks are not looking for one.",
-     "state": "complete"
-    },
-    {
-     "index": 60,
-     "text": "One clerk is cheaper than the other and knows it.",
-     "state": "complete"
-    },
-    {
      "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
+     "text": "The water-film held until I touched the box. It was enough; I was already past them.",
+     "state": "success"
+    },
+    {
+     "index": 91,
+     "text": "The lamp has a blind side and the clerks are not looking for one.",
+     "state": "success"
+    },
+    {
+     "index": 92,
+     "text": "One clerk is cheaper than the other and knows it.",
+     "state": "success"
+    },
+    {
+     "index": 93,
      "text": "Two clerks. It is not difficult and it is not quiet.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -838,7 +982,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "The water-film held until I touched the box. It was enough; I was already past them.",
      "morally_better": null
     },
@@ -851,7 +995,7 @@
       }
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The lamp has a blind side and the clerks are not looking for one.",
      "morally_better": null
     },
@@ -862,7 +1006,7 @@
       "gold": 700
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "One clerk is cheaper than the other and knows it.",
      "morally_better": null
     },
@@ -870,7 +1014,7 @@
      "id": "mag_the_counting_house__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 70,
+     "journal_index": 93,
      "outcome": "Two clerks. It is not difficult and it is not quiet.",
      "morally_better": null
     }
@@ -880,7 +1024,7 @@
     {
      "id": "mag_the_counting_house__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -899,10 +1043,24 @@
      "fence-ashul": 8
     }
    },
-   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist. Authoring slug: mag_the_counting_house.",
+   "branches": [
+    {
+     "id": "Q-MAG-08__fork",
+     "at_journal_index": 30,
+     "condition": "The box is open: take the coin, take the book of names, or take both",
+     "leads_to": [
+      "mag_the_counting_house__magic",
+      "mag_the_counting_house__sneak",
+      "mag_the_counting_house__bribe",
+      "mag_the_counting_house__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_quiet_floor",
+   "id": "Q-MAG-09",
    "title": "The Quiet Floor",
    "category": "side",
    "discovery": "overheard",
@@ -912,11 +1070,15 @@
     "honest": true
    },
    "opens_by": {
-    "topic": "the quiet floor"
+    "topic": "the quiet floor",
+    "overheard_from": [
+     "innkeeper-veth",
+     "herbwife-ossa"
+    ]
    },
    "task_kind": "investigation",
    "stakes": 4,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The archive is under the Stormhold garrison, down the stair beside the granary. The drum floor is the boarded room above it, reached from the mess passage.",
    "journal": [
     {
      "index": 10,
@@ -929,19 +1091,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I crossed the drum floor without it saying anything about me, and watched the archivist do the same on his own.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "Along the joists, one foot at a time, is slow and silent.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "The night warden tells me who signs in, which is the same answer with less floor.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -957,7 +1124,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I crossed the drum floor without it saying anything about me, and watched the archivist do the same on his own.",
      "morally_better": null
     },
@@ -970,7 +1137,7 @@
       }
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "Along the joists, one foot at a time, is slow and silent.",
      "morally_better": null
     },
@@ -981,7 +1148,7 @@
       "disposition": 70
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "The night warden tells me who signs in, which is the same answer with less floor.",
      "morally_better": null
     }
@@ -991,9 +1158,10 @@
     {
      "id": "mag_the_quiet_floor__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
-     "consequence": "The giver stops raising the topic. Nobody explains why."
+     "consequence": "The giver stops raising the topic. Nobody explains why.",
+     "silent": true
     }
    ],
    "deceit": null,
@@ -1010,10 +1178,23 @@
      "scribe-hulen": 8
     }
    },
-   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S3. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_quiet_floor.",
+   "branches": [
+    {
+     "id": "Q-MAG-09__fork",
+     "at_journal_index": 30,
+     "condition": "You know who has been coming at night: tell Hulen, or ask the archivist first",
+     "leads_to": [
+      "mag_the_quiet_floor__magic",
+      "mag_the_quiet_floor__sneak",
+      "mag_the_quiet_floor__persuade"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_witness",
+   "id": "Q-MAG-10",
    "title": "The Witness",
    "category": "faction",
    "faction": "the_imperial_assize",
@@ -1028,7 +1209,7 @@
    },
    "task_kind": "moral_dilemma",
    "stakes": 6,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The court sits in the Imperial compound in Gideon. The woman keeps a stall at the fish steps below the bridge, and she is there before the second bell and gone after it.",
    "journal": [
     {
      "index": 10,
@@ -1041,24 +1222,29 @@
      "state": "active"
     },
     {
-     "index": 40,
-     "text": "She told me everything in a warm room and I have thought about that room since. What she said was true. That is not the same as it being mine to have.",
-     "state": "complete"
-    },
-    {
-     "index": 50,
-     "text": "Two hundred and twenty-five gold and she testifies, and she is afraid the whole time.",
-     "state": "complete"
-    },
-    {
-     "index": 60,
-     "text": "I found what she is afraid of and dealt with it. She testified without being asked.",
-     "state": "complete"
-    },
-    {
      "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
+     "text": "She told me everything in a warm room and I have thought about that room since. What she said was true. That is not the same as it being mine to have.",
+     "state": "success"
+    },
+    {
+     "index": 91,
+     "text": "Two hundred and twenty-five gold and she testifies, and she is afraid the whole time.",
+     "state": "success"
+    },
+    {
+     "index": 92,
+     "text": "I found what she is afraid of and dealt with it. She testified without being asked.",
+     "state": "success"
+    },
+    {
+     "index": 93,
      "text": "She testified. She will not look at me in the street.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1074,7 +1260,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "She told me everything in a warm room and I have thought about that room since. What she said was true. That is not the same as it being mine to have.",
      "morally_better": null
     },
@@ -1086,7 +1272,7 @@
       "disposition": 40
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "Two hundred and twenty-five gold and she testifies, and she is afraid the whole time.",
      "morally_better": null
     },
@@ -1099,7 +1285,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "I found what she is afraid of and dealt with it. She testified without being asked.",
      "morally_better": null
     },
@@ -1112,7 +1298,7 @@
       }
      },
      "violence_required": false,
-     "journal_index": 70,
+     "journal_index": 93,
      "outcome": "She testified. She will not look at me in the street.",
      "morally_better": null
     }
@@ -1122,7 +1308,7 @@
     {
      "id": "mag_the_witness__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -1141,13 +1327,28 @@
      "assizer-corvo": 8
     },
     "faction_reputation": {
-     "the_imperial_assize": 5
+     "the_imperial_assize": 5,
+     "the_wet_ledger": -5
     }
    },
-   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 3 non-magic resolution(s) exist. Authoring slug: mag_the_witness.",
+   "branches": [
+    {
+     "id": "Q-MAG-10__fork",
+     "at_journal_index": 30,
+     "condition": "She has told you what she saw: enter it as testimony, or use it and leave her out of it",
+     "leads_to": [
+      "mag_the_witness__magic",
+      "mag_the_witness__bribe",
+      "mag_the_witness__lore_knowledge",
+      "mag_the_witness__intimidate"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_stilt_house_dog",
+   "id": "Q-MAG-11",
    "title": "The Stilt-House Guard",
    "category": "side",
    "discovery": "given",
@@ -1161,7 +1362,7 @@
    },
    "task_kind": "errand",
    "stakes": 2,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "Ossa's racks are behind the third stilt house on the Thornmarsh boardwalk, the one with the split ladder. The yard is under the house and the guar is in it.",
    "journal": [
     {
      "index": 10,
@@ -1174,19 +1375,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I asked the guar to be still and it was still, and Ossa got her racks back without anything dying in her yard.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "A bundle of saltrice moves a guar further than a spell does.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "The guar is dead. Ossa has her racks and does not thank me.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1202,7 +1408,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I asked the guar to be still and it was still, and Ossa got her racks back without anything dying in her yard.",
      "morally_better": null
     },
@@ -1215,7 +1421,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "A bundle of saltrice moves a guar further than a spell does.",
      "morally_better": null
     },
@@ -1223,7 +1429,7 @@
      "id": "mag_the_stilt_house_dog__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "The guar is dead. Ossa has her racks and does not thank me.",
      "morally_better": null
     }
@@ -1233,7 +1439,7 @@
     {
      "id": "mag_the_stilt_house_dog__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -1252,10 +1458,23 @@
      "herbwife-ossa": 8
     }
    },
-   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_stilt_house_dog.",
+   "branches": [
+    {
+     "id": "Q-MAG-11__fork",
+     "at_journal_index": 30,
+     "condition": "The yard is clear: return the guar to its owner, or say nothing about whose it was",
+     "leads_to": [
+      "mag_the_stilt_house_dog__magic",
+      "mag_the_stilt_house_dog__trade",
+      "mag_the_stilt_house_dog__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_two_brothers",
+   "id": "Q-MAG-12",
    "title": "The Two Brothers",
    "category": "side",
    "discovery": "given",
@@ -1269,7 +1488,7 @@
    },
    "task_kind": "rival_conflict",
    "stakes": 6,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The inn is inside the Blackrose gate, first building on the left. The brothers work the lease gang and come back through the yard at dusk.",
    "journal": [
     {
      "index": 10,
@@ -1282,14 +1501,19 @@
      "state": "active"
     },
     {
-     "index": 40,
-     "text": "I put enough fear in him to walk. He walked. He is somewhere, and I do not know where, and that is now a thing about me.",
-     "state": "complete"
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
     },
     {
-     "index": 50,
+     "index": 90,
+     "text": "I put enough fear in him to walk. He walked. He is somewhere, and I do not know where, and that is now a thing about me.",
+     "state": "success"
+    },
+    {
+     "index": 91,
      "text": "The older brother is dead in the common room and the younger one saw it.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1305,7 +1529,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I put enough fear in him to walk. He walked. He is somewhere, and I do not know where, and that is now a thing about me.",
      "morally_better": null
     },
@@ -1313,7 +1537,7 @@
      "id": "mag_the_two_brothers__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The older brother is dead in the common room and the younger one saw it.",
      "morally_better": null
     }
@@ -1323,7 +1547,7 @@
     {
      "id": "mag_the_two_brothers__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -1340,14 +1564,30 @@
    "consequences": {
     "npc_disposition": {
      "innkeeper-veth": 8
+    },
+    "faction_reputation": {
+     "the_imperial_assize": -6
     }
    },
-   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+   "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_the_two_brothers.",
+   "branches": [
+    {
+     "id": "Q-MAG-12__fork",
+     "at_journal_index": 30,
+     "condition": "You know which brother lied: say so in front of both, or take one of them aside",
+     "leads_to": [
+      "mag_the_two_brothers__magic",
+      "mag_the_two_brothers__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_who_paid_him",
+   "id": "Q-MAG-13",
    "title": "Who Paid Him",
    "category": "main",
+   "act": 2,
    "discovery": "given",
    "giver": {
     "npc_id": "assizer-corvo",
@@ -1359,7 +1599,7 @@
    },
    "task_kind": "investigation",
    "stakes": 8,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The runner went down on the Gideon road, at the ford below the mile post where the bank is cut. The body was carried back to the court cellar.",
    "journal": [
     {
      "index": 10,
@@ -1372,14 +1612,19 @@
      "state": "active"
     },
     {
-     "index": 40,
-     "text": "I asked him and he answered, in the flat way they answer. He named a house. He did not name a person, because he never saw one.",
-     "state": "complete"
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
     },
     {
-     "index": 50,
+     "index": 90,
+     "text": "I asked him and he answered, in the flat way they answer. He named a house. He did not name a person, because he never saw one.",
+     "state": "success"
+    },
+    {
+     "index": 91,
      "text": "The house sends someone to stop me asking. What he carries answers the question, and I had to take it off him.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1398,7 +1643,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I asked him and he answered, in the flat way they answer. He named a house. He did not name a person, because he never saw one.",
      "morally_better": null
     },
@@ -1406,7 +1651,7 @@
      "id": "mag_who_paid_him__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The house sends someone to stop me asking. What he carries answers the question, and I had to take it off him.",
      "morally_better": null
     }
@@ -1416,7 +1661,7 @@
     {
      "id": "mag_who_paid_him__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -1433,12 +1678,27 @@
    "consequences": {
     "npc_disposition": {
      "assizer-corvo": 8
+    },
+    "faction_reputation": {
+     "the_wet_ledger": -7
     }
    },
-   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_who_paid_him.",
+   "branches": [
+    {
+     "id": "Q-MAG-13__fork",
+     "at_journal_index": 30,
+     "condition": "The purse names a payer: give the name to Corvo, or to the payer",
+     "leads_to": [
+      "mag_who_paid_him__magic",
+      "mag_who_paid_him__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_lost_key",
+   "id": "Q-MAG-14",
    "title": "The Lost Key",
    "category": "side",
    "discovery": "given",
@@ -1452,7 +1712,7 @@
    },
    "task_kind": "retrieval",
    "stakes": 3,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "Oleen thinks it went into the mud between her yard and the tide line, somewhere along the plank walk she uses twice a day.",
    "journal": [
     {
      "index": 10,
@@ -1465,19 +1725,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "It is four metres from the gate, under sixty centimetres of yard, and it has been there long enough to be part of the yard.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "A new lock is ninety gold and takes an hour.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "The old yardman remembers the day it went and roughly where he was standing.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1493,7 +1758,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "It is four metres from the gate, under sixty centimetres of yard, and it has been there long enough to be part of the yard.",
      "morally_better": null
     },
@@ -1504,7 +1769,7 @@
       "gold": 90
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "A new lock is ninety gold and takes an hour.",
      "morally_better": null
     },
@@ -1515,7 +1780,7 @@
       "disposition": 50
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "The old yardman remembers the day it went and roughly where he was standing.",
      "morally_better": null
     }
@@ -1525,7 +1790,7 @@
     {
      "id": "mag_the_lost_key__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -1544,10 +1809,23 @@
      "shipwright-oleen": 8
     }
    },
-   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_lost_key.",
+   "branches": [
+    {
+     "id": "Q-MAG-14__fork",
+     "at_journal_index": 30,
+     "condition": "The key is found: hand it back, or copy it first",
+     "leads_to": [
+      "mag_the_lost_key__magic",
+      "mag_the_lost_key__trade",
+      "mag_the_lost_key__persuade"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_hollow_count",
+   "id": "Q-MAG-15",
    "title": "The Hollow Count",
    "category": "faction",
    "faction": "the_rootkeepers",
@@ -1562,7 +1840,7 @@
    },
    "task_kind": "investigation",
    "stakes": 6,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The sapwells are under Helstrom, down the root stair from the undertemple. The count is kept on the wall of the furthest chamber, where the roots come through the floor.",
    "journal": [
     {
      "index": 10,
@@ -1575,19 +1853,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "Eleven warm smudges, and one of them is very large and has not moved in a long time. I did not go in.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "You can count them from the lip if you are patient and low.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "I counted them by killing them, which is a count Jeen did not want.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1603,7 +1886,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "Eleven warm smudges, and one of them is very large and has not moved in a long time. I did not go in.",
      "morally_better": null
     },
@@ -1616,7 +1899,7 @@
       }
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "You can count them from the lip if you are patient and low.",
      "morally_better": null
     },
@@ -1624,7 +1907,7 @@
      "id": "mag_the_hollow_count__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "I counted them by killing them, which is a count Jeen did not want.",
      "morally_better": null
     }
@@ -1634,7 +1917,7 @@
     {
      "id": "mag_the_hollow_count__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -1653,13 +1936,27 @@
      "rootkeeper-jeen": 8
     },
     "faction_reputation": {
-     "the_rootkeepers": 5
+     "the_rootkeepers": 5,
+     "ixtu_vakh": -9
     }
    },
-   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_hollow_count.",
+   "branches": [
+    {
+     "id": "Q-MAG-15__fork",
+     "at_journal_index": 30,
+     "condition": "The count does not match the wall: tell Jeen, or tell the coast",
+     "leads_to": [
+      "mag_the_hollow_count__magic",
+      "mag_the_hollow_count__sneak",
+      "mag_the_hollow_count__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_kiln_flues",
+   "id": "Q-MAG-16",
    "title": "The Kiln Flues",
    "category": "side",
    "discovery": "given",
@@ -1673,7 +1970,7 @@
    },
    "task_kind": "retrieval",
    "stakes": 5,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "Mek's kiln stands on the Stone Wastes road, an hour east of the last well, and you will see its smoke before its roof. The flues are the brick runs behind the firing shed.",
    "journal": [
     {
      "index": 10,
@@ -1686,19 +1983,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "Thick skin and eleven seconds. My eyebrows are a separate problem.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "The cycle is nine minutes on and four off, and everyone in the Stone Wastes knows it except me.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "A Naga walks in and out of the flue for a hundred and fifty gold and calls it easy money.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1714,7 +2016,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "Thick skin and eleven seconds. My eyebrows are a separate problem.",
      "morally_better": null
     },
@@ -1727,7 +2029,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The cycle is nine minutes on and four off, and everyone in the Stone Wastes knows it except me.",
      "morally_better": null
     },
@@ -1738,7 +2040,7 @@
       "gold": 150
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "A Naga walks in and out of the flue for a hundred and fifty gold and calls it easy money.",
      "morally_better": null
     }
@@ -1748,7 +2050,7 @@
     {
      "id": "mag_the_kiln_flues__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -1767,10 +2069,23 @@
      "potter-mek": 8
     }
    },
-   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_kiln_flues.",
+   "branches": [
+    {
+     "id": "Q-MAG-16__fork",
+     "at_journal_index": 30,
+     "condition": "The flue is clear: fire it now, or wait for the wind to turn",
+     "leads_to": [
+      "mag_the_kiln_flues__magic",
+      "mag_the_kiln_flues__wait",
+      "mag_the_kiln_flues__bribe"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_rot_house",
+   "id": "Q-MAG-17",
    "title": "The Rot House",
    "category": "side",
    "discovery": "overheard",
@@ -1780,11 +2095,15 @@
     "honest": true
    },
    "opens_by": {
-    "topic": "the rot house"
+    "topic": "the rot house",
+    "overheard_from": [
+     "innkeeper-veth",
+     "herbwife-ossa"
+    ]
    },
    "task_kind": "errand",
    "stakes": 5,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The rot house is the shut one at the end of the Thornmarsh boardwalk, past the racks, where the planks give under you.",
    "journal": [
     {
      "index": 10,
@@ -1797,19 +2116,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I cleaned the blood of three people and burned the reed mats. The rot came out of the mats, which nobody had thought to say.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "The temple sells the cure at eighty a head and does not ask about the mats.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "The family can be talked into leaving the house, which cures them and ends the house.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1826,7 +2150,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I cleaned the blood of three people and burned the reed mats. The rot came out of the mats, which nobody had thought to say.",
      "morally_better": null
     },
@@ -1837,7 +2161,7 @@
       "gold": 240
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The temple sells the cure at eighty a head and does not ask about the mats.",
      "morally_better": null
     },
@@ -1848,7 +2172,7 @@
       "disposition": 60
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "The family can be talked into leaving the house, which cures them and ends the house.",
      "morally_better": null
     }
@@ -1858,9 +2182,10 @@
     {
      "id": "mag_the_rot_house__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
-     "consequence": "The giver stops raising the topic. Nobody explains why."
+     "consequence": "The giver stops raising the topic. Nobody explains why.",
+     "silent": true
     }
    ],
    "deceit": null,
@@ -1877,10 +2202,23 @@
      "herbwife-ossa": 8
     }
    },
-   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_rot_house.",
+   "branches": [
+    {
+     "id": "Q-MAG-17__fork",
+     "at_journal_index": 30,
+     "condition": "The house can be saved or burned: choose before the rot reaches the walkway",
+     "leads_to": [
+      "mag_the_rot_house__magic",
+      "mag_the_rot_house__trade",
+      "mag_the_rot_house__persuade"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_burning_bank",
+   "id": "Q-MAG-18",
    "title": "The Burning Bank",
    "category": "side",
    "discovery": "given",
@@ -1894,7 +2232,7 @@
    },
    "task_kind": "weird",
    "stakes": 4,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The voriplasm is in the reed bank on the Thorn side of the water, upstream of the gate, where the current slows and the reeds are yellow.",
    "journal": [
     {
      "index": 10,
@@ -1907,19 +2245,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "Burning resin takes voriplasm off a bank the way salt takes a slug. The path is a path again and the bank is black.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "It goes back down at the turn of the tide, four hours later, and comes back the next day.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "Two barrows of salt from the pans, spread thin. It will not cross it again.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -1935,7 +2278,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "Burning resin takes voriplasm off a bank the way salt takes a slug. The path is a path again and the bank is black.",
      "morally_better": null
     },
@@ -1943,7 +2286,7 @@
      "id": "mag_the_burning_bank__wait",
      "method": "wait",
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "It goes back down at the turn of the tide, four hours later, and comes back the next day.",
      "morally_better": null
     },
@@ -1956,7 +2299,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "Two barrows of salt from the pans, spread thin. It will not cross it again.",
      "morally_better": null
     }
@@ -1966,7 +2309,7 @@
     {
      "id": "mag_the_burning_bank__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -1985,12 +2328,26 @@
      "warden-eshi": 8
     }
    },
-   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S6. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_burning_bank.",
+   "branches": [
+    {
+     "id": "Q-MAG-18__fork",
+     "at_journal_index": 30,
+     "condition": "The bank is dealt with: tell Eshi how, or let her assume",
+     "leads_to": [
+      "mag_the_burning_bank__magic",
+      "mag_the_burning_bank__wait",
+      "mag_the_burning_bank__lore_knowledge"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_ninety_seconds",
+   "id": "Q-MAG-19",
    "title": "Ninety Seconds",
    "category": "main",
+   "act": 2,
    "discovery": "given",
    "giver": {
     "npc_id": "rootkeeper-jeen",
@@ -2002,7 +2359,7 @@
    },
    "task_kind": "politics",
    "stakes": 9,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The naming is held at the hollow in the Deep Marshes, on the root track east of the Helstrom sapwell. It begins when the water goes still and it does not wait.",
    "journal": [
     {
      "index": 10,
@@ -2015,19 +2372,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I took the speaker's voice and the ninety seconds ran out with nothing in them. The congregation stood there and then went home.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "The speaker is dead and the naming stopped, and now there is a dead speaker.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "I told the congregation what it would cost them. Eleven of them left and it needed twelve.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -2046,7 +2408,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I took the speaker's voice and the ninety seconds ran out with nothing in them. The congregation stood there and then went home.",
      "morally_better": null
     },
@@ -2054,7 +2416,7 @@
      "id": "mag_ninety_seconds__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The speaker is dead and the naming stopped, and now there is a dead speaker.",
      "morally_better": null
     },
@@ -2068,7 +2430,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "I told the congregation what it would cost them. Eleven of them left and it needed twelve.",
      "morally_better": null
     }
@@ -2078,7 +2440,7 @@
     {
      "id": "mag_ninety_seconds__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -2097,10 +2459,23 @@
      "rootkeeper-jeen": 8
     }
    },
-   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_ninety_seconds.",
+   "branches": [
+    {
+     "id": "Q-MAG-19__fork",
+     "at_journal_index": 30,
+     "condition": "The naming is done: keep the name, or give it away",
+     "leads_to": [
+      "mag_ninety_seconds__magic",
+      "mag_ninety_seconds__combat",
+      "mag_ninety_seconds__persuade"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_far_exit",
+   "id": "Q-MAG-20",
    "title": "The Far Exit",
    "category": "faction",
    "faction": "the_dockhands",
@@ -2115,7 +2490,7 @@
    },
    "task_kind": "retrieval",
    "stakes": 6,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The far exit is the seaward end of the Lilmoth customs cellars, reached from the wharf under the crane arm and coming out on the rocks below the old quarter.",
    "journal": [
     {
      "index": 10,
@@ -2128,19 +2503,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I stilled the room, walked through it, and went out of the far door, which opens onto nine metres of nothing and then the wharf. They were still standing when I left and I did not take anything else.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "Four of them, one lamp, and a long way to the far door.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "Four bodies in a room Tesh has to explain.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -2157,7 +2537,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I stilled the room, walked through it, and went out of the far door, which opens onto nine metres of nothing and then the wharf. They were still standing when I left and I did not take anything else.",
      "morally_better": null
     },
@@ -2170,7 +2550,7 @@
       }
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "Four of them, one lamp, and a long way to the far door.",
      "morally_better": null
     },
@@ -2178,7 +2558,7 @@
      "id": "mag_the_far_exit__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "Four bodies in a room Tesh has to explain.",
      "morally_better": null
     }
@@ -2188,7 +2568,7 @@
     {
      "id": "mag_the_far_exit__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -2210,10 +2590,23 @@
      "the_dockhands": 5
     }
    },
-   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_far_exit.",
+   "branches": [
+    {
+     "id": "Q-MAG-20__fork",
+     "at_journal_index": 30,
+     "condition": "The passage is open: use it once, or tell the harbourmistress it exists",
+     "leads_to": [
+      "mag_the_far_exit__magic",
+      "mag_the_far_exit__sneak",
+      "mag_the_far_exit__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_door_that_stays_shut",
+   "id": "Q-MAG-21",
    "title": "The Door That Stays Shut",
    "category": "side",
    "discovery": "overheard",
@@ -2223,11 +2616,15 @@
     "honest": true
    },
    "opens_by": {
-    "topic": "the cellar door"
+    "topic": "the cellar door",
+    "overheard_from": [
+     "innkeeper-veth",
+     "herbwife-ossa"
+    ]
    },
    "task_kind": "escort",
    "stakes": 5,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The cellar door is at the back of the Blackrose inn yard, under the outside stair, and it has not been opened since Veth's father held the lease.",
    "journal": [
     {
      "index": 10,
@@ -2240,19 +2637,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I sealed the door harder than it was built and sat against it. Whatever it was stopped trying at about the fourth bell.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "Forty gold of iron bar and a carpenter who is awake at that hour.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "I opened the door instead. It is dealt with and Veth has a new cellar door to buy.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -2268,7 +2670,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I sealed the door harder than it was built and sat against it. Whatever it was stopped trying at about the fourth bell.",
      "morally_better": null
     },
@@ -2279,7 +2681,7 @@
       "gold": 40
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "Forty gold of iron bar and a carpenter who is awake at that hour.",
      "morally_better": null
     },
@@ -2287,7 +2689,7 @@
      "id": "mag_the_door_that_stays_shut__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "I opened the door instead. It is dealt with and Veth has a new cellar door to buy.",
      "morally_better": null
     }
@@ -2297,7 +2699,7 @@
     {
      "id": "mag_the_door_that_stays_shut__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -2316,10 +2718,23 @@
      "innkeeper-veth": 8
     }
    },
-   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_door_that_stays_shut.",
+   "branches": [
+    {
+     "id": "Q-MAG-21__fork",
+     "at_journal_index": 30,
+     "condition": "The cellar is open: tell Veth what is in it, or shut it again",
+     "leads_to": [
+      "mag_the_door_that_stays_shut__magic",
+      "mag_the_door_that_stays_shut__trade",
+      "mag_the_door_that_stays_shut__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_broken_heirloom",
+   "id": "Q-MAG-22",
    "title": "The Broken Heirloom",
    "category": "side",
    "discovery": "given",
@@ -2333,7 +2748,7 @@
    },
    "task_kind": "moral_dilemma",
    "stakes": 4,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "Ineel keeps the pieces in the chest under her window on the Thornmarsh stilts. The smith who could match the work is in Stormhold, inside the wall, on the smiths’ row.",
    "journal": [
     {
      "index": 10,
@@ -2346,14 +2761,19 @@
      "state": "active"
     },
     {
-     "index": 40,
-     "text": "I put it back together well enough that only I know. That is a thing I now know about myself.",
-     "state": "complete"
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
     },
     {
-     "index": 50,
+     "index": 90,
+     "text": "I put it back together well enough that only I know. That is a thing I now know about myself.",
+     "state": "success"
+    },
+    {
+     "index": 91,
      "text": "The family found out how it broke. It ended badly and the heirloom is still in pieces.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -2369,7 +2789,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I put it back together well enough that only I know. That is a thing I now know about myself.",
      "morally_better": null
     },
@@ -2377,7 +2797,7 @@
      "id": "mag_the_broken_heirloom__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The family found out how it broke. It ended badly and the heirloom is still in pieces.",
      "morally_better": null
     }
@@ -2387,7 +2807,7 @@
     {
      "id": "mag_the_broken_heirloom__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -2406,10 +2826,22 @@
      "widow-ineel": 8
     }
    },
-   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available."
+   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_the_broken_heirloom.",
+   "branches": [
+    {
+     "id": "Q-MAG-22__fork",
+     "at_journal_index": 30,
+     "condition": "The heirloom is whole: return it, or keep the piece that was not hers",
+     "leads_to": [
+      "mag_the_broken_heirloom__magic",
+      "mag_the_broken_heirloom__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_stilled_man",
+   "id": "Q-MAG-23",
    "title": "The Stilled Man",
    "category": "side",
    "discovery": "given",
@@ -2423,7 +2855,7 @@
    },
    "task_kind": "errand",
    "stakes": 5,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The man is in the back room of the herb house on the Thornmarsh boardwalk, second door past the racks. He has not moved since the tide before last.",
    "journal": [
     {
      "index": 10,
@@ -2436,19 +2868,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I loosened the joint and he fell down and swore at me for four minutes without stopping. He remembers all of it.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "The temple has a draught for it and charges eighty.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "It wears off in nine days. He remembers those too.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -2464,7 +2901,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I loosened the joint and he fell down and swore at me for four minutes without stopping. He remembers all of it.",
      "morally_better": null
     },
@@ -2475,7 +2912,7 @@
       "gold": 80
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "The temple has a draught for it and charges eighty.",
      "morally_better": null
     },
@@ -2483,7 +2920,7 @@
      "id": "mag_the_stilled_man__wait",
      "method": "wait",
      "violence_required": false,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "It wears off in nine days. He remembers those too.",
      "morally_better": null
     }
@@ -2493,9 +2930,10 @@
     {
      "id": "mag_the_stilled_man__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
-     "consequence": "The giver stops raising the topic. Nobody explains why."
+     "consequence": "The giver stops raising the topic. Nobody explains why.",
+     "silent": true
     }
    ],
    "deceit": null,
@@ -2512,10 +2950,23 @@
      "herbwife-ossa": 8
     }
    },
-   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_stilled_man.",
+   "branches": [
+    {
+     "id": "Q-MAG-23__fork",
+     "at_journal_index": 30,
+     "condition": "He wakes or he does not: tell his people the truth, or the kinder version",
+     "leads_to": [
+      "mag_the_stilled_man__magic",
+      "mag_the_stilled_man__trade",
+      "mag_the_stilled_man__wait"
+     ],
+     "irreversible": true
+    }
+   ]
   },
   {
-   "id": "mag_the_hollowed_scribe",
+   "id": "Q-MAG-24",
    "title": "The Hollowed Scribe",
    "category": "faction",
    "faction": "the_rootkeepers",
@@ -2530,7 +2981,7 @@
    },
    "task_kind": "investigation",
    "stakes": 7,
-   "directions": "Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.",
+   "directions": "The scribe worked the copying desk in the Stormhold archive, down the stair beside the granary, and his room is the last cell on the archive passage.",
    "journal": [
     {
      "index": 10,
@@ -2543,19 +2994,24 @@
      "state": "active"
     },
     {
-     "index": 40,
+     "index": 70,
+     "text": "It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.",
+     "state": "failure"
+    },
+    {
+     "index": 90,
      "text": "I put back what was taken. He read the first line aloud and then would not read the second.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 50,
+     "index": 91,
      "text": "Breaking the gem gives it back on its own, and breaks something else.",
-     "state": "complete"
+     "state": "success"
     },
     {
-     "index": 60,
+     "index": 92,
      "text": "I killed the thing that took it. He got it back and it was not clean.",
-     "state": "complete"
+     "state": "success"
     }
    ],
    "resolutions": [
@@ -2574,7 +3030,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 40,
+     "journal_index": 90,
      "outcome": "I put back what was taken. He read the first line aloud and then would not read the second.",
      "morally_better": null
     },
@@ -2588,7 +3044,7 @@
       ]
      },
      "violence_required": false,
-     "journal_index": 50,
+     "journal_index": 91,
      "outcome": "Breaking the gem gives it back on its own, and breaks something else.",
      "morally_better": null
     },
@@ -2596,7 +3052,7 @@
      "id": "mag_the_hollowed_scribe__combat",
      "method": "combat",
      "violence_required": true,
-     "journal_index": 60,
+     "journal_index": 92,
      "outcome": "I killed the thing that took it. He got it back and it was not clean.",
      "morally_better": null
     }
@@ -2606,7 +3062,7 @@
     {
      "id": "mag_the_hollowed_scribe__too_late",
      "cause": "The situation resolves itself, badly, without you.",
-     "journal_index": 95,
+     "journal_index": 70,
      "recoverable": false,
      "consequence": "The giver stops raising the topic. Nobody explains why."
     }
@@ -2628,7 +3084,20 @@
      "the_rootkeepers": 5
     }
    },
-   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist."
+   "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist. Authoring slug: mag_the_hollowed_scribe.",
+   "branches": [
+    {
+     "id": "Q-MAG-24__fork",
+     "at_journal_index": 30,
+     "condition": "What was taken out of him is on the desk: burn it, or read it",
+     "leads_to": [
+      "mag_the_hollowed_scribe__magic",
+      "mag_the_hollowed_scribe__lore_knowledge",
+      "mag_the_hollowed_scribe__combat"
+     ],
+     "irreversible": true
+    }
+   ]
   }
  ]
 }

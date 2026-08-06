@@ -1,0 +1,527 @@
+{
+ "probe": "A — the live runtime",
+ "build": {
+  "name": "elder-souls",
+  "version": "0.2.0-w1-09",
+  "commit": null,
+  "builtAt": null,
+  "harnessVersion": 2,
+  "fixedStepHz": 60,
+  "dataRoot": "game/data",
+  "piece": "W1-09 — combat core (on W1-00’s harness)",
+  "threeVersion": "180",
+  "dataFiles": 288
+ },
+ "method": "window.__HARNESS driven in headless Chromium; every figure below is read out of getPlayerStats()/traceDrain(), never out of a data file.",
+ "roster_declared_in_data": 87,
+ "A1_equip": {
+  "attempted": 87,
+  "equipped_ok": 0,
+  "rejected": 87,
+  "distinct_errors": [
+   "createPlayer: no moveset 'axe_bog_cleaver'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'axe_hatchet_pair'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'axe_kings_bite'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'axe_ridge_axe'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'axe_shell_reaper'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'axe_shell_splitter'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'bow_chitin_recurve'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'bow_horn_sinew'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'bow_kings_horn'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'bow_marsh_longbow'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'bow_reed_shortbow'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'cgs_drowned_reaper'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'cgs_harvest_edge'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'cgs_kings_crescent'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'cgs_mire_scythe'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'cgs_tide_falx'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'csw_drowned_kris'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'csw_mangrove_hook'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'csw_naga_sickle'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'csw_reaver_blade'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'csw_saltmarsh_sabre'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'csw_tide_falchion'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'dgr_bone_awl'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'dgr_hist_barb'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'dgr_kings_needle'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'dgr_reed_dirk'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'dgr_shell_knife'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'dgr_thornfang'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'fst_hist_talon'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'fst_marsh_claw'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'fst_quarry_caestus'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'fst_wrapped_fists'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ghm_bog_maul'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ghm_kings_ruin'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ghm_pile_driver'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ghm_root_hammer'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ghm_stone_breaker'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'gsw_drowned_greatblade'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'gsw_fen_claymore'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'gsw_hist_greatblade'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'gsw_memorial_blade'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'gsw_oath_of_ash'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'gsw_reed_bastard'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'gsw_saltwind'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'gsw_tomb_guard'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'hlb_fen_hook'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'hlb_garrison_bill'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'hlb_lane_keeper'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'hlb_marsh_glaive'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'hlb_reed_partisan'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'hlb_saltcutter'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'mce_bog_iron_mace'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'mce_bone_hammer'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'mce_chain_flail'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'mce_pilgrim_club'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'mce_root_maul'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'mce_stone_answer'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'spr_drowned_harpoon'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'spr_fishers_gig'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'spr_marsh_lance'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'spr_mire_trident'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'spr_reed_gig'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'spr_root_pike'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'spr_xanmeer_sting'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ssw_barsaebic_warblade'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ssw_fen_wardens'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ssw_garrison_sword'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ssw_hist_sap_blade'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ssw_kothringi_bronze'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ssw_marsh_shortsword'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ssw_oath_of_drowned'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ssw_rusted_levy'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'tsw_bog_rapier'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'tsw_duelling_pick'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'tsw_oath_of_salt'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'tsw_reed_estoc'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'tsw_xanmeer_needle'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ugs_drowned_slab'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ugs_fen_zwei'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ugs_golem_sword'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ugs_oath_of_root'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ugs_saltiron_greatsword'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'ugs_tomb_colossus'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'whp_hide_lash'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'whp_hist_bindings'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'whp_root_tendril'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword",
+   "createPlayer: no moveset 'whp_salt_scourge'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+  ],
+  "classes_with_zero_equippable": [
+   "DGR",
+   "SSW",
+   "CSW",
+   "TSW",
+   "FST",
+   "SPR",
+   "AXE",
+   "MCE",
+   "WHP",
+   "HLB",
+   "GSW",
+   "CGS",
+   "GHM",
+   "UGS",
+   "BOW"
+  ],
+  "per_class": {
+   "DGR": {
+    "in_data": 6,
+    "equippable": 0
+   },
+   "SSW": {
+    "in_data": 8,
+    "equippable": 0
+   },
+   "CSW": {
+    "in_data": 6,
+    "equippable": 0
+   },
+   "TSW": {
+    "in_data": 5,
+    "equippable": 0
+   },
+   "FST": {
+    "in_data": 4,
+    "equippable": 0
+   },
+   "SPR": {
+    "in_data": 7,
+    "equippable": 0
+   },
+   "AXE": {
+    "in_data": 6,
+    "equippable": 0
+   },
+   "MCE": {
+    "in_data": 6,
+    "equippable": 0
+   },
+   "WHP": {
+    "in_data": 4,
+    "equippable": 0
+   },
+   "HLB": {
+    "in_data": 6,
+    "equippable": 0
+   },
+   "GSW": {
+    "in_data": 8,
+    "equippable": 0
+   },
+   "CGS": {
+    "in_data": 5,
+    "equippable": 0
+   },
+   "GHM": {
+    "in_data": 5,
+    "equippable": 0
+   },
+   "UGS": {
+    "in_data": 6,
+    "equippable": 0
+   },
+   "BOW": {
+    "in_data": 5,
+    "equippable": 0
+   }
+  },
+  "live_moveset_ids": [
+   {
+    "id": "axe",
+    "ok": {
+     "weapon": "axe",
+     "weapon_class": "axe",
+     "shield": "marsh_oak_medium",
+     "stamina_max": 120,
+     "tier": "LIGHT"
+    }
+   },
+   {
+    "id": "dagger",
+    "ok": {
+     "weapon": "dagger",
+     "weapon_class": "dagger",
+     "shield": "marsh_oak_medium",
+     "stamina_max": 120,
+     "tier": "LIGHT"
+    }
+   },
+   {
+    "id": "greatsword",
+    "ok": {
+     "weapon": "greatsword",
+     "weapon_class": "greatsword",
+     "shield": "marsh_oak_medium",
+     "stamina_max": 120,
+     "tier": "LIGHT"
+    }
+   },
+   {
+    "id": "halberd",
+    "ok": {
+     "weapon": "halberd",
+     "weapon_class": "halberd",
+     "shield": "marsh_oak_medium",
+     "stamina_max": 120,
+     "tier": "LIGHT"
+    }
+   },
+   {
+    "id": "spear",
+    "ok": {
+     "weapon": "spear",
+     "weapon_class": "spear",
+     "shield": "marsh_oak_medium",
+     "stamina_max": 120,
+     "tier": "LIGHT"
+    }
+   },
+   {
+    "id": "straight-sword",
+    "ok": {
+     "weapon": "straight-sword",
+     "weapon_class": "straight_sword",
+     "shield": "marsh_oak_medium",
+     "stamina_max": 120,
+     "tier": "LIGHT"
+    }
+   },
+   {
+    "id": "ultra-greatsword",
+    "ok": {
+     "weapon": "ultra-greatsword",
+     "weapon_class": "ultra_greatsword",
+     "shield": "marsh_oak_medium",
+     "stamina_max": 120,
+     "tier": "LIGHT"
+    }
+   },
+   {
+    "id": "curved-sword",
+    "err": "createPlayer: no moveset 'curved-sword'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+   },
+   {
+    "id": "thrusting-sword",
+    "err": "createPlayer: no moveset 'thrusting-sword'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+   },
+   {
+    "id": "fist",
+    "err": "createPlayer: no moveset 'fist'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+   },
+   {
+    "id": "mace",
+    "err": "createPlayer: no moveset 'mace'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+   },
+   {
+    "id": "whip",
+    "err": "createPlayer: no moveset 'whip'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+   },
+   {
+    "id": "curved-greatsword",
+    "err": "createPlayer: no moveset 'curved-greatsword'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+   },
+   {
+    "id": "great-hammer",
+    "err": "createPlayer: no moveset 'great-hammer'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+   },
+   {
+    "id": "bow",
+    "err": "createPlayer: no moveset 'bow'. Known: axe, dagger, greatsword, halberd, spear, straight-sword, ultra-greatsword"
+   }
+  ]
+ },
+ "A2_contextual": {
+  "straight-sword": {
+   "r1.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r2.charged": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r1.2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r1.3": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "roll.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "roll.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "backstep.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "run.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "run.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "jump.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "jump.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "plunge": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "guardbreak": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "guard.counter": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "art.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "2h.r1.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "2h.r2": {
+    "seq": [],
+    "attack_anims": []
+   }
+  },
+  "ultra-greatsword": {
+   "r1.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r2.charged": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r1.2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r1.3": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "roll.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "roll.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "backstep.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "run.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "run.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "jump.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "jump.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "plunge": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "guardbreak": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "guard.counter": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "art.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "2h.r1.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "2h.r2": {
+    "seq": [],
+    "attack_anims": []
+   }
+  },
+  "dagger": {
+   "r1.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r2.charged": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r1.2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "r1.3": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "roll.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "roll.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "backstep.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "run.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "run.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "jump.r1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "jump.r2": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "plunge": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "guardbreak": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "guard.counter": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "art.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "2h.r1.1": {
+    "seq": [],
+    "attack_anims": []
+   },
+   "2h.r2": {
+    "seq": [],
+    "attack_anims": []
+   }
+  }
+ },
+ "A3_twohand": {
+  "stance_switch": {
+   "seq": []
+  },
+  "switch_during_attack": {
+   "seq": []
+  }
+ },
+ "page_errors": []
+}

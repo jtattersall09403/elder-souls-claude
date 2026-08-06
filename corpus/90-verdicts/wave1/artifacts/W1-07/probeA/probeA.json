@@ -1,0 +1,2922 @@
+{
+  "url": "http://127.0.0.1:33293/game/index.html",
+  "harness_version": 2,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "nodes": [
+    {
+      "step": "censusBegin",
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "hold.hatch-name",
+        "speaker": "jeeh-ei",
+        "place": "barge-hold",
+        "beat": "B01",
+        "line": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+        "sets": "hatch_name",
+        "input": {
+          "kind": "text",
+          "options": null
+        },
+        "full_screen": false,
+        "world_visible": true
+      }
+    },
+    {
+      "i": 1,
+      "verb": "censusAnswer",
+      "value": "Silence-Under-Salt",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "hold.hatch-name",
+        "speaker": "jeeh-ei",
+        "place": "barge-hold",
+        "beat": "B01",
+        "line": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+        "sets": "hatch_name",
+        "input": {
+          "kind": "text",
+          "options": null
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "npc_record": {
+          "id": "jeeh-ei",
+          "name": "Jeeh-Ei",
+          "settlement": "tidewrack",
+          "interior": "barge-hold",
+          "topics": [
+            "the-hold",
+            "the-writ-house",
+            "your-hatch-name",
+            "what-they-take-off-you"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": true,
+        "awaiting": "the player walks out of the hold, down the gangplank and into the Writ House. RI-JRN01 O6.",
+        "node": "hold.out",
+        "speaker": "jeeh-ei",
+        "place": "barge-hold",
+        "beat": "B01",
+        "line": "Go up. The light is bad but it is light. When you are done at the desk, come back down here if I am still here.",
+        "sets": null,
+        "input": null,
+        "full_screen": false,
+        "world_visible": true
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/01-censusAnswer-Silence_Under_Salt.png"
+    },
+    {
+      "i": 2,
+      "verb": "censusEnter",
+      "value": null,
+      "state_before": {
+        "done": false,
+        "paused": true,
+        "awaiting": "the player walks out of the hold, down the gangplank and into the Writ House. RI-JRN01 O6.",
+        "node": "hold.out",
+        "speaker": "jeeh-ei",
+        "place": "barge-hold",
+        "beat": "B01",
+        "line": "Go up. The light is bad but it is light. When you are done at the desk, come back down here if I am still here.",
+        "sets": null,
+        "input": null,
+        "full_screen": false,
+        "world_visible": true,
+        "npc_record": {
+          "id": "jeeh-ei",
+          "name": "Jeeh-Ei",
+          "settlement": "tidewrack",
+          "interior": "barge-hold",
+          "topics": [
+            "the-hold",
+            "the-writ-house",
+            "your-hatch-name",
+            "what-they-take-off-you"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.race-observed",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Altmer. — No, of course not, you are not tall enough and you are not smug enough. Dunmer. I will write Dunmer.",
+        "sets": "race",
+        "input": {
+          "kind": "observed",
+          "options": [
+            {
+              "id": "correct",
+              "text": "Correct her."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "misread_as": "Altmer"
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/02-censusEnter.png"
+    },
+    {
+      "i": 3,
+      "verb": "censusAnswer",
+      "value": "correct",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.race-observed",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Altmer. — No, of course not, you are not tall enough and you are not smug enough. Dunmer. I will write Dunmer.",
+        "sets": "race",
+        "input": {
+          "kind": "observed",
+          "options": [
+            {
+              "id": "correct",
+              "text": "Correct her."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "misread_as": "Altmer",
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.sex",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat you differently for it and I have watched for eleven years.",
+        "sets": "sex",
+        "input": {
+          "kind": "choice",
+          "options": [
+            {
+              "id": "male",
+              "text": "Male."
+            },
+            {
+              "id": "female",
+              "text": "Female."
+            },
+            {
+              "id": "unrecorded",
+              "text": "Leave it empty."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/03-censusAnswer-correct.png"
+    },
+    {
+      "i": 4,
+      "verb": "censusAnswer",
+      "value": "unrecorded",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.sex",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat you differently for it and I have watched for eleven years.",
+        "sets": "sex",
+        "input": {
+          "kind": "choice",
+          "options": [
+            {
+              "id": "male",
+              "text": "Male."
+            },
+            {
+              "id": "female",
+              "text": "Female."
+            },
+            {
+              "id": "unrecorded",
+              "text": "Leave it empty."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.upbringing",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Where were you a child? Answer in the name of a water, not a country.",
+        "sets": "upbringing",
+        "input": {
+          "kind": "choice",
+          "options": [
+            {
+              "id": "interior",
+              "text": "Black water, no bottom."
+            },
+            {
+              "id": "lukiul",
+              "text": "The harbour at Lilmoth."
+            },
+            {
+              "id": "foreign-born",
+              "text": "A river you have not heard of."
+            },
+            {
+              "id": "blackrose",
+              "text": "The ditch under the wall."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/04-censusAnswer-unrecorded.png"
+    },
+    {
+      "i": 5,
+      "verb": "censusAnswer",
+      "value": "interior",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.upbringing",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Where were you a child? Answer in the name of a water, not a country.",
+        "sets": "upbringing",
+        "input": {
+          "kind": "choice",
+          "options": [
+            {
+              "id": "interior",
+              "text": "Black water, no bottom."
+            },
+            {
+              "id": "lukiul",
+              "text": "The harbour at Lilmoth."
+            },
+            {
+              "id": "foreign-born",
+              "text": "A river you have not heard of."
+            },
+            {
+              "id": "blackrose",
+              "text": "The ditch under the wall."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.given-name",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "And the name they will use.",
+        "sets": "given_name",
+        "input": {
+          "kind": "text",
+          "options": null
+        },
+        "full_screen": false,
+        "world_visible": true
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/05-censusAnswer-interior.png"
+    },
+    {
+      "i": 6,
+      "verb": "censusAnswer",
+      "value": "Neras Athrenil",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.given-name",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "And the name they will use.",
+        "sets": "given_name",
+        "input": {
+          "kind": "text",
+          "options": null
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-routes",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Profession. There are three ways to do this and I do not care which, and neither does the box.",
+        "sets": null,
+        "input": {
+          "kind": "choice",
+          "options": [
+            {
+              "id": "named",
+              "text": "Name a trade the Office already has a word for."
+            },
+            {
+              "id": "custom",
+              "text": "Tell her what you actually do."
+            },
+            {
+              "id": "questionnaire",
+              "text": "Ask me something instead. I do not know what to call it."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/06-censusAnswer-Neras_Athrenil.png"
+    },
+    {
+      "i": 7,
+      "verb": "censusAnswer",
+      "value": "questionnaire",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-routes",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Profession. There are three ways to do this and I do not care which, and neither does the box.",
+        "sets": null,
+        "input": {
+          "kind": "choice",
+          "options": [
+            {
+              "id": "named",
+              "text": "Name a trade the Office already has a word for."
+            },
+            {
+              "id": "custom",
+              "text": "Tell her what you actually do."
+            },
+            {
+              "id": "questionnaire",
+              "text": "Ask me something instead. I do not know what to call it."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Pay, and count what they take."
+            },
+            {
+              "id": "b",
+              "text": "Go around, through the standing water, at night."
+            },
+            {
+              "id": "c",
+              "text": "Wait for a larger party and walk in the middle of it."
+            },
+            {
+              "id": "d",
+              "text": "Take the house."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q1",
+          "index": 1,
+          "text": "The salt-road out of the Hills is the only dry way north for a month. There is a house at the crossing that takes a toll, and the men in it wear a mark you have seen on the sides of ships.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Pay, and count what they take."
+            },
+            {
+              "id": "b",
+              "text": "Go around, through the standing water, at night."
+            },
+            {
+              "id": "c",
+              "text": "Wait for a larger party and walk in the middle of it."
+            },
+            {
+              "id": "d",
+              "text": "Take the house."
+            }
+          ]
+        },
+        "question_number": 1,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/07-censusAnswer-questionnaire.png"
+    },
+    {
+      "i": 8,
+      "verb": "censusAnswer",
+      "value": "a",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Pay, and count what they take."
+            },
+            {
+              "id": "b",
+              "text": "Go around, through the standing water, at night."
+            },
+            {
+              "id": "c",
+              "text": "Wait for a larger party and walk in the middle of it."
+            },
+            {
+              "id": "d",
+              "text": "Take the house."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q1",
+          "index": 1,
+          "text": "The salt-road out of the Hills is the only dry way north for a month. There is a house at the crossing that takes a toll, and the men in it wear a mark you have seen on the sides of ships.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Pay, and count what they take."
+            },
+            {
+              "id": "b",
+              "text": "Go around, through the standing water, at night."
+            },
+            {
+              "id": "c",
+              "text": "Wait for a larger party and walk in the middle of it."
+            },
+            {
+              "id": "d",
+              "text": "Take the house."
+            }
+          ]
+        },
+        "question_number": 1,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Sit down beside them and stay until one of you speaks."
+            },
+            {
+              "id": "b",
+              "text": "Go down into the well and cut out whatever is fouling it."
+            },
+            {
+              "id": "c",
+              "text": "Cut a channel from the live water two ridges over."
+            },
+            {
+              "id": "d",
+              "text": "Take what can be carried from the keeper's things and walk on."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q2",
+          "index": 2,
+          "text": "A well you drank at as a child is grey to the rim, and the keeper is still sitting beside it, and has been for some days.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Sit down beside them and stay until one of you speaks."
+            },
+            {
+              "id": "b",
+              "text": "Go down into the well and cut out whatever is fouling it."
+            },
+            {
+              "id": "c",
+              "text": "Cut a channel from the live water two ridges over."
+            },
+            {
+              "id": "d",
+              "text": "Take what can be carried from the keeper's things and walk on."
+            }
+          ]
+        },
+        "question_number": 2,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/08-censusAnswer-a.png"
+    },
+    {
+      "i": 9,
+      "verb": "censusAnswer",
+      "value": "c",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Sit down beside them and stay until one of you speaks."
+            },
+            {
+              "id": "b",
+              "text": "Go down into the well and cut out whatever is fouling it."
+            },
+            {
+              "id": "c",
+              "text": "Cut a channel from the live water two ridges over."
+            },
+            {
+              "id": "d",
+              "text": "Take what can be carried from the keeper's things and walk on."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q2",
+          "index": 2,
+          "text": "A well you drank at as a child is grey to the rim, and the keeper is still sitting beside it, and has been for some days.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Sit down beside them and stay until one of you speaks."
+            },
+            {
+              "id": "b",
+              "text": "Go down into the well and cut out whatever is fouling it."
+            },
+            {
+              "id": "c",
+              "text": "Cut a channel from the live water two ridges over."
+            },
+            {
+              "id": "d",
+              "text": "Take what can be carried from the keeper's things and walk on."
+            }
+          ]
+        },
+        "question_number": 2,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Cut the collar. It is one cut."
+            },
+            {
+              "id": "b",
+              "text": "Carry what will sell and go. He was in the hold when you found him."
+            },
+            {
+              "id": "c",
+              "text": "Wait for the crew and put the question to them in front of witnesses."
+            },
+            {
+              "id": "d",
+              "text": "Break the hold's ribs so the tide takes the salt as well as the barge."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q3",
+          "index": 3,
+          "text": "A tithe-barge has grounded on the flats and the crew have gone for help. In the hold there is salt, and rope, and a man in a collar who says he was put there yesterday. The tide turns in an hour.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Cut the collar. It is one cut."
+            },
+            {
+              "id": "b",
+              "text": "Carry what will sell and go. He was in the hold when you found him."
+            },
+            {
+              "id": "c",
+              "text": "Wait for the crew and put the question to them in front of witnesses."
+            },
+            {
+              "id": "d",
+              "text": "Break the hold's ribs so the tide takes the salt as well as the barge."
+            }
+          ]
+        },
+        "question_number": 3,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/09-censusAnswer-c.png"
+    },
+    {
+      "i": 10,
+      "verb": "censusAnswer",
+      "value": "a",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Cut the collar. It is one cut."
+            },
+            {
+              "id": "b",
+              "text": "Carry what will sell and go. He was in the hold when you found him."
+            },
+            {
+              "id": "c",
+              "text": "Wait for the crew and put the question to them in front of witnesses."
+            },
+            {
+              "id": "d",
+              "text": "Break the hold's ribs so the tide takes the salt as well as the barge."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q3",
+          "index": 3,
+          "text": "A tithe-barge has grounded on the flats and the crew have gone for help. In the hold there is salt, and rope, and a man in a collar who says he was put there yesterday. The tide turns in an hour.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Cut the collar. It is one cut."
+            },
+            {
+              "id": "b",
+              "text": "Carry what will sell and go. He was in the hold when you found him."
+            },
+            {
+              "id": "c",
+              "text": "Wait for the crew and put the question to them in front of witnesses."
+            },
+            {
+              "id": "d",
+              "text": "Break the hold's ribs so the tide takes the salt as well as the barge."
+            }
+          ]
+        },
+        "question_number": 3,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Write yourself onto it."
+            },
+            {
+              "id": "b",
+              "text": "Wake him and ask what it would take."
+            },
+            {
+              "id": "c",
+              "text": "Go over the wall where the buttress is broken."
+            },
+            {
+              "id": "d",
+              "text": "Sit where he will see you when he wakes, and be the first thing he deals with."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q4",
+          "index": 4,
+          "text": "The wall at Blackrose has a gate and the gate has a list, and your name is not on it, and the man who keeps the list is asleep in the sun.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Write yourself onto it."
+            },
+            {
+              "id": "b",
+              "text": "Wake him and ask what it would take."
+            },
+            {
+              "id": "c",
+              "text": "Go over the wall where the buttress is broken."
+            },
+            {
+              "id": "d",
+              "text": "Sit where he will see you when he wakes, and be the first thing he deals with."
+            }
+          ]
+        },
+        "question_number": 4,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/10-censusAnswer-a.png"
+    },
+    {
+      "i": 11,
+      "verb": "censusAnswer",
+      "value": "b",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Write yourself onto it."
+            },
+            {
+              "id": "b",
+              "text": "Wake him and ask what it would take."
+            },
+            {
+              "id": "c",
+              "text": "Go over the wall where the buttress is broken."
+            },
+            {
+              "id": "d",
+              "text": "Sit where he will see you when he wakes, and be the first thing he deals with."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q4",
+          "index": 4,
+          "text": "The wall at Blackrose has a gate and the gate has a list, and your name is not on it, and the man who keeps the list is asleep in the sun.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Write yourself onto it."
+            },
+            {
+              "id": "b",
+              "text": "Wake him and ask what it would take."
+            },
+            {
+              "id": "c",
+              "text": "Go over the wall where the buttress is broken."
+            },
+            {
+              "id": "d",
+              "text": "Sit where he will see you when he wakes, and be the first thing he deals with."
+            }
+          ]
+        },
+        "question_number": 4,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Rope, torch, down."
+            },
+            {
+              "id": "b",
+              "text": "Take a reading of the air and the stone first, and go tomorrow."
+            },
+            {
+              "id": "c",
+              "text": "Tell a rootkeeper before anyone else hears of it."
+            },
+            {
+              "id": "d",
+              "text": "Break the hole wider so a cart can be got down."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q5",
+          "index": 5,
+          "text": "Water has opened a hole into a xanmeer that was sealed before the Empire had a name for this coast. It is a long drop and the air coming up is old.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Rope, torch, down."
+            },
+            {
+              "id": "b",
+              "text": "Take a reading of the air and the stone first, and go tomorrow."
+            },
+            {
+              "id": "c",
+              "text": "Tell a rootkeeper before anyone else hears of it."
+            },
+            {
+              "id": "d",
+              "text": "Break the hole wider so a cart can be got down."
+            }
+          ]
+        },
+        "question_number": 5,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/11-censusAnswer-b.png"
+    },
+    {
+      "i": 12,
+      "verb": "censusAnswer",
+      "value": "d",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Rope, torch, down."
+            },
+            {
+              "id": "b",
+              "text": "Take a reading of the air and the stone first, and go tomorrow."
+            },
+            {
+              "id": "c",
+              "text": "Tell a rootkeeper before anyone else hears of it."
+            },
+            {
+              "id": "d",
+              "text": "Break the hole wider so a cart can be got down."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q5",
+          "index": 5,
+          "text": "Water has opened a hole into a xanmeer that was sealed before the Empire had a name for this coast. It is a long drop and the air coming up is old.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Rope, torch, down."
+            },
+            {
+              "id": "b",
+              "text": "Take a reading of the air and the stone first, and go tomorrow."
+            },
+            {
+              "id": "c",
+              "text": "Tell a rootkeeper before anyone else hears of it."
+            },
+            {
+              "id": "d",
+              "text": "Break the hole wider so a cart can be got down."
+            }
+          ]
+        },
+        "question_number": 5,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Walk. Carry her."
+            },
+            {
+              "id": "b",
+              "text": "Cut a new well. You know how. It is not permitted."
+            },
+            {
+              "id": "c",
+              "text": "Burn her, and let the Drowned Court argue about it."
+            },
+            {
+              "id": "d",
+              "text": "Sit with her until it is finished either way."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q6",
+          "index": 6,
+          "text": "Your kin has been dead four days and the roots here are grey and will not drink her. The nearest living well is two days' walk and she will not last it.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Walk. Carry her."
+            },
+            {
+              "id": "b",
+              "text": "Cut a new well. You know how. It is not permitted."
+            },
+            {
+              "id": "c",
+              "text": "Burn her, and let the Drowned Court argue about it."
+            },
+            {
+              "id": "d",
+              "text": "Sit with her until it is finished either way."
+            }
+          ]
+        },
+        "question_number": 6,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/12-censusAnswer-d.png"
+    },
+    {
+      "i": 13,
+      "verb": "censusAnswer",
+      "value": "a",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Walk. Carry her."
+            },
+            {
+              "id": "b",
+              "text": "Cut a new well. You know how. It is not permitted."
+            },
+            {
+              "id": "c",
+              "text": "Burn her, and let the Drowned Court argue about it."
+            },
+            {
+              "id": "d",
+              "text": "Sit with her until it is finished either way."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q6",
+          "index": 6,
+          "text": "Your kin has been dead four days and the roots here are grey and will not drink her. The nearest living well is two days' walk and she will not last it.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Walk. Carry her."
+            },
+            {
+              "id": "b",
+              "text": "Cut a new well. You know how. It is not permitted."
+            },
+            {
+              "id": "c",
+              "text": "Burn her, and let the Drowned Court argue about it."
+            },
+            {
+              "id": "d",
+              "text": "Sit with her until it is finished either way."
+            }
+          ]
+        },
+        "question_number": 6,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Give a share and make it look like more than it is."
+            },
+            {
+              "id": "b",
+              "text": "Meet the leader's eye and let them decide."
+            },
+            {
+              "id": "c",
+              "text": "Swim the narrows below the crossing with the load on your back."
+            },
+            {
+              "id": "d",
+              "text": "Put the first of them in the water."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q7",
+          "index": 7,
+          "text": "A river-crew has both banks of the narrows and wants a share of what you are carrying, and their leader is looking at your hands rather than your face.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Give a share and make it look like more than it is."
+            },
+            {
+              "id": "b",
+              "text": "Meet the leader's eye and let them decide."
+            },
+            {
+              "id": "c",
+              "text": "Swim the narrows below the crossing with the load on your back."
+            },
+            {
+              "id": "d",
+              "text": "Put the first of them in the water."
+            }
+          ]
+        },
+        "question_number": 7,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/13-censusAnswer-a.png"
+    },
+    {
+      "i": 14,
+      "verb": "censusAnswer",
+      "value": "c",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Give a share and make it look like more than it is."
+            },
+            {
+              "id": "b",
+              "text": "Meet the leader's eye and let them decide."
+            },
+            {
+              "id": "c",
+              "text": "Swim the narrows below the crossing with the load on your back."
+            },
+            {
+              "id": "d",
+              "text": "Put the first of them in the water."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q7",
+          "index": 7,
+          "text": "A river-crew has both banks of the narrows and wants a share of what you are carrying, and their leader is looking at your hands rather than your face.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Give a share and make it look like more than it is."
+            },
+            {
+              "id": "b",
+              "text": "Meet the leader's eye and let them decide."
+            },
+            {
+              "id": "c",
+              "text": "Swim the narrows below the crossing with the load on your back."
+            },
+            {
+              "id": "d",
+              "text": "Put the first of them in the water."
+            }
+          ]
+        },
+        "question_number": 7,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Carry it back."
+            },
+            {
+              "id": "b",
+              "text": "Build it a bank here and hope."
+            },
+            {
+              "id": "c",
+              "text": "Find who moved it."
+            },
+            {
+              "id": "d",
+              "text": "Leave it. The marsh moved it and the marsh may have meant to."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q10",
+          "index": 10,
+          "text": "There is an egg in the shallows that should not be where it is, and the pool it belongs to is a day behind you, and the water here is warm and rising.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Carry it back."
+            },
+            {
+              "id": "b",
+              "text": "Build it a bank here and hope."
+            },
+            {
+              "id": "c",
+              "text": "Find who moved it."
+            },
+            {
+              "id": "d",
+              "text": "Leave it. The marsh moved it and the marsh may have meant to."
+            }
+          ]
+        },
+        "question_number": 8,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/14-censusAnswer-c.png"
+    },
+    {
+      "i": 15,
+      "verb": "censusAnswer",
+      "value": "b",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Carry it back."
+            },
+            {
+              "id": "b",
+              "text": "Build it a bank here and hope."
+            },
+            {
+              "id": "c",
+              "text": "Find who moved it."
+            },
+            {
+              "id": "d",
+              "text": "Leave it. The marsh moved it and the marsh may have meant to."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q10",
+          "index": 10,
+          "text": "There is an egg in the shallows that should not be where it is, and the pool it belongs to is a day behind you, and the water here is warm and rising.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Carry it back."
+            },
+            {
+              "id": "b",
+              "text": "Build it a bank here and hope."
+            },
+            {
+              "id": "c",
+              "text": "Find who moved it."
+            },
+            {
+              "id": "d",
+              "text": "Leave it. The marsh moved it and the marsh may have meant to."
+            }
+          ]
+        },
+        "question_number": 8,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Climb over them both, fast."
+            },
+            {
+              "id": "b",
+              "text": "Take the child up and then go back down."
+            },
+            {
+              "id": "c",
+              "text": "Brace the rope with your own body and shout for the bank."
+            },
+            {
+              "id": "d",
+              "text": "Cut above yourself so the drop is shorter for everyone."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q11",
+          "index": 11,
+          "text": "Three of you are on a rope over a channel and the rope is failing. The one below you is heavier and is holding a child.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Climb over them both, fast."
+            },
+            {
+              "id": "b",
+              "text": "Take the child up and then go back down."
+            },
+            {
+              "id": "c",
+              "text": "Brace the rope with your own body and shout for the bank."
+            },
+            {
+              "id": "d",
+              "text": "Cut above yourself so the drop is shorter for everyone."
+            }
+          ]
+        },
+        "question_number": 9,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/15-censusAnswer-b.png"
+    },
+    {
+      "i": 16,
+      "verb": "censusAnswer",
+      "value": "a",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "Climb over them both, fast."
+            },
+            {
+              "id": "b",
+              "text": "Take the child up and then go back down."
+            },
+            {
+              "id": "c",
+              "text": "Brace the rope with your own body and shout for the bank."
+            },
+            {
+              "id": "d",
+              "text": "Cut above yourself so the drop is shorter for everyone."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q11",
+          "index": 11,
+          "text": "Three of you are on a rope over a channel and the rope is failing. The one below you is heavier and is holding a child.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "Climb over them both, fast."
+            },
+            {
+              "id": "b",
+              "text": "Take the child up and then go back down."
+            },
+            {
+              "id": "c",
+              "text": "Brace the rope with your own body and shout for the bank."
+            },
+            {
+              "id": "d",
+              "text": "Cut above yourself so the drop is shorter for everyone."
+            }
+          ]
+        },
+        "question_number": 9,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "The crew."
+            },
+            {
+              "id": "b",
+              "text": "The box."
+            },
+            {
+              "id": "c",
+              "text": "Neither. Stand on the bar and mark where both go."
+            },
+            {
+              "id": "d",
+              "text": "Put a line on the box and let the crew pull themselves along it."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q12",
+          "index": 12,
+          "text": "A tax barge has come apart on the bar outside Gideon and the crew are in the water and so is the strongbox, and both are drifting the same way.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "The crew."
+            },
+            {
+              "id": "b",
+              "text": "The box."
+            },
+            {
+              "id": "c",
+              "text": "Neither. Stand on the bar and mark where both go."
+            },
+            {
+              "id": "d",
+              "text": "Put a line on the box and let the crew pull themselves along it."
+            }
+          ]
+        },
+        "question_number": 10,
+        "question_count": 10
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/16-censusAnswer-a.png"
+    },
+    {
+      "i": 17,
+      "verb": "censusAnswer",
+      "value": "c",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.class-questions",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+        "sets": null,
+        "input": {
+          "kind": "questionnaire",
+          "options": [
+            {
+              "id": "a",
+              "text": "The crew."
+            },
+            {
+              "id": "b",
+              "text": "The box."
+            },
+            {
+              "id": "c",
+              "text": "Neither. Stand on the bar and mark where both go."
+            },
+            {
+              "id": "d",
+              "text": "Put a line on the box and let the crew pull themselves along it."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "question": {
+          "id": "q12",
+          "index": 12,
+          "text": "A tax barge has come apart on the bar outside Gideon and the crew are in the water and so is the strongbox, and both are drifting the same way.",
+          "answers": [
+            {
+              "id": "a",
+              "text": "The crew."
+            },
+            {
+              "id": "b",
+              "text": "The box."
+            },
+            {
+              "id": "c",
+              "text": "Neither. Stand on the bar and mark where both go."
+            },
+            {
+              "id": "d",
+              "text": "Put a line on the box and let the crew pull themselves along it."
+            }
+          ]
+        },
+        "question_number": 10,
+        "question_count": 10,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.birthsign",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Which tide were you drawn on?",
+        "sets": "birthsign",
+        "input": {
+          "kind": "choice",
+          "options": [
+            {
+              "id": "raj-xul",
+              "text": "The Full Root",
+              "aside": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+            },
+            {
+              "id": "xan-kheel",
+              "text": "The Warm Stone",
+              "aside": "You hatched on stone the sun had been at all day. Warm things do not take a chill easily and they do not hold a rot."
+            },
+            {
+              "id": "deek-xul",
+              "text": "The Long Root",
+              "aside": "Your pool sat under a trade road. The root ran a long way to find water and it learned the way back."
+            },
+            {
+              "id": "nu-ixtu",
+              "text": "The Dry Well",
+              "aside": "The root gave you nothing, so nothing runs back into you. What you take from the world is what you will have."
+            },
+            {
+              "id": "teekh-nuvei",
+              "text": "The Spilled",
+              "aside": "Your pattern was never fully drunk. Some of it went into the mud beside the pool. The wells will hold you badly and they will not lose you entirely."
+            },
+            {
+              "id": "nu-shanei",
+              "text": "The Unlit Water",
+              "aside": "The pool was dark when they lifted you and there are people who keep a list of those. I am obliged to write it down. I am not obliged to tell you who reads the list."
+            },
+            {
+              "id": "vastei-nu",
+              "text": "The Backward Tide",
+              "aside": "The tide ran up instead of down when you were drawn. The marsh took nothing from you that day and it has been making it back since."
+            },
+            {
+              "id": "kaal-kaal",
+              "text": "The Two-Drink",
+              "aside": "They gave you the sap twice. Somebody was not paying attention, or somebody was paying very close attention. Choose the second tide now; you will carry all of it and half of what it gives."
+            },
+            {
+              "id": "shuja-vei",
+              "text": "The Grey Sap",
+              "aside": "The well you came out of was already dying. The tree has no purchase on you. You will not be poisoned by it and you will not be spoken to by it, and you will be told which of those you mind about later."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/17-censusAnswer-c.png"
+    },
+    {
+      "i": 18,
+      "verb": "censusAnswer",
+      "value": "nu-ixtu",
+      "state_before": {
+        "done": false,
+        "paused": false,
+        "awaiting": null,
+        "node": "writ.birthsign",
+        "speaker": "warden-scribe-tuleeh-ma",
+        "place": "writ-house",
+        "beat": "B03",
+        "line": "Which tide were you drawn on?",
+        "sets": "birthsign",
+        "input": {
+          "kind": "choice",
+          "options": [
+            {
+              "id": "raj-xul",
+              "text": "The Full Root",
+              "aside": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+            },
+            {
+              "id": "xan-kheel",
+              "text": "The Warm Stone",
+              "aside": "You hatched on stone the sun had been at all day. Warm things do not take a chill easily and they do not hold a rot."
+            },
+            {
+              "id": "deek-xul",
+              "text": "The Long Root",
+              "aside": "Your pool sat under a trade road. The root ran a long way to find water and it learned the way back."
+            },
+            {
+              "id": "nu-ixtu",
+              "text": "The Dry Well",
+              "aside": "The root gave you nothing, so nothing runs back into you. What you take from the world is what you will have."
+            },
+            {
+              "id": "teekh-nuvei",
+              "text": "The Spilled",
+              "aside": "Your pattern was never fully drunk. Some of it went into the mud beside the pool. The wells will hold you badly and they will not lose you entirely."
+            },
+            {
+              "id": "nu-shanei",
+              "text": "The Unlit Water",
+              "aside": "The pool was dark when they lifted you and there are people who keep a list of those. I am obliged to write it down. I am not obliged to tell you who reads the list."
+            },
+            {
+              "id": "vastei-nu",
+              "text": "The Backward Tide",
+              "aside": "The tide ran up instead of down when you were drawn. The marsh took nothing from you that day and it has been making it back since."
+            },
+            {
+              "id": "kaal-kaal",
+              "text": "The Two-Drink",
+              "aside": "They gave you the sap twice. Somebody was not paying attention, or somebody was paying very close attention. Choose the second tide now; you will carry all of it and half of what it gives."
+            },
+            {
+              "id": "shuja-vei",
+              "text": "The Grey Sap",
+              "aside": "The well you came out of was already dying. The tree has no purchase on you. You will not be poisoned by it and you will not be spoken to by it, and you will be told which of those you mind about later."
+            }
+          ]
+        },
+        "full_screen": false,
+        "world_visible": true,
+        "npc_record": {
+          "id": "warden-scribe-tuleeh-ma",
+          "name": "Tuleeh-Ma",
+          "settlement": "tidewrack",
+          "interior": "writ-house",
+          "topics": [
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "the-provincial-office",
+            "the-tides",
+            "my-work",
+            "the-list",
+            "lukiul"
+          ]
+        },
+        "interior": "writ-house",
+        "routes_offered": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "full_screen_panels": 0
+      },
+      "ret": {
+        "done": true,
+        "node": null,
+        "character": {
+          "given_name": "Neras Athrenil",
+          "hatch_name": "Silence-Under-Salt",
+          "hatch_name_refused": false,
+          "sex": "unrecorded",
+          "race": "dunmer",
+          "upbringing": "interior",
+          "upbringing_given_as": "black water, no bottom",
+          "class_id": "custom",
+          "class_name": "Walks the country, untitled",
+          "class_family": "scout",
+          "class_family_fit": null,
+          "class_route": "questionnaire",
+          "birthsign": "nu-ixtu",
+          "birthsign_second": null,
+          "attributes": {
+            "strength": 12,
+            "endurance": 6,
+            "agility": 16,
+            "speed": 12,
+            "vigour": 10,
+            "willpower": 11,
+            "intellect": 12,
+            "hist-bond": 10,
+            "personality": 14,
+            "luck": 9
+          },
+          "skills": {
+            "blades": 20,
+            "axes-maces": 15,
+            "polearms": 5,
+            "greatweapons": 5,
+            "marksman": 15,
+            "claw-fang": 5,
+            "shieldcraft": 5,
+            "sorcery": 15,
+            "root-speech": 25,
+            "warding": 5,
+            "veiling": 10,
+            "alchemy": 5,
+            "athletics": 25,
+            "acrobatics": 5,
+            "survival": 25,
+            "sneak": 5,
+            "security": 5,
+            "mercantile": 5,
+            "speechcraft": 15
+          },
+          "signature": {
+            "race": "dunmer",
+            "class_family": "scout",
+            "birthsign_family": "withheld",
+            "upbringing_class": "interior",
+            "key": "dunmer|scout|withheld|interior"
+          },
+          "powers": [
+            {
+              "sign": "nu-ixtu",
+              "scale": 1,
+              "power": {
+                "summary": "Max Focus x1.60. You absorb 55% of the magnitude of any spell effect that lands on you, as Focus.",
+                "effects": [
+                  {
+                    "kind": "focus_max_multiplier",
+                    "value": 1.6
+                  },
+                  {
+                    "kind": "spell_absorption",
+                    "value": 0.55
+                  }
+                ]
+              }
+            }
+          ],
+          "drawbacks": [
+            {
+              "sign": "nu-ixtu",
+              "scale": 1,
+              "drawback": {
+                "kind": "mechanical",
+                "removes_system": "focus_regeneration",
+                "summary": "You have no Focus regeneration of any kind. Ever.",
+                "detail": "Not passive, not from resting, not from Fatigue, not from ENDURANCE. Focus is refilled only by absorption and by consumables. This is the Atronach, ported to our Focus economy and not softened: a Dry Well character who walks into a room with no casters in it has whatever Focus they walked in with.",
+                "assertion": "player.focus is monotonically non-increasing across all frames except on `absorb` and `item` events."
+              }
+            }
+          ],
+          "invariants": {
+            "attribute_total": 112,
+            "attribute_total_ok": true,
+            "race_delta_sum": 12,
+            "class_delta_sum": 0,
+            "skills_above_baseline": 9,
+            "skills_above_baseline_ok": true,
+            "max_skill": 25,
+            "max_skill_ok": true
+          },
+          "flags": [
+            "raised-by-the-marsh"
+          ],
+          "route": "questionnaire",
+          "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Neras Athrenil\nAlso called: Silence-Under-Salt\nObserved as: Dunmer\nRaised at: black water, no bottom\nTrade declared: Walks the country, untitled\nTide drawn on: The Dry Well (Nu-Ixtu)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-SCO\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+        },
+        "writ": {
+          "id": "stamped-writ",
+          "name": "Reed-case writ, stamped",
+          "readable": true,
+          "text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Neras Athrenil\nAlso called: Silence-Under-Salt\nObserved as: Dunmer\nRaised at: black water, no bottom\nTrade declared: Walks the country, untitled\nTide drawn on: The Dry Well (Nu-Ixtu)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-SCO\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+        },
+        "transcript": [
+          {
+            "node": "hold.wake",
+            "line": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+          },
+          {
+            "node": "hold.out",
+            "line": "Go up. The light is bad but it is light. When you are done at the desk, come back down here if I am still here."
+          },
+          {
+            "node": "hold.hatch-name",
+            "value": "Silence-Under-Salt",
+            "line": "Silence-Under-Salt. I will not say it again where they can hear it, and neither will you, and one day somebody will say it to you and you will know what they are."
+          },
+          {
+            "node": "writ.enter",
+            "line": "Stand where the light is. I have to be able to see you to write you down."
+          },
+          {
+            "node": "writ.race-observed",
+            "value": "correct"
+          },
+          {
+            "node": "writ.sex",
+            "value": "unrecorded"
+          },
+          {
+            "node": "writ-house.strange.interior-dunmer",
+            "line": "Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in the hand, not in the man. So it is true. Somebody's raid went badly and somebody's kin did not do the obvious thing with what was left of it. You will be hated in Helstrom by people who will feed you first."
+          },
+          {
+            "node": "writ.upbringing",
+            "value": "interior",
+            "line": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors."
+          },
+          {
+            "node": "writ.given-name",
+            "value": "Neras Athrenil",
+            "line": "Neras Athrenil. Two hundred and fifty gold at any Provincial Office if you decide you were wrong, once, and the old one stays legible under the line."
+          },
+          {
+            "node": "writ.class-routes",
+            "value": "questionnaire"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "a",
+            "question": "q1"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "c",
+            "question": "q2"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "a",
+            "question": "q3"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "b",
+            "question": "q4"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "d",
+            "question": "q5"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "a",
+            "question": "q6"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "c",
+            "question": "q7"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "b",
+            "question": "q10"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "a",
+            "question": "q11"
+          },
+          {
+            "node": "writ.class-questions",
+            "value": "c",
+            "question": "q12",
+            "line": "I do not have a word for that. I am going to write what you told me and let the next person along argue with it."
+          },
+          {
+            "node": "writ.stamp",
+            "line": "Neras Athrenil. Dunmer. interior. Walks the country, untitled. The Dry Well. — Reed-case, stamped, and it is the only thing in this province that says you are a person rather than a shape somebody saw. Do not lose it. The door behind me is the one you want.",
+            "grants_item": "stamped-writ"
+          },
+          {
+            "node": "writ.birthsign",
+            "value": "nu-ixtu",
+            "line": "The root gave you nothing, so nothing runs back into you. What you take from the world is what you will have."
+          }
+        ]
+      },
+      "ui": {
+        "canvases": 1,
+        "opaque_overlays": [],
+        "full_viewport_opaque": 0
+      },
+      "shot": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/18-censusAnswer-nu_ixtu.png"
+    }
+  ],
+  "notes": [],
+  "pre_census": {
+    "character": {
+      "created": false,
+      "_why": "RI-JRN01 O6: the player is controllable, in a body, before anything defines them. Nothing has been written down yet."
+    },
+    "entities": 0
+  },
+  "boot_ui": {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "canvases": [
+      {
+        "w": 1920,
+        "h": 1080,
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "z": "auto"
+      }
+    ],
+    "opaque_overlays": [],
+    "full_viewport_opaque": 0,
+    "dom_text": ""
+  },
+  "censusState_0": {
+    "done": false,
+    "paused": false,
+    "awaiting": null,
+    "node": "hold.hatch-name",
+    "speaker": "jeeh-ei",
+    "place": "barge-hold",
+    "beat": "B01",
+    "line": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+    "sets": "hatch_name",
+    "input": {
+      "kind": "text",
+      "options": null
+    },
+    "full_screen": false,
+    "world_visible": true,
+    "npc_record": {
+      "id": "jeeh-ei",
+      "name": "Jeeh-Ei",
+      "settlement": "tidewrack",
+      "interior": "barge-hold",
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ]
+    },
+    "interior": "writ-house",
+    "routes_offered": [
+      "named",
+      "custom",
+      "questionnaire"
+    ],
+    "full_screen_panels": 0
+  },
+  "shots_0": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/01-censusBegin.png",
+  "ui_0": {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "canvases": [
+      {
+        "w": 1920,
+        "h": 1080,
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "z": "auto"
+      }
+    ],
+    "opaque_overlays": [],
+    "full_viewport_opaque": 0,
+    "dom_text": ""
+  },
+  "censusState_end": {
+    "done": true,
+    "node": null,
+    "character": {
+      "given_name": "Neras Athrenil",
+      "hatch_name": "Silence-Under-Salt",
+      "hatch_name_refused": false,
+      "sex": "unrecorded",
+      "race": "dunmer",
+      "upbringing": "interior",
+      "upbringing_given_as": "black water, no bottom",
+      "class_id": "custom",
+      "class_name": "Walks the country, untitled",
+      "class_family": "scout",
+      "class_family_fit": null,
+      "class_route": "questionnaire",
+      "birthsign": "nu-ixtu",
+      "birthsign_second": null,
+      "attributes": {
+        "strength": 12,
+        "endurance": 6,
+        "agility": 16,
+        "speed": 12,
+        "vigour": 10,
+        "willpower": 11,
+        "intellect": 12,
+        "hist-bond": 10,
+        "personality": 14,
+        "luck": 9
+      },
+      "skills": {
+        "blades": 20,
+        "axes-maces": 15,
+        "polearms": 5,
+        "greatweapons": 5,
+        "marksman": 15,
+        "claw-fang": 5,
+        "shieldcraft": 5,
+        "sorcery": 15,
+        "root-speech": 25,
+        "warding": 5,
+        "veiling": 10,
+        "alchemy": 5,
+        "athletics": 25,
+        "acrobatics": 5,
+        "survival": 25,
+        "sneak": 5,
+        "security": 5,
+        "mercantile": 5,
+        "speechcraft": 15
+      },
+      "signature": {
+        "race": "dunmer",
+        "class_family": "scout",
+        "birthsign_family": "withheld",
+        "upbringing_class": "interior",
+        "key": "dunmer|scout|withheld|interior"
+      },
+      "powers": [
+        {
+          "sign": "nu-ixtu",
+          "scale": 1,
+          "power": {
+            "summary": "Max Focus x1.60. You absorb 55% of the magnitude of any spell effect that lands on you, as Focus.",
+            "effects": [
+              {
+                "kind": "focus_max_multiplier",
+                "value": 1.6
+              },
+              {
+                "kind": "spell_absorption",
+                "value": 0.55
+              }
+            ]
+          }
+        }
+      ],
+      "drawbacks": [
+        {
+          "sign": "nu-ixtu",
+          "scale": 1,
+          "drawback": {
+            "kind": "mechanical",
+            "removes_system": "focus_regeneration",
+            "summary": "You have no Focus regeneration of any kind. Ever.",
+            "detail": "Not passive, not from resting, not from Fatigue, not from ENDURANCE. Focus is refilled only by absorption and by consumables. This is the Atronach, ported to our Focus economy and not softened: a Dry Well character who walks into a room with no casters in it has whatever Focus they walked in with.",
+            "assertion": "player.focus is monotonically non-increasing across all frames except on `absorb` and `item` events."
+          }
+        }
+      ],
+      "invariants": {
+        "attribute_total": 112,
+        "attribute_total_ok": true,
+        "race_delta_sum": 12,
+        "class_delta_sum": 0,
+        "skills_above_baseline": 9,
+        "skills_above_baseline_ok": true,
+        "max_skill": 25,
+        "max_skill_ok": true
+      },
+      "flags": [
+        "raised-by-the-marsh"
+      ],
+      "route": "questionnaire",
+      "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Neras Athrenil\nAlso called: Silence-Under-Salt\nObserved as: Dunmer\nRaised at: black water, no bottom\nTrade declared: Walks the country, untitled\nTide drawn on: The Dry Well (Nu-Ixtu)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-SCO\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+    },
+    "writ": {
+      "id": "stamped-writ",
+      "name": "Reed-case writ, stamped",
+      "readable": true,
+      "text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Neras Athrenil\nAlso called: Silence-Under-Salt\nObserved as: Dunmer\nRaised at: black water, no bottom\nTrade declared: Walks the country, untitled\nTide drawn on: The Dry Well (Nu-Ixtu)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-SCO\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+    },
+    "transcript": [
+      {
+        "node": "hold.wake",
+        "line": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+      },
+      {
+        "node": "hold.out",
+        "line": "Go up. The light is bad but it is light. When you are done at the desk, come back down here if I am still here."
+      },
+      {
+        "node": "hold.hatch-name",
+        "value": "Silence-Under-Salt",
+        "line": "Silence-Under-Salt. I will not say it again where they can hear it, and neither will you, and one day somebody will say it to you and you will know what they are."
+      },
+      {
+        "node": "writ.enter",
+        "line": "Stand where the light is. I have to be able to see you to write you down."
+      },
+      {
+        "node": "writ.race-observed",
+        "value": "correct"
+      },
+      {
+        "node": "writ.sex",
+        "value": "unrecorded"
+      },
+      {
+        "node": "writ-house.strange.interior-dunmer",
+        "line": "Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in the hand, not in the man. So it is true. Somebody's raid went badly and somebody's kin did not do the obvious thing with what was left of it. You will be hated in Helstrom by people who will feed you first."
+      },
+      {
+        "node": "writ.upbringing",
+        "value": "interior",
+        "line": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors."
+      },
+      {
+        "node": "writ.given-name",
+        "value": "Neras Athrenil",
+        "line": "Neras Athrenil. Two hundred and fifty gold at any Provincial Office if you decide you were wrong, once, and the old one stays legible under the line."
+      },
+      {
+        "node": "writ.class-routes",
+        "value": "questionnaire"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "a",
+        "question": "q1"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "c",
+        "question": "q2"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "a",
+        "question": "q3"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "b",
+        "question": "q4"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "d",
+        "question": "q5"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "a",
+        "question": "q6"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "c",
+        "question": "q7"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "b",
+        "question": "q10"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "a",
+        "question": "q11"
+      },
+      {
+        "node": "writ.class-questions",
+        "value": "c",
+        "question": "q12",
+        "line": "I do not have a word for that. I am going to write what you told me and let the next person along argue with it."
+      },
+      {
+        "node": "writ.stamp",
+        "line": "Neras Athrenil. Dunmer. interior. Walks the country, untitled. The Dry Well. — Reed-case, stamped, and it is the only thing in this province that says you are a person rather than a shape somebody saw. Do not lose it. The door behind me is the one you want.",
+        "grants_item": "stamped-writ"
+      },
+      {
+        "node": "writ.birthsign",
+        "value": "nu-ixtu",
+        "line": "The root gave you nothing, so nothing runs back into you. What you take from the world is what you will have."
+      }
+    ],
+    "npc_record": null,
+    "interior": "writ-house",
+    "routes_offered": [
+      "named",
+      "custom",
+      "questionnaire"
+    ],
+    "full_screen_panels": 0
+  },
+  "writ": {
+    "id": "stamped-writ",
+    "name": "Reed-case writ, stamped",
+    "text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Neras Athrenil\nAlso called: Silence-Under-Salt\nObserved as: Dunmer\nRaised at: black water, no bottom\nTrade declared: Walks the country, untitled\nTide drawn on: The Dry Well (Nu-Ixtu)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-SCO\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+  },
+  "character": {
+    "created": true,
+    "given_name": "Neras Athrenil",
+    "hatch_name": "Silence-Under-Salt",
+    "hatch_name_refused": false,
+    "sex": "unrecorded",
+    "race": "dunmer",
+    "upbringing": "interior",
+    "upbringing_given_as": "black water, no bottom",
+    "class_id": "custom",
+    "class_name": "Walks the country, untitled",
+    "class_family": "scout",
+    "class_family_fit": null,
+    "class_route": "questionnaire",
+    "birthsign": "nu-ixtu",
+    "birthsign_second": null,
+    "attributes": {
+      "strength": 12,
+      "endurance": 6,
+      "agility": 16,
+      "speed": 12,
+      "vigour": 10,
+      "willpower": 11,
+      "intellect": 12,
+      "hist-bond": 10,
+      "personality": 14,
+      "luck": 9
+    },
+    "skills": {
+      "blades": 20,
+      "axes-maces": 15,
+      "polearms": 5,
+      "greatweapons": 5,
+      "marksman": 15,
+      "claw-fang": 5,
+      "shieldcraft": 5,
+      "sorcery": 15,
+      "root-speech": 25,
+      "warding": 5,
+      "veiling": 10,
+      "alchemy": 5,
+      "athletics": 25,
+      "acrobatics": 5,
+      "survival": 25,
+      "sneak": 5,
+      "security": 5,
+      "mercantile": 5,
+      "speechcraft": 15
+    },
+    "signature": {
+      "race": "dunmer",
+      "class_family": "scout",
+      "birthsign_family": "withheld",
+      "upbringing_class": "interior",
+      "key": "dunmer|scout|withheld|interior"
+    },
+    "powers": [
+      {
+        "sign": "nu-ixtu",
+        "scale": 1,
+        "power": {
+          "summary": "Max Focus x1.60. You absorb 55% of the magnitude of any spell effect that lands on you, as Focus.",
+          "effects": [
+            {
+              "kind": "focus_max_multiplier",
+              "value": 1.6
+            },
+            {
+              "kind": "spell_absorption",
+              "value": 0.55
+            }
+          ]
+        }
+      }
+    ],
+    "drawbacks": [
+      {
+        "sign": "nu-ixtu",
+        "scale": 1,
+        "drawback": {
+          "kind": "mechanical",
+          "removes_system": "focus_regeneration",
+          "summary": "You have no Focus regeneration of any kind. Ever.",
+          "detail": "Not passive, not from resting, not from Fatigue, not from ENDURANCE. Focus is refilled only by absorption and by consumables. This is the Atronach, ported to our Focus economy and not softened: a Dry Well character who walks into a room with no casters in it has whatever Focus they walked in with.",
+          "assertion": "player.focus is monotonically non-increasing across all frames except on `absorb` and `item` events."
+        }
+      }
+    ],
+    "invariants": {
+      "attribute_total": 112,
+      "attribute_total_ok": true,
+      "race_delta_sum": 12,
+      "class_delta_sum": 0,
+      "skills_above_baseline": 9,
+      "skills_above_baseline_ok": true,
+      "max_skill": 25,
+      "max_skill_ok": true
+    },
+    "flags": [
+      "raised-by-the-marsh"
+    ],
+    "route": "questionnaire",
+    "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Neras Athrenil\nAlso called: Silence-Under-Salt\nObserved as: Dunmer\nRaised at: black water, no bottom\nTrade declared: Walks the country, untitled\nTide drawn on: The Dry Well (Nu-Ixtu)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-SCO\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+  },
+  "entities_after": [],
+  "shot_end": "../../../../../../home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/99-after.png",
+  "ui_end": {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "canvases": [
+      {
+        "w": 1920,
+        "h": 1080,
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "z": "auto"
+      }
+    ],
+    "opaque_overlays": [],
+    "full_viewport_opaque": 0,
+    "dom_text": ""
+  },
+  "console": [],
+  "page_errors": []
+}

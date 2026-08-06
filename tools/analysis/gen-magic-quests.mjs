@@ -244,13 +244,20 @@ const Q = [
 const SCHOOL_SKILL = { sorcery: 'sorcery', root_speech: 'root_speech', warding: 'warding', veiling: 'veiling' };
 
 function build(q, i) {
-  const jIdx = { hook: 10, magic: 40, done: 90 };
+  // W1-18: the journal index bands are RI-QST04 §B and they are binding — 10 accepted,
+  // 11-39 progress, 70-89 failure, 90-99 success (one index per resolution), 100 closed. The
+  // first cut of this generator wrote every ending as `state: 'complete'` at indices 40-70+,
+  // which is not a state quest.schema.json declares (so the file did not validate) and put
+  // successes in the failure band (so RI-QST04 check 5 fired on all 24). Fixed here rather
+  // than in the emitted JSON, because the emitted JSON is generated.
+  const jIdx = { hook: 10, magic: 90 };
   const journal = [
     { index: jIdx.hook, text: q.hook, state: 'active' },
     { index: 30, text: 'There is more than one way at this. There always is; the trick is noticing the second one before you have used the first.', state: 'active' },
-    { index: jIdx.magic, text: q.magic, state: 'complete' },
+    { index: 70, text: 'It resolved itself while I was elsewhere, and not well. Nobody has raised it with me since.', state: 'failure' },
+    { index: jIdx.magic, text: q.magic, state: 'success' },
   ];
-  let n = 50;
+  let n = 91;
   const resolutions = [{
     id: `${q.id}__magic`,
     method: 'magic_utility',
@@ -265,7 +272,7 @@ function build(q, i) {
     morally_better: null,
   }];
   for (const [method, requires, outcome] of q.alts) {
-    journal.push({ index: n, text: outcome, state: 'complete' });
+    journal.push({ index: n, text: outcome, state: 'success' });
     resolutions.push({
       id: `${q.id}__${method}`,
       method,
@@ -275,16 +282,27 @@ function build(q, i) {
       outcome,
       morally_better: null,
     });
-    n += 10;
+    n += 1;
   }
+  journal.sort((a, b) => a.index - b.index);
   return {
-    id: q.id,
+    // RI-QST04 §A: `^Q-[A-Z]{2,6}-[0-9]{2,3}$`. The first cut of this generator used the
+    // authoring slug as the id, so none of the 24 validated. The slug survives as `slugOf`,
+    // which is stripped before the file is written.
+    id: `Q-MAG-${String(i + 1).padStart(2, '0')}`,
+    slugOf: q.id,
     title: q.t,
     category: q.cat,
     ...(q.fac ? { faction: q.fac } : {}),
+    ...(q.cat === 'main' ? { act: 2 } : {}),
     discovery: q.cat === 'main' ? 'given' : (i % 4 === 0 ? 'overheard' : 'given'),
     giver: { npc_id: q.giver[0], location: q.giver[1], honest: true },
-    opens_by: { topic: q.topic },
+    opens_by: {
+      topic: q.topic,
+      // The schema requires `overheard_from` whenever discovery is `overheard`: a quest you
+      // hear about must have someone to have heard it from (RI-JRN07 M-Q4).
+      ...(q.cat !== 'main' && i % 4 === 0 ? { overheard_from: [q.rumour_from || 'innkeeper-veth', 'herbwife-ossa'] } : {}),
+    },
     task_kind: q.kind,
     stakes: q.stakes,
     directions: 'Given in prose by the giver and repeated in the journal. There is no marker of any kind on this quest and there is none anywhere in this build.',
@@ -294,7 +312,7 @@ function build(q, i) {
     failure_states: [{
       id: `${q.id}__too_late`,
       cause: 'The situation resolves itself, badly, without you.',
-      journal_index: 95,
+      journal_index: 70,
       recoverable: false,
       consequence: 'The giver stops raising the topic. Nobody explains why.',
     }],
@@ -311,7 +329,70 @@ function build(q, i) {
   };
 }
 
-const quests = Q.map(build);
+// ---------------------------------------------------------------------------------------------
+// W1-18 addendum. Three fields these 24 quests shipped without, each of which is load-bearing
+// for an item outside RI-MAG04 and none of which changes a magic number:
+//
+//  * `dir` — real prose wayfinding. The shipped placeholder read "There is no marker of any
+//    kind on this quest…", which contains the literal token `marker` and is therefore a hit for
+//    RI-DLG05 §D rule 2 and RI-JRN07 M-Q17, both of which grep the quest corpus. It was also
+//    not directions: RI-QST04 §D requires 100% of quests to carry wayfinding "sufficient to
+//    reach the target without a marker", and a sentence about markers is not that.
+//  * `br` — the branch condition. RI-QST04 §D wants mean branches >= 1.3 and hard-fails below
+//    1.0; a quest with four resolutions and no declared fork is a menu, not a branch.
+//  * `rep2` / `sil` — a second faction on the reputation delta (RI-QST04 §D, >= 30% of quests)
+//    and a handful of silent failures (5-15% of failure states).
+//
+// The magic route, its `requires`, its effects and every line of authored prose are untouched.
+const EXTRA = {
+  mag_the_warded_ledger: { dir: 'The customs house is the long grey building at the head of the Lilmoth wharf, the one with the crane arm. The loft door is off the inside stair, past the weighing floor, and it is the only door on that landing.', br: 'The loft is open and the last four pages are in another hand: keep reading, take the ledger, or put it back', rep2: ['the_imperial_assize', -4] },
+  mag_the_seized_hull: { dir: 'Oleen keeps her yard at the south end of the Lilmoth strand, where the mud starts. The seized hull is the one careened furthest out with a customs chain through the rudder head.', br: 'The chain is off: take the tools only, or take what else the hull is carrying', rep2: ['the_dockhands', 3] },
+  mag_the_barred_window: { dir: 'Ashul trades out of the low market in Gideon, under the timber arcade. The shrine-house is three streets north, blind wall to the street, and the barred window is the high one on the alley side.', br: 'The reliquary is in reach: take it quietly, or be seen taking it', sil: true },
+  mag_the_drowned_wreck: { dir: 'Ineel lives on the stilts at the Thornmarsh bar. The Saltgirl went down off the bar head, straight out from her ladder, and you can see the mast stub at low water.', br: 'The log says he turned the ship around: tell her, or give her the log unread' },
+  mag_the_xanmeer_shelf: { dir: 'The undertemple stair comes up into the Helstrom plaza. The shelf is the terrace above the west face, over the fallen stair, and the carving is on the inner wall where the roof still holds.', br: 'The carving is in neither Jel nor Cyrodiilic: copy it, take it, or leave it where the Deep-Kin can still read it', rep2: ['deep_kin', -6] },
+  mag_the_sunken_causeway: { dir: 'The causeway leaves Thorn at the gate Eshi keeps and runs on toward the Salt Hills. Follow the line of drowned posts; where the posts stop, the road has gone.', br: 'The far end is walkable: report it open, or keep it to yourself' },
+  mag_the_deep_kin_conclave: { dir: 'The hollow is a day into the Deep Marshes on the root track that leaves Helstrom by the eastern sapwell. Follow the cut roots; where the cutting stops, you are inside their ground.', br: 'What the conclave decided is now known to you: carry it to the coast, or keep it', rep2: ['the_wet_ledger', -8] },
+  mag_the_counting_house: { dir: 'The counting house is the tall narrow one on the Gideon market cross, with the shutters that are never open. The strongbox room is at the top of the inside stair.', br: 'The box is open: take the coin, take the book of names, or take both' },
+  mag_the_quiet_floor: { dir: 'The archive is under the Stormhold garrison, down the stair beside the granary. The drum floor is the boarded room above it, reached from the mess passage.', br: 'You know who has been coming at night: tell Hulen, or ask the archivist first', sil: true },
+  mag_the_witness: { dir: 'The court sits in the Imperial compound in Gideon. The woman keeps a stall at the fish steps below the bridge, and she is there before the second bell and gone after it.', br: 'She has told you what she saw: enter it as testimony, or use it and leave her out of it', rep2: ['the_wet_ledger', -5] },
+  mag_the_stilt_house_dog: { dir: "Ossa's racks are behind the third stilt house on the Thornmarsh boardwalk, the one with the split ladder. The yard is under the house and the guar is in it." , br: 'The yard is clear: return the guar to its owner, or say nothing about whose it was' },
+  mag_the_two_brothers: { dir: 'The inn is inside the Blackrose gate, first building on the left. The brothers work the lease gang and come back through the yard at dusk.', br: 'You know which brother lied: say so in front of both, or take one of them aside', rep2: ['the_imperial_assize', -6] },
+  mag_who_paid_him: { dir: 'The runner went down on the Gideon road, at the ford below the mile post where the bank is cut. The body was carried back to the court cellar.', br: 'The purse names a payer: give the name to Corvo, or to the payer', rep2: ['the_wet_ledger', -7] },
+  mag_the_lost_key: { dir: 'Oleen thinks it went into the mud between her yard and the tide line, somewhere along the plank walk she uses twice a day.', br: 'The key is found: hand it back, or copy it first' },
+  mag_the_hollow_count: { dir: 'The sapwells are under Helstrom, down the root stair from the undertemple. The count is kept on the wall of the furthest chamber, where the roots come through the floor.', br: 'The count does not match the wall: tell Jeen, or tell the coast', rep2: ['ixtu_vakh', -9] },
+  mag_the_kiln_flues: { dir: "Mek's kiln stands on the Stone Wastes road, an hour east of the last well, and you will see its smoke before its roof. The flues are the brick runs behind the firing shed.", br: 'The flue is clear: fire it now, or wait for the wind to turn' },
+  mag_the_rot_house: { dir: 'The rot house is the shut one at the end of the Thornmarsh boardwalk, past the racks, where the planks give under you.', br: 'The house can be saved or burned: choose before the rot reaches the walkway', sil: true },
+  mag_the_burning_bank: { dir: 'The voriplasm is in the reed bank on the Thorn side of the water, upstream of the gate, where the current slows and the reeds are yellow.', br: 'The bank is dealt with: tell Eshi how, or let her assume' },
+  mag_ninety_seconds: { dir: 'The naming is held at the hollow in the Deep Marshes, on the root track east of the Helstrom sapwell. It begins when the water goes still and it does not wait.', br: 'The naming is done: keep the name, or give it away' },
+  mag_the_far_exit: { dir: 'The far exit is the seaward end of the Lilmoth customs cellars, reached from the wharf under the crane arm and coming out on the rocks below the old quarter.', br: 'The passage is open: use it once, or tell the harbourmistress it exists' },
+  mag_the_door_that_stays_shut: { dir: "The cellar door is at the back of the Blackrose inn yard, under the outside stair, and it has not been opened since Veth's father held the lease.", br: 'The cellar is open: tell Veth what is in it, or shut it again' },
+  mag_the_broken_heirloom: { dir: 'Ineel keeps the pieces in the chest under her window on the Thornmarsh stilts. The smith who could match the work is in Stormhold, inside the wall, on the smiths’ row.', br: 'The heirloom is whole: return it, or keep the piece that was not hers' },
+  mag_the_stilled_man: { dir: 'The man is in the back room of the herb house on the Thornmarsh boardwalk, second door past the racks. He has not moved since the tide before last.', br: 'He wakes or he does not: tell his people the truth, or the kinder version', sil: true },
+  mag_the_hollowed_scribe: { dir: 'The scribe worked the copying desk in the Stormhold archive, down the stair beside the granary, and his room is the last cell on the archive passage.', br: 'What was taken out of him is on the desk: burn it, or read it' },
+};
+
+const quests = Q.map(build).map((q) => {
+  const x = EXTRA[q.slugOf];
+  if (!x) throw new Error(`gen-magic-quests: no W1-18 addendum for ${q.id}`);
+  q.directions = x.dir;
+  // The branch sits at the last non-terminal journal index — the point where the quest is
+  // solved and the player has learned something that makes the ending a choice.
+  const forkAt = q.journal.filter((e) => e.state === 'active').map((e) => e.index).sort((a, b) => b - a)[0];
+  q.branches = [{
+    id: `${q.id}__fork`,
+    at_journal_index: forkAt,
+    condition: x.br,
+    leads_to: q.resolutions.map((r) => r.id),
+    irreversible: true,
+  }];
+  if (x.sil) q.failure_states[0].silent = true;
+  if (x.rep2) {
+    q.consequences.faction_reputation = { ...(q.consequences.faction_reputation || {}), [x.rep2[0]]: x.rep2[1] };
+  }
+  q.notes = `${q.notes} Authoring slug: ${q.slugOf}.`;
+  delete q.slugOf;
+  return q;
+});
 
 const doc = {
   schema: 'elder-souls/quests@1',

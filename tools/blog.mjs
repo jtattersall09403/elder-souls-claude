@@ -31,10 +31,35 @@ function md(src) {
   const flushLi = () => { if (liBuf) { out += `<li>${inline(liBuf.join(' '))}</li>\n`; liBuf = null; } };
   const closeList = () => { flushLi(); if (inList) { out += '</ul>\n'; inList = false; } };
   const closeQuote = () => { if (inQuote) { out += '</blockquote>\n'; inQuote = false; } };
+  // ::: compare blocks — a labelled side-by-side row of images with one shared caption.
+  // Used for critic comparisons (ours vs the reference it lost to), before/after fixes, and
+  // region contrast sets. Any number of images; two or three read best.
+  //   :::compare Optional caption, may wrap over several lines
+  //   ![Ours — Lilmoth, 14:00](../shots/x.png)
+  //   ![Reference — RI-VIS03](../shots/ref-x.jpg)
+  //   :::
+  let cmp = null;
+  const flushCmp = () => {
+    if (!cmp) return;
+    const n = Math.max(1, cmp.items.length);
+    out += `<figure class="cmp"><div class="cmp-row" style="grid-template-columns:repeat(${n},minmax(0,1fr))">`
+      + cmp.items.map(i => `<a class="cmp-cell" href="${i.src}" target="_blank" rel="noopener">`
+        + `<img src="${i.src}" alt="${esc(i.label)}" loading="lazy"><span>${inline(i.label)}</span></a>`).join('')
+      + `</div>${cmp.caption ? `<figcaption>${inline(cmp.caption)}</figcaption>` : ''}</figure>\n`;
+    cmp = null;
+  };
   for (const raw of lines) {
     const l = raw.trimEnd();
-    if (l.startsWith('```')) { flushPara(); inCode = !inCode; out += inCode ? '<pre><code>' : '</code></pre>\n'; continue; }
+    if (l.startsWith('```')) { flushPara(); flushCmp(); inCode = !inCode; out += inCode ? '<pre><code>' : '</code></pre>\n'; continue; }
     if (inCode) { out += esc(raw) + '\n'; continue; }
+    if (/^:::compare\b/.test(l)) { flushPara(); closeList(); closeQuote(); flushCmp(); cmp = { caption: l.replace(/^:::compare\s*/, '').trim(), items: [] }; continue; }
+    if (cmp) {
+      if (/^:::\s*$/.test(l)) { flushCmp(); continue; }
+      const im = l.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)\s*$/);
+      if (im) cmp.items.push({ label: im[1], src: im[2].replace(/^\.\.\//, '') });
+      else if (l.trim()) cmp.caption += (cmp.caption ? ' ' : '') + l.trim();
+      continue;
+    }
     if (/^\s*$/.test(l)) { flushPara(); closeList(); closeQuote(); continue; }
     if (l.startsWith('> ')) { flushPara(); if (!inQuote) { out += '<blockquote>\n'; inQuote = true; } out += `<p>${inline(l.slice(2))}</p>\n`; continue; }
     closeQuote();
@@ -51,7 +76,7 @@ function md(src) {
     // breaks in the middle of sentences on the rendered page.
     para.push(l);
   }
-  flushPara(); closeList(); closeQuote();
+  flushPara(); closeList(); closeQuote(); flushCmp();
   return out;
 }
 
@@ -123,6 +148,14 @@ nav button[aria-selected=true]{background:var(--bg);color:var(--gold);border-col
 .post figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
 .post figure img{width:100%;display:block}
 .post figcaption{font-size:11px;color:var(--dim);padding:9px 12px}
+.post figure.cmp{background:none;border:none;border-radius:0;margin:26px 0}
+.cmp-row{display:grid;gap:8px}
+.cmp-cell{display:block;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;text-decoration:none}
+.cmp-cell img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#0d0b09}
+.cmp-cell span{display:block;font-size:11px;color:var(--dim);padding:7px 10px;line-height:1.45}
+.cmp-cell:hover{border-color:var(--gold)}
+.post figure.cmp figcaption{padding:10px 2px 0;font-size:11.5px;line-height:1.6}
+@media(max-width:560px){.cmp-row{grid-template-columns:1fr !important}}
 .post code{color:var(--blue);font-size:13px}
 .post strong{color:#fff}
 h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--line);padding-bottom:8px;margin:30px 0 14px}

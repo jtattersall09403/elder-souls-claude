@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-15-critic",
+  "brief": "CRITIC for wave-1 piece W1-15 \u2014 Stealth and crime (RI-STL01, RI-STL02, RI-CRM01, RI-CRM02, RI-QST05)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-15.json",
+    "corpus/90-verdicts/wave1/W1-15.md"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "Read doctrine + 5 items. Bar files: RI-STL01 (10 methods), RI-STL02 (10), RI-CRM01 (13), RI-CRM02 (11), RI-QST05 (jq census + live verification).",
+    "PROCEDURAL NOTE: my task prompt handed me orchestration/status/W1-15.json (builder checkpoint) and I read it + AMENDMENT-W1-15-01 before measuring. CRITIC-DOCTRINE \u00a78 says builder rationale comes after raw measurement. Deviation is directed by the orchestrator; must be recorded in verdict notes and builder claims must be independently re-measured, never credited.",
+    "S21 collision confirmed in the corpus itself: RI-STL02 \u00a75 says pickpocket has NO roll; ARBITRATION S21 as amended says pickpocketing KEEPS its roll. ARBITRATION \u00a75 precedence rung 2 (seam) > rung 3 (item method). So a die on pickpocket is correct and NO die on lockpicking is correct.",
+    "PLAN \u00a73 lists W1-15 judged by RI-CHR02, RI-CRM01, RI-CRM02, RI-STL01, RI-STL02 \u2014 my charter substitutes RI-QST05 for RI-CHR02. Will score the 5 assigned and note RI-CHR02 as unjudged-by-me."
+  ],
+  "next_step": "locate harness entry points; run stl-live/stl-probe/crime-audit; then run my own independent probes",
+  "notes_for_successor": ""
+}

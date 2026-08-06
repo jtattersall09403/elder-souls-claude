@@ -1,0 +1,147 @@
+{
+  "schema": "elder-souls/dialogue-topics@2",
+  "group": "tier-a-settlements",
+  "owner": "W1-17. Lilmoth, Stormhold and Helstrom — the settlement-local topic layer.",
+  "key_legend_ref": "topics/00-roots.json §key_legend",
+  "note": "RI-DLG01 §How-we-lose: 'One INFO per topic. No filter stack at all — every NPC gives the same answer.' Morrowind's Balmora answers the SAME murder question three ways by race. Every settlement node below carries at least three filtered answers for that reason.",
+
+  "topics": [
+    { "id": "lilmoth", "settlement": "lilmoth", "infos": [
+      { "a": "sapcutter", "cell": "lilmoth", "x": "Lilmoth. Two cities, friend. The old one is under your feet and still has people in it. This one does not go down there after dark.", "to": ["the-drowned-quarter", "the-tide-steps", "the-low-city"] },
+      { "a": "legionary", "cell": "lilmoth", "x": "Port city. Six thousand. Half of them off the rolls. We hold the harbour and the stair. Below that is the Ledger's.", "to": ["the-harbour-chain", "the-wet-ledger", "the-low-city"] },
+      { "a": "archivist", "cell": "lilmoth", "x": "The colonial city was built on made ground and the ground has been unmaking itself for two centuries, at a rate the survey puts at a hand a decade, which sounds gentle until you consider that the survey began after the first floor had already gone.", "to": ["the-drowned-quarter", "the-made-ground", "the-imperial-claim"] },
+      { "a": "mudborn", "cell": "lilmoth", "d": 10, "x": "It is the only town in the province where a person can sleep dry for nothing, dry-one, because there are so many rooms nobody has got round to claiming, and every one of them is somebody's if you ask the wrong person.", "to": ["the-low-city", "the-boards"] },
+      { "a": "rootkeeper", "cell": "lilmoth", "d": 30, "x": "There was a well here and it is under the water now and it is still tended, supplicant, by people who swim down to it once a season and come up with nothing and go again the next season.", "to": ["the-sunken-well", "the-covenant"] } ] },
+
+    { "id": "the-low-city", "settlement": "lilmoth", "infos": [
+      { "a": "sapcutter", "cell": "lilmoth", "x": "Second floors and roof-walks. Everything happens up there. Friend, the ground floor is for water.", "to": ["the-drowned-quarter", "the-roof-walks"] },
+      { "a": "mudborn", "cell": "lilmoth", "d": 10, "x": "They call it the low city because it is low and they call the boards above it the high city as a joke, dry-one, and after a while nobody remembers it was a joke and starts putting on airs about which one they live in.", "to": ["the-roof-walks"] } ] },
+
+    { "id": "the-roof-walks", "settlement": "lilmoth", "infos": [
+      { "a": "sapcutter", "cell": "lilmoth", "x": "Planks across the old roofs. Faster than a boat. Friend, mind the third span. It has gone.", "to": ["the-boards", "the-second-stair"] } ] },
+
+    { "id": "the-tide-steps", "settlement": "lilmoth", "infos": [
+      { "a": "legionary", "cell": "lilmoth", "x": "Landing stair. Customs post at the top. Everything off a boat goes past me. Manifest or nothing.", "to": ["the-manifest", "the-harbour-chain"] },
+      { "a": "sapcutter", "cell": "lilmoth", "d": 30, "x": "Everything goes past the customs man. Friend, not everything comes ashore at a stair.", "to": ["the-second-stair", "contraband"] } ] },
+
+    { "id": "the-second-stair", "settlement": "lilmoth", "infos": [
+      { "a": "sapcutter", "cell": "lilmoth", "d": 30, "x": "Under it, at the low tide. Friend, that is where the market is. Ask nothing. Point at things.", "to": ["the-organ-market", "the-cut"] },
+      { "a": "legionary", "cell": "lilmoth", "x": "Old stair. Condemned. Nobody uses it. Move along, citizen.", "to": [] } ] },
+
+    { "id": "the-harbour-chain", "settlement": "lilmoth", "infos": [
+      { "a": "legionary", "cell": "lilmoth", "x": "Raised at dusk. Dropped at dawn. It has not been raised in two years. The winch is rotten and the requisition is refused.", "to": ["the-quartermaster", "the-dead-pay"] },
+      { "a": "archivist", "cell": "lilmoth", "x": "A harbour chain is a statement about who may leave, not who may enter, and the fact that this one is generally acknowledged to be inoperable is the single most eloquent document in the province about the condition of Imperial authority here.", "to": ["the-imperial-claim"] } ] },
+
+    { "id": "the-made-ground", "settlement": "lilmoth", "infos": [
+      { "a": "archivist", "cell": "lilmoth", "x": "Rubble, ballast and the demolished first city, tipped into the shallows and built on, which was an entirely standard Imperial procedure and had worked in eleven other provinces where the substrate was not silt over nothing.", "to": ["the-drowned-quarter", "the-sunken-well"] } ] },
+
+    { "id": "the-sunken-well", "settlement": "lilmoth", "infos": [
+      { "a": "rootkeeper", "cell": "lilmoth", "d": 30, "x": "It is not dead and it is not reachable, which is the worst arrangement there is, and every keeper who has gone down has come up saying the same thing, which is that it is still asking.", "to": ["the-quiet-wells", "the-covenant", "the-swimmers"] } ] },
+
+    { "id": "the-swimmers", "settlement": "lilmoth", "infos": [
+      { "a": "rootkeeper", "cell": "lilmoth", "d": 40, "x": "Four of them, and they are not keepers and were never given to a well, and they go down anyway once a season because somebody must, and the order has never decided whether to thank them or to stop them.", "to": ["the-sunken-well", "hides-his-foot"] },
+      { "a": "mudborn", "cell": "lilmoth", "d": 10, "x": "They go down at the turn and they come up grey and they do not talk for a day after, dry-one, and one year one of them did not come up and the others went back the next season anyway.", "to": ["hides-his-foot"] } ] },
+
+    { "id": "hides-his-foot", "settlement": "lilmoth", "infos": [
+      { "a": "mudborn", "cell": "lilmoth", "d": 10, "x": "He is the oldest of the swimmers and he has been going down since before the fever, dry-one, and if you want him he is on the third roof-walk in the afternoon with his back to the water, which I have always thought was deliberate.", "to": ["the-swimmers", "the-roof-walks", "the-sunken-well"] },
+      { "a": "sapcutter", "cell": "lilmoth", "x": "Old swimmer. Buys nothing. Sells nothing. Friend, this one respects that.", "to": ["the-swimmers"] } ] },
+
+    { "id": "the-lamp-tax", "settlement": "lilmoth", "infos": [
+      { "a": "legionary", "cell": "lilmoth", "x": "A drake a month per lamp on a roof-walk. It pays for the oil. It does not pay for the oil.", "to": ["the-roof-walks", "the-provincial-office"] },
+      { "a": "mudborn", "cell": "lilmoth", "d": 10, "x": "They tax the lamps and half the walks are dark now, dry-one, and the ones that are dark are the ones where a person can be pushed off a plank at night and nobody has to explain anything.", "to": ["the-cut", "the-roof-walks"] } ] },
+
+    { "id": "the-fish-market", "settlement": "lilmoth", "infos": [
+      { "a": "sapcutter", "cell": "lilmoth", "x": "Dawn only. Buy at the third bell. Friend, before that you are paying for the noise.", "to": ["the-tide-steps"] },
+      { "a": "mudborn", "cell": "lilmoth", "d": 10, "x": "When it closes there is a half hour when the boxes are turned out and nobody minds who is standing there, dry-one, and I have eaten better in that half hour than most people manage on a wage.", "to": ["the-boards"] } ] },
+
+    { "id": "wide-eye-teel", "settlement": "lilmoth", "infos": [
+      { "a": "sapcutter", "cell": "lilmoth", "d": 20, "x": "Runs the second stair market. Never touches the goods. Friend, that is how she is still running it.", "to": ["the-organ-market", "the-second-stair"] },
+      { "a": "legionary", "cell": "lilmoth", "x": "Known. Nothing on her. Eleven years of nothing on her.", "to": ["the-organ-market"] } ] },
+
+    { "id": "the-warehouse-row", "settlement": "lilmoth", "infos": [
+      { "a": "legionary", "cell": "lilmoth", "x": "Ledger property. Every door. We knock. We do not go in.", "to": ["the-wet-ledger", "the-cut"] },
+      { "a": "sapcutter", "cell": "lilmoth", "d": 30, "x": "Behind them is the cut. Friend, things go in the front and out the back and only one of those is written down.", "to": ["the-cut", "the-short-weight"] } ] },
+
+    { "id": "stormhold", "settlement": "stormhold", "infos": [
+      { "a": "legionary", "cell": "stormhold", "x": "Border garrison. Wall, gate, muster, market. Four streets. Cleanest town in the province. That is the whole boast.", "to": ["the-wall-street", "the-muster-board", "the-gate-fee"] },
+      { "a": "archivist", "cell": "stormhold", "x": "Stormhold is the only settlement in Argonia laid out to an Imperial plan and completed to it, and the effect on a traveller arriving from the interior is genuinely disorienting: a right-angled town on dry rock, with drains that work, twelve hours from a place where the ground has opinions.", "to": ["the-salt-hills", "the-drains"] },
+      { "a": "rootkeeper", "cell": "stormhold", "d": 25, "x": "There is no well here and there never was, supplicant, and that is why the Empire could build here and why nobody argued, and it is also why nothing in this town has ever had to be honest about what it wants.", "to": ["the-covenant", "the-salt-hills"] },
+      { "a": "mudborn", "cell": "stormhold", "d": 10, "x": "It is a good town to beg in and a bad town to sleep in, dry-one, because the streets are dry and full of people with coin and the guard walks them all night for exactly that reason.", "to": ["the-night-watch"] },
+      { "a": "sapcutter", "cell": "stormhold", "x": "Gate fee, market fee, weigh fee. Friend, Stormhold charges for air.", "to": ["the-gate-fee", "the-weigh-house"] } ] },
+
+    { "id": "the-wall-street", "settlement": "stormhold", "infos": [
+      { "a": "legionary", "cell": "stormhold", "x": "Runs the inside of the wall. Barracks, quartermaster, wall house. Tribune is at the far end. Do not wander.", "to": ["ancus-varo", "the-quartermaster", "the-ninth-cohort"] } ] },
+
+    { "id": "the-weigh-house", "settlement": "stormhold", "infos": [
+      { "a": "sapcutter", "cell": "stormhold", "x": "Every cart, every load, one drake a stone. Friend, the scales are the Ledger's and the fee is the Empire's.", "to": ["the-wet-ledger", "the-short-weight"] },
+      { "a": "archivist", "cell": "stormhold", "x": "The arrangement is unusual and has never been examined: the Empire levies the duty, the Ledger owns the instrument that determines the duty, and the Office receives a figure it has no independent means of checking.", "to": ["the-short-weight", "the-provincial-office"] } ] },
+
+    { "id": "the-night-watch", "settlement": "stormhold", "infos": [
+      { "a": "legionary", "cell": "stormhold", "x": "Two on each street. Dusk to fourth bell. Lantern, horn, cudgel. No blades on the watch.", "to": ["the-sanction"] },
+      { "a": "mudborn", "cell": "stormhold", "d": 10, "x": "They will move you on four times a night without ever once being cruel about it, dry-one, and by the fourth time you have walked further than a man does in a day's work and you have not slept.", "to": ["the-boards"] } ] },
+
+    { "id": "the-drains", "settlement": "stormhold", "infos": [
+      { "a": "archivist", "cell": "stormhold", "x": "Cut into the salt rock by the original engineers and still functioning, which is the only Imperial infrastructure in Argonia of which that can be said, and the reason is simply that they are holes in stone and there is nothing in them to rot.", "to": ["the-salt-hills", "the-under-drain"] } ] },
+
+    { "id": "the-under-drain", "settlement": "stormhold", "quest": "q-under-drain", "infos": [
+      { "a": "mudborn", "cell": "stormhold", "d": 55, "x": "There is a grating on the north drain that has been unbolted and bolted again, dry-one, and I know it has because I slept against it for a winter and the bolts were rusted and now two of them are bright, and men do not polish bolts for nothing.", "to": ["the-drains", "the-night-watch", "belena-sarn"], "q": true, "res": { "journal": ["q-under-drain", 10] } },
+      { "a": "legionary", "cell": "stormhold", "x": "Storm drain. Sealed. Nothing down there but salt.", "to": ["the-drains"] } ] },
+
+    { "id": "the-border-road", "settlement": "stormhold", "infos": [
+      { "a": "legionary", "cell": "stormhold", "x": "North to Morrowind. Twelve miles of it is ours. After that it is theirs and it is worse.", "to": ["house-dres", "the-slavers-road"] },
+      { "a": "sapcutter", "cell": "stormhold", "x": "Good stone. Bad company. Friend, this one goes in daylight only.", "to": ["the-cart-roads"] } ] },
+
+    { "id": "the-salt-market", "settlement": "stormhold", "infos": [
+      { "a": "sapcutter", "cell": "stormhold", "x": "Salt, hide, dried fish, iron. No sap. Friend, no sap in this town at all, and that is strange.", "to": ["the-weigh-house", "the-quiet-wells"] },
+      { "a": "archivist", "cell": "stormhold", "x": "The absence of sap in the Stormhold market is a recent development and is not explained by supply, since the routes still run; what has changed is that the Ledger has stopped offering it here, and the Ledger does not stop offering a profitable thing for reasons it publishes.", "to": ["the-wet-ledger", "the-quiet-wells"] } ] },
+
+    { "id": "okan-shei", "settlement": "stormhold", "infos": [
+      { "a": "sapcutter", "cell": "stormhold", "d": 20, "x": "The Ledger's man at the weigh house. Polite. Very polite. Friend, that is not a compliment.", "to": ["the-weigh-house", "the-wet-ledger"] },
+      { "a": "mudborn", "cell": "stormhold", "d": 10, "x": "He has given me coin twice and both times he asked me afterwards what I had seen that week, dry-one, and I did not understand until the second time that the coin was for the answer and not for me.", "to": ["the-wet-ledger", "the-under-drain"] } ] },
+
+    { "id": "helstrom", "settlement": "helstrom", "infos": [
+      { "a": "rootkeeper", "cell": "helstrom", "d": 20, "x": "Helstrom is not a city with a tree in it, supplicant, it is a tree that has been permitted to have a city, and everything you find strange about the place follows from that one sentence and from nothing else.", "to": ["the-great-hist", "the-root-halls", "the-covenant"] },
+      { "a": "archivist", "cell": "helstrom", "x": "No Imperial survey of Helstrom has ever been completed and the three attempts are catalogued as abandoned rather than refused, which is a distinction the Office has maintained for a hundred and forty years without ever explaining what the surveyors actually encountered.", "to": ["the-unfinished-survey", "the-root-halls"] },
+      { "a": "sapcutter", "cell": "helstrom", "d": 20, "x": "No cart goes in. Everything is carried. Friend, this one has never been past the second root.", "to": ["the-root-halls", "the-carriers"] },
+      { "a": "legionary", "cell": "helstrom", "x": "We keep an outpost. Outside. By arrangement. Do not ask what the arrangement is, citizen.", "to": ["the-arrangement"] },
+      { "a": "magister", "cell": "helstrom", "d": 20, "x": "Were the House permitted a factor in Helstrom, provincial, it would have one. It is not. It never has been. That is the only place in this province of which that is true.", "to": ["house-dres"] } ] },
+
+    { "id": "the-root-halls", "settlement": "helstrom", "infos": [
+      { "a": "rootkeeper", "cell": "helstrom", "d": 25, "x": "The halls are the spaces the root left and they are not cut and they are not shaped, and a person who lives in one has been given it, and a person who is given one is expected to be worth the gift for the rest of their life.", "to": ["the-great-hist", "the-naming", "the-given-halls"] },
+      { "a": "archivist", "cell": "helstrom", "x": "Chambers formed by root growth, occupied without modification, and allocated by a process no Imperial observer has been able to describe in less than a page or with any confidence at all.", "to": ["the-given-halls"] } ] },
+
+    { "id": "the-given-halls", "settlement": "helstrom", "infos": [
+      { "a": "rootkeeper", "cell": "helstrom", "d": 30, "x": "It is not inherited and it is not bought and it is not earned in the way you mean, supplicant; it is that the well is asked and an answer comes, and the answer has been wrong twice in living memory and both times the person was left in the hall anyway.", "to": ["the-great-hist", "the-covenant", "naheesh-tul"] } ] },
+
+    { "id": "naheesh-tul", "settlement": "helstrom", "infos": [
+      { "a": "rootkeeper", "cell": "helstrom", "d": 25, "x": "The eldest of the keepers here, and she is not in authority over anyone, which every Imperial visitor refuses to believe and which is the reason none of them ever gets anywhere.", "to": ["the-given-halls", "the-quiet-wells", "the-arrangement"] },
+      { "a": "sapcutter", "cell": "helstrom", "x": "The old one. Sees everybody. Sells nothing. Friend, go with clean hands.", "to": ["the-root-halls"] } ] },
+
+    { "id": "the-arrangement", "settlement": "helstrom", "infos": [
+      { "a": "legionary", "cell": "helstrom", "x": "Twenty men. Outside the third root. We do not enter. They do not come out. Eleven years, no incident.", "to": ["the-root-halls", "the-ninth-cohort"] },
+      { "a": "rootkeeper", "cell": "helstrom", "d": 40, "x": "The Empire was told it could keep twenty soldiers where they could be seen, and it agreed, and it has never once understood that being visible was the entire content of the concession.", "to": ["the-imperial-claim", "naheesh-tul"] },
+      { "a": "archivist", "x": "There is no instrument. I have looked. Whatever governs the Cohort's presence at Helstrom was agreed verbally, is honoured absolutely by both parties, and does not exist in any register in Cyrodiil.", "to": ["the-blackwater-treaty"] } ] },
+
+    { "id": "the-carriers", "settlement": "helstrom", "infos": [
+      { "a": "sapcutter", "cell": "helstrom", "x": "No wheels past the gate. They carry it all on the back. Friend, they charge by the root, not the mile.", "to": ["the-root-halls", "the-cart-roads"] },
+      { "a": "mudborn", "cell": "helstrom", "d": 10, "x": "It is the one trade here a stranger can get, dry-one, and it will break your back in four years, and for those four years you will be inside the halls every day, which some people think is worth a back.", "to": ["the-root-halls"] } ] },
+
+    { "id": "the-third-root", "settlement": "helstrom", "infos": [
+      { "a": "rootkeeper", "cell": "helstrom", "d": 30, "x": "It is the root the Empire is permitted to stand beside and it is also the root that has been thinning for six years, and I do not say those two facts are connected, supplicant, I say only that I have watched people decide they are.", "to": ["the-arrangement", "the-quiet-wells", "the-thinning"] } ] },
+
+    { "id": "the-thinning", "settlement": "helstrom", "quest": "q-the-thinning", "infos": [
+      { "a": "rootkeeper", "cell": "helstrom", "d": 55, "x": "Six years, and it is not cutting, and it is not the Empire, and it is not the fever, and I have eliminated those in that order over six years and I am now left with the answer I did not want, which is that it is being asked for something and it is answering.", "to": ["the-third-root", "the-bad-dreams", "the-quiet-wells", "naheesh-tul"], "q": true, "res": { "journal": ["q-the-thinning", 10] } },
+      { "a": "archivist", "d": 40, "x": "The sap yield from the Helstrom wells is down by a figure the Ledger will not state and which can be inferred from its own carriage bookings at something close to a third, over six years, monotonically.", "to": ["the-wet-ledger", "the-quiet-wells"] } ] },
+
+    { "id": "the-hatchery", "settlement": "helstrom", "infos": [
+      { "a": "rootkeeper", "cell": "helstrom", "d": 30, "x": "The eggs are tended in the fourth hall and they are tended by whoever is nearest, which the Empire records as communal childrearing and which is not that at all, supplicant; it is that they are not anyone's.", "to": ["the-naming", "the-covenant"] },
+      { "a": "archivist", "x": "Egg-tending is the single most misdescribed practice in the Imperial literature on this province, generally rendered as a quaint communalism, when the sources available to any surveyor who asked would establish that it is a legal status and that the status is 'unowned'.", "to": ["the-naming"] } ] },
+
+    { "id": "the-listening-floor", "settlement": "helstrom", "infos": [
+      { "a": "rootkeeper", "cell": "helstrom", "d": 40, "x": "In the deepest hall the floor is root and it carries sound from a very long way, and keepers lie on it, and what is heard is not reported, and I will not tell you what I have heard on it because I have not decided what it was.", "to": ["the-great-hist", "the-bad-dreams", "the-thinning"] } ] },
+
+    { "id": "wades-deep", "settlement": "helstrom", "infos": [
+      { "a": "sapcutter", "cell": "helstrom", "d": 20, "x": "Carrier. Twenty years on the roots. Knows every hall. Friend, buy the first drink.", "to": ["the-carriers", "the-root-halls", "the-listening-floor"] },
+      { "a": "mudborn", "cell": "helstrom", "d": 10, "x": "He carried for the keepers before he carried for the Ledger, dry-one, and there are not many who have done both, and he will not say why he stopped doing the first.", "to": ["the-carriers", "the-wet-ledger"] } ] }
+  ]
+}

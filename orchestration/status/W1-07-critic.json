@@ -1,0 +1,25 @@
+{
+  "task_id": "W1-07-critic",
+  "brief": "critic for wave-1 piece W1-07 - Character creation",
+  "started": "wave-1",
+  "state": "researching",
+  "commit": "65275dcd5fca9b1bf21e16999c8295fb109b6353",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-07.json",
+    "corpus/90-verdicts/wave1/W1-07.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/*"
+  ],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/*.png (21)"
+  ],
+  "findings": [
+    "BUILD DOES NOT BOOT AT HEAD: game/data/index.json line 1411 references dialogue/topics/thorn.json which does not exist at HEAD (added by W1-18 commit 65275dc). window.__HARNESS.ready() throws. Measured in a clean git worktree at HEAD with that one index entry removed; recorded as method_deviation. Not W1-07's fault but it is the state of the repo.",
+    "HEADLINE: the entire Writ House creation sequence renders NOTHING. 19 census nodes screenshotted at 1920x1080; all 20 PNGs are byte-identical (sha256 7277a273...). No barge hold, no Writ House interior, no Warden-Scribe, no dialogue text, no answer options, no DOM text at all. The player stands in an open green field for the whole of creation. getCensusState() self-reports full_screen:false / world_visible:true / full_screen_panels:0 - those are fields in a JSON return value with no rendered counterpart.",
+    "listEntities() returns 0 entities before AND after creation. There is no NPC anywhere. RI-JRN01 M4 requires >=1 other NPC entity and >=1 takeable item entity during the pre-definition window; both are absent.",
+    "There is no title surface at all (RI-JRN01 O3): page load goes straight to a world with a body. O1 is trivially satisfied by having no surfaces; O3 is unmet because the O3 element set does not exist.",
+    "readWrit() returns a real, well-written stamped writ carrying all eight answers (RI-JRN01 O10 content is good) - but it is a string returned by an API, never rendered."
+  ],
+  "next_step": "AR-3 encounter test (RI-CHR02 m8) re-run by me; then reaction/price/guard live probes; then RI-CHR03 drawbacks; then PRG02/PRG03 skill-by-use and S3 purity",
+  "notes_for_successor": "Worktree at $SCRATCH/wt-head is a clean HEAD with the thorn.json index entry removed so the game boots. Run probes from there."
+}

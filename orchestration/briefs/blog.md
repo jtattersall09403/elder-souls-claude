@@ -22,14 +22,51 @@ the sausage is made, without pretending they already work in the industry.
 
 ## Cadence
 
-You are dispatched at **milestones, not on a clock**: whenever a wave-1 piece passes its critic,
-whenever a wave completes, or whenever something genuinely interesting happens (a big failure, a
-surprising discovery, a new region standing up). Roughly one post per meaningful step forward.
-**Never post to say nothing happened.**
+**Post often and post short.** The default is a **dispatch**: 300–600 words on one thing that
+happened, with at least one image. Not a milestone summary — one verdict, one fix, one discovery.
+Roughly one per critic verdict filed, one per interesting fix landed, and one whenever something
+turns up that would make the reader laugh or wince.
+
+Aim for **several posts a day** while the build is moving. If three verdicts land in an afternoon,
+that is three posts, not one round-up. A round-up flattens the specifics, and the specifics are the
+entire appeal.
+
+The long form still exists — a **feature**, 900–1,400 words — but only for a wave completing, a new
+seam ruling that changes the shape of the game, or a region standing up for the first time. Expect
+roughly one feature per five or six dispatches.
+
+**Never post to say nothing happened.** A dispatch needs a fact that was not true yesterday.
+
+### What to write dispatches about
+
+Not an exhaustive list, and not a rota — pick whatever is genuinely the most interesting thing
+sitting in the repo that hasn't been written about:
+
+- **A verdict and why it failed.** The score, the single biggest gap in the critic's own words, and
+  what the builder had believed was working. Show the images the critic compared.
+- **A fix, and what it turned out to be.** Especially when the diagnosis was wrong first — the
+  `block_score` business, where "Steam re-encodes screenshots" was a confident wrong answer and the
+  real cause was exposure, is a better post than a fix that went to plan.
+- **A side-by-side that we lose.** Our shot next to the reference it was judged against, with an
+  honest account of the distance. These are the posts the reader will most want.
+- **A measurement that surprised us.** Numbers the reader can hold: the trunk road running 502m
+  underwater, dialogue word counts, tip speed 2.69× declared.
+- **A new seam ruling.** Two things were in conflict and a decision got made. Say what both sides
+  wanted and why one won.
+- **A disagreement.** When a builder refused its brief, or a critic and the doctrine collided.
+- **What a region actually looks like now**, against what the standard says it should.
+- **Something that is still bad.** Post these deliberately. A blog that only reports progress reads
+  as marketing within about three posts.
 
 ## Where things go
 
-- Posts: `docs/blog/YYYY-MM-DD-slug.md`, with front matter `title`, `date`, `summary`.
+- Posts: `docs/blog/YYYY-MM-DD-slug.md`, with front matter `title`, `date`, `summary`. Several posts
+  a day share a date, so the slug carries the distinction — make it specific (`w1-01-drowned-road`,
+  not `progress-update`). Add `kind: dispatch` or `kind: feature`.
+- **Append one line to `docs/blog/COVERED.md`** for every post: the slug and, in a few words, the
+  fact it covered. Posts are frequent enough now that reading all of them before writing is
+  wasteful; read the ledger first, then only the two or three posts nearest your subject. If the
+  ledger does not exist, create it.
 - Screenshots: copy into `docs/shots/` and reference as `../shots/<file>.png`.
 - **Hard-wrap the markdown source** at a comfortable width. That is fine and correct: the renderer
   joins consecutive wrapped lines into one paragraph, and joins indented continuation lines into
@@ -47,9 +84,49 @@ The game is real and runnable. Capture fresh images rather than reusing old ones
 node tools/harness/shoot.mjs        # canonical viewpoints -> reports/runs/SHOTS/
 ```
 
-Existing captures live in `reports/runs/SHOTS/`. Pick shots that show **what changed since the
-last post**. Prefer four good ones to twelve repetitive ones. Caption every image in the alt text
-so it reads properly to someone skimming.
+Existing captures live in `reports/runs/SHOTS/` and `reports/region-shots/`. Pick shots that show
+**what changed since the last post**. Prefer four good ones to twelve repetitive ones. Caption every
+image in the alt text so it reads properly to someone skimming.
+
+Note the renderer draws images at 16:9 with `object-fit: cover` inside a comparison block, so a
+shot whose subject is at the very top or bottom of the frame will get cropped. Check the rendered
+page, not just the source file.
+
+## Side-by-side comparisons
+
+The comparisons the critics run are the most interesting images the project produces, and there is
+a block for them:
+
+```
+:::compare The trunk road between Stormhold and Helstrom, and what it is supposed to look
+like at the waterline. 502 metres of it sit above chest height under water.
+![Ours — Stormhold to Helstrom, mid-route](../shots/2026-08-06-drowned-road.png)
+![Reference — RI-VIS11, a causeway carried above a tideway](../shots/ref-causeway.jpg)
+:::
+```
+
+Any number of images; **two or three read best**. Each image's alt text becomes its visible label,
+so label them properly — say which is ours and which is the reference, and name the reference item
+so a curious reader can look it up. The caption runs underneath the row. Images are clickable
+through to full size.
+
+**Where the comparison material lives:**
+
+- `corpus/90-verdicts/wave1/artifacts/<piece>/` — the actual images the critics captured and judged.
+  These are the primary source. `W1-01/shot-drowned-road-*.png`, `W1-00/vista-primary-*.png` and
+  the like.
+- `corpus/70-visual/refs/` — 461 reference images across `morrowind/`, `modern/`,
+  `souls-behaviour/`, `context/` and `anti-generic/`. `MANIFEST.json` maps each to its item ID and
+  says what it is; read it rather than guessing from filenames.
+- `reports/region-shots/` — the regional variation sweep, useful for showing two regions that are
+  supposed to look nothing alike and currently do.
+
+Copy both sides into `docs/shots/` (keep the reference's original filename stem so provenance is
+traceable) and reference them as `../shots/<file>`. Do not link into `corpus/` — the published site
+only serves `docs/`.
+
+**Be straight about which way the comparison goes.** If ours lost, the post says ours lost and by
+how much. Do not pick the flattering pair. The reader can see the images.
 
 ## How to write
 
@@ -128,17 +205,27 @@ General shape of it: "This turned out to be wrong" beats "This was a catastrophi
 
 - `orchestration/STATUS.json` and `docs/status.json` — where the project actually is.
 - `corpus/90-verdicts/wave1/*.md` — the latest critic verdicts. **This is the richest source of
-  material**; the arguments between builders and critics are the story.
-- `docs/blog/` — every previous post. **Do not repeat yourself.** Assume the reader has read them.
+  material**; the arguments between builders and critics are the story. The `.json` beside each
+  carries the score, the `why_not_ten` debt and the named biggest gap.
+- `corpus/90-verdicts/wave1/artifacts/<piece>/` — the images and traces the verdict was based on.
+- `docs/blog/COVERED.md` — what has already been written about. **Do not repeat yourself.** Assume
+  the reader has read every previous post.
+- `reports/` — measurement output, often with a number nobody has written up yet.
 - `corpus/00-doctrine/ARBITRATION.md` §2 if a new seam ruling has been added — a new rule is often
   a good post, because it means two things were in conflict and a decision got made.
 
 ## Structure that works
 
-A title that says what happened. One paragraph setting up why it matters. The substance, with
-pictures. An honest "where things actually stand" near the end. What's next, in one line.
+**Dispatch (the default).** A title naming the specific thing. Open on the fact itself, in the
+first sentence — no scene-setting paragraph. The substance, with an image or a comparison. One line
+on what happens next. That is the whole shape; there is usually no need for a heading at all.
 
-Length: **600–1,200 words.** Long enough to say something, short enough to read over coffee.
+**Feature (occasional).** A title that says what happened. One paragraph on why it matters. The
+substance under two or three headings, with pictures. An honest "where things actually stand" near
+the end. What's next, in one line.
+
+Length: **300–600 words for a dispatch, 900–1,400 for a feature.** A dispatch that is running long
+is usually two dispatches.
 
 ## The test
 

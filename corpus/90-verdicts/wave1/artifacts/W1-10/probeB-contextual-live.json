@@ -1,0 +1,9279 @@
+{
+ "probe": "B — every contextual slot, driven in the live sim",
+ "build": {
+  "name": "elder-souls",
+  "version": "0.2.0-w1-09",
+  "commit": null,
+  "builtAt": null,
+  "harnessVersion": 2,
+  "fixedStepHz": 60,
+  "dataRoot": "game/data",
+  "piece": "W1-09 — combat core (on W1-00’s harness)",
+  "threeVersion": "180",
+  "dataFiles": 288
+ },
+ "weapons": {
+  "straight-sword": {
+   "r1.1": {
+    "attack_anims": [
+     "straight_sword_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 29,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 39,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 79,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.2": {
+    "attack_anims": [
+     "straight_sword_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 29,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 39,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 79,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.3": {
+    "attack_anims": [
+     "straight_sword_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 82,
+     "total": 145,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 29,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 39,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 79,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 93,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 71
+     },
+     {
+      "f": 112,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 71
+     },
+     {
+      "f": 122,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 71
+     },
+     {
+      "f": 164,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2": {
+    "attack_anims": [
+     "straight_sword_r2"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r2",
+     "startup": 0,
+     "active": 12,
+     "recovery": 60,
+     "total": 122,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r2",
+      "phase": "windup",
+      "anim_len": 122
+     },
+     {
+      "f": 55,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r2",
+      "phase": "active",
+      "anim_len": 122
+     },
+     {
+      "f": 67,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r2",
+      "phase": "recovery",
+      "anim_len": 122
+     },
+     {
+      "f": 127,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2.charged": {
+    "attack_anims": [
+     "straight_sword_r2"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r2",
+     "startup": 0,
+     "active": 12,
+     "recovery": 60,
+     "total": 122,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r2",
+      "phase": "windup",
+      "anim_len": 122
+     },
+     {
+      "f": 55,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r2",
+      "phase": "active",
+      "anim_len": 122
+     },
+     {
+      "f": 67,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r2",
+      "phase": "recovery",
+      "anim_len": 122
+     },
+     {
+      "f": 127,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r1": {
+    "attack_anims": [
+     "straight_sword_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 71,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 81,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 121,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r2": {
+    "attack_anims": [
+     "straight_sword_r2"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r2",
+     "startup": 0,
+     "active": 12,
+     "recovery": 60,
+     "total": 122,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r2",
+      "phase": "windup",
+      "anim_len": 122
+     },
+     {
+      "f": 97,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r2",
+      "phase": "active",
+      "anim_len": 122
+     },
+     {
+      "f": 109,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r2",
+      "phase": "recovery",
+      "anim_len": 122
+     },
+     {
+      "f": 169,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "backstep.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "BACKSTEP"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r1": {
+    "attack_anims": [
+     "straight_sword_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 75,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 85,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 125,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r2": {
+    "attack_anims": [
+     "straight_sword_r2"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r2",
+     "startup": 0,
+     "active": 12,
+     "recovery": 60,
+     "total": 122,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r2",
+      "phase": "windup",
+      "anim_len": 122
+     },
+     {
+      "f": 101,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r2",
+      "phase": "active",
+      "anim_len": 122
+     },
+     {
+      "f": 113,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r2",
+      "phase": "recovery",
+      "anim_len": 122
+     },
+     {
+      "f": 173,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r2": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "plunge": {
+    "attack_anims": [
+     "straight_sword_r2"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r2",
+     "startup": 0,
+     "active": 15,
+     "recovery": 72,
+     "total": 152,
+     "hit_frames": 15
+    },
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 31,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r2",
+      "phase": "windup",
+      "anim_len": 152
+     },
+     {
+      "f": 96,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r2",
+      "phase": "active",
+      "anim_len": 152
+     },
+     {
+      "f": 111,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r2",
+      "phase": "recovery",
+      "anim_len": 152
+     },
+     {
+      "f": 183,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guardbreak": {
+    "attack_anims": [
+     "straight_sword_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 29,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 39,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 79,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guard.counter": {
+    "attack_anims": [
+     "straight_sword_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 75,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 85,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 125,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "art.1": {
+    "attack_anims": [
+     "straight_sword_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_2h_r2",
+     "startup": 0,
+     "active": 12,
+     "recovery": 60,
+     "total": 122,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 39,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_2h_r2",
+      "phase": "windup",
+      "anim_len": 122
+     },
+     {
+      "f": 101,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_2h_r2",
+      "phase": "active",
+      "anim_len": 122
+     },
+     {
+      "f": 113,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_2h_r2",
+      "phase": "recovery",
+      "anim_len": 122
+     },
+     {
+      "f": 173,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r1.1": {
+    "attack_anims": [
+     "straight_sword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_2h_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_2h_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 81,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_2h_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 91,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 131,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r2": {
+    "attack_anims": [
+     "straight_sword_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_2h_r2",
+     "startup": 0,
+     "active": 12,
+     "recovery": 60,
+     "total": 122,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_2h_r2",
+      "phase": "windup",
+      "anim_len": 122
+     },
+     {
+      "f": 107,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_2h_r2",
+      "phase": "active",
+      "anim_len": 122
+     },
+     {
+      "f": 119,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_2h_r2",
+      "phase": "recovery",
+      "anim_len": 122
+     },
+     {
+      "f": 179,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.roll.r1": {
+    "attack_anims": [
+     "straight_sword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_2h_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 99,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_2h_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 123,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_2h_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 133,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 173,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.run.r1": {
+    "attack_anims": [
+     "straight_sword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_2h_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 101,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_2h_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 125,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_2h_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 135,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 175,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "parry": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "PARRY_ACTIVE",
+     "PARRY_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "PARRY_ACTIVE",
+      "anim": "parry_medium",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "PARRY_RECOVER",
+      "anim": "parry_medium",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "shield.bash": {
+    "attack_anims": [
+     "straight_sword_r1"
+    ],
+    "first_attack": {
+     "anim": "straight_sword_r1",
+     "startup": 0,
+     "active": 10,
+     "recovery": 40,
+     "total": 74,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 21,
+      "state": "ATK_STARTUP",
+      "anim": "straight_sword_r1",
+      "phase": "windup",
+      "anim_len": 74
+     },
+     {
+      "f": 45,
+      "state": "ATK_ACTIVE",
+      "anim": "straight_sword_r1",
+      "phase": "active",
+      "anim_len": 74
+     },
+     {
+      "f": 55,
+      "state": "ATK_RECOVER",
+      "anim": "straight_sword_r1",
+      "phase": "recovery",
+      "anim_len": 74
+     },
+     {
+      "f": 95,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   }
+  },
+  "dagger": {
+   "r1.1": {
+    "attack_anims": [
+     "dagger_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 17,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 23,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.2": {
+    "attack_anims": [
+     "dagger_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 49,
+     "total": 82,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 17,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 23,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 40
+     },
+     {
+      "f": 56,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 40
+     },
+     {
+      "f": 62,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 40
+     },
+     {
+      "f": 87,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.3": {
+    "attack_anims": [
+     "dagger_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_r1",
+     "startup": 0,
+     "active": 18,
+     "recovery": 74,
+     "total": 122,
+     "hit_frames": 18
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 17,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 23,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 40
+     },
+     {
+      "f": 56,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 40
+     },
+     {
+      "f": 62,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 40
+     },
+     {
+      "f": 87,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 93,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 40
+     },
+     {
+      "f": 102,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 40
+     },
+     {
+      "f": 108,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 40
+     },
+     {
+      "f": 133,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2": {
+    "attack_anims": [
+     "dagger_r2"
+    ],
+    "first_attack": {
+     "anim": "dagger_r2",
+     "startup": 0,
+     "active": 6,
+     "recovery": 44,
+     "total": 78,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r2",
+      "phase": "windup",
+      "anim_len": 78
+     },
+     {
+      "f": 33,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r2",
+      "phase": "active",
+      "anim_len": 78
+     },
+     {
+      "f": 39,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r2",
+      "phase": "recovery",
+      "anim_len": 78
+     },
+     {
+      "f": 83,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2.charged": {
+    "attack_anims": [
+     "dagger_r2"
+    ],
+    "first_attack": {
+     "anim": "dagger_r2",
+     "startup": 0,
+     "active": 6,
+     "recovery": 44,
+     "total": 78,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r2",
+      "phase": "windup",
+      "anim_len": 78
+     },
+     {
+      "f": 33,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r2",
+      "phase": "active",
+      "anim_len": 78
+     },
+     {
+      "f": 39,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r2",
+      "phase": "recovery",
+      "anim_len": 78
+     },
+     {
+      "f": 83,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r1": {
+    "attack_anims": [
+     "dagger_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 59,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 65,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 89,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r2": {
+    "attack_anims": [
+     "dagger_r2"
+    ],
+    "first_attack": {
+     "anim": "dagger_r2",
+     "startup": 0,
+     "active": 6,
+     "recovery": 44,
+     "total": 78,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r2",
+      "phase": "windup",
+      "anim_len": 78
+     },
+     {
+      "f": 75,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r2",
+      "phase": "active",
+      "anim_len": 78
+     },
+     {
+      "f": 81,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r2",
+      "phase": "recovery",
+      "anim_len": 78
+     },
+     {
+      "f": 125,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "backstep.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "BACKSTEP"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r1": {
+    "attack_anims": [
+     "dagger_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 63,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 69,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 93,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r2": {
+    "attack_anims": [
+     "dagger_r2"
+    ],
+    "first_attack": {
+     "anim": "dagger_r2",
+     "startup": 0,
+     "active": 6,
+     "recovery": 44,
+     "total": 78,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r2",
+      "phase": "windup",
+      "anim_len": 78
+     },
+     {
+      "f": 79,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r2",
+      "phase": "active",
+      "anim_len": 78
+     },
+     {
+      "f": 85,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r2",
+      "phase": "recovery",
+      "anim_len": 78
+     },
+     {
+      "f": 129,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r2": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "plunge": {
+    "attack_anims": [
+     "dagger_r2"
+    ],
+    "first_attack": {
+     "anim": "dagger_r2",
+     "startup": 0,
+     "active": 8,
+     "recovery": 53,
+     "total": 97,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 31,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r2",
+      "phase": "windup",
+      "anim_len": 97
+     },
+     {
+      "f": 67,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r2",
+      "phase": "active",
+      "anim_len": 97
+     },
+     {
+      "f": 75,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r2",
+      "phase": "recovery",
+      "anim_len": 97
+     },
+     {
+      "f": 128,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guardbreak": {
+    "attack_anims": [
+     "dagger_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 17,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 23,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guard.counter": {
+    "attack_anims": [
+     "dagger_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 63,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 69,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 93,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "art.1": {
+    "attack_anims": [
+     "dagger_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "dagger_2h_r2",
+     "startup": 0,
+     "active": 6,
+     "recovery": 44,
+     "total": 78,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 39,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_2h_r2",
+      "phase": "windup",
+      "anim_len": 78
+     },
+     {
+      "f": 79,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_2h_r2",
+      "phase": "active",
+      "anim_len": 78
+     },
+     {
+      "f": 85,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_2h_r2",
+      "phase": "recovery",
+      "anim_len": 78
+     },
+     {
+      "f": 129,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r1.1": {
+    "attack_anims": [
+     "dagger_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_2h_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_2h_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 69,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_2h_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 75,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_2h_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 99,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r2": {
+    "attack_anims": [
+     "dagger_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "dagger_2h_r2",
+     "startup": 0,
+     "active": 6,
+     "recovery": 44,
+     "total": 78,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_2h_r2",
+      "phase": "windup",
+      "anim_len": 78
+     },
+     {
+      "f": 85,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_2h_r2",
+      "phase": "active",
+      "anim_len": 78
+     },
+     {
+      "f": 91,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_2h_r2",
+      "phase": "recovery",
+      "anim_len": 78
+     },
+     {
+      "f": 135,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.roll.r1": {
+    "attack_anims": [
+     "dagger_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_2h_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 99,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_2h_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 111,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_2h_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 117,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_2h_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 141,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.run.r1": {
+    "attack_anims": [
+     "dagger_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_2h_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 101,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_2h_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 113,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_2h_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 119,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_2h_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 143,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "parry": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "PARRY_ACTIVE",
+     "PARRY_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "PARRY_ACTIVE",
+      "anim": "parry_medium",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "PARRY_RECOVER",
+      "anim": "parry_medium",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "shield.bash": {
+    "attack_anims": [
+     "dagger_r1"
+    ],
+    "first_attack": {
+     "anim": "dagger_r1",
+     "startup": 0,
+     "active": 6,
+     "recovery": 24,
+     "total": 42,
+     "hit_frames": 6
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 21,
+      "state": "ATK_STARTUP",
+      "anim": "dagger_r1",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 33,
+      "state": "ATK_ACTIVE",
+      "anim": "dagger_r1",
+      "phase": "active",
+      "anim_len": 42
+     },
+     {
+      "f": 39,
+      "state": "ATK_RECOVER",
+      "anim": "dagger_r1",
+      "phase": "recovery",
+      "anim_len": 42
+     },
+     {
+      "f": 63,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   }
+  },
+  "ultra-greatsword": {
+   "r1.1": {
+    "attack_anims": [
+     "ultra_greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 63,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 83,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 171,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.2": {
+    "attack_anims": [
+     "ultra_greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 63,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 83,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 171,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.3": {
+    "attack_anims": [
+     "ultra_greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 63,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 83,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 171,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2": {
+    "attack_anims": [
+     "ultra_greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r2",
+     "startup": 0,
+     "active": 24,
+     "recovery": 124,
+     "total": 252,
+     "hit_frames": 24
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r2",
+      "phase": "windup",
+      "anim_len": 252
+     },
+     {
+      "f": 109,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r2",
+      "phase": "active",
+      "anim_len": 252
+     },
+     {
+      "f": 133,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 252
+     },
+     {
+      "f": 257,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2.charged": {
+    "attack_anims": [
+     "ultra_greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r2",
+     "startup": 0,
+     "active": 24,
+     "recovery": 124,
+     "total": 252,
+     "hit_frames": 24
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r2",
+      "phase": "windup",
+      "anim_len": 252
+     },
+     {
+      "f": 109,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r2",
+      "phase": "active",
+      "anim_len": 252
+     },
+     {
+      "f": 133,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 252
+     },
+     {
+      "f": 257,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r1": {
+    "attack_anims": [
+     "ultra_greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 171,
+     "hit_frames": 25
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 105,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 130,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 218,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r2": {
+    "attack_anims": [
+     "ultra_greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r2",
+     "startup": 0,
+     "active": 24,
+     "recovery": 99,
+     "total": 234,
+     "hit_frames": 31
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r2",
+      "phase": "windup",
+      "anim_len": 252
+     },
+     {
+      "f": 151,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r2",
+      "phase": "active",
+      "anim_len": 252
+     },
+     {
+      "f": 182,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 252
+     }
+    ]
+   },
+   "backstep.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "BACKSTEP"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r1": {
+    "attack_anims": [
+     "ultra_greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 109,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 129,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 217,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r2": {
+    "attack_anims": [
+     "ultra_greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r2",
+     "startup": 0,
+     "active": 24,
+     "recovery": 102,
+     "total": 230,
+     "hit_frames": 24
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r2",
+      "phase": "windup",
+      "anim_len": 252
+     },
+     {
+      "f": 155,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r2",
+      "phase": "active",
+      "anim_len": 252
+     },
+     {
+      "f": 179,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 252
+     }
+    ]
+   },
+   "jump.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r2": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "plunge": {
+    "attack_anims": [
+     "ultra_greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r2",
+     "startup": 0,
+     "active": 30,
+     "recovery": 85,
+     "total": 250,
+     "hit_frames": 30
+    },
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 31,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r2",
+      "phase": "windup",
+      "anim_len": 314
+     },
+     {
+      "f": 166,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r2",
+      "phase": "active",
+      "anim_len": 314
+     },
+     {
+      "f": 196,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 314
+     }
+    ]
+   },
+   "guardbreak": {
+    "attack_anims": [
+     "ultra_greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 63,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 83,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 171,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guard.counter": {
+    "attack_anims": [
+     "ultra_greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 109,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 129,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 217,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "art.1": {
+    "attack_anims": [
+     "ultra_greatsword_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_2h_r2",
+     "startup": 0,
+     "active": 24,
+     "recovery": 102,
+     "total": 230,
+     "hit_frames": 24
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 39,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_2h_r2",
+      "phase": "windup",
+      "anim_len": 252
+     },
+     {
+      "f": 155,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_2h_r2",
+      "phase": "active",
+      "anim_len": 252
+     },
+     {
+      "f": 179,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_2h_r2",
+      "phase": "recovery",
+      "anim_len": 252
+     }
+    ]
+   },
+   "2h.r1.1": {
+    "attack_anims": [
+     "ultra_greatsword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_2h_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 115,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 135,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 223,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r2": {
+    "attack_anims": [
+     "ultra_greatsword_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_2h_r2",
+     "startup": 0,
+     "active": 24,
+     "recovery": 96,
+     "total": 224,
+     "hit_frames": 24
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_2h_r2",
+      "phase": "windup",
+      "anim_len": 252
+     },
+     {
+      "f": 161,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_2h_r2",
+      "phase": "active",
+      "anim_len": 252
+     },
+     {
+      "f": 185,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_2h_r2",
+      "phase": "recovery",
+      "anim_len": 252
+     }
+    ]
+   },
+   "2h.roll.r1": {
+    "attack_anims": [
+     "ultra_greatsword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_2h_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 171,
+     "hit_frames": 25
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 99,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 157,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 182,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 270,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.run.r1": {
+    "attack_anims": [
+     "ultra_greatsword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_2h_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 101,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 159,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 179,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 267,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "parry": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "PARRY_ACTIVE",
+     "PARRY_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "PARRY_ACTIVE",
+      "anim": "parry_medium",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "PARRY_RECOVER",
+      "anim": "parry_medium",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "shield.bash": {
+    "attack_anims": [
+     "ultra_greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "ultra_greatsword_r1",
+     "startup": 0,
+     "active": 20,
+     "recovery": 88,
+     "total": 166,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 21,
+      "state": "ATK_STARTUP",
+      "anim": "ultra_greatsword_r1",
+      "phase": "windup",
+      "anim_len": 166
+     },
+     {
+      "f": 79,
+      "state": "ATK_ACTIVE",
+      "anim": "ultra_greatsword_r1",
+      "phase": "active",
+      "anim_len": 166
+     },
+     {
+      "f": 99,
+      "state": "ATK_RECOVER",
+      "anim": "ultra_greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 166
+     },
+     {
+      "f": 187,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   }
+  },
+  "axe": {
+   "r1.1": {
+    "attack_anims": [
+     "axe_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 37,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 49,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 97,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.2": {
+    "attack_anims": [
+     "axe_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 37,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 49,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 97,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.3": {
+    "attack_anims": [
+     "axe_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_r1",
+     "startup": 0,
+     "active": 24,
+     "recovery": 98,
+     "total": 179,
+     "hit_frames": 24
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 37,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 49,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 97,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 87
+     },
+     {
+      "f": 122,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 87
+     },
+     {
+      "f": 134,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 87
+     },
+     {
+      "f": 184,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2": {
+    "attack_anims": [
+     "axe_r2"
+    ],
+    "first_attack": {
+     "anim": "axe_r2",
+     "startup": 0,
+     "active": 14,
+     "recovery": 72,
+     "total": 146,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r2",
+      "phase": "windup",
+      "anim_len": 146
+     },
+     {
+      "f": 65,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r2",
+      "phase": "active",
+      "anim_len": 146
+     },
+     {
+      "f": 79,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r2",
+      "phase": "recovery",
+      "anim_len": 146
+     },
+     {
+      "f": 151,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2.charged": {
+    "attack_anims": [
+     "axe_r2"
+    ],
+    "first_attack": {
+     "anim": "axe_r2",
+     "startup": 0,
+     "active": 14,
+     "recovery": 72,
+     "total": 146,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r2",
+      "phase": "windup",
+      "anim_len": 146
+     },
+     {
+      "f": 65,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r2",
+      "phase": "active",
+      "anim_len": 146
+     },
+     {
+      "f": 79,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r2",
+      "phase": "recovery",
+      "anim_len": 146
+     },
+     {
+      "f": 151,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r1": {
+    "attack_anims": [
+     "axe_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 79,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 91,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 139,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r2": {
+    "attack_anims": [
+     "axe_r2"
+    ],
+    "first_attack": {
+     "anim": "axe_r2",
+     "startup": 0,
+     "active": 14,
+     "recovery": 72,
+     "total": 146,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r2",
+      "phase": "windup",
+      "anim_len": 146
+     },
+     {
+      "f": 107,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r2",
+      "phase": "active",
+      "anim_len": 146
+     },
+     {
+      "f": 121,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r2",
+      "phase": "recovery",
+      "anim_len": 146
+     },
+     {
+      "f": 193,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "backstep.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "BACKSTEP"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r1": {
+    "attack_anims": [
+     "axe_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 83,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 95,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 143,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r2": {
+    "attack_anims": [
+     "axe_r2"
+    ],
+    "first_attack": {
+     "anim": "axe_r2",
+     "startup": 0,
+     "active": 14,
+     "recovery": 72,
+     "total": 146,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r2",
+      "phase": "windup",
+      "anim_len": 146
+     },
+     {
+      "f": 111,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r2",
+      "phase": "active",
+      "anim_len": 146
+     },
+     {
+      "f": 125,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r2",
+      "phase": "recovery",
+      "anim_len": 146
+     },
+     {
+      "f": 197,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r2": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "plunge": {
+    "attack_anims": [
+     "axe_r2"
+    ],
+    "first_attack": {
+     "anim": "axe_r2",
+     "startup": 0,
+     "active": 18,
+     "recovery": 86,
+     "total": 182,
+     "hit_frames": 18
+    },
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 31,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r2",
+      "phase": "windup",
+      "anim_len": 182
+     },
+     {
+      "f": 109,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r2",
+      "phase": "active",
+      "anim_len": 182
+     },
+     {
+      "f": 127,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r2",
+      "phase": "recovery",
+      "anim_len": 182
+     },
+     {
+      "f": 213,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guardbreak": {
+    "attack_anims": [
+     "axe_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 37,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 49,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 97,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guard.counter": {
+    "attack_anims": [
+     "axe_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 83,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 95,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 143,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "art.1": {
+    "attack_anims": [
+     "axe_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "axe_2h_r2",
+     "startup": 0,
+     "active": 14,
+     "recovery": 72,
+     "total": 146,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 39,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "axe_2h_r2",
+      "phase": "windup",
+      "anim_len": 146
+     },
+     {
+      "f": 111,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_2h_r2",
+      "phase": "active",
+      "anim_len": 146
+     },
+     {
+      "f": 125,
+      "state": "ATK_RECOVER",
+      "anim": "axe_2h_r2",
+      "phase": "recovery",
+      "anim_len": 146
+     },
+     {
+      "f": 197,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r1.1": {
+    "attack_anims": [
+     "axe_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_2h_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "axe_2h_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 89,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_2h_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 101,
+      "state": "ATK_RECOVER",
+      "anim": "axe_2h_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 149,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r2": {
+    "attack_anims": [
+     "axe_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "axe_2h_r2",
+     "startup": 0,
+     "active": 14,
+     "recovery": 72,
+     "total": 146,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "axe_2h_r2",
+      "phase": "windup",
+      "anim_len": 146
+     },
+     {
+      "f": 117,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_2h_r2",
+      "phase": "active",
+      "anim_len": 146
+     },
+     {
+      "f": 131,
+      "state": "ATK_RECOVER",
+      "anim": "axe_2h_r2",
+      "phase": "recovery",
+      "anim_len": 146
+     },
+     {
+      "f": 203,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.roll.r1": {
+    "attack_anims": [
+     "axe_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_2h_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 99,
+      "state": "ATK_STARTUP",
+      "anim": "axe_2h_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 131,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_2h_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 143,
+      "state": "ATK_RECOVER",
+      "anim": "axe_2h_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 191,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.run.r1": {
+    "attack_anims": [
+     "axe_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_2h_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 101,
+      "state": "ATK_STARTUP",
+      "anim": "axe_2h_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 133,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_2h_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 145,
+      "state": "ATK_RECOVER",
+      "anim": "axe_2h_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 193,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "parry": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "PARRY_ACTIVE",
+     "PARRY_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "PARRY_ACTIVE",
+      "anim": "parry_medium",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "PARRY_RECOVER",
+      "anim": "parry_medium",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "shield.bash": {
+    "attack_anims": [
+     "axe_r1"
+    ],
+    "first_attack": {
+     "anim": "axe_r1",
+     "startup": 0,
+     "active": 12,
+     "recovery": 48,
+     "total": 92,
+     "hit_frames": 12
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 21,
+      "state": "ATK_STARTUP",
+      "anim": "axe_r1",
+      "phase": "windup",
+      "anim_len": 92
+     },
+     {
+      "f": 53,
+      "state": "ATK_ACTIVE",
+      "anim": "axe_r1",
+      "phase": "active",
+      "anim_len": 92
+     },
+     {
+      "f": 65,
+      "state": "ATK_RECOVER",
+      "anim": "axe_r1",
+      "phase": "recovery",
+      "anim_len": 92
+     },
+     {
+      "f": 113,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   }
+  },
+  "halberd": {
+   "r1.1": {
+    "attack_anims": [
+     "halberd_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 43,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 57,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 113,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.2": {
+    "attack_anims": [
+     "halberd_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 43,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 57,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 113,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.3": {
+    "attack_anims": [
+     "halberd_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 43,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 57,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 113,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2": {
+    "attack_anims": [
+     "halberd_r2"
+    ],
+    "first_attack": {
+     "anim": "halberd_r2",
+     "startup": 0,
+     "active": 16,
+     "recovery": 84,
+     "total": 168,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r2",
+      "phase": "windup",
+      "anim_len": 168
+     },
+     {
+      "f": 73,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r2",
+      "phase": "active",
+      "anim_len": 168
+     },
+     {
+      "f": 89,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r2",
+      "phase": "recovery",
+      "anim_len": 168
+     },
+     {
+      "f": 173,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2.charged": {
+    "attack_anims": [
+     "halberd_r2"
+    ],
+    "first_attack": {
+     "anim": "halberd_r2",
+     "startup": 0,
+     "active": 16,
+     "recovery": 84,
+     "total": 168,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r2",
+      "phase": "windup",
+      "anim_len": 168
+     },
+     {
+      "f": 73,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r2",
+      "phase": "active",
+      "anim_len": 168
+     },
+     {
+      "f": 89,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r2",
+      "phase": "recovery",
+      "anim_len": 168
+     },
+     {
+      "f": 173,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r1": {
+    "attack_anims": [
+     "halberd_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 113,
+     "hit_frames": 19
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 85,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 104,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 160,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r2": {
+    "attack_anims": [
+     "halberd_r2"
+    ],
+    "first_attack": {
+     "anim": "halberd_r2",
+     "startup": 0,
+     "active": 16,
+     "recovery": 84,
+     "total": 175,
+     "hit_frames": 23
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r2",
+      "phase": "windup",
+      "anim_len": 168
+     },
+     {
+      "f": 115,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r2",
+      "phase": "active",
+      "anim_len": 168
+     },
+     {
+      "f": 138,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r2",
+      "phase": "recovery",
+      "anim_len": 168
+     },
+     {
+      "f": 222,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "backstep.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "BACKSTEP"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r1": {
+    "attack_anims": [
+     "halberd_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 89,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 103,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 159,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r2": {
+    "attack_anims": [
+     "halberd_r2"
+    ],
+    "first_attack": {
+     "anim": "halberd_r2",
+     "startup": 0,
+     "active": 16,
+     "recovery": 84,
+     "total": 168,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r2",
+      "phase": "windup",
+      "anim_len": 168
+     },
+     {
+      "f": 119,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r2",
+      "phase": "active",
+      "anim_len": 168
+     },
+     {
+      "f": 135,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r2",
+      "phase": "recovery",
+      "anim_len": 168
+     },
+     {
+      "f": 219,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r2": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "plunge": {
+    "attack_anims": [
+     "halberd_r2"
+    ],
+    "first_attack": {
+     "anim": "halberd_r2",
+     "startup": 0,
+     "active": 20,
+     "recovery": 101,
+     "total": 209,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 31,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r2",
+      "phase": "windup",
+      "anim_len": 209
+     },
+     {
+      "f": 119,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r2",
+      "phase": "active",
+      "anim_len": 209
+     },
+     {
+      "f": 139,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r2",
+      "phase": "recovery",
+      "anim_len": 209
+     },
+     {
+      "f": 240,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guardbreak": {
+    "attack_anims": [
+     "halberd_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 43,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 57,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 113,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guard.counter": {
+    "attack_anims": [
+     "halberd_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 89,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 103,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 159,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "art.1": {
+    "attack_anims": [
+     "halberd_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "halberd_2h_r2",
+     "startup": 0,
+     "active": 16,
+     "recovery": 84,
+     "total": 168,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 39,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_2h_r2",
+      "phase": "windup",
+      "anim_len": 168
+     },
+     {
+      "f": 119,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_2h_r2",
+      "phase": "active",
+      "anim_len": 168
+     },
+     {
+      "f": 135,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_2h_r2",
+      "phase": "recovery",
+      "anim_len": 168
+     },
+     {
+      "f": 219,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r1.1": {
+    "attack_anims": [
+     "halberd_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_2h_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_2h_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 95,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_2h_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 109,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_2h_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 165,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r2": {
+    "attack_anims": [
+     "halberd_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "halberd_2h_r2",
+     "startup": 0,
+     "active": 16,
+     "recovery": 84,
+     "total": 168,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_2h_r2",
+      "phase": "windup",
+      "anim_len": 168
+     },
+     {
+      "f": 125,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_2h_r2",
+      "phase": "active",
+      "anim_len": 168
+     },
+     {
+      "f": 141,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_2h_r2",
+      "phase": "recovery",
+      "anim_len": 168
+     },
+     {
+      "f": 225,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.roll.r1": {
+    "attack_anims": [
+     "halberd_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_2h_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 113,
+     "hit_frames": 19
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 99,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_2h_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 137,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_2h_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 156,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_2h_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 212,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.run.r1": {
+    "attack_anims": [
+     "halberd_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_2h_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 101,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_2h_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 139,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_2h_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 153,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_2h_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 209,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "parry": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "PARRY_ACTIVE",
+     "PARRY_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "PARRY_ACTIVE",
+      "anim": "parry_medium",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "PARRY_RECOVER",
+      "anim": "parry_medium",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "shield.bash": {
+    "attack_anims": [
+     "halberd_r1"
+    ],
+    "first_attack": {
+     "anim": "halberd_r1",
+     "startup": 0,
+     "active": 14,
+     "recovery": 56,
+     "total": 108,
+     "hit_frames": 14
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 21,
+      "state": "ATK_STARTUP",
+      "anim": "halberd_r1",
+      "phase": "windup",
+      "anim_len": 108
+     },
+     {
+      "f": 59,
+      "state": "ATK_ACTIVE",
+      "anim": "halberd_r1",
+      "phase": "active",
+      "anim_len": 108
+     },
+     {
+      "f": 73,
+      "state": "ATK_RECOVER",
+      "anim": "halberd_r1",
+      "phase": "recovery",
+      "anim_len": 108
+     },
+     {
+      "f": 129,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   }
+  },
+  "spear": {
+   "r1.1": {
+    "attack_anims": [
+     "spear_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 41,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.2": {
+    "attack_anims": [
+     "spear_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 41,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.3": {
+    "attack_anims": [
+     "spear_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 90,
+     "total": 156,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 41,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 93,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 76
+     },
+     {
+      "f": 115,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 76
+     },
+     {
+      "f": 123,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 76
+     },
+     {
+      "f": 169,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2": {
+    "attack_anims": [
+     "spear_r2"
+    ],
+    "first_attack": {
+     "anim": "spear_r2",
+     "startup": 0,
+     "active": 10,
+     "recovery": 64,
+     "total": 128,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r2",
+      "phase": "windup",
+      "anim_len": 128
+     },
+     {
+      "f": 59,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r2",
+      "phase": "active",
+      "anim_len": 128
+     },
+     {
+      "f": 69,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r2",
+      "phase": "recovery",
+      "anim_len": 128
+     },
+     {
+      "f": 133,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2.charged": {
+    "attack_anims": [
+     "spear_r2"
+    ],
+    "first_attack": {
+     "anim": "spear_r2",
+     "startup": 0,
+     "active": 10,
+     "recovery": 64,
+     "total": 128,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r2",
+      "phase": "windup",
+      "anim_len": 128
+     },
+     {
+      "f": 59,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r2",
+      "phase": "active",
+      "anim_len": 128
+     },
+     {
+      "f": 69,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r2",
+      "phase": "recovery",
+      "anim_len": 128
+     },
+     {
+      "f": 133,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r1": {
+    "attack_anims": [
+     "spear_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 85,
+     "hit_frames": 13
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 75,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 88,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 132,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r2": {
+    "attack_anims": [
+     "spear_r2"
+    ],
+    "first_attack": {
+     "anim": "spear_r2",
+     "startup": 0,
+     "active": 10,
+     "recovery": 64,
+     "total": 128,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r2",
+      "phase": "windup",
+      "anim_len": 128
+     },
+     {
+      "f": 101,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r2",
+      "phase": "active",
+      "anim_len": 128
+     },
+     {
+      "f": 111,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r2",
+      "phase": "recovery",
+      "anim_len": 128
+     },
+     {
+      "f": 175,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "backstep.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "BACKSTEP"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r1": {
+    "attack_anims": [
+     "spear_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 79,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 87,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 131,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r2": {
+    "attack_anims": [
+     "spear_r2"
+    ],
+    "first_attack": {
+     "anim": "spear_r2",
+     "startup": 0,
+     "active": 10,
+     "recovery": 64,
+     "total": 128,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r2",
+      "phase": "windup",
+      "anim_len": 128
+     },
+     {
+      "f": 105,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r2",
+      "phase": "active",
+      "anim_len": 128
+     },
+     {
+      "f": 115,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r2",
+      "phase": "recovery",
+      "anim_len": 128
+     },
+     {
+      "f": 179,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r2": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "plunge": {
+    "attack_anims": [
+     "spear_r2"
+    ],
+    "first_attack": {
+     "anim": "spear_r2",
+     "startup": 0,
+     "active": 13,
+     "recovery": 77,
+     "total": 160,
+     "hit_frames": 13
+    },
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 31,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r2",
+      "phase": "windup",
+      "anim_len": 160
+     },
+     {
+      "f": 101,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r2",
+      "phase": "active",
+      "anim_len": 160
+     },
+     {
+      "f": 114,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r2",
+      "phase": "recovery",
+      "anim_len": 160
+     },
+     {
+      "f": 191,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guardbreak": {
+    "attack_anims": [
+     "spear_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 41,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guard.counter": {
+    "attack_anims": [
+     "spear_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 79,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 87,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 131,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "art.1": {
+    "attack_anims": [
+     "spear_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "spear_2h_r2",
+     "startup": 0,
+     "active": 10,
+     "recovery": 64,
+     "total": 128,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 39,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "spear_2h_r2",
+      "phase": "windup",
+      "anim_len": 128
+     },
+     {
+      "f": 105,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_2h_r2",
+      "phase": "active",
+      "anim_len": 128
+     },
+     {
+      "f": 115,
+      "state": "ATK_RECOVER",
+      "anim": "spear_2h_r2",
+      "phase": "recovery",
+      "anim_len": 128
+     },
+     {
+      "f": 179,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r1.1": {
+    "attack_anims": [
+     "spear_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_2h_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "spear_2h_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_2h_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 93,
+      "state": "ATK_RECOVER",
+      "anim": "spear_2h_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 137,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r2": {
+    "attack_anims": [
+     "spear_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "spear_2h_r2",
+     "startup": 0,
+     "active": 10,
+     "recovery": 64,
+     "total": 128,
+     "hit_frames": 10
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "spear_2h_r2",
+      "phase": "windup",
+      "anim_len": 128
+     },
+     {
+      "f": 111,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_2h_r2",
+      "phase": "active",
+      "anim_len": 128
+     },
+     {
+      "f": 121,
+      "state": "ATK_RECOVER",
+      "anim": "spear_2h_r2",
+      "phase": "recovery",
+      "anim_len": 128
+     },
+     {
+      "f": 185,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.roll.r1": {
+    "attack_anims": [
+     "spear_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_2h_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 85,
+     "hit_frames": 13
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 99,
+      "state": "ATK_STARTUP",
+      "anim": "spear_2h_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 127,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_2h_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 140,
+      "state": "ATK_RECOVER",
+      "anim": "spear_2h_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 184,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.run.r1": {
+    "attack_anims": [
+     "spear_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_2h_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 101,
+      "state": "ATK_STARTUP",
+      "anim": "spear_2h_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 129,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_2h_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 137,
+      "state": "ATK_RECOVER",
+      "anim": "spear_2h_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 181,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "parry": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "PARRY_ACTIVE",
+     "PARRY_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "PARRY_ACTIVE",
+      "anim": "parry_medium",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "PARRY_RECOVER",
+      "anim": "parry_medium",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "shield.bash": {
+    "attack_anims": [
+     "spear_r1"
+    ],
+    "first_attack": {
+     "anim": "spear_r1",
+     "startup": 0,
+     "active": 8,
+     "recovery": 44,
+     "total": 80,
+     "hit_frames": 8
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 21,
+      "state": "ATK_STARTUP",
+      "anim": "spear_r1",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 49,
+      "state": "ATK_ACTIVE",
+      "anim": "spear_r1",
+      "phase": "active",
+      "anim_len": 80
+     },
+     {
+      "f": 57,
+      "state": "ATK_RECOVER",
+      "anim": "spear_r1",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 101,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   }
+  },
+  "greatsword": {
+   "r1.1": {
+    "attack_anims": [
+     "greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 49,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 65,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 131,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.2": {
+    "attack_anims": [
+     "greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 49,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 65,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 131,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r1.3": {
+    "attack_anims": [
+     "greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 49,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 65,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 131,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2": {
+    "attack_anims": [
+     "greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r2",
+     "startup": 0,
+     "active": 20,
+     "recovery": 96,
+     "total": 196,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r2",
+      "phase": "windup",
+      "anim_len": 196
+     },
+     {
+      "f": 85,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r2",
+      "phase": "active",
+      "anim_len": 196
+     },
+     {
+      "f": 105,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 196
+     },
+     {
+      "f": 201,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "r2.charged": {
+    "attack_anims": [
+     "greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r2",
+     "startup": 0,
+     "active": 20,
+     "recovery": 96,
+     "total": 196,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r2",
+      "phase": "windup",
+      "anim_len": 196
+     },
+     {
+      "f": 85,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r2",
+      "phase": "active",
+      "anim_len": 196
+     },
+     {
+      "f": 105,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 196
+     },
+     {
+      "f": 201,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r1": {
+    "attack_anims": [
+     "greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 131,
+     "hit_frames": 21
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 91,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 112,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 178,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "roll.r2": {
+    "attack_anims": [
+     "greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r2",
+     "startup": 0,
+     "active": 20,
+     "recovery": 96,
+     "total": 203,
+     "hit_frames": 27
+    },
+    "states": [
+     "IDLE",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r2",
+      "phase": "windup",
+      "anim_len": 196
+     },
+     {
+      "f": 127,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r2",
+      "phase": "active",
+      "anim_len": 196
+     },
+     {
+      "f": 154,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 196
+     },
+     {
+      "f": 250,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "backstep.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "BACKSTEP"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 47,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r1": {
+    "attack_anims": [
+     "greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 95,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 111,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 177,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "run.r2": {
+    "attack_anims": [
+     "greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r2",
+     "startup": 0,
+     "active": 20,
+     "recovery": 96,
+     "total": 196,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r2",
+      "phase": "windup",
+      "anim_len": 196
+     },
+     {
+      "f": 131,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r2",
+      "phase": "active",
+      "anim_len": 196
+     },
+     {
+      "f": 151,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 196
+     },
+     {
+      "f": 247,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r1": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "jump.r2": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "JUMP_LAND"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 39,
+      "state": "JUMP_LAND",
+      "anim": "jump",
+      "phase": "recovery",
+      "anim_len": 46
+     },
+     {
+      "f": 51,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "plunge": {
+    "attack_anims": [
+     "greatsword_r2"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r2",
+     "startup": 0,
+     "active": 25,
+     "recovery": 115,
+     "total": 244,
+     "hit_frames": 25
+    },
+    "states": [
+     "IDLE",
+     "JUMP_RISE",
+     "JUMP_AIR",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "JUMP_RISE",
+      "anim": "jump",
+      "phase": "windup",
+      "anim_len": 46
+     },
+     {
+      "f": 13,
+      "state": "JUMP_AIR",
+      "anim": "jump",
+      "phase": "active",
+      "anim_len": 46
+     },
+     {
+      "f": 31,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r2",
+      "phase": "windup",
+      "anim_len": 244
+     },
+     {
+      "f": 135,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r2",
+      "phase": "active",
+      "anim_len": 244
+     },
+     {
+      "f": 160,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r2",
+      "phase": "recovery",
+      "anim_len": 244
+     },
+     {
+      "f": 275,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guardbreak": {
+    "attack_anims": [
+     "greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 49,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 65,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 131,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "guard.counter": {
+    "attack_anims": [
+     "greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 95,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 111,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 177,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "art.1": {
+    "attack_anims": [
+     "greatsword_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "greatsword_2h_r2",
+     "startup": 0,
+     "active": 20,
+     "recovery": 96,
+     "total": 196,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 39,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 51,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_2h_r2",
+      "phase": "windup",
+      "anim_len": 196
+     },
+     {
+      "f": 131,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_2h_r2",
+      "phase": "active",
+      "anim_len": 196
+     },
+     {
+      "f": 151,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_2h_r2",
+      "phase": "recovery",
+      "anim_len": 196
+     },
+     {
+      "f": 247,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r1.1": {
+    "attack_anims": [
+     "greatsword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_2h_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_2h_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 101,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_2h_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 117,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 183,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.r2": {
+    "attack_anims": [
+     "greatsword_2h_r2"
+    ],
+    "first_attack": {
+     "anim": "greatsword_2h_r2",
+     "startup": 0,
+     "active": 20,
+     "recovery": 96,
+     "total": 196,
+     "hit_frames": 20
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_2h_r2",
+      "phase": "windup",
+      "anim_len": 196
+     },
+     {
+      "f": 137,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_2h_r2",
+      "phase": "active",
+      "anim_len": 196
+     },
+     {
+      "f": 157,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_2h_r2",
+      "phase": "recovery",
+      "anim_len": 196
+     },
+     {
+      "f": 253,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.roll.r1": {
+    "attack_anims": [
+     "greatsword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_2h_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "BACKSTEP",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 57,
+      "state": "BACKSTEP",
+      "anim": "backstep_light",
+      "phase": "windup",
+      "anim_len": 42
+     },
+     {
+      "f": 99,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_2h_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 143,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_2h_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 159,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 225,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "2h.run.r1": {
+    "attack_anims": [
+     "greatsword_2h_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_2h_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "STANCE_SWITCH",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "STANCE_SWITCH",
+      "anim": "stance_to_two_hand",
+      "phase": "recovery",
+      "anim_len": 36
+     },
+     {
+      "f": 41,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 101,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_2h_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 145,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_2h_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 161,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_2h_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 227,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "parry": {
+    "attack_anims": [],
+    "first_attack": null,
+    "states": [
+     "IDLE",
+     "PARRY_ACTIVE",
+     "PARRY_RECOVER"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 5,
+      "state": "PARRY_ACTIVE",
+      "anim": "parry_medium",
+      "phase": "windup",
+      "anim_len": 80
+     },
+     {
+      "f": 33,
+      "state": "PARRY_RECOVER",
+      "anim": "parry_medium",
+      "phase": "recovery",
+      "anim_len": 80
+     },
+     {
+      "f": 85,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   },
+   "shield.bash": {
+    "attack_anims": [
+     "greatsword_r1"
+    ],
+    "first_attack": {
+     "anim": "greatsword_r1",
+     "startup": 0,
+     "active": 16,
+     "recovery": 66,
+     "total": 126,
+     "hit_frames": 16
+    },
+    "states": [
+     "IDLE",
+     "BLOCK_HOLD",
+     "ATK_STARTUP",
+     "ATK_ACTIVE",
+     "ATK_RECOVER",
+     "RUN"
+    ],
+    "seq": [
+     {
+      "f": 1,
+      "state": "IDLE",
+      "anim": "idle",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 3,
+      "state": "BLOCK_HOLD",
+      "anim": "idle_guard",
+      "phase": "none",
+      "anim_len": 1
+     },
+     {
+      "f": 21,
+      "state": "ATK_STARTUP",
+      "anim": "greatsword_r1",
+      "phase": "windup",
+      "anim_len": 126
+     },
+     {
+      "f": 65,
+      "state": "ATK_ACTIVE",
+      "anim": "greatsword_r1",
+      "phase": "active",
+      "anim_len": 126
+     },
+     {
+      "f": 81,
+      "state": "ATK_RECOVER",
+      "anim": "greatsword_r1",
+      "phase": "recovery",
+      "anim_len": 126
+     },
+     {
+      "f": 147,
+      "state": "RUN",
+      "anim": "run",
+      "phase": "none",
+      "anim_len": 1
+     }
+    ]
+   }
+  }
+ },
+ "note": "The seven ids below are the only movesets the live simulation will equip (probe A). The 87-weapon roster in game/data/combat/movesets/ is unreachable from the running game, so this is the whole of what a player can actually press."
+}

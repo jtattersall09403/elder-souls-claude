@@ -1,0 +1,153 @@
+{
+  "schema": "elder-souls/run-manifest@1",
+  "run_id": "20260806T201639Z-wld-dres-raid-road-s1337-4c4ed2",
+  "ok": true,
+  "scenario": "wld-dres-raid-road",
+  "scenario_title": "RI-CHR02 method 8 — the AR-3 assertion. A created character walks a salt road with a Dres raid party on it. Identical statblocks, identical movesets, three different openings and one non-fight.",
+  "seed": 1337,
+  "frames_requested": 1800,
+  "frames_traced": 1800,
+  "warmup_frames": 10,
+  "window_reanchor": {
+    "frame": 10,
+    "seed": 1337,
+    "entities": [
+      {
+        "eid": "dres-raid-party-infantry-0",
+        "anim_len": 48,
+        "seeded_phase": 40,
+        "anim_frame": [
+          2,
+          40
+        ],
+        "state_entered_f": [
+          0,
+          10
+        ]
+      },
+      {
+        "eid": "dres-raid-party-infantry-1",
+        "anim_len": 48,
+        "seeded_phase": 5,
+        "anim_frame": [
+          15,
+          5
+        ],
+        "state_entered_f": [
+          0,
+          10
+        ]
+      },
+      {
+        "eid": "dres-raid-party-infantry-2",
+        "anim_len": 48,
+        "seeded_phase": 47,
+        "anim_frame": [
+          9,
+          47
+        ],
+        "state_entered_f": [
+          0,
+          10
+        ]
+      },
+      {
+        "eid": "dres-raid-party-infantry-3",
+        "anim_len": 48,
+        "seeded_phase": 10,
+        "anim_frame": [
+          20,
+          10
+        ],
+        "state_entered_f": [
+          0,
+          10
+        ]
+      },
+      {
+        "eid": "dres-raid-party-net-thrower-0",
+        "anim_len": 48,
+        "seeded_phase": 12,
+        "anim_frame": [
+          22,
+          12
+        ],
+        "state_entered_f": [
+          0,
+          10
+        ]
+      },
+      {
+        "eid": "dres-raid-party-net-thrower-1",
+        "anim_len": 48,
+        "seeded_phase": 1,
+        "anim_frame": [
+          11,
+          1
+        ],
+        "state_entered_f": [
+          0,
+          10
+        ]
+      }
+    ]
+  },
+  "character_override": {
+    "race": "dunmer",
+    "upbringing": "foreign-born"
+  },
+  "character": {
+    "race": "dunmer",
+    "upbringing": "foreign-born",
+    "class_id": "reed-walker",
+    "class_family": "scout",
+    "birthsign": "raj-xul",
+    "signature": "dunmer|scout|given|foreign"
+  },
+  "fixed_step_hz": 60,
+  "trace": {
+    "path": "trace.jsonl",
+    "records": 1800,
+    "body_sha256": "aa88322d5b8c048054aabf424ab20f30f41a68cb35153079fed65c7ba1c106cb"
+  },
+  "url": "http://127.0.0.1:42233/game/index.html",
+  "harness_version": 2,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 288
+  },
+  "git": {
+    "commit": "65275dcd5fca9b1bf21e16999c8295fb109b6353",
+    "branch": "HEAD",
+    "dirty": true
+  },
+  "data": {
+    "files": 293,
+    "sha256": "957c499d147d876a4def064717a16e5da45b7a1e8e58fef33fcb49c7ebc395c0"
+  },
+  "started_at": "2026-08-06T20:16:39.785Z",
+  "ended_at": "2026-08-06T20:16:46.677Z",
+  "wall_ms": 6892,
+  "page_errors": [],
+  "console_errors": [],
+  "node": "v22.22.2",
+  "tool_argv": [
+    "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/wt-head/tools/harness/run-headless.mjs",
+    "--scenario",
+    "wld-dres-raid-road",
+    "--seed",
+    "1337",
+    "--state",
+    "race=dunmer,upbringing=foreign-born",
+    "--out",
+    "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07/ar3/dunmer"
+  ]
+}
