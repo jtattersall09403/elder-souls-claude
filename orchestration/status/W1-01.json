@@ -4,12 +4,24 @@
   "started": "wave-1",
   "state": "researching",
   "outputs_expected": [
-    "game/data/world/*.json",
-    "game/src/world/* (terrain, regions, water, streaming)",
-    "orchestration/status/W1-01.json"
+    "game/data/world/terrain.json",
+    "game/data/world/regions.json (rewritten, 13 regions)",
+    "game/data/world/water.json (elder-souls/water@1)",
+    "game/data/world/roads.json",
+    "game/data/world/settlements-sites.json",
+    "game/src/world/** (heightfield, regions, water, streaming)",
+    "tools/world/* measurement scripts"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read docs/PLAN.md W1-01 section, ARBITRATION seams S17/S24/S25, corpus/50-world data",
+  "findings": [
+    "world-scale.json is authoritative: world box x[0,4822] z[0,5540]; RI-WLD01 prose says 4825x5540 — use 4825 for the box, tolerance ±25m in M1.",
+    "Crossing = Stormhold->Helstrom->Blackrose->Lilmoth = 2921+2485+1503 = 6909 m; 6909/2.0/60 = 57.575 min. Legs come from roads[] with sinuosity 1.45/1.45/1.45.",
+    "RI-WLD01 M3 anti-cheat: <=8% of speed samples on road may be below 1.6 m/s.",
+    "RI-WLD04 M18: 9 axes, every one of 78 pairs must differ on >=6.",
+    "RI-WLD10 M47 census script exists at corpus/80-methods/m-wld10-water-census.mjs; it reads game/data/world/water.json. Exact tidal set: Crimson Coast, Eastern Rootlands, Marauder's Coast, Stone Wastes, Western Rootlands.",
+    "W1-00 shipped game/ with fixed-step loop, seeded PRNG (core/rng.js), determinism trap (core/guards.js), render/scene.js = 420m patch at origin. W1-01 replaces the patch with the province.",
+    "HARNESS §7 data layout requires game/data/world/regions.json + pois.json + settlements/<id>.json"
+  ],
+  "next_step": "read ARBITRATION S17/S24/S25, RI-WLD07/11, RI-TRV01, RI-AI05, RI-PRG06/07, RI-CAM02; then read game/src engine + scene",
   "notes_for_successor": ""
 }
