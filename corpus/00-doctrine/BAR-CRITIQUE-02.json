@@ -1,0 +1,237 @@
+{
+  "critic": "bar-critic",
+  "pass": 2,
+  "date": "2026-08-06",
+  "supersedes": "corpus/00-doctrine/BAR-CRITIQUE-01.json",
+  "scope": {
+    "reference_items": 137,
+    "subsystem_paths": 323,
+    "corpus_index_strict_exit": 0,
+    "holes": 0,
+    "unresolved_paths": 0,
+    "problems": 0
+  },
+  "verdict": "SUFFICIENT",
+  "gates_met": 12,
+  "gates_total": 15,
+  "verdict_note": "Every one of the 13 ranked gaps is closed or substantively closed. The three unmet gates are a scoring-metadata pass (W7), a missing aggregate content-budget sheet, and a CI invocation that was asserted to exist and does not. None is a design gap; each is closable in under a day by someone making no design decisions. They are carried forward as conditions on specific later steps, not as a reason to hold the wave.",
+
+  "gates": [
+    {
+      "condition": "G1 - corpus/95-experience/ exists with a critic.experience role, a PLAYTHROUGH-CRITIC.md doctrine granting scoring authority over quality across the whole game, and at least RI-EXP01, RI-EXP02 and RI-EXP04 written to CORPUS-CONTRACT section 2 with executable comparison methods; an experience.* root exists in subsystems.json.",
+      "met": true,
+      "evidence": "corpus/95-experience/ holds 11 files. PLAYTHROUGH-CRITIC.md section 1 inverts the coherence-agent remit table clause for clause; section 2 grants wave_experience_verdict in {ALIVE, ALIVE_WITH_FINDINGS, DEAD} with min aggregation and bans 'every piece passed' as a defence; section 3 sets a FRAGMENT/PARTIAL/FULL dosage of 3/8/20 h with P1-P11 mandatory activities; section 4.5 is the sabotage control. RI-EXP01-06 and RI-CMP01-03 all exist. subsystems.json carries 15 experience.* paths, 6 composition.* paths and a critic.experience role."
+    },
+    {
+      "condition": "G2 - ARBITRATION.md section 3 carries AR-3 (seam sterility), and RI-CMP01 (cross-system payoff matrix) exists with a numeric floor on boundary-crossing interactions.",
+      "met": true,
+      "evidence": "AR-3 is the third bullet of ARBITRATION.md section 3, requires seam_sterile:true with justification on any zero-crossing piece, and defers the floor to RI-CMP01. RI-CMP01 section H sets per-wave floors on demonstrated crossings (BAR-CRITIQUE-01's >=8 is its W2 floor, then exceeded); section D registers 41 crossings; its hardest rule is stated first - a cell that cannot be demonstrated firing in a trace scores zero. The item also declares its own unmet obligation: the 41 crossings split 30 W->F / 11 F->W = 27%, below its own crossing_both_directions gate of 1/3, recorded as a debt rather than resolved by lowering the gate."
+    },
+    {
+      "condition": "G3 - RI-EXP06 (permissiveness budget) exists with >=12 registered sanctioned breakages asserted to work; no 20-progression item may add an anti-exploit hard fail without naming a register entry it leaves open.",
+      "met": true,
+      "evidence": "RI-EXP06 registers 15 live entries, 8 systemic, 2 permanent, against its thresholds of 12/4/2. Each entry carries a probe that must succeed; probes_run is a hard fail, not a scored metric. PB-RULE clause 4 makes the cross-rule symmetric in both directions; clause 3 forbids the register falling below twelve live entries. Hard fail 4 is wave-over-wave REGRESSION detection when a previously-passing entry fails with no strike recorded."
+    },
+    {
+      "condition": "G4 - Magic exists in the corpus: ARBITRATION S19, plus RI-MAG01 (effects + spellmaking) and RI-MAG02 (casting in the fight) at minimum; magic.* paths exist and combat.magic.casting is no longer a hole.",
+      "met": true,
+      "evidence": "S19 is in ARBITRATION.md section 2, stated as SPLIT, and its own text says 'Ruling added wave 0 in response to BAR-CRITIQUE-01 G4'. It additionally reconciles Mark/Recall/Intervention with S7 and bans teleport as a level-design solvent, correcting an earlier drafting that contradicted S7 (drift ID-03). 20 magic.* paths registered with a critic.magic role. RI-MAG01-05 exist; 55 effects. INDEX.md maps combat.magic.casting to RI-MAG01 and RI-TRV02."
+    },
+    {
+      "condition": "G5 - RI-CMB09 (impact/hitstop/feedback) and RI-AUD01 (combat audio) exist, and combat.feedback.hitstop no longer lists RI-MTH03 as its judge.",
+      "met": true,
+      "evidence": "The hitstop bar arrived as RI-WPN05 (weapon feel - hitstop, material impact, whiff, mass) rather than under the proposed ID; the ID is immaterial. INDEX.md maps combat.feedback.hitstop to RI-WPN05 + RI-CAM06 + RI-AUD01, and audio.combat.impact to RI-AUD01 + RI-AUD02. Audio grew from 4 paths / 3 holes / 1 world item to 5 dedicated items with a critic.audio role. W5 applied per CORPUS-COHERENCE-01 section 7: all five of RI-MTH03's false mappings removed; it retains only process.critic.discipline and process.verdict.format."
+    },
+    {
+      "condition": "G6 - A camera.* root with >=6 paths exists and RI-CAM01 covers the S18 clause list - spring-arm collision, framing, recentre, clamp, and the own-body-legibility check - with thresholds measured in the game's three worst geometries.",
+      "met": true,
+      "met_qualifier": "MET WITH DEFECT - substance met, taxonomy clause not met",
+      "evidence": "RI-CAM01-07 exist and cover S18 in more depth than requested: rig geometry and spring arm, free-camera and camera-relative movement, lock-on containment law, locked movement and directional roll, the camera outside the fight (including the first-person ban and AR-2 on shot-reverse-shot dialogue), camera feel as derivative statistics, and third-person character presentation. Shared values with RI-CMB06 section B are marked [CMB06] and locked against unilateral change. DEFECT: there is no camera.* root and no critic.camera; all seven items resolve onto combat.camera.behaviour plus paths owned by other areas. See new_defects N6."
+    },
+    {
+      "condition": "G7 - constants.json exists with a single owner per shared constant; RI-MTH05 exists; the walk-speed/traversal-minute contradiction (W4) is resolved by amendment; the enemy-budget contradiction is reconciled with an explicit arithmetic reconciliation recorded in one item; and an aggregate content-budget sheet exists with a stated feasibility argument.",
+      "met": false,
+      "evidence": "First four clauses met. constants.json holds 28 constants with one owner each, plus three deliberate divergences recorded as divergences rather than flattened (RI-STL01 sneak 0.85 m/s, RI-CRM01 guard pursuit 3.4 m/s, RI-MAG02 levitation 0.8 m/s). W4 resolved: the traversal minute is 120 m owned by RI-AI07, with eleven figure groups re-derived. Enemy budget reconciled in RI-PRG06 section 7 - 576 redesignated a floor and the derivation-N, census set at 1230 owned by RI-WLD07, and a normalisation rule souls_each x 576/N_shipped preserving RI-PRG06's soul column. RI-MTH05 exists with checks C1-C5. FIFTH CLAUSE NOT MET: no aggregate content-budget sheet exists anywhere in the repository. See new_defects N2."
+    },
+    {
+      "condition": "G8 - stealth.* and crime.* roots exist with RI-STL01 and RI-CRM01; RI-QST05 is amended per W6 to score unmeasurable -> 0 if they are absent.",
+      "met": true,
+      "evidence": "9 stealth.* and 9 crime.* paths registered with a critic.stealth role. RI-STL01 (detection and sneak), RI-STL02 (theft, locks, fencing), RI-CRM01 (crime, witnesses, justice), RI-CRM02 (faction crime and writs). W6 applied per CORPUS-COHERENCE-01 section 7: VERB-SPREAD <=40% promoted from band condition to hard fail, and RI-QST05 now formally depends on RI-STL01/02 and RI-CRM01 with PACIFIST-ALL scoring unmeasurable -> 0 if those systems are absent. Seam S21 (where the die survives) was added at the stealth author's request."
+    },
+    {
+      "condition": "G9 - RI-CMB10 (player moveset contract with the archetype answer matrix) and RI-CMB11 (weapon identity) exist; combat.attack.charge and combat.weapon.identity are no longer holes; the arrows priced in RI-PRG05 have a mechanic.",
+      "met": true,
+      "evidence": "Delivered as RI-WPN01-06 rather than under the proposed IDs. RI-WPN01 section E is titled 'The answer matrix (BAR-CRITIQUE-01 G9)' and gives every RI-AI05 archetype x answering slot x region of availability; check M5 hard-fails any archetype whose earliest answering slot arrives after its first appearance, and any archetype whose only answer is a shoot slot out-ranging its aggro radius. 20 weapon.* paths, a moveset.schema.json, and a dedicated WEAPON-CRITIC.md. INDEX.md maps combat.attack.charge to RI-WPN01 and combat.weapon.identity to RI-WPN02 + RI-WPN03. Ranged combat is specified across six items."
+    },
+    {
+      "condition": "G10 - character.* exists with RI-CHR01; progression.build.identity is no longer a hole.",
+      "met": true,
+      "evidence": "10 character.* paths. RI-CHR01 (character creation - flow, custom class, irreversibility), RI-CHR02 (race and standing), RI-CHR03 (birthsigns - nine tides, three with drawbacks). INDEX.md maps progression.build.identity to RI-CHR01 + RI-CHR03, with RI-CMP03 (build-identity payoff) as the composition-side viability check."
+    },
+    {
+      "condition": "G11 - RI-WLD09 (opacity budget) and RI-DLG08 (tonal range and indifference ratio) exist.",
+      "met": true,
+      "evidence": "Both exist and both are measured rather than asserted. RI-WLD09 forced the W2 resolution against RI-WLD02 and adds an anti-abuse witness-prop clause (>=6 authored non-poi props per km2 inside a declared void tract). RI-DLG08 measured 11 surface statistics and the full indifference decomposition over 28,051 distinct texts from the vendored Morrowind.esm extraction, and corrected BAR-CRITIQUE-01's own proposed band with the arithmetic attached: the proposed 0.45-0.75 was measured at 0.3723 for that definition, so the item split the metric into non_address_rate (band around the measured value) and a stance-based indifference ratio (0.8746 measured, band 0.78-0.92), with anti-gaming floors on both sides."
+    },
+    {
+      "condition": "G12 - RI-PLT01 (frame and memory budget) exists and CRITIC-DOCTRINE section 2.4.3 cites it, so the fidelity/performance trade is judgeable rather than banned.",
+      "met": true,
+      "met_qualifier": "MET WITH DEFECT - item exists and the doctrine clause now resolves, but the cross-reference is unnamed",
+      "evidence": "13 platform.* paths and a critic.platform role. RI-PLT01 (frame budget, M1-M15), RI-PLT02 (memory and asset budgets), RI-PLT03 (load, streaming, hitches), with the two-tier valid-here / needs-hardware split. CRITIC-DOCTRINE section 2.4.3's conditional - 'platform limits are judged only where a platform.* item explicitly sets the budget' - now resolves because one does. DEFECT: neither section 2.4.3 nor RI-VIS04's 'a different corpus area' sentence names RI-PLT01 or corpus/85-platform/, so a fresh critic with no context cannot follow either. See new_defects N7."
+    },
+    {
+      "condition": "G13 - The wrong bars W1, W2, W3, W4, W5, W6, W7, W8 are amended as specified (W9 is satisfied by G2).",
+      "met": false,
+      "evidence": "Seven of eight applied and verified in the items. W1: RI-WLD05 now <=12 strangeness elements in the first 30 min, >=26 by hour 10, 30 by hour 18, no empty 90-min window after hour 2; M24's sign reversed; the audit additionally found the item's own E column summed to 20, not the claimed 22. W2: RI-WLD02's D1/D2/D13 scoped to settled regions, V5/V6 added as peers so the item can now fail for too little emptiness, with a witness-prop anti-abuse clause. W3: ours_win_rate demoted from pass condition to reported statistic; professional_bet_accuracy <=0.65 and judge_cannot_name_a_consistent_tell are the pass metrics; ours_win_rate >0.5 now VOIDs the run. W4: resolved via constants.json. W5: applied. W6: applied. W8: fixture wave-standard-build pinned, unstated fixture is unmeasurable => 0. W9: correctly left untouched. W7 IS NOT APPLIED - the rule is in SCORING.md section 1.2 but the per-item execution is missing. See new_defects N1."
+    },
+    {
+      "condition": "G14 - node tools/corpus-index.mjs reports 0 front-matter errors, and --check is a blocking CI gate; every remaining hole is filled or explicitly accepted in writing by the dimension owner with a reason.",
+      "met": false,
+      "evidence": "First and third clauses met: --strict exits 0 with 323 paths, 137 items, 0 errors, 0 warnings, 0 unresolved paths and 0 holes. ACCEPTED-HOLES.md is the register and is empty because all fourteen holes open at the start of the holes task were closed with real reference items rather than accepted. SECOND CLAUSE NOT MET: there is no .github/, no package.json and no git hook in the repository. Nothing invokes --check. RI-MTH05 M8 states it 'is wired as a blocking gate'; it is not. See new_defects N5."
+    },
+    {
+      "condition": "G15 - Every one of the user's stated requirements maps to >=1 reference item. As of BAR-CRITIQUE-01 the following mapped to zero: magic/spellmaking/enchanting; character creation and race; stealth; crime and justice; player ranged combat; hit impact and combat audio; the camera beyond three lock-on clauses; the endings; the first hour; the shape of a session; whether it is fun.",
+      "met": true,
+      "evidence": "All eleven now map to real items: magic -> RI-MAG01-05; character creation and race -> RI-CHR01-03; stealth -> RI-STL01-02; crime and justice -> RI-CRM01-02; player ranged combat -> RI-WPN01 section E; hit impact and combat audio -> RI-WPN05 + RI-AUD01; the camera -> RI-CAM01-07; the endings -> RI-EXP05; the first hour -> RI-EXP01 + RI-JRN02; the shape of a session -> RI-EXP03; whether it is fun -> the whole of 95-experience under PLAYTHROUGH-CRITIC.md."
+    }
+  ],
+
+  "gaps": [
+    {"id": "G1-rank1", "status": "closed", "note": "The experience blind spot. Closed better than proposed. PLAYTHROUGH-CRITIC.md grants standing, sets a 3/8/20 h dosage with P1-P11 mandatory activities, and - the part not specified in the request - makes the instrument's own validity a per-wave empirical test via the sabotage control (section 4.5), where a battery that cannot separate the live build from a sabotaged one produces VOID rather than FAIL. Section 10 pre-registers the eight ways the role fails."},
+    {"id": "G2-rank2", "status": "closed", "note": "AR-3 in ARBITRATION.md section 3 plus RI-CMP01 with the demonstrated-not-declared rule stated first as the item's hardest rule. RI-CMP02 (emergence fuzzing) and RI-CMP03 (build-identity viability) were not requested and are the right two companions."},
+    {"id": "G3-rank3", "status": "closed", "note": "RI-EXP06: 15 live entries against a floor of 12, 8 systemic against a floor of 4, 2 permanent against a floor of 2. Probes must succeed; probes_run is a hard fail. PB-RULE is symmetric; the register may never fall below twelve. Wave-over-wave REGRESSION detection is hard fail 4."},
+    {"id": "G4-rank4", "status": "closed", "note": "S19 + 20 magic.* paths + RI-MAG01-05 + 55 effects + critic.magic. S19 also resolved a contradiction with S7 that BAR-CRITIQUE-01 did not spot (an earlier drafting banned utility teleport outright)."},
+    {"id": "G5-rank5", "status": "closed", "note": "RI-WPN05 (hitstop, material impact, whiff, mass), RI-CAM06 (camera-side hitstop and shake), RI-AUD01 (impact audio with onset within one frame and a parry ring identifiable with the screen off). The false RI-MTH03 mapping is removed."},
+    {"id": "G6-rank6", "status": "substantively closed", "note": "Seven camera items covering S18 in depth, including the own-body-legibility check S18 says is the reason it exists. The taxonomy half is not done: no camera.* root, no critic.camera. See new_defects N6."},
+    {"id": "G7-rank7", "status": "closed", "note": "CORPUS-COHERENCE-01 is 1,114 lines and its most valuable sections are 11b (edits deliberately NOT made) and 12 (what remains contradictory). It found defects BAR-CRITIQUE-01 missed: RI-CMB02 contradicting itself with an arithmetically impossible rule, RI-LOR06 judging nothing at all, the Jel validator rejecting canon, and deviceScaleFactor:1 making the fake-UI check unmeasurable. Note: this closes the audit gap; the aggregate-budget clause of gate G7 remains separately unmet."},
+    {"id": "G8-rank8", "status": "closed", "note": "18 paths, 4 items, a critic, seam S21, and W6 applied so RI-QST05 can no longer be satisfied by speechcraft alone."},
+    {"id": "G9-rank9", "status": "closed", "note": "RI-WPN01-06 plus the answer matrix. combat.attack.charge and combat.weapon.identity are judged by real items."},
+    {"id": "G10-rank10", "status": "closed", "note": "RI-CHR01-03 plus 10 character.* paths. RI-CHR02 makes the Argonian-in-Black-Marsh premise pay mechanically, which was the point of the gap."},
+    {"id": "G11-rank11", "status": "closed", "note": "RI-WLD09 exists and did more than exist: it forced the W2 resolution, and its witness-prop clause closes the obvious abuse of declaring a void tract over land nobody built."},
+    {"id": "G12-rank12", "status": "closed", "note": "RI-DLG08, measured against 28,051 real dialogue texts, with anti-gaming floors on both sides of the indifference ratio and a correction of the critic's own proposed band."},
+    {"id": "G13-rank13", "status": "closed", "note": "RI-PLT01-03 with the two-tier split. Two cross-references still dangle - see new_defects N7."}
+  ],
+
+  "new_defects": [
+    {
+      "id": "N1",
+      "rank": 1,
+      "title": "Thirty-five items score zero under a rule the repair itself created (W7 unexecuted)",
+      "severity": "major",
+      "detail": "SCORING.md section 1.2, as amended for W7, requires every item's ## Scoring section to carry a fixed native->ladder row and states that an item with no ladder row is unmeasurable and scores 0, fail-closed. Measured today: 6 of 137 items carry the mandated row verbatim (all six in 12-weapons); 102 of 137 carry a band table that does the job in a different format and are substantively but not formally compliant; 35 of 137 carry no native->ladder mapping in any form and therefore score 0 as written. The 35 include all six 86-ui items (among them RI-UIX02, the enforcement point for AR-2/S8), four of five 87-audio items, five of eight 40-dialogue items (including RI-DLG01 and RI-DLG05), five of seven 60-lore items, seven of nine 30-quests items including RI-QST06 (the main quest), six of nine 70-visual, plus RI-AI01 and RI-MTH01. Three of the fourteen wave-1 pieces in docs/PLAN.md are therefore unscoreable on day one. CORPUS-COHERENCE-01 section 12.2 flagged this honestly at the time; 73 items were then written while the rule was live and only the six weapons items complied, because the rule is invisible to corpus-index.mjs --check.",
+      "fix": "One pass by area owners filling the row for the 35; either reconcile the other 96 to the mandated format or amend SCORING.md section 1.2 to accept any table mapping a native band to a ladder number. Add the row's presence to corpus-index.mjs --check as C6."
+    },
+    {
+      "id": "N2",
+      "rank": 2,
+      "title": "The corpus grew 114% and nobody re-summed it; still no aggregate content budget",
+      "severity": "major",
+      "detail": "Gate G7's fifth clause. The enemy budget was reconciled properly (576 -> derivation-N and floor, census 1230, normalisation rule preserving RI-PRG06's soul column). That was one axis; nobody did the others, and 73 new items added new counts. Summing what the corpus currently demands: ~117,000 words of settlement-local dialogue (RI-DLG02 tier targets against settlements.json's 1 capital, 2 cities, 3 towns, 2 villages, 16 minor); a global reachable pool of ~80-90,000 words to satisfy the 0.28 locality ratio; 112 book texts at median 520 words (~65,000 words); 24-28 quests per faction line; >=5.5xN side quests (~80); a main quest at Morrowind's depth; 269 named NPCs; 250 interiors; 1,230 hand-placed enemies over 14.5 km2; 180 placed strangeness instances (30 elements x >=6); 55 spell effects; 15 weapon classes with full movesets; 9 birthsigns and >=6 origins; 15 working sanctioned breakages; 41 demonstrated seam crossings; >=15 opacity register entries and >=5 void tracts. That is an authored surface at or above Morrowind's base game, for a browser game, and no item, report or plan states the total or argues it is reachable. The failure mode an unreachable aggregate produces is not duplication (which a dozen items check for) but UNIFORM THINNING - every count met, every count met at its floor - and no instrument in the corpus fires when everything is simultaneously at the minimum.",
+      "fix": "corpus/00-doctrine/CONTENT-BUDGET.md: one table summing every count threshold into totals for words, quests, NPCs, interiors, enemies, placed instances and unique assets; each total with a named owning item; one signed paragraph stating whether the total is producible in the planned waves and what is cut first if not."
+    },
+    {
+      "id": "N3",
+      "rank": 3,
+      "title": "The wave plan did not grow with the corpus",
+      "severity": "major",
+      "detail": "docs/PLAN.md's wave-1 decomposition is unchanged: fourteen pieces, written against a 200-path taxonomy. There is no builder for camera, character creation, weapon movesets, magic, stealth, crime, UI, audio or platform. Against that: RI-EXP01 is a DEAD-capable item whose binding beat sheet requires character creation, >=7 exercised verbs including sneak, and a hub with >=3 unfenced exits; RI-QST05's PACIFIST-ALL is now unmeasurable => 0 without RI-STL01/02 and RI-CRM01, so the W6 fix makes wave 1 fail the quest dimension by construction if stealth and crime are unbuilt; RI-CMP01's crossing floor cannot be met by fourteen pieces that exclude most of the crossing systems; and S25 makes the S18 third-person camera load-bearing for the water model rather than a deferrable presentation choice. This is an orchestration consequence rather than a corpus defect, but it will present in wave 1 as a run of hard fails on items whose prerequisites were never assigned.",
+      "fix": "Re-derive the wave-1 piece list against all 323 paths and assign every path a wave, so 'not built yet' is a declared state rather than a scoring-time surprise."
+    },
+    {
+      "id": "N4",
+      "rank": 4,
+      "title": "RI-VIS03 still carries four bands its own reference population fails; M9 is the answer to 'does any new bar fail its own reference game'",
+      "severity": "major",
+      "detail": "tools/metrics/image-metrics.mjs now implements all twelve metrics with a self-test proving the instrument can fail - real progress from two. But METRICS-IMPLEMENTATION-01 section 8 states the position: M1 and M8 are calibrated; M2, M4, M5 are close; M3, M6, M9 and M10 have bands the reference population fails; M11 and M12 have never been run on real data at all. With the necessary highlight_frac gate already applied, 17 of 24 real Witcher 3 next-gen frames still hard-fail M9.ShoulderRatio < 0.12 -> LINEAR CLAMP, and not one is a linear clamp. M10.R_aerial's band 0.25-0.70 is failed at p10, p50 and p90 by the same population. The report proposes the corrections with evidence attached in exactly the form RI-VIS03's own step 7 demands, and RI-VIS03 has not adopted them - a grep for ShoulderRatio, advisory or an amendment block returns only the original band table. Compounding it: the modern fidelity set holds one usable HUD-free frame against RI-VIS03's own requirement of >=3 legally-usable frames per profile across four profiles, and the only populated profile is HUD-bearing and barred from numeric comparison by the acquisition request's section 5a. critic.fidelity cannot issue an admissible verdict today and nothing in the corpus says so. Note the report's own withdrawals W1 and W2 show why this must not be rushed: both were band amendments computed from a broken statistic, and adopting either would have hard-coded an instrument bug into the corpus.",
+      "fix": "Adopt METRICS-IMPLEMENTATION-01 section 7.1's A1-A3 and section 7.2's two withdrawals into RI-VIS03 now; mark M3, M6, M9, M10 advisory-not-scoring until the modern set lands; record in RI-VIS02 that fidelity verdicts are unmeasurable => 0 for any profile with fewer than three legally-usable frames."
+    },
+    {
+      "id": "N5",
+      "rank": 5,
+      "title": "--check is asserted to be a blocking CI gate and is wired to nothing",
+      "severity": "moderate",
+      "detail": "RI-MTH05 M8 states '--check is wired as a blocking gate. It must run on any change to...', and its failure mode 4 is '--check made non-blocking, or the gate removed from CI'. There is no .github/, no package.json and no git hook in the repository. Nothing invokes it. The tool itself is sound and exits nonzero correctly, but a gate nobody runs is the same false-enforcement pattern W5 identified - it tells a reader the check is happening when it is not. This is the mechanism that let 147 orphaned paths and three doubly-owned constants survive an entire wave while INDEX.md reported 'up to date'.",
+      "fix": "A pre-commit hook or a two-line CI job running node tools/corpus-index.mjs --check. Until it exists, RI-MTH05 M8 should read 'must be wired', not 'is wired'."
+    },
+    {
+      "id": "N6",
+      "rank": 6,
+      "title": "Seven camera items, one subsystem path",
+      "severity": "moderate",
+      "detail": "RI-CAM01-07 all resolve onto combat.camera.behaviour plus paths owned by other areas (combat.player.movement, ui.dialogue.presentation, render.fidelity.character, platform.determinism.harness). There is no camera.* root and no critic.camera. CORPUS-COHERENCE-01 section 11b gives a good reason for not creating the root alone - registering eight unused paths would have created eight new corpus holes and blocked builders on subsystems no item judges - and names the correct fix: the items must move their judges: in the same commit. Nobody performed it. Residual cost: critic.combat silently inherits the exploration camera, dialogue framing, interior collision and comfort; no path exists on which a defect in any of those can be recorded as a hole; and the hole count, the corpus's only automated coverage signal, cannot see camera coverage regress. Given S18 is the user's single most explicit instruction and S25 makes the third-person body load-bearing for the water model, that is more exposure than the taxonomy should carry.",
+      "fix": "One commit adding camera.* (rig, springarm, lockon.framing, explore, dialogue, comfort, presentation) and moving RI-CAM01-07's judges: onto them in the same change, so the hole count never goes above zero."
+    },
+    {
+      "id": "N7",
+      "rank": 7,
+      "title": "Two dangling cross-references make correct behaviour undiscoverable",
+      "severity": "minor",
+      "detail": "CRITIC-DOCTRINE.md section 2.4.3 still reads 'Platform limits are judged only where a platform.* item explicitly sets the budget' without naming RI-PLT01. RI-VIS04 still reads 'Performance is a different axis with a different corpus area' without naming corpus/85-platform/. Both sentences were written when the area did not exist and both now resolve, but only for a reader who already knows. A fresh critic.fidelity with no context - which is the design - cannot follow either.",
+      "fix": "Two one-line edits."
+    },
+    {
+      "id": "N8",
+      "rank": 8,
+      "title": "Two of the seven 'judged by an item about something else' thin spots survived the repair",
+      "severity": "minor",
+      "detail": "Five of BAR-CRITIQUE-01 section 5.3's thin spots were closed with real items: world.persistence.state -> RI-CRM01, world.property.ownership -> RI-STL02, world.locks.security -> RI-STL02, ui.hud.combat -> RI-UIX01, coherence.systems.composition -> RI-CMP01, lore.canon.argonian -> RI-LOR07. Two did not: progression.crafting.alchemy - the whole crafting loop - is still judged by RI-PRG03, a skill-growth-curve item, on one axis; and progression.inventory.model is still judged by RI-QST08, a reward-design item. Alchemy is one of Morrowind's four signature systems, is named in RI-CMB08's leakage warning, and is the canonical Morrowind sanctioned breakage that RI-EXP06's register runs through. Separately disclosed and open: RI-PRG03's skill-event budget now over-delivers at the reconciled 1,230-enemy census, recorded by the audit and correctly not retuned because re-deriving a skill curve is design work.",
+      "fix": "Give progression.crafting.alchemy an item of its own before wave 3's content pieces are briefed."
+    }
+  ],
+
+  "hollowness_assessment": {
+    "question": "Would a game that scored well on all 137 items be Morrowind's world, quests, dialogue, factions, journal, lore and strangeness with Dark Souls' combat, in Black Marsh - or could it pass everything and be hollow?",
+    "answer": "It would be the thing that was asked for. The reason is not the 73 extra items but one mechanism: PLAYTHROUGH-CRITIC.md section 4.5's sabotage control. Every number in the experience battery is meaningless in isolation - nobody knows what detour_rate = 2.1/h should be - so the corpus only ever interprets the battery as a difference from a control: the same commit run twice, once through a sabotage filter, the critic blind to which is which, and VOID rather than FAIL if the instrument cannot separate them at the stated margin. That converts 'can an agent tell whether a game is any good' from a philosophical objection into a per-wave experiment with a recorded answer.",
+    "residual_routes_to_hollowness": [
+      {
+        "route": "The control lapses",
+        "detail": "PLAYTHROUGH-CRITIC section 10 names this as the most likely single failure: the control is the most expensive thing in the corpus and the least obviously necessary, and once it stops running the numbers become decoration and the area reverts to the travelogue section 4.8 bans. There is currently no mechanical enforcement - it depends entirely on the orchestrator producing sabotage variants each wave. The verdict extension has a sabotage_control object but nothing rejects a verdict that omits it."
+      },
+      {
+        "route": "Everything the harness cannot reach",
+        "detail": "Section 4.7 is honest: audio, impact, tactile feel, input latency, frame rate, physical comfort, beauty, frustration, fatigue and attachment over weeks are outside the instrument and score unmeasurable => 0 fail-closed, which is the right rule and does not make them measured. Section 4.7 then says the true thing - 'the ultimate instrument for those properties is a human playing the game, and this corpus should say so' - and the corpus does not yet say so anywhere binding. There is no item, doctrine clause or wave gate requiring that a human ever play this before it is called done. PLAYTHROUGH-CRITIC builds exactly the right packs for it (worst-twenty-minutes clips, blind first hours, the two endings, the sabotage pair) and nothing requires anyone to look at them. This is the last real hole in the bar and it cannot be closed by commissioning another reference item."
+      }
+    ]
+  },
+
+  "remaining_gate_conditions": [],
+
+  "carry_forward_conditions": [
+    {
+      "id": "C1",
+      "blocks": "any wave-1 verdict",
+      "condition": "Every reference item carries a native->ladder mapping. Close the 35 items with none; either reconcile the other 96 to SCORING.md section 1.2's mandated format or amend section 1.2 to accept any table mapping a native band to a ladder number. Add the check to corpus-index.mjs --check as C6.",
+      "checkable": "node tools/corpus-index.mjs --check exits 0 with C6 enabled."
+    },
+    {
+      "id": "C2",
+      "blocks": "briefing wave-1 content pieces",
+      "condition": "corpus/00-doctrine/CONTENT-BUDGET.md exists: one table summing every count threshold in the corpus into totals for words, quests, NPCs, interiors, enemies, placed instances and unique assets; each total with a named owning item; one signed paragraph stating whether the total is producible in the planned waves and what is cut first if not.",
+      "checkable": "The file exists, every total names an owner, and the feasibility paragraph names a cut order."
+    },
+    {
+      "id": "C3",
+      "blocks": "wave 1 starting",
+      "condition": "node tools/corpus-index.mjs --check runs automatically on any change to corpus/** (CI job or pre-commit hook), and docs/PLAN.md's wave-1 piece list is re-derived against all 323 paths with every path assigned a wave.",
+      "checkable": "The hook or workflow file exists and fails a deliberately broken front-matter; no path in subsystems.json lacks a wave assignment."
+    },
+    {
+      "id": "C4",
+      "blocks": "any wave being declared complete",
+      "condition": "One clause, in PLAYTHROUGH-CRITIC.md or SCORING.md, requiring (a) that sabotage_control.picked_correctly be present in every critic.experience verdict and rejected as a schema error by tools/verdict-validate.mjs when absent, and (b) that a human spend twenty minutes on the packs the playthrough critic builds before a wave is signed off.",
+      "checkable": "The validator rejects a verdict with no sabotage control; the wave sign-off record names the human and the date."
+    },
+    {
+      "id": "C5",
+      "blocks": "wave 4 (visual fidelity)",
+      "condition": "RI-VIS03 adopts METRICS-IMPLEMENTATION-01 section 7.1's A1-A3 and section 7.2's two withdrawals; M3, M6, M9 and M10 are marked advisory-not-scoring until the modern reference set lands; RI-VIS02 records that fidelity verdicts are unmeasurable => 0 for any profile with fewer than three legally-usable frames.",
+      "checkable": "RI-VIS03 carries an amendment block; image-metrics.mjs reports the four as advisory."
+    },
+    {
+      "id": "C6",
+      "blocks": "nothing - housekeeping, any time",
+      "condition": "Add the camera.* root and move RI-CAM01-07's judges: in the same commit. Name RI-PLT01 in CRITIC-DOCTRINE section 2.4.3 and corpus/85-platform/ in RI-VIS04. Give progression.crafting.alchemy an item of its own.",
+      "checkable": "corpus-index.mjs reports 0 holes after the camera commit; grep finds RI-PLT01 in CRITIC-DOCTRINE.md."
+    }
+  ]
+}

@@ -1,0 +1,232 @@
+{
+  "audit": "INTENT-AUDIT-02",
+  "auditor": "critic.intent",
+  "wave": 0,
+  "pass": 2,
+  "date": "2026-08-06",
+  "corpus_state": {
+    "reference_items": 137,
+    "subsystem_paths": 323,
+    "judged": 323,
+    "holes": 0,
+    "unresolved_paths": 0,
+    "problems": 0,
+    "legacy_aliases_in_use": 202,
+    "strict_gate_exit_code": 0,
+    "game_source_files": 0
+  },
+  "verdict": "DRIFTED",
+  "verdict_summary": "Eleven of seventeen prior drifts are fully closed, three partly, three untouched. Every clause originating in a direct user instruction now maps to at least one reference item with a named critic and a falsifiable bar (gate A10 met). The blockers are concentrated: docs/PLAN.md is byte-identical to its first commit and contains no piece for six of the nine later user directions (gate A8, not attempted); the ID-01 repair landed the ruling but not its two enforcement instruments (AR-2 B12, PACIFIST-IN-FIGHT); and seam S21 deletes the die in two of the three places its own text preserves it. Four gate conditions, three of them single-file edits.",
+  "prior_drifts": [
+    {
+      "id": "ID-01",
+      "status": "partially_fixed",
+      "evidence": "FIXED: ARBITRATION.md:18-36 splits Souls' authority over the conduct of the fight from the world's continued existence, preserving fleeing, yielding, parley, bribery, non-lethal outcomes and mid-fight crime/faction accrual. ARBITRATION.md:88 S13 restated SPLIT: Souls owns the absence of a browsable topic list mid-swing, Morrowind owns a non-lethal exit for anything capable of speech; beasts exempt; 'a humanoid faction NPC with no parley path is a defect'. PROPAGATED into new items: RI-CMP01:155,157,193 (FAC->BOS, DIS->BOS, BOS->LOR crossing cells), RI-CRM01:201,362,410 (guard surrender parley asserted in scoring), RI-EXP06:263-265 (probe PB-10 reds if bosses become parley-exempt), RI-EXP03:93 (parley trace event), RI-JRN02:192,259. NOT FIXED: CRITIC-DOCTRINE.md section 4.2 contains B10, B11 and B13 but no B12 'no exit but death'. PACIFIST-IN-FIGHT appears in no reference item; RI-QST05:71-78 measures only pre-aggro fractions. The ruling is unenforced and unmeasured; a build shipping zero working non-lethal exits passes every check. See also new drift ND-04 (the parley's form is undecided)."
+    },
+    {
+      "id": "ID-02",
+      "status": "fixed",
+      "evidence": "corpus/50-world/RI-TRV01-transport-network.md (kind: graph, judges world.traversal.transport + 8 paths) and RI-TRV02-travel-magic.md exist. subsystems.json:1083 retitled to 'The in-fiction transport network REQUIRED by seam S7 - modes, lines, stations, fares, ride time; warp-to-map-pin is what is banned, not travel'. RI-PRG04:255 cites its thresholds: >=5 modes, >=17 lines, >=60 services, all fares > 0, all ride times > 0."
+    },
+    {
+      "id": "ID-03",
+      "status": "fixed",
+      "evidence": "ARBITRATION.md:98 S19 places Mark/Recall and Intervention inside the S7 network with its rules (known destinations, above ground, out of combat, never into a dungeon/boss arena/locked area), forbids teleport as a level-design solvent, and carries the struck-through prior wording per section 5's append-only rule."
+    },
+    {
+      "id": "ID-04",
+      "status": "fixed",
+      "evidence": "corpus/12-weapons/ holds RI-WPN01 (moveset slot contract), RI-WPN02 (class differentiation), RI-WPN03 (within-class subtlety), RI-WPN04 (contextual attacks), RI-WPN05 (feel/impact), RI-WPN06 (two-handing/shields/parry), moveset.schema.json and WEAPON-CRITIC.md, whose section 0 quotes the user's direction verbatim including 'the bar critic thinks about and pushes on that bar'. critic.weapons is registered in subsystems.json.critics with a validator-not-source mandate. 20 weapon.* paths. 'backstep' now appears in RI-WPN01/02/03/04/06, RI-CMB06, RI-CMB09 and RI-JRN03."
+    },
+    {
+      "id": "ID-05",
+      "status": "fixed",
+      "evidence": "RI-JRN04-mobile-and-gamepad.md names the GameSir X2s Type-C in its title, is provenance: community-data with vendor page / manuals.plus / MDN / web.dev cited per row, profiles both enumeration modes (x2s-standard and the XInput descriptor), sets a 0.14 radial deadzone, latches input edges into the 60 Hz step, rules on the 'invisible until first button press' hazard (L1), specifies touch fallback T4/T6/T9, and exposes __HARNESS.gamepad.connect/set for automation. M-P1 hard-fails any unbound action or any action reachable on only one descriptor. input.* root with 10 paths including input.modality.parity. RI-JRN03 covers desktop."
+    },
+    {
+      "id": "ID-06",
+      "status": "fixed",
+      "evidence": "15 experience.* and 6 composition.* paths registered; critic.experience in subsystems.json.critics bound to PLAYTHROUGH-CRITIC.md section 4; RI-EXP01 through RI-EXP06 all on disk. The user's 'a fan of' is honoured as a real plural: journey.process.fleet ('one critic per journey, fresh context, evidence, aggregation') plus journey.process.naive, the enforced first-time-user protocol."
+    },
+    {
+      "id": "ID-07",
+      "status": "fixed",
+      "evidence": "RI-JRN05-save-and-load.md defines the state manifest, requires an empty round-trip diff, rules IndexedDB in and localStorage out, bans cloud saves as unmeasurable, specifies corruption and quota/eviction cases, and cross-checks M19 (second-death bloodstain) against RI-JRN06 with an explicit precedence rule. Judges journey.save.roundtrip, platform.save.persistence, platform.save.storage."
+    },
+    {
+      "id": "ID-08",
+      "status": "fixed",
+      "evidence": "RI-EXP01-first-hour-beat-sheet.md section A gives Seyda Neen 0-60 min and section B Asylum/Firelink 0-60 min as beat tables, reduced to eleven shared beats SB1-SB11 (confinement then weather, identity by interrogation not cutscene, an authored defeat or deception, a hub with exits you are not strong enough for, the loop closing) with the one thing neither game does stated at :101. RI-CHR01/02/03 cover origin, race and birthsign."
+    },
+    {
+      "id": "ID-09",
+      "status": "fixed",
+      "evidence": "RI-PRG04:255 now scores 10 only for 'the transport network of RI-TRV01 exists and is used AND every warp code path lies inside the transport module', and 0 for 'HEARTH menu offers destinations, OR warp-to-map-pin exists, OR no transport network exists at all -> automatic fail in both directions'. Amendment note recorded at :263."
+    },
+    {
+      "id": "ID-10",
+      "status": "fixed",
+      "evidence": "ARBITRATION.md:63 world-structure row now reads 'hand-placed density, named interiors, walk-and-navigate wayfinding, and a real in-fiction fast-travel network (S7). Only warp-to-map-pin is banned'. Gate A2's grep is clean: surviving 'no fast travel' strings are only the struck-through text inside S7, RI-WLD01:185 where it is now a measurement condition, and audit 01's own record."
+    },
+    {
+      "id": "ID-11",
+      "status": "still_drifted",
+      "evidence": "COHERENCE-AGENT.md:133 is unchanged: 'C4.3 Gating is by lethality and knowledge, never by level checks (seam S9).' No scope word. Read literally it forbids the attribute/skill thresholds ARBITRATION section 1 and S3 require, so a coherence agent still files a finding against a correct Morrowind faction gate. The taxonomy got this right where the checklist did not - INDEX.md:206 correctly scopes it as world.region.gating - which makes the one-word fix unambiguous."
+    },
+    {
+      "id": "ID-12",
+      "status": "fixed",
+      "evidence": "corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md exists with 41 declared crossings, a demonstrated-not-declared rule, and a self-declared debt (F->W crossings at 27% against a 1/3 gate) recorded rather than the bar lowered. AR-3 now has the floor it claimed. ID-01's non-violent exit is among its required cells (:155, :157)."
+    },
+    {
+      "id": "ID-13",
+      "status": "still_drifted",
+      "evidence": "git log -- docs/PLAN.md returns one commit, bbae0f2 (2026-08-05 22:26). The file is byte-identical to it. :5 still says 'Ten agents' against a 16-task registry. Its fourteen Wave-1 pieces contain no piece for camera, transport, magic, weapon movesets, UI, input, audio, persistence, character creation, stealth/crime, journeys or experience - 135 subsystem paths across 12 roots, and six of the nine later user directions, with no builder assigned. No clause makes Wave 1 conditional on any critic verdict, so user direction 2 (the bar critic gates progress) is written nowhere."
+    },
+    {
+      "id": "ID-14",
+      "status": "still_drifted",
+      "evidence": "docs/PLAN.md:46 unchanged: combat.core remains one piece ('stamina, roll i-frames, committed attacks, hitboxes, lock-on') now judged by RI-CMB01 through RI-CMB11, RI-CAM04 and RI-CMB07's trace format. One critic, one score and one gap for eleven independently judgeable dimensions; SCORING.md section 2.2 then discards ten of eleven findings. quests.engine and render.fidelity are the same shape."
+    },
+    {
+      "id": "ID-15",
+      "status": "partially_fixed",
+      "evidence": "FIXED: 173 files under corpus/70-visual/refs/, registered by a new RI-VIS09 whose section 5 is readable by a blind judge without contamination and whose bifurcation is enforced per-directory. refs/morrowind/ is populated across REF-A1..A19. docs/REFERENCE-IMAGE-REQUEST.md v4 has passed four bar-critic reviews (BAR-CRITIQUE-IMAGES-04: SUFFICIENT). NOT FIXED: refs/modern/ has images in 2 of 7 slots - 24 Witcher-3-next-gen HUD frames and one RDR2 frame; combat/, exterior_daylight/, exterior_lowlight/, interior_darkemissive/ and material_closeup/ are empty. No Elden Ring and no Skyrim frame exists anywhere in the tree, and those are the two titles the user named. RI-VIS02 remains blind_pair: yes with every REF-M entry marked 'FETCH: spec only' or 'image bytes not retrieved'. The fidelity blind pack still cannot be built. Now a scheduled gap with an owner rather than an unnoticed one."
+    },
+    {
+      "id": "ID-16",
+      "status": "partially_fixed",
+      "evidence": "FIXED: node tools/corpus-index.mjs --strict exits 0 - 323 paths, 137 items, 323 judged, 0 holes, 0 unresolved, 0 error, 0 warn - and --check is now a blocking gate (CORPUS-COHERENCE-01 section 4d). RI-CMB08's and RI-WLD08's dead judges: paths are fixed to canonical spellings. OUTSTANDING: 202 legacy alias spellings still in use (was 206) - they resolve, so hygiene rather than misrouting; and CORPUS-COHERENCE-01 section 12.2 records that 126 items lack the W7 ladder-anchor row and would score unmeasurable => 0 under the rule as written. The index being clean does not yet mean the corpus is scorable. That half is the bar critic's gate, not this one's."
+    },
+    {
+      "id": "ID-17",
+      "status": "fixed",
+      "evidence": "CRITIC-DOCTRINE.md:251 adds AR-2 check B13: from three settlements board each transport modality, pay gold, arrive at a station, verify in-world time advanced and the destination was previously visited; 'no modality boards -> AR-2 fail', with B2 and B13 declared a pair that must be run together. COHERENCE-AGENT.md:85-89 extends T6 with 'transport -> gold spent -> world clock advanced -> arrival at a station, verified once per modality' and states the reason: nothing had tested that the network S7 mandates exists at all."
+    }
+  ],
+  "prior_drift_counts": {
+    "fixed": 11,
+    "partially_fixed": 3,
+    "still_drifted": 3,
+    "total": 17
+  },
+  "clause_coverage": [
+    { "clause": "Morrowind's world, Souls' combat, arbitrated", "items": ["ARBITRATION.md S1-S25, AR-1/AR-2/AR-3"], "covered": true },
+    { "clause": "Souls wins inside the fight only where necessary for the combat to feel like Souls", "items": ["ARBITRATION.md:18-36"], "covered": true },
+    { "clause": "Morrowind wins everywhere else", "items": ["ARBITRATION.md:54-67 domain table"], "covered": true },
+    { "clause": "An hour to cross on foot", "items": ["RI-WLD01", "ARBITRATION S17"], "covered": true },
+    { "clause": "Bonfires; souls level you and only you; gold is the only currency", "items": ["RI-PRG04", "RI-PRG01", "RI-PRG05", "RI-PRG06", "ARBITRATION S15"], "covered": true },
+    { "clause": "Density per minute of travel", "items": ["RI-WLD02", "RI-WLD09"], "covered": true },
+    { "clause": "Words of unique dialogue per settlement", "items": ["RI-DLG02"], "covered": true },
+    { "clause": "How many quests resolve without combat", "items": ["RI-QST05"], "covered": false, "note": "Pre-aggro fraction measured (PACIFIST-ALL >= 45%, VERB-SPREAD <= 40% hard fail). The post-aggro fraction PACIFIST-IN-FIGHT, required by audit 01, exists in no item." },
+    { "clause": "Faction escalation, deceit, gating", "items": ["RI-QST01", "RI-QST02", "RI-QST03"], "covered": true },
+    { "clause": "The topic list as a graph", "items": ["RI-DLG01", "RI-DLG03", "RI-DLG04"], "covered": true },
+    { "clause": "Journal entries as written", "items": ["RI-DLG05", "RI-UIX04", "RI-JRN08"], "covered": true },
+    { "clause": "A minute of Souls combat as inputs and states", "items": ["RI-CMB07"], "covered": true, "note": "Exemplar invalidated by S22 and flagged for regeneration - tracked, not hidden." },
+    { "clause": "Strangeness", "items": ["RI-WLD05", "RI-WLD14", "RI-WLD09"], "covered": true },
+    { "clause": "Side-quest volume and texture", "items": ["RI-QST07"], "covered": true },
+    { "clause": "Build the bar first", "items": ["137 reference items; game/ contains 0 files"], "covered": true },
+    { "clause": "Builder + separate critic with fresh context per piece", "items": ["BUILDER-PROMPT-TEMPLATE.md", "CRITIC-PROMPT-TEMPLATE.md", "CRITIC-DOCTRINE.md section 9"], "covered": true, "note": "Sound as doctrine; the decomposition it applies to is ID-14." },
+    { "clause": "Blind comparison", "items": ["RI-MTH03", "RI-VIS06", "RI-DLG07", "RI-WLD04 M17/M20", "RI-WPN02"], "covered": true, "note": "Except the fidelity pack - ID-15." },
+    { "clause": "One biggest gap per verdict", "items": ["SCORING.md section 2.2", "ARBITRATION.md:119", "verdict.schema.json"], "covered": true },
+    { "clause": "End-of-wave coherence agent", "items": ["COHERENCE-AGENT.md", "critic.coherence", "coherence.* (8 paths)"], "covered": true },
+    { "clause": "Wide before deep - traversable world and completable main quest from an early wave", "items": ["docs/PLAN.md:21-26", "RI-QST06"], "covered": false, "note": "The invariant is stated; the Wave-1 decomposition that would deliver it has no transport, camera, input, save/load or HUD piece. ID-13." },
+    { "clause": "Never leave a region or questline missing", "items": ["docs/PLAN.md:23-26", "RI-WLD04", "RI-QST01", "RI-QST03"], "covered": false, "note": "Same cause: world.terrain is one piece covering all 13 S24 regions and their >=6-of-9-axis differentiation." },
+    { "clause": "Every piece maps to the reference items that judge it, with the comparison method written down", "items": ["INDEX.md (323/323 judged, 0 holes)", "per-item Comparison method sections"], "covered": true },
+    { "clause": "Critics pick current-generation reference shots (Elden Ring, Skyrim) and judge fidelity against those", "items": ["RI-VIS02", "RI-VIS03", "RI-VIS06", "RI-VIS07", "RI-VIS09", "corpus/70-visual/refs/"], "covered": false, "note": "Twelve numeric metrics implemented; refs/modern/ has 2 of 7 slots filled and holds no Elden Ring or Skyrim frame. ID-15." },
+    { "clause": "Black Marsh setting and the Argonian premise", "items": ["RI-LOR01", "RI-LOR07", "RI-CHR02", "RI-WLD10 section 3", "ARBITRATION S20", "ARBITRATION S24"], "covered": true },
+    { "clause": "LATER 1 - Third person, matching Souls' third-person behaviour in all respects", "items": ["ARBITRATION S18", "RI-CAM01..07", "RI-VIS08", "ARBITRATION S25"], "covered": true, "note": "Covered at the bar, not in the taxonomy: one subsystem path, no critic.camera, and the out-of-fight camera is administered by critic.combat. ND-02." },
+    { "clause": "LATER 2 - A bar critic that judges whether the bar itself is good enough, gating progress", "items": ["BAR-CRITIQUE-01", "BAR-CRITIQUE-IMAGES-01..04"], "covered": true, "note": "The role exists; its live substantive verdict (INSUFFICIENT) judged 64 items against today's 137. bar-critique-02 is in flight. No gate clause exists in PLAN.md - ID-13." },
+    { "clause": "LATER 3 - Fast travel must exist, Morrowind-style, as world not combat", "items": ["ARBITRATION S7", "RI-TRV01", "RI-TRV02", "RI-PRG04:255", "CRITIC-DOCTRINE B13", "COHERENCE-AGENT T6"], "covered": true },
+    { "clause": "LATER 4 - Weapon movesets subtly unique, dedicated bar, dedicated harsh critic, bar critic pushes on that bar", "items": ["RI-WPN01..06", "moveset.schema.json", "WEAPON-CRITIC.md", "critic.weapons", "weapon.* (20 paths)"], "covered": true, "note": "Bar and critic complete. The bar critic pushing on it is bar-critique-02's unfinished obligation." },
+    { "clause": "LATER 5 - End-to-end journey testing by a fan of harsh critics: new-game flow vs Morrowind's opening, desktop and mobile with GameSir X2s, save/load correctness", "items": ["RI-JRN01..08", "RI-EXP01", "journey.process.fleet", "journey.process.naive", "critic.journey", "input.* (10 paths)"], "covered": true },
+    { "clause": "LATER 6 - Agents must checkpoint so session limits do not lose work", "items": ["orchestration/AGENT-PROTOCOL.md", "20 status files", "orchestration/STATUS.json"], "covered": true },
+    { "clause": "LATER 7 - The world must be diverse in biomes within Black Marsh lore, checked by critics against appropriate bars", "items": ["ARBITRATION S24", "corpus/50-world/regions.json (13 regions)", "RI-WLD04 M17/M18/M20", "RI-WLD12", "RI-WLD10 section 8"], "covered": true, "note": "Enforced hard: blind region test >=33/39 day, every region pair differing on >=6 of 9 axes, audio blind >=26/39. Defect: S24's prose lists 12 regions, regions.json holds 13 (Thornmarsh missing from the ruling). ND-06." },
+    { "clause": "LATER 8 - Keep one live auto-refreshing progress page", "items": ["docs/progress.html", "tools/progress.mjs"], "covered": true },
+    { "clause": "LATER 9 - Loop until all critics conclude the game meets its bars", "items": ["docs/PLAN.md:18-19", "SCORING.md gap-ledger rules", "tools/gap-ledger.mjs"], "covered": true }
+  ],
+  "new_drifts": [
+    {
+      "rank": 1,
+      "id": "ND-01",
+      "brief_says": "Morrowind wins everywhere outside the fight, and Souls' claim is admitted only where necessary for the combat to feel like Souls. ARBITRATION.md:92 seam S21 accepts this explicitly - 'S1 bans dice inside the fight, but it says nothing about the world' - and names three checks whose failure is permanent and which therefore keep their roll: a persuasion attempt that lowers disposition, a pickpocket that gets you caught, and a spell that fails and consumes the magicka.",
+      "corpus_says": "Two of S21's own three named survivors are deleted by the items that cite it. RI-STL02 section 5 opens 'Same ruling, same reasons: no roll' and closes 'no die at any point'; its M7 asserts determinism across 100 seeds and its scoring row :362 scores 'a percentage chance' as the 0 band - despite the caught branch costing a CRIME, fDispPickPocketMod -25 and a 100-gold bounty. RI-MAG01 section E.3 deletes the cast-failure roll (correct inside the fight, where S1 compels it) and RI-MAG03:79 carries it across the seam: 'There is no spell-failure chance and no cast-failure roll anywhere in this system. Morrowind had both; both are deleted by S1' - in an item about spellmaking and enchanting, which S19 places on Morrowind's side 'emphatically'. Net effect: RI-DLG04's persuasion roll is the only surviving die in the entire world model. RI-STL02:101-103 files the counter-argument in its own words ('a project that subtracts Morrowind's randomness is quietly building Dark Souls with a wider stat sheet') and is overruled by an argument about lockpicking that S21 then generalised to everything.",
+      "type": "inverted",
+      "severity": "high",
+      "correction": "Do not reopen the lockpicking ruling - the ward-collar is a genuine improvement on 12%-per-attempt. Instead: (1) amend S21 to scope itself - 'the deterministic-threshold replacement applies only to checks that are freely and immediately repeatable at no cost. A check whose failure is charged - in gold, magicka, disposition, a bounty, an item, or time you cannot get back - keeps its roll, and the number of surviving rolls is a property the corpus measures'; (2) amend RI-STL02 section 5 to restore a roll on the caught branch (its suspicion fill during T is the natural place) or record why pickpocketing is exempt from S21's own example; (3) amend RI-MAG03:79 to scope its deletion to 'inside the fight, by S1' and rule separately on out-of-fight cast failure, which S19 gives to Morrowind; (4) add a corpus-level count of surviving permanent-failure rolls with a floor, so incremental determinisation is visible to a critic.",
+      "target_file": "corpus/00-doctrine/ARBITRATION.md (S21); corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md; corpus/25-magic/RI-MAG03-spellmaking-enchanting.md"
+    },
+    {
+      "rank": 2,
+      "id": "ND-02",
+      "brief_says": "User direction 1: third-person, matching Souls' third-person behaviour in all respects. ARBITRATION S18 expands that into eighteen named behaviours and binds them outside the fight too - 'exploration, dialogue, menus and cutscenes are all third-person, because a perspective that changes at the combat boundary would break the seam that S-rulings exist to keep clean'.",
+      "corpus_says": "subsystems.json contains exactly one camera path - combat.camera.behaviour, 'Combat camera framing, collision, and lock-on pivot' - plus two legacy aliases pointing at it. Seven reference items (RI-CAM01..07) collapse onto it and onto borrowed combat/ui/render/platform paths. There is no camera.* root and no critic.camera. RI-CAM05 is titled 'camera outside the fight' and its primary judged path is combat.camera.behaviour, so the exploration, dialogue and menu cameras are administered by critic.combat - a role bound to run the combat harness and apply AR-1, the check for Morrowind contaminating the fight. The arbitration boundary is inverted inside the taxonomy for the one system the user singled out. RI-CAM07 (third-person character presentation) is filed entirely under render.*, so 'third person in all respects' is judged in part by the fidelity critic. Independently re-found by bar-critique-02 as its G6.",
+      "type": "narrowed",
+      "severity": "high",
+      "correction": "Append a camera.* root to subsystems.json (append-only, arb: souls) with one path per S18 behaviour cluster - at minimum camera.rig.springarm, camera.lockon.framing, camera.movement.relative, camera.outoffight.behaviour, camera.feel.response, camera.character.presentation. Repoint the seven RI-CAM items' judges: lists. Add critic.camera, or explicitly assign camera.* to an existing critic and state why the out-of-fight paths are not AR-1's business. Regenerate INDEX.md.",
+      "target_file": "corpus/00-doctrine/subsystems.json"
+    },
+    {
+      "rank": 3,
+      "id": "ND-03",
+      "brief_says": "The user's brief and the nine later directions are the source of truth for every agent in the project.",
+      "corpus_says": "INTENT-AUDIT-01.md:12 states 'Source of truth: the user's brief and the four subsequent user directions, verbatim, as reproduced in INTENT-AUDIT-CHARTER.md section 2.' That file does not exist in the working tree or anywhere in git history (git log --all --diff-filter=D --name-only | grep -i charter returns nothing). The brief is quoted verbatim nowhere in the repository. Across fifteen briefs, exactly two - weapons.md:3 and journeys.md:5 - carry a user direction in the user's own words; every other agent has worked from the orchestrator's restatement. This is the documented mechanism that produced seam S24, where an orchestrator's 'entirely standing water' propagated into agent work until the user corrected it in person, and it is still fully in place.",
+      "type": "method-drift",
+      "severity": "high",
+      "correction": "Write corpus/00-doctrine/INTENT-AUDIT-CHARTER.md containing (a) the original brief verbatim, (b) all nine later user directions verbatim, each dated and attributed, and (c) the standing rule that a direction may be paraphrased in a brief only alongside its verbatim text. Make it required reading in BUILDER-PROMPT-TEMPLATE.md and CRITIC-PROMPT-TEMPLATE.md. Nothing in this audit - including this audit - is checkable without it.",
+      "target_file": "corpus/00-doctrine/INTENT-AUDIT-CHARTER.md (new)"
+    },
+    {
+      "rank": 4,
+      "id": "ND-04",
+      "brief_says": "S13 as amended requires 'a distinct, fast, diegetic parley interaction (yield / offer gold / invoke a faction / speak a name you learned) available during combat', and INTENT-AUDIT-01 section 2.4 specified it further as 'an action with startup and recovery that the enemy can punish, not a menu'.",
+      "corpus_says": "That second sentence never reached S13, and the corpus now holds both readings on opposite sides of an automatic fail. CRITIC-DOCTRINE.md:234 A10 automatically fails any piece where 'a topic list opens' during COMBAT - applied to every piece. RI-JRN02:192 M-I11 requires '0 frames with a surface open during COMBAT other than the dialogue-locked parley (seam S13/S14)' and :259 HF7 hard-fails a combat surface 'outside the S13 parley' - an explicit carve-out permitting parley to be a modal surface. Meanwhile no reference item gives parley frame data: grep -rn parley over corpus/10-combat/ and corpus/12-weapons/ returns nothing. It has no startup, recovery, punish window, interrupt rule, or binding in RI-JRN03/RI-JRN04's 14-action set, and no subsystem path - grep parley corpus/00-doctrine/subsystems.json is empty - so nothing in INDEX.md routes it to a critic. It is judged only obliquely, as crossing cells in RI-CMP01 and a scored assertion in RI-CRM01.",
+      "type": "dropped",
+      "severity": "medium",
+      "correction": "(a) Add audit 01's missing sentence to S13: the parley is a committed, animated, interruptible action with startup and recovery, not a menu, and A10 stands unamended. (b) Give it a frame row in RI-WPN04 (contextual attacks) or a new RI-CMB section, at f@60, with the enemy's punish window on it. (c) Register combat.encounter.parley in subsystems.json under critic.combat and bind it in RI-JRN03/RI-JRN04's action set. (d) Add AR-2 B12 per gate B1, which is what detects its absence.",
+      "target_file": "corpus/00-doctrine/ARBITRATION.md (S13); corpus/00-doctrine/subsystems.json; corpus/12-weapons/RI-WPN04-contextual-attacks.md"
+    },
+    {
+      "rank": 5,
+      "id": "ND-05",
+      "brief_says": "Morrowind owns world structure and everything else outside the fight, unqualified. Souls' claim is admitted only where necessary for the combat to feel like Souls - a justification test, not a territory grant. ARBITRATION.md:18-21 now states this test explicitly.",
+      "corpus_says": "ARBITRATION.md:91 seam S16 assigns 8 Souls-loop dungeons - 'interconnected, multi-strata, shortcut-unlocking, HEARTH-anchored, with a closed/open path ratio >=1.5' - inside world.dungeon.design, which section 1's world-structure row gives to Morrowind, without recording the necessity test. It is a split by census rather than a deletion, and it guards both directions (a Souls-loop that is merely a long cave fails; a cave inflated into a shortcut puzzle fails equally), which is why it ranks fifth. But it is the only one of the nine new seams that transfers territory to Souls outside the fight, and the only one that reasons from 'which game does this smell like' - the exact question order that produced S7. Every other new seam defends Morrowind (S17, S19, S20, S24), is user-directed (S18), splits a real contradiction by domain (S23, S25), or is pure correctness (S22).",
+      "type": "method-drift",
+      "severity": "medium",
+      "correction": "Append the necessity finding to S16: what specifically about the Souls fight requires a shortcut-unlocking multi-strata descent, why 8 is the number, and what would be lost if all 90 were Morrowind caves with good encounters in them. If the honest answer is that nothing about the fight requires it but the brief asked for a Souls game and this is Souls' most recognisable level-design form, write that. A recorded design grant is defensible; an unrecorded one is how S7 happened.",
+      "target_file": "corpus/00-doctrine/ARBITRATION.md (S16)"
+    },
+    {
+      "rank": 6,
+      "id": "ND-06",
+      "brief_says": "S24 declares corpus/50-world/black-marsh-map-source.jpg binding and regions.json authoritative; corpus/00-doctrine/README.md is the first file every agent is told to read; ARBITRATION.md is the supreme law read by every builder and critic.",
+      "corpus_says": "S24's prose names twelve regions; regions.json holds thirteen - Thornmarsh (1.08 km2) is in the data and absent from the ruling. README.md still describes ARBITRATION.md as holding 'Seam rulings S1-S15'; there are 25. ARBITRATION.md section 2's seam table runs S1-S16, then S21, S22, S23, S25, S24, S20, S19, S18, S17 - append-only ordering is correct policy but the supreme law is now hard to read, and S24 sits after S25.",
+      "type": "narrowed",
+      "severity": "low",
+      "correction": "Add Thornmarsh to S24's region list. Update README.md to 'S1-S25'. Either sort ARBITRATION section 2's table by seam number while preserving every strike-through, or add a numeric index above it.",
+      "target_file": "corpus/00-doctrine/ARBITRATION.md; corpus/00-doctrine/README.md"
+    }
+  ],
+  "gate_conditions": [
+    {
+      "id": "B1",
+      "condition": "Finish ID-01. CRITIC-DOCTRINE.md section 4.2 carries AR-2 check B12 - 'no exit but death': for each of five encounter classes (ordinary humanoid, faction patrol, animal, quest-critical NPC, humanoid boss), attempt to end the encounter without a kill using every non-violent verb the build offers; zero encounter classes exiting non-violently is an AR-2 fail. RI-QST05 carries PACIFIST-IN-FIGHT >= 15%, the pacifist fraction re-attempted after the encounter has entered COMBAT. S13 gains audit 01's missing sentence (the parley is an action, not a menu), combat.encounter.parley is registered in subsystems.json, and one item gives the parley frame data at f@60 (ND-04)."
+    },
+    {
+      "id": "B2",
+      "condition": "Close ID-11 and ND-01. COHERENCE-AGENT.md:133 C4.3 gains its scope word: 'Region gating is by lethality and knowledge, never by player level (S9). Faction and content gating by rank, skill and attribute thresholds is required (S3, section 1) and is not a level check.' ARBITRATION S21 gains its scope clause (repeatable-at-no-cost only). RI-STL02 section 5 and RI-MAG03:79 are reconciled with S21's own named examples, or record why they are exempt."
+    },
+    {
+      "id": "B3",
+      "condition": "Write the charter (ND-03). corpus/00-doctrine/INTENT-AUDIT-CHARTER.md exists, containing the original brief and all nine later directions verbatim, dated and attributed, and is required reading in BUILDER-PROMPT-TEMPLATE.md and CRITIC-PROMPT-TEMPLATE.md."
+    },
+    {
+      "id": "B4",
+      "condition": "Regenerate docs/PLAN.md from subsystems.json as it now stands (ID-13, ID-14): every one of the 323 paths assigned to exactly one piece, script-verifiable; no piece spanning more than one method script (combat.core decomposes to at least combat.dodge, combat.attack.frames, combat.stamina, combat.hitbox, combat.lockon; quests.engine and render.fidelity likewise); pieces for the six later directions currently unrepresented - camera, transport, magic, weapon movesets, input (desktop + mobile/X2s), persistence - plus UI, audio, character, stealth/crime, journeys and experience; the wide-before-deep invariant made deliverable rather than merely stated, so that whatever Wave 1 contains leaves the world crossable, the main quest completable, the game savable, controllable on both named platforms and visible in third person; an explicit gate clause that Wave 1 does not start until BAR-CRITIQUE returns SUFFICIENT and INTENT-AUDIT returns ALIGNED (user direction 2, currently written nowhere); and :5's 'Ten agents' corrected against the registry."
+    },
+    {
+      "id": "S1",
+      "condition": "STANDING, non-blocking, reported every wave until closed: refs/modern/ has 2 of 7 slots filled and holds no Elden Ring or Skyrim frame, so RI-VIS02 still claims a blind pair it cannot form (ID-15); 202 legacy aliases await migration and 126 items await their W7 ladder-anchor row (ID-16); and BAR-CRITIQUE-01's live verdict is INSUFFICIENT against a 64-item corpus that no longer exists - bar-critique-02 must land, and must push on the weapon moveset bar as user direction 4 requires, before B4's gate clause means anything."
+    }
+  ]
+}

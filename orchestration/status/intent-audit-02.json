@@ -2,13 +2,37 @@
   "task_id": "intent-audit-02",
   "brief": "re-run intent audit gate against repaired corpus",
   "started": "wave-N",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/00-doctrine/INTENT-AUDIT-02.md",
     "corpus/00-doctrine/INTENT-AUDIT-02.json"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read INTENT-AUDIT-01.md/.json and INTENT-AUDIT-CHARTER.md",
-  "notes_for_successor": "Task: re-audit 17 prior drifts, re-check clause coverage, audit S16-S25 seams, audit method vs docs/PLAN.md, hunt new drift in the 73 new items. Verdict ALIGNED or DRIFTED up front."
+  "outputs_written": [
+    "corpus/00-doctrine/INTENT-AUDIT-02.md",
+    "corpus/00-doctrine/INTENT-AUDIT-02.json"
+  ],
+  "findings": [
+    "INTENT-AUDIT-CHARTER.md DOES NOT EXIST on disk and never has (git log has no record). INTENT-AUDIT-01.md:12 cites it as the source of truth for the brief verbatim. The brief is therefore nowhere quoted verbatim in the repo.",
+    "corpus-index --strict: 323 paths, 137 items, 0 holes, 0 unresolved, 0 problems, exit 0. ID-16 index half FIXED. 202 legacy aliases still in use (was 206).",
+    "ID-01 PARTIAL: ARBITRATION \u00a71 conduct/exit split FIXED (lines 18-36), S13 restated FIXED (line 88). But AR-2 check B12 'no exit but death' is ABSENT from CRITIC-DOCTRINE.md (B10, B11, B13 exist; no B12). PACIFIST-IN-FIGHT absent from RI-QST05. So the ruling exists and nothing enforces or measures it.",
+    "ID-17 FIXED: B13 at CRITIC-DOCTRINE.md:251 and COHERENCE-AGENT.md:85-89 transport link both added, explicitly two-directional.",
+    "ID-03 FIXED: S19 (ARBITRATION.md:98) now makes Mark/Recall/Intervention part of the S7 network with struck-through prior wording.",
+    "ID-10 FIXED: ARBITRATION.md:63 world-structure row now reads 'and a real in-fiction fast-travel network (S7). Only warp-to-map-pin is banned'.",
+    "ID-09 FIXED: RI-PRG04:255 S7 axis rewritten, fails in both directions, with amendment note at :263.",
+    "ID-11 STILL DRIFTED: COHERENCE-AGENT.md:133 C4.3 still reads 'Gating is by lethality and knowledge, never by level checks (seam S9)' with no 'region' scope word.",
+    "ID-13/ID-14 STILL DRIFTED: docs/PLAN.md is byte-identical to its first commit (bbae0f2, Aug 5 22:26). No pieces for camera, transport, magic, movesets, UI, input, audio, persistence, character, stealth/crime, journeys. No bar-critic/intent-audit gate. Still says 'Ten agents'.",
+    "ID-15 PARTIAL: 173 files under corpus/70-visual/refs/, RI-VIS09 registers the set. BUT refs/modern/ has images in only 2 of 7 slots (hud 24 W3-nextgen frames, character_closeup 1 RDR2); combat, exterior_daylight, exterior_lowlight, interior_darkemissive, material_closeup are EMPTY. No Elden Ring or Skyrim shot exists. RI-VIS02 still blind_pair:yes with every REF-M entry FETCH: spec only.",
+    "critics block in subsystems.json now has critic.weapons, critic.magic, critic.journey, critic.experience, critic.stealth. All 323 paths carry a critic.",
+    "NEW DRIFT ND-01: S21 names three dice that survive (persuasion, pickpocket, spell failure). RI-STL02 sect5+M7+scoring makes pickpocket fully deterministic and scores 'a percentage chance' as 0. RI-MAG01 sectE.3 and RI-MAG03 sectA ('anywhere in this system') delete cast failure outside the fight too. Persuasion (RI-DLG04) is the ONLY surviving die in the world model.",
+    "NEW DRIFT ND-02: no camera.* root and no critic.camera. All 7 RI-CAM items judge combat.camera.behaviour + borrowed paths. RI-CAM05 (camera OUTSIDE the fight) is therefore administered by critic.combat under AR-1.",
+    "NEW DRIFT ND-03: INTENT-AUDIT-CHARTER.md does not exist and never has (no git record). Only 2 of 15 briefs quote a user direction verbatim.",
+    "NEW DRIFT ND-04: parley's form undecided. RI-JRN02 M-I11 permits a modal 'dialogue-locked parley' surface during COMBAT; A10 auto-fails a topic list during COMBAT; no combat item gives parley frame data; no subsystem path owns it.",
+    "NEW DRIFT ND-05: S16 grants Souls 8 dungeons inside Morrowind's named domain (world structure) with no necessity-test sentence - the one remaining unrecorded territory grant.",
+    "Parley DID propagate well into new items: RI-CMP01 FAC->BOS/DIS->BOS/BOS->LOR, RI-CRM01 guard surrender, RI-EXP06 PB-10 boss parley, RI-JRN02 HF7, RI-EXP03 trace event.",
+    "S24 enforcement is real: regions.json 13 regions with areas summing ~14.5 km2; RI-WLD04 M17 blind test >=33/39 day, M18 >=6 of 9 axes per pair, M20 audio blind >=26/39.",
+    "game/ contains 0 files - no game code exists yet, confirming this gate precedes development.",
+    "BAR-CRITIQUE-01 (INSUFFICIENT) judged 64 items and predates corpus/12-weapons entirely; bar-critique-02 is in flight concurrently."
+  ],
+  "next_step": "none - gate returned DRIFTED with 4 gate conditions (B1-B4) plus 1 standing",
+  "notes_for_successor": "VERDICT DRIFTED. Prior: 11 fixed, 3 partial (ID-01, ID-15, ID-16), 3 drifted (ID-11, ID-13, ID-14). New: ND-01..ND-06. Blockers are B4 (regenerate docs/PLAN.md) and B1 (AR-2 B12 + PACIFIST-IN-FIGHT). B2 and B3 are three sentences and one new file."
 }

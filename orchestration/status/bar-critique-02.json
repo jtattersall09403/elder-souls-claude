@@ -2,13 +2,35 @@
   "task_id": "bar-critique-02",
   "brief": "re-run BAR CRITIC gate against repaired corpus (137 items, 323 paths)",
   "started": "wave-N",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/00-doctrine/BAR-CRITIQUE-02.md",
     "corpus/00-doctrine/BAR-CRITIQUE-02.json"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read BAR-CRITIQUE-01.md/.json to recover the 15 gate conditions and 13 gaps",
-  "notes_for_successor": "Primary output is the 15-gate walkthrough. Judged against own prior gate conditions, not fresh opinions."
+  "outputs_written": [
+    "corpus/00-doctrine/BAR-CRITIQUE-02.md",
+    "corpus/00-doctrine/BAR-CRITIQUE-02.json"
+  ],
+  "findings": [
+    "corpus-index --strict exits 0: 323 paths, 137 items, 0 holes, 0 unresolved, 0 errors. G14 first half MET.",
+    "G1 MET: PLAYTHROUGH-CRITIC.md is exceptional. Inverted remit table, DEAD wave verdict, sabotage control (4.5) with VOID-on-failure, enforced context isolation levels, confabulation penalty (-1). RI-EXP01..06 all exist.",
+    "G2 MET: AR-3 in ARBITRATION.md sect 3; RI-CMP01 with 41 declared crossings, demonstrated-not-declared rule, and a SELF-DECLARED DEBT (F->W crossings 27% vs 1/3 gate) recorded rather than bar lowered.",
+    "G4 MET: S19 magic seam exists; 20 magic.* paths; RI-MAG01..05.",
+    "G6 PARTIAL: RI-CAM01..07 exist and cover S18 well, BUT there is NO camera.* root. All 7 items collapse onto combat.camera.behaviour plus borrowed paths. Gate literally said 'camera.* root with >=6 paths'. No critic.camera either.",
+    "G7 MET: constants.json 28 constants, one owner each, 3 declared deliberate divergences. Traversal minute rebased to 120m (W4). Enemy budget reconciled: 576 redesignated a FLOOR/derivation-N, census 1230 owned by RI-WLD07, normalisation rule souls x 576/N.",
+    "W1,W2,W3,W5,W6,W8,W9 all applied per CORPUS-COHERENCE-01 sects 6-7. W4 via constants. W7 explicitly NOT FINISHED - see sect 10.",
+    "S22 rebase: combat was at double wall-clock speed (30Hz upstream ticks in a 60Hz sim), passed every internal check. This is the single strongest evidence that the corpus's self-checking works.",
+    "CORPUS-COHERENCE-01 sect 12 = 'What remains contradictory or outstanding' - READ THIS, it is the honest defect list.",
+    "N1 (biggest new defect): W7 ladder rows. SCORING.md 1.2 mandates a per-item native->ladder row and makes its absence unmeasurable=>0. Only 6/137 carry the verbatim row; 35/137 have NO ladder mapping in any form incl RI-QST06 (main quest), all 6 UI items, 4/5 audio, 5/8 dialogue, 5/7 lore, 7/9 quests. 73 items were written AFTER the rule landed and only the 6 weapons items complied.",
+    "N2: no aggregate content-budget sheet (G7 third clause UNMET). Indicative: ~117k settlement-local dialogue words + ~89k global + 112 books x520 + ~336 faction quests + 80 side + 250 interiors + 1230 enemies + 269 NPCs + 180 strangeness instances + 55 effects + 15 weapon classes. Larger authored surface than Morrowind base game. Nobody has summed it or argued feasibility.",
+    "N3: docs/PLAN.md wave-1 piece list unchanged (14 pieces, written against 200 paths). No builder for camera/chargen/weapons/magic/stealth/crime/UI/audio/platform, yet RI-EXP01 is DEAD-capable and requires chargen+sneak+unfenced hub, and RI-QST05 PACIFIST-ALL is unmeasurable=>0 without STL/CRM.",
+    "N4: RI-VIS03 NOT amended. METRICS-IMPLEMENTATION-01 sect8: M3,M6,M9,M10 have bands the reference population fails; M11/M12 never run on real data. M9 ShoulderRatio hard-fails 17/24 real Witcher3 frames. Modern set = 1 usable HUD-free frame vs required >=3 per profile x4 profiles.",
+    "N5: --check is NOT a CI gate. No .github, no package.json, no git hooks. RI-MTH05 M8 asserts it is wired as a blocking gate. False enforcement claim = same class as W5.",
+    "N6: camera = 7 items, 1 subsystem path (combat.camera.behaviour). No camera.* root, no critic.camera. Audit sect 11b explains why; consequence is camera coverage invisible to tooling.",
+    "N7: CRITIC-DOCTRINE 2.4.3 does not name RI-PLT01; RI-VIS04 does not name corpus/85-platform. Two dangling cross-refs.",
+    "N8: progression.inventory.model and progression.crafting.alchemy still judged by items about something else (RI-QST08, RI-PRG03). 5 of 7 sect5.3 thin spots closed, these 2 survived.",
+    "VERDICT DECISION: SUFFICIENT. 12/15 gates met (G6 and G12 met-with-defect). 3 not met: G7 (aggregate budget), G13 (W7), G14 (CI gate) - all mechanical, none a design gap."
+  ],
+  "next_step": "none - complete",
+  "notes_for_successor": "VERDICT SUFFICIENT, 12/15 gates. Not met: G7 (no aggregate content-budget sheet), G13 (W7 ladder rows unexecuted in 35 items), G14 (--check not wired to CI). 8 new defects N1-N8 ranked. 6 carry-forward conditions C1-C6, each blocking a named later step, none blocking a builder from starting. Wave 1 may begin."
 }
