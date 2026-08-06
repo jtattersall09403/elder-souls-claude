@@ -1,0 +1,155 @@
+{
+ "jump": {
+  "states": [
+   "IDLE"
+  ],
+  "max_y": 0,
+  "stamina_start": 120,
+  "stamina_min": 120
+ },
+ "gate_prep": {
+  "min_stamina": 11,
+  "stamina_drops": 1
+ },
+ "gate": {
+  "roll": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN",
+    "ROLL_STARTUP",
+    "ROLL_IFRAME",
+    "ROLL_RECOVER"
+   ],
+   "drops": 0
+  },
+  "light": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "drops": 0
+  },
+  "heavy": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN"
+   ],
+   "drops": 1
+  },
+  "sprint": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN",
+    "SPRINT"
+   ],
+   "drops": 0
+  },
+  "jump": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN"
+   ],
+   "drops": 0
+  },
+  "parry": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN",
+    "PARRY_ACTIVE",
+    "PARRY_RECOVER"
+   ],
+   "drops": 0
+  },
+  "use_item": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN",
+    "HEAL_STARTUP",
+    "HEAL_ACTIVE",
+    "HEAL_RECOVER"
+   ],
+   "drops": 0
+  },
+  "block": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN",
+    "WALK"
+   ],
+   "drops": 0
+  },
+  "interact": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN"
+   ],
+   "drops": 0
+  },
+  "lock_on": {
+   "stamina_at_press": 33,
+   "states_after": [
+    "RUN"
+   ],
+   "drops": 0
+  }
+ },
+ "block": [
+  {
+   "shield": "chitin_buckler",
+   "loadout": {
+    "weapon": "straight-sword",
+    "weapon_class": "straight_sword",
+    "shield": "chitin_buckler",
+    "stamina_max": 120,
+    "tier": "LIGHT"
+   },
+   "events": [
+    {
+     "f": 92,
+     "dS": 55.68,
+     "dHP": 13.44,
+     "state": "BLOCK_HOLD"
+    }
+   ]
+  },
+  {
+   "shield": "marsh_oak_medium",
+   "loadout": {
+    "weapon": "straight-sword",
+    "weapon_class": "straight_sword",
+    "shield": "marsh_oak_medium",
+    "stamina_max": 120,
+    "tier": "LIGHT"
+   },
+   "events": [
+    {
+     "f": 92,
+     "dS": 36.48,
+     "dHP": 5.76,
+     "state": "BLOCK_HOLD"
+    }
+   ]
+  },
+  {
+   "shield": "naga_tower",
+   "loadout": {
+    "weapon": "straight-sword",
+    "weapon_class": "straight_sword",
+    "shield": "naga_tower",
+    "stamina_max": 120,
+    "tier": "LIGHT"
+   },
+   "events": [
+    {
+     "f": 92,
+     "dS": 21.12,
+     "dHP": 0,
+     "state": "BLOCK_HOLD"
+    }
+   ]
+  }
+ ]
+}

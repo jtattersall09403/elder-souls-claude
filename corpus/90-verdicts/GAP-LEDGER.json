@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-06T14:58:37Z",
+  "generated": "2026-08-06T18:17:48Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1
   ],
-  "verdicts_read": 2,
+  "verdicts_read": 3,
   "counts": {
-    "total": 2,
-    "open": 2,
+    "total": 3,
+    "open": 3,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -20,6 +20,9 @@
     ],
     "platform.save.persistence": [
       "GAP-W1-platform-save-drops-entity-prev-state"
+    ],
+    "world.terrain.form": [
+      "GAP-W1-world-trunk-road-below-the-waterline"
     ]
   },
   "warnings": [
@@ -96,6 +99,51 @@
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload.json",
         "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload-prefix.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-world-trunk-road-below-the-waterline",
+      "subsystem_path": "world.terrain.form",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-01-world-7c1a",
+      "opened_in": "corpus/90-verdicts/wave1/W1-01.json",
+      "piece_id": "W1-01",
+      "severity": "blocking",
+      "what": "The trunk road network is routed along the floors of water bodies. Sampling getWaterAt() at every point of all ten built legs at tide LOW: 1,364 m of road (5.4%) is above knee depth and 574 m (2.3%) is above chest depth, concentrated on the Stormhold-Helstrom leg, which carries 538 m over-knee and 502 m over-chest and reaches a maximum depth of 65.64 m at (2182.52, 2214.63) - ground at 69.66 m under a water surface at 135.30 m. That leg is the first of THE CROSSING, so 502 m of the canonical 6,788 m walk - 7.4%, about 4.2 minutes of the hour - is walked along a lake bed. The player traverses it at 2.0000 m/s in state WALK at full HP and full stamina, with no swim, no wade band, no breath clock and no drowning; a screenshot from that point is a uniformly black-green frame of water volume. Nothing in the instrument suite asks the question: scale-audit.mjs has a TIDEWAY-INVERSION check that measures water depth on exactly one of the ten legs and none on the other nine.",
+      "why_it_matters": "The 56.574-minute crossing that every density figure in the corpus is denominated in is measured along a route that stops being walkable the moment RI-WLD10's depth bands land - 502 m at the declared swim speed of 1.1 m/s is 7.6 minutes underwater against a 40-60 second breath clock - so the traversal minute is resting on water having no effect, and a player walking the main road today sees a black screen for four minutes.",
+      "remedy": {
+        "action": "Add water depth to the trunk-routing cost in tools/world/build-roads.mjs: make any cell whose water depth exceeds 0.60 m (band W2) impassable to A*, except on the leg RI-WLD01 §4 declares 'tideway', and re-run the build chain build-terrain -> build-water-hazards -> build-roads. Where a leg genuinely must cross a channel, emit a bridge or causeway deck into game/data/world/roads.json as a raised polyline carrying its own surface height, so the road is over the water rather than under it. Then add the check that does not exist to tools/world/scale-audit.mjs as M2-ROAD-ABOVE-WATER, covering all ten legs at all four tide phases rather than one leg at one phase.",
+        "targets": [
+          "tools/world/build-roads.mjs",
+          "tools/world/build-terrain.mjs",
+          "game/data/world/roads.json",
+          "tools/world/scale-audit.mjs",
+          "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md"
+        ],
+        "acceptance": "tools/world/scale-audit.mjs reports 0 m of trunk road above band W2 on every leg except lilmoth-archon, at all four tide phases (RISING, HIGH, FALLING, LOW); lilmoth-archon keeps its declared inversion at <=0.85 m deep at LOW and >=1.40 m at HIGH; and tools/world/crossing.mjs re-measures the crossing on the re-routed network inside 52-65 min and 6,300-7,600 m with mean ground speed still 2.00 +/-0.05 m/s.",
+        "ref_item": "RI-WLD01",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Add water depth to the trunk-routing cost in tools/world/build-roads.mjs: make any cell whose water depth exceeds 0.60 m (band W2) impassable to A*, except on the leg RI-WLD01 §4 declares 'tideway', and re-run the build chain build-terrain -> build-water-hazards -> build-roads. Where a leg genuinely must cross a channel, emit a bridge or causeway deck into game/data/world/roads.json as a raised polyline carrying its own surface height, so the road is over the water rather than under it. Then add the check that does not exist to tools/world/scale-audit.mjs as M2-ROAD-ABOVE-WATER, covering all ten legs at all four tide phases rather than one leg at one phase.",
+      "remedy_acceptance": "tools/world/scale-audit.mjs reports 0 m of trunk road above band W2 on every leg except lilmoth-archon, at all four tide phases (RISING, HIGH, FALLING, LOW); lilmoth-archon keeps its declared inversion at <=0.85 m deep at LOW and >=1.40 m at HIGH; and tools/world/crossing.mjs re-measures the crossing on the re-routed network inside 52-65 min and 6,300-7,600 m with mean ground speed still 2.00 +/-0.05 m/s.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01/critic-road-water-harness.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01/shot-drowned-road-stormhold-helstrom.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-01/shot-drowned-road-helstrom-gideon.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-01/critic-shots.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01/critic-locomotion.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01/critic-crossing-walk.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

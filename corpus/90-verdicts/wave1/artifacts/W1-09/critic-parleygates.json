@@ -1,0 +1,100 @@
+{
+ "cases": [
+  {
+   "case": "NAME pass",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": true,
+   "gold_before": 0,
+   "gold_after": 0,
+   "enemy_final": "YIELDED"
+  },
+  {
+   "case": "NAME absent",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": false,
+   "gold_before": 0,
+   "gold_after": 0,
+   "enemy_final": "REPOSITION"
+  },
+  {
+   "case": "GOLD pass",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": true,
+   "gold_before": 500,
+   "gold_after": 320,
+   "enemy_final": "YIELDED"
+  },
+  {
+   "case": "GOLD short",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": false,
+   "gold_before": 100,
+   "gold_after": 100,
+   "enemy_final": "REPOSITION"
+  },
+  {
+   "case": "GOLD low disposition",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": true,
+   "gold_before": 500,
+   "gold_after": 320,
+   "enemy_final": "YIELDED"
+  },
+  {
+   "case": "FACTION rank ok",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": true,
+   "gold_before": 0,
+   "gold_after": 0,
+   "enemy_final": "YIELDED"
+  },
+  {
+   "case": "FACTION rank low",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": false,
+   "gold_before": 0,
+   "gold_after": 0,
+   "enemy_final": "REPOSITION"
+  },
+  {
+   "case": "FACTION expelled",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": false,
+   "gold_before": 0,
+   "gold_after": 0,
+   "enemy_final": "REPOSITION"
+  },
+  {
+   "case": "FACTION rival rank",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": false,
+   "gold_before": 0,
+   "gold_after": 0,
+   "enemy_final": "REPOSITION"
+  },
+  {
+   "case": "nothing at all",
+   "parley_ran": true,
+   "parley_len": 78,
+   "yielded": false,
+   "gold_before": 0,
+   "gold_after": 0,
+   "enemy_final": "REPOSITION"
+  }
+ ],
+ "beast": {
+  "states": [
+   "IDLE"
+  ],
+  "frames_spent": 0
+ }
+}

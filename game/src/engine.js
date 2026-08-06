@@ -1862,7 +1862,7 @@ async function loadData(onBytes) {
     return JSON.parse(text);
   };
   const index = await fetchJson('index.json');
-  const out = { index, enemies: {}, npcs: {}, interiors: {}, settlements: {}, states: {}, topics: {}, quests: {}, books: {}, items: {}, combat: {}, movesets: {} };
+  const out = { index, enemies: {}, npcs: {}, interiors: {}, settlements: {}, states: {}, topics: {}, quests: {}, books: {}, items: {}, combat: {}, movesets: {}, weapons: {} };
   const bucketFor = (path) => {
     if (path.startsWith('combat/enemies/')) return 'enemies';
     if (path.startsWith('npcs/')) return 'npcs';
@@ -1891,7 +1891,11 @@ async function loadData(onBytes) {
     else if (entry.path === 'camera/targets.json') out.cameraTargets = doc;
     else if (entry.path === 'save-manifest.json') out.saveManifest = doc;
     else if (entry.path === 'combat/input.json') out.input = doc;
-    else if (entry.path.startsWith('combat/movesets/')) out.movesets[doc.id] = doc;
+    // W1-09's seven class-spine files (loaded as `movesets` by system.js / moves.js) live under
+    // combat/spine/. W1-10's 87 per-weapon movesets own combat/movesets/ and validate against
+    // corpus/12-weapons/moveset.schema.json, which the spine files predate and do not.
+    else if (entry.path.startsWith('combat/spine/')) out.movesets[doc.id] = doc;
+    else if (entry.path.startsWith('combat/movesets/')) out.weapons[doc.weapon_id] = doc;
     else if (entry.path.startsWith('combat/')) out.combat[entry.path.slice('combat/'.length).replace(/\.json$/, '')] = doc;
     else if (entry.path === 'dialogue/greetings.json') out.greetings = doc;
     else if (entry.path === 'dialogue/rumours.json') out.rumours = doc;

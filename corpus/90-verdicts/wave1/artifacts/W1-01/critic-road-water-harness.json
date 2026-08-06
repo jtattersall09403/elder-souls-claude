@@ -1,0 +1,320 @@
+{
+  "schema": "critic/road-water@1",
+  "note": "getWaterAt sampled along every built road point, at the same tide state crossing.mjs uses (LOW), and again at HIGH.",
+  "tides": {
+    "LOW": [
+      {
+        "id": "stormhold-thorn",
+        "total_m": 2224.1,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 2224.1,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "stormhold-helstrom",
+        "total_m": 2904,
+        "max_depth_m": 65.64,
+        "deepest_at": [
+          2182.52,
+          2214.63
+        ],
+        "band_metres": {
+          "W0": 2366.3,
+          "W1": 0,
+          "W2": 0,
+          "W3": 24,
+          "W4": 12,
+          "W5": 501.7
+        }
+      },
+      {
+        "id": "helstrom-archon",
+        "total_m": 2576.3,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 2576.3,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "helstrom-blackrose",
+        "total_m": 2464.2,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 2464.2,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "helstrom-gideon",
+        "total_m": 2372.6,
+        "max_depth_m": 6.934,
+        "deepest_at": [
+          1657.99,
+          2758.75
+        ],
+        "band_metres": {
+          "W0": 2276.6,
+          "W1": 0,
+          "W2": 12,
+          "W3": 12,
+          "W4": 0,
+          "W5": 72
+        }
+      },
+      {
+        "id": "gideon-soulrest",
+        "total_m": 2551,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 2551,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "soulrest-blackrose",
+        "total_m": 1835.8,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 1835.8,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "blackrose-lilmoth",
+        "total_m": 1492.4,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 1492.4,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "archon-thorn",
+        "total_m": 4287.2,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 4287.2,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "lilmoth-archon",
+        "total_m": 2513.7,
+        "max_depth_m": 0.854,
+        "deepest_at": [
+          2937.8,
+          4834.14
+        ],
+        "band_metres": {
+          "W0": 481.8,
+          "W1": 191.4,
+          "W2": 1098.7,
+          "W3": 741.9,
+          "W4": 0,
+          "W5": 0
+        }
+      }
+    ],
+    "HIGH": [
+      {
+        "id": "stormhold-thorn",
+        "total_m": 2224.1,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 2224.1,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "stormhold-helstrom",
+        "total_m": 2904,
+        "max_depth_m": 65.64,
+        "deepest_at": [
+          2182.52,
+          2214.63
+        ],
+        "band_metres": {
+          "W0": 2366.3,
+          "W1": 0,
+          "W2": 0,
+          "W3": 24,
+          "W4": 12,
+          "W5": 501.7
+        }
+      },
+      {
+        "id": "helstrom-archon",
+        "total_m": 2576.3,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 2576.3,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "helstrom-blackrose",
+        "total_m": 2464.2,
+        "max_depth_m": 0.024,
+        "deepest_at": [
+          2136.04,
+          3681
+        ],
+        "band_metres": {
+          "W0": 2452.2,
+          "W1": 12,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "helstrom-gideon",
+        "total_m": 2372.6,
+        "max_depth_m": 6.934,
+        "deepest_at": [
+          1657.99,
+          2758.75
+        ],
+        "band_metres": {
+          "W0": 2276.6,
+          "W1": 0,
+          "W2": 12,
+          "W3": 12,
+          "W4": 0,
+          "W5": 72
+        }
+      },
+      {
+        "id": "gideon-soulrest",
+        "total_m": 2551,
+        "max_depth_m": 0.005,
+        "deepest_at": [
+          568.06,
+          3512.56
+        ],
+        "band_metres": {
+          "W0": 2551,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "soulrest-blackrose",
+        "total_m": 1835.8,
+        "max_depth_m": 0.075,
+        "deepest_at": [
+          1446.2,
+          4540.81
+        ],
+        "band_metres": {
+          "W0": 1811.9,
+          "W1": 24,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "blackrose-lilmoth",
+        "total_m": 1492.4,
+        "max_depth_m": 0,
+        "deepest_at": null,
+        "band_metres": {
+          "W0": 1492.4,
+          "W1": 0,
+          "W2": 0,
+          "W3": 0,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "archon-thorn",
+        "total_m": 4287.2,
+        "max_depth_m": 0.567,
+        "deepest_at": [
+          3671.68,
+          2330.63
+        ],
+        "band_metres": {
+          "W0": 3927.9,
+          "W1": 311.7,
+          "W2": 36,
+          "W3": 11.7,
+          "W4": 0,
+          "W5": 0
+        }
+      },
+      {
+        "id": "lilmoth-archon",
+        "total_m": 2513.7,
+        "max_depth_m": 1.455,
+        "deepest_at": [
+          3284.54,
+          4645.08
+        ],
+        "band_metres": {
+          "W0": 373.9,
+          "W1": 12,
+          "W2": 95.9,
+          "W3": 645.8,
+          "W4": 1110.9,
+          "W5": 275.2
+        }
+      }
+    ]
+  }
+}

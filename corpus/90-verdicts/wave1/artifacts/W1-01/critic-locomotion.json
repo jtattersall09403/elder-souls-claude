@@ -1,0 +1,803 @@
+{
+  "schema": "critic/locomotion@1",
+  "measured_at": "2026-08-06T17:54:55.190Z",
+  "note": "W1-01 critic instrument: S17 tested from the side RI-WLD01 M3 cannot see.",
+  "probes": {
+    "P1": [
+      {
+        "site": "road-stormhold-helstrom",
+        "x": 2210,
+        "z": 1200,
+        "region": "stone-forest",
+        "water_depth_m": 8.207,
+        "water": {
+          "depth_m": 8.207,
+          "band": "W5",
+          "substrate": "SILT",
+          "region": "stone-forest",
+          "region_name": "The Stone Forest",
+          "sea": null,
+          "tidal": false,
+          "k": 1.100000023841858,
+          "ground_y": 165.843,
+          "surface_y": 174.05
+        },
+        "terrain": {
+          "x": 2210,
+          "z": 1200,
+          "y": 165.843,
+          "base_y": 167.25,
+          "slope_deg": 69.61,
+          "region": "stone-forest",
+          "region_name": "The Stone Forest",
+          "region_index": 8,
+          "danger_tier": 3,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 3.2,
+          "substrate": "SILT",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 1.9945,
+        "dy_m": -35.8,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "valus-ridge-high",
+        "x": 1701.4,
+        "z": 1885.6,
+        "region": "valus-ridge",
+        "water_depth_m": 0,
+        "water": {
+          "depth_m": 0,
+          "band": "W0",
+          "substrate": "FIRM",
+          "region": "valus-ridge",
+          "region_name": "Valus Ridge",
+          "sea": null,
+          "tidal": false,
+          "k": 0.8999999761581421,
+          "ground_y": 390.991,
+          "surface_y": null
+        },
+        "terrain": {
+          "x": 1701.4,
+          "z": 1885.6,
+          "y": 390.991,
+          "base_y": 392.209,
+          "slope_deg": 6.49,
+          "region": "valus-ridge",
+          "region_name": "Valus Ridge",
+          "region_index": 11,
+          "danger_tier": 4,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 72.4,
+          "substrate": "FIRM",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 2,
+        "dy_m": -0.04,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "valus-ridge-steep",
+        "x": 1642.6,
+        "z": 1617.8,
+        "region": "valus-ridge",
+        "water_depth_m": 0,
+        "water": {
+          "depth_m": 0,
+          "band": "W0",
+          "substrate": "FIRM",
+          "region": "valus-ridge",
+          "region_name": "Valus Ridge",
+          "sea": null,
+          "tidal": false,
+          "k": 0.8999999761581421,
+          "ground_y": 415.056,
+          "surface_y": null
+        },
+        "terrain": {
+          "x": 1642.6,
+          "z": 1617.8,
+          "y": 415.056,
+          "base_y": 415.659,
+          "slope_deg": 26.89,
+          "region": "valus-ridge",
+          "region_name": "Valus Ridge",
+          "region_index": 11,
+          "danger_tier": 4,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 35.3,
+          "substrate": "FIRM",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 2,
+        "dy_m": -4.13,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "deep-marshes-water",
+        "x": 3184.6,
+        "z": 3463.9,
+        "region": "deep-marshes",
+        "water_depth_m": 0.369,
+        "water": {
+          "depth_m": 0.369,
+          "band": "W2",
+          "substrate": "SUCK",
+          "region": "deep-marshes",
+          "region_name": "The Deep Marshes",
+          "sea": null,
+          "tidal": false,
+          "k": 4.5,
+          "ground_y": 1.286,
+          "surface_y": 1.655
+        },
+        "terrain": {
+          "x": 3184.6,
+          "z": 3463.9,
+          "y": 1.286,
+          "base_y": 1,
+          "slope_deg": 0.62,
+          "region": "deep-marshes",
+          "region_name": "The Deep Marshes",
+          "region_index": 3,
+          "danger_tier": 5,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 318.1,
+          "substrate": "SUCK",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 1.9988,
+        "dy_m": -0.14,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "deep-marshes-water2",
+        "x": 3254.9,
+        "z": 3801.9,
+        "region": "deep-marshes",
+        "water_depth_m": 0.437,
+        "water": {
+          "depth_m": 0.437,
+          "band": "W2",
+          "substrate": "SILT",
+          "region": "deep-marshes",
+          "region_name": "The Deep Marshes",
+          "sea": null,
+          "tidal": false,
+          "k": 4.5,
+          "ground_y": 1.321,
+          "surface_y": 1.759
+        },
+        "terrain": {
+          "x": 3254.9,
+          "z": 3801.9,
+          "y": 1.321,
+          "base_y": 1.1,
+          "slope_deg": 2.81,
+          "region": "deep-marshes",
+          "region_name": "The Deep Marshes",
+          "region_index": 3,
+          "danger_tier": 5,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 482.7,
+          "substrate": "SILT",
+          "sea": "padomaic"
+        },
+        "walk_mps_over_5s": 1.9988,
+        "dy_m": 0.12,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "blackwood-offroad",
+        "x": 1558.9,
+        "z": 3432.7,
+        "region": "blackwood",
+        "water_depth_m": 0,
+        "water": {
+          "depth_m": 0,
+          "band": "W0",
+          "substrate": "SUCK",
+          "region": "blackwood",
+          "region_name": "Blackwood",
+          "sea": null,
+          "tidal": false,
+          "k": 2.5999999046325684,
+          "ground_y": 5.558,
+          "surface_y": null
+        },
+        "terrain": {
+          "x": 1558.9,
+          "z": 3432.7,
+          "y": 5.558,
+          "base_y": 4.89,
+          "slope_deg": 2.13,
+          "region": "blackwood",
+          "region_name": "Blackwood",
+          "region_index": 0,
+          "danger_tier": 2,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 339.8,
+          "substrate": "SUCK",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 1.9988,
+        "dy_m": -1.02,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "salt-hills-slope",
+        "x": 2426.4,
+        "z": 737.2,
+        "region": "salt-hills",
+        "water_depth_m": 0,
+        "water": {
+          "depth_m": 0,
+          "band": "W0",
+          "substrate": "SILT",
+          "region": "salt-hills",
+          "region_name": "The Salt Hills",
+          "sea": null,
+          "tidal": false,
+          "k": 0.800000011920929,
+          "ground_y": 128.804,
+          "surface_y": null
+        },
+        "terrain": {
+          "x": 2426.4,
+          "z": 737.2,
+          "y": 128.804,
+          "base_y": 127.723,
+          "slope_deg": 10.04,
+          "region": "salt-hills",
+          "region_name": "The Salt Hills",
+          "region_index": 7,
+          "danger_tier": 3,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 103.4,
+          "substrate": "SILT",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 2,
+        "dy_m": -0.73,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "stone-wastes-flat",
+        "x": 853.3,
+        "z": 5047.4,
+        "region": "stone-wastes",
+        "water_depth_m": 0,
+        "water": {
+          "depth_m": 0,
+          "band": "W0",
+          "substrate": "FIRM",
+          "region": "stone-wastes",
+          "region_name": "Stone Wastes",
+          "sea": "topal",
+          "tidal": true,
+          "k": 1.399999976158142,
+          "ground_y": 8.83,
+          "surface_y": null
+        },
+        "terrain": {
+          "x": 853.3,
+          "z": 5047.4,
+          "y": 8.83,
+          "base_y": 9.124,
+          "slope_deg": 3.07,
+          "region": "stone-wastes",
+          "region_name": "Stone Wastes",
+          "region_index": 9,
+          "danger_tier": 5,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 230.1,
+          "substrate": "FIRM",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 2,
+        "dy_m": -0.26,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "eastern-rootlands",
+        "x": 3147,
+        "z": 4723.7,
+        "region": "eastern-rootlands",
+        "water_depth_m": 0,
+        "water": {
+          "depth_m": 0,
+          "band": "W0",
+          "substrate": "SILT",
+          "region": "eastern-rootlands",
+          "region_name": "Eastern Rootlands",
+          "sea": "padomaic",
+          "tidal": true,
+          "k": 3.200000047683716,
+          "ground_y": 0.963,
+          "surface_y": null
+        },
+        "terrain": {
+          "x": 3147,
+          "z": 4723.7,
+          "y": 0.963,
+          "base_y": 1.2,
+          "slope_deg": 2.06,
+          "region": "eastern-rootlands",
+          "region_name": "Eastern Rootlands",
+          "region_index": 4,
+          "danger_tier": 2,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 67.8,
+          "substrate": "SILT",
+          "sea": "padomaic"
+        },
+        "walk_mps_over_5s": 2,
+        "dy_m": -0.09,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "clay-moor",
+        "x": 3650.7,
+        "z": 2098.6,
+        "region": "clay-moor",
+        "water_depth_m": 0,
+        "water": {
+          "depth_m": 0,
+          "band": "W0",
+          "substrate": "FIRM",
+          "region": "clay-moor",
+          "region_name": "The Clay Moor",
+          "sea": null,
+          "tidal": false,
+          "k": null,
+          "ground_y": 28.558,
+          "surface_y": null
+        },
+        "terrain": {
+          "x": 3650.7,
+          "z": 2098.6,
+          "y": 28.558,
+          "base_y": 28.999,
+          "slope_deg": 1.54,
+          "region": "clay-moor",
+          "region_name": "The Clay Moor",
+          "region_index": 1,
+          "danger_tier": 4,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 170.2,
+          "substrate": "FIRM",
+          "sea": "padomaic"
+        },
+        "walk_mps_over_5s": 2,
+        "dy_m": -0.84,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "lilmoth-start",
+        "x": 2766.5,
+        "z": 5011,
+        "region": "western-rootlands",
+        "water_depth_m": 0,
+        "water": {
+          "depth_m": 0,
+          "band": "W0",
+          "substrate": "FIRM",
+          "region": "western-rootlands",
+          "region_name": "Western Rootlands",
+          "sea": "topal",
+          "tidal": true,
+          "k": 1.899999976158142,
+          "ground_y": 2.77,
+          "surface_y": null
+        },
+        "terrain": {
+          "x": 2766.5,
+          "z": 5011,
+          "y": 2.77,
+          "base_y": 1.994,
+          "slope_deg": 0,
+          "region": "western-rootlands",
+          "region_name": "Western Rootlands",
+          "region_index": 12,
+          "danger_tier": 1,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 126.1,
+          "substrate": "FIRM",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 2,
+        "dy_m": 0,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      },
+      {
+        "site": "marauders-coast",
+        "x": 552.5,
+        "z": 4271.9,
+        "region": "marauders-coast",
+        "water_depth_m": 0.086,
+        "water": {
+          "depth_m": 0.086,
+          "band": "W1",
+          "substrate": "SILT",
+          "region": "marauders-coast",
+          "region_name": "Marauder's Coast",
+          "sea": "topal",
+          "tidal": true,
+          "k": 1.399999976158142,
+          "ground_y": 1.32,
+          "surface_y": 1.407
+        },
+        "terrain": {
+          "x": 552.5,
+          "z": 4271.9,
+          "y": 1.32,
+          "base_y": 1.48,
+          "slope_deg": 1.49,
+          "region": "marauders-coast",
+          "region_name": "Marauder's Coast",
+          "region_index": 6,
+          "danger_tier": 2,
+          "land": true,
+          "ocean": false,
+          "coast_dist_m": 115.6,
+          "substrate": "SILT",
+          "sea": "topal"
+        },
+        "walk_mps_over_5s": 1.9998,
+        "dy_m": 0.1,
+        "stamina": [
+          120,
+          120
+        ],
+        "hp": [
+          620,
+          620
+        ],
+        "end_state": "WALK"
+      }
+    ],
+    "P2": {
+      "ramp": [
+        {
+          "frames": 1,
+          "dist_m": 0.0183,
+          "mean_mps": 1.1
+        },
+        {
+          "frames": 2,
+          "dist_m": 0.0449,
+          "mean_mps": 1.3475
+        },
+        {
+          "frames": 3,
+          "dist_m": 0.0752,
+          "mean_mps": 1.5042
+        },
+        {
+          "frames": 4,
+          "dist_m": 0.1072,
+          "mean_mps": 1.6077
+        },
+        {
+          "frames": 5,
+          "dist_m": 0.1399,
+          "mean_mps": 1.6788
+        },
+        {
+          "frames": 6,
+          "dist_m": 0.173,
+          "mean_mps": 1.7295
+        },
+        {
+          "frames": 8,
+          "dist_m": 0.2394,
+          "mean_mps": 1.7958
+        },
+        {
+          "frames": 10,
+          "dist_m": 0.3061,
+          "mean_mps": 1.8364
+        },
+        {
+          "frames": 15,
+          "dist_m": 0.4727,
+          "mean_mps": 1.8909
+        },
+        {
+          "frames": 20,
+          "dist_m": 0.6394,
+          "mean_mps": 1.9182
+        },
+        {
+          "frames": 30,
+          "dist_m": 0.9727,
+          "mean_mps": 1.9455
+        },
+        {
+          "frames": 60,
+          "dist_m": 1.9727,
+          "mean_mps": 1.9727
+        }
+      ],
+      "note": "mean m/s from a standing start; a flat 2.0 at k=1 means no acceleration model at all"
+    },
+    "P3": {
+      "reversal": [
+        {
+          "frames_after_reversal": 0,
+          "yaw_deg": 90
+        },
+        {
+          "frames_after_reversal": 1,
+          "yaw_deg": 102
+        },
+        {
+          "frames_after_reversal": 2,
+          "yaw_deg": 114
+        },
+        {
+          "frames_after_reversal": 3,
+          "yaw_deg": 126
+        },
+        {
+          "frames_after_reversal": 4,
+          "yaw_deg": 138
+        },
+        {
+          "frames_after_reversal": 6,
+          "yaw_deg": 162
+        },
+        {
+          "frames_after_reversal": 8,
+          "yaw_deg": 186
+        },
+        {
+          "frames_after_reversal": 12,
+          "yaw_deg": 234
+        },
+        {
+          "frames_after_reversal": 20,
+          "yaw_deg": 270
+        },
+        {
+          "frames_after_reversal": 40,
+          "yaw_deg": 270
+        },
+        {
+          "frames_after_reversal": 80,
+          "yaw_deg": 270
+        }
+      ],
+      "note": "yaw after k frames of a full 180-degree stick reversal"
+    },
+    "P4": {
+      "stamina": [
+        120,
+        120
+      ],
+      "hp": [
+        620,
+        620
+      ],
+      "dist_m": 120,
+      "mean_mps_over_60s": 2
+    },
+    "P5": [
+      {
+        "label": "walk",
+        "stick_mag": 0.5499999990000001,
+        "mps": 1.9945,
+        "end_state": "WALK",
+        "end_stamina": 120,
+        "end_water": {
+          "depth_m": 41.913,
+          "band": "W5",
+          "substrate": "SILT",
+          "region": "stone-forest",
+          "region_name": "The Stone Forest",
+          "sea": null,
+          "tidal": false,
+          "k": 1.100000023841858,
+          "ground_y": 130.045,
+          "surface_y": 171.958
+        }
+      },
+      {
+        "label": "jog",
+        "stick_mag": 1,
+        "mps": 3.1913,
+        "end_state": "RUN",
+        "end_stamina": 120,
+        "end_water": {
+          "depth_m": 41.24,
+          "band": "W5",
+          "substrate": "SILT",
+          "region": "stone-forest",
+          "region_name": "The Stone Forest",
+          "sea": "topal",
+          "tidal": false,
+          "k": 1.100000023841858,
+          "ground_y": 129.043,
+          "surface_y": 170.282
+        }
+      },
+      {
+        "label": "quarter-stick",
+        "stick_mag": 0.1375,
+        "mps": 0,
+        "end_state": "IDLE",
+        "end_stamina": 120,
+        "end_water": {
+          "depth_m": 8.207,
+          "band": "W5",
+          "substrate": "SILT",
+          "region": "stone-forest",
+          "region_name": "The Stone Forest",
+          "sea": null,
+          "tidal": false,
+          "k": 1.100000023841858,
+          "ground_y": 165.843,
+          "surface_y": 174.05
+        }
+      },
+      {
+        "label": "half-walk-band",
+        "stick_mag": 0.275,
+        "mps": 0.9973,
+        "end_state": "WALK",
+        "end_stamina": 120,
+        "end_water": {
+          "depth_m": 23.715,
+          "band": "W5",
+          "substrate": "SILT",
+          "region": "stone-forest",
+          "region_name": "The Stone Forest",
+          "sea": null,
+          "tidal": false,
+          "k": 1.100000023841858,
+          "ground_y": 149.639,
+          "surface_y": 173.354
+        }
+      },
+      {
+        "label": "walk-in-deep-marsh-water",
+        "stick_mag": 0.5499999990000001,
+        "mps": 1.9988,
+        "end_state": "WALK",
+        "end_stamina": 120,
+        "end_water": {
+          "depth_m": 0.476,
+          "band": "W2",
+          "substrate": "SUCK",
+          "region": "deep-marshes",
+          "region_name": "The Deep Marshes",
+          "sea": null,
+          "tidal": false,
+          "k": 4.5,
+          "ground_y": 1.147,
+          "surface_y": 1.623
+        }
+      },
+      {
+        "label": "jog-in-deep-marsh-water",
+        "stick_mag": 1,
+        "mps": 3.1943,
+        "end_state": "RUN",
+        "end_stamina": 120,
+        "end_water": {
+          "depth_m": 0.628,
+          "band": "W3",
+          "substrate": "SUCK",
+          "region": "deep-marshes",
+          "region_name": "The Deep Marshes",
+          "sea": null,
+          "tidal": false,
+          "k": 4.5,
+          "ground_y": 0.974,
+          "surface_y": 1.601
+        }
+      }
+    ]
+  }
+}

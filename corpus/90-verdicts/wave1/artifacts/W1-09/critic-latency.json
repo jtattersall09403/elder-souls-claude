@@ -1,0 +1,156 @@
+{
+ "m1": [
+  {
+   "button": "light",
+   "state_before": "IDLE",
+   "state_after": "ATK_STARTUP",
+   "anim_frame_after": 1,
+   "changed": true,
+   "move_after": true
+  },
+  {
+   "button": "heavy",
+   "state_before": "IDLE",
+   "state_after": "ATK_STARTUP",
+   "anim_frame_after": 1,
+   "changed": true,
+   "move_after": true
+  },
+  {
+   "button": "roll",
+   "state_before": "IDLE",
+   "state_after": "BACKSTEP",
+   "anim_frame_after": 1,
+   "changed": true,
+   "move_after": true
+  },
+  {
+   "button": "block",
+   "state_before": "IDLE",
+   "state_after": "BLOCK_HOLD",
+   "anim_frame_after": 9,
+   "changed": true,
+   "move_after": false
+  },
+  {
+   "button": "parry",
+   "state_before": "IDLE",
+   "state_after": "PARRY_ACTIVE",
+   "anim_frame_after": 1,
+   "changed": true,
+   "move_after": true
+  },
+  {
+   "button": "sprint",
+   "state_before": "IDLE",
+   "state_after": "IDLE",
+   "anim_frame_after": 9,
+   "changed": false,
+   "move_after": false
+  },
+  {
+   "button": "jump",
+   "state_before": "IDLE",
+   "state_after": "IDLE",
+   "anim_frame_after": 9,
+   "changed": false,
+   "move_after": false
+  },
+  {
+   "button": "use_item",
+   "state_before": "IDLE",
+   "state_after": "HEAL_STARTUP",
+   "anim_frame_after": 1,
+   "changed": true,
+   "move_after": true
+  },
+  {
+   "button": "interact",
+   "state_before": "IDLE",
+   "state_after": "IDLE",
+   "anim_frame_after": 9,
+   "changed": false,
+   "move_after": false
+  },
+  {
+   "button": "lock_on",
+   "state_before": "IDLE",
+   "state_after": "IDLE",
+   "anim_frame_after": 9,
+   "changed": false,
+   "move_after": false
+  },
+  {
+   "button": "two_hand",
+   "state_before": "IDLE",
+   "state_after": "IDLE",
+   "anim_frame_after": 9,
+   "changed": false,
+   "move_after": false
+  },
+  {
+   "button": "swap_right",
+   "state_before": "IDLE",
+   "state_after": "IDLE",
+   "anim_frame_after": 9,
+   "changed": false,
+   "move_after": false
+  },
+  {
+   "button": "swap_left",
+   "state_before": "IDLE",
+   "state_after": "IDLE",
+   "anim_frame_after": 9,
+   "changed": false,
+   "move_after": false
+  },
+  {
+   "button": "menu",
+   "state_before": "IDLE",
+   "state_after": "IDLE",
+   "anim_frame_after": 9,
+   "changed": false,
+   "move_after": false
+  }
+ ],
+ "m4": {
+  "press36": {
+   "press_at_anim_f": 36,
+   "executed_at_anim_f": null,
+   "state": null
+  },
+  "press44": {
+   "press_at_anim_f": 44,
+   "executed_at_anim_f": 56,
+   "state": "ATK_STARTUP"
+  },
+  "press45": {
+   "press_at_anim_f": 45,
+   "executed_at_anim_f": 56,
+   "state": "ATK_STARTUP"
+  },
+  "press49": {
+   "press_at_anim_f": 49,
+   "executed_at_anim_f": 56,
+   "state": "ATK_STARTUP"
+  },
+  "press52": {
+   "press_at_anim_f": 52,
+   "executed_at_anim_f": 56,
+   "state": "ATK_STARTUP"
+  },
+  "one_slot": {
+   "after_roll": [
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER",
+    "RUN"
+   ]
+  },
+  "mash_attacks": 1
+ },
+ "m1_repeat": {
+  "trials": 200,
+  "failures": 0
+ }
+}

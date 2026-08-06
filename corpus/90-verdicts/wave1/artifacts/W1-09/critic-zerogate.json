@@ -1,0 +1,134 @@
+{
+ "drain": {
+  "min_stamina": 0,
+  "stamina_at_press": 20.25,
+  "states_after": [
+   "IDLE"
+  ],
+  "drops": 1,
+  "pos_moved": [
+   0,
+   0,
+   1.6499999999999988
+  ]
+ },
+ "tries": {
+  "light": {
+   "min_stamina": 0,
+   "stamina_at_press": 20.25,
+   "states_after": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "drops": 1,
+   "pos_moved": [
+    0,
+    0,
+    1.799999999999999
+   ]
+  },
+  "heavy": {
+   "min_stamina": 0,
+   "stamina_at_press": 20.25,
+   "states_after": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "drops": 1,
+   "pos_moved": [
+    0,
+    0,
+    1.8499999999999983
+   ]
+  },
+  "roll": {
+   "min_stamina": 0,
+   "stamina_at_press": 20.25,
+   "states_after": [
+    "IDLE",
+    "BACKSTEP"
+   ],
+   "drops": 1,
+   "pos_moved": [
+    0,
+    0,
+    -0.650000000000001
+   ]
+  },
+  "sprint": {
+   "min_stamina": 0,
+   "stamina_at_press": 20.25,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 1,
+   "pos_moved": [
+    0,
+    0,
+    1.6499999999999988
+   ]
+  },
+  "parry": {
+   "min_stamina": 0,
+   "stamina_at_press": 20.25,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 2,
+   "pos_moved": [
+    0,
+    0,
+    1.6499999999999988
+   ]
+  },
+  "block": {
+   "min_stamina": 0,
+   "stamina_at_press": 20.25,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 1,
+   "pos_moved": [
+    0,
+    0,
+    1.6499999999999988
+   ]
+  },
+  "use_item": {
+   "min_stamina": 0,
+   "stamina_at_press": 20.25,
+   "states_after": [
+    "IDLE",
+    "HEAL_STARTUP",
+    "HEAL_ACTIVE",
+    "HEAL_RECOVER"
+   ],
+   "drops": 1,
+   "pos_moved": [
+    0,
+    0,
+    1.6499999999999988
+   ]
+  },
+  "jump": {
+   "min_stamina": 0,
+   "stamina_at_press": 20.25,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 1,
+   "pos_moved": [
+    0,
+    0,
+    1.6499999999999988
+   ]
+  }
+ },
+ "walk_at_low": {
+  "moved_m": 9.34
+ }
+}

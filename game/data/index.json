@@ -146,49 +146,49 @@
       "sha256": "ee95d6a784277fa9"
     },
     {
-      "path": "combat/movesets/axe.json",
+      "path": "combat/spine/axe.json",
       "schema": "elder-souls/moveset@1",
       "id": "axe",
       "bytes": 2285,
       "sha256": "d4339854e77019e3"
     },
     {
-      "path": "combat/movesets/dagger.json",
+      "path": "combat/spine/dagger.json",
       "schema": "elder-souls/moveset@1",
       "id": "dagger",
       "bytes": 2744,
       "sha256": "b95720039fa14833"
     },
     {
-      "path": "combat/movesets/greatsword.json",
+      "path": "combat/spine/greatsword.json",
       "schema": "elder-souls/moveset@1",
       "id": "greatsword",
       "bytes": 2809,
       "sha256": "3adb7c3f1597d239"
     },
     {
-      "path": "combat/movesets/halberd.json",
+      "path": "combat/spine/halberd.json",
       "schema": "elder-souls/moveset@1",
       "id": "halberd",
       "bytes": 2297,
       "sha256": "96e093aa9e2cb0bc"
     },
     {
-      "path": "combat/movesets/spear.json",
+      "path": "combat/spine/spear.json",
       "schema": "elder-souls/moveset@1",
       "id": "spear",
       "bytes": 2272,
       "sha256": "50425800a120055b"
     },
     {
-      "path": "combat/movesets/straight-sword.json",
+      "path": "combat/spine/straight-sword.json",
       "schema": "elder-souls/moveset@1",
       "id": "straight-sword",
       "bytes": 2337,
       "sha256": "1cbd78dd2e713f7a"
     },
     {
-      "path": "combat/movesets/ultra-greatsword.json",
+      "path": "combat/spine/ultra-greatsword.json",
       "schema": "elder-souls/moveset@1",
       "id": "ultra-greatsword",
       "bytes": 2838,
@@ -662,6 +662,461 @@
       "id": null,
       "bytes": 8668,
       "sha256": "a084e9e7c7f864f4"
+    },
+    {
+      "path": "combat/movesets/axe_bog_cleaver.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/axe_hatchet_pair.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/axe_kings_bite.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/axe_ridge_axe.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/axe_shell_reaper.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/axe_shell_splitter.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/bow_chitin_recurve.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/bow_horn_sinew.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/bow_kings_horn.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/bow_marsh_longbow.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/bow_reed_shortbow.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/cgs_drowned_reaper.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/cgs_harvest_edge.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/cgs_kings_crescent.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/cgs_mire_scythe.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/cgs_tide_falx.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/csw_drowned_kris.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/csw_mangrove_hook.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/csw_naga_sickle.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/csw_reaver_blade.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/csw_saltmarsh_sabre.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/csw_tide_falchion.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/dgr_bone_awl.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/dgr_hist_barb.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/dgr_kings_needle.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/dgr_reed_dirk.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/dgr_shell_knife.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/dgr_thornfang.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/fst_hist_talon.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/fst_marsh_claw.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/fst_quarry_caestus.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/fst_wrapped_fists.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ghm_bog_maul.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ghm_kings_ruin.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ghm_pile_driver.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ghm_root_hammer.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ghm_stone_breaker.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/gsw_drowned_greatblade.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/gsw_fen_claymore.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/gsw_hist_greatblade.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/gsw_memorial_blade.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/gsw_oath_of_ash.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/gsw_reed_bastard.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/gsw_saltwind.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/gsw_tomb_guard.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/hlb_fen_hook.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/hlb_garrison_bill.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/hlb_lane_keeper.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/hlb_marsh_glaive.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/hlb_reed_partisan.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/hlb_saltcutter.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/mce_bog_iron_mace.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/mce_bone_hammer.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/mce_chain_flail.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/mce_pilgrim_club.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/mce_root_maul.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/mce_stone_answer.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/spr_drowned_harpoon.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/spr_fishers_gig.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/spr_marsh_lance.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/spr_mire_trident.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/spr_reed_gig.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/spr_root_pike.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/spr_xanmeer_sting.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ssw_barsaebic_warblade.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ssw_fen_wardens.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ssw_garrison_sword.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ssw_hist_sap_blade.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ssw_kothringi_bronze.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ssw_marsh_shortsword.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ssw_oath_of_drowned.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ssw_rusted_levy.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/tsw_bog_rapier.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/tsw_duelling_pick.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/tsw_oath_of_salt.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/tsw_reed_estoc.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/tsw_xanmeer_needle.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ugs_drowned_slab.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ugs_fen_zwei.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ugs_golem_sword.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ugs_oath_of_root.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ugs_saltiron_greatsword.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/ugs_tomb_colossus.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/whp_hide_lash.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/whp_hist_bindings.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/whp_root_tendril.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "combat/movesets/whp_salt_scourge.json",
+      "schema": "elder-souls/moveset@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "weapons/classes.json",
+      "schema": "elder-souls/classes@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "weapons/pose-library.json",
+      "schema": "elder-souls/pose-library@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "weapons/roster.json",
+      "schema": "elder-souls/roster@1",
+      "owner": "W1-10 (RI-WPN01..06)"
+    },
+    {
+      "path": "weapons/clip-registry.json",
+      "schema": "elder-souls/clip-registry@1",
+      "owner": "W1-10 (RI-WPN01..06)"
     }
   ]
 }

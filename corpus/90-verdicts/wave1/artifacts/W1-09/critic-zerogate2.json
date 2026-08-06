@@ -1,0 +1,127 @@
+{
+ "probe": [
+  {
+   "cycles": 1,
+   "action": null,
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 2,
+   "action": null,
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": null,
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": "light",
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": "heavy",
+   "stamina_at_press": 120,
+   "min_stamina": 58,
+   "states_after": [
+    "IDLE",
+    "ATK_STARTUP",
+    "ATK_ACTIVE",
+    "ATK_RECOVER"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": "roll",
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE",
+    "BACKSTEP"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": "sprint",
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": "parry",
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE",
+    "PARRY_ACTIVE",
+    "PARRY_RECOVER"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": "block",
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE",
+    "BLOCK_HOLD"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": "use_item",
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE",
+    "HEAL_STARTUP",
+    "HEAL_ACTIVE",
+    "HEAL_RECOVER"
+   ],
+   "drops": 0
+  },
+  {
+   "cycles": 3,
+   "action": "interact",
+   "stamina_at_press": 120,
+   "min_stamina": 78,
+   "states_after": [
+    "IDLE"
+   ],
+   "drops": 0
+  }
+ ]
+}

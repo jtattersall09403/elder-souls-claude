@@ -1,0 +1,718 @@
+{
+ "runs": [
+  {
+   "sprint_frames": 500,
+   "stamina_before_block": 45.15,
+   "broke": false,
+   "at_f": null,
+   "stam_at_break": null,
+   "end_f": null,
+   "duration_f": null,
+   "impacts": [
+    {
+     "f": 80,
+     "dS": 36.33,
+     "dHP": 5.759999999999991,
+     "st": "BLOCK_HOLD",
+     "stam_after": 14.52
+    }
+   ],
+   "transitions": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "stam": 45.15,
+     "hp": 620
+    },
+    {
+     "f": 2,
+     "st": "BLOCK_HOLD",
+     "stam": 45.15,
+     "hp": 620
+    },
+    {
+     "f": 80,
+     "dS": 36.33,
+     "dHP": 5.759999999999991,
+     "st": "BLOCK_HOLD",
+     "stam_after": 14.52
+    }
+   ]
+  },
+  {
+   "sprint_frames": 600,
+   "stamina_before_block": 30.15,
+   "broke": true,
+   "at_f": 80,
+   "stam_at_break": 0,
+   "end_f": 126,
+   "duration_f": 46,
+   "impacts": [
+    {
+     "f": 80,
+     "dS": 35.85,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    }
+   ],
+   "transitions": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "stam": 30.15,
+     "hp": 620
+    },
+    {
+     "f": 2,
+     "st": "BLOCK_HOLD",
+     "stam": 30.15,
+     "hp": 620
+    },
+    {
+     "f": 80,
+     "st": "GUARD_BREAK",
+     "stam": 0,
+     "hp": 614.24
+    },
+    {
+     "f": 80,
+     "dS": 35.85,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    },
+    {
+     "f": 126,
+     "st": "IDLE",
+     "stam": 2.25,
+     "hp": 614.24
+    },
+    {
+     "f": 169,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3
+    },
+    {
+     "f": 170,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3.75
+    },
+    {
+     "f": 171,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 4.5
+    },
+    {
+     "f": 172,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 5.25
+    },
+    {
+     "f": 173,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6
+    },
+    {
+     "f": 174,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6.75
+    }
+   ]
+  },
+  {
+   "sprint_frames": 640,
+   "stamina_before_block": 24.15,
+   "broke": true,
+   "at_f": 80,
+   "stam_at_break": 0,
+   "end_f": 126,
+   "duration_f": 46,
+   "impacts": [
+    {
+     "f": 80,
+     "dS": 29.85,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    }
+   ],
+   "transitions": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "stam": 24.15,
+     "hp": 620
+    },
+    {
+     "f": 2,
+     "st": "BLOCK_HOLD",
+     "stam": 24.15,
+     "hp": 620
+    },
+    {
+     "f": 80,
+     "st": "GUARD_BREAK",
+     "stam": 0,
+     "hp": 614.24
+    },
+    {
+     "f": 80,
+     "dS": 29.85,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    },
+    {
+     "f": 126,
+     "st": "IDLE",
+     "stam": 2.25,
+     "hp": 614.24
+    },
+    {
+     "f": 169,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3
+    },
+    {
+     "f": 170,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3.75
+    },
+    {
+     "f": 171,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 4.5
+    },
+    {
+     "f": 172,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 5.25
+    },
+    {
+     "f": 173,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6
+    },
+    {
+     "f": 174,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6.75
+    }
+   ]
+  },
+  {
+   "sprint_frames": 645,
+   "stamina_before_block": 23.4,
+   "broke": true,
+   "at_f": 80,
+   "stam_at_break": 0,
+   "end_f": 126,
+   "duration_f": 46,
+   "impacts": [
+    {
+     "f": 80,
+     "dS": 29.1,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    }
+   ],
+   "transitions": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "stam": 23.4,
+     "hp": 620
+    },
+    {
+     "f": 2,
+     "st": "BLOCK_HOLD",
+     "stam": 23.4,
+     "hp": 620
+    },
+    {
+     "f": 80,
+     "st": "GUARD_BREAK",
+     "stam": 0,
+     "hp": 614.24
+    },
+    {
+     "f": 80,
+     "dS": 29.1,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    },
+    {
+     "f": 126,
+     "st": "IDLE",
+     "stam": 2.25,
+     "hp": 614.24
+    },
+    {
+     "f": 169,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3
+    },
+    {
+     "f": 170,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3.75
+    },
+    {
+     "f": 171,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 4.5
+    },
+    {
+     "f": 172,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 5.25
+    },
+    {
+     "f": 173,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6
+    },
+    {
+     "f": 174,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6.75
+    }
+   ]
+  },
+  {
+   "sprint_frames": 650,
+   "stamina_before_block": 22.65,
+   "broke": true,
+   "at_f": 80,
+   "stam_at_break": 0,
+   "end_f": 126,
+   "duration_f": 46,
+   "impacts": [
+    {
+     "f": 80,
+     "dS": 28.35,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    }
+   ],
+   "transitions": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "stam": 22.65,
+     "hp": 620
+    },
+    {
+     "f": 2,
+     "st": "BLOCK_HOLD",
+     "stam": 22.65,
+     "hp": 620
+    },
+    {
+     "f": 80,
+     "st": "GUARD_BREAK",
+     "stam": 0,
+     "hp": 614.24
+    },
+    {
+     "f": 80,
+     "dS": 28.35,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    },
+    {
+     "f": 126,
+     "st": "IDLE",
+     "stam": 2.25,
+     "hp": 614.24
+    },
+    {
+     "f": 169,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3
+    },
+    {
+     "f": 170,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3.75
+    },
+    {
+     "f": 171,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 4.5
+    },
+    {
+     "f": 172,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 5.25
+    },
+    {
+     "f": 173,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6
+    },
+    {
+     "f": 174,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6.75
+    }
+   ]
+  },
+  {
+   "sprint_frames": 700,
+   "stamina_before_block": 15.15,
+   "broke": true,
+   "at_f": 80,
+   "stam_at_break": 0,
+   "end_f": 126,
+   "duration_f": 46,
+   "impacts": [
+    {
+     "f": 80,
+     "dS": 20.85,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    }
+   ],
+   "transitions": [
+    {
+     "f": 1,
+     "st": "IDLE",
+     "stam": 15.15,
+     "hp": 620
+    },
+    {
+     "f": 2,
+     "st": "BLOCK_HOLD",
+     "stam": 15.15,
+     "hp": 620
+    },
+    {
+     "f": 80,
+     "st": "GUARD_BREAK",
+     "stam": 0,
+     "hp": 614.24
+    },
+    {
+     "f": 80,
+     "dS": 20.85,
+     "dHP": 5.759999999999991,
+     "st": "GUARD_BREAK",
+     "stam_after": 0
+    },
+    {
+     "f": 123,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 0.75
+    },
+    {
+     "f": 124,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 1.5
+    },
+    {
+     "f": 125,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "GUARD_BREAK",
+     "stam_after": 2.25
+    },
+    {
+     "f": 126,
+     "st": "IDLE",
+     "stam": 2.25,
+     "hp": 614.24
+    },
+    {
+     "f": 169,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3
+    },
+    {
+     "f": 170,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 3.75
+    },
+    {
+     "f": 171,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 4.5
+    },
+    {
+     "f": 172,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 5.25
+    },
+    {
+     "f": 173,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6
+    },
+    {
+     "f": 174,
+     "dS": -0.75,
+     "dHP": 0,
+     "st": "IDLE",
+     "stam_after": 6.75
+    }
+   ]
+  }
+ ]
+}

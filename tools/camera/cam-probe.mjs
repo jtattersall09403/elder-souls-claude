@@ -400,7 +400,7 @@ async function runProbe(name) {
       // static world geometry, so this measures that the structure holds in a real fight.
       fresh(); place('cam-flat-plain', 0, 0); setYaw(0); setPitch(0); step(60);
       const before = cam().arm_len_m;
-      const eid = H.spawn('naga_levy', 0, -1.5);
+      const eid = H.spawn('cam_levy', 0, -1.5);
       H.aggro(eid); step(30);
       const rows = collect(120);
       const minArm = Math.min(...rows.map((c) => c.arm_len_m));
@@ -574,16 +574,18 @@ async function runProbe(name) {
       // RI-CAM03 M1 + M3 — THE CONTAINMENT LAW. On-screen fractions over real duels and under
       // adversarial motion, at several target heights and in the geometries that fail.
       const scenarios = [
-        { id: 'duel-infantry', cell: 'cam-boss-arena', h: 1.9, arch: 'naga_levy', d: 3.5, mode: 'orbit' },
-        { id: 'duel-in-corridor', cell: 'cam-walk-cistern', h: 1.9, arch: 'naga_levy', d: 3.0, mode: 'orbit' },
-        { id: 'duel-on-stair', cell: 'cam-stair', h: 1.9, arch: 'naga_levy', d: 3.0, mode: 'orbit' },
-        { id: 'adversarial-h1p9', cell: 'cam-boss-arena', h: 1.9, arch: 'naga_levy', d: 2.5, mode: 'adversarial' },
-        { id: 'adversarial-h8p0', cell: 'cam-boss-arena', h: 8.0, arch: 'naga_levy', d: 6.0, mode: 'adversarial' },
+        { id: 'duel-infantry', cell: 'cam-boss-arena', h: 1.9, arch: 'cam_levy', d: 3.5, mode: 'orbit' },
+        { id: 'duel-in-corridor', cell: 'cam-walk-cistern', h: 1.9, arch: 'cam_levy', d: 3.0, mode: 'orbit' },
+        { id: 'duel-on-stair', cell: 'cam-stair', h: 1.9, arch: 'cam_levy', d: 3.0, mode: 'orbit' },
+        { id: 'adversarial-h1p9', cell: 'cam-boss-arena', h: 1.9, arch: 'cam_levy', d: 2.5, mode: 'adversarial' },
+        { id: 'adversarial-h8p0', cell: 'cam-boss-arena', h: 8.0, arch: 'cam_boss_great', d: 6.0, mode: 'adversarial' },
+        { id: 'adversarial-h4p5', cell: 'cam-boss-arena', h: 4.5, arch: 'cam_boss_mid', d: 5.0, mode: 'adversarial' },
+        { id: 'duel-rat', cell: 'cam-boss-arena', h: 0.6, arch: 'cam_rat', d: 2.0, mode: 'orbit' },
       ];
       const per = {};
       for (const s of scenarios) {
         fresh(); place(s.cell, 0, 0, 0);
-        const eid = H.spawn(s.arch, 0, -s.d, { height_m: s.h });
+        const eid = H.spawn(s.arch, 0, -s.d);
         H.lockOn(eid); step(2);
         const rows = [];
         const N = 1200;
@@ -647,10 +649,11 @@ async function runProbe(name) {
       // RI-CAM03 M2 — the 40-pose pitch grid. The residual against the pure aim-point spring
       // must equal pitch_bias(d,h), and pitch must be monotone in both d and h.
       const grid = [];
+      const DUMMY = { 0.6: 'cam_rat', 1.9: 'cam_levy', 2.6: 'cam_elite', 4.5: 'cam_boss_mid', 8.0: 'cam_boss_great' };
       for (const h of [0.6, 1.9, 2.6, 4.5, 8.0]) {
         for (const d of [2, 3, 4, 6, 8, 10, 12, 14]) {
           fresh(); place('cam-flat-plain', 0, 0, 0);
-          const eid = H.spawn('naga_levy', 0, -d, { height_m: h });
+          const eid = H.spawn(DUMMY[h], 0, -d);
           H.lockOn(eid); step(240);
           const c = cam();
           const base = Math.max(-16.0, Math.min(-2.0, -16.0 + 0.80 * (d - 3.0)));
@@ -686,7 +689,7 @@ async function runProbe(name) {
       const reframes = [], acquires = [];
       for (let trial = 0; trial < 20; trial++) {
         fresh(1337 + trial); place('cam-boss-arena', 0, 0, 0);
-        const eid = H.spawn('naga_levy', 0, -4);
+        const eid = H.spawn('cam_levy', 0, -4);
         step(30);
         H.lockOn(eid);
         let acq = -1;
@@ -706,7 +709,7 @@ async function runProbe(name) {
 
       // Break with no snap.
       fresh(); place('cam-boss-arena', 0, 0, 0);
-      const eid = H.spawn('naga_levy', 2, -4);
+      const eid = H.spawn('cam_levy', 2, -4);
       H.lockOn(eid); step(120);
       const pre = [];
       for (let i = 0; i < 10; i++) { step(1); pre.push(cam()); }
@@ -733,7 +736,7 @@ async function runProbe(name) {
       const sample = (locked) => {
         fresh(); place('cam-boss-arena', 0, 0, 0);
         let eid = null;
-        if (locked) { eid = H.spawn('naga_levy', 0, -4); H.lockOn(eid); }
+        if (locked) { eid = H.spawn('cam_levy', 0, -4); H.lockOn(eid); }
         const rows = [];
         for (const p of [-40, -20, -10, 0, 10, 20]) {
           setPitch(p); step(30);
@@ -866,7 +869,7 @@ async function runProbe(name) {
           for (const kind of ['tap', 'hold']) {
             fresh(); place('cam-flat-plain', 0, 0, 0);
             let eid = null;
-            if (st === 'locked') { eid = H.spawn('naga_levy', 0, -4); H.lockOn(eid); }
+            if (st === 'locked') { eid = H.spawn('cam_levy', 0, -4); H.lockOn(eid); }
             if (st === 'dialogue') H.uiOpen('dialogue');
             if (st === 'menu') H.uiOpen('menu');
             if (st === 'rest') H.uiOpen('rest');
@@ -949,7 +952,7 @@ async function runProbe(name) {
       windows.locomotion_flat = collect(300, () => qi({ move: [0, 1] }));
       // (b) locked duel, no look input
       fresh(); place('cam-boss-arena', 0, 0, 0);
-      { const e = H.spawn('naga_levy', 0, -4); H.lockOn(e); step(30);
+      { const e = H.spawn('cam_levy', 0, -4); H.lockOn(e); step(30);
         windows.locked_duel = collect(300, (i) => { const a = (i * 90 / 60) * Math.PI / 180; H.setEntityPos(e, Math.sin(a) * 4, Math.cos(a) * 4); }); }
       // (c) manual look, constant stick
       fresh(); place('cam-flat-plain', 0, 0); step(30);
@@ -1090,7 +1093,7 @@ async function runProbe(name) {
 
       // --- fog gate + the reproducibility test.
       fresh(); place('cam-boss-arena', 0, 0, 180);
-      const eid = H.spawn('naga_levy', 0, -8, { height_m: 4.5 });
+      const eid = H.spawn('cam_boss_mid', 0, -8);
       step(20);
       const start = cam();
       H.fogGate(eid);

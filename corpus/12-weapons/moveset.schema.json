@@ -58,11 +58,18 @@
       "type": "object",
       "description": "Keyed by slot id. Every id in RI-WPN01 §B marked MANDATORY must be present. Absent mandatory slot = the weapon does not exist for scoring purposes.",
       "propertyNames": { "$ref": "#/$defs/slotId" },
-      "additionalProperties": { "$ref": "#/$defs/slot" },
-      "minProperties": 25
+      "additionalProperties": { "$ref": "#/$defs/slot" }
     },
     "notes": { "type": "string" }
   },
+  "allOf": [
+    {
+      "_comment": "AMENDED wave 1 (W1-10, AMENDMENT-W1-10-01 D8). slots.minProperties was an unconditional 25, which denied the reduced table RI-WPN01 \u00a7A grants BOW in prose ('BOW is the one class permitted a reduced table ... a mandatory count of 7'). The conditional below is exactly what the item says.",
+      "if": { "properties": { "class": { "const": "BOW" } }, "required": ["class"] },
+      "then": { "properties": { "slots": { "minProperties": 7 } } },
+      "else": { "properties": { "slots": { "minProperties": 25 } } }
+    }
+  ],
   "$defs": {
     "stanceBlock": {
       "type": "object",
@@ -82,7 +89,7 @@
     "slotId": {
       "type": "string",
       "enum": [
-        "r1.1", "r1.2", "r1.3", "r1.4",
+        "r1.1", "r1.2", "r1.3", "r1.4", "r1.5",
         "r2", "r2.charged", "r2.follow",
         "run.r1", "run.r2",
         "roll.r1", "roll.r2",
@@ -95,7 +102,7 @@
         "parry",
         "off.r1.1", "off.r1.2", "off.r2",
         "shield.bash", "shield.charge",
-        "2h.r1.1", "2h.r1.2", "2h.r1.3", "2h.r1.4",
+        "2h.r1.1", "2h.r1.2", "2h.r1.3", "2h.r1.4", "2h.r1.5",
         "2h.r2", "2h.r2.charged", "2h.r2.follow",
         "2h.run.r1", "2h.run.r2",
         "2h.roll.r1", "2h.roll.r2",
@@ -129,14 +136,14 @@
           "description": "slot id this slot may chain into via the 8-frame combo buffer (RI-CMB02 §D.5), or null to terminate the chain."
         },
         "chain_index": { "type": "integer", "minimum": 1, "maximum": 5 },
-        "startup_f": { "type": "integer", "minimum": 4, "maximum": 90 },
-        "active_f": { "type": "integer", "minimum": 2, "maximum": 16 },
-        "recovery_f": { "type": "integer", "minimum": 6, "maximum": 90 },
+        "startup_f": { "type": "integer", "minimum": 6, "maximum": 180, "description": "AMENDED wave 1 (W1-10, AMENDMENT-W1-10-01 D3): was 4..90, which forbade GHM R2 startup 96 and UGS R2 startup 104 (RI-WPN02 \u00a7B, rebased). Minimum raised to RI-CMB02 \u00a7E's 6 f@60 floor, which S22 does NOT rebase." },
+        "active_f": { "type": "integer", "minimum": 2, "maximum": 32, "description": "AMENDED wave 1 (W1-10, D1): was 2..16, the pre-S22 bound, which forbade the published jump.r1 active frames of HLB 18, GSW 20, CGS 23, GHM 20, UGS 25 (RI-WPN04 \u00a7A)." },
+        "recovery_f": { "type": "integer", "minimum": 6, "maximum": 180, "description": "AMENDED wave 1 (W1-10, D2): was 6..90, which forbade GHM jump.r1 recovery 96 and UGS jump.r1 recovery 106 (RI-WPN04 \u00a7A)." },
         "charge_max_f": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 60,
-          "description": "Frames of hold inserted between startup and active. Non-zero ONLY on r2.charged / 2h.r2.charged / bow.aimed. Closes the combat.attack.charge hole."
+          "maximum": 90,
+          "description": "AMENDED wave 1 (W1-10, D4): maximum was 60, which forbade bow.aimed's published 90 f@60 draw (RI-WPN02 \u00a7C). RI-WPN01 \u00a7C.3's melee 1-60 range is prose the critic checks, not an encoding bound. Frames of hold inserted between startup and active. Non-zero ONLY on r2.charged / 2h.r2.charged / bow.aimed. Closes the combat.attack.charge hole."
         },
         "charge_ramp": {
           "type": "object",
@@ -194,6 +201,7 @@
             "stone": { "type": "integer" },
             "metal": { "type": "integer" },
             "shield": { "type": "integer" },
+            "wood": { "type": "integer" },
             "water": { "type": "integer" }
           }
         },
@@ -219,7 +227,7 @@
       "additionalProperties": false,
       "description": "The input contract. Buttons are the closed set from HARNESS.md §4; an unlisted button is a tooling error, not a silent no-op.",
       "properties": {
-        "button": { "enum": ["light", "heavy", "parry", "block", "use_item", "interact", "jump", "two_hand"] },
+        "button": { "enum": ["light", "heavy", "roll", "block", "parry", "sprint", "jump", "use_item", "interact", "lock_on", "two_hand", "swap_right", "swap_left", "menu"], "description": "AMENDED wave 1 (W1-10, D5): carried 8 of HARNESS.md \u00a74's 14 names while claiming to BE that closed set. Omitting swap_left forbade RI-WPN06 \u00a7C's mandatory O2 offhand slots outright." },
         "modifier": { "enum": ["none", "forward", "hold", "tap", "block_held", "double_tap"] },
         "state_window": {
           "type": "object",

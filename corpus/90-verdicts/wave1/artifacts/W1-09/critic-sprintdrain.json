@@ -1,0 +1,217 @@
+{
+ "gate": [
+  {
+   "action": "light",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "RUN"
+   ],
+   "drops_delta": 1,
+   "pos": [
+    0,
+    0,
+    80.87
+   ]
+  },
+  {
+   "action": "heavy",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "RUN"
+   ],
+   "drops_delta": 1,
+   "pos": [
+    0,
+    0,
+    80.87
+   ]
+  },
+  {
+   "action": "roll",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "RUN"
+   ],
+   "drops_delta": 1,
+   "pos": [
+    0,
+    0,
+    80.87
+   ]
+  },
+  {
+   "action": "sprint",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "RUN"
+   ],
+   "drops_delta": 0,
+   "pos": [
+    0,
+    0,
+    80.87
+   ]
+  },
+  {
+   "action": "parry",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "RUN"
+   ],
+   "drops_delta": 1,
+   "pos": [
+    0,
+    0,
+    80.87
+   ]
+  },
+  {
+   "action": "use_item",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "HEAL_STARTUP",
+    "HEAL_ACTIVE"
+   ],
+   "drops_delta": 0,
+   "pos": [
+    0,
+    0,
+    75.71
+   ]
+  },
+  {
+   "action": "block",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "RUN"
+   ],
+   "drops_delta": 0,
+   "pos": [
+    0,
+    0,
+    80.87
+   ]
+  },
+  {
+   "action": "interact",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "RUN"
+   ],
+   "drops_delta": 0,
+   "pos": [
+    0,
+    0,
+    80.87
+   ]
+  },
+  {
+   "action": "jump",
+   "stamina_at_press": 0,
+   "min_stamina": 0,
+   "states_after": [
+    "WALK",
+    "RUN"
+   ],
+   "drops_delta": 0,
+   "pos": [
+    0,
+    0,
+    80.87
+   ]
+  }
+ ],
+ "guard_break": [
+  {
+   "sprint_frames": 600,
+   "broke": false,
+   "at_f": null,
+   "stam_at_break": null,
+   "end_f": null,
+   "duration_f": null,
+   "impact": [],
+   "states": [
+    "RUN",
+    "SPRINT",
+    "IDLE",
+    "BLOCK_HOLD"
+   ]
+  },
+  {
+   "sprint_frames": 660,
+   "broke": false,
+   "at_f": null,
+   "stam_at_break": null,
+   "end_f": null,
+   "duration_f": null,
+   "impact": [],
+   "states": [
+    "RUN",
+    "SPRINT",
+    "IDLE",
+    "BLOCK_HOLD"
+   ]
+  },
+  {
+   "sprint_frames": 665,
+   "broke": false,
+   "at_f": null,
+   "stam_at_break": null,
+   "end_f": null,
+   "duration_f": null,
+   "impact": [],
+   "states": [
+    "RUN",
+    "SPRINT",
+    "IDLE",
+    "BLOCK_HOLD"
+   ]
+  },
+  {
+   "sprint_frames": 670,
+   "broke": false,
+   "at_f": null,
+   "stam_at_break": null,
+   "end_f": null,
+   "duration_f": null,
+   "impact": [],
+   "states": [
+    "RUN",
+    "SPRINT",
+    "IDLE",
+    "BLOCK_HOLD"
+   ]
+  },
+  {
+   "sprint_frames": 700,
+   "broke": false,
+   "at_f": null,
+   "stam_at_break": null,
+   "end_f": null,
+   "duration_f": null,
+   "impact": [],
+   "states": [
+    "RUN",
+    "SPRINT",
+    "IDLE",
+    "BLOCK_HOLD"
+   ]
+  }
+ ]
+}

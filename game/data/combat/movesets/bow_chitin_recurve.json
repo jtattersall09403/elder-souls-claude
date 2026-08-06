@@ -1,0 +1,382 @@
+{
+ "schema": "elder-souls/moveset@1",
+ "weapon_id": "bow_chitin_recurve",
+ "name": "Chitin recurve",
+ "class": "BOW",
+ "weight_tier": "ranged",
+ "baseline_ref": "bow_horn_sinew",
+ "stance": {
+  "one_hand": {
+   "stamina_mult": 1,
+   "motion_value_mult": 1,
+   "poise_damage_mult": 1
+  },
+  "two_hand": {
+   "stamina_mult": 1.15,
+   "motion_value_mult": 1.15,
+   "poise_damage_mult": 1.3,
+   "exclusive_slots": []
+  }
+ },
+ "parry_capable": false,
+ "guardbreak_kind": "kick",
+ "reach_m": 1.6,
+ "arc_sweep_deg": 0,
+ "slots": {
+  "bow.draw": {
+   "anim": "clip_w_bow_chitin_recurve_bow_draw",
+   "anim_owner": "bow_chitin_recurve",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "tap",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 48,
+   "active_f": 4,
+   "recovery_f": 40,
+   "stamina": 14,
+   "motion_value": 0.85,
+   "poise_damage": 4,
+   "root_dz_m": 0,
+   "arc_sweep_deg": 0,
+   "shape": "shoot",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.07,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "ammo"
+   ],
+   "answers": [
+    "RANGED",
+    "CASTER",
+    "AMBUSHER"
+   ],
+   "hitstop_f": {
+    "flesh": 4,
+    "chitin": 6,
+    "stone": 10,
+    "metal": 8,
+    "shield": 8,
+    "wood": 4,
+    "water": 2
+   }
+  },
+  "bow.quick": {
+   "anim": "clip_chitinbow_bow_quick",
+   "anim_owner": "lin_chitinbow",
+   "trigger": {
+    "button": "light",
+    "modifier": "tap",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 36,
+   "active_f": 4,
+   "recovery_f": 34,
+   "stamina": 11,
+   "motion_value": 0.85,
+   "poise_damage": 4,
+   "root_dz_m": 0,
+   "arc_sweep_deg": 0,
+   "shape": "shoot",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.07,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "ammo"
+   ],
+   "answers": [
+    "RANGED",
+    "SWARM"
+   ],
+   "hitstop_f": {
+    "flesh": 4,
+    "chitin": 6,
+    "stone": 10,
+    "metal": 8,
+    "shield": 8,
+    "wood": 4,
+    "water": 2
+   }
+  },
+  "bow.aimed": {
+   "anim": "clip_chitinbow_bow_aimed",
+   "anim_owner": "lin_chitinbow",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "hold",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 48,
+   "active_f": 4,
+   "recovery_f": 90,
+   "charge_max_f": 90,
+   "charge_ramp": {
+    "motion_value_at_full": 1.3,
+    "poise_damage_at_full": 1.5,
+    "hyperarmour_at_full": true
+   },
+   "stamina": 20,
+   "motion_value": 1.6,
+   "poise_damage": 6,
+   "root_dz_m": 0,
+   "arc_sweep_deg": 0,
+   "shape": "shoot",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.07,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "ammo"
+   ],
+   "answers": [
+    "CASTER",
+    "RANGED",
+    "ELITE"
+   ],
+   "hitstop_f": {
+    "flesh": 4,
+    "chitin": 6,
+    "stone": 10,
+    "metal": 8,
+    "shield": 8,
+    "wood": 4,
+    "water": 2
+   }
+  },
+  "bow.roll": {
+   "anim": "clip_chitinbow_bow_roll",
+   "anim_owner": "lin_chitinbow",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "ROLL",
+     "from_f": 31,
+     "to_f": 52
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 14,
+   "active_f": 4,
+   "recovery_f": 22,
+   "stamina": 10,
+   "motion_value": 0.6,
+   "poise_damage": 3,
+   "root_dz_m": 0,
+   "arc_sweep_deg": 0,
+   "shape": "shoot",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.07,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "ammo"
+   ],
+   "answers": [
+    "AMBUSHER",
+    "DUELIST"
+   ],
+   "hitstop_f": {
+    "flesh": 4,
+    "chitin": 6,
+    "stone": 10,
+    "metal": 8,
+    "shield": 8,
+    "wood": 4,
+    "water": 2
+   }
+  },
+  "plunge": {
+   "anim": "clip_chitinbow_plunge",
+   "anim_owner": "lin_chitinbow",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "AIRBORNE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 53,
+   "active_f": 6,
+   "recovery_f": 52,
+   "stamina": 18,
+   "motion_value": 1.53,
+   "poise_damage": 9,
+   "root_dz_m": 0.16,
+   "arc_sweep_deg": 8,
+   "shape": "thrust",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.07,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "airborne",
+    "descending"
+   ],
+   "answers": [
+    "AMBUSHER",
+    "ELITE"
+   ],
+   "hitstop_f": {
+    "flesh": 4,
+    "chitin": 6,
+    "stone": 10,
+    "metal": 8,
+    "shield": 8,
+    "wood": 4,
+    "water": 2
+   }
+  },
+  "guardbreak": {
+   "anim": "clip_chitinbow_guardbreak",
+   "anim_owner": "lin_chitinbow",
+   "trigger": {
+    "button": "light",
+    "modifier": "forward",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 22,
+   "active_f": 6,
+   "recovery_f": 28,
+   "stamina": 16,
+   "motion_value": 0.35,
+   "poise_damage": 24,
+   "root_dz_m": 0.55,
+   "arc_sweep_deg": 5.3,
+   "shape": "grab",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.07,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "TURTLE"
+   ],
+   "hitstop_f": {
+    "flesh": 4,
+    "chitin": 6,
+    "stone": 10,
+    "metal": 8,
+    "shield": 8,
+    "wood": 4,
+    "water": 2
+   }
+  },
+  "art.1": {
+   "anim": "clip_chitinbow_art_1",
+   "anim_owner": "lin_chitinbow",
+   "trigger": {
+    "button": "two_hand",
+    "modifier": "hold",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 62,
+   "active_f": 6,
+   "recovery_f": 60,
+   "stamina": 22,
+   "motion_value": 1.44,
+   "poise_damage": 8,
+   "root_dz_m": 0.54,
+   "arc_sweep_deg": 20,
+   "shape": "thrust",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.07,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "ELITE",
+    "GANK_DUO"
+   ],
+   "hitstop_f": {
+    "flesh": 4,
+    "chitin": 6,
+    "stone": 10,
+    "metal": 8,
+    "shield": 8,
+    "wood": 4,
+    "water": 2
+   }
+  }
+ },
+ "notes": "Drawn from the chest rather than the ear: it shoots flatter and hits harder on chitin, which is what it is made of.\n\nProjectile range 20.5 m (RI-WPN02 §B); reach_m above is the bow's own hitbox reach.\n\nLineage: chitinbow — A chitin recurve: shorter limbs, a lower draw, and the shot comes from the chest rather than the ear.\nMandatory slots present: 7/7. Total slots: 7.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+}

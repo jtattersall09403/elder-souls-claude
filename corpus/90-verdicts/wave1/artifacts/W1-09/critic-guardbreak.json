@@ -1,0 +1,236 @@
+{
+ "no_prespend": {
+  "pre_rolls": 0,
+  "transitions": [
+   {
+    "f": 1,
+    "st": "RUN",
+    "stam": 120
+   },
+   {
+    "f": 2,
+    "st": "WALK",
+    "stam": 120
+   }
+  ],
+  "guard_break_at": null,
+  "guard_break_len": null,
+  "min_stamina": 120
+ },
+ "four_rolls": {
+  "pre_rolls": 4,
+  "transitions": [
+   {
+    "f": 1,
+    "st": "RUN",
+    "stam": 120
+   },
+   {
+    "f": 2,
+    "st": "ROLL_STARTUP",
+    "stam": 98
+   },
+   {
+    "f": 6,
+    "st": "ROLL_IFRAME",
+    "stam": 98
+   },
+   {
+    "f": 32,
+    "st": "ROLL_RECOVER",
+    "stam": 98
+   },
+   {
+    "f": 54,
+    "st": "RUN",
+    "stam": 105.5
+   },
+   {
+    "f": 55,
+    "st": "ROLL_STARTUP",
+    "stam": 83.5
+   },
+   {
+    "f": 59,
+    "st": "ROLL_IFRAME",
+    "stam": 83.5
+   },
+   {
+    "f": 85,
+    "st": "ROLL_RECOVER",
+    "stam": 83.5
+   },
+   {
+    "f": 107,
+    "st": "RUN",
+    "stam": 91
+   },
+   {
+    "f": 108,
+    "st": "ROLL_STARTUP",
+    "stam": 69
+   },
+   {
+    "f": 112,
+    "st": "ROLL_IFRAME",
+    "stam": 69
+   },
+   {
+    "f": 138,
+    "st": "ROLL_RECOVER",
+    "stam": 69
+   },
+   {
+    "f": 160,
+    "st": "RUN",
+    "stam": 76.5
+   },
+   {
+    "f": 161,
+    "st": "ROLL_STARTUP",
+    "stam": 54.5
+   },
+   {
+    "f": 165,
+    "st": "ROLL_IFRAME",
+    "stam": 54.5
+   },
+   {
+    "f": 191,
+    "st": "ROLL_RECOVER",
+    "stam": 54.5
+   },
+   {
+    "f": 213,
+    "st": "RUN",
+    "stam": 62
+   },
+   {
+    "f": 214,
+    "st": "WALK",
+    "stam": 62.15
+   }
+  ],
+  "guard_break_at": null,
+  "guard_break_len": null,
+  "min_stamina": 54.5
+ },
+ "five_rolls": {
+  "pre_rolls": 5,
+  "transitions": [
+   {
+    "f": 1,
+    "st": "RUN",
+    "stam": 120
+   },
+   {
+    "f": 2,
+    "st": "ROLL_STARTUP",
+    "stam": 98
+   },
+   {
+    "f": 6,
+    "st": "ROLL_IFRAME",
+    "stam": 98
+   },
+   {
+    "f": 32,
+    "st": "ROLL_RECOVER",
+    "stam": 98
+   },
+   {
+    "f": 54,
+    "st": "RUN",
+    "stam": 105.5
+   },
+   {
+    "f": 55,
+    "st": "ROLL_STARTUP",
+    "stam": 83.5
+   },
+   {
+    "f": 59,
+    "st": "ROLL_IFRAME",
+    "stam": 83.5
+   },
+   {
+    "f": 85,
+    "st": "ROLL_RECOVER",
+    "stam": 83.5
+   },
+   {
+    "f": 107,
+    "st": "RUN",
+    "stam": 91
+   },
+   {
+    "f": 108,
+    "st": "ROLL_STARTUP",
+    "stam": 69
+   },
+   {
+    "f": 112,
+    "st": "ROLL_IFRAME",
+    "stam": 69
+   },
+   {
+    "f": 138,
+    "st": "ROLL_RECOVER",
+    "stam": 69
+   },
+   {
+    "f": 160,
+    "st": "RUN",
+    "stam": 76.5
+   },
+   {
+    "f": 161,
+    "st": "ROLL_STARTUP",
+    "stam": 54.5
+   },
+   {
+    "f": 165,
+    "st": "ROLL_IFRAME",
+    "stam": 54.5
+   },
+   {
+    "f": 191,
+    "st": "ROLL_RECOVER",
+    "stam": 54.5
+   },
+   {
+    "f": 213,
+    "st": "RUN",
+    "stam": 62
+   },
+   {
+    "f": 214,
+    "st": "ROLL_STARTUP",
+    "stam": 40
+   },
+   {
+    "f": 218,
+    "st": "ROLL_IFRAME",
+    "stam": 40
+   },
+   {
+    "f": 244,
+    "st": "ROLL_RECOVER",
+    "stam": 40
+   },
+   {
+    "f": 266,
+    "st": "RUN",
+    "stam": 47.5
+   },
+   {
+    "f": 267,
+    "st": "WALK",
+    "stam": 47.65
+   }
+  ],
+  "guard_break_at": null,
+  "guard_break_len": null,
+  "min_stamina": 40
+ }
+}

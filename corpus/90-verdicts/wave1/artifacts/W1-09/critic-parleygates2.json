@@ -1,0 +1,110 @@
+{
+ "cases": [
+  {
+   "case": "GOLD, disposition 10 (npc key)",
+   "world": {
+    "gold": 500,
+    "topicsKnown": [],
+    "dispositions": {
+     "sentry_ghelis": 10
+    },
+    "factions": {}
+   },
+   "yielded": false,
+   "gold": "500->500",
+   "enemy_final": "REPOSITION"
+  },
+  {
+   "case": "GOLD, disposition 35 (base)",
+   "world": {
+    "gold": 500,
+    "topicsKnown": [],
+    "dispositions": {},
+    "factions": {}
+   },
+   "yielded": true,
+   "gold": "500->320",
+   "enemy_final": "YIELDED"
+  },
+  {
+   "case": "YIELD, disposition 45, full hp",
+   "world": {
+    "gold": 0,
+    "topicsKnown": [],
+    "dispositions": {
+     "sentry_ghelis": 45
+    },
+    "factions": {}
+   },
+   "yielded": false,
+   "gold": "0->0",
+   "enemy_final": "REPOSITION"
+  },
+  {
+   "case": "NAME only, disposition 0",
+   "world": {
+    "gold": 0,
+    "topicsKnown": [
+     "the-drowned-ford"
+    ],
+    "dispositions": {
+     "sentry_ghelis": 0
+    },
+    "factions": {}
+   },
+   "yielded": true,
+   "gold": "0->0",
+   "enemy_final": "YIELDED"
+  },
+  {
+   "case": "FACTION rank 3, disposition 0",
+   "world": {
+    "gold": 0,
+    "topicsKnown": [],
+    "dispositions": {
+     "sentry_ghelis": 0
+    },
+    "factions": {
+     "marsh-wardens": {
+      "rank": 3
+     }
+    }
+   },
+   "yielded": true,
+   "gold": "0->0",
+   "enemy_final": "YIELDED"
+  },
+  {
+   "case": "FACTION rank 1",
+   "world": {
+    "gold": 0,
+    "topicsKnown": [],
+    "dispositions": {
+     "sentry_ghelis": 0
+    },
+    "factions": {
+     "marsh-wardens": {
+      "rank": 1
+     }
+    }
+   },
+   "yielded": false,
+   "gold": "0->0",
+   "enemy_final": "REPOSITION"
+  },
+  {
+   "case": "nothing",
+   "world": {
+    "gold": 0,
+    "topicsKnown": [],
+    "dispositions": {
+     "sentry_ghelis": 0
+    },
+    "factions": {}
+   },
+   "yielded": false,
+   "gold": "0->0",
+   "enemy_final": "REPOSITION"
+  }
+ ]
+}

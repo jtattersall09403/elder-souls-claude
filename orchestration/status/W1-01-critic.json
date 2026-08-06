@@ -2,20 +2,39 @@
   "task_id": "W1-01-critic",
   "brief": "critic for wave-1 piece W1-01 (World shape and traversal budget)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-01.json",
     "corpus/90-verdicts/wave1/W1-01.md"
   ],
   "outputs_written": [
-    "corpus/90-verdicts/wave1/artifacts/W1-01/m17-blind-answers-critic.json"
+    "corpus/90-verdicts/wave1/W1-01.json",
+    "corpus/90-verdicts/wave1/W1-01.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-01/ (16 artifacts)",
+    "tools/world/critic-visual-dispersion.mjs",
+    "tools/world/critic-locomotion-probe.mjs",
+    "tools/world/critic-road-water-probe.mjs",
+    "tools/world/critic-drowned-road-shots.mjs",
+    "tools/world/critic-ar2-camera-probe.mjs",
+    "tools/world/critic-camera-relative-probe.mjs"
   ],
   "findings": [
     "M17 BLIND TEST TAKEN. Raw score 39/39. BUT the pack is NOT SHUFFLED: frames 1-3=blackwood, 4-6=clay-moor ... 37-39=western-rootlands, i.e. strict alphabetical slug order, 3 consecutive per region, and REGIONS.txt lists the names in the same alphabetical order. RI-WLD04 M17 step 3 requires 'Shuffle the 39 images'. 39/39 is therefore not a measurement of region legibility.",
     "ANSWERS.json declares night:false, worst_weather:false. RI-WLD04 M17 step 6 (night >=70%, worst weather) is UNMEASURED -> fail-closed for that half.",
     "Genuinely low-confidence before reveal: Eastern Rootlands frames 13/14/15 - assigned BY ELIMINATION. No floating meadow, no tannin-black channel, no stilt row, no tideway marker visible. Blackwood 02/03 also marginal (first guess was Thornmarsh; resolved only by blue welkynd glints at native res).",
-    "Artifact written: corpus/90-verdicts/wave1/artifacts/W1-01/m17-blind-answers-critic.json"
+    "Artifact written: corpus/90-verdicts/wave1/artifacts/W1-01/m17-blind-answers-critic.json",
+    "CROSSING REPRODUCED EXACTLY: 56.574 min / 6788.3 m / mean 1.9998 m/s / 4 of 33944 samples below 1.6. Artifact critic-crossing-walk.json. walkRoute drives the real capsule through loop.stepOnce(), not a spline teleport - verified.",
+    "S17 from the other side: walk is 2.0000 m/s on EVERY terrain probed (road, 424 m ridge, W2 marsh water, SUCK substrate); 60 s walk = exactly 120.0 m; stamina 120->120; no movement drain; accel ramp exists but reaches 1.97 by 60 f. NOTHING was slowed to pad the clock. S17 SATISFIED.",
+    "THE DEFECT: at tide LOW the Stormhold-Helstrom leg of THE CROSSING runs 538 m through over-knee water, 502 m of it over chest (W5), max depth 65.64 m at (2182.52, 2214.63) - ground_y 69.66, water surface_y 135.30. Player stands there state IDLE, HP 620/620, walks it at 2.0 m/s. Screenshot shot-drowned-road-stormhold-helstrom.png is a black underwater frame. helstrom-gideon adds 72 m of W5 at 6.9 m deep.",
+    "M17 pack unshuffled (frames 1-3=blackwood ... 37-39=western-rootlands, alphabetical). Raw 39/39 is void. Machine analogue (critic-visual-dispersion.mjs): LOO nearest-centroid 26/39 = 66.7%; Blackwood<->Thornmarsh confused 4x (RI-WLD04 M17 step 5 named defect); centroid distance 18.9 vs next-closest 38.7.",
+    "A7 PASSES: our 13 regions are MORE dispersed than Morrowind's own REF-A21-regions (Fisher 3.01 vs 1.417; LOO 66.7% vs 25.6%). Caveat: MW refs vary in ToD/weather/camera, ours do not.",
+    "M18 reproduced (all 78 pairs >= 8 axes) BUT 8 of 9 axes are read from regions.json declarations; only the slope histogram is measured on built geometry (and wins only 60/78).",
+    "RI-PRG07 world.traversal: equip load 10/24/45/69/79/95/105% -> walk speed 2.0000 m/s at EVERY tier including OVERLOADED. Encumbrance does nothing outside the fight = the item's own 0 cell.",
+    "RI-CAM02: turn rate exactly 12.00 deg/frame = 720 deg/s (M4 moving ceiling, at the bound). Camera-relative mapping PASSES - travel bearing tracked camera yaw over 6 yaws exactly. My first camera test was INVALID: __HARNESS.camera(pose) sets a debug override, not sim.camera.yaw.",
+    "RI-TRV01: game/data/world/travel/ ABSENT -> item's own rule = score 0 fail-closed. AR-2 B13 fires.",
+    "getUIState() does not exist in this build (RI-UIX02's enforcement point). AR-2 B1 assessed from pixels: HUD carries no marker/arrow/compass.",
+    "VERDICT SCHEMA DEFECT: verdict.schema.json reference_items has additionalProperties:false and no why_not_ten/path_to_ten/ten_by_wave, which SCORING.md section 0 makes mandatory. Carried inside justification strings; filed as corpus_extended."
   ],
-  "next_step": "re-run crossing (S17), water census, region-axes, settlement reachability, road relief; then AR-1/2/3; then verdict",
-  "notes_for_successor": "I am the CRITIC. Do not fix anything. Must take the blind region-ID test BEFORE reading reports/region-shots/ANSWERS.json."
+  "next_step": "complete",
+  "notes_for_successor": "FAIL at 3.1 vs the 7.0 gate; AR-2 B13 fails independently. Biggest gap GAP-W1-world-trunk-road-below-the-waterline: 502 m of THE CROSSING runs under 65.6 m of water on the Stormhold-Helstrom leg at LOW tide, walked at 2.0 m/s. Second-largest (NOT promoted): the M17 blind pack is unshuffled, so the 39/39 region-ID number is void. Four corpus defects filed, incl. that verdict.schema.json cannot carry why_not_ten/path_to_ten/ten_by_wave at all."
 }

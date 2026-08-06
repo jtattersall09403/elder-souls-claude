@@ -1,0 +1,112 @@
+{
+  "schema": "critic/w1-01-ar-and-locomotion@1",
+  "measured_at": "2026-08-06T17:59:49.863Z",
+  "probes": {
+    "equip_load_vs_walk": [
+      {
+        "requested_pct": 10,
+        "reported_pct": 10,
+        "roll_class": "LIGHT",
+        "walk_mps": 2,
+        "state": "WALK"
+      },
+      {
+        "requested_pct": 24,
+        "reported_pct": 24,
+        "roll_class": "LIGHT",
+        "walk_mps": 2,
+        "state": "WALK"
+      },
+      {
+        "requested_pct": 45,
+        "reported_pct": 45,
+        "roll_class": "MEDIUM",
+        "walk_mps": 2,
+        "state": "WALK"
+      },
+      {
+        "requested_pct": 69,
+        "reported_pct": 69,
+        "roll_class": "MEDIUM",
+        "walk_mps": 2,
+        "state": "WALK"
+      },
+      {
+        "requested_pct": 79,
+        "reported_pct": 79,
+        "roll_class": "HEAVY",
+        "walk_mps": 2,
+        "state": "WALK"
+      },
+      {
+        "requested_pct": 95,
+        "reported_pct": 95,
+        "roll_class": "HEAVY",
+        "walk_mps": 2,
+        "state": "WALK"
+      },
+      {
+        "requested_pct": 105,
+        "reported_pct": 105,
+        "roll_class": "OVERLOADED",
+        "walk_mps": 2,
+        "state": "WALK"
+      }
+    ],
+    "camera_relative_mapping": [
+      {
+        "camera_yaw": 0,
+        "travel_bearing_deg": 354.01,
+        "player_yaw": 353.96,
+        "dist": 4
+      },
+      {
+        "camera_yaw": 45,
+        "travel_bearing_deg": 353.96,
+        "player_yaw": 353.96,
+        "dist": 4
+      },
+      {
+        "camera_yaw": 90,
+        "travel_bearing_deg": 353.96,
+        "player_yaw": 353.96,
+        "dist": 4
+      },
+      {
+        "camera_yaw": 135,
+        "travel_bearing_deg": 353.96,
+        "player_yaw": 353.96,
+        "dist": 4
+      },
+      {
+        "camera_yaw": 180,
+        "travel_bearing_deg": 353.96,
+        "player_yaw": 353.96,
+        "dist": 4
+      },
+      {
+        "camera_yaw": 225,
+        "travel_bearing_deg": 353.96,
+        "player_yaw": 353.96,
+        "dist": 4
+      },
+      {
+        "camera_yaw": 270,
+        "travel_bearing_deg": 353.96,
+        "player_yaw": 353.96,
+        "dist": 4
+      },
+      {
+        "camera_yaw": 315,
+        "travel_bearing_deg": 353.96,
+        "player_yaw": 353.96,
+        "dist": 4
+      }
+    ],
+    "no_auto_follow_720f_circle": {
+      "start": null,
+      "end": null
+    }
+  },
+  "error": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at /tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/ar.mjs:47:63"
+}
