@@ -1,0 +1,429 @@
+{
+  "schema": "elder-souls/water@1",
+  "provenance": "RI-WLD10 §11. Band table, locomotion multipliers, stamina, breath, substrate, detection, combat rules and tide are transcribed from the reference item; the per-region `table_offset_m` and `channel_wet` are SOLVED by tools/world/build-terrain.mjs so that the built terrain reproduces the declared coverage index (RI-WLD10 M48).",
+  "reference_body_height_m": 1.8,
+  "bands": [
+    {
+      "id": "W0",
+      "name": "DRY",
+      "min_m": 0,
+      "max_m": 0
+    },
+    {
+      "id": "W1",
+      "name": "FILM",
+      "min_m": 0.01,
+      "max_m": 0.2
+    },
+    {
+      "id": "W2",
+      "name": "SHIN",
+      "min_m": 0.21,
+      "max_m": 0.5
+    },
+    {
+      "id": "W3",
+      "name": "WADE",
+      "min_m": 0.51,
+      "max_m": 0.95
+    },
+    {
+      "id": "W4",
+      "name": "DEEP",
+      "min_m": 0.96,
+      "max_m": 1.4
+    },
+    {
+      "id": "W5",
+      "name": "SWIM",
+      "min_m": 1.41,
+      "max_m": null
+    }
+  ],
+  "band_hysteresis_m": 0.03,
+  "locomotion": {
+    "W0": {
+      "walk": 1,
+      "jog": 1,
+      "sprint": 1,
+      "roll": "full"
+    },
+    "W1": {
+      "walk": 0.97,
+      "jog": 0.95,
+      "sprint": 0.92,
+      "roll": "full"
+    },
+    "W2": {
+      "walk": 0.85,
+      "jog": 0.78,
+      "sprint": 0.72,
+      "roll": "full",
+      "roll_distance": 0.85
+    },
+    "W3": {
+      "walk": 0.65,
+      "jog": 0.55,
+      "sprint": "denied",
+      "roll": "wade_lunge"
+    },
+    "W4": {
+      "walk": 0.43,
+      "jog": 0.43,
+      "sprint": "denied",
+      "roll": "wade_lunge"
+    },
+    "W5": {
+      "swim_mps": 1.1,
+      "burst_mps": 1.7,
+      "attacks": "denied",
+      "block": "denied"
+    }
+  },
+  "wade_lunge": {
+    "startup_f": 6,
+    "iframes": 0,
+    "total_f": 22,
+    "distance_m": 1.3,
+    "stamina": 26
+  },
+  "stamina_drain_per_s": {
+    "W3": {
+      "moving": 2,
+      "still": 0
+    },
+    "W4": {
+      "moving": 5,
+      "still": 1.2
+    },
+    "W5": {
+      "moving": 4,
+      "still": 0.6,
+      "burst": 12
+    }
+  },
+  "regen": {
+    "W4": "delay_rearmed_while_moving",
+    "W5": "suppressed"
+  },
+  "equip_load": {
+    "LIGHT": {
+      "swim_stam": 0.8,
+      "swim_speed": 1
+    },
+    "MEDIUM": {
+      "swim_stam": 1,
+      "swim_speed": 1
+    },
+    "HEAVY": {
+      "swim_stam": 1.6,
+      "swim_speed": 0.8
+    },
+    "OVERLOADED": {
+      "can_swim": false,
+      "walks_bottom": true
+    }
+  },
+  "breath": {
+    "base_s": 40,
+    "per_endurance_over_10_s": 2,
+    "cap_s": 100,
+    "refill_rate_multiple": 3,
+    "drown_hp_pct_per_s": 2,
+    "amphibious_races": [
+      "saxhleel",
+      "naga"
+    ]
+  },
+  "substrate": {
+    "FIRM": {
+      "speed": 1
+    },
+    "SILT": {
+      "speed": 0.92,
+      "print_persist_s": 120
+    },
+    "SUCK": {
+      "speed": 0.7,
+      "mire_per_step": 1,
+      "mire_threshold": 6,
+      "mire_decay_frames": 45,
+      "mired": {
+        "escape_cost_stam": 25,
+        "escape_every_f": 30,
+        "escapes_needed": 3,
+        "break_recovery_f": 20
+      }
+    }
+  },
+  "detection": {
+    "W1_sprint_noise": 1.6,
+    "W1_walk_noise": 1.15,
+    "W3_still_visual": 0.55,
+    "submerged_visual": 0.15,
+    "wake_visible_m": 25,
+    "wake_persist_s": 6
+  },
+  "combat": {
+    "frame_invariance": true,
+    "arena_max_band": "W2",
+    "loop_dungeons_with_W3_traversal_max": 2,
+    "loop_dungeons_with_W3_arena_max": 0,
+    "min_water_native_archetypes": 4
+  },
+  "tide": {
+    "cycle_real_min": 12,
+    "states": [
+      "LOW",
+      "RISING",
+      "HIGH",
+      "FALLING"
+    ],
+    "mean_range_m": 1.2,
+    "spring_mult": 1.35,
+    "neap_mult": 0.65,
+    "inland_damping_m": 400,
+    "seas": {
+      "padomaic": {
+        "range_mult": 1,
+        "k": 0.35
+      },
+      "topal": {
+        "range_mult": 0.55,
+        "k": 1.4
+      }
+    }
+  },
+  "regions": [
+    {
+      "region": "Blackwood",
+      "region_id": "blackwood",
+      "wci": 0.41,
+      "class": "flooded-forest",
+      "deepest_band": "W5",
+      "tidal": false,
+      "sea": null,
+      "k": 2.6,
+      "substrates": [
+        "SILT",
+        "SUCK"
+      ],
+      "table_offset_m": -0.1363,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.41
+    },
+    {
+      "region": "The Clay Moor",
+      "region_id": "clay-moor",
+      "wci": 0,
+      "class": "arid",
+      "deepest_band": "W0",
+      "tidal": false,
+      "sea": null,
+      "k": null,
+      "substrates": [
+        "FIRM"
+      ],
+      "table_offset_m": -12,
+      "channel_wet": 0,
+      "dry": true,
+      "wci_built": 0
+    },
+    {
+      "region": "Crimson Coast",
+      "region_id": "crimson-coast",
+      "wci": 0.34,
+      "class": "tidal-littoral",
+      "deepest_band": "W5",
+      "tidal": true,
+      "sea": "padomaic",
+      "k": 0.35,
+      "substrates": [
+        "FIRM",
+        "SILT"
+      ],
+      "table_offset_m": -0.5795,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.3399
+    },
+    {
+      "region": "The Deep Marshes",
+      "region_id": "deep-marshes",
+      "wci": 0.86,
+      "class": "drowned",
+      "deepest_band": "W5",
+      "tidal": false,
+      "sea": null,
+      "k": 4.5,
+      "substrates": [
+        "SUCK",
+        "SILT"
+      ],
+      "table_offset_m": 0.707,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.86
+    },
+    {
+      "region": "Eastern Rootlands",
+      "region_id": "eastern-rootlands",
+      "wci": 0.71,
+      "class": "tidal-delta",
+      "deepest_band": "W5",
+      "tidal": true,
+      "sea": "padomaic",
+      "k": 3.2,
+      "substrates": [
+        "SILT",
+        "SUCK"
+      ],
+      "table_offset_m": 0.2081,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.71
+    },
+    {
+      "region": "The Hive",
+      "region_id": "hive",
+      "wci": 0,
+      "class": "arid",
+      "deepest_band": "W0",
+      "tidal": false,
+      "sea": null,
+      "k": null,
+      "substrates": [
+        "FIRM"
+      ],
+      "table_offset_m": -12,
+      "channel_wet": 0,
+      "dry": true,
+      "wci_built": 0
+    },
+    {
+      "region": "Marauder's Coast",
+      "region_id": "marauders-coast",
+      "wci": 0.58,
+      "class": "tidal-flat",
+      "deepest_band": "W5",
+      "tidal": true,
+      "sea": "topal",
+      "k": 1.4,
+      "substrates": [
+        "SUCK",
+        "SILT"
+      ],
+      "table_offset_m": 0.1775,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.58
+    },
+    {
+      "region": "The Salt Hills",
+      "region_id": "salt-hills",
+      "wci": 0.02,
+      "class": "dry-upland",
+      "deepest_band": "W2",
+      "tidal": false,
+      "sea": null,
+      "k": 0.8,
+      "substrates": [
+        "FIRM",
+        "SILT"
+      ],
+      "table_offset_m": -2.6725,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.02
+    },
+    {
+      "region": "The Stone Forest",
+      "region_id": "stone-forest",
+      "wci": 0.06,
+      "class": "damp",
+      "deepest_band": "W2",
+      "tidal": false,
+      "sea": null,
+      "k": 1.1,
+      "substrates": [
+        "FIRM"
+      ],
+      "table_offset_m": -2.0537,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.06
+    },
+    {
+      "region": "Stone Wastes",
+      "region_id": "stone-wastes",
+      "wci": 0.03,
+      "class": "arid-salt-fringe",
+      "deepest_band": "W3",
+      "tidal": true,
+      "sea": "topal",
+      "k": 1.4,
+      "substrates": [
+        "FIRM",
+        "SILT"
+      ],
+      "table_offset_m": -12,
+      "channel_wet": 0.4204,
+      "dry": false,
+      "wci_built": 0.0299
+    },
+    {
+      "region": "Thornmarsh",
+      "region_id": "thornmarsh",
+      "wci": 0.09,
+      "class": "seasonal",
+      "deepest_band": "W2",
+      "tidal": false,
+      "sea": null,
+      "k": 2,
+      "substrates": [
+        "FIRM",
+        "SILT"
+      ],
+      "table_offset_m": -1.5843,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.09
+    },
+    {
+      "region": "Valus Ridge",
+      "region_id": "valus-ridge",
+      "wci": 0.01,
+      "class": "dry-upland",
+      "deepest_band": "W3",
+      "tidal": false,
+      "sea": null,
+      "k": 0.9,
+      "substrates": [
+        "FIRM"
+      ],
+      "table_offset_m": -12,
+      "channel_wet": 0.3332,
+      "dry": false,
+      "wci_built": 0.01
+    },
+    {
+      "region": "Western Rootlands",
+      "region_id": "western-rootlands",
+      "wci": 0.47,
+      "class": "paddy-channel",
+      "deepest_band": "W4",
+      "tidal": true,
+      "sea": "topal",
+      "k": 1.9,
+      "substrates": [
+        "FIRM",
+        "SILT"
+      ],
+      "table_offset_m": -0.0653,
+      "channel_wet": 1,
+      "dry": false,
+      "wci_built": 0.47
+    }
+  ]
+}

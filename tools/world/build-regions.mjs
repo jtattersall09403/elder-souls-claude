@@ -51,7 +51,7 @@ const R = {
     flora_density: 0.30, canopy: 0.0, sightline_m: 900,
   },
   thornmarsh: {
-    terrain: { base_m: 13, amp_m: 12, wavelength_m: 700, relief_m: 2.8, ridge: 0.10, terrace: 0.0, style: 'thicket' },
+    terrain: { base_m: 10, amp_m: 11, wavelength_m: 700, relief_m: 2.8, ridge: 0.10, terrace: 0.0, style: 'thicket' },
     ground: { id: 'gnd_ash_over_peat', albedo: '#4A4438', roughness: 0.97, name: 'ash-dusted peat' },
     fog: { colour: '#8B8577', extinction_per_m: 0.0090, height_falloff_m: 90 },
     sky: { zenith: '#54524B', horizon: '#9A9484' },
@@ -79,7 +79,7 @@ const R = {
     flora_density: 0.45, canopy: 0.10, sightline_m: 2200,
   },
   'stone-forest': {
-    terrain: { base_m: 38, amp_m: 30, wavelength_m: 940, relief_m: 4.2, ridge: 0.14, terrace: 0.36, style: 'plateau' },
+    terrain: { base_m: 31, amp_m: 26, wavelength_m: 940, relief_m: 4.2, ridge: 0.14, terrace: 0.36, style: 'plateau' },
     ground: { id: 'gnd_petrified_flag', albedo: '#7C8794', roughness: 0.60, name: 'petrified root-flags' },
     fog: { colour: '#9FA9A2', extinction_per_m: 0.0026, height_falloff_m: 200 },
     sky: { zenith: '#37699C', horizon: '#C3C7BA' },
@@ -121,7 +121,7 @@ const R = {
     flora_density: 0.55, canopy: 0.0, sightline_m: 700,
   },
   blackwood: {
-    terrain: { base_m: 2.6, amp_m: 5.0, wavelength_m: 700, relief_m: 2.7, ridge: 0.0, terrace: 0.0, style: 'flooded-forest' },
+    terrain: { base_m: 1.5, amp_m: 3.6, wavelength_m: 700, relief_m: 2.7, ridge: 0.0, terrace: 0.0, style: 'flooded-forest' },
     ground: { id: 'gnd_leaf_mulch', albedo: '#1F2E1C', roughness: 0.96, name: 'black leaf mulch and root buttress' },
     fog: { colour: '#25361F', extinction_per_m: 0.0140, height_falloff_m: 60 },
     sky: { zenith: '#243A2C', horizon: '#3E5238' },
@@ -149,7 +149,7 @@ const R = {
     flora_density: 0.0, canopy: 0.0, sightline_m: 55,
   },
   'deep-marshes': {
-    terrain: { base_m: 1.1, amp_m: 2.6, wavelength_m: 620, relief_m: 1.9, ridge: 0.0, terrace: 0.0, style: 'drowned' },
+    terrain: { base_m: 0.9, amp_m: 2.2, wavelength_m: 620, relief_m: 1.9, ridge: 0.0, terrace: 0.0, style: 'drowned' },
     ground: { id: 'gnd_black_silt', albedo: '#16191A', roughness: 0.99, name: 'black silt and voriplasm margin' },
     fog: { colour: '#3B5A3A', extinction_per_m: 0.0230, height_falloff_m: 30 },
     sky: { zenith: '#2B3A33', horizon: '#4A5A46' },

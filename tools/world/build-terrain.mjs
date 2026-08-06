@@ -66,6 +66,18 @@ const dIn = edt((i) => !!land[i]);   // distance from a water cell to the neares
 const sd = new Float32Array(COLS * ROWS);
 for (let i = 0; i < sd.length; i++) sd[i] = land[i] ? dOut[i] : -dIn[i];
 
+// The sea and a river are not the same kind of water, and treating them alike was the single
+// worst artefact of the first cut: every stream on the map became a 300 m gorge, because the
+// shore ramp pulled the land down to sea level on both banks. A water cell more than 90 m from
+// any shore is open water; anything narrower is a channel, and a channel is an INCISION in the
+// local land surface, not a hole punched through to sea level.
+const OCEAN_HALFWIDTH = 90;
+const oceanCell = new Uint8Array(COLS * ROWS);
+for (let i = 0; i < oceanCell.length; i++) oceanCell[i] = (!land[i] && dIn[i] >= OCEAN_HALFWIDTH) ? 1 : 0;
+const dOceanRaw = edt((i) => !!oceanCell[i]);
+const dOcean = new Float32Array(COLS * ROWS);
+for (let i = 0; i < dOcean.length; i++) dOcean[i] = oceanCell[i] ? -dIn[i] : dOceanRaw[i];
+
 // ---- region assignment: an area-fitted power diagram with a warped metric --------------------
 // The plain Voronoi of thirteen label positions gets the topology right and the AREAS wrong,
 // and `regions.json`'s areas are load-bearing (RI-WLD10's census is area-weighted). Additive
@@ -132,7 +144,7 @@ for (let it = 0; it < 220; it++) {
 // changes at the border. Painting from the raster rather than from centroid distance is also what
 // stops a region inheriting a neighbour's landform across half its own territory — the first cut
 // of this file gave Blackwood a 410 m peak because its territory reached toward Valus Ridge.
-const BLUR_SIGMA_CELLS = 9;
+const BLUR_SIGMA_CELLS = 7;
 
 function gaussBlur(src, sigma) {
   const rad = Math.ceil(sigma * 2.6);
@@ -201,24 +213,29 @@ const terrB = gaussBlur(terrRaw, BLUR_SIGMA_CELLS * 0.5);
 const dipB = gaussBlur(dipRaw, BLUR_SIGMA_CELLS * 0.5);
 
 const baseH = new Float32Array(COLS * ROWS);
+const shoreH = new Float32Array(COLS * ROWS);
 const reliefG = new Float32Array(COLS * ROWS);
 const ridgeG = ridgeB, terrG = terrB;
 for (let z = 0; z < ROWS; z++) {
   for (let x = 0; x < COLS; x++) {
     const i = z * COLS + x;
-    const m = macroG[i], s = sd[i];
+    const m = macroG[i], s = sd[i], o = dOcean[i];
+    // The shore ramp is short and scales only weakly with height; it is measured against the
+    // OPEN SEA, so a stream crossing the Valus Ridge cuts a channel into a mountain instead of
+    // dragging the mountain down to the waterline.
+    const ramp = clamp(70 + Math.abs(m) * 0.70, 70, 340);
+    const shore = m * smoothstep(0, ramp, Math.max(o, 0));
     let h;
-    if (s > 0) {
-      // The shore ramp is SHORT and scales only weakly with height: a long ramp would flatten
-      // Valus Ridge every time a river came within a kilometre of it, and the river gorges are
-      // wanted. SEA_REACH below is what decides whether a low-lying cell is actually flooded.
-      const ramp = clamp(62 + Math.abs(m) * 0.62, 62, 300);
-      h = m * smoothstep(0, ramp, s) - dipB[i] * (1 - smoothstep(0, 320, s));
+    if (oceanCell[i]) {
+      h = -Math.min(40, 0.5 + 40 * (1 - Math.exp(-dIn[i] / 210)));
+    } else if (!land[i]) {
+      h = shore - (0.85 + 3.1 * (1 - Math.exp(-dIn[i] / 45)));      // a channel, incised
     } else {
-      h = -40 * (1 - Math.exp(-(-s) / 210));
+      h = shore - dipB[i] * (1 - smoothstep(0, 320, Math.max(o, 0)));
     }
     baseH[i] = h;
-    reliefG[i] = s > 0 ? reliefB[i] * smoothstep(0, 90, s) : reliefB[i] * 0.25;
+    shoreH[i] = shore;
+    reliefG[i] = land[i] ? reliefB[i] * smoothstep(0, 90, Math.max(o, 0)) : reliefB[i] * 0.25;
   }
 }
 
@@ -260,8 +277,38 @@ for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
   }
 }
 const nSamples = SAMPLES.length / 4;
+// The surface of every water body the MAP draws: sea level for open water, one notch below the
+// local bank for a channel or a tarn. Sentinel -3276 on land, then dilated one cell so the
+// bilinear read at a bank never interpolates the sentinel.
+const wtop = new Float32Array(COLS * ROWS).fill(-3276);
+const chanNoise = new Float32Array(COLS * ROWS);
+for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
+  chanNoise[z * COLS + x] = noise2((x * CELL) / 70, (z * CELL) / 70, 8801);
+}
+for (let i = 0; i < wtop.length; i++) {
+  if (oceanCell[i]) wtop[i] = 0;
+  else if (!land[i]) wtop[i] = shoreH[i] - 0.15;
+}
+{
+  const src = Float32Array.from(wtop);
+  for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
+    let mx = src[z * COLS + x];
+    for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) {
+      const nx = x + dx, nz = z + dz;
+      if (nx < 0 || nz < 0 || nx >= COLS || nz >= ROWS) continue;
+      mx = Math.max(mx, src[nz * COLS + nx]);
+    }
+    wtop[z * COLS + x] = mx;
+  }
+}
+
 const DRY = REG.map((r) => r.water.wci === 0);   // the Clay Moor and the Hive: no standing water at all
 const offsets = new Float64Array(N).fill(-8);
+// How much of the channel network the map draws through a region actually HOLDS water. In the
+// Stone Wastes and on the Valus Ridge the answer is "most of it does not": a dry wash and a
+// salt-cut are still drawn as channels on a map. This is the second solve variable and it exists
+// because the map's own water network already exceeds those two regions' declared coverage.
+const chanWet = new Float64Array(N).fill(1);
 const woffG = new Float32Array(COLS * ROWS);
 const SEA_REACH = 400;          // RI-WLD10 §7: the tide damps to zero 400 m inland
 
@@ -294,9 +341,16 @@ function seaDepthAt(x, z, g) {
   if (s > SEA_REACH || g >= 0) return 0;
   return -g * smoothstep(SEA_REACH, 0, s);
 }
+function channelOpen(x, z, r) {
+  if (chanWet[r] >= 1) return true;
+  if (chanWet[r] <= 0) return false;
+  return bilinearBase(chanNoise, x, z) < chanWet[r];
+}
 function depthAt(x, z, g, r) {
   if (DRY[r]) return 0;
-  return Math.max(tableAt(x, z) - g, seaDepthAt(x, z, g));
+  let d = tableAt(x, z) - g;
+  if (channelOpen(x, z, r)) d = Math.max(d, bilinearBase(wtop, x, z) - g);
+  return Math.max(d, seaDepthAt(x, z, g));
 }
 function wciOf(r) {
   let wet = 0, tot = 0;
@@ -312,16 +366,32 @@ paintOffsets(offsets);
 for (let pass = 0; pass < 6; pass++) {
   for (let r = 0; r < N; r++) {
     const tgt = REG[r].water.wci;
-    if (tgt === 0) { offsets[r] = -12; continue; }
-    let lo = -12, hi = 10;
-    for (let it = 0; it < 28; it++) {
-      const mid = (lo + hi) / 2;
-      const save = offsets[r]; offsets[r] = mid; paintOffsets(offsets);
-      const v = wciOf(r);
-      offsets[r] = save;
-      if (v < tgt) lo = mid; else hi = mid;
+    if (tgt === 0) { offsets[r] = -12; chanWet[r] = 0; continue; }
+    const saveO = offsets[r], saveC = chanWet[r];
+    offsets[r] = -12; chanWet[r] = 1; paintOffsets(offsets);
+    const floor = wciOf(r);
+    offsets[r] = saveO; chanWet[r] = saveC;
+    if (floor > tgt) {
+      // Even with no water table at all the drawn channels over-cover: solve how many of them run.
+      offsets[r] = -12; chanWet[r] = 1;
+      let lo = 0, hi = 1;
+      for (let it = 0; it < 26; it++) {
+        const mid = (lo + hi) / 2; chanWet[r] = mid; paintOffsets(offsets);
+        if (wciOf(r) < tgt) lo = mid; else hi = mid;
+      }
+      chanWet[r] = (lo + hi) / 2;
+    } else {
+      chanWet[r] = 1;
+      let lo = -12, hi = 10;
+      for (let it = 0; it < 28; it++) {
+        const mid = (lo + hi) / 2;
+        const save = offsets[r]; offsets[r] = mid; paintOffsets(offsets);
+        const v = wciOf(r);
+        offsets[r] = save;
+        if (v < tgt) lo = mid; else hi = mid;
+      }
+      offsets[r] = (lo + hi) / 2;
     }
-    offsets[r] = (lo + hi) / 2;
     paintOffsets(offsets);
   }
 }
@@ -353,7 +423,7 @@ function addSite(id, name, kind, x, z, rFlat, rFall) {
     for (const rr of [0, rFlat * 0.5, rFlat]) { sum += groundAt(x + Math.cos(th) * rr, z + Math.sin(th) * rr); n++; }
   }
   const local = sum / n;
-  const tbl = tableAt(x, z);
+  const tbl = Math.max(tableAt(x, z), bilinearBase(wtop, x, z));
   const y = Math.max(local, tbl + 0.85, 0.85);
   sites.push({ id, name, kind, x: +x.toFixed(1), z: +z.toFixed(1), y: +y.toFixed(2), r_flat: rFlat, r_falloff: rFall });
 }
@@ -377,6 +447,8 @@ const ridgeU = new Uint8Array(COLS * ROWS);
 const terrU = new Uint8Array(COLS * ROWS);
 const woffCm = new Int16Array(COLS * ROWS);
 const coast16 = new Int8Array(COLS * ROWS);
+const wtopDm = new Int16Array(COLS * ROWS);
+const chanNoiseU8 = new Uint8Array(COLS * ROWS);
 for (let i = 0; i < COLS * ROWS; i++) {
   baseDm[i] = Math.round(clamp(baseH[i], -3200, 3200) * 10);
   reliefU[i] = Math.round(clamp(reliefG[i] / 0.06, 0, 255));
@@ -384,6 +456,8 @@ for (let i = 0; i < COLS * ROWS; i++) {
   terrU[i] = Math.round(clamp(terrG[i], 0, 1) * 255);
   woffCm[i] = Math.round(clamp(woff[i], -320, 320) * 100);
   coast16[i] = Math.round(clamp(sd[i] / 16, -127, 127));
+  wtopDm[i] = Math.round(clamp(wtop[i], -3276, 3276) * 10);
+  chanNoiseU8[i] = Math.round(clamp(chanNoise[i], 0, 1) * 255);
 }
 
 // ---- census (reported, and re-measured independently by tools/world/scale-audit.mjs) -------------
@@ -437,15 +511,17 @@ const doc = {
     frac_below_5m: +(regBelow5[i] / Math.max(1, regCells[i])).toFixed(3),
     dry: DRY[i],
     water_offset_m: +offsets[i].toFixed(4),
+    channel_wet: +chanWet[i].toFixed(4),
     wci_declared: r.water.wci, wci_built: +observed[i].toFixed(4),
   })),
   sites,
   channels: {
-    order: ['base_dm:int16', 'relief:uint8', 'ridge:uint8', 'terrace:uint8', 'region:uint8', 'substrate:uint8', 'woff_cm:int16', 'coast16_m:int8'],
+    order: ['base_dm:int16', 'relief:uint8', 'ridge:uint8', 'terrace:uint8', 'region:uint8', 'substrate:uint8', 'woff_cm:int16', 'coast16_m:int8', 'wtop_dm:int16', 'ocean:uint8', 'chan_noise:uint8'],
     substrate_names: SUB,
     sea_names: ['none', 'topal', 'padomaic'],
     base_dm: b64(baseDm), relief: b64(reliefU), ridge: b64(ridgeU), terrace: b64(terrU),
     region: b64(region), substrate: b64(substrate), woff_cm: b64(woffCm), coast16_m: b64(coast16),
+    wtop_dm: b64(wtopDm), ocean: b64(oceanCell), chan_noise: b64(chanNoiseU8),
     sea: b64(seaOf), land: mask.bits,
   },
 };
