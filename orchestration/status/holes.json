@@ -1,0 +1,18 @@
+{
+  "task_id": "holes",
+  "brief": "orchestration/briefs/holes.md",
+  "started": "wave-0",
+  "state": "researching",
+  "outputs_expected": [
+    "TBD - reference items for 14 unjudged subsystem paths, world.water.marsh first"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "corpus-index --check confirms 14 holes exactly as briefed; 323 subsystem paths, 126 reference items, 309 judged, 0 unresolved.",
+    "subsystems.json gives each hole an arb side + area + critic: combat.dodge.recovery/stamina.exhaustion/input.latency = souls/10-combat/critic.combat; combat.status.buildup = split(S11); progression.affliction.economy = morrowind/20-progression; quests.* = morrowind/30-quests; world.* = morrowind/50-world/critic.world; lore.canon.* = morrowind/60-lore/critic.lore.",
+    "S22 binding: all combat durations rebase to 60Hz by DOUBLING upstream souls-community tick counts (which are 1/30s). Every frame figure must state its unit.",
+    "S23: RI-CMB01 owns in-fight equip-load tiers (30/55/80/100, iframes 13/11/9/7 at 1/30s -> must be restated at 60Hz)."
+  ],
+  "next_step": "read HARNESS.md, game/data layout, RI-WLD04/05/07, RI-TRV01, RI-CMB01/03, souls-frame-data.json",
+  "notes_for_successor": "Just started. Nothing read yet."
+}

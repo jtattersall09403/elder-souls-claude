@@ -27,7 +27,39 @@ re-issued mid-animation deletes the entire risk model.
 
 ### A. Upstream models (what the two games actually do)
 
-| Property | Dark Souls 1 (PTDE/Remastered) | Dark Souls 3 |
+> **UNIT WARNING — AMENDED wave 0 (corpus-audit), from `PROVENANCE-UPGRADE-02-SOULS.md` §0.
+> The Souls columns below are in 1/30-second ticks. Ours are 60 Hz frames. THEY ARE NOT THE
+> SAME UNIT AND MUST NOT BE COMPARED DIRECTLY.**
+>
+> Souls community frame counts are quoted at **30 fps** — in DS1, DS3 *and* Elden Ring.
+> Elden Ring Reforged states it outright; DS3 corroborates it arithmetically, since the
+> Carthus Bloodring is documented as raising i-frames "from 12 (.4 sec) to 16 (.533 sec)", and
+> 12 ÷ 0.4 s = 30 fps exactly. **A Souls figure of N frames is 2N of ours.**
+>
+> DS3's 13 i-frames are **433 ms**. Our 13 i-frames are **217 ms**. The table below put both
+> numbers in the same column with no unit stated, and §B's design rationale then rested on the
+> comparison. That false equivalence is what this warning removes.
+>
+> **The corpus-wide consequence, stated plainly: our combat currently runs at roughly double
+> Souls wall-clock speed while looking correct on paper.** Every *ratio* is preserved — §E's
+> derived table is healthy, our LIGHT roll is invulnerable for 0.500 of its animation against
+> DS1's fast-roll 0.458 — so the discrepancy survives every internal consistency check, every
+> blind pair over frame vectors, and every M-check in every method script. It surfaces only
+> when a human plays it.
+>
+> **This audit declared the unit; it did not rebase the numbers.** Rebasing (doubling every
+> frame count inherited from Souls recall, across RI-CMB01, RI-CMB02, RI-CMB05 and RI-CMB08,
+> and regenerating the RI-CMB07 exemplar trace) is a **design decision about how the game
+> should feel**, not a coherence repair, and it must be settled by a wave that can play the
+> result. It is registered as an **open design question** in `CORPUS-COHERENCE-01.md` §9 and
+> `constants.json` (`combat.souls_tick_hz`). **What is no longer acceptable, and is fixed here,
+> is the status quo in which the two units shared a table with nothing said.**
+>
+> Note that `RI-CMB03` got this right in the one place it worked from a figure denominated in
+> seconds: it took the measured 0.70 s regen pause and correctly wrote **42 frames at 60 Hz**.
+> The error is confined to figures recalled as *frame counts* rather than as durations.
+
+| Property | Dark Souls 1 (PTDE/Remastered) **@30 fps ticks** | Dark Souls 3 **@30 fps ticks** |
 |---|---|---|
 | Equip-load breakpoints | **25%** (fast) / **50%** (mid) / **100%** (fat) | **30%** (light) / **70%** (medium) / **100%** (heavy/fat) |
 | i-frames, light roll | 11 | 13 |
@@ -45,6 +77,18 @@ We take **DS3's 30% / 70% breakpoints** (they read better on a stat sheet and gi
 middle tier) with **DS1's stinginess about what a roll buys you** (fewer i-frames than DS3,
 a real recovery tail, a stamina cost you can run out of). Frames are at a fixed 60 Hz
 simulation step. Frame indices are 1-based and inclusive.
+
+> **AMENDED wave 0 (corpus-audit): "fewer i-frames than DS3" is true only if the units are
+> ignored.** At 30 fps ticks DS3's 13 i-frames are 433 ms; our 13 are 217 ms at 60 Hz. In
+> *duration* we are far stingier than either game — about half of DS1's. The design intent
+> ("stingy i-frames, real recovery, a stamina cost") is satisfied and then some; what is
+> **not** established is that 217 ms is the right number rather than an artefact of adopting
+> tick counts as frame counts. **This item's numbers are binding as written** — a build must
+> implement 13/11/5/0 at 60 Hz — and the question of whether the whole ladder should double is
+> an open design question, not a licence for a builder to improvise. See §A's unit warning.
+>
+> **This item owns the equip-load ladder outright, including the tier structure** (ruling wave 0
+> — see the block after §B's table).
 
 | Tier | Equip load | Startup (vulnerable) | **i-frames** | Recovery (vulnerable) | Total | Stamina | Ground distance | Speed of animation |
 |---|---|---|---|---|---|---|---|---|

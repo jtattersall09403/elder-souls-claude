@@ -2,7 +2,7 @@
   "task_id": "corpus-audit",
   "brief": "orchestration/briefs/corpus-audit.md",
   "started": "wave-0-final",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/00-doctrine/CORPUS-COHERENCE-01.md",
     "corpus/00-doctrine/constants.json",
@@ -37,7 +37,21 @@
     "corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md (W3: indistinguishability replaces ours_win_rate)",
     "corpus/10-combat/RI-AI05-*.md (W8: fixture wave-standard-build pinned)",
     "corpus/30-quests/RI-QST05-*.md (W6: VERB-SPREAD hard fail + STL/CRM dependency)",
-    "corpus/00-doctrine/SCORING.md (W7: mandatory per-item ladder anchor row)"
+    "corpus/00-doctrine/SCORING.md (W7: mandatory per-item ladder anchor row)",
+    "corpus/10-combat/RI-CMB02 (B4 clamp + spine scoping + 2 rows)",
+    "corpus/20-progression/RI-PRG04 (ID-09 S7 axis)",
+    "corpus/50-world/RI-WLD01,RI-WLD05,RI-TRV01,RI-TRV02 (ID-17)",
+    "corpus/00-doctrine/CRITIC-DOCTRINE.md (B13)",
+    "corpus/00-doctrine/COHERENCE-AGENT.md (T6)",
+    "corpus/80-methods/HARNESS.md (B8 UI viewpoint set)",
+    "corpus/86-ui/RI-UIX06 (notes applied)",
+    "corpus/70-visual/RI-VIS01 (F17-F19 + CC-7)",
+    "corpus/25-magic/RI-MAG02 (B11 min_tier carve-out)",
+    "corpus/10-combat/RI-CMB01 (unit warning + ladder ownership)",
+    "corpus/20-progression/RI-PRG07 (equip-load ruling)",
+    "corpus/00-doctrine/ARBITRATION.md (i-frame unit warning)",
+    "corpus/23-stealth-crime/RI-STL02,RI-CRM01 (S20->S21)",
+    "corpus/00-doctrine/CORPUS-COHERENCE-01.md (990 lines, sections 0-13)"
   ],
   "findings": [
     "corpus-index.mjs --check ONLY gates on INDEX.md staleness; error-gating is behind --strict. Brief wants --check to gate. Will make --check imply strict-on-errors.",
@@ -54,8 +68,9 @@
     "DECISION: 206 legacy aliases left in use. They resolve correctly, aliases are a documented migration aid, and rewriting front-matter across 60+ items is churn with no semantic gain. --check does not gate on them.",
     "RULED B6/B7: Jel validator split into --mode canon (attested never fails; 26.7%->0.0%) and --mode coinage (strict; still rejects Krothgar/Blooddrinker). --self-test is the regression guard. Glosses xul/uxith/ojel/kaal corrected from the attested primer; xul-aneekh and ixtu-xul RE-GLOSSED not renamed (Deep-Kin kept as Tamrielic exonym) so 5 other items keep working. RI-LOR04 \u00a74 minority-form fixed: Jel primary (86% of attested), word count 2-5 modal 2, verb slot non-obligatory, 15 title-prefixes added. NEW: 3 classifier bugs - Skink-in-Tree's-Shade classified khajiit, Jel compounds classified tamrielic, Tree-Minder Deyapa classified imperial.",
     "RI-MTH05 written. --check still 0 errors, 126 items, 323 paths, 14 holes, 202 aliases.",
-    "W1,W2,W3,W5,W6,W7,W8 applied. W4 was the traversal minute (done). W9 needs no change (BAR-CRITIQUE itself says 'no change to the ruling'); its counterweight RI-CMP01 exists."
+    "W1,W2,W3,W5,W6,W7,W8 applied. W4 was the traversal minute (done). W9 needs no change (BAR-CRITIQUE itself says 'no change to the ruling'); its counterweight RI-CMP01 exists.",
+    "PROVENANCE-UPGRADE-02-SOULS.md EXISTS. Its two big findings applied: (a) the 30fps-tick vs 60Hz unit error - DECLARED not rebased (rebasing is a design decision); (b) RI-PRG07 vs RI-CMB01 equip-load ladder ruled for RI-CMB01 including the tier structure, since equip load changing roll behaviour is inside the fight."
   ],
-  "next_step": "B4 RI-CMB02 internal contradiction; B8 harness DPR; B10 two-directional travel; B11 MAG02 prices; seam propagation S20/S21; RI-VIS01 F17-F19; GAP-LEDGER + progress; finish report",
-  "notes_for_successor": "corpus-index.mjs --check PASSES cleanly as of now. Do not break it. Remaining queue: RI-MTH05 item; Jel validator (B6) + 3 lexicon glosses (B7); RI-WLD02 vs WLD09 (B2); RI-WLD05 tick arithmetic (B3); RI-CMB02 internal contradiction (B4); harness deviceScaleFactor (B8); RI-MTH03 hitstop drop (B9); two-directional travel checks (B10/ID-17/ID-09); RI-MAG02 teleport prices (B11); seam propagation S16-S21 + S20-vs-S21 misnumbering; W1-W8; RI-VIS01 F17-F19+CC-7; GAP-LEDGER + progress.mjs."
+  "next_step": "none - complete",
+  "notes_for_successor": "COMPLETE. `node tools/corpus-index.mjs --check` exits 0 (was 148 errors). 323 paths, 126 items, 14 pre-existing holes, 0 unresolved. `python3 corpus/80-methods/jel-phonotactics.py --self-test` exits 0. OUTSTANDING, all recorded in CORPUS-COHERENCE-01 section 12: (1) THE BIG ONE - Souls frame counts are 30fps ticks and ours are 60Hz, so our combat runs at ~2x Souls wall-clock speed; DECLARED and registered in constants.json but NOT rebased, because rebasing is a design decision needing a playtest. (2) SCORING.md W7 now REQUIRES a per-item native->ladder anchor row and makes its absence score 0; no item carries one yet, so item owners must do a pass before the next wave scores anything. (3) PROVENANCE-UPGRADE-02-SOULS amendments 1-11 (attribution/disclosure fixes to RI-CMB01/03/05/08, RI-PRG01) are the owning items' to apply. (4) 14 holes, 202 aliases. DO NOT break the gate: any new RI must use canonical paths from subsystems.json, and any shared number must be registered in constants.json with a real owner id."
 }

@@ -59,3 +59,15 @@ Found by `tools/refs/merge-manifest.mjs`, deliberately left unfixed to avoid rac
    each, not 5.
 3. The remaining 121 warnings are the `corroboration: "one-host"` gap — unfixable under the old
    proxy, now cheap to close with a second source per file.
+
+## R7 — Biome diversity is binding (now seam S24)
+
+The world is **not** uniformly marsh. The map (`corpus/50-world/black-marsh-map-source.jpg`) is
+authoritative and shows mountains, arid rock, jungle, petrified forest, dry moor, a red coast, two
+different seas, and wetland — thirteen regions in `regions.json`, each of which must read as a
+different place.
+
+Water, tides and wetland belong to **specific regions**, never to the world globally. Any item,
+brief or builder instruction implying a globally swampy world must be corrected. `RI-WLD04`'s blind
+region-identification test (≥33/39 from unlabelled screenshots, ≥6 of 9 axes differing per pair)
+is the enforcement and must be cited by world, art-direction, audio and encounter critics.

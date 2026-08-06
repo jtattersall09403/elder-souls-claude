@@ -2,7 +2,7 @@
   "task_id": "vis-metrics",
   "brief": "orchestration/briefs/vis-metrics.md",
   "started": "wave-N",
-  "state": "implementing",
+  "state": "writing-doctrine",
   "outputs_expected": [
     "tools/metrics/lib/decode.mjs",
     "tools/metrics/lib/vis03.mjs",
@@ -14,7 +14,8 @@
     "tools/metrics/lib/decode.mjs",
     "tools/metrics/lib/vis03.mjs",
     "tools/metrics/lib/battery.mjs",
-    "tools/metrics/image-metrics.mjs"
+    "tools/metrics/image-metrics.mjs",
+    "tools/metrics/self-test.mjs"
   ],
   "findings": [
     "DECODE SOLVED. `npm i jpeg-js @jsquash/avif @jsquash/webp` all install cleanly in tools/ (network is open). @jsquash/avif's default decode() does `fetch` of its wasm and FAILS ('fetch failed'); the fix is to import '@jsquash/avif/decode.js' and call init(undefined, {wasmBinary: fs.readFileSync('node_modules/@jsquash/avif/codec/dec/avif_dec.wasm')}) BEFORE decode. Verified decoding a 320x320 mwscr AVIF. Same pattern for @jsquash/webp. This removes the 'refs must be decoded to PNG in a scratch dir' step from ACQUISITION-REPORT s9.",
@@ -23,8 +24,15 @@
     "FIRST REAL MEASUREMENT (RDR2 REF-M6, character_closeup, native 1921x1081): M5 NYQ_ratio = 0.093 on a NATIVE 1024^2 crop, i.e. it PASSES the 0.18 band. The acquisition report's 0.363-0.465 (100% of the reference population failing) was entirely the 256x256 box-downscale artefact. ACQUISITION-REPORT amendment 5 is therefore WITHDRAWN, not adopted: the band was never broken, the instrument was. Do not relax M5 NYQ.",
     "REAL MODERN FRAME HARD-FAILS AS BANDED (RDR2): M3 p95C=16.4 (band >=42, hard-fail <20) 'DEAD RENDER'; M3 meanC=6.27 (band 10-34); M6 retention=0.266 (hard-fail <0.30); M9 ShoulderRatio=0.023 (hard-fail <0.12); M4 scale_ratio=1.47 (band 0.35-1.10). These are band errors, not render errors -> the four biggest proposed amendments.",
     "M4 scale_ratio is >1 on real photography-grade frames because a fixed Sobel threshold on a box-downsampled image sees HIGHER edge density (downsampling concentrates contrast). RI-VIS03's 0.35-1.10 band assumed it falls. The alias-storm guard (scale_ratio < 0.22) is still correct and still fires on noise; the UPPER bound is what is wrong.",
-    "SOBEL NORMALISATION: the pre-existing sobel() divides magnitude by 4 (so a 0->1 step edge gives G~1). The acquisition report's measured ED_1 = 0.172-0.320 (modern) was measured on that normalised scale against RI-VIS03's 0.08 threshold, and it matches the constructed band 0.10-0.34. Keeping /4 is therefore required for continuity; RI-VIS03's formula omits it. Documented in the tool."
+    "SOBEL NORMALISATION: the pre-existing sobel() divides magnitude by 4 (so a 0->1 step edge gives G~1). The acquisition report's measured ED_1 = 0.172-0.320 (modern) was measured on that normalised scale against RI-VIS03's 0.08 threshold, and it matches the constructed band 0.10-0.34. Keeping /4 is therefore required for continuity; RI-VIS03's formula omits it. Documented in the tool.",
+    "SELF-TEST GREEN: 25/25 assertions in tools/metrics/self-test.mjs. Proves the instrument detects AA at fixed resolution (no-AA NYQ 0.131 vs 4x-SSAA 0.060 on the same synthetic scene), REFUSES M5 on anything under 1024^2 (so a 320px 2002 preview can never out-score a native frame), hard-fails M8 on a flat-shaded render (FS 0.0001, LargestFlat 0.47), hard-fails M7 on a uniform sky, separates one-light from key+fill on M6 hue_offset (0.27deg vs 166deg), calls a blue plane a blue plane on M12, and is bit-deterministic.",
+    "SPEC DEFECT FOUND IN RI-VIS03 M7 \u00a7detect: the sky candidate gate `Yp > P60(whole frame)` combined with `4-connected to row 0` means ANY sky whose zenith is darker than the frame's P60 (every dawn/dusk gradient) yields an EMPTY SKY_MASK and M7 silently records itself SKIPPED. Implemented a recorded stage-B fallback (drop the luminance gate, require the component to span >=50% of frame width). Amendment proposed; the detector used is emitted in masks.sky_detect on every image so it is never silent.",
+    "MEASURED n=24 Witcher 3 next-gen 1440p (exterior_daylight) p10-p90 with the CORRECT statistics: M1.DR 0.772-0.919; M1.mean_Yp 0.234-0.412; M1.stops 9.51-16.29; M1.blown 0-0.00115; M1.crushed 0.00026-0.0116; M2.C_global 0.187-0.278; M2.C_local_med 0.0632-0.1035 (32px median); M2.C_local_p10 0.0137-0.0356; M3.meanC 9.50-17.99; M3.p95C 25.4-43.9; M3.H_hue 2.87-4.07; M3.chroma_frac 0.417-0.699; M4.ED_1 0.190-0.344; M4.scale_ratio 1.052-1.679; M5.HFR 0.044-0.144; M5.NYQ_ratio 0.064-0.123; M5.alpha 1.95-2.70; M6.retention 0.250-0.679; M6.hue_offset 9.96-171.3; M6.C_shadow 1.69-5.54; M7.dY_sky 0.0031-0.1196; M7.sky_noise 0.0056-0.0086; M8.FS_score 0.0362-0.0589; M8.LargestFlat 0.0040-0.0535; M8.TotalFlat 0.0508-0.1499; M9.ShoulderRatio 0.0086-0.348; M9.HighlightDesat 0.326-1.569; M9.BloomHalo 0.0123-0.157; M9.VeilIndex 0.0033-0.0181; M10.R_aerial 0.691-2.828. CAVEAT: HUD-bearing, barred from comparison by the acquisition request \u00a75a; one game, one session.",
+    "MEASURED n=89 Morrowind 320px AVIF contrast population: M1.stops 5.62-8.32 (vs modern 9.51-16.29 -> STILL NO OVERLAP with the corrected instrument; stops remains the single best era discriminator); M9.HighlightDesat p50 1.60 (modern p50 0.86) -> the battery correctly diagnoses 2002 as NO TONEMAPPING; M8.FS_score p50 0.0327 vs modern 0.0460; M4.ED_1 p50 0.126 vs 0.261. M5, M10, M11, M12 all report unmeasurable on all 89 (320px, and no 32-row far band) rather than producing a comparable-looking number.",
+    "ACQUISITION-REPORT AMENDMENT 5 IS WITHDRAWN, NOT ADOPTED. Measured M5.NYQ_ratio on native 1024^2 crops is 0.064-0.123 (p90 0.123), comfortably inside RI-VIS03's `max 0.18`. The reported 0.363-0.465 was 100% the 256x256 box-downscale. The band was never broken; the instrument was. DO NOT relax M5 NYQ.",
+    "ACQUISITION-REPORT AMENDMENT 3 IS ALSO WITHDRAWN. It proposed raising M7 dY_sky from 0.06 to 0.15 on a measured p10 of 0.248 - but that 0.248 was `sky_gradient.row_mean_range` over the top 40% of ALL rows (mostly trees and buildings). With a real SKY_MASK the measured M7.dY_sky p10 is 0.0031 and p50 is 0.0294. Raising the floor to 0.15 would have failed ~85% of genuine modern frames.",
+    "M10's single-image proxy does not discriminate: 20/24 real Witcher 3 frames hard-fail `R_aerial > 0.85` (measured p50 1.42) and 13/24 hard-fail `dC_depth > 0`. The proxy is dominated by content (a smooth road in the near band vs a detailed treeline in the far band inverts it). RI-VIS03's own two-capture FogDelta upgrade is the only sound form. Recommend demoting the single-image M10 to advisory."
   ],
-  "next_step": "write tools/metrics/lib/decode.mjs then lib/vis03.mjs (M1-M10), then M11/M12, then CLI, then self-test, then doctrine doc",
-  "notes_for_successor": "Order of work is priority order from the brief: FG_MASK -> M5 native 1024 crop -> M8 FS_score/LargestFlat -> M3 CIELAB -> M4 scale_ratio -> M6,M9,M10 -> M11,M12 (sequence-only, unmeasurable on a still). Every statistic emits {value,unit,profile,measurable,reason}."
+  "next_step": "write corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md",
+  "notes_for_successor": "Code is done and green (node tools/metrics/self-test.mjs -> 25/25). Measured population JSON is in the scratchpad (out/modern-hud.json, out/morrowind.json, out/cc.json) - if it is gone, regenerate with: node tools/metrics/image-metrics.mjs --in corpus/70-visual/refs/modern/hud --profile exterior_daylight --no-legacy --out <path> (~3 min for 24 frames). Only the doctrine doc remains."
 }

@@ -68,6 +68,16 @@ MUST file a corpus extension (CORPUS-CONTRACT §5) before judging it.
 | F14 | Character/creature model quality (topology, weighting) | FIDELITY | modern refs | VIS08 |
 | F15 | Sky rendering (model, gradient, sun/moon, banding) | FIDELITY | modern refs | VIS03 M7, VIS04 §12 |
 | F16 | Particle/VFX quality (sorting, softness, resolution) | FIDELITY | modern refs | VIS04 §13 |
+| **F17** | **UI text raster fidelity** — glyph edge sharpness, subpixel/greyscale AA quality, vector-or-SDF vs upscaled bitmap, effective text height in device pixels | FIDELITY | modern refs | **RI-UIX06 §D** |
+| **F18** | **UI scaling and layout integrity across resolutions and DPI** — 1280×720 → 3840×2160, `deviceScaleFactor` 1 and 2; clipping, overlap, overflow, 9-slice corner distortion, icon mip quality | FIDELITY | modern refs | **RI-UIX06 §E** |
+| **F19** | **UI compositing correctness** — alpha fringing, premultiplication, sRGB/linear correctness on blends, gradient banding on panels | FIDELITY | modern refs | **RI-UIX06 §F** |
+
+> **F17–F19 appended wave 0 (corpus-audit)** at `RI-UIX06`'s request, in its own table format.
+> Until they existed, **a critic judging UI rendering quality was out of process and its verdict
+> was void** — there was no fidelity property covering the interface at all, so "the UI looks
+> bad" had nowhere to be recorded and "the UI looks fine" had nothing to be checked against.
+> F18's DPR-2 clause depends on the `HARNESS.md` §6 amendment made in the same pass (the UI
+> viewpoint set has its own pinned configuration); without it F18 is unmeasurable.
 
 Mnemonic for the split: **ART owns the noun, FIDELITY owns the adjective.** *What* is a
 Hist tree shaped like = ART. *How many triangles, what shader, what shadow* = FIDELITY.
@@ -108,6 +118,13 @@ severity in ARBITRATION.md §3.
 | CC-4 | Art direction excused by fidelity | "It's generic but it looks great", "the lighting carries it", "high fidelity so the setting reads" | **FAIL, verdict void** |
 | CC-5 | Score fusion | A single combined "visual score" is reported anywhere | **FAIL** — the two scores are reported as an ordered pair `(ART x/10, FIDELITY y/10)` and never summed, averaged, or weighted |
 | CC-6 | Reference-free assertion | A fidelity claim made with no metric from RI-VIS03 and no shot from RI-VIS02; or an art claim with no swatch/silhouette from RI-VIS05 | **FAIL** — "it looks bad" is not a verdict |
+| **CC-7** | **The diegetic-blur excuse.** Low UI rendering quality excused as UI art direction | Verdict contains any of: "meant to look like old parchment", "the softness is the wet-paper look", "hand-drawn so it shouldn't be crisp", "the blur is atmospheric", "weathered look", "it's supposed to look aged", "the texture reads as damp", "diegetic so fidelity doesn't apply" — *applied to any of F17, F18, F19* | **FAIL, verdict void, and the piece under review fails** |
+
+> **CC-7 appended wave 0 (corpus-audit)**, from `RI-UIX06`. It is CC-3 ("the cardinal sin" —
+> low fidelity excused as style) transposed to the interface, and it is the more likely of the
+> two to be committed, because a UI genuinely *is* meant to look like damp parchment. The test
+> that separates the real thing from the excuse is in §D: **render at 4× and downsample — real
+> ink bleed persists, raster blur disappears.**
 
 **CC-3 note.** This is the one the whole document exists for. Morrowind at release ran
 `bump-mapped` water, per-pixel-lit interiors and the highest texture budget Bethesda could

@@ -4,7 +4,7 @@
 > Canonical data: `corpus/90-verdicts/GAP-LEDGER.json`. Source: every verdict's
 > `biggest_gap` (opens) and `gap_closure[]` (closes). Rules: `SCORING.md` §5.
 
-Generated: 2026-08-06T09:02:35Z · verdicts read: 0 · waves: (none)
+Generated: 2026-08-06T09:44:22Z · verdicts read: 0 · waves: (none)
 
 **The three rules that matter**
 1. Every verdict opens exactly one gap. A verdict with no gap is void.

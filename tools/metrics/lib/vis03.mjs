@@ -684,6 +684,18 @@ export function M7(pl, masks) {
   const yTop = present[0].y;
   const dense = rows.filter((r) => r.frac >= 0.20);
   const yHorizon = dense.length ? dense[dense.length - 1].y : present[present.length - 1].y;
+  // VERTICAL-EXTENT GATE (not in RI-VIS03; added on measured evidence, amendment M7-span).
+  // dY_sky is a difference between two rows. If those rows are 20 px apart — a few patches of
+  // sky between trees, which is 6 of 24 real Witcher 3 frames — the difference is necessarily
+  // tiny and "dY_sky < 0.02 AND dC_sky < 2" fires as FLAT SINGLE-COLOUR SKY on a real sky.
+  // Area alone (sky_frac >= 0.02) does not catch this: a wide thin band passes it.
+  const spanFrac = (yHorizon - yTop) / H;
+  if (spanFrac < 0.15) {
+    return {
+      skipped: `SKY_MASK spans only ${(spanFrac * 100).toFixed(1)}% of the frame height (rows ${yTop}..${yHorizon}); dY_sky/dC_sky/dH_sky are differences ACROSS the sky and are meaningless over a band this short. RI-VIS03 gates M7 on area (sky_frac >= 0.02) only, which a wide thin sliver of sky passes — see METRICS-IMPLEMENTATION-01 §amendment M7-span. Recorded SKIPPED; it does NOT pass.`,
+      sky_frac: masks.skyFrac, sky_span_frac: spanFrac,
+    };
+  }
   // 9-row moving average over the rows that contain sky
   const smooth = (key) => {
     const vals = present.map((r) => r[key]);
@@ -714,8 +726,11 @@ export function M7(pl, masks) {
   const tiles = tileStdevs(Yp, masks.sky, W, H, 16, true);
   const sky_noise = median(tiles.map((t) => t.sd));
   return {
-    sky_frac: masks.skyFrac, y_top: yTop, y_horizon: yHorizon,
+    sky_frac: masks.skyFrac, sky_span_frac: spanFrac, y_top: yTop, y_horizon: yHorizon,
     dY_sky, dC_sky, dH_sky, BI, sky_noise, sky_tiles: tiles.length,
+    // normalised: how much the sky changes per unit of the frame height it occupies. Comparable
+    // between a full-height sky and a half-height one; dY_sky is not.
+    dY_per_span: dY_sky / Math.max(spanFrac, 1e-6),
   };
 }
 
@@ -859,7 +874,15 @@ export function M9(pl, masks, m1) {
     else if (Yp[i] >= 0.75 && Yp[i] < 0.90) mid++;
   }
   const ClipFrac = clip / N;
-  const ShoulderRatio = hi / Math.max(mid, 1);
+  // HIGHLIGHT-CONTENT GATE (not in RI-VIS03; added on measured evidence, amendment M9-shoulder).
+  // ShoulderRatio = |Yp in [0.90,0.996)| / |Yp in [0.75,0.90)| is a shape statistic of the
+  // highlight roll-off. On a frame with almost nothing above 0.75 it is a ratio of two tiny
+  // counts and reports noise: 18 of 24 real Witcher 3 frames "hard fail" ShoulderRatio < 0.12
+  // and none of them is a linear clamp. Require the frame to HAVE highlights first.
+  const highlightFrac = (hi + mid) / N;
+  const ShoulderRatio = highlightFrac >= 0.02 ? hi / Math.max(mid, 1) : null;
+  const shoulderReason = ShoulderRatio === null
+    ? `only ${(highlightFrac * 100).toFixed(2)}% of the frame has Yp >= 0.75; ShoulderRatio is a ratio of two near-empty bins and would report noise. RI-VIS03 does not gate it — see METRICS-IMPLEMENTATION-01 §amendment M9-shoulder.` : null;
   // HighlightDesat: mean chroma of the top 5% by Yp, over mean chroma of FG
   const q = maskedPercentile(Yp, null, 0, 1, [0.95]);
   let ctop = 0, ntop = 0;
@@ -881,7 +904,7 @@ export function M9(pl, masks, m1) {
     else BloomHalo = s / n - m1.mean_Yp;
   }
   const VeilIndex = maskedPercentile(Yp, masks.fg, 0, 1, [0.01])[0.01];
-  return { ClipFrac, ShoulderRatio, HighlightDesat, C_top, C_all, BloomHalo, bloomReason, VeilIndex, bright_frac: brightN / N };
+  return { ClipFrac, ShoulderRatio, shoulderReason, highlight_frac: highlightFrac, HighlightDesat, C_top, C_all, BloomHalo, bloomReason, VeilIndex, bright_frac: brightN / N };
 }
 
 // ---------------------------------------------------------------------------------------

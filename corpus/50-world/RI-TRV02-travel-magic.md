@@ -371,6 +371,10 @@ score is **0**, not 14/26 for seven solvent detectors that had nothing to detect
 - **`RI-MAG02`'s gold formula is applied literally to these four.** `round(3.9 × focus_base^1.75)` on a
   computed magnitude prices `mark` at about 4 gold and makes `recall`'s shelf price depend on where the
   player is standing. Someone will ship that, and travel magic becomes the cheapest thing in the game.
+  **RESOLVED wave 0 (corpus-audit): `RI-MAG02` now carves these four out of the magnitude formula
+  explicitly and defers their prices to this item's `min_tier` table (3,400 / 3,400 / 900 / 900).**
+  The risk is now a build that re-applies the formula anyway, which P1's exact-price assertion
+  catches.
 - **The two Interventions are merged.** One "Return" spell that goes to the nearest safe place. Cheaper
   to build, half the content, and it deletes the only navigational decision the spellbook contains.
 - **D2 is run only against the 8 loop dungeons.** The 82 caves have locked doors and hand-placed named

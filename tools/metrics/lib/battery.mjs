@@ -219,6 +219,8 @@ export function runBattery(pl, o = {}) {
           BI: S(r7.BI, 'outliers per 100 sky rows', b.BI),
           sky_noise: r7.sky_noise === null ? U('stdev of Yp per 16x16 sky tile', 'no 16x16 tile lies entirely inside SKY_MASK', b.sky_noise) : S(r7.sky_noise, 'stdev of Yp per 16x16 sky tile', b.sky_noise),
           sky_frac: S(r7.sky_frac, 'fraction of frame', { min: 0.02 }),
+          sky_span_frac: S(r7.sky_span_frac, 'fraction of frame height spanned by SKY_MASK', { min: 0.15 }),
+          dY_per_span: S(r7.dY_per_span, 'Yp per unit of frame height spanned', null),
         };
         const hf = [], soft = [];
         if (r7.dY_sky < 0.02 && r7.dC_sky < 2) hf.push(HF('dY_sky', r7.dY_sky, 'dY_sky < 0.02 AND dC_sky < 2', 'FLAT SINGLE-COLOUR SKY (scene.background = new THREE.Color(...)) — the most common Three.js tell', 'RI-VIS04 — a sky/scattering model'));
@@ -270,14 +272,15 @@ export function runBattery(pl, o = {}) {
     const b = V.M9_BANDS;
     const st = {
       ClipFrac: S(r9.ClipFrac, 'fraction of pixels with r,g,b all >= 0.99', b.ClipFrac),
-      ShoulderRatio: S(r9.ShoulderRatio, '|Yp in [0.90,0.996)| / |Yp in [0.75,0.90)|', b.ShoulderRatio),
+      ShoulderRatio: r9.ShoulderRatio === null ? U('|Yp in [0.90,0.996)| / |Yp in [0.75,0.90)|', r9.shoulderReason, b.ShoulderRatio) : S(r9.ShoulderRatio, '|Yp in [0.90,0.996)| / |Yp in [0.75,0.90)|', b.ShoulderRatio),
+      highlight_frac: S(r9.highlight_frac, 'fraction of pixels with Yp >= 0.75', null),
       HighlightDesat: r9.HighlightDesat === null ? U('C_top / C_all', 'FG_MASK has no chroma to normalise against', b.HighlightDesat) : S(r9.HighlightDesat, 'C_top / C_all', b.HighlightDesat),
       BloomHalo: r9.BloomHalo === null ? U('Yp difference', r9.bloomReason, b.BloomHalo) : S(r9.BloomHalo, 'Yp difference (annulus mean - frame mean)', b.BloomHalo),
       VeilIndex: S(r9.VeilIndex, 'P1(Yp) over FG_MASK', b.VeilIndex),
     };
     const hf = [], dg = [];
     if (r9.ClipFrac > 0.02) hf.push(HF('ClipFrac', r9.ClipFrac, 'ClipFrac > 0.02', 'HARD CLIPPING, NO SHOULDER', 'RI-VIS04 §5 — renderer.toneMapping = ACESFilmicToneMapping'));
-    if (r9.ShoulderRatio < 0.12) hf.push(HF('ShoulderRatio', r9.ShoulderRatio, 'ShoulderRatio < 0.12', 'LINEAR CLAMP — the histogram falls off a cliff into white', 'RI-VIS04 §5'));
+    if (r9.ShoulderRatio !== null && r9.ShoulderRatio < 0.12) hf.push(HF('ShoulderRatio', r9.ShoulderRatio, 'ShoulderRatio < 0.12', 'LINEAR CLAMP — the histogram falls off a cliff into white', 'RI-VIS04 §5'));
     if (r9.HighlightDesat !== null && r9.HighlightDesat > 1.05) hf.push(HF('HighlightDesat', r9.HighlightDesat, 'HighlightDesat > 1.05', 'NO TONEMAPPING (a filmic curve desaturates highlights; a linear clamp keeps them saturated then clips a channel)', 'RI-VIS04 §5 — set renderer.toneMapping = ACESFilmicToneMapping'));
     if (r9.BloomHalo !== null && r9.BloomHalo <= 0.002) hf.push(HF('BloomHalo', r9.BloomHalo, 'BloomHalo <= 0.002', 'NO BLOOM', 'RI-VIS04 — thresholded bloom pass'));
     if (r9.BloomHalo !== null && r9.BloomHalo > 0.12) hf.push(HF('BloomHalo', r9.BloomHalo, 'BloomHalo > 0.12', 'BLOOM IS EATING THE FRAME', null));
@@ -287,7 +290,7 @@ export function runBattery(pl, o = {}) {
     // RI-VIS03 M9 combined diagnosis rules — report the named cause, not just the numbers
     if (r9.HighlightDesat !== null && r9.HighlightDesat > 1.05 && r9.ClipFrac > 0.02) dg.push('NO TONEMAPPING');
     if (r1.mean_Yp < 0.18 && r1.skew > 1.6 && r1.P99 >= 0.95) dg.push('SUSPECTED LINEAR OUTPUT (no sRGB encode)');
-    if (r9.ShoulderRatio < 0.12 && r1.blown > 0.05) dg.push('EXPOSURE TOO HIGH / no auto-exposure');
+    if (r9.ShoulderRatio !== null && r9.ShoulderRatio < 0.12 && r1.blown > 0.05) dg.push('EXPOSURE TOO HIGH / no auto-exposure');
     M.M9 = metric('M9', 'Tonemapping and colour response', profile, st, { hard_fails: hf, diagnoses: dg });
   }
 

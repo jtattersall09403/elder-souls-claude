@@ -61,19 +61,64 @@ equipRatio = (weight of equipped weapons, shields, armour, talismans) / maxLoad
 
 Inventory weight is **not** counted. Consumables are **not** counted.
 
+> **AMENDED wave 0 (corpus-audit) — `PROVENANCE-UPGRADE-02-SOULS.md` §7/§11.1, "the corpus's
+> worst internal contradiction". RULED IN FAVOUR OF `RI-CMB01`, INCLUDING THE TIER STRUCTURE.**
+>
+> This table and `RI-CMB01` §B's `ES-ROLL/1` described **two different equip-load systems**, and
+> both were written as binding: 5 tiers at 30/55/80/100 vs 4 at 30/70/100; i-frames 13/11/9/7
+> vs 13/11/5/0; roll distance, roll stamina and stamina regen all disagreeing as well.
+> **The two items' own method scripts fail each other** — `RI-CMB01`'s M5 threshold-cliff check
+> fails any build whose i-frame count changes anywhere but 30.00→30.01 and 70.00→70.01, while
+> this item's method 4 asserts exactly four transitions at 0.30, 0.55, 0.80 and 1.00. A builder
+> could not satisfy both, and this is the likeliest single reason the build would not converge.
+>
+> The escape clause below ceded the numeric columns and explicitly refused to concede the tier
+> structure — **which is precisely what conflicts**, so the conflict was not resolvable by
+> reading the items.
+>
+> **Ruling: `RI-CMB01` owns the whole ladder, tier structure included.** Under ARBITRATION §1,
+> *"equip load changing roll type, distance and recovery"* is **inside the fight** and Souls is
+> authoritative there; the canonical path `combat.dodge.equipload` sits in `10-combat` under
+> `critic.combat`. The tiers exist for no purpose except to change roll behaviour, so the
+> breakpoints are a combat property. This item's own subordination clause is honoured in full —
+> it simply reaches one step further than it intended.
+>
+> **What this item keeps, and it is not nothing:**
+> - **BURDEN (§3) and the whole out-of-fight encumbrance economy** — untouched and still owned
+>   here. That is the Morrowind half and no combat item speaks to it.
+> - **The name `Immobilised`** for the >100% state, adopted as the display name of
+>   `RI-CMB01`'s `OVERLOADED`, because it says what happens.
+> - **The fall-damage column**, which no combat item states.
+> - **The practice of writing `@60 fps` in the header.** This is the only equip-load table in
+>   the corpus that states its framerate, and `PROVENANCE-UPGRADE-02-SOULS` §0 recommends it
+>   everywhere. `RI-CMB01` §A now does the same.
+>
+> Method 4's "exactly four transitions at 0.30, 0.55, 0.80, 1.00" is superseded by
+> `RI-CMB01` M5's two cliffs. Full reasoning: `CORPUS-COHERENCE-01.md` §9.
+
 | Tier | Ratio | I-frames @60 fps | Roll distance | Roll stamina | Stamina regen | Fall damage |
 |---|---|---:|---:|---:|---:|---:|
-| **Light** | ≤ 30% | 13 | 5.2 m | 20 | ×1.00 | ×0.80 |
-| **Medium** | ≤ 55% | 11 | 4.4 m | 22 | ×0.93 | ×1.00 |
-| **Heavy** | ≤ 80% | 9 | 3.5 m | 25 | ×0.85 | ×1.25 |
-| **Overburdened** | ≤ 100% | 7 | 2.4 m | 32 | ×0.70 | ×1.60 |
-| **Immobilised** | > 100% | — no roll, step only | 0.8 m | 40 | ×0.40 | ×2.00 |
+| **Light** | ≤ **30%** | **13** | **5.20 m** | **22** | ×1.00 | ×0.80 |
+| **Medium** | ≤ **70%** | **11** | **4.40 m** | **26** | ×1.00 | ×1.00 |
+| **Heavy** | ≤ **100%** | **5** | **2.60 m** | **34** | ×0.80 | ×1.40 |
+| **Immobilised** (`OVERLOADED`) | > 100% | **0** — no roll, stumble only | **1.10 m** | **40** | ×0.60 | ×2.00 |
+
+~~| **Light** | ≤ 30% | 13 | 5.2 m | 20 | ×1.00 | ×0.80 |~~
+~~| **Medium** | ≤ 55% | 11 | 4.4 m | 22 | ×0.93 | ×1.00 |~~
+~~| **Heavy** | ≤ 80% | 9 | 3.5 m | 25 | ×0.85 | ×1.25 |~~
+~~| **Overburdened** | ≤ 100% | 7 | 2.4 m | 32 | ×0.70 | ×1.60 |~~
+~~| **Immobilised** | > 100% | — no roll, step only | 0.8 m | 40 | ×0.40 | ×2.00 |~~
+
+The fall-damage column is this item's own and is unchanged; every other column is now
+`RI-CMB01` §B's `ES-ROLL/1`, restated here for readability and **not independently settable**.
 
 **The i-frame, roll-distance and stamina-cost columns are provisional and subordinate to
 `corpus/10-combat/`.** If a combat reference item states different frame counts, that item
-wins and these values are amended, not defended. What this item owns and does not concede is
-the **tier structure**: four tiers, at 30/55/80/100, discrete, with no interpolation between
-them. A continuous roll quality is Morrowind leakage into the fight (AR-1).
+wins and these values are amended, not defended. ~~What this item owns and does not concede is
+the **tier structure**: four tiers, at 30/55/80/100~~ **The tier structure is also
+`RI-CMB01`'s, as of the wave-0 ruling above: four tiers at 30/70/100**, discrete, with no
+interpolation between them. A continuous roll quality is Morrowind leakage into the fight
+(AR-1), and that clause is unchanged and still right.
 
 ### 3. Ratio 2 — **BURDEN**: everything you are carrying (Morrowind, outside the fight)
 
@@ -135,7 +180,7 @@ teeth. You cannot liquidate a dungeon in one trip because you cannot carry a dun
 | Root-Speaker | 22 | 22 | 26 | 89.0 | 29.2% | **Light** |
 | The Fence | 20 | 22 | 30 | 86.0 | 34.9% | **Medium** |
 | Sworn Blade | 40 | 26 | 58 | 118.0 | 49.2% | **Medium** |
-| Shell-Warden | 55 | 30 | 126 | 142.5 | 88.4% | **Overburdened** |
+| Shell-Warden | 55 | 30 | 126 | 142.5 | 88.4% | **Heavy** (~~Overburdened~~ — retiered wave 0; 88.4% is Heavy under RI-CMB01's 30/70/100 ladder) |
 
 Read the last row. **The heaviest build in the game fat-rolls, on purpose, and it is still
 viable** — its 924 HP, greatshield stability and poise are the trade for 7 i-frames. The
@@ -147,9 +192,9 @@ costs them Light. Those two facts are the whole tuning target for the 30% breakp
 
 | Situation | Equip Load | Burden |
 |---|---|---|
-| Wearing plate, empty bag | Overburdened → 7 i-frames | Unburdened → normal walking |
+| Wearing plate, empty bag | Heavy → 5 i-frames (retiered wave 0) | Unburdened → normal walking |
 | Wearing robes, bag full of loot | Light → 13 i-frames | Overladen → 0.72× speed, no sprint, easily spotted |
-| Wearing plate, bag full of loot | Overburdened | Overladen |
+| Wearing plate, bag full of loot | Heavy | Overladen |
 | Any of the above, **in combat** | applies | **suppressed entirely** |
 
 The middle row is the interesting one and the reason the split exists: a light-armoured
@@ -182,9 +227,9 @@ instant anything jumps them.
    above 1.00** and that the player is told why in prose, not a red icon.
 6. **The six builds.** Instantiate the §5 loadouts. **Assert every ratio is within 1
    percentage point** and **assert every tier assignment matches exactly**, especially
-   Shell-Warden = Overburdened and Fence = Medium. If the Fence lands on Light, the 30%
+   Shell-Warden = Heavy and Fence = Medium. If the Fence lands on Light, the 30%
    breakpoint has been moved and RI-PRG02's build differentiation is weaker than claimed.
-7. **Shell-Warden viability.** Sim the R6 boss with the Shell-Warden loadout (Overburdened,
+7. **Shell-Warden viability.** Sim the R6 boss with the Shell-Warden loadout (Heavy,
    7 i-frames) 200 times against a competent AI policy. **Assert win rate ≥ 15%** — the
    heaviest legal build must be *hard*, not *impossible*. A 0% win rate means the tier
    penalties are too steep and the heavy branch of the build space is dead.
@@ -192,7 +237,11 @@ instant anything jumps them.
 9. **Subordination check.** Diff §2's i-frame/distance/stamina columns against whatever
    `corpus/10-combat/` states. **If they disagree, this item is amended and the verdict
    records the amendment** — that is a corpus-extension success, not a failure of either
-   item. Only the *tier structure* (four tiers at 30/55/80/100) is defended here.
+   item. ~~Only the *tier structure* (four tiers at 30/55/80/100) is defended here.~~
+   **AMENDED wave 0 (corpus-audit): nothing in §2 is defended here any longer — the tier
+   structure is `RI-CMB01`'s too, four tiers at 30/70/100. This step now asserts the columns
+   MATCH `RI-CMB01` §B exactly, and the previous "exactly four transitions at 0.30, 0.55, 0.80,
+   1.00" assertion is superseded by `RI-CMB01` M5's two cliffs at 30.00 and 70.00.**
 
 ## Scoring
 

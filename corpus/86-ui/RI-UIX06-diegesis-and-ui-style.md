@@ -19,8 +19,10 @@ blind_pair: yes
 > UI rendering quality, and §A is declared "exhaustive and closed: a property not listed is
 > `UNASSIGNED` and the critic MUST file a corpus extension before judging it." Text crispness,
 > DPI scaling and compositing correctness on a UI surface are therefore currently unjudgeable.
-> §C below proposes **F17, F18, F19** and **CC-7** for append to RI-VIS01. Until they are
-> appended, a critic judging UI rendering quality is out of process and its verdict is void.
+> §C below proposes **F17, F18, F19** and **CC-7** for append to RI-VIS01. ~~Until they are
+> appended, a critic judging UI rendering quality is out of process and its verdict is void.~~
+> **APPENDED wave 0 (corpus-audit): F17–F19 are in RI-VIS01 §B and CC-7 is in §C.** A critic
+> judging UI rendering quality is now in process.
 
 ## The bar
 
@@ -440,6 +442,9 @@ overdraw: number                              // M-F19.4
 ```
 plus `setUIVisible` promoted to mandatory-for-UI-items, and the screenshot contract
 (HARNESS.md §6) amended to permit **`deviceScaleFactor: 2`** captures for the UI viewpoint set.
-That amendment is required by F17 and is a genuine change to a contract that currently pins
-`deviceScaleFactor: 1` for commensurability — the resolution is that UI shots form their own
+That amendment is required by F17 and is a genuine change to a contract that ~~currently pins~~
+pinned `deviceScaleFactor: 1` for commensurability — the resolution is that UI shots form their own
 viewpoint set with their own pinned configuration and are never compared against world shots.
+**APPLIED wave 0 (corpus-audit): `HARNESS.md` §6 now carries exactly that split** — a `world`
+set at 1920×1080 DPR 1 (12 poses, unchanged) and a `ui` set at 4 resolutions × DPR 1 and 2, with
+neither admissible as evidence for the other's metrics. FD2 is measurable as of that edit.

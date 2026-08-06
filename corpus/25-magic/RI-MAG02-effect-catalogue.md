@@ -136,6 +136,34 @@ The gold formula is **fitted to RI-PRG05 §2's three published prices** (tier-1 
 no published price and this item supplies them — see the amendment requested in the
 provenance note.
 
+> **AMENDED wave 0 (corpus-audit) — queue B11. The formula degenerates for the teleport
+> spells, and `min_tier` pricing overrides it for them.**
+>
+> `round(3.9 × focus_base^1.75)` prices a spell by its *computed magnitude*. The four S7/S19
+> teleport effects — `mark`, `recall`, `intervention_root`, `intervention_imperial` — have
+> essentially **no magnitude**: `mark` merely writes a position, so the formula prices it at
+> **about 4 gold**, and `recall`'s magnitude scales with distance travelled, so **its shelf
+> price would depend on where the player happens to be standing**. A shop price that moves
+> when the customer walks is not a price.
+>
+> **Ruling: for the four teleport effects, gold price is set by `min_tier`, not by the
+> magnitude formula.** `RI-TRV02` §P1 already prices them this way and asserts the numbers;
+> this item defers to it rather than competing with it:
+>
+> | Spell | `min_tier` | Gold price |
+> |---|---:|---:|
+> | `recall` | 3 | **3,400 g** |
+> | `intervention_root` | 3 | **3,400 g** |
+> | `mark` | 2 | **900 g** |
+> | `intervention_imperial` | 2 | **900 g** |
+>
+> These are `RI-PRG05` §2's published tier-3 and tier-2 spell prices, unmodified — so the
+> exception introduces no new numbers into the economy. **The magnitude formula remains the
+> rule for every other effect**; this is a narrow carve-out for effects whose whole value is
+> *where they take you*, which magnitude cannot express. `RI-TRV02` owns the four spells'
+> prices, gates and detectors; this item owns their effect records, Focus costs and cast class.
+> Recorded so a later reader does not "fix" the inconsistency by re-applying the formula.
+
 **The Focus pool is the only ceiling spellmaking needs.** Maximum reachable cost is
 `focus_max` = 124 (WIL 99, RI-MAG01 §A), so the largest legal spell of each class is:
 
