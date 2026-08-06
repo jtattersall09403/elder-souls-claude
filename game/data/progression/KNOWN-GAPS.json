@@ -32,6 +32,12 @@
       "judged_by": "RI-CHR02 method 5 (§4c minimums: 1,500 greeting lines, 90 race-filtered topics, 60 slavery lines)",
       "what": "W1-07 owns the reaction MATRIX and every term downstream of it. It does not own the dialogue corpus those terms key into; that is W1-11..W1-13. The five channels are specified in race-reactions.json and the greeting key is implemented (playerRaceClass), but the line volume is not shipped by this piece.",
       "removed_by": "the dialogue pieces writing against the shipped key."
+    },
+    {
+      "id": "GAP-W1-07-npc-population",
+      "judged_by": "RI-CHR02 method 4 (population shares within +/-4 points of §2)",
+      "what": "Five NPC records exist in game/data/npcs/** in wave 1. All five carry a reaction_group and the audit asserts that hard; the POPULATION SHARE half of method 4 is not assertable until the settlement rosters exist.",
+      "removed_by": "W1-04 (settlements) and W1-11..13 (dialogue) populating the eight settlements; the audit's npcs section then asserts shares as well as coverage."
     }
   ],
   "declared_corpus_discrepancies": [

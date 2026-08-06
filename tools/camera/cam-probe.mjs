@@ -234,19 +234,29 @@ async function runProbe(name) {
           const sr = d[0] * right[0] + d[1] * right[1] + d[2] * right[2];
           const su = d[0] * up[0] + d[1] * up[1] + d[2] * up[2];
           // pitch-dependent arm scale, re-derived: measured arm / 4.10
-          grid.push({ pitch: r3(c.pitch_deg), yaw: r3(c.yaw_deg), arm: r4(c.arm_len_m), sr: r4(sr), su: r4(su), scale: r4(c.arm_len_m / 4.10) });
+          // The pitch-dependent arm SCALE is a property of the desired length, before
+          // collision. On truly flat ground the +38° pose is always obstructed — the camera
+          // dips to y = 1.55 + 0.10 − 4.10×0.94×sin38° = −0.72 m, i.e. under the floor — so
+          // reading it off `arm_len_m` would be measuring the ground plane, not the law.
+          grid.push({ pitch: r3(c.pitch_deg), yaw: r3(c.yaw_deg), arm: r4(c.arm_len_m),
+            desired: r4(c.arm_desired_m), hit: c.arm_hit, sr: r4(sr), su: r4(su),
+            scale: r4(c.arm_desired_m / 4.10) });
         }
       }
       R.grid = grid;
-      const srs = grid.map((g) => g.sr), sus = grid.map((g) => g.su);
-      chk('shoulder_right_0p42', srs.every((v) => Math.abs(v - 0.42) <= 0.02), `min=${r4(Math.min(...srs))} max=${r4(Math.max(...srs))} over 24 poses`);
+      // The shoulder census is read at UNOBSTRUCTED poses: where the arm has been pulled in,
+      // the camera is deliberately on the cast ray and the offset is scaled with it (§C).
+      const clear = grid.filter((g) => !g.hit);
+      const srs = clear.map((g) => g.sr), sus = clear.map((g) => g.su);
+      chk('shoulder_right_0p42', srs.every((v) => Math.abs(v - 0.42) <= 0.02), `min=${r4(Math.min(...srs))} max=${r4(Math.max(...srs))} over ${clear.length} unobstructed poses of 24`);
       chk('shoulder_up_0p10', sus.every((v) => Math.abs(v - 0.10) <= 0.02), `min=${r4(Math.min(...sus))} max=${r4(Math.max(...sus))}`);
       chk('shoulder_nonzero', Math.min(...srs) > 0.1, 'a centred camera is not a Souls camera');
       const want = (p) => p < 0 ? 1 + (Math.min(1, p / -55)) * (0.82 - 1) : 1 + (Math.min(1, p / 38)) * (0.94 - 1);
       const devs = grid.map((g) => Math.abs(g.scale - want(g.pitch)) / want(g.pitch));
       chk('pitch_arm_scale_2pct', Math.max(...devs) <= 0.02, `max deviation ${(Math.max(...devs) * 100).toFixed(3)}% (bar 2%)`);
       const near = (p) => grid.slice().sort((a, b) => Math.abs(a.pitch - p) - Math.abs(b.pitch - p))[0];
-      R.report.push(`arm at pitch ${near(0).pitch} = ${near(0).arm} m (declared 4.10 at pitch 0)`);
+      R.report.push(`arm at pitch ${near(0).pitch} = ${near(0).arm} m desired ${near(0).desired} (declared 4.10 at pitch 0)`);
+      R.report.push(`obstructed poses (camera below the ground plane at positive pitch): ${grid.filter((g) => g.hit).length} of 24`);
       R.report.push(`arm at pitch ${near(-55).pitch} = ${near(-55).arm} m (4.10 x 0.82 = 3.362 at -55)`);
       const c55 = near(-55);
       chk('derived_height_at_-55', true, `1.55+0.10+4.10*0.82*sin55 = ${r3(1.55 + 0.10 + 4.10 * 0.82 * Math.sin(55 * Math.PI / 180))} m (item §E); measured arm ${c55.arm}`);

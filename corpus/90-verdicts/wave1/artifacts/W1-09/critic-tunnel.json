@@ -1,0 +1,1472 @@
+{
+ "classes": [
+  {
+   "weapon": "dagger",
+   "hitbox_r_m": 0.055,
+   "active_frames": 6,
+   "peak_tip_travel_m": 0.29325,
+   "peak_tip_travel_frame": 17,
+   "per_substep_travel_m_at_4": 0.07331,
+   "substep_travel_in_radii": 1.333,
+   "declared_substep_travel_radii": 1,
+   "pole_radius_that_tunnels_below_m": -0.01834,
+   "pole_006_tunnels": false,
+   "offsets": [
+    {
+     "offset_m": 0,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.07364,
+     "agree": true
+    },
+    {
+     "offset_m": 0.075,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.08922,
+     "agree": true
+    },
+    {
+     "offset_m": 0.15,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.10442,
+     "agree": true
+    },
+    {
+     "offset_m": 0.225,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.10923,
+     "agree": true
+    },
+    {
+     "offset_m": 0.3,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.11508,
+     "agree": true
+    },
+    {
+     "offset_m": 0.375,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.13197,
+     "agree": true
+    },
+    {
+     "offset_m": 0.45,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.16307,
+     "agree": true
+    },
+    {
+     "offset_m": 0.525,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.20527,
+     "agree": true
+    },
+    {
+     "offset_m": 0.6,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.24935,
+     "agree": true
+    },
+    {
+     "offset_m": 0.675,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.29789,
+     "agree": true
+    },
+    {
+     "offset_m": 0.75,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.35291,
+     "agree": true
+    },
+    {
+     "offset_m": 0.825,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.41252,
+     "agree": true
+    },
+    {
+     "offset_m": 0.9,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.47543,
+     "agree": true
+    },
+    {
+     "offset_m": 0.975,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.54074,
+     "agree": true
+    },
+    {
+     "offset_m": 1.05,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.60783,
+     "agree": true
+    },
+    {
+     "offset_m": 1.125,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.67628,
+     "agree": true
+    },
+    {
+     "offset_m": 1.2,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.74577,
+     "agree": true
+    },
+    {
+     "offset_m": 1.275,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.81608,
+     "agree": true
+    },
+    {
+     "offset_m": 1.35,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.88704,
+     "agree": true
+    },
+    {
+     "offset_m": 1.425,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.95796,
+     "agree": true
+    },
+    {
+     "offset_m": 1.5,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.02891,
+     "agree": true
+    },
+    {
+     "offset_m": 1.575,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.09987,
+     "agree": true
+    },
+    {
+     "offset_m": 1.65,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.17083,
+     "agree": true
+    },
+    {
+     "offset_m": 1.725,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.24179,
+     "agree": true
+    }
+   ],
+   "disagreements": []
+  },
+  {
+   "weapon": "straight-sword",
+   "hitbox_r_m": 0.07,
+   "active_frames": 10,
+   "peak_tip_travel_m": 0.61357,
+   "peak_tip_travel_frame": 33,
+   "per_substep_travel_m_at_4": 0.15339,
+   "substep_travel_in_radii": 2.191,
+   "declared_substep_travel_radii": 1,
+   "pole_radius_that_tunnels_below_m": 0.0067,
+   "pole_006_tunnels": false,
+   "offsets": [
+    {
+     "offset_m": 0,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.22821,
+     "agree": true
+    },
+    {
+     "offset_m": 0.075,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.2273,
+     "agree": true
+    },
+    {
+     "offset_m": 0.15,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.2347,
+     "agree": true
+    },
+    {
+     "offset_m": 0.225,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.23204,
+     "agree": true
+    },
+    {
+     "offset_m": 0.3,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.23392,
+     "agree": true
+    },
+    {
+     "offset_m": 0.375,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.23482,
+     "agree": true
+    },
+    {
+     "offset_m": 0.45,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.22847,
+     "agree": true
+    },
+    {
+     "offset_m": 0.525,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19818,
+     "agree": true
+    },
+    {
+     "offset_m": 0.6,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.16802,
+     "agree": true
+    },
+    {
+     "offset_m": 0.675,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.16999,
+     "agree": true
+    },
+    {
+     "offset_m": 0.75,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.16938,
+     "agree": true
+    },
+    {
+     "offset_m": 0.825,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.16858,
+     "agree": true
+    },
+    {
+     "offset_m": 0.9,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.16701,
+     "agree": true
+    },
+    {
+     "offset_m": 0.975,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.168,
+     "agree": true
+    },
+    {
+     "offset_m": 1.05,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.16756,
+     "agree": true
+    },
+    {
+     "offset_m": 1.125,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.1367,
+     "agree": true
+    },
+    {
+     "offset_m": 1.2,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": false,
+     "min_gap_m": -0.08273,
+     "agree": true
+    },
+    {
+     "offset_m": 1.275,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": false,
+     "min_gap_m": -0.02853,
+     "agree": true
+    },
+    {
+     "offset_m": 1.35,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.02559,
+     "agree": true
+    },
+    {
+     "offset_m": 1.425,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.07977,
+     "agree": true
+    },
+    {
+     "offset_m": 1.5,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.13391,
+     "agree": true
+    },
+    {
+     "offset_m": 1.575,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.18809,
+     "agree": true
+    },
+    {
+     "offset_m": 1.65,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.24224,
+     "agree": true
+    },
+    {
+     "offset_m": 1.725,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.2964,
+     "agree": true
+    }
+   ],
+   "disagreements": []
+  },
+  {
+   "weapon": "spear",
+   "hitbox_r_m": 0.06,
+   "active_frames": 8,
+   "peak_tip_travel_m": 0.62131,
+   "peak_tip_travel_frame": 34,
+   "per_substep_travel_m_at_4": 0.15533,
+   "substep_travel_in_radii": 2.589,
+   "declared_substep_travel_radii": 1,
+   "pole_radius_that_tunnels_below_m": 0.01766,
+   "pole_006_tunnels": false,
+   "offsets": [
+    {
+     "offset_m": 0,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.7306,
+     "agree": true
+    },
+    {
+     "offset_m": 0.075,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.75087,
+     "agree": true
+    },
+    {
+     "offset_m": 0.15,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.77032,
+     "agree": true
+    },
+    {
+     "offset_m": 0.225,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.78135,
+     "agree": true
+    },
+    {
+     "offset_m": 0.3,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.79261,
+     "agree": true
+    },
+    {
+     "offset_m": 0.375,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.80409,
+     "agree": true
+    },
+    {
+     "offset_m": 0.45,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.81767,
+     "agree": true
+    },
+    {
+     "offset_m": 0.525,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.83634,
+     "agree": true
+    },
+    {
+     "offset_m": 0.6,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.85989,
+     "agree": true
+    },
+    {
+     "offset_m": 0.675,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.888,
+     "agree": true
+    },
+    {
+     "offset_m": 0.75,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.92034,
+     "agree": true
+    },
+    {
+     "offset_m": 0.825,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.95656,
+     "agree": true
+    },
+    {
+     "offset_m": 0.9,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.99632,
+     "agree": true
+    },
+    {
+     "offset_m": 0.975,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.03866,
+     "agree": true
+    },
+    {
+     "offset_m": 1.05,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.08089,
+     "agree": true
+    },
+    {
+     "offset_m": 1.125,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.12612,
+     "agree": true
+    },
+    {
+     "offset_m": 1.2,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.17403,
+     "agree": true
+    },
+    {
+     "offset_m": 1.275,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.22435,
+     "agree": true
+    },
+    {
+     "offset_m": 1.35,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.27682,
+     "agree": true
+    },
+    {
+     "offset_m": 1.425,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.33122,
+     "agree": true
+    },
+    {
+     "offset_m": 1.5,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.38734,
+     "agree": true
+    },
+    {
+     "offset_m": 1.575,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.44501,
+     "agree": true
+    },
+    {
+     "offset_m": 1.65,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.50406,
+     "agree": true
+    },
+    {
+     "offset_m": 1.725,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 1.56435,
+     "agree": true
+    }
+   ],
+   "disagreements": []
+  },
+  {
+   "weapon": "axe",
+   "hitbox_r_m": 0.09,
+   "active_frames": 12,
+   "peak_tip_travel_m": 0.38108,
+   "peak_tip_travel_frame": 38,
+   "per_substep_travel_m_at_4": 0.09527,
+   "substep_travel_in_radii": 1.059,
+   "declared_substep_travel_radii": 1,
+   "pole_radius_that_tunnels_below_m": -0.04236,
+   "pole_006_tunnels": false,
+   "offsets": [
+    {
+     "offset_m": 0,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.22547,
+     "agree": true
+    },
+    {
+     "offset_m": 0.075,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25959,
+     "agree": true
+    },
+    {
+     "offset_m": 0.15,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.24942,
+     "agree": true
+    },
+    {
+     "offset_m": 0.225,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.24385,
+     "agree": true
+    },
+    {
+     "offset_m": 0.3,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.17399,
+     "agree": true
+    },
+    {
+     "offset_m": 0.375,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.18954,
+     "agree": true
+    },
+    {
+     "offset_m": 0.45,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.1895,
+     "agree": true
+    },
+    {
+     "offset_m": 0.525,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.16898,
+     "agree": true
+    },
+    {
+     "offset_m": 0.6,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.12624,
+     "agree": true
+    },
+    {
+     "offset_m": 0.675,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.05906,
+     "agree": true
+    },
+    {
+     "offset_m": 0.75,
+     "sim_hit": true,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.00812,
+     "agree": false
+    },
+    {
+     "offset_m": 0.825,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.0753,
+     "agree": true
+    },
+    {
+     "offset_m": 0.9,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.14248,
+     "agree": true
+    },
+    {
+     "offset_m": 0.975,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.20965,
+     "agree": true
+    },
+    {
+     "offset_m": 1.05,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.27721,
+     "agree": true
+    },
+    {
+     "offset_m": 1.125,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.34559,
+     "agree": true
+    },
+    {
+     "offset_m": 1.2,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.41451,
+     "agree": true
+    },
+    {
+     "offset_m": 1.275,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.4841,
+     "agree": true
+    },
+    {
+     "offset_m": 1.35,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.55396,
+     "agree": true
+    },
+    {
+     "offset_m": 1.425,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.62389,
+     "agree": true
+    },
+    {
+     "offset_m": 1.5,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.69387,
+     "agree": true
+    },
+    {
+     "offset_m": 1.575,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.76389,
+     "agree": true
+    },
+    {
+     "offset_m": 1.65,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.83394,
+     "agree": true
+    },
+    {
+     "offset_m": 1.725,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.90402,
+     "agree": true
+    }
+   ],
+   "disagreements": [
+    {
+     "offset_m": 0.75,
+     "sim_hit": true,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.00812,
+     "agree": false
+    }
+   ]
+  },
+  {
+   "weapon": "halberd",
+   "hitbox_r_m": 0.085,
+   "active_frames": 14,
+   "peak_tip_travel_m": 0.98505,
+   "peak_tip_travel_frame": 46,
+   "per_substep_travel_m_at_4": 0.24626,
+   "substep_travel_in_radii": 2.897,
+   "declared_substep_travel_radii": 1,
+   "pole_radius_that_tunnels_below_m": 0.03813,
+   "pole_006_tunnels": false,
+   "offsets": [
+    {
+     "offset_m": 0,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.23987,
+     "agree": true
+    },
+    {
+     "offset_m": 0.075,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.23649,
+     "agree": true
+    },
+    {
+     "offset_m": 0.15,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.23307,
+     "agree": true
+    },
+    {
+     "offset_m": 0.225,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.22968,
+     "agree": true
+    },
+    {
+     "offset_m": 0.3,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.22628,
+     "agree": true
+    },
+    {
+     "offset_m": 0.375,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.19823,
+     "agree": true
+    },
+    {
+     "offset_m": 0.45,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.16853,
+     "agree": true
+    },
+    {
+     "offset_m": 0.525,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.13887,
+     "agree": true
+    },
+    {
+     "offset_m": 0.6,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.10925,
+     "agree": true
+    },
+    {
+     "offset_m": 0.675,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.07976,
+     "agree": true
+    },
+    {
+     "offset_m": 0.75,
+     "sim_hit": true,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.02934,
+     "agree": false
+    },
+    {
+     "offset_m": 0.825,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": false,
+     "min_gap_m": -0.02192,
+     "agree": true
+    },
+    {
+     "offset_m": 0.9,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": false,
+     "min_gap_m": -0.07069,
+     "agree": true
+    },
+    {
+     "offset_m": 0.975,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.10891,
+     "agree": true
+    },
+    {
+     "offset_m": 1.05,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.10782,
+     "agree": true
+    },
+    {
+     "offset_m": 1.125,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": false,
+     "min_gap_m": -0.14569,
+     "agree": true
+    },
+    {
+     "offset_m": 1.2,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": false,
+     "min_gap_m": -0.19834,
+     "agree": true
+    },
+    {
+     "offset_m": 1.275,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25011,
+     "agree": true
+    },
+    {
+     "offset_m": 1.35,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25169,
+     "agree": true
+    },
+    {
+     "offset_m": 1.425,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25147,
+     "agree": true
+    },
+    {
+     "offset_m": 1.5,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25097,
+     "agree": true
+    },
+    {
+     "offset_m": 1.575,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.24629,
+     "agree": true
+    },
+    {
+     "offset_m": 1.65,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.231,
+     "agree": true
+    },
+    {
+     "offset_m": 1.725,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.21328,
+     "agree": true
+    }
+   ],
+   "disagreements": [
+    {
+     "offset_m": 0.75,
+     "sim_hit": true,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.02934,
+     "agree": false
+    }
+   ]
+  },
+  {
+   "weapon": "greatsword",
+   "hitbox_r_m": 0.095,
+   "active_frames": 16,
+   "peak_tip_travel_m": 0.50665,
+   "peak_tip_travel_frame": 57,
+   "per_substep_travel_m_at_4": 0.12666,
+   "substep_travel_in_radii": 1.333,
+   "declared_substep_travel_radii": 1,
+   "pole_radius_that_tunnels_below_m": -0.03167,
+   "pole_006_tunnels": false,
+   "offsets": [
+    {
+     "offset_m": 0,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25433,
+     "agree": true
+    },
+    {
+     "offset_m": 0.075,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25391,
+     "agree": true
+    },
+    {
+     "offset_m": 0.15,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25473,
+     "agree": true
+    },
+    {
+     "offset_m": 0.225,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25435,
+     "agree": true
+    },
+    {
+     "offset_m": 0.3,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25491,
+     "agree": true
+    },
+    {
+     "offset_m": 0.375,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25408,
+     "agree": true
+    },
+    {
+     "offset_m": 0.45,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25393,
+     "agree": true
+    },
+    {
+     "offset_m": 0.525,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25953,
+     "agree": true
+    },
+    {
+     "offset_m": 0.6,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25976,
+     "agree": true
+    },
+    {
+     "offset_m": 0.675,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25945,
+     "agree": true
+    },
+    {
+     "offset_m": 0.75,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25856,
+     "agree": true
+    },
+    {
+     "offset_m": 0.825,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25771,
+     "agree": true
+    },
+    {
+     "offset_m": 0.9,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.23378,
+     "agree": true
+    },
+    {
+     "offset_m": 0.975,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.21282,
+     "agree": true
+    },
+    {
+     "offset_m": 1.05,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19473,
+     "agree": true
+    },
+    {
+     "offset_m": 1.125,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19439,
+     "agree": true
+    },
+    {
+     "offset_m": 1.2,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19393,
+     "agree": true
+    },
+    {
+     "offset_m": 1.275,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19479,
+     "agree": true
+    },
+    {
+     "offset_m": 1.35,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19446,
+     "agree": true
+    },
+    {
+     "offset_m": 1.425,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19367,
+     "agree": true
+    },
+    {
+     "offset_m": 1.5,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19457,
+     "agree": true
+    },
+    {
+     "offset_m": 1.575,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19406,
+     "agree": true
+    },
+    {
+     "offset_m": 1.65,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19313,
+     "agree": true
+    },
+    {
+     "offset_m": 1.725,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19419,
+     "agree": true
+    }
+   ],
+   "disagreements": []
+  },
+  {
+   "weapon": "ultra-greatsword",
+   "hitbox_r_m": 0.11,
+   "active_frames": 20,
+   "peak_tip_travel_m": 0.74071,
+   "peak_tip_travel_frame": 67,
+   "per_substep_travel_m_at_4": 0.18518,
+   "substep_travel_in_radii": 1.683,
+   "declared_substep_travel_radii": 1,
+   "pole_radius_that_tunnels_below_m": -0.01741,
+   "pole_006_tunnels": false,
+   "offsets": [
+    {
+     "offset_m": 0,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.2045,
+     "agree": true
+    },
+    {
+     "offset_m": 0.075,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.18545,
+     "agree": true
+    },
+    {
+     "offset_m": 0.15,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.18947,
+     "agree": true
+    },
+    {
+     "offset_m": 0.225,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.19349,
+     "agree": true
+    },
+    {
+     "offset_m": 0.3,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.20761,
+     "agree": true
+    },
+    {
+     "offset_m": 0.375,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.22211,
+     "agree": true
+    },
+    {
+     "offset_m": 0.45,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.24988,
+     "agree": true
+    },
+    {
+     "offset_m": 0.525,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.27849,
+     "agree": true
+    },
+    {
+     "offset_m": 0.6,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.27899,
+     "agree": true
+    },
+    {
+     "offset_m": 0.675,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.27975,
+     "agree": true
+    },
+    {
+     "offset_m": 0.75,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.25252,
+     "agree": true
+    },
+    {
+     "offset_m": 0.825,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.22252,
+     "agree": true
+    },
+    {
+     "offset_m": 0.9,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.22386,
+     "agree": true
+    },
+    {
+     "offset_m": 0.975,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.22367,
+     "agree": true
+    },
+    {
+     "offset_m": 1.05,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.224,
+     "agree": true
+    },
+    {
+     "offset_m": 1.125,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.18895,
+     "agree": true
+    },
+    {
+     "offset_m": 1.2,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.14718,
+     "agree": true
+    },
+    {
+     "offset_m": 1.275,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.10343,
+     "agree": true
+    },
+    {
+     "offset_m": 1.35,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.05969,
+     "agree": true
+    },
+    {
+     "offset_m": 1.425,
+     "sim_hit": true,
+     "analytic_hit": true,
+     "analytic_substep1_hit": true,
+     "min_gap_m": -0.01594,
+     "agree": true
+    },
+    {
+     "offset_m": 1.5,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.02781,
+     "agree": true
+    },
+    {
+     "offset_m": 1.575,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.07155,
+     "agree": true
+    },
+    {
+     "offset_m": 1.65,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.11529,
+     "agree": true
+    },
+    {
+     "offset_m": 1.725,
+     "sim_hit": false,
+     "analytic_hit": false,
+     "analytic_substep1_hit": false,
+     "min_gap_m": 0.15902,
+     "agree": true
+    }
+   ],
+   "disagreements": []
+  }
+ ],
+ "note": ""
+}

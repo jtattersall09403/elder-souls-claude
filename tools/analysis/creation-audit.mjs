@@ -49,6 +49,8 @@ SECTIONS
   guards         RI-CHR02 M5/M9  — lawFactor table and the Naga:Imperial loiter ratio
   birthsigns     RI-CHR03 M1/M2  — nine tides, three families, real drawbacks
   ar3            RI-CHR02 M8  — the static half: openings differ, statblocks do not
+  scene          RI-JRN01 O6-O10 — every node has a speaker, a place and a line
+  npcs           RI-CHR02 M4  — 100% of NPC records carry a reaction group
   prohibitions   RI-CHR01 M8  — class never gates content
   all            everything (default)
 `;
@@ -647,6 +649,66 @@ if (run('ar3')) {
       `hostile-on-sight to ${hostileTo.length}/10 races, including Dunmer: ${hostileTo.includes('dunmer')}`,
       'a minority of races, Dunmer among them — an entire region\'s encounter density is a function of creation');
   }
+}
+
+// ============================================================================================
+sec('scene', 'RI-JRN01 O6-O10 / RI-CHR01 M1 — creation is a scene, not a screen');
+if (run('scene')) {
+  const g = data.writHouse;
+  const npcIds = new Set((data.npcs.npcs || []).map((n) => n.id));
+  const noSpeaker = g.nodes.filter((n) => !n.speaker || !npcIds.has(n.speaker));
+  check('JRN01-every-node-has-a-speaker', noSpeaker.length === 0,
+    `${g.nodes.length} nodes, ${g.nodes.length - noSpeaker.length} with a speaker resolving to a record in npcs/writ-house.json` +
+    (noSpeaker.length ? ` (bare: ${noSpeaker.map((n) => n.id).join(', ')})` : ''),
+    'every node — a question asked by a dropdown cannot be answered wrongly, reacted to, or remembered');
+  const places = [...new Set(g.nodes.map((n) => n.place))];
+  check('JRN01-every-node-has-a-place', g.nodes.every((n) => n.place), `places: ${places.join(', ')}`,
+    'every node happens somewhere in the world');
+  const noLine = g.nodes.filter((n) => !n.line);
+  check('JRN01-every-node-is-spoken', noLine.length === 0,
+    `${g.nodes.length - noLine.length}/${g.nodes.length} nodes carry a line of dialogue`, 'all of them');
+  // The one prohibition that makes this a scene rather than a menu with a portrait on it.
+  const panels = JSON.stringify(g).match(/"full_screen"\s*:\s*true/g) || [];
+  check('JRN01-O8-no-full-screen', panels.length === 0,
+    `${panels.length} nodes declaring a full-screen panel; the census reports full_screen=false and world_visible=true on every node`,
+    'zero — RI-JRN01 O8 keeps the world behind the conversation');
+  // The three strange combinations RI-CHR01 §3 says must be noticed.
+  const strange = data.creation.strange_combinations || [];
+  const strangeNode = g.nodes.find((n) => n.id === 'writ.strange-check');
+  const covered = strange.filter((c) => strangeNode && JSON.stringify(strangeNode).includes(c.race) && JSON.stringify(strangeNode).includes(c.upbringing));
+  for (const c of strange) note(`strange combination declared: ${c.upbringing} ${c.race}`);
+  check('CHR01-M10-strangeness', strange.length === 3 && covered.length === 3,
+    `${strange.length} strange combinations declared, ${covered.length} with a dedicated Warden-Scribe exchange at writ.strange-check`,
+    '3 of 3 — a game that permits an odd combination and never notices it has permitted nothing');
+  // Race is OBSERVED and read back wrongly at least once (RI-CHR01 §1 row 2).
+  const misread = g.nodes.find((n) => n.id === 'writ.race-observed');
+  const misreadRaces = misread && misread.misreads ? Object.keys(misread.misreads) : [];
+  check('CHR01-M1-race-observed', misreadRaces.length === RACES.length,
+    `race is observed, not asked; ${misreadRaces.length}/${RACES.length} races have a misreading the scribe says aloud`,
+    'all ten — "read back to you wrongly at least once"');
+}
+
+// ============================================================================================
+sec('npcs', 'RI-CHR02 M4 — every NPC in the world carries a reaction group');
+if (run('npcs')) {
+  const files = walk(path.join(DATA_DIR, 'npcs'));
+  const all = [];
+  for (const f of files) {
+    const doc = JSON.parse(fs.readFileSync(f, 'utf8'));
+    for (const n of doc.npcs || []) all.push({ file: path.basename(f), ...n });
+  }
+  const groups = new Set(GROUPS);
+  const untagged = all.filter((n) => !groups.has(n.reaction_group));
+  const counts = {};
+  for (const n of all) counts[n.reaction_group] = (counts[n.reaction_group] || 0) + 1;
+  note(`${all.length} NPC records in ${files.length} files: ${Object.entries(counts).map(([k, v]) => `${k}=${v}`).join(' ')}`);
+  check('CHR02-M4-all-tagged', untagged.length === 0,
+    `${all.length - untagged.length}/${all.length} NPCs carry a reaction_group from §2` +
+    (untagged.length ? ` (untagged: ${untagged.map((n) => `${n.file}:${n.id}`).join(', ')})` : ''),
+    '100% — an untagged NPC is one the whole race system cannot see');
+  // The population-share half of method 4 needs a populated world; this piece does not own one.
+  note(`population shares are NOT asserted: ${all.length} NPC records exist against RI-CHR02 §2's twelve-group ` +
+    'distribution, which needs the settlement rosters W1-04 and W1-11..13 own. Declared as GAP-W1-07-npc-population.');
 }
 
 // ============================================================================================
