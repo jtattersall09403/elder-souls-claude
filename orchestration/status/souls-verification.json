@@ -2,12 +2,15 @@
   "task_id": "souls-verification",
   "brief": "orchestration/briefs/souls-verification.md",
   "started": "wave-post-network-unlock",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/10-combat/data/souls-frame-data.json",
     "corpus/00-doctrine/PROVENANCE-UPGRADE-02-SOULS.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/10-combat/data/souls-frame-data.json",
+    "corpus/00-doctrine/PROVENANCE-UPGRADE-02-SOULS.md"
+  ],
   "findings": [
     "RI-CMB01 is structurally honest: \u00a7A holds upstream DS1/DS3 numbers as community-data (medium), \u00a7B is an explicitly CONSTRUCTED model 'ES-ROLL/1' that openly states it blends DS3's 30%/70% breakpoints with DS1's i-frame stinginess. The blend is DECLARED, not silent. Verification target = \u00a7A cells only.",
     "RI-CMB01 already self-corrects the commissioning brief: says DS1 breakpoints are 25%/50%, not 30%/70%. Needs external check.",
@@ -31,8 +34,15 @@
     "RI-PRG01 formula-band note: Fextralife DS1 says the cubic 'only applies for level 12 and beyond' while RI-PRG01 says 13+. Both piecewise formulas evaluate to 847 at n=12, so there is no numeric conflict - the boundary statement is cosmetic.",
     "DS3 poise (https://darksouls3.wiki.fextralife.com/Poise): hidden poise health = 100 for all player-model characters; the Poise stat reduces incoming poise DAMAGE by a percentage equal to Poise; max achievable Poise 50.15-67.22. CRUCIALLY: 'you are only able to resist stagger during active poise [hyperarmour], and at any other time you can be staggered regardless of how much poise health you have left.'",
     "Elden Ring poise (https://eldenring.wiki.fextralife.com/Poise): poise HP = visible poise stat; stagger at 0; poise instantly resets to max after a stagger; player poise does NOT regenerate over time, it fully resets after 30 s without a hit; overflow poise damage does not carry to the next bar.",
-    "FINDING: RI-CMB05 \u00a7A models an ALWAYS-ON poise pool that depletes and refills - that is the Elden Ring / DS1 model, NOT DS3's. Its \u00a7C hyperarmour-only-on-heavies is the DS3 model. Its provenance note cites ONLY DS3 sources and calls the model 'the Dark Souls III model'. The combined model does exist - in Elden Ring - so the mechanics are coherent, but the attribution is wrong. Amendment: cite Elden Ring."
+    "FINDING: RI-CMB05 \u00a7A models an ALWAYS-ON poise pool that depletes and refills - that is the Elden Ring / DS1 model, NOT DS3's. Its \u00a7C hyperarmour-only-on-heavies is the DS3 model. Its provenance note cites ONLY DS3 sources and calls the model 'the Dark Souls III model'. The combined model does exist - in Elden Ring - so the mechanics are coherent, but the attribution is wrong. Amendment: cite Elden Ring.",
+    "DS1 Estus: FLAT HP 300(+0) -> 800(+7); charge count is a property of the BONFIRE (5/10/15/20 via kindling), not the flask. DS3 Estus: FLAT HP 250(+0) -> 600(+10); start 3; max 15 shared with Ashen; refills also from a hidden soul gauge. Neither game heals a PERCENTAGE of max HP - RI-CMB08's %-of-max-HP curve matches no Souls game (it is declared constructed, and it is a good construction for a game whose max HP grows, but the corpus should say so).",
+    "RI-CMB08 charge model is a 3-way blend: '5 at start' = DS1's unkindled bonfire; 'max 15' = DS3's flask cap; '+0..+10' = DS3's Undead Bone Shard levels (DS1 caps at +7). Declared constructed; blend is undeclared.",
+    "RI-CAM02 \u00a7Provenance ALREADY records the camera auto-rotate correction correctly and cites https://www.nexusmods.com/darksouls3/mods/2028 plus Elden Ring's 'Camera Auto Rotation' setting. CONFIRMED, no amendment needed.",
+    "DS3 Parry page: partial-parry window before/after active frames (block-without-stagger); two-handed UGS/Greataxe/Great Hammer R1+R2 are UNPARRYABLE; whips unparryable; fist weapons have post-parry instability frames. Our RI-CMB05 makes everything parryable and has no partial-parry concept. No parry FRAME data was citable.",
+    "SEVERE INTERNAL CONTRADICTION: RI-PRG07 \u00a72 and RI-CMB01 \u00a7B define DIFFERENT equip-load systems. PRG07: 5 tiers at 30/55/80/100, iframes 13/11/9/7, roll dist 5.2/4.4/3.5/2.4/0.8, stamina 20/22/25/32/40, regen 1.0/0.93/0.85/0.70/0.40. CMB01: 4 tiers at 30/70/100, iframes 13/11/5/0, dist 5.20/4.40/2.60/1.10, stamina 22/26/34/40, regen 1.0/1.0/0.80/0.60. PRG07's escape clause cedes the numeric columns but explicitly refuses to concede the TIER STRUCTURE - which is the thing in dispute. Their method scripts fail each other: CMB01 M5 demands cliffs only at 30.00/70.00; PRG07 method 4 asserts exactly four transitions at 0.30/0.55/0.80/1.00.",
+    "RI-PRG07 is the ONLY equip-load table in the corpus that states its framerate ('I-frames @60 fps').",
+    "Both deliverables written. 64 figures checked: 39 confirmed, 9 needs-amendment, 6 contradicted, 10 unverifiable, plus 1 corpus-wide unit finding and 4 internal contradictions."
   ],
-  "next_step": "verify estus (DS1/DS3/ER charges, upgrade levels, heal amounts, drink frames); lock-on camera auto-rotate; parry/backstab frames; then WRITE deliverables",
-  "notes_for_successor": "Just started. Network is unrestricted; verify before recalling."
+  "next_step": "done",
+  "notes_for_successor": "Highest-value remaining target: github.com/soulsmods/Paramdex (extracted EquipParamWeapon/AtkParam/BehaviorParam) to check RI-CMB02 attack frame shape claims and get real parry/backstab frames. Access notes: fandom blocks curl/WebFetch but its api.php?action=parse&prop=wikitext works; fextralife serves curl with a desktop UA but 403s WebFetch; reddit JSON 403s; wikidot is blocked by the host allowlist."
 }

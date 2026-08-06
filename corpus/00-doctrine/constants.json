@@ -1,0 +1,205 @@
+{
+  "$comment": "SHARED-CONSTANT REGISTRY. Created by the corpus-audit agent, wave 0, to close BAR-CRITIQUE-01 G7 and W4. RULE: a number used by more than one reference item has EXACTLY ONE owning item. Every other item that uses it CITES it and may not restate a different value. A second definition of an owned constant is a corpus defect, reported by tools/corpus-index.mjs --check under the constants rule of RI-MTH05. Where an item's number deliberately differs from the owner's, it is recorded in `deliberate_divergences` below and is NOT a defect. Append-only, like subsystems.json.",
+  "version": 1,
+  "created": "wave-0",
+  "created_by": "corpus-audit",
+  "report": "corpus/00-doctrine/CORPUS-COHERENCE-01.md",
+
+  "how_to_use": {
+    "adding_a_constant": "If your item states a number another item will need, register it here with your item as `owner` before you finish. If the number already exists with a different owner, do not restate it - cite the owner.",
+    "consuming_a_constant": "Name the owning item inline, e.g. `walk speed 2.0 m/s (RI-WLD01, seam S17)`. Never re-derive.",
+    "changing_a_constant": "Only the owner may change the value. When it changes, every item in `consumers` must be re-derived, not re-argued.",
+    "diverging_deliberately": "Add an entry to `deliberate_divergences` naming the item, the value, and why. An unrecorded divergence is a defect; a recorded one is a design decision."
+  },
+
+  "constants": [
+    {
+      "id": "world.walk_speed_mps",
+      "value": 2.0,
+      "unit": "m/s",
+      "owner": "RI-WLD01",
+      "owner_file": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
+      "also_fixed_by": "ARBITRATION.md seam S17 - walk speed may not be lowered to inflate traversal time",
+      "derivation": "Morrowind base human/Dunmer at Speed 40 = 140 units/s x 0.014319 m/unit = 2.005 m/s. community-data.",
+      "consumers": [
+        "RI-AI07 (traversal minute)",
+        "RI-WLD02 (D1 TTNIT, M6 scripted walk)",
+        "RI-STL01 (sneak speed stated as a fraction of walk)",
+        "RI-MAG02 (levitation speed comparison)",
+        "RI-CAM02 (speed-band table)",
+        "RI-TRV01 (route times)",
+        "RI-CRM01 (guard response times - see deliberate_divergences)"
+      ],
+      "collision_resolved": "RI-AI07 formerly defined its own 3.4 m/s. Resolved wave 0: see CORPUS-COHERENCE-01 section 1."
+    },
+    {
+      "id": "world.jog_speed_mps",
+      "value": 3.2,
+      "unit": "m/s",
+      "owner": "RI-WLD01",
+      "note": "Default locomotion, no stamina drain.",
+      "consumers": ["RI-WLD01 M-jog cross-check", "RI-CRM01 (guard run - see deliberate_divergences)"]
+    },
+    {
+      "id": "world.sprint_speed_mps",
+      "value": 5.0,
+      "unit": "m/s",
+      "owner": "RI-WLD01",
+      "note": "Costs stamina (RI-CMB03).",
+      "consumers": ["RI-CMB03", "RI-CAM02"]
+    },
+    {
+      "id": "world.swim_speed_mps",
+      "value": 1.1,
+      "unit": "m/s",
+      "owner": "RI-WLD01",
+      "consumers": ["RI-WLD08", "RI-TRV01"]
+    },
+    {
+      "id": "world.tide_wade_speed_mps",
+      "value": 1.3,
+      "unit": "m/s",
+      "owner": "RI-WLD01",
+      "consumers": ["RI-WLD08", "RI-TRV01"]
+    },
+    {
+      "id": "combat.traversal_minute_m",
+      "value": 120,
+      "unit": "m per traversal minute (TM)",
+      "owner": "RI-AI07",
+      "owner_file": "corpus/10-combat/RI-AI07-encounter-composition.md",
+      "derivation": "world.walk_speed_mps x 60 s. DERIVED - not independently settable.",
+      "superseded_value": 204,
+      "superseded_reason": "Was derived from a private 3.4 m/s walk speed that no item owned and that seam S17 contradicts. Amended wave 0; RI-AI07 section H carries the full re-derivation. Physical densities unchanged.",
+      "consumers": ["RI-AI07 sections C/D/E/G and M1", "RI-WLD02 (already computed at 120 m/min)", "RI-AI06 (runback, quoted in seconds - unaffected)"]
+    },
+    {
+      "id": "world.timescale",
+      "value": 20,
+      "unit": "game minutes per real minute",
+      "owner": "RI-WLD01",
+      "note": "Full day = 72 real minutes.",
+      "consumers": ["RI-TRV01 (route game-time)", "RI-WLD08", "RI-PRG04 (clock cost)", "RI-CRM01 (jail terms)"]
+    },
+    {
+      "id": "world.trunk_road_m",
+      "value": 25331,
+      "unit": "m",
+      "owner": "RI-WLD01",
+      "note": "10 legs, one-way. 211.1 min at walk. Full road+track network target >= 34,000 m.",
+      "consumers": ["RI-WLD02 (M6 scripted walk, 50.7 km both directions)", "RI-TRV01", "RI-PRG06 section 7 (enemy census)"]
+    },
+    {
+      "id": "world.walkable_land_km2",
+      "value": 14.5,
+      "unit": "km^2",
+      "owner": "RI-WLD01",
+      "consumers": ["RI-WLD02 (POI density per km^2)", "RI-WLD09"]
+    },
+    {
+      "id": "world.crossing_minutes",
+      "value": 79,
+      "unit": "minutes, walking, longest settlement-to-settlement road path (Thorn to Soulrest)",
+      "owner": "RI-WLD01",
+      "also_fixed_by": "ARBITRATION.md seam S17 - the hour comes from distance, never from slow walking",
+      "consumers": ["RI-WLD02", "RI-TRV01", "RI-JRN07"]
+    },
+    {
+      "id": "world.dungeon_census.loops",
+      "value": 8,
+      "unit": "Souls-loop dungeons",
+      "owner": "RI-WLD07",
+      "also_fixed_by": "ARBITRATION.md seam S16 (dungeon census)",
+      "note": "30 strata, 18 shortcuts, 358 enemies, ~2.5 h first-clear content. Minimum per loop: 3 strata, 2 shortcuts, 1 boss, >=25 enemies.",
+      "consumers": ["RI-AI07 (bonfire loops)", "RI-TRV02 (D2)", "RI-WLD02 (D10)", "RI-PRG06 section 7"]
+    },
+    {
+      "id": "world.dungeon_census.caves",
+      "value": 82,
+      "unit": "Morrowind-style small interiors",
+      "owner": "RI-WLD07",
+      "also_fixed_by": "ARBITRATION.md seam S16",
+      "note": "30 root-hollows/caves, 20 egg-mines, 16 xanmeer chambers, 10 dens, 6 grottoes. No bonfires, no shortcuts, no bosses.",
+      "consumers": ["RI-TRV02", "RI-WLD02", "RI-PRG06 section 7"]
+    },
+    {
+      "id": "world.interior_census.total",
+      "value": 250,
+      "unit": "interiors",
+      "owner": "RI-WLD07",
+      "note": "8 loops + 82 caves + 160 settlement interiors (RI-WLD03).",
+      "consumers": ["RI-WLD02 (Tier A allocation = 250)", "RI-WLD03"]
+    },
+    {
+      "id": "world.enemy_census",
+      "value": 1230,
+      "band": [891, 1569],
+      "unit": "hand-placed hostile instances",
+      "owner": "RI-WLD07",
+      "derivation": "358 (RI-WLD07 section 2, exact) + ~491 (RI-WLD07 section 3 midpoints over the 82 interiors) + ~381 (RI-WLD02 D9 0.7-1.2 groups/min over world.trunk_road_m at RI-AI07's mean 1.9 enemies/encounter).",
+      "collision_resolved": "RI-PRG06 stated 576 for the whole game. Resolved wave 0: the world items own the census, RI-PRG06 owns the soul budget, joined by a normalisation rule. See RI-PRG06 section 7 and CORPUS-COHERENCE-01 section 2.",
+      "consumers": ["RI-PRG06 (rescales per-archetype soul values by 576/N)", "RI-PRG03 (kill-count budget)", "RI-WLD02 D9/D10"]
+    },
+    {
+      "id": "progression.total_souls_first_clear",
+      "value": 1124285,
+      "unit": "souls, 100% clear of the six regions",
+      "owner": "RI-PRG06",
+      "note": "THE CONTRACT. L93 at 100% clear, L82 typical, over 20.0 h. Invariant under the enemy-census amendment; per-archetype values are the free variable, not this.",
+      "consumers": ["RI-PRG01 (curve)", "RI-PRG04 (death/retention model, section 7)"]
+    },
+    {
+      "id": "progression.roster_derivation_n",
+      "value": 576,
+      "unit": "enemies",
+      "owner": "RI-PRG06",
+      "note": "The N at which RI-PRG06 section 3's per-archetype decomposition was derived, and a FLOOR on hand-placed enemies. Not the world census - see world.enemy_census. Shipping values are scaled by 576/N_shipped per region.",
+      "consumers": ["RI-PRG06 section 3"]
+    },
+    {
+      "id": "combat.framerate_hz",
+      "value": 60,
+      "unit": "Hz",
+      "owner": "RI-CMB02",
+      "note": "Every frame count in the corpus is at 60 fps (ARBITRATION section 1, I-frame accounting).",
+      "consumers": ["all combat.* items", "RI-WPN01..06", "RI-MAG01", "RI-CAM01/02", "RI-PLT01"]
+    },
+    {
+      "id": "combat.min_startup_frames",
+      "value": 6,
+      "unit": "frames",
+      "owner": "RI-CMB02",
+      "note": "Section E floor on any player attack. Amended wave 0 to state that section C's contextual multipliers CLAMP to it rather than pass through it - see CORPUS-COHERENCE-01 section 4.",
+      "consumers": ["RI-WPN01", "RI-WPN04", "RI-MAG01"]
+    },
+    {
+      "id": "dialogue.corpus_scope",
+      "value": "full-vendored-file",
+      "unit": "scope selector",
+      "owner": "RI-DLG02",
+      "note": "Ruled wave 0: the canonical Morrowind dialogue reference population is the FULL vendored file - 28,050 distinct texts / 1,869,218 words - not the 17,298 / 504,896 filtered subset. See CORPUS-COHERENCE-01 section 3.",
+      "consumers": ["RI-DLG02 (per-settlement word targets)", "RI-DLG01", "RI-DLG07", "corpus/40-dialogue/data/README.md"]
+    }
+  ],
+
+  "deliberate_divergences": [
+    {
+      "item": "RI-STL01",
+      "constant": "world.walk_speed_mps",
+      "value": 0.85,
+      "why": "Sneak locomotion, deliberately 42.5% of walk. Not a competing definition of walk speed; RI-STL01 cites S17 correctly. KEPT."
+    },
+    {
+      "item": "RI-CRM01",
+      "constant": "world.jog_speed_mps",
+      "value": 3.4,
+      "why": "Guard pursuit speed, stated as 3.4 m/s against RI-WLD01's jog of 3.2 m/s. Found by this audit; not in the queue. A 6% divergence with no stated reason. KEPT as a divergence rather than silently retuned - guards may legitimately outrun the player's jog - but now recorded so a later reader does not treat it as the walk-speed collision returning. RI-CRM01's derived 6-90 s guard response window is unchanged; at 3.2 m/s its ceiling would be 96 s."
+    },
+    {
+      "item": "RI-MAG02",
+      "constant": "world.walk_speed_mps",
+      "value": 0.8,
+      "why": "Levitation climb rate, deliberately slower than walk so levitation is never a shortcut across flat ground (S17-compatible). KEPT."
+    }
+  ]
+}

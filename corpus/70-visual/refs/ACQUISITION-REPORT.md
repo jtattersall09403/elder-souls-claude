@@ -145,7 +145,7 @@ by eye on contact sheets of all 89.** **V2 (no distant land) assessed per image*
 show terrain beyond the fog wall and are recorded `engine: "openmw-distant-land"`, which §7 says
 is usable for silhouette and palette but not composition or draw distance. **V3, V4 and V6 cannot
 be assessed at 320×320 after AVIF compression and are recorded as `null`, not as `true`.**
-Therefore `vanilla_confidence: "medium"` on all 73, never `"high"`.
+Therefore `vanilla_confidence: "medium"` on all 89, never `"high"`.
 
 > **Judgement call the reviewer should check.** A literal reading of §7 ("If you cannot confirm
 > all seven … place the file in `refs/morrowind/unconfirmed/`") would put all 89 in
@@ -487,3 +487,136 @@ Not met. Five of six `modern/` folders and both of `context/` and `video/` are s
 explains why continuing to search from this container will not change that. Stopping here and
 reporting accurately is the correct outcome per §11 rung 5 and per the brief's closing
 instruction.
+
+---
+
+## §13 Revision 2 addendum (2026-08-06, successor agent)
+
+Revision 1 was written and the agent was killed by a usage limit. A successor resumed from
+`orchestration/status/image-acquisition.json`. This section records what changed. **Everything
+above is revision 1's text with only the counts and the REF-A13/A15/A18/A19 rows corrected; no
+judgement of revision 1 was overturned.**
+
+### §13.1 Three REF-A slots filled — 73 → 89 Morrowind images
+
+`dehero/mwscr` was re-cloned (70 MB, deleted immediately after extraction) and searched again
+with different vocabulary. Sixteen further files were placed and verified by eye on PIL contact
+sheets:
+
+| Slot | n | What was searched that revision 1 did not |
+|---|---|---|
+| **REF-A13** — armour and clothing | 5 | `guard`, `ordinator`, `guardess`, `armory` — the *wearer*, not the armour. See the struck-through paragraph in §4. |
+| **REF-A18** — dusk / night exterior | 5 | `night`, `dusk`, `moon`, `masser`, `star`, `sunset`, `evening`. Revision 1 did not attempt A18 or A19 at all; both are late additions to the request's §5e table and were not in the slot list it worked from. |
+| **REF-A19** — stilted / waterside settlement | 5 | `hla-oad`, `gnaar-mok`, `vos`, `seyda`, `dock`, `pier`, `shack`, `stilt`. |
+| REF-A15 — Daedric signage | +1 | The Gnaar Mok signboard: large red Daedric characters filling a third of the frame. The best legible Daedric script in the source, and it replaces the one A15 candidate that was rejected for subject size. |
+
+All sixteen carry the same provenance profile as the other 73: `provenance_chain:
+"downscaled-preview"`, `pixel_metrics_valid: false`, `corroboration: "one-host"`,
+`vanilla_confidence: "medium"`, V3/V4/V6 `null`. **Every caveat in §3, §8 and §11 applies to them
+unchanged.**
+
+Two of the sixteen (`REF-A13__…high-ordinator-surveying-godsreach-at-night`,
+`REF-A13__…going-out-of-mournhold-armory`, and `REF-A18__…masser-over-the-mournhold-temple` had
+it been taken) are set in **Mournhold**, which is *Tribunal* expansion content rather than base
+2002 Vvardenfell. It is official Bethesda content, so §7 passes — but if the art-direction spec
+means Vvardenfell specifically, those two should be swapped. **Flagged rather than decided.**
+
+**REF-A12 (the UI) remains the single unfilled Morrowind slot, and it is permanently unfillable
+from this source.** `mwscr`'s stated editorial policy is "No interface": every one of ~1,600 files
+in it was captured with the HUD and menus off, by design. There is no inventory, journal, dialogue
+list or map anywhere in the repository. **A realistic version, better than revision 1's
+suggestion:** Morrowind's UI is recoverable *exactly* from OpenMW's `resources/mygui/` layout XML,
+which is clonable from this container. That gives real widget geometry rather than a photograph of
+it, which is what a UI transposition actually needs. `RI-UIX*` should cite those layout files.
+
+### §13.2 The finding that matters more than the images — the tool does not compute RI-VIS03
+
+Revision 1's §11.3 table noted that the harness metric names differ from RI-VIS03's. On
+re-reading `tools/metrics/image-metrics.mjs` line by line, **the divergence is larger than that
+table implies, and in three places the numbers are not comparable at all.**
+
+**(a) There is no `FG_MASK`.** Every RI-VIS03 band is computed over `FG_MASK` = NOT sky.
+`image-metrics.mjs` masks nothing. `mean_Y`, `C_global`, `ED_1` and both flat fractions are
+whole-frame, so all four are contaminated by however much sky the frame contains — and by a
+different amount per frame, which is worse than a constant bias.
+
+**(b) The FFT runs on a 256×256 downscale of the whole frame, not a native 1024² centre crop.**
+`radialSpectrum(Y, w, h, 256)` calls `resampleSquare(Y, w, h, 256)` first. A 2560×1440 frame is
+box-averaged down by a factor of ten before the transform. **Everything above 256 cycles — which
+is the entire range M5 was designed to interrogate — is destroyed before the measurement
+begins.** M5 exists to measure texture resolution and aliasing; as implemented it measures the
+box filter. It is also therefore **resolution-dependent**, so a 320px Morrowind preview and a
+1440p Witcher 3 frame are not on the same scale even in principle.
+
+This is the mechanical explanation for revision 1's amendment 5 — the observation that the 2002
+population measured "better anti-aliased" than the modern one. **That inversion is not a fact
+about the games. It is an artefact of downscaling both to 256² first.** Revision 1's conclusion
+("do not ship an AA verdict on this number") was right; the reason is now known, and it is worse
+than "different band edges". Both of its proposed fixes remain correct, and the first is now
+clearly the necessary one.
+
+**(c) Neither of M8's two HARD FAIL statistics is computed by anything in this repository.**
+RI-VIS03's M8 is the headline metric — the one that caps the FIDELITY score at 2 and the one
+RI-VIS01 CC-3 exists to protect. It is defined as `FS_score` (216-bin RGB colour-cube, within-bin
+luminance variance, area-weighted) and `LargestFlat` (9×9 local-standard-deviation threshold at
+0.008, largest 4-connected component). `image-metrics.mjs` computes neither. `flat_tile_frac` is
+a count of 16×16 tiles whose standard deviation is below 0.004 — a different statistic with a
+different threshold on a different support. **M8 currently has no implementation.**
+
+**(d) Band edges and supports, precisely.**
+
+| RI-VIS03 | `image-metrics.mjs` | Comparable? |
+|---|---|---|
+| M5 `HFR` = `E(f∈[0.20,0.45)) / (E_LOW+E_MID+E_HIGH)` | `high_band_ratio` = `E(r/nyq∈[0.25,1.0)) / E(all)` | No — wider band, includes Nyquist, different denominator |
+| M5 `NYQ_ratio` = `E([0.45,0.50)) / E([0.20,0.45))` | `very_high/high` = `E([0.5,1.0)) / E([0.25,1.0))` | **No — a different quantity.** This is why measured values are 0.36–0.46 against a `max 0.18` band. **That is not a failure; do not read it as one.** |
+| M2 `C_local_med` = **median** of **32×32** tile stdevs | `local_mean_16px` = **mean** of **16×16** tile stdevs | Loosely |
+| M4 `ED_1` + `ED_2` + `ED_4` + `scale_ratio` | `frac_above_threshold` only | Partly — **`scale_ratio` is not computed**, so the alias-storm / noise-injection guard does not exist |
+| M3 `meanC` in CIELAB C\*, `chroma_frac`, `p95C`, `H_hue` | HSV saturation and RGB max−min | **No — different colour space. M3 is entirely unverified.** |
+| M7 `SKY_MASK` = largest 4-connected component touching row 0 | "the top 40% of rows", no horizon detection | No |
+| M6, M9, M10, M11, M12 | not implemented | **Not computed at all** |
+
+**Consequence, stated as plainly as it can be: of RI-VIS03's twelve metrics, exactly two (M1 and,
+loosely, M4) can be calibrated by any reference image today. M2 and M7 need the statistic
+corrected. M3, M5, M6, M8, M9, M10, M11 and M12 need implementing before any photograph can
+calibrate them.**
+
+**This changes the project's priority order.** Revision 1 concluded that the modern side needs
+Codex's images. That is still true and still necessary — but it is no longer sufficient, and it
+is no longer first. **Extending `image-metrics.mjs` to implement RI-VIS03 as written is now the
+blocking task**, it is cheaper than another acquisition session, and it is a prerequisite for the
+images Codex returns being worth anything numerically. Until it lands, the images serve
+RI-VIS05's art-direction judgement and RI-VIS06's blind pairing — which need no numbers at all —
+and nothing else.
+
+### §13.3 What was regenerated
+
+- `_provenance.json` — 111 → 127 records (16 hand-authored blocks added).
+- `MANIFEST.json` — regenerated by `make-manifest.py`; 127 records. **No numeric field was hand-
+  edited; the script is the only writer of `_computed.json`.**
+- `reference-metrics.json` — recomputed over all 127 files in five populations, adding `rejected`
+  (measured only so the rejection log can quote a failing statistic — **it is not a band**). Two
+  new top-level fields, `population_note` and `metric_name_warning`, carry §13.2's warning inside
+  the data file so a consumer who never reads this report still meets it.
+- Every image file is byte-identical to the upstream commit. **Nothing under `refs/` was ever
+  rewritten, re-encoded or resized.** Measurement decoding to PNG happened in a scratch directory
+  outside the repository, as in revision 1.
+
+### §13.4 Codex status at the time of writing
+
+**Codex had written nothing into `corpus/`.** No progress file, no images, no manifest fragment.
+The merge procedure for when it does is in §13.5.
+
+### §13.5 How to merge Codex's results into this set
+
+The manifest schema takes both sides; nothing here needs restructuring.
+
+1. Drop files into the folders in the request's §2. **Do not touch anything already present.**
+2. Add one block per file to `_provenance.json`, keyed by path relative to `refs/`.
+3. Run `python3 corpus/70-visual/refs/make-manifest.py`. It recomputes `_computed.json` and
+   re-joins `MANIFEST.json`. Numeric fields come only from the script and cannot be hand-edited
+   into agreement.
+4. Decode each population to PNG in a scratch directory, run
+   `node tools/metrics/image-metrics.mjs --in <scratch>/<population>`, and rebuild
+   `reference-metrics.json`. **Never rewrite a committed image file.**
+5. Update §1, §2 and §10 here, and the coverage table in `RI-VIS09` §3. Both documents are
+   written so that a new population changes a row, not the document.

@@ -153,6 +153,15 @@
       ]
     },
     {
+      "id": "vis-metrics",
+      "title": "Implement M1-M12 fidelity metrics per RI-VIS03",
+      "brief": "orchestration/briefs/vis-metrics.md",
+      "outputs_expected": [
+        "tools/metrics/self-test.mjs",
+        "corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md"
+      ]
+    },
+    {
       "id": "corpus-audit",
       "title": "Corpus coherence: constants, front-matter repair, wrong-bar amendments",
       "brief": "orchestration/briefs/corpus-audit.md",

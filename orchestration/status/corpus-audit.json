@@ -10,14 +10,25 @@
     "corpus/INDEX.md",
     "corpus/80-methods/RI-MTH05-*.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/00-doctrine/CORPUS-COHERENCE-01.md (skeleton)",
+    "corpus/00-doctrine/constants.json",
+    "corpus/10-combat/RI-AI07-encounter-composition.md (AMENDED: traversal minute 204->120 m)",
+    "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md (AMENDED: enemy census 576 -> normalisation rule, new section 7)",
+    "corpus/40-dialogue/RI-DLG02-words-per-settlement.md (AMENDED: scope + locality floor)",
+    "corpus/40-dialogue/data/README.md (discrepancy note resolved)"
+  ],
   "findings": [
     "corpus-index.mjs --check ONLY gates on INDEX.md staleness; error-gating is behind --strict. Brief wants --check to gate. Will make --check imply strict-on-errors.",
     "148 errors: 147 orphan judges paths (134 unique) + 1 bad front-matter (RI-STL01 side: 'split' not in enum). Roots: weapon 20, magic 20, experience 15, input 10, character 10, stealth 9, journey 9, crime 9, platform 7, composition 6, combat 5, progression 4, world 3, lore 3, ui/npc/critic/audio 1 each.",
     "Formal registration files already on disk: corpus/88-journeys/paths-requested.json (journey/input/platform, formatted records) and corpus/25-magic/subsystems-patch.proposed.json (20 magic.* records + critic.magic). Character/stealth/crime path list in orchestration/status/character-stealth-crime.json new_subsystem_paths (28, names only). Weapons/experience/camera: names only, must derive titles from items.",
     "ARBITRATION.md S17 fixes walk speed at 2.0 m/s and forbids lowering it to inflate traversal. S16,S18,S19,S20,S21 all present in ARBITRATION.md \u00a72 (out of numeric order: S16,S21,S20,S19,S18,S17).",
-    "subsystems.json: 200 paths, 226 aliases, 13 critics, version 1. Record shape {path,title,arb,area,critic} + optional judged_by_doctrine."
+    "subsystems.json: 200 paths, 226 aliases, 13 critics, version 1. Record shape {path,title,arb,area,critic} + optional judged_by_doctrine.",
+    "RULED B1: traversal minute = 120 m (2.0 m/s). RI-AI07 amended throughout; physical densities preserved exactly (per-TM rates x0.5882, TM-lengths x1.70, counts/ratios/fractions/metres unchanged). New section H in RI-AI07 carries the derivation.",
+    "RULED B-enemy-budget: world items (RI-WLD07 358 dungeon + ~491 cave + RI-WLD02 D9 ~381 road) own the census = ~1230 (band 891-1569); RI-PRG06 owns the soul budget 1,124,285 and level curve; joined by normalisation souls_each x 576/N_shipped. RI-PRG06's own provenance note already licensed exactly this. New RI-PRG06 section 7.",
+    "NEW, not in queue: RI-CRM01 line 121 uses 3.4 m/s as guard RUN speed vs RI-WLD01's jog 3.2 m/s. Recorded as a deliberate divergence in constants.json rather than retuned.",
+    "RULED B5 dialogue scope: canonical = Source in {Morrowind,Tribunal,Bloodmoon} dedup exact text = 27,875 texts / 682,372 words (24.5 w/entry). NEW FINDING: the README's 28,050/1,869,218 mis-paired a distinct-text count with a per-row word sum; would have inflated targets 2.7x. NEW WRONG BAR: RI-DLG02 locality floor 0.35 fails Morrowind's own Balmora (0.30) at canonical scope -> restated to 0.28. Per-settlement tier targets deliberately UNCHANGED (they derive from Balmora's 38,760, not the total)."
   ],
-  "next_step": "read BAR-CRITIQUE-01.md (W1-W8) and INTENT-AUDIT-01.md; then RI-AI07 vs RI-WLD01 traversal minute",
-  "notes_for_successor": "Nothing edited yet. Plan order: (1) constants.json + traversal-minute amendment, (2) subsystems.json registration + --check gate, (3) Jel validator + lexicon, (4) remaining queue. Report file corpus/00-doctrine/CORPUS-COHERENCE-01.md must be created early and appended to after EVERY edit."
+  "next_step": "subsystems.json registration of ~134 orphan paths + critic roles; then make --check gate on errors",
+  "notes_for_successor": "constants.json written (19 constants + 3 deliberate divergences). CORPUS-COHERENCE-01.md still only has its header + section 0 - the per-edit ledger sections 1..N are OUTSTANDING and must be written. Edits so far: RI-AI07 (traversal minute), RI-PRG06 (enemy census)."
 }

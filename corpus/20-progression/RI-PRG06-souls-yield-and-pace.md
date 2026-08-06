@@ -50,8 +50,18 @@ Machine-readable: **`corpus/20-progression/RI-PRG06-souls-yield.json`**
 derived in RI-PRG04 §7 from 86 deaths at a 22% second-death rate; the two items must move
 together).
 
-**576 unique hand-placed enemies.** With respawns across ~28 HEARTH rest cycles a player
+**576 unique hand-placed enemies** — **AMENDED wave 0 (corpus-audit): this is the count the
+§3 decomposition was *derived at*, not the world census.** The world census is owned by
+`RI-WLD07` §§2–3 and `RI-WLD02` D9 and totals **≈ 1,230** (see §7). Per this item's own
+provenance note — *"if the map ships 380 or 900 enemies, every soul value must be rescaled to
+preserve the cumulative column, which is the binding part"* — the per-archetype values in §3
+are rescaled by `576 / N_shipped` and the cumulative column, the levels and the pace curve are
+invariant. **576 is a floor on hand-placed enemies, never a ceiling.**
+
+With respawns across ~28 HEARTH rest cycles a player
 kills roughly 1,400–2,000 times — the budget RI-PRG03 §3's skill event counts are built on.
+(At the reconciled census of ≈1,230 uniques this becomes ≈3,000–4,300 kills, which *over*-delivers
+RI-PRG03's skill budget rather than under-delivering it; see §7.)
 
 **L120 requires 2,391,999 souls = 2.13× the entire world.** L120 is an NG+ or
 deliberate-farm destination. It is not, and must not become, a first-clear level.
@@ -203,6 +213,44 @@ deceleration is smooth (worst single-region jump is R4→R5 at 1.35×) because a
 | 1,124,285 (world total) | **93** |
 | 2,391,999 | 120 |
 
+### 7. Amendment record — the enemy-budget reconciliation (wave 0, corpus-audit)
+
+`RI-PRG06` fixed **576** hand-placed enemies for the whole game. Three world items require
+more than that on their own:
+
+| Source | What it requires | Enemies |
+|---|---:|---:|
+| `RI-WLD07` §2 — 8 Souls-loop dungeons, stated total | exact | **358** |
+| `RI-WLD07` §3 — 82 Morrowind interiors (30 caves 3–9, 20 egg-mines 4–10, 16 xanmeer 2–8, 10 dens 5–12, 6 grottoes 0–2) | 252 – 730 | **≈ 491** (midpoint) |
+| `RI-WLD02` D9 — 0.7–1.2 hostile groups per minute over `RI-WLD01`'s ~25.35 km one-way trunk road network (211 min at 2.0 m·s⁻¹), at `RI-AI07` §D's mean 1.9 enemies/encounter | 281 – 481 | **≈ 381** |
+| **Reconciled world census** | 891 – 1,569 | **≈ 1,230** |
+
+The interiors alone (849) already exceed 576, so the two figures could not both be "the whole
+game". **Ruling:**
+
+- **`RI-WLD07` + `RI-WLD02` own the enemy census.** How many enemies exist is a world-design
+  fact and belongs to the world items.
+- **`RI-PRG06` owns the soul budget and the level curve.** §1's cumulative column
+  (1,124,285 souls, L93 at 100% clear / L82 typical, 20.0 h) is the contract and is
+  **unchanged by this amendment.**
+- **They are joined by a normalisation rule, not by a new argument.** Per-archetype values in
+  §3 are *derived*: `souls_each_shipped = souls_each_here × 576 / N_shipped`, applied
+  per region so each region's soul total equals §1's Region-souls column exactly. At the
+  reconciled census of 1,230 the scale factor is **0.468**.
+
+**Planning figure adopted: 1,230 hand-placed hostile instances (band 891–1,569).** Registered
+in `corpus/00-doctrine/constants.json` as `world.enemy_census`, owner `RI-WLD07`.
+
+**What this does *not* change.** No soul total, no level, no hour figure, no pace-curve value,
+no scoring threshold in this item. The §3 tables are left standing verbatim as the derivation
+of record; §3 is now explicitly one valid decomposition of §1 at N = 576, exactly as the
+provenance note already said it was.
+
+**Consequence flagged for RI-PRG03's owner:** the kill count roughly doubles, so RI-PRG03's
+skill-event budget (built on ~5 hits × 1,400–2,000 kills) now *over*-delivers. That is a
+softer failure than under-delivering and is left as a recorded divergence rather than silently
+retuned — RI-PRG03 is not this audit's to re-derive. See CORPUS-COHERENCE-01 §7 (edits not made).
+
 ## Comparison method
 
 The harness lives at `corpus/80-methods/sim-souls-yield.md`. Every assertion below runs
@@ -311,13 +359,17 @@ is `canonical-recall` from the Souls series at confidence medium.
 Confidence is **medium**, and lower than RI-PRG01's, for a specific reason worth stating
 plainly: **the roster in §3 is a budget, not an inventory.** It asserts that
 `corpus/50-world/` will contain 576 hand-placed enemies in six regions occupying twenty
-hours. That world does not exist yet. Three things could invalidate this item and all three
+hours (**amended: ≈1,230 — see §7; the soul totals are unchanged**). That world does not
+exist yet. Three things could invalidate this item and all three
 are outside its control:
 
 1. **The real enemy count differs.** If the map ships 380 or 900 enemies, every soul value
    must be rescaled to preserve the cumulative column, which is the binding part. The
    *cumulative souls per region* and the *expected level per region* are the contract; the
    per-archetype breakdown is one valid decomposition of it.
+   **RESOLVED wave 0 (corpus-audit): it does differ — the reconciled census is ≈1,230, not
+   576. The rescaling this clause anticipated has been applied as a rule in §7; the cumulative
+   column is preserved untouched.**
 2. **The hour budget differs.** 20.0 hours split 1.8/2.4/3.0/3.6/4.2/5.0 is a target handed
    to the world and quest agents. If R6 is really eight hours, §5's pace curve is wrong even
    though §1's levels are right.

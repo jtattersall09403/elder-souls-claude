@@ -2,7 +2,7 @@
   "task_id": "image-acquisition",
   "brief": "orchestration/briefs/image-acquisition.md",
   "started": "wave-?",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/70-visual/refs/MANIFEST.json",
     "corpus/70-visual/refs/ACQUISITION-REPORT.md",
@@ -10,18 +10,17 @@
     "corpus/70-visual/RI-VIS09-reference-image-set.md"
   ],
   "outputs_written": [
-    "corpus/70-visual/refs/morrowind/ (73 images across 15 REF-A slots + 2 unconfirmed) - DONE",
-    "corpus/70-visual/refs/modern/hud/ (24 x Witcher 3 2560x1440 gameplay JPEGs) - DONE",
-    "corpus/70-visual/refs/modern/character_closeup/ (1 RDR2)",
+    "corpus/70-visual/refs/morrowind/ (89 images across 18 of 19 REF-A slots; only REF-A12 UI unfilled) - DONE",
+    "corpus/70-visual/refs/modern/hud/ (24 x Witcher 3 2560x1440 gameplay JPEGs, HUD-bearing, never compared) - DONE",
+    "corpus/70-visual/refs/modern/character_closeup/ (1 RDR2, the ONLY T1-measurable modern file)",
     "corpus/70-visual/refs/anti-generic/ (5 W3 copies)",
-    "corpus/70-visual/refs/rejected/ (6)",
-    "corpus/70-visual/refs/reference-metrics.json",
-    "corpus/70-visual/refs/make-manifest.py",
-    "corpus/70-visual/refs/_provenance.json",
-    "corpus/70-visual/refs/_computed.json",
-    "corpus/70-visual/refs/MANIFEST.json",
-    "corpus/70-visual/refs/ACQUISITION-REPORT.md",
-    "corpus/70-visual/refs/LICENCE-NOTE.md"
+    "corpus/70-visual/refs/rejected/ (8, each with a failing statistic)",
+    "corpus/70-visual/refs/reference-metrics.json (5 populations, 127 images) - DONE",
+    "corpus/70-visual/refs/MANIFEST.json (127 records) - DONE",
+    "corpus/70-visual/refs/_provenance.json, _computed.json, make-manifest.py - DONE",
+    "corpus/70-visual/refs/LICENCE-NOTE.md - DONE",
+    "corpus/70-visual/refs/ACQUISITION-REPORT.md (revision 2, 622 lines) - DONE",
+    "corpus/70-visual/RI-VIS09-reference-image-set.md - DONE (registered in 00-doctrine/INDEX.md)"
   ],
   "findings": [
     "Disk at start: 23G avail on /, repo 39M.",
@@ -51,6 +50,6 @@
     "SUCCESSOR-2 TOOLING FINDING (important, feeds RI-VIS09 \u00a75): image-metrics.mjs FFT resamples the WHOLE frame to 256x256 before the transform (radialSpectrum -> resampleSquare(Y,w,h,256)). RI-VIS03 M5 specifies a NATIVE-RESOLUTION centre 1024x1024 crop. So HFR/NYQ/alpha from image-metrics are statistics of a heavy downscale and are resolution-dependent; they cannot be compared to RI-VIS03's M5 bands at all. Band edges also differ: image-metrics high_band_ratio = E(r/nyq in [0.25,1.0))/E(all), RI-VIS03 HFR = E(f in [0.20,0.45))/(E_LOW+E_MID+E_HIGH). NYQ_ratio is [0.5,1.0)/[0.25,1.0) vs RI-VIS03's [0.45,0.50)/[0.20,0.45) \u2014 which is why measured NYQ ~0.40 sits far above RI-VIS03's 0.18 max and means NOTHING. Also: image-metrics has NO FG_MASK, so sky is included in mean_Y, C_global, ED_1 and the flat fractions, whereas every RI-VIS03 band is FG-only. And M8 FS_score / LargestFlat (the two HARD FAIL statistics) are NOT COMPUTED BY ANY TOOL WE HAVE \u2014 flat_tile_frac is a 16px-tile count, not a 9x9 connected-component area.",
     "SUCCESSOR-2: reference-metrics.json regenerated over all 127 files (5 populations incl. 'rejected'). Morrowind n=89."
   ],
-  "next_step": "write ACQUISITION-REPORT.md then RI-VIS09, then done",
-  "notes_for_successor": "RI-VIS03 exterior_daylight bands to compare against: M1 DR>=0.72 meanYp 0.28-0.58; M2 C_global 0.13-0.28 C_local_med>=0.045; M3 meanC 12-32 chroma_frac>=0.55; M4 ED_1 0.10-0.34; M5 HFR 0.06-0.24 NYQ<=0.18 alpha 1.6-2.6; M8 FS>=0.035 LargestFlat<=0.06 TotalFlat<=0.18. | SUCCESSOR-2: verified on disk 2026-08-06 \u2014 MANIFEST.json (111 records), reference-metrics.json (5 populations, 105 images), _computed.json, _provenance.json, make-manifest.py all present and complete. unconfirmed/ already emptied into rejected/ (8 files). NO Codex progress file exists anywhere in corpus/ yet \u2014 Codex had landed nothing as of this resume."
+  "next_step": "none - task complete",
+  "notes_for_successor": "RI-VIS03 exterior_daylight bands to compare against: M1 DR>=0.72 meanYp 0.28-0.58; M2 C_global 0.13-0.28 C_local_med>=0.045; M3 meanC 12-32 chroma_frac>=0.55; M4 ED_1 0.10-0.34; M5 HFR 0.06-0.24 NYQ<=0.18 alpha 1.6-2.6; M8 FS>=0.035 LargestFlat<=0.06 TotalFlat<=0.18. | SUCCESSOR-2: verified on disk 2026-08-06 \u2014 MANIFEST.json (111 records), reference-metrics.json (5 populations, 105 images), _computed.json, _provenance.json, make-manifest.py all present and complete. unconfirmed/ already emptied into rejected/ (8 files). NO Codex progress file exists anywhere in corpus/ yet \u2014 Codex had landed nothing as of this resume. | SUCCESSOR-2 FINAL: all four expected outputs exist and verify. make-manifest.py --check exits 0; manifest<->disk sets identical; 0 side/folder mismatches. THE BLOCKING TASK IS NO LONGER IMAGES, IT IS TOOLING: tools/metrics/image-metrics.mjs does not implement RI-VIS03 (no FG_MASK; FFT on a 256x256 downscale of the whole frame instead of a native 1024^2 crop; M8's two HARD FAIL statistics FS_score and LargestFlat not computed at all; M3 in HSV not CIELAB; M4 scale_ratio missing; M6/M9/M10/M11/M12 absent). Only M1 and loosely M4 can be calibrated by any reference image today. See RI-VIS09 \u00a74a and ACQUISITION-REPORT \u00a713.2. Codex had still written nothing into corpus/ at completion."
 }

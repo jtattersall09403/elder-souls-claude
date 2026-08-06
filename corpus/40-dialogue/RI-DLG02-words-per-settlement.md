@@ -31,12 +31,31 @@ the same shared line once per NPC who can say it.
 Measured over a community extraction of every `INFO` record in `Morrowind.esm` +
 `Tribunal.esm` + `Bloodmoon.esm`, deduplicated on exact response text:
 
-| Layer | Distinct entries | Words | Share |
-|---|---:|---:|---:|
-| **Speaker-unique** (filter pins a named actor) | 12,854 | **375,025** | 74.3% |
-| **Generic, cell-filtered** (belongs to one settlement) | 2,373 | **64,044** | 12.7% |
-| **Generic, global** (no cell filter — shared island-wide) | 2,071 | **65,827** | 13.0% |
-| **Total dialogue text** | 17,298 | **504,896** | 100% |
+> **AMENDED wave 0 (corpus-audit) — scope ruled.** The totals below were recomputed against
+> the vendored extraction `corpus/40-dialogue/data/morrowind-dialogue.csv.gz` (69,876 rows,
+> Kezyma/Morrowind-Voices). **Canonical scope: `Source ∈ {Morrowind, Tribunal, Bloodmoon}`,
+> deduplicated on exact response text ⇒ 27,875 distinct texts / 682,372 words** (mean 24.5
+> words/entry). The four bundled official plugins add 177 texts / 5,692 words (0.8%) and are
+> excluded because this item's own scope names three files. The original 17,298 / 504,896
+> figures came from an extraction carrying a `Cell` column that the vendored file does not
+> have, and are **not reproducible from any artifact in this repo**. See
+> `corpus/00-doctrine/CORPUS-COHERENCE-01.md` §3 for the full ruling.
+>
+> The **layer split is not recomputable** from the vendored file — it has no `Cell` column —
+> so the original *shares* are preserved (they are this section's actual claim) and the layer
+> word counts restated against the corrected total.
+
+| Layer | Distinct entries | Words | Share | ~~Was~~ |
+|---|---:|---:|---:|---|
+| **Speaker-unique** (filter pins a named actor) | — | **507,003** | 74.3% | ~~12,854 / 375,025~~ |
+| **Generic, cell-filtered** (belongs to one settlement) | — | **86,661** | 12.7% | ~~2,373 / 64,044~~ |
+| **Generic, global** (no cell filter — shared island-wide) | — | **88,708** | 13.0% | ~~2,071 / 65,827~~ |
+| **Total dialogue text** | **27,875** | **682,372** | 100% | ~~17,298 / 504,896~~ |
+
+Per-layer entry counts are dashed because they cannot be recovered at the canonical scope
+without the `Cell` filter; the words are what §D and the locality rule consume, and those are
+restated. Corroboration that the two measurements describe the same corpus: the vendored file
+gives **24.5 words per entry**, against the ~24 median this item states independently at §C.
 
 Read that table twice. **87% of Morrowind's dialogue text is location- or person-specific.**
 Only 13% is the shared pool that every town draws on. The instinct to build "a big generic
@@ -130,8 +149,15 @@ Settlement tiers as defined in `corpus/50-world/`. `W_local` is the metric defin
 
 Additional hard rules, all failable on their own:
 
-1. **Locality ratio.** `W_local / (W_local + W_globalreachable) ≥ 0.35` for every Tier A/B
-   settlement. Morrowind's Balmora: 38,760 / (38,760 + 65,827) = **0.37**.
+1. **Locality ratio.** `W_local / (W_local + W_globalreachable) ≥ **0.28**` for every Tier A/B
+   settlement. Morrowind's Balmora at the canonical scope:
+   38,760 / (38,760 + 88,708) = **0.30**.
+   **AMENDED wave 0 (corpus-audit) — this was a wrong bar.** ~~`≥ 0.35`; Balmora 38,760 /
+   (38,760 + 65,827) = 0.37.~~ The 0.35 floor was set against a global pool measured at the
+   superseded scope. At the canonical scope the global pool is 88,708 words and **Morrowind's
+   own Balmora scores 0.30 — it would have failed our floor.** A bar the reference loses is a
+   broken bar (CORPUS-CONTRACT §6). The floor is restated at 0.28, which preserves the
+   original margin below the reference exactly (0.35/0.37 = 0.946; 0.30 × 0.946 = 0.288).
 2. **Cross-settlement duplication.** For any two settlements, the Jaccard similarity of
    their *local* entry-text sets must be **< 0.05**. Identical rumour text in two towns is
    the failure this catches.
@@ -207,7 +233,8 @@ the verdict so the number is auditable.
 named_NPCs, top5_share, filler_rate`.
 
 The reference numbers to compare against are §B and §C of this file. Do **not** compare our
-absolute total to Morrowind's 504,896-word corpus — compare per settlement, per tier.
+absolute total to Morrowind's **682,372**-word corpus (~~504,896~~, amended wave 0) — compare
+per settlement, per tier.
 
 ## Scoring
 
@@ -283,3 +310,43 @@ words of settlement dialogue" by counting the shared pool three times.
 - All **targets, tiers, floors and the five hard rules in §D are `constructed`** — defined
   for this project because no upstream equivalent exists. Binding regardless
   (CORPUS-CONTRACT §3).
+
+### Scope amendment (wave 0, corpus-audit)
+
+The discrepancy flagged in `corpus/40-dialogue/data/README.md` is resolved. **Canonical
+scope: the vendored extraction, `Source ∈ {Morrowind, Tribunal, Bloodmoon}`, deduplicated on
+exact response text — 27,875 distinct texts / 682,372 words.** Reproduce with:
+
+```
+python3 - <<'PY'
+import gzip,csv
+rows=[r for r in csv.DictReader(gzip.open(
+  'corpus/40-dialogue/data/morrowind-dialogue.csv.gz','rt',encoding='utf-8',errors='replace'))
+  if r['Source'] in ('Morrowind','Tribunal','Bloodmoon')]
+t={r['DialogueText'].strip() for r in rows if r['DialogueText'].strip()}
+print(len(t), sum(len(x.split()) for x in t))
+PY
+```
+
+Provenance on §A therefore moves from the unverifiable extraction to
+`provenance: community-data` with an in-repo, re-runnable derivation.
+
+**What changed:** §A's total and layer word counts; §D hard rule 1's locality floor
+(0.35 → 0.28, because Morrowind's own Balmora scores 0.30 at the canonical scope and a bar
+the reference loses is a broken bar); the "do not compare to 504,896" line in the comparison
+method.
+
+**What deliberately did *not* change, and why:**
+
+- **§B's per-settlement local-generic table and §C's Balmora/Ald'ruhn/Sadrith Mora figures.**
+  These are per-settlement measurements of base-game Vvardenfell text, which is present
+  identically in both scopes. A wider corpus adds Mournhold and Solstheim rows; it does not
+  add words to Balmora.
+- **§D's tier targets and hard floors (20,000 / 9,000 / 3,000 / 1,500 and their floors).**
+  They were derived from Balmora's measured 38,760 local words, not from the corpus total.
+  Since Balmora's number is unchanged, the targets are unchanged. **Restating them upward in
+  proportion to the corpus total would have been an arithmetic error** — the total grew
+  because Tribunal and Bloodmoon settlements were counted, not because Balmora got bigger.
+- **§A's layer *shares* (74.3 / 12.7 / 13.0%).** The vendored file has no `Cell` column, so
+  the split is not recomputable; the shares are §A's actual claim ("87% of Morrowind's
+  dialogue is location- or person-specific") and are carried forward as measured.

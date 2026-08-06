@@ -1,0 +1,234 @@
+{
+  "schema": "es-souls-frame-data/1",
+  "generated_by": "orchestration/briefs/souls-verification.md",
+  "generated": "2026-08-06",
+  "purpose": "Verified upstream FromSoftware reference values, per game, per mechanic. This file is EVIDENCE, not a specification. Nothing here is binding on our build; our binding numbers live in the RI- items and are `constructed`. Use this file to check that any claim we make ABOUT a Souls game is true.",
+  "critical_conventions": {
+    "frame_rate_of_community_frame_counts": {
+      "value": 30,
+      "unit": "fps",
+      "games": ["DS1", "DS1R", "DS3", "ER"],
+      "source_url": "https://err.fandom.com/wiki/Combat_Mechanics",
+      "corroborating_url": "https://steamcommunity.com/app/374320/discussions/0/1733217528121996749/",
+      "confidence": "high",
+      "notes": "ALL community i-frame and attack frame counts for FromSoftware titles are quoted in 1/30 s ticks, regardless of the framerate the game renders at. Elden Ring Reforged states it outright ('i-frames values are at 30 FPS'). Independently corroborated in DS3 by the Carthus Bloodring figure: it raises i-frames 'from 12 (.4 sec) to 16 (.533 sec)' -> 12/0.4 s = 30 fps exactly. A Souls frame count moved onto a 60 Hz simulation WITHOUT doubling halves its real-time duration. This is the single most important line in this file."
+    }
+  },
+
+  "roll": {
+    "DS1": {
+      "equip_load_breakpoints": {
+        "value": {"fast": "<=25%", "medium": "25-50%", "fat": "50-100%", "overloaded": ">100%"},
+        "unit": "percent of max equip load",
+        "game": "DS1 / DS1 Remastered",
+        "source_url": "https://darksouls.fandom.com/wiki/Rolling",
+        "confidence": "high",
+        "notes": "Confirmed independently on https://dark-souls-remastered.fandom.com/wiki/Rolling. Over 100% the player cannot roll at all and staggers if they try."
+      },
+      "iframes": {
+        "value": {"fast": 11, "medium": 11, "fat": 11, "ninja_flip_DWGR": 13},
+        "unit": "frames @30fps",
+        "real_time_s": {"fast": 0.367, "medium": 0.367, "fat": 0.367, "ninja_flip_DWGR": 0.433},
+        "game": "DS1",
+        "source_url": "https://darksouls.fandom.com/wiki/Rolling",
+        "confidence": "high",
+        "notes": "'Contrary to popular belief, all roll types have 11 iframes except ... Dark Wood Grain Ring (Ninja Flip) which has 13.' Equip load does NOT change the i-frame count in DS1 - it changes recovery, total length, and instability frames."
+      },
+      "total_animation_frames": {
+        "value": {"fast_0pct": 21, "fast_25pct": 24, "medium_50pct": 33, "fat_100pct": 48, "ninja_flip": 19},
+        "unit": "frames @30fps",
+        "real_time_s": {"fast_25pct": 0.80, "medium_50pct": 1.10, "fat_100pct": 1.60},
+        "game": "DS1",
+        "source_url": "https://darksouls.fandom.com/wiki/Rolling",
+        "confidence": "high"
+      },
+      "instability_frames": {
+        "value": {"fast": "7-8", "medium": 14, "fat": 25, "ninja_flip": 0},
+        "unit": "frames @30fps",
+        "game": "DS1",
+        "source_url": "https://darksouls.fandom.com/wiki/Rolling",
+        "confidence": "high",
+        "notes": "Frames of the roll during which the player takes 1.4x damage. This is the real DS1 differentiator between roll tiers, not the i-frame count. Our corpus has no analogue of this mechanic."
+      },
+      "iframe_fraction_of_animation": {
+        "value": {"fast_25pct": 0.458, "medium_50pct": 0.333, "fat_100pct": 0.229},
+        "unit": "ratio",
+        "game": "DS1",
+        "source_url": "derived from the two rows above",
+        "confidence": "high"
+      }
+    },
+    "DS3": {
+      "equip_load_breakpoints": {
+        "value": {"light": "<=29.9%", "medium": "30.0-70.0%", "heavy": "70.1-99.9%", "overburdened": ">=100.0%"},
+        "unit": "percent of max equip load (Weight Ratio)",
+        "game": "DS3",
+        "source_url": "https://darksouls3.wiki.fextralife.com/Equipment+Load",
+        "confidence": "high"
+      },
+      "iframes": {
+        "value": {"light": 13, "medium": 13, "heavy": 12},
+        "unit": "frames @30fps",
+        "real_time_s": {"light": 0.433, "medium": 0.433, "heavy": 0.400},
+        "game": "DS3",
+        "source_url": "https://darksouls3.wiki.fextralife.com/Equipment+Load",
+        "confidence": "high"
+      },
+      "light_vs_medium_duration": {
+        "value": "identical",
+        "unit": "n/a",
+        "game": "DS3",
+        "source_url": "https://darksouls3.wiki.fextralife.com/Equipment+Load",
+        "confidence": "high",
+        "notes": "'Roll farther / cover more distance, but animation has the same total duration as normal.' The light tier in DS3 buys DISTANCE, not TIME. This is the opposite of DS1, where the tiers differ in recovery length and total duration."
+      },
+      "overburdened": {
+        "value": "cannot roll, back step, or run; walking animation changes",
+        "game": "DS3",
+        "source_url": "https://darksouls3.wiki.fextralife.com/Equipment+Load",
+        "confidence": "high"
+      },
+      "equip_load_effect_on_run_speed": {
+        "value": "none below 100%",
+        "game": "DS3",
+        "source_url": "https://darksouls3.wiki.fextralife.com/Equipment+Load",
+        "confidence": "high",
+        "notes": "Explicitly 'Unlike Dark Souls 1'. In DS1 equip load DOES slow walking and sprinting."
+      }
+    },
+    "ER": {
+      "equip_load_breakpoints": {
+        "value": {"light": "<30%", "medium": "30-70%", "heavy": ">70%", "overloaded": ">=100%"},
+        "unit": "percent of max equip load",
+        "game": "Elden Ring",
+        "source_url": "https://eldenring.wiki.fextralife.com/Equip+Load",
+        "confidence": "high"
+      },
+      "iframes": {
+        "value": {"light": "13 (contested)", "medium": "13 (contested)", "heavy": "fewer, ~11"},
+        "unit": "frames @30fps",
+        "game": "Elden Ring",
+        "source_url": "https://eldenring.wiki.fextralife.com/Dodging",
+        "confidence": "low",
+        "notes": "UNVERIFIED at the frame level. Community testing repeatedly reports 'little to no difference' between light and medium roll i-frames, with light buying distance and faster recovery instead. Some testers claim light has +3 i-frames over medium. Treat ER roll i-frames as contested. The vanilla-adjacent Elden Ring Reforged mod rebalances to 13/12/11 and states these are 30 fps values, which is evidence for the convention but NOT for vanilla values."
+      }
+    }
+  },
+
+  "stamina": {
+    "DS1": {
+      "base_regen": {"value": 45, "unit": "stamina/second", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Stamina", "confidence": "high"},
+      "regen_scales_with_stat": {"value": false, "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Stamina", "confidence": "high", "notes": "'Stamina recovery rate is not influenced by the maximum Stamina (or the Endurance value).'"},
+      "regen_while_blocking": {"value": -0.80, "unit": "multiplier delta (i.e. x0.20)", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Stamina", "confidence": "high", "notes": "'blocking/raising the shield or climbing a ladder (-80%)'. Applied together with the encumbrance malus, after all other buffs."},
+      "regen_over_50pct_load": {"value": -0.20, "unit": "multiplier delta (x0.80)", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Stamina", "confidence": "high"},
+      "regen_over_100pct_load": {"value": -0.30, "unit": "multiplier delta (x0.70)", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Stamina", "confidence": "high"},
+      "regen_pause": {"value": "until the animation finishes", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Stamina", "confidence": "medium", "notes": "'Attacking stops all Stamina recovery until the animation finishes.' DS1 is described as animation-gated rather than carrying a fixed post-spend delay."},
+      "regen_range": {"value": {"max": 135, "min": 3.5}, "unit": "stamina/second", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Stamina", "confidence": "high"}
+    },
+    "DS3": {
+      "base_regen": {"value": 45, "unit": "stamina/second", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Stamina", "confidence": "high"},
+      "regen_over_70pct_load": {"value": 37, "unit": "stamina/second (= x0.822 of base)", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Stamina", "confidence": "high", "notes": "The Equipment Load page states this as 'stamina regenerates about 20% slower'."},
+      "regen_delay_after_spend": {"value": 0.70, "unit": "seconds", "game": "DS3", "source_url": "https://steamcommunity.com/app/374320/discussions/0/133257324792331846/", "confidence": "medium", "notes": "Community frame-by-frame measurement with no stamina-regen items equipped. 0.70 s = 21 frames @30fps = 42 frames @60Hz."},
+      "stamina_can_go_negative": {"value": true, "unit": "boolean", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Stamina", "confidence": "high", "notes": "'Stamina can go into negative values if you overuse your remaining stamina.' Floor is -60. Negative stamina recovers at the same rate as positive. Actions are gated on stamina > 0, not on stamina >= cost."},
+      "regen_at_zero": {"value": "neither degenerates nor regenerates when at exactly zero", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Stamina", "confidence": "high"},
+      "endurance_to_stamina": {"value": {"11": 95, "20": 112, "30": 134, "40": 160, "99": 170}, "unit": "stamina", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Stamina", "confidence": "high", "notes": "Soft cap 160 at 40 Endurance; only +10 more across 41-99."},
+      "full_bar_refill_time": {"value": 3.6, "unit": "seconds for a 160 pool at 45/s", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Stamina", "confidence": "high"}
+    }
+  },
+
+  "poise": {
+    "DS1": {
+      "model": {"value": "threshold, always active; poise refills instantly on timer reset rather than regenerating", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Poise", "confidence": "medium"},
+      "max_armour_poise": {"value": 121, "unit": "poise (Havel's set); 161 with Wolf Ring", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Poise", "confidence": "medium"}
+    },
+    "DS3": {
+      "model": {
+        "value": "hidden poise health of 100 on all player-model characters; the visible Poise stat reduces incoming poise DAMAGE by a percentage equal to the Poise value; but stagger can only be RESISTED during active-poise (hyperarmour) frames",
+        "game": "DS3",
+        "source_url": "https://darksouls3.wiki.fextralife.com/Poise",
+        "confidence": "high",
+        "notes": "Verbatim: 'you are only able to resist stagger during active poise, and at any other time you can be staggered regardless of how much poise health you have left.' A DS3 player standing still or walking has NO functional poise. This is why DS3 poise was considered 'broken' at launch."
+      },
+      "hidden_poise_health": {"value": 100, "unit": "poise health", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Poise", "confidence": "high"},
+      "max_achievable_poise_stat": {"value": "50.15 - 67.22", "unit": "poise (i.e. 50-67% poise damage reduction)", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Poise", "confidence": "high"},
+      "stacking_formula": {"value": "a + b - (a*b/100)", "unit": "diminishing-returns combination of poise sources", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Poise", "confidence": "medium"},
+      "hyperarmour_weapon_classes": {"value": ["Ultra Greatswords", "Great Hammers", "two-handed Greatswords", "certain Weapon Arts"], "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Poise", "confidence": "high"}
+    },
+    "ER": {
+      "model": {
+        "value": "always-active poise HP pool equal to the visible poise stat (player Toughness = poise/10); stagger when it reaches 0; resets to max instantly on stagger",
+        "game": "Elden Ring",
+        "source_url": "https://eldenring.wiki.fextralife.com/Poise",
+        "confidence": "high"
+      },
+      "player_poise_regen": {
+        "value": "no gradual regen; full reset after 30 s without taking a hit",
+        "unit": "seconds",
+        "game": "Elden Ring",
+        "source_url": "https://eldenring.wiki.fextralife.com/Poise",
+        "confidence": "high",
+        "notes": "Enemies DO regenerate poise HP, on a 6-15 s timer scaling with their poise value (80 poise -> 6 s, 200 poise -> 15 s)."
+      },
+      "overflow_rule": {"value": "excess poise damage does NOT carry into the next poise bar", "game": "Elden Ring", "source_url": "https://eldenring.wiki.fextralife.com/Poise", "confidence": "high"},
+      "player_has_stance_break": {"value": false, "game": "Elden Ring", "source_url": "https://eldenring.wiki.fextralife.com/Poise", "confidence": "high", "notes": "Stance/stance-break is an NPC-only mechanic; players only have hitstun staggers."}
+    }
+  },
+
+  "healing_flask": {
+    "DS1": {
+      "starting_charges": {"value": 5, "unit": "charges from an unkindled bonfire", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Estus+Flask", "confidence": "high"},
+      "max_charges": {"value": 20, "unit": "charges (bonfire kindled to max with Rite of Kindling)", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Estus+Flask", "confidence": "high", "notes": "Charge count is a property of the BONFIRE (5 / 10 / 15 / 20), not of the flask - a structurally different model from DS3's."},
+      "upgrade_levels": {"value": "+0 to +7", "game": "DS1", "source_url": "https://darksouls.fandom.com/wiki/Estus_Flask_(Dark_Souls)", "confidence": "high"},
+      "heal_amount": {"value": {"+0": 300, "+1": 400, "+2": 500, "+3": 600, "+4": 650, "+5": 700, "+6": 750, "+7": 800}, "unit": "flat HP", "game": "DS1", "source_url": "https://darksouls.fandom.com/wiki/Estus_Flask_(Dark_Souls)", "confidence": "high", "notes": "FLAT HP, not a percentage of max HP."}
+    },
+    "DS3": {
+      "starting_charges": {"value": 3, "unit": "Estus (plus 1 Ashen Estus picked up in the first area)", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Estus+Flask", "confidence": "high"},
+      "max_charges": {"value": 15, "unit": "total, split by the player between Estus and Ashen Estus", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Estus+Flask", "confidence": "high"},
+      "upgrade_levels": {"value": "+0 to +10 (Undead Bone Shards)", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Estus+Flask", "confidence": "high"},
+      "heal_amount": {"value": {"+0": 250, "+1": 335, "+2": 410, "+3": 470, "+4": 515, "+5": 535, "+6": 550, "+7": 565, "+8": 580, "+9": 590, "+10": 600}, "unit": "flat HP", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Estus+Flask", "confidence": "high", "notes": "FLAT HP with steeply diminishing returns: +0->+1 is +85 HP, +9->+10 is +10 HP. Estus Ring adds +20%."},
+      "refill_sources": {"value": ["resting at a bonfire", "a hidden gauge filled by souls from fallen enemies", "defeating invaders/players"], "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Estus+Flask", "confidence": "high"}
+    }
+  },
+
+  "soul_cost_curve": {
+    "DS1": {
+      "formula_level_12_plus": {"value": "y = 0.02x^3 + 3.06x^2 + 105.6x - 895", "unit": "souls to reach level x", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Level", "confidence": "high", "notes": "Fextralife states it applies from level 12; the community's low-band fit 0.0068x^3 - 0.06x^2 + 17.1x + 639 agrees with it at x=12 (both give 847), so the 12-vs-13 boundary is cosmetic."},
+      "table": {"value": {"2": 673, "5": 724, "10": 811, "12": 847, "13": 1039, "15": 1445, "20": 2601, "25": 3970, "30": 5567, "40": 9505, "50": 14535, "60": 20777, "70": 28351, "80": 37377, "90": 47975, "100": 60265, "110": 74367, "120": 90401, "130": 108487, "140": 128745}, "unit": "souls for that level", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Level", "confidence": "high"},
+      "max_level": {"value": "709-713 depending on starting class", "game": "DS1", "source_url": "https://darksouls.wiki.fextralife.com/Level", "confidence": "high"}
+    },
+    "DS3": {
+      "formula_level_13_plus": {"value": "y = 0.02x^3 + 3.06x^2 + 105.6x - 895, rounded DOWN", "unit": "souls to reach level x", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Level", "confidence": "high", "notes": "Same cubic as DS1. Levels 2-12 increase ~2.5% per level. The only difference from DS1 is rounding direction, worth 0-1 souls per level (DS1 L25=3970 vs DS3 L25=3969)."},
+      "table": {"value": {"2": 673, "5": 723, "10": 811, "12": 847, "13": 1038, "15": 1445, "20": 2601, "25": 3969, "30": 5566, "40": 9505, "50": 14535}, "unit": "souls for that level", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Level", "confidence": "high"},
+      "max_level": {"value": 802, "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Level", "confidence": "high"}
+    }
+  },
+
+  "camera": {
+    "DS3": {
+      "auto_rotate_behind_moving_player": {"value": true, "game": "DS3", "source_url": "https://www.nexusmods.com/darksouls3/mods/2028", "confidence": "medium", "notes": "A Nexus mod exists purely to disable it, which is the strongest available evidence that the stock behaviour is present. DS3 exposes no in-game toggle."}
+    },
+    "ER": {
+      "auto_rotate_behind_moving_player": {"value": true, "game": "Elden Ring", "source_url": "https://steamcommunity.com/app/1245620/discussions/0/3183486320470225224/", "confidence": "high", "notes": "Elden Ring ships an explicit 'Camera Auto Rotation' option in System > Camera; it is on by default and widely turned off by players. RI-CAM02's provenance note already records this correctly."}
+    }
+  },
+
+  "parry_and_criticals": {
+    "DS3": {
+      "partial_parry": {"value": "a window immediately before and after the active parry frames in which a hit is treated as a normal block (damage + stamina loss) but does not stagger", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Parry", "confidence": "high", "notes": "Our RI-CMB05 has no analogue of the partial-parry window."},
+      "fist_weapon_instability": {"value": "fist weapons have instability frames after the parry window, causing extra damage taken on an early parry", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Parry", "confidence": "high"},
+      "unparryable": {"value": ["player jump/plunge attacks", "two-handed R1/R2 from Ultra Greatswords, Greataxes, Great Hammers", "Curved Greatsword two-handed R2", "whips"], "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Parry", "confidence": "high", "notes": "Relevant to RI-CMB05: in DS3 the heaviest weapon classes are UNPARRYABLE when two-handed. Our corpus makes every attack parryable."},
+      "backstab_parryable_from_behind": {"value": "parrying an attack from behind is possible but far more precise", "game": "DS3", "source_url": "https://darksouls3.wiki.fextralife.com/Parry", "confidence": "medium"},
+      "parry_frame_counts": {"value": null, "game": "DS3", "source_url": null, "confidence": "unverifiable", "notes": "UNVERIFIED. Fextralife's Parry page carries no frame data; the per-shield-class parry frame charts circulating in the community were not reachable from a citable source in this pass. Our RI-CMB05's 8-12 frame parry window claim remains canonical-recall."}
+    }
+  },
+
+  "unverified": [
+    "Elden Ring per-tier roll i-frame counts (community testing is openly contradictory; the wiki declines to give a table).",
+    "Per-shield-class parry startup/active frame counts in DS1, DS3 and ER.",
+    "Backstab and riposte animation lengths and their invulnerability windows in any game.",
+    "Attack startup/active/recovery frame data per weapon class for any game - no citable public frame-data table was reached in this pass. Extracted param tables (EquipParamWeapon / AtkParam / Paramdex) exist but were not opened here; a successor should start at github.com/soulsmods/Paramdex.",
+    "Estus drink animation length in frames for any game.",
+    "Lock-on acquisition and break ranges in metres for any game.",
+    "DS1's exact post-spend stamina regeneration delay (DS1 is documented as animation-gated; the 0.70 s figure is a DS3 measurement)."
+  ]
+}
