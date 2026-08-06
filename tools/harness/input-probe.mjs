@@ -27,13 +27,17 @@ USAGE
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
+// 200 inputs x ~90 simulated frames each is 18,000 frames; on this software renderer that is
+// slow enough to be inconvenient, so the sample count is a flag. RI-JRN03 M-K23 asks for 200
+// and that is the default; a critic in a hurry can lower it and must say so in the verdict.
+const LATENCY_SAMPLES = Number(args['latency-samples'] || 200);
 const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, 'INPUT-PROBE');
 ensureDir(outDir);
 
 const handle = await launchGame(args);
 let report;
 try {
-  report = await handle.page.evaluate(async () => {
+  report = await handle.page.evaluate(async ({ latencySamples }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
@@ -172,7 +176,7 @@ try {
     // ---- M-K23 / M-K24: latency in frames, and dropped inputs -----------------------------------
     H.clearInputs(); H.setSeed(1337); H.loadState('arena_flat');
     const lags = [];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < latencySamples; i++) {
       H.stepFrames(10);                            // return to actionable
       const f0 = H.getFrame();
       mouse('mousedown', 0);
@@ -183,6 +187,7 @@ try {
       lags.push(fired ? s.f - f0 - 1 : null);
       H.stepFrames(80);                            // let the swing finish
     }
+    out.checks.MK23_samples_requested = latencySamples;
     const clean = lags.filter((l) => l !== null);
     out.checks.MK23_input_latency_frames = {
       samples: clean.length, dropped: lags.length - clean.length,
@@ -203,7 +208,7 @@ try {
     };
     H.setMode('harness');
     return out;
-  });
+  }, { latencySamples: LATENCY_SAMPLES });
 } finally {
   await handle.close();
 }
