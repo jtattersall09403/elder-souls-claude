@@ -1,0 +1,15 @@
+{
+  "task_id": "temporal-refs",
+  "brief": "inline (TEMPORAL REFERENCE BUILDER)",
+  "started": "wave-post-acq",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/70-visual/refs/TEMPORAL-ACQUISITION.md",
+    "corpus/70-visual/refs/video/**",
+    "corpus/70-visual/refs/souls-behaviour/** (temporal additions)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read A8/A5 amendments, CRITIQUE-R1 wiki-gif finding, REPORT s15",
+  "notes_for_successor": "Constraints: <=40MB/file, <=250MB total for video/. Never re-encode. pixel_metrics_valid:false on all temporal media."
+}
