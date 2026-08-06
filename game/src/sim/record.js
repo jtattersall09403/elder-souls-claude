@@ -236,6 +236,20 @@ function enemyRecord(e, sim, opts) {
     yaw_deg: r2(e.yaw),
     yaw_rate_dps: r2(e.yawRate),
     speed_mps: r3(e.speed),
+    // ---- W1-15 — RI-STL01's requested enemy perception fields ------------------------------
+    // `alert_channel` is the field RI-STL01's Comparison method names as mandatory ("without it
+    // a critic cannot tell a light failure from a sound failure"). It was absent from the
+    // round-1 record entirely, and the verdict said its absence was its own answer.
+    alert_channel: e.alertChannel === undefined ? null : e.alertChannel,
+    // Was there an unbroken sight line to the player's chest node this frame? The occlusion term
+    // round 1 did not have, reported so a wall can be seen to be doing something.
+    los: e.percept_los === undefined ? null : !!e.percept_los,
+    // RI-STL01 §7's search, as a trace field rather than a promise: where the searcher is
+    // walking, how big its band is, and whether S-3 raised it by a shout.
+    search_target: e.searchTarget ? [r2(e.searchTarget[0]), r2(e.searchTarget[1]), r2(e.searchTarget[2])] : null,
+    search_radius_m: e.searchRadius || 0,
+    lkp: e.lkp ? [r2(e.lkp[0]), r2(e.lkp[1]), r2(e.lkp[2])] : null,
+    alert_hop: e.alertHop || 0,
     target: e.alertState === 'AGGRO' ? 'player' : null,
     dist_m: r4(Math.sqrt(dx * dx + dz * dz)),
     los: true,

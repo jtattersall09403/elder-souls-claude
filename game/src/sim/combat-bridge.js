@@ -84,17 +84,20 @@ export function stepCombat(sim, input, combat, bus) {
       }
       // Armour and mitigation are the consuming systems `corrode`, `shield` and the two resists
       // write into, so a spell's damage reads them for the same reason a sword's does.
-      if (dmg > 0) {
+      // `target` is null when the geometry resolved on a WORLD OBJECT rather than a body — a
+      // ward, a lock, a brick wall. Damage has nowhere to go and the handlers do the work.
+      if (dmg > 0 && target) {
         dmg = Math.max(1, Math.round(dmg * (target.mitigation === undefined ? 1 : target.mitigation) - (target.armourRating || 0)));
         if (target.wardCharges > 0) { target.wardCharges--; dmg = 0; }
         target.hp -= dmg;
         if (target.hp <= 0) { target.hp = 0; target.dead = true; }
-      }
+      } else if (!target) dmg = 0;
       M.setContactPoint(contact.at);
       M.applyEffects(frame, spell, target, M.wil);
       M.setContactPoint(null);
       const ev = bus.emit(frame, 'spell_hit');
-      ev.spell = spell.id; ev.target = target.id; ev.dmg = dmg; ev.kind = contact.kind;
+      ev.spell = spell.id; ev.target = target ? target.id : (contact.world || 'world'); ev.dmg = dmg; ev.kind = contact.kind;
+      ev.hit_world_object = contact.world || null;
       ev.status = M.statusBuildupOf(spell);
       // Declared vs applied, on the event: which of this spell's effects were allowed to be
       // damage, and which were routed to a handler instead. A critic reading the stream can

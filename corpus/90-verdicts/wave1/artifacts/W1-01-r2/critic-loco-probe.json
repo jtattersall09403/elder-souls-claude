@@ -1,6 +1,6 @@
 {
  "schema": "critic/w1-01-r2-loco@1",
- "measured_at": "2026-08-06T21:20:39.385Z",
+ "measured_at": "2026-08-06T21:38:35.522Z",
  "probes": {
   "L1_uphill": [
    {
@@ -13,9 +13,9 @@
      -0.81,
      0.58
     ],
-    "horiz_m": 9.4,
-    "climbed_m": 10.28,
-    "state": "WALK",
+    "horiz_m": 5.1,
+    "climbed_m": -12.05,
+    "state": "SLIDE",
     "hp": [
      620,
      620
@@ -24,7 +24,7 @@
      120,
      120
     ],
-    "end_slope_deg": 52.34
+    "end_slope_deg": 59.76
    },
    {
     "at": [
@@ -36,9 +36,9 @@
      0.27,
      -0.96
     ],
-    "horiz_m": 10,
-    "climbed_m": 11.76,
-    "state": "WALK",
+    "horiz_m": 9.95,
+    "climbed_m": -10.36,
+    "state": "SLIDE",
     "hp": [
      620,
      620
@@ -47,7 +47,7 @@
      120,
      120
     ],
-    "end_slope_deg": 54.21
+    "end_slope_deg": 57.7
    },
    {
     "at": [
@@ -59,9 +59,9 @@
      -0.62,
      0.79
     ],
-    "horiz_m": 10,
-    "climbed_m": 16.76,
-    "state": "WALK",
+    "horiz_m": 2.76,
+    "climbed_m": -4.25,
+    "state": "SLIDE",
     "hp": [
      620,
      620
@@ -70,7 +70,7 @@
      120,
      120
     ],
-    "end_slope_deg": 48.21
+    "end_slope_deg": 59.03
    },
    {
     "at": [
@@ -82,9 +82,9 @@
      -0.99,
      0.1
     ],
-    "horiz_m": 10,
-    "climbed_m": 3.69,
-    "state": "WALK",
+    "horiz_m": 2.16,
+    "climbed_m": -3.79,
+    "state": "SLIDE",
     "hp": [
      620,
      620
@@ -93,7 +93,7 @@
      120,
      120
     ],
-    "end_slope_deg": 26.35
+    "end_slope_deg": 42.66
    },
    {
     "at": [
@@ -186,14 +186,14 @@
     "drop_m": 150,
     "placed": true,
     "y0": 172.33,
-    "y1": 22.55,
+    "y1": 30.62,
     "ground": 22.33,
     "hp": [
      620,
      620
     ],
     "state_before": "WALK",
-    "state_after": "WALK"
+    "state_after": "FALL"
    }
   ],
   "L3_water": [
@@ -222,7 +222,7 @@
     "depth_m": 0.181,
     "band": "W1",
     "substrate": "SUCK",
-    "walk_mps": 1.8664,
+    "walk_mps": 0.8933,
     "stamina": [
      120,
      120
@@ -231,7 +231,7 @@
      620,
      620
     ],
-    "state": "WALK"
+    "state": "MIRED"
    },
    {
     "id": "W2-suck",
@@ -240,7 +240,7 @@
     "depth_m": 0,
     "band": "W0",
     "substrate": "SUCK",
-    "walk_mps": 1.8632,
+    "walk_mps": 0,
     "stamina": [
      120,
      120
@@ -249,7 +249,7 @@
      620,
      620
     ],
-    "state": "WALK"
+    "state": "MIRED"
    },
    {
     "id": "W2-silt",
@@ -258,7 +258,7 @@
     "depth_m": 0.437,
     "band": "W2",
     "substrate": "SILT",
-    "walk_mps": 1.7,
+    "walk_mps": 0.2659,
     "stamina": [
      120,
      120
@@ -276,16 +276,16 @@
     "depth_m": 8.28,
     "band": "W5",
     "substrate": "SILT",
-    "walk_mps": 1.1,
+    "walk_mps": 1.012,
     "stamina": [
-     120,
-     120
+     119.933333,
+     119.933333
     ],
     "hp": [
      476,
      476
     ],
-    "state": "WALK"
+    "state": "SWIM"
    }
   ],
   "L4_travel": {

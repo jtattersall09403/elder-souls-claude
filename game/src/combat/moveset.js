@@ -188,9 +188,11 @@ export class MovesetLibrary {
     const pick = (id, reason) => (has(id) ? { slot: id, reason } : { slot: null, reason: `${reason}:absent` });
 
     // --- weapon art: heavy while two_hand is HELD. Checked first because it shadows r2. -------
-    if (ctx.two_hand_held && button === 'heavy') {
-      return pick(ctx.held_frames >= 12 && has('art.2') ? 'art.2' : 'art.1', 'art');
-    }
+    // input-map.json: `art.1` is "two_hand held + heavy TAP" and `art.2` is "two_hand held +
+    // heavy HELD >= 12 f@60". A press cannot yet know whether it is a tap or a hold, so this
+    // always resolves to `art.1` and the runtime promotes it to `art.2` if the button is still
+    // down twelve frames later — the same discriminator, and the same place, as `r2.charged`.
+    if (ctx.two_hand_held && button === 'heavy') return pick(pre + 'art.1', 'art');
 
     // --- airborne ----------------------------------------------------------------------------
     if (ctx.state === 'AIRBORNE') {

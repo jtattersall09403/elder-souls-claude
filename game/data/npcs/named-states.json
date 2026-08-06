@@ -1,0 +1,229 @@
+{
+  "schema": "elder-souls/npcs@1",
+  "group": "named-states",
+  "owner": "W1-07 — race and standing",
+  "source": "RI-CHR02 methods 7 and 9 and RI-CHR03 methods 3 and 7 name three states by id: helstrom-market, stormhold-street, rootlands-well-graph. Round 1 shipped none of them, so five assigned methods could not be run at all. These are the people standing in them.",
+  "npcs": [
+    {
+      "id": "helstrom-draught-seller",
+      "name": "Ashul-Reeh",
+      "race": "saxhleel",
+      "class": "apothecary",
+      "faction": "town",
+      "reaction_group": "RG-DEEP",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 50,
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "Sixty for the draught and it is sixty because it works."
+      }
+    },
+    {
+      "id": "helstrom-salt-factor",
+      "name": "Drovas Reln",
+      "race": "dunmer",
+      "class": "factor",
+      "faction": "house-dres",
+      "reaction_group": "RG-DRES",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "The House buys salt, reed and time. Which are you selling?"
+      }
+    },
+    {
+      "id": "helstrom-net-mender",
+      "name": "Hul-Meesh",
+      "race": "saxhleel",
+      "class": "fisher",
+      "faction": null,
+      "reaction_group": "RG-TOWN",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 42,
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Mind the ropes. They are not decorative."
+      }
+    },
+    {
+      "id": "helstrom-reed-seller",
+      "name": "Perrine Bec",
+      "race": "breton",
+      "class": "merchant",
+      "faction": null,
+      "reaction_group": "RG-TOWN",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 40,
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "Reed, rope, and one very good knife I am not selling."
+      }
+    },
+    {
+      "id": "stormhold-gate-guard",
+      "name": "Cassius Melo",
+      "race": "imperial",
+      "class": "legionary",
+      "title": "Decanus",
+      "faction": "legion",
+      "reaction_group": "RG-EMPIRE",
+      "settlement": "stormhold",
+      "interior": null,
+      "disposition": 38,
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "services": [
+        "arrest"
+      ],
+      "lines": {
+        "greeting": "State your business on the street."
+      }
+    },
+    {
+      "id": "stormhold-second-guard",
+      "name": "Livia Sarran",
+      "race": "imperial",
+      "class": "legionary",
+      "faction": "legion",
+      "reaction_group": "RG-EMPIRE",
+      "settlement": "stormhold",
+      "interior": null,
+      "disposition": 36,
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "services": [
+        "arrest"
+      ],
+      "lines": {
+        "greeting": "Keep to the road."
+      }
+    },
+    {
+      "id": "stormhold-street-sweeper",
+      "name": "Okan-Zei",
+      "race": "saxhleel",
+      "class": "townsman",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "stormhold",
+      "interior": null,
+      "disposition": 44,
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You are standing where the water goes."
+      }
+    },
+    {
+      "id": "rootlands-keeper",
+      "name": "Teeba-Ei",
+      "race": "saxhleel",
+      "class": "rootkeeper",
+      "faction": "rootkeepers",
+      "reaction_group": "RG-ROOT",
+      "settlement": "rootlands",
+      "interior": null,
+      "disposition": 52,
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "services": [
+        "rest"
+      ],
+      "lines": {
+        "greeting": "The tree is well. That is usually the question."
+      }
+    },
+    {
+      "id": "rootlands-drowned-speaker",
+      "name": "Nokh-Vashan",
+      "race": "saxhleel",
+      "class": "vakh-speaker",
+      "faction": "vakh",
+      "reaction_group": "RG-VAKH",
+      "settlement": "rootlands",
+      "interior": null,
+      "disposition": 30,
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The water is high. It is always high."
+      }
+    },
+    {
+      "id": "rootlands-band-elder",
+      "name": "Xhuth",
+      "race": "naga",
+      "class": "band-elder",
+      "faction": "river-bands",
+      "reaction_group": "RG-NAGA",
+      "settlement": "rootlands",
+      "interior": null,
+      "disposition": 40,
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "services": [
+        "ferry"
+      ],
+      "lines": {
+        "greeting": "You are on the wrong side."
+      }
+    }
+  ]
+}

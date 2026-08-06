@@ -201,6 +201,11 @@ export function installHarness(engine, bootPromise) {
     getWaterAt(x, z) { return engine.getWaterAt(x, z); },
     getTerrainAt(x, z) { return engine.getTerrainAt(x, z); },
     getRegionAt(x, z) { return engine.getRegionAt(x, z); },
+    // RI-WLD04 M19. `signatureAudit()` re-derives each instance's region from the region raster,
+    // so it reports where the thing actually is and not what it was labelled.
+    getSignatures(filter) { return engine.getSignatures(filter); },
+    signatureAudit() { return engine.signatureAudit(); },
+    getRegionSignature(x, z) { return engine.getRegionSignature(x, z); },
     setTide(stateOrPhase) { return engine.setTide(stateOrPhase); },
     getTide() { return engine.getTide(); },
     getRoutes() { return engine.getRoutes(); },
@@ -487,7 +492,13 @@ export function installHarness(engine, bootPromise) {
     /** Buying a spell teaches you its effects — the spellmaking knowledge gate. */
     learnSpell(id) { return engine.magic.learnSpell(id); },
     /** Enchanting arithmetic: points, capacity, soul-grade gate, gold, charge. */
-    enchantQuote(spec) { return engine.magic.enchantQuote(spec); },
+    enchantQuote(spec) {
+      const e = engine.data.magic.enchanting.enchanters.find((x) => x.id === (spec && spec.enchanter));
+      if (e && e.quest_gated && !engine.sim.quest.flags[e.quest_gated]) {
+        return { ok: false, problems: [`${e.name} will not see you: ${e.quest_gated} has not happened`], gated_by: e.quest_gated };
+      }
+      return engine.magic.enchantQuote(spec);
+    },
     /** SG-5's anti-farm downgrade and SG-6's xul_hesh counter, both observable. */
     trapSoul(instanceId, grade, isSpeaker) { return engine.magic.trapSoul(engine.sim.frame, String(instanceId), String(grade), !!isSpeaker); },
     getXulHesh() { return engine.magic.xulHeshConsequences(); },
@@ -579,7 +590,61 @@ export function installHarness(engine, bootPromise) {
     questFail(id, failureId) { return engine.questEngine.fail(String(id), String(failureId)); },
     questSetFlag(flag, v) { return engine.questEngine.setFlag(String(flag), v === undefined ? true : v); },
     questBook() { return engine.questEngine ? engine.questEngine.book.ids.slice() : []; },
-    questEventsDrain() { return engine.questEngine ? engine.questEngine.drain() : []; },
+    questEventsDrain() { return engine.questEngine ? engine.questEngine.drainEvents() : []; },
+    /** What a named resolution actually requires, so a probe can satisfy it rather than guess. */
+    questResolutionRequirements(questId, resolutionId) {
+      const q = engine.questEngine.book.get(String(questId));
+      const r = (q.resolutions || []).find((x) => x.id === String(resolutionId));
+      if (!r) throw new Error(`questResolutionRequirements: ${questId} has no resolution '${resolutionId}'`);
+      return { ...(r.requires || {}), requires_knowing: r.requires_knowing || [], method: r.method, journal_index: r.journal_index, violence_required: !!r.violence_required };
+    },
+    /** Seed a dialogue topic. The topic gate on `opens_by` is what makes a quest offerable. */
+    learnTopic(topic) {
+      const t = String(topic);
+      if (!engine.sim.quest.topicsKnown.includes(t)) engine.sim.quest.topicsKnown.push(t);
+      engine.sim.quest.topicsKnown.sort();
+      return engine.sim.quest.topicsKnown.slice();
+    },
+    /** Set progression skills directly — the numbers a resolution's `requires.skills` reads. */
+    setSkills(patch) {
+      const S = engine.sim.progression.skills;
+      for (const k of Object.keys(patch || {})) S[k] = { value: Number(patch[k]), useProgress: 0 };
+      return Object.fromEntries(Object.entries(S).map(([k, v]) => [k, v && v.value != null ? v.value : v]));
+    },
+    /**
+     * RI-MAG05 PART 2's F-M1 checklist and §B2 budget, as the build's own DECLARATION. The
+     * critic measures both independently (draw calls from `getWorldStats()`, the features from
+     * screenshots); this is here so a declared-vs-observed mismatch is one diff rather than an
+     * argument, which is HARNESS §7 rule 4's whole point.
+     */
+    getSpellVFXReport() {
+      const v = engine.renderer && engine.renderer.vfx;
+      if (!v) return { _declared_incomplete: { owner: 'W1-14', missing: 'the VFX system has not been constructed yet — render at least one frame first' } };
+      return {
+        features: v.featureReport(),
+        live: { ...v.stats },
+        budget: {
+          particles_per_spell_max: 900, particles_per_spell_max_GREAT: 1600, particles_frame_max: 4000,
+          particle_draw_calls_per_spell_max: 6, particle_draw_calls_frame_max: 24,
+          distinct_systems_per_spell_min: 3, residue_decals_per_spell_min: 1, residue_decals_live_max: 60,
+        },
+        palette: engine.data.magic.vfx.palette,
+        design_language: engine.data.magic.vfx.design_language.map((l) => l.id),
+        intensity_by_phase: engine.data.magic.vfx.intensity_by_phase,
+      };
+    },
+    /** Learn a truth the quest declares. The ONLY way a `requires_knowing` gate is satisfied. */
+    questReveal(questId, revealId) { return engine.questEngine.reveal(String(questId), String(revealId)); },
+    /**
+     * Is this enchanter's counter open? RI-MAG04 §E X5's chain runs through a quest-gated
+     * enchanter, so whether that gate is shut has to be readable rather than implied.
+     */
+    enchanterOpen(id) {
+      const e = engine.data.magic.enchanting.enchanters.find((x) => x.id === String(id));
+      if (!e) throw new Error(`enchanterOpen('${id}'): unknown enchanter`);
+      const gate = e.quest_gated || null;
+      return { id: e.id, gate, open: !gate || !!engine.sim.quest.flags[gate], max_points: e.max_points === undefined ? null : e.max_points, gold_multiplier: e.gold_multiplier };
+    },
     /** Which effects the player has actually CAST — what the resolution gate now reads. */
     getCastEffects() { return [...engine.magic.castEffects].sort(); },
     /**
@@ -681,7 +746,54 @@ export function installHarness(engine, bootPromise) {
     /** RI-STL01 §8: the seam. Returns a BOOLEAN and nothing else. */
     isStealthOpener(q) { return engine.isStealthOpener(q || {}); },
     /** RI-STL01 §4: the four discrete sound events, including the distraction throw. */
-    emitStealthSound(id) { engine.sim.stealth.emitSound(engine.sim, engine.sim.frame, String(id), engine.bus); return true; },
+    emitStealthSound(id, at) { return engine.sim.stealth.emitSound(engine.sim, engine.sim.frame, String(id), engine.bus, at || null); },
+
+    // ---- W1-15 round 2: the surfaces RI-MTH07's coupling test needs ------------------------
+    // Every one of these PERTURBS THE WORLD. None of them reports a model's own return value,
+    // and none of them lets a probe tell the engine what it should have observed.
+
+    /**
+     * Put a wall in the world. An axis-aligned box added to the stealth occluder cell, which
+     * line of sight casts against alongside `sim.cell` — the same static collision set the
+     * camera's spring arm and the player's body use. This exists so `RI-MTH07`'s LOS pair can
+     * be measured in an otherwise empty arena without mutating a shared camera fixture.
+     */
+    addOccluder(spec) { return engine.addOccluder(spec || {}); },
+    listOccluders() { return engine.sim.stealth.occluders.shapes.map((s) => ({ id: s.id, k: s.k })); },
+    /** Is the segment from a to b clear? The predicate itself, for a critic's independent check. */
+    losBetween(a, b) { return engine.losBetween(a, b); },
+    /** RI-STL01 §2's `A` term as the world computes it, at an arbitrary point. */
+    coverAt(x, y, z) { return engine.coverAt(Number(x), Number(y), Number(z)); },
+    /** S-1's nav-mesh cover volumes. The searcher's plausible set is drawn from these. */
+    addCoverVolume(spec) { return engine.addCoverVolume(spec || {}); },
+    listCoverVolumes() { return engine.sim.stealth.coverVolumes.map((v) => ({ ...v })); },
+    /** RI-STL01 §7: every live search, with its plan, its band and its visited set. */
+    getSearchState() {
+      return engine.sim.stealth.searches.map((s) => ({
+        eid: s.eid, lkp: s.lkp, zone: s.zone, start_f: s.startFrame, end_f: s.endFrame,
+        radius_m: s.radiusAt(engine.sim.frame), plan: s.plan.map((v) => v.id), visited: s.visited.slice(),
+        acquired: s.acquired, over: !!s.over,
+      }));
+    },
+    /**
+     * Force the motion band. `RI-STL01` §4's sound model is a function of the movement mode, and
+     * an input-driven sprint in an arena with no ground is not a reliable way to hold one for
+     * ten seconds. This sets the band the way `setZoneAmbient` sets the light — a world fact,
+     * not an assertion. `null` returns the band to the controller's actual speed.
+     */
+    setPlayerMotion(m) { return engine.setPlayerMotion(m === undefined || m === null ? null : String(m)); },
+    /** A guard, as a person: a witness with `guard_V_min`, a report target, and a jurisdiction. */
+    spawnGuard(spec) { return engine.spawnGuard(spec || {}); },
+    /** RI-CRM01 §3b's four responses to a fleeing witness, driven at the pending report. */
+    listPendingReports() { return engine.listPendingReports(); },
+    bribeWitness(i, gold) { return engine.bribeWitness(Number(i), gold === undefined ? null : Number(gold)); },
+    talkDownWitness(i, ok) { return engine.talkDownWitness(Number(i), !!ok); },
+    /** RI-AI01 §B's instant channels, so a critic can raise a meter without moving the player. */
+    raiseEnemyAlert(eid, amount, channel) { return engine.sim.stealth.raiseAlert(engine.sim, String(eid), Number(amount), String(channel || 'shout')); },
+    /** RI-STL02 §6: launder a registered stolen item through a fence, for real. */
+    fenceSell(fenceId, instance) { return engine.fenceSell(String(fenceId), String(instance)); },
+    /** RI-QST05: the verb census over the shipped quest tree. */
+    questVerbCensus() { return engine.questVerbCensus(); },
 
     /** RI-STL02: listOwnedObjects(interiorId) -> [{instance, owner, owner_scope, value_g}] */
     listOwnedObjects(zoneId) { return engine.listOwnedObjects(String(zoneId)); },

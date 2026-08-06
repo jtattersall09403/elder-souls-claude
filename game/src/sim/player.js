@@ -80,7 +80,15 @@ export function stepPlayer(sim, input, moves, bus) {
           : startBit === BIT.parry ? 'parry' : null;
     const md = id ? moves[id] : null;
     if (md) {
-      if (p.stamina < md.stamina) {
+      // S25 again: the roll is denied above W2 and every action is denied while swimming. The
+      // move's FRAME DATA is never touched — that is the clause the seam turns on.
+      if ((id === 'roll' && p.denyRoll) || (p.waterBand === 'W5' && id !== 'roll') || p.mired) {
+        const e = bus.emit(f, 'action_denied_by_water');
+        e.button = id; e.band = p.waterBand || 'W0'; e.mired = !!p.mired;
+        // RI-WLD10 §4: while MIRED the roll press is not a roll, it is a STRUGGLE — one per
+        // 30 f, 25 stamina, three of them break you out. sim/traversal.js owns the counter.
+        if (id === 'roll' && p.mired) p.mireStruggle = true;
+      } else if (p.stamina < md.stamina) {
         bus.emit(f, 'input_dropped_no_stamina').button = id;
       } else {
         p.stamina = Math.max(0, p.stamina - md.stamina);
@@ -161,7 +169,13 @@ export function stepPlayer(sim, input, moves, bus) {
       const dl = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]) || 1;
       dir[0] /= dl; dir[1] /= dl;
 
-      const sprinting = (input.held & BIT.sprint) !== 0 && p.stamina > 0;
+      // S25: above knee depth sprint is DENIED, not slowed. "A denied action is legible; a
+      // silently degraded one is not." `p.denySprint` is written by sim/traversal.js off the
+      // band the body is standing in, so the water model decides and this only obeys.
+      if ((input.held & BIT.sprint) !== 0 && p.denySprint) {
+        bus.emit(f, 'action_denied_by_water').button = 'sprint';
+      }
+      const sprinting = (input.held & BIT.sprint) !== 0 && p.stamina > 0 && !p.denySprint;
       let mps;
       if (sprinting) {
         mps = PLAYER_CONST.sprint_mps;

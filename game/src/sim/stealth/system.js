@@ -590,6 +590,40 @@ export class StealthCrime {
     q.hunting = this.crime.hunters.map((h) => h.id || h.faction || String(h)).sort();
   }
 
+  /**
+   * Clear the subsystem to its boot state. Called by `applyNamedState()`, i.e. by every
+   * `reset()` and every `loadState()`.
+   *
+   * The list is exhaustive by construction: everything below is either re-`new`ed or emptied.
+   * The player's SKILLS are deliberately preserved — a named state may declare a character and
+   * the character piece owns that — but the CRIME LEDGER, the civilians, the searches, the zone
+   * memory, the scratch occluders and the context are all scenario state and all go.
+   */
+  resetSubsystem() {
+    this.zones = new ZoneMemory(this.d.search);
+    this.crime = new CrimeWorld(this.d.bounty, this.d.justice);
+    this.civilians.length = 0;
+    this.pending.length = 0;
+    this.searches.length = 0;
+    this.events.length = 0;
+    this.coverVolumes.length = 0;
+    this.occluders = new CollisionCell('stealth_occluders', []);
+    for (const s of this.light.sources) { s.lit = true; s.relightAtF = -1; }
+    Object.assign(this.p, {
+      crouched: false, crouchRefusedReason: null, inCover: false, inCoverForced: false,
+      inCoverFraction: 0, motionForced: null, carryingTorch: false, zone: null, motion: 'still',
+      lockAttempt: null, pickpocket: null, jurisdiction: 'imperial', settlement: null,
+      magicChameleonPct: 0, magicInvisible: false, magicMufflePct: 0, magicLightBonus: 0, magicDisguise: false,
+    });
+    this.setContext('public_street_sheathed');
+    // The world's own object records carry `stolen_from`; a scenario boundary must put them
+    // back or the second scenario in a session starts with the first one's loot marked hot.
+    for (const k of Object.keys(this.property || {})) {
+      for (const z of this.property[k].zones || []) for (const c of z.contents || []) c.stolen_from = null;
+    }
+    return true;
+  }
+
   // ---- helpers used by the step and by the harness ----------------------------------------
 
   effectiveContextWeight() {
@@ -693,6 +727,18 @@ export class StealthCrime {
     return this.civilians.map((c) => ({
       eid: c.eid, group: c.group, civ_state: c.civ_state,
       suspicion: r2(c.suspicion), context_weight: this.effectiveContextWeight(),
+      // The terms the round-1 verdict could not see: which channel is filling this person, and
+      // whether they can actually see you.
+      alert_channel: c.alert_channel || null,
+      los: c.los === undefined ? null : !!c.los,
+      dist_m: c.dist === undefined ? null : r2(c.dist),
+      pos: [r2(c.pos[0]), r2(c.pos[1]), r2(c.pos[2])],
+      yaw_deg: r2(c.yaw),
+      // A fleeing witness is "legible from across a street" (RI-CRM01 §3a) — so it is legible
+      // in the trace too: who they are running at, and how long until the report lands.
+      reporting: !!c.reporting,
+      fleeing_to: c.flee ? c.flee.target_eid : null,
+      witnessed: c.witnessed || 0,
     }));
   }
 

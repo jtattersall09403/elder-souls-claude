@@ -1,28 +1,36 @@
 {
   "task_id": "W1-15-r2",
-  "brief": "round-2 ULTRACODE rebuild of W1-15 stealth/crime — close GAP-W1-stealth-crime-model-not-coupled-to-the-world",
+  "brief": "round-2 ULTRACODE rebuild of W1-15 stealth/crime \u2014 close GAP-W1-stealth-crime-model-not-coupled-to-the-world",
   "started": "wave-1 round 2",
-  "state": "researching",
+  "state": "building",
   "tier": "ultracode",
   "verdict_round1": "corpus/90-verdicts/wave1/W1-15.json (FAIL 2/10)",
   "outputs_expected": [
-    "game/src/sim/entities.js — perception reads V/sound, alert_channel, LOS occlusion, search",
-    "game/src/sim/stealth/system.js — witness derivation from live world, sound reaches civilians, LOS",
-    "game/src/sim/stealth/perception.js (new) — the single shared perception kernel",
+    "game/src/sim/entities.js \u2014 perception reads V/sound, alert_channel, LOS occlusion, search",
+    "game/src/sim/stealth/system.js \u2014 witness derivation from live world, sound reaches civilians, LOS",
+    "game/src/sim/stealth/perception.js (new) \u2014 the single shared perception kernel",
     "game/src/sim/inventory (stolen registry) + save path",
     "guard entities + parley reachability",
     "quest data: sneak/steal resolutions to clear VERB-SPREAD",
-    "tools/harness/w1-15-coupling.mjs — RI-MTH07 coupling probes driven world-side"
+    "tools/harness/w1-15-coupling.mjs \u2014 RI-MTH07 coupling probes driven world-side"
   ],
   "outputs_written": [],
   "findings": [
-    "R1 defect A: entities.js stepEntities() hold_ground branch does `e.alert = min(100, e.alert+4)` — flat, never multiplies by sim.stealth.p.V. This is the coupling-0 call site.",
-    "R1 defect B: stealth/system.js step() §5 loops civilians only; no witness derivation, no sound propagation into civilians (only emitSound() discrete events).",
+    "R1 defect A: entities.js stepEntities() hold_ground branch does `e.alert = min(100, e.alert+4)` \u2014 flat, never multiplies by sim.stealth.p.V. This is the coupling-0 call site.",
+    "R1 defect B: stealth/system.js step() \u00a75 loops civilians only; no witness derivation, no sound propagation into civilians (only emitSound() discrete events).",
     "R1 defect C: no occlusion anywhere; p.inCover is an authored boolean A=0.80.",
     "R1 defect D: search.js Search/ZoneMemory never instantiated by the step (this.searches = [] is never pushed to).",
     "R1 defect E: engine.takeObject() sets obj.stolen_from on the DATA record but never adds to an inventory or crime.stolen_registry; save/state.js has no stolen registry.",
-    "R1 defect F: no guard entities exist; getGuardBand() is a pure function of setBounty()."
+    "R1 defect F: no guard entities exist; getGuardBand() is a pure function of setBounty().",
+    "CRITICAL: sim/entities.js stepEntities() is DEAD CODE \u2014 never called from step.js. The LIVE perception call site the critic was looking for is combat/enemy.js::_idleBehaviour line ~222: `if (sees || b.aggro) this.alert = Math.min(100, this.alert+4)`. combat-bridge.js mirrors ec.alert -> e.alert every frame.",
+    "Perception is now owned by ONE module: game/src/sim/stealth/perception.js, called from stealth/system.js stepPerception(). combat/enemy.js no longer fills the meter; it reads it.",
+    "MEASURED after the fix, RI-STL01 method 2 (inf_trash at 8 m, R=16): r2 4.00s vs item 3.94 (1.52%), r3 8.50 vs 8.5 (0.00%), r4 26.667 vs 26.7 (0.12%). r1 within sampling granularity of 1.03. Coupling is no longer 0.",
+    "inf_trash sight_radius_m moved 14.0 -> 16.0 (RI-AI01 \u00a7B nominal INFANTRY; \u00b12 tolerance). RI-STL01 \u00a72's worked table is computed at R=16.",
+    "CORPUS CONFLICT FOUND: RI-AI01 \u00a7B states the primary sight rate as '100/s at <=0.5R, 50/s at 1.0R'; RI-STL01 \u00a72's worked table implies 75/s at 0.5R (97.5 = 150*1.30*0.5). Irreconcilable. Build uses RI-STL01's form (its method 2 asserts against that table). Filed for the bar critic.",
+    "detection.json peripheral_rate_scale corrected 0.45 -> 0.35 (RI-AI01 \u00a7B). Added hearing_rate_per_s {60,40,25,0}, hearing_wall_attenuation 0.4, peripheral_alert_cap 70 \u2014 all RI-AI01 \u00a7B verbatim.",
+    "LOS uses sim.cell.sphereCast() \u2014 the SAME static collision set the camera spring arm and player body use \u2014 plus a stealth scratch occluder cell. r=0.05 m probe (r=0 makes conservative advancement degenerate).",
+    "Stepping 1 frame at a time over the playwright bridge is far too slow (>120 s for 2 rows). Probe loops must run inside page.evaluate()."
   ],
-  "next_step": "verify boot + baseline critic run, then build the shared perception kernel",
+  "next_step": "rewrite w1-15-coupling.mjs with in-page loops; then search, witnesses, parley, quest verbs",
   "notes_for_successor": ""
 }

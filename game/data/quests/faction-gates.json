@@ -1,0 +1,912 @@
+{
+  "schema": "elder-souls/faction-gates@1",
+  "id": "faction-gates",
+  "corpus_item": "RI-QST03 §A (two favoured attributes, six favoured skills) and §B (the four-part rank statement)",
+  "generated_by": "tools/analysis/gen-faction-gates.mjs",
+  "note": [
+    "The rank ladders for every faction the quest book references, and no others.",
+    "RI-QST03 §B repeats one rule three times: \"No rank may reference character level, souls,",
+    "gold-on-hand, or a raw quest counter.\" game/src/sim/quest/gate.js enforces that at",
+    "construction and throws — a level gate here is a build that does not start, not a low score.",
+    "",
+    "This file did not exist. QuestEngine requires it, which is one of the two reasons the quest",
+    "runtime was never instantiated and RI-MAG04 M6 scored 0. Wave-1 pieces W1-2x own the CONTENT",
+    "of these ladders and should re-derive every number; what is binding here is the SHAPE."
+  ],
+  "factions": [
+    {
+      "id": "deep_kin",
+      "name": "The Deep Kin",
+      "favoured_attributes": [
+        "willpower",
+        "intelligence"
+      ],
+      "favoured_skills": [
+        "root-speech",
+        "sorcery",
+        "survival",
+        "warding",
+        "veiling",
+        "alchemy"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Stranger",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Guest",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Known",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Kin-Named",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Deep Kin",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Elder Kin",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "Root-Kin",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "deep_kin:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "The Deep",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "deep_kin:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ixtu_vakh",
+      "name": "The Ixtu-Vakh",
+      "favoured_attributes": [
+        "endurance",
+        "strength"
+      ],
+      "favoured_skills": [
+        "claw-fang",
+        "survival",
+        "athletics",
+        "axes-maces",
+        "marksman",
+        "acrobatics"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Egg",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Hatchling",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Runner",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Hunter",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Pack-Hunter",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Spear-Kin",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "War-Kin",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "ixtu_vakh:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "Ixtu-Vakh",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "ixtu_vakh:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "the_dockhands",
+      "name": "The Dockhands",
+      "favoured_attributes": [
+        "strength",
+        "endurance"
+      ],
+      "favoured_skills": [
+        "athletics",
+        "mercantile",
+        "blades",
+        "shieldcraft",
+        "speechcraft",
+        "security"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Casual",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Hand",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Rope",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Ganger",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Foreman",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Wharf-Master",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "Ledger-Keeper",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "the_dockhands:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "Harbourmaster",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "the_dockhands:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "the_drowned_court",
+      "name": "The Drowned Court",
+      "favoured_attributes": [
+        "willpower",
+        "endurance"
+      ],
+      "favoured_skills": [
+        "sorcery",
+        "warding",
+        "root-speech",
+        "survival",
+        "veiling",
+        "alchemy"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Wader",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Knee-Deep",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Waist-Deep",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Chest-Deep",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Drowned",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Deep-Drowned",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "Court-Sworn",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "the_drowned_court:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "The Drowned Crown",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "the_drowned_court:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "the_imperial_assize",
+      "name": "The Imperial Assize",
+      "favoured_attributes": [
+        "personality",
+        "intelligence"
+      ],
+      "favoured_skills": [
+        "speechcraft",
+        "mercantile",
+        "blades",
+        "marksman",
+        "security",
+        "alchemy"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Clerk",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Notary",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Assessor",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Adjutant",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Assizer",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Senior Assizer",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "Prefect",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "the_imperial_assize:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "Legate of the Assize",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "the_imperial_assize:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "the_ixtu_vakh",
+      "name": "The Ixtu-Vakh",
+      "favoured_attributes": [
+        "endurance",
+        "strength"
+      ],
+      "favoured_skills": [
+        "claw-fang",
+        "survival",
+        "athletics",
+        "axes-maces",
+        "marksman",
+        "acrobatics"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Egg",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Hatchling",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Runner",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Hunter",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Pack-Hunter",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Spear-Kin",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "War-Kin",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "the_ixtu_vakh:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "Ixtu-Vakh",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "the_ixtu_vakh:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "the_rootkeepers",
+      "name": "The Rootkeepers",
+      "favoured_attributes": [
+        "willpower",
+        "personality"
+      ],
+      "favoured_skills": [
+        "root-speech",
+        "warding",
+        "alchemy",
+        "survival",
+        "speechcraft",
+        "veiling"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Supplicant",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Leaf",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Green Hand",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Sapwright",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Root-Speaker",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Deep Root",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "Hist-Marked",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "the_rootkeepers:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "Voice of the Hist",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "the_rootkeepers:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "the_wet_ledger",
+      "name": "The Wet Ledger",
+      "favoured_attributes": [
+        "agility",
+        "personality"
+      ],
+      "favoured_skills": [
+        "security",
+        "sneak",
+        "mercantile",
+        "speechcraft",
+        "veiling",
+        "acrobatics"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Runner",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Fence",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Ledger-Hand",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Quiet Partner",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Book-Keeper",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Underwriter",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "Silent Partner",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "the_wet_ledger:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "The Ledger",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "the_wet_ledger:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "the_xul_aneekh",
+      "name": "The Xul-Aneekh",
+      "favoured_attributes": [
+        "intelligence",
+        "willpower"
+      ],
+      "favoured_skills": [
+        "sorcery",
+        "veiling",
+        "warding",
+        "alchemy",
+        "security",
+        "sneak"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Unnamed",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Taken",
+          "reputation": 10,
+          "attribute": 25,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Bound",
+          "reputation": 25,
+          "attribute": 30,
+          "skill_1": 30,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Debtor",
+          "reputation": 40,
+          "attribute": 35,
+          "skill_1": 40,
+          "skill_2": 25,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Keeper",
+          "reputation": 55,
+          "attribute": 45,
+          "skill_1": 50,
+          "skill_2": 35,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Gem-Cutter",
+          "reputation": 70,
+          "attribute": 55,
+          "skill_1": 60,
+          "skill_2": 45,
+          "world_state": null
+        },
+        {
+          "rank": 6,
+          "name": "Sap-Drinker",
+          "reputation": 85,
+          "attribute": 65,
+          "skill_1": 70,
+          "skill_2": 55,
+          "world_state": {
+            "flag": "the_xul_aneekh:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "Xul-Aneekh",
+          "reputation": 100,
+          "attribute": 75,
+          "skill_1": 80,
+          "skill_2": 65,
+          "world_state": {
+            "flag": "the_xul_aneekh:trusted",
+            "text": "the faction has trusted you with something it cannot take back"
+          }
+        }
+      ]
+    }
+  ],
+  "exclusivity": {
+    "hard_groups": [
+      {
+        "id": "the_two_courts",
+        "members": [
+          "the_drowned_court",
+          "the_imperial_assize"
+        ],
+        "why": "You cannot swear to a drowned crown and to the Assize that would hang it."
+      }
+    ],
+    "enemy_pairs": [
+      [
+        "the_xul_aneekh",
+        "deep_kin"
+      ],
+      [
+        "the_wet_ledger",
+        "the_imperial_assize"
+      ]
+    ],
+    "soft": [
+      {
+        "a": "the_dockhands",
+        "b": "the_wet_ledger",
+        "penalty": -15,
+        "why": "The wharf knows who fences its cargo."
+      }
+    ]
+  }
+}

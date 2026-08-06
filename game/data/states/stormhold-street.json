@@ -1,0 +1,95 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "stormhold-street",
+  "owner": "W1-07 — character creation / race and standing",
+  "title": "The street up to the Stormhold gate. RI-CHR02 method 9 loads this: two guards at a post, a bounty, and ten races' worth of loiter tolerance.",
+  "env": {
+    "timeOfDay": 9.0,
+    "weather": "overcast",
+    "region": "stormhold",
+    "interior": "stormhold-street"
+  },
+  "player": {
+    "pos": [
+      0,
+      0,
+      26.0
+    ],
+    "yaw": 0.0
+  },
+  "camera": {
+    "yaw": 0.0,
+    "pitch": -6.0,
+    "mode": "free"
+  },
+  "npcs": [
+    {
+      "from_record": "stormhold-gate-guard",
+      "pos": [
+        -2.0,
+        0,
+        32.4
+      ],
+      "yaw": 185,
+      "behaviour": "post",
+      "notice_radius_m": 8
+    },
+    {
+      "from_record": "stormhold-second-guard",
+      "pos": [
+        2.2,
+        0,
+        32.4
+      ],
+      "yaw": 180,
+      "behaviour": "post",
+      "notice_radius_m": 8,
+      "height_scale": 0.97
+    },
+    {
+      "from_record": "stormhold-street-sweeper",
+      "pos": [
+        -5.4,
+        0,
+        20.0
+      ],
+      "yaw": 90,
+      "behaviour": "stand",
+      "notice_radius_m": 4
+    }
+  ],
+  "props": [
+    {
+      "eid": "street-lawboard",
+      "name": "The law, nailed to a board",
+      "item": "law-board",
+      "takeable": false,
+      "pos": [
+        2.9,
+        1.6,
+        32.5
+      ],
+      "material": "plank"
+    }
+  ],
+  "spawn": [],
+  "character": {
+    "race": "saxhleel",
+    "upbringing": "interior",
+    "class": "reed-walker",
+    "birthsign": "raj-xul",
+    "given_name": "Unwritten",
+    "sex": "unrecorded"
+  },
+  "loadout": {
+    "weapon": "straight-sword",
+    "shield": "marsh_oak_medium",
+    "endurance": 20,
+    "hpMax": 620,
+    "armourPoise": 28,
+    "equipLoadPct": 24.0,
+    "flaskLevel": 0,
+    "estus": 5,
+    "gold": 600
+  }
+}

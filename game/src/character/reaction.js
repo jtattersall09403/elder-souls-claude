@@ -91,9 +91,15 @@ export function skillPriceTerms({ disposition = 40, mercantile = 5, personality 
 export function priceQuote(data, { group, race, upbringing, basePrice, skillBuyMult, skillSellMult, skills, attributes, disposition }) {
   const s = raceSurcharge(data, { group, race, upbringing });
   const derived = skillPriceTerms({
-    disposition: disposition === undefined
-      ? derivedDisposition(data, { group, race, upbringing, baseDisposition: 50 }).value
-      : disposition,
+    // THE DOUBLE-COUNT, avoided deliberately. RI-CHR02 §4b says the surcharge "multiplies
+    // RI-PRG05's existing terms", and its own worked example is `0.80 x 1.26 = 1.008` — the
+    // 0.80 being RI-PRG05's FLOOR, which a Mercantile-100/PER-60 character reaches at any
+    // disposition at or above ~27. Feeding the race-modified disposition into the barter
+    // formula as well would charge a Dunmer for their race twice, turn "a permanent handicap
+    // you can pay down" into one you cannot, and put the worked example out of reach. So the
+    // skill term uses the merchant's BASE disposition (50 by default) and the race term is
+    // applied exactly once, as the surcharge. A caller may state a disposition explicitly.
+    disposition: disposition === undefined ? 50 : disposition,
     mercantile: (skills && skills.mercantile !== undefined)
       ? (typeof skills.mercantile === 'object' ? skills.mercantile.value : skills.mercantile) : 5,
     personality: (attributes && attributes.personality !== undefined) ? attributes.personality : 10,
@@ -109,6 +115,12 @@ export function priceQuote(data, { group, race, upbringing, basePrice, skillBuyM
     effective_sell_mult: round4(s.sellMult * sm),
     buy: Math.round(basePrice * s.buyMult * bm),
     sell: Math.round(basePrice * s.sellMult * sm),
+    // RI-CHR02 §4b's own worked table is the SURCHARGE ALONE — 54 / 70 / 76 on a 60 g
+    // draught — because the item is about race and not about Mercantile. Both numbers are
+    // reported so method 7 can read its table without having to neutralise the skill term by
+    // hand, and so that nobody can mistake one for the other.
+    buy_surcharge_only: Math.round(basePrice * s.buyMult),
+    sell_surcharge_only: Math.round(basePrice * s.sellMult),
   };
 }
 

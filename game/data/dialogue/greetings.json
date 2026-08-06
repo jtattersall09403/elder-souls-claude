@@ -1,43 +1,4869 @@
 {
-  "schema": "elder-souls/greetings@1",
+  "schema": "elder-souls/greetings@2",
+  "id": "greetings",
+  "owner": "W1-07 — race and standing",
+  "source": "corpus/22-character/RI-CHR02-race-and-standing.md §4c",
+  "generated_by": "tools/dialogue/gen-greetings.mjs",
+  "provenance": {
+    "label": "authored-fragments-expanded",
+    "honest_statement": "1500 lines across 300 cells, composed from 300 authored stances and 60 authored addresses (360 authored fragments in total). This is a combinatorial expansion of authored material, not 1,500 individually written lines, and it is declared as such here so that no reader can mistake the volume for the labour. It is also, precisely, the shape of Morrowind's own greeting table: a small authored set indexed by faction, race and disposition and recombined at runtime.",
+    "register_anchor": "RI-CHR02 §4c: Argonian speakers name themselves in the third person under duress; Argonian self-description is collective; the coast calls outsiders warmblood, foreign-raised Argonians lukiul, and Naga in the third person.",
+    "distinct_lines": 1400
+  },
+  "keying": {
+    "by": [
+      "reaction_group",
+      "disposition_band",
+      "player_race_class"
+    ],
+    "bands": [
+      {
+        "id": "hostile",
+        "range": [
+          0,
+          9
+        ]
+      },
+      {
+        "id": "cold",
+        "range": [
+          10,
+          29
+        ]
+      },
+      {
+        "id": "neutral",
+        "range": [
+          30,
+          49
+        ]
+      },
+      {
+        "id": "warm",
+        "range": [
+          50,
+          69
+        ]
+      },
+      {
+        "id": "friendly",
+        "range": [
+          70,
+          100
+        ]
+      }
+    ],
+    "player_race_classes": [
+      "saxhleel",
+      "naga",
+      "dunmer",
+      "imperial",
+      "other-foreign"
+    ],
+    "cells": 300,
+    "lines_per_cell": 5,
+    "total_lines": 1500
+  },
   "pools": [
     {
-      "faction": null,
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "hostile",
       "disposition": [
         0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Root-kin. Go back the way the water came in.",
+        "We are the People of the Root. You are not. Root-kin.",
+        "Root-kin. Nothing here is yours, including the air.",
+        "Turn around before somebody makes it a story. Root-kin.",
+        "Root-kin. The Hist has not said your name and neither will we."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "It comes up out of the water and it wants talking to. Go back the way the water came in.",
+        "We are the People of the Root. You are not. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. Nothing here is yours, including the air.",
+        "Turn around before somebody makes it a story. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. The Hist has not said your name and neither will we."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash-man. Go back the way the water came in.",
+        "We are the People of the Root. You are not. Ash-man.",
+        "Ash-man. Nothing here is yours, including the air.",
+        "Turn around before somebody makes it a story. Ash-man.",
+        "Ash-man. The Hist has not said your name and neither will we."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Warmblood, and the paper kind. Go back the way the water came in.",
+        "We are the People of the Root. You are not. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. Nothing here is yours, including the air.",
+        "Turn around before somebody makes it a story. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. The Hist has not said your name and neither will we."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Warmblood. Go back the way the water came in.",
+        "We are the People of the Root. You are not. Warmblood.",
+        "Warmblood. Nothing here is yours, including the air.",
+        "Turn around before somebody makes it a story. Warmblood.",
+        "Warmblood. The Hist has not said your name and neither will we."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
         29
       ],
+      "player_race_class": "saxhleel",
       "lines": [
-        "What."
+        "Root-kin. Say what you came to say.",
+        "We do not sell and we do not guide. Root-kin.",
+        "Root-kin. Stand where we can see the whole of you.",
+        "The village is not open. The path around it is. Root-kin.",
+        "Root-kin. Speak, and then be somewhere else."
       ]
     },
     {
-      "faction": null,
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "It comes up out of the water and it wants talking to. Say what you came to say.",
+        "We do not sell and we do not guide. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. Stand where we can see the whole of you.",
+        "The village is not open. The path around it is. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. Speak, and then be somewhere else."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash-man. Say what you came to say.",
+        "We do not sell and we do not guide. Ash-man.",
+        "Ash-man. Stand where we can see the whole of you.",
+        "The village is not open. The path around it is. Ash-man.",
+        "Ash-man. Speak, and then be somewhere else."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Warmblood, and the paper kind. Say what you came to say.",
+        "We do not sell and we do not guide. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. Stand where we can see the whole of you.",
+        "The village is not open. The path around it is. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. Speak, and then be somewhere else."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Warmblood. Say what you came to say.",
+        "We do not sell and we do not guide. Warmblood.",
+        "Warmblood. Stand where we can see the whole of you.",
+        "The village is not open. The path around it is. Warmblood.",
+        "Warmblood. Speak, and then be somewhere else."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "neutral",
       "disposition": [
         30,
-        69
+        49
       ],
+      "player_race_class": "saxhleel",
       "lines": [
-        "You are not from the boards.",
-        "Say it and go."
+        "Root-kin. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. Root-kin.",
+        "Root-kin. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. Root-kin.",
+        "Root-kin. What."
       ]
     },
     {
-      "faction": null,
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "It comes up out of the water and it wants talking to. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash-man. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. Ash-man.",
+        "Ash-man. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. Ash-man.",
+        "Ash-man. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Warmblood, and the paper kind. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Warmblood. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. Warmblood.",
+        "Warmblood. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. Warmblood.",
+        "Warmblood. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Root-kin. There is dry floor by the fire.",
+        "Eat something before you talk. It goes better. Root-kin.",
+        "Root-kin. Ask. This one will answer if it can.",
+        "You have been walking. Sit. Root-kin.",
+        "Root-kin. The village knows you came in. That is not a bad thing."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "It comes up out of the water and it wants talking to. There is dry floor by the fire.",
+        "Eat something before you talk. It goes better. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. Ask. This one will answer if it can.",
+        "You have been walking. Sit. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. The village knows you came in. That is not a bad thing."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash-man. There is dry floor by the fire.",
+        "Eat something before you talk. It goes better. Ash-man.",
+        "Ash-man. Ask. This one will answer if it can.",
+        "You have been walking. Sit. Ash-man.",
+        "Ash-man. The village knows you came in. That is not a bad thing."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Warmblood, and the paper kind. There is dry floor by the fire.",
+        "Eat something before you talk. It goes better. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. Ask. This one will answer if it can.",
+        "You have been walking. Sit. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. The village knows you came in. That is not a bad thing."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Warmblood. There is dry floor by the fire.",
+        "Eat something before you talk. It goes better. Warmblood.",
+        "Warmblood. Ask. This one will answer if it can.",
+        "You have been walking. Sit. Warmblood.",
+        "Warmblood. The village knows you came in. That is not a bad thing."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "friendly",
       "disposition": [
         70,
         100
       ],
+      "player_race_class": "saxhleel",
       "lines": [
-        "Sit. There is dry floor by the fire."
+        "Root-kin. Root-water and a bowl. Sit down.",
+        "We were told about you and it was told kindly. Root-kin.",
+        "Root-kin. Whatever you need, ask it plainly and it is yours if we have it.",
+        "The Hist noticed you. Do not make anything of it. Sit. Root-kin.",
+        "Root-kin. You are welcome here, and welcome is not a word we spend."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "It comes up out of the water and it wants talking to. Root-water and a bowl. Sit down.",
+        "We were told about you and it was told kindly. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. Whatever you need, ask it plainly and it is yours if we have it.",
+        "The Hist noticed you. Do not make anything of it. Sit. It comes up out of the water and it wants talking to.",
+        "It comes up out of the water and it wants talking to. You are welcome here, and welcome is not a word we spend."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash-man. Root-water and a bowl. Sit down.",
+        "We were told about you and it was told kindly. Ash-man.",
+        "Ash-man. Whatever you need, ask it plainly and it is yours if we have it.",
+        "The Hist noticed you. Do not make anything of it. Sit. Ash-man.",
+        "Ash-man. You are welcome here, and welcome is not a word we spend."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Warmblood, and the paper kind. Root-water and a bowl. Sit down.",
+        "We were told about you and it was told kindly. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. Whatever you need, ask it plainly and it is yours if we have it.",
+        "The Hist noticed you. Do not make anything of it. Sit. Warmblood, and the paper kind.",
+        "Warmblood, and the paper kind. You are welcome here, and welcome is not a word we spend."
+      ]
+    },
+    {
+      "reaction_group": "RG-DEEP",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Warmblood. Root-water and a bowl. Sit down.",
+        "We were told about you and it was told kindly. Warmblood.",
+        "Warmblood. Whatever you need, ask it plainly and it is yours if we have it.",
+        "The Hist noticed you. Do not make anything of it. Sit. Warmblood.",
+        "Warmblood. You are welcome here, and welcome is not a word we spend."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Egg-brother. The sap is not for you.",
+        "Do not touch the tree. Do not look long at the tree. Egg-brother.",
+        "Egg-brother. You have brought something in on your feet.",
+        "Leave the grove and do not come back this season. Egg-brother.",
+        "Egg-brother. The root turned away from you before we did."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river sent one of its own up the bank. The sap is not for you.",
+        "Do not touch the tree. Do not look long at the tree. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. You have brought something in on your feet.",
+        "Leave the grove and do not come back this season. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. The root turned away from you before we did."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You. From the salt side. The sap is not for you.",
+        "Do not touch the tree. Do not look long at the tree. You. From the salt side.",
+        "You. From the salt side. You have brought something in on your feet.",
+        "Leave the grove and do not come back this season. You. From the salt side.",
+        "You. From the salt side. The root turned away from you before we did."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Officer of nothing, here. The sap is not for you.",
+        "Do not touch the tree. Do not look long at the tree. Officer of nothing, here.",
+        "Officer of nothing, here. You have brought something in on your feet.",
+        "Leave the grove and do not come back this season. Officer of nothing, here.",
+        "Officer of nothing, here. The root turned away from you before we did."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Dry-skin. The sap is not for you.",
+        "Do not touch the tree. Do not look long at the tree. Dry-skin.",
+        "Dry-skin. You have brought something in on your feet.",
+        "Leave the grove and do not come back this season. Dry-skin.",
+        "Dry-skin. The root turned away from you before we did."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Egg-brother. This one keeps the tree. That is all this one does.",
+        "State it and go; the tree is listening and it is tiring. Egg-brother.",
+        "Egg-brother. You may stand there. Not further.",
+        "Nothing is sold at a sapwell. Egg-brother.",
+        "Egg-brother. Ask a short question."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river sent one of its own up the bank. This one keeps the tree. That is all this one does.",
+        "State it and go; the tree is listening and it is tiring. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. You may stand there. Not further.",
+        "Nothing is sold at a sapwell. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. Ask a short question."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You. From the salt side. This one keeps the tree. That is all this one does.",
+        "State it and go; the tree is listening and it is tiring. You. From the salt side.",
+        "You. From the salt side. You may stand there. Not further.",
+        "Nothing is sold at a sapwell. You. From the salt side.",
+        "You. From the salt side. Ask a short question."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Officer of nothing, here. This one keeps the tree. That is all this one does.",
+        "State it and go; the tree is listening and it is tiring. Officer of nothing, here.",
+        "Officer of nothing, here. You may stand there. Not further.",
+        "Nothing is sold at a sapwell. Officer of nothing, here.",
+        "Officer of nothing, here. Ask a short question."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Dry-skin. This one keeps the tree. That is all this one does.",
+        "State it and go; the tree is listening and it is tiring. Dry-skin.",
+        "Dry-skin. You may stand there. Not further.",
+        "Nothing is sold at a sapwell. Dry-skin.",
+        "Dry-skin. Ask a short question."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Egg-brother. The tree is well. That is usually the question.",
+        "You may rest here. Rest is not the same as staying. Egg-brother.",
+        "Egg-brother. Speak. This one has time and the tree has more.",
+        "Keep your voice down. It carries into the wood. Egg-brother.",
+        "Egg-brother. The grove is open. The heartwood is not."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river sent one of its own up the bank. The tree is well. That is usually the question.",
+        "You may rest here. Rest is not the same as staying. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. Speak. This one has time and the tree has more.",
+        "Keep your voice down. It carries into the wood. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. The grove is open. The heartwood is not."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You. From the salt side. The tree is well. That is usually the question.",
+        "You may rest here. Rest is not the same as staying. You. From the salt side.",
+        "You. From the salt side. Speak. This one has time and the tree has more.",
+        "Keep your voice down. It carries into the wood. You. From the salt side.",
+        "You. From the salt side. The grove is open. The heartwood is not."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Officer of nothing, here. The tree is well. That is usually the question.",
+        "You may rest here. Rest is not the same as staying. Officer of nothing, here.",
+        "Officer of nothing, here. Speak. This one has time and the tree has more.",
+        "Keep your voice down. It carries into the wood. Officer of nothing, here.",
+        "Officer of nothing, here. The grove is open. The heartwood is not."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Dry-skin. The tree is well. That is usually the question.",
+        "You may rest here. Rest is not the same as staying. Dry-skin.",
+        "Dry-skin. Speak. This one has time and the tree has more.",
+        "Keep your voice down. It carries into the wood. Dry-skin.",
+        "Dry-skin. The grove is open. The heartwood is not."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Egg-brother. Sit at the root. It is warm on that side.",
+        "This one will speak with you. The tree does not mind. Egg-brother.",
+        "Egg-brother. You may drink. Once, and not deeply.",
+        "Ask about the sap and this one will not stop talking. Egg-brother.",
+        "Egg-brother. You have the smell of a long road. Sit."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river sent one of its own up the bank. Sit at the root. It is warm on that side.",
+        "This one will speak with you. The tree does not mind. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. You may drink. Once, and not deeply.",
+        "Ask about the sap and this one will not stop talking. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. You have the smell of a long road. Sit."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You. From the salt side. Sit at the root. It is warm on that side.",
+        "This one will speak with you. The tree does not mind. You. From the salt side.",
+        "You. From the salt side. You may drink. Once, and not deeply.",
+        "Ask about the sap and this one will not stop talking. You. From the salt side.",
+        "You. From the salt side. You have the smell of a long road. Sit."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Officer of nothing, here. Sit at the root. It is warm on that side.",
+        "This one will speak with you. The tree does not mind. Officer of nothing, here.",
+        "Officer of nothing, here. You may drink. Once, and not deeply.",
+        "Ask about the sap and this one will not stop talking. Officer of nothing, here.",
+        "Officer of nothing, here. You have the smell of a long road. Sit."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Dry-skin. Sit at the root. It is warm on that side.",
+        "This one will speak with you. The tree does not mind. Dry-skin.",
+        "Dry-skin. You may drink. Once, and not deeply.",
+        "Ask about the sap and this one will not stop talking. Dry-skin.",
+        "Dry-skin. You have the smell of a long road. Sit."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Egg-brother. The tree knows your step now. So does this one.",
+        "Come to the heartwood. It is not a small thing to be asked. Egg-brother.",
+        "Egg-brother. Drink, and let it take as long as it takes.",
+        "This one has kept the tree eleven years and has invited four people in. You are the fifth. Egg-brother.",
+        "Egg-brother. Whatever you want to know about the root, ask it, and this one will answer until the light goes."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river sent one of its own up the bank. The tree knows your step now. So does this one.",
+        "Come to the heartwood. It is not a small thing to be asked. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. Drink, and let it take as long as it takes.",
+        "This one has kept the tree eleven years and has invited four people in. You are the fifth. The river sent one of its own up the bank.",
+        "The river sent one of its own up the bank. Whatever you want to know about the root, ask it, and this one will answer until the light goes."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You. From the salt side. The tree knows your step now. So does this one.",
+        "Come to the heartwood. It is not a small thing to be asked. You. From the salt side.",
+        "You. From the salt side. Drink, and let it take as long as it takes.",
+        "This one has kept the tree eleven years and has invited four people in. You are the fifth. You. From the salt side.",
+        "You. From the salt side. Whatever you want to know about the root, ask it, and this one will answer until the light goes."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Officer of nothing, here. The tree knows your step now. So does this one.",
+        "Come to the heartwood. It is not a small thing to be asked. Officer of nothing, here.",
+        "Officer of nothing, here. Drink, and let it take as long as it takes.",
+        "This one has kept the tree eleven years and has invited four people in. You are the fifth. Officer of nothing, here.",
+        "Officer of nothing, here. Whatever you want to know about the root, ask it, and this one will answer until the light goes."
+      ]
+    },
+    {
+      "reaction_group": "RG-ROOT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Dry-skin. The tree knows your step now. So does this one.",
+        "Come to the heartwood. It is not a small thing to be asked. Dry-skin.",
+        "Dry-skin. Drink, and let it take as long as it takes.",
+        "This one has kept the tree eleven years and has invited four people in. You are the fifth. Dry-skin.",
+        "Dry-skin. Whatever you want to know about the root, ask it, and this one will answer until the light goes."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Cousin — you have the accent of somewhere. We do not want the trouble you carry.",
+        "This is a working town and you are not working. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. Nothing here needs you.",
+        "Go and be strange somewhere with a bigger market. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. We have enough people looking at us sideways."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Cousin, of a kind, and everybody here will say so slowly. We do not want the trouble you carry.",
+        "This is a working town and you are not working. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. Nothing here needs you.",
+        "Go and be strange somewhere with a bigger market. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. We have enough people looking at us sideways."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We have had your people through here before. We do not want the trouble you carry.",
+        "This is a working town and you are not working. We have had your people through here before.",
+        "We have had your people through here before. Nothing here needs you.",
+        "Go and be strange somewhere with a bigger market. We have had your people through here before.",
+        "We have had your people through here before. We have enough people looking at us sideways."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You will want the ledger side of town. We do not want the trouble you carry.",
+        "This is a working town and you are not working. You will want the ledger side of town.",
+        "You will want the ledger side of town. Nothing here needs you.",
+        "Go and be strange somewhere with a bigger market. You will want the ledger side of town.",
+        "You will want the ledger side of town. We have enough people looking at us sideways."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are a long way from wherever that is. We do not want the trouble you carry.",
+        "This is a working town and you are not working. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. Nothing here needs you.",
+        "Go and be strange somewhere with a bigger market. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. We have enough people looking at us sideways."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Cousin — you have the accent of somewhere. State your business at the boards, not at me.",
+        "We keep the roads open. That is our whole contribution. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. You want the ledger house.",
+        "Buy or move. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. We are not a stop."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Cousin, of a kind, and everybody here will say so slowly. State your business at the boards, not at me.",
+        "We keep the roads open. That is our whole contribution. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. You want the ledger house.",
+        "Buy or move. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. We are not a stop."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We have had your people through here before. State your business at the boards, not at me.",
+        "We keep the roads open. That is our whole contribution. We have had your people through here before.",
+        "We have had your people through here before. You want the ledger house.",
+        "Buy or move. We have had your people through here before.",
+        "We have had your people through here before. We are not a stop."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You will want the ledger side of town. State your business at the boards, not at me.",
+        "We keep the roads open. That is our whole contribution. You will want the ledger side of town.",
+        "You will want the ledger side of town. You want the ledger house.",
+        "Buy or move. You will want the ledger side of town.",
+        "You will want the ledger side of town. We are not a stop."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are a long way from wherever that is. State your business at the boards, not at me.",
+        "We keep the roads open. That is our whole contribution. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. You want the ledger house.",
+        "Buy or move. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. We are not a stop."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Cousin — you have the accent of somewhere. You want something. Everybody does.",
+        "Say it once and I will tell you who to ask. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. The road is that way and the water is the other.",
+        "We trade. That is what this is. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. Mind the boards; the third one from the end is rotten."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Cousin, of a kind, and everybody here will say so slowly. You want something. Everybody does.",
+        "Say it once and I will tell you who to ask. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. The road is that way and the water is the other.",
+        "We trade. That is what this is. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. Mind the boards; the third one from the end is rotten."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We have had your people through here before. You want something. Everybody does.",
+        "Say it once and I will tell you who to ask. We have had your people through here before.",
+        "We have had your people through here before. The road is that way and the water is the other.",
+        "We trade. That is what this is. We have had your people through here before.",
+        "We have had your people through here before. Mind the boards; the third one from the end is rotten."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You will want the ledger side of town. You want something. Everybody does.",
+        "Say it once and I will tell you who to ask. You will want the ledger side of town.",
+        "You will want the ledger side of town. The road is that way and the water is the other.",
+        "We trade. That is what this is. You will want the ledger side of town.",
+        "You will want the ledger side of town. Mind the boards; the third one from the end is rotten."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are a long way from wherever that is. You want something. Everybody does.",
+        "Say it once and I will tell you who to ask. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. The road is that way and the water is the other.",
+        "We trade. That is what this is. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. Mind the boards; the third one from the end is rotten."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Cousin — you have the accent of somewhere. There is beer, and it is not good, but it is cold.",
+        "Ask around. People here answer. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. You look like you have paid for things honestly. That is rare.",
+        "Sit on the boards; nobody minds. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. If you need a bed, the third house does not overcharge."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Cousin, of a kind, and everybody here will say so slowly. There is beer, and it is not good, but it is cold.",
+        "Ask around. People here answer. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. You look like you have paid for things honestly. That is rare.",
+        "Sit on the boards; nobody minds. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. If you need a bed, the third house does not overcharge."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We have had your people through here before. There is beer, and it is not good, but it is cold.",
+        "Ask around. People here answer. We have had your people through here before.",
+        "We have had your people through here before. You look like you have paid for things honestly. That is rare.",
+        "Sit on the boards; nobody minds. We have had your people through here before.",
+        "We have had your people through here before. If you need a bed, the third house does not overcharge."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You will want the ledger side of town. There is beer, and it is not good, but it is cold.",
+        "Ask around. People here answer. You will want the ledger side of town.",
+        "You will want the ledger side of town. You look like you have paid for things honestly. That is rare.",
+        "Sit on the boards; nobody minds. You will want the ledger side of town.",
+        "You will want the ledger side of town. If you need a bed, the third house does not overcharge."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are a long way from wherever that is. There is beer, and it is not good, but it is cold.",
+        "Ask around. People here answer. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. You look like you have paid for things honestly. That is rare.",
+        "Sit on the boards; nobody minds. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. If you need a bed, the third house does not overcharge."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Cousin — you have the accent of somewhere. You are welcome here and the beer is on the boards.",
+        "Anything you want to know about this stretch of water, ask me. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. We were saying good things about you, which does not happen twice.",
+        "Stay as long as you like. We have the room and the roof holds. Cousin — you have the accent of somewhere.",
+        "Cousin — you have the accent of somewhere. You have done right by this town. It remembers, badly, but it remembers."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Cousin, of a kind, and everybody here will say so slowly. You are welcome here and the beer is on the boards.",
+        "Anything you want to know about this stretch of water, ask me. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. We were saying good things about you, which does not happen twice.",
+        "Stay as long as you like. We have the room and the roof holds. Cousin, of a kind, and everybody here will say so slowly.",
+        "Cousin, of a kind, and everybody here will say so slowly. You have done right by this town. It remembers, badly, but it remembers."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We have had your people through here before. You are welcome here and the beer is on the boards.",
+        "Anything you want to know about this stretch of water, ask me. We have had your people through here before.",
+        "We have had your people through here before. We were saying good things about you, which does not happen twice.",
+        "Stay as long as you like. We have the room and the roof holds. We have had your people through here before.",
+        "We have had your people through here before. You have done right by this town. It remembers, badly, but it remembers."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You will want the ledger side of town. You are welcome here and the beer is on the boards.",
+        "Anything you want to know about this stretch of water, ask me. You will want the ledger side of town.",
+        "You will want the ledger side of town. We were saying good things about you, which does not happen twice.",
+        "Stay as long as you like. We have the room and the roof holds. You will want the ledger side of town.",
+        "You will want the ledger side of town. You have done right by this town. It remembers, badly, but it remembers."
+      ]
+    },
+    {
+      "reaction_group": "RG-LUKIUL",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are a long way from wherever that is. You are welcome here and the beer is on the boards.",
+        "Anything you want to know about this stretch of water, ask me. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. We were saying good things about you, which does not happen twice.",
+        "Stay as long as you like. We have the room and the roof holds. You are a long way from wherever that is.",
+        "You are a long way from wherever that is. You have done right by this town. It remembers, badly, but it remembers."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Little cousin. The water is ours. All of it.",
+        "You are standing on a bank that has a price. Little cousin.",
+        "Little cousin. Nothing walks through here without being noticed and charged.",
+        "Get off the river. Little cousin.",
+        "Little cousin. We have eaten better company."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Kin. The water is ours. All of it.",
+        "You are standing on a bank that has a price. Kin.",
+        "Kin. Nothing walks through here without being noticed and charged.",
+        "Get off the river. Kin.",
+        "Kin. We have eaten better company."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Salt-eater. The water is ours. All of it.",
+        "You are standing on a bank that has a price. Salt-eater.",
+        "Salt-eater. Nothing walks through here without being noticed and charged.",
+        "Get off the river. Salt-eater.",
+        "Salt-eater. We have eaten better company."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Ledger-hand. The water is ours. All of it.",
+        "You are standing on a bank that has a price. Ledger-hand.",
+        "Ledger-hand. Nothing walks through here without being noticed and charged.",
+        "Get off the river. Ledger-hand.",
+        "Ledger-hand. We have eaten better company."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Land-walker. The water is ours. All of it.",
+        "You are standing on a bank that has a price. Land-walker.",
+        "Land-walker. Nothing walks through here without being noticed and charged.",
+        "Get off the river. Land-walker.",
+        "Land-walker. We have eaten better company."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Little cousin. State it from where you are.",
+        "We do not come up the bank for conversation. Little cousin.",
+        "Little cousin. The crossing is not free and neither is the talk.",
+        "Say your piece to the water and we will hear it. Little cousin.",
+        "Little cousin. You are on the wrong side."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Kin. State it from where you are.",
+        "We do not come up the bank for conversation. Kin.",
+        "Kin. The crossing is not free and neither is the talk.",
+        "Say your piece to the water and we will hear it. Kin.",
+        "Kin. You are on the wrong side."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Salt-eater. State it from where you are.",
+        "We do not come up the bank for conversation. Salt-eater.",
+        "Salt-eater. The crossing is not free and neither is the talk.",
+        "Say your piece to the water and we will hear it. Salt-eater.",
+        "Salt-eater. You are on the wrong side."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Ledger-hand. State it from where you are.",
+        "We do not come up the bank for conversation. Ledger-hand.",
+        "Ledger-hand. The crossing is not free and neither is the talk.",
+        "Say your piece to the water and we will hear it. Ledger-hand.",
+        "Ledger-hand. You are on the wrong side."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Land-walker. State it from where you are.",
+        "We do not come up the bank for conversation. Land-walker.",
+        "Land-walker. The crossing is not free and neither is the talk.",
+        "Say your piece to the water and we will hear it. Land-walker.",
+        "Land-walker. You are on the wrong side."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Little cousin. You want across. Everybody wants across.",
+        "Speak. The river is patient and we are not. Little cousin.",
+        "Little cousin. We can take you. We can take your things separately.",
+        "What is it worth to you. Little cousin.",
+        "Little cousin. Talk. It is a long river."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Kin. You want across. Everybody wants across.",
+        "Speak. The river is patient and we are not. Kin.",
+        "Kin. We can take you. We can take your things separately.",
+        "What is it worth to you. Kin.",
+        "Kin. Talk. It is a long river."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Salt-eater. You want across. Everybody wants across.",
+        "Speak. The river is patient and we are not. Salt-eater.",
+        "Salt-eater. We can take you. We can take your things separately.",
+        "What is it worth to you. Salt-eater.",
+        "Salt-eater. Talk. It is a long river."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Ledger-hand. You want across. Everybody wants across.",
+        "Speak. The river is patient and we are not. Ledger-hand.",
+        "Ledger-hand. We can take you. We can take your things separately.",
+        "What is it worth to you. Ledger-hand.",
+        "Ledger-hand. Talk. It is a long river."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Land-walker. You want across. Everybody wants across.",
+        "Speak. The river is patient and we are not. Land-walker.",
+        "Land-walker. We can take you. We can take your things separately.",
+        "What is it worth to you. Land-walker.",
+        "Land-walker. Talk. It is a long river."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Little cousin. Come down to the boat. It is drier than it looks.",
+        "We will take you across and not count it twice. Little cousin.",
+        "Little cousin. Ask. The river tells us things.",
+        "Sit on the bank. The current does the work. Little cousin.",
+        "Little cousin. You have not lied to us yet. That is a start."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Kin. Come down to the boat. It is drier than it looks.",
+        "We will take you across and not count it twice. Kin.",
+        "Kin. Ask. The river tells us things.",
+        "Sit on the bank. The current does the work. Kin.",
+        "Kin. You have not lied to us yet. That is a start."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Salt-eater. Come down to the boat. It is drier than it looks.",
+        "We will take you across and not count it twice. Salt-eater.",
+        "Salt-eater. Ask. The river tells us things.",
+        "Sit on the bank. The current does the work. Salt-eater.",
+        "Salt-eater. You have not lied to us yet. That is a start."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Ledger-hand. Come down to the boat. It is drier than it looks.",
+        "We will take you across and not count it twice. Ledger-hand.",
+        "Ledger-hand. Ask. The river tells us things.",
+        "Sit on the bank. The current does the work. Ledger-hand.",
+        "Ledger-hand. You have not lied to us yet. That is a start."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Land-walker. Come down to the boat. It is drier than it looks.",
+        "We will take you across and not count it twice. Land-walker.",
+        "Land-walker. Ask. The river tells us things.",
+        "Sit on the bank. The current does the work. Land-walker.",
+        "Land-walker. You have not lied to us yet. That is a start."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Little cousin. The boat is yours when you want it.",
+        "Kin-price. Do not tell the others. Little cousin.",
+        "Little cousin. We will carry you and whatever you are carrying and ask nothing about either.",
+        "The band knows your name and says it correctly, which is more than the towns manage. Little cousin.",
+        "Little cousin. Whatever the river knows, you may know."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Kin. The boat is yours when you want it.",
+        "Kin-price. Do not tell the others. Kin.",
+        "Kin. We will carry you and whatever you are carrying and ask nothing about either.",
+        "The band knows your name and says it correctly, which is more than the towns manage. Kin.",
+        "Kin. Whatever the river knows, you may know."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Salt-eater. The boat is yours when you want it.",
+        "Kin-price. Do not tell the others. Salt-eater.",
+        "Salt-eater. We will carry you and whatever you are carrying and ask nothing about either.",
+        "The band knows your name and says it correctly, which is more than the towns manage. Salt-eater.",
+        "Salt-eater. Whatever the river knows, you may know."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Ledger-hand. The boat is yours when you want it.",
+        "Kin-price. Do not tell the others. Ledger-hand.",
+        "Ledger-hand. We will carry you and whatever you are carrying and ask nothing about either.",
+        "The band knows your name and says it correctly, which is more than the towns manage. Ledger-hand.",
+        "Ledger-hand. Whatever the river knows, you may know."
+      ]
+    },
+    {
+      "reaction_group": "RG-NAGA",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Land-walker. The boat is yours when you want it.",
+        "Kin-price. Do not tell the others. Land-walker.",
+        "Land-walker. We will carry you and whatever you are carrying and ask nothing about either.",
+        "The band knows your name and says it correctly, which is more than the towns manage. Land-walker.",
+        "Land-walker. Whatever the river knows, you may know."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Name and hatch-name, if you have both. Your paper is wrong and so are you.",
+        "There is nothing I can do for you and I would not. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. Stand aside. There are people here with correct documents.",
+        "That name is on a list and it is not the good list. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. Come back when you have something I can stamp without lying."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Name, and the river you came off. Your paper is wrong and so are you.",
+        "There is nothing I can do for you and I would not. Name, and the river you came off.",
+        "Name, and the river you came off. Stand aside. There are people here with correct documents.",
+        "That name is on a list and it is not the good list. Name, and the river you came off.",
+        "Name, and the river you came off. Come back when you have something I can stamp without lying."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Name and House, if you claim one. Your paper is wrong and so are you.",
+        "There is nothing I can do for you and I would not. Name and House, if you claim one.",
+        "Name and House, if you claim one. Stand aside. There are people here with correct documents.",
+        "That name is on a list and it is not the good list. Name and House, if you claim one.",
+        "Name and House, if you claim one. Come back when you have something I can stamp without lying."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Name and cohort or name and none. Your paper is wrong and so are you.",
+        "There is nothing I can do for you and I would not. Name and cohort or name and none.",
+        "Name and cohort or name and none. Stand aside. There are people here with correct documents.",
+        "That name is on a list and it is not the good list. Name and cohort or name and none.",
+        "Name and cohort or name and none. Come back when you have something I can stamp without lying."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Name, and what the writ says under it. Your paper is wrong and so are you.",
+        "There is nothing I can do for you and I would not. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. Stand aside. There are people here with correct documents.",
+        "That name is on a list and it is not the good list. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. Come back when you have something I can stamp without lying."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Name and hatch-name, if you have both. Two hundred and fifty, and it is once.",
+        "The queue is behind you. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. Documents, or nothing.",
+        "I do not answer questions. I answer forms. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. That is not my window."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Name, and the river you came off. Two hundred and fifty, and it is once.",
+        "The queue is behind you. Name, and the river you came off.",
+        "Name, and the river you came off. Documents, or nothing.",
+        "I do not answer questions. I answer forms. Name, and the river you came off.",
+        "Name, and the river you came off. That is not my window."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Name and House, if you claim one. Two hundred and fifty, and it is once.",
+        "The queue is behind you. Name and House, if you claim one.",
+        "Name and House, if you claim one. Documents, or nothing.",
+        "I do not answer questions. I answer forms. Name and House, if you claim one.",
+        "Name and House, if you claim one. That is not my window."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Name and cohort or name and none. Two hundred and fifty, and it is once.",
+        "The queue is behind you. Name and cohort or name and none.",
+        "Name and cohort or name and none. Documents, or nothing.",
+        "I do not answer questions. I answer forms. Name and cohort or name and none.",
+        "Name and cohort or name and none. That is not my window."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Name, and what the writ says under it. Two hundred and fifty, and it is once.",
+        "The queue is behind you. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. Documents, or nothing.",
+        "I do not answer questions. I answer forms. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. That is not my window."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Name and hatch-name, if you have both. Yes. What.",
+        "If it is an amendment it is a fee. If it is anything else it is a wait. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. I can look it up. It will take as long as it takes.",
+        "Say the whole thing once rather than half of it three times. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. Papers on the desk, please."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Name, and the river you came off. Yes. What.",
+        "If it is an amendment it is a fee. If it is anything else it is a wait. Name, and the river you came off.",
+        "Name, and the river you came off. I can look it up. It will take as long as it takes.",
+        "Say the whole thing once rather than half of it three times. Name, and the river you came off.",
+        "Name, and the river you came off. Papers on the desk, please."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Name and House, if you claim one. Yes. What.",
+        "If it is an amendment it is a fee. If it is anything else it is a wait. Name and House, if you claim one.",
+        "Name and House, if you claim one. I can look it up. It will take as long as it takes.",
+        "Say the whole thing once rather than half of it three times. Name and House, if you claim one.",
+        "Name and House, if you claim one. Papers on the desk, please."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Name and cohort or name and none. Yes. What.",
+        "If it is an amendment it is a fee. If it is anything else it is a wait. Name and cohort or name and none.",
+        "Name and cohort or name and none. I can look it up. It will take as long as it takes.",
+        "Say the whole thing once rather than half of it three times. Name and cohort or name and none.",
+        "Name and cohort or name and none. Papers on the desk, please."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Name, and what the writ says under it. Yes. What.",
+        "If it is an amendment it is a fee. If it is anything else it is a wait. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. I can look it up. It will take as long as it takes.",
+        "Say the whole thing once rather than half of it three times. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. Papers on the desk, please."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Name and hatch-name, if you have both. I can move you up the list. Once.",
+        "Ask. I have been here eleven years and I remember most of it. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. That is a reasonable question and I will give you the real answer.",
+        "Sit. I will find it. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. I will write it the way you said it, not the way the form wants it."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Name, and the river you came off. I can move you up the list. Once.",
+        "Ask. I have been here eleven years and I remember most of it. Name, and the river you came off.",
+        "Name, and the river you came off. That is a reasonable question and I will give you the real answer.",
+        "Sit. I will find it. Name, and the river you came off.",
+        "Name, and the river you came off. I will write it the way you said it, not the way the form wants it."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Name and House, if you claim one. I can move you up the list. Once.",
+        "Ask. I have been here eleven years and I remember most of it. Name and House, if you claim one.",
+        "Name and House, if you claim one. That is a reasonable question and I will give you the real answer.",
+        "Sit. I will find it. Name and House, if you claim one.",
+        "Name and House, if you claim one. I will write it the way you said it, not the way the form wants it."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Name and cohort or name and none. I can move you up the list. Once.",
+        "Ask. I have been here eleven years and I remember most of it. Name and cohort or name and none.",
+        "Name and cohort or name and none. That is a reasonable question and I will give you the real answer.",
+        "Sit. I will find it. Name and cohort or name and none.",
+        "Name and cohort or name and none. I will write it the way you said it, not the way the form wants it."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Name, and what the writ says under it. I can move you up the list. Once.",
+        "Ask. I have been here eleven years and I remember most of it. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. That is a reasonable question and I will give you the real answer.",
+        "Sit. I will find it. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. I will write it the way you said it, not the way the form wants it."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Name and hatch-name, if you have both. I will write what you tell me and I will not ask again.",
+        "There is a copy of your file and there is now not a copy of your file. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. Anything in this office, ask me. Anything in the next office, do not ask me in writing.",
+        "You have been decent to a clerk. Nobody is decent to a clerk. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. Whatever you need stamped, it is stamped."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Name, and the river you came off. I will write what you tell me and I will not ask again.",
+        "There is a copy of your file and there is now not a copy of your file. Name, and the river you came off.",
+        "Name, and the river you came off. Anything in this office, ask me. Anything in the next office, do not ask me in writing.",
+        "You have been decent to a clerk. Nobody is decent to a clerk. Name, and the river you came off.",
+        "Name, and the river you came off. Whatever you need stamped, it is stamped."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Name and House, if you claim one. I will write what you tell me and I will not ask again.",
+        "There is a copy of your file and there is now not a copy of your file. Name and House, if you claim one.",
+        "Name and House, if you claim one. Anything in this office, ask me. Anything in the next office, do not ask me in writing.",
+        "You have been decent to a clerk. Nobody is decent to a clerk. Name and House, if you claim one.",
+        "Name and House, if you claim one. Whatever you need stamped, it is stamped."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Name and cohort or name and none. I will write what you tell me and I will not ask again.",
+        "There is a copy of your file and there is now not a copy of your file. Name and cohort or name and none.",
+        "Name and cohort or name and none. Anything in this office, ask me. Anything in the next office, do not ask me in writing.",
+        "You have been decent to a clerk. Nobody is decent to a clerk. Name and cohort or name and none.",
+        "Name and cohort or name and none. Whatever you need stamped, it is stamped."
+      ]
+    },
+    {
+      "reaction_group": "RG-LEDGER",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Name, and what the writ says under it. I will write what you tell me and I will not ask again.",
+        "There is a copy of your file and there is now not a copy of your file. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. Anything in this office, ask me. Anything in the next office, do not ask me in writing.",
+        "You have been decent to a clerk. Nobody is decent to a clerk. Name, and what the writ says under it.",
+        "Name, and what the writ says under it. Whatever you need stamped, it is stamped."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Provincial. Move along or be moved.",
+        "You are a matter for the watch and I am the watch. Provincial.",
+        "Provincial. I have a description and you match too much of it.",
+        "This is Imperial ground. Behave as though it were. Provincial.",
+        "Provincial. One more word and it is a night in the cells."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Provincial, and the kind we write twice. Move along or be moved.",
+        "You are a matter for the watch and I am the watch. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. I have a description and you match too much of it.",
+        "This is Imperial ground. Behave as though it were. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. One more word and it is a night in the cells."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Citizen — of the useful sort. Move along or be moved.",
+        "You are a matter for the watch and I am the watch. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. I have a description and you match too much of it.",
+        "This is Imperial ground. Behave as though it were. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. One more word and it is a night in the cells."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Citizen. Move along or be moved.",
+        "You are a matter for the watch and I am the watch. Citizen.",
+        "Citizen. I have a description and you match too much of it.",
+        "This is Imperial ground. Behave as though it were. Citizen.",
+        "Citizen. One more word and it is a night in the cells."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Citizen, at a stretch. Move along or be moved.",
+        "You are a matter for the watch and I am the watch. Citizen, at a stretch.",
+        "Citizen, at a stretch. I have a description and you match too much of it.",
+        "This is Imperial ground. Behave as though it were. Citizen, at a stretch.",
+        "Citizen, at a stretch. One more word and it is a night in the cells."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Provincial. State your business, briefly.",
+        "The Legion does not answer questions from the road. Provincial.",
+        "Provincial. Keep to the road and keep moving.",
+        "That is provincial business. Take it to the provincial office. Provincial.",
+        "Provincial. I am on duty and you are in the way."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Provincial, and the kind we write twice. State your business, briefly.",
+        "The Legion does not answer questions from the road. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. Keep to the road and keep moving.",
+        "That is provincial business. Take it to the provincial office. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. I am on duty and you are in the way."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Citizen — of the useful sort. State your business, briefly.",
+        "The Legion does not answer questions from the road. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. Keep to the road and keep moving.",
+        "That is provincial business. Take it to the provincial office. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. I am on duty and you are in the way."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Citizen. State your business, briefly.",
+        "The Legion does not answer questions from the road. Citizen.",
+        "Citizen. Keep to the road and keep moving.",
+        "That is provincial business. Take it to the provincial office. Citizen.",
+        "Citizen. I am on duty and you are in the way."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Citizen, at a stretch. State your business, briefly.",
+        "The Legion does not answer questions from the road. Citizen, at a stretch.",
+        "Citizen, at a stretch. Keep to the road and keep moving.",
+        "That is provincial business. Take it to the provincial office. Citizen, at a stretch.",
+        "Citizen, at a stretch. I am on duty and you are in the way."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Provincial. Citizen. Something you need?",
+        "Roads are clear as far as the bridge. After that, your problem. Provincial.",
+        "Provincial. Ask, and if it is Legion business I will tell you it is Legion business.",
+        "Keep out of the marsh after dark and I will have less to write. Provincial.",
+        "Provincial. Something to report?"
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Provincial, and the kind we write twice. Citizen. Something you need?",
+        "Roads are clear as far as the bridge. After that, your problem. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. Ask, and if it is Legion business I will tell you it is Legion business.",
+        "Keep out of the marsh after dark and I will have less to write. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. Something to report?"
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Citizen — of the useful sort. Citizen. Something you need?",
+        "Roads are clear as far as the bridge. After that, your problem. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. Ask, and if it is Legion business I will tell you it is Legion business.",
+        "Keep out of the marsh after dark and I will have less to write. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. Something to report?"
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Citizen. Citizen. Something you need?",
+        "Roads are clear as far as the bridge. After that, your problem. Citizen.",
+        "Citizen. Ask, and if it is Legion business I will tell you it is Legion business.",
+        "Keep out of the marsh after dark and I will have less to write. Citizen.",
+        "Citizen. Something to report?"
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Citizen, at a stretch. Citizen. Something you need?",
+        "Roads are clear as far as the bridge. After that, your problem. Citizen, at a stretch.",
+        "Citizen, at a stretch. Ask, and if it is Legion business I will tell you it is Legion business.",
+        "Keep out of the marsh after dark and I will have less to write. Citizen, at a stretch.",
+        "Citizen, at a stretch. Something to report?"
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Provincial. You can ask. I have five minutes and no orders in them.",
+        "The cohort has had worse through here. Sit down. Provincial.",
+        "Provincial. If it is trouble, tell me before it is trouble.",
+        "There is water in the guardhouse. Help yourself. Provincial.",
+        "Provincial. You have not made my day harder. I notice that."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Provincial, and the kind we write twice. You can ask. I have five minutes and no orders in them.",
+        "The cohort has had worse through here. Sit down. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. If it is trouble, tell me before it is trouble.",
+        "There is water in the guardhouse. Help yourself. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. You have not made my day harder. I notice that."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Citizen — of the useful sort. You can ask. I have five minutes and no orders in them.",
+        "The cohort has had worse through here. Sit down. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. If it is trouble, tell me before it is trouble.",
+        "There is water in the guardhouse. Help yourself. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. You have not made my day harder. I notice that."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Citizen. You can ask. I have five minutes and no orders in them.",
+        "The cohort has had worse through here. Sit down. Citizen.",
+        "Citizen. If it is trouble, tell me before it is trouble.",
+        "There is water in the guardhouse. Help yourself. Citizen.",
+        "Citizen. You have not made my day harder. I notice that."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Citizen, at a stretch. You can ask. I have five minutes and no orders in them.",
+        "The cohort has had worse through here. Sit down. Citizen, at a stretch.",
+        "Citizen, at a stretch. If it is trouble, tell me before it is trouble.",
+        "There is water in the guardhouse. Help yourself. Citizen, at a stretch.",
+        "Citizen, at a stretch. You have not made my day harder. I notice that."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Provincial. Whatever you need, and I will pretend I did not do it.",
+        "The tribune will not hear of this from me. Provincial.",
+        "Provincial. Take the pass road. I will say I saw you take the other one.",
+        "You have done the Legion a turn and the Legion is bad at saying so. I am saying so. Provincial.",
+        "Provincial. Ask me anything short of the muster book."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Provincial, and the kind we write twice. Whatever you need, and I will pretend I did not do it.",
+        "The tribune will not hear of this from me. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. Take the pass road. I will say I saw you take the other one.",
+        "You have done the Legion a turn and the Legion is bad at saying so. I am saying so. Provincial, and the kind we write twice.",
+        "Provincial, and the kind we write twice. Ask me anything short of the muster book."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Citizen — of the useful sort. Whatever you need, and I will pretend I did not do it.",
+        "The tribune will not hear of this from me. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. Take the pass road. I will say I saw you take the other one.",
+        "You have done the Legion a turn and the Legion is bad at saying so. I am saying so. Citizen — of the useful sort.",
+        "Citizen — of the useful sort. Ask me anything short of the muster book."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Citizen. Whatever you need, and I will pretend I did not do it.",
+        "The tribune will not hear of this from me. Citizen.",
+        "Citizen. Take the pass road. I will say I saw you take the other one.",
+        "You have done the Legion a turn and the Legion is bad at saying so. I am saying so. Citizen.",
+        "Citizen. Ask me anything short of the muster book."
+      ]
+    },
+    {
+      "reaction_group": "RG-EMPIRE",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Citizen, at a stretch. Whatever you need, and I will pretend I did not do it.",
+        "The tribune will not hear of this from me. Citizen, at a stretch.",
+        "Citizen, at a stretch. Take the pass road. I will say I saw you take the other one.",
+        "You have done the Legion a turn and the Legion is bad at saying so. I am saying so. Citizen, at a stretch.",
+        "Citizen, at a stretch. Ask me anything short of the muster book."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Stock, unless the paper says otherwise. You are worth more in a net than in a conversation.",
+        "Stand still. It is easier for everyone. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. That is a price walking about on its own legs.",
+        "We are not here for you, and that can change. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. Nothing you say will be entered anywhere."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That one is not stock. That one is a problem. You are worth more in a net than in a conversation.",
+        "Stand still. It is easier for everyone. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. That is a price walking about on its own legs.",
+        "We are not here for you, and that can change. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. Nothing you say will be entered anywhere."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Serjo. You are worth more in a net than in a conversation.",
+        "Stand still. It is easier for everyone. Serjo.",
+        "Serjo. That is a price walking about on its own legs.",
+        "We are not here for you, and that can change. Serjo.",
+        "Serjo. Nothing you say will be entered anywhere."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Factor. Or near enough for trade. You are worth more in a net than in a conversation.",
+        "Stand still. It is easier for everyone. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. That is a price walking about on its own legs.",
+        "We are not here for you, and that can change. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. Nothing you say will be entered anywhere."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Free, I take it. For now. You are worth more in a net than in a conversation.",
+        "Stand still. It is easier for everyone. Free, I take it. For now.",
+        "Free, I take it. For now. That is a price walking about on its own legs.",
+        "We are not here for you, and that can change. Free, I take it. For now.",
+        "Free, I take it. For now. Nothing you say will be entered anywhere."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Stock, unless the paper says otherwise. State it and keep your hands where the wagon can see them.",
+        "We are trading. You are interrupting. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. The House does not treat with people on roads.",
+        "Say it fast. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. We are buying, not answering."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That one is not stock. That one is a problem. State it and keep your hands where the wagon can see them.",
+        "We are trading. You are interrupting. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. The House does not treat with people on roads.",
+        "Say it fast. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. We are buying, not answering."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Serjo. State it and keep your hands where the wagon can see them.",
+        "We are trading. You are interrupting. Serjo.",
+        "Serjo. The House does not treat with people on roads.",
+        "Say it fast. Serjo.",
+        "Serjo. We are buying, not answering."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Factor. Or near enough for trade. State it and keep your hands where the wagon can see them.",
+        "We are trading. You are interrupting. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. The House does not treat with people on roads.",
+        "Say it fast. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. We are buying, not answering."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Free, I take it. For now. State it and keep your hands where the wagon can see them.",
+        "We are trading. You are interrupting. Free, I take it. For now.",
+        "Free, I take it. For now. The House does not treat with people on roads.",
+        "Say it fast. Free, I take it. For now.",
+        "Free, I take it. For now. We are buying, not answering."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Stock, unless the paper says otherwise. Are you buying? We have four and one of them can read.",
+        "Business, then. Quickly. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. You want something or you want past. Both are arrangeable.",
+        "The House is open to trade even out here. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. Speak up."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That one is not stock. That one is a problem. Are you buying? We have four and one of them can read.",
+        "Business, then. Quickly. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. You want something or you want past. Both are arrangeable.",
+        "The House is open to trade even out here. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. Speak up."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Serjo. Are you buying? We have four and one of them can read.",
+        "Business, then. Quickly. Serjo.",
+        "Serjo. You want something or you want past. Both are arrangeable.",
+        "The House is open to trade even out here. Serjo.",
+        "Serjo. Speak up."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Factor. Or near enough for trade. Are you buying? We have four and one of them can read.",
+        "Business, then. Quickly. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. You want something or you want past. Both are arrangeable.",
+        "The House is open to trade even out here. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. Speak up."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Free, I take it. For now. Are you buying? We have four and one of them can read.",
+        "Business, then. Quickly. Free, I take it. For now.",
+        "Free, I take it. For now. You want something or you want past. Both are arrangeable.",
+        "The House is open to trade even out here. Free, I take it. For now.",
+        "Free, I take it. For now. Speak up."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Stock, unless the paper says otherwise. There is wine in the wagon and it is better than the road deserves.",
+        "Sit down, we can do business properly. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. The House likes a customer who does not flinch.",
+        "Ask. Trade talk is the only talk out here. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. You are not what we came out for, which makes you welcome."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That one is not stock. That one is a problem. There is wine in the wagon and it is better than the road deserves.",
+        "Sit down, we can do business properly. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. The House likes a customer who does not flinch.",
+        "Ask. Trade talk is the only talk out here. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. You are not what we came out for, which makes you welcome."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Serjo. There is wine in the wagon and it is better than the road deserves.",
+        "Sit down, we can do business properly. Serjo.",
+        "Serjo. The House likes a customer who does not flinch.",
+        "Ask. Trade talk is the only talk out here. Serjo.",
+        "Serjo. You are not what we came out for, which makes you welcome."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Factor. Or near enough for trade. There is wine in the wagon and it is better than the road deserves.",
+        "Sit down, we can do business properly. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. The House likes a customer who does not flinch.",
+        "Ask. Trade talk is the only talk out here. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. You are not what we came out for, which makes you welcome."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Free, I take it. For now. There is wine in the wagon and it is better than the road deserves.",
+        "Sit down, we can do business properly. Free, I take it. For now.",
+        "Free, I take it. For now. The House likes a customer who does not flinch.",
+        "Ask. Trade talk is the only talk out here. Free, I take it. For now.",
+        "Free, I take it. For now. You are not what we came out for, which makes you welcome."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Stock, unless the paper says otherwise. The House knows your name and spells it right.",
+        "Come to the factor house at Helstrom. Ask for the back room. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. Wine, and the good chair, and no counting.",
+        "Whatever you want off this wagon, name it. Stock, unless the paper says otherwise.",
+        "Stock, unless the paper says otherwise. You are a friend of the House, which is not a phrase we spend and not one you can give back."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That one is not stock. That one is a problem. The House knows your name and spells it right.",
+        "Come to the factor house at Helstrom. Ask for the back room. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. Wine, and the good chair, and no counting.",
+        "Whatever you want off this wagon, name it. That one is not stock. That one is a problem.",
+        "That one is not stock. That one is a problem. You are a friend of the House, which is not a phrase we spend and not one you can give back."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Serjo. The House knows your name and spells it right.",
+        "Come to the factor house at Helstrom. Ask for the back room. Serjo.",
+        "Serjo. Wine, and the good chair, and no counting.",
+        "Whatever you want off this wagon, name it. Serjo.",
+        "Serjo. You are a friend of the House, which is not a phrase we spend and not one you can give back."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Factor. Or near enough for trade. The House knows your name and spells it right.",
+        "Come to the factor house at Helstrom. Ask for the back room. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. Wine, and the good chair, and no counting.",
+        "Whatever you want off this wagon, name it. Factor. Or near enough for trade.",
+        "Factor. Or near enough for trade. You are a friend of the House, which is not a phrase we spend and not one you can give back."
+      ]
+    },
+    {
+      "reaction_group": "RG-DRES",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Free, I take it. For now. The House knows your name and spells it right.",
+        "Come to the factor house at Helstrom. Ask for the back room. Free, I take it. For now.",
+        "Free, I take it. For now. Wine, and the good chair, and no counting.",
+        "Whatever you want off this wagon, name it. Free, I take it. For now.",
+        "Free, I take it. For now. You are a friend of the House, which is not a phrase we spend and not one you can give back."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local. Useful. The Company has your description and it is not flattering.",
+        "You cost us a contract. That gets settled. Local. Useful.",
+        "Local. Useful. Nothing here is for sale to you.",
+        "Walk on. Local. Useful.",
+        "Local. Useful. We do not hire, we do not talk, and we do not repeat ourselves."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That is not a local, that is a hazard with a name. The Company has your description and it is not flattering.",
+        "You cost us a contract. That gets settled. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. Nothing here is for sale to you.",
+        "Walk on. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. We do not hire, we do not talk, and we do not repeat ourselves."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Contract or coin, either is fine. The Company has your description and it is not flattering.",
+        "You cost us a contract. That gets settled. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. Nothing here is for sale to you.",
+        "Walk on. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. We do not hire, we do not talk, and we do not repeat ourselves."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You can read a contract. Sit down. The Company has your description and it is not flattering.",
+        "You cost us a contract. That gets settled. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. Nothing here is for sale to you.",
+        "Walk on. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. We do not hire, we do not talk, and we do not repeat ourselves."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You look like you can carry things. The Company has your description and it is not flattering.",
+        "You cost us a contract. That gets settled. You look like you can carry things.",
+        "You look like you can carry things. Nothing here is for sale to you.",
+        "Walk on. You look like you can carry things.",
+        "You look like you can carry things. We do not hire, we do not talk, and we do not repeat ourselves."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local. Useful. Contract business only.",
+        "The Company is not recruiting today. Local. Useful.",
+        "Local. Useful. Take it to the factor.",
+        "Say it in one line. Local. Useful.",
+        "Local. Useful. We are working."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That is not a local, that is a hazard with a name. Contract business only.",
+        "The Company is not recruiting today. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. Take it to the factor.",
+        "Say it in one line. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. We are working."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Contract or coin, either is fine. Contract business only.",
+        "The Company is not recruiting today. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. Take it to the factor.",
+        "Say it in one line. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. We are working."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You can read a contract. Sit down. Contract business only.",
+        "The Company is not recruiting today. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. Take it to the factor.",
+        "Say it in one line. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. We are working."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You look like you can carry things. Contract business only.",
+        "The Company is not recruiting today. You look like you can carry things.",
+        "You look like you can carry things. Take it to the factor.",
+        "Say it in one line. You look like you can carry things.",
+        "You look like you can carry things. We are working."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local. Useful. Company business. What is yours?",
+        "We are hiring for the north road, if you can hold a line. Local. Useful.",
+        "Local. Useful. Ask, but the contract terms are the contract terms.",
+        "You look like work. Are you work? Local. Useful.",
+        "Local. Useful. Say what you want."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That is not a local, that is a hazard with a name. Company business. What is yours?",
+        "We are hiring for the north road, if you can hold a line. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. Ask, but the contract terms are the contract terms.",
+        "You look like work. Are you work? That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. Say what you want."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Contract or coin, either is fine. Company business. What is yours?",
+        "We are hiring for the north road, if you can hold a line. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. Ask, but the contract terms are the contract terms.",
+        "You look like work. Are you work? Contract or coin, either is fine.",
+        "Contract or coin, either is fine. Say what you want."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You can read a contract. Sit down. Company business. What is yours?",
+        "We are hiring for the north road, if you can hold a line. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. Ask, but the contract terms are the contract terms.",
+        "You look like work. Are you work? You can read a contract. Sit down.",
+        "You can read a contract. Sit down. Say what you want."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You look like you can carry things. Company business. What is yours?",
+        "We are hiring for the north road, if you can hold a line. You look like you can carry things.",
+        "You look like you can carry things. Ask, but the contract terms are the contract terms.",
+        "You look like work. Are you work? You look like you can carry things.",
+        "You look like you can carry things. Say what you want."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local. Useful. Sit with us. The pay talk is better sitting.",
+        "The Company can use you and will say so plainly. Local. Useful.",
+        "Local. Useful. Ask about the contract. All of it, not the pretty half.",
+        "There is stew. It is Company stew, so lower your expectations. Local. Useful.",
+        "Local. Useful. You have not lied to us yet."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That is not a local, that is a hazard with a name. Sit with us. The pay talk is better sitting.",
+        "The Company can use you and will say so plainly. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. Ask about the contract. All of it, not the pretty half.",
+        "There is stew. It is Company stew, so lower your expectations. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. You have not lied to us yet."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Contract or coin, either is fine. Sit with us. The pay talk is better sitting.",
+        "The Company can use you and will say so plainly. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. Ask about the contract. All of it, not the pretty half.",
+        "There is stew. It is Company stew, so lower your expectations. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. You have not lied to us yet."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You can read a contract. Sit down. Sit with us. The pay talk is better sitting.",
+        "The Company can use you and will say so plainly. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. Ask about the contract. All of it, not the pretty half.",
+        "There is stew. It is Company stew, so lower your expectations. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. You have not lied to us yet."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You look like you can carry things. Sit with us. The pay talk is better sitting.",
+        "The Company can use you and will say so plainly. You look like you can carry things.",
+        "You look like you can carry things. Ask about the contract. All of it, not the pretty half.",
+        "There is stew. It is Company stew, so lower your expectations. You look like you can carry things.",
+        "You look like you can carry things. You have not lied to us yet."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local. Useful. You are on the books whether you signed or not.",
+        "Anything the Company knows about this stretch, you can have. Local. Useful.",
+        "Local. Useful. Full share, and nobody will argue it.",
+        "We told the factor about you and he wrote it down, which is how they say thank you. Local. Useful.",
+        "Local. Useful. Whatever you need, and no paper."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "That is not a local, that is a hazard with a name. You are on the books whether you signed or not.",
+        "Anything the Company knows about this stretch, you can have. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. Full share, and nobody will argue it.",
+        "We told the factor about you and he wrote it down, which is how they say thank you. That is not a local, that is a hazard with a name.",
+        "That is not a local, that is a hazard with a name. Whatever you need, and no paper."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Contract or coin, either is fine. You are on the books whether you signed or not.",
+        "Anything the Company knows about this stretch, you can have. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. Full share, and nobody will argue it.",
+        "We told the factor about you and he wrote it down, which is how they say thank you. Contract or coin, either is fine.",
+        "Contract or coin, either is fine. Whatever you need, and no paper."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You can read a contract. Sit down. You are on the books whether you signed or not.",
+        "Anything the Company knows about this stretch, you can have. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. Full share, and nobody will argue it.",
+        "We told the factor about you and he wrote it down, which is how they say thank you. You can read a contract. Sit down.",
+        "You can read a contract. Sit down. Whatever you need, and no paper."
+      ]
+    },
+    {
+      "reaction_group": "RG-BWC",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You look like you can carry things. You are on the books whether you signed or not.",
+        "Anything the Company knows about this stretch, you can have. You look like you can carry things.",
+        "You look like you can carry things. Full share, and nobody will argue it.",
+        "We told the factor about you and he wrote it down, which is how they say thank you. You look like you can carry things.",
+        "You look like you can carry things. Whatever you need, and no paper."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "One of the drowned ones, then. The water took the wrong ones and left you.",
+        "You are dry and that is an offence. One of the drowned ones, then.",
+        "One of the drowned ones, then. Go and drown somewhere that is not ours.",
+        "We know what you did on the bank. One of the drowned ones, then.",
+        "One of the drowned ones, then. Nothing here forgives."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river brought it and the river will want it back. The water took the wrong ones and left you.",
+        "You are dry and that is an offence. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. Go and drown somewhere that is not ours.",
+        "We know what you did on the bank. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. Nothing here forgives."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash and salt. Nothing grows in either. The water took the wrong ones and left you.",
+        "You are dry and that is an offence. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. Go and drown somewhere that is not ours.",
+        "We know what you did on the bank. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. Nothing here forgives."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Paper. It burns. The water took the wrong ones and left you.",
+        "You are dry and that is an offence. Paper. It burns.",
+        "Paper. It burns. Go and drown somewhere that is not ours.",
+        "We know what you did on the bank. Paper. It burns.",
+        "Paper. It burns. Nothing here forgives."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Something with dry feet. The water took the wrong ones and left you.",
+        "You are dry and that is an offence. Something with dry feet.",
+        "Something with dry feet. Go and drown somewhere that is not ours.",
+        "We know what you did on the bank. Something with dry feet.",
+        "Something with dry feet. Nothing here forgives."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "One of the drowned ones, then. Speak. The drowned are listening and they are not kind.",
+        "You are not welcome and you are not stopped. One of the drowned ones, then.",
+        "One of the drowned ones, then. Stand where the water can reach you.",
+        "Say it and let it sink. One of the drowned ones, then.",
+        "One of the drowned ones, then. We do not hold conversations. We hold grudges."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river brought it and the river will want it back. Speak. The drowned are listening and they are not kind.",
+        "You are not welcome and you are not stopped. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. Stand where the water can reach you.",
+        "Say it and let it sink. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. We do not hold conversations. We hold grudges."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash and salt. Nothing grows in either. Speak. The drowned are listening and they are not kind.",
+        "You are not welcome and you are not stopped. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. Stand where the water can reach you.",
+        "Say it and let it sink. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. We do not hold conversations. We hold grudges."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Paper. It burns. Speak. The drowned are listening and they are not kind.",
+        "You are not welcome and you are not stopped. Paper. It burns.",
+        "Paper. It burns. Stand where the water can reach you.",
+        "Say it and let it sink. Paper. It burns.",
+        "Paper. It burns. We do not hold conversations. We hold grudges."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Something with dry feet. Speak. The drowned are listening and they are not kind.",
+        "You are not welcome and you are not stopped. Something with dry feet.",
+        "Something with dry feet. Stand where the water can reach you.",
+        "Say it and let it sink. Something with dry feet.",
+        "Something with dry feet. We do not hold conversations. We hold grudges."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "One of the drowned ones, then. The water is high. It is always high.",
+        "You want something the drowned know. One of the drowned ones, then.",
+        "One of the drowned ones, then. Ask. It may cost you a thing you did not offer.",
+        "Keep your feet wet and your words short. One of the drowned ones, then.",
+        "One of the drowned ones, then. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river brought it and the river will want it back. The water is high. It is always high.",
+        "You want something the drowned know. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. Ask. It may cost you a thing you did not offer.",
+        "Keep your feet wet and your words short. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash and salt. Nothing grows in either. The water is high. It is always high.",
+        "You want something the drowned know. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. Ask. It may cost you a thing you did not offer.",
+        "Keep your feet wet and your words short. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Paper. It burns. The water is high. It is always high.",
+        "You want something the drowned know. Paper. It burns.",
+        "Paper. It burns. Ask. It may cost you a thing you did not offer.",
+        "Keep your feet wet and your words short. Paper. It burns.",
+        "Paper. It burns. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Something with dry feet. The water is high. It is always high.",
+        "You want something the drowned know. Something with dry feet.",
+        "Something with dry feet. Ask. It may cost you a thing you did not offer.",
+        "Keep your feet wet and your words short. Something with dry feet.",
+        "Something with dry feet. What."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "One of the drowned ones, then. The water does not object to you. That is unusual.",
+        "Sit at the edge. It is warmer there than it looks. One of the drowned ones, then.",
+        "One of the drowned ones, then. Ask about the drowned road. This one remembers it.",
+        "You have not lied while standing in water, which is harder than it sounds. One of the drowned ones, then.",
+        "One of the drowned ones, then. Stay. The tide will tell you when to go."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river brought it and the river will want it back. The water does not object to you. That is unusual.",
+        "Sit at the edge. It is warmer there than it looks. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. Ask about the drowned road. This one remembers it.",
+        "You have not lied while standing in water, which is harder than it sounds. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. Stay. The tide will tell you when to go."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash and salt. Nothing grows in either. The water does not object to you. That is unusual.",
+        "Sit at the edge. It is warmer there than it looks. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. Ask about the drowned road. This one remembers it.",
+        "You have not lied while standing in water, which is harder than it sounds. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. Stay. The tide will tell you when to go."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Paper. It burns. The water does not object to you. That is unusual.",
+        "Sit at the edge. It is warmer there than it looks. Paper. It burns.",
+        "Paper. It burns. Ask about the drowned road. This one remembers it.",
+        "You have not lied while standing in water, which is harder than it sounds. Paper. It burns.",
+        "Paper. It burns. Stay. The tide will tell you when to go."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Something with dry feet. The water does not object to you. That is unusual.",
+        "Sit at the edge. It is warmer there than it looks. Something with dry feet.",
+        "Something with dry feet. Ask about the drowned road. This one remembers it.",
+        "You have not lied while standing in water, which is harder than it sounds. Something with dry feet.",
+        "Something with dry feet. Stay. The tide will tell you when to go."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "One of the drowned ones, then. The drowned know your name and do not want it.",
+        "Whatever went under, this one will tell you where. One of the drowned ones, then.",
+        "One of the drowned ones, then. You may walk the flooded ways and come back. Few do both.",
+        "Take the marker. It floats when nothing else does. One of the drowned ones, then.",
+        "One of the drowned ones, then. The water has decided about you and it decided well."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The river brought it and the river will want it back. The drowned know your name and do not want it.",
+        "Whatever went under, this one will tell you where. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. You may walk the flooded ways and come back. Few do both.",
+        "Take the marker. It floats when nothing else does. The river brought it and the river will want it back.",
+        "The river brought it and the river will want it back. The water has decided about you and it decided well."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Ash and salt. Nothing grows in either. The drowned know your name and do not want it.",
+        "Whatever went under, this one will tell you where. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. You may walk the flooded ways and come back. Few do both.",
+        "Take the marker. It floats when nothing else does. Ash and salt. Nothing grows in either.",
+        "Ash and salt. Nothing grows in either. The water has decided about you and it decided well."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Paper. It burns. The drowned know your name and do not want it.",
+        "Whatever went under, this one will tell you where. Paper. It burns.",
+        "Paper. It burns. You may walk the flooded ways and come back. Few do both.",
+        "Take the marker. It floats when nothing else does. Paper. It burns.",
+        "Paper. It burns. The water has decided about you and it decided well."
+      ]
+    },
+    {
+      "reaction_group": "RG-VAKH",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Something with dry feet. The drowned know your name and do not want it.",
+        "Whatever went under, this one will tell you where. Something with dry feet.",
+        "Something with dry feet. You may walk the flooded ways and come back. Few do both.",
+        "Take the marker. It floats when nothing else does. Something with dry feet.",
+        "Something with dry feet. The water has decided about you and it decided well."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Approach. The court does not receive you.",
+        "Withdraw. Approach.",
+        "Approach. You have no standing here.",
+        "That petition is refused. Approach.",
+        "Approach. Leave the hall."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Approach. The court does not receive you.",
+        "Withdraw. Approach.",
+        "Approach. You have no standing here.",
+        "That petition is refused. Approach.",
+        "Approach. Leave the hall."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Approach. The court does not receive you.",
+        "Withdraw. Approach.",
+        "Approach. You have no standing here.",
+        "That petition is refused. Approach.",
+        "Approach. Leave the hall."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Approach. The court does not receive you.",
+        "Withdraw. Approach.",
+        "Approach. You have no standing here.",
+        "That petition is refused. Approach.",
+        "Approach. Leave the hall."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Approach. The court does not receive you.",
+        "Withdraw. Approach.",
+        "Approach. You have no standing here.",
+        "That petition is refused. Approach.",
+        "Approach. Leave the hall."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Approach. State your petition.",
+        "The court sits at the eighth hour. Approach.",
+        "Approach. Documents to the steward.",
+        "You may wait. Approach.",
+        "Approach. That is not before this court."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Approach. State your petition.",
+        "The court sits at the eighth hour. Approach.",
+        "Approach. Documents to the steward.",
+        "You may wait. Approach.",
+        "Approach. That is not before this court."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Approach. State your petition.",
+        "The court sits at the eighth hour. Approach.",
+        "Approach. Documents to the steward.",
+        "You may wait. Approach.",
+        "Approach. That is not before this court."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Approach. State your petition.",
+        "The court sits at the eighth hour. Approach.",
+        "Approach. Documents to the steward.",
+        "You may wait. Approach.",
+        "Approach. That is not before this court."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Approach. State your petition.",
+        "The court sits at the eighth hour. Approach.",
+        "Approach. Documents to the steward.",
+        "You may wait. Approach.",
+        "Approach. That is not before this court."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Approach. Speak your business to the court.",
+        "The court will hear it in order. Approach.",
+        "Approach. You may put it in writing.",
+        "The steward will see to you. Approach.",
+        "Approach. What is your petition?"
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Approach. Speak your business to the court.",
+        "The court will hear it in order. Approach.",
+        "Approach. You may put it in writing.",
+        "The steward will see to you. Approach.",
+        "Approach. What is your petition?"
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Approach. Speak your business to the court.",
+        "The court will hear it in order. Approach.",
+        "Approach. You may put it in writing.",
+        "The steward will see to you. Approach.",
+        "Approach. What is your petition?"
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Approach. Speak your business to the court.",
+        "The court will hear it in order. Approach.",
+        "Approach. You may put it in writing.",
+        "The steward will see to you. Approach.",
+        "Approach. What is your petition?"
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Approach. Speak your business to the court.",
+        "The court will hear it in order. Approach.",
+        "Approach. You may put it in writing.",
+        "The steward will see to you. Approach.",
+        "Approach. What is your petition?"
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Approach. The court will hear you now.",
+        "You may speak plainly here. Approach.",
+        "Approach. Sit. The court has time.",
+        "Your petition is noted and it is not buried. Approach.",
+        "Approach. Ask, and the court will not be short with you."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Approach. The court will hear you now.",
+        "You may speak plainly here. Approach.",
+        "Approach. Sit. The court has time.",
+        "Your petition is noted and it is not buried. Approach.",
+        "Approach. Ask, and the court will not be short with you."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Approach. The court will hear you now.",
+        "You may speak plainly here. Approach.",
+        "Approach. Sit. The court has time.",
+        "Your petition is noted and it is not buried. Approach.",
+        "Approach. Ask, and the court will not be short with you."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Approach. The court will hear you now.",
+        "You may speak plainly here. Approach.",
+        "Approach. Sit. The court has time.",
+        "Your petition is noted and it is not buried. Approach.",
+        "Approach. Ask, and the court will not be short with you."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Approach. The court will hear you now.",
+        "You may speak plainly here. Approach.",
+        "Approach. Sit. The court has time.",
+        "Your petition is noted and it is not buried. Approach.",
+        "Approach. Ask, and the court will not be short with you."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Approach. The court knows you and welcomes you.",
+        "Your petition is granted before you finish it. Approach.",
+        "Approach. You may speak in the hall without an appointment.",
+        "The court remembers what you did and it will keep remembering. Approach.",
+        "Approach. Come to the high table."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Approach. The court knows you and welcomes you.",
+        "Your petition is granted before you finish it. Approach.",
+        "Approach. You may speak in the hall without an appointment.",
+        "The court remembers what you did and it will keep remembering. Approach.",
+        "Approach. Come to the high table."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "Approach. The court knows you and welcomes you.",
+        "Your petition is granted before you finish it. Approach.",
+        "Approach. You may speak in the hall without an appointment.",
+        "The court remembers what you did and it will keep remembering. Approach.",
+        "Approach. Come to the high table."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Approach. The court knows you and welcomes you.",
+        "Your petition is granted before you finish it. Approach.",
+        "Approach. You may speak in the hall without an appointment.",
+        "The court remembers what you did and it will keep remembering. Approach.",
+        "Approach. Come to the high table."
+      ]
+    },
+    {
+      "reaction_group": "RG-COURT",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Approach. The court knows you and welcomes you.",
+        "Your petition is granted before you finish it. Approach.",
+        "Approach. You may speak in the hall without an appointment.",
+        "The court remembers what you did and it will keep remembering. Approach.",
+        "Approach. Come to the high table."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "You are from here, or near enough. We want none of it.",
+        "Nobody here will sell to you. You are from here, or near enough.",
+        "You are from here, or near enough. Take it out of the square.",
+        "You have brought a smell in with you. You are from here, or near enough.",
+        "You are from here, or near enough. Move on, quickly."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The children have been told to stay in. We want none of it.",
+        "Nobody here will sell to you. The children have been told to stay in.",
+        "The children have been told to stay in. Take it out of the square.",
+        "You have brought a smell in with you. The children have been told to stay in.",
+        "The children have been told to stay in. Move on, quickly."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We do not take that side and we do not take yours either. We want none of it.",
+        "Nobody here will sell to you. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. Take it out of the square.",
+        "You have brought a smell in with you. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. Move on, quickly."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Tax or trade? We want none of it.",
+        "Nobody here will sell to you. Tax or trade?",
+        "Tax or trade? Take it out of the square.",
+        "You have brought a smell in with you. Tax or trade?",
+        "Tax or trade? Move on, quickly."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Off a boat, then. We want none of it.",
+        "Nobody here will sell to you. Off a boat, then.",
+        "Off a boat, then. Take it out of the square.",
+        "You have brought a smell in with you. Off a boat, then.",
+        "Off a boat, then. Move on, quickly."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "You are from here, or near enough. Buying or asking? Only one is free.",
+        "We keep out of things. You are from here, or near enough.",
+        "You are from here, or near enough. The inn is that way and it is full.",
+        "Say it and I will get back to the stall. You are from here, or near enough.",
+        "You are from here, or near enough. We are not a town for stopping in."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The children have been told to stay in. Buying or asking? Only one is free.",
+        "We keep out of things. The children have been told to stay in.",
+        "The children have been told to stay in. The inn is that way and it is full.",
+        "Say it and I will get back to the stall. The children have been told to stay in.",
+        "The children have been told to stay in. We are not a town for stopping in."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We do not take that side and we do not take yours either. Buying or asking? Only one is free.",
+        "We keep out of things. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. The inn is that way and it is full.",
+        "Say it and I will get back to the stall. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. We are not a town for stopping in."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Tax or trade? Buying or asking? Only one is free.",
+        "We keep out of things. Tax or trade?",
+        "Tax or trade? The inn is that way and it is full.",
+        "Say it and I will get back to the stall. Tax or trade?",
+        "Tax or trade? We are not a town for stopping in."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Off a boat, then. Buying or asking? Only one is free.",
+        "We keep out of things. Off a boat, then.",
+        "Off a boat, then. The inn is that way and it is full.",
+        "Say it and I will get back to the stall. Off a boat, then.",
+        "Off a boat, then. We are not a town for stopping in."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "You are from here, or near enough. Something you need?",
+        "Prices are on the board. You are from here, or near enough.",
+        "You are from here, or near enough. Ask. If I know it, you can have it.",
+        "It is a small place. There is not much to tell. You are from here, or near enough.",
+        "You are from here, or near enough. Mind the wagons."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The children have been told to stay in. Something you need?",
+        "Prices are on the board. The children have been told to stay in.",
+        "The children have been told to stay in. Ask. If I know it, you can have it.",
+        "It is a small place. There is not much to tell. The children have been told to stay in.",
+        "The children have been told to stay in. Mind the wagons."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We do not take that side and we do not take yours either. Something you need?",
+        "Prices are on the board. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. Ask. If I know it, you can have it.",
+        "It is a small place. There is not much to tell. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. Mind the wagons."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Tax or trade? Something you need?",
+        "Prices are on the board. Tax or trade?",
+        "Tax or trade? Ask. If I know it, you can have it.",
+        "It is a small place. There is not much to tell. Tax or trade?",
+        "Tax or trade? Mind the wagons."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Off a boat, then. Something you need?",
+        "Prices are on the board. Off a boat, then.",
+        "Off a boat, then. Ask. If I know it, you can have it.",
+        "It is a small place. There is not much to tell. Off a boat, then.",
+        "Off a boat, then. Mind the wagons."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "You are from here, or near enough. There is a bed at the inn and I will say a word for you.",
+        "Sit down, you are letting the heat out. You are from here, or near enough.",
+        "You are from here, or near enough. Ask anybody here, they will answer you straight.",
+        "Take the second stall; he does not water the drink. You are from here, or near enough.",
+        "You are from here, or near enough. You have been decent in the square. It gets noticed."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The children have been told to stay in. There is a bed at the inn and I will say a word for you.",
+        "Sit down, you are letting the heat out. The children have been told to stay in.",
+        "The children have been told to stay in. Ask anybody here, they will answer you straight.",
+        "Take the second stall; he does not water the drink. The children have been told to stay in.",
+        "The children have been told to stay in. You have been decent in the square. It gets noticed."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We do not take that side and we do not take yours either. There is a bed at the inn and I will say a word for you.",
+        "Sit down, you are letting the heat out. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. Ask anybody here, they will answer you straight.",
+        "Take the second stall; he does not water the drink. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. You have been decent in the square. It gets noticed."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Tax or trade? There is a bed at the inn and I will say a word for you.",
+        "Sit down, you are letting the heat out. Tax or trade?",
+        "Tax or trade? Ask anybody here, they will answer you straight.",
+        "Take the second stall; he does not water the drink. Tax or trade?",
+        "Tax or trade? You have been decent in the square. It gets noticed."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Off a boat, then. There is a bed at the inn and I will say a word for you.",
+        "Sit down, you are letting the heat out. Off a boat, then.",
+        "Off a boat, then. Ask anybody here, they will answer you straight.",
+        "Take the second stall; he does not water the drink. Off a boat, then.",
+        "Off a boat, then. You have been decent in the square. It gets noticed."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "You are from here, or near enough. This town owes you and knows it.",
+        "Whatever is on the stall, take it and settle later. You are from here, or near enough.",
+        "You are from here, or near enough. Ask me anything about this place and I will tell you the true version.",
+        "The whole square talks about you and it is all good. You are from here, or near enough.",
+        "You are from here, or near enough. You have a bed here whenever you want one."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "The children have been told to stay in. This town owes you and knows it.",
+        "Whatever is on the stall, take it and settle later. The children have been told to stay in.",
+        "The children have been told to stay in. Ask me anything about this place and I will tell you the true version.",
+        "The whole square talks about you and it is all good. The children have been told to stay in.",
+        "The children have been told to stay in. You have a bed here whenever you want one."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "We do not take that side and we do not take yours either. This town owes you and knows it.",
+        "Whatever is on the stall, take it and settle later. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. Ask me anything about this place and I will tell you the true version.",
+        "The whole square talks about you and it is all good. We do not take that side and we do not take yours either.",
+        "We do not take that side and we do not take yours either. You have a bed here whenever you want one."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "Tax or trade? This town owes you and knows it.",
+        "Whatever is on the stall, take it and settle later. Tax or trade?",
+        "Tax or trade? Ask me anything about this place and I will tell you the true version.",
+        "The whole square talks about you and it is all good. Tax or trade?",
+        "Tax or trade? You have a bed here whenever you want one."
+      ]
+    },
+    {
+      "reaction_group": "RG-TOWN",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "Off a boat, then. This town owes you and knows it.",
+        "Whatever is on the stall, take it and settle later. Off a boat, then.",
+        "Off a boat, then. Ask me anything about this place and I will tell you the true version.",
+        "The whole square talks about you and it is all good. Off a boat, then.",
+        "Off a boat, then. You have a bed here whenever you want one."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local knowledge. That is worth something. You talked. We know you talked.",
+        "There is nothing here and there never was. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. Walk away and keep walking.",
+        "You are a witness and we do not keep those. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. Wrong cellar."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Nobody looks for one of those, which is worth more. You talked. We know you talked.",
+        "There is nothing here and there never was. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. Walk away and keep walking.",
+        "You are a witness and we do not keep those. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. Wrong cellar."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You will be wanting to be somebody else for a while. You talked. We know you talked.",
+        "There is nothing here and there never was. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. Walk away and keep walking.",
+        "You are a witness and we do not keep those. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. Wrong cellar."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You have the walk of a man with a rank he lost. You talked. We know you talked.",
+        "There is nothing here and there never was. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. Walk away and keep walking.",
+        "You are a witness and we do not keep those. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. Wrong cellar."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "hostile",
+      "disposition": [
+        0,
+        9
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are nobody here. Congratulations. You talked. We know you talked.",
+        "There is nothing here and there never was. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. Walk away and keep walking.",
+        "You are a witness and we do not keep those. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. Wrong cellar."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local knowledge. That is worth something. Who sent you.",
+        "We do not know you. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. Say the word or say nothing.",
+        "You are standing in the doorway. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. Nothing is for sale."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Nobody looks for one of those, which is worth more. Who sent you.",
+        "We do not know you. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. Say the word or say nothing.",
+        "You are standing in the doorway. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. Nothing is for sale."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You will be wanting to be somebody else for a while. Who sent you.",
+        "We do not know you. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. Say the word or say nothing.",
+        "You are standing in the doorway. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. Nothing is for sale."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You have the walk of a man with a rank he lost. Who sent you.",
+        "We do not know you. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. Say the word or say nothing.",
+        "You are standing in the doorway. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. Nothing is for sale."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "cold",
+      "disposition": [
+        10,
+        29
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are nobody here. Congratulations. Who sent you.",
+        "We do not know you. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. Say the word or say nothing.",
+        "You are standing in the doorway. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. Nothing is for sale."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local knowledge. That is worth something. You want something moved or something forgotten.",
+        "Speak quietly and quickly. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. We can do most things. Most.",
+        "What is it worth. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. Money first, questions after."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Nobody looks for one of those, which is worth more. You want something moved or something forgotten.",
+        "Speak quietly and quickly. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. We can do most things. Most.",
+        "What is it worth. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. Money first, questions after."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You will be wanting to be somebody else for a while. You want something moved or something forgotten.",
+        "Speak quietly and quickly. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. We can do most things. Most.",
+        "What is it worth. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. Money first, questions after."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You have the walk of a man with a rank he lost. You want something moved or something forgotten.",
+        "Speak quietly and quickly. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. We can do most things. Most.",
+        "What is it worth. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. Money first, questions after."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "neutral",
+      "disposition": [
+        30,
+        49
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are nobody here. Congratulations. You want something moved or something forgotten.",
+        "Speak quietly and quickly. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. We can do most things. Most.",
+        "What is it worth. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. Money first, questions after."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local knowledge. That is worth something. Sit at the back. Nobody looks at the back.",
+        "We can find you a door. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. Ask. If it can be got, it can be got.",
+        "You pay on time. That is the whole friendship. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. There is a bed under the floor if it comes to that."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Nobody looks for one of those, which is worth more. Sit at the back. Nobody looks at the back.",
+        "We can find you a door. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. Ask. If it can be got, it can be got.",
+        "You pay on time. That is the whole friendship. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. There is a bed under the floor if it comes to that."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You will be wanting to be somebody else for a while. Sit at the back. Nobody looks at the back.",
+        "We can find you a door. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. Ask. If it can be got, it can be got.",
+        "You pay on time. That is the whole friendship. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. There is a bed under the floor if it comes to that."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You have the walk of a man with a rank he lost. Sit at the back. Nobody looks at the back.",
+        "We can find you a door. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. Ask. If it can be got, it can be got.",
+        "You pay on time. That is the whole friendship. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. There is a bed under the floor if it comes to that."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "warm",
+      "disposition": [
+        50,
+        69
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are nobody here. Congratulations. Sit at the back. Nobody looks at the back.",
+        "We can find you a door. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. Ask. If it can be got, it can be got.",
+        "You pay on time. That is the whole friendship. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. There is a bed under the floor if it comes to that."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "saxhleel",
+      "lines": [
+        "Local knowledge. That is worth something. Your name never comes up here and it never will.",
+        "Anything we have, and no price this time. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. The fence will see you first, before anybody.",
+        "We would put a knife in somebody for you and you have not even asked. Local knowledge. That is worth something.",
+        "Local knowledge. That is worth something. Whatever the cellar knows, you know."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "naga",
+      "lines": [
+        "Nobody looks for one of those, which is worth more. Your name never comes up here and it never will.",
+        "Anything we have, and no price this time. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. The fence will see you first, before anybody.",
+        "We would put a knife in somebody for you and you have not even asked. Nobody looks for one of those, which is worth more.",
+        "Nobody looks for one of those, which is worth more. Whatever the cellar knows, you know."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "dunmer",
+      "lines": [
+        "You will be wanting to be somebody else for a while. Your name never comes up here and it never will.",
+        "Anything we have, and no price this time. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. The fence will see you first, before anybody.",
+        "We would put a knife in somebody for you and you have not even asked. You will be wanting to be somebody else for a while.",
+        "You will be wanting to be somebody else for a while. Whatever the cellar knows, you know."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "imperial",
+      "lines": [
+        "You have the walk of a man with a rank he lost. Your name never comes up here and it never will.",
+        "Anything we have, and no price this time. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. The fence will see you first, before anybody.",
+        "We would put a knife in somebody for you and you have not even asked. You have the walk of a man with a rank he lost.",
+        "You have the walk of a man with a rank he lost. Whatever the cellar knows, you know."
+      ]
+    },
+    {
+      "reaction_group": "RG-OUTLAW",
+      "disposition_band": "friendly",
+      "disposition": [
+        70,
+        100
+      ],
+      "player_race_class": "other-foreign",
+      "lines": [
+        "You are nobody here. Congratulations. Your name never comes up here and it never will.",
+        "Anything we have, and no price this time. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. The fence will see you first, before anybody.",
+        "We would put a knife in somebody for you and you have not even asked. You are nobody here. Congratulations.",
+        "You are nobody here. Congratulations. Whatever the cellar knows, you know."
       ]
     }
-  ],
-  "declared_incomplete": {
-    "owner": "wave-1 piece W1-11",
-    "missing": [
-      "per-faction pools",
-      "per-race pools"
-    ]
-  }
+  ]
 }

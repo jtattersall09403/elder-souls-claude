@@ -1,6 +1,6 @@
 {
   "schema": "elder-souls/rumours@1",
-  "note": "RI-DLG02: rumours MUST differ per town. Two towns are seeded here so the analyser can see the shape; the other six are W1-11's.",
+  "note": "RI-DLG02: rumours MUST differ per town. RI-CHR02 §4c: '>= 2 race-specific rumours per settlement = 16'. Round 1 shipped 0 race-gated. A race-gated rumour is the same town gossiping differently at you: the square does not say the same sentence to a Saxhleel and to a Dunmer, and what it declines to say is the content.",
   "rumours": {
     "thorn": [
       "The king pays in fish because he has nothing else, and he pays.",
@@ -14,8 +14,163 @@
   "declared_incomplete": {
     "owner": "wave-1 piece W1-11",
     "missing": [
-      "six settlements",
-      "11-14 variants per settlement"
+      "11-14 non-race-gated variants per settlement"
     ]
-  }
+  },
+  "race_gated": [
+    {
+      "settlement": "thorn",
+      "requires": {
+        "race": [
+          "saxhleel",
+          "naga"
+        ]
+      },
+      "x": "The king's fishermen found a net in the reeds with a House mark on the float and they buried it rather than report it."
+    },
+    {
+      "settlement": "thorn",
+      "forbids": {
+        "race": [
+          "saxhleel",
+          "naga"
+        ]
+      },
+      "x": "They will smile at you in the square and count you out of the town at the gate. Somebody keeps a tally."
+    },
+    {
+      "settlement": "stormhold",
+      "requires": {
+        "race": [
+          "imperial"
+        ]
+      },
+      "x": "The customs house has not sent a return to Cyrodiil in three quarters and nobody in the cohort has mentioned it."
+    },
+    {
+      "settlement": "stormhold",
+      "forbids": {
+        "race": [
+          "imperial"
+        ]
+      },
+      "x": "There is a room under the customs house with a lock on the outside and the cohort walks past it."
+    },
+    {
+      "settlement": "helstrom",
+      "requires": {
+        "race": [
+          "dunmer"
+        ]
+      },
+      "x": "The factor house is taking on a new hand and the last one is not being talked about."
+    },
+    {
+      "settlement": "helstrom",
+      "forbids": {
+        "race": [
+          "dunmer"
+        ]
+      },
+      "x": "Wagons go out of the quiet street at the second bell and come back light, and the market has agreed not to hear them."
+    },
+    {
+      "settlement": "blackrose",
+      "requires": {
+        "race": [
+          "saxhleel",
+          "naga"
+        ]
+      },
+      "x": "Two of the prison's gaolers are marsh-born and one of them has been letting letters out."
+    },
+    {
+      "settlement": "blackrose",
+      "forbids": {
+        "race": [
+          "saxhleel",
+          "naga"
+        ]
+      },
+      "x": "Half the men inside are in for things that are not crimes forty miles north of here."
+    },
+    {
+      "settlement": "lilmoth",
+      "requires": {
+        "race": [
+          "naga"
+        ]
+      },
+      "x": "The harbour master will not deal with the bands any more and the bands have stopped asking."
+    },
+    {
+      "settlement": "lilmoth",
+      "forbids": {
+        "race": [
+          "naga"
+        ]
+      },
+      "x": "Something came up the harbour steps in the spring and the town has agreed it was a story."
+    },
+    {
+      "settlement": "soulrest",
+      "requires": {
+        "race": [
+          "saxhleel",
+          "naga"
+        ]
+      },
+      "x": "The sapwell south of the town has gone quiet and the rootkeeper has stopped saying it has not."
+    },
+    {
+      "settlement": "soulrest",
+      "forbids": {
+        "race": [
+          "saxhleel",
+          "naga"
+        ]
+      },
+      "x": "They will take your coin at the gate and your questions at the wall, and the wall does not answer."
+    },
+    {
+      "settlement": "gideon",
+      "requires": {
+        "race": [
+          "dunmer",
+          "imperial"
+        ]
+      },
+      "x": "The tariff at Gideon is set by a man who has never seen a boat and it shows in the schedule."
+    },
+    {
+      "settlement": "gideon",
+      "forbids": {
+        "race": [
+          "dunmer",
+          "imperial"
+        ]
+      },
+      "x": "They loaded a barge at Gideon at night and the manifest said reeds and reeds do not knock."
+    },
+    {
+      "settlement": "tidewrack",
+      "requires": {
+        "race": [
+          "saxhleel",
+          "naga"
+        ]
+      },
+      "x": "The Warden-Scribe was on the other side of that desk once and she says so about once a month, to one person."
+    },
+    {
+      "settlement": "tidewrack",
+      "forbids": {
+        "race": [
+          "saxhleel",
+          "naga"
+        ]
+      },
+      "x": "Nobody off a barge leaves Tidewrack the same shape they arrived, and the Office writes the new shape down."
+    }
+  ]
 }

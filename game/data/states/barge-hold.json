@@ -1,0 +1,79 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "barge-hold",
+  "owner": "W1-07 — character creation",
+  "title": "The hold of the prison barge, two days out of Gideon. RI-JRN01 O6: the player is controllable, in a body, in a walkable space, with another person in it and an object they can pick up, BEFORE anything defines them.",
+  "env": {
+    "timeOfDay": 8.0,
+    "weather": "overcast",
+    "region": "coast",
+    "interior": "barge-hold"
+  },
+  "player": {
+    "pos": [
+      0.3,
+      0,
+      -1.2
+    ],
+    "yaw": 329.0
+  },
+  "camera": {
+    "yaw": 351.0,
+    "pitch": -4.0,
+    "mode": "free"
+  },
+  "npcs": [
+    {
+      "from_record": "jeeh-ei",
+      "pos": [
+        -2.0,
+        0,
+        2.6
+      ],
+      "yaw": 149,
+      "behaviour": "attend",
+      "notice_radius_m": 6,
+      "height_scale": 0.96
+    }
+  ],
+  "props": [
+    {
+      "eid": "hold-knife",
+      "name": "A knife somebody did not find",
+      "item": "dagger",
+      "pos": [
+        -2.0,
+        0.82,
+        0.2
+      ],
+      "yaw": 24,
+      "material": "metal",
+      "shape": "tall"
+    },
+    {
+      "eid": "hold-gourd",
+      "name": "A tithe-gourd, empty",
+      "item": "tithe-gourd",
+      "pos": [
+        1.6,
+        0.82,
+        -1.6
+      ],
+      "yaw": 200,
+      "material": "reed"
+    }
+  ],
+  "spawn": [],
+  "loadout": {
+    "weapon": "dagger",
+    "shield": null,
+    "endurance": 10,
+    "hpMax": 300,
+    "armourPoise": 0,
+    "equipLoadPct": 8.0,
+    "flaskLevel": 0,
+    "estus": 0,
+    "gold": 0,
+    "_note": "A prisoner off a barge. VIG 10 = 300 HP (RI-PRG02 §3), no shield, no flask, and one knife somebody did not find."
+  }
+}

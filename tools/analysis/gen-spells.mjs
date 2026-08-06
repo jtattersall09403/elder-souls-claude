@@ -210,7 +210,10 @@ function geometryOf(s, effectIds) {
       kind: 'volume', shape: 'sphere',
       radius_m: Math.max(...s.fx.map((f) => f.area_r_m)),
       active_f: 6, ticks_every_f: 12, decal_lead_f: classesDoc.ballistics.volume_decal_lead_f,
-      placement: s.range === 'area_at_range' ? 'resolved_world_point' : 'caster',
+      // An area spell aimed at somebody lands ON THEM, not on the caster. `wamasu_arc` is a
+      // 3 m shock burst at `target` range and it measured 0 damage against two bodies 6 m away
+      // because the volume was centred on the person casting it. Only a `self`/`touch` area is.
+      placement: (s.range === 'self' || s.range === 'touch') ? 'caster' : 'resolved_world_point',
     };
   }
   if (s.range === 'projectile' || s.range === 'target') {

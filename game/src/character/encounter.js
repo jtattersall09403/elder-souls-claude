@@ -46,6 +46,7 @@ export const HAIL_RANGE_M = 24.0;
 export const ENGAGE = {
   advance_mps: 2.20,           // a jog under armour, not a sprint
   engage_range_m: 2.30,        // inside a chop's 2.4 m reach
+  min_standoff_m: 1.45,        // and NOT closer: a body standing inside yours swings over you
   disengage_range_m: 2.80,     // hysteresis, so nobody vibrates on the boundary
   attack_cadence_f: 78,        // f@60 between one member's attacks; the roster rotates
   party_stagger_f: 26,         // f@60 offset per member, so six raiders are not one raider
@@ -206,6 +207,17 @@ function engageMember(sim, combat, bus, e, enc, rule, dist, dx, dz) {
   let t = angleDelta(b.yaw, bearing);
   if (t > maxStep) t = maxStep; else if (t < -maxStep) t = -maxStep;
   b.yaw = norm360(b.yaw + t);
+
+  if (!isNetter && dist < ENGAGE.min_standoff_m) {
+    // Too close to swing. Back off to the standoff rather than stand inside the player and
+    // whiff forever — which is what 46 attacks and 46 WHIFFs in one run looks like.
+    const step = ENGAGE.advance_mps / 60;
+    const ux = dx / (dist || 1), uz = dz / (dist || 1);
+    b.pos[0] -= ux * step; b.pos[2] -= uz * step;
+    b.state = 'REPOSITION';
+    b.speedMps = ENGAGE.advance_mps;
+    return;
+  }
 
   if (dist > want) {
     // Close. Straight-line advance at a constant speed, with a per-member lateral offset so

@@ -27,7 +27,11 @@
     "game/src/harness/api.js (getMagicWorld/getStatusState/getEffectConsumerMap/getFallState/dropFrom/quest*)",
     "game/data/magic/wards.json",
     "game/data/quests/hooks.json + tools/analysis/gen-quest-hooks.mjs",
-    "game/data/combat/enemies/drowned_lesser.json, drowned_greater.json"
+    "game/data/combat/enemies/drowned_lesser.json, drowned_greater.json",
+    "tools/harness/mag-census.mjs",
+    "reports/runs/MAG-CENSUS/mag-census.json",
+    "game/data/combat/enemies/*.json (armour_rating)",
+    "tools/analysis/gen-spells.mjs (3 uncastable spells retuned, cure_paralysis self carrier)"
   ],
   "findings": [
     "ROOT CAUSE confirmed at combat-bridge.js:72 — `if (e.utility_class === null || e.geometry !== 'none') dmg += outputOf(...)`. That predicate is true for every effect with geometry, i.e. every enemy-side effect. Now closed over DAMAGE_EFFECTS (5) only.",
@@ -39,8 +43,19 @@
     "Projectile tracking measured 0.000 deg/s because _spawnProjectile never set p.target. Now acquires a body already inside a 20-degree release cone and stops dead at cutoffF.",
     "Data loader keys game/data/quests/* by doc.id, not filename: hooks.json -> data.quests['quest-hooks'], magic-utility.json -> data.quests['magic-utility-quests'].",
     "api-probe 33/33 PASS with all of the above wired.",
-    "CONCURRENT-AGENT HAZARD: other agents commit the whole worktree (commit 1c1f98b picked up my in-flight files) and left engine.js referencing a missing _censusStep. I added a defensive `this._censusStep ? ... : null` guard on that line."
+    "CONCURRENT-AGENT HAZARD: other agents commit the whole worktree (commit 1c1f98b picked up my in-flight files) and left engine.js referencing a missing _censusStep. I added a defensive `this._censusStep ? ... : null` guard on that line.",
+    "MEASURED at HEAD: EFFECT-FUNCTION 55/55, HP_DAMAGE_ONLY 0, UNREAD_TIMER 0, PARTIAL 0, NOT_OBSERVED 0, GENERIC-APPLICATOR 0/55. RI-MAG06 bar is >=50/55 with HP_DAMAGE_ONLY 0 and UNREAD_TIMER <=2.",
+    "LEVITATION measured: pos[1] peak 6.12 m at altitude_m 6.12 (the two are the same number by assignment), 1.500 Focus/m, drift 1.388 m/s against a 1.4 cap and a measured walk of 3.173 m/s, state AIRBORNE throughout, light/heavy/block/roll/parry ALL dropped, iframe false on every frame.",
+    "SLOWFALL measured: terminal 3.5 m/s and 0 fall damage from 30 m, against a control of 18 m/s and 144 damage.",
+    "PARALYSE measured: buildup 36/59/82 over three contacts, procs on the fourth, enemy state PARALYSED. Never 0 -> applied in one frame.",
+    "MITIGATION measured: an identical scripted 100-damage hit takes 100 unbuffed, 53.68 with shield, 30.52 with resist_element.",
+    "CONTROL VERBS measured: calm_beast/demoralise/charm all end with hp_fall 0, deaths 0, yielded true, in_combat FALSE. charm also moves disposition. frenzy changes the target with 0 deaths.",
+    "RECALL measured: [60,0,60] -> [0,0,0], 84.85 m.",
+    "SOUL_TRAP measured: gems 0 at cast, 1 after the target's death; xul_hesh 0 -> 1. Fills on death, not on cast.",
+    "FEATHER measured: 34% MEDIUM -> 0% LIGHT, crossing RI-CMB01 M5's 30.00 cliff, which does not move.",
+    "BUG WORTH REMEMBERING: MagicSystem._emit(frame, kind, fields) spreads `fields`, so a field literally named `kind` overwrites the event type. addBuildup emitted {kind:'fire'} instead of {kind:'status_buildup'} and the meter was invisible to every consumer. Renamed to status_kind.",
+    "BUG WORTH REMEMBERING: SimState.reset() replaces sim.quest wholesale, so a QuestEngine built at boot keeps writing into the PREVIOUS journal array after any loadState(). Engine._rebindQuestRuntime() fixes it; hist_sight measured UNREAD_TIMER purely because of this."
   ],
-  "next_step": "write tools/harness/mag-census.mjs (RI-MAG06 instrument), measure EFFECT-FUNCTION and HP_DAMAGE_ONLY live, then VFX and the economy",
+  "next_step": "regressions, then the economy (priced enchanting services), quest-solvable-by-magic, and RI-MAG05 VFX",
   "notes_for_successor": "The registry in game/src/sim/magic/apply.js is checked for completeness at boot (assertRegistryComplete): a catalogue effect with no handler throws rather than falling through to a damage number. DAMAGE_EFFECTS is the frozen 5-element set shared by apply.js and combat-bridge.js so the two cannot drift."
 }

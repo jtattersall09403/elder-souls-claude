@@ -569,6 +569,7 @@ export class MagicSystem {
       p.pos[0] += Math.sin(rad) * step;
       p.pos[2] += Math.cos(rad) * step;
       p.travelF++;
+      let consumed = false;
       for (const t of targets) {
         if (t.dead || p.hits.includes(t.id)) continue;
         if (segmentSphereHit(p.prev, p.pos, p.r, t.pos, 0.45)) {
@@ -576,7 +577,22 @@ export class MagicSystem {
           onHit(t, this.spellOf(p.spell), { kind: 'projectile', at: [p.pos[0], p.pos[1], p.pos[2]], frame });
           this.projectiles.splice(i, 1);
           this._residue(frame, p.spell, p.pos);
+          consumed = true;
           break;
+        }
+      }
+      // THE WORLD IS A TARGET. A projectile that only ever tests creature bodies means `open`
+      // cast at a door with nobody standing in front of it does nothing at all — which is one
+      // half of why the round-1 verdict measured `open` as 31 hp to a creature: the only thing
+      // the geometry could find WAS a creature. A ward, a lock and a brick wall are things you
+      // aim at, so they are swept against on the same frame, by the same segment test.
+      if (!consumed && this.projectiles[i] === p) {
+        const w = this._worldHit(p.prev, p.pos, p.r);
+        if (w) {
+          onHit(null, this.spellOf(p.spell), { kind: 'projectile', at: w.at, frame, world: w.id });
+          this.projectiles.splice(i, 1);
+          this._residue(frame, p.spell, w.at);
+          consumed = true;
         }
       }
       if (this.projectiles[i] === p && p.travelF >= p.lifeF) { this.projectiles.splice(i, 1); this._residue(frame, p.spell, p.pos); }
@@ -589,13 +605,20 @@ export class MagicSystem {
       if (frame > v.activeTo) { this.volumes.splice(i, 1); this._residue(frame, v.spell, v.centre); continue; }
       if (v.lastTickF >= 0 && frame - v.lastTickF < v.ticksEveryF) continue;
       v.lastTickF = frame;
+      let touched = false;
       for (const t of targets) {
         if (t.dead) continue;
         const dx = t.pos[0] - v.centre[0], dz = t.pos[2] - v.centre[2];
         if (dx * dx + dz * dz <= (v.r + 0.45) * (v.r + 0.45)) {
           v.hits.push(t.id);
+          touched = true;
           onHit(t, this.spellOf(v.spell), { kind: v.contact ? 'contact' : 'volume', at: [v.centre[0], v.centre[1], v.centre[2]], frame });
         }
+      }
+      // Same rule for a volume and a touch spell: the world is inside the sphere too.
+      if (!touched && !v.worldHit) {
+        const w = this._worldHit(v.centre, v.centre, v.r);
+        if (w) { v.worldHit = w.id; onHit(null, this.spellOf(v.spell), { kind: v.contact ? 'contact' : 'volume', at: w.at, frame, world: w.id }); }
       }
     }
 
@@ -705,6 +728,26 @@ export class MagicSystem {
       this._emit(frame, 'effect_break', { effect: 'invisibility', cause, remaining_f: a.remaining_f });
     }
     return broke;
+  }
+
+  /**
+   * The nearest world object whose position the segment `p0 -> p1`, fattened by `r`, comes
+   * within reach of. Locks, traps and breakables only: these are the things a Warding or
+   * Sorcery verb aims AT. Deterministic — iteration is over insertion order and the nearest
+   * wins, with the id breaking a tie.
+   */
+  _worldHit(p0, p1, r) {
+    const reach = r + 0.9;
+    let best = null, bestD = Infinity;
+    const consider = (o) => {
+      if (!o.pos) return;
+      const d = segmentPointDist2(p0, p1, o.pos);
+      if (d <= reach * reach && (d < bestD || (d === bestD && best && o.id < best.id))) { bestD = d; best = o; }
+    };
+    for (const l of this.world.locks.values()) if (l.locked) consider(l);
+    for (const t of this.world.traps.values()) if (t.armed) consider(t);
+    for (const b of this.world.breakables.values()) if (b.intact) consider(b);
+    return best ? { id: best.id, at: [best.pos[0], best.pos[1], best.pos[2]] } : null;
   }
 
   _residue(frame, spellId, at) {
@@ -1044,7 +1087,11 @@ export class MagicSystem {
     const b = this.ballistics.classes[spec.class];
     const area = Math.max(...q.effects.map((t) => t.area_r_m));
     if (area > 0 || spec.range === 'area_at_range') {
-      return { kind: 'volume', shape: 'sphere', radius_m: Math.max(area, 1), active_f: 6, ticks_every_f: 12, decal_lead_f: this.ballistics.volume_decal_lead_f, placement: spec.range === 'area_at_range' ? 'resolved_world_point' : 'caster' };
+      // An area spell aimed at somebody lands ON THEM. Placing it at the caster is how
+      // `wamasu_arc` — a 3 m shock burst at `target` range — measured 0 damage against two
+      // bodies standing 6 m away: the volume was correct, it was just centred on the wrong
+      // person. Only a `self`-range area is centred on the caster.
+      return { kind: 'volume', shape: 'sphere', radius_m: Math.max(area, 1), active_f: 6, ticks_every_f: 12, decal_lead_f: this.ballistics.volume_decal_lead_f, placement: spec.range === 'self' || spec.range === 'touch' ? 'caster' : 'resolved_world_point' };
     }
     if (spec.range === 'projectile' || spec.range === 'target') {
       return { kind: 'projectile', radius_m: b.radius_m, speed_mps: b.speed_mps, turn_rate_dps: b.turn_rate_dps, tracking_cutoff: b.tracking_cutoff, lifetime_s: b.lifetime_s };
@@ -1252,6 +1299,18 @@ function segmentSphereHit(p0, p1, r, c, tr) {
   t = Math.max(0, Math.min(1, t));
   const qx = fx + dx * t, qz = fz + dz * t;
   return qx * qx + qz * qz <= R * R;
+}
+
+/** Squared distance from a point to the segment p0->p1, planar. No allocation. */
+function segmentPointDist2(p0, p1, c) {
+  const dx = p1[0] - p0[0], dz = p1[2] - p0[2];
+  const fx = c[0] - p0[0], fz = c[2] - p0[2];
+  const a = dx * dx + dz * dz;
+  if (a < 1e-9) return fx * fx + fz * fz;
+  let t = (fx * dx + fz * dz) / a;
+  t = Math.max(0, Math.min(1, t));
+  const qx = fx - dx * t, qz = fz - dz * t;
+  return qx * qx + qz * qz;
 }
 
 function bearing(x, z) { return (Math.atan2(x, z) / DEG + 360) % 360; }

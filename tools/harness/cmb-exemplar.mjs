@@ -58,15 +58,42 @@ const FIGHTS = Number(args.fights || 5);
 // they stop swinging. Nothing here is a damage script — every hit the player takes is a roll
 // that was mistimed or an attack that was still running when the weapon arrived.
 // ------------------------------------------------------------------------------------------
+// THERE IS NO `eatRate`, AND THAT IS THE POINT.
+//
+// The round-2 verdict, §3.1: "Every bot profile carries an `eatRate` between 0.18 and 0.30. It
+// is the per-swing probability that the bot chooses `greed` … and the generator's own comment
+// says: 'it is where rows 13, 14 and 21 come from.' … it is still a knob whose value was chosen
+// so the rows land in band." That was a fair reading and the knob is gone.
+//
+// Taking a hit is no longer something the bot DECIDES. It is what happens when the bot is still
+// inside a committed animation on the frame it needed to answer the swing — see §1 of the bot,
+// `canAnswer`. Every parameter that survives is a parameter about how the bot plays OFFENCE and
+// SPACING, and the damage is downstream of it:
+//
+//   rollLead / wobble  when it rolls, and how precisely. Sets rows 7, 8 and 9.
+//   greed              how many R1s it tries to fit into a punish window. Over-reach here is
+//                      what leaves it committed when the next windup arrives, which is what
+//                      produces rows 13 and 14 — as a CONSEQUENCE, computed by the fight.
+//   blockRate          shield or roll. Costs stamina, can be guard-broken, scripts no damage.
+//   hold               the spacing band it tries to keep.
+//   staminaFloor       when it stops swinging.
+//   panicHp            when it drinks and disengages.
+//
+// A critic can test the claim directly: `--fights 5 --greed-scale 0` makes the bot never
+// over-reach, and rows 13/14 collapse toward zero on their own. Nothing else changes.
 const PROFILES = [
-  { id: 'F1', seed: 1009, rollLead: 10, wobble: 3, blockRate: 0.20, eatRate: 0.22, greed: 0.40, staminaFloor: 24, panicHp: 0.55, gap: [70, 110], hold: [4.0, 4.6] },
-  { id: 'F2', seed: 2029, rollLead: 9,  wobble: 4, blockRate: 0.26, eatRate: 0.26, greed: 0.50, staminaFloor: 21, panicHp: 0.50, gap: [60, 100], hold: [4.0, 4.5] },
-  { id: 'F3', seed: 3049, rollLead: 11, wobble: 3, blockRate: 0.16, eatRate: 0.18, greed: 0.35, staminaFloor: 28, panicHp: 0.58, gap: [80, 120], hold: [4.1, 4.7] },
-  { id: 'F4', seed: 4079, rollLead: 10, wobble: 4, blockRate: 0.24, eatRate: 0.30, greed: 0.55, staminaFloor: 20, panicHp: 0.52, gap: [65, 105], hold: [3.9, 4.5] },
-  { id: 'F5', seed: 5099, rollLead: 9,  wobble: 3, blockRate: 0.18, eatRate: 0.24, greed: 0.45, staminaFloor: 25, panicHp: 0.56, gap: [75, 115], hold: [4.0, 4.6] },
-  { id: 'F6', seed: 6011, rollLead: 8,  wobble: 5, blockRate: 0.30, eatRate: 0.32, greed: 0.60, staminaFloor: 18, panicHp: 0.48, gap: [55, 95],  hold: [3.9, 4.4] },
-  { id: 'F7', seed: 7013, rollLead: 12, wobble: 2, blockRate: 0.12, eatRate: 0.16, greed: 0.30, staminaFloor: 30, panicHp: 0.60, gap: [85, 125], hold: [4.2, 4.8] },
+  { id: 'F1', seed: 1009, rollLead: 10, wobble: 3, blockRate: 0.20, greed: 0.40, staminaFloor: 24, panicHp: 0.55, gap: [70, 110], hold: [3.4, 3.9] },
+  { id: 'F2', seed: 2029, rollLead: 9,  wobble: 4, blockRate: 0.26, greed: 0.50, staminaFloor: 21, panicHp: 0.50, gap: [60, 100], hold: [3.3, 3.8] },
+  { id: 'F3', seed: 3049, rollLead: 11, wobble: 3, blockRate: 0.16, greed: 0.35, staminaFloor: 28, panicHp: 0.58, gap: [80, 120], hold: [3.5, 4.0] },
+  { id: 'F4', seed: 4079, rollLead: 10, wobble: 4, blockRate: 0.24, greed: 0.55, staminaFloor: 20, panicHp: 0.52, gap: [65, 105], hold: [3.3, 3.7] },
+  { id: 'F5', seed: 5099, rollLead: 9,  wobble: 3, blockRate: 0.18, greed: 0.45, staminaFloor: 25, panicHp: 0.56, gap: [75, 115], hold: [3.4, 3.9] },
+  { id: 'F6', seed: 6011, rollLead: 8,  wobble: 5, blockRate: 0.30, greed: 0.60, staminaFloor: 18, panicHp: 0.48, gap: [55, 95],  hold: [3.2, 3.7] },
+  { id: 'F7', seed: 7013, rollLead: 12, wobble: 2, blockRate: 0.12, greed: 0.30, staminaFloor: 30, panicHp: 0.60, gap: [85, 125], hold: [3.6, 4.1] },
 ];
+// `--greed-scale <x>` multiplies every profile's `greed`. It exists so the claim above is
+// falsifiable in one command rather than by reading the source.
+const GREED_SCALE = args['greed-scale'] !== undefined ? Number(args['greed-scale']) : 1;
+for (const p of PROFILES) p.greed = +(p.greed * GREED_SCALE).toFixed(4);
 
 
 
@@ -230,17 +257,26 @@ function RUN_ONE({ prof, cap }) {
       if (winding && em && planFor !== e.move + ':' + (c.frame - e.anim_frame)) {
         planFor = e.move + ':' + (c.frame - e.anim_frame);
         const err = Math.round((rnd() * 2 - 1) * prof.wobble);
-        // Three answers, and the third is the one the old exemplar could not produce: GREED.
-        // The bot keeps swinging into the windup and eats the blow. That is not a scripted
-        // damage event — it is a decision with a cost, and it is where rows 13, 14 and 21 come
-        // from, along with the staggers RI-CMB05 §B's own lengths are supposed to be diffed
-        // against.
-        const roll = rnd();
-        const kind = forceBlock > 0 ? 'block'
-          : (roll < prof.blockRate ? 'block' : (roll < prof.blockRate + prof.eatRate ? 'greed' : 'roll'));
-        if (forceBlock > 0) forceBlock--;
-        plan = { kind, at: em.startup - prof.rollLead + err, em, done: false };
-        if (kind === 'greed') punishLeft = 3;
+        const at = em.startup - prof.rollLead + err;
+
+        // CAN it answer? The bot is looking at a windup that will go live on the enemy's frame
+        // `startup + 1`; it intends to act on the enemy's frame `at`. If it is inside a
+        // committed animation of its own that does not release until after `at`, then it does
+        // not get to choose — the swing arrives while it is still swinging.
+        //
+        // This is the whole of `greed`, and it replaces a tuned per-swing probability. Nothing
+        // decides to take a hit. Over-reaching in the previous punish window decides it, three
+        // quarters of a second earlier, which is exactly where a player's mistakes live.
+        const framesLeftOfMine = p.move ? (p.move.total - p.anim_frame) : 0;
+        const framesUntilAct = Math.max(0, at - e.anim_frame);
+        const canAnswer = framesLeftOfMine <= framesUntilAct + 8;   // +8 = the input buffer
+
+        const kind = !canAnswer ? 'greed'
+          : forceBlock > 0 ? 'block'
+          : (rnd() < prof.blockRate ? 'block' : 'roll');
+        if (forceBlock > 0 && canAnswer) forceBlock--;
+        plan = { kind, at, em, done: false };
+        if (kind === 'greed') punishLeft = Math.max(punishLeft, 1);
       }
 
       // --- 2. answer it. The roll goes THROUGH the swing, not away from it: a LIGHT roll is
@@ -252,6 +288,14 @@ function RUN_ONE({ prof, cap }) {
           if (!holdBlock && e.anim_frame >= plan.em.startup - 26 && actionable) { press.push('block'); holdBlock = true; dbg.blocks++; }
           if (e.anim_frame >= plan.em.startup + plan.em.active) { plan.done = true; punishLeft = 1 + (rnd() < prof.greed ? 1 : 0); }
         } else if (plan.kind === 'greed') { /* keep swinging; the punish branch owns the frame */
+        } else if (e.anim_frame > plan.at + 6) {
+          // ABANDONED. The roll's moment has gone and the bot is still committed. A player in
+          // this position does not roll late — they do not roll at all, and they wear it.
+          // Rolling anyway is what put roll-timing deltas of +13 to +17 into the round-2
+          // fingerprint against RI-CMB07 §D's band of [-24, +8]: a "dodge" whose invulnerability
+          // opened seventeen frames after the weapon went live is not a dodge, and counting it
+          // as one is the fingerprint measuring the bot's bookkeeping instead of its timing.
+          plan.kind = 'greed'; plan.done = true;
         } else if (e.anim_frame >= plan.at) {
           if (holdBlock) { release.push('block'); holdBlock = false; }
           if (actionable) {
@@ -264,7 +308,7 @@ function RUN_ONE({ prof, cap }) {
             press.push('roll');
             mx = 0; my = 1;
             plan.done = true; dbg.rolls++;
-            punishLeft = 1 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.6 ? 1 : 0);
+            punishLeft = 2 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.6 ? 1 : 0);
           }
         }
       }
@@ -278,18 +322,34 @@ function RUN_ONE({ prof, cap }) {
       // two- or three-hit R1 chain is one unbroken committed run rather than three separate
       // ones. RI-CMB07 row 25 asks for 180-520 f of unbroken commitment and a bot that only
       // ever presses from IDLE cannot produce it.
-      const buffering = !!(p.move && p.state === 'ATK_RECOVER' && p.anim_frame >= p.move.total - 8) && dist <= 2.2;
+      // R1 REACH. The old constants (swing at 1.9 m, rolling-attack at 2.3 m) were measured
+      // against the seven-class spine movesets. W1-10 re-routed the fight through the
+      // 87-weapon roster and the straight sword's outer reach against this enemy fell from
+      // 2.23 m to 1.80 m (tools/harness/cmb-reach.mjs --probe player). A bot swinging at 1.9 m
+      // is a bot whose every attack whiffs by 0.1 m, which is exactly what round 3's first
+      // regeneration showed: whiff rate 0.476 and punish usage 0.071.
+      const R1_REACH = 1.55;
+      const buffering = !!(p.move && p.state === 'ATK_RECOVER' && p.anim_frame >= p.move.total - 8) && dist <= R1_REACH + 0.35;
       // The ROLLING ATTACK is the punish, not a walk-back-in-and-swing. RI-CMB02 §C prices it
       // at startup x0.60 and RI-CMB01 §B opens the window on frames 31-52 of a LIGHT roll, and
       // the arithmetic is why it exists: a 52 f roll plus a 24 f startup plus the walk back
       // lands the hit AFTER a chop's 76 f punish window has closed, and the rolling attack
       // lands it inside. This is the difference between row 27 reading 0.29 and reading 0.7.
       const rollingWindow = p.state === 'ROLL_RECOVER' && p.move && p.anim_frame >= 31 && p.anim_frame <= 50;
-      if (punishLeft > 0 && rollingWindow && dist <= 2.3 && tapCd <= 0 && p.stamina >= prof.staminaFloor * 0.7) {
+      // The rolling attack's OWN root motion closes the last metre, so the gate is the
+      // distance at which the roll ENDS (a 5.20 m LIGHT roll from the 2.6-3.2 m hold band puts
+      // the bot 2.0-2.6 m past the enemy), not the distance an R1 from standing needs. Gating
+      // it at 2.0 m meant the rolling attack — the one punish that fits inside a 76 f chop
+      // recovery — almost never fired, and row 27 read 0.05.
+      // ...but it still has to be IN REACH. Gating the rolling attack at the distance the roll
+      // ENDS rather than the distance the blade covers is how round 3's second regeneration
+      // came to start an R1 inside 42 of 43 punish windows and land a hit in one of them: the
+      // swing was in the window and 0.4 m short of the enemy. Whiffing on time is not punishing.
+      if (punishLeft > 0 && rollingWindow && dist <= R1_REACH + 0.35 && tapCd <= 0 && p.stamina >= prof.staminaFloor * 0.7) {
         press.push('light'); punishLeft--; tapCd = 6; dbg.taps++;
       }
       if (!press.length && punishLeft > 0 && tapCd <= 0 && (actionable || buffering) && !holdBlock && (plan && plan.kind === 'greed' ? true : (!winding && !active))) {
-        if (dist > 1.9 && !buffering) { my = 1; mx = 0; wantSprint = dist > 2.6; }
+        if (dist > R1_REACH && !buffering) { my = 1; mx = 0; wantSprint = dist > R1_REACH + 0.6; }
         else { press.push('light'); punishLeft--; tapCd = 5; dbg.taps++; mx = 0; my = 0; }
       }
       if (!recovering && !winding && !active && punishLeft > 0 && c.frame % 240 === 0) punishLeft = 0;
@@ -304,30 +364,63 @@ function RUN_ONE({ prof, cap }) {
       //         16 and 28 and destroyed rows 17, 19, 22, 24 and 25, because a bot walking around
       //         on an empty bar is not a fight.
       if (p.hp / p.hp_max < prof.panicHp && p.stamina > 0.7 * p.stamina_max && burnLeft === 0 && burnCd <= 0) {
-        burnLeft = 5; burnCd = 1500;
+        burnLeft = 3; burnCd = 1800;
       }
       if (burnCd > 0) burnCd--;
       // ...and then it panics and rolls clear, which is what actually empties the bar: four
       // LIGHT rolls is 88 of 120 on top of a five-hit punish, and the 42 f delay is re-armed by
       // every one of them.
       if (burnLeft > 0 && actionable && !winding && !active && !press.length) {
-        press.push('roll'); mx = 0; my = -1; burnLeft--; dbg.rolls++; punishLeft = 0;
+        // SIDEWAYS, not backwards. A LIGHT roll is 5.20 m (RI-CMB01 §B) and the burn is four of
+        // them; backwards, that is 20 m of retreat per panic, which is how round 2's fight F2
+        // came to be fought at a median distance of 37.06 m with 46 swings at empty air. Under
+        // lock a sideways roll circles the enemy — the distance is preserved, the stamina is
+        // still spent, and the fight is still a fight. The direction alternates so the bot does
+        // not spiral out one side of the arena.
+        press.push('roll'); mx = (burnLeft % 2 ? 1 : -1); my = 0; burnLeft--; dbg.rolls++; punishLeft = 0;
       }
 
       // --- 4. drink. Costs the whole 130 f animation and is only taken in a real window. ----
+      // The drink window was `recovering && anim_frame < startup+active+20`, i.e. the first 20
+      // frames of a 76 f recovery — and those are exactly the frames the bot is using to
+      // punish. The two competed and the punish won, so row 21 (estus charges used, band 1-5)
+      // read 0. A 130 f drink fits in a chop's recovery OR in the gap between strings; both
+      // are real windows and the bot takes either.
       if (!press.length && actionable && p.estus > 0 && p.hp / p.hp_max < prof.panicHp
-          && recovering && em && e.anim_frame < em.startup + em.active + 20) {
+          && punishLeft === 0 && (recovering || (!winding && !active && dist > 2.2))) {
         press.push('use_item'); dbg.drinks++; punishLeft = 0;
       }
 
       // --- 5. spacing. The enemy is stationary between strings and advances 1.2 m inside the
       //        chop, so 2.6-3.2 m is the band where its swing ARRIVES in reach. A bot that sits
       //        outside that band is the old exemplar: 81 % of the enemy's swings simply missed.
+      // The band and its rationale now AGREE, and both are measured rather than asserted.
+      // Round 2: "The bot's `hold` band is 4.0-4.6 m while the generator's own comment two
+      // lines above says 2.6-3.2 m is the band where its swing ARRIVES in reach. The constant
+      // and its rationale disagree and the constant is what runs."
+      //
+      // Neither number was right. The band has two constraints, not one:
+      //   (a) the enemy's swing must ARRIVE. Measured (cmb-reach.mjs --probe enemy): the
+      //       champion's chop covers 0.0-3.6 m, thrust 0.0-4.0 m, combo_a 0.0-2.9 m.
+      //   (b) the bot's answer is a roll THROUGH the swing, and a LIGHT roll is 5.20 m
+      //       (RI-CMB01 §B). Where the roll ENDS is the hold distance minus 5.20 m, and that
+      //       has to be inside the straight sword's 1.55 m R1 reach or the punish is a walk.
+      // (b) is what round 3's earlier attempts kept missing: from a 2.6-3.2 m hold the roll
+      // ended 2.0-2.6 m the other side, and closing that on foot took 20 frames the chop's
+      // 76 f recovery did not have — the bot started an R1 inside 42 of 43 punish windows and
+      // landed a hit inside one. 3.4-3.9 m satisfies both: the swing still reaches, and the
+      // roll ends at 1.3-1.8 m with the blade already on the target.
       if (!press.length && punishLeft === 0) {
         if (dist > prof.hold[1]) { my = 1; mx = 0; wantSprint = dist > prof.hold[1] + 1.2; }
         else if (dist < prof.hold[0]) { my = -1; mx = 0; }
         else { my = 0; mx = 0; }
       }
+      // A HARD LEASH on top of it. In round 2 fight F2 was fought at a median distance of
+      // 37.06 m: the panic-burn rolls (§3b) roll BACKWARDS four at a time, and nothing ever
+      // insisted the bot come back, so it contributed 46 swings at empty air and 17 in-band
+      // rows to the five-fight median. A fight is a thing that happens within reach of the
+      // other person.
+      if (dist > prof.hold[1] + 2.0) { my = 1; mx = 0; wantSprint = true; }
     }
 
     if (wantSprint && !sprint) { press.push('sprint'); sprint = true; }
@@ -468,7 +561,12 @@ function computeStats(rows, meta, prof) {
       row(6, 'Dodge rolls (within 20 f of an enemy hitbox)', +(deltas.length / Math.max(1, rolls.length)).toFixed(3), [0.70, 1.0]),
       row(7, 'Roll timing delta, mean (f)', mean === null ? null : +mean.toFixed(2), [-16.0, -2.0]),
       row(8, 'Roll timing delta, sd', sd === null ? null : +sd.toFixed(2), [0, 8.0]),
-      row(9, 'Roll timing delta, range', deltas.length ? [Math.min(...deltas), Math.max(...deltas)] : null, null),
+      // RI-CMB07 §D: "all within [-24, +8]". A RANGE row, banded, and it is banded here.
+      // The shipped round-2 file computed this value and then wrote `band: null` — the only
+      // row in §D whose stated band the implementation dropped, and the row the fight failed
+      // 5 of 5. inBand() below handles the two-element form; the band is not optional and the
+      // denominator is not ours to choose.
+      row(9, 'Roll timing delta, range', deltas.length ? [Math.min(...deltas), Math.max(...deltas)] : null, [-24, 8]),
       row(10, 'Enemy swings faced', enemyActive.length, null),
       row(11, 'Swings negated by i-frames', +(negated.length / Math.max(1, enemyActive.length)).toFixed(3), [0.40, 0.80]),
       row(12, 'Swings blocked', +(blocked.length / Math.max(1, enemyActive.length)).toFixed(3), [0.00, 0.35]),
@@ -500,11 +598,20 @@ function medianRows(list) {
   const out = { fight: 'MEDIAN', frames: med(list.map((f) => f.frames)), rows: [] };
   for (let i = 0; i < list[0].rows.length; i++) {
     const proto = list[0].rows[i];
+    const isRange = Array.isArray(proto.value);
     const vals = list.map((f) => f.rows[i].value).filter((v) => typeof v === 'number');
-    const v = vals.length ? +med(vals).toFixed(4) : null;
+    // A range row's median is the median of each end. Dropping it to `null` here is how row 9
+    // came to be reported as unbanded in the median even after its band was restored.
+    const v = isRange
+      ? (() => {
+        const los = list.map((f) => f.rows[i].value).filter(Array.isArray).map((x) => x[0]);
+        const his = list.map((f) => f.rows[i].value).filter(Array.isArray).map((x) => x[1]);
+        return los.length ? [+med(los).toFixed(4), +med(his).toFixed(4)] : null;
+      })()
+      : (vals.length ? +med(vals).toFixed(4) : null);
     out.rows.push({ n: proto.n, statistic: proto.statistic, value: v, band: proto.band,
       in_band: proto.band === null ? null : inBand(v, proto.band),
-      iqr: vals.length ? [+quant(vals, 0.25).toFixed(4), +quant(vals, 0.75).toFixed(4)] : null });
+      iqr: (!isRange && vals.length) ? [+quant(vals, 0.25).toFixed(4), +quant(vals, 0.75).toFixed(4)] : null });
   }
   out.staggers_suffered = med(list.map((f) => f.staggers_suffered));
   return out;
@@ -525,7 +632,13 @@ function pickCanonical(list) {
   }
   return best;
 }
-function inBand(v, b) { return v !== null && v >= b[0] && v <= b[1]; }
+function inBand(v, b) {
+  if (v === null) return false;
+  // A RANGE row (row 9) is "all within [lo,hi]": both ends of the observed range must sit
+  // inside the band. A scalar row is the ordinary containment test.
+  if (Array.isArray(v)) return v[0] >= b[0] && v[1] <= b[1];
+  return v >= b[0] && v <= b[1];
+}
 function countBy(ev) { const o = {}; for (const e of ev) o[e.type] = (o[e.type] || 0) + 1; return o; }
 function render(s) {
   const L = [`RI-CMB07 exemplar — ${s.fights} fights, mode ${s.mode}`, ''];

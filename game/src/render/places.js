@@ -34,6 +34,27 @@ function lamp(root, x, y, z, colour, intensity, dist) {
   return l;
 }
 
+/**
+ * Outdoor fill. The market, the street and the well graph are open-air cells and the sky's
+ * own sun is aimed at the exterior patch, so without this they render as a lit ground plane
+ * under unlit props — which is what the first capture of `helstrom-market` looked like.
+ */
+function outdoorFill(root, skyHex, groundHex, intensity) {
+  const hemi = new THREE.HemisphereLight(skyHex, groundHex, intensity);
+  hemi.position.set(0, 30, 0);
+  root.add(hemi);
+  const key = new THREE.DirectionalLight(0xfff0d8, 1.35);
+  key.position.set(24, 42, -18);
+  key.target.position.set(0, 0, 0);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.camera.left = -40; key.shadow.camera.right = 40;
+  key.shadow.camera.top = 40; key.shadow.camera.bottom = -40;
+  key.shadow.bias = -0.0012;
+  root.add(key, key.target);
+  return root;
+}
+
 function box(root, mat, w, h, d, x, y, z, ry) {
   const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
   m.position.set(x, y, z);
@@ -175,6 +196,7 @@ export function buildMarket(root, mats) {
   }
   // A stack of crates in the middle, and the well-head the square grew around.
   for (let i = 0; i < 5; i++) box(root, mats.wall, 0.9, 0.9, 0.9, (i % 2 ? 1.1 : -0.9), 0.45 + Math.floor(i / 2) * 0.9, 0.4 + (i % 3) * 0.5, i * 0.3);
+  outdoorFill(root, 0x9fc4e8, 0x554b38, 1.05);
   root.visible = false;
   return root;
 }
@@ -202,6 +224,7 @@ export function buildStormholdStreet(root, mats) {
   const brazier = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.36, 0.7, 10), mats.metal);
   brazier.position.set(-2.9, 0.9, 32.6); brazier.castShadow = true; root.add(brazier);
   lamp(root, -2.9, 1.5, 32.6, 0xff8a3a, 22, 24);
+  outdoorFill(root, 0x8ea8bd, 0x4a4638, 0.95);
   root.visible = false;
   return root;
 }
@@ -231,6 +254,7 @@ export function buildRootlandsWells(root, mats) {
     }
     lamp(root, x, 1.6, z, i === 0 ? 0x9fe0c0 : 0x7fbfa6, 14, 22);
   }
+  outdoorFill(root, 0x87b490, 0x33402a, 0.85);
   // The graph edges: a root running between each pair of wells, half-buried.
   for (let i = 0; i < WELLS.length; i++) {
     for (let j = i + 1; j < WELLS.length; j++) {

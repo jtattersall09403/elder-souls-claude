@@ -46,6 +46,11 @@ export class PlayerController {
     this.twoHandHeldF = 0;               // two_hand HELD frames, for art.1 vs art.2
     this.lastLightPress = -9999;         // guardbreak's "no light press in the last 8 f@60"
     this.chargeHeld = 0;
+    this.twoHandPressedAt = -1;
+    this.twoHandConsumed = false;
+    this.swapLeftPressedAt = -1;
+    this.swapLeftConsumed = false;
+    this.pendingContextual = null;
     // RI-CAM02 §C's turn-in-place clip, owned by W1-06.
     this.turnInPlace = 0;
     this.turnInPlaceStep = 0;
@@ -78,6 +83,19 @@ export class PlayerController {
 
     if (b.dead) { b.poseDead(frame); return; }
 
+    // The RELEASE edge of the chord buttons. See `_tryStart`'s two_hand branch for why the grip
+    // changes here rather than on the press.
+    if (this.twoHandPressedAt >= 0 && !(input.held & BIT.two_hand)) {
+      const consumed = this.twoHandConsumed;
+      this.twoHandPressedAt = -1; this.twoHandConsumed = false;
+      if (!consumed) this._startLoadoutMove(true, frame, ctx);
+    }
+    if (this.swapLeftPressedAt >= 0 && !(input.held & BIT.swap_left)) {
+      const consumed = this.swapLeftConsumed;
+      this.swapLeftPressedAt = -1; this.swapLeftConsumed = false;
+      if (!consumed) this._startLoadoutMove(false, frame, ctx);
+    }
+
     // RI-MAG01 §D. If the cast's move is gone — a stagger, a guard break, a death, a parry —
     // the cast was INTERRUPTED, and the Focus is gone with it. This is one branch rather than
     // a hook in every reaction site, so no future reaction can be added that quietly forgets
@@ -106,6 +124,7 @@ export class PlayerController {
       if (ended.kind === 'stagger' || ended.kind === 'guard_break') {
         b.regenBlockUntil = Math.max(b.regenBlockUntil, frame + this.d.stamina.regen.delay_frames_after_any_spend);
       }
+      if (this.pendingContextual && this.pendingContextual.move === ended) this.pendingContextual = null;
       if (ended.kind === 'attack') {
         this.chainIndex = Math.min(2, this.chainIndex + 1);
         this.chainUntil = frame + 24;
@@ -140,6 +159,13 @@ export class PlayerController {
 
     if (committed) {
       this._inputDuringCommitment(frame, input, pressed, ctx);
+      // RI-WPN04 §B rule 1: a press inside the 8 f@60 run-up to a contextual window fires the
+      // contextual slot on the window's first frame, not the standing attack after the state.
+      const pc = this.pendingContextual;
+      if (pc && pc.move === b.move && frame >= pc.fireAt) {
+        this.pendingContextual = null;
+        this._attack(pc.bit, frame, input, ctx, { buffered: true });
+      }
     } else {
       const bit = pressed ? firstActionBit(pressed) : (input.takeBuffered ? input.takeBuffered() : 0);
       const chosen = bit || (input.bufferedAction && frame >= b.actionableAt ? input.takeBuffered() : 0);
@@ -385,9 +411,22 @@ export class PlayerController {
       return;
     }
 
-    if (bit === BIT.two_hand || bit === BIT.swap_right || bit === BIT.swap_left) {
-      const stance = bit === BIT.two_hand;
-      const m = stance ? b.moves.stance_switch : b.moves.swap;
+    // ---- the two_hand / swap_left CHORD ------------------------------------------------------
+    //
+    // `game/data/weapons/input-map.json` is explicit and machine-readable about this: `art.1` is
+    // the chord "two_hand HELD + heavy tap", `art.2` is "two_hand held + heavy held >= 12 f@60",
+    // and `off.r1.*` is "swap_left held + light tap". A button that starts a 36 f@60 committed
+    // stance switch on the PRESS can never be the held half of a chord — the weapon art was
+    // structurally unreachable, which is one of the two `art.*` slots every one of the 87
+    // movesets declares. So the grip changes on the RELEASE, and only if nothing consumed the
+    // hold. Nothing about RI-WPN06 §A's commitment is relaxed: the 36 frames still run
+    // uncancellable, they simply start one frame after the button comes up.
+    if (bit === BIT.two_hand) { this.twoHandPressedAt = frame; this.twoHandConsumed = false; return; }
+    if (bit === BIT.swap_left) { this.swapLeftPressedAt = frame; this.swapLeftConsumed = false; return; }
+
+    if (bit === BIT.swap_right) {
+      const stance = false;
+      const m = b.moves.swap;
       if (!m) return;
       // RI-WPN06 §A: legal from IDLE, WALK, RUN only. `_tryStart` is only reached when the
       // actor is uncommitted, so the states that remain to exclude are the guard and the
@@ -403,9 +442,7 @@ export class PlayerController {
         return;
       }
       b.begin(m, frame, {});
-      b.pendingLoadout = stance
-        ? { twoHanded: !b.twoHanded }
-        : { cycle: bit === BIT.swap_right ? 'right' : 'left' };
+      b.pendingLoadout = { cycle: 'right' };
       const e = emit(frame, 'ACTION_START');
       e.mv = stance ? 'STANCE_SWITCH' : 'SWAP'; e.tag = stance ? 'stance' : 'swap';
       e.total = m.total; e.to = stance ? (b.twoHanded ? 'one_hand' : 'two_hand') : e.mv;
@@ -440,6 +477,39 @@ export class PlayerController {
       e.resolution_frame = m.resolution_frame; e.stam_after = round1(b.stamina);
       return;
     }
+  }
+
+  /**
+   * Start the 36 f@60 stance switch (or the quick swap) on the button's RELEASE.
+   * RI-WPN06 §A: legal from IDLE / WALK / RUN only, uncancellable, and the grip changes when the
+   * animation ENDS — committing on the press would make the switch free, which §A hard-fails.
+   */
+  _startLoadoutMove(stance, frame, ctx) {
+    const b = this.b;
+    const emit = ctx.emit;
+    if (b.move) {
+      const e = emit(frame, 'INPUT_DROPPED');
+      e.button = stance ? 'two_hand' : 'swap_left'; e.reason = 'illegal_from_state'; e.state = b.state;
+      return;
+    }
+    const m = stance ? b.moves.stance_switch : b.moves.swap;
+    if (!m) return;
+    if (m.legal_from && m.legal_from.indexOf(b.state) < 0) {
+      const e = emit(frame, 'INPUT_DROPPED');
+      e.button = stance ? 'two_hand' : 'swap_left'; e.reason = 'illegal_from_state'; e.state = b.state;
+      e.legal_from = m.legal_from;
+      return;
+    }
+    if (stance && !b.moves._hasTwoHanded) {
+      const e = emit(frame, 'INPUT_DROPPED'); e.button = 'two_hand'; e.reason = 'no_two_handed_moveset';
+      return;
+    }
+    b.begin(m, frame, {});
+    b.pendingLoadout = stance ? { twoHanded: !b.twoHanded } : { cycle: 'left' };
+    const e = emit(frame, 'ACTION_START');
+    e.mv = stance ? 'STANCE_SWITCH' : 'SWAP'; e.tag = stance ? 'stance' : 'swap';
+    e.total = m.total; e.to = stance ? (b.twoHanded ? 'one_hand' : 'two_hand') : 'SWAP';
+    e.stam_after = round1(b.stamina);
   }
 
   /** RI-WPN06 §A: the grip (or the item) changes when the committed animation ends. */
@@ -639,7 +709,6 @@ export class PlayerController {
     const b = this.b;
     const emit = ctx.emit;
     const button = bit === BIT.light ? 'light' : bit === BIT.heavy ? 'heavy' : 'parry';
-    if (bit === BIT.light) this.lastLightPress = frame;
 
     if (!this.lib || !b.moves._slotIds || !b.moves._slotIds.length) {
       // The seven-class spine path. It survives only so that a build with the weapon data
@@ -657,14 +726,30 @@ export class PlayerController {
 
     const sctx = this._slotCtx(frame, input, ctx, opts);
     const r = this.lib.resolveSlot(b.weaponId, button, sctx);
+    // `guardbreak` requires NO light press in the previous 8 f@60 (RI-WPN04 §B). The press being
+    // resolved right now is not "previous", so the clock is stamped AFTER the resolver has read
+    // it — stamping it before made every forward light press look like a repeat and guardbreak
+    // structurally unreachable.
+    if (bit === BIT.light) this.lastLightPress = frame;
+    // The two_hand button is a MODIFIER as well as a verb (input-map.json §art.1: the chord is
+    // "two_hand held + heavy tap"). A chord that fired consumes the hold, so releasing the
+    // button afterwards must not also switch the grip.
+    if (r.slot && /^art\./.test(r.slot)) this.twoHandConsumed = true;
     if (!r.slot) {
       // RI-WPN04 §B rule 1: a press within 8 f@60 BEFORE a contextual window opens is buffered
       // and fires on the window's first frame. Rule 2: anything earlier is DROPPED, not stored.
       const opensIn = this._framesUntilWindow(sctx, button);
       if (opensIn !== null && opensIn > 0 && opensIn <= (this.lib.classes.contextual_windows.buffer_f || 8)) {
-        input.tryBuffer(bit, frame, opensIn);
+        // The buffered press is held HERE rather than handed to the generic action buffer,
+        // because the generic buffer is only drained once the actor is actionable — which is
+        // AFTER the enclosing state ends, and would fire the standing `r1.1` instead of the
+        // contextual slot. RI-WPN04 §B rule 1 is specific: it "fires the contextual slot on the
+        // window's FIRST FRAME". One slot, overwritten by a later press, exactly like the
+        // 8 f@60 combo buffer it mirrors (RI-CMB01 §C.6).
+        this.pendingContextual = { bit, fireAt: frame + opensIn, swing: b.swingSeq, move: b.move };
         const e = emit(frame, 'INPUT_BUFFERED');
-        e.button = button; e.frames_left = opensIn; e.for_slot = r.reason;
+        e.button = button; e.frames_left = opensIn; e.for_state = sctx.state;
+        e.window_opens_at_state_frame = sctx.state_frame + opensIn; e.reason = r.reason;
         return;
       }
       input.droppedInputs++;
@@ -727,21 +812,35 @@ export class PlayerController {
       }
       return;
     }
-    if (!/(^|\.)r2$/.test(m.slot || '') || nf !== m.startup) return;
+    // ---- the TAP / HOLD discriminator --------------------------------------------------------
+    //
+    // `r2` vs `r2.charged` and `art.1` vs `art.2` are different SLOTS with different clips, and
+    // input-map.json distinguishes them by tap versus hold. On the press frame the two are
+    // indistinguishable — a press implies the button is down — so the discrimination happens
+    // `HOLD_DISCRIMINATOR_F` frames later, and the promoted slot then plays its OWN clip from its
+    // OWN frame 1, so the declared frames and the observed frames of the slot that actually fired
+    // agree exactly. The eight frames are the `RI-CMB01` §C.6 input allowance, which S22 does not
+    // rebase because it is a property of human hands, and the twelve are input-map.json's own
+    // figure for `art.2`.
+    const promote = /(^|\.)r2$/.test(m.slot || '') ? { at: 9, to: (m.slot === '2h.r2' ? '2h.' : '') + 'r2.charged', why: 'r2.charged' }
+      : /(^|\.)art\.1$/.test(m.slot || '') ? { at: 13, to: (m.slot === '2h.art.1' ? '2h.' : '') + 'art.2', why: 'art.2' }
+        : null;
+    if (!promote || nf !== promote.at) return;
     if (!(input.held & BIT.heavy)) return;
-    const chargedId = (m.slot === '2h.r2' ? '2h.' : '') + 'r2.charged';
-    const cm = b.moves[chargedId];
+    const cm = b.moves[promote.to];
     if (!cm) return;
-    if (!canAfford(b, Math.max(0, cm.stamina - m.stamina))) return;
-    // Same swing, held. The clip, the frames and the ramp are the charged slot's own.
-    b.move = cm;
-    b.animFrame = cm.startup - cm.charge_max_f;
+    const extra = Math.max(0, cm.stamina - m.stamina);
+    if (extra && !canAfford(b, extra)) return;
+    b.move = null;
+    b.begin(cm, frame, {});
+    if (extra) b.spend(extra, frame, this.d);
     this.chargeHeld = 0;
     const e = ctx.emit(frame, 'ACTION_START');
-    e.mv = 'R2'; e.tag = 'attack'; e.anim_slot = chargedId; e.anim = cm.anim;
-    e.reason = 'r2.charged'; e.startup = cm.startup; e.active = cm.active;
+    e.mv = 'R2'; e.tag = 'attack'; e.anim_slot = promote.to; e.anim = cm.anim;
+    e.reason = promote.why; e.promoted_from = m.slot; e.after_f = promote.at - 1;
+    e.startup = cm.startup; e.active = cm.active;
     e.recovery = cm.recovery; e.total = cm.total; e.Ps = cm.startup + 1;
-    e.charge_max_f = cm.charge_max_f; e.stam_after = round1(b.stamina);
+    e.charge_max_f = cm.charge_max_f || 0; e.stam_after = round1(b.stamina);
     if (cm.hyperarmour_window) e.ha_window = cm.hyperarmour_window;
   }
 

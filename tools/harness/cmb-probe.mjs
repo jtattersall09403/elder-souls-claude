@@ -228,6 +228,19 @@ const PROBES = {
     const H = window.__HARNESS;
     const cs = () => H.getCombatState();
     const grid = {};
+    // The R1 under test names itself. This USED to be the literal string 'light', which was
+    // true only for as long as the seven-class spine files were the move source: when W1-10
+    // routed the fight through the 87-weapon roster the R1's id became its slot id, `id !==
+    // 'light'` became true on the FIRST frame of the swing, and every cell in the grid read
+    // `C`. That is RI-CMB02's automatic-fail signature — "any attack cancellable during
+    // startup or active frames" — reported for a build in which nothing had been cancelled.
+    // A probe that hard-codes a name it does not own is a probe that will eventually accuse
+    // the build of the worst thing it can think of. It reads the id off frame 1 instead.
+    H.setSeed(1337); H.loadState('arena_flat'); H.stepFrames(6);
+    H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] }]);
+    H.stepFrames(2);
+    const R1 = cs().player.move ? cs().player.move.id : null;
+    if (!R1) throw new Error('commit probe: pressing `light` from IDLE started no move at all.');
     const TOTAL = 74;                        // straight sword R1
     for (const a of ['roll', 'light', 'block', 'sprint', 'use_item', 'parry']) {
       const row = [];
@@ -241,8 +254,8 @@ const PROBES = {
           H.stepFrames(1); f++;
           const c = cs();
           const id = c.player.move ? c.player.move.id : null;
-          if (endedAt === null && f > 1 && id !== 'light') endedAt = f;
-          if (executedAt === null && id && id !== 'light') executedAt = f;
+          if (endedAt === null && f > 1 && id !== R1) endedAt = f;
+          if (executedAt === null && id && id !== R1) executedAt = f;
           if (endedAt !== null && f > endedAt + 20) break;
         }
         // CANCELLED = the new action began before frame TOTAL+1; BUFFERED = it began after.
@@ -252,6 +265,7 @@ const PROBES = {
     }
     return {
       total: TOTAL,
+      r1_move_id: R1,
       grid,
       legend: { '.': 'ignored / dropped', B: 'buffered — fired after the animation released', C: 'CANCELLED the animation' },
       declared: { startup: 24, active: 10, recovery: 40, hard_until: 52, dodge_cancel_from: 53, buffer_from: 67 },

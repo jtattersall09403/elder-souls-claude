@@ -283,6 +283,7 @@ export class CrimeWorld {
       hunters: this.hunters.map((h) => ({ ...h })),
       jail: this.jail ? { ...this.jail } : null,
       next_crime_id: this.nextCrimeId,
+      stolen_registry: this.stolenRegistry.map((s) => ({ ...s })),
     };
   }
 
@@ -300,6 +301,7 @@ export class CrimeWorld {
     this.hunters = (o.hunters || []).map((h) => ({ ...h }));
     this.jail = o.jail ? { ...o.jail } : null;
     this.nextCrimeId = o.next_crime_id;
+    this.stolenRegistry = (o.stolen_registry || []).map((s) => ({ ...s }));
     return this;
   }
 

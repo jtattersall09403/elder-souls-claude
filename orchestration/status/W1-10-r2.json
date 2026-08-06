@@ -1,7 +1,7 @@
 {
   "task_id": "W1-10-r2",
   "brief": "round 2, ULTRACODE, after 0/10 verdict",
-  "state": "building",
+  "state": "measuring",
   "findings": [
     "ROOT CAUSE 1 (equip): CombatSystem.createPlayer reads d.movesets, which engine.js:2578 fills ONLY from combat/spine/*.json (7 class files). The 87 roster movesets land in d.weaponMovesets, read only by game/src/harness/weapons.js. Fix: make the roster the runtime source and alias the 7 spine ids to their class baselines.",
     "ROOT CAUSE 2 (CFS): player.js _contextualVariant() derives contextual attacks by MULTIPLYING the base light/heavy row. It never selects a slot. MovesetLibrary.resolveSlot() exists and is correct but is called by nobody in the runtime.",
@@ -16,8 +16,16 @@
     "probe C's BLOCK row presses light with no forward and no incoming attack, so guard.counter (which needs BLOCK_SUCCESS) can never fire there. RI-WPN06 C row 'shield.bash = light + forward, shield raised' is the only authored verb for a raised guard.",
     "arena_probe's only enemy is probe_pulse (ai=scripted, never attacks unless queueEnemyScript'd), so no BLOCK_SUCCESS occurs in probe C.",
     "game boots at HEAD now: game/data/dialogue/topics/thorn.json exists; the critic's 404 repair is no longer needed. tools/harness/smoke.mjs passes.",
-    "BASELINE REPRODUCED: node tools/harness/critic-w1-10a.mjs -> equipped_ok 0/87."
+    "BASELINE REPRODUCED: node tools/harness/critic-w1-10a.mjs -> equipped_ok 0/87.",
+    "DONE data layer: 0 dangling chains_to (was 82/87), 0 orphan r1 slots, chain lengths now match RI-WPN02 §B on 15/15 classes, r2 active/recovery reconciled to frames.json on all 7 anchor classes.",
+    "measure.mjs after data fixes: D_min 1.659 (was 1.629, pass >=1.6), Dg_min 0.914 (was 0.899, pass bar 1.0 NOT reached), ARI 0.4547, SEP 1.518 (was 1.4469), CFS_declared 1.0, TDV med 0.833, ILS 0.80, W_min 0.235 (was 0.175). No hard failures.",
+    "PROVEN: Dg_min >= 1.0 is not reachable from a design-defensible hyperarmour assignment. Four of Dg's five dimensions (D2 recovery ratio, D4 chain, D6 arc, D7 root) are pinned by RI-WPN02 §B's published table; only D11 (hyperarmour fraction over the mandatory 25) is free. Exhaustive integer search under any mass-monotone ordering peaks at Dg_min 0.916; the unconstrained continuous optimum is 1.60 but requires arbitrary fractions with no design meaning. Dg over the four PINNED dims alone is 0.396 (SPR-TSW).",
+    "DONE runtime: equipped_ok 87/87 live via setLoadout(). 7 spine ids are aliases onto the class baselines (moveset.js SPINE_ALIASES) so probe C's dagger/straight-sword/axe/ultra-greatsword are slot-driven.",
+    "LIVE straight-sword: 22 driven slots all resolve to their OWN slot id and clip; distinct_anim 19 (floor 18). roll.r2/jump.r2 correctly absent for SSW by class grammar.",
+    "BUG FOUND AND FIXED: two_hand started a 36f committed stance switch on the PRESS, so input-map.json's chord 'two_hand HELD + heavy tap' (= art.1) was structurally unreachable. The grip now changes on the RELEASE if nothing consumed the hold.",
+    "BUG FOUND AND FIXED: guardbreak's 'no light press in the previous 8 f' clock was stamped BEFORE the resolver read it, so guardbreak could never fire.",
+    "NOTE for successors: tools/harness/critic-w1-10a.mjs calls traceStop() BEFORE traceDrain(), and traceStop() nulls the trace, so its A2 block reads an empty array. That is a critic-tool bug, not a game bug: probe A's A2 table was empty in round 1 too."
   ],
-  "next_step": "A: generator+classes.json fixes, regenerate 87 movesets. B: runtime slot dispatch. C: harness surfaces.",
+  "next_step": "run critic probes C (CFS_live) and F (M6 agreement); then TDV live; then write the report and the amendment position.",
   "notes_for_successor": "Do not rebuild the authored layer. All work is (a) tools/weapons/* + game/data/weapons/classes.json regeneration, (b) game/src/combat/{moves,player,system,moveset}.js wiring, (c) game/src/sim/record.js + harness surfaces."
 }

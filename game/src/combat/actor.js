@@ -346,6 +346,7 @@ export class CombatBody {
     }
     this.rig.applyCrossFade();
     const w = this.moves._weapon;
+    this._lastRootDy = rootDy || 0;
     this.rig.evaluate(this.pos, this.yaw, rootDy || 0, w.socket_a_dist_m, w.socket_b_dist_m);
     this.socketA[0] = this.rig.socketA[0]; this.socketA[1] = this.rig.socketA[1]; this.socketA[2] = this.rig.socketA[2];
     this.socketB[0] = this.rig.socketB[0]; this.socketB[1] = this.rig.socketB[1]; this.socketB[2] = this.rig.socketB[2];

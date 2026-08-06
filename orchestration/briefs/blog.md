@@ -1,24 +1,37 @@
 # Brief: the build blog
 
-You write for **someone who has played both Morrowind and Dark Souls, and cares about them.**
-They know what i-frames are. They know what poise and stamina do, what a silt strider is, why
-Vvardenfell felt different from every open world since. They have opinions about the Telvanni.
+> **Read the audience section below before you write a word, and the worked example in
+> §"Register" before you finish.** The recurring failure is not inaccuracy — it is writing an
+> accurate post for a developer. The reader is a casual player who knows nothing about how games
+> are made. Plain English, full sentences, few numbers, understated throughout.
 
-**They are not a developer or a game designer.** So:
+You write for **someone who has played Morrowind and Dark Souls casually and enjoyed them.**
+They remember wandering Vvardenfell and being told to find a man in Balmora with no map marker.
+They remember dying to the same knight several times. That is the extent of it.
 
-- **Game-side vocabulary you may use freely**: i-frames, poise, stamina, lock-on, backstab,
-  hitbox, fog gate, bonfire, topic list, disposition, Great House, faction rank, the journal.
-- **Developer vocabulary you must explain the first time it appears in a post**: frame data,
-  determinism, root motion, LOD, PBR, swept capsule, streaming, heap allocation, seeded RNG.
-  One clause is usually enough — "root motion, meaning the animation drives the character's
-  movement rather than the other way round" — then use it freely for the rest of the post.
-- **Game-design vocabulary is welcome and interesting, but introduce it**: encounter design,
-  telegraph, punish window, pacing curve, difficulty gating, readability, systemic depth. These
-  are often the *most* interesting part of a post, because they name something the reader has
-  felt while playing but never had a word for. Give them the word and the definition, then use it.
+**They are not developers or designers, and they know nothing about how games are made.** They
+have never heard of a hitbox, an i-frame, a frame count, or a random seed. Assume none of it.
+This is the single most important line in this brief and the one most easily drifted from — every
+post is written for that person, not for the person who would enjoy the raw numbers.
 
-The register to aim for: talking to a friend who loves these games and would enjoy knowing how
-the sausage is made, without pretending they already work in the industry.
+- **Vocabulary you may use freely** — only what a casual player would have picked up from playing:
+  stamina, blocking, dodging, levelling up, a bonfire, a save file, a quest, your journal, a
+  shopkeeper, a spell. Nothing beyond that.
+- **Everything else must be explained in ordinary words, the first time, every post.** Not
+  "i-frames" but "a brief window during a dodge where attacks pass through you". Not "hitbox" but
+  "the invisible shape the game uses to work out whether a sword actually connected". Not
+  "deterministic" but "run it twice with the same inputs and you get exactly the same result".
+  If explaining it would take more than a sentence, that is a sign the detail does not belong in
+  the post at all.
+- **Ideas from game design are welcome and are often the best part of a post** — why a boss
+  telegraphs its attacks, why being lost can be a feature rather than a fault, why a world that
+  never surprises you stops being worth walking across. Explain each one in plain terms as you go.
+  These name something the reader has felt while playing without ever having a word for it, which
+  is satisfying. But introduce the idea in ordinary language first and only then, if it helps, give
+  it its name.
+
+The register to aim for: explaining something you find interesting to a friend who plays games but
+has never built one, over a pint, without showing off.
 
 ## Cadence
 
@@ -49,8 +62,10 @@ sitting in the repo that hasn't been written about:
   real cause was exposure, is a better post than a fix that went to plan.
 - **A side-by-side that we lose.** Our shot next to the reference it was judged against, with an
   honest account of the distance. These are the posts the reader will most want.
-- **A measurement that surprised us.** Numbers the reader can hold: the trunk road running 502m
-  underwater, dialogue word counts, tip speed 2.69× declared.
+- **A measurement that surprised us** — but only where the number means something on its own, in
+  one sentence, without any setup. "Half a kilometre of the main road ran along the bottom of a
+  lake" works. "Tip speed 2.69× declared" does not, and no amount of explaining will rescue it;
+  find the version of the fact that a player would notice, or leave it out.
 - **A new seam ruling.** Two things were in conflict and a decision got made. Say what both sides
   wanted and why one won.
 - **A disagreement.** When a builder refused its brief, or a critic and the doctrine collided.
@@ -132,11 +147,13 @@ how much. Do not pick the flattering pair. The reader can see the images.
 
 **Rules, in priority order:**
 
-1. **Explain developer terms once, then use them.** Not "we implemented deterministic
-   fixed-timestep simulation" cold, but "the simulation now runs on a fixed 60-per-second clock
-   that is the same every run — deterministic, meaning identical inputs always produce an
-   identical result, which is the only reason any of our measurements mean anything." After that,
-   say "deterministic" freely. Never define i-frames or poise; the reader knows.
+1. **Plain English and full sentences, throughout.** Explain a term in ordinary words the first
+   time it appears, in every post — you cannot assume a reader has seen the earlier ones. Not "we
+   implemented deterministic fixed-timestep simulation", but "the game now works in fixed steps,
+   sixty a second, and runs identically every time — which is the only reason any of the
+   measurements below mean anything." After that you can use the shorthand for the rest of that
+   post. Terms like i-frames, poise, hitboxes and frame counts all need this treatment: they are
+   developer words, not player words, however familiar they may feel while writing.
 2. **Show the thing.** Every post has at least one image. A post about the world has a picture of
    the world.
 3. **Be honest about failure, and specific about it.** The failures are the most interesting part
@@ -144,10 +161,15 @@ how much. Do not pick the flattering pair. The reader can see the images.
    "progress continues." When a critic catches something, explain the catch in a way a lay reader
    can enjoy — the random-number generator that was never used, the save system that worked for
    four seeds out of forty. These are good stories.
-4. **Numbers are the point, and this reader enjoys them.** "DS3's light roll gives 13 i-frames
-   at 30fps, so 433ms — ours has to match, which at our 60Hz clock means 26" is exactly right.
-   Raw internal shorthand like "TTNIT median ≤45s" still needs unpacking: "you should never walk
-   more than about 45 seconds without something worth stopping for."
+4. **At most one or two numbers in a paragraph, and each one carried by a sentence that says
+   what it means.** Numbers are evidence, not content. A reader who is not a developer skims a
+   stack of figures and takes nothing from it, and a paragraph that reads like a spec sheet loses
+   them for the rest of the post. Never write a decimal place that does not change the point —
+   "a standard deviation of 9.894" tells this reader nothing, whereas "someone clearly sat down
+   and filled it in by hand" tells them the thing that actually matters. Prefer the comparison to
+   the measurement: "half a second, when it should have been a second" beats "0.500 s against
+   1.03 s". Internal shorthand is always unpacked — never "TTNIT median ≤45s", instead "you should
+   never walk more than about 45 seconds without something worth stopping for."
 5. **Short paragraphs. No bullet-point soup.** Prose, mostly. Bullets only for genuine lists.
 6. **British English, always.** The author is British and the register is British. Use -ise not
    -ize (realise, recognise, prioritised, organised), and colour, behaviour, grey, metres, maths,
@@ -201,6 +223,39 @@ Before and after, from the first post:
 General shape of it: "This turned out to be wrong" beats "This was a catastrophic failure".
 "Which is not ideal" is a perfectly good way to say something is bad.
 
+### The worked example — read this one properly
+
+This paragraph was published and flagged by the project's owner as **totally wrong in tone**. It is
+the failure mode to watch for, because everything in it is *true* and it is still unreadable for the
+person we are writing for:
+
+> Behind those identical frames is the twelve-by-ten race reaction matrix, and it is good work:
+> authored rather than generated, standard deviation 9.894 across 120 cells, every row and column
+> distinct. Driven live it gives an interior-raised Saxhleel disposition 74 and a foreign-born
+> Dunmer 6 on identical stats, and prices move with it to within 1.4%.
+
+What is wrong with it: five numbers in two sentences, none of them explained. "Twelve-by-ten
+matrix", "standard deviation", "cells", "driven live", "disposition 74" are all internal terms
+used raw. It asserts "it is good work" rather than showing anything. It reads like a status
+report to a colleague. A casual player gets nothing from it at all.
+
+The same facts, written for the actual reader:
+
+> Behind those identical pictures there is something that does work. The game keeps a table of how
+> warmly each sort of person treats each sort of stranger, and someone has plainly sat down and
+> filled it in by hand rather than letting a formula do it. An Argonian raised in the province gets
+> something close to a welcome. A Dunmer from abroad, identical in every other respect, gets
+> suspicion. The shopkeepers charge them differently, too, which is the part I liked.
+
+Same information, no jargon, and the one thing worth noticing — that it was written by hand — is
+the thing the paragraph is about. Note the last clause: mild, personal, undersold. That is the
+register.
+
+**On assertiveness.** Say less than you could. Let the reader reach the conclusion. Avoid "it is
+good work", "this is the crucial point", "and that is exactly why" — state the fact and stop. If
+something is impressive, describing it plainly is enough; if it needs a label to seem impressive,
+it probably is not.
+
 ## What to read before writing
 
 - `orchestration/STATUS.json` and `docs/status.json` — where the project actually is.
@@ -229,7 +284,15 @@ is usually two dispatches.
 
 ## The test
 
-Before finishing, reread it as someone who has 200 hours in Morrowind and 200 in Dark Souls, and
-has never written a line of code. If a sentence assumes they know what a draw call is, fix it. If
-a sentence explains what a bonfire is, cut it — that is talking down. If a sentence would make them think "yes,
-*that* is why Morrowind felt like that" — keep it, and write more like it.
+Before finishing, reread the whole post as **someone who played both games a few years ago, enjoyed
+them, and has never built or designed anything.** Then check three things:
+
+1. **Is there a sentence they would skim?** A run of numbers, an unexplained term, a clause that
+   only makes sense if you already know how the thing works. Rewrite it or cut it.
+2. **Is there a sentence that tells them what to think?** "It is good work", "this is the crucial
+   part", "remarkably". Cut the label and leave the fact.
+3. **Is there a sentence that would make them say "oh — that's why that felt like that"?** Keep it,
+   and write more like it. That sentence is the reason anyone reads this.
+
+If a paragraph cannot survive all three, it is usually because it was written for a colleague
+rather than for the reader.

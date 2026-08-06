@@ -1,27 +1,39 @@
 {
   "task_id": "W1-09-r3",
-  "brief": "ULTRACODE escalation dispatch — combat core round 3",
+  "brief": "ULTRACODE escalation dispatch \u2014 combat core round 3",
   "started": "wave-1",
   "state": "building",
   "escalation": {
-    "trigger": "EFFORT-POLICY trigger 1 — two consecutive critic rounds at 4/10",
+    "trigger": "EFFORT-POLICY trigger 1 \u2014 two consecutive critic rounds at 4/10",
     "gap": "GAP-W1-enemy-attacks-cannot-reach-contact-range (combat.hitbox.sweep)",
     "governing_ruling": "corpus/00-doctrine/ARBITRATION.md S26"
   },
   "findings": [
-    "THE CRITIC'S MECHANISM WAS WRONG, ITS OBSERVATION WAS RIGHT. r2 remedy said 'interpolate the socket capsule between last frame's world pose and this frame's world pose, root delta included'. That was ALREADY true: CombatBody.evaluateRig() double-buffers sockets in world space and advance() applies root motion to pos[] BEFORE evaluating the rig. Measured per frame at d=0.8: at the champion's first active frame (af=69) the enemy root is at z=0.384 and its weapon capsule spans z=[1.34,2.57] — the blade near end is 0.95 m IN FRONT of its own root, and the root travels a further 0.79 m during the active window. The blade is ahead of the target for every active frame and the attacker walks through it. The uncovered volume is the corridor the ATTACKER'S BODY sweeps, which nothing tested on either side.",
-    "FIX (S26): hitgeometry.json §body_hazard declares the trunk parts (pelvis, torso_lower, torso_upper, head). skeleton.js double-buffers every hurtbox capsule (pa/pb). resolve.js step 8b sweeps the attacker's OWN trunk capsules prev-pose -> now-pose against the target's hurtboxes, with the identical closed-form routine, ONLY on frames where A.lastRootDelta != 0. Zero root motion = no body hazard = no proximity component, so it cannot degenerate into RI-CMB04 'how we lose' #1.",
+    "THE CRITIC'S MECHANISM WAS WRONG, ITS OBSERVATION WAS RIGHT. r2 remedy said 'interpolate the socket capsule between last frame's world pose and this frame's world pose, root delta included'. That was ALREADY true: CombatBody.evaluateRig() double-buffers sockets in world space and advance() applies root motion to pos[] BEFORE evaluating the rig. Measured per frame at d=0.8: at the champion's first active frame (af=69) the enemy root is at z=0.384 and its weapon capsule spans z=[1.34,2.57] \u2014 the blade near end is 0.95 m IN FRONT of its own root, and the root travels a further 0.79 m during the active window. The blade is ahead of the target for every active frame and the attacker walks through it. The uncovered volume is the corridor the ATTACKER'S BODY sweeps, which nothing tested on either side.",
+    "FIX (S26): hitgeometry.json \u00a7body_hazard declares the trunk parts (pelvis, torso_lower, torso_upper, head). skeleton.js double-buffers every hurtbox capsule (pa/pb). resolve.js step 8b sweeps the attacker's OWN trunk capsules prev-pose -> now-pose against the target's hurtboxes, with the identical closed-form routine, ONLY on frames where A.lastRootDelta != 0. Zero root motion = no body hazard = no proximity component, so it cannot degenerate into RI-CMB04 'how we lose' #1.",
     "MEASURED AFTER FIX (node arena, 0.1 m steps 0..4 m): chop min 0.0 max 3.6 (was 1.2/3.6); thrust 0.1/4.0 (was 1.6/4.0); combo_a 0.0/2.9 (was 1.1/2.9); combo_b 0.0/3.5. All contiguous, no interior gap.",
     "TURTLE TEST after fix: stationary mashing player takes 234-384 of 620 at d=0.4..2.6 (was 0 at 0.8-1.1).",
-    "tools/lib/combat-node.mjs — the combat modules run headless in bare Node (no Chromium, no engine.js). Reproduces the browser reach numbers to the digit. 574 fights in ~2 s instead of ~20 min.",
-    "HAZARD: the working tree is shared with a concurrent builder; HEAD was transiently unbootable (game/src/character/derive.js missing for ~30 s). game/src/combat/{actor,moves,player}.js and engine.js are being edited by that agent."
+    "tools/lib/combat-node.mjs \u2014 the combat modules run headless in bare Node (no Chromium, no engine.js). Reproduces the browser reach numbers to the digit. 574 fights in ~2 s instead of ~20 min.",
+    "HAZARD: the working tree is shared with a concurrent builder; HEAD was transiently unbootable (game/src/character/derive.js missing for ~30 s). game/src/combat/{actor,moves,player}.js and engine.js are being edited by that agent.",
+    "S26 BODY HAZARD final form: the attacker's COLLISION capsule (pelvis->head bone origins, radius = the actor's declared body radius) swept prev-pose -> now-pose against the target's same capsule, only on frames where lastRootDelta != 0. Using the trunk HURTBOX radii instead left a dead ring 0.60-0.93 m wide in which a lunging player pushed a target it could not hit (measured: halberd min reach 0.00 -> 1.40 m). Same volume for push and hit = no ring, by construction.",
+    "BODY SEPARATION (RI-CMB04 A step 5 'resolve collision', unimplemented until now) runs at the TOP of the step, relieving LAST frame's overlap before THIS frame's root motion. Putting it between root motion and the sweep deletes the overlap S26 exists to detect. Capped at 3.0 m/s ('separation FORCE', RI-AI01) so it cannot outrun a lunge. Body radius 0.30 m, NOT the statblock's radius_m (0.5 = AI spacing radius; using it made the standoff 0.9 m and W1-10's dagger, max reach 0.9 m, could never touch the champion).",
+    "TURTLE after both: stationary mashing player DIES at every stand distance 0.4-2.6 m; champion survives with 511-774 of 2876. Was: player kills a 2876-HP boss in 19 s taking 0 damage.",
+    "TRANSITION SNAPS. Three separate defects, not one. (a) poses instantiated not blended -> clips.json cross_fade, 10 f, smoothstep, applied in Rig.applyCrossFade() and triggered by `anim` changing. (b) LoopClip curves that do not close, so the pose jumps at every wrap (idle 1.293 m x624) -> closeCurve() pins the terminal key to the initial key at construction. (c) YAW SNAPS, which no pose blend can fix because they move the actor's frame: enemy.js snapped yaw to the player's bearing on the attack-start frame (3.390 m of socket, 203 m/s) and the player's facing reversed 180 deg across roll-into-attack (2.493 m). Fixed by enforcing RI-CAM02 C's bounded turn ONCE, centrally, in CombatSystem.step, with the scenario `face` override the only exemption.",
+    "WORST single-frame weapon-socket displacement after all three, excluding frame 1 (rig initialisation, which is not a transition): 0.508 m SPRINT->SPRINT (root motion at 6.6 m/s + arm swing), 0.418 m champion ATK_ACTIVE (its own weapon is 1.75 m). Every state BOUNDARY is now <= 0.367 m against a declared per-frame tip travel of 0.308 m. Was 2.528 / 2.521 / 2.293 m.",
+    "PROBE BUG FOUND AND FIXED: cmb-probe.mjs `commit` compared the live move id against the literal 'light'. W1-10's roster renamed the R1 to `r1.1`, so `id !== 'light'` was true on frame 1 of the swing and EVERY cell of the RI-CMB02 M2 commitment grid read C = CANCELLED \u2014 the item's automatic-fail signature, reported for a build in which nothing was cancelled. It now reads the id off frame 1. Grid restored byte-identical to round 2's."
   ],
   "outputs_written": [
     "game/data/combat/hitgeometry.json (body_hazard)",
     "game/src/combat/skeleton.js (hurtbox double-buffer, hazardParts)",
     "game/src/combat/resolve.js (step 8b, e.via)",
-    "tools/lib/combat-node.mjs"
+    "tools/lib/combat-node.mjs",
+    "game/src/combat/system.js (separation + bounded turn)",
+    "game/src/combat/actor.js (cross-fade trigger, displace)",
+    "game/src/combat/clips.js (closeCurve/closeLoop)",
+    "game/src/combat/enemy.js (no yaw snap on attack start)",
+    "game/data/combat/clips.json (cross_fade)",
+    "tools/harness/cmb-probe.mjs (commit probe id fix)"
   ],
-  "next_step": "body separation (RI-AI01 minimum standoff), then row 9 band, exemplar eatRate, transition blending, parry riposte, poise probes, RI-AI01 stream",
+  "next_step": "exemplar: row 9 band, eatRate removal, hold band, kills not timeouts; then parry riposte + stamina 22; poise probes; RI-AI01 stream; permanent reach probe + root-motion harness hook",
   "notes_for_successor": ""
 }

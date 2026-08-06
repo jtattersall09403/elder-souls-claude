@@ -102,6 +102,10 @@ export class EnemyController {
     this.windedUntil = 0;
     this.alert = 0;
     this.alertState = 'IDLE';
+    // Which channel filled the meter this frame — RI-STL01's requested `alert_channel`, whose
+    // absence from the round-1 enemy record the verdict called "its own answer". Written by
+    // sim/stealth/perception.js and read by sim/record.js.
+    this.alertChannel = null;
   }
 
   /** Scenario contract: enemy actions on declared frames, relative to the window origin. */
@@ -142,8 +146,18 @@ export class EnemyController {
       while (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f < frame) this.scriptIdx++;
       if (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f === frame) {
         const ev = this.script[this.scriptIdx++];
-        if (ev.face !== undefined) b.yaw = norm360(ev.face);
-        else if (ctx.player) b.yaw = bearingDeg(ctx.player.pos[0] - b.pos[0], ctx.player.pos[2] - b.pos[2]);
+        // `face` is a SCENARIO authoring instrument — an absolute heading the author states,
+        // so it is honoured exactly. Turning to look at the player is not: this used to snap
+        // `b.yaw` to the player's bearing on the frame the attack began, which made RI-AI02's
+        // tracking cutoff (the 180 °/s and 45 °/s bands applied three lines below, during
+        // startup) decorative, because the enemy had already finished turning before the first
+        // band opened. Measured: a 180° reversal moved the champion's weapon socket 3.390 m in
+        // a single frame — 203 m/s against a declared 18.5 — and it was the largest single-frame
+        // pose discontinuity anywhere in the build, larger than the transition snaps the pose
+        // cross-fade was written for. The turn is now the same bounded turn everything else in
+        // the fight uses.
+        if (ev.face !== undefined) { b.yaw = norm360(ev.face); b.yawExempt = true; }
+        else if (ctx.player) this._steer(ctx.player, this.d.locomotion ? (this.d.locomotion.turn_rate_stationary_dps || 480) : 480);
         if (ev.move === 'block') {
           b.guardRaised = true;
           const e = emit(frame, 'GUARD_UP'); e.who = b.id;
@@ -215,13 +229,29 @@ export class EnemyController {
     const b = this.b;
     if (this.stat.ai === 'none') { b.state = 'IDLE'; b.poseLocomotion('IDLE', frame); return; }
     const p = ctx.player;
-    const dx = p.pos[0] - b.pos[0], dz = p.pos[2] - b.pos[2];
-    const d = Math.hypot(dx, dz);
-    const facing = Math.abs(angleDelta(b.yaw, bearingDeg(dx, dz)));
-    const sees = d <= this.stat.sight_radius_m && facing <= this.stat.sight_cone_deg / 2;
-    if (sees || b.aggro) this.alert = Math.min(100, this.alert + 4); else this.alert = Math.max(0, this.alert - 1);
-    this.alertState = this.alert >= 100 ? 'AGGRO' : this.alert >= 50 ? 'SEARCH' : this.alert > 0 ? 'SUSPICIOUS' : 'IDLE';
+    // ---- PERCEPTION IS NOT OWNED HERE ANY MORE (W1-15 round 2) -------------------------------
+    //
+    // This block used to be:
+    //
+    //     const sees = d <= sight_radius_m && facing <= sight_cone_deg / 2;
+    //     if (sees || b.aggro) this.alert = Math.min(100, this.alert + 4);
+    //     else this.alert = Math.max(0, this.alert - 1);
+    //
+    // — a flat +4/frame inside a radius and a cone. It read no light, no sound, no line of
+    // sight and no Sneak, so `RI-STL01` §2's `V` was computed into the trace 60 times a second
+    // and consumed by nothing: an INFANTRY at 8 m reached AGGRO in 0.500 s at V = 0.6669 and in
+    // 0.500 s at V = 0.0500. `RI-MTH07` scores that coupling 0.00, and `ARBITRATION` §3's
+    // CONSUMPTION check scores a model with coupling 0 exactly as it scores a missing one.
+    //
+    // The meter is now filled in ONE place — `sim/stealth/system.js::stepPerception()`, through
+    // `sim/stealth/perception.js` — and written through to `this.alert` / `this.alertState`
+    // there. `RI-STL01` §1 is explicit that the stealth item owns the multipliers on
+    // `RI-AI01` §B's fill rates, and two perception implementations is how the round-1 build
+    // came to have a good one and a broken one at the same time.
+    //
+    // What is still owned here, and only this: what the enemy DOES with the meter.
     if (this.alertState === 'AGGRO') { this._steer(p, 240); b.state = 'REPOSITION'; }
+    else if (this.alertState === 'SEARCH') { b.state = 'SEARCH'; }
     else b.state = 'IDLE';
     b.poseLocomotion('IDLE', frame);
   }

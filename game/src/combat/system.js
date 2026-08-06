@@ -13,7 +13,7 @@ import { LockOn } from './lockon.js';
 import { MovesetLibrary, SPINE_ALIASES } from './moveset.js';
 import { sweepAndResolve } from './resolve.js';
 import { staminaMaxFor } from './rules.js';
-import { bearingDeg } from './geometry.js';
+import { bearingDeg, angleDelta, norm360 } from './geometry.js';
 
 export class CombatSystem {
   /** @param {object} data all of game/data/combat/*.json keyed by basename, plus locomotion */
@@ -234,7 +234,7 @@ export class CombatSystem {
       for (const b of this.bodies) b.hitstop = true;
       return;
     }
-    for (const b of this.bodies) b.hitstop = false;
+    for (const b of this.bodies) { b.hitstop = false; b._yawIn = b.yaw; }
 
     // A hitstun state begins when the hold releases, never inside it — CombatBody.queueReaction.
     // This runs BEFORE the controllers so the controller's advance() takes the reaction to
@@ -276,6 +276,35 @@ export class CombatSystem {
       if (b === this.player) continue;
       const ec = this.enemies.get(b.id);
       if (ec) ec.step(frame, ctx);
+    }
+
+    // THE BOUNDED-TURN LAW, enforced once for every actor rather than at each of the eleven
+    // sites that assign `yaw`.
+    //
+    // RI-CAM02 §C gives the ceiling — 720 °/s moving, 480 °/s stationary — and player.js
+    // already cites it ("a levitating character still cannot snap its facing"). Eleven call
+    // sites obeyed it and two did not, and the two that did not were the largest single-frame
+    // pose discontinuities in the build: the champion snapping to the player's bearing on the
+    // frame an attack began (3.390 m of weapon socket, 203 m/s) and the player's facing
+    // reversing across a roll-into-attack (2.493 m, 150 m/s). Both are invisible in a still
+    // and both are a teleport in motion. A ceiling that is enforced in one place cannot be
+    // forgotten by the twelfth site.
+    //
+    // A yaw snap is not a pose problem and the pose cross-fade cannot fix it: the cross-fade
+    // blends bone Eulers in the actor's own frame, and the actor's frame is exactly what a
+    // yaw snap moves. They are two different discontinuities and they need two different fixes.
+    const maxYawStep = (this.d.locomotion.turn_rate_moving_dps || 720) / 60;
+    for (const b of this.bodies) {
+      if (b.dead || b.yawExempt) { b.yawExempt = false; continue; }
+      const dd = angleDelta(b._yawIn, b.yaw);
+      if (dd > maxYawStep) b.yaw = norm360(b._yawIn + maxYawStep);
+      else if (dd < -maxYawStep) b.yaw = norm360(b._yawIn - maxYawStep);
+      else continue;
+      // The pose was evaluated at the un-clamped facing, so re-evaluate at the clamped one.
+      // `prev` is untouched: the previous frame really did happen where it happened.
+      b.rig.evaluate(b.pos, b.yaw, b._lastRootDy || 0, b.moves._weapon.socket_a_dist_m, b.moves._weapon.socket_b_dist_m);
+      b.socketA[0] = b.rig.socketA[0]; b.socketA[1] = b.rig.socketA[1]; b.socketA[2] = b.rig.socketA[2];
+      b.socketB[0] = b.rig.socketB[0]; b.socketB[1] = b.rig.socketB[1]; b.socketB[2] = b.rig.socketB[2];
     }
 
     // steps 8–9

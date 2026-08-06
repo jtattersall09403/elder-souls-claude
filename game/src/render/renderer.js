@@ -15,6 +15,7 @@ const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 import { buildScene, makeActor, terrainHeight } from './scene.js';
 import { Sky, WEATHER } from './sky.js';
 import { Province } from '../world/province.js';
+import { SpellVFX } from './spell-vfx.js';
 import { UILayer } from './ui.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
@@ -123,6 +124,7 @@ export class Renderer {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.ui.setSize(w, h);
+    if (this.vfx) this.vfx.setSize(w, h);
     return { width: w, height: h };
   }
 
@@ -299,6 +301,22 @@ export class Renderer {
     this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog);
     this.sky.followCamera(this.camera);
 
+    // ---- seam S19: spell VFX -----------------------------------------------------------------
+    // Two passes, and the second one is the frame. The prepass writes scene DEPTH (which soft
+    // particles fade against — RI-MAG05 V1, mandatory) and scene COLOUR (which the Veiling
+    // refraction displaces — V8) with the VFX group hidden, so the effects never fade against
+    // or refract themselves. `info.reset()` happens BETWEEN the two, so the draw-call and
+    // triangle counters a critic reads are the VISIBLE frame's and not the sum — reporting the
+    // sum would inflate the very budget RI-MAG05 §B2 asks us to stay inside.
+    if (!this.vfx && sim.magic && sim.magic.d && sim.magic.d.vfx) {
+      this.vfx = new SpellVFX(this.scene, this.three, sim.magic.d.vfx, { spells: sim.magic.d.spells, effects: sim.magic.d.effects });
+      this.vfx.setSize(this.canvas.width, this.canvas.height);
+    }
+    if (this.vfx) {
+      this.vfx.prepass(this.camera);
+      this.vfx.update(sim, this.sky, this.camera);
+    }
+
     this.three.info.reset();
     this.three.render(this.scene, this.camera);
     // three.js resets `info` at the top of every top-level `render()`, so the world pass is
@@ -321,6 +339,8 @@ export class Renderer {
       geometries: info.memory.geometries,
       textures: info.memory.textures,
       programs: (this.three.info.programs || []).length,
+      // RI-MAG05 §B2's budget quantities, reported next to the frame they belong to.
+      vfx: this.vfx ? { ...this.vfx.stats } : { particles: 0, systems: 0, decals: 0, meshes: 0, particleDrawCalls: 0 },
     };
     return true;
   }

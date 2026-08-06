@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 313,
+  "file_count": 324,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -125,11 +125,18 @@
       "sha256": "737c96036e2bd9ae"
     },
     {
+      "path": "combat/enemies/guard_legion.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "guard_legion",
+      "bytes": 3878,
+      "sha256": "b19ca311b5aeb364"
+    },
+    {
       "path": "combat/enemies/inf_trash.json",
       "schema": "elder-souls/enemy@1",
       "id": "inf_trash",
-      "bytes": 3750,
-      "sha256": "95877c275fbc40c0"
+      "bytes": 4239,
+      "sha256": "41d161cd5ebf9734"
     },
     {
       "path": "combat/enemies/probe_pulse.json",
@@ -1066,8 +1073,8 @@
       "path": "combat/movesets/spell-wamasu_arc.json",
       "schema": "elder-souls/spell-moveset@1",
       "id": "spell-wamasu_arc",
-      "bytes": 721,
-      "sha256": "adcc2a1e38f87371"
+      "bytes": 735,
+      "sha256": "ed639880a0eb76cd"
     },
     {
       "path": "combat/movesets/spell-warm_smudges.json",
@@ -1435,11 +1442,10 @@
     },
     {
       "path": "dialogue/greetings.json",
-      "schema": "elder-souls/greetings@1",
-      "id": null,
-      "bytes": 675,
-      "sha256": "8a88ef2268eb44d5",
-      "declared_incomplete": true
+      "schema": "elder-souls/greetings@2",
+      "id": "greetings",
+      "bytes": 186802,
+      "sha256": "de9beeb0ca1dc1ca"
     },
     {
       "path": "dialogue/persuasion-gmst.json",
@@ -1452,9 +1458,16 @@
       "path": "dialogue/rumours.json",
       "schema": "elder-souls/rumours@1",
       "id": null,
-      "bytes": 720,
-      "sha256": "30cf7fab26416d99",
+      "bytes": 4842,
+      "sha256": "e8fc6089028a8e1e",
       "declared_incomplete": true
+    },
+    {
+      "path": "dialogue/slavery-lines.json",
+      "schema": "elder-souls/slavery-lines@1",
+      "id": "slavery-lines",
+      "bytes": 15303,
+      "sha256": "cde1467e0ed6f23b"
     },
     {
       "path": "dialogue/speakers.json",
@@ -1504,6 +1517,13 @@
       "id": null,
       "bytes": 22970,
       "sha256": "42f48f4c5e23814e"
+    },
+    {
+      "path": "dialogue/topics/40-race-gated.json",
+      "schema": "elder-souls/topics@1",
+      "id": null,
+      "bytes": 40013,
+      "sha256": "f1db046a2e754425"
     },
     {
       "path": "dialogue/topics/thorn.json",
@@ -1557,6 +1577,13 @@
       "sha256": "44ea365d4b5b57d4"
     },
     {
+      "path": "magic/enchant-services.json",
+      "schema": "elder-souls/magic-enchant-services@1",
+      "id": "magic-enchant-services",
+      "bytes": 10792,
+      "sha256": "e61577a27cfe44e8"
+    },
+    {
       "path": "magic/enchanting.json",
       "schema": "elder-souls/magic-enchanting@1",
       "id": "magic-enchanting",
@@ -1567,8 +1594,8 @@
       "path": "magic/spells.json",
       "schema": "elder-souls/magic-spells@1",
       "id": "magic-spells",
-      "bytes": 75195,
-      "sha256": "b709cc003698e6fe"
+      "bytes": 75209,
+      "sha256": "92f1b358afc5b0c2"
     },
     {
       "path": "magic/traversal-routes.json",
@@ -1590,6 +1617,13 @@
       "id": "magic-wards",
       "bytes": 6544,
       "sha256": "dbd59a220a420611"
+    },
+    {
+      "path": "npcs/named-states.json",
+      "schema": "elder-souls/npcs@1",
+      "id": null,
+      "bytes": 5581,
+      "sha256": "a39a005d5cf6ba5f"
     },
     {
       "path": "npcs/thorn.json",
@@ -1701,6 +1735,13 @@
       "sha256": "2e59e4471a1c698d"
     },
     {
+      "path": "quests/faction-gates.json",
+      "schema": "elder-souls/faction-gates@1",
+      "id": "faction-gates",
+      "bytes": 22163,
+      "sha256": "4cf1f6d248da580c"
+    },
+    {
       "path": "quests/hooks.json",
       "schema": "elder-souls/quest-hooks@1",
       "id": "quest-hooks",
@@ -1711,8 +1752,8 @@
       "path": "quests/magic-utility.json",
       "schema": "elder-souls/quests@1",
       "id": "magic-utility-quests",
-      "bytes": 89875,
-      "sha256": "293c549904ff2f5d"
+      "bytes": 110897,
+      "sha256": "f37065451829caaf"
     },
     {
       "path": "quests/the-boards.json",
@@ -1757,6 +1798,13 @@
       "id": "arena_probe",
       "bytes": 1150,
       "sha256": "880f8004f4570387"
+    },
+    {
+      "path": "states/barge-hold.json",
+      "schema": "elder-souls/state@1",
+      "id": "barge-hold",
+      "bytes": 1652,
+      "sha256": "26d67deeaede5610"
     },
     {
       "path": "states/cam_boardwalk.json",
@@ -1836,6 +1884,13 @@
       "sha256": "3c4f91dd9e4549f4"
     },
     {
+      "path": "states/helstrom-market.json",
+      "schema": "elder-souls/state@1",
+      "id": "helstrom-market",
+      "bytes": 2125,
+      "sha256": "01af3be9c24727e1"
+    },
+    {
       "path": "states/interior_firelit.json",
       "schema": "elder-souls/state@1",
       "id": "interior_firelit",
@@ -1857,6 +1912,13 @@
       "sha256": "3178285ddb0e6647"
     },
     {
+      "path": "states/rootlands-well-graph.json",
+      "schema": "elder-souls/state@1",
+      "id": "rootlands-well-graph",
+      "bytes": 2270,
+      "sha256": "457148253a614124"
+    },
+    {
       "path": "states/settlement_primary_street.json",
       "schema": "elder-souls/state@1",
       "id": "settlement_primary_street",
@@ -1869,6 +1931,13 @@
       "id": "showcase_patch",
       "bytes": 905,
       "sha256": "2135f122e5c356a0"
+    },
+    {
+      "path": "states/stormhold-street.json",
+      "schema": "elder-souls/state@1",
+      "id": "stormhold-street",
+      "bytes": 1867,
+      "sha256": "8899143edc05323f"
     },
     {
       "path": "states/sv1-midquest.json",
@@ -1958,8 +2027,8 @@
       "path": "states/writ-house.json",
       "schema": "elder-souls/state@1",
       "id": "writ-house",
-      "bytes": 837,
-      "sha256": "0a165349959df87a"
+      "bytes": 2021,
+      "sha256": "ea308dc6ea1d552e"
     },
     {
       "path": "stealth/detection.json",
@@ -1979,8 +2048,8 @@
       "path": "stealth/search.json",
       "schema": "elder-souls/stealth-search@1",
       "id": "search",
-      "bytes": 2879,
-      "sha256": "eb1e23c4d0963493"
+      "bytes": 3169,
+      "sha256": "44f7c3db180a59f3"
     },
     {
       "path": "stealth/theft.json",
@@ -2202,6 +2271,13 @@
       "id": null,
       "bytes": 1526,
       "sha256": "f79459db29837f17"
+    },
+    {
+      "path": "world/traversal.json",
+      "schema": "elder-souls/traversal@1",
+      "id": null,
+      "bytes": 4463,
+      "sha256": "cfea6c409532dfdb"
     },
     {
       "path": "world/water.json",

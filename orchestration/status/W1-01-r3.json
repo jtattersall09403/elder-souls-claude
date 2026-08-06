@@ -12,7 +12,14 @@
     "harness camera() throws on bad call",
     "CONSUMPTION proof for every model shipped"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/src/world/signature.js",
+    "game/src/world/signature-geo.js",
+    "tools/world/build-signatures.mjs",
+    "game/data/world/signatures.json",
+    "game/data/world/traversal.json",
+    "game/src/sim/traversal.js"
+  ],
   "findings": [
     "BASELINE CONFIRMED (probe critic-w1-01-r2-loco.mjs re-run at HEAD): L1 70.63 deg walked at full stick, state WALK; L2 150 m drop HP unchanged; L3 8.28 m water -> 1.1 m/s but stamina 120->120.",
     "game/data/combat/hitgeometry.json was transiently invalid JSON (another agent mid-edit) and broke every harness probe; it self-resolved. Concurrent-agent breakage of the shared tree is a recurring hazard for probes.",
@@ -20,8 +27,9 @@
     "engine.camera(pose): unknown keys like {yaw,pitch,arm} fall through to the override branch and freeze the camera at cur.pos/cur.look. Needs a closed key vocabulary that throws.",
     "field.heightAt() is the single ground surface for collision, mesh, audits. Signature landforms must go through it. _applyRoads blends ground to deck over hw..3.2*hw - that IS the earth berm the critic measured.",
     "engine._settleWorld() (engine.js:1330) snaps p.pos[1] = field.heightAt() every frame with no vertical integration at all -> that is why there is no fall and no max slope.",
-    "13 ONLY-HERE ids live in tools/world/build-regions.mjs only_here:{id,instances} and are copied into regions.json; nothing places them."
+    "13 ONLY-HERE ids live in tools/world/build-regions.mjs only_here:{id,instances} and are copied into regions.json; nothing places them.",
+    "DONE: RI-WLD04 M19 now measures 13/13 in the running world (signatureAudit()): all 13 ONLY-HERE elements placed at declared counts, 0 instances outside their own region. 7 of 13 are LANDFORM (max ground delta: flute spire +25.2 m, comb cliff +12.8 m, petrified bole +9.5 m, hull +8.2 m, kiln +7.9 m, crater -8.9 m, root causeway +2.6 m) so they are in field.heightAt() and therefore in collision, mesh, slope histogram and every audit."
   ],
-  "next_step": "write game/src/world/signature.js + tools/world/build-signatures.mjs",
+  "next_step": "run loco probe: verify max walkable slope 40deg, fall damage, swim/breath/stamina",
   "notes_for_successor": ""
 }

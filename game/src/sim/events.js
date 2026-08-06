@@ -7,6 +7,16 @@
 
 /** HARNESS.md §5 closed vocabulary, plus the A-JRN7 additions and RI-CMB11's input events. */
 export const EVENT_TYPES = new Set([
+  // W1-01 round 3, by the same amendment clause §5 grants. Verdict W1-01 r2 found the world had
+  // no way to tell anyone what it had done to a body: "there is no fall", "60 s in 8.28 m of
+  // water costs no breath, no stamina and no state change", "19 hazards, none fire". A world
+  // event that leaves no trace record is unmeasurable, so each of these carries the number a
+  // critic needs to recompute the rule: the fall its distance and damage, the hazard its tell
+  // lead and its class.
+  'world_fall_start', 'world_landed', 'world_fall_damage', 'world_fall_death',
+  'world_slope_blocked', 'world_mired', 'world_drowning', 'world_drowned',
+  'action_denied_by_water',
+  'hazard_tell', 'hazard_enter', 'hazard_exit', 'hazard_damage', 'hazard_fired',
   // HARNESS.md §5
   'attack_start', 'hit', 'block', 'parry', 'riposte', 'backstab', 'stagger', 'death',
   // W1-10, by the same amendment clause §5 grants. RI-WPN04 §B harness request 4 and RI-WPN06
@@ -49,6 +59,9 @@ export const EVENT_TYPES = new Set([
   // throw, `restrain_begin`/`restrain_end` are what it does to you, and `capture` is the
   // outcome that is NOT a death.
   'net_throw', 'restrain_begin', 'restrain_end', 'capture',
+  // W1-07: a person noticing you, and the loiter clock RI-CHR02 §5's guard tolerance is
+  // denominated in. Not `detect` — that is W1-15's stealth channel and means something else.
+  'npc_notice',
   // ---------------------------------------------------------------------------------------
   // RI-CMB07 §A's CLOSED event-kind set, for the SECOND stream (`es-combat-trace/1`).
   //

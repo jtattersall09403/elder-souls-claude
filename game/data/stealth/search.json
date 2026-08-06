@@ -3,6 +3,8 @@
   "id": "search",
   "source": "RI-STL01 §7. RI-AI01 T04/T06 give the skeleton (walk to last-known-position; leash after 12 s in SEARCH) and are NOT re-opened; these four behaviours sit on top.",
   "duration_s": 12,
+  "walk_mps": 2.0,
+  "walk_mps_source": "S17: walk speed is 2.0 m/s and may not be lowered to inflate traversal time. A searcher walks; it does not jog and it does not sprint. No new constant is minted here — this is the corpus walk speed, named so the search timings are reproducible.",
 
   "s1": {
     "name": "Last-known-position, then the plausible set",

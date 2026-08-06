@@ -1,0 +1,383 @@
+// What the ground and the water do to a body.
+//
+// WHY THIS FILE EXISTS. Verdict W1-01 round 2 found three holes that between them made the shape
+// of the world unmeasurable:
+//
+//   * "There is no maximum walkable slope. 70.63 deg walked at full stick, +10.28 m in 5 s, state
+//     WALK — while the piece's own flood fill calls 40 deg impassable."
+//   * "There is no fall. A 150 m drop leaves HP 620->620."
+//   * "60 s in 8.28 m of water costs no breath, no stamina and no state change."
+//
+// Each of those is the same defect: the province produced a NUMBER (a height, a depth, a
+// substrate) that nothing downstream was obliged to obey. `engine._settleWorld` snapped the
+// player's Y to `field.heightAt()` every frame and applied a horizontal speed multiplier, and that
+// was the whole of the coupling between the world and the body. A world you can walk up at any
+// angle and fall off with no consequence has no shape.
+//
+// Everything here is read from `game/data/world/traversal.json`, which is the DECLARATION; this
+// module is the OBSERVATION, and `getTraversalReport()` prints both so a critic can diff them
+// (HARNESS.md §7 rule 4). Nothing uses a wall clock, a deltaTime or Math.random: every quantity is
+// per-frame at 60 Hz, exactly as `sim/player.js` requires.
+//
+// SEAM DISCIPLINE. S25 is explicit that water "may never change a frame number", so nothing here
+// touches a startup, an active window, an i-frame or a stamina COST. What it does is:
+//   * retract a displacement (where you ended up),
+//   * DENY an action above knee depth rather than degrading it,
+//   * charge stamina for being in it,
+//   * run a breath clock when your head is under.
+// All four are S25 in terms.
+'use strict';
+
+const DEG = 180 / Math.PI;
+const BANDS = ['W0', 'W1', 'W2', 'W3', 'W4', 'W5'];
+const BAND_MIN = { W0: 0.00, W1: 0.01, W2: 0.21, W3: 0.51, W4: 0.96, W5: 1.41 };
+
+/** Band of a depth, with hysteresis about the previous band (RI-WLD10 §1 property 2). */
+export function bandWithHysteresis(depth, prev, hyst) {
+  let b = 'W0';
+  for (const k of BANDS) if (depth >= BAND_MIN[k]) b = k;
+  if (!prev || prev === b) return b;
+  const pi = BANDS.indexOf(prev), bi = BANDS.indexOf(b);
+  // Only the boundary you are leaving is sticky, and only by `hyst`.
+  if (bi === pi + 1 && depth < BAND_MIN[b] + hyst) return prev;
+  if (bi === pi - 1 && depth > BAND_MIN[prev] - hyst) return prev;
+  return b;
+}
+
+const bandIndex = (b) => BANDS.indexOf(b);
+
+export class Traversal {
+  /**
+   * @param {object} cfg game/data/world/traversal.json
+   * @param {import('../world/field.js').WorldField} field
+   */
+  constructor(cfg, field) {
+    this.cfg = cfg;
+    this.field = field;
+    this.sig = null;
+    // Everything below is a live counter, reset by `reset()` and saved by the engine.
+    this.reset();
+  }
+
+  reset() {
+    this.airborne = false;
+    this.vy = 0;
+    this.apexY = null;
+    this.band = 'W0';
+    this.depth = 0;
+    this.submerged = false;
+    this.breath = this.cfg.water.breath_max_s;
+    this.mire = 0;
+    this.mireLastFootfall = 0;
+    this.mired = false;
+    this.mireEscapes = 0;
+    this.slide = 0;
+    this.lastFall = null;
+    this.lastLanding = null;
+    this.blockedBySlope = false;
+    this.footAccum = 0;
+    this.mireRecovery = 0;
+    this.lastEscapeF = -999;
+    this.escapePressed = false;
+    this.events = [];
+  }
+
+  attach(sig) { this.sig = sig; }
+
+  /** Is an action denied by the water the body is standing in? S25: denied, never degraded. */
+  denies(action) {
+    const c = this.cfg.water;
+    const bi = bandIndex(this.band);
+    if (action === 'sprint') return bi > bandIndex(c.sprint_denied_above);
+    if (action === 'roll') return bi > bandIndex(c.roll_denied_above);
+    if (action === 'attack' || action === 'block' || action === 'parry') return this.band === 'W5';
+    return false;
+  }
+
+  /**
+   * The whole per-frame coupling, run after the step has moved the body and before the frame
+   * record is built.
+   *
+   * @param {object} p        sim.player
+   * @param {number} px       the body's x BEFORE this frame's displacement
+   * @param {number} pz       the body's z before
+   * @param {number} burden   the RI-PRG07 multiplier (1.00 inside a fight, by that item's guard)
+   * @param {boolean} moving  did the player request movement this frame
+   */
+  step(p, px, pz, burden, moving, body) {
+    const f = this.field, C = this.cfg;
+    // THE AUTHORITY IS THE COMBAT BODY. `sim/combat-bridge.js mirror()` copies hp, stamina and
+    // state OUT of `CombatSystem`'s body and INTO `sim.player` at the bottom of every step, which
+    // runs before this does — so a drowning tick or a fall's damage written only to `sim.player`
+    // is silently reverted one frame later and the world costs nothing. This is exactly the class
+    // of defect the round-2 verdict found in the water retraction ("what survived was a constant
+    // POSITIONAL LAG ... which is why the whole locomotion ladder read inert"), one field over.
+    this.body = body || null;
+    this.events.length = 0;
+    let x = p.pos[0], z = p.pos[2];
+    let dx = x - px, dz = z - pz;
+
+    // ---- 1. the medium ------------------------------------------------------------------------
+    const midDepth = f.depthAt(px + dx * 0.5, pz + dz * 0.5);
+    this.band = bandWithHysteresis(midDepth, this.band, C.water.hysteresis_m);
+    this.depth = midDepth;
+    const sub = f.substrateAt(x, z);
+    this.substrate = sub;
+    const swimming = this.band === 'W5';
+
+    // ---- 2. retraction: water, substrate, burden ----------------------------------------------
+    // A retraction can only change where you ended up. It cannot reach a frame number (S25).
+    const mult = C.water.speed_mult[this.band] * (C.substrate.speed_mult[sub] || 1) * burden
+      * (this.mired ? 0 : 1);
+    if ((dx !== 0 || dz !== 0) && mult !== 1) {
+      x = px + dx * mult; z = pz + dz * mult;
+      dx = x - px; dz = z - pz;
+    }
+
+    // ---- 3. the slope gate --------------------------------------------------------------------
+    // You cannot walk up a wall. The number is `slope.max_walkable_deg`, and it is deliberately
+    // the SAME 40 deg the province's own S9-NO-FENCES flood fill uses to decide reachability.
+    this.blockedBySlope = false;
+    if (!this.airborne && !swimming && (dx !== 0 || dz !== 0)) {
+      const y0 = f.heightAt(px, pz);
+      let y1 = f.heightAt(x, z);
+      const run = Math.hypot(dx, dz);
+      const rise = y1 - y0;
+      if (run > 1e-9 && rise > C.slope.step_up_m) {
+        // A big single-frame rise is a wall, whatever the sampled gradient says.
+        const climbDeg = Math.atan2(rise, run) * DEG;
+        if (climbDeg > C.slope.max_walkable_deg) {
+          // Slide along the contour instead of stopping dead, so a steep face guides rather than
+          // glues — but no upward progress is made at all.
+          const gx = (f.heightAt(x + 1.2, z) - f.heightAt(x - 1.2, z)) / 2.4;
+          const gz = (f.heightAt(x, z + 1.2) - f.heightAt(x, z - 1.2)) / 2.4;
+          const gl = Math.hypot(gx, gz) || 1;
+          const nx = gx / gl, nz = gz / gl;                    // uphill unit vector
+          const along = dx * nx + dz * nz;
+          let tx = dx - nx * along, tz = dz - nz * along;      // the contour component
+          x = px + tx; z = pz + tz;
+          y1 = f.heightAt(x, z);
+          if (y1 - y0 > C.slope.step_up_m) { x = px; z = pz; }
+          dx = x - px; dz = z - pz;
+          this.blockedBySlope = true;
+          this.events.push({ kind: 'slope_blocked', deg: +climbDeg.toFixed(2) });
+        }
+      }
+    }
+
+    // ---- 4. the ONLY-HERE elements are solid --------------------------------------------------
+    if (this.sig) {
+      const r = this.sig.resolve(x, z, 0.55);
+      if (r) { x = r[0]; z = r[1]; dx = x - px; dz = z - pz; }
+    }
+
+    p.pos[0] = x; p.pos[2] = z;
+
+    // ---- 5. vertical: gravity, landing, damage ------------------------------------------------
+    const ground = f.heightAt(x, z);
+    const surf = f.waterSurfaceAt(x, z);
+    const groundOrFloat = swimming && surf !== null ? surf - 0.78 * 1.8 : ground;
+    if (swimming) {
+      // Swimming: the body floats with the waterline at chest, so its Y is the surface minus the
+      // submerged fraction of a 1.8 m body. There is no fall while swimming.
+      this.airborne = false; this.vy = 0; this.apexY = null;
+      p.pos[1] = Math.max(ground, groundOrFloat);
+    } else if (this.airborne) {
+      this.vy -= C.fall.gravity_mps2 / 60;
+      p.pos[1] += this.vy / 60;
+      if (p.pos[1] <= ground) { this._land(p, ground, x, z); }
+    } else if (p.pos[1] > ground + 0.35) {
+      // The ground went away under the body — stepping off a viaduct deck, a crater rim, the crown
+      // of a petrified bole. Round 2's "it is not a fence because nothing about height costs
+      // anything" is closed here.
+      this.airborne = true;
+      this.vy = 0;
+      this.apexY = p.pos[1];
+      this.events.push({ kind: 'fall_start', from_y: +p.pos[1].toFixed(2) });
+      p.pos[1] += this.vy / 60;
+    } else {
+      p.pos[1] = ground;
+    }
+    if (this.airborne && p.pos[1] > (this.apexY ?? p.pos[1])) this.apexY = p.pos[1];
+
+    // ---- 6. sliding ---------------------------------------------------------------------------
+    // Above `slide_deg` the body is not supported; it goes downhill whether it was asked to or not.
+    if (!this.airborne && !swimming) {
+      const deg = f.slopeAt(x, z, 2.0);
+      this.slopeDeg = deg;
+      if (deg > C.slope.slide_deg) {
+        const gx = (f.heightAt(x + 1.2, z) - f.heightAt(x - 1.2, z)) / 2.4;
+        const gz = (f.heightAt(x, z + 1.2) - f.heightAt(x, z - 1.2)) / 2.4;
+        const gl = Math.hypot(gx, gz) || 1;
+        this.slide = Math.min(C.slope.slide_max_mps, this.slide + C.slope.slide_accel_mps2 / 60);
+        p.pos[0] -= (gx / gl) * this.slide / 60;
+        p.pos[2] -= (gz / gl) * this.slide / 60;
+        p.pos[1] = f.heightAt(p.pos[0], p.pos[2]);
+        this._setState(p, 'SLIDE');
+      } else this.slide = 0;
+    } else this.slopeDeg = f.slopeAt(x, z, 2.0);
+
+    // ---- 7. what the water costs --------------------------------------------------------------
+    const W = C.water;
+    this.regenSuppressedNow = W.regen_suppressed_in.includes(this.band);
+    const drain = (moving && (dx !== 0 || dz !== 0) ? W.stamina_drain_moving_per_s : W.stamina_drain_still_per_s)[this.band] || 0;
+    if (drain > 0) {
+      this._spendStamina(p, drain / 60);
+      if (W.regen_delay_rearmed_in.includes(this.band)) {
+        const until = (p.frameNow || 0) + 42;
+        p.regenBlockUntil = Math.max(p.regenBlockUntil, until);
+        if (this.body) this.body.regenBlockUntil = Math.max(this.body.regenBlockUntil || 0, until);
+      }
+    }
+    if (this.regenSuppressedNow) {
+      // W5: regen suppressed entirely (RI-WLD10 §3). Re-arm the delay every frame so the
+      // 42-frame clock can never elapse while swimming.
+      const until = (p.frameNow || 0) + 2;
+      p.regenBlockUntil = Math.max(p.regenBlockUntil, until);
+      if (this.body) this.body.regenBlockUntil = Math.max(this.body.regenBlockUntil || 0, until);
+    }
+    this.staminaDrainPerS = drain;
+    this.regenSuppressed = W.regen_suppressed_in.includes(this.band);
+
+    // ---- 8. breath ----------------------------------------------------------------------------
+    // Submerged = the water surface is above the head of a 1.8 m body standing on the bottom.
+    const head = p.pos[1] + W.submerge_head_clearance_m;
+    this.submerged = surf !== null && surf >= head;
+    if (this.submerged) {
+      this.breath = Math.max(0, this.breath - 1 / 60);
+      if (this.breath <= 0) {
+        const dmg = p.hpMax * (W.drown_hp_pct_per_s / 100) / 60;
+        this._damage(p, dmg);
+        this.events.push({ kind: 'drowning', hp: +p.hp.toFixed(2) });
+        if (p.hp <= 0) { this._setState(p, 'DEATH'); this.events.push({ kind: 'drowned' }); }
+      }
+    } else if (this.breath < W.breath_max_s) {
+      this.breath = Math.min(W.breath_max_s, this.breath + W.breath_refill_mult / 60);
+    }
+
+    // ---- 9. substrate: the mire counter -------------------------------------------------------
+    const S = C.substrate;
+    this.footAccum += Math.hypot(dx, dz);
+    // SATURATED SUCK ONLY. RI-WLD10 §4 places `SUCK` at "mudflats at low tide, the Deep Marshes
+    // floor, voriplasm margins" and §4's MIRED block ends "drowning := if d rises above 1.40 m
+    // while MIRED (a rising tide)" — every context it names is wet mud. Read without that
+    // qualifier the rule mires the player after six footfalls (5.4 m) of walking on any cell the
+    // substrate raster calls SUCK, including bone-dry ones, which would make roughly a fifth of
+    // the province impassable on foot and is not what a mudflat is. The counter therefore runs on
+    // SUCK **that has water in it** (band >= W1). This is a deviation from a literal reading of
+    // the item and it is declared here rather than hidden: `mire_requires_band` is in
+    // traversal.json, and setting it to "W0" restores the literal rule.
+    const sucking = sub === 'SUCK'
+      && bandIndex(this.band) >= bandIndex(S.mire_requires_band || 'W1');
+    if (sucking) {
+      if (this.footAccum >= S.mire_footfall_m) {
+        this.footAccum = 0;
+        this.mire += S.mire_per_footfall;
+        if (this.mire >= S.mire_threshold && !this.mired) {
+          this.mired = true; this.mireEscapes = 0;
+          this.events.push({ kind: 'mired' });
+        }
+      }
+    } else {
+      this.mireDecay = (this.mireDecay || 0) + 1;
+      if (this.mireDecay >= S.mire_decay_frames) { this.mireDecay = 0; this.mire = Math.max(0, this.mire - 1); }
+      if (this.mire === 0) this.mired = false;
+    }
+
+    // ---- 9b. breaking out of the mire ---------------------------------------------------------
+    // RI-WLD10 §4: "escape := one `roll` press per 30 f, costing 25 stamina, 3 successes to break
+    // out; on break out := 20 f recovery, mire := 0". Without this MIRED is a kill volume, which
+    // is precisely what the item says it must not be ("MIRED is survivable, expensive, and
+    // something a competent player walks around").
+    if (this.mired) {
+      if (this.mireRecovery > 0) { this.mireRecovery--; if (this.mireRecovery === 0) this.mired = false; }
+      else if (this.escapePressed && (p.frameNow || 0) - (this.lastEscapeF || -999) >= S.mire_escape_cooldown_frames) {
+        this.lastEscapeF = p.frameNow || 0;
+        if ((this.body ? this.body.stamina : p.stamina) >= S.mire_escape_cost_stamina) {
+          this._spendStamina(p, S.mire_escape_cost_stamina);
+          this.mireEscapes++;
+          this.events.push({ kind: 'mire_struggle', successes: this.mireEscapes });
+          if (this.mireEscapes >= S.mire_escape_successes) {
+            this.mire = 0; this.mireEscapes = 0;
+            this.mireRecovery = S.mire_break_recovery_frames;
+            this.events.push({ kind: 'mire_break' });
+          }
+        }
+      }
+    }
+    this.escapePressed = false;
+
+    // ---- 10. the state the player is in -------------------------------------------------------
+    if (p.state !== 'DEATH') {
+      if (this.mired) this._setState(p, 'MIRED');
+      else if (this.airborne) this._setState(p, 'FALL');
+      else if (swimming) this._setState(p, this.submerged ? 'SUBMERGED' : 'SWIM');
+    }
+    return this;
+  }
+
+  _land(p, ground, x, z) {
+    const C = this.cfg;
+    const from = this.apexY === null ? p.pos[1] : this.apexY;
+    const dist = Math.max(0, from - ground);
+    p.pos[1] = ground;
+    this.airborne = false;
+    this.vy = 0;
+    this.apexY = null;
+    // RI-WLD10 §2: fall damage is computed against the WATER SURFACE, x0.25 above 1.40 m of depth.
+    const depth = this.field.depthAt(x, z);
+    const soft = depth > C.fall.water_soften_depth_m ? C.fall.water_damage_mult : 1.0;
+    const span = C.fall.lethal_m - C.fall.safe_m;
+    const frac = dist <= C.fall.safe_m ? 0
+      : Math.min(1, Math.pow((dist - C.fall.safe_m) / span, C.fall.curve_exponent));
+    const dmg = frac * p.hpMax * soft;
+    this.lastFall = { distance_m: +dist.toFixed(2), damage: +dmg.toFixed(2), water_depth_m: +depth.toFixed(2), softened: soft < 1 };
+    if (dmg > 0) {
+      this._damage(p, dmg);
+      this.events.push({ kind: 'fall_damage', distance_m: +dist.toFixed(2), damage: +dmg.toFixed(2) });
+      if (p.hp <= 0) { this._setState(p, 'DEATH'); this.events.push({ kind: 'fall_death' }); }
+      else if (dist >= C.fall.stagger_from_m) {
+        this._setState(p, 'STAGGER');
+        const until = (p.frameNow || 0) + C.fall.stagger_frames;
+        p.actionableAt = until;
+        if (this.body) { this.body.actionableAt = until; this.body.move = null; }
+      }
+    }
+    this.events.push({ kind: 'landed', distance_m: +dist.toFixed(2), damage: +dmg.toFixed(2) });
+  }
+
+  // ---- writes that survive the mirror ---------------------------------------------------------
+  _damage(p, amount) {
+    if (this.body) { this.body.hp = Math.max(0, this.body.hp - amount); p.hp = this.body.hp; }
+    else p.hp = Math.max(0, p.hp - amount);
+  }
+  _spendStamina(p, amount) {
+    if (this.body) { this.body.stamina = Math.max(0, this.body.stamina - amount); p.stamina = this.body.stamina; }
+    else p.stamina = Math.max(0, p.stamina - amount);
+  }
+  _setState(p, s) {
+    p.state = s;
+    if (this.body) this.body.state = s;
+  }
+
+  /** Declared vs observed, in one object. */
+  report() {
+    return {
+      declared: this.cfg,
+      observed: {
+        band: this.band, depth_m: +this.depth.toFixed(3), substrate: this.substrate || null,
+        slope_deg: this.slopeDeg === undefined ? null : +this.slopeDeg.toFixed(2),
+        airborne: this.airborne, vertical_mps: +this.vy.toFixed(3),
+        sliding: this.slide > 0, slide_mps: +this.slide.toFixed(2),
+        submerged: this.submerged, breath_s: +this.breath.toFixed(2),
+        breath_max_s: this.cfg.water.breath_max_s,
+        stamina_drain_per_s: this.staminaDrainPerS || 0,
+        regen_suppressed: !!this.regenSuppressed,
+        mire: this.mire, mired: this.mired,
+        blocked_by_slope: this.blockedBySlope,
+        denies: { sprint: this.denies('sprint'), roll: this.denies('roll'), attack: this.denies('attack') },
+        last_fall: this.lastFall,
+      },
+    };
+  }
+}

@@ -10,6 +10,8 @@
 
 import * as THREE from '../../vendor/three/three.module.js';
 import { noise2, clamp, smoothstep, lerp } from './noise.js';
+import { SIGNATURE_KINDS } from './signature.js';
+import { signatureGeometry, signatureMaterials } from './signature-geo.js';
 
 const TILE_M = 300;
 const TILE_SEG = 40;              // 7.5 m per quad
@@ -206,9 +208,89 @@ export class Province {
 
     // ---- flora and rock ----------------------------------------------------------------------
     this._scatter(g, ox, oz);
+    // ---- the region's ONLY-HERE element ------------------------------------------------------
+    this._signatures(g, ox, oz);
 
     this.group.add(g);
     return { group: g, tx, tz };
+  }
+
+  /**
+   * The thirteen ONLY-HERE elements, in this tile. `RI-WLD04` M19.
+   *
+   * The landform half of seven of them is already in the ground mesh above, because
+   * `field.heightAt()` evaluates `signature.profile()` — the crater is a hole in the terrain, not
+   * a decal on it. What is added here is everything that is not ground, plus the night emission
+   * six of them carry, which is M17 step 6's "a region that is only identifiable in clear daylight
+   * is half-built" answered with light sources the region owns rather than with exposure.
+   */
+  _signatures(group, ox, oz) {
+    const sig = this.field.sig;
+    if (!sig) return;
+    const m = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), s = new THREE.Vector3();
+    const up = new THREE.Vector3(0, 1, 0);
+    const buckets = new Map();
+    // Cover the tile plus the largest footprint, so a crater rim that reaches into this tile is
+    // drawn with it rather than popping when the neighbouring tile streams in.
+    const pad = 40;
+    for (const it of sig.items) {
+      if (it.x < ox - pad || it.x >= ox + TILE_M + pad || it.z < oz - pad || it.z >= oz + TILE_M + pad) continue;
+      // One instance belongs to exactly one tile — the one containing its centre — so a feature
+      // straddling a tile edge is not drawn twice.
+      if (it.x < ox || it.x >= ox + TILE_M || it.z < oz || it.z >= oz + TILE_M) continue;
+      const K = SIGNATURE_KINDS[it.kind];
+      let b = buckets.get(it.kind);
+      if (!b) { b = { kind: it.kind, xf: [] }; buckets.set(it.kind, b); }
+      // The body stands on the ground the profile already raised, except the jelly, which floats.
+      const gy = it.kind === 'swamp_jelly_canopy'
+        ? (this.field.waterSurfaceAt(it.x, it.z) ?? this.field.heightAt(it.x, it.z)) + it.hover
+        : this.field.heightAt(it.x, it.z);
+      q.setFromAxisAngle(up, it.rot);
+      v.set(it.x, gy, it.z);
+      // Unit geometry is authored at height 1 and radius ~1, so one scale carries both.
+      const sc = K.landform && it.kind !== 'root_arch' ? it.h : (K.r_base * it.s * 0.5);
+      s.set(it.kind === 'petrified_bole' || it.kind === 'glassed_crater' ? K.r_base * it.s * 0.5 : sc,
+        it.kind === 'petrified_bole' || it.kind === 'glassed_crater' ? K.r_base * it.s * 0.5 : it.h,
+        it.kind === 'petrified_bole' || it.kind === 'glassed_crater' ? K.r_base * it.s * 0.5 : sc);
+      if (it.kind === 'rock_flute_spire') s.set(K.r_base * it.s * 0.9, it.h, K.r_base * it.s * 0.9);
+      if (it.kind === 'root_arch') s.setScalar(K.r_base * it.s * 0.62);
+      if (it.kind === 'beached_hull_house') s.set(K.r_base * it.s, it.h, K.r_base * it.s);
+      if (it.kind === 'comb_cliff') s.set(K.r_base * it.s, it.h, K.r_base * it.s);
+      if (it.kind === 'naga_kiln_dome') s.set(K.r_base * it.s, it.h, K.r_base * it.s);
+      m.compose(v, q, s);
+      b.xf.push(m.clone());
+    }
+    for (const b of buckets.values()) {
+      if (!b.xf.length) continue;
+      const ri = this.field.regionIndexAt(b.xf[0].elements[12], b.xf[0].elements[14]);
+      const geo = this._sigGeo(b.kind);
+      const mat = this._sigMat(b.kind, ri);
+      const im = new THREE.InstancedMesh(geo.body, mat.body, b.xf.length);
+      for (let i = 0; i < b.xf.length; i++) im.setMatrixAt(i, b.xf[i]);
+      im.instanceMatrix.needsUpdate = true;
+      im.castShadow = true; im.receiveShadow = true;
+      im.name = `signature:${b.kind}`;
+      group.add(im);
+      if (geo.glow && mat.glow) {
+        const gm = new THREE.InstancedMesh(geo.glow, mat.glow, b.xf.length);
+        for (let i = 0; i < b.xf.length; i++) gm.setMatrixAt(i, b.xf[i]);
+        gm.instanceMatrix.needsUpdate = true;
+        gm.name = `signature-glow:${b.kind}`;
+        group.add(gm);
+      }
+    }
+  }
+
+  _sigGeo(kind) {
+    const k = `sig:${kind}`;
+    if (!this.geoCache.has(k)) this.geoCache.set(k, signatureGeometry(kind));
+    return this.geoCache.get(k);
+  }
+
+  _sigMat(kind, ri) {
+    this.sigMats = this.sigMats || new Map();
+    if (!this.sigMats.has(kind)) this.sigMats.set(kind, signatureMaterials(kind, this.field.regions[ri]));
+    return this.sigMats.get(kind);
   }
 
   _geo(kind, r) {

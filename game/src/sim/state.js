@@ -35,6 +35,10 @@ export const PLAYER_CONST = {
 export const PLAYER_STATES = [
   'IDLE', 'WALK', 'RUN', 'SPRINT', 'ATTACK', 'ROLL', 'BACKSTEP', 'BLOCK',
   'PARRY', 'HEAL', 'STAGGER', 'DEATH',
+  // W1-01 round 3. Verdict round 2: "60 s in 8.28 m of water costs no breath, no stamina and no
+  // state change", and "there is no fall". A state the world can put you in is the legible half
+  // of a rule; the other half is what it costs. Both are `sim/traversal.js`.
+  'SWIM', 'SUBMERGED', 'FALL', 'SLIDE', 'MIRED',
 ];
 
 /** HARNESS.md §5: phase ∈ none|windup|active|recovery|turn|hitstun */
