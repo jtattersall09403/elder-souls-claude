@@ -838,7 +838,14 @@ export class Engine {
     const eid = opts.as || `e${this.sim.nextEid}`;
     if (this.sim.findEntity(eid)) throw new Error(`spawn: eid '${eid}' is already in use`);
     const e = this.statFor(id, eid, Number(x), Number(z), this.sim.frame);
-    e.pos[1] = this.groundAt(e.pos[0], e.pos[2]);
+    // Ground against whatever the character is standing on. With a camera fixture active that
+    // is the fixture's own collision set, not the province heightfield — otherwise a target
+    // spawned in `cam-boss-arena` lands at the province height under the world origin, 41 m
+    // below the player, and every RI-CAM03 containment measurement is taken against a camera
+    // pitched to its −50° floor chasing an enemy underground. That is exactly what the first
+    // full probe run reported: onscreen_fraction(T_a) == 0.000 in all seven scenarios while
+    // P_a == 1.000, and a pitch law flat at −50° for every d.
+    e.pos[1] = this.groundInActiveCell(e.pos[0], e.pos[2]);
     e.anchor[1] = e.pos[1];
     this.sim.addEntity(e);
     const body = this.combat.spawnEnemy(eid, this.data.enemies[id], e.pos[0], e.pos[2], e.yaw);
@@ -918,6 +925,17 @@ export class Engine {
     const c = this.sim.camera;
     if (pose === null) { c.override = null; return this.cameraState(); }
     if (!pose || typeof pose !== 'object') throw new Error('camera(pose): pose must be an object, or null to release the override');
+    // VALIDATE BEFORE MUTATING. This check used to run after `c.override` had already been
+    // assigned, so `camera({mode:'first'})` threw — and left the rig suspended behind a posed
+    // override anyway. A refusal that half-applies is not a refusal, and RI-CAM05 M7 calls
+    // this three times in a row expecting the camera to be untouched after each.
+    if (pose.mode !== undefined && pose.mode !== 'gameplay' && !CAMERA_MODES.includes(String(pose.mode))) {
+      throw new Error(
+        `camera({mode:'${String(pose.mode)}'}): '${String(pose.mode)}' is not a camera mode. Seam S18 makes this game ` +
+        `third-person at all times and RI-CAM05 §F fixes the vocabulary to ` +
+        `[${CAMERA_MODES.join(', ')}]. There is no first-person mode, on a key, on the ` +
+        'wheel, in the options, or through this API.');
+    }
     if (pose.mode === 'gameplay') {
       c.override = null;
       if (pose.lockOn !== undefined && pose.lockOn !== true) this.lockOn(pose.lockOn);
@@ -929,20 +947,10 @@ export class Engine {
       look: pose.look ? [Number(pose.look[0]), Number(pose.look[1]), Number(pose.look[2])] : cur.look,
       fov: pose.fov !== undefined ? Number(pose.fov) : cur.fov,
     };
-    // RI-CAM05 §F/M7: `camera({mode:'first'})` must THROW, not silently accept. The check is
-    // against the closed vocabulary rather than a blocklist, so a future mode name cannot
-    // sneak a first-person view in under a synonym.
-    if (pose.mode !== undefined) {
-      const m = String(pose.mode);
-      if (!CAMERA_MODES.includes(m)) {
-        throw new Error(
-          `camera({mode:'${m}'}): '${m}' is not a camera mode. Seam S18 makes this game ` +
-          `third-person at all times and RI-CAM05 §F fixes the vocabulary to ` +
-          `[${CAMERA_MODES.join(', ')}]. There is no first-person mode, on a key, on the ` +
-          'wheel, in the options, or through this API.');
-      }
-      c.mode = m;
-    }
+    // The mode name was validated against the closed vocabulary above, before anything was
+    // written. It is checked against the vocabulary rather than a blocklist so a future mode
+    // name cannot sneak a first-person view in under a synonym.
+    if (pose.mode !== undefined) c.mode = String(pose.mode);
     // Apply immediately so a read-back before the next step is truthful.
     const o = c.override;
     c.pos[0] = o.pos[0]; c.pos[1] = o.pos[1]; c.pos[2] = o.pos[2];
@@ -1075,6 +1083,13 @@ export class Engine {
 
   cameraRouteEnd() { endRoute(this.sim); return true; }
 
+  /** Ground height at (x,z) against whatever surface is authoritative right now: the active
+   *  camera fixture's collision set if there is one, otherwise the province heightfield. */
+  groundInActiveCell(x, z) {
+    if (this.sim.cellId && this.sim.cell) return groundYInCell(this.sim.cell, Number(x), Number(z));
+    return this.groundAt(Number(x), Number(z));
+  }
+
   /**
    * Place an entity, per frame, without going through its AI. RI-CAM03 M3's adversarial
    * target — 300 °/s orbit, a 14→1.5 m charge in 40 frames, a 9 m leap behind the player —
@@ -1086,6 +1101,7 @@ export class Engine {
     if (!e) throw new Error(`setEntityPos('${eid}'): no such entity`);
     e.pos[0] = Number(x); e.pos[2] = Number(z);
     if (opts.y !== undefined) e.pos[1] = Number(opts.y);
+    else e.pos[1] = this.groundInActiveCell(e.pos[0], e.pos[2]);
     const b = this.combat && this.combat.bodyOf(eid);
     if (b) { b.pos[0] = e.pos[0]; b.pos[1] = e.pos[1]; b.pos[2] = e.pos[2]; b.hasPrev = false; }
     return { eid, pos: [e.pos[0], e.pos[1], e.pos[2]] };

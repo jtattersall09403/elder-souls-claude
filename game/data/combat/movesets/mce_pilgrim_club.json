@@ -28,8 +28,8 @@
  },
  "parry_capable": false,
  "guardbreak_kind": "shoulder",
- "reach_m": 1.56,
- "arc_sweep_deg": 121,
+ "reach_m": 1.628,
+ "arc_sweep_deg": 108.4,
  "slots": {
   "r1.1": {
    "anim": "clip_bogiron_r1_1",
@@ -43,14 +43,14 @@
    },
    "chains_to": "r1.2",
    "chain_index": 1,
-   "startup_f": 28,
+   "startup_f": 31,
    "active_f": 12,
-   "recovery_f": 44,
+   "recovery_f": 46,
    "stamina": 25,
    "motion_value": 1.2,
    "poise_damage": 32,
-   "root_dz_m": 0.12,
-   "arc_sweep_deg": 121,
+   "root_dz_m": 0.198,
+   "arc_sweep_deg": 108.4,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -70,8 +70,8 @@
    ]
   },
   "r1.2": {
-   "anim": "clip_bogiron_r1_2",
-   "anim_owner": "lin_bogiron",
+   "anim": "clip_w_mce_pilgrim_club_r1_2",
+   "anim_owner": "mce_pilgrim_club",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -81,14 +81,14 @@
    },
    "chains_to": "r1.3",
    "chain_index": 2,
-   "startup_f": 21,
+   "startup_f": 24,
    "active_f": 12,
    "recovery_f": 47,
    "stamina": 27,
    "motion_value": 1.14,
    "poise_damage": 30,
-   "root_dz_m": 0.148,
-   "arc_sweep_deg": 130.5,
+   "root_dz_m": 0.226,
+   "arc_sweep_deg": 117.9,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -118,14 +118,14 @@
    },
    "chains_to": null,
    "chain_index": 3,
-   "startup_f": 25,
+   "startup_f": 28,
    "active_f": 12,
-   "recovery_f": 62,
+   "recovery_f": 61,
    "stamina": 29,
    "motion_value": 1.26,
    "poise_damage": 37,
-   "root_dz_m": 0.148,
-   "arc_sweep_deg": 130.5,
+   "root_dz_m": 0.226,
+   "arc_sweep_deg": 117.9,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -162,8 +162,8 @@
    "stamina": 43,
    "motion_value": 1.86,
    "poise_damage": 59,
-   "root_dz_m": 0.316,
-   "arc_sweep_deg": 84.9,
+   "root_dz_m": 0.394,
+   "arc_sweep_deg": 72.3,
    "shape": "smash",
    "hyperarmour": {
     "enabled": true,
@@ -209,8 +209,8 @@
    "stamina": 43,
    "motion_value": 1.86,
    "poise_damage": 59,
-   "root_dz_m": 0.387,
-   "arc_sweep_deg": 107.7,
+   "root_dz_m": 0.465,
+   "arc_sweep_deg": 95.1,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": true,
@@ -250,8 +250,8 @@
    "stamina": 38,
    "motion_value": 1.68,
    "poise_damage": 51,
-   "root_dz_m": 0.24,
-   "arc_sweep_deg": 130.5,
+   "root_dz_m": 0.318,
+   "arc_sweep_deg": 117.9,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -271,8 +271,8 @@
    ]
   },
   "run.r1": {
-   "anim": "clip_bogiron_run_r1",
-   "anim_owner": "lin_bogiron",
+   "anim": "clip_w_mce_pilgrim_club_run_r1",
+   "anim_owner": "mce_pilgrim_club",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -288,8 +288,8 @@
    "stamina": 28,
    "motion_value": 1.26,
    "poise_damage": 35,
-   "root_dz_m": 0.372,
-   "arc_sweep_deg": 78.3,
+   "root_dz_m": 0.45,
+   "arc_sweep_deg": 65.7,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -329,14 +329,11 @@
    "stamina": 28,
    "motion_value": 1.26,
    "poise_damage": 35,
-   "root_dz_m": 0.372,
-   "arc_sweep_deg": 78.3,
+   "root_dz_m": 0.45,
+   "arc_sweep_deg": 65.7,
    "shape": "smash",
    "hyperarmour": {
-    "enabled": true,
-    "from_f": 15,
-    "to_f": 36,
-    "poise_multiplier": 1.4
+    "enabled": false
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -356,8 +353,8 @@
    ]
   },
   "roll.r1": {
-   "anim": "clip_bogiron_roll_r1",
-   "anim_owner": "lin_bogiron",
+   "anim": "clip_w_mce_pilgrim_club_roll_r1",
+   "anim_owner": "mce_pilgrim_club",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -375,8 +372,8 @@
    "stamina": 21,
    "motion_value": 1.02,
    "poise_damage": 27,
-   "root_dz_m": 0.12,
-   "arc_sweep_deg": 100.1,
+   "root_dz_m": 0.198,
+   "arc_sweep_deg": 87.5,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -417,8 +414,8 @@
    "stamina": 20,
    "motion_value": 0.96,
    "poise_damage": 24,
-   "root_dz_m": 0.369,
-   "arc_sweep_deg": 109.6,
+   "root_dz_m": 0.447,
+   "arc_sweep_deg": 97,
    "shape": "slash_d",
    "hyperarmour": {
     "enabled": false
@@ -455,8 +452,8 @@
    "stamina": 33,
    "motion_value": 1.62,
    "poise_damage": 58,
-   "root_dz_m": -0.076,
-   "arc_sweep_deg": 54.5,
+   "root_dz_m": 0.002,
+   "arc_sweep_deg": 41.9,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -500,8 +497,8 @@
    "stamina": 30,
    "motion_value": 1.56,
    "poise_damage": 51,
-   "root_dz_m": 0.019,
-   "arc_sweep_deg": 96.3,
+   "root_dz_m": 0.097,
+   "arc_sweep_deg": 83.7,
    "shape": "slash_d",
    "hyperarmour": {
     "enabled": false
@@ -537,13 +534,13 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 37,
-   "active_f": 16,
+   "active_f": 17,
    "recovery_f": 65,
    "stamina": 33,
    "motion_value": 2.16,
    "poise_damage": 70,
-   "root_dz_m": -0.115,
-   "arc_sweep_deg": 50,
+   "root_dz_m": -0.037,
+   "arc_sweep_deg": 19,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": false
@@ -584,8 +581,8 @@
    "stamina": 16,
    "motion_value": 0.35,
    "poise_damage": 32,
-   "root_dz_m": 1.28,
-   "arc_sweep_deg": 42.8,
+   "root_dz_m": 1.358,
+   "arc_sweep_deg": 30.2,
    "shape": "grab",
    "hyperarmour": {
     "enabled": false
@@ -616,13 +613,13 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 74,
-   "active_f": 16,
-   "recovery_f": 90,
+   "active_f": 17,
+   "recovery_f": 95,
    "stamina": 48,
    "motion_value": 2.1,
    "poise_damage": 64,
-   "root_dz_m": 0.092,
-   "arc_sweep_deg": 67.8,
+   "root_dz_m": 0.17,
+   "arc_sweep_deg": 55.2,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -659,8 +656,8 @@
    "stamina": 23,
    "motion_value": 1.02,
    "poise_damage": 27,
-   "root_dz_m": 0.086,
-   "arc_sweep_deg": 130.5,
+   "root_dz_m": 0.164,
+   "arc_sweep_deg": 117.9,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -700,8 +697,8 @@
    "stamina": 23,
    "motion_value": 1.02,
    "poise_damage": 27,
-   "root_dz_m": 0.064,
-   "arc_sweep_deg": 84.9,
+   "root_dz_m": 0.142,
+   "arc_sweep_deg": 72.3,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -741,8 +738,8 @@
    "stamina": 23,
    "motion_value": 1.5,
    "poise_damage": 27,
-   "root_dz_m": 0.064,
-   "arc_sweep_deg": 84.9,
+   "root_dz_m": 0.142,
+   "arc_sweep_deg": 72.3,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -775,14 +772,14 @@
    },
    "chains_to": "2h.r1.2",
    "chain_index": 1,
-   "startup_f": 31,
+   "startup_f": 34,
    "active_f": 14,
-   "recovery_f": 48,
+   "recovery_f": 50,
    "stamina": 29,
    "motion_value": 1.38,
    "poise_damage": 42,
-   "root_dz_m": 0.162,
-   "arc_sweep_deg": 100.2,
+   "root_dz_m": 0.24,
+   "arc_sweep_deg": 85.3,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -816,14 +813,14 @@
    },
    "chains_to": "2h.r1.3",
    "chain_index": 2,
-   "startup_f": 24,
+   "startup_f": 27,
    "active_f": 14,
    "recovery_f": 51,
    "stamina": 31,
    "motion_value": 1.31,
    "poise_damage": 39,
-   "root_dz_m": 0.194,
-   "arc_sweep_deg": 154,
+   "root_dz_m": 0.272,
+   "arc_sweep_deg": 139.1,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -856,14 +853,14 @@
    },
    "chains_to": null,
    "chain_index": 3,
-   "startup_f": 28,
+   "startup_f": 31,
    "active_f": 14,
    "recovery_f": 67,
    "stamina": 33,
    "motion_value": 1.45,
    "poise_damage": 48,
-   "root_dz_m": 0.162,
-   "arc_sweep_deg": 100.2,
+   "root_dz_m": 0.24,
+   "arc_sweep_deg": 85.3,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -903,8 +900,8 @@
    "stamina": 49,
    "motion_value": 2.14,
    "poise_damage": 77,
-   "root_dz_m": 0.387,
-   "arc_sweep_deg": 100.2,
+   "root_dz_m": 0.465,
+   "arc_sweep_deg": 85.3,
    "shape": "smash",
    "hyperarmour": {
     "enabled": true,
@@ -953,8 +950,8 @@
    "stamina": 49,
    "motion_value": 2.14,
    "poise_damage": 77,
-   "root_dz_m": 0.469,
-   "arc_sweep_deg": 127.1,
+   "root_dz_m": 0.547,
+   "arc_sweep_deg": 112.2,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": true,
@@ -997,8 +994,8 @@
    "stamina": 32,
    "motion_value": 1.45,
    "poise_damage": 46,
-   "root_dz_m": 0.452,
-   "arc_sweep_deg": 92.3,
+   "root_dz_m": 0.53,
+   "arc_sweep_deg": 77.5,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -1039,14 +1036,11 @@
    "stamina": 32,
    "motion_value": 1.45,
    "poise_damage": 46,
-   "root_dz_m": 0.452,
-   "arc_sweep_deg": 92.3,
+   "root_dz_m": 0.53,
+   "arc_sweep_deg": 77.5,
    "shape": "smash",
    "hyperarmour": {
-    "enabled": true,
-    "from_f": 16,
-    "to_f": 40,
-    "poise_multiplier": 1.4
+    "enabled": false
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -1086,8 +1080,8 @@
    "stamina": 24,
    "motion_value": 1.17,
    "poise_damage": 35,
-   "root_dz_m": 0.162,
-   "arc_sweep_deg": 118.1,
+   "root_dz_m": 0.24,
+   "arc_sweep_deg": 103.3,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -1131,8 +1125,8 @@
    "stamina": 23,
    "motion_value": 1.1,
    "poise_damage": 31,
-   "root_dz_m": 0.449,
-   "arc_sweep_deg": 129.3,
+   "root_dz_m": 0.527,
+   "arc_sweep_deg": 114.5,
    "shape": "slash_d",
    "hyperarmour": {
     "enabled": false
@@ -1167,13 +1161,13 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 48,
-   "active_f": 16,
+   "active_f": 17,
    "recovery_f": 65,
    "stamina": 38,
    "motion_value": 1.86,
    "poise_damage": 75,
-   "root_dz_m": -0.063,
-   "arc_sweep_deg": 64.3,
+   "root_dz_m": 0.015,
+   "arc_sweep_deg": 49.4,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -1218,8 +1212,8 @@
    "stamina": 35,
    "motion_value": 1.79,
    "poise_damage": 66,
-   "root_dz_m": 0.046,
-   "arc_sweep_deg": 113.6,
+   "root_dz_m": 0.124,
+   "arc_sweep_deg": 98.8,
    "shape": "slash_d",
    "hyperarmour": {
     "enabled": false
@@ -1256,13 +1250,13 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 81,
-   "active_f": 16,
-   "recovery_f": 90,
+   "active_f": 20,
+   "recovery_f": 103,
    "stamina": 55,
    "motion_value": 2.42,
    "poise_damage": 83,
-   "root_dz_m": 0.13,
-   "arc_sweep_deg": 80,
+   "root_dz_m": 0.208,
+   "arc_sweep_deg": 65.1,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -1302,8 +1296,8 @@
    "stamina": 49,
    "motion_value": 2.25,
    "poise_damage": 77,
-   "root_dz_m": 0.114,
-   "arc_sweep_deg": 64.3,
+   "root_dz_m": 0.192,
+   "arc_sweep_deg": 49.4,
    "shape": "smash",
    "hyperarmour": {
     "enabled": true,
@@ -1346,8 +1340,8 @@
    "stamina": 49,
    "motion_value": 2.25,
    "poise_damage": 77,
-   "root_dz_m": 0.333,
-   "arc_sweep_deg": 86.7,
+   "root_dz_m": 0.411,
+   "arc_sweep_deg": 22.4,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": true,

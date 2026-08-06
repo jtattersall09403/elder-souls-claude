@@ -28,12 +28,12 @@
  },
  "parry_capable": false,
  "guardbreak_kind": "kick",
- "reach_m": 3.78,
- "arc_sweep_deg": 230,
+ "reach_m": 3.703,
+ "arc_sweep_deg": 217.2,
  "slots": {
   "r1.1": {
-   "anim": "clip_tendril_r1_1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_r1_1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -43,14 +43,14 @@
    },
    "chains_to": "r1.2",
    "chain_index": 1,
-   "startup_f": 40,
+   "startup_f": 41,
    "active_f": 10,
-   "recovery_f": 58,
+   "recovery_f": 59,
    "stamina": 22,
    "motion_value": 0.8,
    "poise_damage": 6,
-   "root_dz_m": 0.04,
-   "arc_sweep_deg": 230,
+   "root_dz_m": 0.108,
+   "arc_sweep_deg": 217.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -81,14 +81,14 @@
    },
    "chains_to": "r1.3",
    "chain_index": 2,
-   "startup_f": 31,
+   "startup_f": 32,
    "active_f": 10,
-   "recovery_f": 61,
+   "recovery_f": 63,
    "stamina": 24,
    "motion_value": 0.76,
    "poise_damage": 6,
-   "root_dz_m": -0.02,
-   "arc_sweep_deg": 194,
+   "root_dz_m": 0.048,
+   "arc_sweep_deg": 217.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -107,8 +107,8 @@
    ]
   },
   "r1.3": {
-   "anim": "clip_tendril_r1_3",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_r1_3",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -118,14 +118,14 @@
    },
    "chains_to": null,
    "chain_index": 3,
-   "startup_f": 36,
+   "startup_f": 37,
    "active_f": 10,
-   "recovery_f": 78,
+   "recovery_f": 80,
    "stamina": 26,
    "motion_value": 0.84,
    "poise_damage": 7,
-   "root_dz_m": -0.02,
-   "arc_sweep_deg": 194,
+   "root_dz_m": 0.048,
+   "arc_sweep_deg": 217.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -145,8 +145,8 @@
    ]
   },
   "r2": {
-   "anim": "clip_tendril_r2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_r2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "tap",
@@ -162,8 +162,8 @@
    "stamina": 37,
    "motion_value": 1.24,
    "poise_damage": 11,
-   "root_dz_m": 0.18,
-   "arc_sweep_deg": 138,
+   "root_dz_m": 0.248,
+   "arc_sweep_deg": 161.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -183,8 +183,8 @@
    ]
   },
   "r2.charged": {
-   "anim": "clip_tendril_r2_charged",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_r2_charged",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "hold",
@@ -206,8 +206,8 @@
    "stamina": 37,
    "motion_value": 1.24,
    "poise_damage": 11,
-   "root_dz_m": 0.231,
-   "arc_sweep_deg": 166,
+   "root_dz_m": 0.299,
+   "arc_sweep_deg": 129,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": true,
@@ -230,8 +230,8 @@
    ]
   },
   "r2.follow": {
-   "anim": "clip_tendril_r2_follow",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_r2_follow",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "none",
@@ -247,8 +247,8 @@
    "stamina": 33,
    "motion_value": 1.12,
    "poise_damage": 10,
-   "root_dz_m": 0.022,
-   "arc_sweep_deg": 194,
+   "root_dz_m": 0.09,
+   "arc_sweep_deg": 217.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -268,8 +268,8 @@
    ]
   },
   "run.r1": {
-   "anim": "clip_tendril_run_r1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_run_r1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -285,8 +285,8 @@
    "stamina": 24,
    "motion_value": 0.84,
    "poise_damage": 7,
-   "root_dz_m": 0.24,
-   "arc_sweep_deg": 218,
+   "root_dz_m": 0.308,
+   "arc_sweep_deg": 200,
    "shape": "slash_h",
    "hyperarmour": {
     "enabled": false
@@ -309,8 +309,8 @@
    ]
   },
   "run.r2": {
-   "anim": "clip_tendril_run_r2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_run_r2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "none",
@@ -326,8 +326,8 @@
    "stamina": 24,
    "motion_value": 0.84,
    "poise_damage": 7,
-   "root_dz_m": 0.24,
-   "arc_sweep_deg": 218,
+   "root_dz_m": 0.308,
+   "arc_sweep_deg": 200,
    "shape": "slash_h",
    "hyperarmour": {
     "enabled": false
@@ -350,8 +350,8 @@
    ]
   },
   "roll.r1": {
-   "anim": "clip_tendril_roll_r1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_w_whp_root_tendril_roll_r1",
+   "anim_owner": "whp_root_tendril",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -369,8 +369,8 @@
    "stamina": 19,
    "motion_value": 0.68,
    "poise_damage": 5,
-   "root_dz_m": 0.04,
-   "arc_sweep_deg": 150,
+   "root_dz_m": 0.108,
+   "arc_sweep_deg": 129,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -411,8 +411,8 @@
    "stamina": 18,
    "motion_value": 0.64,
    "poise_damage": 5,
-   "root_dz_m": 0.218,
-   "arc_sweep_deg": 170,
+   "root_dz_m": 0.286,
+   "arc_sweep_deg": 193.2,
    "shape": "slash_d",
    "hyperarmour": {
     "enabled": false
@@ -432,8 +432,8 @@
    ]
   },
   "jump.r1": {
-   "anim": "clip_tendril_jump_r1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_jump_r1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -449,8 +449,8 @@
    "stamina": 29,
    "motion_value": 1.08,
    "poise_damage": 11,
-   "root_dz_m": -0.088,
-   "arc_sweep_deg": 126,
+   "root_dz_m": -0.02,
+   "arc_sweep_deg": 129,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -475,8 +475,8 @@
    ]
   },
   "guard.counter": {
-   "anim": "clip_tendril_guard_counter",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_guard_counter",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -494,8 +494,8 @@
    "stamina": 26,
    "motion_value": 1.04,
    "poise_damage": 10,
-   "root_dz_m": -0.032,
-   "arc_sweep_deg": 142,
+   "root_dz_m": 0.036,
+   "arc_sweep_deg": 165.2,
    "shape": "slash_d",
    "hyperarmour": {
     "enabled": false
@@ -519,8 +519,8 @@
    ]
   },
   "plunge": {
-   "anim": "clip_tendril_plunge",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_plunge",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -536,8 +536,8 @@
    "stamina": 29,
    "motion_value": 1.44,
    "poise_damage": 13,
-   "root_dz_m": -0.128,
-   "arc_sweep_deg": 18,
+   "root_dz_m": -0.06,
+   "arc_sweep_deg": 19,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": false
@@ -561,8 +561,8 @@
    ]
   },
   "guardbreak": {
-   "anim": "clip_tendril_guardbreak",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_guardbreak",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "forward",
@@ -578,8 +578,8 @@
    "stamina": 16,
    "motion_value": 0.35,
    "poise_damage": 24,
-   "root_dz_m": 0.39,
-   "arc_sweep_deg": 7.2,
+   "root_dz_m": 0.458,
+   "arc_sweep_deg": 30.4,
    "shape": "grab",
    "hyperarmour": {
     "enabled": false
@@ -598,8 +598,8 @@
    ]
   },
   "art.1": {
-   "anim": "clip_tendril_art_1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_art_1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "two_hand",
     "modifier": "hold",
@@ -611,12 +611,12 @@
    "chain_index": 1,
    "startup_f": 69,
    "active_f": 14,
-   "recovery_f": 90,
+   "recovery_f": 92,
    "stamina": 42,
    "motion_value": 1.4,
    "poise_damage": 12,
-   "root_dz_m": 0.344,
-   "arc_sweep_deg": 304,
+   "root_dz_m": 0.412,
+   "arc_sweep_deg": 327.2,
    "shape": "spin",
    "hyperarmour": {
     "enabled": false
@@ -636,8 +636,8 @@
    ]
   },
   "off.r1.1": {
-   "anim": "clip_tendril_off_r1_1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_off_r1_1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "swap_left",
     "modifier": "hold",
@@ -653,8 +653,8 @@
    "stamina": 20,
    "motion_value": 0.68,
    "poise_damage": 5,
-   "root_dz_m": 0,
-   "arc_sweep_deg": 138,
+   "root_dz_m": 0.068,
+   "arc_sweep_deg": 161.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -677,8 +677,8 @@
    ]
   },
   "off.r1.2": {
-   "anim": "clip_tendril_off_r1_2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_off_r1_2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "swap_left",
     "modifier": "hold",
@@ -694,8 +694,8 @@
    "stamina": 20,
    "motion_value": 0.68,
    "poise_damage": 5,
-   "root_dz_m": -0.048,
-   "arc_sweep_deg": 194,
+   "root_dz_m": 0.02,
+   "arc_sweep_deg": 217.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -718,8 +718,8 @@
    ]
   },
   "off.r2": {
-   "anim": "clip_tendril_off_r2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_off_r2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "swap_left",
     "modifier": "hold",
@@ -735,8 +735,8 @@
    "stamina": 20,
    "motion_value": 1,
    "poise_damage": 5,
-   "root_dz_m": 0,
-   "arc_sweep_deg": 138,
+   "root_dz_m": 0.068,
+   "arc_sweep_deg": 161.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -758,8 +758,8 @@
    ]
   },
   "2h.r1.1": {
-   "anim": "clip_tendril_2h_r1_1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_w_whp_root_tendril_2h_r1_1",
+   "anim_owner": "whp_root_tendril",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -769,14 +769,14 @@
    },
    "chains_to": "2h.r1.2",
    "chain_index": 1,
-   "startup_f": 44,
+   "startup_f": 45,
    "active_f": 12,
-   "recovery_f": 63,
+   "recovery_f": 64,
    "stamina": 25,
    "motion_value": 0.92,
    "poise_damage": 8,
-   "root_dz_m": 0.001,
-   "arc_sweep_deg": 228.9,
+   "root_dz_m": 0.069,
+   "arc_sweep_deg": 256.3,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -799,8 +799,8 @@
    ]
   },
   "2h.r1.2": {
-   "anim": "clip_tendril_2h_r1_2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_r1_2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -810,14 +810,14 @@
    },
    "chains_to": "2h.r1.3",
    "chain_index": 2,
-   "startup_f": 34,
+   "startup_f": 35,
    "active_f": 12,
-   "recovery_f": 66,
+   "recovery_f": 68,
    "stamina": 28,
    "motion_value": 0.87,
    "poise_damage": 8,
-   "root_dz_m": 0.07,
-   "arc_sweep_deg": 162.8,
+   "root_dz_m": 0.138,
+   "arc_sweep_deg": 190.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -839,8 +839,8 @@
    ]
   },
   "2h.r1.3": {
-   "anim": "clip_tendril_2h_r1_3",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_r1_3",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -850,14 +850,14 @@
    },
    "chains_to": null,
    "chain_index": 3,
-   "startup_f": 40,
+   "startup_f": 41,
    "active_f": 12,
-   "recovery_f": 84,
+   "recovery_f": 86,
    "stamina": 30,
    "motion_value": 0.97,
    "poise_damage": 9,
-   "root_dz_m": 0.001,
-   "arc_sweep_deg": 228.9,
+   "root_dz_m": 0.069,
+   "arc_sweep_deg": 256.3,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -880,8 +880,8 @@
    ]
   },
   "2h.r2": {
-   "anim": "clip_tendril_2h_r2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_r2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "tap",
@@ -897,8 +897,8 @@
    "stamina": 43,
    "motion_value": 1.43,
    "poise_damage": 14,
-   "root_dz_m": 0.231,
-   "arc_sweep_deg": 162.8,
+   "root_dz_m": 0.299,
+   "arc_sweep_deg": 190.2,
    "shape": "lash",
    "hyperarmour": {
     "enabled": false
@@ -921,8 +921,8 @@
    ]
   },
   "2h.r2.charged": {
-   "anim": "clip_tendril_2h_r2_charged",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_r2_charged",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "hold",
@@ -944,8 +944,8 @@
    "stamina": 43,
    "motion_value": 1.43,
    "poise_damage": 14,
-   "root_dz_m": 0.289,
-   "arc_sweep_deg": 195.9,
+   "root_dz_m": 0.357,
+   "arc_sweep_deg": 152.2,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": true,
@@ -971,8 +971,8 @@
    ]
   },
   "2h.run.r1": {
-   "anim": "clip_tendril_2h_run_r1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_run_r1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -988,8 +988,8 @@
    "stamina": 28,
    "motion_value": 0.97,
    "poise_damage": 9,
-   "root_dz_m": 0.3,
-   "arc_sweep_deg": 257.2,
+   "root_dz_m": 0.368,
+   "arc_sweep_deg": 236,
    "shape": "slash_h",
    "hyperarmour": {
     "enabled": false
@@ -1013,8 +1013,8 @@
    ]
   },
   "2h.run.r2": {
-   "anim": "clip_tendril_2h_run_r2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_run_r2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "none",
@@ -1030,8 +1030,8 @@
    "stamina": 28,
    "motion_value": 0.97,
    "poise_damage": 9,
-   "root_dz_m": 0.3,
-   "arc_sweep_deg": 257.2,
+   "root_dz_m": 0.368,
+   "arc_sweep_deg": 236,
    "shape": "slash_h",
    "hyperarmour": {
     "enabled": false
@@ -1055,8 +1055,8 @@
    ]
   },
   "2h.roll.r1": {
-   "anim": "clip_tendril_2h_roll_r1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_roll_r1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -1074,8 +1074,8 @@
    "stamina": 22,
    "motion_value": 0.78,
    "poise_damage": 7,
-   "root_dz_m": 0.07,
-   "arc_sweep_deg": 177,
+   "root_dz_m": 0.138,
+   "arc_sweep_deg": 152.2,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -1100,8 +1100,8 @@
    ]
   },
   "2h.backstep.r1": {
-   "anim": "clip_tendril_2h_backstep_r1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_backstep_r1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -1119,8 +1119,8 @@
    "stamina": 21,
    "motion_value": 0.74,
    "poise_damage": 7,
-   "root_dz_m": 0.275,
-   "arc_sweep_deg": 200.6,
+   "root_dz_m": 0.343,
+   "arc_sweep_deg": 228,
    "shape": "slash_d",
    "hyperarmour": {
     "enabled": false
@@ -1143,8 +1143,8 @@
    ]
   },
   "2h.jump.r1": {
-   "anim": "clip_tendril_2h_jump_r1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_jump_r1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -1160,8 +1160,8 @@
    "stamina": 33,
    "motion_value": 1.24,
    "poise_damage": 14,
-   "root_dz_m": -0.077,
-   "arc_sweep_deg": 148.7,
+   "root_dz_m": -0.009,
+   "arc_sweep_deg": 152.2,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -1187,8 +1187,8 @@
    ]
   },
   "2h.guard.counter": {
-   "anim": "clip_tendril_2h_guard_counter",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_guard_counter",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -1206,8 +1206,8 @@
    "stamina": 30,
    "motion_value": 1.2,
    "poise_damage": 13,
-   "root_dz_m": -0.013,
-   "arc_sweep_deg": 167.6,
+   "root_dz_m": 0.055,
+   "arc_sweep_deg": 194.9,
    "shape": "slash_d",
    "hyperarmour": {
     "enabled": false
@@ -1232,8 +1232,8 @@
    ]
   },
   "2h.art.1": {
-   "anim": "clip_tendril_2h_art_1",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_art_1",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "two_hand",
     "modifier": "hold",
@@ -1245,12 +1245,12 @@
    "chain_index": 1,
    "startup_f": 76,
    "active_f": 16,
-   "recovery_f": 90,
+   "recovery_f": 99,
    "stamina": 48,
    "motion_value": 1.61,
    "poise_damage": 16,
-   "root_dz_m": 0.42,
-   "arc_sweep_deg": 358.7,
+   "root_dz_m": 0.488,
+   "arc_sweep_deg": 360,
    "shape": "spin",
    "hyperarmour": {
     "enabled": false
@@ -1273,8 +1273,8 @@
    ]
   },
   "2h.roll.r2": {
-   "anim": "clip_tendril_2h_roll_r2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_roll_r2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "tap",
@@ -1290,8 +1290,8 @@
    "stamina": 43,
    "motion_value": 1.5,
    "poise_damage": 14,
-   "root_dz_m": 0.153,
-   "arc_sweep_deg": 264.3,
+   "root_dz_m": 0.221,
+   "arc_sweep_deg": 359.9,
    "shape": "spin",
    "hyperarmour": {
     "enabled": false
@@ -1314,8 +1314,8 @@
    ]
   },
   "2h.art.2": {
-   "anim": "clip_tendril_2h_art_2",
-   "anim_owner": "lin_tendril",
+   "anim": "clip_hide_2h_art_2",
+   "anim_owner": "lin_hide",
    "trigger": {
     "button": "heavy",
     "modifier": "tap",
@@ -1331,8 +1331,8 @@
    "stamina": 43,
    "motion_value": 1.5,
    "poise_damage": 14,
-   "root_dz_m": 0.192,
-   "arc_sweep_deg": 110.9,
+   "root_dz_m": 0.26,
+   "arc_sweep_deg": 22.4,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": false
@@ -1355,5 +1355,5 @@
    ]
   }
  },
- "notes": "A living lash: it strikes straight down the line rather than coiling round, so it can be used with a wall at your shoulder.\n\nLineage: tendril — A living root-tendril: it strikes down the line rather than round it, and it does not wrap.\nMandatory slots present: 25/25. Total slots: 32.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "A living lash: it strikes straight down the line rather than coiling round, so it can be used with a wall at your shoulder.\n\nLineage: hide — Plaited hide and living root-tendril alike. WHP has four weapons, so it is a single-lineage class, for the same reason as FST.\nMandatory slots present: 25/25. Total slots: 32.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

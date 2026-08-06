@@ -29,14 +29,56 @@ const CLASSES = readJson('game/data/weapons/classes.json');
 const POSES = readJson('game/data/weapons/pose-library.json');
 const ROSTER = readJson('game/data/weapons/roster.json');
 
+const DELTA_SCALE = Number(process.env.W110_DELTA_SCALE || CLASSES.delta_scale || 1);
+const BUDGET = Number(process.env.W110_BUDGET || CLASSES.deviation_budget || 0.38);
+const BUDGET_SIG = Number(process.env.W110_BUDGET_SIG || CLASSES.deviation_budget_signature || 0.50);
+// Approximate roster-wide standard deviations of the five numeric fingerprint dimensions a
+// weapon delta can move. Used only to make budgets comparable across dimensions; the real
+// z-normalisation is recomputed from the shipped data by tools/weapons/measure.mjs.
+const FP_SD = { f: 14, reach: 0.72, arc: 82, root: 0.34, hitstop: 4.2 };
+function budgetise(w) {
+  const d = { ...(w.d || {}) };
+  if (w.baseline) return { f: 0, reach: 0, arc: 0, root: 0, hitstop: 0, ha: d.ha, chain: d.chain };
+  const FILL = [['f', 14 * 0.42], ['reach', 0.72 * 0.42], ['arc', 82 * 0.42], ['root', 0.34 * 0.42]];
+  for (let i = 0; i < FILL.length; i++) {
+    const [k, amp] = FILL[i];
+    if (!d[k]) d[k] = sig(w.id + ':fill:' + k, amp) + (sig(w.id + ':pol:' + k, 1) >= 0 ? amp * 0.35 : -amp * 0.35);
+  }
+  const raw = [(d.f || 0) / FP_SD.f, (d.reach || 0) / FP_SD.reach, (d.arc || 0) / FP_SD.arc,
+    (d.root || 0) / FP_SD.root, ((d.hitstop || 0) * 2) / FP_SD.hitstop];
+  const mag = Math.hypot(...raw);
+  const target = (w.sig ? BUDGET_SIG : BUDGET) * DELTA_SCALE;
+  const k = mag > 1e-9 ? target / mag : 0;
+  const out = { chain: d.chain, ha: d.ha };
+  out.f = Math.round((d.f || 0) * k);
+  out.reach = Math.round((d.reach || 0) * k * 1000) / 1000;
+  out.arc = Math.round((d.arc || 0) * k * 10) / 10;
+  out.root = Math.round((d.root || 0) * k * 1000) / 1000;
+  out.hitstop = Math.abs((d.hitstop || 0) * k) >= 0.45 ? Math.sign(d.hitstop) : 0;
+  return out;
+}
+const LIN_ARC = Number(process.env.W110_LIN_ARC || CLASSES.lineage_arc_scale || 1);
 const CTX = CLASSES.contextual_multipliers;
 const CHAINM = CLASSES.chain_multipliers;
 const TWOH = CLASSES.two_hand_multipliers;
 const WINDOWS = CLASSES.contextual_windows;
-const TIER_ORDER = ['light', 'medium', 'heavy', 'ultra'];
+// 'ranged' sits BELOW light: a bow that hits harder than its class shifts toward the light row.
+const TIER_ORDER = ['ranged', 'light', 'medium', 'heavy', 'ultra'];
 
 const clipKey = (slot) => 'clip_' + slot.replace(/\./g, '_');
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+// RI-WPN02 M5: "FAIL any class whose declared shape and measured arc disagree. A weapon labelled
+// thrust that sweeps 140 degrees is mislabelled data, and mislabelled data is how a critic gets
+// lied to without anyone lying." The bands below are M5's own, and they are enforced HERE — on
+// the arc that CAUSES the animation — so the check cannot fail by carelessness. Families with no
+// band in M5 (slash_d, lash, grab) are given generous sanity bands.
+const SHAPE_ARC_BAND = {
+  thrust: [4, 19], shoot: [0, 0], spin: [305, 360],
+  sweep: [90, 200], slash_h: [90, 200],
+  smash: [10, 129], slash_v: [10, 129],
+  slash_d: [25, 230], lash: [40, 260], grab: [0, 90],
+};
 
 /** Which classes may be dual-wielded (RI-WPN06 §C O2). Heavy and ultra classes may not. */
 const DUAL_OK = new Set(['DGR', 'FST', 'CSW', 'TSW', 'SSW', 'SPR', 'AXE', 'MCE', 'HLB', 'WHP']);
@@ -419,12 +461,12 @@ for (const w of ROSTER.weapons) {
   const g = CLASS_GRAMMAR[w.class];
   const lin = lineageOf[w.lin];
   if (!lin) throw new Error(`weapon ${w.id}: unknown lineage ${w.lin}`);
-  const d = w.d || {};
+  const d = budgetise(w);
   const specs = classSpecs[w.class];
   const unq = new Map((w.unq || []).map(([slot, fam]) => [slot, fam]));
   const haFlip = new Set(w.ha || d.ha || []);
   const baseReach = c.melee_reach_m !== undefined ? c.melee_reach_m : c.reach_m;
-  const reach = Math.round((baseReach + (w.class === 'BOW' ? 0 : (d.reach || 0))) * 1000) / 1000;
+  const reach = Math.round((baseReach + (d.reach || 0)) * 1000) / 1000;
   const projRange = w.class === 'BOW' ? Math.round((c.reach_m + (d.reach || 0)) * 100) / 100 : null;
 
   const slots = {};
@@ -436,29 +478,51 @@ for (const w of ROSTER.weapons) {
       const i = Number(slotId.slice(3));
       if (i > chainLen1h) continue;
     }
-    const famName = unq.get(slotId) || spec.fam;
+    const famName = unq.get(slotId) || spec.fam;   // null in the roster = pose variant of the class family
     const isUnq = unq.has(slotId);
     const owner = isUnq ? w.id : `lin_${w.lin}`;
     const clipId = isUnq ? `clip_w_${w.id}_${slotId.replace(/\./g, '_')}` : `clip_${w.lin}_${slotId.replace(/\./g, '_')}`;
 
     const arcDelta = (d.arc || 0);
-    const exactR1 = slotId === 'r1.1' && !isUnq;
-    const slotArc = exactR1
-      ? clamp(spec.arc + arcDelta, 0, 360)
-      : clamp(spec.arc * (POSES.families[famName].arc_scale) + (lin.shift.arc || 0) + arcDelta, 0, 360);
+    const isR1 = slotId === 'r1.1';
+    const baseFamR1 = POSES.families[(specs['r1.1'] || specs['bow.draw']).fam];
+    const famScale = POSES.families[famName].arc_scale;
+    const r1FamRatio = clamp(famScale / (baseFamR1.arc_scale || 1), 0.80, 1.25);
+    const rawArc = isR1
+      ? clamp(spec.arc * r1FamRatio + (lin.shift.arc || 0) * LIN_ARC + arcDelta, 0, 360)
+      : clamp(spec.arc * famScale + (lin.shift.arc || 0) + arcDelta, 0, 360);
+    // The class baseline's own r1.1 declares RI-WPN02 §B's published cell verbatim even where
+    // that cell violates M5's band (UGS: shape slash_v at 210 deg, and M5 says slash_v < 130 —
+    // a contradiction inside RI-WPN02 itself, reported in reports/W1-10-MEASUREMENTS.md and NOT
+    // silently repaired). Everything else is clamped into its shape's band.
+    const band = SHAPE_ARC_BAND[POSES.families[famName].shape] || [0, 360];
+    const classCell = isR1 && famName === (specs['r1.1'] || specs['bow.draw']).fam;
+    const slotArc = classCell ? rawArc : clamp(rawArc, band[0], band[1]);
+    // Guard the rule the roster must obey: a weapon's r1.1 may be a different POSE from its
+    // class's, but not a different arc BAND. The first light attack is what makes a weapon
+    // legible as a member of its class, and a signature weapon that breaks it lands nearer a
+    // different class than its own siblings (RI-WPN03 §D.2's SEP is exactly that measurement).
+    if (isR1 && !classCell) {
+      const cb = SHAPE_ARC_BAND[POSES.families[(specs['r1.1'] || specs['bow.draw']).fam].shape] || [0, 360];
+      if (band[1] < cb[0] || band[0] > cb[1]) {
+        throw new Error(`${w.id}: r1.1 override to '${famName}' leaves the class's arc band ` +
+          `[${cb}] for [${band}]. Move the override to r1.2/r1.3/r2/art.1 (RI-WPN03 §C's identity list).`);
+      }
+    }
     const lsig = LINEAGE_SIG[w.lin];
     const wpb = isUnq ? weaponPerturb(w.id, slotId) : { plane: 0, cock: 0, follow: 0, extend: 0, crouch: 0, twist: 0, lean: 0 };
     const wp = { plane: wpb.plane + lsig.plane, cock: wpb.cock + lsig.cock, follow: wpb.follow + lsig.follow, extend: wpb.extend + lsig.extend, crouch: wpb.crouch + lsig.crouch, twist: wpb.twist + lsig.twist, lean: wpb.lean + lsig.lean };
     const prof = resolveProfile(famName, c, slotArc, lin.shift, wp, !!spec.twoHand);
 
     const fdelta = (d.f || 0);
-    const applyF = /^(2h\.)?r1\.\d$/.test(slotId);
+    const applyF = /^(2h\.)?r1\.\d$/.test(slotId) || /^bow\./.test(slotId);
+    const fk = applyF && fdelta ? (spec.f.s + fdelta) / spec.f.s : 1;
     const f = {
-      s: clamp(spec.f.s + (applyF ? fdelta : 0), 4, 90),
-      a: clamp(spec.f.a, 2, 16),
-      r: clamp(spec.f.r + (applyF ? fdelta : 0), 6, 90),
+      s: clamp(Math.round(spec.f.s * fk), 6, 180),
+      a: clamp(spec.f.a, 2, 32),
+      r: clamp(Math.round(spec.f.r * fk), 6, 180),
     };
-    const rootM = clamp(Math.round(((exactR1 ? spec.root : spec.root * prof.root_scale) + (d.root || 0)) * 1000) / 1000, -2.0, 6.0);
+    const rootM = clamp(Math.round(((isR1 ? spec.root : spec.root * prof.root_scale) + (d.root || 0)) * 1000) / 1000, -2.0, 6.0);
     const baseHa = !!spec.ha || (g.ha_extra || []).includes(slotId);
     const ha = haFlip.has(slotId) ? !baseHa : baseHa;
 
@@ -500,8 +564,12 @@ for (const w of ROSTER.weapons) {
       ...(spec.answers ? { answers: spec.answers } : {}),
     };
     if (d.hitstop) {
-      const ti = clamp(TIER_ORDER.indexOf(c.tier) + d.hitstop, 0, TIER_ORDER.length - 1);
-      slot.hitstop_f = { ...CLASSES.hitstop.attacker[TIER_ORDER[ti]] };
+      const i0 = TIER_ORDER.indexOf(c.tier);
+      const i1 = clamp(i0 + d.hitstop, 0, TIER_ORDER.length - 1);
+      const a = CLASSES.hitstop.attacker[TIER_ORDER[i0]], b = CLASSES.hitstop.attacker[TIER_ORDER[i1]];
+      slot.hitstop_f = {};
+      for (const k in a) slot.hitstop_f[k] = Math.round((a[k] + b[k]) / 2);
+      if (!Object.keys(slot.hitstop_f).length) throw new Error(`${w.id}: empty hitstop override (tier ${c.tier})`);
     }
     slots[slotId] = slot;
 

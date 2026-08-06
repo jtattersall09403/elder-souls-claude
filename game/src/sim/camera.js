@@ -278,7 +278,14 @@ export function stepCamera(sim) {
 
   // ---- 5. pivot ---------------------------------------------------------------------------
   // RI-CAM06 §H: on death the pivot DETACHES and holds its last world position.
-  if (c.mode !== 'death') {
+  //
+  // RI-CAM05 §B/§C: in `dialogue` and `menu` the camera POSE is frozen — "Σ|Δcamera.pos| ≤
+  // 0.001 m ... for the whole time any menu is open". Freezing only the angles is not enough
+  // and the probe proved it: with the world still simulating (S14 forbids a combat pause), the
+  // character walked, the rigid XZ pivot followed, and the world camera drifted 13.5 m over
+  // 300 menu frames. The pivot detaches for the same reason it detaches on death, and by the
+  // same mechanism, so there is still exactly one camera in this build.
+  if (c.mode !== 'death' && !frozen) {
     c.pivot[0] = p.pos[0];
     c.pivot[2] = p.pos[2];
     const want = p.pos[1] + CAMERA_CONST.pivot_height_m;
@@ -566,10 +573,23 @@ function solveArm(sim, c, cell) {
     desiredPoint(c, c.armDesired, sr, su, _to, c.armDesired);
     const tg = cell.sphereCast(_from, _to, CAMERA_CONST.guard_radius_m);
     let g = c.armDesired * tg - 0.005;
-    // Never inside the character's own head — RI-CAM05 §F's second invariant, 0.35 m.
+    // THE 0.90 m FLOOR IS ABSOLUTE. RI-CAM01 §A calls it "arm length, absolute min (collision)
+    // [CMB06]", and RI-CAM05 §F makes it an invariant "on every frame of every state, forever"
+    // whose breach is "an automatic fail of the piece, whatever it is called in the build".
+    //
+    // §C step 7's penetration guard is "unbounded, same frame" — but read the sentence it is
+    // in: "The rate limit is a smoothing device, never a correctness device." What step 7
+    // overrides is step 6's RATE LIMIT, not step 5's clamp. This build previously let the
+    // guard drive to `arm_hard_min_m` = 0.30 m, and the first full probe run duly reported
+    // min arm_len 0.3499 m on two of the three worst routes. That is the automatic fail.
+    //
+    // The consequence is stated rather than hidden: in a space too tight for a 0.90 m boom the
+    // camera now STAYS at 0.90 m and `clip_through` may go true. That is the correct failure —
+    // it is visible, it is counted, and RI-CAM05 §D's answer to it is architectural (a wider
+    // corridor), not a shorter arm.
     const dyHead = CAMERA_CONST.head_height_m - CAMERA_CONST.pivot_height_m - su;
     const headMin = Math.sqrt(Math.max(0, CAMERA_CONST.camera_to_head_min_m ** 2 - dyHead * dyHead));
-    g = clamp(g, Math.max(CAMERA_CONST.arm_hard_min_m, headMin), c.armLen);
+    g = clamp(g, Math.max(CAMERA_CONST.arm_min_m, headMin), c.armLen);
     if (g < c.armLen) { c.armLen = g; c.armGuard = true; }
   }
   c.dist = c.armLen;
@@ -775,7 +795,13 @@ export function triggerShake(sim, hpFraction) {
 // =========================================================================================
 export function openUI(sim, kind, npcHeadNdcX) {
   const c = sim.camera;
+  const wasDialogue = c.uiMode === 'dialogue';
   c.uiMode = kind;
+  // RI-CAM05 §B: the accommodation fires "once, at open. Never again, not on a topic change,
+  // not on a new NPC line." A topic change re-enters through the same call, so re-arming here
+  // is precisely the failure the sentence forbids — and the probe caught it, measuring a
+  // second 1.92° swing on a re-open.
+  if (kind === 'dialogue' && wasDialogue) return c.uiMode;
   if (kind === 'dialogue') {
     // RI-CAM05 §B: ONE bounded accommodation, at open, never again — not on a topic change,
     // not on a new NPC line. Pitch never moves.

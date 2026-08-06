@@ -29,7 +29,7 @@
  "parry_capable": false,
  "guardbreak_kind": "shoulder",
  "reach_m": 1.7,
- "arc_sweep_deg": 58.9,
+ "arc_sweep_deg": 95,
  "slots": {
   "r1.1": {
    "anim": "clip_w_mce_bog_iron_mace_r1_1",
@@ -50,7 +50,7 @@
    "motion_value": 1.2,
    "poise_damage": 32,
    "root_dz_m": 0.28,
-   "arc_sweep_deg": 58.9,
+   "arc_sweep_deg": 95,
    "shape": "smash",
    "hyperarmour": {
     "enabled": false
@@ -333,10 +333,7 @@
    "arc_sweep_deg": 52.3,
    "shape": "smash",
    "hyperarmour": {
-    "enabled": true,
-    "from_f": 15,
-    "to_f": 36,
-    "poise_multiplier": 1.4
+    "enabled": false
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -537,13 +534,13 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 37,
-   "active_f": 16,
+   "active_f": 17,
    "recovery_f": 65,
    "stamina": 33,
    "motion_value": 2.16,
    "poise_damage": 70,
    "root_dz_m": 0.045,
-   "arc_sweep_deg": 24,
+   "arc_sweep_deg": 19,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": false
@@ -616,8 +613,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 74,
-   "active_f": 16,
-   "recovery_f": 90,
+   "active_f": 17,
+   "recovery_f": 95,
    "stamina": 48,
    "motion_value": 2.1,
    "poise_damage": 64,
@@ -1043,10 +1040,7 @@
    "arc_sweep_deg": 61.7,
    "shape": "smash",
    "hyperarmour": {
-    "enabled": true,
-    "from_f": 16,
-    "to_f": 40,
-    "poise_multiplier": 1.4
+    "enabled": false
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -1167,7 +1161,7 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 48,
-   "active_f": 16,
+   "active_f": 17,
    "recovery_f": 65,
    "stamina": 38,
    "motion_value": 1.86,
@@ -1256,8 +1250,8 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 81,
-   "active_f": 16,
-   "recovery_f": 90,
+   "active_f": 20,
+   "recovery_f": 103,
    "stamina": 55,
    "motion_value": 2.42,
    "poise_damage": 83,
@@ -1347,7 +1341,7 @@
    "motion_value": 2.25,
    "poise_damage": 77,
    "root_dz_m": 0.493,
-   "arc_sweep_deg": 56.1,
+   "arc_sweep_deg": 22.4,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": true,

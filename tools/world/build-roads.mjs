@@ -31,42 +31,100 @@ const field = new WorldField(rd('game/data/world/terrain.json'), rd('game/data/w
 const COLS = field.cols, ROWS = field.rows, CELL = field.cell;
 
 // ---- traversal cost -----------------------------------------------------------------------------
+const TIDE_PEAK = 0.25;        // h = A/2 sin(2 pi phase); phase 0.25 is the maximum of every surface
 const cost = new Float32Array(COLS * ROWS);
+const terrainCost = new Float32Array(COLS * ROWS);
+const waterCost = new Float32Array(COLS * ROWS);
 const groundG = new Float32Array(COLS * ROWS);
 const depthG = new Float32Array(COLS * ROWS);
 for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
   const i = z * COLS + x, px = x * CELL + CELL / 2, pz = z * CELL + CELL / 2;
   const g = field.heightAt(px, pz);
   groundG[i] = g;
-  depthG[i] = field.depthAt(px, pz, 0);
+  depthG[i] = field.depthAt(px, pz, TIDE_PEAK);
 }
+// Depth is sampled at the tide phase where every water surface is at its maximum (HIGH, phase 0.25).
+// A route costed at LOW is a route that floods twice a day.
 for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
   const i = z * COLS + x;
   const hx = (groundG[i + (x < COLS - 1 ? 1 : 0)] - groundG[i - (x > 0 ? 1 : 0)]) / (2 * CELL);
   const hz = (groundG[i + (z < ROWS - 1 ? COLS : 0)] - groundG[i - (z > 0 ? COLS : 0)]) / (2 * CELL);
   const slope = Math.atan(Math.hypot(hx, hz)) * 180 / Math.PI;
+  // Roughness: the height range of the 3x3 neighbourhood. Slope from central differences cannot
+  // see a 50 m notch between two cells, and a notch is exactly what a road cannot follow — it is
+  // where the deck solve is forced to choose between a cutting and a viaduct.
+  let lo = Infinity, hi = -Infinity;
+  for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) {
+    const nx = x + dx, nz = z + dz;
+    if (nx < 0 || nz < 0 || nx >= COLS || nz >= ROWS) continue;
+    const v = groundG[nz * COLS + nx];
+    if (v < lo) lo = v; if (v > hi) hi = v;
+  }
+  const rough = hi - lo;
   const d = depthG[i];
-  cost[i] = 1 + 0.40 * slope + (d > 0 ? 4.5 + 3.0 * Math.min(d, 3) : 0) + (field.isOceanAt(x * CELL, z * CELL) ? 60 : 0);
+  // Water is costed by DEPTH and without the old min(d,3) ceiling: an 18 m tarn and a 0.3 m puddle
+  // used to cost the same 13.5, which is why the trunk was happy to lie in a lake. A crossing is
+  // still possible — it is priced, at roughly 12 cost-metres per metre of depth — so A* crosses at
+  // the narrows and at the shallows instead of along the bed.
+  waterCost[i] = d > 0 ? 8 + 12 * d : 0;
+  terrainCost[i] = 0.40 * slope + 0.25 * rough + waterCost[i] + (field.isOceanAt(x * CELL, z * CELL) ? 400 : 0);
+  cost[i] = 1 + terrainCost[i];
 }
 
-function astar(ax, az, bx, bz) {
+/** Binary min-heap on (priority, cell). The bisection below runs A* a few hundred times. */
+function makeHeap() {
+  const p = [], v = [];
+  return {
+    get size() { return v.length; },
+    push(pri, val) {
+      p.push(pri); v.push(val);
+      let i = v.length - 1;
+      while (i > 0) { const q = (i - 1) >> 1; if (p[q] <= p[i]) break; [p[q], p[i]] = [p[i], p[q]]; [v[q], v[i]] = [v[i], v[q]]; i = q; }
+    },
+    pop() {
+      const top = v[0];
+      const lp = p.pop(), lv = v.pop();
+      if (v.length) {
+        p[0] = lp; v[0] = lv;
+        let i = 0;
+        for (;;) {
+          const l = 2 * i + 1, r = l + 1; let m = i;
+          if (l < v.length && p[l] < p[m]) m = l;
+          if (r < v.length && p[r] < p[m]) m = r;
+          if (m === i) break;
+          [p[m], p[i]] = [p[i], p[m]]; [v[m], v[i]] = [v[i], v[m]]; i = m;
+        }
+      }
+      return top;
+    },
+  };
+}
+
+/**
+ * A* over the built terrain with a single tunable: `w`, how much the route cares about terrain.
+ *
+ * `w = 0` is the straight line; raising it buys sinuosity by going ROUND things — the ridge, the
+ * tarn, the notch. That is what the leg-length solve below bisects on, so the road's wander is a
+ * route negotiating obstacles rather than a sine wave bolted onto a chord.
+ */
+function astar(ax, az, bx, bz, w = 1) {
   const s = Math.floor(clamp(az, 0, ROWS * CELL - 1) / CELL) * COLS + Math.floor(clamp(ax, 0, COLS * CELL - 1) / CELL);
   const t = Math.floor(clamp(bz, 0, ROWS * CELL - 1) / CELL) * COLS + Math.floor(clamp(bx, 0, COLS * CELL - 1) / CELL);
   const g = new Float64Array(COLS * ROWS).fill(Infinity);
   const prev = new Int32Array(COLS * ROWS).fill(-1);
-  const open = [[0, s]];
+  const open = makeHeap();
+  open.push(0, s);
   g[s] = 0;
   const tx = t % COLS, tz = (t - tx) / COLS;
   const h = (i) => { const x = i % COLS, z = (i - x) / COLS; return Math.hypot(x - tx, z - tz) * CELL; };
   const closed = new Uint8Array(COLS * ROWS);
-  while (open.length) {
-    let bi = 0;
-    for (let i = 1; i < open.length; i++) if (open[i][0] < open[bi][0]) bi = i;
-    const [, cur] = open.splice(bi, 1)[0];
+  while (open.size) {
+    const cur = open.pop();
     if (closed[cur]) continue;
     closed[cur] = 1;
     if (cur === t) break;
     const cx = cur % COLS, cz = (cur - cx) / COLS;
+    const cc = 1 + w * terrainCost[cur];
     for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) {
       if (!dx && !dz) continue;
       const nx = cx + dx, nz = cz + dz;
@@ -74,8 +132,8 @@ function astar(ax, az, bx, bz) {
       const ni = nz * COLS + nx;
       if (closed[ni]) continue;
       const step = CELL * (dx && dz ? Math.SQRT2 : 1);
-      const ng = g[cur] + step * (cost[cur] + cost[ni]) / 2;
-      if (ng < g[ni]) { g[ni] = ng; prev[ni] = cur; open.push([ng + h(ni), ni]); }
+      const ng = g[cur] + step * (cc + 1 + w * terrainCost[ni]) / 2;
+      if (ng < g[ni]) { g[ni] = ng; prev[ni] = cur; open.push(ng + h(ni), ni); }
     }
   }
   const out = [];
@@ -112,11 +170,38 @@ function smooth(p, passes) {
   }
   return q;
 }
+/**
+ * Is a point somewhere a trunk road may stand?
+ *
+ * The old solve displaced the finished polyline up to 212 m sideways to hit the leg's tabled
+ * length and asked nothing about where it landed. Every lateral move is now line-searched against
+ * this predicate, so sinuosity can only be bought on ground the road could actually be built on.
+ * `t = 0` — the routed point itself — is always admissible, so a leg can never fail to solve.
+ */
+function admissible(x, z) {
+  const g = field.heightAt(x, z);
+  let s = null;
+  for (const ph of [0, 0.25, 0.5, 0.75]) { const v = field.waterSurfaceAt(x, z, ph); if (v !== null && (s === null || v > s)) s = v; }
+  if (s !== null && s - g > 0.45) return false;          // never over knee-deep at any tide phase
+  if (field.slopeAt(x, z, 8) > 28) return false;          // and never on ground a deck cannot hold
+  return true;
+}
+/** Move `q` toward `to` by the largest fraction of the way that stays admissible. */
+function safeMove(q, tox, toz) {
+  for (let t = 1.0; t > 0.001; t -= 0.125) {
+    const x = lerp(q[0], tox, t), z = lerp(q[1], toz, t);
+    if (admissible(x, z)) return [x, z];
+  }
+  return q.slice();
+}
 /** Pull a route toward its own chord by `s`; s = 1 is the straight line. */
 function straighten(p, s) {
   const a = p[0], b = p[p.length - 1];
   const n = p.length - 1;
-  return p.map((q, i) => [lerp(q[0], lerp(a[0], b[0], i / n), s), lerp(q[1], lerp(a[1], b[1], i / n), s)]);
+  return p.map((q, i) => {
+    if (i === 0 || i === n) return q.slice();
+    return safeMove(q, lerp(q[0], lerp(a[0], b[0], i / n), s), lerp(q[1], lerp(a[1], b[1], i / n), s));
+  });
 }
 /** Add smooth lateral sinuosity of amplitude `amp`, zero at both ends. */
 function wiggle(p, amp, seedPhase) {
@@ -129,8 +214,99 @@ function wiggle(p, amp, seedPhase) {
     const px = p[Math.min(n, i + 1)][0] - p[Math.max(0, i - 1)][0];
     const pz = p[Math.min(n, i + 1)][1] - p[Math.max(0, i - 1)][1];
     const L = Math.hypot(px, pz) || 1;
-    return [q[0] + (-pz / L) * amp * env * w, q[1] + (px / L) * amp * env * w];
+    return safeMove(q, q[0] + (-pz / L) * amp * env * w, q[1] + (px / L) * amp * env * w);
   });
+}
+
+// ---- the deck ------------------------------------------------------------------------------------
+// The defect verdict W1-01 §8 names — 502 m of THE CROSSING under 65.6 m of water at LOW tide —
+// was not a routing defect. The natural ground at the deepest point is 154.01 m and dry; the road's
+// own elevation profile was 69.17 m there, an 85 m CUTTING that `field._applyRoads` blends the hill
+// down into, and the cutting then fills from a water plane at 135.30 m. The old solve had a 12%
+// grade cap and NO LIMIT ON CUT OR FILL, so every hill the road could not climb at 12% was sliced
+// off at road level and every gorge it could not descend was bridged with 88 m of earth.
+//
+// The constraint order below is the fix, and the order is the whole of it. Applied last wins:
+//   1. clearance above the highest water of the tide cycle   (hardest: a drowned road is not a road)
+//   2. cut and fill limits against the natural ground        (a trench is what fills)
+//   3. grade                                                 (softest: a steep road is still a road)
+const CLEAR_M = 0.40;          // deck stands this far above the highest water it crosses
+const MAX_CUT_M = 3.0;         // a road cutting. Deeper than this is a trench, and trenches fill
+const MAX_FILL_M = 26.0;       // an embankment; above DECK_M of it the road is a deck, not a bank
+const DECK_M = 3.0;            // fill above this is emitted as a causeway/bridge span
+const MAX_GRADE = 0.20;
+const TIDE_PHASES = [0, 0.25, 0.5, 0.75];
+
+/** The highest this point's water ever stands, over the whole tide cycle; null where never wet. */
+function highWater(x, z) {
+  let s = null;
+  for (const ph of TIDE_PHASES) {
+    const v = field.waterSurfaceAt(x, z, ph);
+    if (v !== null && (s === null || v > s)) s = v;
+  }
+  return s;
+}
+
+function solveDeck(p, tideway, extraFloor = null) {
+  const g = p.map(([x, z]) => field.heightAt(x, z));
+  const hw = p.map(([x, z]) => highWater(x, z));
+  // The tideway is the one leg whose identity is that it is BELOW the waterline: 0.85 m under mean
+  // water, walkable at LOW, closed at HIGH (RI-TRV01, RI-WLD10 M54). It is exempt by name, not by
+  // accident, and the M2-ROAD-ABOVE-WATER check exempts exactly the same leg.
+  if (tideway) {
+    const y = p.map(([x, z], i) => (field.waterSurfaceAt(x, z, 0) === null ? g[i] : field.waterSurfaceAt(x, z, 0)) - 0.85);
+    return { y, max_cut: 0, max_fill: 0, spans: [], span_m: 0 };
+  }
+  const floor = p.map((_, i) => {
+    let f = hw[i] === null ? -Infinity : hw[i] + CLEAR_M;
+    if (extraFloor && extraFloor[i] > f) f = extraFloor[i];
+    return f;
+  });
+  let y = g.map((gi, i) => Math.max(gi, floor[i] === -Infinity ? -1e9 : floor[i]));
+  for (let k = 0; k < 60; k++) {
+    const q = y.slice();
+    for (let i = 1; i < y.length - 1; i++) q[i] = (y[i - 1] + 2 * y[i] + y[i + 1]) / 4;
+    for (let i = 1; i < q.length; i++) {
+      const d = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]) || 1;
+      q[i] = clamp(q[i], q[i - 1] - MAX_GRADE * d, q[i - 1] + MAX_GRADE * d);
+    }
+    for (let i = q.length - 2; i >= 0; i--) {
+      const d = Math.hypot(p[i + 1][0] - p[i][0], p[i + 1][1] - p[i][1]) || 1;
+      q[i] = clamp(q[i], q[i + 1] - MAX_GRADE * d, q[i + 1] + MAX_GRADE * d);
+    }
+    for (let i = 0; i < q.length; i++) {
+      q[i] = clamp(q[i], g[i] - MAX_CUT_M, g[i] + MAX_FILL_M);
+      if (floor[i] > q[i]) q[i] = floor[i];
+    }
+    y = q;
+  }
+  // Spans: every run where the deck stands more than DECK_M above the ground it crosses is a
+  // structure, not an earth bank, and is emitted as one so `field.setRoads` can hold the ground
+  // under it instead of damming the channel with it.
+  const spans = [];
+  let cum = [0];
+  for (let i = 1; i < p.length; i++) cum.push(cum[i - 1] + Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]));
+  let start = -1, maxCut = 0, maxFill = 0, spanM = 0;
+  for (let i = 0; i < y.length; i++) {
+    maxCut = Math.max(maxCut, g[i] - y[i]);
+    maxFill = Math.max(maxFill, y[i] - g[i]);
+    const isDeck = y[i] - g[i] > DECK_M;
+    if (isDeck && start < 0) start = i;
+    if ((!isDeck || i === y.length - 1) && start >= 0) {
+      const end = isDeck ? i : i - 1;
+      let h = 0, wet = 0;
+      for (let k = start; k <= end; k++) { h = Math.max(h, y[k] - g[k]); if (hw[k] !== null) wet++; }
+      const L = cum[end] - cum[start];
+      if (L >= 12) {
+        spans.push({ from_i: start, to_i: end, from_m: +cum[start].toFixed(0), to_m: +cum[end].toFixed(0),
+          length_m: +L.toFixed(0), max_height_m: +h.toFixed(1),
+          kind: wet > (end - start) / 2 ? 'causeway over water' : 'viaduct' });
+        spanM += L;
+      }
+      start = -1;
+    }
+  }
+  return { y, max_cut: +maxCut.toFixed(2), max_fill: +maxFill.toFixed(2), spans, span_m: +spanM.toFixed(0) };
 }
 
 // ---- the legs ------------------------------------------------------------------------------------
@@ -156,20 +332,38 @@ for (const leg of scale.roads) {
   const modes = [];
   let p = [];
   for (let i = 0; i + 1 < way.length; i++) {
-    let sp = smooth(resample(astar(way[i][0], way[i][1], way[i + 1][0], way[i + 1][1]), 18), 12);
     const tgt = leg.path_m * chords[i] / chordSum;
-    const L0 = len2d(sp);
-    let mode, amount;
-    if (L0 > tgt) {
-      let lo = 0, hi = 1;
-      for (let it = 0; it < 40; it++) { const m = (lo + hi) / 2; if (len2d(straighten(sp, m)) > tgt) lo = m; else hi = m; }
-      amount = (lo + hi) / 2; sp = straighten(sp, amount); mode = 'straightened';
+    // The leg length is RI-WLD01 §4's number and it is met by bisection — but the scalar bisected
+    // is now the ROUTE's terrain-aversion `w`, not a lateral displacement applied afterwards. The
+    // old solve pushed the finished polyline up to 212 m sideways into terrain nobody had costed,
+    // which is how a trunk leg ended up over a tarn. Sinuosity is now bought by detouring.
+    // Two bisections on two scalars, in the order that keeps the road on buildable ground.
+    //
+    //   (a) `w` — how much the route pays to avoid slope, roughness and depth. w = 0 is the chord;
+    //       raising it buys length by going ROUND the ridge, the notch and the tarn. Take the
+    //       largest w whose route is still no longer than the leg's tabled length, so the wander is
+    //       bought by obstacle-negotiation first and by displacement only for the remainder.
+    //   (b) the residual lateral sinuosity, every metre of it line-searched against `admissible`.
+    //
+    // RI-WLD01 §4's path_m is still met exactly. What changed is where the metres come from.
+    const route = (w) => smooth(resample(astar(way[i][0], way[i][1], way[i + 1][0], way[i + 1][1], w), 18), 12);
+    let lo = 0, hi = 24, sp = route(0), mode, amount;
+    if (len2d(sp) > tgt) {
+      let a = 0, b = 1;
+      for (let it = 0; it < 30; it++) { const m = (a + b) / 2; if (len2d(straighten(sp, m)) > tgt) a = m; else b = m; }
+      amount = (a + b) / 2; sp = straighten(sp, amount); mode = `chord route, straightened ${amount.toFixed(2)}`;
     } else {
-      let lo = 0, hi = 400;
-      for (let it = 0; it < 40; it++) { const m = (lo + hi) / 2; if (len2d(wiggle(sp, m, 0.11 + i * 0.19)) < tgt) lo = m; else hi = m; }
-      amount = (lo + hi) / 2; sp = wiggle(sp, amount, 0.11 + i * 0.19); mode = 'sinuosity added';
+      for (let it = 0; it < 12; it++) {
+        const m = (lo + hi) / 2, cand = route(m);
+        if (len2d(cand) <= tgt) { lo = m; sp = cand; } else hi = m;
+      }
+      let a = 0, b = 400;
+      for (let it = 0; it < 30; it++) { const m = (a + b) / 2; if (len2d(wiggle(sp, m, 0.11 + i * 0.19)) < tgt) a = m; else b = m; }
+      amount = (a + b) / 2;
+      sp = wiggle(sp, amount, 0.11 + i * 0.19);
+      mode = `detour w=${lo.toFixed(2)} + sinuosity ${amount.toFixed(0)} m`;
     }
-    modes.push(`${mode} ${amount.toFixed(1)}`);
+    modes.push(mode);
     for (let k = (p.length ? 1 : 0); k < sp.length; k++) p.push(sp[k]);
   }
   const mode = modes.join(' | ');
@@ -177,40 +371,9 @@ for (const leg of scale.roads) {
   p = resample(p, 12);
 
   // ---- elevation profile --------------------------------------------------------------------
-  // A causeway: the road holds a smoothed grade and stands clear of the water it crosses, except
-  // the Lilmoth-Archon tideway, whose whole identity is that it is BELOW the waterline and only
-  // walkable at low tide (RI-TRV01 / RI-WLD10 M54).
   const tideway = /tideway/i.test(leg.class);
-  let y = p.map(([x, z]) => {
-    const surf = field.waterSurfaceAt(x, z, 0);
-    const g = field.heightAt(x, z);
-    // 0.85 m below mean water: at LOW the whole tideway is <= W3 and walkable, at HIGH its deepest
-    // stretch passes 1.41 m and the walk is closed while the barge runs (RI-TRV01, RI-WLD10 M54).
-    if (tideway) return (surf === null ? g : surf) - 0.85;
-    return surf === null ? g : Math.max(g, surf + 0.40);
-  });
-  // Smooth the profile, hold it clear of the water, and cap the grade. A road that a walker
-  // cannot hold 2.0 m/s on is exactly the friction-cheat RI-WLD01 M3 exists to catch, so the cap
-  // is part of the road and not a tuning value: MAX_GRADE at 12% is a hard limit, iterated
-  // against the water clearance until both hold.
-  const MAX_GRADE = 0.12;
-  const surfAt = p.map(([x, z]) => field.waterSurfaceAt(x, z, 0));
-  for (let k = 0; k < 18; k++) {
-    const q = y.slice();
-    for (let i = 1; i < y.length - 1; i++) q[i] = (y[i - 1] + 2 * y[i] + y[i + 1]) / 4;
-    for (let i = 1; i < y.length - 1; i++) if (!tideway && surfAt[i] !== null) q[i] = Math.max(q[i], surfAt[i] + 0.40);
-    for (let i = 1; i < q.length; i++) {
-      const d = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]) || 1;
-      q[i] = clamp(q[i], q[i - 1] - MAX_GRADE * d, q[i - 1] + MAX_GRADE * d);
-    }
-    for (let i = q.length - 2; i >= 0; i--) {
-      const d = Math.hypot(p[i + 1][0] - p[i][0], p[i + 1][1] - p[i][1]) || 1;
-      q[i] = clamp(q[i], q[i + 1] - MAX_GRADE * d, q[i + 1] + MAX_GRADE * d);
-    }
-    y = q;
-  }
-  // The tideway's elevation IS its identity and the smoothing must not negotiate it away.
-  if (tideway) for (let i = 0; i < y.length; i++) y[i] = (surfAt[i] === null ? field.heightAt(p[i][0], p[i][1]) : surfAt[i]) - 0.85;
+  const deck = solveDeck(p, tideway);
+  const y = deck.y;
   let maxGrade = 0;
   for (let i = 1; i < y.length; i++) {
     const d = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]) || 1;
@@ -226,6 +389,8 @@ for (const leg of scale.roads) {
     sinuosity_built: +(built / Math.hypot(S[leg.to].x - S[leg.from].x, S[leg.to].z - S[leg.from].z)).toFixed(3),
     routing: mode,
     max_grade: +maxGrade.toFixed(3),
+    max_cut_m: deck.max_cut, max_fill_m: deck.max_fill,
+    deck_spans: deck.spans, deck_span_m: deck.span_m,
     half_width_m: tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0,
     waypoints: minorsFor(leg.from, leg.to).map((m) => m.name),
     points: pts,

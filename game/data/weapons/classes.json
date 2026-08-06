@@ -777,5 +777,10 @@
     "buffer_f": 8,
     "stamina": 0,
     "effective_strength_mult": 1.5
-  }
+  },
+  "delta_scale": 1.0,
+  "delta_scale_note": "Global magnitude on every per-weapon numeric delta in roster.json. roster.json authors the DIRECTION and the RANK of each weapon's deviation; this scalar sets how far. Tuned against RI-WPN03 \u00a7D.2's two-sided band (W_med in [0.35,1.00], W_min>=0.20) and SEP = B_min/W_max >= 1.4 \u2014 see reports/W1-10-MEASUREMENTS.md \u00a7sweep for the sweep that chose it.",
+  "lineage_arc_scale": 0.35,
+  "deviation_budget": 0.38,
+  "deviation_budget_signature": 0.5
 }

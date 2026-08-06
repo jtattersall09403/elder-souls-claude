@@ -52,7 +52,7 @@ for (const p of run) if (!PROBES.includes(p)) { console.error(`unknown probe '${
 
 const handle = await launchGame(args);
 handle.page.on('console', (m) => { if (String(m.text()).startsWith('[probe]')) log(m.text()); });
-await requireMethods(handle, ['setSeed', 'loadState', 'stepFrames', 'queueInputs', 'snapshot',
+await requireMethods(handle, ['setSeed', 'loadState', 'stepFrames', 'queueInputs', 'snapshot', 'setRenderRate',
   'setCameraCell', 'cameraRoute', 'getCameraRig', 'projectPoint', 'castCameraArm', 'solidAt',
   'listPerspectiveModes', 'uiOpen', 'uiClose', 'spawn', 'lockOn', 'teleport']);
 
@@ -169,7 +169,18 @@ async function runProbe(name) {
       }
       return cam().pitch_deg;
     }
-    function fresh(seed) { H.setSeed(seed === undefined ? 1337 : seed); H.loadState('default'); FR = H.getCameraFrame().f; }
+    function fresh(seed) {
+      H.setSeed(seed === undefined ? 1337 : seed); H.loadState('default');
+      // `stepFrames()` renders one frame at the END OF EVERY CALL (engine.js: `if
+      // (this.loop.renderRateHz !== 0) this.loop.renderNow()`). Under headless software WebGL
+      // a full province render is ~500 ms, so a probe that steps one frame at a time — which
+      // is what every per-frame measurable in RI-CAM01..06 requires — paid 528 ms per frame
+      // and a single route walk took over eight minutes. Measured: 100 BATCHED steps take
+      // 8-19 ms; 200 single steps took 105,677 ms. The rig is not slow; the instrument was.
+      // Rendering is re-enabled explicitly where a probe needs pixels.
+      H.setRenderRate(0);
+      FR = H.getCameraFrame().f;
+    }
 
     /** DFT magnitude at a given cycles-per-frame frequency, plus the median bin. */
     function fftPeakRatio(sig, freqCycPerFrame) {
@@ -336,7 +347,7 @@ async function runProbe(name) {
       for (let n = 0; n < CYCLE * CYCLES; n++) {
         const ph = (n % CYCLE) / CYCLE;
         const z = ph < 0.5 ? -6.0 + (ph / 0.5) * 5.5 : -0.5 - ((ph - 0.5) / 0.5) * 5.5;
-        H.setCameraObstacle('wall', 0, 2.0, z);
+        H.setCameraObstacle('rail_wall', 0, 3.0, z);
         step(1);
         rows.push(cam());
       }
@@ -371,7 +382,7 @@ async function runProbe(name) {
     if (name === 'wall') {
       // RI-CAM01 M5 — back into a wall. No auto-yaw, no pitch drift, no FOV change, fade+shadow.
       fresh(); place('cam-collision-rig', 0, 0);
-      H.setCameraObstacle('wall', 0, 2.0, -3.0);
+      H.setCameraObstacle('rail_wall', 0, 3.0, -3.0);
       setYaw(0); setPitch(0); step(60);
       const y0 = cam().yaw_deg, p0 = cam().pitch_deg;
       const rows = [];
@@ -524,7 +535,7 @@ async function runProbe(name) {
       fresh(); place('cam-flat-plain', 0, 0, 0); setYaw(90); step(20);
       const rows = [];
       for (let i = 0; i < 400; i++) {
-        qi({ move: [0, 1], hold: ['sprint'], until: FR + 1 });
+        if (i === 0) H.queueInputs([{ f: 0, move: [0, 1], press: ['sprint'] }]); else qi({ move: [0, 1] });
         step(1);
         const c = cam(); rows.push({ f: i, yaw: c.yaw_deg, rf: c.recentre_frames, ra: c.recentre_active, pitch: c.pitch_deg });
       }
@@ -551,7 +562,7 @@ async function runProbe(name) {
       }
       // Same-frame disengage on a look input.
       const preYaw = cam().yaw_deg;
-      qi({ look: [1.0, 0], move: [0, 1], hold: ['sprint'], until: FR + 1 });
+      qi({ look: [1.0, 0], move: [0, 1] });
       step(1);
       const afterLook = cam();
       const moved = ang180(afterLook.yaw_deg - preYaw);
@@ -828,9 +839,14 @@ async function runProbe(name) {
       step(1);
       const rows = collect(Math.min(1200, info.frames_per_lap + 2));
       H.cameraRouteEnd();
-      const ys = rows.map((c) => c.pos[1]);
+      // The authored spine descends 13.5 m and climbs back, so a single linear fit over the
+      // round trip has no trend to remove — the first run reported a residual peak-to-peak of
+      // 8.92 m, which is the ROUTE, not the camera. RI-CAM05 §D says "after removing the
+      // linear climb trend", so the residual is computed over the DESCENT alone.
+      const half = Math.floor(rows.length * 0.42);
+      const seg = rows.slice(2, half);
+      const ys = seg.map((c) => c.pos[1]);
       const dys = ys.slice(1).map((v, i) => Math.abs(v - ys[i]));
-      // Remove the linear climb trend, then look for a peak at the tread frequency.
       const n = ys.length;
       let sx = 0, sy = 0, sxx = 0, sxy = 0;
       for (let i = 0; i < n; i++) { sx += i; sy += ys[i]; sxx += i * i; sxy += i * ys[i]; }
@@ -840,7 +856,7 @@ async function runProbe(name) {
       const treadFreq = (4.5 / 0.312) / 60;
       const f = fftPeakRatio(resid, treadFreq);
       R.stairs = {
-        frames: n, p99_abs_dy: r4(pct(dys, 99)), peak_to_peak_resid: r4(Math.max(...resid) - Math.min(...resid)),
+        frames: n, segment: 'descent only, frames 2..' + half, p99_abs_dy: r4(pct(dys, 99)), peak_to_peak_resid: r4(Math.max(...resid) - Math.min(...resid)),
         tread_freq_cyc_per_frame: r4(treadFreq), fft_peak: f.peak.toExponential(3), fft_median_bin: f.median.toExponential(3),
         fft_peak_ratio: r3(f.ratio), largest_bin_ratio: r3(f.max_bin), clip_frames: rows.filter((c) => c.clip_through).length,
       };
@@ -992,9 +1008,11 @@ async function runProbe(name) {
       const bob = {};
       for (const [label, mag, sprint] of [['walk', 0.4, false], ['run', 1.0, false], ['sprint', 1.0, true]]) {
         fresh(); place('cam-flat-plain', 0, 0, 0); setYaw(0); step(30);
+        let first = true;
         const rows = collect(300, () => {
-          const f = FR;
-          H.queueInputs(sprint ? [{ f, move: [0, mag], hold: ['sprint'], until: f + 1 }] : [{ f, move: [0, mag] }]);
+          const f = first ? 0 : 1; first = false;
+          if (sprint && f === 0) H.queueInputs([{ f: 0, move: [0, mag], press: ['sprint'] }]);
+          else H.queueInputs([{ f: 0, move: [0, mag] }]);
         });
         const ys = rows.map((c) => c.pos[1]);
         const n = ys.length; let sx = 0, sy = 0, sxx = 0, sxy = 0;
@@ -1042,7 +1060,7 @@ async function runProbe(name) {
         const N = Math.min(900, info.frames_per_lap);
         const rows = [];
         if (mode === 'one') { for (let i = 0; i < N; i++) { step(1); rows.push(cam()); } }
-        else if (mode === 'render') { for (let i = 0; i < N; i++) { step(1); H.renderFrame(); rows.push(cam()); } }
+        else if (mode === 'render') { for (let i = 0; i < N; i++) { step(1); H.renderFrame(); rows.push(cam()); } }   // RI-CAM06 M1 (c)
         else { for (let i = 0; i < N / 60; i++) { step(60); rows.push(cam()); } }
         H.cameraRouteEnd();
         return rows;

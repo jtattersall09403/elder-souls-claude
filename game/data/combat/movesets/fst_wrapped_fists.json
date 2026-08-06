@@ -49,7 +49,7 @@
    "stamina": 9,
    "motion_value": 0.55,
    "poise_damage": 5,
-   "root_dz_m": 0.12,
+   "root_dz_m": 0.1,
    "arc_sweep_deg": 45,
    "shape": "smash",
    "hyperarmour": {
@@ -325,7 +325,7 @@
    "motion_value": 0.58,
    "poise_damage": 6,
    "root_dz_m": 0.2,
-   "arc_sweep_deg": 50.4,
+   "arc_sweep_deg": 90,
    "shape": "slash_h",
    "hyperarmour": {
     "enabled": false
@@ -451,7 +451,7 @@
    "motion_value": 0.44,
    "poise_damage": 4,
    "root_dz_m": 0.196,
-   "arc_sweep_deg": 29.3,
+   "arc_sweep_deg": 19,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": false
@@ -655,7 +655,7 @@
    "motion_value": 0.96,
    "poise_damage": 10,
    "root_dz_m": 0.252,
-   "arc_sweep_deg": 69.8,
+   "arc_sweep_deg": 305,
    "shape": "spin",
    "hyperarmour": {
     "enabled": false
@@ -1030,7 +1030,7 @@
    "motion_value": 0.66,
    "poise_damage": 8,
    "root_dz_m": 0.23,
-   "arc_sweep_deg": 59.5,
+   "arc_sweep_deg": 106.2,
    "shape": "slash_h",
    "hyperarmour": {
     "enabled": false
@@ -1161,7 +1161,7 @@
    "motion_value": 0.51,
    "poise_damage": 5,
    "root_dz_m": 0.225,
-   "arc_sweep_deg": 34.5,
+   "arc_sweep_deg": 22.4,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": false
@@ -1291,7 +1291,7 @@
    "motion_value": 1.11,
    "poise_damage": 13,
    "root_dz_m": 0.29,
-   "arc_sweep_deg": 82.3,
+   "arc_sweep_deg": 359.9,
    "shape": "spin",
    "hyperarmour": {
     "enabled": false
@@ -1396,5 +1396,5 @@
    ]
   }
  },
- "notes": "The baseline. Five hits deep at ninety centimetres of reach: the class is a bet that you can live inside everything else's minimum range.\n\nLineage: wrapped — Bound linen over the knuckle. Straight punching.\nMandatory slots present: 25/25. Total slots: 33.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "The baseline. Five hits deep at ninety centimetres of reach: the class is a bet that you can live inside everything else's minimum range.\n\nLineage: wrapped — Bound linen and Hist-bonded talon alike. FST has four weapons, so it is a single-lineage class: two lineages cannot both reach the three members a signature weapon needs (see why_lineages).\nMandatory slots present: 25/25. Total slots: 33.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

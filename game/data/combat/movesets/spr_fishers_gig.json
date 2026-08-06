@@ -49,7 +49,7 @@
    "stamina": 18,
    "motion_value": 1,
    "poise_damage": 18,
-   "root_dz_m": 0.688,
+   "root_dz_m": 0.55,
    "arc_sweep_deg": 8,
    "shape": "thrust",
    "hyperarmour": {
@@ -335,7 +335,7 @@
    "motion_value": 0.85,
    "poise_damage": 15,
    "root_dz_m": 0.55,
-   "arc_sweep_deg": 6.2,
+   "arc_sweep_deg": 10,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -415,7 +415,7 @@
    "motion_value": 1.35,
    "poise_damage": 32,
    "root_dz_m": 0.198,
-   "arc_sweep_deg": 5.3,
+   "arc_sweep_deg": 10,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -460,10 +460,13 @@
    "motion_value": 1.3,
    "poise_damage": 29,
    "root_dz_m": 0.352,
-   "arc_sweep_deg": 5.9,
+   "arc_sweep_deg": 25,
    "shape": "slash_d",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 15,
+    "to_f": 32,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -502,7 +505,7 @@
    "motion_value": 1.8,
    "poise_damage": 40,
    "root_dz_m": 0.088,
-   "arc_sweep_deg": 3.2,
+   "arc_sweep_deg": 4,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": false
@@ -1043,7 +1046,7 @@
    "motion_value": 0.98,
    "poise_damage": 20,
    "root_dz_m": 0.633,
-   "arc_sweep_deg": 7.4,
+   "arc_sweep_deg": 11.8,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -1129,7 +1132,7 @@
    "motion_value": 1.55,
    "poise_damage": 42,
    "root_dz_m": 0.228,
-   "arc_sweep_deg": 6.2,
+   "arc_sweep_deg": 11.8,
    "shape": "slash_v",
    "hyperarmour": {
     "enabled": false
@@ -1175,10 +1178,13 @@
    "motion_value": 1.5,
    "poise_damage": 38,
    "root_dz_m": 0.405,
-   "arc_sweep_deg": 7,
+   "arc_sweep_deg": 29.5,
    "shape": "slash_d",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 16,
+    "to_f": 35,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -1259,7 +1265,7 @@
    "motion_value": 1.87,
    "poise_damage": 43,
    "root_dz_m": 0.968,
-   "arc_sweep_deg": 9.4,
+   "arc_sweep_deg": 106.2,
    "shape": "sweep",
    "hyperarmour": {
     "enabled": true,

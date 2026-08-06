@@ -70,7 +70,10 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_step', jump1: 'jump_fall', jump2: null, plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'thrust_low', art: ['art_guard', 'art_lunge'],
     h2_exclusive: ['2h.r2.follow', '2h.art.2'],
-    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: [],
+    // The spear's guard counter carries hyperarmour: RI-WPN02 §C makes SPR the one melee class
+    // that attacks THROUGH a raised offhand shield, and the guard counter is that verb. It is
+    // also the grammar split from TSW, its nearest neighbour on RI-WPN02 §D's Dg distance.
+    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: ['guard.counter', '2h.guard.counter'],
   },
   AXE: {
     r1: ['cut_diagonal', 'cut_horizontal_rev', 'cut_vertical'],
@@ -79,7 +82,7 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_cut', jump1: 'jump_fall', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_kick', art: ['art_whirl', 'art_stomp'],
     h2_exclusive: ['2h.roll.r2', '2h.jump.r2'],
-    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: true, ha_extra: ['guard.counter', '2h.guard.counter'],
+    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: true, ha_extra: ['guard.counter', '2h.guard.counter', 'jump.r1', '2h.jump.r1'],
   },
   MCE: {
     r1: ['smash_over', 'smash_side', 'smash_over'],
@@ -88,7 +91,7 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_cut', jump1: 'jump_stomp', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_shoulder', art: ['art_stomp', 'art_guard'],
     h2_exclusive: ['2h.jump.r2', '2h.art.2'],
-    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: true, ha_extra: [],
+    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: [],
   },
   HLB: {
     r1: ['sweep_low', 'sweep_wide', 'thrust_low'],
