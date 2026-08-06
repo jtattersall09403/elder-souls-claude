@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-14-r3",
+  "brief": "round-3 ULTRACODE builder on W1-14 magic (seam S19)",
+  "started": "wave-1 round 3",
+  "state": "researching",
+  "prior_verdict": "corpus/90-verdicts/wave1/W1-14-r2.json (FAIL 4.4/10)",
+  "objectives": [
+    "GAP-W1-magic-skill-frozen: one register written by play, survives save/load, quest gate reads it",
+    "kind-aware mitigation (shield/resist_element/resist_disease/sap_ward)",
+    "status procs BURNING/FROSTBITE/CONCUSSED/POISONED consumed world-side",
+    "8 orphan registers rehomed (telekinesis reach, detect markers, mend, water, cure_disease)",
+    "S27 + S29 enforcement (no Focus regen; no Recall/Mark/Intervention in combat)",
+    "AP-M3 tracking arc exposed on a harness surface",
+    "VFX: impact frame distinct from idle, projectile particles in flight",
+    "distinguishable-outcome count 33 -> higher"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "confirm boot; read verdict JSON remedies + RI-MAG06 amended; map magic module",
+  "notes_for_successor": ""
+}

@@ -2,13 +2,19 @@
  "task_id": "critic-w1-09-r3",
  "brief": "CRITIC round 3 on W1-09 combat core",
  "started": "wave-1",
- "state": "writing",
+ "state": "complete",
  "outputs_expected": [
   "corpus/90-verdicts/wave1/W1-09-r3.json",
   "corpus/90-verdicts/wave1/W1-09-r3.md",
   "corpus/90-verdicts/wave1/artifacts/W1-09-r3/**"
  ],
- "outputs_written": [],
+ "outputs_written": [
+  "corpus/90-verdicts/wave1/W1-09-r3.json",
+  "corpus/90-verdicts/wave1/W1-09-r3.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-09-r3/ (32 files)",
+  "tools/harness/critic-w1-09-r3.mjs (browser)",
+  "tools/harness/critic-w1-09-r3n.mjs (node)"
+ ],
  "findings": [
   "NODE ARENA VERIFIED: tools/lib/combat-node.mjs reproduces the browser exactly. My own browser probe (critic-w1-09-r3.mjs --probe reach, headless Chromium, arena_champion, E1 respawned with explicit yaw) gives min/max/interior-gaps identical to the node arena for 4 enemy attacks and 4 player weapons. Safe to use node for volume, browser for headline.",
   "THE ROUND-2 CRITIC PROBE IS NOW STALE, NOT A FINDING: critic-w1-09-r2.mjs --probe reach reports chop/thrust/combo_a hit at NO distance 0-4 m on this build, because Engine.setEntityPos() ignores opts.yaw and round 3 removed the enemy yaw snap. Re-spawn with spawn(...,{yaw}) instead.",
@@ -37,6 +43,6 @@
   "AR-2 B12: 9 parley gate cases all correct; humanoid exits COMBAT alive; beast exempt.",
   "CONSUMPTION: body_hazard consumed (159 -> 0 damage when deleted); cross_fade consumed (boundary jump 0.081 -> 0.684 at 0 frames, 0.088 at 30); roll iframes consumed (26 vs 2 frames, negation 1 vs 0); poise stagger frames consumed. bodies.separation and sweep.substeps have no demonstrated consumer at their shipped values."
  ],
- "next_step": "write artifacts + verdict json/md",
- "notes_for_successor": ""
+ "next_step": "none — verdict emitted, schema-valid, gap ledger regenerated",
+ "notes_for_successor": "FAIL 4/10 (mean 3.5). AR-1 pass including the S26 gate; AR-2 pass; AR-3 not sterile. RI-CMB07 hard-fails on its own row-28 clause (median 0 inputs denied for stamina) — capped at 2. Biggest gap: GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage. Two things a successor must not re-discover: (1) tools/lib/combat-node.mjs omits sim/step.js's stealth perception, so the enemy never steers between attacks and any node-arena fight longer than ~300 frames diverges from the game — the advertised `cmb-reach.mjs --verify` does not exist; (2) tools/harness/critic-w1-09-r2.mjs --probe reach is now a stale instrument (setEntityPos ignores opts.yaw) and reports a false catastrophe. Another agent's commit (41df551) swept these deliverables in; this critic did not commit."
 }

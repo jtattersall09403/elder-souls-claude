@@ -30,7 +30,7 @@
 // what lets the water-table solve remain valid after the ground grew a texture.
 'use strict';
 
-import { hash2, noise2, fbm, ridged, clamp, smoothstep } from './noise.js';
+import { hash2, fbm, ridged, clamp, smoothstep } from './noise.js';
 
 /** The vocabulary. Order is load-bearing: it indexes the per-region weight vectors. */
 export const MICRO_KINDS = [
@@ -160,15 +160,15 @@ const RAW = [
  * where it was sampled would not be the same surface in the builder and in the game.
  */
 const CAL = [
-  { mean: 0.198397, sd: 0.246105 },   // hummock
-  { mean: -0.128128, sd: 0.246847 },  // crack
-  { mean: 0.000474, sd: 0.767888 },   // ripple
-  { mean: 0.001222, sd: 0.577469 },   // terracette
-  { mean: 0.000313, sd: 0.303080 },   // rubble
-  { mean: -0.238479, sd: 0.276677 },  // rill
-  { mean: 0.148215, sd: 0.343436 },   // bund
-  { mean: 0.192214, sd: 0.235405 },   // rootmat
-  { mean: 0.500000, sd: 0.288675 },   // dune
+  { mean: 0.179940, sd: 0.209990 },   // hummock
+  { mean: -0.258100, sd: 0.406721 },  // crack
+  { mean: 0.000473, sd: 0.775239 },   // ripple
+  { mean: -0.001084, sd: 0.578285 },  // terracette
+  { mean: -0.000805, sd: 0.309574 },  // rubble
+  { mean: -0.127538, sd: 0.171963 },  // rill
+  { mean: 0.413984, sd: 0.567751 },   // bund
+  { mean: 0.595455, sd: 0.241678 },   // rootmat
+  { mean: 0.499944, sd: 0.288860 },   // dune
 ];
 
 /** One primitive, normalised. Exported for the calibration tool and for probes. */

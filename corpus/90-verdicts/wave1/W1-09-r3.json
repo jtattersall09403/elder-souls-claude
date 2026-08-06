@@ -954,7 +954,7 @@
     {
      "id": "M8",
      "result": "pass",
-     "value": "patient-player TTK is now finite and lethal in the shipping game: a motionless mashing player dies in 27.6-41.0 s at every stand distance from 0.0 to 3.2 m with the champion on 1565-2069 of 2876",
+     "value": "patient-player TTK is now finite and lethal in the shipping game: a motionless mashing player dies in 27.6-41.0 s in all 30 browser runs across two cadences and nine stand distances from 0.0 to 3.2 m, with the champion on 1565-2069 of 2876",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json"
      ]
@@ -1180,6 +1180,14 @@
    "kind": "report",
    "produced_by": "written by this critic",
    "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser-backtoback.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-09-r3.mjs --probe turtle,yaw — a harder enemy cadence than cmb-reach uses, and two stand distances (0.0, 0.2 m) that cmb-reach never tests",
+   "seed": 0,
+   "source": "ours",
+   "note": "the `yaw` probe in this same file returned nulls: getCombatState() exposes no per-enemy yaw field, only bearing_deg. AR-1 A7 is measured in critic-r3-ar1-a4-a5-a7.json instead, in the node arena, where the body objects are reachable. Shipped rather than deleted so the null is on the record."
   }
  ],
  "blind_comparisons": [
@@ -1506,7 +1514,7 @@
    "subsystem_path": "platform.determinism.harness"
   },
   {
-   "what": "THE TURTLE DOES NOT WIN, AND THE BUILD'S OWN CAVEAT IS WRONG IN THE OTHER DIRECTION. reports/w1-09/cmb-reach.json says a motionless mashing player kills the 2,876-HP champion at every stand distance from 0.4 m to 2.6 m taking 46-90% of its health. Replaying that exact configuration through window.__HARNESS in headless Chromium, at three input phases and at nine stand distances from 0.0 m to 3.2 m: the player DIES in every one of 27 runs, in 27.6-41.0 s, with the champion on 1565-2069 of 2876. The acceptance the round-2 gap set — 'a motionless mashing player at 0.8-1.5 m taking >= 0.4 x max HP' — is met in the shipping game by a wide margin. It is met by the body corridor: 5 to 7 of the 8 hits that kill it are `via: body`.",
+   "what": "THE TURTLE DOES NOT WIN, AND THE BUILD'S OWN CAVEAT IS WRONG IN THE OTHER DIRECTION. reports/w1-09/cmb-reach.json says a motionless mashing player kills the 2,876-HP champion at every stand distance from 0.4 m to 2.6 m taking 46-90% of its health. Replaying that exact configuration through window.__HARNESS in headless Chromium, at three input phases across seven stand distances: the player DIES in all 21 runs, in 27.6-33.7 s, with the champion on 1628-2069 of 2876. With a harder cadence of my own across nine distances including the 0.0 m and 0.2 m that cmb-reach never tests, all nine die too, in 33.4-41.0 s. The acceptance the round-2 gap set — 'a motionless mashing player at 0.8-1.5 m taking >= 0.4 x max HP' — is met in the shipping game by a wide margin. It is met by the body corridor: 5 to 7 of the 8 hits that kill it are `via: body`.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-browser.json",
     "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-via-browser.json"
