@@ -23,18 +23,62 @@
 
 import { focusBase, focusCost, focusMaxFor, spellSlotsFor, skillDiscount, commissionPrice, goldPrice, tierFor } from './cost.js';
 import { buildCastMove } from './moves.js';
-import { HANDLERS, DAMAGE_EFFECTS, BUILDUP, assertRegistryComplete } from './apply.js';
+import { HANDLERS, DAMAGE_EFFECTS, BUILDUP, addBuildup, assertRegistryComplete } from './apply.js';
+import { mitigate } from '../../combat/resolve.js';
 
 const DEG = Math.PI / 180;
+
+/**
+ * The magic module's school id -> the character sheet's skill id, from
+ * `game/data/progression/skills.json`. The two files spell root-speech differently and that
+ * difference is load-bearing: it is why nobody noticed the two registers were not the same one.
+ */
+export const SCHOOL_TO_SKILL = Object.freeze({
+  sorcery: 'sorcery', root_speech: 'root-speech', warding: 'warding', veiling: 'veiling',
+});
+/** The inverse, for `skilluse.js` — an `effect_apply` carries the school, the sheet wants the skill. */
+export const SKILL_TO_SCHOOL = Object.freeze({
+  sorcery: 'sorcery', 'root-speech': 'root_speech', warding: 'warding', veiling: 'veiling',
+});
 
 /** RI-MAG02 §H: global clamps. Morrowind's worst breakage closed by a clamp, not a removal. */
 export const CHAMELEON_CLAMP_PCT = 80;
 export const RESIST_CLAMP_PCT = 85;
 
+/**
+ * What each S11 proc costs, in authored constants rather than literals scattered through the
+ * step. All integers and fixed periods: a proc is a schedule, never a per-frame draw.
+ */
+export const PROC = Object.freeze({
+  burn_period_f: 12,             // one tick per 0.2 s
+  burn_dps_pct: 0.9,             // % of the body's own max HP per tick
+  poison_period_f: 30,           // one tick per 0.5 s, for 10 s
+  poison_dps_pct: 0.45,
+  frost_stamina_max_cut_pct: 30,
+  frost_speed_cut_pct: 25,
+});
+
 export { DAMAGE_EFFECTS };
 
 /** The four effects that act on a lock, a ward or a breakable rather than on a body. */
 const WORLD_VERBS = new Set(['open_lock', 'lock_lock', 'ward_trap', 'shatter']);
+
+/**
+ * S29 — "Recall is travel, and travel does not happen mid-fight."
+ *
+ * The round-2 critic commissioned a LIGHT-class Recall and an Intervention and left a live
+ * fight 84.7 m and 44.8 m behind, in 56 frames, for gold. Round 1 had passed this only because
+ * the shipped carriers are all `RITUAL` and a 210-frame ritual cannot finish with an enemy on
+ * you — the clock was doing the work, and `quoteSpell`/`makeSpell` accept any class for any
+ * effect, so the clock could simply be bought off.
+ *
+ * These four effects are world travel under S7 and they are refused OUTRIGHT in combat, on
+ * exactly the terms S27 sets for Focus: while any hostile is aggroed, and for 300 f@60 after
+ * the last hostile action. ARBITRATION §1's non-lethal exits are untouched — you may still
+ * flee on foot, yield or parley. You may not leave by keystroke.
+ */
+export const TRAVEL_EFFECTS = new Set(['mark', 'recall', 'intervention']);
+export const TRAVEL_COMBAT_COOLDOWN_F = 300;
 
 export class MagicSystem {
   /**
@@ -56,7 +100,40 @@ export class MagicSystem {
     this.attuned = ['spark_dart', 'slowfall'];
     this.catalyst = 'none';              // no catalyst until one is equipped
     this.hasCatalyst = false;            // casting requires a catalyst in the right hand
-    this.skills = { sorcery: 30, root_speech: 30, warding: 30, veiling: 30 };
+    // ---- THE SKILL REGISTER (GAP-W1-magic-skill-frozen) --------------------------------------
+    //
+    // Wave 1 round 2 shipped `this.skills = {sorcery: 30, root_speech: 30, warding: 30,
+    // veiling: 30}` — a private literal that NO GAMEPLAY PATH WROTE. The consequence, measured
+    // by the round-2 critic in all four shipped states, was 47 of 72 spells attunable for the
+    // whole game, every tier-3 and tier-4 spell silently refused, spellmaking capped at two
+    // effects forever, and a coupling of 0.00 in both directions between the character's magic
+    // skill and the magic system's magic skill. It survived two critic rounds because every
+    // probe in the tree — including the critic's own first two — opened with
+    // `setMagicSkills({...100})`, which held the gate open on both sides of the desk.
+    //
+    // There is now ONE register: `sim.progression.skills`, the character sheet, written by
+    // `character/skilluse.js` when you cast, saved by `save/state.js`, and read by the quest
+    // machine's `requires.skills`. `this.skills` is a VIEW of it — four accessor properties
+    // that map the magic module's school ids onto the sheet's skill ids, which are spelled
+    // differently (`root_speech` here, `root-speech` there) and which is half of why the two
+    // registers were ever allowed to drift apart.
+    //
+    // `_offlineSkills` is the fallback for a MagicSystem constructed with no world bound, which
+    // `tools/analysis/*.mjs` does to price spells arithmetically. It is NOT a second register:
+    // the moment `bindWorld()` runs, every read and write goes to the sheet.
+    this._offlineSkills = { sorcery: 5, root_speech: 5, warding: 5, veiling: 5 };
+    this.skills = {};
+    for (const school of Object.keys(SCHOOL_TO_SKILL)) {
+      Object.defineProperty(this.skills, school, {
+        enumerable: true, configurable: false,
+        get: () => this._readSkill(school),
+        set: (v) => this._writeSkill(school, v),
+      });
+    }
+    // Fortify is a SEPARATE lease, not a write into the sheet. Wave 1 had `h_fortify_skill`
+    // adding its magnitude into `M.skills` *and* `_effectiveSkillFor` adding it again out of
+    // `this.active`, so every fortify counted twice.
+    this.skillFortify = { sorcery: 0, root_speech: 0, warding: 0, veiling: 0 };
     this.knownEffects = new Set();       // effects you own a spell for (the spellmaking gate)
     for (const id of ['spark_dart', 'slowfall']) for (const e of this.spells[id].effects) this.knownEffects.add(e.effect);
     this.gold = 0;
@@ -286,29 +363,104 @@ export class MagicSystem {
     return dropped;
   }
 
+  /** The character sheet's skill map, or null when no world is bound (offline pricing). */
+  _sheet() {
+    const s = this.w && this.w.sim && this.w.sim.progression ? this.w.sim.progression.skills : null;
+    return s && typeof s === 'object' ? s : null;
+  }
+
+  _readSkill(school) {
+    const sheet = this._sheet();
+    if (!sheet) return this._offlineSkills[school];
+    const rec = sheet[SCHOOL_TO_SKILL[school]];
+    if (rec === undefined || rec === null) return 0;
+    return typeof rec === 'object' ? (rec.value || 0) : Number(rec) || 0;
+  }
+
+  _writeSkill(school, v) {
+    const n = Number(v) || 0;
+    const sheet = this._sheet();
+    if (!sheet) { this._offlineSkills[school] = n; return n; }
+    const id = SCHOOL_TO_SKILL[school];
+    if (!sheet[id] || typeof sheet[id] !== 'object') sheet[id] = { value: n, useProgress: 0 };
+    else sheet[id].value = n;
+    return n;
+  }
+
+  /**
+   * Re-freeze the skill view into wave 1's private literal. THE ONLY CALLER IS THE HARNESS,
+   * and its only purpose is to let a probe that measures the unfreezing be watched failing.
+   * A probe that cannot fail is worse than no probe (AGENT-PROTOCOL).
+   */
+  __refreezeSkillsForProbeSelfTest() {
+    this._frozen = { sorcery: 30, root_speech: 30, warding: 30, veiling: 30 };
+    const self = this;
+    this.skills = {};
+    for (const school of Object.keys(SCHOOL_TO_SKILL)) {
+      Object.defineProperty(this.skills, school, {
+        enumerable: true, configurable: true,
+        get: () => self._frozen[school], set: (v) => { self._frozen[school] = Number(v) || 0; },
+      });
+    }
+    return { ...this._frozen };
+  }
+
   _baseSkillFor(spell) {
     return Math.min(...spell.schools.map((sc) => this.skills[sc] === undefined ? 0 : this.skills[sc]));
   }
 
-  /** Fortified values satisfy every gate at the instant it is evaluated (RI-EXP06 B-02). */
+  /**
+   * Fortified values satisfy every gate at the instant it is evaluated (RI-EXP06 B-02).
+   * The bonus lives in `skillFortify` and NOWHERE ELSE — a fortify does not write the character
+   * sheet, because a lease that expires must not be able to leave a permanent skill behind.
+   */
   _effectiveSkillFor(spell) {
-    let s = this._baseSkillFor(spell);
-    for (const a of this.active) if (a.effect === 'fortify_skill') s += a.magnitude;
-    return s;
+    let best = Infinity;
+    for (const sc of spell.schools) {
+      const base = this.skills[sc] === undefined ? 0 : this.skills[sc];
+      const v = base + (this.skillFortify[sc] || 0);
+      if (v < best) best = v;
+    }
+    return best === Infinity ? 0 : best;
   }
 
-  setAttuned(ids) {
+  /**
+   * Pin a loadout. RI-PRG03 §6: below the tier requirement a spell cannot be attuned AT ALL,
+   * which is why there is no "spell failure" branch anywhere in the cast path — the gate is here.
+   *
+   * Wave 1 dropped an under-skilled spell SILENTLY: it returned a shorter array than it was
+   * given, with no event and no reason, so a player who bought `the_unmaking` simply never saw
+   * it in the loadout. Every refusal now emits `attune_refused` naming the school, the
+   * requirement and the shortfall.
+   */
+  setAttuned(ids, frame) {
     const out = [];
+    const refused = [];
+    const f = frame === undefined ? (this.w && this.w.sim ? this.w.sim.frame : 0) : frame;
     for (const id of ids) {
-      if (out.length >= this.slots) break;
       const s = this.spells[id] || this.custom.find((c) => c.id === id);
       if (!s) throw new Error(`setAttuned: no spell '${id}'. Known: ${Object.keys(this.spells).length} shipped + ${this.custom.length} commissioned.`);
-      // RI-PRG03 §6: below the tier requirement a spell cannot be attuned AT ALL. This is why
-      // there is no "spell failure" branch anywhere in the cast path — the gate is here.
-      if (this._effectiveSkillFor(s) < s.skill_req) continue;
+      if (out.length >= this.slots) {
+        refused.push({ spell: id, reason: 'no_slot', slots: this.slots });
+        this._emit(f, 'attune_refused', { spell: id, reason: 'no_slot', slots: this.slots });
+        continue;
+      }
+      const have = this._effectiveSkillFor(s);
+      if (have < s.skill_req) {
+        const worst = s.schools.slice().sort((a, b) =>
+          (this.skills[a] + (this.skillFortify[a] || 0)) - (this.skills[b] + (this.skillFortify[b] || 0)))[0];
+        refused.push({ spell: id, reason: 'skill', school: worst, have, need: s.skill_req, shortfall: s.skill_req - have });
+        this._emit(f, 'attune_refused', {
+          spell: id, reason: 'skill', school: worst, tier: s.tier,
+          have, need: s.skill_req, shortfall: s.skill_req - have,
+          text: `${s.name || id} needs ${SCHOOL_TO_SKILL[worst] || worst} ${s.skill_req}; you have ${have}.`,
+        });
+        continue;
+      }
       out.push(id);
     }
     this.attuned = out;
+    this.lastAttuneRefusals = refused;
     return out.slice();
   }
 
@@ -354,12 +506,48 @@ export class MagicSystem {
    * RI-MAG01 §B's drop rules, evaluated on the frame the cast WOULD begin. Returns a reason
    * string when the input is dropped, or null when the cast may start. Nothing here queues.
    */
+  /**
+   * S29's fence, as a readable predicate rather than a boolean buried in a branch. Returns null
+   * when travel is legal, or `{reason, ...}` naming which half of the rule closed it.
+   */
+  travelFence(frame) {
+    const eng = this.w && this.w.engine;
+    const sim = this.w && this.w.sim;
+    const f = frame === undefined ? (sim ? sim.frame : 0) : frame;
+    if (eng && typeof eng.inCombat === 'function' && eng.inCombat()) {
+      return { reason: 'in_combat', text: 'Not with them on you. The roots do not carry bodies out of a fight.' };
+    }
+    const last = sim && sim.lastHostileFrame ? sim.lastHostileFrame : 0;
+    if (last && f - last < TRAVEL_COMBAT_COOLDOWN_F) {
+      return {
+        reason: 'hostile_cooldown', frames_remaining: TRAVEL_COMBAT_COOLDOWN_F - (f - last),
+        since_last_hostile_f: f - last, cooldown_f: TRAVEL_COMBAT_COOLDOWN_F,
+        text: 'Your hands are still shaking. Wait until the marsh is quiet again.',
+      };
+    }
+    return null;
+  }
+
+  /** Does this spell carry a travel effect at all? (S29 fences the effect, not the class.) */
+  static carriesTravel(spell) {
+    return !!(spell && spell.effects && spell.effects.some((t) => TRAVEL_EFFECTS.has(t.effect)));
+  }
+
   castDropReason(spellId, stamina) {
     const s = this.spellOf(spellId);
     if (!s) return 'not_attuned';
     if (!this.attuned.includes(spellId)) return 'not_attuned';
     if (!this.hasCatalyst) return 'no_catalyst';
     if (this.silenced) return 'silenced';
+    // S29. Refused OUTRIGHT — not slowed, not made more expensive — and refused at the input
+    // gate every cast goes through, so it cannot be bought off by commissioning a faster class.
+    if (MagicSystem.carriesTravel(s) && !this._fenceDisabled) {
+      const fence = this.travelFence();
+      if (fence) {
+        this._lastTravelRefusal = { spell: spellId, ...fence };
+        return 'travel_in_combat';
+      }
+    }
     if (this.airborne && spellId !== 'slowfall' && !s.effects.some((e) => e.effect === 'slowfall')) return 'airborne';
     const cls = this.classes[s.class];
     if (this.focus < this.costOf(s)) return 'no_focus';
@@ -386,6 +574,11 @@ export class MagicSystem {
     };
     this.stats.casts++;
     this.stats.focusSpent += cost;
+    // One serial per cast. `applyEffects` runs once per body an area spell touches, and skill
+    // must be banked once per CAST, not once per body and not once per effect.
+    this._castSerial = (this._castSerial || 0) + 1;
+    this.cast.serial = this._castSerial;
+    this.cast.focusAtStart = cost;
     this._emit(frame, 'cast_start', { spell: spellId, class: s.class, focus_spent: cost, stamina_spent: cls.stamina, focus_after: this.focus, tc_frame: cls.Tc });
     this._emit(frame, 'focus_spend', { spell: spellId, amount: cost, focus_after: this.focus });
     return this.cast;
@@ -697,7 +890,10 @@ export class MagicSystem {
         for (const kind of Object.keys(b.statusProc)) {
           if (frame >= b.statusProc[kind]) {
             delete b.statusProc[kind];
+            this._onProcEnd(frame, b, kind);
             this._emit(frame, 'status_proc_end', { kind, on: b.id });
+          } else {
+            this._stepProc(frame, b, kind);
           }
         }
       }
@@ -712,6 +908,103 @@ export class MagicSystem {
         b.paralysedUntil = 0;
         if (b.state === 'PARALYSED') b.state = 'IDLE';
       }
+    }
+  }
+
+  /**
+   * WHAT A PROC ACTUALLY DOES. RI-MAG06 §B and S11 give Souls the in-fight status meter AND its
+   * "proc effect", and wave 1 shipped the meter without the effect: of the five proc kinds only
+   * `PARALYSED` was consumed. The round-2 critic measured `BURNING` proccing twice on a live
+   * enemy whose state stayed `REPOSITION` for all twelve samples, and `FROSTBITE`, `CONCUSSED`
+   * and `POISONED` the same shape — `body.statusProc[kind]` written, and nothing outside the
+   * expiry deleter and the status readout ever reading it. That is round 1's `UNREAD_TIMER`
+   * failure one level down, below where the census looks.
+   *
+   * Each of the four now has a consuming system that an entity's behaviour depends on, and each
+   * is arithmetic on integers — no dice anywhere, so AR-1 is untouched (S11 explicitly gives
+   * Souls the proc). `PARALYSED` keeps its own branch below because it stops the body outright.
+   */
+  _stepProc(frame, b, kind) {
+    const cfg = BUILDUP[kind];
+    if (!cfg) return;
+    switch (cfg.proc) {
+      case 'BURNING': {
+        // Fire sticks and burns: a fixed tick on a fixed period, through the FIRE ward channel,
+        // so `resist_element` is what saves you from it and `shield` is not.
+        if ((frame - b.statusProc[kind]) % PROC.burn_period_f !== 0) break;
+        this._procDamage(frame, b, PROC.burn_dps_pct * b.hpMax / 100, 'fire', 'BURNING');
+        break;
+      }
+      case 'POISONED': {
+        // Rot: slower, longer, and it also stops you healing while it runs — which is the half
+        // that makes it a different verb from BURNING rather than the same one at another rate.
+        b.healBlockedUntil = Math.max(b.healBlockedUntil || 0, b.statusProc[kind]);
+        if ((frame - b.statusProc[kind]) % PROC.poison_period_f !== 0) break;
+        this._procDamage(frame, b, PROC.poison_dps_pct * b.hpMax / 100, 'poison', 'POISONED');
+        break;
+      }
+      case 'FROSTBITE': {
+        // Cold in the joints: stamina stops coming back, and the pool it comes back into is
+        // smaller. Re-armed every frame so the 42-frame regen clock can never elapse inside it.
+        b.regenBlockUntil = Math.max(b.regenBlockUntil || 0, frame + 2);
+        if (!b.frostbitten) {
+          b.frostbitten = true;
+          b.staminaMaxBeforeFrost = b.staminaMax;
+          b.staminaMax = Math.round(b.staminaMax * (1 - PROC.frost_stamina_max_cut_pct / 100));
+          if (b.stamina > b.staminaMax) b.stamina = b.staminaMax;
+          b.moveSpeedMult = (b.moveSpeedMult === undefined ? 1 : b.moveSpeedMult) * (1 - PROC.frost_speed_cut_pct / 100);
+          this._emit(frame, 'status_proc_effect', {
+            status_kind: kind, on: b.id, proc: 'FROSTBITE', consumer: 'stamina_max + stamina_regen + move_speed',
+            stamina_max_after: b.staminaMax, speed_mult_after: round3(b.moveSpeedMult),
+          });
+        }
+        break;
+      }
+      case 'CONCUSSED': {
+        // Shock rattles the frame: poise is gone and does not come back while it runs, so the
+        // next blow staggers a body that would have eaten it. Souls' own reading of shock.
+        b.poiseHealth = 0;
+        b.poiseRegenBlockUntil = Math.max(b.poiseRegenBlockUntil || 0, frame + 2);
+        if (!b.concussed) {
+          b.concussed = true;
+          this._emit(frame, 'status_proc_effect', {
+            status_kind: kind, on: b.id, proc: 'CONCUSSED', consumer: 'poise_health + poise_regen',
+            poise_health_after: 0, poise_health_max: b.poiseHealthMax,
+          });
+        }
+        break;
+      }
+      default: break;
+    }
+  }
+
+  /** Undo the leases a proc took out. A proc that never gave the body back is a permanent debuff. */
+  _onProcEnd(frame, b, kind) {
+    const cfg = BUILDUP[kind];
+    if (!cfg) return;
+    if (cfg.proc === 'FROSTBITE' && b.frostbitten) {
+      b.frostbitten = false;
+      if (b.staminaMaxBeforeFrost !== undefined) b.staminaMax = b.staminaMaxBeforeFrost;
+      b.moveSpeedMult = (b.moveSpeedMult === undefined ? 1 : b.moveSpeedMult) / (1 - PROC.frost_speed_cut_pct / 100);
+      if (Math.abs(b.moveSpeedMult - 1) < 1e-9) b.moveSpeedMult = 1;
+    }
+    if (cfg.proc === 'CONCUSSED') b.concussed = false;
+    if (cfg.proc === 'POISONED') b.healBlockedUntil = 0;
+  }
+
+  /** One proc tick. Routed through the ward channel the status belongs to, like any damage. */
+  _procDamage(frame, b, amount, channel, proc) {
+    const applied = Math.max(1, Math.round(mitigate(b, amount, channel)));
+    b.hp = Math.max(0, b.hp - applied);
+    const died = b.hp <= 0 && !b.dead;
+    if (died) { b.dead = true; b.state = 'DEAD'; b.move = null; }
+    this._emit(frame, 'status_proc_effect', {
+      status_kind: channel, on: b.id, proc, consumer: 'hp',
+      damage: applied, channel, hp_after: round2(b.hp), killed: died,
+    });
+    if (died && this.w && this.w.bus) {
+      const e = this.w.bus.emit(frame, 'DEATH');
+      e.who = b.id; e.by = 'status:' + proc;
     }
   }
 
@@ -806,6 +1099,7 @@ export class MagicSystem {
    */
   applyEffects(frame, spell, target, attrValue) {
     const out = [];
+    let anyChanged = false;
     for (const t of spell.effects) {
       const e = this.effects[t.effect];
       const mag = this.outputOf(t.effect, t.magnitude, attrValue === undefined ? 30 : attrValue);
@@ -825,11 +1119,22 @@ export class MagicSystem {
         // A handler that throws is a build defect, not a gameplay outcome. Say which one.
         throw new Error(`magic effect handler '${t.effect}' threw while applying ${spell.id}: ${err && err.message}`);
       }
+      // S27: the Dry Well takes a bite out of anything that lands on it — from SOMEBODY ELSE.
+      // `this.cast` is non-null for the whole of a cast the player is making, so absorbing your
+      // own shield (which would make Focus go UP after spending it, i.e. regeneration wearing a
+      // hat) is structurally impossible rather than merely unintended.
+      const onMe = !target || target === (this.w && this.w.combat && this.w.combat.player);
+      if (onMe && !this.cast) this.absorbOnHit(frame, t.effect, mag);
       if (rec.remaining_f > 0) this.active.push(rec);
       else if (rec._undo) rec._undo();          // an instantaneous effect never holds a lease
+      if (census && census.changed) anyChanged = true;
       this._emit(frame, 'effect_apply', {
         effect: t.effect, magnitude: round2(mag), duration_f: rec.remaining_f,
         target: target ? target.id : 'self', spell: spell.id,
+        // The SCHOOL this effect belongs to and the CHARACTER-SHEET SKILL it banks into. Wave 1
+        // carried neither, so `character/skilluse.js` fell back to `'sorcery'` for every spell
+        // of every school — and would have banked into it, had there been anything to bank into.
+        school: e.school, skill: SCHOOL_TO_SKILL[e.school] || null,
         // RI-MAG06's paired read, taken by the code that did the work.
         consumer: census ? census.consumer : null,
         before: census ? census.before : null,
@@ -839,10 +1144,90 @@ export class MagicSystem {
       });
       out.push(rec);
     }
+    this._creditCast(frame, spell, anyChanged);
     return out;
   }
 
+  /**
+   * RI-PRG03 §3: `cast_effective` — "Focus, which does not come back". The whole of
+   * GAP-W1-magic-skill-frozen's return path is this method.
+   *
+   * It emits ONE `cast_effective` event onto the shared bus per cast that actually delivered,
+   * carrying the school the spell belongs to. `character/skilluse.js` reads it and banks into
+   * `sim.progression.skills[skill]`, which is the same register `this.skills` is a view of — so
+   * casting warding spells raises warding, which raises what you can attune, which is the loop
+   * that did not exist.
+   *
+   * Three guards, each of which a naive version gets wrong:
+   *  - once per CAST, not once per effect and not once per body an area spell touches (`serial`);
+   *  - only if a handler actually MOVED a consuming system (`changed`) — a fireball into empty
+   *    air is a spent resource, but RI-PRG03 §4's Cost Gate prices the consumed thing, and what
+   *    a whiffed cast consumes is Focus, so it banks at a quarter rate rather than not at all;
+   *  - the school comes from the effects, so a multi-school spell credits the school of its
+   *    FIRST effect and never silently credits sorcery.
+   */
+  _creditCast(frame, spell, changed) {
+    const bus = this.w && this.w.bus;
+    if (this._creditDisabled) return null;   // harness self-test only; see api.__breakCastCredit
+    if (!bus || !spell || !spell.effects || !spell.effects.length) return null;
+    const serial = this.cast && this.cast.serial ? this.cast.serial : `f${frame}:${spell.id}`;
+    if (this._creditedSerial === serial) return null;
+    this._creditedSerial = serial;
+    const e0 = this.effects[spell.effects[0].effect];
+    const school = e0 ? e0.school : 'sorcery';
+    const skill = SCHOOL_TO_SKILL[school] || 'sorcery';
+    const focus = this.cast && this.cast.focusSpent ? this.cast.focusSpent : (spell.focus_base || 1);
+    const ev = bus.emit(frame, 'cast_effective');
+    ev.spell = spell.id; ev.school = school; ev.skill = skill;
+    ev.focus_spent = round2(focus);
+    ev.delivered = !!changed;
+    // A cast that moved nothing still spent the Focus. Quarter weight, never zero — otherwise a
+    // school you can only practise on a live target is unpractisable at the skill that gets you
+    // to a live target.
+    ev.cost = round2(changed ? focus : focus * 0.25);
+    return ev;
+  }
+
   _applySelf(frame, spell) { return this.applyEffects(frame, spell, null, this.wil); }
+
+  /**
+   * Cast on the caster with no geometry. Used by the harness to measure what an effect DOES
+   * without also measuring whether a projectile connected.
+   *
+   * It is NOT a back door. Every gate a pressed cast passes through is enforced here in the
+   * same order — attunement, catalyst, silence, Focus, and S29's travel fence — and the Focus
+   * is spent. An effect that a player could not deliver cannot be delivered through this.
+   */
+  castNow(frame, spellId) {
+    const s = this.spellOf(spellId);
+    if (!s) throw new Error(`castNow: no spell '${spellId}'`);
+    if (!this.attuned.includes(spellId)) return { cast: false, refused: 'not_attuned' };
+    if (this.silenced) return { cast: false, refused: 'silenced' };
+    if (MagicSystem.carriesTravel(s) && !this._fenceDisabled) {
+      const fence = this.travelFence(frame);
+      if (fence) {
+        this._lastTravelRefusal = { spell: spellId, ...fence };
+        this._emit(frame, 'travel_refused', { spell: spellId, ruling: 'S29', ...fence });
+        return { cast: false, refused: 'travel_in_combat', fence };
+      }
+    }
+    const cost = this.costOf(s);
+    if (this.focus < cost) return { cast: false, refused: 'no_focus', have: round2(this.focus), need: round2(cost) };
+    this.focus -= cost;
+    this.stats.casts++; this.stats.focusSpent += cost;
+    this._castSerial = (this._castSerial || 0) + 1;
+    this.cast = { spellId, spell: s, class: s.class, startFrame: frame, focusSpent: cost, released: true, serial: this._castSerial };
+    this._emit(frame, 'focus_spend', { spell: spellId, amount: round2(cost), focus_after: round2(this.focus) });
+    const rows = this._applySelf(frame, s);
+    this.cast = null;
+    return { cast: true, spell: spellId, focus_spent: round2(cost), focus_after: round2(this.focus), effects: rows.map((r) => r.effect) };
+  }
+
+  /** Put buildup on a body's S11 meter. The threshold and the proc are still the game's. */
+  addBuildupTo(frame, body, kind, amount) {
+    if (!body) return null;
+    return addBuildup(this, frame, body, kind, amount);
+  }
 
   /** The world point the geometry resolved at, set by the bridge for the duration of one apply. */
   setContactPoint(at) { this.contactAt = at ? [at[0], at[1], at[2]] : null; }
@@ -974,6 +1359,30 @@ export class MagicSystem {
     if (this.cast && this.cast.abortable) this.abortRitual(frame, 'damage');
   }
 
+  /**
+   * S27's one legal exception, and RI-CHR03's Dry Well made observable at last.
+   *
+   * "A birthsign, item or enchantment may grant Focus as a DISCRETE, CONSUMED, ONE-SHOT effect,
+   * never as a rate." `spell_absorption` was derived in `character/derive.js` and consumed by
+   * nothing — the round-2 critic's finding — so the sign's power was as unobservable as its
+   * drawback. One grant per effect that lands on you, clamped at the reservoir, on the event
+   * stream with the magnitude it came from.
+   */
+  absorbOnHit(frame, effectId, magnitude) {
+    const frac = this.spellAbsorption || 0;
+    if (!(frac > 0) || !(magnitude > 0)) return 0;
+    const before = this.focus;
+    const gained = Math.min(this.focusMax - this.focus, magnitude * frac);
+    if (gained <= 0) return 0;
+    this.focus += gained;
+    this._emit(frame, 'focus_absorb', {
+      effect: effectId, magnitude: round2(magnitude), fraction: frac,
+      gained: round2(gained), focus_before: round2(before), focus_after: round2(this.focus),
+      one_shot: true, ruling: 'S27',
+    });
+    return gained;
+  }
+
   onEnterCombat(frame) {
     if (this.cast && this.cast.abortable) this.abortRitual(frame, 'combat');
   }
@@ -1050,7 +1459,7 @@ export class MagicSystem {
     const unknown = terms.map((t) => t.effect).filter((id) => !this.knownEffects.has(id));
     if (unknown.length) return { refused: true, gate: 'effect_knowledge', reason: `you do not own a spell for: ${unknown.join(', ')}`, notes };
     // GATE 2 — effect count, from skill. This is the only gate that refuses on a legal tuple.
-    const relevant = [...schools].map((s) => this.skills[s] || 0);
+    const relevant = [...schools].map((s) => (this.skills[s] || 0) + (this.skillFortify[s] || 0));
     const maxEffects = Math.min(5, 1 + Math.floor(Math.max(...relevant) / 25));
     if (terms.length > maxEffects) {
       return { refused: true, gate: 'effect_count', reason: `${terms.length} effects needs skill ${(terms.length - 1) * 25}; your best relevant school is ${Math.max(...relevant)} (allows ${maxEffects})`, notes };
@@ -1248,17 +1657,29 @@ export class MagicSystem {
     const out = [];
     const bodies = this.w && this.w.combat ? this.w.combat.bodies : [];
     for (const b of bodies) {
-      if (!b.status && !b.statusProc && !b.paralysedUntil) continue;
+      // Every body, always. A census that skips the bodies nothing has been cast at has no
+      // control row, and RI-MAG06 M2's paired read needs one.
       out.push({
         id: b.id,
         buildup: b.status ? Object.fromEntries(Object.entries(b.status).map(([k, v]) => [k, round2(v)])) : {},
         procs: b.statusProc ? { ...b.statusProc } : {},
         paralysed: !!(b.paralysedUntil && b.paralysedUntil > 0),
-        mitigation: round4(b.mitigation === undefined ? 1 : b.mitigation),
+        // W1-14 round 3: one multiplier per DAMAGE KIND, plus `shield`'s flat physical term.
+        // The old single `mitigation` field is gone rather than kept as an alias, because an
+        // alias is exactly how a critic reads "the ward moved" and concludes the ward works.
+        wards: b.wards ? Object.fromEntries(Object.keys(b.wards).sort().map((k) => [k, round4(b.wards[k])])) : null,
+        shield_flat: round2(b.shieldFlat || 0),
         armour_rating: round2(b.armourRating === undefined ? 0 : b.armourRating),
         ward_charges: b.wardCharges || 0,
         yielded: !!b.yielded, silenced: !!b.silenced, frenzy_target: b.frenzyTarget || null,
         hp: round2(b.hp), hp_max: round2(b.hpMax),
+        // The consuming systems the four previously-unread procs write into, so the paired read
+        // RI-MAG06 M2 requires is one call rather than four.
+        stamina: round2(b.stamina), stamina_max: round2(b.staminaMax),
+        poise_health: round2(b.poiseHealth), poise_health_max: round2(b.poiseHealthMax),
+        move_speed_mult: round3(b.moveSpeedMult === undefined ? 1 : b.moveSpeedMult),
+        heal_blocked: !!(b.healBlockedUntil && b.healBlockedUntil > 0),
+        frostbitten: !!b.frostbitten, concussed: !!b.concussed,
         equip_load_pct: round2(b.equipLoadPct), roll_class: b.tier,
       });
     }

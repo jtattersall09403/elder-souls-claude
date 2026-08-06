@@ -228,22 +228,55 @@ frame `f0`; run 400 frames with no further input.
 - **FAIL** if any executes *later* (i.e. was queued rather than dropped).
 - **FAIL** if walking, turning, camera, lock-on, or menu input is blocked.
 
+**M6b — M-STAM, the margin gate. *(ADDED wave 1, BAR-CRITIQUE-W1-09-R1 §R2.)*** M6 tests
+stamina **exactly zero**. The interesting case — and the one the whole economy turns on — is
+`0 < stamina < cost`, and nothing in the corpus tested it. This is where `RI-CMB07`'s row-28
+invariant now lives, because it is an **engine** property and row 28 was measuring a **bot**:
+in `W1-09` round 3 a pilot with a `staminaFloor` that declined to over-commit produced row
+28 = 0 on a build whose denial worked, and the item's automatic fail capped it at 2.
+
+For every action in §B, and for each of `cost − 1`, `cost − 0.1`, `cost`, `cost + 0.1`:
+- Set stamina to the value, inject the action on a known frame, read the trace.
+- **FAIL** unless the two sub-cost values emit `INPUT_DROPPED` with `reason: "no_stamina"` and
+  no state change, and the two at-or-above values execute and deduct in full on `first_frame`.
+- **FAIL** if the drop is queued, partially executed, or clamps the spend (`RI-CMB02` §D.6:
+  *"Not queued, not partially executed"*).
+- **FAIL** if the boundary is not exactly `cost` — an off-by-epsilon here is how a build ships an
+  economy that never bites.
+- Run the mirror case for **enemies**. The rule is symmetric or the economy is a player tax.
+
 **M7 — Distribution diff (the headline).** Run the RI-CMB07 exemplar input script against
 our build; compute the §E statistics from our trace; diff against the exemplar column.
 - Score each row inside/outside its acceptance band.
 - **FAIL** if `inputs dropped for insufficient stamina == 0`.
 
+> **M7 is `corpus_debt` while `RI-CMB07`'s exemplar carries `INVALIDATED`. *(ADDED wave 1,
+> BAR-CRITIQUE-W1-09-R1 §R2.)*** M7 replays *"the RI-CMB07 exemplar input script"* and compares
+> against *"the exemplar column"*. Both have been invalidated since wave 0 and neither has been
+> regenerated, so M7's 10 points have been unearnable for the whole of wave 1 for a reason no
+> builder can address. Handle it exactly as `RI-CMB07` §0.1 handles M1: **remove M7's weight from
+> both numerator and denominator, report raw and runnable on the same line, record the debt
+> against the corpus and not against the build, and restore it the moment the exemplar returns.**
+> Its `inputs dropped == 0` clause is preserved and strengthened meanwhile by M6b, which does not
+> depend on any fixture.
+
 ## Scoring
 
 | Check | Weight | Pass condition |
 |---|---|---|
-| M1 regeneration curve | 15 | Delay exactly 42 f, slope exact, linear |
-| M2 delay re-arming | 10 | Single global re-armed delay |
-| M3 cost census | 15 | All §B costs exact, applied once, on frame 1 |
-| M4 block formula | 20 | Both formulas exact and independent |
-| M5 guard break | 20 | All seven sub-conditions, symmetric for enemies |
-| M6 zero-stamina gate | 10 | Drops, never queues; free actions stay free |
-| M7 distribution diff | 10 | ≥ 5 of 7 rows inside band |
+| M1 regeneration curve | 13 | Delay exactly 42 f, slope exact, linear |
+| M2 delay re-arming | 9 | Single global re-armed delay |
+| M3 cost census | 13 | All §B costs exact, applied once, on frame 1 |
+| M4 block formula | 18 | Both formulas exact and independent |
+| M5 guard break | 18 | All seven sub-conditions, symmetric for enemies |
+| M6 zero-stamina gate | 9 | Drops, never queues; free actions stay free |
+| **M6b M-STAM margin gate** | **10** | Boundary exactly at `cost`, both directions, both sides |
+| M7 distribution diff | 10 — **`corpus_debt` while the `RI-CMB07` exemplar is INVALIDATED** | ≥ 5 of 7 rows inside band |
+
+> **Weights re-cut wave 1 (BAR-CRITIQUE-W1-09-R1 §R2) to make room for M6b, which is new work.**
+> ~~M1 15, M2 10, M3 15, M4 20, M5 20, M6 10~~ → 13 / 9 / 13 / 18 / 18 / 9, total 100 with M6b at
+> 10. **No band moved and no pass condition weakened**; the 10 points come out of the existing
+> checks proportionally, so a build that passed everything before has 10 points of new work.
 
 - **≥ 90** — parity.
 - **70–89** — gap named, remediable.

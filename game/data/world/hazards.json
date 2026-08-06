@@ -1,6 +1,6 @@
 {
   "schema": "elder-souls/hazards@1",
-  "provenance": "RI-WLD11 §2 and §5. The thirteen signature hazards are the reference item verbatim; the six shared ones are W1-01, and are what make each region's hazard shape unique (RI-WLD11 M63 static half).",
+  "provenance": "RI-WLD11 \u00a72 and \u00a75. The thirteen signature hazards are the reference item verbatim; the six shared ones are W1-01, and are what make each region's hazard shape unique (RI-WLD11 M63 static half).",
   "hazards": [
     {
       "id": "press-gang-water",
@@ -82,7 +82,9 @@
         "spell:resist-common-disease"
       ],
       "applies_to_npcs": true,
-      "scales_with_level": false
+      "scales_with_level": false,
+      "affliction_kind": "disease",
+      "affliction_name": "The Droops"
     },
     {
       "id": "comb-collapse",
@@ -302,7 +304,9 @@
         "item:mask"
       ],
       "applies_to_npcs": true,
-      "scales_with_level": false
+      "scales_with_level": false,
+      "affliction_kind": "disease",
+      "affliction_name": "Vat-lung"
     },
     {
       "id": "salt-storm",
@@ -487,7 +491,9 @@
         "item:mask"
       ],
       "applies_to_npcs": true,
-      "scales_with_level": false
+      "scales_with_level": false,
+      "affliction_kind": "disease",
+      "affliction_name": "Ash-lung"
     },
     {
       "id": "hist-sap-fume",
@@ -513,7 +519,9 @@
         "route:upwind-of-the-bole"
       ],
       "applies_to_npcs": true,
-      "scales_with_level": false
+      "scales_with_level": false,
+      "affliction_kind": "disease",
+      "affliction_name": "Sap-dream"
     }
   ]
 }

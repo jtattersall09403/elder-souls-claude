@@ -67,6 +67,10 @@ export class Traversal {
     this.depth = 0;
     this.submerged = false;
     this.breath = this.cfg.water.breath_max_s;
+    // Seam S19's two water effects write these, and this file reads them. Both false for every
+    // body that has not been enchanted, so a run with no magic in it behaves exactly as before.
+    this.breathesWater = false;
+    this.buoyant = false;
     this.mire = 0;
     this.mireLastFootfall = 0;
     this.mired = false;
@@ -259,7 +263,10 @@ export class Traversal {
     // ---- 7. what the water costs --------------------------------------------------------------
     const W = C.water;
     this.regenSuppressedNow = W.regen_suppressed_in.includes(this.band);
-    const drain = (moving && (dx !== 0 || dz !== 0) ? W.stamina_drain_moving_per_s : W.stamina_drain_still_per_s)[this.band] || 0;
+    let drain = (moving && (dx !== 0 || dz !== 0) ? W.stamina_drain_moving_per_s : W.stamina_drain_still_per_s)[this.band] || 0;
+    // Seam S19: `buoyancy` holds you up, so the water stops costing you to be in. Not a frame
+    // number and not a denial removed — S25 keeps both — just the stamina the band charges.
+    if (this.buoyant) drain = 0;
     if (drain > 0) {
       this._spendStamina(p, drain / 60);
       if (W.regen_delay_rearmed_in.includes(this.band)) {
@@ -282,7 +289,12 @@ export class Traversal {
     // Submerged = the water surface is above the head of a 1.8 m body standing on the bottom.
     const head = p.pos[1] + W.submerge_head_clearance_m;
     this.submerged = surf !== null && surf >= head;
-    if (this.submerged) {
+    // Seam S19: `breathe_water` is a real answer to a real drown clock (W1-14 round 3). Wave 1's
+    // handler wrote a magic-private `M.water.drownF` that nothing here read, so the spell whose
+    // entire purpose is "you do not drown" left you drowning on schedule.
+    if (this.submerged && this.breathesWater) {
+      this.breath = W.breath_max_s;
+    } else if (this.submerged) {
       this.breath = Math.max(0, this.breath - 1 / 60);
       if (this.breath <= 0) {
         const dmg = p.hpMax * (W.drown_hp_pct_per_s / 100) / 60;
@@ -410,6 +422,7 @@ export class Traversal {
         sliding: this.slide > 0, slide_mps: +this.slide.toFixed(2),
         submerged: this.submerged, sinking: !!this.sinking, breath_s: +this.breath.toFixed(2),
         breath_max_s: this.cfg.water.breath_max_s,
+        breathes_water: !!this.breathesWater, buoyant: !!this.buoyant,
         stamina_drain_per_s: this.staminaDrainPerS || 0,
         regen_suppressed: !!this.regenSuppressed,
         mire: this.mire, mired: this.mired,

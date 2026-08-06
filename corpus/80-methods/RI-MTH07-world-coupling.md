@@ -76,6 +76,41 @@ coupling = |observed_b − observed_a| / |predicted_b − predicted_a|
 Control: at 30 m (beyond the archetype's 16 m sight radius) neither configuration ever alerts, which
 proves the probe is driving a live entity and not a stub. The model is real; the coupling is zero.
 
+### D. The partial-world harness — *(ADDED wave 1, BAR-CRITIQUE-W1-09-R1, adopting the extension filed by the `W1-09` round-3 critic)*
+
+This item makes a critic prove a **model** is consumed. It said nothing about an **instrument that
+claims to reproduce the world**, and wave 1 produced that failure too, on the acceptance number
+for a whole remediation:
+
+> `tools/lib/combat-node.mjs` states: *"if a number measured here disagrees with the same number
+> measured through `window.__HARNESS`, the disagreement is a defect in this file and the browser
+> wins. `cmb-reach.mjs --verify` runs a sample of rows through both and fails if they differ, so
+> the claim is checked rather than asserted."* **`--verify` does not exist.** Passing the flag is
+> silently ignored and the run exits 0. Two files assert a check that was never written.
+
+The critic wrote the diff by hand and found the node arena calls `CombatSystem.step` and nothing
+else, while the engine's fixed step also runs world collision, `settleWorld`, encounters, skill
+use, NPCs, the stealth system, route and camera and one seeded RNG draw. **The enemy's
+`alertState` is written by the stealth system, so in the node arena the boss never turns between
+attacks** — by frame 1700 its yaw had drifted 85.5° off the player. A 200-frame reach sweep agrees
+with the browser to the digit; a 1700-frame fight does not, and the fight was the acceptance
+instrument.
+
+**Binding, on the same terms as §B:**
+
+1. **Any harness that partially instantiates the simulation must ship a `VERIFY` mode** that
+   replays sampled scenarios through the **shipping entry point** and fails on any divergence in
+   the state sequence, not merely in the headline number.
+2. **A critic may not cite a number from such a harness without running its `VERIFY`.** A cited
+   number from an unverified partial harness is `unmeasurable ⇒ 0`, exactly as a model with no
+   consumer is.
+3. **A comment asserting a check is not a check.** Where a source file claims a verification
+   exists, the critic greps for it. This is `RI-MTH04`'s discipline applied to the instrument
+   rather than to the measurement, and it is cheap: one `grep`, once, per cited harness.
+4. **Divergence length matters.** `VERIFY` must include at least one scenario **longer than the
+   longest run the harness is cited for**. The round-3 failure was invisible at 200 frames and
+   total at 1700, and a `VERIFY` sampling only short runs would have passed it.
+
 ## Comparison method
 
 1. **Enumerate the piece's models** from the harness surface: every method that returns a computed
@@ -102,6 +137,7 @@ proves the probe is driving a live entity and not a stub. The model is real; the
 | Coupling measured | all models `coupling ∈ [0.95, 1.05]`, controls clean | all models `coupling > 0`, controls clean | any `coupling == 0` |
 | Hand-feed audit | zero harness methods require injected world facts | injected facts exist but the derived path is demonstrated | the rule is only reachable by hand-feeding |
 | Instrumentation honesty | trace fields with no consumer are declared | declared | undeclared trace-only fields presented as implementation |
+| **Harness fidelity (§D)** *(added wave 1)* | every partial-world harness cited ships a `VERIFY` that replays through the shipping entry point, including a scenario longer than any cited run, and it was run | `VERIFY` exists and was run | a number cited from a partial harness with no `VERIFY`, or with a `VERIFY` that is only asserted in a comment |
 
 **Failure threshold: any `coupling == 0` on a model the piece's own reference items require to act.**
 That is binary and it is the point of the item.

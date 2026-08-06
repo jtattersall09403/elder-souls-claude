@@ -210,10 +210,15 @@ export function applyBirthsignToPools(pools, character) {
   }
   for (const d of character.drawbacks || []) {
     const db = d.drawback || {};
-    if (db.removes_system === 'focus_regeneration') {
-      // See the header. This is the one thing RI-MAG01 §A leaves that CAN be removed.
+    // S27, wave 1: Focus never regenerates for anybody, so a drawback that removes "Focus
+    // regeneration" removes a system nobody has and is definitionally unobservable — which is
+    // exactly what W1-07 round 2 reported and half of what S27 was referred to settle. The one
+    // thing S27 leaves available is the hearth refill, so that is what The Dry Well takes.
+    // `focus_regeneration` is still accepted so an unamended data file keeps working, and
+    // `hearth_focus_restore` is the name the amended `birthsigns.json` now uses.
+    if (db.removes_system === 'hearth_focus_restore' || db.removes_system === 'focus_regeneration') {
       out.focus_restores_at_hearth = false;
-      out.birthsign_terms.push({ sign: d.sign, kind: 'drawback', removes: 'focus_restore_at_hearth', scale: 1.0, via: d.via || null });
+      out.birthsign_terms.push({ sign: d.sign, kind: 'drawback', removes: 'focus_restore_at_hearth', scale: 1.0, via: d.via || null, ruled_by: 'S27' });
     }
     if (db.removes_system === 'nearest_well_respawn_and_recall_targeting') {
       out.respawn_rank = 2;                        // the SECOND-nearest sapwell

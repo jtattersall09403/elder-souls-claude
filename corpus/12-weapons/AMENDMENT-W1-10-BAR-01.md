@@ -8,8 +8,18 @@ reason: corpus_hole
 provenance: constructed
 confidence: high
 filed_by: bar-critic, wave 1, BAR-CRITIQUE-W1-10-R1 §R5 hole H5
-status: amendment request — RI-CMB02 belongs to critic.combat and is not this critic's to edit (CORPUS-CONTRACT §5)
+status: GRANTED and APPLIED, wave 1, by BAR-CRITIQUE-W1-09-R1 §R1. The amended text is written into `RI-CMB02` §C (boxed amendment under the two chain rows), §E (per-link readability) and M4b, and a matching automatic fail was added. `RI-WPN02` §B may now carry the per-class columns.
 ---
+
+> **RULING — BAR-CRITIQUE-W1-09-R1 §R1, wave 1. GRANTED IN FULL.**
+> The defect is real and is a direct contradiction of `INTENT-AUDIT-CHARTER` §5.4 (*"each weapon
+> subtly unique — light, heavy, **combos**, roll-attack, backstep-attack"*). Where an item's
+> language and the brief's differ, the brief wins (§7). Granted with one clarification the
+> request did not make explicit: **only tempo is overridable.** Active frames, stamina, motion
+> value and poise damage stay on the shared rows, so the budget cannot become a balance lever;
+> and the ±0.20 budget is **bounded** by the new per-link `recovery / startup ≥ 1.40` rule — the
+> worst legal corner (startup ×0.98, recovery ×0.85) multiplies the base ratio by 0.867 and is
+> illegal for any class sitting near §E's floor. See `RI-CMB02` §C for the applied text.
 
 ## The defect
 

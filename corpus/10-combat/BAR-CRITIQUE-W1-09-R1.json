@@ -1,0 +1,242 @@
+{
+  "critic": "bar-critic",
+  "area": "10-combat",
+  "pass": "W1-09-R1",
+  "date": "2026-08-06",
+  "scope": {
+    "reference_items": [
+      "RI-CMB01", "RI-CMB02", "RI-CMB03", "RI-CMB04", "RI-CMB05", "RI-CMB06",
+      "RI-CMB07", "RI-CMB08", "RI-CMB09", "RI-CMB10", "RI-CMB11",
+      "RI-AI01", "RI-AI02", "RI-AI03", "RI-AI04", "RI-AI05", "RI-AI06", "RI-AI07"
+    ],
+    "artifacts_read": [
+      "corpus/10-combat/RI-CMB07-exemplar-scenario.json",
+      "corpus/10-combat/RI-CMB07-exemplar-trace.segments.jsonl",
+      "corpus/10-combat/RI-CMB07-exemplar-frames-150-265.jsonl",
+      "corpus/10-combat/RI-CMB07-exemplar-frames-990-1125.jsonl"
+    ],
+    "doctrine": [
+      "INTENT-AUDIT-CHARTER.md", "ARBITRATION.md", "SCORING.md", "CORPUS-CONTRACT.md",
+      "RI-MTH07-world-coupling.md", "orchestration/EFFORT-POLICY.md"
+    ],
+    "amendments_ruled": ["AMENDMENT-W1-10-BAR-01"],
+    "worked_example": [
+      "corpus/90-verdicts/wave1/W1-09", "corpus/90-verdicts/wave1/W1-09-r2",
+      "corpus/90-verdicts/wave1/W1-09-r3"
+    ],
+    "predecessor": "corpus/12-weapons/BAR-CRITIQUE-W1-10-R1.md"
+  },
+
+  "verdict": "NOT_SATISFIED",
+  "verdict_note": "These bars can prove the machine is correct. They cannot prove the fight is a fight - and three of the twelve bars W1-09 was scored against could not be passed by any build whatsoever, for reasons belonging to the corpus and to the piece boundary rather than to the builder. Seven defects: four unreachable-by-construction bars, one instrument with a free parameter under the control of the party it measures, one ruling with no enforcement anywhere in the corpus, and one hole where nothing measured whether a fight is good. All seven fixed or filed; the area is not cleared until four of them have been RUN once.",
+
+  "bars_or_build": {
+    "answer": "BOTH, and the two have been masking each other for three rounds",
+    "bars_side": "With RI-AI01 pinned at 0 by a piece that does not exist and RI-CMB07 capped at 2 by an artifact the corpus invalidated in wave 0 and never regenerated, the other ten items must average 8.2 for W1-09 to reach a wave-1 gate of 7.0. SCORING 1.1 requires a passed blind comparison for every 8; SCORING 4's anti-inflation audit fires above 15% of scores >= 8. The only configuration in which W1-09 could clear its gate is one the corpus instructs the project to disbelieve on sight. That, not builder incompetence, is why three dispatches produced 4, 4, 4.",
+    "build_side": "Round 3's own measurements contain two coupling==0 models (bodies.separation, sweep.substeps) that RI-MTH07 makes a binary dimension-zero, and a substep ablation that RI-CMB04 M2 already defines as 'sweeping is not actually implemented'. Both were recorded as 'partial' or filed as a proposed extension. The weapon volume still cannot reach a stationary target at 1 m, the body corridor pays the blade's damage, two player weapons have interior gaps, and RI-CMB06 has sat at 30/100 for three rounds with no dependency blocking it. Round 3 was scored TOO GENEROUSLY, not too harshly. Fixing the bars does not rescue this build.",
+    "consequence": "Do not dispatch W1-09 round 4 against the old bars. Dispatch it against RI-CMB04 M8/M9 and the RI-CMB07 section F falsification triple, and dispatch the exemplar regeneration as its own piece with its own owner."
+  },
+
+  "decomposition_wrong": {
+    "answer": true,
+    "mechanism": "The item set was assembled by directory (ls corpus/10-combat/) rather than by CORPUS-CONTRACT section 4's rule that a critic is handed exactly the items whose judges: list contains the piece's declared path.",
+    "evidence": {
+      "declared_paths": ["combat.hitbox.sweep", "combat.hitbox.resolution", "combat.dodge.iframes", "combat.stamina.costs", "platform.determinism.harness"],
+      "items_judging_those_paths": ["RI-CMB01", "RI-CMB03", "RI-CMB04", "RI-CMB07", "RI-AI02", "RI-CAM06", "RI-MTH01", "RI-MTH02", "RI-MTH07", "RI-PLT01"],
+      "scored_but_judging_none_of_them": ["RI-CMB02", "RI-CMB05", "RI-CMB06", "RI-CMB09", "RI-CMB11", "RI-AI01", "RI-AI03"],
+      "judging_a_declared_path_but_never_scored": ["RI-MTH01", "RI-MTH02", "RI-MTH07", "RI-PLT01"],
+      "worst_case": "RI-AI01 judges combat.enemy.perception/statemachine/movement/leash and was scored 0 - 'unmeasurable: there is no enemy AI in this build' - into the mean of a piece that was never going to ship one, three rounds running.",
+      "unowned_seam": "combat.feedback.hitstop is judged by RI-WPN05 + RI-CAM06 + RI-AUD01, is on neither W1-09's path list nor its item list, and is implemented by W1-09's resolver. W1-10 round 2 found the hitstop tables INERT. Two pieces, one hole, no owner - RI-MTH07 'How we lose' clause 2 word for word."
+    },
+    "fix": "CORPUS-CONTRACT section 4 amended in two halves: (1) a piece is scored against the items that judge the paths it declares, and an item judging a path it does not own becomes a cross-piece coupling debt owned by the seam, recorded at its measured value against the piece that does own it - never averaged in, never forgiven; (2) a piece's declared path set must cover what it ships, checked at verdict time, a mismatch is a method_deviation. Shipping only (1) would remove three bars and add none.",
+    "net_effect": "W1-09 stops being charged for a piece nobody built and starts being charged for hitstop, latency, wall-clock delivery and harness coupling, which it was ducking."
+  },
+
+  "referrals": [
+    {
+      "id": "R1",
+      "subject": "AMENDMENT-W1-10-BAR-01: RI-CMB02 section C's chain multipliers are class-uniform",
+      "ruling": "GRANTED IN FULL and APPLIED",
+      "verified": "Direct quotation: section C published one row per chain position applied to every class alike (x0.78/x1.00/x1.05 hit 2, x0.78/x1.00/x1.35 hit 3), and RI-WPN02 section B's authority note makes RI-CMB02 binding on frame values, so no builder could deviate. Every combo in the game shared one rhythm envelope by corpus construction.",
+      "brief_conflict": "INTENT-AUDIT-CHARTER 5.4 names combos explicitly - 'each weapon subtly unique - light, heavy, combos, roll-attack, backstep-attack'. Charter 7: where an item's language and the brief's differ, the brief wins. Drift type: NARROWED.",
+      "clarification_added_on_grant": "Only tempo is overridable - active, stamina, motion value and poise damage stay on the shared rows so the budget cannot become a balance lever. The +/-0.20 budget is BOUNDED by the new per-link readability rule: the worst legal corner (startup x0.98, recovery x0.85) multiplies the base recovery/startup ratio by 0.867, giving 1.21 against a 1.40 floor, and is illegal.",
+      "applied_to": ["RI-CMB02 section C", "RI-CMB02 section E", "RI-CMB02 M4b", "RI-CMB02 Scoring automatic fails", "AMENDMENT-W1-10-BAR-01 front matter and ruling block"],
+      "consequence_for_Rh": "AMENDMENT-W1-10-CRITIC-01's rejection of a frame-side chain metric (-0.976 correlation with r1_startup) was correct at the time and is now obsolete AS A REASON. RI-WPN03 section D.3's Chg stays adopted; readmitting a frame-side companion is RI-WPN03's call, on evidence."
+    },
+    {
+      "id": "R2",
+      "subject": "Is a 24-to-29-row banded fingerprint of one scripted fight the right instrument?",
+      "ruling": "Right KIND of instrument, wrong instrument as built. Replaced, not relaxed.",
+      "core_defect": "Every banded row is a joint function of the engine and the player's policy, and M2 let the party being measured author the policy. Round 1: a bot that was never hit. Round 2: eatRate, whose own comment said 'it is where rows 13, 14 and 21 come from'. Round 3: staminaFloor, which took rows 16/17/22/28 out of band and fired the item's automatic fail on a build whose stamina denial worked. An instrument with a free parameter under the control of the thing it measures is not a measurement.",
+      "unreachability": {
+        "M1_weight": 30,
+        "M1_status": "replays RI-CMB07-exemplar-scenario.json, which carries an INVALIDATED block a conforming harness is DESIGNED to fail on. Unearnable by any build since wave 0.",
+        "M2_weight": 40,
+        "M2_status": "requires 'our real game with real AI ... RI-AI01-05 govern it'. W1-12 does not exist. Unearnable.",
+        "max_attainable_native": 30,
+        "item_bands": "<70 = we lose; ladder anchor row puts native 70 at ladder 4",
+        "conclusion": "RI-CMB07 could not exceed ladder 3 under any build in wave 1. It was scored 2, 3, 2. RI-CMB03 M7 (weight 10) dies to the same fixture."
+      },
+      "fixes_applied": [
+        "section 0.1 - M1's 30 points are corpus_debt: removed from numerator AND denominator, raw and runnable reported on the same line, debt filed against the corpus not the build, expiring by its own condition when the exemplar is regenerated. Bands unchanged and applied to the renormalised score.",
+        "section F - ES-PILOT/1, ES-MASHER/1, ES-TURTLE/1 published by the corpus with every threshold fixed, permitted inputs enumerated, forbidden inputs (the enemy's future action, its internal timers, its declared frame table) VOID on use, and explicitly no greed / eat-rate / aggression / stamina-floor knob.",
+        "M2 falsification triple - ES-PILOT/1 >= 25 of 29 banded rows, ES-MASHER/1 <= 13, ES-TURTLE/1 <= 13, both degenerate policies must die to an encounter the pilot survives. A fingerprint in band however the player plays is measuring nothing, and nothing in the corpus detected that before.",
+        "M2 split - M2-CTRL (25, declared fixed enemy script, runnable today, carries the triple) and M2-LIVE (15, real AI, recorded at 0 as a W1-09<->W1-12 seam debt). The enemy script carries the same publish-and-diff discipline as the pilot, or the free parameter moves from the bot to the boss.",
+        "M2b - >= 3 archetypes, cannot pass at n_archetypes == 1; part of M2-LIVE and carrying its seam-debt disposition.",
+        "section D.1 - banded set closed and enumerated at 26 rows (item said 24, table always showed 26; a build un-banded row 9, which it failed 5 of 5, and kept the total at 24). Which median M2 means is settled: per-row across fights.",
+        "row 28's automatic fail relocated to ES-MASHER/1; an ordinary out-of-band row under ES-PILOT/1.",
+        "RI-CMB03 M6b (M-STAM) - the margin gate at 0 < stamina < cost, four values per action, mirrored for enemies. M6 only ever tested stamina exactly zero.",
+        "RI-CMB03 M7 marked corpus_debt on the same terms as RI-CMB07 M1; weights re-cut 15/10/15/20/20/10 -> 13/9/13/18/18/9 to fund M6b at 10."
+      ],
+      "denominator_note": "24 -> 26 -> 29 holds the original 20/24 = 0.833 pass fraction: ceil(29 x 0.833) = 25. Taking >=20 of 26 would have been a quiet relaxation under cover of a counting fix and is refused. The corrected figure is very slightly STRICTER than the rule it replaces.",
+      "mode_b_prime_refusal": "UPHELD, NOT OVERTURNED. A bar that moves to meet the work stops being a bar, a dependency is not a defect in the instrument, and scoring rows 2/22/27 at 0 with the debt visible was correct. But the refusal answered a smaller question than the one in front of it, and answering it correctly is why the larger one - 70 points of unearnable weight, 30 of them the corpus's own unpaid debt - went unexamined for two further rounds. That is SCORING section 0's own category: an item that cannot reach 10 because the corpus is broken is a corpus bug.",
+      "regression_test": "Would round 3 pass under the amended item? No. Row 28 = 0 under the pilot is still out of band; 18 of 24 is still short; the masher run does not exist and is unmeasured => 0."
+    },
+    {
+      "id": "R3",
+      "subject": "Does anything in corpus/10-combat/ measure whether a fight is GOOD?",
+      "ruling": "NO. Hole filed as RI-CMB12.",
+      "demonstration": "The build passed frame censuses, i-frame windows, stamina curves, commitment grids, root-motion fidelity and determinism in three consecutive rounds while three independent critics found by hand: (1) a 120-second exemplar in which the player was never hit at all; (2) a boss whose correct answer was to walk inside it and stand still; (3) a hole in every enemy weapon arc, covered by a second volume that paid the blade's damage. Not one was caught by an instrument. A bar that depends on the critic being cleverer than the bar is not a bar.",
+      "item_filed": "RI-CMB12 - the exchange: reactability, decision divergence, and whether the fight is a decision at all",
+      "measures": {
+        "ES-REACT/1": "t_react = f_active - f_vis, where f_vis is the frame the windup pose becomes distinguishable (12 deg max joint deviation over six named joints, or silhouette IoU <= 0.92, later wins on disagreement). Budget >= 19 f@60 = 15 f human + 4 f machine from RI-CMB11's own table. lie = t_label - t_react <= 8 f@60. RI-AI02 checks the STATE window; nothing checked whether the animation is visible inside it.",
+        "ES-DIVERGE/1": "Fork the sim at 200 sampled frames, run 8 alternative actions to a 120-frame horizon, measure the spread of exchange value. DIV >= 0.06 (hard fail < 0.02 - a slideshow with a health bar), DIV_dominant <= 0.40 (hard fail > 0.70 - a solved fight), DIV_dead <= 0.15, DIV_identity <= 0.45. Rounds 1, 2 and 3 are each a high-DIV_dominant state: this single number would have caught all three at the round they appeared. M3 additionally hard-fails if do_nothing dominates more than 5% of sampled frames.",
+        "feel_citation": "M5 requires a combat verdict to cite RI-WPN05's ILS and the hitstop consumption result for the same build. Eleven combat verdicts exist with no number in them about what a hit feels like.",
+        "wall_clock_gate": "See R7."
+      },
+      "runnable_today": "Yes - needs no exemplar, no enemy AI and no tuned bot, which matters because every other quality instrument in this area is blocked on one of those three. It does need two harness surfaces that do not exist (fork/restore of full sim state, per-frame tracked-joint dump), and says so, with M2 scoring 0 fail-closed if fork/restore is absent."
+    },
+    {
+      "id": "R4",
+      "subject": "Is the CONSUMPTION check reaching corpus/10-combat/ at all?",
+      "ruling": "NO - zero of eighteen items mentioned RI-MTH07 or CONSUMPTION. Propagated in this pass. And where the equivalent check already existed it was not enforced.",
+      "measured": "grep -c 'RI-MTH07|CONSUMPTION|world-side consumer' over corpus/10-combat/*.md returned 0 for all eighteen items before this pass. ARBITRATION section 3 carries it, which is why the round-3 critic ran it: the check reached the CRITICS and never reached the ITEMS, so nothing said which models must be enumerated or what a zero costs.",
+      "under_enforcement": "Round 3 found two coupling==0 models - hitgeometry section bodies.separation (both radii zeroed: 585/2617 interpenetrating frames and 0.015 m minimum centre distance, byte-identical) and hitgeometry section sweep.substeps (4 -> 1: hit set byte-identical, 36 of 71 distances, none lost, none gained) - and recorded CONSUMPTION: partial, scoring RI-CMB04 at 55/100. RI-MTH07's threshold is binary: any coupling == 0 on a model the piece's items require to act forces that dimension to 0. 'partial' is not a disposition this check has.",
+      "sharpest_finding": "The substep ablation was ALREADY IN RI-CMB04 M2 - 'Re-run with substeps forced to 1 and confirm the sim now produces misses; if it does not, sweeping is not actually implemented and the substep parameter is decorative.' The critic measured exactly that outcome and filed it as a proposed corpus extension (M2c) rather than as the M2 failure the item already defined. The bar was adequate and was not applied.",
+      "applied_to": ["RI-CMB01", "RI-CMB02", "RI-CMB03 (via RI-CMB04's full statement)", "RI-CMB04", "RI-CMB05", "RI-CMB06", "RI-CMB07", "RI-CMB09", "RI-CMB11", "RI-CMB12"],
+      "new_check": "RI-CMB04 M9 makes the substep ablation a scored check with its own weight, failing when the set of outcomes that change between substeps=1 and the shipped value is EMPTY, so it cannot be filed away a second time."
+    },
+    {
+      "id": "R5",
+      "subject": "RI-CMB07 M3(d)'s blind test - ours won the coarse pack and lost the fine one",
+      "ruling": "VOID as run. blind_pair: not_possible until the exemplar exists. Same standard as the weapons packs.",
+      "defect": "The protocol says 'hand the critic the four M3 plots for our fight AND FOR THE EXEMPLAR'. The exemplar is INVALIDATED. Round 3 generated the counterpart 'from section D's stated fingerprint' - from this item's own published bands - and ours won. That is not a blind test of whether our fight looks like a Souls fight; it is a test of which strip better matches a table both sides can read. Identical to BAR-CRITIQUE-W1-10-R1 section R6's finding that blind packs were being passed by reciting JSON columns with the header removed.",
+      "applied": [
+        "A pack whose counterpart is generated from section D, from this item's text, or from any published design table is VOID; a verdict citing one records blind: void with the reason.",
+        "Until the exemplar is regenerated, record blind_pair: not_possible with reason 'reference artifact INVALIDATED since wave 0', per SCORING section 1's allowance. An honest not_possible is worth more than a test the build can win by reading the bar.",
+        "When the exemplar returns: both sides runtime-generated, all axis labels, band annotations and row numbers stripped, and the fine discriminator becomes a NUMERIC GATE - p90_iframe_to_hitbox <= 40 f@60. Round 3 won the coarse strip and measured 58-96 f, with the player invulnerable for 803-1014 frames against 360-443 frames of anything trying to hit it. A blind test that can be won coarsely and lost finely is not yet an instrument."
+      ]
+    },
+    {
+      "id": "R6",
+      "subject": "Is S26 as amended testable, and does corpus/10-combat/ contain a method that would have caught a body corridor paying a weapon's damage?",
+      "ruling": "Testable in principle. The corpus contained NO METHOD FOR IT WHATSOEVER, and nothing anywhere recorded what hit you.",
+      "measured": "grep for S26 / body corridor / body capsule / body hazard / root translation across RI-CMB01, RI-CMB02, RI-CMB04 and RI-CMB05 returns nothing but RI-CMB02's unrelated use of the word 'separation' in its S22 unit table. S26 imposed a positive requirement binding on every attack and required every combat critic to measure minimum reaching distance directly, confirm contiguity, and never infer reach from declared values. None of RI-CMB04's seven methods tested any of it.",
+      "drift_type": "STALLED CORRECTION in its purest form - INTENT-AUDIT-CHARTER section 6: 'a ruling amended without its enforcement amended is not fixed. Always trace a correction all the way to the check that would catch a violation.' The ruling was traced to a paragraph in ARBITRATION and stopped there.",
+      "arbitration_question_ruled": {
+        "question": "Does S26's 'use the same volume for pushing and for hitting' license a body corridor paying the weapon's damage?",
+        "ruling": "NO. THE CORRIDOR IS A HAZARD, NOT A WEAPON. A body corridor must declare its own motion_value and poise_damage, and a via:'body' hit's damage must be STRICTLY LESS than the same attack's via:'weapon' damage.",
+        "reasoning": "Measured: 96 damage whether the greatsword cut at 3.65 m or the champion's chest arrived at 0.05 m; on the player's side 14 of a dagger's 19 connecting distances and 15 of a straight sword's 36 were torso-checks paying the blade's damage. That makes reach cosmetic, which is RI-CMB02 'How we lose' #10 arriving through a door nobody was watching, and it quietly guts the entire 12-weapons area: 87 weapons differentiated by reach, in a game where reach does not decide what your damage is.",
+        "written_into": "ARBITRATION.md seam S26 (append-only amendment)"
+      },
+      "instruments_created": {
+        "RI-CMB04 M8": "For every attack, player and enemy: measured minimum reach at 0.05 m resolution against a stationary target; contiguity as a HARD FAIL; the two-volume ablation failing if removing the corridor moves minimum reach by more than 0.35 m (that difference IS the hole the corridor is covering); the root_dz=0 guard; attribution hard-failing when a body hit's damage meets or exceeds the weapon's; and one body, one radius (a player 0.30 m wide to a sword and 0.55 m wide to a wall is two characters).",
+        "RI-CMB07 section D.2": "Required via field on every HIT (closed set weapon/body/projectile/status/environment, fail-closed on unknown, emitted by the resolver never inferred), plus rows 30-32: body_share_of_hits <= 0.20, body_share_of_damage <= 0.10, mean_body_dmg/mean_weapon_dmg <= 0.50, with automatic fails above 0.50 and 1.00.",
+        "weights": "RI-CMB04 re-cut 20/25/15/20/5/10/5 -> 15/20/10/15/5/8/5 to fund M8 at 15 and M9 at 7. No band moved, no pass condition weakened. This item scored 86 in round 1 while the geometry it measures could not hit a stationary target at one metre."
+      },
+      "decomposition": "See decomposition_wrong above. Also filed: EFFORT-POLICY trigger 1 ('two consecutive rounds with no score improvement') fired on a mean whose DENOMINATOR CHANGED between the rounds it compares - round 1 scored 9 items, rounds 2 and 3 scored 12, adding RI-AI01 at a structural 0. Each round also had a visibly harsher critic; round 1 gave RI-CMB04 an 86 for the geometry described above. The trigger happened to fire on a piece that needed this critique, so the outcome was right and the reasoning was not. Recommend the trigger require a constant item set, or compare per-item deltas rather than the mean."
+    },
+    {
+      "id": "R7",
+      "subject": "Would these bars pass a game that is frame-perfect and feels like a slideshow?",
+      "ruling": "YES, and it would score 10.",
+      "reasoning": "Every one of RI-CMB07 section D's 29 statistics is a ratio of simulation frames to simulation frames or a count per fight. There is exactly one wall-clock row - row 1, fight duration - and it is the simulation frame count divided by the nominal 60. A build delivering six frames per second produces byte-identical statistics. The same is true of every frame count in RI-CMB01-06, RI-CMB05's stagger lengths and RI-CMB02's entire census. RI-CMB11 noticed and handled it with unusual honesty, assigning L1 and L4 to RI-JRN03 and RI-PLT01 'so that nobody assumes the other pair measured them' - good item hygiene that left an unowned obligation, because at the PIECE level nobody has been holding the other pair and neither item has appeared on any combat verdict.",
+      "fix": "RI-CMB12 section C makes the wall clock a GATE on any combat verdict: cite RI-PLT01's measured p50/p99 sim-step delivery for the same build, cite RI-CMB11's L2 == 0, or record blocked_on_hardware with a wave. SCORING section 0's third honest exception (SwiftShader) is an admissible reason; an indefinite one is an excuse and the debt escalates like any other.",
+      "feel_question": "'Does anything measure what a Souls player means by it feels good to hit things?' In the corpus: yes - RI-WPN05, RI-CAM06, RI-AUD01. On the combat piece: no, not once, in eleven verdicts. RI-CMB12 M5 closes it by citation rather than duplication."
+    }
+  ],
+
+  "biggest_weakness": "Every quality instrument in this area is blocked on something that does not exist, and the two that are not are pointed at the wrong thing. RI-CMB07 M1 is blocked on an artifact the corpus invalidated three waves ago and never rebuilt; M2 on a piece nobody has built; its blind pair is unbuildable and was built anyway out of the bar's own numbers; RI-AI01 on the same missing piece and averaged into the score regardless; RI-CMB03 M7 on the same missing artifact. What WAS runnable measured the builder's bot (RI-CMB07 M2's rows) and the builder's declared values (RI-CMB04, until M8). So W1-09 was judged three times almost entirely on whether its frame tables were arithmetically correct - which they largely are - while the fight itself was danger-free, then solvable by standing still, then killing the player with a torso. The bars were not wrong about the numbers. They were pointed away from the game. That is the same sentence my predecessor wrote about the weapons area, and finding it twice in two areas is the finding: this corpus systematically verifies the artifact and not the artifact's effect.",
+
+  "holes_filed": [
+    {
+      "id": "H1",
+      "what": "Nothing in corpus/10-combat/ measured whether a fight is good - whether a telegraph is readable while playing, or whether the player's decisions change the outcome.",
+      "closed_by": "RI-CMB12 (new item)"
+    },
+    {
+      "id": "H2",
+      "what": "No combat piece held the wall clock. Every statistic in the area is frames-over-frames and is byte-identical in a build running at 6 fps. RI-CMB11 assigned L1/L4 to RI-PLT01 and RI-JRN03 and neither has ever appeared on a combat verdict.",
+      "closed_by": "RI-CMB12 section C (gate)"
+    },
+    {
+      "id": "H3",
+      "what": "No instrument recorded WHAT HIT YOU. 29 statistics counting hits, none asking by what volume, on a build where 5-7 of 8 killing blows were a torso.",
+      "closed_by": "RI-CMB07 section D.2 (via field, rows 30-32) + RI-CMB04 M8.4"
+    },
+    {
+      "id": "H4",
+      "what": "Seam S26 had no enforcement method anywhere in the corpus for three rounds.",
+      "closed_by": "RI-CMB04 M8 + ARBITRATION S26 amendment naming its instrument"
+    },
+    {
+      "id": "H5",
+      "what": "ARBITRATION section 3's CONSUMPTION check had reached zero of eighteen corpus/10-combat/ items.",
+      "closed_by": "CONSUMPTION blocks in RI-CMB01/02/03/04/05/06/07/09/11/12 + RI-CMB04 M9"
+    },
+    {
+      "id": "H6",
+      "what": "No combat verdict has ever cited a number about what a hit feels like, though RI-WPN05/RI-CAM06/RI-AUD01 exist and W1-09 owns the resolver that applies hitstop.",
+      "closed_by": "RI-CMB12 M5 (mandatory citation) + CORPUS-CONTRACT section 4 amendment"
+    }
+  ],
+
+  "items_amended": [
+    {"item": "RI-CMB02", "sections": ["C", "E", "M4b", "Scoring", "CONSUMPTION"], "referral": "R1, R4"},
+    {"item": "RI-CMB03", "sections": ["M6b", "M7 corpus_debt", "Scoring weights"], "referral": "R2"},
+    {"item": "RI-CMB04", "sections": ["M8", "M9", "CONSUMPTION", "Scoring weights", "automatic fails"], "referral": "R4, R6"},
+    {"item": "RI-CMB07", "sections": ["0.1", "A (via)", "D.1", "D.2", "M2 split", "M2 triple", "M2b", "F", "Scoring", "blind pair", "How we lose 12-14", "CONSUMPTION"], "referral": "R2, R3, R5, R6"},
+    {"item": "RI-CMB01", "sections": ["CONSUMPTION"], "referral": "R4"},
+    {"item": "RI-CMB05", "sections": ["CONSUMPTION"], "referral": "R4"},
+    {"item": "RI-CMB06", "sections": ["CONSUMPTION"], "referral": "R4"},
+    {"item": "RI-CMB09", "sections": ["CONSUMPTION"], "referral": "R4"},
+    {"item": "RI-CMB11", "sections": ["CONSUMPTION"], "referral": "R4"},
+    {"item": "ARBITRATION.md", "sections": ["S26"], "referral": "R6"},
+    {"item": "CORPUS-CONTRACT.md", "sections": ["4"], "referral": "R6"},
+    {"item": "AMENDMENT-W1-10-BAR-01", "sections": ["front matter status", "ruling block"], "referral": "R1"}
+  ],
+
+  "items_created": ["RI-CMB12"],
+  "subsystem_paths_registered": ["combat.exchange.reactability", "combat.exchange.divergence"],
+
+  "thresholds_lowered": [],
+  "thresholds_lowered_note": "NONE. Every re-cut of weights takes points OUT OF existing checks to pay for new ones (RI-CMB04 -22 to fund M8/M9; RI-CMB03 -10 to fund M6b). Every renormalisation removes weight from BOTH numerator and denominator and leaves the bands untouched. The one denominator correction (24 -> 26 -> 29) holds the original 0.833 pass fraction and is very slightly STRICTER than the rule it replaces. RI-CMB07 row 28's hard fail was relocated to where it discriminates, not deleted, and the regression test is recorded: round 3 still fails under the amended item.",
+
+  "thresholds_held": [
+    "RI-CMB07 bands >=90 / 70-89 / <70 unchanged and applied to the renormalised score",
+    "RI-CMB07 M2 pass fraction 0.833 held exactly across the denominator correction",
+    "RI-CMB04 bands >=90 / 70-89 / <70 unchanged after the weight re-cut",
+    "RI-CMB03 bands unchanged after the weight re-cut",
+    "RI-CMB02 section E's recovery/startup >= 1.40 unchanged - and now binding on more links, not fewer",
+    "RI-CMB02 section C's default chain multipliers unchanged in value",
+    "The Mode B-prime refusal - UPHELD, not overturned",
+    "Wave-1 gate of 7.0 - untouched"
+  ],
+
+  "conditions_for_satisfied": [
+    {"id": "C1", "condition": "The RI-CMB07 exemplar is regenerated - META with no INVALIDATED block, constants matching RI-CMB01 B and RI-CMB02 A/B as rebased, section D's statistics recomputed. Section 0.1's renormalisation and RI-CMB03 M7's debt expire by their own condition that day. This is the corpus's debt and it is three waves old.", "owner": "critic.combat / a dedicated piece, NOT a builder"},
+    {"id": "C2", "condition": "The falsification triple is RUN once, with ES-PILOT/1, ES-MASHER/1 and ES-TURTLE/1 implemented from section F, both degenerate policies losing, and the pilot and enemy-script diffs published. If a degenerate policy lands in band, the finding is far larger than W1-09.", "owner": "W1-09 round 4"},
+    {"id": "C3", "condition": "RI-CMB04 M8 is run on every attack with the two-volume ablation and the attribution table, and M9 reports a NON-EMPTY change set.", "owner": "W1-09 round 4"},
+    {"id": "C4", "condition": "RI-CMB12 M1 and M2 are run once. Needs the two harness surfaces the item names - fork/restore of full sim state, and the tracked-joint dump. If DIV comes back below 0.02 on a build that passes every frame check, that is the most important number this project has produced.", "owner": "W1-09 round 4 + RI-MTH01 surface"},
+    {"id": "C5", "condition": "W1-09's declared path set is corrected and its item set rebuilt from judges:, with RI-AI01/RI-AI03 moved to the W1-09<->W1-12 seam ledger at their measured values, and RI-WPN05, RI-PLT01, RI-MTH07 added.", "owner": "orchestrator"},
+    {"id": "C6", "condition": "A combat verdict cites RI-WPN05's ILS and the hitstop consumption result. Eleven exist without one.", "owner": "critic.combat"},
+    {"id": "C7", "condition": "RI-CMB02 M4b reports >= 6 of 14 melee classes deviating from the default chain tempo.", "owner": "W1-10 / RI-WPN02 section B"}
+  ],
+
+  "provenance": {
+    "corpus_findings": "constructed, confidence high - direct reads of files in this repository, reproducible by grep and node tools/corpus-index.mjs: section C's class-uniformity, the absence of RI-MTH07/CONSUMPTION from all eighteen 10-combat items, the absence of any S26 method, the INVALIDATED blocks in all four exemplar artifacts, RI-CMB07's 15/30/40/10/5 weight split, and the judges:-vs-declared-paths mismatch.",
+    "build_figures": "MEASURED BY OTHERS AND ATTRIBUTED. This critic did not re-run the build - it judges standards, not code. Every build figure quoted (96 damage via torso and via blade; the 1.20-1.25 m spear and 1.15-1.30 m halberd interior gaps; substeps 4->1 byte-identical; separation radii ->0 byte-identical; p90 58-96 f; 803-1014 invulnerable frames against 360-443 active; eatRate / wobble / staminaFloor; row 28's per-fight 0,1,0,3,0; 21/24 -> 18/24) is quoted from W1-09.md, W1-09-r2.md and W1-09-r3.md and their artifacts, with the measuring critic named.",
+    "arithmetic": "The R6.4 result - mean >= 8.2 required over the remaining ten items - is computed here from SCORING sections 1.1 and 4 and the three verdicts' own item tables, and is reproducible by hand.",
+    "new_thresholds": "The thresholds introduced in RI-CMB12 (12 deg, 0.92 IoU, lie <= 8 f, DIV >= 0.06, DIV_dominant <= 0.40, DIV_dead <= 0.15, DIV_identity <= 0.45) are CONVENTIONS DEFINED BY THAT ITEM, in the same class as RI-MTH07's [0.95, 1.05] coupling band, and are declared as such in its Provenance note. The 250 ms reaction budget is canonical-recall, confidence medium; the 4-frame machine share is read from RI-CMB11 section 1 and moves if that table moves. No figure anywhere in this pass is a measurement of any FromSoftware title."
+  }
+}

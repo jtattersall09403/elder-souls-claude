@@ -1,0 +1,47 @@
+{
+ "task_id": "W1-10-r3",
+ "brief": "round 3, ULTRACODE, after 2/10 verdict (r2) and 0/10 (r1)",
+ "state": "building",
+ "outputs_expected": [
+  "game/data/combat/enemies/*.json (material on all statblocks)",
+  "game/src/combat/resolve.js (material-aware impact)",
+  "game/src/combat/moves.js (stop collapsing hitstop table to .flesh)",
+  "game/src/sim/record.js (expose resolved material + hitstop)",
+  "game/data/weapons/classes.json (hitbox_span_m contiguity fix)",
+  "game/data/weapons/roster.json / clip-registry.json (arc + recovery-arc fixes)",
+  "tools/weapons/* verification instruments",
+  "reports/W1-10-ROUND3.md"
+ ],
+ "outputs_written": [
+  "game/src/combat/impact.js (NEW)",
+  "game/src/combat/resolve.js",
+  "game/src/combat/moves.js",
+  "game/src/combat/moveset.js",
+  "game/src/combat/system.js",
+  "game/src/combat/actor.js",
+  "game/src/combat/enemy.js",
+  "game/src/combat/player.js",
+  "game/src/sim/events.js",
+  "game/data/weapons/classes.json",
+  "game/data/combat/enemies/*.json (22)",
+  "game/data/states/wpn-material-range.json",
+  "tools/weapons/impact-consumption.mjs (NEW)",
+  "tools/weapons/impact-census.mjs (NEW)"
+ ],
+ "findings": [
+  "BOOT OK at start: node tools/harness/smoke.mjs passes (6/6).",
+  "ARC ROOT CAUSE FOUND (ablation, /tmp scratch ablate.mjs): the measured arc is produced almost entirely by swing.js's `clavicle_r.rz` track, NOT by arc_deg. TSW r1.1 declares 6.5 deg and the rig sweeps 69.6; deleting clavicle_r.rz alone takes it to 9.5 (PASS). Deleting the ENTIRE yaw chain (the arc itself) only takes 69.6 -> 65.4. clavicle_r.rz swings a FIXED 32+8e degrees across the active window for every clip regardless of declared arc.",
+  "Fast arc harness reproduces the critic's kritik-arc.mjs exactly: 24/28 arc nonconforming, 21/28 recovery>active, WHP r1.1 pose step 1.026 m. Safe to iterate against.",
+  "IMPACT MODEL WIRED. New game/src/combat/impact.js is the single arithmetic; resolve.js calls it at hit time; MovesetLibrary's five accessors delegate to it so harness and fight cannot disagree. moves.js no longer collapses the 5x7 grid to .flesh at build time.",
+  "All 22 enemy statblocks now declare `material`; 3 declare `material_by_region` (slitherfang chitin/flesh head, hist-marked champion plant/metal/flesh, legion metal/flesh head). 8 new mat_* dummies drive wpn-material-range.",
+  "DEFECT FOUND AND FIXED (data): RI-WPN05 A's victim table mixes DELTA rows (flesh/wood +4, chitin +2) with ABSOLUTE-ZERO rows (water, stone/metal/shield). classes.json encoded both as victim_delta 0, so stone gave victim = attacker + 0 = 16 where the item says 0. Added `victim_hitstop_mode`.",
+  "DEFECT FOUND AND FIXED (engine): hitstop held N-1 frames, not N. `hitstopUntil = frame + N` with a `> frame` test holds F+1..F+N-1. Round 2's 'hitstop_f 4 held for 3 frames' was a real 1-frame shortfall against RI-WPN05 M1's +/-0 tolerance, not a reporting artefact. Now frame + N + 1.",
+  "Per-body hitstop added (system.js): each body holds on b.hitstopUntil. When every body is held the step takes the identical early return wave 1 took. This is what makes RI-WPN05 A's asymmetry observable at all.",
+  "MEASURED: tools/weapons/impact-consumption.mjs 17/17 CONSUMED. tools/weapons/impact-census.mjs M1 0 failures (5x7 attacker AND victim grids exact), M2 0 failures (18 cells, 0/22 statblocks missing material, 1 distinct damage over 20 repeats), M3 deflection PASS (TSW+SSW deflect, MCE bypasses, +16f exact), M4 0 failures, ILS_unique 0.8286 (bar 0.80), tier span ok, monotone true.",
+  "CONFIRMED BAR DEFECT: ILS_1nn (RI-WPN05 F's literal leave-one-out nearest-neighbour over 35 unique points) = 0.0000 by construction, exactly as the round-2 critic filed. Reporting both readings.",
+  "The round-2 critic's kritik-consumption3.mjs can only reach 2/6 on ANY correct build: four of its six probes perturb rows a FLESH dummy never reads, and it observes only {dmg, hitF, attacker hitstop} so it cannot see a knockback. Reproduced and documented rather than claimed passing.",
+  "DAMAGE BASELINE MOVED: a straight-sword r1.1 on flesh is now 129.8, not 118, because RI-WPN05 B's flesh/slash multiplier is 1.10 and it is now applied. 118 was the pre-material number and the RI-CMB07 exemplar carrying it is already marked INVALIDATED pending the S22 regeneration."
+ ],
+ "next_step": "S26 contiguity (hitbox_span_m), then arc/recovery-arc/pose-teleport in swing.js, then grammar + CR + RI-WPN07",
+ "notes_for_successor": "Round 3 targets: (1) impact+material model consumption (biggest gap, blocking, AR-3 seam_sterile), (2) S26 contiguity dead bands on 11 weapons (hard fail), (3) measured-vs-declared arc on 28 clips, (4) recovery>active arc 21/28, (5) whp_hide_lash pose teleport 1.026 m, (6) mace-vs-axe grammar not weight, (7) RI-WPN07 weapon character. Do NOT regress r2's wins: CFS_live 1.0, equipped_ok 87/87, moveset consumption 7/7, Dg_min 1.598."
+}

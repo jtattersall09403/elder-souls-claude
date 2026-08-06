@@ -309,19 +309,19 @@ const PROPS = {
  *   western-rootlands  paddy bund and root-wood road                  -> the one rectilinear landform here
  */
 const MICRO = {
-  blackwood:           { amp_m: 0.42, weights: { rootmat: 0.60, hummock: 0.40 } },
-  'clay-moor':         { amp_m: 0.38, weights: { crack: 1.00 } },
+  blackwood:           { amp_m: 0.50, weights: { rootmat: 0.60, hummock: 0.40 } },
+  'clay-moor':         { amp_m: 0.48, weights: { crack: 1.00 } },
   'crimson-coast':     { amp_m: 0.45, weights: { terracette: 0.50, rubble: 0.50 } },
-  'deep-marshes':      { amp_m: 0.48, weights: { hummock: 0.75, rill: 0.25 } },
-  'eastern-rootlands': { amp_m: 0.42, weights: { rill: 0.60, ripple: 0.40 } },
+  'deep-marshes':      { amp_m: 0.56, weights: { hummock: 0.75, rill: 0.25 } },
+  'eastern-rootlands': { amp_m: 0.50, weights: { rill: 0.60, ripple: 0.40 } },
   hive:                { amp_m: 0.62, weights: { terracette: 0.70, crack: 0.30 } },
-  'marauders-coast':   { amp_m: 0.34, weights: { ripple: 0.70, rill: 0.30 } },
+  'marauders-coast':   { amp_m: 0.44, weights: { ripple: 0.70, rill: 0.30 } },
   'salt-hills':        { amp_m: 0.55, weights: { terracette: 0.75, rubble: 0.25 } },
   'stone-forest':      { amp_m: 0.44, weights: { crack: 0.55, rubble: 0.45 } },
-  'stone-wastes':      { amp_m: 0.44, weights: { dune: 0.55, crack: 0.45 } },
-  thornmarsh:          { amp_m: 0.44, weights: { hummock: 0.50, rootmat: 0.50 } },
+  'stone-wastes':      { amp_m: 0.52, weights: { dune: 0.55, crack: 0.45 } },
+  thornmarsh:          { amp_m: 0.52, weights: { hummock: 0.50, rootmat: 0.50 } },
   'valus-ridge':       { amp_m: 0.55, weights: { rubble: 0.70, terracette: 0.30 } },
-  'western-rootlands': { amp_m: 0.40, weights: { bund: 0.80, ripple: 0.20 } },
+  'western-rootlands': { amp_m: 0.58, weights: { bund: 0.80, ripple: 0.20 } },
 };
 
 /**
@@ -345,42 +345,45 @@ const MICRO = {
  *   maze         dense everywhere except along sinuous cut corridors
  *
  * `cover` is the ordinary underfoot material — the thing most of every frame is actually made of,
- * and the layer that was missing entirely. It is instanced in CLUMPS at each lattice site so a
- * 6.5 m lattice can carry a sub-metre ground texture without a sub-metre lattice.
+ * and the layer that was missing entirely. `per100m2` is INSTANCES per 100 m2 and `patch_m` is the
+ * scale at which it drifts into patches, so scree at 30/100 m2 in 4 m patches and a salt crust at
+ * 6/100 m2 in 20 m patches are different ground even before the shape is chosen. It is built on
+ * its own fine lattice inside a 70 m disc around the camera rather than on the 6.5 m prop lattice,
+ * because ground cover at 300 m is invisible and ground cover at 3 m is most of the frame.
  *
  * `canopy.h_var` / `canopy.lean_deg` / `canopy.emergent` are the vertical structure axis: whether
  * a region's skyline is a flat ceiling, a ragged one, or a few giants over a low roof.
  */
 const ARRANGE = {
   blackwood:           { mode: 'high-ground', strength: 0.85, gap_m: 46 },
-  'clay-moor':         { mode: 'isolated',    strength: 1.00, gap_m: 62 },
-  'crimson-coast':     { mode: 'fringe',      strength: 0.80, gap_m: 34 },
+  'clay-moor':         { mode: 'isolated',    strength: 1.00, gap_m: 45 },
+  'crimson-coast':     { mode: 'fringe',      strength: 0.55, gap_m: 34 },
   'deep-marshes':      { mode: 'high-ground', strength: 0.95, gap_m: 26 },
   'eastern-rootlands': { mode: 'drainage',    strength: 0.85, gap_m: 40 },
   hive:                { mode: 'clumped',     strength: 0.90, gap_m: 54 },
   'marauders-coast':   { mode: 'rows',        strength: 0.85, spacing_m: 38, bearing_deg: 24 },
   'salt-hills':        { mode: 'clumped',     strength: 0.75, gap_m: 78 },
   'stone-forest':      { mode: 'scatter',     strength: 0.00 },
-  'stone-wastes':      { mode: 'isolated',    strength: 1.00, gap_m: 95 },
+  'stone-wastes':      { mode: 'isolated',    strength: 1.00, gap_m: 58 },
   thornmarsh:          { mode: 'maze',        strength: 0.95, gap_m: 58 },
   'valus-ridge':       { mode: 'drainage',    strength: 0.70, gap_m: 52 },
   'western-rootlands': { mode: 'rows',        strength: 0.90, spacing_m: 34, bearing_deg: 0, rectilinear: true },
 };
 
 const COVER = {
-  blackwood:           { shape: 'litter',  h: 0.10, colour: '#243522', per100m2: 15, clump: 5 },
-  'clay-moor':         { shape: 'plate',   h: 0.09, colour: '#AC6440', per100m2: 10, clump: 4 },
-  'crimson-coast':     { shape: 'cobble',  h: 0.22, colour: '#2C2629', per100m2: 12, clump: 4 },
-  'deep-marshes':      { shape: 'tussock', h: 0.45, colour: '#1F3138', per100m2: 13, clump: 4 },
-  'eastern-rootlands': { shape: 'reed',    h: 0.55, colour: '#4E7A5A', per100m2: 16, clump: 6 },
-  hive:                { shape: 'wax',     h: 0.16, colour: '#D8CC96', per100m2: 11, clump: 4 },
-  'marauders-coast':   { shape: 'shell',   h: 0.10, colour: '#9AA0A0', per100m2: 17, clump: 6 },
-  'salt-hills':        { shape: 'tuft',    h: 0.28, colour: '#7E8B58', per100m2: 19, clump: 6 },
-  'stone-forest':      { shape: 'flag',    h: 0.12, colour: '#6E7987', per100m2: 9,  clump: 3 },
-  'stone-wastes':      { shape: 'flake',   h: 0.20, colour: '#E4E2D6', per100m2: 8,  clump: 3 },
-  thornmarsh:          { shape: 'tussock', h: 0.30, colour: '#9A8570', per100m2: 14, clump: 5 },
-  'valus-ridge':       { shape: 'gravel',  h: 0.15, colour: '#B2AA96', per100m2: 21, clump: 7 },
-  'western-rootlands': { shape: 'stubble', h: 0.35, colour: '#7E9052', per100m2: 18, clump: 6 },
+  blackwood:           { shape: 'litter',  h: 0.10, colour: '#243522', per100m2: 22, patch_m: 7 },
+  'clay-moor':         { shape: 'plate',   h: 0.09, colour: '#AC6440', per100m2: 9,  patch_m: 12 },
+  'crimson-coast':     { shape: 'cobble',  h: 0.22, colour: '#2C2629', per100m2: 16, patch_m: 5 },
+  'deep-marshes':      { shape: 'tussock', h: 0.45, colour: '#1F3138', per100m2: 14, patch_m: 9 },
+  'eastern-rootlands': { shape: 'reed',    h: 0.55, colour: '#4E7A5A', per100m2: 20, patch_m: 4 },
+  hive:                { shape: 'wax',     h: 0.16, colour: '#D8CC96', per100m2: 13, patch_m: 14 },
+  'marauders-coast':   { shape: 'shell',   h: 0.10, colour: '#9AA0A0', per100m2: 24, patch_m: 6 },
+  'salt-hills':        { shape: 'tuft',    h: 0.28, colour: '#7E8B58', per100m2: 26, patch_m: 3 },
+  'stone-forest':      { shape: 'flag',    h: 0.12, colour: '#6E7987', per100m2: 8,  patch_m: 16 },
+  'stone-wastes':      { shape: 'flake',   h: 0.20, colour: '#E4E2D6', per100m2: 6,  patch_m: 20 },
+  thornmarsh:          { shape: 'tussock', h: 0.30, colour: '#9A8570', per100m2: 17, patch_m: 5 },
+  'valus-ridge':       { shape: 'gravel',  h: 0.15, colour: '#B2AA96', per100m2: 30, patch_m: 4 },
+  'western-rootlands': { shape: 'stubble', h: 0.35, colour: '#7E9052', per100m2: 21, patch_m: 3 },
 };
 
 /** Vertical structure: how ragged the skyline is, and what breaks it. */

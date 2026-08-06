@@ -83,6 +83,13 @@ export const EVENT_TYPES = new Set([
   // `guard.counter` cannot be measured at all. `CHARGE_RELEASE` is RI-WPN01 §C's "released,
   // not cancelled": the frame the hold ended, the frames held, and the ramped motion value.
   'BLOCK_SUCCESS', 'CHARGE_RELEASE',
+  // W1-10 round 3, RI-WPN05 §C harness requests 3 and 4, quoted: "The existing `hit` event
+  // carries no material and no feedback data." `IMPACT` fires on every resolved contact and
+  // carries (material, tier, hitstop_f, victim_hitstop_f, knockback_m, deflect, decal,
+  // shake_deg) — which is what makes the 5x7 grid and the Impact Legibility Score recoverable
+  // from a TRACE rather than from a function a probe called. `DEFLECT` is §A's bounce: a
+  // non-blunt blade on stone under 30 poise damage, zero damage, +16 f@60 of recovery.
+  'IMPACT', 'DEFLECT',
   // ---------------------------------------------------------------------------------------
   // W1-14 / seam S19. RI-MAG01's harness amendment 4 asks for exactly these six lower_snake
   // kinds, and they are ADDITIONS: `elder-souls/trace@1` -> `@2`, nothing removed. They stay
@@ -91,6 +98,19 @@ export const EVENT_TYPES = new Set([
   'cast_start', 'cast_release', 'cast_interrupt', 'focus_spend', 'effect_apply', 'effect_expire',
   // and the world-facing consequences the Morrowind half needs
   'spell_hit', 'levitate_begin', 'levitate_end', 'soul_trapped', 'soul_trap_refused',
+  // W1-14 round 3 — the return path for GAP-W1-magic-skill-frozen. `cast_effective` is emitted
+  // ONCE per delivered cast, carrying the spell's own school and the character-sheet skill it
+  // banks into. Wave 1 had `character/skilluse.js` reading `spell_hit`/`effect_apply` and
+  // guessing `'sorcery'` because neither event carried a school, so casting could not have
+  // raised the right skill even if there had been a register to raise.
+  'cast_effective',
+  // W1-14 round 3 — an under-skilled spell used to vanish from the loadout with no event and no
+  // reason. Every `setAttuned` refusal now says which school, what it needed and by how much.
+  'attune_refused',
+  // W1-14 round 3 / S29 — Recall, Mark and the Interventions are world travel and are refused
+  // outright in combat, exactly as S27 refuses a Focus refill. The refusal is an event because
+  // a silent refusal is indistinguishable from a broken spell.
+  'travel_refused',
   // ---- W1-15 / AMENDMENT AM-W1-15-02 — stealth, theft, crime and justice ------------------
   // HARNESS.md §5 declares the vocabulary "a closed vocabulary, EXTENSIBLE BY AMENDMENT", and
   // four reference items name these events by string in their Comparison methods:

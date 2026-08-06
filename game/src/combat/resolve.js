@@ -11,8 +11,9 @@
 // ascending), so even the ORDER of the emitted tuples is a function of the state alone.
 'use strict';
 
-import { sweepCapsuleVsCapsule, sweptAABB, aabbVsCapsule, bearingDeg, angleDelta } from './geometry.js';
+import { sweepCapsuleVsCapsule, sweptAABB, aabbVsCapsule, bearingDeg, angleDelta, segSegParamOnA } from './geometry.js';
 import { computeDamage, applyPoiseDamage, resolveBlock, inHyperArmour } from './rules.js';
+import { resolveImpact, materialAt } from './impact.js';
 
 const _min = [0, 0, 0], _max = [0, 0, 0];
 const _bmin = [0, 0, 0], _bmax = [0, 0, 0];
@@ -32,6 +33,7 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
   for (let ai = 0; ai < bodies.length; ai++) {
     const A = bodies[ai];
     if (!A.hitboxActive || !A.move) continue;
+    if (A.hitstop) continue;                  // a frozen blade resolves nothing (RI-WPN05 §A)
     const r = A.move.hitbox_radius_m;
     sweptAABB(A.prevA, A.prevB, A.socketA, A.socketB, r, PAD, _min, _max);
 
@@ -140,16 +142,68 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
         continue;
       }
 
+      // ---- (1b) WHAT DID IT HIT — RI-WPN05 §A/§B, resolved here and nowhere else -----------
+      // The material is a property of the STRUCK REGION, not of the body: a Hist-Marked champion
+      // is plant at the trunk and metal where it wears a cuirass, and a player learns to aim.
+      // Everything downstream — the damage multiplier, both hitstop clocks, the knockback sign,
+      // the deflect, the decal and the shake — comes out of `impact.js` reading
+      // `game/data/weapons/classes.json` on THIS frame. Perturb any cell and this fight changes.
+      const incoming = bearingDeg(A.pos[0] - B.pos[0], A.pos[2] - B.pos[2]);
+      const blocking = B.guardRaised && B.shield && Math.abs(angleDelta(B.yaw, incoming)) <= CONE && !A.move.unblockable;
+      // A raised shield IS a material — it is the `shield` column of §A, and it is the reason
+      // that column exists. This is also the join that makes the block branch legible: a mace
+      // into a shield and a mace into a face are different feedback, not the same number twice.
+      const material = blocking ? 'shield' : materialAt(B, bestHb.id);
+      const imp = resolveImpact(C.weaponClasses, A.move, material);
+
+      // ---- (1b2) WHERE ON THE WEAPON — S26's contiguity law, paid for honestly --------------
+      // The hit capsule now runs grip-to-tip so the reachable band has no interior hole. The
+      // design fact `hitbox_span_m` was written for — an axe is edged only at its head — is
+      // kept as a damage taper: a contact inboard of `edge_from_m` is the haft, not the edge,
+      // and deals `haft_damage_mult` of the blow. Geometry still decides ENTIRELY whether the
+      // hit happened (ARBITRATION S1); this only scales what it was worth.
+      let haft = 1;
+      if (A.move.edge_from_m !== undefined && A.move.haft_damage_mult !== undefined && !bestVia) {
+        const s = segSegParamOnA(A.socketA, A.socketB, bestHb.a, bestHb.b);
+        const a0 = A.move.socket_a_dist_m, b0 = A.move.socket_b_dist_m;
+        const contact = a0 + s * (b0 - a0);
+        if (contact < A.move.edge_from_m) haft = A.move.haft_damage_mult;
+      }
+
       // Seam S19's consuming system for `shield`, `resist_element`, `resist_disease`, `sap_ward`
       // and `corrode`. RI-MAG06 §B: a resist is judged by the damage number from an identical
       // scripted hit, with and without — so the mitigation has to be HERE, in the one place a
       // damage number is computed, and not in a field only the buff itself reads. Wave 1 had a
       // row in `effects_active` and a 100-damage hit that stayed 100 either way.
-      const dmgBase = mitigate(B, computeDamage(A.move.motion_value || 1, A.moves._weapon.attack_rating, bestHb.damage_mult, 0));
+      //
+      // `imp.multiplier` is RI-WPN05 §B's (damage type x material) cell and it lands BEFORE
+      // mitigation, because it is a property of the blade meeting the surface and mitigation is
+      // a property of the buffs the victim is carrying.
+      const dmgBase = mitigate(B, computeDamage(A.move.motion_value || 1, A.moves._weapon.attack_rating, bestHb.damage_mult, 0) * imp.multiplier * haft);
+
+      // ---- (1c) deflection — §A. A non-blunt blade on stone under 30 poise damage BOUNCES ----
+      // Zero damage, no victim reaction at all, the attacker eats a x1.5 hitstop and +16 f@60 of
+      // recovery. Deterministic: shape, poise damage and material, no dice (ARBITRATION S1).
+      // This is the mechanical reason MCE and GHM exist, and until now it existed only in a
+      // function the harness called.
+      if (imp.deflect && !blocking) {
+        applyKnockback(A, B, imp.knockback_m);
+        A.deflectExtraRecoveryF = (A.deflectExtraRecoveryF || 0) + imp.added_recovery_f;
+        if (A.move) A.move_deflect_recovery_f = imp.added_recovery_f;
+        A.recoveryExtraF = (A.recoveryExtraF || 0) + imp.added_recovery_f;
+        const e = emit(frame, 'DEFLECT');
+        e.src = A.id; e.dst = B.id; e.atk = A.move.id; e.part = bestHb.id;
+        e.material = material; e.tier = imp.tier; e.shape = A.move.shape || null;
+        e.poise_damage = A.move.poise_damage || 0;
+        e.hitstop_f = imp.attacker_hitstop_f; e.added_recovery_f = imp.added_recovery_f;
+        e.knockback_m = imp.knockback_m; e.decal = imp.decal; e.via = bestVia || 'weapon';
+        emitImpact(emit, frame, A, B, imp, bestHb, bestVia, 0);
+        applyHitstop(sim, A, B, frame, imp);
+        continue;
+      }
 
       // (2) block: a 60-degree half-cone from the defender's forward
-      const incoming = bearingDeg(A.pos[0] - B.pos[0], A.pos[2] - B.pos[2]);
-      if (B.guardRaised && B.shield && Math.abs(angleDelta(B.yaw, incoming)) <= CONE && !A.move.unblockable) {
+      if (blocking) {
         const res = resolveBlock(B, dmgBase, B.shield);
         B.stamina = res.stamina_after;
         B.regenBlockUntil = frame + C.stamina.regen.delay_frames_after_any_spend;
@@ -185,7 +239,12 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
           bs.block_angle_deg = round1(angleDelta(B.yaw, incoming));
         }
         if (B.hp <= 0) killed(B, A, frame, emit);
-        sim.hitstopUntil = frame + (A.move.hitstop_frames || 0);
+        // A blocked blow reads off the `shield` column of §A: the biggest attacker hitstop in
+        // the grid after stone, and a knockback that pushes the ATTACKER back rather than the
+        // shield. That is what makes a turtle feel like a wall instead of like a soft target.
+        applyKnockback(A, B, imp.knockback_m);
+        emitImpact(emit, frame, A, B, imp, bestHb, bestVia, Math.round(res.chip));
+        applyHitstop(sim, A, B, frame, imp);
         continue;
       }
 
@@ -203,6 +262,10 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
       e.via = bestVia || 'weapon';
       e.hp_after = Math.round(Math.max(0, B.hp)); e.hyperarmour = pr.hyperarmour;
       e.poise_after = round1(Math.max(0, B.poiseHealth));
+      // The HIT event carries the material too, so a reader that only knows the RI-CMB07
+      // vocabulary still sees what was struck without having to join two streams.
+      e.material = imp.material; e.material_mult = imp.multiplier; e.damage_type = imp.damage_type;
+      e.haft_mult = haft;
 
       if (pr.staggered && !B.dead) {
         // RI-CMB05 §B: a target ALREADY staggered takes damage but the timer does NOT restart.
@@ -217,7 +280,13 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
         }
       }
       if (B.hp <= 0) killed(B, A, frame, emit);
-      sim.hitstopUntil = frame + (A.move.hitstop_frames || 0);
+      // Knockback BEFORE hitstop, so the displacement is on the frame of contact and the freeze
+      // is what the player watches it in. §A's sign convention: positive pushes the victim along
+      // the attack's forward axis; negative pushes the ATTACKER back and leaves the victim where
+      // it stood — "the target does not move. You do."
+      applyKnockback(A, B, imp.knockback_m);
+      emitImpact(emit, frame, A, B, imp, bestHb, bestVia, Math.round(dmgBase));
+      applyHitstop(sim, A, B, frame, imp);
     }
   }
 
@@ -233,18 +302,106 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
 }
 
 /**
- * Apply the magic mitigation terms a body is carrying. Exactly one multiplier and one flat
- * armour subtraction, both defaulting to the identity, so a build with no magic in it computes
- * the same number it computed before this function existed.
+ * RI-WPN05 §C's `impact` event — the one the item asks for by name and by shape:
+ *   {"f":221,"type":"impact","material":"chitin","tier":"heavy","hitstop_f":8,
+ *    "knockback_m":0.25,"deflect":false,"decal":"chip"}
  *
- * `wardCharges` is `sap_ward`: it eats a whole blow rather than scaling it, and it is spent.
+ * It exists because "the existing `hit` event carries no material and no feedback data", which
+ * made every material check in the item unmeasurable off a trace. Emitted on EVERY resolved
+ * contact — hit, block and deflect alike — so the 5x7 grid is recoverable from traces rather
+ * than from a function a probe called.
  */
-export function mitigate(B, dmg) {
+function emitImpact(emit, frame, A, B, imp, hb, via, dmg) {
+  const e = emit(frame, 'IMPACT');
+  e.src = A.id; e.dst = B.id; e.atk = A.move.id; e.slot = A.move.slot || A.move.id;
+  e.material = imp.material; e.impact_row = imp.impact_row; e.tier = imp.tier;
+  e.damage_type = imp.damage_type; e.material_mult = imp.multiplier;
+  e.hitstop_f = imp.attacker_hitstop_f; e.victim_hitstop_f = imp.victim_hitstop_f;
+  e.knockback_m = imp.knockback_m; e.deflect = imp.deflect;
+  e.added_recovery_f = imp.added_recovery_f;
+  e.decal = imp.decal; e.shake_deg = imp.shake_deg;
+  e.part = hb ? hb.id : null; e.via = via || 'weapon'; e.dmg = dmg;
+  return e;
+}
+
+/**
+ * RI-WPN05 §A's TWO clocks.
+ *
+ * `sim.hitstopUntil` is the WORLD's hold — the camera and the fixed step's other systems — and
+ * it takes the longer of the two. Each participant then holds on its OWN clock, and the
+ * difference between them is the whole of §A's asymmetry table:
+ *
+ *   flesh, wood                 victim = attacker + 4   the target flinches harder than you do
+ *   chitin                      victim = attacker + 2
+ *   stone / metal / shield      victim = 0              "The target does not move. You do."
+ *
+ * A single global freeze cannot express that, and a single global freeze is exactly why the
+ * stone row has been indistinguishable from the flesh row in every trace this piece has
+ * produced. The asymmetry IS the bounce.
+ */
+function applyHitstop(sim, A, B, frame, imp) {
+  // `hitstopUntil` is the first frame that RUNS AGAIN, and the `+ 1` is what makes that true.
+  // The hit resolves at the END of step F (sweep and resolve are steps 8 and 9), so F itself has
+  // already advanced its animation clock; the hold is F+1 … F+N. With `frame + N` the hold ran
+  // F+1 … F+N-1 and every impact in the build was ONE FRAME SHORT of its declared hitstop —
+  // "hitstop_f 4 held for 3 frames" in the round-2 verdict, which is a defect against
+  // RI-WPN05 M1's ±0 f tolerance rather than a reporting artefact. Found by driving the census.
+  const a = imp.attacker_hitstop_f ? frame + imp.attacker_hitstop_f + 1 : 0;
+  const b = imp.victim_hitstop_f ? frame + imp.victim_hitstop_f + 1 : 0;
+  if (a > sim.hitstopUntil) sim.hitstopUntil = a;
+  if (b > sim.hitstopUntil) sim.hitstopUntil = b;
+  if (a > (A.hitstopUntil || 0)) A.hitstopUntil = a;
+  if (b > (B.hitstopUntil || 0)) B.hitstopUntil = b;
+  A.lastImpact = imp;
+  B.lastImpactTaken = imp;
+}
+
+/**
+ * RI-WPN05 §A's knockback, along the attack's forward axis.
+ *
+ * Positive metres move the VICTIM away from the attacker. Negative metres move the ATTACKER
+ * back and leave the victim exactly where it stood — the bounce. It moves `pos` only; the rigs
+ * are re-evaluated from `pos` on the next step, so nothing here can smear a pose.
+ */
+function applyKnockback(A, B, m) {
+  if (!m) return;
+  const dx = B.pos[0] - A.pos[0], dz = B.pos[2] - A.pos[2];
+  const d = Math.hypot(dx, dz);
+  if (d < 1e-6) return;
+  const ux = dx / d, uz = dz / d;
+  if (m > 0) {
+    if (B.dead || B.knockbackImmune) return;
+    B.pos[0] += ux * m; B.pos[2] += uz * m;
+    B.lastKnockbackM = m;
+  } else {
+    A.pos[0] += ux * m; A.pos[2] += uz * m;   // m is negative: A moves AWAY from B
+    A.lastKnockbackM = m;
+  }
+}
+
+/**
+ * Apply the magic ward terms a body is carrying TO A DAMAGE OF A NAMED KIND.
+ *
+ * W1-14 round 3. Wave 1's version took `(B, dmg)` and multiplied by a single kind-blind
+ * `B.mitigation`, so a resist-disease ward blunted a sword by 85% and a physical shield stopped
+ * a fireball as well as a resist-element ward did. `kind` is now a required part of the
+ * question: a ward that does not name your damage kind does nothing to it.
+ *
+ * Kinds: `physical` (every weapon; the default, so an un-migrated caller behaves as before),
+ * `fire` / `frost` / `shock` / `poison` (the elements), `disease` (hazard vectors and rot),
+ * `magic` (`damage_health` — the unresisted channel, which is what makes it worth its cost).
+ *
+ * Flat terms — armour, and `shield`'s flat reduction — apply to `physical` only. Every channel
+ * defaults to the identity, so a build with no magic in it computes exactly what it did before.
+ */
+export function mitigate(B, dmg, kind) {
+  const k = kind || 'physical';
   if (B.wardCharges > 0) { B.wardCharges--; return 0; }
-  const m = B.mitigation === undefined ? 1 : B.mitigation;
-  const armour = B.armourRating || 0;
-  if (m === 1 && armour === 0) return dmg;
-  return Math.max(dmg > 0 ? 1 : 0, dmg * m - armour);
+  const w = B.wards && B.wards[k] !== undefined ? B.wards[k]
+    : (B.wards ? 1 : (B.mitigation === undefined ? 1 : B.mitigation));
+  const flat = k === 'physical' ? ((B.armourRating || 0) + (B.shieldFlat || 0)) : 0;
+  if (w === 1 && flat === 0) return dmg;
+  return Math.max(dmg > 0 ? 1 : 0, dmg * w - flat);
 }
 
 function killed(B, A, frame, emit) {

@@ -170,6 +170,11 @@ function h_restore_health(M, frame, rec, target) {
   const b = subject(M, target);
   if (!b) return moved('caster.hp', null, null);
   const before = { hp: r2(b.hp), hp_max: r2(b.hpMax) };
+  // S11's POISONED proc blocks healing of every kind, magical included. The Focus is still
+  // spent — that is the point of the proc.
+  if (b.healBlockedUntil && frame < b.healBlockedUntil) {
+    return moved('caster.hp', before, { hp: r2(b.hp), hp_max: r2(b.hpMax) }, { blocked_by: 'POISONED' });
+  }
   b.hp = Math.min(b.hpMax, b.hp + Math.round(rec.magnitude));
   return moved('caster.hp', before, { hp: r2(b.hp), hp_max: r2(b.hpMax) });
 }
@@ -209,20 +214,27 @@ function h_fortify_attribute(M, frame, rec) {
 }
 
 function h_fortify_skill(M, frame, rec) {
-  const before = { ...M.skills };
+  const before = { fortify: { ...M.skillFortify }, base: { ...M.skills } };
   const pts = Math.round(rec.magnitude);
   const which = rec.school || 'warding';
-  // Fortify moves the LIVE skill number, which is what `_effectiveSkillFor` and every gate in
-  // the build read. The base is what `reattune()` re-evaluates against at a HEARTH (RI-MAG03 §E2).
-  for (const k of Object.keys(M.skills)) M.skills[k] += pts;
+  // Fortify is a LEASE, never a write into the character sheet: `_effectiveSkillFor` and
+  // `quoteSpell` both read base + `skillFortify`, and the base is what `reattune()` re-evaluates
+  // against at a HEARTH (RI-MAG03 §E2). Wave 1 added the magnitude into `M.skills` here AND
+  // again in `_effectiveSkillFor`'s loop over `this.active`, so every fortify counted twice —
+  // and, now that `M.skills` is the character sheet, writing it here would leave a permanent
+  // skill behind when the lease expired.
+  for (const k of Object.keys(M.skillFortify)) M.skillFortify[k] += pts;
   const stl = M.w && M.w.sim && M.w.sim.stealth ? M.w.sim.stealth.p : null;
   const stlBefore = stl ? { security: stl.security, sneak: stl.sneak } : null;
   if (stl) { stl.security += pts; stl.sneak += pts; }
   rec._undo = () => {
-    for (const k of Object.keys(M.skills)) M.skills[k] -= pts;
+    for (const k of Object.keys(M.skillFortify)) M.skillFortify[k] -= pts;
     if (stl) { stl.security -= pts; stl.sneak -= pts; }
   };
-  return moved('magic.skills + stealth.security', { magic: before, stealth: stlBefore }, { magic: { ...M.skills }, stealth: stl ? { security: stl.security, sneak: stl.sneak } : null }, { points: pts, school: which });
+  return moved('magic.skill_fortify + stealth.security',
+    { fortify: before.fortify, stealth: stlBefore },
+    { fortify: { ...M.skillFortify }, stealth: stl ? { security: stl.security, sneak: stl.sneak } : null },
+    { points: pts, school: which, base_unchanged: { ...M.skills } });
 }
 
 // ---- mitigation ------------------------------------------------------------------------------
@@ -231,46 +243,155 @@ function h_fortify_skill(M, frame, rec) {
 // `body.mitigation` is a multiplier the combat resolver applies to every incoming number, so the
 // only honest read (the damage taken) is the one that moves.
 
-function mitigationHandler(kindLabel) {
+/** The damage channels a ward may name. `magic` is deliberately unwardable. */
+export const DAMAGE_KINDS = Object.freeze(['physical', 'fire', 'frost', 'shock', 'poison', 'disease', 'magic']);
+/** Which channels each resist covers. This table IS the difference between the two resists. */
+const RESIST_CHANNELS = Object.freeze({
+  element: ['fire', 'frost', 'shock'],   // `resist_element` — Thick Hide. The elements, and only those.
+  disease: ['disease', 'poison'],        // `resist_disease` — Clean Blood. Rot and fever, and only those.
+});
+
+function wardsOf(b) {
+  if (!b.wards) { b.wards = {}; for (const k of DAMAGE_KINDS) b.wards[k] = 1; }
+  return b.wards;
+}
+
+/**
+ * `resist_element` and `resist_disease`. A PERCENTAGE, clamped at 85, applied to the channels
+ * this resist names — and to no others.
+ *
+ * Wave 1 wrote both of these, and `shield`, into one kind-blind `body.mitigation`, so the
+ * round-2 critic measured a resist-DISEASE buff taking a scripted physical 100 down to 15 and a
+ * physical shield cutting fire damage from 405 to 5, identically to resist-element. Four
+ * effects passed RI-MAG06 §A's census while being one number with four names, which is exactly
+ * the failure §D was added to catch.
+ */
+function resistHandler(channelKey) {
+  const channels = RESIST_CHANNELS[channelKey];
   return (M, frame, rec, target) => {
     const b = subject(M, target);
-    if (!b) return moved('damage_taken_multiplier', null, null);
+    if (!b) return moved('damage_taken_by_kind', null, null);
+    const W = wardsOf(b);
     const pct = Math.min(RESIST_CLAMP_PCT, rec.magnitude);
-    const before = { mitigation: r3(b.mitigation === undefined ? 1 : b.mitigation), pct_declared: r2(pct) };
+    const before = { ...W };
     const factor = 1 - pct / 100;
-    b.mitigation = (b.mitigation === undefined ? 1 : b.mitigation) * factor;
-    rec._undo = () => { b.mitigation = b.mitigation / factor; if (Math.abs(b.mitigation - 1) < 1e-9) b.mitigation = 1; };
-    return moved('damage_taken_multiplier', before, { mitigation: r3(b.mitigation), pct_declared: r2(pct) }, { kind: kindLabel });
+    for (const k of channels) W[k] *= factor;
+    rec._undo = () => {
+      for (const k of channels) { W[k] /= factor; if (Math.abs(W[k] - 1) < 1e-9) W[k] = 1; }
+    };
+    return moved('damage_taken_by_kind', before, { ...W },
+      { ward: channelKey, channels: channels.slice(), pct_declared: r2(pct), unaffected: DAMAGE_KINDS.filter((k) => !channels.includes(k)) });
   };
 }
 
-function h_sap_ward(M, frame, rec, target) {
-  // The Hist's Patience: an instantaneous ward that eats the next hit outright. Its consumer is
-  // the same multiplier, held for one incoming blow rather than for a duration.
+/**
+ * `shield` — Second Shell. FLAT damage reduction against physical blows, per the effect's own
+ * ruling in `effects.json`: "Flat damage reduction, applied after RI-CMB05's poise maths and
+ * before RI-CMB08's HP accounting." It is the caster's armour, and armour does not stop fire.
+ *
+ * Flat-against-physical rather than a fraction is what makes `shield` a DIFFERENT VERB from the
+ * two resists rather than the same verb with a different coefficient: it is worth most against
+ * a flurry of small hits and worth least against one big one, which is the opposite of a
+ * percentage, and it is worth nothing at all against a fireball.
+ */
+function h_shield(M, frame, rec, target) {
   const b = subject(M, target);
-  if (!b) return moved('damage_taken_multiplier', null, null);
-  const before = { ward_charges: b.wardCharges || 0 };
-  b.wardCharges = (b.wardCharges || 0) + Math.max(1, Math.round(rec.magnitude));
-  return moved('damage_taken_multiplier', before, { ward_charges: b.wardCharges }, { kind: 'sap_ward', absorbs_next_hits: b.wardCharges });
+  if (!b) return moved('damage_taken_flat_physical', null, null);
+  const before = { shield_flat: r2(b.shieldFlat || 0), armour_rating: r2(b.armourRating || 0) };
+  const pts = Math.round(rec.magnitude);
+  b.shieldFlat = (b.shieldFlat || 0) + pts;
+  rec._undo = () => { b.shieldFlat = Math.max(0, (b.shieldFlat || 0) - pts); };
+  return moved('damage_taken_flat_physical', before,
+    { shield_flat: r2(b.shieldFlat), armour_rating: r2(b.armourRating || 0) },
+    { points: pts, channel: 'physical', unaffected: DAMAGE_KINDS.filter((k) => k !== 'physical') });
+}
+
+/**
+ * `sap_ward` — Holding the Wound. NOT a damage ward.
+ *
+ * `RI-MAG06` §B files this effect in the same row as `shield` and the two resists ("damage taken
+ * from an identical scripted hit"), and that row is wrong: the effect's OWN record in
+ * `corpus/25-magic/data/effects.json` rules that it "lowers sap-taint by exactly one band
+ * (RI-LOR05 §4a) ... usable at most 3 times in a playthrough. Argonian PCs cannot cast it —
+ * they have no taint." It is the only mechanical answer to the tithe-curse, which is a *social*
+ * condition, and implementing it as a fourth damage multiplier is what put it in a collision
+ * group with three effects it has nothing in common with. Amendment proposed in the report.
+ */
+function h_sap_ward(M, frame, rec) {
+  const sim = M.w && M.w.sim ? M.w.sim : null;
+  if (!sim) return moved('progression.sap_taint', null, null);
+  const T = taintOf(sim);
+  const before = { band: T.band, uses_left: T.wardUsesLeft, rests: T.rests };
+  if (T.immune) {
+    return moved('progression.sap_taint', before, { ...before },
+      { refused: 'argonian', reason: 'an Argonian has no taint to lower — sap is food' });
+  }
+  if (T.wardUsesLeft <= 0) {
+    return moved('progression.sap_taint', before, { ...before },
+      { refused: 'exhausted', reason: 'Holding the Wound works three times in a life' });
+  }
+  if (T.band <= 0) {
+    return moved('progression.sap_taint', before, { ...before },
+      { refused: 'clean', reason: 'there is nothing in you to draw out' });
+  }
+  // `warded` rather than `band -= 1`, because the band is DERIVED from the rest count: a bare
+  // decrement is undone by the very next hearth rest, which is a lowering that lowers nothing.
+  T.warded = (T.warded || 0) + 1;
+  T.band = bandFromRests(T);
+  T.wardUsesLeft -= 1;
+  M._emit(frame, 'effect_apply', { effect: 'sap_ward', sap_taint_band: T.band, uses_left: T.wardUsesLeft });
+  return moved('progression.sap_taint', before,
+    { band: T.band, uses_left: T.wardUsesLeft, rests: T.rests },
+    { lowered_by: 1, consumer: 'npc disposition + rootkeeper access (RI-LOR05 §4a)' });
+}
+
+/**
+ * The sap-taint register. RI-LOR05 §4a is hard canon and it had no implementation at all: a
+ * non-Argonian who rests at a HEARTH is drinking Hist sap, "every rest is a small poisoning",
+ * and it accumulates. `Engine.hearthRest()` charges it; `dialogue/disposition.js` reads it;
+ * `sap_ward` is the only thing that lowers it.
+ */
+export function taintOf(sim) {
+  const race = sim.character ? sim.character.race : null;
+  const immune = race === null ? false : race === 'saxhleel';
+  if (!sim.progression.sapTaint) {
+    // "Argonian PCs cannot cast it — they have no taint." The well knows them; sap is food.
+    sim.progression.sapTaint = { band: 0, rests: 0, warded: 0, wardUsesLeft: 3, immune };
+  } else if (sim.progression.sapTaint.immune !== immune) {
+    // The character was composed after the register existed. Whose body it is decides this.
+    sim.progression.sapTaint.immune = immune;
+  }
+  return sim.progression.sapTaint;
+}
+
+/** RI-LOR05 §4a: five bands, one per four rests, minus whatever has been drawn back out. */
+export const TAINT_RESTS_PER_BAND = 4;
+export function bandFromRests(T) {
+  return Math.max(0, Math.min(4, Math.floor(T.rests / TAINT_RESTS_PER_BAND) - (T.warded || 0)));
 }
 
 // ---- afflictions (S11 Morrowind half) --------------------------------------------------------
 
 function cureHandler(kinds) {
   return (M, frame, rec) => {
-    const q = M.w && M.w.sim ? M.w.sim.quest : null;
+    const sim = M.w && M.w.sim ? M.w.sim : null;
+    const q = sim ? sim.quest : null;
     if (!q) return moved('quest.afflictions', null, null);
     const before = q.afflictions.map((a) => a.id);
+    const cured = [];
     for (let i = q.afflictions.length - 1; i >= 0; i--) {
-      if (kinds.includes(q.afflictions[i].kind)) q.afflictions.splice(i, 1);
+      if (kinds.includes(q.afflictions[i].kind)) cured.push(q.afflictions.splice(i, 1)[0].id);
     }
+    // The player-side view is a list of ids over the same register (see sim/hazards.js).
+    if (sim.player) sim.player.afflictions = q.afflictions.map((a) => a.id);
+    for (const id of cured) M._emit(frame, 'affliction_cured', { affliction: id, by: rec.effect });
     const b = self(M);
     if (b && kinds.includes('paralysis')) {
       if (b.status) b.status.paralysis = 0;
       b.paralysedUntil = 0;
       if (b.statusProc) delete b.statusProc.paralysis;
     }
-    return moved('quest.afflictions', before, q.afflictions.map((a) => a.id), { cures: kinds });
+    return moved('quest.afflictions (the register hazards write)', before, q.afflictions.map((a) => a.id), { cures: kinds, cured });
   };
 }
 
@@ -328,21 +449,37 @@ function h_leap(M, frame, rec) {
   return moved('jump apex -> pos[1] peak', before, { jump_apex_mult: r3(M.jumpApexMult) });
 }
 
+/** The traversal system — the water the player actually stands, swims and drowns in. */
+function traversalOf(M) { return M.w && M.w.engine ? M.w.engine.traversal : null; }
+
 function h_buoyancy(M, frame, rec) {
-  const before = { swim_denied: M.water.swimDenied, buoyant: M.water.buoyant };
+  // W1-14 round 3. Wave 1 wrote `M.water.{buoyant, swimDenied}`, which nothing outside the
+  // magic module read; the water you actually wade in is `engine.traversal`, which charges
+  // stamina per band and denies sprint and roll above the knee (S25). `buoyant` now lifts you
+  // a band's worth of cost: the denied actions come back and the drain stops.
+  const T = traversalOf(M);
+  const before = { buoyant: M.water.buoyant, traversal_buoyant: T ? !!T.buoyant : null, band: T ? T.band : null };
   M.water.buoyant = true;
   M.water.swimDenied = false;
-  rec._undo = () => { M.water.buoyant = false; };
-  return moved('water band (S25)', before, { swim_denied: M.water.swimDenied, buoyant: M.water.buoyant });
+  if (T) T.buoyant = true;
+  rec._undo = () => { M.water.buoyant = false; if (T) T.buoyant = false; };
+  return moved('traversal.buoyant (S25 water band)', before,
+    { buoyant: M.water.buoyant, traversal_buoyant: T ? !!T.buoyant : null, band: T ? T.band : null });
 }
 
 function h_breathe_water(M, frame, rec) {
-  const before = { drown_timer_f: M.water.drownF, drown_running: M.water.drowning };
+  // Same defect, same fix: the drown clock that matters is `traversal.breath`, ticked in
+  // `sim/traversal.js` §8 and the thing that actually kills you. `M.water.drownF` was a
+  // magic-private mirror nobody read.
+  const T = traversalOf(M);
+  const before = { breath_s: T ? r2(T.breath) : null, breathes: M.water.breathes, drown_running: M.water.drowning };
   M.water.drowning = false;
   M.water.breathes = true;
   M.water.drownF = M.water.drownMaxF;
-  rec._undo = () => { M.water.breathes = false; };
-  return moved('water band (S25) drown timer', before, { drown_timer_f: M.water.drownF, drown_running: M.water.drowning });
+  if (T) { T.breathesWater = true; T.breath = T.breathMaxS === undefined ? T.breath : T.breathMaxS; }
+  rec._undo = () => { M.water.breathes = false; if (T) T.breathesWater = false; };
+  return moved('traversal.breath_s (the drown clock)', before,
+    { breath_s: T ? r2(T.breath) : null, breathes: M.water.breathes, drown_running: M.water.drowning });
 }
 
 // ---- Veiling: the stealth terms --------------------------------------------------------------
@@ -552,10 +689,29 @@ function h_mend_item(M, frame, rec) {
 }
 
 function h_telekinesis(M, frame, rec) {
-  const before = { reach_m: r2(M.reachM) };
-  M.reachM = Math.max(M.reachM, rec.magnitude);
-  rec._undo = () => { M.reachM = M.baseReachM; };
-  return moved('interaction reach', before, { reach_m: r2(M.reachM) }, { base_reach_m: M.baseReachM });
+  // W1-14 round 3. Wave 1 wrote `M.reachM` — a magic-private number. The interaction that
+  // actually reaches for a prop is `Engine._censusStep`, and it tests `o.reach_m` ON THE PROP:
+  // `if (d <= o.reach_m && d < bestD)`. So the reach that mattered was never the one the spell
+  // moved, and an object outside melee range stayed un-takeable however far the spell reached.
+  // RI-MTH07 §A's orphan model, exactly. The lease now raises the prop's own `reach_m`.
+  const sim = M.w && M.w.sim ? M.w.sim : null;
+  const props = sim ? sim.props : [];
+  const want = Math.max(M.baseReachM, rec.magnitude);
+  const before = { reach_m: r2(M.reachM), props: props.map((o) => ({ id: o.eid, reach_m: r2(o.reach_m) })) };
+  M.reachM = want;
+  const raised = [];
+  for (const o of props) {
+    if (o.taken) continue;
+    if (o._baseReachM === undefined) o._baseReachM = o.reach_m;
+    if (o.reach_m < want) { o.reach_m = want; raised.push(o.eid); }
+  }
+  rec._undo = () => {
+    M.reachM = M.baseReachM;
+    for (const o of props) if (o._baseReachM !== undefined) o.reach_m = o._baseReachM;
+  };
+  return moved('prop.reach_m (engine._censusStep interaction test)', before,
+    { reach_m: r2(M.reachM), props: props.map((o) => ({ id: o.eid, reach_m: r2(o.reach_m) })) },
+    { base_reach_m: M.baseReachM, props_raised: raised });
 }
 
 function h_wall(M, frame, rec) {
@@ -806,11 +962,11 @@ export const HANDLERS = {
   fortify_attribute: h_fortify_attribute,
   fortify_skill: h_fortify_skill,
 
-  // --- mitigation
-  resist_element: mitigationHandler('element'),
-  resist_disease: mitigationHandler('disease'),
-  shield: mitigationHandler('physical'),
-  sap_ward: h_sap_ward,
+  // --- wards. Four DIFFERENT verbs, not one multiplier with four names (RI-MAG06 §D).
+  resist_element: resistHandler('element'),   // % off fire/frost/shock, and nothing else
+  resist_disease: resistHandler('disease'),   // % off disease/poison, and nothing else
+  shield: h_shield,                           // FLAT off physical, and nothing else
+  sap_ward: h_sap_ward,                       // not damage at all: the sap-taint band
 
   // --- afflictions
   cure_disease: cureHandler(['disease']),
@@ -873,6 +1029,16 @@ export const HANDLERS = {
 
 /** The five effects whose consequence IS hp loss. Everything else is forbidden from touching it. */
 export const DAMAGE_EFFECTS = new Set(['fire_damage', 'frost_damage', 'shock_damage', 'poison_damage', 'damage_health']);
+
+/**
+ * Which ward channel each damage effect is stopped by. `damage_health` is `magic` — the channel
+ * NOTHING wards — which is what makes it worth its cost and what makes it distinguishable from
+ * the four elemental damage effects that share its shape.
+ */
+export const DAMAGE_EFFECT_KIND = Object.freeze({
+  fire_damage: 'fire', frost_damage: 'frost', shock_damage: 'shock',
+  poison_damage: 'poison', damage_health: 'magic',
+});
 
 /**
  * Fail loudly at boot on a catalogue entry with no handler, or a handler for an effect that is

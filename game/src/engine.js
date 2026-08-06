@@ -48,7 +48,16 @@ import { canonicalise } from './core/canonical.js';
 import { Census, renderWrit } from './character/census.js';
 import * as STL_PER from './sim/stealth/perception.js';
 import { StealthCrime, DET as STL_DET, THF as STL_THF, PP as STL_PP, JUS as STL_JUS, SAN as STL_SAN, WIT as STL_WIT, LockAttempt as STL_LockAttempt, lockGate as STL_lockGate, lockTolerance as STL_lockTolerance } from './sim/stealth/system.js';
-import { composeCharacter, signatureOf } from './character/sheet.js';
+import { composeCharacter, signatureOf, composeSkills } from './character/sheet.js';
+import { taintOf, bandFromRests } from './sim/magic/apply.js';
+
+/**
+ * The character every shipped narrative state (`helstrom-market`, `stormhold-street`,
+ * `rootlands-well-graph`) declares. Used to seed the skill register in states that declare no
+ * character at all, so the sheet exists everywhere rather than only where someone wrote it out.
+ */
+const DEFAULT_START = Object.freeze({ race: 'saxhleel', class_id: 'reed-walker' });
+
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
 import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACTIONS, placeOfNode } from './character/scene.js';
@@ -394,6 +403,12 @@ export class Engine {
     // resolves without the scenario having to replay the whole Writ House scene.
     sim.encounterData = this.data.character;
     if (patch.character) this.setCharacter(patch.character);
+    // W1-14 round 3, GAP-W1-magic-skill-frozen. `sim.progression.skills` is THE skill register:
+    // the quest machine's `requires.skills` reads it, `character/skilluse.js` writes it,
+    // `save/state.js` persists it, and `MagicSystem.skills` is now a view of it. It was `{}` in
+    // every state that did not declare a `character` block, which meant magic had to keep a
+    // private copy — and the private copy was the defect. Seed it, so there is exactly one.
+    this._ensureSkillRegister();
     // W1-07: the people and the things. A state file that names an interior and puts nobody
     // in it is the round-1 failure in data form.
     this.censusPlace = null;
@@ -563,6 +578,7 @@ export class Engine {
       route: spec.route || 'named',
     });
     ch.flags = spec.flags ? spec.flags.slice() : [];
+    this._skillsSeeded = false;
     const writ = renderWrit(this.chData, ch);
     ch.writ_text = writ.text;
     this.sim.character = ch;
@@ -580,6 +596,51 @@ export class Engine {
     this.applyDerivedPools({ refill: true, why: 'setCharacter' });
     quantiseColdState(this.sim);
     return this.getCharacter();
+  }
+
+  /**
+   * Make sure `sim.progression.skills` — THE skill register — has a row for every skill in
+   * `game/data/progression/skills.json`.
+   *
+   * W1-14 round 3. Before this method, the register was written in exactly one place
+   * (`setCharacter`), so a state file with no `character` block left it `{}`. Three things then
+   * followed, and all three were separately reported as defects by two critics:
+   *
+   *   - `sim/step.js` gated `stepSkillUse` on `sim.character`, so NO skill advanced by use in
+   *     any arena state — RI-PRG03's whole item, off, in the states its probes run in;
+   *   - the quest machine evaluated `requires.skills` against `{}`, so every skill-gated quest
+   *     resolution was unreachable by play;
+   *   - magic could not read the sheet, so it kept a private `{sorcery: 30, …}` that nothing
+   *     could write, which is GAP-W1-magic-skill-frozen.
+   *
+   * The values are the ones character creation itself would produce for the game's own starting
+   * character (`composeSkills` = `max(5, raceSkill, classSkill)`), not a number invented here:
+   * a state that has not been through the Writ House gets the sheet of someone who has just
+   * come off the barge. A state WITH a `character` block has already been composed by
+   * `setCharacter` and is left alone.
+   */
+  _ensureSkillRegister() {
+    const S = this.sim.progression.skills;
+    if (!S || typeof S !== 'object') this.sim.progression.skills = {};
+    const reg = this.sim.progression.skills;
+    const defs = this.chData && this.chData.skills ? this.chData.skills.skills : null;
+    if (!defs) return reg;
+    const base = this.chData.skills.base_value === undefined ? 5 : this.chData.skills.base_value;
+    // The default starting character: the same race/class every shipped narrative state uses.
+    let seed = null;
+    try {
+      seed = composeSkills(this.chData, DEFAULT_START.race,
+        (this.chData.classes.classes || []).find((c) => c.id === DEFAULT_START.class_id) || null);
+    } catch (err) { seed = null; }
+    for (const d of defs) {
+      const cur = reg[d.id];
+      if (cur && typeof cur === 'object' && cur.value !== undefined) continue;
+      const v = cur !== undefined && cur !== null && typeof cur !== 'object'
+        ? Number(cur)
+        : (seed && seed[d.id] !== undefined ? seed[d.id] : base);
+      reg[d.id] = { value: v, useProgress: 0 };
+    }
+    return reg;
   }
 
   /**
@@ -620,6 +681,11 @@ export class Engine {
       else this.magic.focus = Math.min(this.magic.focus, pools.focus_max);
       // RI-CHR03 / AMENDMENT-W1-07-03: the one thing The Dry Well can actually take away.
       this.magic.focusRestoresAtHearth = pools.focus_restores_at_hearth;
+      // S27's one legal exception: a DISCRETE, one-shot grant of Focus from an effect that
+      // lands on you. Derived here and consumed in `magic/system.js:absorbOnHit`; wave 1
+      // derived it and consumed it nowhere, so The Dry Well's power was as unobservable as its
+      // drawback and `magic-audit` failed on the pair.
+      this.magic.spellAbsorption = pools.spell_absorption || 0;
     }
     this.sim.pools = pools;
     if (b) mirror(this.sim, this.combat);
@@ -698,14 +764,26 @@ export class Engine {
     }
     const b = this.combat && this.combat.player;
     if (b) { b.hp = b.hpMax; b.stamina = b.staminaMax; }
+    // RI-LOR05 §4a, hard canon (CF-006), and it had no implementation at all until now:
+    // "Kneeling to a wound means taking sap into a body that was not made for it. Every rest is
+    // a small poisoning. It accumulates." A non-Argonian who rests climbs the taint bands; an
+    // Argonian never does, because the well knows them and sap is food. The consumer is NPC
+    // disposition (`sim/dialogue/disposition.js`), never a frame, a hitbox or a damage number —
+    // "an enemy that BEHAVED differently under taint would be an AR-1 fail."
+    const taint = taintOf(this.sim);
+    const taintBefore = taint.band;
+    if (!taint.immune) { taint.rests++; taint.band = bandFromRests(taint); }
     const ev = this.bus.emit(this.sim.frame, 'bonfire_rest');
     ev.focus_before = focusBefore; ev.focus_after = focusAfter; ev.focus_restored = restores;
+    ev.sap_taint_band = taint.band; ev.sap_taint_rests = taint.rests;
+    if (taint.band !== taintBefore) ev.sap_taint_rose = true;
     mirror(this.sim, this.combat);
     quantiseColdState(this.sim);
     return {
       rested: true, focus_restored: restores, focus: focusAfter, focus_max: this.magic ? this.magic.focusMax : null,
       why: restores ? null : 'The Dry Well. RI-CHR03: the wells do not fill you. AMENDMENT-W1-07-03.',
       rest_clamp_reset: true,
+      sap_taint: { band: taint.band, rests: taint.rests, immune: taint.immune, ward_uses_left: taint.wardUsesLeft },
       note: 'RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here.',
     };
   }
@@ -3454,11 +3532,24 @@ export class Engine {
       dispositions: { ...q.dispositions },
       factions: JSON.parse(JSON.stringify(q.factions)),
       crime: JSON.parse(JSON.stringify(q.crime)),
-      _declared_incomplete: {
-        owner: 'wave-1 pieces W1-14..W1-16 (quests) and W1-11..W1-13 (dialogue)',
-        implemented: ['quest STATE is real, saved, round-tripped and reported here', 'named states in game/data/states/ set it'],
-        missing: ['a quest runtime: no quest in this build can be started, advanced or completed by playing'],
-        note: 'This is state, not simulation. Reporting a fabricated active quest would be measurement fraud (RI-MTH04); reporting the real, empty-by-default state is not.',
+      // W1-14 round 3. The two registers this call did not expose, and both are the consuming
+      // system RI-MAG06 §B names for an effect: `cure_disease`/`cure_poison` read the affliction
+      // register (which `sim/hazards.js` now writes, rather than only the harness), and `mark`
+      // writes the recall destination. A consumer nobody can read through the call every critic
+      // uses is a consumer nobody can check.
+      afflictions: q.afflictions.map((a) => ({ id: a.id, kind: a.kind, name: a.name || a.id, source: a.source || null })),
+      travel: { mark: q.travel.mark ? q.travel.mark.slice() : null, nodes_visited: q.travel.nodesVisited.slice().sort() },
+      sap_taint: this.sim.progression.sapTaint
+        ? { ...this.sim.progression.sapTaint } : { band: 0, rests: 0, warded: 0, wardUsesLeft: 3, immune: false },
+      // `_declared_incomplete` used to say "a quest runtime: no quest in this build can be
+      // started, advanced or completed by playing". That became false when the runtime was
+      // constructed in round 2, and it stayed in the single most-read harness surface for the
+      // quest area for a whole round — a declaration of incompleteness is exactly as much a
+      // measurement as a number is, and a stale one misleads in the direction of modesty.
+      quest_runtime: {
+        present: !!this.questEngine,
+        quests_loaded: this.questEngine ? this.questEngine.book.ids.length : 0,
+        note: 'Quests can be offered, advanced and resolved by playing. `questResolutions(id)` reports what is reachable now, with the shortfall for each that is not.',
       },
     };
   }

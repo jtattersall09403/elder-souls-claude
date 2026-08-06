@@ -114,7 +114,7 @@ export class PlayerController {
     // which HARNESS.md §7 rule 4 calls a hard fail and which RI-CMB01 M1 / RI-CMB02 M1 both
     // measure to +/-0 frames. W1-00 got this right for the same reason and the comment is
     // repeated here because it is the single easiest frame to lose.
-    if (b.move && b.animFrame >= b.move.total) {
+    if (b.move && b.animFrame >= b.moveTotal()) {
       const ended = b.move;
       // The cast record lives for exactly `total` frames, retired at the top of the step for
       // the same reason the move is (see the comment below): retiring it a frame early makes
@@ -545,6 +545,17 @@ export class PlayerController {
       e.button = 'cast'; e.reason = reason; e.spell = spellId;
       if (reason === 'no_focus') { e.have = M.focus; e.need = M.costOf(M.spellOf(spellId)); }
       if (reason === 'no_stamina') { e.have = round1(b.stamina); e.need = M.classes[M.spellOf(spellId).class].stamina; }
+      // S29: the refusal is spoken, not silent. A traveller who presses cast in a fight is told
+      // why, and a critic reading the trace can see that a fence closed rather than a spell
+      // failing — which is the difference between a rule and a bug.
+      if (reason === 'travel_in_combat' && M._lastTravelRefusal) {
+        const t = M._lastTravelRefusal;
+        e.fence = t.reason; e.text = t.text;
+        if (t.frames_remaining !== undefined) e.frames_remaining = t.frames_remaining;
+        const te = emit(frame, 'travel_refused');
+        te.spell = spellId; te.fence = t.reason; te.text = t.text; te.ruling = 'S29';
+        if (t.frames_remaining !== undefined) { te.frames_remaining = t.frames_remaining; te.cooldown_f = t.cooldown_f; }
+      }
       this.dropReason = reason;
       return;
     }
@@ -916,6 +927,11 @@ export class PlayerController {
       else if (mag > 0.55) { mps = this.d.locomotion.jog_mps; state = 'RUN'; }
       else { mps = this.d.locomotion.walk_mps * (mag / 0.55); state = 'WALK'; }
       mps *= (locked && state !== 'SPRINT') ? dir.speedMult : 1.0;
+      // S11's FROSTBITE proc, applied where locomotion actually happens. `moveSpeedMult` is 1
+      // for every body that is not frostbitten, so this line is the identity in every run that
+      // does not contain the proc — and it is a real consumer, which is what the four unread
+      // procs were missing (W1-14 round 3).
+      mps *= (b.moveSpeedMult === undefined ? 1 : b.moveSpeedMult);
       const per = mps / 60;
       b.pos[0] += Math.sin(dir.dirDeg / DEG) * per;
       b.pos[2] += Math.cos(dir.dirDeg / DEG) * per;
@@ -1059,6 +1075,15 @@ export class PlayerController {
     const b = this.b, m = b.move;
     const nf = b.animFrame + 1;
     if (nf < m.heal_active[0] || nf > m.heal_active[1]) return;
+    // S11's POISONED proc: rot stops you healing. A flask drunk under it is spent and does
+    // nothing, which is the cost that makes POISONED a different verb from BURNING.
+    if (b.healBlockedUntil && frame < b.healBlockedUntil) {
+      if (nf === m.heal_active[1]) {
+        const e = emit(frame, 'ESTUS_DONE');
+        e.healed = 0; e.hp = Math.round(b.hp); e.left = this.estus; e.blocked_by = 'POISONED';
+      }
+      return;
+    }
     const pct = 0.400 + 0.032 * this.flaskLevel;
     const total = b.hpMax * pct;
     const per = total / m.ramp_frames;

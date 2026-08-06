@@ -21,7 +21,8 @@
 import { rng } from '../core/rng.js';
 import { BIT } from '../input/actions.js';
 import { openUI, closeUI } from './camera.js';
-import { DAMAGE_EFFECTS } from './magic/apply.js';
+import { DAMAGE_EFFECTS, DAMAGE_EFFECT_KIND } from './magic/apply.js';
+import { mitigate } from '../combat/resolve.js';
 
 export function stepCombat(sim, input, combat, bus) {
   const frame = sim.frame;
@@ -77,21 +78,34 @@ export function stepCombat(sim, input, combat, bus) {
       // The accumulator is now closed over exactly the five effects whose stated mechanical
       // consequence IS hp loss. `DAMAGE_EFFECTS` is a frozen set in magic/apply.js next to the
       // registry, so the two cannot drift: an effect can only be here if it is named there.
-      let dmg = 0;
+      //
+      // W1-14 round 3: accumulated PER DAMAGE KIND, not into one number. Wave 1 summed all five
+      // damage effects and then multiplied the total by one kind-blind `target.mitigation`, so a
+      // physical shield stopped a fireball as well as a resist-element ward did (405 -> 5, both).
+      // Each channel is now warded on its own terms and the sum is taken afterwards, so a spell
+      // still lands ONE damage event (RI-MAG01 §E rule 1) while a ward that does not name the
+      // element does nothing to it.
+      const byKind = {};
       for (const t of spell.effects) {
         if (!DAMAGE_EFFECTS.has(t.effect)) continue;
-        dmg += Math.round(M.outputOf(t.effect, t.magnitude, M.wil));
+        const k = DAMAGE_EFFECT_KIND[t.effect] || 'magic';
+        byKind[k] = (byKind[k] || 0) + Math.round(M.outputOf(t.effect, t.magnitude, M.wil));
       }
-      // Armour and mitigation are the consuming systems `corrode`, `shield` and the two resists
-      // write into, so a spell's damage reads them for the same reason a sword's does.
+      let dmg = 0;
+      const dmgByKind = {};
       // `target` is null when the geometry resolved on a WORLD OBJECT rather than a body — a
       // ward, a lock, a brick wall. Damage has nowhere to go and the handlers do the work.
-      if (dmg > 0 && target) {
-        dmg = Math.max(1, Math.round(dmg * (target.mitigation === undefined ? 1 : target.mitigation) - (target.armourRating || 0)));
-        if (target.wardCharges > 0) { target.wardCharges--; dmg = 0; }
-        target.hp -= dmg;
-        if (target.hp <= 0) { target.hp = 0; target.dead = true; }
-      } else if (!target) dmg = 0;
+      if (target) {
+        for (const k of Object.keys(byKind).sort()) {
+          const applied = Math.max(1, Math.round(mitigate(target, byKind[k], k)));
+          dmgByKind[k] = applied;
+          dmg += applied;
+        }
+        if (dmg > 0) {
+          target.hp -= dmg;
+          if (target.hp <= 0) { target.hp = 0; target.dead = true; }
+        }
+      }
       M.setContactPoint(contact.at);
       M.applyEffects(frame, spell, target, M.wil);
       M.setContactPoint(null);
@@ -99,6 +113,7 @@ export function stepCombat(sim, input, combat, bus) {
       ev.spell = spell.id; ev.target = target ? target.id : (contact.world || 'world'); ev.dmg = dmg; ev.kind = contact.kind;
       ev.hit_world_object = contact.world || null;
       ev.status = M.statusBuildupOf(spell);
+      ev.damage_by_kind = dmgByKind;
       // Declared vs applied, on the event: which of this spell's effects were allowed to be
       // damage, and which were routed to a handler instead. A critic reading the stream can
       // recompute `HP_DAMAGE_ONLY` without re-probing the consuming system.

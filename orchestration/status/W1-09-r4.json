@@ -1,18 +1,25 @@
 {
-  "task_id": "W1-09-r4",
-  "brief": "W1-09 combat core round 4 (ULTRACODE). Fix the weapon volume itself; body corridor must deal body damage.",
-  "started": "wave-1 round 4",
-  "state": "researching",
-  "outputs_expected": [
-    "game/data/combat/clips.json (weapon volume follow-through / socket path)",
-    "game/data/combat/hitgeometry.json (body_hazard own motion_value + poise)",
-    "game/src/combat/resolve.js (body damage separate from weapon)",
-    "tools/harness/cmb-reach.mjs --verify (implement or delete claim)",
-    "exemplar stamina economy rows 16/17/22/28",
-    "reports/w1-09/W1-09-R4-REPORT.md"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read r2 verdict, r3 artifacts, then the combat source",
-  "notes_for_successor": ""
+ "task_id": "W1-09-r4",
+ "brief": "W1-09 combat core round 4 (ULTRACODE). Fix the weapon volume itself; body corridor must deal body damage.",
+ "started": "wave-1 round 4",
+ "state": "building",
+ "outputs_expected": [
+  "game/data/combat/clips.json (weapon volume follow-through / socket path)",
+  "game/data/combat/hitgeometry.json (body_hazard own motion_value + poise)",
+  "game/src/combat/resolve.js (body damage separate from weapon)",
+  "tools/harness/cmb-reach.mjs --verify (implement or delete claim)",
+  "exemplar stamina economy rows 16/17/22/28",
+  "reports/w1-09/W1-09-R4-REPORT.md"
+ ],
+ "outputs_written": [],
+ "findings": [
+  "INSTRUMENT: scratchpad/vol.mjs measures, per clip, peak tip speed (active + all frames), forward reach, MIN-CONTACT (smallest forward offset at which the swept weapon hull touches a stationary target column y0.15-1.75 r0.17), and the grip hand world z. This is the number three rounds never measured.",
+  "ROOT CAUSE A (the blade): every attack clip keeps the grip hand 0.63-1.35 m in front of its own root through the whole ACTIVE window, and the weapon capsule starts socket_a_dist past the hand. MIN-CONTACT is 0.50-2.71 m for player classes and 0.83-1.50 m for enemies. The blade physically cannot occupy the 0-0.5 m band in front of the attacker at any point the hitbox is live.",
+  "ROOT CAUSE A mechanism: anim-author.mjs solves swing_scale against RI-CMB04 B peak tip speed by SHRINKING the excursion about an aim pose that is arm-forward (upperarm_r.rx aim -71 deg for chop_overhead). A shrunken arc about a forward-pointing shoulder is a blade parked out front for the whole swing. The follow pose (arm down, hand at the belly) sits at phase 2.3 - AFTER the hitbox closes at phase 2.0.",
+  "ROOT CAUSE B (the lunge): separation pushes the target at a hard cap of 0.05 m/frame while a champion chop carries its root 0.8 m in 10 active frames (0.08 m/frame). The lunge outruns the push, so a target that started at 0.35 m ends up ~0.3 m inside the attacker where nothing can reach it. This is also why the separation model measures as consuming nothing.",
+  "TWO CLIP SYNTHESIS PATHS: (1) clips.json archetypes, hand-authored by tools/harness/anim-author.mjs, used by enemy attacks and by game/data/combat/spine/*.json player baselines; (2) game/src/combat/swing.js buildSwing() from game/data/weapons/clip-registry.json profiles, used by W1-10s 87-weapon roster slots (clip_garrison_r1_3 etc). The r3 peak-tip-speed regression (39.6-45.2 m/s) is in path (2), which no solver constrains and which cmb-probe never samples.",
+  "Champion weapon socket_a_dist_m is 0.45 (a 45 cm dead haft between the hand and the start of the hitbox); player straight sword is 0.11. Both still fail min-contact, so socket_a is a contributor and not the cause."
+ ],
+ "next_step": "fix clips.json archetypes + anim-author solver to add a MIN-CONTACT constraint; then separation; then body-hazard damage",
+ "notes_for_successor": ""
 }

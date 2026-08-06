@@ -1,49 +1,51 @@
 {
-  "schema": "elder-souls/enemy@1",
-  "id": "probe_pulse",
-  "name": "Boundary pulse (measurement fixture)",
-  "archetype": "FIXTURE",
-  "tier": "prop",
-  "ai": "scripted",
-  "unit": "f@60",
-  "hp": 99999,
-  "poise": 99999,
-  "stamina_max": 9999,
-  "radius_m": 0.4,
-  "sight_radius_m": 0.0,
-  "sight_cone_deg": 0,
-  "reach_m": 0.0,
-  "idle_anim_frames": 1,
-  "lockable": false,
-  "weapon": {
-    "radius_m": 8.0,
-    "socket_a_dist_m": 0.0,
-    "socket_b_dist_m": 0.1,
-    "attack_rating": 40,
-    "socket_a": "wpn_guard",
-    "socket_b": "wpn_tip",
-    "capsule_length_m": 0.1,
-    "length_m": 0.1
-  },
-  "attacks": {
-    "pulse": {
-      "anim": "e_pulse",
-      "archetype": "thrust",
-      "startup": 54,
-      "active": 1,
-      "recovery": 20,
-      "poise_damage": 0,
-      "motion_value": 0.1,
-      "root_dz_m": 0.0,
-      "hitstop_frames": 0,
-      "hitbox_radius_m": 8.0,
-      "note": "A ONE-FRAME hitbox with an 8 m radius. RI-CMB01 M2 asks for exactly this: 'enemy scripted to activate a 1-frame hitbox exactly on frame press + k'. The radius is deliberately large so that GEOMETRY is never the variable — the only thing that can decide hit/no-hit is whether the player's i-frame window was open on that frame, which is what M2 measures. poise_damage is 0 so a stagger cannot confound the run, and the damage is small so the player survives the whole sweep."
-    }
-  },
-  "parley": null,
-  "provenance": {
-    "what": "A MEASUREMENT FIXTURE, not a game enemy. It never appears in a scenario a player could reach, and it is declared here rather than special-cased in the probe so that the number a critic reads (8.0 m) is inspectable in the data tree instead of buried in a tool."
-  },
-  "armour_rating": 0,
-  "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
+ "schema": "elder-souls/enemy@1",
+ "id": "probe_pulse",
+ "name": "Boundary pulse (measurement fixture)",
+ "archetype": "FIXTURE",
+ "tier": "prop",
+ "ai": "scripted",
+ "unit": "f@60",
+ "hp": 99999,
+ "poise": 99999,
+ "material": "flesh",
+ "material_note": "Measurement fixture; flesh so a reach sweep measures GEOMETRY and nothing else — the multiplier is 1.10 and constant across every probe.",
+ "stamina_max": 9999,
+ "radius_m": 0.4,
+ "sight_radius_m": 0.0,
+ "sight_cone_deg": 0,
+ "reach_m": 0.0,
+ "idle_anim_frames": 1,
+ "lockable": false,
+ "weapon": {
+  "radius_m": 8.0,
+  "socket_a_dist_m": 0.0,
+  "socket_b_dist_m": 0.1,
+  "attack_rating": 40,
+  "socket_a": "wpn_guard",
+  "socket_b": "wpn_tip",
+  "capsule_length_m": 0.1,
+  "length_m": 0.1
+ },
+ "attacks": {
+  "pulse": {
+   "anim": "e_pulse",
+   "archetype": "thrust",
+   "startup": 54,
+   "active": 1,
+   "recovery": 20,
+   "poise_damage": 0,
+   "motion_value": 0.1,
+   "root_dz_m": 0.0,
+   "hitstop_frames": 0,
+   "hitbox_radius_m": 8.0,
+   "note": "A ONE-FRAME hitbox with an 8 m radius. RI-CMB01 M2 asks for exactly this: 'enemy scripted to activate a 1-frame hitbox exactly on frame press + k'. The radius is deliberately large so that GEOMETRY is never the variable — the only thing that can decide hit/no-hit is whether the player's i-frame window was open on that frame, which is what M2 measures. poise_damage is 0 so a stagger cannot confound the run, and the damage is small so the player survives the whole sweep."
+  }
+ },
+ "parley": null,
+ "provenance": {
+  "what": "A MEASUREMENT FIXTURE, not a game enemy. It never appears in a scenario a player could reach, and it is declared here rather than special-cased in the probe so that the number a critic reads (8.0 m) is inspectable in the data tree instead of buried in a tool."
+ },
+ "armour_rating": 0,
+ "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
 }

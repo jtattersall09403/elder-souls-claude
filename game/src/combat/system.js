@@ -25,7 +25,7 @@ export class CombatSystem {
     // every W1-09 probe keeps working. One library, one slot resolver, one clip source: the
     // "declared here, hard-coded there" split that made 87 movesets unreachable cannot recur.
     this.lib = (data.weaponClasses && data.clipRegistry && data.weaponMovesets)
-      ? new MovesetLibrary(data.clipRegistry, data.weaponClasses, data.weaponMovesets)
+      ? new MovesetLibrary(data.clipRegistry, data.weaponClasses, data.weaponMovesets, data.skeleton, data.hitgeometry)
       : null;
     this.bodies = [];
     this.player = null;
@@ -210,6 +210,16 @@ export class CombatSystem {
     body.readsExhaustion = !!stat.reads_exhaustion;
     body.lockable = stat.lockable !== false;
     body.shieldId = stat.shield || null;
+    // RI-WPN05 §B: "Every enemy statblock MUST declare a `material` per hurtbox region."
+    // The body-level `material` is the default and `material_by_region` overrides it, so a
+    // Hist-Marked champion can be plant at the trunk and metal where it wears a cuirass and a
+    // player can learn to aim. A statblock declaring neither is recorded as UNDECLARED rather
+    // than silently defaulting — `material_declared` is what a census counts (CRITIC-DOCTRINE
+    // §7.3: a statblock with no material is unmeasurable, not "flesh").
+    body.material = stat.material || 'flesh';
+    body.materialByRegion = stat.material_by_region || null;
+    body.materialDeclared = !!stat.material;
+    body.knockbackImmune = !!stat.knockback_immune;
     body.evaluateRig(0);
     this.bodies.push(body);
     this.bodies.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
@@ -248,18 +258,32 @@ export class CombatSystem {
     };
     const lockedBody = this.lock.target ? this.bodyOf(this.lock.target) : null;
 
-    // hitstop: the world HOLDS. Animation clocks do not advance; nothing resolves.
-    if (sim.hitstopUntil > frame) {
-      for (const b of this.bodies) b.hitstop = true;
-      return;
+    // ---- hitstop: the world HOLDS, and RI-WPN05 §A says the two participants hold on DIFFERENT
+    // clocks --------------------------------------------------------------------------------
+    //
+    // Wave 1 froze every body for `sim.hitstopUntil` and returned. That is the right shape for
+    // a symmetric impact and it makes §A's asymmetry table unobservable: a stone golem's victim
+    // hitstop is **0** — "the target does not move. You do." — and under a global freeze it
+    // moved exactly as little as a sack of flesh did. The bounce IS the asymmetry, so the
+    // asymmetry has to be in the step.
+    //
+    // Each body now holds on `b.hitstopUntil`, which `resolve.js:applyHitstop` sets from the
+    // material. When every body is held — the common case, and the whole of the hold for a
+    // flesh hit — this takes the identical early return wave 1 took, so nothing that was
+    // frame-exact before is frame-exact by luck now.
+    let heldCount = 0;
+    for (const b of this.bodies) {
+      b.hitstop = (b.hitstopUntil || 0) > frame;
+      if (b.hitstop) heldCount++;
     }
-    for (const b of this.bodies) { b.hitstop = false; b._yawIn = b.yaw; }
+    if (heldCount === this.bodies.length && sim.hitstopUntil > frame) return;
+    for (const b of this.bodies) b._yawIn = b.yaw;
 
     // A hitstun state begins when the hold releases, never inside it — CombatBody.queueReaction.
     // This runs BEFORE the controllers so the controller's advance() takes the reaction to
     // anim_frame 1 in this same step, which is what makes the state exactly `total` frames
     // long (RI-CMB05 §B, RI-CMB03 §D) at every hitstop value including zero.
-    for (const b of this.bodies) if (b.pendingReaction) b.flushReaction(frame);
+    for (const b of this.bodies) if (b.pendingReaction && !b.hitstop) b.flushReaction(frame);
 
     // Body separation — RI-AI01's minimum standoff. It relieves the overlap that LAST frame's
     // root motion produced, BEFORE this frame's root motion runs, and it moves `pos` only:
@@ -289,10 +313,13 @@ export class CombatSystem {
       rebuildLoadout: (p) => this.rebuildPlayerLoadout(p),
     };
 
-    // steps 1–7, player then enemies in stable id order (HARNESS.md D7)
-    this.playerCtl.step(frame, input, ctx);
+    // steps 1–7, player then enemies in stable id order (HARNESS.md D7).
+    // A body inside its own hitstop hold does not step: its animation clock is frozen, which is
+    // what hitstop IS. A body whose hold has expired steps even while its opponent is still
+    // frozen — that is the stone bounce, seen from the golem's side.
+    if (!this.player.hitstop) this.playerCtl.step(frame, input, ctx);
     for (const b of this.bodies) {
-      if (b === this.player) continue;
+      if (b === this.player || b.hitstop) continue;
       const ec = this.enemies.get(b.id);
       if (ec) ec.step(frame, ctx);
     }

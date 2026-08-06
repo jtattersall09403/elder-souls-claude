@@ -106,8 +106,62 @@ in this section that are themselves frame counts. Those are marked and struck th
 | Modifier | Startup | Active | Recovery | Stamina | Motion value | Poise dmg | Notes |
 |---|---|---|---|---|---|---|---|
 | Two-handed | ×1.00 | ×1.00 | ×1.00 | ×1.15 | ×1.15 | ×1.30 | Different clip, same frame counts. Enables R1 hyperarmour on Axe (**f20–f44**), Greatsword (**⚠ f27–f60**) and Ultra greatsword (**⚠ f35–f78**), by the same derivation. ~~f10–f22 / f14–f30 / f18–f39~~ — *re-derived, not scaled: `ceil(0.60 × 44) = 27`, not 28; `ceil(0.60 × 58) = 35`, not 36.* |
-| R1 chain, hit 2 | ×0.78 | ×1.00 | ×1.05 | ×1.00 | ×0.95 | ×1.00 | Rounded to nearest frame. Multiplier unchanged. |
-| R1 chain, hit 3 | ×0.78 | ×1.00 | ×1.35 | ×1.00 | ×0.90 | ×1.00 | Chain terminates here for all classes except dagger (4). Multiplier unchanged. |
+| R1 chain, hit 2 | ×0.78 **(default)** | ×1.00 | ×1.05 **(default)** | ×1.00 | ×0.95 | ×1.00 | Rounded to nearest frame. **Per-class override permitted — see the boxed amendment below.** |
+| R1 chain, hit 3 | ×0.78 **(default)** | ×1.00 | ×1.35 **(default)** | ×1.00 | ×0.90 | ×1.00 | Chain terminates here for all classes except dagger (4). **Per-class override permitted — see the boxed amendment below.** |
+
+> ### AMENDED wave 1 — BAR-CRITIQUE-W1-09-R1 §R1, granting `AMENDMENT-W1-10-BAR-01`
+>
+> **The two chain rows above were class-uniform, and that made every combo in the game share one
+> rhythm envelope by corpus construction.** For any conforming build the ratio of one link's
+> timing to the next was a constant shared by all eighty-seven weapons: a dagger's four-hit chain
+> and an ultra greatsword's three-hit chain accelerated and decelerated in exactly the same
+> proportions, and only the scale differed. The user's standing direction (`INTENT-AUDIT-CHARTER`
+> §5.4) names **combos** as one of the five things a weapon must own — *"each weapon subtly
+> unique — light, heavy, combos, roll-attack, backstep-attack"* — and at the level of rhythm this
+> table guaranteed that **no weapon owned its combo**. A builder who varied the multipliers would
+> have been publishing frame data contradicting this item, which `RI-WPN02` §B's authority note
+> forbids. Where the brief and an item's language differ, the brief wins
+> (`INTENT-AUDIT-CHARTER` §7). **The bar critic grants the amendment.**
+>
+> **What changes.** The two rows above are now **defaults**, inherited by any class that declares
+> nothing, with a per-class deviation budget:
+>
+> | Field | Rule |
+> |---|---|
+> | Default | ×0.78 / ×1.05 (hit 2), ×0.78 / ×1.35 (hit 3) — **unchanged numbers**, now the inherited value |
+> | Per-class override | a class may declare its own hit-2 and hit-3 **startup** and **recovery** multipliers in `RI-WPN02` §B, within **±0.20** of the default |
+> | Active, stamina, motion value, poise | **not overridable.** Only tempo is a class property; damage and cost stay on the shared rows, so this cannot become a balance lever |
+> | Floor | `startup_final = max(6, round(base × modifier))` still binds after the override (§E, wall-clock) |
+> | Readability, now per link | **`recovery / startup` ≥ 1.40 must hold on EVERY link of the chain, not only on the chain root.** Previously §E checked `r1.1` alone |
+> | Roster requirement | **≥ 6 of the 14 melee classes must deviate from the default on at least one multiplier**, so chain tempo is a real axis rather than a permission nobody uses. Verified by `RI-WPN02` §B, reported by M4 |
+>
+> **The ±0.20 budget is bounded by the per-link readability rule and that is deliberate.** The
+> default hit-2 pair multiplies the base `recovery/startup` ratio by `1.05 / 0.78 = 1.346`, and
+> hit 3 by `1.35 / 0.78 = 1.731`, so both links clear 1.40 comfortably from a base of 1.40. The
+> worst legal corner of the budget — startup ×0.98 with recovery ×0.85 — multiplies the base
+> ratio by **0.867**, giving 1.21 on a class sitting exactly on §E's floor. **That corner is
+> illegal**, and a class must prove its declared pair clears 1.40 on its own base row rather than
+> assume the budget is free. The budget is a licence to shape the chain, not to delete the
+> readability contract.
+>
+> **Design intent, stated so the axis is arguable rather than merely arithmetic:** an axe's chain
+> should *accelerate* into a committed third swing (hit 3 startup ×0.65, recovery ×1.50 — harder
+> commitment, bigger payoff); a halberd's should *decelerate* as it recovers its lane (hit 3
+> startup ×0.90, recovery ×1.25); a fist's five-link flurry should stay flat. None of that was
+> expressible before this amendment.
+>
+> **Consequence for the chain-rhythm metrics.** `AMENDMENT-W1-10-CRITIC-01`'s proposed `Rh`
+> vector was rejected on the ground that, with uniform multipliers, its ratio components reduce
+> to `r1_recovery / r1_startup` times a constant and its inter-link gap components correlate
+> **−0.976** with `r1_startup` — i.e. with mass. That rejection was correct **at the time** and is
+> now obsolete as a reason: with per-class multipliers, chain tempo carries independent
+> information. `RI-WPN03` §D.3's geometry-based `Chg` remains the adopted measure and is not
+> displaced; whether a frame-side companion is re-admitted is `RI-WPN03`'s to decide, on
+> evidence, not this item's.
+>
+> **`RI-CMB02` remains the owner of every multiplier.** `RI-WPN02` §B carries the per-class
+> columns under this grant and may not exceed the budget; a declared multiplier outside ±0.20,
+> or a class whose per-link ratio falls below 1.40, is a defect in `RI-WPN02`, not a new licence.
 | Charged R2 (held) | **+1…+60 f@60** charge ~~+1…+30 f~~ | ×1.00 | ×1.00 | ×1.00 | ×1.00→×1.30 | ×1.00→×1.50 | Charge frames inserted between startup and active; linear ramp. **Rebased**: a full charge is 1.000 s, not 500 ms. |
 | Rolling attack | ×0.60 | ×1.00 | ×1.10 | ×0.85 | ×0.85 | ×0.85 | Only from **frames 31–52** of a `LIGHT` roll (RI-CMB01, rebased). ~~frames 16–26~~ |
 | Running attack | ×0.70 | ×1.00 | ×1.00 | ×1.10 | ×1.05 | ×1.10 | Root Δz ×2.0. |
@@ -233,7 +287,7 @@ weakens by half. A **wall-clock** row is anchored to human perception and does n
 
 | Quantity | Requirement | Under S22 | Rationale |
 |---|---|---|---|
-| `recovery / startup`, light attacks | ≥ **1.40** for every class | **ratio — invariant** | Lights pay on the back end, or spam dominates |
+| `recovery / startup`, light attacks | ≥ **1.40** for every class, **and now on every link of the R1 chain, not only the chain root** *(amended wave 1, BAR-CRITIQUE-W1-09-R1 §R1)* | **ratio — invariant** | Lights pay on the back end, or spam dominates. Per-link, because §C's chain multipliers are now per-class and a class could otherwise buy a fast chain by flattening its recovery |
 | `recovery / startup`, heavy attacks | ≥ **1.15** for every class | **ratio — invariant** | Heavies already pay on the front end in startup; demanding 1.4 there would make them unusable rather than committal |
 | Startup delta, light vs heavy of the same class | ≥ **16 f@60** ~~8 f~~ | **separation — ×2** | R2 must be a visibly different decision, not a slightly slower R1. Verified: deltas 16/26/26/28/30/36/46 |
 | `active / total` | ≤ 0.16 for every row | **ratio — invariant** | A swing is dangerous briefly; a long active window is a hitbox, not an attack |
@@ -317,6 +371,23 @@ against `round(base × multiplier)`.
   3 swings occur with startups `44, 34, 34` (`round(44×0.78) = 34`) and the chain terminates.
   *(AMENDED wave 0 (rebase-s22): was `21, 16, 16`.)*
 
+> **M4b — per-class chain tempo. AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 §R1).** The greatsword
+> assertion above is a *default-inheritance* case and must no longer be read as the universal
+> answer. For **every** melee class in `RI-WPN02` §B:
+> 1. Read the class's declared hit-2 and hit-3 startup/recovery multipliers (or the §C defaults
+>    where it declares none) and compute the expected per-link startups and recoveries with the
+>    §C rounding rule and the `max(6, …)` clamp.
+> 2. Mash R1 for `3 × total` frames, measure the realised per-link frame counts from the trace.
+> - **FAIL** on any ≥1 frame discrepancy against the class's own declared pair.
+> - **FAIL** if any declared multiplier lies outside **±0.20** of the §C default.
+> - **FAIL** if any link's realised `recovery / startup` is below **1.40**.
+> - **FAIL** if fewer than **6 of the 14 melee classes** deviate from the default on at least one
+>   multiplier. Report the deviating set by name; a roster that inherits everywhere has not used
+>   the axis and the combo is not a per-weapon property, which is the defect this amendment
+>   exists to close.
+> - Report the realised per-class link tempo vector `[st1, st2, st3, rec1, rec2, rec3]` for all
+>   14 classes as a table. It is the artifact `RI-WPN03` consumes.
+
 **M5 — Readability contract.** Recompute every row of §E from the M1 census.
 - **FAIL** on any violated requirement. These are ratios, so they cannot be satisfied by
   accident and cannot be fudged by adjusting one number.
@@ -325,6 +396,26 @@ against `round(base × multiplier)`.
 - **FAIL** if any frame count varies at all. There is no randomness on this path — no damage
   roll, no timing jitter, no to-hit check (ARBITRATION S1).
 
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, BAR-CRITIQUE-W1-09-R1 §R4)*
+
+`ARBITRATION` §3's CONSUMPTION check landed in wave 1 and reached the combat **critics** through
+the doctrine while reaching **none of the items in `corpus/10-combat/`**. The consequence was
+visible immediately: `W1-09` round 3 enumerated six models by its own choice, found two with
+`coupling == 0`, and recorded the result as `partial` — a disposition `RI-MTH07` does not have,
+because its threshold is binary. Which models must be enumerated, and what a zero costs, are
+properties of the item, not of the critic's diligence. So, for this item:
+
+1. **Enumerate exhaustively** every model this item requires to act — every table, curve, window
+   and constant it publishes that the running game must read — and list it in the verdict. A
+   sample is not an enumeration.
+2. **Perturb and observe** per `RI-MTH07` §B: two well-separated values, everything else held
+   fixed, an **entity-side** observable (a state transition, an hp change, a position, a denied
+   input), plus the null control. `"the trace carries it"` is not a consumer; a trace is an
+   observer.
+3. **Apply the consequence.** Any `coupling == 0` scores **that dimension 0**, fail-closed, and
+   appears in the piece's `status_reasons`. There is no `partial`.
+4. **Report the coupling table in the verdict**, as data, not in prose.
+
 ## Scoring
 
 | Check | Weight | Pass condition |
@@ -332,7 +423,7 @@ against `round(base × multiplier)`.
 | M1 frame census | 25 | All 14 rows exact |
 | M2 commitment probe | 30 | No illegal cancels, buffer exactly 8 f, dodge-cancel window exact |
 | M3 root motion | 20 | Per-frame match to clip, non-linear, frame-rate invariant |
-| M4 modifier arithmetic | 10 | All §C products exact |
+| M4 modifier arithmetic | 10 | All §C products exact, **and M4b's per-class chain tempo table produced with every class's declared pair matched to ±0 frames** *(amended wave 1)* |
 | M5 readability contract | 10 | All six §E rows satisfied |
 | M6 determinism | 5 | Zero variance across seeds |
 
@@ -348,7 +439,12 @@ against `round(base × multiplier)`.
   - a single "attack" animation shared by all weapon classes with the numbers swapped —
     if the ultra greatsword's swing does not *look* 166 f@60 long, the frame data is a lie
     the player cannot read;
-  - free instant turning during active frames.
+  - free instant turning during active frames;
+  - *(added wave 1, BAR-CRITIQUE-W1-09-R1 §R1)* **every melee class inheriting §C's default chain
+    multipliers**, i.e. fewer than 6 of the 14 declaring a deviation. This is the chain-rhythm
+    form of failure 3 below — "everything is 20 frames" one level up, at the level of the combo —
+    and the user's direction names combos explicitly as a per-weapon property. A roster that
+    inherits everywhere has one combo wearing eighty-seven costumes.
 
 **Blind pair:** hand the critic two `C[action][k]` commitment grids and two frame censuses,
 unlabelled, and ask which game rewards patience. Record the blind pick before the reveal.

@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-06T22:57:50Z
+Generated: 2026-08-06T23:21:15Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -25,16 +25,16 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 
 ## 1. Coverage at a glance
 
-- Canonical subsystem paths: **326**
-- Reference items found: **142** across 18 area(s)
-- Subsystems with at least one judging reference item: **320**
+- Canonical subsystem paths: **328**
+- Reference items found: **143** across 18 area(s)
+- Subsystems with at least one judging reference item: **322**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
 - Front-matter problems: 0 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
-| `combat.*` | 50 | 50 | 0 | 0 |
+| `combat.*` | 52 | 52 | 0 | 0 |
 | `progression.*` | 18 | 18 | 0 | 0 |
 | `quests.*` | 22 | 22 | 0 | 0 |
 | `dialogue.*` | 14 | 14 | 0 | 0 |
@@ -70,7 +70,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
-| `combat.frames.timing` | Startup / active / recovery frame counts per attack | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md)<br>[RI-WPN02](../../corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs<br>in-item M1–M7 (7 checks); corpus/80-methods/m-wpn02-class-fingerprint.mjs |
+| `combat.frames.timing` | Startup / active / recovery frame counts per attack | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-AI03](../../corpus/10-combat/RI-AI03-punish-windows.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md)<br>[RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md)<br>[RI-WPN02](../../corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M8 (8 checks)<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs<br>in-item M1–M9 (9 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs<br>in-item M1–M7 (7 checks); corpus/80-methods/m-wpn02-class-fingerprint.mjs |
 | `combat.frames.cancel` | What may cancel what, and when (roll-cancel, no free animation cancels) | souls | [RI-WPN04](../../corpus/12-weapons/RI-WPN04-contextual-attacks.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-wpn04-contextual.mjs |
 | `combat.dodge.iframes` | Roll invulnerability window measured in frames at 60Hz | souls | [RI-CMB01](../../corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb01-roll-iframes.mjs |
 | `combat.dodge.directional` | Directional roll semantics under lock-on, including backstep | souls | [RI-CMB01](../../corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md)<br>[RI-CMB06](../../corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md)<br>[RI-CAM04](../../corpus/15-camera/RI-CAM04-locked-movement-directional-roll-soft-lock.md)<br>[RI-PRG07](../../corpus/20-progression/RI-PRG07-equip-load-encumbrance.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb01-roll-iframes.mjs<br>in-item M1–M8 (8 checks); corpus/80-methods/m-cmb06-lockon.mjs<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cam04-locked-movement.mjs<br>in-item procedure (kind: number) |
@@ -79,9 +79,9 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `combat.stamina.regen` | Regen rate and post-spend regen delay | souls | [RI-CMB03](../../corpus/10-combat/RI-CMB03-stamina-economy.md)<br>[RI-UIX01](../../corpus/86-ui/RI-UIX01-combat-hud.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb03-stamina.mjs<br>in-item procedure (kind: number); tools/harness/run-headless.mjs, tools/harness/shoot.mjs, tools/analysis/ui-census.mjs, tools/analysis/ui-forbidden.mjs |
 | `combat.stamina.block` | Guard stamina drain, guard break, stability | souls | [RI-CMB03](../../corpus/10-combat/RI-CMB03-stamina-economy.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb03-stamina.mjs |
 | `combat.stamina.exhaustion` | Zero-stamina state and its punish window | souls | [RI-CMB09](../../corpus/10-combat/RI-CMB09-recovery-and-exhaustion.md) | `critic.combat` | in-item M1–M8 (8 checks) |
-| `combat.hitbox.sweep` | Weapon hit volumes swept along the arc across the active window | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs |
-| `combat.hitbox.hurtbox` | Hurtboxes bound to and moving with animated bones | souls | [RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs |
-| `combat.hitbox.resolution` | Deterministic geometric hit resolution — NO to-hit roll (seam S1) | split | [RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) | `critic.combat` | in-item M1–M7 (7 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs |
+| `combat.hitbox.sweep` | Weapon hit volumes swept along the arc across the active window | souls | [RI-AI02](../../corpus/10-combat/RI-AI02-telegraph-doctrine.md)<br>[RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) | `critic.combat` | in-item M1–M7 (7 checks)<br>in-item M1–M9 (9 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs |
+| `combat.hitbox.hurtbox` | Hurtboxes bound to and moving with animated bones | souls | [RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md) | `critic.combat` | in-item M1–M9 (9 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs |
+| `combat.hitbox.resolution` | Deterministic geometric hit resolution — NO to-hit roll (seam S1) | split | [RI-CMB04](../../corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md)<br>[RI-CMB07](../../corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md) | `critic.combat` | in-item M1–M9 (9 checks); corpus/80-methods/m-cmb04-hitgeometry.mjs<br>in-item M0–M4 (5 checks); corpus/80-methods/m-cmb07-expand.mjs |
 | `combat.damage.model` | Damage formula, defences, absorption | souls | [RI-PRG02](../../corpus/20-progression/RI-PRG02-stat-sheet.md)<br>[RI-PRG08](../../corpus/20-progression/RI-PRG08-upgrade-path.md) | `critic.combat` | in-item procedure (kind: number)<br>in-item procedure (kind: number) |
 | `combat.damage.scaling` | How stats and skills scale damage (seam S3: scaling, never to-hit) | split | [RI-PRG02](../../corpus/20-progression/RI-PRG02-stat-sheet.md)<br>[RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md) | `critic.combat` | in-item procedure (kind: number)<br>in-item procedure (kind: number) |
 | `combat.poise.player` | Player poise / hyperarmour and stagger-out | souls | [RI-CMB05](../../corpus/10-combat/RI-CMB05-poise-stagger-criticals.md) | `critic.combat` | in-item M1–M8 (8 checks); corpus/80-methods/m-cmb05-poise.mjs |
@@ -118,6 +118,8 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `combat.input.buffer` | Input buffering window and queue semantics | souls | [RI-CMB01](../../corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md)<br>[RI-CMB02](../../corpus/10-combat/RI-CMB02-attack-frame-data.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb01-roll-iframes.mjs<br>in-item M1–M6 (6 checks); corpus/80-methods/m-cmb02-frame-data.mjs |
 | `combat.input.latency` | Press-to-first-active-frame latency | souls | [RI-CMB11](../../corpus/10-combat/RI-CMB11-input-latency.md) | `critic.combat` | in-item M1–M7 (7 checks) |
 | `combat.feedback.hitstop` | Hitstop, impact vfx/sfx, damage legibility | souls | [RI-WPN05](../../corpus/12-weapons/RI-WPN05-weapon-feel-impact.md)<br>[RI-CAM06](../../corpus/15-camera/RI-CAM06-camera-feel.md)<br>[RI-AUD01](../../corpus/87-audio/RI-AUD01-combat-impact-audio.md) | `critic.combat` | in-item M1–M8 (8 checks); corpus/80-methods/m-wpn05-impact.mjs<br>in-item M1–M9 (9 checks); corpus/80-methods/m-cam06-feel.mjs<br>in-item M1–M8 (6 checks); tools/harness/run-headless.mjs, tools/analysis/audio-sync.mjs, tools/blind/audio-pack.mjs |
+| `combat.exchange.reactability` | Can a telegraph be read while playing — visual onset vs the declared windup label | souls | [RI-CMB12](../../corpus/10-combat/RI-CMB12-exchange-reactability-and-decision-divergence.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb12-exchange.mjs |
+| `combat.exchange.divergence` | Do different decisions at the same moment produce different outcomes | souls | [RI-CMB12](../../corpus/10-combat/RI-CMB12-exchange-reactability-and-decision-divergence.md) | `critic.combat` | in-item M1–M5 (5 checks); corpus/80-methods/m-cmb12-exchange.mjs |
 | `combat.difficulty.lethality` | Regions gated by lethality; NO level-scaling to the player (seam S9) | souls | [RI-AI05](../../corpus/10-combat/RI-AI05-roster-archetypes.md)<br>[RI-WLD04](../../corpus/50-world/RI-WLD04-region-identity.md) | `critic.combat` | in-item M1–M8 (8 checks)<br>in-item M17–M21 (5 checks) |
 | `combat.pause.policy` | World does not pause during combat; inventory is not a safe haven (seam S14) | souls | [RI-UIX03](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) | `critic.combat` | in-item procedure (kind: structure); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs |
 
@@ -777,6 +779,7 @@ _None._
 | RI-CMB09 | The two self-inflicted punish windows — post-roll recovery, roll-spam, and the exhausted state | 10-combat | number | souls | constructed | high | yes | `combat.dodge.recovery` `combat.stamina.exhaustion` | [corpus/10-combat/RI-CMB09-recovery-and-exhaustion.md](../../corpus/10-combat/RI-CMB09-recovery-and-exhaustion.md) |
 | RI-CMB10 | Status buildup — the five meters, the proc, and the handoff to the affliction economy | 10-combat | number | split | constructed | medium | yes | `combat.status.buildup` | [corpus/10-combat/RI-CMB10-status-buildup.md](../../corpus/10-combat/RI-CMB10-status-buildup.md) |
 | RI-CMB11 | Input latency as a combat-correctness property — the four-stage budget, the zero-frame dispatch rule, and edge sampling | 10-combat | number | souls | constructed | high | no | `combat.input.latency` | [corpus/10-combat/RI-CMB11-input-latency.md](../../corpus/10-combat/RI-CMB11-input-latency.md) |
+| RI-CMB12 | The exchange — reactability, decision divergence, and whether the fight is a decision at all | 10-combat | number | souls | constructed | medium | no | `combat.exchange.reactability` `combat.exchange.divergence` | [corpus/10-combat/RI-CMB12-exchange-reactability-and-decision-divergence.md](../../corpus/10-combat/RI-CMB12-exchange-reactability-and-decision-divergence.md) |
 | RI-WPN01 | The moveset slot contract — every attack a weapon must own, and the schema it serialises to | 12-weapons | structure | souls | constructed | high | yes | `weapon.moveset.slots` `weapon.moveset.schema` `weapon.charge.heavy` `weapon.moveset.answers` `combat.attack.charge` `combat.attack.moveset` | [corpus/12-weapons/RI-WPN01-moveset-slot-contract.md](../../corpus/12-weapons/RI-WPN01-moveset-slot-contract.md) |
 | RI-WPN02 | Weapon-class differentiation — fifteen classes and the behavioural fingerprint distance between them | 12-weapons | number | souls | constructed | high | yes | `weapon.class.taxonomy` `weapon.class.differentiation` `weapon.class.reach` `weapon.moveset.slots` `combat.weapon.identity` `combat.frames.timing` | [corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md](../../corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md) |
 | RI-WPN03 | Within-class subtlety — how much two weapons of the same class are allowed to be the same | 12-weapons | number | souls | constructed | high | yes | `weapon.identity.withinclass` `weapon.animation.reuse` `weapon.class.differentiation` `combat.weapon.identity` | [corpus/12-weapons/RI-WPN03-within-class-subtlety.md](../../corpus/12-weapons/RI-WPN03-within-class-subtlety.md) |

@@ -25,6 +25,14 @@
 'use strict';
 
 /** RI-DLG04 §E: the five bands. Returns 1..5. */
+/**
+ * RI-LOR05 §4a's five taint bands, priced as disposition. Ordinary people find you increasingly
+ * wrong to be near; rootkeepers find you increasingly interesting, which the item is explicit is
+ * worse. Band 0 is absent from both tables because band 0 is nothing happening.
+ */
+export const SAP_TAINT_DISPOSITION = Object.freeze({ 1: -4, 2: -10, 3: -18, 4: -30 });
+export const SAP_TAINT_ROOTKEEPER = Object.freeze({ 1: +5, 2: +12, 3: +18, 4: +25 });
+
 export function band(d) {
   const x = Math.max(0, Math.min(100, Math.trunc(d)));
   if (x < 20) return 1;
@@ -149,6 +157,19 @@ export function derivedDisposition(npc, player, ctx = {}) {
 
   const charm = Number(player.charmMagnitude || 0);
   if (charm) { x += charm; terms.push(['charm', charm]); }
+
+  // RI-LOR05 §4a, the tithe-curse, made observable. "NPCs notice your eyes" at band 1;
+  // "Rootkeepers will now speak to you, which is worse" at band 2; at band 4 "certain NPCs will
+  // not be in the same room as you". A non-Argonian who uses the hearths — which is to say, who
+  // plays the game — carries this, and it is the ONLY thing `sap_ward` lowers. It touches
+  // nothing inside the fight, which is what keeps it legal under AR-1: no frame, no hitbox, no
+  // telegraph and no damage number reads it.
+  const taint = Number(player.sapTaintBand || 0);
+  if (taint > 0) {
+    const isRootkeeper = !!(npc.rootkeeper || (npc.tags && npc.tags.includes('rootkeeper')));
+    const t = isRootkeeper ? SAP_TAINT_ROOTKEEPER[taint] : SAP_TAINT_DISPOSITION[taint];
+    if (t) { x += t; terms.push([isRootkeeper ? 'sap_taint_rootkeeper' : 'sap_taint', t]); }
+  }
 
   const out = Math.max(0, Math.min(100, Math.trunc(x)));
   return ctx.explain ? { value: out, raw: x, terms, faction: ft, race: rt } : out;

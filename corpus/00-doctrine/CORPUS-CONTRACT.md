@@ -81,6 +81,43 @@ Every builder task names its subsystem path. Every critic is handed exactly the 
 items whose `judges:` list contains that path. A subsystem with zero judging items is a
 **corpus hole** — the builder must not start until the hole is filled.
 
+> ### AMENDED wave 1 — BAR-CRITIQUE-W1-09-R1 §R6. **The item set is chosen by `judges:`, never by directory.**
+>
+> This rule was in force for the whole of wave 1 and `W1-09` was judged against a set assembled
+> from `ls corpus/10-combat/`. The two disagree badly, and in both directions at once:
+>
+> - `W1-09` declared five paths — `combat.hitbox.sweep`, `combat.hitbox.resolution`,
+>   `combat.dodge.iframes`, `combat.stamina.costs`, `platform.determinism.harness`. Resolved
+>   through the alias table those are judged by `RI-CMB01`, `RI-CMB03`, `RI-CMB04`, `RI-CMB07`,
+>   `RI-AI02`, `RI-CAM06`, `RI-MTH01`, `RI-MTH02`, `RI-MTH07` and `RI-PLT01`.
+> - It was **scored against twelve items**, seven of which (`RI-CMB02`, `05`, `06`, `09`, `11`,
+>   `RI-AI01`, `RI-AI03`) judge **none** of its declared paths, while four that do
+>   (`RI-MTH01/02/07`, `RI-PLT01`) were never scored at all.
+> - `RI-AI01` judges `combat.enemy.perception / statemachine / movement / leash`. Those belong to
+>   the enemy-AI piece, which does not exist. It was scored **0 — "unmeasurable: there is no enemy
+>   AI in this build"** — into the mean of a piece that was never going to ship one, for three
+>   rounds.
+>
+> **Two rules follow, and neither of them lowers any bar.**
+>
+> 1. **A piece is scored against the items that judge the paths it declares.** An item judging a
+>    path the piece does not own is not scored into that piece's mean. It is not thereby
+>    forgiven: it becomes a **cross-piece coupling debt owned by the seam**, recorded at its
+>    measured value against the piece that *does* own the path, exactly as `RI-MTH07` "How we
+>    lose" clause 2 prescribes — *"a cross-piece coupling debt with no owner is how both pieces
+>    pass and the game does nothing."*
+> 2. **A piece's declared path set must cover what it ships.** `W1-09`'s five paths do not
+>    mention attacks, poise, lock-on, latency, exhaustion or hitstop, all of which it builds. A
+>    piece that ships a subsystem it did not declare has escaped the item that judges it, and the
+>    escape is silent. The declaration is checked against the piece's own outputs at verdict time
+>    and a mismatch is a `method_deviation`.
+>
+> Both halves matter, and shipping only the first would be exactly the relaxation this amendment
+> is not: dropping the AI items without widening the declaration would remove three bars and add
+> none. The net effect on `W1-09` is that it stops being charged for a piece nobody built and
+> starts being charged for hitstop, latency, wall-clock delivery and harness coupling, which it
+> was ducking.
+
 ## 5. Extension rule
 
 When a critic cannot judge something with the items it was given, it does not guess and

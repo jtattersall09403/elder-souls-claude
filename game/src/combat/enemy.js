@@ -25,6 +25,17 @@ import { applyPoiseDamage } from './rules.js';
 
 export const IMPLEMENTED_AI = new Set(['none', 'hold_ground', 'scripted']);
 
+/**
+ * Which damage type an enemy attack's pose archetype delivers, when the statblock does not say.
+ * RI-WPN05 §B owns the shape -> damage-type mapping; this only maps ARCHETYPE -> shape, so an
+ * enemy overhead chop strikes and an enemy thrust thrusts rather than everything slashing.
+ */
+const SHAPE_OF_ARCHETYPE = {
+  chop_overhead: 'slash_v', thrust: 'thrust', sweep_wide: 'sweep', cut_diagonal: 'slash_d',
+  cut_horizontal: 'slash_h', cut_horizontal_rev: 'slash_h', smash_overhead: 'smash',
+  slam: 'smash', crit_thrust: 'thrust', grab: 'grab', lash: 'lash', spin: 'spin',
+};
+
 /** Build an enemy's move table from its statblock's declared attacks. */
 export function buildEnemyMoves(stat, data, weapon) {
   const arch = data.clips.archetypes;
@@ -51,6 +62,15 @@ export function buildEnemyMoves(stat, data, weapon) {
       hitbox: true,
       hitbox_radius_m: a.hitbox_radius_m || weapon.radius_m,
       hitstop_frames: a.hitstop_frames || 6,
+      // RI-WPN05 §A/§B apply symmetrically: an enemy blade meeting the player's flesh reads the
+      // same tables the player's blade does. `shape` picks the damage type; `weight_tier` picks
+      // the hitstop and knockback rows. Both are declarable per attack and default honestly —
+      // an enemy statblock that says nothing gets the medium row and a slashing shape, which is
+      // what its `cut_diagonal`/`sweep_wide` archetypes already are.
+      shape: a.shape || SHAPE_OF_ARCHETYPE[a.archetype] || 'slash_d',
+      weight_tier: a.weight_tier || stat.weight_tier || 'medium',
+      weapon_class: null,
+      hitstop_f_table: a.hitstop_f || null,
       root_dz_m: a.root_dz_m || 0,
       iframes: null,
       hard_until: total,
@@ -127,7 +147,7 @@ export class EnemyController {
     }
 
     // Retire at the TOP of the step — see the note in combat/player.js.
-    if (b.move && b.animFrame >= b.move.total) b.endMove();
+    if (b.move && b.animFrame >= b.moveTotal()) b.endMove();
 
     if (b.move && (b.move.kind === 'stagger' || b.move.kind === 'guard_break')) {
       b.advance(frame);

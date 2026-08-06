@@ -231,17 +231,112 @@ raised guard.
 **M7 — Render decoupling.** Run M2 with the render loop at 30, 60, 90, 144 and uncapped Hz.
 - **FAIL** if any hit/miss outcome changes. Queries must live in the fixed step only.
 
+**M8 — Reach, contiguity and attribution. *(ADDED wave 1, BAR-CRITIQUE-W1-09-R1 §R6, enforcing
+ARBITRATION seam S26.)*** Seam S26 imposed a positive requirement — *"a moving attacker's own
+body is a hazard, and its sweep must be tested"* — and required every combat critic to *"measure
+minimum reaching distance directly, at contact range, against a stationary target"*, to
+*"confirm the reachable band is contiguous"*, and to *"never infer reach from declared values"*.
+**None of M1–M7 tested any of that.** The hole that produced S26 survived a full critic round,
+and the "fix" for it survived another, because the item that owns hit geometry contained no
+method for the thing the ruling requires. It does now.
+
+For **every** attack in the game, player and enemy alike — not a sample:
+
+1. **Minimum reach, measured.** Place a **stationary** target directly in front of the attacker.
+   Sweep placement distance from **0.00 m to `declared_reach + 1.00 m` in 0.05 m steps**, one run
+   per step, and record for each whether any damage event occurred and its `via`.
+   - Report `min_hit_distance_m`, `max_hit_distance_m` and the full hit set per attack.
+   - **FAIL** if `min_hit_distance_m` is inferred from any declared value rather than measured.
+   - **FAIL** if `min_hit_distance_m > 0.35 m` for any attack **with the body corridor ablated**
+     (see 3). A weapon that cannot reach a target standing inside its own root travel has a hole
+     in its arc, whatever covers it.
+2. **Contiguity.** The set of connecting distances must be a **single unbroken run**.
+   - **HARD FAIL** on any interior gap. An interior gap is the same defect as a short arc wearing
+     a different shape: a spearman standing at 1.22 m who cannot be hit by anything is a hole
+     that no aggregate statistic will ever surface.
+   - Report every gap by attack and by distance.
+3. **The two-volume ablation.** Re-run 1 and 2 on a deep copy of the loaded data with
+   `§body_hazard` removed, and again with every attack's `root_dz` forced to 0.
+   - **FAIL** if removing the body corridor changes `min_hit_distance_m` by more than **0.35 m**
+     on any attack. That difference *is* the hole the corridor is covering, and reporting the
+     covered figure as the reach is how `W1-09` round 3 shipped round 2's geometry unchanged.
+   - **FAIL** if `root_dz == 0` does **not** reduce body-corridor hits to zero at every distance.
+     Zero root translation must mean zero body hazard, or the corridor is a proximity check and
+     **AR-1 fires** (S26's own guard, and the one thing rounds 2→3 got right).
+4. **Attribution.** For every connecting distance record `(via, dmg, poise_damage)`.
+   - **HARD FAIL** if a `via: "body"` event's `dmg` is **≥** the same attack's `via: "weapon"`
+     `dmg`. A shoulder-check is a shove; a blade is a blade. Measured in `W1-09` round 3: 96
+     damage whether the greatsword cut at 3.65 m or the champion's chest arrived at 0.05 m — and
+     on the player's side, 14 of the dagger's 19 connecting distances and 15 of the straight
+     sword's 36 were torso-checks paying the blade's damage. **That makes reach cosmetic**, which
+     is `RI-CMB02` "How we lose" #10 arriving through a door nobody was watching.
+   - `§body_hazard` must therefore declare its **own** `motion_value` and `poise_damage`. A
+     corridor that inherits the weapon's numbers is a defect under this method and under S26 as
+     amended wave 1.
+5. **One body, one radius.** Report the actor's body radius as used for (a) the hit/push volume
+   and (b) world collision. **FAIL** if they differ by more than **0.05 m**. S26 already forbids
+   using a narrow hurtbox for hits and a wide one for pushing; the same argument applies to a
+   player who is 0.30 m wide to a sword and 0.55 m wide to a wall.
+
+**M9 — Substep ablation is a scored check, not an aside. *(AMENDED wave 1.)*** M2 already
+carries the clause — *"Re-run with substeps forced to 1 and confirm the sim now produces misses;
+if it does not, sweeping is not actually implemented and the substep parameter is decorative."*
+It has never been reported as a **result**. In `W1-09` round 3 the hit set with `substeps = 1`
+was **byte-identical** to the shipped value across 71 distances — none lost, none gained — and
+that was filed as a proposed corpus extension rather than as the M2 failure the item already
+defines. It is now its own check so that it cannot be filed away again:
+- Report the `(attack, distance)` pairs whose outcome differs between `substeps = 1` and the
+  shipped value.
+- **FAIL** if that set is **empty**. The sweep is then a single discrete overlap test per frame,
+  §C's continuity argument is fiction, and the tunnelling that §C exists to prevent is only
+  absent because nothing moves fast enough to expose it yet.
+- This is also a **CONSUMPTION** failure under `RI-MTH07`: `coupling == 0` on a model this item
+  requires to act, which forces the dimension to 0. See the CONSUMPTION block below.
+
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, BAR-CRITIQUE-W1-09-R1 §R4)*
+
+`ARBITRATION` §3's CONSUMPTION check landed in wave 1 and **never reached a single item in
+`corpus/10-combat/`**. It arrived at the combat *critics* through the doctrine, which is why
+`W1-09` round 3 ran it at all; it never arrived at the *items*, so nothing said which models must
+be enumerated, and nothing said what a `coupling == 0` costs. Round 3 duly found two orphans —
+`hitgeometry §bodies.separation` (both radii zeroed: every hit set and every overlap statistic
+byte-identical) and `hitgeometry §sweep.substeps` (4 → 1: hit set byte-identical) — and scored
+the item **55/100 with a "partial" consumption note**, where `RI-MTH07`'s own threshold is
+binary: *"any `coupling == 0` on a model the piece's own reference items require to act"* forces
+that dimension to **0**. The check was present, correct, and not enforced.
+
+**Every verdict citing this item must therefore:**
+
+1. **Enumerate exhaustively**, not by sample, every model this item requires to act — at minimum
+   the weapon hit volumes (§B), the hurtbox layout (§D), the sweep substep count (§C), the body
+   capsule and its separation radii, and `§body_hazard`'s own motion value and poise damage.
+2. **Perturb and observe**, per `RI-MTH07` §B: two well-separated values, everything else held,
+   an **entity-side** observable, plus the null control. `"the trace carries it"` is not a
+   consumer.
+3. **Apply the consequence.** Any `coupling == 0` scores **that dimension 0** and appears in the
+   piece's `status_reasons`. `partial` is not a disposition this check has.
+4. **Report the coupling table in the verdict**, not in prose.
+
 ## Scoring
 
 | Check | Weight | Pass condition |
 |---|---|---|
-| M1 bone attachment | 20 | Hurtboxes track bones every frame, after evaluation |
-| M2 tunneling | 25 | Sim matches analytic on all 7 classes × 24 offsets |
-| M3 boundary sharpness | 15 | Single crossing, within 0.03 m |
-| M4 determinism / no dice | 20 | 200 identical hashes, no reachable RNG |
+| M1 bone attachment | 15 | Hurtboxes track bones every frame, after evaluation |
+| M2 tunneling | 20 | Sim matches analytic on all 7 classes × 24 offsets |
+| M3 boundary sharpness | 10 | Single crossing, within 0.03 m |
+| M4 determinism / no dice | 15 | 200 identical hashes, no reachable RNG |
 | M5 de-dup | 5 | Exactly one event per swing per target |
-| M6 resolution order | 10 | All four scenarios exact |
+| M6 resolution order | 8 | All four scenarios exact |
 | M7 render decoupling | 5 | Outcomes invariant to render rate |
+| **M8 reach, contiguity, attribution (S26)** | **15** | Measured minimum reach ≤ 0.35 m with the corridor ablated, no interior gap, body damage strictly below weapon damage, one body radius |
+| **M9 substep ablation** | **7** | The set of outcomes that change between `substeps = 1` and the shipped value is **non-empty** |
+
+> **Weights re-cut wave 1 (BAR-CRITIQUE-W1-09-R1 §R6) to make room for M8 and M9. No band
+> moved and no pass condition weakened**: ≥90 / 70–89 / <70 are unchanged, and every previously
+> weighted check keeps its full pass condition. The 22 points come out of the seven existing
+> checks proportionally, so a build that passed everything before now has 22 points of new work
+> to do. This item scored 86 in `W1-09` round 1 while the geometry it measures could not hit a
+> stationary target at one metre; that is the gap M8 closes.
 
 - **≥ 90** — parity.
 - **70–89** — gap named, remediable.
@@ -254,7 +349,15 @@ raised guard.
   - distance-based or "close enough" hit approximation (sphere-around-the-player,
     `distance < 2.0 && facing`);
   - hurtboxes that do not move with the animated skeleton;
-  - hit queries executed in the render loop or scaled by `dt`.
+  - hit queries executed in the render loop or scaled by `dt`;
+  - *(added wave 1, enforcing seam **S26**)* **an interior gap in any attack's reachable band**
+    (M8.2) — a hole in the middle of a weapon's range is a distance check with a bite taken out
+    of it, and it is invisible to every aggregate in this corpus;
+  - *(added wave 1)* **a body-corridor hit dealing damage greater than or equal to the same
+    attack's weapon hit** (M8.4) — reach becomes cosmetic and the weapon is decoration;
+  - *(added wave 1)* **a body corridor that damages a target while the attacker's root
+    translation is zero** — that is a proximity check under another name and is the AR-1 failure
+    S26 was careful to keep separate from the defect it was ruling on.
 
 `blind_pair: no` — this item is judged by measurement, not by comparative aesthetics. There
 is no unlabelled artifact a critic could usefully pick between; the analytic answer is

@@ -37,7 +37,7 @@ export function governingMap(data) {
  */
 export function stepSkillUse(sim, combat, bus, chData) {
   const prog = sim.progression;
-  if (!sim.character || !prog || !prog.skills) return;
+  if (!prog || !prog.skills) return;
   const p = combat && combat.player;
   if (!p) return;
   const weaponClass = p.moves && p.moves._classKey;
@@ -71,11 +71,15 @@ export function stepSkillUse(sim, combat, bus, chData) {
         kind = 'parry';
         ctx = { cost: 1 };
         break;
-      case 'spell_hit':
-      case 'effect_apply':
-        if (e.by !== undefined && e.by !== p.id) break;
+      // W1-14 round 3. Wave 1 read `spell_hit` AND `effect_apply` and mapped both to
+      // `cast_effective` with `spell_skill: e.skill || 'sorcery'` — but neither event carried a
+      // `skill` field, so every spell of every school would have banked into sorcery, and a
+      // three-effect spell would have banked four times for one cast. `cast_effective` is
+      // emitted once per delivered cast by `magic/system.js:_creditCast` and carries the
+      // spell's own school, already mapped onto this file's skill ids.
+      case 'cast_effective':
         kind = 'cast_effective';
-        ctx = { cost: e.focus_spent || e.dmg || 1, spell_skill: e.skill || 'sorcery' };
+        ctx = { cost: e.cost || 0, spell_skill: e.skill || 'sorcery' };
         break;
       default: break;
     }
@@ -110,7 +114,7 @@ export function stepSkillUse(sim, combat, bus, chData) {
  */
 export function grantUse(sim, bus, chData, kind, ctx) {
   const prog = sim.progression;
-  if (!sim.character || !prog || !prog.skills) return { refused: 'no character' };
+  if (!prog || !prog.skills || !Object.keys(prog.skills).length) return { refused: 'no skill register' };
   const governingOf = sim._governingOf || (sim._governingOf = ((m) => (id) => m[id])(governingMap(chData)));
   const g = skillProgressFor(kind, ctx || {});
   if (!g || !g.skill) return { refused: (g && g.refused) || `unknown use event '${kind}'` };

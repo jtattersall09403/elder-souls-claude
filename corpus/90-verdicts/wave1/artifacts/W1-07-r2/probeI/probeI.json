@@ -1,4 +1,1622 @@
 {
   "generated_by": "tools/harness/critic-w1-07-r2i.mjs",
-  "tests": []
+  "tests": [
+    {
+      "id": "I1-browser-vs-node-hit-resolution",
+      "node_arena_says": "cmb-reach --probe player --enemy inf_trash --weapons straight-sword => contiguous hits 0.05..1.80 m, ACCEPTANCE pass",
+      "browser_inf_trash": [
+        {
+          "spawn_dist_m": 0.4,
+          "enemy": "inf_trash",
+          "separation_min": 0.587,
+          "separation_max": 0.6,
+          "enemy_hp_after": 22.599999999999966,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "CRIT_HIT": 1,
+            "backstab": 1,
+            "CRIT_RELEASE": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 0.598,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.498226
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.096087
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 20,
+              "sep": 0.593,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.448636
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.041186
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 30,
+              "sep": 0.592,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.369366
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.961811
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 40,
+              "sep": 0.598,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.312486
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.910034
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 50,
+              "sep": 0.592,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.279876
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.871659
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 60,
+              "sep": 0.587,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.170331
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.757532
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 0.8,
+          "enemy": "inf_trash",
+          "separation_min": 0.587,
+          "separation_max": 0.796,
+          "enemy_hp_after": 22.599999999999966,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "CRIT_HIT": 1,
+            "backstab": 1,
+            "CRIT_RELEASE": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 0.796,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.996087
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 20,
+              "sep": 0.741,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.941186
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 30,
+              "sep": 0.662,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.861811
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 40,
+              "sep": 0.61,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.810034
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 50,
+              "sep": 0.592,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.179876
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.771659
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 60,
+              "sep": 0.587,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.070331
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.657532
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1,
+          "enemy": "inf_trash",
+          "separation_min": 0.589,
+          "separation_max": 0.996,
+          "enemy_hp_after": 22.599999999999966,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "CRIT_HIT": 1,
+            "backstab": 1,
+            "CRIT_RELEASE": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 0.996,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.996087
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 20,
+              "sep": 0.941,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.941186
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 30,
+              "sep": 0.862,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.861811
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 40,
+              "sep": 0.81,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.810034
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 50,
+              "sep": 0.772,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.771659
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 60,
+              "sep": 0.658,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.657532
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1.2,
+          "enemy": "inf_trash",
+          "separation_min": 0.65,
+          "separation_max": 1.196,
+          "enemy_hp_after": 22.599999999999966,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "CRIT_HIT": 1,
+            "backstab": 1,
+            "CRIT_RELEASE": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 1.196,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.996087
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 20,
+              "sep": 1.141,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.941186
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 30,
+              "sep": 1.062,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.861811
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 40,
+              "sep": 1.01,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.810034
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 50,
+              "sep": 0.972,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.771659
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            },
+            {
+              "f": 60,
+              "sep": 0.858,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.657532
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 412
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1.4,
+          "enemy": "inf_trash",
+          "separation_min": 1.05,
+          "separation_max": 1.433,
+          "enemy_hp_after": 324,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "HIT": 1,
+            "hit": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 1.407,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.007262
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 20,
+              "sep": 1.433,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.033056
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 30,
+              "sep": 1.366,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.966202
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 40,
+              "sep": 1.194,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.793987
+              ],
+              "p_state": "ATK_ACTIVE",
+              "e_hp": 324
+            },
+            {
+              "f": 50,
+              "sep": 1.05,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 324
+            },
+            {
+              "f": 60,
+              "sep": 1.05,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 324
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1.6,
+          "enemy": "inf_trash",
+          "separation_min": 1.25,
+          "separation_max": 1.633,
+          "enemy_hp_after": 324,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "HIT": 1,
+            "hit": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 1.607,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.007262
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 20,
+              "sep": 1.633,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.033056
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 30,
+              "sep": 1.566,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.966202
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 40,
+              "sep": 1.394,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.793987
+              ],
+              "p_state": "ATK_ACTIVE",
+              "e_hp": 324
+            },
+            {
+              "f": 50,
+              "sep": 1.25,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 324
+            },
+            {
+              "f": 60,
+              "sep": 1.25,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 324
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1.8,
+          "enemy": "inf_trash",
+          "separation_min": 1.45,
+          "separation_max": 1.833,
+          "enemy_hp_after": 324,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "HIT": 1,
+            "hit": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 1.807,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.007262
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 20,
+              "sep": 1.833,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.033056
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 30,
+              "sep": 1.766,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.966202
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 412
+            },
+            {
+              "f": 40,
+              "sep": 1.594,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.793987
+              ],
+              "p_state": "ATK_ACTIVE",
+              "e_hp": 324
+            },
+            {
+              "f": 50,
+              "sep": 1.45,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 324
+            },
+            {
+              "f": 60,
+              "sep": 1.45,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 324
+            }
+          ]
+        }
+      ],
+      "browser_champion": [
+        {
+          "spawn_dist_m": 0.4,
+          "enemy": "champion_hist_marked",
+          "separation_min": 0.587,
+          "separation_max": 0.6,
+          "enemy_hp_after": 2486.6,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "CRIT_HIT": 1,
+            "backstab": 1,
+            "CRIT_RELEASE": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 0.598,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.498226
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.096087
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 20,
+              "sep": 0.593,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.448636
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.041186
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 30,
+              "sep": 0.592,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.369366
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.961811
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 40,
+              "sep": 0.598,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.312486
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.910034
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 50,
+              "sep": 0.592,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.279876
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.871659
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 60,
+              "sep": 0.587,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.170331
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.757532
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 0.8,
+          "enemy": "champion_hist_marked",
+          "separation_min": 0.587,
+          "separation_max": 0.796,
+          "enemy_hp_after": 2486.6,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "CRIT_HIT": 1,
+            "backstab": 1,
+            "CRIT_RELEASE": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 0.796,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.996087
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 20,
+              "sep": 0.741,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.941186
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 30,
+              "sep": 0.662,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.861811
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 40,
+              "sep": 0.61,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.810034
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 50,
+              "sep": 0.592,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.179876
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.771659
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 60,
+              "sep": 0.587,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010.070331
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.657532
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1,
+          "enemy": "champion_hist_marked",
+          "separation_min": 0.589,
+          "separation_max": 0.996,
+          "enemy_hp_after": 2486.6,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "CRIT_HIT": 1,
+            "backstab": 1,
+            "CRIT_RELEASE": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 0.996,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.996087
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 20,
+              "sep": 0.941,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.941186
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 30,
+              "sep": 0.862,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.861811
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 40,
+              "sep": 0.81,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.810034
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 50,
+              "sep": 0.772,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.771659
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 60,
+              "sep": 0.658,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5010
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.657532
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1.2,
+          "enemy": "champion_hist_marked",
+          "separation_min": 0.65,
+          "separation_max": 1.196,
+          "enemy_hp_after": 2486.6,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "CRIT_HIT": 1,
+            "backstab": 1,
+            "CRIT_RELEASE": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 1.196,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.996087
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 20,
+              "sep": 1.141,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.941186
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 30,
+              "sep": 1.062,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.861811
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 40,
+              "sep": 1.01,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.810034
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 50,
+              "sep": 0.972,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.771659
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            },
+            {
+              "f": 60,
+              "sep": 0.858,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.8
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.657532
+              ],
+              "p_state": "CRIT_ATTACK",
+              "e_hp": 2876
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1.4,
+          "enemy": "champion_hist_marked",
+          "separation_min": 1.05,
+          "separation_max": 1.433,
+          "enemy_hp_after": 2813,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "HIT": 1,
+            "hit": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 1.407,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.007262
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 20,
+              "sep": 1.433,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.033056
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 30,
+              "sep": 1.366,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.966202
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 40,
+              "sep": 1.194,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.793987
+              ],
+              "p_state": "ATK_ACTIVE",
+              "e_hp": 2813
+            },
+            {
+              "f": 50,
+              "sep": 1.05,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 2813
+            },
+            {
+              "f": 60,
+              "sep": 1.05,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.6
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 2813
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1.6,
+          "enemy": "champion_hist_marked",
+          "separation_min": 1.25,
+          "separation_max": 1.633,
+          "enemy_hp_after": 2813,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "HIT": 1,
+            "hit": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 1.607,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.007262
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 20,
+              "sep": 1.633,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.033056
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 30,
+              "sep": 1.566,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.966202
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 40,
+              "sep": 1.394,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.793987
+              ],
+              "p_state": "ATK_ACTIVE",
+              "e_hp": 2813
+            },
+            {
+              "f": 50,
+              "sep": 1.25,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 2813
+            },
+            {
+              "f": 60,
+              "sep": 1.25,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.4
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 2813
+            }
+          ]
+        },
+        {
+          "spawn_dist_m": 1.8,
+          "enemy": "champion_hist_marked",
+          "separation_min": 1.45,
+          "separation_max": 1.833,
+          "enemy_hp_after": 2813,
+          "hit": true,
+          "kinds": {
+            "ACTION_START": 1,
+            "attack_start": 1,
+            "detect": 1,
+            "HIT": 1,
+            "hit": 1,
+            "skill_use": 1
+          },
+          "samples": [
+            {
+              "f": 10,
+              "sep": 1.807,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.007262
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 20,
+              "sep": 1.833,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5011.033056
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 30,
+              "sep": 1.766,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.966202
+              ],
+              "p_state": "ATK_STARTUP",
+              "e_hp": 2876
+            },
+            {
+              "f": 40,
+              "sep": 1.594,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.793987
+              ],
+              "p_state": "ATK_ACTIVE",
+              "e_hp": 2813
+            },
+            {
+              "f": 50,
+              "sep": 1.45,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 2813
+            },
+            {
+              "f": 60,
+              "sep": 1.45,
+              "e_pos": [
+                2766.5,
+                2.77,
+                5009.2
+              ],
+              "p_pos": [
+                2766.5,
+                2.77,
+                5010.65
+              ],
+              "p_state": "ATK_RECOVER",
+              "e_hp": 2813
+            }
+          ]
+        }
+      ],
+      "hit_geometry_sample": [
+        "frame",
+        "substeps",
+        "actors"
+      ]
+    }
+  ]
 }

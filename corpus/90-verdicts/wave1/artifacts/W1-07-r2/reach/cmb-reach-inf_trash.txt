@@ -1,0 +1,41 @@
+cmb-reach — S26 minimum reaching distance, inf_trash, 0.05 m steps to 4 m
+
+  ENEMY ATTACKS                min      max   contiguous  declared root_dz  hit at min via
+   chop                         0     3.1      yes           0.9      body
+   thrust                    0.05     3.3      yes           1.2      weapon
+   combo_a                   0.05     2.5      yes           0.6      weapon
+   combo_b                   0.05     2.9      yes           0.8      weapon
+
+  PLAYER WEAPONS               min      max   contiguous   hit at min via
+   dagger                       0    0.95      yes       body
+   straight-sword            0.05     1.8      yes       body
+   spear                     0.05    1.75      yes       weapon
+   greatsword                   0     2.1      yes       weapon
+   halberd                   0.05     1.9      yes       body
+   ultra-greatsword          0.05     2.8      yes       body
+   axe                          0    1.55      yes       weapon
+
+  TURTLE — stand still, mash light, never move
+    stand   frames  player died  enemy killed   damage taken       enemy hp left
+     0.4 m     391       false         true    178/620 (0.287)       0/412
+     0.8 m     391       false         true    178/620 (0.287)       0/412
+       1 m     391       false         true    178/620 (0.287)       0/412
+     1.1 m     391       false         true    178/620 (0.287)       0/412
+     1.5 m     391       false         true    178/620 (0.287)       0/412
+       2 m     470       false         true    211/620 (0.341)       0/412
+     2.6 m     470       false         true    211/620 (0.341)       0/412
+
+  ROOT-DZ OVERRIDE (no data file edited) — min hit distance per attack
+    root_dz_m=0      chop=0.05  thrust=0.05  combo_a=0.05  combo_b=0.05
+    root_dz_m=0.6    chop=0  thrust=0.05  combo_a=0.05  combo_b=0.05
+    root_dz_m=1.2    chop=0.05  thrust=0.05  combo_a=0.05  combo_b=0.05
+    root_dz_m=2      chop=0.05  thrust=0.05  combo_a=0.05  combo_b=0.05
+
+  ACCEPTANCE: FAIL
+    - turtle @ 0.4 m: took 0.287 of max HP < 0.4
+    - turtle @ 0.8 m: took 0.287 of max HP < 0.4
+    - turtle @ 1 m: took 0.287 of max HP < 0.4
+    - turtle @ 1.1 m: took 0.287 of max HP < 0.4
+    - turtle @ 1.5 m: took 0.287 of max HP < 0.4
+    - turtle @ 2 m: took 0.341 of max HP < 0.4
+    - turtle @ 2.6 m: took 0.341 of max HP < 0.4

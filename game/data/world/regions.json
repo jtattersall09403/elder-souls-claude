@@ -64,7 +64,7 @@
         "terrace": 0,
         "style": "flooded-forest",
         "micro": {
-          "amp_m": 0.42,
+          "amp_m": 0.5,
           "weights": {
             "rootmat": 0.6,
             "hummock": 0.4
@@ -106,8 +106,8 @@
           "shape": "litter",
           "h": 0.1,
           "colour": "#243522",
-          "per100m2": 15,
-          "clump": 5
+          "per100m2": 22,
+          "patch_m": 7
         }
       },
       "water": {
@@ -220,7 +220,7 @@
         "terrace": 0.48,
         "style": "fired-flat",
         "micro": {
-          "amp_m": 0.38,
+          "amp_m": 0.48,
           "weights": {
             "crack": 1
           }
@@ -252,14 +252,14 @@
         "arrangement": {
           "mode": "isolated",
           "strength": 1,
-          "gap_m": 62
+          "gap_m": 45
         },
         "cover": {
           "shape": "plate",
           "h": 0.09,
           "colour": "#AC6440",
-          "per100m2": 10,
-          "clump": 4
+          "per100m2": 9,
+          "patch_m": 12
         }
       },
       "water": {
@@ -399,15 +399,15 @@
         },
         "arrangement": {
           "mode": "fringe",
-          "strength": 0.8,
+          "strength": 0.55,
           "gap_m": 34
         },
         "cover": {
           "shape": "cobble",
           "h": 0.22,
           "colour": "#2C2629",
-          "per100m2": 12,
-          "clump": 4
+          "per100m2": 16,
+          "patch_m": 5
         }
       },
       "water": {
@@ -518,7 +518,7 @@
         "terrace": 0,
         "style": "drowned",
         "micro": {
-          "amp_m": 0.48,
+          "amp_m": 0.56,
           "weights": {
             "hummock": 0.75,
             "rill": 0.25
@@ -557,8 +557,8 @@
           "shape": "tussock",
           "h": 0.45,
           "colour": "#1F3138",
-          "per100m2": 13,
-          "clump": 4
+          "per100m2": 14,
+          "patch_m": 9
         }
       },
       "water": {
@@ -666,7 +666,7 @@
         "terrace": 0,
         "style": "delta",
         "micro": {
-          "amp_m": 0.42,
+          "amp_m": 0.5,
           "weights": {
             "rill": 0.6,
             "ripple": 0.4
@@ -708,8 +708,8 @@
           "shape": "reed",
           "h": 0.55,
           "colour": "#4E7A5A",
-          "per100m2": 16,
-          "clump": 6
+          "per100m2": 20,
+          "patch_m": 4
         }
       },
       "water": {
@@ -858,8 +858,8 @@
           "shape": "wax",
           "h": 0.16,
           "colour": "#D8CC96",
-          "per100m2": 11,
-          "clump": 4
+          "per100m2": 13,
+          "patch_m": 14
         }
       },
       "water": {
@@ -960,7 +960,7 @@
         "terrace": 0.3,
         "style": "tidal-flat",
         "micro": {
-          "amp_m": 0.34,
+          "amp_m": 0.44,
           "weights": {
             "ripple": 0.7,
             "rill": 0.3
@@ -1000,8 +1000,8 @@
           "shape": "shell",
           "h": 0.1,
           "colour": "#9AA0A0",
-          "per100m2": 17,
-          "clump": 6
+          "per100m2": 24,
+          "patch_m": 6
         }
       },
       "water": {
@@ -1150,8 +1150,8 @@
           "shape": "tuft",
           "h": 0.28,
           "colour": "#7E8B58",
-          "per100m2": 19,
-          "clump": 6
+          "per100m2": 26,
+          "patch_m": 3
         }
       },
       "water": {
@@ -1307,8 +1307,8 @@
           "shape": "flag",
           "h": 0.12,
           "colour": "#6E7987",
-          "per100m2": 9,
-          "clump": 3
+          "per100m2": 8,
+          "patch_m": 16
         }
       },
       "water": {
@@ -1420,7 +1420,7 @@
         "terrace": 0.52,
         "style": "crater-salt",
         "micro": {
-          "amp_m": 0.44,
+          "amp_m": 0.52,
           "weights": {
             "dune": 0.55,
             "crack": 0.45
@@ -1453,14 +1453,14 @@
         "arrangement": {
           "mode": "isolated",
           "strength": 1,
-          "gap_m": 95
+          "gap_m": 58
         },
         "cover": {
           "shape": "flake",
           "h": 0.2,
           "colour": "#E4E2D6",
-          "per100m2": 8,
-          "clump": 3
+          "per100m2": 6,
+          "patch_m": 20
         }
       },
       "water": {
@@ -1570,7 +1570,7 @@
         "terrace": 0,
         "style": "thicket",
         "micro": {
-          "amp_m": 0.44,
+          "amp_m": 0.52,
           "weights": {
             "hummock": 0.5,
             "rootmat": 0.5
@@ -1609,8 +1609,8 @@
           "shape": "tussock",
           "h": 0.3,
           "colour": "#9A8570",
-          "per100m2": 14,
-          "clump": 5
+          "per100m2": 17,
+          "patch_m": 5
         }
       },
       "water": {
@@ -1761,8 +1761,8 @@
           "shape": "gravel",
           "h": 0.15,
           "colour": "#B2AA96",
-          "per100m2": 21,
-          "clump": 7
+          "per100m2": 30,
+          "patch_m": 4
         }
       },
       "water": {
@@ -1871,7 +1871,7 @@
         "terrace": 0.3,
         "style": "paddy",
         "micro": {
-          "amp_m": 0.4,
+          "amp_m": 0.58,
           "weights": {
             "bund": 0.8,
             "ripple": 0.2
@@ -1912,8 +1912,8 @@
           "shape": "stubble",
           "h": 0.35,
           "colour": "#7E9052",
-          "per100m2": 18,
-          "clump": 6
+          "per100m2": 21,
+          "patch_m": 3
         }
       },
       "water": {

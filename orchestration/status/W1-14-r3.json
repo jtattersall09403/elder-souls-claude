@@ -2,7 +2,7 @@
   "task_id": "W1-14-r3",
   "brief": "round-3 ULTRACODE builder on W1-14 magic (seam S19)",
   "started": "wave-1 round 3",
-  "state": "researching",
+  "state": "building",
   "prior_verdict": "corpus/90-verdicts/wave1/W1-14-r2.json (FAIL 4.4/10)",
   "objectives": [
     "GAP-W1-magic-skill-frozen: one register written by play, survives save/load, quest gate reads it",
@@ -14,8 +14,23 @@
     "VFX: impact frame distinct from idle, projectile particles in flight",
     "distinguishable-outcome count 33 -> higher"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "confirm boot; read verdict JSON remedies + RI-MAG06 amended; map magic module",
+  "outputs_written": [
+    "tools/harness/w1-14-r3-skill.mjs",
+    "reports/w1-14-r3/skill.json"
+  ],
+  "findings": [
+    "SKILL REGISTER: MagicSystem.skills is a private literal at magic/system.js:59 {sorcery:30,root_speech:30,warding:30,veiling:30}. Character sheet uses ids sorcery/root-speech/warding/veiling in sim.progression.skills as {value,useProgress}. Spell tiers: t1 skill_req 0 (17), t2 25 (30), t3 45 (17), t4 65 (8) = 72. At 30 -> 47 attunable, matching the critic exactly.",
+    "NOTE: 30 was a fiction no character sheet can produce. composeSkills gives max(5, raceSkill, classSkill); mage classes cap at 25 at creation (sap-reader sorcery25/warding25/veiling15). So unification LOWERS the shipped baseline and makes the count rise with play, which is the point.",
+    "DOUBLE-COUNT BUG FOUND: h_fortify_skill writes M.skills[k]+=pts AND _effectiveSkillFor adds a.magnitude for each active fortify_skill. Fortify is counted twice.",
+    "save/state.js already persists progression.skills (line 77 write / 310 read) and magic's own blob does NOT carry skills - so unifying gives save/load survival for free. Restore order is correct: skills at 310 before M.setAttuned at 333.",
+    "MITIGATION: body.mitigation single multiplier, read in combat/resolve.js:242 mitigate() and sim/combat-bridge.js:90. No kind channel. shield's OWN effect record rules 'Flat damage reduction'; resist_* are percentages clamped 85. sap_ward's own record rules 'Lowers sap-taint by exactly one band (RI-LOR05 4a), max 3 uses, Argonians cannot cast it' - it is NOT a damage ward, so RI-MAG06 B's row for sap_ward is wrong and I will propose the amendment.",
+    "AFFLICTIONS SPLIT CONFIRMED: hazards.js:259 pushes the hazard ID STRING onto sim.player.afflictions for the 4 VECTOR hazards (spore-bloom, dye-fume, ash-lung, hist-sap-fume); magic cureHandler splices sim.quest.afflictions which holds {id,kind} records only H.addAffliction writes.",
+    "No sap-taint band register exists anywhere in the build (xulHesh is a different counter).",
+    "P1 DONE + VERIFIED. MagicSystem.skills is now four accessor properties over sim.progression.skills (SCHOOL_TO_SKILL maps root_speech<->root-speech). MEASURED: shipped states default/arena_flat/dungeon_primary/helstrom-market all 17/72 attunable for the default starting character (sorcery5/root-speech10/warding5/veiling5); 35/72 for a sap-reader chosen at CREATION (25/10/25/15). 120 warding casts -> 120 cast_effective events -> 120 skill_use events with skill=='warding' (0 mis-banked to sorcery) -> warding 25->47, attunable 35->39. Save/load survives: warding 47 -> wipe to 5 -> restore 47, attunable 39->39. Coupling sheet->magic now 1 (was 0.00). attune_refused event carries school/need/have/shortfall/prose. Spellmaking: 3 effects refused at 25, allowed once sorcery reaches 50+ (tier 4 quote).",
+    "PROBE SELF-TEST PASSES BOTH WAYS. --break=nogrant: advancement 25->25, cast_effective 0, attunable 35->35. --break=frozen: reproduces the round-2 verdict EXACTLY - 47/72 in all four states, refused_by_tier {3:17,4:8}, attunable frozen at 47 while warding climbs to 47, coupling 0.",
+    "TREE WAS BROKEN AT HEAD, NOT BY ME: commit 54a4145 ('Restore nine quest routes') restored nine Q-MAG-* resolutions without their journal entries, so QuestBook threw 9 integrity failures and NO engine boot was possible. Fixed by restoring each missing journal entry from the resolution's own surviving `outcome` prose, and giving the two colliding __sneak resolutions (Q-MAG-15, Q-MAG-20) their own success index. check-content still reports 110 resolutions, none lost.",
+    "DEAD CALL SITE FOUND AND FIXED: sim/step.js gated stepSkillUse on sim.character, which is null in every arena state - so RI-PRG03's skills-by-use was switched off entirely in the states its own probes run in. Now gated on the register being non-empty."
+  ],
+  "next_step": "P2 kind-aware mitigation",
   "notes_for_successor": ""
 }

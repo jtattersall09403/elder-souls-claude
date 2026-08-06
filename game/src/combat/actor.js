@@ -55,6 +55,17 @@ export class CombatBody {
     // The swing identity. RI-CMB02 §D.4: one hitbox activation per swing per target. A
     // monotonic counter, not a frame stamp — a frame stamp does not survive a save (that
     // exact bug cost W1-00 a round).
+    // RI-WPN05 §A's deflect: "+16 f@60 appended to the ATTACKER's recovery". It is appended to
+    // the BODY, never to the move — a move object is cached per (weapon, slot) and shared by
+    // every actor holding that weapon, so writing 16 frames onto it would lengthen the swing
+    // for everyone who ever bounced off a rock. Cleared when the move retires.
+    this.recoveryExtraF = 0;
+    // The last impact this body dealt / took, for the frame record. RI-WPN05 §C.
+    this.lastImpact = null;
+    this.lastImpactTaken = null;
+    this.hitstopUntil = 0;
+    this.material = 'flesh';
+    this.materialByRegion = null;
     this.swingSeq = 0;
     this.hitThisSwing = new Set();
 
@@ -82,9 +93,25 @@ export class CombatBody {
     // computed before these existed; a critic reading `getMagicState().status` sees the whole
     // set on every body, including the ones nothing has been cast at, which is what makes the
     // paired read in RI-MAG06 M2 possible at all.
-    this.mitigation = 1;              // damage-taken multiplier: shield, resist_*, sap_ward
-    this.armourRating = cfg.armourRating || 0;   // flat subtraction: `corrode` lowers it
-    this.wardCharges = 0;             // sap_ward: eats whole blows, then is spent
+    // ---- WARDS ARE KIND-AWARE (W1-14 round 3) ------------------------------------------------
+    //
+    // Wave 1 shipped ONE multiplier, `body.mitigation`, that `resolve.js:mitigate()` applied to
+    // every incoming number regardless of where the damage came from. The round-2 critic
+    // measured the consequence: a *resist-disease* buff took a scripted PHYSICAL 100 down to
+    // 15, and a *physical shield* cut fire damage from 405 to 5, identically to a resist-element
+    // ward. Four effects, one number, four names. In Morrowind, Resist Fire does not stop a
+    // sword.
+    //
+    // `wards` is a multiplier PER DAMAGE KIND. Every channel starts at the identity, so a build
+    // with no magic in it computes exactly the number it computed before this existed, and a
+    // ward that does not name your damage kind does nothing to it — which is the whole point.
+    this.wards = { physical: 1, fire: 1, frost: 1, shock: 1, poison: 1, disease: 1, magic: 1 };
+    // `shield` is FLAT reduction, not a fraction, per its own ruling in effects.json:
+    // "Flat damage reduction, applied after RI-CMB05's poise maths and before RI-CMB08's HP
+    // accounting." It is the caster's armour, so it defends the same channel armour does.
+    this.shieldFlat = 0;
+    this.armourRating = cfg.armourRating || 0;   // flat subtraction, PHYSICAL: `corrode` lowers it
+    this.wardCharges = 0;             // legacy one-shot ward; nothing writes it since sap_ward moved
     this.status = {};                 // S11 buildup meters, kind -> integer
     this.statusProc = {};             // kind -> frame the proc ends
     this.paralysedUntil = 0;
@@ -112,7 +139,7 @@ export class CombatBody {
   // ---- committed actions ------------------------------------------------------------------
 
   isActionable(frame) {
-    return !this.dead && (this.move === null || this.animFrame >= this.move.total) && frame >= this.staggerUntil
+    return !this.dead && (this.move === null || this.animFrame >= this.moveTotal()) && frame >= this.staggerUntil
       && frame >= this.guardBreakUntil && !this.beingCritted;
   }
 
@@ -139,6 +166,9 @@ export class CombatBody {
    * RI-CMB04 §A steps 3, 4, 5 and 6, in that order, for one frame.
    * Returns true if the move ENDED on this frame.
    */
+  /** A move's length for THIS body, including any recovery a deflect appended (RI-WPN05 §A). */
+  moveTotal(m) { return (m || this.move).total + (this.recoveryExtraF || 0); }
+
   advance(frame) {
     const m = this.move;
     if (!m) return false;
@@ -196,7 +226,7 @@ export class CombatBody {
     // step 7: hitbox active flags, from the frame data at this anim_frame
     this.hitboxActive = !!m.hitbox && f > m.startup && f <= m.startup + m.active;
 
-    if (f >= m.total) return true;
+    if (f >= this.moveTotal(m)) return true;
     return false;
   }
 
@@ -300,6 +330,7 @@ export class CombatBody {
     this.state = 'IDLE';
     this.anim = 'idle';
     this.animFrame = 0;
+    this.recoveryExtraF = 0;             // the deflect's appended recovery dies with the move
     this.iframe = false;
     this.iframeKind = null;
     this.hitboxActive = false;

@@ -53,6 +53,31 @@ const skel = J('combat/skeleton.json');
 const hitgeo = J('combat/hitgeometry.json');
 const CLASSES = ['dagger', 'straight-sword', 'spear', 'axe', 'halberd', 'greatsword', 'ultra-greatsword'];
 const spine = Object.fromEntries(CLASSES.map((c) => [c, J(`combat/spine/${c}.json`)]));
+const ENEMIES = {};
+for (const f of fs.readdirSync(path.join(ROOT, 'game/data/combat/enemies'))) {
+  if (!f.endsWith('.json')) continue;
+  const doc = J('combat/enemies/' + f);
+  ENEMIES[doc.id] = doc;
+}
+
+// ---- the standoff the weapon volume must reach ------------------------------------------
+// `hitgeometry.json §bodies` says two humanoids are pushed apart until their centres are
+// `player_radius_m + default_enemy_radius_m` apart, and `§body_hazard` says the hazard capsule
+// is EXACTLY that collision volume so that "anything the attacker's body would shove, its body
+// has already struck". The weapon owes the same promise and did not keep it: measured, every
+// attack in the build kept its hitbox capsule 0.42-1.82 m from its own root axis for the whole
+// active window, so a target standing ON the separation boundary was outside the blade at every
+// frame of every swing. That is the ring `§body_hazard` claims cannot exist, sitting on the
+// other side of the same seam.
+//
+// STANDOFF is where the target's CENTRE ends up; TARGET_HURTBOX is the radius of the thinnest
+// hurtbox that centre carries (a forearm, 0.065 m) — no: the number that matters is the LARGEST
+// trunk radius, because that is what a shove is resolved against and what a body hazard strikes
+// (`§body_hazard.struck_part = torso_upper`, radius 0.170). So the blade must come within
+// STANDOFF - TARGET_HURTBOX of its own root axis, measured to the capsule SURFACE.
+const STANDOFF_M = 0.60;
+const TARGET_HURTBOX_M = 0.17;
+const MIN_AXIS_MAX = STANDOFF_M - TARGET_HURTBOX_M;   // 0.43 m, capsule surface to own root axis
 
 // ---- the pose the whole fight returns to -----------------------------------------------
 const IDLE = {
@@ -64,6 +89,37 @@ const IDLE = {
   lowerarm_l: { rx: -30 },
 };
 const idleOf = (bone, ch) => ((IDLE[bone] || {})[ch] !== undefined ? IDLE[bone][ch] : 0);
+
+// ---- the pose a swing FINISHES in, and why it is inside the active window ----------------
+// The blade BURIED: torso pitched over the blow, shoulder come home, elbow folded, the hands
+// back at the belly and the weapon hanging down and forward through the attacker's own footprint.
+// Every reference clip in corpus/70-visual/refs/souls-behaviour/anim ends its swing here — the
+// W1-09 status file's own reading of er-ER_Moveset_Neutral_Attack_Chain_Longsword.gif is
+// "recovery is the FOLLOW-THROUGH HELD low across the body" — and rounds 1-3 authored it at
+// phase 2.3, i.e. AFTER the hitbox closes at phase 2.0. So the only part of the swing whose
+// geometry covers the attacker's own body was the only part that could not hit anything.
+//
+// Solved, not guessed: these angles are the argmin of the worst-case `min_axis` over the six
+// weapon geometries that use an arc archetype (champion 0.10-1.75, axe head 0.64-0.96, and the
+// four guard-to-tip classes), subject to the tip staying above -0.50 m (a blade may bite the
+// ground, it may not vanish into it), the tip staying in FRONT of the attacker, and the grip
+// hand staying above 0.72 m and in front of the pelvis. Worst case at this pose is the axe head
+// at 0.407 m axis / 0.317 m surface, against a 0.43 m budget.
+const BURY = {
+  spine_00: { rx: 14 },
+  spine_02: { rx: 8 },
+  clavicle_r: { rz: 4 },
+  upperarm_r: { rx: 25, rz: -12 },
+  lowerarm_r: { rx: -80 },
+  hand_r: { rx: 0 },
+  upperarm_l: { rx: -24 },
+  lowerarm_l: { rx: -58 },
+  thigh_l: { rx: 14 },
+  thigh_r: { rx: -14 },
+  calf_l: { rx: -8 },
+  calf_r: { rx: 18 },
+};
+const buryOf = (bone, ch) => ((BURY[bone] || {})[ch]);
 
 // ---- (a) the idle base loop: motion, no arms -------------------------------------------
 const IDLE_LOOP = {
@@ -104,7 +160,7 @@ const ARCH = {
       'reference clip\'s own per-frame motion energy decays monotonically to its resting baseline ' +
       'over the last third of the animation and ends at rest, which the previous curve did not: ' +
       'it over-rotated to a peak at phase 2.4 and then snapped back.',
-    cockPhase: 0.45, hitPhase: 1.45, followPhase: 2.2,
+    cockPhase: 0.45, hitPhase: 1.45, followPhase: 2.2, bury: true, hitFrac: 0.5,
     root_forward: [[0.0, 0.0], [0.55, 0.04], [1.0, 0.34], [1.45, 0.86], [2.0, 0.98], [2.4, 1.0], [3.0, 1.0]],
     root_offset_y: [[0.0, 0.0], [1.0, -0.05], [1.6, -0.11], [2.2, -0.09], [3.0, 0.0]],
     tracks: {
@@ -132,7 +188,7 @@ const ARCH = {
       'it. The settle is now authored as a deceleration onto the ready pose rather than a second ' +
       'excursion.',
     aimAtFraction: 0.45,
-    cockPhase: 0.5, hitPhase: 1.5, followPhase: 2.3,
+    cockPhase: 0.5, hitPhase: 1.5, followPhase: 2.3, bury: true, hitFrac: 0.5,
     root_forward: [[0.0, 0.0], [0.6, 0.05], [1.0, 0.32], [1.5, 0.9], [2.0, 0.99], [2.4, 1.0], [3.0, 1.0]],
     root_offset_y: [[0.0, 0.0], [1.0, 0.03], [1.6, -0.13], [2.3, -0.11], [3.0, 0.0]],
     tracks: {
@@ -158,7 +214,7 @@ const ARCH = {
       'why a spear\'s swept volume is a narrow tube and why stepping 20 cm sideways beats it. The ' +
       'recovery pulls the point back off line and settles on the ready pose.',
     aim: 'hit',
-    cockPhase: 0.5, hitPhase: 1.4, followPhase: 2.2,
+    cockPhase: 0.5, hitPhase: 1.4, followPhase: 2.2, bury: false,
     root_forward: [[0.0, 0.0], [0.55, 0.03], [1.0, 0.34], [1.4, 0.9], [2.0, 0.99], [2.3, 1.0], [3.0, 1.0]],
     root_offset_y: [[0.0, 0.0], [1.0, -0.05], [1.5, -0.15], [2.3, -0.12], [3.0, 0.0]],
     tracks: {
@@ -184,7 +240,7 @@ const ARCH = {
       'curve over-rotated PAST the target and then unwound, which is how a 108-frame R1 came to ' +
       'sweep 665° at 59.1 m/s. It now arrives on line as the hitbox opens, carries through the arc ' +
       'at a bounded rate, and unwinds onto the ready pose.',
-    cockPhase: 0.45, hitPhase: 1.5, followPhase: 2.25,
+    cockPhase: 0.45, hitPhase: 1.5, followPhase: 2.25, bury: true, hitFrac: 0.5,
     root_forward: [[0.0, 0.0], [0.6, 0.05], [1.0, 0.33], [1.5, 0.88], [2.0, 0.98], [2.35, 1.0], [3.0, 1.0]],
     root_offset_y: [[0.0, 0.0], [1.0, -0.04], [1.6, -0.09], [2.3, -0.07], [3.0, 0.0]],
     tracks: {
@@ -209,35 +265,36 @@ const ARCH = {
 /**
  * Build one archetype's track key lists.
  *
- * Three knobs, all solved rather than tuned by eye:
+ * FOUR knobs, all solved rather than tuned by eye, against THREE of the corpus's own numbers.
  *
- *   `t`     the pose on the LAST STARTUP frame, as a blend cock -> hit. FIXED at 0.32 and not
- *           solved, because it is not free: the blade must cross the target's centreline
- *           INSIDE the hitbox-active window, and it crosses at roughly the midpoint of
- *           cock -> hit, so any t above 0.5 puts the crossing in the startup and the weapon
- *           reaches nothing. That is not hypothetical — solving t against peak tip speed alone
- *           produced t = 0.74 for `sweep_wide`, and the halberd's and ultra greatsword's R1
- *           then measured a forward reach of 0.00 m against RI-CMB02 §A's declared 2.85 and
- *           2.95. Peak speed is bought with `swing` instead.
- *   `swing`  scales the whole rotational excursion about the mid-swing pose. This is what buys
- *           the RI-CMB04 §B peak-tip-speed budget.
- *   `ext`    degrees of elbow extension added at the hit pose. This is what buys RI-CMB02 §A's
- *           declared reach back after `swing` has shrunk the arc.
+ *   `t`     the pose on the LAST STARTUP frame, as a blend cock -> hit. Rounds 1-3 pinned this
+ *           at 0.32 and bought their peak-tip-speed budget with `swing` alone; that is the
+ *           mechanism behind the defect this round exists to fix. See `swing`.
+ *   `swing` scales the cock/hit excursion about the AIM pose. It buys peak tip speed — but the
+ *           aim pose of an arc archetype is arm-forward, so shrinking `swing` parks the blade
+ *           OUT IN FRONT for the whole active window. At the shipped 0.46 the champion's chop
+ *           kept its capsule 0.67 m from its own root axis on every active frame, and a target
+ *           standing against its chest could not be cut by anything. `swing` is therefore no
+ *           longer allowed to be the only lever.
+ *   `ext`   degrees of elbow/shoulder extension at the hit pose. Buys RI-CMB02 §A's reach.
+ *   `bury`  0..1, how far the pose at phase 2.0 — the LAST ACTIVE FRAME — travels from `hit`
+ *           to the shared BURY pose. This is the knob that did not exist. It buys `min_axis`:
+ *           the blade finishes the swing through the attacker's own footprint, INSIDE the
+ *           hitbox window, which is what every reference clip does and what makes the dead
+ *           ring in front of an attacker impossible rather than merely unmeasured.
  *
- * The active band 1.0 -> 2.0 carries FOUR evenly spaced keys so the angular rate through the
- * hitbox is close to constant rather than one smoothstep hump (a smoothstep segment peaks at
- * 1.5x its own mean, which is most of why the old curves ran at x1.00-x2.69 of the declared
- * column). The recovery is front-loaded — 2.0 -> follow -> 55 % -> 88 % -> idle — so its
- * per-frame rate DECREASES monotonically: the blade comes to rest, it does not carry on.
- * Nothing after `follow` moves away from the idle pose, which is the specific defect the
- * verdict measured (an overshoot peaking at phase 2.4 and then snapping back).
+ * Curve shape. The active band now carries the arc in TWO segments rather than one ramp:
+ * 1.0 (entry) -> 1.0 + hitFrac (maximum extension, where reach is measured) -> 2.0 (buried).
+ * Each segment is split once more so a smoothstep hump cannot double the local rate. The
+ * recovery is the settle FROM the buried pose, front-loaded and monotone onto idle, so nothing
+ * after phase 2.0 moves away from the pose free locomotion holds.
  */
-const T_FIXED = 0.32;
 const EXT_CH = { lowerarm_r: 'rx', upperarm_r: 'rx' };
 
-function buildArch(def, swing, ext) {
-  const t = T_FIXED;
+function buildArch(def, t, swing, ext, bury) {
   const tracks = {};
+  const hp = def.bury ? (def.hitFrac === undefined ? 0.5 : def.hitFrac) : 1.0;
+  const B = def.bury ? bury : 0;
   for (const bone of Object.keys(def.tracks)) {
     tracks[bone] = {};
     for (const ch of Object.keys(def.tracks[bone])) {
@@ -263,21 +320,57 @@ function buildArch(def, swing, ext) {
       // elbow.
       if (bone === 'upperarm_r' && ch === 'rx') { cock -= ext; hit -= ext; fol -= ext * 0.5; }
       if (bone === 'lowerarm_r' && ch === 'rx') { cock += ext * 0.6; hit += ext * 0.6; fol += ext * 0.3; }
+      // The pose at the LAST ACTIVE frame. For an arc archetype this is the blade buried
+      // through the attacker's own footprint; for a thrust it is the fully extended point,
+      // because a lunge that RETRACTS inside its own hitbox window is not a thrust.
+      const bv = buryOf(bone, ch);
+      const endActive = (B > 0 && bv !== undefined) ? hit + (bv - hit) * B : hit;
+      // the settle: from the pose the swing ENDED in, monotonically onto idle
+      const settle = endActive + (end - endActive) * 0.30;
       const v1 = cock + t * (hit - cock);
-      const lin = (u) => v1 + (hit - v1) * u;
-      tracks[bone][ch] = [
+      const seg = (a, b, u) => a + (b - a) * u;
+      const keys = [
         [0.0, r(start)],
         [def.cockPhase, r(cock)],
         [1.0, r(v1)],
-        [1.25, r(lin(0.25))],
-        [1.5, r(lin(0.5))],
-        [1.75, r(lin(0.75))],
-        [2.0, r(hit)],
-        [def.followPhase, r(fol)],
-        [2.0 + (def.followPhase - 2.0) + 0.45 * (3.0 - def.followPhase), r(fol + 0.55 * (end - fol))],
-        [2.0 + (def.followPhase - 2.0) + 0.78 * (3.0 - def.followPhase), r(fol + 0.88 * (end - fol))],
-        [3.0, r(end)],
       ];
+      if (hp < 1.0) {
+        keys.push([1.0 + hp * 0.5, r(seg(v1, hit, 0.5))]);
+        keys.push([1.0 + hp, r(hit)]);
+        keys.push([1.0 + hp + (1 - hp) * 0.5, r(seg(hit, endActive, 0.5))]);
+        keys.push([2.0, r(endActive)]);
+      } else {
+        keys.push([1.25, r(seg(v1, hit, 0.25))]);
+        keys.push([1.5, r(seg(v1, hit, 0.5))]);
+        keys.push([1.75, r(seg(v1, hit, 0.75))]);
+        keys.push([2.0, r(hit)]);
+      }
+      keys.push([def.followPhase, r(B > 0 && bv !== undefined ? settle : fol)]);
+      const base = B > 0 && bv !== undefined ? settle : fol;
+      keys.push([2.0 + (def.followPhase - 2.0) + 0.45 * (3.0 - def.followPhase), r(base + 0.55 * (end - base))]);
+      keys.push([2.0 + (def.followPhase - 2.0) + 0.78 * (3.0 - def.followPhase), r(base + 0.88 * (end - base))]);
+      keys.push([3.0, r(end)]);
+      tracks[bone][ch] = keys;
+    }
+  }
+  // Bones the BURY pose moves that the archetype's own swing never touched still have to get
+  // there and back, or the arm arrives at the buried pose with half of itself still in the
+  // swing. They are authored as a pure 1.0 -> 2.0 -> idle excursion.
+  if (B > 0) {
+    for (const bone of Object.keys(BURY)) {
+      for (const ch of Object.keys(BURY[bone])) {
+        if (tracks[bone] && tracks[bone][ch]) continue;
+        const end = idleOf(bone, ch);
+        const endActive = end + (BURY[bone][ch] - end) * B;
+        const settle = endActive + (end - endActive) * 0.30;
+        tracks[bone] = tracks[bone] || {};
+        tracks[bone][ch] = [
+          [0.0, r(end)], [def.cockPhase, r(end)], [1.0, r(end)],
+          [2.0, r(endActive)], [def.followPhase, r(settle)],
+          [2.0 + (def.followPhase - 2.0) + 0.45 * (3.0 - def.followPhase), r(settle + 0.55 * (end - settle))],
+          [3.0, r(end)],
+        ];
+      }
     }
   }
   // Every channel `idle_ready` holds MUST appear in every attack archetype, even if the swing
@@ -293,13 +386,22 @@ function buildArch(def, swing, ext) {
   }
   return {
     note: def.note,
-    solved: { startup_blend: t, swing_scale: +swing.toFixed(3), elbow_extension_deg: +ext.toFixed(1) },
+    solved: {
+      startup_blend: +t.toFixed(3), swing_scale: +swing.toFixed(3),
+      elbow_extension_deg: +ext.toFixed(1), bury: +(def.bury ? bury : 0).toFixed(3),
+      hit_phase_fraction: hp,
+    },
     solved_note:
-      'Solved by tools/harness/anim-author.mjs against two of the corpus\'s own columns at once: ' +
-      'RI-CMB04 §B\'s peak_tip_speed_mps (a ceiling, measured over the ACTIVE frames only) and ' +
-      'RI-CMB02 §A\'s reach_m (a floor, measured as the furthest forward point the weapon capsule ' +
-      'occupies near the centreline during the active window). The search takes the LARGEST swing ' +
-      'and the SMALLEST elbow extension that satisfy both for every class using this archetype.',
+      'Solved by tools/harness/anim-author.mjs against THREE of the corpus\'s own numbers at once, ' +
+      'for every player class AND every enemy statblock that selects this archetype: ' +
+      '(1) RI-CMB04 §B\'s peak_tip_speed_mps as a ceiling, measured over EVERY frame of the clip ' +
+      'and not only the active ones — the round-3 build satisfied it on the active window and ran ' +
+      'at x2.4 in the startup of a chain clip; (2) RI-CMB02 §A\'s reach_m as a floor; and (3) ' +
+      'min_axis — the distance from the swept hitbox capsule\'s SURFACE to the attacker\'s own root ' +
+      'axis at its closest approach during the active window — as a ceiling of ' +
+      '`bodies.player_radius_m + bodies.default_enemy_radius_m - torso_upper.radius_m` = 0.43 m, ' +
+      'so that anything the attacker\'s body can shove, its weapon can also cut. The search takes ' +
+      'the LARGEST swing and the SMALLEST elbow extension that satisfy all three.',
     root_forward: def.root_forward,
     root_offset: { y: def.root_offset_y },
     tracks,
@@ -308,86 +410,190 @@ function buildArch(def, swing, ext) {
 function r(v) { return Math.round(v * 100) / 100; }
 
 // ---- the measurement the solver optimises against ---------------------------------------
-function measureArch(archName, archObj) {
-  let worstPeak = 0, worstReach = Infinity, worstReachClass = null;
+// Rows are (clip, weapon geometry, frame counts) triples. EVERY consumer of an archetype is a
+// row, player and enemy alike: rounds 1-3 solved against the seven player spine rows only, and
+// the champion — whose weapon is 1.75 m and whose chop is the attack the whole remediation is
+// about — was never in the objective at all.
+function rowsFor(archName) {
+  const rows = [];
   for (const id of CLASSES) {
     const ms = spine[id];
     for (const mv of ['light', 'heavy']) {
       const base = ms.moves[mv];
-      const variants = [base];
+      const variants = [[base, true]];
       const th = ms.moves.two_handed && ms.moves.two_handed[mv];
-      if (th) variants.push(Object.assign({}, base, th));
-      for (const m of variants) {
+      if (th) variants.push([Object.assign({}, base, th), false]);
+      for (const [m, isOneHanded] of variants) {
         if (m.archetype !== archName) continue;
-        const clip = new Clip(m.anim, archObj, { startup: base.startup, active: base.active, total: base.total }, m.amplitude, m.root_dz_m);
-        const r = trackOf(clip, ms.weapon, base);
-        const pr = r.peak / ms.weapon.peak_tip_speed_mps_declared;
-        if (pr > worstPeak) worstPeak = pr;
-        // RI-CMB02 §A's reach column is the ONE-HANDED row; the two-handed rows select a
-        // different archetype entirely (RI-WPN06 §B) and the item declares no reach for them,
-        // so they are held to the peak ceiling but not to the reach floor.
-        if (m !== base) continue;
-        const declR = base.reach_m_declared || 1.0;
-        const rr = r.reach / declR;
-        if (rr < worstReach) { worstReach = rr; worstReachClass = id + ':' + mv; }
+        rows.push({
+          label: id + ':' + mv + (isOneHanded ? '' : ':2h'),
+          anim: m.anim, amplitude: m.amplitude, root_dz_m: m.root_dz_m,
+          timing: { startup: base.startup, active: base.active, total: base.total },
+          weapon: ms.weapon, hitboxR: ms.weapon.radius_m,
+          declPeak: ms.weapon.peak_tip_speed_mps_declared,
+          declReach: isOneHanded ? (base.reach_m_declared || null) : null,
+          coversStandoff: coversStandoff(ms.weapon.socket_a_dist_m),
+        });
       }
     }
   }
-  return { peak: worstPeak, reach: worstReach, reachClass: worstReachClass };
+  for (const eid of Object.keys(ENEMIES)) {
+    const st = ENEMIES[eid];
+    if (st.id === 'probe_pulse') continue;         // an 8 m instrument pulse, not a weapon
+    for (const k of Object.keys(st.attacks || {})) {
+      const a = st.attacks[k];
+      if ((a.archetype || 'cut_diagonal') !== archName) continue;
+      rows.push({
+        label: eid + ':' + k, anim: a.anim, amplitude: 1.0, root_dz_m: a.root_dz_m || 0,
+        timing: { startup: a.startup, active: a.active, total: a.startup + a.active + a.recovery },
+        weapon: st.weapon, hitboxR: a.hitbox_radius_m !== undefined ? a.hitbox_radius_m : st.weapon.radius_m,
+        declPeak: st.weapon.peak_tip_speed_mps_declared || null,
+        declReach: null,
+        coversStandoff: coversStandoff(st.weapon.socket_a_dist_m),
+      });
+    }
+  }
+  // Many statblocks are the same weapon with the same frame data under different names (the
+  // material-probe roster, the camera roster). Identical rows measure identically; keeping one
+  // of each is what makes the three-constraint search finish.
+  const seen = new Map();
+  for (const row of rows) {
+    const w = row.weapon;
+    const key = [w.socket_a_dist_m, w.socket_b_dist_m, row.hitboxR, row.declPeak, row.declReach,
+      row.timing.startup, row.timing.active, row.timing.total, row.amplitude, row.root_dz_m].join('|');
+    if (!seen.has(key)) seen.set(key, row);
+  }
+  return [...seen.values()];
 }
 
-function trackOf(clip, w, m) {
-  const rig = new Rig(skel, hitgeo);
+/**
+ * Can this weapon's hitbox capsule geometrically reach its wielder's own standoff boundary?
+ *
+ * The near end of the capsule sits `socket_a_dist_m` from the grip hand, and the grip hand
+ * cannot be drawn closer to the root axis than about 0.10 m without putting the arm through the
+ * pelvis. A hafted weapon whose hitbox is declared to START a metre down the shaft — RI-CMB04
+ * §B gives the spear `wpn_mid` and the halberd `wpn_head_a`, which `spine/*.json` place at 1.31 m
+ * and 1.11 m from the hand — therefore has a MINIMUM ENGAGEMENT RANGE, and no pose can remove it.
+ * That is not a defect: it is what a polearm is, and it is why you roll INTO a spearman. It is
+ * declared per class rather than tuned away, and the body corridor (`§body_hazard`, which now
+ * deals BODY damage) is what covers it.
+ */
+function coversStandoff(socketADist) { return socketADist <= 0.35; }
+
+function measureArch(archName, archObj, rowsCache) {
+  const rows = rowsCache || rowsFor(archName);
+  let worstPeak = 0, worstPeakRow = null;
+  let worstReach = Infinity, worstReachRow = null;
+  let worstAxis = 0, worstAxisRow = null;
+  let worstWorld = 0, worstTravel = 0, worstTravelRow = null;
+  for (const row of rows) {
+    const clip = new Clip(row.anim, archObj, row.timing, row.amplitude, row.root_dz_m);
+    const t = trackOf(clip, row.weapon, row.timing, row.hitboxR);
+    if (row.declPeak) {
+      const pr = t.peak / row.declPeak;
+      if (pr > worstPeak) { worstPeak = pr; worstPeakRow = row.label; }
+    }
+    if (row.declReach) {
+      const rr = t.reach / row.declReach;
+      if (rr < worstReach) { worstReach = rr; worstReachRow = row.label; }
+    }
+    if (row.coversStandoff && t.minAxis > worstAxis) { worstAxis = t.minAxis; worstAxisRow = row.label; }
+    if (t.peakWorld > worstWorld) worstWorld = t.peakWorld;
+    if (t.travel / row.hitboxR > worstTravel) { worstTravel = t.travel / row.hitboxR; worstTravelRow = row.label; }
+  }
+  if (worstReach === Infinity) worstReach = 1;
+  return { peak: worstPeak, peakRow: worstPeakRow, reach: worstReach, reachRow: worstReachRow,
+    axis: worstAxis, axisRow: worstAxisRow, world: worstWorld, travelRadii: worstTravel, travelRow: worstTravelRow };
+}
+
+// One rig, reused. `evaluate()` allocates nothing, and the solver runs this tens of thousands
+// of times.
+const _rig = new Rig(skel, hitgeo);
+function trackOf(clip, w, m, hitboxR) {
+  const rig = _rig;
   const pos = [0, 0, 0];
-  let z = 0, prev = null, peak = 0, reach = 0;
+  const r = hitboxR === undefined ? w.radius_m : hitboxR;
+  let z = 0, px = 0, py = 0, pz = 0, pz0 = 0, hasPrev = false;
+  let ax = 0, ay = 0, az = 0;
+  let peak = 0, peakWorld = 0, travel = 0, reach = 0, minAxis = Infinity;
   for (let f = 1; f <= m.total; f++) {
     z += clip.rootDeltaAt(f);
     clip.applyPose(rig, f);
     pos[2] = z;
     rig.evaluate(pos, 0, clip.rootOffsetYAt(f), w.socket_a_dist_m, w.socket_b_dist_m);
-    const a = rig.socketA.slice(), b = rig.socketB.slice();
+    const a = rig.socketA, b = rig.socketB;
+    // RI-CMB04 §B's peak_tip_speed_mps is a property of the WEAPON, not of a window: round 3
+    // measured it over the ACTIVE frames only and shipped a chain clip whose STARTUP ran at
+    // 39.6-45.2 m/s against a declared 18.5. Every frame of the clip counts here.
+    //
+    // And it is a property of the SWING, measured in the attacker's own frame. A weapon's peak
+    // tip speed is how fast you can swing it; it is not raised by the fact that you are also
+    // running. Held in WORLD space the column becomes a speed limit on root motion — the
+    // slitherfang's 2.2 m lunge alone puts its fang through a 22 m/s ceiling with the arm
+    // completely still — and RI-CMB01/RI-CMB02 own root_dz, not RI-CMB04. What world-space
+    // travel governs instead is SWEEP CONTINUITY, and that is `travel`, which is what the
+    // substep count is derived from (hitgeometry.json §sweep.substeps).
+    if (hasPrev) {
+      const d = Math.hypot(b[0] - px, b[1] - py, (b[2] - z) - pz) * 60;
+      if (d > peak) peak = d;
+      const dw = Math.hypot(b[0] - px, b[1] - py, b[2] - pz0) * 60;
+      if (dw > peakWorld) peakWorld = dw;
+      const da = Math.hypot(a[0] - ax, a[1] - ay, a[2] - az);
+      if (dw / 60 > travel) travel = dw / 60;
+      if (da > travel) travel = da;
+    }
     if (f > m.startup && f <= m.startup + m.active) {
-      if (prev) {
-        const d = Math.hypot(b[0] - prev[0], b[1] - prev[1], b[2] - prev[2]) * 60;
-        if (d > peak) peak = d;
-      }
       for (let u = 0; u <= 1.0001; u += 0.05) {
-        const px = a[0] + (b[0] - a[0]) * u, pz = a[2] + (b[2] - a[2]) * u;
-        if (Math.abs(px) <= 0.35 && pz > reach) reach = pz;
+        const qx = a[0] + (b[0] - a[0]) * u, qz = a[2] + (b[2] - a[2]) * u, qy = a[1] + (b[1] - a[1]) * u;
+        if (Math.abs(qx) <= 0.35 && qz > reach) reach = qz;
+        // min_axis: closest approach of the capsule SURFACE to the attacker's own root axis,
+        // counted only where a hurtbox could be — a blade that passes 3 m over your head or
+        // 0.5 m under the floor is not covering your body.
+        if (qy < 0.10 || qy > 1.85) continue;
+        const dd = Math.hypot(qx, qz - z) - r;
+        if (dd < minAxis) minAxis = dd;
       }
     }
-    prev = b;
+    px = b[0]; py = b[1]; pz = b[2] - z; pz0 = b[2]; ax = a[0]; ay = a[1]; az = a[2]; hasPrev = true;
   }
-  return { peak, reach };
+  return { peak, peakWorld, travel, reach, minAxis: minAxis === Infinity ? 99 : minAxis };
 }
 
 // ---- solve ------------------------------------------------------------------------------
-const PEAK_MAX = 0.99;     // fraction of RI-CMB04 §B's declared column
+const PEAK_MAX = 0.99;     // fraction of RI-CMB04 §B's declared column, every frame of the clip
 const REACH_MIN = 0.90;    // fraction of RI-CMB02 §A's declared reach
 const solved = {};
 for (const name of Object.keys(ARCH)) {
-  let best = null;
-  for (let ext = 0; ext <= 70 && !best; ext += 1) {
-    for (let swing = 1.30; swing >= 0.10; swing -= 0.02) {
-      const a = buildArch(ARCH[name], swing, ext);
-      const m = measureArch(name, a);
-      if (m.peak <= PEAK_MAX && m.reach >= REACH_MIN) { best = { a, m, swing, ext }; break; }
+  const rows = rowsFor(name);
+  const def = ARCH[name];
+  const buryOpts = def.bury ? [1.0, 0.85, 0.7, 0.55] : [0];
+  let best = null, closest = null;
+  for (const bury of buryOpts) {
+    for (let t = 0.00; t <= 0.801; t += 0.05) {
+      for (let ext = 0; ext <= 70; ext += 5) {
+        let hit = null;
+        for (let swing = 1.30; swing >= 0.10; swing -= 0.05) {
+          const a = buildArch(def, t, swing, ext, bury);
+          const m = measureArch(name, a, rows);
+          const miss = Math.max(0, m.peak - PEAK_MAX) * 6 + Math.max(0, REACH_MIN - m.reach) * 3 + Math.max(0, m.axis - MIN_AXIS_MAX);
+          if (!closest || miss < closest.miss - 1e-9) closest = { a, m, t, swing, ext, bury, miss };
+          if (miss === 0) { hit = { a, m, t, swing, ext, bury }; break; }
+        }
+        // Prefer the deepest bury, then the largest swing, then the smallest extension.
+        if (hit && (!best || hit.swing > best.swing + 1e-9)) best = hit;
+        if (hit) break;         // smallest feasible ext at this (bury, t)
+      }
     }
+    if (best) break;            // the deepest bury that admits any feasible point wins
   }
   if (!best) {
-    // Report the closest achievable rather than silently shipping something that misses both.
-    let closest = null;
-    for (let ext = 0; ext <= 70; ext += 2) for (let swing = 1.30; swing >= 0.10; swing -= 0.04) {
-      const a = buildArch(ARCH[name], swing, ext);
-      const m = measureArch(name, a);
-      if (m.peak > PEAK_MAX) continue;
-      if (!closest || m.reach > closest.m.reach) closest = { a, m, swing, ext };
-    }
     best = closest;
-    console.log(`${name.padEnd(16)} NO feasible point: best reach ${best.m.reach.toFixed(3)} of declared (worst class ${best.m.reachClass})`);
+    console.log(`${name.padEnd(16)} NO feasible point: peak ${best.m.peak.toFixed(3)}x (${best.m.peakRow}) reach ${best.m.reach.toFixed(3)}x (${best.m.reachRow}) min_axis ${best.m.axis.toFixed(3)} m (${best.m.axisRow})`);
   }
   solved[name] = best.a;
-  console.log(`${name.padEnd(16)} swing=${best.swing.toFixed(2)} ext=${best.ext}  peak=${best.m.peak.toFixed(3)}x  reach=${best.m.reach.toFixed(3)}x (worst ${best.m.reachClass})`);
+  console.log(`${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury}  ` +
+    `peak=${best.m.peak.toFixed(3)}x (${best.m.peakRow})  reach=${best.m.reach.toFixed(3)}x (${best.m.reachRow})  min_axis=${best.m.axis.toFixed(3)} m (${best.m.axisRow})  ` +
+    `world_peak=${best.m.world.toFixed(1)} m/s  travel=${best.m.travelRadii.toFixed(2)} radii/frame (${best.m.travelRow})`);
 }
 
 if (process.argv.includes('--write')) {

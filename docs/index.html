@@ -69,7 +69,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-06 23:03Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-06 23:32Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -227,12 +227,12 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <div class="wrap">
 
 <div class="grid">
-  <div class="card"><div class="n">142</div><div class="l">Reference items</div></div>
-  <div class="card"><div class="n">467</div><div class="l">Subsystems judged</div></div>
+  <div class="card"><div class="n">143</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">469</div><div class="l">Subsystems judged</div></div>
   <div class="card"><div class="n">26</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n bad">0/26</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n warn">13</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">106,893</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">108,925</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">21</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">1,035</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -282,7 +282,7 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <tr><td><code>AUD</code></td><td></td><td>5</td><td style="width:40%"><div class="bar"><i style="width:60%"></i></div></td></tr>
 <tr><td><code>CAM</code></td><td></td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 <tr><td><code>CHR</code></td><td></td><td>3</td><td style="width:40%"><div class="bar"><i style="width:36%"></i></div></td></tr>
-<tr><td><code>CMB</code></td><td>Souls combat</td><td>11</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
+<tr><td><code>CMB</code></td><td>Souls combat</td><td>12</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>CMP</code></td><td></td><td>3</td><td style="width:40%"><div class="bar"><i style="width:36%"></i></div></td></tr>
 <tr><td><code>CRM</code></td><td></td><td>2</td><td style="width:40%"><div class="bar"><i style="width:24%"></i></div></td></tr>
 <tr><td><code>DLG</code></td><td>Dialogue &amp; journal</td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
@@ -337,6 +337,7 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <tr><td><code>RI-CMB09</code></td><td>The two self-inflicted punish windows — post-roll recovery, roll-spam, and the exhausted state</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.dodge.recovery combat.stamina.exhaustion</code></td></tr>
 <tr><td><code>RI-CMB10</code></td><td>Status buildup — the five meters, the proc, and the handoff to the affliction economy</td><td>number</td><td><span class="tag split">split</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.status.buildup</code></td></tr>
 <tr><td><code>RI-CMB11</code></td><td>Input latency as a combat-correctness property — the four-stage budget, the zero-frame dispatch rule, and edge sampling</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td>&mdash;</td><td><code>combat.input.latency</code></td></tr>
+<tr><td><code>RI-CMB12</code></td><td>The exchange — reactability, decision divergence, and whether the fight is a decision at all</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td>&mdash;</td><td><code>combat.exchange.reactability combat.exchange.divergence</code></td></tr>
 <tr><td><code>RI-CMP01</code></td><td>The cross-system payoff matrix — the seam-sterility floor</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>composition.matrix.coverage composition.seam.crossings coherence.systems.composition</code></td></tr>
 <tr><td><code>RI-CMP02</code></td><td>Emergence — the fuzzing protocol for combinations nobody wrote</td><td>trace</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>composition.emergence.fuzzing composition.emergence.degeneracy</code></td></tr>
 <tr><td><code>RI-CMP03</code></td><td>Build-identity payoff — six archetypes, each taken through the whole game</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>composition.build.identity composition.build.viability</code></td></tr>
@@ -497,14 +498,14 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
 <h2>Content built</h2>
 <table><tr><th>Metric</th><th>Count</th></tr>
-<tr><td>files</td><td>326</td></tr>
+<tr><td>files</td><td>334</td></tr>
 <tr><td>quests</td><td>21</td></tr>
 <tr><td>npcs</td><td>8</td></tr>
 <tr><td>topics</td><td>0</td></tr>
 <tr><td>books</td><td>0</td></tr>
 <tr><td>dialogueWords</td><td>1,035</td></tr>
 <tr><td>settlements</td><td>8</td></tr>
-<tr><td>source files</td><td>90</td></tr>
+<tr><td>source files</td><td>92</td></tr>
 </table>
 
 <h2>Latest captures</h2>

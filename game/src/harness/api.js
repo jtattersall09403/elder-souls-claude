@@ -532,6 +532,67 @@ export function installHarness(engine, bootPromise) {
     // in game/src/sim/magic/apply.js write into — and none of them is a magic-side mirror a
     // spell could satisfy by talking to itself.
 
+    /**
+     * Cast a spell on the caster with no geometry, for measuring what an effect DOES rather
+     * than whether it connects. Resources are spent exactly as a real cast spends them, and
+     * S29's travel fence is enforced here too, so this cannot be used to walk round a rule.
+     */
+    castNow(spellId) { return engine.magic.castNow(engine.sim.frame, String(spellId)); },
+    /**
+     * Press the cast button for real and step. The whole input path — `_tryStart`, the drop
+     * table, the move, the resource charge — so a refusal measured here is the refusal a
+     * player gets. Returns the drops and any `travel_refused` the press produced.
+     */
+    pressCast(frames) {
+      // RI-MAG01 §C: casting is the `light` button with a catalyst in the right hand. There is
+      // no `cast` action and there must not be one — the whole point of the mapping is that it
+      // needs no new verb.
+      engine.input.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }], engine.sim.frame);
+      const drops = [], refused = [];
+      const n = Math.max(1, Number(frames) || 60);
+      for (let i = 0; i < n; i++) {
+        engine.loop.stepOnce(); engine._afterStep();
+        for (let j = 0; j < engine.bus.count; j++) {
+          const e = engine.bus.pool[j];
+          if (e.type === 'INPUT_DROPPED' && e.button === 'cast') drops.push({ reason: e.reason, spell: e.spell, fence: e.fence, text: e.text });
+          if (e.type === 'travel_refused') refused.push({ spell: e.spell, fence: e.fence, text: e.text, ruling: e.ruling });
+        }
+      }
+      return { frame: engine.sim.frame, drops, travel_refused: refused };
+    },
+    /** Every live S11 buildup meter and proc, per body. The short name the census reads. */
+    getStatus() { return engine.magic.statusReport(); },
+    /**
+     * Put buildup on the S11 meter directly. RI-MAG06 §B judges a proc by what it does to an
+     * entity, and reaching a 100-point threshold by casting takes a spell shelf the arena may
+     * not have — so the METER is fed here and the PROC is left to the game. Nothing about the
+     * proc's consequence is short-circuited: it still has to cross the threshold.
+     */
+    addStatusBuildup(eid, kind, amount) {
+      const b = engine.combat.bodyOf(String(eid)) || engine.combat.player;
+      return engine.magic.addBuildupTo(engine.sim.frame, b, String(kind), Number(amount));
+    },
+
+    /**
+     * RI-MAG06 §D self-test. Collapse the seven ward channels back into wave 1's single
+     * kind-blind multiplier, so the ward x kind matrix can be watched going red.
+     */
+    __breakKindBlindWards() {
+      for (const b of engine.combat.bodies) {
+        const w = b.wards || {};
+        const m = Math.min(...Object.values(w));
+        for (const k of Object.keys(w)) w[k] = m;
+        if (b.shieldFlat) { for (const k of Object.keys(w)) w[k] = w[k] * 0.31; b.shieldFlat = 0; }
+      }
+      return true;
+    },
+    /** RI-LOR05 §4a: read the taint register; and clear it, for a probe that needs to count from 0. */
+    getSapTaint() { const t = engine.sim.progression.sapTaint; return t ? { ...t } : null; },
+    resetSapTaint() { engine.sim.progression.sapTaint = null; return engine.hearthRest ? true : true; },
+
+    /** S29 self-test: open the travel fence, so the refusal can be watched not happening. */
+    __breakTravelFence() { engine.magic._fenceDisabled = true; return true; },
+
     /** Locks, traps, breakables, item condition, keys, shrines, conjured walls, summons, markers. */
     getMagicWorld() { return engine.magic.worldCensus(); },
     /** Every live S11 buildup meter, proc, mitigation multiplier and armour rating, per body. */
@@ -616,6 +677,45 @@ export function installHarness(engine, bootPromise) {
       engine.sim.quest.topicsKnown.sort();
       return engine.sim.quest.topicsKnown.slice();
     },
+    /**
+     * READ the one skill register. `sim.progression.skills` is what a quest resolution's
+     * `requires.skills` reads, what `character/skilluse.js` writes when you play, what
+     * `save/state.js` persists, and — since W1-14 round 3 — the register `MagicSystem.skills`
+     * is a view of. There is no second one; `setMagicSkills` writes this.
+     *
+     * A critic auditing RI-MAG06 §E should read the number here and never set it.
+     */
+    getSkills() {
+      const S = engine.sim.progression.skills || {};
+      const out = {};
+      for (const k of Object.keys(S).sort()) out[k] = S[k] && S[k].value !== undefined ? S[k].value : Number(S[k]) || 0;
+      return out;
+    },
+    /** The same register with its progress fractions, for RI-PRG03's curve checks. */
+    getSkillProgress() {
+      const S = engine.sim.progression.skills || {};
+      const out = {};
+      for (const k of Object.keys(S).sort()) {
+        const r = S[k];
+        out[k] = r && typeof r === 'object'
+          ? { value: r.value, use_progress: Math.round((r.useProgress || 0) * 1e6) / 1e6, levels_since_rest: r.levelsSinceRest || 0, rest_clamped: !!r.restClamped }
+          : { value: Number(r) || 0, use_progress: 0, levels_since_rest: 0, rest_clamped: false };
+      }
+      return out;
+    },
+    /** Restore a blob produced by `saveState()`. The other half of a round-trip test. */
+    restoreState(blob) { const r = engine.loadState(blob); engine.input.reset(engine.sim.frame); return { ok: true, frame: engine.sim.frame, ...r }; },
+
+    /**
+     * RI-MAG06 §E, the arena audit, made runnable against ITSELF: re-freeze the magic skill
+     * register into the private literal wave 1 shipped, so a probe that claims to measure the
+     * unfreezing can be watched going red. Nothing in the game calls this; it exists so the
+     * instrument can be broken on purpose (AGENT-PROTOCOL, failure mode 2).
+     */
+    __breakSkillRegister() { return engine.magic.__refreezeSkillsForProbeSelfTest(); },
+    /** The other half of the same self-test: stop crediting casts, so advancement must read 0. */
+    __breakCastCredit() { engine.magic._creditDisabled = true; return true; },
+
     /** Set progression skills directly — the numbers a resolution's `requires.skills` reads. */
     setSkills(patch) {
       const S = engine.sim.progression.skills;
@@ -710,7 +810,13 @@ export function installHarness(engine, bootPromise) {
       // that read structurally impossible, so it goes through the SAME mitigate() the weapon
       // resolver uses. Both numbers are returned: `raw` is what was asked for, `applied` is
       // what the body took, and the difference is the effect.
-      const applied = mitigate(b, raw);
+      //
+      // W1-14 round 3: the hit now has a KIND (`opts.kind`, default `physical`), because
+      // "the damage taken from an identical scripted hit" was the exact read that could not
+      // tell `resist_disease` from `shield` — both moved it, so both passed. A ward is only
+      // demonstrated when a hit it names is blunted AND a hit it does not name is not.
+      const kind = (opts && opts.kind) || 'physical';
+      const applied = mitigate(b, raw, kind);
       b.hp = Math.max(0, b.hp - applied);
       if (b.hp <= 0) b.dead = true;
       if (!opts || opts.stagger !== false) {
@@ -722,9 +828,10 @@ export function installHarness(engine, bootPromise) {
       // getPlayerStats() immediately after this call sees the hit it just scripted.
       mirrorView(engine.sim, engine.combat);
       return {
-        hp: b.hp, raw, applied: Math.round(applied * 1000) / 1000,
-        mitigation: Math.round((b.mitigation === undefined ? 1 : b.mitigation) * 1e4) / 1e4,
-        ward_charges: b.wardCharges || 0,
+        hp: b.hp, raw, kind, applied: Math.round(applied * 1000) / 1000,
+        wards: Object.fromEntries(Object.entries(b.wards || {}).map(([k, v]) => [k, Math.round(v * 1e4) / 1e4])),
+        shield_flat: Math.round((b.shieldFlat || 0) * 100) / 100,
+        armour_rating: Math.round((b.armourRating || 0) * 100) / 100,
         magic: engine.magic.report(engine.sim.frame),
       };
     },

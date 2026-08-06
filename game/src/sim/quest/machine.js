@@ -23,6 +23,10 @@
 import { Journal } from './journal.js';
 import { canOffer, canResolve } from './gate.js';
 import { dateOf } from './calendar.js';
+import { SAP_TAINT_DISPOSITION } from '../dialogue/disposition.js';
+
+/** Morrowind's `fDispDiseaseMod`, per active disease. Cure it and the door opens again. */
+const DISEASE_DISPOSITION_PER = -12;
 
 /** RI-UIX04 Q11's exemption: one glyph, <= 3 s. 3 s at 60 Hz = 180 f@60. */
 export const GLYPH_FRAMES = 180;
@@ -158,11 +162,35 @@ export class QuestEngine {
     });
   }
 
+  /**
+   * How this person actually feels about you, which is the register plus everything the world
+   * knows about you that the register does not carry.
+   *
+   * W1-14 round 3 adds RI-LOR05 §4a's sap-taint term. The tithe-curse is hard canon (CF-006) and
+   * had no implementation: a non-Argonian who rests at the hearths — which is to say, who plays
+   * the game — accumulates it, and "NPCs notice your eyes". This is where it bites, on the
+   * disposition a `requires.disposition` gate reads, which makes `sap_ward` the only thing in
+   * the build that can buy a closed door back open. It touches nothing inside the fight, so
+   * AR-1 is untouched: no frame, no hitbox, no telegraph and no damage number reads it.
+   */
+  _dispositionToward(npcId) {
+    let d = (this.sim.quest.dispositions || {})[npcId] || 0;
+    const t = this.sim.progression && this.sim.progression.sapTaint;
+    if (t && t.band) d += SAP_TAINT_DISPOSITION[t.band] || 0;
+    // Morrowind's own `fDispDiseaseMod`: a visibly sick stranger is a worse guest. This is the
+    // world-side consumer that makes `cure_disease` worth casting on yourself — and, since
+    // W1-14 round 3 unified the two affliction arrays, the disease it reads is the one the
+    // hazards actually gave you rather than one only the harness could write.
+    const sick = (this.sim.quest.afflictions || []).filter((a) => a.kind === 'disease').length;
+    if (sick) d += DISEASE_DISPOSITION_PER * sick;
+    return Math.max(0, Math.min(100, d));
+  }
+
   /** The resolutions reachable right now, with the shortfall spelled out for each that is not. */
   resolutionsFor(id) {
     const def = this.book.get(id);
     const ctx = this.context();
-    ctx.disposition = (this.sim.quest.dispositions || {})[def.giver && def.giver.npc_id] || 0;
+    ctx.disposition = this._dispositionToward(def.giver && def.giver.npc_id);
     return (def.resolutions || []).map((r) => {
       const c = canResolve(r, ctx);
       return { id: r.id, method: r.method, violence_required: r.violence_required, available: c.available, why: c.why, excludes: r.exclusive_with || [] };
@@ -241,7 +269,7 @@ export class QuestEngine {
     const res = (def.resolutions || []).find((x) => x.id === resolutionId);
     if (!res) throw new Error(`${id}: no resolution ${resolutionId}`);
     const ctx = this.context();
-    ctx.disposition = (this.sim.quest.dispositions || {})[def.giver && def.giver.npc_id] || 0;
+    ctx.disposition = this._dispositionToward(def.giver && def.giver.npc_id);
     const c = canResolve(res, ctx);
     if (!c.available) return { ok: false, reason: c.why.join('; ') };
     for (const x of res.exclusive_with || []) {

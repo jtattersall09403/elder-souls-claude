@@ -92,6 +92,14 @@ export function buildSave(sim, build) {
       hearths_discovered: [...sim.progression.hearthsDiscovered].sort(),
       hearth_last_rested: sim.progression.hearthLastRested,
       upgrades: sortedMap(sim.progression.upgrades),
+      // RI-LOR05 §4a. A permanent, accumulating, irreversible-except-by-one-spell condition is
+      // exactly the kind of thing a save must carry, and `sap_ward` is only meaningful if the
+      // band it lowered stays lowered.
+      sap_taint: sim.progression.sapTaint
+        ? { band: sim.progression.sapTaint.band, rests: sim.progression.sapTaint.rests,
+            warded: sim.progression.sapTaint.warded || 0,
+            ward_uses_left: sim.progression.sapTaint.wardUsesLeft, immune: !!sim.progression.sapTaint.immune }
+        : null,
     },
     // Seam S19. The commissioned spells are the load-bearing entry: RI-MAG03 M1 requires a
     // spell the player made to appear in saveState(), because a maker's system whose output
@@ -315,6 +323,10 @@ export function applySave(sim, blob, moves, statFor) {
   sim.progression.hearthsDiscovered = [...blob.progression.hearths_discovered];
   sim.progression.hearthLastRested = blob.progression.hearth_last_rested;
   sim.progression.upgrades = { ...blob.progression.upgrades };
+  if (blob.progression.sap_taint) {
+    const t = blob.progression.sap_taint;
+    sim.progression.sapTaint = { band: t.band, rests: t.rests, warded: t.warded || 0, wardUsesLeft: t.ward_uses_left, immune: !!t.immune };
+  } else sim.progression.sapTaint = null;
   if (sim.magic && blob.magic) {
     const M = sim.magic;
     M.custom = blob.magic.custom_spells.map((c) => ({

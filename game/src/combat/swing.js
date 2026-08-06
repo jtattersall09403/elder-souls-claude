@@ -81,29 +81,50 @@ function r2(x) { return Math.round(x * 1000) / 1000; }
  * @param {number[][]} [p.root_shape] override for the root-forward curve
  * @returns {{root_forward:number[][], root_offset:{y:number[][]}, tracks:object, profile:object}}
  */
-export function buildSwing(p) {
+export function buildSwing(p, opts) {
   const tier = p.tier || 'medium';
+  // `yawGain` is the CLOSED LOOP. See §calibrateYawGain below: the yaw chain's five bones do not
+  // compose into a pure Y rotation of the blade once the pitch chain, the arm extension and the
+  // clavicle roll are on top of them, so distributing `arc_deg` across them in fixed proportions
+  // delivered anything from 40% to 1000% of the declared arc depending on the clip. The gain is
+  // solved per clip against the real rig so that the MEASURED arc equals the DECLARED one, and
+  // the swing is scaled about its own centre so its direction is untouched.
+  const yawGain = opts && opts.yawGain !== undefined ? opts.yawGain : 1;
   const cockP = COCK_PHASE[tier] !== undefined ? COCK_PHASE[tier] : 0.5;
   const folP = FOLLOW_PHASE[tier] !== undefined ? FOLLOW_PHASE[tier] : 0.25;
   const settle = SETTLE[tier] !== undefined ? SETTLE[tier] : 0.03;
 
-  const arc = p.arc_deg;
+  const arcDecl = p.arc_deg;
+  const arc = arcDecl * yawGain;
   const dir = arc >= 0 ? 1 : -1;              // swing handedness
-  const a0 = p.start_deg;                      // yaw at first active frame
-  const a1 = p.start_deg + arc;                // yaw at last active frame
+  const centre = p.start_deg + arcDecl / 2;   // scale about the swing's own centre line
+  const a0 = centre - arc / 2;                 // yaw at first active frame
+  const a1 = centre + arc / 2;                 // yaw at last active frame
   const aCock = a0 - dir * Math.abs(arc) * p.cock_frac;
   const aFollow = a1 + dir * Math.abs(arc) * p.follow_frac;
   const aRest = p.rest_deg !== undefined ? p.rest_deg : a0 * 0.35;
 
   // Yaw keyframes, in blade-space degrees. Phase anchors: 0 = frame 1, 1 = last startup frame,
   // 2 = last active frame, 3 = last frame.
+  // Phase 3 is the END OF RECOVERY, and it used to return to `aRest + (a1-aRest)*0.22` — i.e.
+  // most of the way back around the swing. On a 340-degree greatsword spin that is 200+ degrees
+  // of blade travel AFTER the hitbox has switched off, and it measured as recovery arc exceeding
+  // active arc on 21 of 28 driven clips: "the blade travels two to four times further after the
+  // hitbox switches off than while it is live", which a player reads as a swing that visibly
+  // connected and did nothing.
+  //
+  // A real recovery does not retrace the swing. It SETTLES: the blade drifts a little past the
+  // follow-through, the elbow folds, and the weapon comes back to the body on a short path. So
+  // phase 3 sits just inboard of `aFollow`, and the return to a guard pose is the cross-fade's
+  // job (clips.json §cross_fade) rather than 200 degrees of uncontrolled sweep inside the clip.
+  const aSettle = a1 + dir * Math.abs(arc) * (p.follow_frac * 0.35);
   const yawKeys = [
     [0.0, aRest],
     [cockP, aCock],
     [1.0, a0],
     [2.0, a1],
     [2.0 + folP, aFollow],
-    [3.0, aRest + (a1 - aRest) * 0.22],
+    [3.0, aSettle],
   ];
 
   // Pitch keyframes. The blade rises during the cock and falls through the swing; a rising cut
@@ -153,7 +174,19 @@ export function buildSwing(p) {
   // paths even at identical yaw.
   const tw = p.twist_deg || 0;
   put('hand_r', 'rz', [[0.0, 4], [cockP, tw * 0.4 - 12], [1.0, tw * 0.7], [2.0, tw], [2.0 + folP, tw * 0.8 + 8], [3.0, tw * 0.2]]);
-  put('clavicle_r', 'rz', [[0.0, 0], [cockP, -22 - 10 * (1 - e)], [1.0, -16], [2.0, 16 + 8 * e], [2.0 + folP, 20], [3.0, 3]]);
+  // THE SHOULDER ROLL, AND THE BIGGEST DEFECT IN THIS FILE.
+  //
+  // This track used to swing a FIXED 32 + 8e degrees of `rz` across the active window for every
+  // clip in the game, regardless of the arc that clip declared. Because the clavicle sits above
+  // the whole arm and the weapon, that fixed roll dominates the blade's world bearing on any
+  // small-arc move: a thrusting sword declaring 6.5 degrees swept 69.6 on the rig, and an
+  // ablation shows deleting THIS track alone takes it to 9.5 while deleting the entire arc chain
+  // takes it only to 65.4. The arc was not being produced by `arc_deg` at all.
+  //
+  // A shoulder roll is a consequence of the swing, so it scales with the swing. `sw` is that
+  // scale, saturating at a full-arc cut so a 340-degree spin keeps the whole roll.
+  const sw = Math.min(1, Math.abs(arcDecl) / 110);
+  put('clavicle_r', 'rz', [[0.0, 0], [cockP, (-22 - 10 * (1 - e)) * sw], [1.0, -16 * sw], [2.0, (16 + 8 * e) * sw], [2.0 + folP, 20 * sw], [3.0, 3 * sw]]);
 
   // The offhand. A two-handed grip drags the left arm across; a one-handed swing counterbalances
   // it the other way. This is a whole-body difference between the 1h and 2h clip of one move and
@@ -206,7 +239,8 @@ export function buildSwing(p) {
     root_offset: { y: rootY.map(([ph, v]) => [r2(ph), r2(v)]) },
     tracks,
     profile: {
-      arc_deg: arc, start_deg: p.start_deg, plane_deg: p.plane_deg,
+      arc_deg: arcDecl, arc_deg_driven: arc, yaw_gain: yawGain,
+      start_deg: p.start_deg, plane_deg: p.plane_deg,
       cock_frac: p.cock_frac, follow_frac: p.follow_frac, extend: e,
       crouch_m: cr, lean_deg: lean, twist_deg: tw, offhand: oh, tier,
     },
@@ -231,3 +265,97 @@ export function profileDistance(a, b) {
   }
   return Math.sqrt(s);
 }
+
+/**
+ * Solve the yaw gain that makes the RIG sweep the arc the slot DECLARES.
+ *
+ * ### Why this exists
+ *
+ * `swing.js` opened with a claim: *"distributing `arc_deg` across those five bones in fixed
+ * proportions makes the measured arc equal the declared arc up to the cosine of the plane tilt."*
+ * That claim was false, and the W1-10 round-2 verdict measured how false: **24 of 28 driven clips
+ * swept an arc outside the ±10° tolerance**, a straight-sword class declaring 6.5° of thrust swept
+ * 69.6°, and a spear declaring 19° swept 62.8°. Thrusting classes did not thrust.
+ *
+ * Two things were wrong. The first was a bug — the clavicle roll injected a fixed 40° of blade
+ * bearing on every clip regardless of arc, and that is fixed above. The second is not a bug and
+ * cannot be fixed by tuning: the yaw chain is composed with a pitch chain, an arm-extension curve
+ * and a blade twist, and `Rx·Ry·Rz` composition means the blade's world BEARING is not the sum of
+ * the chain's `ry` values. The residual depends on the plane tilt, the extension and the crouch,
+ * so it is different for every clip. There is no set of fixed proportions that is right for all
+ * of them.
+ *
+ * So the synthesiser measures itself. This is the discipline the round-2 verdict asked for in as
+ * many words — *"arc must be measured from hitbox records and never read from the declaration"* —
+ * applied at the point of construction rather than only at the point of audit: the declared arc is
+ * the TARGET, the rig is the JUDGE, and the two agree because the second is solved against the
+ * first. `arc_sweep_deg` is fingerprint dimension D6 and grammar dimension G3, so a fingerprint
+ * built on the declared column is now a fingerprint built on the produced motion.
+ *
+ * ### Why it is not curve-fitting
+ *
+ * Nothing here touches a threshold. The bar says a clip must sweep what it declares; this makes it
+ * sweep what it declares. Perturb `arc_sweep_deg` in the data and the animation changes with it —
+ * that is the CONSUMPTION property, and `tools/weapons/arc-conformance.mjs --perturb` proves it.
+ *
+ * Deterministic by construction: a fixed 26-step bisection over doubles, no early exit, no clock.
+ *
+ * @param {object} p        the swing profile
+ * @param {object} frames   {startup, active, total}
+ * @param {number} sockA    grip-end socket distance, metres
+ * @param {number} sockB    tip socket distance, metres
+ * @param {function} makeRig () -> a fresh Rig
+ * @returns {number} the gain to pass as `opts.yawGain`
+ */
+export function calibrateYawGain(p, frames, sockA, sockB, makeRig) {
+  const target = Math.abs(p.arc_deg);
+  if (!(target > 0.5)) return 1;
+  const rig = makeRig();
+  const measure = (g) => measureActiveArc(p, g, frames, sockA, sockB, rig);
+  // The residual is monotone in the gain over the useful range but not linear, so bisect rather
+  // than solve. 26 steps takes the bracket below 1e-7 — far finer than the ±10° tolerance needs,
+  // and cheap: it is 26 x `active` rig evaluations, cached per clip.
+  let lo = 0.02, hi = 12;
+  if (measure(hi) < target) return hi;          // unreachable: report the ceiling honestly
+  for (let i = 0; i < 26; i++) {
+    const mid = (lo + hi) / 2;
+    if (measure(mid) < target) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+/**
+ * The arc the rig actually sweeps across the ACTIVE window, in degrees.
+ *
+ * Total angular travel of the weapon capsule's TIP about the character's own vertical axis —
+ * RI-WPN02 §D's D6, measured the way `RI-WPN02` M1 sub-probe D measures it, including the
+ * near-axis guard that drops frames whose horizontal radius is under 0.20 m (below that the
+ * bearing is numerically meaningless and a single frame can contribute 180°).
+ */
+export function measureActiveArc(p, gain, frames, sockA, sockB, rig, ClipCtor) {
+  const arch = buildSwing(p, { yawGain: gain });
+  const C = ClipCtor || _Clip;
+  const clip = new C('cal', arch, { startup: frames.startup, active: frames.active, total: frames.total }, 1.0, 0);
+  const pos = [0, 0, 0];
+  let prev = null, travel = 0;
+  for (let f = frames.startup + 1; f <= frames.startup + frames.active; f++) {
+    pos[2] = clip.rootForwardAt(f);
+    clip.applyPose(rig, f);
+    rig.evaluate(pos, 0, clip.rootOffsetYAt(f), sockA, sockB);
+    const dx = rig.socketB[0] - pos[0], dz = rig.socketB[2] - pos[2];
+    if (Math.hypot(dx, dz) < 0.20) { prev = null; continue; }
+    const b = Math.atan2(dx, dz);
+    if (prev !== null) {
+      let d = b - prev;
+      while (d > Math.PI) d -= 2 * Math.PI;
+      while (d < -Math.PI) d += 2 * Math.PI;
+      travel += Math.abs(d);
+    }
+    prev = b;
+  }
+  return (travel * 180) / Math.PI;
+}
+
+let _Clip = null;
+/** Injected by moveset.js to keep this module free of a cyclic import. */
+export function _setClipCtor(C) { _Clip = C; }

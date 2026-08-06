@@ -310,6 +310,7 @@ export class SimState {
     this.seed = seed >>> 0;
     rng.reseed(this.seed);
     this.stateName = stateName;
+    this.lastHostileFrame = 0;      // S29: a new scenario is not still in the last one's fight
     this.player = makePlayer();
     this.camera = makeCamera();
     this.env = makeEnvironment();
@@ -319,6 +320,10 @@ export class SimState {
     // The world-generation seed this world was built from — durable (save `world.gen_seed`),
     // null for an authored cell that generates nothing. Drawn by Engine._drawWorldSeed().
     this.worldSeed = null;
+    // S29: the frame the world last did violence, stamped off the event bus in sim/step.js.
+    // Travel spells are refused for 300 f@60 after it. Session state, not save state — a save
+    // taken mid-fight and loaded later starts you unfenced, which is correct: the fight is over.
+    this.lastHostileFrame = 0;
     this.entities = [];         // kept sorted by eid — HARNESS.md D7
     // W1-07. People, as opposed to combat entities: a name, a race, an upbringing, a
     // disposition and a list of topics, with no statblock and no hitbox (sim/npc.js).

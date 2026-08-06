@@ -25,6 +25,8 @@ globalThis.atob = globalThis.atob || ((s) => Buffer.from(s, 'base64').toString('
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(join(HERE, '..', '..'));
 const rd = (p) => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
+const ARGV = process.argv.slice(2);
+const argOf = (flag, dflt) => (ARGV.includes(flag) ? ARGV[ARGV.indexOf(flag) + 1] : dflt);
 
 const scale = rd('corpus/50-world/world-scale.json');
 const field = new WorldField(rd('game/data/world/terrain.json'), rd('game/data/world/regions.json'), rd('game/data/world/water.json'));
@@ -35,6 +37,8 @@ const TIDE_PEAK = 0.25;        // h = A/2 sin(2 pi phase); phase 0.25 is the max
 const cost = new Float32Array(COLS * ROWS);
 const terrainCost = new Float32Array(COLS * ROWS);
 const waterCost = new Float32Array(COLS * ROWS);
+const slopeG = new Float32Array(COLS * ROWS);
+const roughG = new Float32Array(COLS * ROWS);
 const groundG = new Float32Array(COLS * ROWS);
 const depthG = new Float32Array(COLS * ROWS);
 for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
@@ -61,13 +65,57 @@ for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
     if (v < lo) lo = v; if (v > hi) hi = v;
   }
   const rough = hi - lo;
+  roughG[i] = rough;
   const d = depthG[i];
   // Water is costed by DEPTH and without the old min(d,3) ceiling: an 18 m tarn and a 0.3 m puddle
   // used to cost the same 13.5, which is why the trunk was happy to lie in a lake. A crossing is
   // still possible — it is priced, at roughly 12 cost-metres per metre of depth — so A* crosses at
   // the narrows and at the shallows instead of along the bed.
   waterCost[i] = d > 0 ? 8 + 12 * d : 0;
-  terrainCost[i] = 0.40 * slope + 0.25 * rough + waterCost[i] + (field.isOceanAt(x * CELL, z * CELL) ? 400 : 0);
+  slopeG[i] = slope;
+  cost[i] = 1;
+}
+
+// ---- RELIEF APPETITE (ARBITRATION S28) ---------------------------------------------------------
+// `RI-WLD07` M36-ROAD-RELIEF asks that at least 30% of 500 m road windows change 15 m in
+// elevation. Rounds 1-3 measured 27.3% and could not move it, because the router was built to do
+// the opposite of what the measure asks: length was bought by raising `w`, and raising `w` buys
+// length by going ROUND the ridge, the notch and the tarn. A road that is paid to avoid relief
+// gets longer and flatter at the same time, which is exactly what happened.
+//
+// S28 unblocks it: "settlement positions are authoritative and immovable, but the route between
+// any two of them may be re-cut freely", provided the crossing stays in its 52-65 minute band, no
+// leg's length moves more than 5% from its declared value, and every re-cut leg is re-verified
+// against the water census, the slope histogram and reachability.
+//
+// So the cost gains a term that is a PENALTY ON FLAT GROUND rather than a reward for steep ground
+// — A* needs non-negative edge costs, and a negative one would be unsound rather than merely
+// slow. `reliefPot` is the height range of the ground over a 175 m neighbourhood: a corridor with
+// less than RELIEF_REF metres of it is charged for the privilege. Slope and roughness aversion are
+// scaled DOWN by the same appetite, so a route with appetite 1 is willing to climb over what a
+// route with appetite 0 walked around, and the length bisection then buys its metres in the
+// vertical instead of the horizontal.
+const RELIEF = Math.max(0, Math.min(1, Number(argOf('--relief', '0.65'))));
+const RELIEF_PULL = 26;        // cost-metres per unit of flatness at appetite 1
+const RELIEF_REF = 30;         // metres of neighbourhood relief above which nothing is charged
+const RELIEF_R = 7;            // cells; 7 x 25 m = 175 m, a third of the 500 m measurement window
+const reliefPot = new Float32Array(COLS * ROWS);
+for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
+  let lo = Infinity, hi = -Infinity;
+  const z0 = Math.max(0, z - RELIEF_R), z1 = Math.min(ROWS - 1, z + RELIEF_R);
+  const x0 = Math.max(0, x - RELIEF_R), x1 = Math.min(COLS - 1, x + RELIEF_R);
+  for (let nz = z0; nz <= z1; nz += 2) for (let nx = x0; nx <= x1; nx += 2) {
+    const v = groundG[nz * COLS + nx];
+    if (v < lo) lo = v; if (v > hi) hi = v;
+  }
+  reliefPot[z * COLS + x] = hi - lo;
+}
+for (let i = 0; i < COLS * ROWS; i++) {
+  const x = i % COLS, z = (i - x) / COLS;
+  const flat = Math.max(0, 1 - reliefPot[i] / RELIEF_REF);
+  terrainCost[i] = (1 - 0.55 * RELIEF) * (0.40 * slopeG[i] + 0.25 * roughG[i])
+    + waterCost[i] + RELIEF * RELIEF_PULL * flat
+    + (field.isOceanAt(x * CELL, z * CELL) ? 400 : 0);
   cost[i] = 1 + terrainCost[i];
 }
 

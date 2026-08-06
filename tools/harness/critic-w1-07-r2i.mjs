@@ -50,8 +50,15 @@ async function sweep(h, enemyId) {
   for (const d of [0.4, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8]) {
     await h.h('loadState', 'default');
     await h.h('setCharacter', CH);
-    const eid = await h.h('spawn', enemyId, 0, d, { as: 'dummy' });
-    await h.soft('setEntityPos', eid, 0, d);
+    // spawn() takes WORLD coordinates; pass I's first run placed the dummy at the world
+    // origin 5.7 km from the player, which invalidated its numbers. Place it relative to the
+    // player, in front of the player's facing, and verify the separation before swinging.
+    const ps0 = await h.h('getPlayerStats');
+    const pp0 = ps0.pos || (ps0.player && ps0.player.pos);
+    const yaw = ((ps0.yaw_deg !== undefined ? ps0.yaw_deg : (ps0.player && ps0.player.yaw_deg)) || 0) * Math.PI / 180;
+    const ex = pp0[0] + Math.sin(yaw) * d, ez = pp0[2] + Math.cos(yaw) * d;
+    const eid = await h.h('spawn', enemyId, ex, ez, { as: 'dummy' });
+    await h.soft('setEntityPos', eid, ex, ez);
     await h.soft('lockOn', eid);
     await h.h('traceStart');
     // one swing, then look

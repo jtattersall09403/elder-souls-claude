@@ -256,9 +256,32 @@ export class Hazards {
           e.hazard = h.id; e.hazard_class = h.class;
           e.telegraph_frames = cur.damageFrom - (this.told.get(h.id) ?? cur.since);
           if (h.class === 'VECTOR') {
-            p.afflictions = p.afflictions || [];
-            if (!p.afflictions.includes(h.id)) p.afflictions.push(h.id);
-            e.outcome = 'affliction'; e.affliction = h.id;
+            // W1-14 round 3: ONE affliction register.
+            //
+            // Wave 1 had two. The four VECTOR hazards pushed the hazard's own id, as a bare
+            // string, onto `sim.player.afflictions`; `cure_disease` spliced `sim.quest.afflictions`,
+            // an array of `{id, kind}` records that only the harness's `addAffliction()` ever
+            // wrote. So the diseases the game could actually give you were in one array and the
+            // spell that cures diseases read the other, and curing a disease you had really
+            // caught did nothing at all. The register is `sim.quest.afflictions` — it is on the
+            // save manifest, the quest machine reads it, and `getQuestState()` reports it —
+            // and `sim.player.afflictions` is kept as a list of ids so nothing that read it breaks.
+            const id = h.affliction || h.id;
+            const q = sim && sim.quest ? sim.quest : null;
+            if (q) {
+              if (!q.afflictions.some((a) => a.id === id)) {
+                q.afflictions.push({
+                  id, kind: h.affliction_kind || 'disease',
+                  name: h.affliction_name || id, source: h.id, caught_at_frame: f,
+                });
+                q.afflictions.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+              }
+              p.afflictions = q.afflictions.map((a) => a.id);
+            } else {
+              p.afflictions = p.afflictions || [];
+              if (!p.afflictions.includes(id)) p.afflictions.push(id);
+            }
+            e.outcome = 'affliction'; e.affliction = id; e.affliction_kind = h.affliction_kind || 'disease';
           } else if (h.class === 'GATE' || h.class === 'STRANDING') {
             p.strandedBy = h.id;
             e.outcome = 'route_closed';

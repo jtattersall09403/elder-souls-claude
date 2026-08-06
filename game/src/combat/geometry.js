@@ -94,6 +94,39 @@ export function segSegDist2(p1, q1, p2, q2) {
 
 function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
 
+/**
+ * WHERE along the attacking capsule the contact happened, as a parameter in [0,1] from the
+ * grip end (`p1`) to the tip (`q1`).
+ *
+ * S26's contiguity law says the reachable band must have no interior hole, which means the hit
+ * VOLUME has to run from the grip to the tip. `hitbox_span_m` exists to say that an axe is
+ * edged only at the head and a sword over almost its whole length, and wave 1 spent that
+ * distinction by simply deleting the inboard part of the capsule — which is how eleven weapons
+ * ended up unable to hit a man standing 1.4 m in front of them. The distinction is now a
+ * DAMAGE taper along a capsule that is whole, and this is the number it reads.
+ *
+ * Same arithmetic as `segSegDist2`; it returns the parameter instead of the distance, so the
+ * two can never disagree about where the closest approach was.
+ */
+export function segSegParamOnA(p1, q1, p2, q2) {
+  const d1x = q1[0] - p1[0], d1y = q1[1] - p1[1], d1z = q1[2] - p1[2];
+  const d2x = q2[0] - p2[0], d2y = q2[1] - p2[1], d2z = q2[2] - p2[2];
+  const rx = p1[0] - p2[0], ry = p1[1] - p2[1], rz = p1[2] - p2[2];
+  const a = d1x * d1x + d1y * d1y + d1z * d1z;
+  const e = d2x * d2x + d2y * d2y + d2z * d2z;
+  const f = d2x * rx + d2y * ry + d2z * rz;
+  if (a <= EPS) return 0;
+  const c = d1x * rx + d1y * ry + d1z * rz;
+  if (e <= EPS) return clamp01(-c / a);
+  const b = d1x * d2x + d1y * d2y + d1z * d2z;
+  const denom = a * e - b * b;
+  let s = denom > EPS ? clamp01((b * f - c * e) / denom) : 0;
+  const t = (b * s + f) / e;
+  if (t < 0) s = clamp01(-c / a);
+  else if (t > 1) s = clamp01((b - c) / a);
+  return s;
+}
+
 /** Capsule-vs-capsule overlap: the primitive both hitboxes and hurtboxes reduce to. */
 export function capsuleOverlap(a0, a1, ra, b0, b1, rb) {
   const r = ra + rb;

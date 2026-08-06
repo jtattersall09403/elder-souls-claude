@@ -2,7 +2,7 @@
   "task_id": "W1-01-r4",
   "brief": "ULTRACODE round 4 on W1-01 (world). Job: per-region ORDINARY ground micro-relief + prop arrangement + vertical structure + ground cover, so a random frame is identifiable with colour stripped. Judged on the COLOUR-STRIPPED LOO/Fisher.",
   "started": "wave-1 round 4",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "per-region ground micro-relief in field.heightAt()",
     "per-region prop ARRANGEMENT (spacing statistics, clumping, lineation)",
@@ -12,13 +12,34 @@
     "M36-ROAD-RELIEF under S28",
     "full 117-frame region capture, day AND night, colour-stripped LOO+Fisher"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/src/world/microrelief.js",
+    "game/src/world/arrangement.js",
+    "tools/world/calibrate-micro.mjs",
+    "tools/world/arrangement-audit.mjs",
+    "game/data/world/regions.json (terrain.micro, props.arrangement, props.cover, canopy h_var/lean/emergent)",
+    "game/data/world/terrain.json (rebuilt through the micro-relief surface)",
+    "game/src/world/field.js (_terrain + MicroField)",
+    "game/src/world/province.js (TILE_SEG 56, ground-cover disc, arrangement, vertical structure)",
+    "tools/world/build-terrain.mjs",
+    "tools/world/build-regions.mjs",
+    "reports/arrangement.json"
+  ],
   "findings": [
     "ARCHITECTURE READ: heightAt = baseAt(25 m raster bilinear) + detailAt(x,z,relief,ridge,terrace) + _applySites + (deck ? deck : _applyRoads) + sig.groundDelta. detailAt is ONE global formula for all 13 regions; the only per-region variation in the ordinary ground is three scalars (relief_m, ridge, terrace) baked as rasters. That is why the ordinary ground is one place thirteen times.",
     "build-terrain.mjs groundAt() is the SAME function offline; the per-region water-table offsets are SOLVED by bisection against it, so any new term added to the ground must be added to BOTH and the terrain rebuilt, after which the WCI targets are met by construction.",
     "MESH NYQUIST: province.js TILE_SEG=40 over TILE_M=300 -> 7.5 m per ground quad. Micro-relief finer than ~15 m wavelength would be invisible in the render and would only show up in collision. Micro-relief must therefore live at 11-45 m, and the sub-metre half of ground character must be instanced PROPS, not heightAt.",
-    "province._scatter uses ONE jittered lattice (N=46 -> 6.5 m) for all thirteen regions with three layers (canopy/under/rock) differing only in shape, colour and density. Arrangement (clumping, lineation, isolation, drainage alignment) is identical everywhere."
+    "province._scatter uses ONE jittered lattice (N=46 -> 6.5 m) for all thirteen regions with three layers (canopy/under/rock) differing only in shape, colour and density. Arrangement (clumping, lineation, isolation, drainage alignment) is identical everywhere.",
+    "MICRO-RELIEF SHIPPED: 9 primitives (hummock/crack/ripple/terracette/rubble/rill/bund/rootmat/dune) at characteristic lengths 11-46 m, each normalised to zero-mean unit-variance by constants MEASURED over 240k province points (tools/world/calibrate-micro.mjs). Per-region amp_m 0.34-0.62 (sd metres) x a convex weight mixture, blended over ~70 m by a 9-tap 1-2-1 read of the region raster. Evaluated inside field._terrain() so it is in heightAt/bareHeightAt/naturalHeightAt and therefore in collision, mesh, slope histogram, water census and every audit.",
+    "WATER CENSUS SURVIVES THE NEW GROUND EXACTLY: build-terrain.mjs re-solves the per-region water-table offsets against the SAME MicroField the game evaluates, so all 13 wci_built equal wci_declared after the rebuild (0.41/0/0.34/0.86/0.71/0/0.58/0.02/0.06/0.03/0.09/0.01/0.47). Elevation -42.3..423.9 (was -41.8..424.2). Mean slope rose 0.7-2.0 deg per region; province mean 9.13 deg (target 6-14).",
+    "scale-audit after micro-relief: ALL PASS except the pre-existing M36-ROAD-RELIEF. M2-ROAD-ABOVE-WATER 0 offences over 4 tide phases x 10 legs. M2-ROAD-CUT-AND-FILL cut 3.24 m (was 3.00, bar 3.5), tallest earth embankment 7.32 m (was 6.97). M1-SETTLEMENT-FLAT 6.8 deg. S9-NO-FENCES 13/13 regions and 8/8 settlements, 99.3% of walkable land.",
+    "heightAt cost with micro-relief: 200k calls in 297 ms = 1.49 us.",
+    "MESH RESOLUTION RAISED: province TILE_SEG 40 -> 56 (7.5 m -> 5.36 m per quad) because an 11 m hummock field is invisible on a 7.5 m grid. Without this the micro-relief would move every audit and no frame.",
+    "PRE-EXISTING DEFECT FOUND AND FIXED: the scatter rolls were noise2() of the position - smoothstep-interpolated value noise concentrated near 0.5 - so P(roll < t) was not t and every region realised roughly HALF its declared per-100m2 density, with the error depending nonlinearly on the threshold. Replaced with hash2 on the lattice cell. Realised canopy density now matches declared within a few percent wherever the per-tile instance cap does not bind (hive 0.566 vs 0.55, stone-forest 0.512 vs 0.55, valus 0.633 vs 0.62).",
+    "PRE-EXISTING DEFECT FOUND AND FIXED: MAX_INSTANCES was applied as TRUNCATION in scan order, so a region declaring more than the budget (thornmarsh 5.4/100m2 = 4,860 in a 300 m tile against a budget of 700) had all its canopy in the low-z half of its own tile and the rest bald. Now a uniform thinning factor.",
+    "ARRANGEMENT SHIPPED: 8 modes as density fields (scatter/clumped/rows/drainage/high-ground/isolated/fringe/maze), normalised by MEASURED per-mode means so arrangement changes WHERE plants are and not HOW MANY. Realised canopy nearest-neighbour distance now ranges 6.4 m (blackwood high-ground) to 23.6 m (clay-moor isolated) with CV 0.35-1.03 and Clark-Evans R 0.70-1.14.",
+    "GROUND COVER SHIPPED as a camera-following 70 m disc on a 1.7 m lattice rather than on the 6.5 m prop lattice: a carpet dense enough to read over the 2.25 km2 of resident tiles is ~250k instances and the software rasteriser will not draw it; over a 70 m disc it is 2-5k. 13 shapes (litter/plate/cobble/tussock/reed/wax/shell/tuft/flag/flake/gravel/stubble), density 6-30 per 100 m2, patch scale 3-20 m."
   ],
-  "next_step": "write game/src/world/microrelief.js (9 landform-micro kinds), wire into noise/field/build-terrain, extend build-regions.mjs with per-region micro+arrangement+cover, rebuild terrain, re-verify water census",
+  "next_step": "render check: time one frame, then capture the 117-frame pack (day+night+worst) and run region-dispersion; then re-verify crossing/reachability/hazards and do M36-ROAD-RELIEF under S28",
   "notes_for_successor": ""
 }

@@ -1,0 +1,6047 @@
+{
+ "schema": "es-combat-reach/1",
+ "ruling": "ARBITRATION.md S26",
+ "enemy": "inf_trash",
+ "step_m": 0.05,
+ "max_m": 4,
+ "acceptance": {
+  "min_hit_distance_m": 0.35,
+  "turtle_damage_fraction": 0.4
+ },
+ "probes": {
+  "enemy": {
+   "chop": {
+    "declared_root_dz_m": 0.9,
+    "min_hit_distance_m": 0,
+    "max_hit_distance_m": 3.1,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [],
+    "via_at_min": "body",
+    "row": [
+     {
+      "d": 0,
+      "hit": true,
+      "dmg": 106,
+      "via": "body",
+      "closest_m": 0.4
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.1
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.15
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.2
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.25
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.3
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.35
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.362
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.39
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.44
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.466
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.49
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.54
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.546
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.576
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.58
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.6
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.65
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.7
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.75
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.8
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.85
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.9
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.95
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.05
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.1
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.15
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.2
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.25
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.3
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.35
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.4
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.45
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.5
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.55
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.6
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.65
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.7
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.75
+     },
+     {
+      "d": 2.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.8
+     },
+     {
+      "d": 2.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.85
+     },
+     {
+      "d": 2.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.9
+     },
+     {
+      "d": 2.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.95
+     },
+     {
+      "d": 2.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2
+     },
+     {
+      "d": 2.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.05
+     },
+     {
+      "d": 2.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.1
+     },
+     {
+      "d": 2.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.15
+     },
+     {
+      "d": 2.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.2
+     },
+     {
+      "d": 3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.25
+     },
+     {
+      "d": 3.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.3
+     },
+     {
+      "d": 3.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.35
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.25
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.3
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.35
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.4
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.45
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.5
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.55
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.6
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.65
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.7
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.75
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.8
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.85
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.9
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.95
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.05
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.1
+     }
+    ]
+   },
+   "thrust": {
+    "declared_root_dz_m": 1.2,
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 3.3,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "weapon",
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 0.4
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.1
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.141
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.178
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.228
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.278
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.328
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.378
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.395
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.428
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.478
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.528
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.567
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.567
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.574
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.6
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.65
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.7
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.75
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.8
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.85
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.9
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 0.95
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.05
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.1
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.15
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.2
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.25
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.3
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.35
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.4
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.45
+     },
+     {
+      "d": 2.55,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.5
+     },
+     {
+      "d": 2.6,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.55
+     },
+     {
+      "d": 2.65,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.6
+     },
+     {
+      "d": 2.7,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.65
+     },
+     {
+      "d": 2.75,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.7
+     },
+     {
+      "d": 2.8,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.728
+     },
+     {
+      "d": 2.85,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.778
+     },
+     {
+      "d": 2.9,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.828
+     },
+     {
+      "d": 2.95,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.878
+     },
+     {
+      "d": 3,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.928
+     },
+     {
+      "d": 3.05,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 1.978
+     },
+     {
+      "d": 3.1,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 2.028
+     },
+     {
+      "d": 3.15,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 2.062
+     },
+     {
+      "d": 3.2,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 2.112
+     },
+     {
+      "d": 3.25,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 2.162
+     },
+     {
+      "d": 3.3,
+      "hit": true,
+      "dmg": 78,
+      "via": "weapon",
+      "closest_m": 2.153
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.15
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.2
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.25
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.3
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.35
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.4
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.45
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.5
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.55
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.6
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.65
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.7
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.75
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.8
+     }
+    ]
+   },
+   "combo_a": {
+    "declared_root_dz_m": 0.6,
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 2.5,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "weapon",
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 0.4
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.1
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.15
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.2
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.25
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.3
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.35
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.4
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.45
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.485
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.485
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.485
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.485
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.485
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.485
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.485
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.485
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.522
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.548
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.572
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.579
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.6
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.65
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.7
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.75
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.8
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.85
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.9
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 0.95
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.05
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.1
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.15
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.2
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.25
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.3
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.35
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.4
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.45
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.5
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.55
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.6
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.65
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.7
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.75
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.8
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.85
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.9
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 1.95
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 2
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 73,
+      "via": "weapon",
+      "closest_m": 2.05
+     },
+     {
+      "d": 2.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 1.95
+     },
+     {
+      "d": 2.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2
+     },
+     {
+      "d": 2.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.05
+     },
+     {
+      "d": 2.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.1
+     },
+     {
+      "d": 2.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.15
+     },
+     {
+      "d": 2.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.2
+     },
+     {
+      "d": 2.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.25
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.3
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.35
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.4
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.45
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.5
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.55
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.6
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.65
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.7
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.75
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.8
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.85
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.9
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.95
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.05
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.1
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.15
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.2
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.25
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.3
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.35
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.4
+     }
+    ]
+   },
+   "combo_b": {
+    "declared_root_dz_m": 0.8,
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 2.9,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "weapon",
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 0.4
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.1
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.15
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.2
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.25
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.3
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.35
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.4
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.422
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.426
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.476
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.506
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.526
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.574
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.574
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.58
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.6
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.65
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.7
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.75
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.8
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.85
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.9
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.95
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.05
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.1
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.15
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.2
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.25
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.3
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.35
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.4
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.45
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.5
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.55
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.6
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.65
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.7
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.75
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.8
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.85
+     },
+     {
+      "d": 2.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.9
+     },
+     {
+      "d": 2.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.95
+     },
+     {
+      "d": 2.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2
+     },
+     {
+      "d": 2.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.05
+     },
+     {
+      "d": 2.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.1
+     },
+     {
+      "d": 2.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.15
+     },
+     {
+      "d": 2.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.2
+     },
+     {
+      "d": 2.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.25
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.15
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.2
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.25
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.3
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.35
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.4
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.45
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.5
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.55
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.6
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.65
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.7
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.75
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.8
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.85
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.9
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.95
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.05
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.1
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.15
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.2
+     }
+    ]
+   }
+  },
+  "player": {
+   "dagger": {
+    "min_hit_distance_m": 0,
+    "max_hit_distance_m": 0.95,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [],
+    "via_at_min": "body",
+    "row": [
+     {
+      "d": 0,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 46,
+      "via": "body"
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 46,
+      "via": "weapon"
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 46,
+      "via": "weapon"
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 46,
+      "via": "weapon"
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 46,
+      "via": "weapon"
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 46,
+      "via": "weapon"
+     },
+     {
+      "d": 1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     }
+    ]
+   },
+   "straight-sword": {
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 1.8,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "body",
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 100,
+      "via": "body"
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 48,
+      "via": "weapon"
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 48,
+      "via": "weapon"
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 100,
+      "via": "weapon"
+     },
+     {
+      "d": 1.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     }
+    ]
+   },
+   "spear": {
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 1.75,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "weapon",
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 11,
+      "via": "weapon"
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 88,
+      "via": "weapon"
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 88,
+      "via": "weapon"
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 88,
+      "via": "weapon"
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 88,
+      "via": "weapon"
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 88,
+      "via": "weapon"
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 88,
+      "via": "weapon"
+     },
+     {
+      "d": 1.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     }
+    ]
+   },
+   "greatsword": {
+    "min_hit_distance_m": 0,
+    "max_hit_distance_m": 2.1,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [],
+    "via_at_min": "weapon",
+    "row": [
+     {
+      "d": 0,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 203,
+      "via": "body"
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 203,
+      "via": "weapon"
+     },
+     {
+      "d": 2.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     }
+    ]
+   },
+   "halberd": {
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 1.9,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "body",
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 152,
+      "via": "body"
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 34,
+      "via": "weapon"
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 152,
+      "via": "weapon"
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 152,
+      "via": "weapon"
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 152,
+      "via": "weapon"
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 152,
+      "via": "weapon"
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 152,
+      "via": "weapon"
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 152,
+      "via": "weapon"
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 152,
+      "via": "weapon"
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 152,
+      "via": "weapon"
+     },
+     {
+      "d": 1.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     }
+    ]
+   },
+   "ultra-greatsword": {
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 2.8,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "body",
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 293,
+      "via": "body"
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.55,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.6,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.65,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.7,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.75,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.8,
+      "hit": true,
+      "dmg": 293,
+      "via": "weapon"
+     },
+     {
+      "d": 2.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     }
+    ]
+   },
+   "axe": {
+    "min_hit_distance_m": 0,
+    "max_hit_distance_m": 1.55,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [],
+    "via_at_min": "weapon",
+    "row": [
+     {
+      "d": 0,
+      "hit": true,
+      "dmg": 17,
+      "via": "weapon"
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 127,
+      "via": "body"
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 17,
+      "via": "weapon"
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 17,
+      "via": "weapon"
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 17,
+      "via": "weapon"
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 17,
+      "via": "weapon"
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 17,
+      "via": "weapon"
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 17,
+      "via": "weapon"
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 17,
+      "via": "weapon"
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 127,
+      "via": "weapon"
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 127,
+      "via": "weapon"
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 127,
+      "via": "weapon"
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 127,
+      "via": "weapon"
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 127,
+      "via": "weapon"
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 127,
+      "via": "weapon"
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 127,
+      "via": "weapon"
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 127,
+      "via": "weapon"
+     },
+     {
+      "d": 1.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 1.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null
+     }
+    ]
+   }
+  },
+  "turtle": {
+   "runs": [
+    {
+     "stand_distance_m": 0.4,
+     "frames": 391,
+     "player_died": false,
+     "enemy_killed": true,
+     "damage_taken": 178,
+     "player_hp_max": 620,
+     "damage_fraction": 0.287,
+     "enemy_hp_end": 0,
+     "enemy_hp_max": 412,
+     "enemy_active_frames": 34,
+     "enemy_stagger_frames": 44,
+     "hits_taken_by": {
+      "weapon": 2
+     }
+    },
+    {
+     "stand_distance_m": 0.8,
+     "frames": 391,
+     "player_died": false,
+     "enemy_killed": true,
+     "damage_taken": 178,
+     "player_hp_max": 620,
+     "damage_fraction": 0.287,
+     "enemy_hp_end": 0,
+     "enemy_hp_max": 412,
+     "enemy_active_frames": 34,
+     "enemy_stagger_frames": 44,
+     "hits_taken_by": {
+      "weapon": 2
+     }
+    },
+    {
+     "stand_distance_m": 1,
+     "frames": 391,
+     "player_died": false,
+     "enemy_killed": true,
+     "damage_taken": 178,
+     "player_hp_max": 620,
+     "damage_fraction": 0.287,
+     "enemy_hp_end": 0,
+     "enemy_hp_max": 412,
+     "enemy_active_frames": 34,
+     "enemy_stagger_frames": 44,
+     "hits_taken_by": {
+      "weapon": 2
+     }
+    },
+    {
+     "stand_distance_m": 1.1,
+     "frames": 391,
+     "player_died": false,
+     "enemy_killed": true,
+     "damage_taken": 178,
+     "player_hp_max": 620,
+     "damage_fraction": 0.287,
+     "enemy_hp_end": 0,
+     "enemy_hp_max": 412,
+     "enemy_active_frames": 34,
+     "enemy_stagger_frames": 44,
+     "hits_taken_by": {
+      "weapon": 2
+     }
+    },
+    {
+     "stand_distance_m": 1.5,
+     "frames": 391,
+     "player_died": false,
+     "enemy_killed": true,
+     "damage_taken": 178,
+     "player_hp_max": 620,
+     "damage_fraction": 0.287,
+     "enemy_hp_end": 0,
+     "enemy_hp_max": 412,
+     "enemy_active_frames": 34,
+     "enemy_stagger_frames": 44,
+     "hits_taken_by": {
+      "weapon": 2
+     }
+    },
+    {
+     "stand_distance_m": 2,
+     "frames": 470,
+     "player_died": false,
+     "enemy_killed": true,
+     "damage_taken": 211,
+     "player_hp_max": 620,
+     "damage_fraction": 0.341,
+     "enemy_hp_end": 0,
+     "enemy_hp_max": 412,
+     "enemy_active_frames": 44,
+     "enemy_stagger_frames": 88,
+     "hits_taken_by": {
+      "weapon": 2
+     }
+    },
+    {
+     "stand_distance_m": 2.6,
+     "frames": 470,
+     "player_died": false,
+     "enemy_killed": true,
+     "damage_taken": 211,
+     "player_hp_max": 620,
+     "damage_fraction": 0.341,
+     "enemy_hp_end": 0,
+     "enemy_hp_max": 412,
+     "enemy_active_frames": 44,
+     "enemy_stagger_frames": 88,
+     "hits_taken_by": {
+      "weapon": 2
+     }
+    }
+   ]
+  },
+  "rootdz": {
+   "root_dz_m=0": {
+    "chop": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 2.35,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "thrust": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 2.1,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "combo_a": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 2.25,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "combo_b": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 2.25,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    }
+   },
+   "root_dz_m=0.6": {
+    "chop": {
+     "min_hit_distance_m": 0,
+     "max_hit_distance_m": 2.85,
+     "contiguous": true,
+     "misses_inside_min_m": 0
+    },
+    "thrust": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 2.7,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "combo_a": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 2.5,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "combo_b": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 2.75,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    }
+   },
+   "root_dz_m=1.2": {
+    "chop": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 3.35,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "thrust": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 3.3,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "combo_a": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 2.85,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "combo_b": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 3.25,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    }
+   },
+   "root_dz_m=2": {
+    "chop": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 4,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "thrust": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 4,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "combo_a": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 3.3,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    },
+    "combo_b": {
+     "min_hit_distance_m": 0.05,
+     "max_hit_distance_m": 3.95,
+     "contiguous": true,
+     "misses_inside_min_m": 1
+    }
+   }
+  }
+ },
+ "acceptance_failures": [
+  "turtle @ 0.4 m: took 0.287 of max HP < 0.4",
+  "turtle @ 0.8 m: took 0.287 of max HP < 0.4",
+  "turtle @ 1 m: took 0.287 of max HP < 0.4",
+  "turtle @ 1.1 m: took 0.287 of max HP < 0.4",
+  "turtle @ 1.5 m: took 0.287 of max HP < 0.4",
+  "turtle @ 2 m: took 0.341 of max HP < 0.4",
+  "turtle @ 2.6 m: took 0.341 of max HP < 0.4"
+ ],
+ "ok": false
+}

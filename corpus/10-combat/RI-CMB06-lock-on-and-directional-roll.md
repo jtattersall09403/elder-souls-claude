@@ -209,6 +209,26 @@ with the camera deliberately rotated to 8 different yaws relative to the target:
 **M8 — No aim assist.** Re-run RI-CMB04's M3 boundary-sharpness test with lock-on engaged.
 - **FAIL** if the measured hit/no-hit crossing offset differs at all from the unlocked run.
 
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, BAR-CRITIQUE-W1-09-R1 §R4)*
+
+`ARBITRATION` §3's CONSUMPTION check landed in wave 1 and reached the combat **critics** through
+the doctrine while reaching **none of the items in `corpus/10-combat/`**. The consequence was
+visible immediately: `W1-09` round 3 enumerated six models by its own choice, found two with
+`coupling == 0`, and recorded the result as `partial` — a disposition `RI-MTH07` does not have,
+because its threshold is binary. Which models must be enumerated, and what a zero costs, are
+properties of the item, not of the critic's diligence. So, for this item:
+
+1. **Enumerate exhaustively** every model this item requires to act — every table, curve, window
+   and constant it publishes that the running game must read — and list it in the verdict. A
+   sample is not an enumeration.
+2. **Perturb and observe** per `RI-MTH07` §B: two well-separated values, everything else held
+   fixed, an **entity-side** observable (a state transition, an hp change, a position, a denied
+   input), plus the null control. `"the trace carries it"` is not a consumer; a trace is an
+   observer.
+3. **Apply the consequence.** Any `coupling == 0` scores **that dimension 0**, fail-closed, and
+   appears in the piece's `status_reasons`. There is no `partial`.
+4. **Report the coupling table in the verdict**, as data, not in prose.
+
 ## Scoring
 
 | Check | Weight | Pass condition |

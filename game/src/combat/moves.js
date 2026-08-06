@@ -160,9 +160,25 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
         multi_hit: s.hitbox.multi_hit || 0,
         socket_a_dist_m: sock.a,
         socket_b_dist_m: sock.b,
+        // S26 contiguity: the capsule is whole from the grip out, and `hitbox_span_m` becomes a
+        // DAMAGE taper on the haft rather than a hole in the world. See moveset.js §socketsFor.
+        edge_from_m: sock.edge_from,
+        haft_damage_mult: (lib.classes.classes[moveset.class] || {}).haft_damage_mult,
         socket_a: s.hitbox.bone_a,
         socket_b: s.hitbox.bone_b,
+        // ---- the impact model's INPUTS, not its output ------------------------------------
+        // This used to read
+        //   hitstop_frames: (s.hitstop_f || lib.classes.hitstop.attacker[tier] || {}).flesh || 6
+        // and that single `.flesh` was the whole of the round-2 biggest gap: the 5x7 grid was
+        // collapsed to one column at BUILD time, so five of six perturbations of the shipped
+        // impact tables changed nothing in the fight. The move now carries what the resolver
+        // needs to look the answer up AT HIT TIME against the material it actually struck —
+        // `game/src/combat/impact.js`. `hitstop_frames` survives as the FLESH fallback for the
+        // paths that have no victim (a whiff, a probe asking what this move would deal), and
+        // nothing on the hit path reads it.
         hitstop_f_table: s.hitstop_f || null,
+        weight_tier: moveset.weight_tier,
+        weapon_class: moveset.class,
         hitstop_frames: (s.hitstop_f || lib.classes.hitstop.attacker[moveset.weight_tier] || {}).flesh || 6,
         root_dz_m: s.root_dz_m,
         reach_m_declared: moveset.reach_m,
@@ -321,6 +337,7 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
         charge_max_f: 0, chains_to: null, chain_index: 1,
         stamina: 16, poise_damage: poise, motion_value: mv,
         shape: 'grab', arc_sweep_deg: 24, answers: ['TURTLE'],
+        weight_tier: moveset.weight_tier, weapon_class: moveset.class, hitstop_f_table: null,
         hyperarmour_window: ha, hitbox: true, hitbox_radius_m: 0.16,
         socket_a_dist_m: 0.05, socket_b_dist_m: 0.45,
         socket_a: 'wpn_guard', socket_b: 'wpn_guard',
