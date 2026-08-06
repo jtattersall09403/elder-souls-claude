@@ -520,6 +520,1977 @@
     },
     "fraction_of_rewarding_quests_with_a_named_item": 0.5871
   },
+  "faction_rank_tables": {
+    "note": "RI-QST03 states this debt explicitly: \"Morrowind's actual per-rank threshold tables should be transcribed into an appendix.\" This is that appendix, transcribed from the == Ranks == wikitable on each faction page. community-data.",
+    "factions": 20,
+    "rank_counts": {
+      "Fighters Guild": 10,
+      "Mages Guild": 10,
+      "House Hlaalu": 10,
+      "House Redoran": 10,
+      "Ashlanders": 10,
+      "Tribunal Temple": 10,
+      "Camonna Tong": 10,
+      "House Telvanni": 10,
+      "Morag Tong": 10,
+      "Berne Clan": 10,
+      "Aundae Clan": 10,
+      "Quarra Clan": 10,
+      "Thieves Guild": 10,
+      "East Empire Company": 9,
+      "Blades": 10,
+      "Imperial Legion": 10,
+      "Imperial Cult": 10,
+      "Census and Excise": 10,
+      "Imperial Knights": 10,
+      "Dark Brotherhood": 10
+    },
+    "tables": [
+      {
+        "faction": "Fighters Guild",
+        "page": "Morrowind:Fighters Guild",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Armorer",
+          "Axe",
+          "Block",
+          "Blunt Weapon",
+          "Heavy Armor",
+          "Long Blade"
+        ],
+        "favoured_attributes": [
+          "Endurance",
+          "Strength"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Associate",
+            "required_attributes": "Strength 30 Endurance 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Apprentice",
+            "required_attributes": "Strength 30 Endurance 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Journeyman",
+            "required_attributes": "Strength 30 Endurance 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Swordsman",
+            "required_attributes": "Strength 30 Endurance 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Protector",
+            "required_attributes": "Strength 30 Endurance 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Defender",
+            "required_attributes": "Strength 31 Endurance 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Warder",
+            "required_attributes": "Strength 32 Endurance 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Guardian",
+            "required_attributes": "Strength 33 Endurance 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Champion",
+            "required_attributes": "Strength 34 Endurance 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Master",
+            "required_attributes": "Strength 35 Endurance 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Mages Guild",
+        "page": "Morrowind:Mages Guild",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Alchemy",
+          "Alteration",
+          "Destruction",
+          "Enchant",
+          "Illusion",
+          "Mysticism"
+        ],
+        "favoured_attributes": [
+          "Intelligence",
+          "Willpower"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Associate",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Apprentice",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Journeyman",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Evoker",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Conjurer",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Magician",
+            "required_attributes": "Intelligence 31 Willpower 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Warlock",
+            "required_attributes": "Intelligence 32 Willpower 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Wizard",
+            "required_attributes": "Intelligence 33 Willpower 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Master Wizard",
+            "required_attributes": "Intelligence 34 Willpower 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Arch-Mage",
+            "required_attributes": "Intelligence 35 Willpower 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "House Hlaalu",
+        "page": "Morrowind:House Hlaalu",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Light Armor",
+          "Marksman",
+          "Mercantile",
+          "Security",
+          "Short Blade",
+          "Speechcraft"
+        ],
+        "favoured_attributes": [
+          "Speed",
+          "Agility"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Hireling",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Retainer",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Oathman",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Lawman",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Kinsman",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "House Cousin",
+            "required_attributes": "Speed 31 Agility 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "House Brother",
+            "required_attributes": "Speed 32 Agility 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "House Father",
+            "required_attributes": "Speed 33 Agility 33",
+            "required_skills": "One skill at 70 and two at 25 (must have started stronghold)",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Councilman",
+            "required_attributes": "Speed 34 Agility 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Grandmaster",
+            "required_attributes": "Speed 35 Agility 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "House Redoran",
+        "page": "Morrowind:House Redoran",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Armorer",
+          "Athletics",
+          "Heavy Armor",
+          "Long Blade",
+          "Medium Armor",
+          "Spear"
+        ],
+        "favoured_attributes": [
+          "Endurance",
+          "Strength"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Hireling",
+            "required_attributes": "Endurance 30 Strength 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Retainer",
+            "required_attributes": "Endurance 30 Strength 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Oathman",
+            "required_attributes": "Endurance 30 Strength 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Lawman",
+            "required_attributes": "Endurance 30 Strength 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Kinsman",
+            "required_attributes": "Endurance 30 Strength 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "House Cousin",
+            "required_attributes": "Endurance 31 Strength 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "House Brother",
+            "required_attributes": "Endurance 32 Strength 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "House Father",
+            "required_attributes": "Endurance 33 Strength 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Councilman",
+            "required_attributes": "Endurance 34 Strength 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Archmaster",
+            "required_attributes": "Endurance 35 Strength 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Ashlanders",
+        "page": "Morrowind:Ashlanders",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Alteration",
+          "Light Armor",
+          "Marksman",
+          "Medium Armor",
+          "Mysticism",
+          "Spear"
+        ],
+        "favoured_attributes": [
+          "Agility",
+          "Endurance"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Clanfriend",
+            "required_attributes": "Agility 30 Endurance 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Hearthfriend",
+            "required_attributes": "Agility 40 Endurance 30",
+            "required_skills": "One skill at 30 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Brother",
+            "required_attributes": "Agility 45 Endurance 35",
+            "required_skills": "One skill at 40 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Initiate",
+            "required_attributes": "Agility 50 Endurance 40",
+            "required_skills": "One skill at 50 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Clanholder",
+            "required_attributes": "Agility 55 Endurance 45",
+            "required_skills": "One skill at 60 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Guide",
+            "required_attributes": "Agility 60 Endurance 50",
+            "required_skills": "One skill at 70 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Champion",
+            "required_attributes": "Agility 65 Endurance 55",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Gulakhan",
+            "required_attributes": "Agility 70 Endurance 60",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Farseer",
+            "required_attributes": "Agility 75 Endurance 65",
+            "required_skills": "One skill at 100 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Ashkhan",
+            "required_attributes": "Agility 80 Endurance 70",
+            "required_skills": "One skill at 110 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Tribunal Temple",
+        "page": "Morrowind:Tribunal Temple",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Alchemy",
+          "Blunt Weapon",
+          "Conjuration",
+          "Mysticism",
+          "Restoration",
+          "Unarmored"
+        ],
+        "favoured_attributes": [
+          "Intelligence",
+          "Personality"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Layman",
+            "required_attributes": "Intelligence 30 Personality 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Novice",
+            "required_attributes": "Intelligence 30 Personality 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Initiate",
+            "required_attributes": "Intelligence 30 Personality 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Acolyte",
+            "required_attributes": "Intelligence 30 Personality 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Adept",
+            "required_attributes": "Intelligence 30 Personality 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Curate",
+            "required_attributes": "Intelligence 31 Personality 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Disciple",
+            "required_attributes": "Intelligence 32 Personality 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Diviner",
+            "required_attributes": "Intelligence 33 Personality 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Master",
+            "required_attributes": "Intelligence 34 Personality 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Patriarch*",
+            "required_attributes": "Intelligence 35 Personality 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Camonna Tong",
+        "page": "Morrowind:Camonna Tong",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Marksman",
+          "Light Armor",
+          "Acrobatics",
+          "Sneak",
+          "Long Blade",
+          "Blunt Weapon"
+        ],
+        "favoured_attributes": [
+          "Strength",
+          "Agility"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Bully",
+            "required_attributes": "Strength 30 Agility 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Tough",
+            "required_attributes": "Strength 40 Agility 30",
+            "required_skills": "One skill at 30 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Thug",
+            "required_attributes": "Strength 45 Agility 35",
+            "required_skills": "One skill at 40 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Brute",
+            "required_attributes": "Strength 50 Agility 40",
+            "required_skills": "One skill at 50 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Lifetaker",
+            "required_attributes": "Strength 55 Agility 45",
+            "required_skills": "One skill at 60 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Chiller",
+            "required_attributes": "Strength 60 Agility 50",
+            "required_skills": "One skill at 70 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Hammer",
+            "required_attributes": "Strength 65 Agility 55",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Old Man",
+            "required_attributes": "Strength 70 Agility 60",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Strongman",
+            "required_attributes": "Strength 75 Agility 65",
+            "required_skills": "One skill at 100 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Kingpin",
+            "required_attributes": "Strength 80 Agility 70",
+            "required_skills": "One skill at 110 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "House Telvanni",
+        "page": "Morrowind:House Telvanni",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Alteration",
+          "Conjuration",
+          "Destruction",
+          "Enchant",
+          "Illusion",
+          "Mysticism"
+        ],
+        "favoured_attributes": [
+          "Intelligence",
+          "Willpower"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Hireling",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Retainer",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Oathman",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Lawman",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Mouth",
+            "required_attributes": "Intelligence 30 Willpower 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Spellwright",
+            "required_attributes": "Intelligence 31 Willpower 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Wizard",
+            "required_attributes": "Intelligence 32 Willpower 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Master¹",
+            "required_attributes": "Intelligence 33 Willpower 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Magister¹",
+            "required_attributes": "Intelligence 34 Willpower 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Archmagister",
+            "required_attributes": "Intelligence 35 Willpower 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Morag Tong",
+        "page": "Morrowind:Morag Tong",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Acrobatics",
+          "Illusion",
+          "Marksman",
+          "Light Armor",
+          "Short Blade",
+          "Sneak"
+        ],
+        "favoured_attributes": [
+          "Speed",
+          "Agility"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Associate",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Blind Thrall",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Thrall",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "White Thrall",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Thinker",
+            "required_attributes": "Speed 30 Agility 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Brother",
+            "required_attributes": "Speed 31 Agility 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Knower",
+            "required_attributes": "Speed 32 Agility 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Master",
+            "required_attributes": "Speed 33 Agility 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Exalted Master",
+            "required_attributes": "Speed 34 Agility 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Grandmaster",
+            "required_attributes": "Speed 35 Agility 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Berne Clan",
+        "page": "Morrowind:Berne Clan",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Acrobatics",
+          "Athletics",
+          "Marksman",
+          "Short Blade",
+          "Sneak",
+          "Unarmored"
+        ],
+        "favoured_attributes": [
+          "Speed",
+          "Willpower"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Cattle",
+            "required_attributes": "Willpower 30 Speed 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Neonate",
+            "required_attributes": "Willpower 40 Speed 30",
+            "required_skills": "One skill at 30 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Minion",
+            "required_attributes": "Willpower 45 Speed 35",
+            "required_skills": "One skill at 40 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Servant",
+            "required_attributes": "Willpower 50 Speed 40",
+            "required_skills": "One skill at 50 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Stalker",
+            "required_attributes": "Willpower 55 Speed 45",
+            "required_skills": "One skill at 60 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Bloodkin",
+            "required_attributes": "Willpower 60 Speed 50",
+            "required_skills": "One skill at 70 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Reaver",
+            "required_attributes": "Willpower 65 Speed 55",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Lord",
+            "required_attributes": "Willpower 70 Speed 60",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Elder",
+            "required_attributes": "Willpower 75 Speed 65",
+            "required_skills": "One skill at 100 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Ancient",
+            "required_attributes": "Willpower 80 Speed 70",
+            "required_skills": "One skill at 110 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Aundae Clan",
+        "page": "Morrowind:Aundae Clan",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Acrobatics",
+          "Athletics",
+          "Conjuration",
+          "Illusion",
+          "Mysticism",
+          "Unarmored"
+        ],
+        "favoured_attributes": [
+          "Willpower",
+          "Intelligence"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Cattle",
+            "required_attributes": "Willpower 30 Intelligence 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Neonate",
+            "required_attributes": "Willpower 40 Intelligence 30",
+            "required_skills": "One skill at 30 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Minion",
+            "required_attributes": "Willpower 45 Intelligence 35",
+            "required_skills": "One skill at 40 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Servant",
+            "required_attributes": "Willpower 50 Intelligence 40",
+            "required_skills": "One skill at 50 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Stalker",
+            "required_attributes": "Willpower 55 Intelligence 45",
+            "required_skills": "One skill at 60 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Bloodkin",
+            "required_attributes": "Willpower 60 Intelligence 50",
+            "required_skills": "One skill at 70 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Reaver",
+            "required_attributes": "Willpower 65 Intelligence 55",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Lord",
+            "required_attributes": "Willpower 70 Intelligence 60",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Elder",
+            "required_attributes": "Willpower 75 Intelligence 65",
+            "required_skills": "One skill at 100 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Ancient",
+            "required_attributes": "Willpower 80 Intelligence 70",
+            "required_skills": "One skill at 110 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Quarra Clan",
+        "page": "Morrowind:Quarra Clan",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Acrobatics",
+          "Athletics",
+          "Destruction",
+          "Hand-to-hand",
+          "Long Blade",
+          "Unarmored"
+        ],
+        "favoured_attributes": [
+          "Endurance",
+          "Strength"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Cattle",
+            "required_attributes": "Strength 30 Endurance 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Neonate",
+            "required_attributes": "Strength 40 Endurance 30",
+            "required_skills": "One skill at 30 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Minion",
+            "required_attributes": "Strength 45 Endurance 35",
+            "required_skills": "One skill at 40 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Servant",
+            "required_attributes": "Strength 50 Endurance 40",
+            "required_skills": "One skill at 50 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Stalker",
+            "required_attributes": "Strength 55 Endurance 45",
+            "required_skills": "One skill at 60 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Bloodkin",
+            "required_attributes": "Strength 60 Endurance 50",
+            "required_skills": "One skill at 70 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Reaver",
+            "required_attributes": "Strength 65 Endurance 55",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Lord",
+            "required_attributes": "Strength 70 Endurance 60",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Elder",
+            "required_attributes": "Strength 75 Endurance 65",
+            "required_skills": "One skill at 100 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Ancient",
+            "required_attributes": "Strength 80 Endurance 70",
+            "required_skills": "One skill at 110 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Thieves Guild",
+        "page": "Morrowind:Thieves Guild",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Acrobatics",
+          "Light Armor",
+          "Marksman",
+          "Security",
+          "Short Blade",
+          "Sneak"
+        ],
+        "favoured_attributes": [
+          "Agility",
+          "Personality"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Toad",
+            "required_attributes": "Agility 30 Personality 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Wet Ear",
+            "required_attributes": "Agility 30 Personality 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Footpad",
+            "required_attributes": "Agility 30 Personality 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Blackcap",
+            "required_attributes": "Agility 30 Personality 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Operative",
+            "required_attributes": "Agility 30 Personality 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Bandit",
+            "required_attributes": "Agility 31 Personality 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Captain",
+            "required_attributes": "Agility 32 Personality 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Ringleader",
+            "required_attributes": "Agility 33 Personality 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Mastermind",
+            "required_attributes": "Agility 34 Personality 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Master Thief",
+            "required_attributes": "Agility 35 Personality 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "East Empire Company",
+        "page": "Bloodmoon:East Empire Company",
+        "game": "Bloodmoon",
+        "favoured_skills": [
+          "Speechcraft",
+          "Mercantile",
+          "Security",
+          "Long Blade",
+          "Medium Armor"
+        ],
+        "favoured_attributes": [
+          "Personality",
+          "Willpower"
+        ],
+        "rank_count": 9,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Underling",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Clerk",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "One skill at 10",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Steward",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "One skill at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Fixer",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Agent",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Negotiator",
+            "required_attributes": "Personality 31 Willpower 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Officer",
+            "required_attributes": "Personality 32 Willpower 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Deputy",
+            "required_attributes": "Personality 33 Willpower 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Factor",
+            "required_attributes": "Personality 35 Willpower 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Blades",
+        "page": "Morrowind:Blades",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Speechcraft",
+          "Marksman",
+          "Light Armor",
+          "Sneak",
+          "Restoration",
+          "Long Blade"
+        ],
+        "favoured_attributes": [
+          "Intelligence",
+          "Personality"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Novice",
+            "required_attributes": "Intelligence 30 Personality 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Apprentice",
+            "required_attributes": "Intelligence 40 Personality 30",
+            "required_skills": "One skill at 30 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Journeyman",
+            "required_attributes": "Intelligence 45 Personality 35",
+            "required_skills": "One skill at 40 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Finder",
+            "required_attributes": "Intelligence 50 Personality 40",
+            "required_skills": "One skill at 50 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Traveller",
+            "required_attributes": "Intelligence 55 Personality 45",
+            "required_skills": "One skill at 60 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Operative",
+            "required_attributes": "Intelligence 60 Personality 50",
+            "required_skills": "One skill at 70 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Agent",
+            "required_attributes": "Intelligence 65 Personality 55",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Spy",
+            "required_attributes": "Intelligence 70 Personality 60",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Spymaster",
+            "required_attributes": "Intelligence 75 Personality 65",
+            "required_skills": "One skill at 100 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Grand Spymaster",
+            "required_attributes": "Intelligence 80 Personality 70",
+            "required_skills": "One skill at 110 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Imperial Legion",
+        "page": "Morrowind:Imperial Legion",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Athletics",
+          "Block",
+          "Blunt Weapon",
+          "Heavy Armor",
+          "Long Blade",
+          "Spear"
+        ],
+        "favoured_attributes": [
+          "Endurance",
+          "Personality"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "RequiredAttributes",
+          "Required Skills",
+          "FactionRep.",
+          "Item Reward"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Recruit",
+            "required_attributes": null,
+            "required_skills": "—",
+            "extra": [
+              "0",
+              "Imperial Chain Cuirass"
+            ]
+          },
+          {
+            "index": 1,
+            "rank": "Spearman",
+            "required_attributes": "Endurance 30Personality 30",
+            "required_skills": "One skill at 10",
+            "extra": [
+              "5",
+              "Imperial Shield"
+            ]
+          },
+          {
+            "index": 2,
+            "rank": "Trooper",
+            "required_attributes": "Endurance 30Personality 30",
+            "required_skills": "One skill at 20",
+            "extra": [
+              "10",
+              "Imperial Steel Cuirass"
+            ]
+          },
+          {
+            "index": 3,
+            "rank": "Agent",
+            "required_attributes": "Endurance 30Personality 30",
+            "required_skills": "One skill at 30 and two at 5",
+            "extra": [
+              "20",
+              "Imperial Steel Helmet and Gauntlets"
+            ]
+          },
+          {
+            "index": 4,
+            "rank": "Champion",
+            "required_attributes": "Endurance 30Personality 30",
+            "required_skills": "One skill at 40 and two at 10",
+            "extra": [
+              "30",
+              "Imperial Steel Pauldrons and Boots"
+            ]
+          },
+          {
+            "index": 5,
+            "rank": "Knight Errant",
+            "required_attributes": "Endurance 31Personality 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": [
+              "45",
+              "Imperial Templar Knight Cuirass and Greaves"
+            ]
+          },
+          {
+            "index": 6,
+            "rank": "Knight Bachelor",
+            "required_attributes": "Endurance 32Personality 32",
+            "required_skills": "One skill at 60 and two at 20",
+            "extra": [
+              "60",
+              "Templar Helmet and Bracers"
+            ]
+          },
+          {
+            "index": 7,
+            "rank": "Knight Protector",
+            "required_attributes": "Endurance 33Personality 33",
+            "required_skills": "One skill at 70 and two at 25",
+            "extra": [
+              "70",
+              "Templar Pauldrons and Boots"
+            ]
+          },
+          {
+            "index": 8,
+            "rank": "Knight of the Garland",
+            "required_attributes": "Endurance 34Personality 34",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": [
+              "80",
+              "Duke's Guard Silver Cuirass"
+            ]
+          },
+          {
+            "index": 9,
+            "rank": "Knight of the Imperial Dragon",
+            "required_attributes": "Endurance 35Personality 35",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": [
+              "100",
+              "Chrysamere and Lord's Mail"
+            ]
+          }
+        ]
+      },
+      {
+        "faction": "Imperial Cult",
+        "page": "Morrowind:Imperial Cult",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Blunt Weapon",
+          "Conjuration",
+          "Mysticism",
+          "Restoration",
+          "Enchant",
+          "Speechcraft",
+          "Unarmored"
+        ],
+        "favoured_attributes": [
+          "Personality",
+          "Willpower"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills",
+          "Reward"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Layman",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "—",
+            "extra": [
+              "—"
+            ]
+          },
+          {
+            "index": 1,
+            "rank": "Novice",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "One skill at 10 and two at 5",
+            "extra": [
+              "—"
+            ]
+          },
+          {
+            "index": 2,
+            "rank": "Initiate",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "One skill at 20 and two at 8",
+            "extra": [
+              "Maran Amulet"
+            ]
+          },
+          {
+            "index": 3,
+            "rank": "Acolyte",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "One skill at 30 and two at 10",
+            "extra": [
+              "Stendarran Belt"
+            ]
+          },
+          {
+            "index": 4,
+            "rank": "Adept",
+            "required_attributes": "Personality 30 Willpower 30",
+            "required_skills": "One skill at 40 and two at 12",
+            "extra": [
+              "—"
+            ]
+          },
+          {
+            "index": 5,
+            "rank": "Disciple",
+            "required_attributes": "Personality 31 Willpower 31",
+            "required_skills": "One skill at 50 and two at 15",
+            "extra": [
+              "Septim Ring"
+            ]
+          },
+          {
+            "index": 6,
+            "rank": "Oracle",
+            "required_attributes": "Personality 32 Willpower 32",
+            "required_skills": "One skill at 60 and two at 18",
+            "extra": [
+              "Akatosh's Ring"
+            ]
+          },
+          {
+            "index": 7,
+            "rank": "Invoker",
+            "required_attributes": "Personality 33 Willpower 33",
+            "required_skills": "One skill at 70 and two at 20",
+            "extra": [
+              "—"
+            ]
+          },
+          {
+            "index": 8,
+            "rank": "Theurgist",
+            "required_attributes": "Personality 34 Willpower 34",
+            "required_skills": "One skill at 80 and two at 25",
+            "extra": [
+              "—"
+            ]
+          },
+          {
+            "index": 9,
+            "rank": "Primate",
+            "required_attributes": "Personality 35 Willpower 35",
+            "required_skills": "One skill at 90 and two at 25",
+            "extra": [
+              "—"
+            ]
+          }
+        ]
+      },
+      {
+        "faction": "Census and Excise",
+        "page": "Morrowind:Census and Excise",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Light Armor",
+          "Long Blade",
+          "Marksman",
+          "Mercantile",
+          "Sneak",
+          "Speechcraft"
+        ],
+        "favoured_attributes": [
+          "Intelligence",
+          "Personality"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Novice",
+            "required_attributes": "Intelligence 30 Personality 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Apprentice",
+            "required_attributes": "Intelligence 40 Personality 30",
+            "required_skills": "One skill at 20 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Clerk",
+            "required_attributes": "Intelligence 45 Personality 35",
+            "required_skills": "One skill at 40 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Taxman",
+            "required_attributes": "Intelligence 50 Personality 40",
+            "required_skills": "One skill at 50 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Taxtaker",
+            "required_attributes": "Intelligence 55 Personality 45",
+            "required_skills": "One skill at 60 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Operative",
+            "required_attributes": "Intelligence 60 Personality 50",
+            "required_skills": "One skill at 70 and two at 40",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Agent",
+            "required_attributes": "Intelligence 65 Personality 55",
+            "required_skills": "One skill at 80 and two at 45",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Excise Officer",
+            "required_attributes": "Intelligence 70 Personality 60",
+            "required_skills": "One skill at 90 and two at 50",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Inspector",
+            "required_attributes": "Intelligence 75 Personality 65",
+            "required_skills": "One skill at 100 and two at 55",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Grand Inspector",
+            "required_attributes": "Intelligence 80 Personality 70",
+            "required_skills": "One skill at 110 and two at 60",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Imperial Knights",
+        "page": "Morrowind:Imperial Knights",
+        "game": "Morrowind",
+        "favoured_skills": [
+          "Armorer",
+          "Athletics",
+          "Block",
+          "Blunt Weapon",
+          "Heavy Armor",
+          "Long Blade"
+        ],
+        "favoured_attributes": [
+          "Endurance",
+          "Personality"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank",
+          "Required Attributes",
+          "Required Skills"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Aspirant",
+            "required_attributes": "Endurance 30 Personality 30",
+            "required_skills": "—",
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Squire",
+            "required_attributes": "Endurance 40 Personality 30",
+            "required_skills": "One skill at 30 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Gallant",
+            "required_attributes": "Endurance 45 Personality 35",
+            "required_skills": "One skill at 40 and two at 20",
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Chevalier",
+            "required_attributes": "Endurance 50 Personality 40",
+            "required_skills": "One skill at 50 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Keeper",
+            "required_attributes": "Endurance 55 Personality 45",
+            "required_skills": "One skill at 60 and two at 25",
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Knight Brother",
+            "required_attributes": "Endurance 60 Personality 50",
+            "required_skills": "One skill at 70 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Commander",
+            "required_attributes": "Endurance 65 Personality 55",
+            "required_skills": "One skill at 80 and two at 30",
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Marshal",
+            "required_attributes": "Endurance 70 Personality 60",
+            "required_skills": "One skill at 90 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Seneschal",
+            "required_attributes": "Endurance 75 Personality 65",
+            "required_skills": "One skill at 100 and two at 35",
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Paladin",
+            "required_attributes": "Endurance 80 Personality 70",
+            "required_skills": "One skill at 110 and two at 35",
+            "extra": []
+          }
+        ]
+      },
+      {
+        "faction": "Dark Brotherhood",
+        "page": "Tribunal:Dark Brotherhood",
+        "game": "Tribunal",
+        "favoured_skills": [
+          "Marksman",
+          "Short Blade",
+          "Light Armor",
+          "Acrobatics",
+          "Alchemy"
+        ],
+        "favoured_attributes": [
+          "Agility",
+          "Speed"
+        ],
+        "rank_count": 10,
+        "table_header": [
+          "Rank"
+        ],
+        "ranks": [
+          {
+            "index": 0,
+            "rank": "Apprentice",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 1,
+            "rank": "Journeyman",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 2,
+            "rank": "Operator",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 3,
+            "rank": "Wetboy",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 4,
+            "rank": "Executioner",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 5,
+            "rank": "Punisher",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 6,
+            "rank": "Terminator",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 7,
+            "rank": "Assassin",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 8,
+            "rank": "Dark Brother",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          },
+          {
+            "index": 9,
+            "rank": "Master Assassin",
+            "required_attributes": null,
+            "required_skills": null,
+            "extra": []
+          }
+        ]
+      }
+    ]
+  },
   "gating": {
     "quests_with_required_rank": 221,
     "quests_with_previous_quest": 319,

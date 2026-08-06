@@ -2,7 +2,7 @@
   "task_id": "weapons",
   "brief": "orchestration/briefs/weapons.md",
   "started": "wave-0",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md",
     "corpus/12-weapons/moveset.schema.json",
@@ -19,7 +19,9 @@
     "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
     "corpus/12-weapons/RI-WPN03-within-class-subtlety.md",
     "corpus/12-weapons/RI-WPN04-contextual-attacks.md",
-    "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md"
+    "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+    "corpus/12-weapons/RI-WPN06-two-handing-shields-parry.md",
+    "corpus/12-weapons/WEAPON-CRITIC.md"
   ],
   "findings": [
     "RI-CMB02 owns 7 classes x {R1,R2} frame data (dagger/straight sword/spear/axe/halberd/greatsword/ultra greatsword) + modifier table \u00a7C incl. rolling/running/jump attack multipliers. MUST cite, not restate. Pinned cells: straight sword R1 Ps=13, R2 Ps=26.",
@@ -33,8 +35,10 @@
     "RI-WPN03: 87-weapon census, 15 class baselines, 16 signature weapons. Metrics UNQ/DEV/DEV_id/SHARE/VEC + Animation Reuse Index ARI=C/S_total with S_total=2085; pure-sharing floor ARI=0.171, PASS >=0.26, HARD FAIL <0.19 (= 'forty weapons, three animations'). Separation SEP=B_min/W_max >=1.4, within-class W_med band [0.35,1.00].",
     "CORPUS DEFECT FOUND: RI-CMB02 is internally contradictory. \u00a7E requires >=6f startup for any player attack; \u00a7C's rolling multiplier x0.60 on \u00a7A's dagger 6f gives 4f. RI-WPN04 resolves by clamping to 6 (binds DGR+FST only) and files it as an amendment request against RI-CMB02.",
     "CORPUS GAP: RI-CMB02 \u00a7C has no backstep-attack row and no guard-counter row. RI-WPN04 \u00a7A proposes both (backstep x0.65 st /x0.95 rec /x1.40 rootDz; guard counter x0.85 st /x1.05 rec /x1.30 MV /x1.60 poise) as amendment requests.",
-    "RI-WPN05 headline: Impact Legibility Score ILS >= 0.80 PASS, < 0.40 HARD FAIL; 5 weight tiers x 7 materials hitstop grid; whiff arithmetic total_on_hit - total_on_whiff == attacker_hitstop; mass measured from weapon tip bone (anticipation/follow-through/deceleration/settle). Partially closes BAR-CRITIQUE G5 (impact half only; audio half stays open for RI-AUD01)."
+    "RI-WPN05 headline: Impact Legibility Score ILS >= 0.80 PASS, < 0.40 HARD FAIL; 5 weight tiers x 7 materials hitstop grid; whiff arithmetic total_on_hit - total_on_whiff == attacker_hitstop; mass measured from weapon tip bone (anticipation/follow-through/deceleration/settle). Partially closes BAR-CRITIQUE G5 (impact half only; audio half stays open for RI-AUD01).",
+    "RI-WPN06 headline: TDV (two-hand divergence) over 12 mirrored slots, PASS >=0.60, HARD FAIL <0.25 or ==0 ('two-handing is a damage multiplier'). Adds guard angle per shield class (buckler +/-50 .. greatshield +/-95). Parry windows CITED from RI-CMB05 \u00a7D unchanged, not restated. Schema extended with off.r1.1/off.r1.2/off.r2/shield.bash/shield.charge and an optional off_hand stance block.",
+    "Verified with `node tools/corpus-index.mjs --check`: the only problems reported for corpus/12-weapons/** are the 20 expected orphan weapon.* paths. No front-matter/structural errors. INDEX.md NOT edited (it is generated from subsystems.json; the taxonomy owner must append the paths first)."
   ],
-  "next_step": "write RI-WPN06 (two-handing / shields / offhand / parry-riposte), then WEAPON-CRITIC.md",
+  "next_step": "none \u2014 all deliverables written. Taxonomy owner must append the 20 weapon.* paths to corpus/00-doctrine/subsystems.json, then regenerate INDEX.md.",
   "notes_for_successor": "DECISIONS LOCKED. 15 weapon classes with codes: DGR SSW CSW TSW FST SPR AXE MCE WHP HLB GSW CGS GHM UGS BOW. Weight tiers light/medium/heavy/ultra/ranged. 41 slot ids, 25 mandatory on melee, 7 on BOW. Slot ids are enumerated in moveset.schema.json $defs.slotId \u2014 treat that file as the vocabulary source of truth and keep every RI consistent with it. Fingerprint: D_min >= 1.6 PASS, < 1.0 HARD FAIL (RI-WPN02). Within-class distance band [0.35, 1.00] (RI-WPN03). New subsystem root weapon.* \u2014 collect every path used in front-matter and report in reply. Follow RI-AI05 as the structural template. Every Scoring section MUST carry the native-to-ladder 4/6/8 row (BAR-CRITIQUE W7)."
 }

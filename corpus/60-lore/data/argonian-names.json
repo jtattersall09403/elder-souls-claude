@@ -18,15 +18,15 @@
       "Lore": 5
     },
     "names_by_shape": {
-      "jel-single": 199,
-      "tamrielic-hyphenated": 23,
-      "jel-compound (Xxx-Yyy)": 121,
-      "other": 34
+      "jel-single": 182,
+      "tamrielic-descriptive": 43,
+      "jel-compound": 142,
+      "mixed": 10
     },
     "hyphenated_name_word_counts": {
-      "2": 4,
-      "3": 15,
-      "4": 3,
+      "2": 31,
+      "3": 6,
+      "4": 5,
       "5": 1
     },
     "black_marsh_place_names": 181,
@@ -508,24 +508,36 @@
   "naming_grammar_as_attested": {
     "note": "RI-LOR04 legislates \"[Verb-3sg] - [optional Determiner|Possessive] - [Noun], 2-4 words, modal 3\" for Tamrielic Argonian names. This is what the shipped games actually do.",
     "shape_distribution": {
-      "jel-single": 199,
-      "tamrielic-hyphenated": 23,
-      "jel-compound (Xxx-Yyy)": 121,
-      "other": 34
+      "jel-single": 182,
+      "tamrielic-descriptive": 43,
+      "jel-compound": 142,
+      "mixed": 10
     },
     "hyphenated_word_count_distribution": {
-      "2": 4,
-      "3": 15,
-      "4": 3,
+      "2": 31,
+      "3": 6,
+      "4": 5,
       "5": 1
     },
     "most_common_first_words": [
       [
-        "Tree",
-        4
+        "Argonian",
+        11
       ],
       [
-        "Heem",
+        "On",
+        2
+      ],
+      [
+        "An",
+        2
+      ],
+      [
+        "Hides",
+        2
+      ],
+      [
+        "Dead",
         2
       ],
       [
@@ -545,7 +557,19 @@
         1
       ],
       [
+        "Tongue",
+        1
+      ],
+      [
         "Swims",
+        1
+      ],
+      [
+        "Big",
+        1
+      ],
+      [
+        "Grey",
         1
       ],
       [
@@ -557,7 +581,35 @@
         1
       ],
       [
-        "Hides",
+        "Twice",
+        1
+      ],
+      [
+        "Fine",
+        1
+      ],
+      [
+        "Bends",
+        1
+      ],
+      [
+        "Sharp",
+        1
+      ],
+      [
+        "Tree",
+        1
+      ],
+      [
+        "Spirit",
+        1
+      ],
+      [
+        "Avatar",
+        1
+      ],
+      [
+        "Egg",
         1
       ],
       [
@@ -565,38 +617,136 @@
         1
       ],
       [
-        "Lights",
+        "Blackguard",
         1
       ],
       [
-        "Laughs",
+        "Ki",
         1
       ],
       [
-        "Claws",
-        1
-      ],
-      [
-        "Grave",
-        1
-      ],
-      [
-        "Listens",
-        1
-      ],
-      [
-        "Plucks",
-        1
-      ],
-      [
-        "Tames",
+        "Wallows",
         1
       ],
       [
         "Many",
         1
+      ],
+      [
+        "Miredancer",
+        1
       ]
-    ]
+    ],
+    "attested_title_prefixes": [
+      [
+        "Tree-Minder",
+        9
+      ],
+      [
+        "Nisswo",
+        7
+      ],
+      [
+        "Sun-Eater",
+        7
+      ],
+      [
+        "Dead-Water",
+        3
+      ],
+      [
+        "Grave-Singer",
+        2
+      ],
+      [
+        "Raj-Kaal",
+        2
+      ],
+      [
+        "Empowered Tree-Minder",
+        1
+      ],
+      [
+        "Egg-Tender",
+        1
+      ],
+      [
+        "Bond-Guru",
+        1
+      ],
+      [
+        "Chime-Maker",
+        1
+      ],
+      [
+        "Copper-Eye",
+        1
+      ],
+      [
+        "Sap-Speaker",
+        1
+      ],
+      [
+        "Ux-Deelith",
+        1
+      ],
+      [
+        "Bright-Throat",
+        1
+      ],
+      [
+        "Root-House",
+        1
+      ],
+      [
+        "Moss-Skin",
+        1
+      ]
+    ],
+    "morrowind_era_names_only": [
+      "'Ten-Tongues' Weerhat",
+      "An-Deesei",
+      "An-Zaw",
+      "Basks-In-The-Sun",
+      "Big Head",
+      "Chanil-Lee",
+      "Chuna",
+      "Effe-Tei",
+      "Eleedal-Lei",
+      "Fine-Mouth",
+      "Gah Julan",
+      "Grey-Throat",
+      "Heem-La",
+      "Hides His Eyes",
+      "Hides-His-Foot",
+      "Huleeya",
+      "Im-Kilaya",
+      "Keel-Raniur",
+      "Lord Cluttermonkey",
+      "Miun-Gei",
+      "Morning-Star-Steals-Away-Clouds",
+      "Neetinei",
+      "Nine-Toes",
+      "Okan-Shei",
+      "Okur",
+      "On-Wan",
+      "Onasha",
+      "Only-He-Stands-There",
+      "Rasha",
+      "Reeh-Jah",
+      "Shatalg",
+      "Silm-Dar",
+      "Skeetul",
+      "Skink-in-Tree's-Shade",
+      "Swims-In-Swells",
+      "Tee-Lan",
+      "Tongue-Toad",
+      "Travelling-New-Woman",
+      "Tul",
+      "Twice-Bitten",
+      "Vistha-Kai"
+    ],
+    "classifier_note": "shape is DERIVED by a declared heuristic: a hyphen/space component counts as Tamrielic if it is in an English word list fitted to this corpus; a majority-English name is tamrielic-descriptive, otherwise jel-compound. Names carrying an attested Argonian title prefix (Tree-Minder, Nisswo, Raj-Kaal, Sap-Speaker…) have the title stripped before classification."
   },
   "personal_names": [
     {
@@ -606,8 +756,10 @@
       "gender": "Male",
       "source_game": "Tribunal (3E 427)",
       "region": "Morrowind",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Aberration",
@@ -616,8 +768,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ah-Shehs",
@@ -626,8 +780,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Ahtalg",
@@ -636,8 +792,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ajim-Jaa",
@@ -646,8 +804,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Aki-Osheeja",
@@ -656,8 +816,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Aliskeeh",
@@ -666,8 +828,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Am-Lai",
@@ -676,8 +840,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Amel-Kiurz",
@@ -686,8 +852,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "An-Deesei",
@@ -696,8 +864,10 @@
       "gender": "Female",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "An-Zaw",
@@ -706,8 +876,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Anash",
@@ -716,8 +888,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Aomee-Ru",
@@ -726,8 +900,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Argonian Behemoth",
@@ -736,8 +912,10 @@
       "gender": null,
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Argonian Berserker",
@@ -746,8 +924,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Minder",
@@ -756,8 +936,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Reveler",
@@ -766,8 +948,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Shellbinder",
@@ -776,8 +960,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Slave",
@@ -786,8 +972,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Spirit",
@@ -796,8 +984,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Stowaway",
@@ -806,8 +996,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Venomcaller",
@@ -816,8 +1008,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Venomshot",
@@ -826,8 +1020,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Warrior",
@@ -836,8 +1032,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Argonian Wrangler",
@@ -846,8 +1044,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Avatar of the Hist",
@@ -856,8 +1056,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 4,
+      "english_components": 3
     },
     {
       "name": "Az-Maxath",
@@ -866,8 +1068,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Bahsumatuu",
@@ -876,8 +1080,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Bahtei",
@@ -886,8 +1092,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Bar-Goh",
@@ -896,8 +1104,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Basks-In-The-Sun",
@@ -906,8 +1116,10 @@
       "gender": "Male",
       "source_game": "Bloodmoon (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 4
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 4,
+      "english_components": 4
     },
     {
       "name": "Baxilt-Gah",
@@ -916,8 +1128,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Beehuna",
@@ -926,8 +1140,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Beek-Shei",
@@ -936,8 +1152,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Beel-Ranu",
@@ -946,8 +1164,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Beela-Kaar",
@@ -956,8 +1176,10 @@
       "gender": null,
       "source_game": "Lore",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Bends-Iron",
@@ -966,8 +1188,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Bhoki",
@@ -976,8 +1200,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Big Head",
@@ -986,8 +1212,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Bijum-Eeto",
@@ -996,8 +1224,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Bijum-Loh",
@@ -1006,8 +1236,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Bijum-Ta",
@@ -1016,8 +1248,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Bikusotl",
@@ -1026,8 +1260,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Bizara",
@@ -1036,8 +1272,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Blackguard Chemist",
@@ -1046,8 +1284,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Bog Blight",
@@ -1056,8 +1296,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Bolu",
@@ -1066,8 +1308,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Bond-Guru Topeth",
@@ -1076,8 +1320,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Bond-Guru",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Bright-Throat Traveler",
@@ -1086,8 +1332,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Bright-Throat",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 1
     },
     {
       "name": "Bun-Maxath",
@@ -1096,8 +1344,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Bunach",
@@ -1106,8 +1356,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Bur-Lei",
@@ -1116,8 +1368,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Buxtil",
@@ -1126,8 +1380,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Chal-Maht",
@@ -1136,8 +1392,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Chaleed-Wan",
@@ -1146,8 +1404,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Chanil-Lee",
@@ -1156,8 +1416,10 @@
       "gender": "Female",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Chastul",
@@ -1166,8 +1428,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Cheemee",
@@ -1176,8 +1440,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Cheerz",
@@ -1186,8 +1452,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Cheesh-Nassa",
@@ -1196,8 +1464,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Chelni",
@@ -1206,8 +1476,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Chexi",
@@ -1216,8 +1488,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Chime-Maker Shuvu",
@@ -1226,8 +1500,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Chime-Maker",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Choixth",
@@ -1236,8 +1512,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Chukka-Jee",
@@ -1246,8 +1524,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Chukka-Saak",
@@ -1256,8 +1536,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Chuna",
@@ -1266,8 +1548,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Chuxu",
@@ -1276,8 +1560,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Chuzu",
@@ -1286,8 +1572,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Claws-the-Ghosts",
@@ -1296,8 +1584,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Copper-Eye Traveler",
@@ -1306,8 +1596,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Copper-Eye",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 1
     },
     {
       "name": "Dajaleen",
@@ -1316,8 +1608,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Dakee-Jat",
@@ -1326,8 +1620,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Dar-Jasa",
@@ -1336,8 +1632,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Dashnu",
@@ -1346,8 +1644,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Dead Veeskhleel",
@@ -1356,8 +1656,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Dead Water Hunter",
@@ -1366,8 +1668,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 3,
+      "english_components": 3
     },
     {
       "name": "Dead-Water Hunter",
@@ -1376,8 +1680,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Dead-Water",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 1
     },
     {
       "name": "Dead-Water Traveler",
@@ -1386,8 +1692,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Dead-Water",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 1
     },
     {
       "name": "Dead-Water Warrior",
@@ -1396,8 +1704,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Dead-Water",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 1
     },
     {
       "name": "Deed-Tei",
@@ -1406,8 +1716,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Deeheesotl",
@@ -1416,8 +1728,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Deemat",
@@ -1426,8 +1740,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Deer-Xol",
@@ -1436,8 +1752,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Deetaku",
@@ -1446,8 +1764,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Deetum-Gih",
@@ -1456,8 +1776,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Deetum-Jah",
@@ -1466,8 +1788,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Depasa",
@@ -1476,8 +1800,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Dercheian",
@@ -1486,8 +1812,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Derkeehez",
@@ -1496,8 +1824,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Deroh-Zah",
@@ -1506,8 +1836,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Desh-Jasaiin",
@@ -1516,8 +1848,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Dosu-Larash",
@@ -1526,8 +1860,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Dozaeek",
@@ -1536,8 +1872,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Dradeiva",
@@ -1546,8 +1884,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Dragonstar Associate",
@@ -1556,8 +1896,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Drakeeh",
@@ -1566,8 +1908,10 @@
       "gender": null,
       "source_game": "Lore",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Drakeeh the Unchained",
@@ -1576,8 +1920,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Dramukkath",
@@ -1586,8 +1932,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Dritan",
@@ -1596,8 +1944,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Droran",
@@ -1606,8 +1956,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Dus-Geet",
@@ -1616,8 +1968,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Effe-Tei",
@@ -1626,8 +1980,10 @@
       "gender": "Male",
       "source_game": "Tribunal (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Egg-Face",
@@ -1636,8 +1992,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Egg-Tender Meena",
@@ -1646,8 +2004,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Egg-Tender",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Eleedal-Lei",
@@ -1656,8 +2016,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Empowered Tree-Minder Totem",
@@ -1666,8 +2028,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Empowered Tree-Minder",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ereel-Jush",
@@ -1676,8 +2040,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Feral Argonian",
@@ -1686,8 +2052,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Fine-Mouth",
@@ -1696,8 +2064,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Gah Julan",
@@ -1706,8 +2076,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Ghelaha",
@@ -1716,8 +2088,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ghesee",
@@ -1726,8 +2100,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Gir-Ta",
@@ -1736,8 +2112,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Grave-Singer Ki-At",
@@ -1746,8 +2124,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": "Grave-Singer",
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Grave-Singer Xaleez",
@@ -1756,8 +2136,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Grave-Singer",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Grey-Throat",
@@ -1766,8 +2148,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Grish",
@@ -1776,8 +2160,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Guhcin",
@@ -1786,8 +2172,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Guleesh",
@@ -1796,8 +2184,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Gulum-La",
@@ -1806,8 +2196,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Haj-Ru",
@@ -1816,8 +2208,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Haj-Ta",
@@ -1826,8 +2220,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Halish",
@@ -1836,8 +2232,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Hameen-Jaa",
@@ -1846,8 +2244,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Harbormaster Ahkur",
@@ -1856,8 +2256,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Haxal",
@@ -1866,8 +2268,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Haxara",
@@ -1876,8 +2280,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Heed-Meeus",
@@ -1886,8 +2292,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Heem-La",
@@ -1896,8 +2304,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Heem-Weska",
@@ -1906,8 +2316,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Heenashan",
@@ -1916,8 +2328,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Heetzasi",
@@ -1926,8 +2340,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Hides His Eyes",
@@ -1936,8 +2352,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 3,
+      "english_components": 3
     },
     {
       "name": "Hides-His-Foot",
@@ -1946,8 +2364,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 3,
+      "english_components": 3
     },
     {
       "name": "Hist Guardian",
@@ -1956,8 +2376,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Hist Sentry Powaj",
@@ -1966,8 +2388,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 3,
+      "english_components": 0
     },
     {
       "name": "Honei",
@@ -1976,8 +2400,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Hul-Wan",
@@ -1986,8 +2412,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Huleeya",
@@ -1996,8 +2424,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Hunted Argonian",
@@ -2006,8 +2436,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Im-Kilaya",
@@ -2016,8 +2448,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Iozukeeus",
@@ -2026,8 +2460,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Iskenaaz",
@@ -2036,8 +2472,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Itan-Eajal",
@@ -2046,8 +2484,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "J'ram-Hei",
@@ -2056,8 +2496,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "J'ram-Jeen",
@@ -2066,8 +2508,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jaree-Li",
@@ -2076,8 +2520,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jasaii",
@@ -2086,8 +2532,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Jasudei",
@@ -2096,8 +2544,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Jaxsik-Orrn",
@@ -2106,8 +2556,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jee-Lar",
@@ -2116,8 +2568,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jee-Tan",
@@ -2126,8 +2580,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jeelus-Lurash",
@@ -2136,8 +2592,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jeer-Xu",
@@ -2146,8 +2604,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jeetum-Hei",
@@ -2156,8 +2616,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jeetum-Lah",
@@ -2166,8 +2628,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jekka-Wass Vozei",
@@ -2176,8 +2640,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 3,
+      "english_components": 0
     },
     {
       "name": "Jotep-Liurz",
@@ -2186,8 +2652,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Jotep-Makka",
@@ -2196,8 +2664,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Junal-Kaza",
@@ -2206,8 +2676,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Juut",
@@ -2216,8 +2688,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Kalanu",
@@ -2226,8 +2700,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Kasa-Jas",
@@ -2236,8 +2712,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Kasa-Jeen",
@@ -2246,8 +2724,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Kaska",
@@ -2256,8 +2736,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Kassandra",
@@ -2266,8 +2748,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Kaxutl",
@@ -2276,8 +2760,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Keel-Medul",
@@ -2286,8 +2772,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Keel-Raniur",
@@ -2296,8 +2784,10 @@
       "gender": "Female",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Keema-Shah",
@@ -2306,8 +2796,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Keenem",
@@ -2316,8 +2808,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Keeran",
@@ -2326,8 +2820,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Keshu",
@@ -2336,8 +2832,10 @@
       "gender": null,
       "source_game": "Lore",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Kishi",
@@ -2346,8 +2844,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Klor",
@@ -2356,8 +2856,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Klutsaan",
@@ -2366,8 +2868,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Krona",
@@ -2376,8 +2880,10 @@
       "gender": null,
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Kud-Gei",
@@ -2386,8 +2892,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Kud-Mere",
@@ -2396,8 +2904,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Kud-Nakal",
@@ -2406,8 +2916,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Lara-Deesei",
@@ -2416,8 +2928,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Laughs-at-Fishes",
@@ -2426,8 +2940,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Lights-the-Way",
@@ -2436,8 +2952,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Listens-By-Smell",
@@ -2446,8 +2964,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 3,
+      "english_components": 0
     },
     {
       "name": "Lord Cluttermonkey",
@@ -2456,8 +2976,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Loxaldesh",
@@ -2466,8 +2988,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Mach-Taeed",
@@ -2476,8 +3000,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Mahei-Tei",
@@ -2486,8 +3012,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Makadel",
@@ -2496,8 +3024,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Makeusta",
@@ -2506,8 +3036,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Mani-Waza",
@@ -2516,8 +3048,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Many-Whispers",
@@ -2526,8 +3060,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Mateem",
@@ -2536,8 +3072,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Meewulm",
@@ -2546,8 +3084,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Mewah-Jez",
@@ -2556,8 +3096,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Milzus",
@@ -2566,8 +3108,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Mimme",
@@ -2576,8 +3120,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Minalz",
@@ -2586,8 +3132,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Miredancer Traveler",
@@ -2596,8 +3144,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Mishapa",
@@ -2606,8 +3156,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Miun-Gei",
@@ -2616,8 +3168,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Morning-Star-Steals-Away-Clouds",
@@ -2626,8 +3180,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 5
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 5,
+      "english_components": 5
     },
     {
       "name": "Moss-Skin Traveler",
@@ -2636,8 +3192,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Moss-Skin",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 1
     },
     {
       "name": "Muhu",
@@ -2646,8 +3204,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Mukka",
@@ -2656,8 +3216,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Mulishsi",
@@ -2666,8 +3228,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Murkmire Guard",
@@ -2676,8 +3240,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Murrax",
@@ -2686,8 +3252,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Na-Kesh",
@@ -2696,8 +3264,10 @@
       "gender": null,
       "source_game": "Lore",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Nam-Teeus",
@@ -2706,8 +3276,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Namalu",
@@ -2716,8 +3288,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Narnum",
@@ -2726,8 +3300,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Naska",
@@ -2736,8 +3312,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Neeti-Ra",
@@ -2746,8 +3324,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Neetinei",
@@ -2756,8 +3336,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Neexi",
@@ -2766,8 +3348,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nesh-Deeka",
@@ -2776,8 +3360,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Nine-Toes",
@@ -2786,8 +3372,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Nisswo Ajul-Jas",
@@ -2796,8 +3384,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Nisswo",
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Nisswo Dakee-Kai",
@@ -2806,8 +3396,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Nisswo",
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Nisswo Kahei",
@@ -2816,8 +3408,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": "Nisswo",
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nisswo Paraxeeh",
@@ -2826,8 +3420,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": "Nisswo",
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nisswo Uaxal",
@@ -2836,8 +3432,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": "Nisswo",
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nisswo Vaxeeh",
@@ -2846,8 +3444,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": "Nisswo",
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nisswo Xode",
@@ -2856,8 +3456,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": "Nisswo",
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Noxutln",
@@ -2866,8 +3468,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nurdan",
@@ -2876,8 +3480,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nurhei",
@@ -2886,8 +3492,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nuxal",
@@ -2896,8 +3504,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Nuxalt",
@@ -2906,8 +3516,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ojei",
@@ -2916,8 +3528,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Okan-Julan",
@@ -2926,8 +3540,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Okan-Shei",
@@ -2936,8 +3552,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Okaw-Neeus",
@@ -2946,8 +3564,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Okur",
@@ -2956,8 +3576,10 @@
       "gender": "Female",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Oleed-Tah",
@@ -2966,8 +3588,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Oleen-Xu",
@@ -2976,8 +3600,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Olik-Reenus",
@@ -2986,8 +3612,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "On-Nei",
@@ -2996,8 +3624,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "On-Wan",
@@ -3006,8 +3636,10 @@
       "gender": "Female",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Onasha",
@@ -3016,8 +3648,10 @@
       "gender": "Female",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Only-He-Stands-There",
@@ -3026,8 +3660,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 4
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 4,
+      "english_components": 2
     },
     {
       "name": "Paheiza",
@@ -3036,8 +3672,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Pateem",
@@ -3046,8 +3684,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Peek-Shah",
@@ -3056,8 +3696,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Peek-Tul",
@@ -3066,8 +3708,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Peesha",
@@ -3076,8 +3720,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Peexalt",
@@ -3086,8 +3732,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Plucks-the-Coin",
@@ -3096,8 +3744,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Powostulm",
@@ -3106,8 +3756,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Pulaya",
@@ -3116,8 +3768,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Rahu-Teemeeta",
@@ -3126,8 +3780,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Raj-Kaal Druxith",
@@ -3136,8 +3792,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Raj-Kaal",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Raj-Kaal Seelan",
@@ -3146,8 +3804,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Raj-Kaal",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Rasha",
@@ -3156,8 +3816,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ree-Nakal",
@@ -3166,8 +3828,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Reeesh",
@@ -3176,8 +3840,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Reeh-Jah",
@@ -3186,8 +3852,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Reekeesh",
@@ -3196,8 +3864,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Root-House Traveler",
@@ -3206,8 +3876,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Root-House",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 1
     },
     {
       "name": "Ruja-Wan",
@@ -3216,8 +3888,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Ruxol the Infirm",
@@ -3226,8 +3900,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Sap-Speaker Kuzei",
@@ -3236,8 +3912,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Sap-Speaker",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sashee",
@@ -3246,8 +3924,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Seeks-the-Dark",
@@ -3256,8 +3936,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 3,
+      "english_components": 2
     },
     {
       "name": "Shadowscale",
@@ -3266,8 +3948,10 @@
       "gender": null,
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Shadowscale Assassin",
@@ -3276,8 +3960,10 @@
       "gender": null,
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Shadowscale Deadeye",
@@ -3286,8 +3972,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Shadowscale Enforcer",
@@ -3296,8 +3984,10 @@
       "gender": null,
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Shadowscale Scout",
@@ -3306,8 +3996,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Shadowscale Sentry",
@@ -3316,8 +4008,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Sharp-Eye",
@@ -3326,8 +4020,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Shatalg",
@@ -3336,8 +4032,10 @@
       "gender": "Female",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sheer-Hahtsei",
@@ -3346,8 +4044,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Sheer-Saak",
@@ -3356,8 +4056,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Shukesh",
@@ -3366,8 +4068,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Shuxaltsei",
@@ -3376,8 +4080,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Silm-Dar",
@@ -3386,8 +4092,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Sinanis",
@@ -3396,8 +4104,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Skasei",
@@ -3406,8 +4116,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Skeetul",
@@ -3416,8 +4128,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Skink-in-Tree's-Shade",
@@ -3426,8 +4140,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 4
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 4,
+      "english_components": 3
     },
     {
       "name": "Solni the Entropist",
@@ -3436,8 +4152,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Sonsu",
@@ -3446,8 +4164,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Spirit of the Hist",
@@ -3456,8 +4176,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 4,
+      "english_components": 3
     },
     {
       "name": "Stormhold Guard",
@@ -3466,8 +4188,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Strikes-Quickly",
@@ -3476,8 +4200,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Suka-Tel",
@@ -3486,8 +4212,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Sulahkeesh",
@@ -3496,8 +4224,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sulosya",
@@ -3506,8 +4236,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sun-Eater Bloodherd",
@@ -3516,8 +4248,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Sun-Eater",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sun-Eater Bloodletter",
@@ -3526,8 +4260,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Sun-Eater",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sun-Eater Deathdrinker",
@@ -3536,8 +4272,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Sun-Eater",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sun-Eater Despoiler",
@@ -3546,8 +4284,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Sun-Eater",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sun-Eater Nightstalker",
@@ -3556,8 +4296,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Sun-Eater",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sun-Eater Pyrewalker",
@@ -3566,8 +4308,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Sun-Eater",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Sun-Eater Thrall",
@@ -3576,8 +4320,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Sun-Eater",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 1
     },
     {
       "name": "Swims-In-Swells",
@@ -3586,8 +4332,10 @@
       "gender": "Male",
       "source_game": "Bloodmoon (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 3,
+      "english_components": 3
     },
     {
       "name": "Talen-Jush",
@@ -3596,8 +4344,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Tames-the-Beast",
@@ -3606,8 +4356,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Tar-Lurash",
@@ -3616,8 +4368,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Taxatl",
@@ -3626,8 +4380,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tee-Lan",
@@ -3636,8 +4392,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Teeba-Hatsei",
@@ -3646,8 +4404,10 @@
       "gender": null,
       "source_game": "Lore",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Teeba-Jei",
@@ -3656,8 +4416,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Teeteka",
@@ -3666,8 +4428,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tem-Tei",
@@ -3676,8 +4440,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Tletva",
@@ -3686,8 +4452,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tlonanza",
@@ -3696,8 +4464,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tloxalith",
@@ -3706,8 +4476,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tongue-Toad",
@@ -3716,8 +4488,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Travelling-New-Woman",
@@ -3726,8 +4500,10 @@
       "gender": "Female",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 3,
+      "english_components": 2
     },
     {
       "name": "Tree-Minder",
@@ -3736,8 +4512,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Tree-Minder Deyapa",
@@ -3746,8 +4524,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tree-Minder Fal-Xoc",
@@ -3756,8 +4536,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Tree-Minder Na-Kesh",
@@ -3766,8 +4548,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Tree-Minder Nexith",
@@ -3776,8 +4560,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tree-Minder Nuleez",
@@ -3786,8 +4572,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tree-Minder Okan-Zish",
@@ -3796,8 +4584,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Tree-Minder Pavu",
@@ -3806,8 +4596,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tree-Minder Raleetal",
@@ -3816,8 +4608,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tree-Minder Vistha-Jush",
@@ -3826,8 +4620,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "tamrielic-hyphenated",
-      "word_count": 3
+      "title_prefix": "Tree-Minder",
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Tsaesh",
@@ -3836,8 +4632,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tseedasi",
@@ -3846,8 +4644,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tsixotl",
@@ -3856,8 +4656,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tsleitzei",
@@ -3866,8 +4668,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tsotap",
@@ -3876,8 +4680,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tsudeereeus",
@@ -3886,8 +4692,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tsurei",
@@ -3896,8 +4704,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tul",
@@ -3906,8 +4716,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Tuwul",
@@ -3916,8 +4728,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Twice-Bitten",
@@ -3926,8 +4740,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 2
     },
     {
       "name": "Ukaspa",
@@ -3936,8 +4752,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ula-Kii",
@@ -3946,8 +4764,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Uraz",
@@ -3956,8 +4776,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Utazaw",
@@ -3966,8 +4788,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ux-Deelith Mezatil",
@@ -3976,8 +4800,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "other",
-      "word_count": 2
+      "title_prefix": "Ux-Deelith",
+      "shape": "jel-single",
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Uzeialus",
@@ -3986,8 +4812,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Vaeshna",
@@ -3996,8 +4824,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Veeskhleel Alchemist",
@@ -4006,8 +4836,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Veeskhleel Bodysnatcher",
@@ -4016,8 +4848,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Veeskhleel Lurker",
@@ -4026,8 +4860,10 @@
       "gender": "Varies",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Veeskhleel Mirestalker",
@@ -4036,8 +4872,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Veeskhleel Shadow Walker",
@@ -4046,8 +4884,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "mixed",
+      "word_count": 3,
+      "english_components": 1
     },
     {
       "name": "Veeskhleel Shadowshaper",
@@ -4056,8 +4896,10 @@
       "gender": "Varied",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-single",
-      "word_count": 1
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Veexalt",
@@ -4066,8 +4908,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Vetra-Jat",
@@ -4076,8 +4920,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Vintheel",
@@ -4086,8 +4932,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Vistha-Kai",
@@ -4096,8 +4944,10 @@
       "gender": "Male",
       "source_game": "Morrowind (3E 427)",
       "region": "Morrowind",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Vistha-Mee",
@@ -4106,8 +4956,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Vohta-Lan",
@@ -4116,8 +4968,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Vornan",
@@ -4126,8 +4980,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Vukus",
@@ -4136,8 +4992,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Wakolus",
@@ -4146,8 +5004,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Waku-Mat",
@@ -4156,8 +5016,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Wallows-Much",
@@ -4166,8 +5028,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "tamrielic-descriptive",
+      "word_count": 2,
+      "english_components": 1
     },
     {
       "name": "Wawul",
@@ -4176,8 +5040,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Weechei",
@@ -4186,8 +5052,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Whiptail",
@@ -4196,8 +5064,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Wih-Sei",
@@ -4206,8 +5076,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Wixil",
@@ -4216,8 +5088,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Wud-Weska",
@@ -4226,8 +5100,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Wusha",
@@ -4236,8 +5112,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xal-Sisei",
@@ -4246,8 +5124,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Xamarz",
@@ -4256,8 +5136,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xazar",
@@ -4266,8 +5148,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xeeka",
@@ -4276,8 +5160,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Ximukto",
@@ -4286,8 +5172,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xinka",
@@ -4296,8 +5184,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xokomar",
@@ -4306,8 +5196,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xowaj",
@@ -4316,8 +5208,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xukas",
@@ -4326,8 +5220,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xul-Mot",
@@ -4336,8 +5232,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     },
     {
       "name": "Xureiik",
@@ -4346,8 +5244,10 @@
       "gender": "Female",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Xuzu",
@@ -4356,8 +5256,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
+      "title_prefix": null,
       "shape": "jel-single",
-      "word_count": 1
+      "word_count": 1,
+      "english_components": 0
     },
     {
       "name": "Yotep-Kus",
@@ -4366,8 +5268,10 @@
       "gender": "Male",
       "source_game": "ESO (2E 582)",
       "region": "BlackMarsh",
-      "shape": "jel-compound (Xxx-Yyy)",
-      "word_count": 2
+      "title_prefix": null,
+      "shape": "jel-compound",
+      "word_count": 2,
+      "english_components": 0
     }
   ],
   "black_marsh_place_names": [

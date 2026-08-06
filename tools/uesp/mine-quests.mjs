@@ -22,7 +22,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadExtract, findTemplate, findTemplates, sections, stripWiki, links } from './uesp-infobox.mjs';
+import { loadExtract, findTemplate, findTemplates, sections, stripWiki, links, wikitables } from './uesp-infobox.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const OUT = path.join(REPO, 'corpus', '30-quests', 'data', 'morrowind-quest-census.json');
@@ -227,6 +227,46 @@ for (const p of pages) {
   });
 }
 
+/* ---------------- faction rank tables (RI-QST03's stated debt) ---------------- */
+// RI-QST03: "Morrowind's actual per-rank threshold tables should be transcribed
+// into an appendix." They live in a == … Ranks == wikitable on each faction page.
+
+const factionRanks = [];
+for (const p of pages) {
+  if (!findTemplate(p.text, 'Faction Summary')) continue;
+  const secs = sections(p.text);
+  const rankSecName = Object.keys(secs).find((k) => /ranks?$/i.test(k) && !/quest/i.test(k));
+  if (!rankSecName) continue;
+  const tables = wikitables(secs[rankSecName]);
+  if (!tables.length) continue;
+  const rows = tables[0];
+  const header = rows[0].map((c) => stripWiki(c));
+  const ranks = [];
+  for (const r of rows.slice(1)) {
+    if (!r.length) continue;
+    const cells = r.map((c) => stripWiki(c).replace(/\s+/g, ' ').trim());
+    const m = /^(\d+)\.?\s*(.*)$/.exec(cells[0] || '');
+    ranks.push({
+      index: m ? Number(m[1]) : null,
+      rank: m ? m[2] : cells[0],
+      required_attributes: cells[1] || null,
+      required_skills: cells[2] || null,
+      extra: cells.slice(3).filter(Boolean),
+    });
+  }
+  const fs2 = findTemplate(p.text, 'Faction Summary');
+  factionRanks.push({
+    faction: p.title.replace(/^[A-Za-z]+:/, ''),
+    page: p.title,
+    game: p.ns,
+    favoured_skills: fs2.params.skills ? stripWiki(fs2.params.skills).split('\n').map((s) => s.replace(/^\*\s*/, '').trim()).filter(Boolean) : [],
+    favoured_attributes: [fs2.params.attrib1, fs2.params.attrib2].filter(Boolean).map((a) => stripWiki(a)),
+    rank_count: ranks.length,
+    table_header: header,
+    ranks,
+  });
+}
+
 /* ---------------- aggregates ---------------- */
 
 function frac(n, d) { return d ? Number((n / d).toFixed(4)) : null; }
@@ -331,6 +371,12 @@ const out = {
       max: goldValues[goldValues.length - 1],
     } : null,
     fraction_of_rewarding_quests_with_a_named_item: frac(rewardsWithItems.length, quests.filter((q) => q.reward.text).length),
+  },
+  faction_rank_tables: {
+    note: 'RI-QST03 states this debt explicitly: "Morrowind\'s actual per-rank threshold tables should be transcribed into an appendix." This is that appendix, transcribed from the == Ranks == wikitable on each faction page. community-data.',
+    factions: factionRanks.length,
+    rank_counts: Object.fromEntries(factionRanks.map((f) => [f.faction, f.rank_count])),
+    tables: factionRanks,
   },
   gating: {
     quests_with_required_rank: quests.filter((q) => q.prerequisites.required_rank).length,

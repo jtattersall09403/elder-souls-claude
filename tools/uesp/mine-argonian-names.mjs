@@ -126,29 +126,49 @@ try {
 /* 3. classify name shape                                              */
 /* ------------------------------------------------------------------ */
 
-const HYPHEN_TAMRIELIC = /^[A-Z][a-z]+(-[A-Za-z']+)+$/;
-const JEL_STYLE = /^[A-Z][a-z]*(-[A-Z][a-z]*)?$/;
+// Heuristic, and declared as one: a hyphen component counts as "Tamrielic" if it is
+// an English word drawn from the vocabulary the shipped games actually use in these
+// names. A name whose components are majority-English is a Tamrielic descriptive name;
+// otherwise it is a Jel compound. Built by reading the extracted name list, so it is
+// fitted to this corpus and would need extending for another one.
+const ENGLISH_BITS = new Set(`the a an and of in on at to his her their its no not nine three two twice ten all own late new old young big small fine deep long short
+sun moon morning star sky night day water swells swamp mud reed root tree shade leaf bark thorn stone iron copper silver gold clay salt sand fire ash smoke rain storm cloud clouds wind
+egg eggs face mouth throat skin scale scales toes toe eyes eye foot feet hand hands tail tongue tongues tooth teeth head bone blood heart claw fin wing
+toad frog snake fish crab bug jelly worm hunter warrior traveler traveller thrall reveler minder tender speaker singer maker eater keeper watcher walker drinker stalker letter herd guru chemist stowaway wrangler berserker shellbinder venomcaller venomshot spirit slave avatar
+hides lifts sees keeps walks swims counts tastes speaks talks runs breaks bites drinks holds sings waits watches wades hunts digs weaves beams cuts bends basks steals stands chews fights blooms grabs gives takes bitten broken drowned burned lost found
+bright silent grey gray green red black white golden dark pale swift slow strong weak wise good bad first last many too much more less
+woman man boy girl child mother father sister brother wife husband
+away back down up out here there where when
+dead water sap tree root chime grave bond copper moss ten`.split(/\s+/).filter(Boolean).map((w) => w.toLowerCase()));
+
+// Argonian title-prefixes attested in the games ("Tree-Minder Deyapa", "Nisswo Ajul-Jas")
+const TITLES = /^(Tree-Minder|Sap-Speaker|Egg-Tender|Grave-Singer|Chime-Maker|Bond-Guru|Raj-Kaal|Ux-Deelith|Nisswo|Vicecanon|Archein|Shellback|Bright-Throat|Dead-Water|Root-House|Moss-Skin|Copper-Eye|Sun-Eater|Empowered Tree-Minder)\s+/;
+
+const titleUse = {};
 
 const classified = [...people.values()].map((p) => {
-  const words = p.name.split('-');
+  let bare = p.name;
+  const tm = TITLES.exec(bare);
+  if (tm) { titleUse[tm[1]] = (titleUse[tm[1]] || 0) + 1; bare = bare.slice(tm[0].length); }
+  const words = bare.split(/[-\s]/).filter(Boolean);
+  const english = words.filter((w) => ENGLISH_BITS.has(w.toLowerCase().replace(/['’]s?$/, ''))).length;
   let shape;
-  if (HYPHEN_TAMRIELIC.test(p.name) && words.length >= 2 && /^(Hides|Lifts|Sees|Keeps|Walks|Swims|Counts|Tastes|Speaks|Talks|Runs|Breaks|Bites|Drinks|Holds|Sings|Waits|Watches|Wades|Hunts|Digs|Weaves|Beams|Cuts|Deep|Many|Three|Nine|Fal|Cuts|Sun|Green|Bright|Silent|Swims|Chews|Fights|Blooms|Grabs|Gives|Takes|Never|Always|Onsi|Heem)/.test(words[0])) shape = 'tamrielic-hyphenated';
-  else if (words.length >= 3) shape = 'tamrielic-hyphenated';
-  else if (words.length === 2 && /^[A-Z][a-z]+$/.test(words[0]) && /^[A-Z][a-z]+$/.test(words[1])) shape = 'jel-compound (Xxx-Yyy)';
-  else if (words.length === 1) shape = 'jel-single';
-  else shape = 'other';
-  return { ...p, shape, word_count: words.length };
+  if (words.length === 1) shape = 'jel-single';
+  else if (english >= Math.ceil(words.length / 2)) shape = 'tamrielic-descriptive';
+  else if (english > 0) shape = 'mixed';
+  else shape = 'jel-compound';
+  return { ...p, title_prefix: tm ? tm[1] : null, shape, word_count: words.length, english_components: english };
 });
 
 const shapeTally = classified.reduce((m, p) => (m[p.shape] = (m[p.shape] || 0) + 1, m), {});
-const wordCountTally = classified.filter((p) => p.shape === 'tamrielic-hyphenated')
+const wordCountTally = classified.filter((p) => p.shape === 'tamrielic-descriptive')
   .reduce((m, p) => (m[p.word_count] = (m[p.word_count] || 0) + 1, m), {});
 
 // first words of hyphenated names — the "verb" slot RI-LOR04 legislates
 const verbSlot = {};
 for (const p of classified) {
-  if (p.shape !== 'tamrielic-hyphenated') continue;
-  const w = p.name.split('-')[0];
+  if (p.shape !== 'tamrielic-descriptive') continue;
+  const w = (p.title_prefix ? p.name.slice(p.title_prefix.length).trim() : p.name).split(/[-\s]/)[0];
   verbSlot[w] = (verbSlot[w] || 0) + 1;
 }
 
@@ -298,6 +318,9 @@ const out = {
     shape_distribution: shapeTally,
     hyphenated_word_count_distribution: wordCountTally,
     most_common_first_words: Object.entries(verbSlot).sort((a, b) => b[1] - a[1]).slice(0, 40),
+    attested_title_prefixes: Object.entries(titleUse).sort((a, b) => b[1] - a[1]),
+    morrowind_era_names_only: classified.filter((p) => /3E 427/.test(p.source_game)).map((p) => p.name).sort(),
+    classifier_note: 'shape is DERIVED by a declared heuristic: a hyphen/space component counts as Tamrielic if it is in an English word list fitted to this corpus; a majority-English name is tamrielic-descriptive, otherwise jel-compound. Names carrying an attested Argonian title prefix (Tree-Minder, Nisswo, Raj-Kaal, Sap-Speaker…) have the title stripped before classification.',
   },
 
   personal_names: classified.sort((a, b) => a.name.localeCompare(b.name)),

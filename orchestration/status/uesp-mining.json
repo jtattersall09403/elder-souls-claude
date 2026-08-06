@@ -22,7 +22,11 @@
     "corpus/30-quests/data/morrowind-quest-census.json",
     "tools/uesp/mine-quests.mjs",
     "corpus/50-world/data/morrowind-world-census.json",
-    "tools/uesp/mine-world.mjs"
+    "tools/uesp/mine-world.mjs",
+    "corpus/60-lore/data/blackmarsh-canon.json",
+    "tools/uesp/mine-blackmarsh.mjs",
+    "corpus/60-lore/data/argonian-names.json",
+    "tools/uesp/mine-argonian-names.mjs"
   ],
   "findings": [
     "Extract decompressed to /tmp/uesp/extract.jsonl (20.7MB, 6299 lines). NEVER into repo.",
@@ -45,8 +49,23 @@
     "RI-WLD03 CONTRADICTED on trainers and shops. Its capital target is 5 skill trainers and 7 shops. Real Balmora: 39 NPCs offer training and 36 offer barter (of 85). Vivec: 46 trainers, 67 merchants. Morrowind's service NPCs are UBIQUITOUS, not scarce - a capital target of 5 trainers is an order of magnitude below Morrowind.",
     "RI-WLD03's '2,824 NPCs on Vvardenfell' cannot be confirmed from the extract: the extract holds 1,429 NPC Summary pages total across Morrowind+Tribunal+Bloodmoon. UESP pages only named NPCs; 2,824 is presumably a Construction Set record count. Flag as unsettled.",
     "Settlement services listed by UESP Town Table: median 3, max 9 (Balmora and Vivec). Balmora's 9: Alchemist, Blacksmith, Bookseller, Clothier, Enchanter, Pawnbroker, Tavern (3), Trader, Tribunal Temple.",
-    "Interiors with their own Place page: median 5 per settlement, max 15 (Balmora). UESP does not page every house, so this is a FLOOR not a total - RI-WLD03's 26-named-interiors capital target cannot be falsified from UESP."
+    "Interiors with their own Place page: median 5 per settlement, max 15 (Balmora). UESP does not page every house, so this is a FLOOR not a total - RI-WLD03's 26-named-interiors capital target cannot be falsified from UESP.",
+    "BLACKMARSH CANON DONE: 194 places, 66 creatures, 471 NPCs, 25 factions/tribes, 147 lore facts (61 of them in-world books), 10 named plants.",
+    "CF-045 CONTRADICTED: Knahaten Flu ran 2E 560 to 2E 603 = 43 years (Lore:Knahaten Flu). Registry says 41 years to 2E 601.",
+    "CF-050 CORRECTED: prison is 'The Rose', raised in a SINGLE DAY by Pelladil Direnni summoning stone atronachs, commissioned by Akaviri Potentate Versidue-Shaie (registry misspells him 'Versidae-Shae'). Lilmothiit founded BOTH Lilmoth and Blackrose.",
+    "CF-047 CORRECTED: Kothringi = 'the Lustrous Folk', silver-skinned, indigenous, sailors - all confirmed; 'Nedic descent' NOT stated by the source. Some fled west on the Crimson Ship.",
+    "CF-046 CORRECTED: source hedges - Kothringi 'thought to be exterminated', Lilmothiit 'mostly extinct', Argonians 'appear immune'. Lore:On the Knahaten Flu records the accusation that Argonians introduced the flu in retaliation for Dunmer slaving, 'never proven or disproven' - usable and not in the registry.",
+    "CF-006 CONFIRMED + DEEPENED: Lore:Hist Sap documents ARGONIAN sap-poisoning with named progressive symptoms - 'gold tongue', 'bark scale', hallucinations (Miredancer Sap-Speakers). The corpus's constructed 5-band sap-taint CF-C011 has a real canonical ancestor. Also: a badly-treated Hist makes its sap bloodlust ARGONIANS too, so the effect is about the tree's condition not the drinker's race. Also 'Amber Plasm' = Chaotic Creatia leaking through a Hist 'like blood from a wound' - sits on top of constructed CF-C009 sapwell-as-wound.",
+    "CF-067 CONFIRMED: An-Xileel formed 'sometime during the Oblivion Crisis' - so absent in 3E 427.",
+    "CF-028/029 CONFIRMED verbatim + 3 additions: Shadowscales follow a DISTINCT set of Five Tenets; tenet-breaking is treason executed by the Argonian Royal Court via an unaffiliated assassin; the 'King of Black Marsh' role is explicitly said to be OVERSTATED with no such king thought to have ruled 'if at all'.",
+    "*** BIGGEST FINDING *** THE CORPUS'S OWN JEL VALIDATOR REJECTS CANON. Running corpus/80-methods/jel-phonotactics.py against the 30 attested Jel words gives a 26.7% violation rate against its own 5% threshold: RESULT FAIL. Rejected attested words: Saxhleel (the Argonians' own word for themselves, medial 'xhl'), Thtithil (egg - already cited as canon in CF-025, initial 'tht'), Xeech (seed - a root in our own lexicon, final 'ch'), Greel ('gr' banned as epic-fantasy cluster), Krona ('kr'), Norg (final 'rg'), Vakka (geminate 'kk'), Xthari ('xth').",
+    "SOURCE FOR ALL OF IT: Lore:The Sharper Tongue: A Jel Primer - a 24-entry in-world Jel glossary. 23 of its words are missing from jel-lexicon.json.",
+    "4 GLOSS CONTRADICTIONS in jel-lexicon.json vs the primer: xul = DEATH/rebirth (we have 'root, that which goes down' - so xul-aneekh 'Deep-Kin' actually reads 'Death-Kin'); uxith = NEST/HOME/BED (we have 'old, long-standing' AND mark it community-data, i.e. claim a source it does not have); ojel = OUTSIDER, 'not of Argonian tongue' (we have 'tongue, the organ'); kaal = WAR CAPTAIN (we coined it as 'to kneel'). CONFIRMED: beeko, deelith, vastei, lukiul, haj, xeech (canon xeech already carries the birth/potential metaphor we were going to have to invent).",
+    "RI-LOR04 naming grammar CONTRADICTED on shape: of 377 attested Argonian names, only 43 are Tamrielic-descriptive; 142 are Jel compounds (Am-Lai, Heem-La, Miun-Gei, Okan-Shei) and 182 single Jel words. The dominant real form is NOT the hyphenated English phrase. In Morrowind-era names specifically: 17 descriptive, 14 Jel compound, 9 single.",
+    "RI-LOR04 word-count rule CONTRADICTED: it says 2-4 words modal 3. Attested descriptive names run 2 (31), 3 (6), 4 (5), 5 (1 - Morning-Star-Steals-Away-Clouds). Modal is TWO, not three, and 5 exists.",
+    "RI-LOR04 misses a whole register: attested Argonian TITLE PREFIXES - Tree-Minder (9), Nisswo (7), Sun-Eater (7), Dead-Water (3), Grave-Singer (2), Raj-Kaal (2), Egg-Tender, Bond-Guru, Chime-Maker, Sap-Speaker, Ux-Deelith. Raj-Kaal independently confirms kaal=war captain and raj- as honorific (primer: Raj-Beeko).",
+    "Canon Morrowind name Skink-in-Tree's-Shade contains an APOSTROPHE and a lowercase 'in' - both against RI-LOR04's letter."
   ],
-  "next_step": "mine-blackmarsh.mjs -> corpus/60-lore/data/blackmarsh-canon.json; cross-check vs canon-facts.json",
+  "next_step": "add per-faction rank tables to quest census (RI-QST03 appendix debt), then write corpus/00-doctrine/PROVENANCE-UPGRADE-01.md",
   "notes_for_successor": "Toolkit is done and verified. uesp-infobox.mjs exports loadExtract/parseTemplates/findTemplate/sections/wikitables/links/stripWiki. Mining scripts go in tools/uesp/mine-*.mjs so datasets are reproducible."
 }

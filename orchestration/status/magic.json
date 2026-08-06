@@ -12,7 +12,10 @@
     "corpus/25-magic/RI-MAG05-magic-vfx.md"
   ],
   "outputs_written": [
-    "corpus/25-magic/RI-MAG01-combat-casting.md"
+    "corpus/25-magic/RI-MAG01-combat-casting.md",
+    "corpus/25-magic/RI-MAG02-effect-catalogue.md",
+    "corpus/25-magic/data/effects.json",
+    "corpus/25-magic/data/gen-effects.py"
   ],
   "findings": [
     "subsystems.json has ONE magic path only: combat.magic.casting (souls, 10-combat, critic.combat). New root magic.* must be requested in reply; taxonomy is append-only, owned by CRT.",
@@ -34,8 +37,14 @@
     "MAG01 cast classes ES-CAST/1: CANTRIP 14/3/20=37 stam10 Fx0.50; LIGHT 24/4/28=56 stam16 Fx1.00; HEAVY 36/6/40=82 stam24 Fx2.10 HA f22-42; GREAT 52/8/60=120 stam34 Fx4.40 HA f32-60; RITUAL 150/12/48=210. Ps={15,25,37,53}. Tc=ceil(0.65*startup). Recovery commit constant 0.60 (weapons use 0.45).",
     "RITUAL class is the S19 enforcement device: Mark/Recall/Intervention are RITUAL, 150f startup, abort on damage/COMBAT/movement input with Focus REFUNDED (only refund case). No 'cannot cast in combat' flag needed - the clock does it.",
     "Casting input = light/heavy with catalyst in right hand (Souls mapping, no new button). ONE new button requested: spell_cycle. Attuning is HEARTH-only.",
-    "Enchanted items have their OWN charge pool recharged from soul gems -> that is the caster's sustain, which is why enchanting is load-bearing not optional."
+    "Enchanted items have their OWN charge pool recharged from soul gems -> that is the caster's sustain, which is why enchanting is load-bearing not optional.",
+    "effects.json SHIPPED: 55 effects (sorcery 14, root_speech 14, warding 15, veiling 12). 40 change traversal-or-quest (bar was >=12). 8/55 = 14.5% pure damage/heal. All G4 thresholds cleared.",
+    "COST FORMULA (final, binding): focus_base = ceil( weight * ( M^1.30 + 0.7*D^0.95 + 0.55*M^0.80*D^0.45 ) * (1 + 0.09*A^1.25) * range_mult / 10 ). focus_cost = ceil(focus_base * class_mult * catalyst_mult * (1-skill_discount)). Cross term kills the 1-second-nuke: nuke/balanced = 2.9x.",
+    "GOLD: round(3.9 * focus_base^1.75), FITTED to RI-PRG05's 220/900/3400 at focus_base 10/22/48 (residuals <3%). Tier4 ~8350g, Tier5 ~22200g -> PRG05 amendment requested.",
+    "LEVITATION RULING: ships, tier 4 (Warding 65), weight 9.0. Four bounds: (1) drift 1.4 m/s < 2.0 walk speed so never a time-saver; (2) ascent costs +1.5 Focus/metre and Focus never regenerates; (3) AIRBORNE = no attack/cast/block/roll/i-frames and ANY damage ends it; (4) diegetic ceilings - all 8 loop-dungeons enclosed, 65%+ exterior under collidable canopy 25-40m, above canopy = hackwing flock (WLD05 el.12). ZERO no_levitation_zone flags - grep asserts zero. Deleting it and fencing it both score 0.",
+    "TELEPORT RULING: mark/recall/intervention are RITUAL class (210f, aborts on damage/COMBAT/movement) so 'no recall out of a fight' needs no flag. recall magnitude is COMPUTED as distance/100m -> diegetic range limit (500m=6 focus, 4km=77 focus). intervention never goes to a HEARTH (S7). RI-TRV02 owns the network predicate/detector; MAG02 owns the effect records.",
+    "GREAT class max focus_base = 54 (at WIL99/staff/-35%), LIGHT max = 238. So the biggest spells must be cast in the class with NO hyperarmour. Emergent tension, worth citing."
   ],
-  "next_step": "write RI-MAG02 + data/effects.json (>=40 effects, >=12 out-of-fight; levitation + teleport rulings)",
+  "next_step": "write RI-MAG03 (spellmaking + enchanting + soul gem ruling SG-1..SG-6 + sanctioned breakages MB-1..MB-10)",
   "notes_for_successor": "Deliverable order chosen: MAG01, MAG02(+data/effects.json), MAG03, MAG04, MAG05. Write each to disk immediately."
 }

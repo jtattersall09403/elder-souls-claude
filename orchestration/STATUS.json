@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-06T08:45:51.425Z",
+  "generated": "2026-08-06T08:48:56.410Z",
   "complete": 1,
   "total": 12,
   "tasks": [
@@ -17,24 +17,22 @@
       "id": "weapons",
       "title": "Weapon movesets, per-weapon identity, dedicated weapon critic",
       "state": "partial",
-      "done": 4,
+      "done": 5,
       "expected": 7,
       "missing": [
-        "corpus/12-weapons/RI-WPN05*",
         "corpus/12-weapons/RI-WPN06*",
         "corpus/12-weapons/WEAPON-CRITIC.md"
       ],
-      "next_step": "write RI-WPN05 (weapon feel: hitstop, material impact, whiff, mass)",
-      "findings": 11
+      "next_step": "write RI-WPN06 (two-handing / shields / offhand / parry-riposte), then WEAPON-CRITIC.md",
+      "findings": 12
     },
     {
       "id": "uesp-mining",
       "title": "Mine the UESP extract; upgrade provenance from recall to measurement",
       "state": "partial",
-      "done": 5,
+      "done": 6,
       "expected": 7,
       "missing": [
-        "corpus/60-lore/data/argonian-names.json",
         "corpus/00-doctrine/PROVENANCE-UPGRADE-01.md"
       ],
       "next_step": "mine-blackmarsh.mjs -> corpus/60-lore/data/blackmarsh-canon.json; cross-check vs canon-facts.json",
@@ -44,11 +42,9 @@
       "id": "journeys",
       "title": "User-journey corpus, journey-critic fleet, platform budget",
       "state": "partial",
-      "done": 3,
+      "done": 5,
       "expected": 11,
       "missing": [
-        "corpus/88-journeys/RI-JRN02*",
-        "corpus/88-journeys/RI-JRN03*",
         "corpus/88-journeys/RI-JRN06*",
         "corpus/88-journeys/RI-JRN07*",
         "corpus/88-journeys/RI-JRN08*",
@@ -56,24 +52,23 @@
         "corpus/85-platform/RI-PLT02*",
         "corpus/85-platform/RI-PLT03*"
       ],
-      "next_step": "write RI-JRN03 (desktop controls)",
-      "findings": 17
+      "next_step": "write RI-JRN06 (death and recovery)",
+      "findings": 18
     },
     {
       "id": "experience",
       "title": "Played-experience critic, anecdote census, cross-system composition",
       "state": "partial",
-      "done": 3,
+      "done": 4,
       "expected": 8,
       "missing": [
-        "corpus/95-experience/RI-EXP06*",
         "corpus/95-experience/RI-CMP01*",
         "corpus/95-experience/RI-CMP02*",
         "corpus/95-experience/RI-CMP03*",
         "corpus/95-experience/CROSS-SYSTEM-BUILDER-BRIEF.md"
       ],
-      "next_step": "write RI-EXP06 permissiveness budget: 15 breakages B-01..B-15 (8 systemic, 3 permanent-world-state), PB-RULE cross-rule, regression-detector hard fail (a probe that passed in a prior wave and now fails without a recorded strike)",
-      "findings": 15
+      "next_step": "write RI-CMP01 cross-system payoff matrix: 19x19 grid (FAC DIS GLD SKL SPL LOR STL QST WLD TOD WEA EQP LVL UPG ROS BOS DUN SCH JRN), tiers trivial(0)/mechanical(1)/structural(3), seam-crossing x2, cells score 0 unless a harness probe demonstrates firing; per-wave tiered floor; reconcile BAR-CRITIQUE's >=35% (declared) vs demonstrated floor; keep hard fail <4 demonstrated crossing cells",
+      "findings": 16
     },
     {
       "id": "magic",
@@ -94,28 +89,26 @@
       "id": "character-stealth-crime",
       "title": "Character creation, race, birthsign; stealth, theft, crime and justice",
       "state": "partial",
-      "done": 3,
+      "done": 4,
       "expected": 7,
       "missing": [
-        "corpus/23-stealth-crime/RI-STL01*",
         "corpus/23-stealth-crime/RI-STL02*",
         "corpus/23-stealth-crime/RI-CRM01*",
         "corpus/23-stealth-crime/RI-CRM02*"
       ],
-      "next_step": "22-character COMPLETE (CHR01/02/03). Now write RI-STL01 detection+sneak, then STL02, CRM01, CRM02. CHR03 exports: 9 signs, families given/withheld/turned, The Unlit Water carries shadowscale-claim (feeds CRM02), The Spilled changes respawn well, Dry Well = Atronach. CHR01 DONE: 8 inputs, 14 classes + custom, 12 questionnaire dilemmas, 540 signatures (10 race x 6 class-family x 3 birthsign-family x 3 upbringing-class), birthsign families must be named Given/Withheld/Turned in CHR03 §2 and CHR03 §5 owns the one-time re-cut at the Helstrom Hist. CHR02 exports: 10 races (Saxhleel, Naga, Dunmer, Imperial, Nord, Breton, Redguard, Khajiit, Orsimer, Bosmer), 12 reaction groups RG-DEEP/ROOT/LUKIUL/NAGA/LEDGER/EMPIRE/DRES/BWC/VAKH/COURT/TOWN/OUTLAW, 4 upbringings interior/lukiul/foreign-born/blackrose (CHR01 owns upbringing), guard lawFactor+suspicion table (CRM01/STL01 consume), raceSurcharge price formula.",
+      "next_step": "STL01 DONE. Now STL02 (theft/locks/fencing), then CRM01, CRM02. STL01 exports: V visibility formula, civilian states CALM/WATCHING/CHALLENGE/ALARM, contextWeight table (STL02 owns trespass zones + owned objects), S-4 zone memory, harness extension requests (crouch button, player.stealth block, alert_channel, civilians[], getLightAt, events detect/challenge/search_start/search_end/zone_alert/light_snuffed/distraction). 22-character COMPLETE. CHR03 exports: 9 signs, families given/withheld/turned, The Unlit Water carries shadowscale-claim (feeds CRM02), The Spilled changes respawn well, Dry Well = Atronach. CHR01 DONE: 8 inputs, 14 classes + custom, 12 questionnaire dilemmas, 540 signatures (10 race x 6 class-family x 3 birthsign-family x 3 upbringing-class), birthsign families must be named Given/Withheld/Turned in CHR03 §2 and CHR03 §5 owns the one-time re-cut at the Helstrom Hist. CHR02 exports: 10 races (Saxhleel, Naga, Dunmer, Imperial, Nord, Breton, Redguard, Khajiit, Orsimer, Bosmer), 12 reaction groups RG-DEEP/ROOT/LUKIUL/NAGA/LEDGER/EMPIRE/DRES/BWC/VAKH/COURT/TOWN/OUTLAW, 4 upbringings interior/lukiul/foreign-born/blackrose (CHR01 owns upbringing), guard lawFactor+suspicion table (CRM01/STL01 consume), raceSurcharge price formula.",
       "findings": 8
     },
     {
       "id": "travel",
       "title": "The fast-travel network as a built, judged system (seam S7)",
-      "state": "started-nothing-written",
-      "done": 0,
+      "state": "partial",
+      "done": 1,
       "expected": 2,
       "missing": [
-        "corpus/50-world/RI-TRV01*",
         "corpus/50-world/RI-TRV02*"
       ],
-      "next_step": "write corpus/50-world/travel-network.json (computed graph), then RI-TRV01, then RI-TRV02",
+      "next_step": "write RI-TRV02 (travel magic + S19 reconciliation): Mark/Recall/Hist Intervention/Imperial Intervention, gating, solvent detector, positive tests",
       "findings": 16
     },
     {
@@ -134,17 +127,16 @@
       "id": "audio-ui",
       "title": "Audio design and user-interface corpus",
       "state": "partial",
-      "done": 6,
+      "done": 7,
       "expected": 11,
       "missing": [
-        "corpus/86-ui/RI-UIX02*",
         "corpus/86-ui/RI-UIX03*",
         "corpus/86-ui/RI-UIX04*",
         "corpus/86-ui/RI-UIX05*",
         "corpus/86-ui/RI-UIX06*"
       ],
-      "next_step": "write UI items: RI-UIX01 combat HUD, then 02 no-marker, 03 inventory, 04 journal, 05 books, 06 diegesis",
-      "findings": 12
+      "next_step": "write RI-UIX03 inventory (+ui.menu.levelup), RI-UIX04 journal UI, RI-UIX05 books, RI-UIX06 diegesis+fidelity bifurcation",
+      "findings": 13
     },
     {
       "id": "image-acquisition",
@@ -156,8 +148,8 @@
         "corpus/70-visual/refs/MANIFEST.json",
         "corpus/70-visual/refs/ACQUISITION-REPORT.md"
       ],
-      "next_step": "try github code search for .htm/.html galleries linking in-repo game screenshots; fill anti-generic + context; then metrics + manifest + report + RI-VIS09",
-      "findings": 17
+      "next_step": "run image-metrics over acquired set, write MANIFEST.json, make-manifest.py, LICENCE-NOTE.md, ACQUISITION-REPORT.md, RI-VIS09",
+      "findings": 20
     },
     {
       "id": "corpus-audit",
