@@ -2,7 +2,7 @@
   "task_id": "W1-09",
   "brief": "docs/PLAN.md \u00a73 W1-09 \u2014 Combat core",
   "started": "wave-1",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [],
   "outputs_written": [
     "game/data/combat/frames.json",
@@ -15,13 +15,18 @@
     "game/data/combat/parley.json",
     "game/data/combat/skeleton.json",
     "game/data/combat/clips.json",
-    "game/data/combat/movesets/*.json (7)",
-    "game/data/combat/enemies/*.json (3)",
-    "game/data/states/arena_duel.json",
+    "game/data/combat/movesets/{dagger,straight-sword,spear,axe,halberd,greatsword,ultra-greatsword}.json",
+    "game/data/combat/enemies/{inf_trash,dummy_passive,beast_slitherfang,champion_hist_marked,probe_pulse}.json",
+    "game/data/states/{arena_duel,arena_champion,arena_probe}.json (+ loadout on arena_flat)",
     "game/src/combat/{geometry,skeleton,clips,moves,rules,actor,resolve,lockon,parley,player,enemy,system,trace}.js",
     "game/src/sim/combat-bridge.js",
     "tools/harness/cmb-probe.mjs",
-    "modified: game/src/engine.js, game/src/sim/step.js, game/src/sim/entities.js, game/src/sim/events.js, game/src/harness/api.js"
+    "tools/harness/cmb-exemplar.mjs",
+    "reports/w1-09/W1-09-REPORT.md",
+    "reports/w1-09/AMENDMENT-W1-09-01.md",
+    "reports/w1-09/cmb-probe-all.json",
+    "reports/w1-09/exemplar/{scenario,frames.jsonl,trace.segments.jsonl,statistics.json}",
+    "modified: game/src/engine.js, game/src/sim/{step,entities,events}.js, game/src/harness/api.js"
   ],
   "findings": [
     "W1-00 already shipped: game/src/{core,sim,harness,input,save,render}, tools/harness/{run-headless,trace,trace-stats,seed-sweep,determinism}.mjs, scenarios cmb-*.json, and game/data/combat/{movesets/straight-sword.json,enemies/*,input.json}. Combat core extends this rather than starting fresh.",
@@ -45,8 +50,18 @@
     "RI-CMB11: L2 dispatch must be EXACTLY 0 frames - press -> anim_frame==1 in the SAME step. D1 input before state advance; D2 no blend before frame 1; D3 buffer adds no latency when actionable; D4 one action buffers. \u00a73 edge sampling: press+release inside one step -> press this step, release next; catch-up attributes edges by timestamp, cap 5.",
     "W1-00's sim/player.js resolves hits by DISTANCE CHECK (resolveHits: d > md.reach_m + e.radius_m -> continue). That is exactly RI-CMB04 'How we lose' #1 and an AR-1 automatic fail. Must be replaced with swept capsule geometry.",
     "Reference animation observed (corpus/70-visual/refs/souls-behaviour/anim/attacks/er-ER_Moveset_Neutral_Attack_Chain_Longsword.gif, 81 frames): R1 windup = blade drops back/down behind right hip then rises to an overhead cock with torso rotated away and weight on the back foot; the swing is a DIAGONAL downward arc through the centreline led by the hips; recovery is the FOLLOW-THROUGH HELD low across the body with the character visibly off-balance for many frames, not a snap back to idle. Chain hit 2 starts from that follow-through and swings back the other way.",
-    "Reference animation observed (anim/stance/er-ER_Skill_Quickstep_Forward.gif, 31 frames): displacement is strongly FRONT-LOADED - the character crouches, covers most ground in the first third, then the tail is a stationary rise. Confirms RI-CMB01 M3's non-constant root curve requirement and RI-CMB09 \u00a72's no-translation recovery tail."
+    "Reference animation observed (anim/stance/er-ER_Skill_Quickstep_Forward.gif, 31 frames): displacement is strongly FRONT-LOADED - the character crouches, covers most ground in the first third, then the tail is a stationary rise. Confirms RI-CMB01 M3's non-constant root curve requirement and RI-CMB09 \u00a72's no-translation recovery tail.",
+    "MEASURED, all exact to the frame: roll 52/60/88/120 with 26/22/10/0 i-frames at f5-f30 / f5-f26 / f7-f16; backsteps 42/42/60/80 with 8/8/0/0; tier cliffs at exactly 30.00/70.00/100.00 with no interpolation; all 14 RI-CMB02 rows startup/Ps/active/recovery/total/stamina/root_dz exact; press->anim_frame==1 (RI-CMB11 L2 = 0) in every row.",
+    "RI-CMB01 M2 boundary probe: zero holes, zero leaks in all three tiers. Fixture is game/data/combat/enemies/probe_pulse.json - a 1-frame 8 m-radius pulse so geometry is never the variable.",
+    "Block formula exact for all 3 shields and provably independent (stability -> stamina only, absorption -> chip only). Guard break fires at stamina 20.35 vs cost 36.48, clamps to 0, never negative; observed 46 frames = 40 animation + 6 hitstop.",
+    "Regen: first increase exactly 43 frames after the spend (RI-CMB03 M1), slope exactly 0.75/frame linear, guarded exactly 0.15/frame, one global re-armed delay (3 rolls -> first regen 43 f after the LAST spend).",
+    "EARNED AMENDMENT: RI-CMB09 \u00a73 says regen between chained rolls is 0 because '52 f < 42 f delay'. 52 > 42. Nine frames per cycle regenerate 6.75. Rolls-before-denial is 7 not 5, denial at frame 366 not 260. Filed at reports/w1-09/AMENDMENT-W1-09-01.md. RP1/RP2 still pass (38 drops, 1 exhausted_enter).",
+    "Geometry: hurtbox midpoint-to-bone variation max 9.24e-05 m (tolerance 0.005); every capsule travels 5.3-7.1 m during a 5.2 m roll. Lateral sweep: single crossing, hit through 1.120 m, miss from 1.125 m - sharp to 5 mm. One HIT per swing per target.",
+    "OPEN, doctrine owner's call: peak tip travel measured 0.6136 m/frame vs RI-CMB04 \u00a7B's assumed 0.308. Four substeps then sample at 2.2 capsule radii each instead of ~1. Ship 4 as \u00a7F pins it, divergence reported.",
+    "Parley: all 9 gating cases correct (name / faction rank / gold accept; expelled, rival rank, low rank, low disposition, insufficient gold refuse). 78 committed frames, uncancellable. Beast exemption drops the input with a named reason and never starts the animation.",
+    "Lock-on: acquisition cliff between 13.5 and 14.5 m, break at 18.03 m, both_framed 180/180, left roll changes bearing +52.85 deg while holding facing.",
+    "RI-CMB07 exemplar REGENERATED by re-running (never by f->2f dilation): 7200 f@60, 12/24 banded rows in band including committed-frame ratio 0.5406 and roll-timing delta mean -2.06 sd 0.23."
   ],
-  "next_step": "run cmb-probe for all probes; fix observed vs declared mismatches; regenerate RI-CMB07 exemplar; write report",
-  "notes_for_successor": "Architecture: CombatSystem (game/src/combat/system.js) is the authority; sim.player/sim.entities are a VIEW refreshed by game/src/sim/combat-bridge.js mirror(). Data files transcribe the corpus; code never holds a second copy of a number. Probe: node tools/harness/cmb-probe.mjs --probe <roll|iframe|frames|commit|stamina|block|geometry|lockon|parley|all>"
+  "next_step": "none - complete. Critic should start at reports/w1-09/W1-09-REPORT.md.",
+  "notes_for_successor": "CombatSystem (game/src/combat/system.js) is the authority; sim.player/sim.entities are a VIEW refreshed by game/src/sim/combat-bridge.js mirror(). Data files transcribe the corpus and the code never holds a second copy of a number. Probe: node tools/harness/cmb-probe.mjs --probe <roll|iframe|frames|commit|stamina|block|geometry|lockon|parley|all>. Exemplar: node tools/harness/cmb-exemplar.mjs. ALWAYS run node tools/analysis/data-index.mjs first - other wave-1 builders are adding data files concurrently and a stale index breaks boot. Known open: substep count vs measured tip speed (report \u00a79); exemplar authoring quality (12/24 rows in band); RI-CMB07 M2 Mode-B needs W1-12 AI."
 }

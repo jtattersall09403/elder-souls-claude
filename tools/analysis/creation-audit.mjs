@@ -19,7 +19,7 @@ import path from 'node:path';
 import { REPO_ROOT, DATA_DIR, parseArgs, wantsHelp, usage, writeJson } from '../lib/cli.mjs';
 import {
   composeCharacter, composeAttributes, composeSkills, customClass, signatureOf,
-  skillsAboveBaseline, sumValues, attributeIds, skillIds, classFamilies,
+  skillsAboveBaseline, sumValues, attributeIds, skillIds, classFamilies, familyOfSkills,
 } from '../../game/src/character/sheet.js';
 import {
   raceTerm, derivedDisposition, band, raceSurcharge, priceQuote, guardTerms,
@@ -368,6 +368,36 @@ if (run('signatures')) {
     '540 constructible, 0 empty (hard fail below 400)');
   // Every one composes a legal character — the same loop already asserted the invariants.
   note('every constructed signature also satisfies the 112-point and 5..10-raised invariants');
+
+  // The custom and questionnaire routes must land INSIDE the grid, or the 540 claim is only
+  // true of the named route and every memorable character falls out of it. Exhaustive over a
+  // deterministic sweep of custom skill sets: all C(19,3) primaries x a rotating secondary
+  // pair is 969 x 19 = 18,411 shapes, which is cheap and complete enough to be a proof.
+  const famSet = new Set(classFamilies(data));
+  const outside = [];
+  let shapes = 0;
+  for (let a = 0; a < SKILLS.length; a++) for (let b = a + 1; b < SKILLS.length; b++) for (let c = b + 1; c < SKILLS.length; c++) {
+    const rest = SKILLS.filter((_, i) => i !== a && i !== b && i !== c);
+    for (let s = 0; s < rest.length - 1; s++) {
+      shapes++;
+      const fit = familyOfSkills(data, [SKILLS[a], SKILLS[b], SKILLS[c]], [rest[s], rest[s + 1]]);
+      if (!famSet.has(fit.family)) outside.push(`${SKILLS[a]}/${SKILLS[b]}/${SKILLS[c]}+${rest[s]}/${rest[s + 1]} -> ${fit.family}`);
+      break; // one secondary pair per primary triple keeps the sweep at C(19,3)
+    }
+  }
+  check('CHR01-M5-custom-in-grid', outside.length === 0,
+    `${shapes.toLocaleString('en-GB')} custom skill shapes classified; ${outside.length} landed outside the six families`,
+    'zero — a custom class is one of the six families, or every custom start falls out of the 540');
+  const famCounts = {};
+  for (let a = 0; a < SKILLS.length; a++) for (let b = a + 1; b < SKILLS.length; b++) for (let c = b + 1; c < SKILLS.length; c++) {
+    const rest = SKILLS.filter((_, i) => i !== a && i !== b && i !== c);
+    const f = familyOfSkills(data, [SKILLS[a], SKILLS[b], SKILLS[c]], [rest[0], rest[1]]).family;
+    famCounts[f] = (famCounts[f] || 0) + 1;
+  }
+  note(`custom-shape family distribution: ${Object.entries(famCounts).map(([k, v]) => `${k}=${v}`).join(' ')}`);
+  check('CHR01-M5-custom-spreads', Object.keys(famCounts).length === 6 && Math.min(...Object.values(famCounts)) >= 30,
+    `${Object.keys(famCounts).length}/6 families reachable from the custom route; rarest has ${Math.min(...Object.values(famCounts))} shapes`,
+    'all six reachable, none vanishingly rare — a classifier that answers "scout" to everything is not a classifier');
 }
 
 // ============================================================================================

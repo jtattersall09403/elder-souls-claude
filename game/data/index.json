@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 89,
+  "file_count": 92,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -37,8 +37,8 @@
       "path": "combat/clips.json",
       "schema": "elder-souls/clips@1",
       "id": null,
-      "bytes": 22551,
-      "sha256": "acd3ab691526377b"
+      "bytes": 22578,
+      "sha256": "56e1ce9c5466f342"
     },
     {
       "path": "combat/enemies/beast_slitherfang.json",
@@ -81,6 +81,13 @@
       "id": "cam_rat",
       "bytes": 1130,
       "sha256": "9a668a05039678bb"
+    },
+    {
+      "path": "combat/enemies/champion_hist_marked.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "champion_hist_marked",
+      "bytes": 3207,
+      "sha256": "2d1f73fdf13c6ec6"
     },
     {
       "path": "combat/enemies/dummy_passive.json",
@@ -292,6 +299,13 @@
       "declared_incomplete": true
     },
     {
+      "path": "progression/KNOWN-GAPS.json",
+      "schema": "elder-souls/known-gaps@1",
+      "id": "known-gaps",
+      "bytes": 4294,
+      "sha256": "1b75c2702e0a8193"
+    },
+    {
       "path": "progression/attributes.json",
       "schema": "elder-souls/attributes@1",
       "id": "attributes",
@@ -309,15 +323,15 @@
       "path": "progression/classes.json",
       "schema": "elder-souls/classes@1",
       "id": "classes",
-      "bytes": 9727,
-      "sha256": "eaa0150751dbb3ea"
+      "bytes": 12271,
+      "sha256": "0aa35558d4e8a405"
     },
     {
       "path": "progression/creation.json",
       "schema": "elder-souls/creation@1",
       "id": "creation",
-      "bytes": 9546,
-      "sha256": "e287b88d158610d1",
+      "bytes": 9686,
+      "sha256": "f19c26140c6c3f38",
       "declared_incomplete": true
     },
     {
@@ -339,7 +353,7 @@
       "schema": "elder-souls/race-reactions@1",
       "id": "race-reactions",
       "bytes": 11326,
-      "sha256": "39f119f9dc7daf80",
+      "sha256": "3eabc6d54862836c",
       "declared_incomplete": true
     },
     {
@@ -371,6 +385,13 @@
       "bytes": 12231,
       "sha256": "b1f6934fc6fe962d",
       "declared_incomplete": true
+    },
+    {
+      "path": "states/arena_champion.json",
+      "schema": "elder-souls/state@1",
+      "id": "arena_champion",
+      "bytes": 1155,
+      "sha256": "4ba5ce9b4613d648"
     },
     {
       "path": "states/arena_duel.json",

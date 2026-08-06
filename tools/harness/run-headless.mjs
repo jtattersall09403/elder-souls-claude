@@ -19,6 +19,8 @@ OPTIONS
   --entry <path>        HTML entry point (default: game/index.html)
   --url <url>           Load an already-served URL instead of starting a static server
   --seed <n>            Override the scenario seed
+  --state <k=v,...>     Patch the loaded state's character before the run. RI-CHR02 method 8:
+                        --state "race=dunmer,upbringing=foreign-born" 
   --frames <n>          Override the scenario frame count
   --out <dir>           Run directory (default: reports/runs/<runId>)
   --width <n>           Viewport width (default 1920)
@@ -50,6 +52,17 @@ const seed = args.seed !== undefined ? Number(args.seed) : scenario.seed;
 const frames = args.frames !== undefined ? Number(args.frames) : scenario.frames;
 log(`scenario=${scenario.id} seed=${seed} frames=${frames}`);
 
+// RI-CHR02 method 8 prescribes this literally: --state "race=<r>,upbringing=foreign-born".
+const stateOverride = {};
+if (args.state) {
+  for (const kv of String(args.state).split(',')) {
+    const i = kv.indexOf('=');
+    if (i < 0) { process.stderr.write(`[harness] --state expects k=v pairs, got '${kv}'\n`); process.exit(EXIT.USAGE); }
+    stateOverride[kv.slice(0, i).trim()] = kv.slice(i + 1).trim();
+  }
+  log(`state override: ${JSON.stringify(stateOverride)}`);
+}
+
 const handle = await launchGame(args);
 // Created only once the game actually loaded, so a missing game leaves no empty run dirs.
 const runDir = newRunDir(scenario.id, seed, args.out);
@@ -57,7 +70,7 @@ log(`run dir: ${path.relative(process.cwd(), runDir.dir) || runDir.dir}`);
 let manifest;
 try {
   manifest = await runScenario(handle, scenario, {
-    runDir, seed, frames,
+    runDir, seed, frames, stateOverride,
     trace: args['no-trace'] !== true,
     chunk: Number(args.chunk || 300),
     onProgress: (a, b) => { if (a % 1200 === 0 || a === b) log(`  ${a}/${b} frames`); },

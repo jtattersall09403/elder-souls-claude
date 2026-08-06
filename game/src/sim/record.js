@@ -148,6 +148,24 @@ export function makeRecord(sim, input, bus, opts, perf) {
     },
   };
   if (perf) rec.perf = perf;
+  // W1-07: the composed sheet rides on the SNAPSHOT, not on every frame record. Two reasons,
+  // both from the corpus: RI-CHR01 method 7 blinds a trace by stripping creation metadata,
+  // which is easier when the frames never carried it; and RI-CHR02 method 8 needs the run to
+  // be self-identifying, which snapshot.json + manifest.json already deliver.
+  if (opts.character && sim.character) {
+    const c = sim.character;
+    rec.character = {
+      given_name: c.given_name, hatch_name: c.hatch_name, sex: c.sex,
+      race: c.race, upbringing: c.upbringing,
+      class_id: c.class_id, class_name: c.class_name, class_family: c.class_family, class_route: c.class_route,
+      birthsign: c.birthsign, birthsign_second: c.birthsign_second,
+      signature: c.signature.key,
+      attributes: c.attributes, skills: c.skills,
+      powers: c.powers, drawbacks: c.drawbacks,
+      invariants: c.invariants,
+      writ_text: c.writ_text || null,
+    };
+  }
   return rec;
 }
 
@@ -156,6 +174,13 @@ function enemyRecord(e, sim, opts) {
   const dx = e.pos[0] - p.pos[0], dz = e.pos[2] - p.pos[2];
   return {
     eid: e.eid,
+    // W1-07 / RI-CHR02 method 8: "assert the enemy archetype and moveset ids are identical
+    // across all three runs". Both are in every frame record so that assertion is a diff of
+    // two trace files rather than a promise in a verdict.
+    statblock: e.id,
+    moveset: `enemy:${e.id}`,
+    encounter: e.encounterId || null,
+    encounter_role: e.encounterRole || null,
     archetype: e.archetype,
     tier: e.tier,
     state: e.state,

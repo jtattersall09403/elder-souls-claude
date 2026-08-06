@@ -84,6 +84,15 @@ export async function runScenario(handle, scenario, opts = {}) {
   if (scenario.world.timeOfDay !== undefined) await handle.hOpt('setTimeOfDay', scenario.world.timeOfDay);
   if (scenario.world.weather !== undefined) await handle.hOpt('setWeather', scenario.world.weather);
 
+  // 2b. W1-07 — the `--state "race=<r>,upbringing=<u>"` override RI-CHR02 method 8 prescribes
+  // verbatim. It patches the CHARACTER the loaded state declared and nothing else, so the
+  // three runs of that method differ in exactly one field and a critic can see that they do:
+  // the applied patch is recorded in the manifest and the composed sheet is in the trace.
+  let characterOverride = null;
+  if (opts.stateOverride && Object.keys(opts.stateOverride).length) {
+    characterOverride = await handle.h('setCharacter', opts.stateOverride);
+  }
+
   // 3. scenario setup ops.
   for (const op of scenario.setup) {
     const fn = SETUP_OPS[op.op];
@@ -158,6 +167,14 @@ export async function runScenario(handle, scenario, opts = {}) {
     frames_traced: records,
     warmup_frames: scenario.warmupFrames,
     window_reanchor: reanchor || null,
+    // W1-07: the exact creation patch this run was given, so RI-CHR02 method 8's three runs
+    // are self-describing and a fourth party can see that only one field moved.
+    character_override: opts.stateOverride && Object.keys(opts.stateOverride).length ? opts.stateOverride : null,
+    character: characterOverride ? {
+      race: characterOverride.race, upbringing: characterOverride.upbringing,
+      class_id: characterOverride.class_id, class_family: characterOverride.class_family,
+      birthsign: characterOverride.birthsign, signature: characterOverride.signature ? characterOverride.signature.key : null,
+    } : null,
     fixed_step_hz: 60,
     trace: wantTrace ? { path: path.relative(dir, tracePath), records, body_sha256: traceDigest } : null,
     url: handle.url,

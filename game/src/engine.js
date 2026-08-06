@@ -392,6 +392,20 @@ export class Engine {
    * PLAYER's route to this is the Writ House scene, not this method (RI-JRN01 O7).
    */
   setCharacter(spec) {
+    // A PARTIAL patch is legal and is how RI-CHR02 method 8 works: the state declares a whole
+    // character and `--state "race=dunmer"` moves exactly one field of it, so the three runs
+    // of that method differ in one field and nothing else. Every unspecified field falls back
+    // to the character already loaded.
+    const prev = this.sim.character;
+    if (prev) {
+      spec = {
+        race: prev.race, upbringing: prev.upbringing, class: prev.class_id,
+        birthsign: prev.birthsign, birthsign_second: prev.birthsign_second,
+        given_name: prev.given_name, hatch_name: prev.hatch_name, sex: prev.sex,
+        route: prev.class_route, flags: prev.flags,
+        ...spec,
+      };
+    }
     const ch = composeCharacter(this.chData, {
       race: spec.race, upbringing: spec.upbringing,
       classId: spec.class || spec.classId || null, custom: spec.custom || null,
@@ -1157,7 +1171,7 @@ export class Engine {
    */
   snapshot(opts) {
     const wantPerf = (opts && opts.perf) || this.tracePerf;
-    return makeRecord(this.sim, this.input, this.bus, { enemies: true, hitboxes: true, events: true }, wantPerf ? this._perfBlock() : null);
+    return makeRecord(this.sim, this.input, this.bus, { enemies: true, hitboxes: true, events: true, character: true }, wantPerf ? this._perfBlock() : null);
   }
 
   // ---- perf (A-JRN5) -----------------------------------------------------------------------

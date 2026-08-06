@@ -16,7 +16,7 @@
 //   * it does not touch RNG or the clock. Same inputs, same character, byte for byte.
 'use strict';
 
-import { composeCharacter, birthsignById, classById } from './sheet.js';
+import { composeCharacter, birthsignById, classById, familyOfSkills } from './sheet.js';
 import { selectQuestions, scoreAnswers } from './questionnaire.js';
 
 export class Census {
@@ -214,7 +214,15 @@ export class Census {
         if (this.askedIndex >= this.asked.length) {
           const s = scoreAnswers(this.data, this.answers);
           this.questionnaireResult = s;
-          this.spec.custom = { name: s.matched_class ? classById(this.data, s.matched_class).name : 'what you told her', favoured: s.favoured, neglected: s.neglected, primary: s.primary, secondary: s.secondary };
+          // No named match: the shape is still one of the six families (sheet.familyOfSkills),
+          // and the Warden-Scribe writes what she saw rather than leaving the box empty.
+          const fit = familyOfSkills(this.data, s.primary, s.secondary);
+          const writeIn = this.data.classes.family_write_in[fit.family];
+          this.spec.custom = {
+            name: s.matched_class ? classById(this.data, s.matched_class).name : writeIn,
+            family: fit.family,
+            favoured: s.favoured, neglected: s.neglected, primary: s.primary, secondary: s.secondary,
+          };
           if (s.matched_class) {
             this.spec.classId = s.matched_class;
             this.spec.custom = null;

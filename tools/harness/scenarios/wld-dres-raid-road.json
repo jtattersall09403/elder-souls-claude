@@ -7,6 +7,11 @@
   "warmupFrames": 10,
   "frames": 1800,
   "setup": [],
-  "inputs": [{ "f": 1, "hold": ["forward"], "until": 1800 }],
+  "inputs": [
+    { "f": 1, "move": [0, 1] },
+    { "f": 300, "move": [0, 0] },
+    { "f": 420, "move": [0, 1] },
+    { "f": 600, "move": [0, 0] }
+  ],
   "trace": { "shape": "frame", "enemies": true, "hitboxes": true, "events": true }
 }

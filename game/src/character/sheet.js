@@ -49,7 +49,40 @@ export function upbringingById(data, id) {
  * to know which route produced it. `attribute_deltas` here is built from the two favoured and
  * two neglected picks and is sum-zero by construction.
  */
-export function customClass({ name, favoured, neglected, primary, secondary }) {
+/**
+ * Which of the SIX families a five-skill set belongs to.
+ *
+ * RI-CHR01 §5 makes class_family one of six and multiplies it into the 540. A custom or
+ * questionnaire character therefore cannot be a seventh family called "custom" — that would
+ * put every custom start outside the signature grid the item's whole distinctness claim is
+ * built on. The rule: score each family by how much the five skills overlap the family's
+ * own classes (primary counts 2, secondary 1, and a family scores a skill at its best class's
+ * weight for it), highest wins, ties broken by RI-CHR01 §4's family order. Deterministic,
+ * data-driven, and it is also what the Warden-Scribe is doing when she decides what to write.
+ */
+export function familyOfSkills(data, primary, secondary) {
+  const want = new Map();
+  for (const s of primary) want.set(s, 2);
+  for (const s of secondary) want.set(s, (want.get(s) || 0) + 1);
+  const families = data.classes.families;
+  let best = null, bestScore = -1;
+  for (const f of families) {
+    let score = 0;
+    for (const [skill, w] of want) {
+      let has = 0;
+      for (const c of data.classes.classes) {
+        if (c.family !== f) continue;
+        const v = c.skills[skill] || 0;
+        has = Math.max(has, v === 25 ? 2 : v === 15 ? 1 : 0);
+      }
+      score += w * has;
+    }
+    if (score > bestScore) { bestScore = score; best = f; }
+  }
+  return { family: best, score: bestScore };
+}
+
+export function customClass({ name, favoured, neglected, primary, secondary, family }) {
   if (favoured.length !== 2) throw new Error('custom class: exactly two favoured attributes');
   if (neglected.length !== 2) throw new Error('custom class: exactly two neglected attributes');
   if (primary.length !== 3) throw new Error('custom class: exactly three primary skills');
@@ -64,7 +97,10 @@ export function customClass({ name, favoured, neglected, primary, secondary }) {
   const skills = {};
   for (const s of primary) skills[s] = 25;
   for (const s of secondary) skills[s] = 15;
-  return { id: 'custom', name: name || 'Custom', family: 'custom', custom: true, attribute_deltas, skills };
+  return {
+    id: 'custom', name: name || 'Custom', custom: true, attribute_deltas, skills,
+    family: family || null, // resolved by composeCharacter, which has `data`
+  };
 }
 
 /** attribute_at_creation(a) = 10 + raceDelta[a] + classDelta[a]. Always sums to 112. */
@@ -126,6 +162,13 @@ export function classFamilies(data) {
  */
 export function composeCharacter(data, spec) {
   const classDef = spec.custom ? customClass(spec.custom) : classById(data, spec.classId);
+  // A custom class is still one of the six families (see familyOfSkills), so every route
+  // through creation lands inside RI-CHR01 §5's 540-cell grid.
+  let familyFit = null;
+  if (classDef.custom && !classDef.family) {
+    familyFit = familyOfSkills(data, spec.custom.primary, spec.custom.secondary);
+    classDef.family = familyFit.family;
+  }
   const attributes = composeAttributes(data, spec.race, classDef);
   const skills = composeSkills(data, spec.race, classDef);
   const sign = birthsignById(data, spec.birthsign);
@@ -147,6 +190,7 @@ export function composeCharacter(data, spec) {
     class_id: classDef.id,
     class_name: classDef.custom ? (spec.custom.name || 'Custom') : classDef.name,
     class_family: classDef.family,
+    class_family_fit: familyFit ? familyFit.score : null,
     class_route: spec.route || (classDef.custom ? 'custom' : 'named'),
     birthsign: spec.birthsign,
     birthsign_second: spec.birthsignSecond || null,

@@ -133,20 +133,18 @@ const PROBES = {
     const H = window.__HARNESS;
     const cs = () => H.getCombatState();
     const R = { note: 'H[k] = did the player get hit, for an enemy thrust whose FIRST ACTIVE FRAME lands on press+k. The transition hit->no-hit must occur exactly at k = startup and back at k = startup + iframes.', tiers: {} };
-    const ATK_STARTUP = 54;      // inf_trash thrust, from its statblock
+    const ATK_STARTUP = 54;      // probe_pulse, from its statblock
     for (const [tier, load, span] of [['LIGHT', 15, 60], ['MEDIUM', 50, 68], ['HEAVY', 85, 96]]) {
       const vec = [];
       for (let k = -4; k <= span; k++) {
-        H.setSeed(1337); H.loadState('arena_duel'); H.setEquipLoad(load); H.lockOn('E1');
-        H.stepFrames(6);
-        const base = 30;
-        const atk = base + k - ATK_STARTUP;
-        if (atk >= 0) H.queueEnemyScript('E1', [{ f: atk, move: 'thrust' }]);
-        else H.queueEnemyScript('E1', []);
-        H.queueInputs([{ f: 0, move: [0, 0] }, { f: base, press: ['roll'] }, { f: base + 2, release: ['roll'] }]);
+        H.setSeed(1337); H.loadState('arena_probe'); H.setEquipLoad(load);
+        H.stepFrames(4);
+        const base = 60;
+        H.queueEnemyScript('E1', [{ f: base + k - ATK_STARTUP, move: 'pulse', face: 0 }]);
+        H.queueInputs([{ f: 0, move: [0, 1] }, { f: base, press: ['roll'] }, { f: base + 2, release: ['roll'] }]);
         const hp0 = cs().player.hp;
-        let hit = 0, negated = 0;
-        for (let i = 0; i < base + 200; i++) {
+        let hit = 0;
+        for (let i = 0; i < base + 220; i++) {
           H.stepFrames(1);
           const c = cs();
           if (c.player.hp < hp0) { hit = 1; break; }
@@ -236,7 +234,7 @@ const PROBES = {
       for (let k = 1; k <= TOTAL; k++) {
         H.setSeed(1337); H.loadState('arena_flat'); H.stepFrames(6);
         H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] },
-          { f: k, press: [a] }, { f: k + 2, release: [a] }]);
+          { f: 1 + k, press: [a] }, { f: 3 + k, release: [a] }]);
         H.stepFrames(1);
         let f = 0, executedAt = null, endedAt = null;
         while (f < 200) {
@@ -282,10 +280,8 @@ const PROBES = {
       stamina_after_spend: afterSpend,
       frames_after_spend_to_first_increase: firstRise,
       declared_delay_f: 42,
-      slope_per_frame: firstRise !== null ? +((curve[firstRise + 39] - curve[firstRise + 4]) / 35).toFixed(4) : null,
-      linear: firstRise !== null
-        ? Math.max(...[10, 20, 30, 40].map((i) => Math.abs((curve[firstRise + i] - curve[firstRise + i - 1]) - 0.75))) < 1e-6
-        : false,
+      slope_per_frame: firstRise !== null ? +(curve[firstRise + 9] - curve[firstRise + 8]).toFixed(4) : null,
+      deltas_after_resume: firstRise !== null ? curve.slice(firstRise - 1, firstRise + 9).map((v, i, a) => (i ? +(v - a[i - 1]).toFixed(4) : null)).slice(1) : null,
       sample_38_to_50: curve.slice(37, 50),
     };
 
@@ -298,7 +294,7 @@ const PROBES = {
     for (let i = 0; i < 200; i++) { H.stepFrames(1); g.push(+cs().player.stamina.toFixed(4)); }
     let gr = null;
     for (let i = 1; i < g.length; i++) if (g[i] > g[i - 1]) { gr = i; break; }
-    R.regen_guarded = { first_rise_index: gr, slope_per_frame: gr !== null ? +((g[gr + 39] - g[gr + 4]) / 35).toFixed(4) : null, declared: 0.15 };
+    R.regen_guarded = { first_rise_index: gr, slope_per_frame: gr !== null ? +(g[gr + 9] - g[gr + 8]).toFixed(4) : null, declared: 0.15 };
 
     // M2 — one global re-armed delay, not a per-action cooldown
     H.setSeed(1337); H.loadState('arena_flat'); H.stepFrames(6);
@@ -318,15 +314,17 @@ const PROBES = {
     // RI-CMB09 §3 — the roll-spam arithmetic, and §4 exhaustion
     H.setSeed(1337); H.loadState('arena_flat'); H.stepFrames(6);
     const spam = [{ f: 0, move: [0, 1] }];
-    for (let i = 0; i < 60; i++) { spam.push({ f: i * 4 + 1, press: ['roll'] }, { f: i * 4 + 3, release: ['roll'] }); }
+    for (let i = 0; i < 200; i++) { spam.push({ f: i * 4 + 1, press: ['roll'] }, { f: i * 4 + 3, release: ['roll'] }); }
     H.queueInputs(spam);
     const rollStarts = [];
     let prev = null, drops = 0, minStam = 999, zeroFrames = 0, exhaustedFrames = 0, firstDrop = null, firstExh = null;
-    for (let i = 1; i <= 600; i++) {
+    for (let i = 1; i <= 800; i++) {
       H.stepFrames(1);
       const p = cs().player;
       const id = p.move ? p.move.id : null;
-      if (id === 'roll' && prev !== 'roll') rollStarts.push(i);
+      // A BUFFERED roll chains seamlessly — there is no frame with a null move between two
+      // rolls — so a roll start is anim_frame == 1, not a null-to-roll transition.
+      if (id === 'roll' && p.anim_frame === 1) rollStarts.push(i);
       prev = id;
       if (p.stamina < minStam) minStam = p.stamina;
       if (p.stamina === 0) zeroFrames++;
@@ -370,6 +368,7 @@ const PROBES = {
     for (const shield of ['chitin_buckler', 'marsh_oak_medium', 'naga_tower']) {
       H.setSeed(1337); H.loadState('arena_duel');
       H.setLoadout({ shield });
+      H.teleport(0, 2.5, { yaw: 0 });
       H.lockOn('E1');
       H.queueEnemyScript('E1', [{ f: 8, move: 'chop' }]);
       H.queueInputs([{ f: 0, press: ['block'] }]);
@@ -389,22 +388,23 @@ const PROBES = {
         state_on_impact: hit ? hit.state : null,
       });
     }
-    // M5 — guard break. Spend down first so the block cannot be paid for.
+    // M5 — guard break. The bar has to be genuinely empty when the blow lands, and with a
+    // 0.75/frame regen the only action fast enough to outrun it is the roll (52 f for 22) —
+    // which is RI-CMB09 §3's point stated from the other side. Roll-spam to zero, then guard.
     H.setSeed(1337); H.loadState('arena_duel');
     H.setLoadout({ shield: 'marsh_oak_medium' });
+    H.teleport(0, 2.4, { yaw: 0 });
     H.lockOn('E1');
-    H.queueEnemyScript('E1', [{ f: 175, move: 'chop' }]);
-    H.queueInputs([{ f: 0, move: [0, 1] },
-      { f: 1, press: ['roll'] }, { f: 3, release: ['roll'] },
-      { f: 55, press: ['roll'] }, { f: 57, release: ['roll'] },
-      { f: 109, press: ['roll'] }, { f: 111, release: ['roll'] },
-      { f: 161, press: ['roll'] }, { f: 163, release: ['roll'] },
-      { f: 214, move: [0, 0] }, { f: 216, press: ['block'] }]);
+    H.queueEnemyScript('E1', [{ f: 470, move: 'chop' }]);
+    const spam2 = [{ f: 0, move: [0, 0] }];
+    for (let i = 0; i < 115; i++) spam2.push({ f: i * 4 + 1, press: ['roll'] }, { f: i * 4 + 3, release: ['roll'] });
+    spam2.push({ f: 462, press: ['block'] });
+    H.queueInputs(spam2);
     const trail = [];
-    for (let i = 1; i <= 420; i++) {
+    for (let i = 1; i <= 620; i++) {
       H.stepFrames(1);
       const p = cs().player;
-      trail.push({ f: i, st: p.state, stam: +p.stamina.toFixed(2), hp: p.hp });
+      trail.push({ f: i, st: p.state, stam: +p.stamina.toFixed(2), hp: p.hp, ex: p.exhausted ? 1 : 0 });
     }
     const gb = trail.filter((x) => x.st === 'GUARD_BREAK');
     R.guard_break = {
@@ -415,7 +415,8 @@ const PROBES = {
       stamina_never_negative: trail.every((x) => x.stam >= 0),
       declared_duration_f: 40,
       window: gb.length ? [gb[0].f, gb[gb.length - 1].f] : null,
-      trail_around_break: gb.length ? trail.slice(Math.max(0, gb[0].f - 4), gb[0].f + 46) : trail.slice(-20),
+      stamina_at_539: (trail[538] || {}).stam,
+      trail_around_break: gb.length ? trail.slice(Math.max(0, gb[0].f - 6), gb[0].f + 44) : trail.slice(455, 560),
     };
     return R;
   },
