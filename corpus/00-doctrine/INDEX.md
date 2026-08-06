@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-06T09:02:28Z
+Generated: 2026-08-06T09:03:52Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -30,7 +30,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 - Subsystems with at least one judging reference item: **180**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 14** (7%)
-- Front-matter problems: 147 error(s), 0 warning(s)
+- Front-matter problems: 148 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -695,6 +695,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | `corpus/85-platform/RI-PLT01-frame-budget.md` | judges: "platform.perf.simtime" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/85-platform/RI-PLT01-frame-budget.md` | judges: "platform.perf.allocation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md` | judges: "platform.asset.budget" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md` | judges: "platform.load.ttfp" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md` | judges: "platform.load.hitches" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.firstlaunch.flow" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.chargen.diegesis" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
@@ -981,6 +982,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | ERROR | `corpus/85-platform/RI-PLT01-frame-budget.md` | judges: "platform.perf.simtime" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/85-platform/RI-PLT01-frame-budget.md` | judges: "platform.perf.allocation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md` | judges: "platform.asset.budget" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md` | judges: "platform.load.ttfp" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md` | judges: "platform.load.hitches" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.firstlaunch.flow" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.chargen.diegesis" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |

@@ -46,7 +46,7 @@ menu you carry. Walking to one is part of the cost, which is Morrowind's shape a
 | **Effect knowledge** | You may only combine effects you already own a spell for. You cannot invent `paralyse` by naming it; you must own a `paralyse` spell first. This is what makes buying a cheap tier-1 spell of a new effect a real purchase. |
 | **Tier gate, per effect** | Your school skill must be ≥ the tier requirement of the **resulting** spell's `focus_base` band (RI-MAG02 §D), evaluated **per effect's school**. A two-school spell is gated by both. |
 | **Effect count** | `max_effects = 1 + floor(highest_relevant_school_skill / 25)`, capped at **5**. Skill 5 ⇒ 1 effect. Skill 25 ⇒ 2. Skill 50 ⇒ 3. Skill 75 ⇒ 4. Skill 100 ⇒ 5. |
-| **Attunement** | The finished spell still obeys RI-PRG03 §6: **below the tier requirement it cannot be attuned at all.** Making a spell you cannot yet carry is legal and is MB-3. |
+| **Attunement** | The finished spell still obeys RI-PRG03 §6: **below the tier requirement it cannot be attuned at all.** Making a spell you cannot yet carry is legal and is MB-3. Per §E2 a fortify effect **does** satisfy this gate at the moment of attunement, and attunement is re-evaluated against base values at the next HEARTH rest. |
 | **Cost ceiling** | **None.** You may commission a spell whose `focus_cost` exceeds your `focus_max`. See MB-3. |
 
 **Price.** `gold = round( 1.6 × spell_gold_price ) + 150`, where `spell_gold_price` is
@@ -226,7 +226,7 @@ unrun probe scores zero.
 | # | The breakage | Why it survives | What it costs the player | The test that FAILS if it stops working |
 |---|---|---|---|---|
 | **MB-1** | **Levitate/slowfall into a region you have no business in.** Climb a cliff at level 12 and walk into R5. | S9 gates by lethality, never by level. A world you can only enter in the intended order is not a world. | It kills you, and your sap-debt stays where you dropped it. | Scripted run: `levitate` from an R2 vantage into R5. **FAIL if the crossing is blocked, teleported back, or fenced.** |
-| **MB-2** | **Fortify Skill across an action gate.** `fortify_skill` Security +40 at base Security 40 opens a tier-5 seal. | Fortify buys you an **action**. RI-PRG03's gates are deterministic thresholds, and a temporary number is still a number. | The spell is tier 3, expensive, and the item behind the seal is hand-placed (S12) — you get one thing early and nothing else. | Set Security 40, cast `fortify_skill` +40, attempt a tier-5 lock. **FAIL if it refuses.** |
+| **MB-2** | **Fortify Skill across a gate.** `fortify_skill` Security +40 at base Security 40 opens a tier-5 seal. Same family as RI-EXP06 **B-02**, at a lower stake; where they overlap, B-02 wins (§E2). | A temporary skill is still a skill, and RI-PRG03's gates are deterministic thresholds evaluated at a moment. Every gate is satisfiable this way, station gates included. | The spell is tier 3 and expensive; the item behind the seal is hand-placed (S12), so you get one thing early and nothing else. On a *station* gate the cost is larger and is B-02's: the rank is real and its quests are at that tier. | Set Security 40, cast `fortify_skill` +40, attempt a tier-5 lock. **FAIL if it refuses**, and **FAIL if a base-skill-only evaluation appears anywhere.** |
 | **MB-3** | **Commissioning a spell no designer authored** — including one you cannot cast. | This is the entire point of spellmaking. A UI that only assembles authored combinations has deleted the system. | Gold, at a 1.6× markup, for an object that may be useless. | Build a 3-effect spell absent from `spells.json`; buy it; cast it. **FAIL if the UI refuses any legal combination, or if the spell does not appear in the save.** |
 | **MB-4** | **Telekinesis theft through geometry.** Lift a ledger off a desk through a window, outside a guard's cone. | The crime system already handles being seen. Reach is not the same as impunity. | 25 m of reach, a spell slot, and the crime still counts if witnessed. | Place an owned item behind a barred window; steal it with `telekinesis` from outside. **FAIL if the interaction is range-clamped to melee.** |
 | **MB-5** | **Frenzy as an indirect murder weapon.** Frenzy a guard into killing your quest target. | Two systems (disposition/AI aggression and crime attribution) producing a result nobody wrote. This is RI-EXP02's T4 class, verbatim. | If **anyone with line of sight saw the cast**, every consequence is attributed to you: bounty, faction standing, and S10's severed thread if the victim mattered. **Produces permanent unrecoverable world state.** | Frenzy an NPC into a lethal fight. **FAIL if the death is unattributed, or if the target is immune, or if the world state reverts.** |
@@ -494,7 +494,12 @@ The three decisions most worth re-litigating with evidence:
 
 ### Amendments requested of other owners
 
-- **RI-EXP06 (experience owner):** eleven register entries (MB-1 … MB-11) are offered above in
+- **RI-EXP06 (experience owner):** **two resolutions first** (§E). (a) **B-08 is not struck** —
+  amend its `What it is` clause to the charge-based formulation in §E1 and **lift the
+  conditional**; `PB-08` passes unmodified and the register stays at twelve live entries.
+  (b) **B-02 is accepted and this item has withdrawn its conflicting ruling** — no change is
+  requested there, only acknowledgement that `corpus/25-magic/` now conforms.
+  Then: eleven register entries (MB-1 … MB-11) are offered above in
   the register's own shape — what it is, why it survives, what it costs, and a test that fails
   if it stops working. **MB-5 and MB-11 produce permanent unrecoverable world state**, which is
   the register's ≥2 requirement, and **MB-1, MB-3, MB-8 and MB-10 are systemic**, which is its
