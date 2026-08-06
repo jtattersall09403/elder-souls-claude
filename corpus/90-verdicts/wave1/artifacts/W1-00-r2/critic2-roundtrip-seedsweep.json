@@ -1,0 +1,1534 @@
+{
+  "methods_count": 55,
+  "methods": [
+    "advanceWallClock",
+    "aggro",
+    "camera",
+    "clearInputs",
+    "deleteSaveSlot",
+    "despawn",
+    "exportSave",
+    "getActionSet",
+    "getBuildInfo",
+    "getCapabilityReport",
+    "getDeterminismReport",
+    "getFrame",
+    "getInputState",
+    "getLoadState",
+    "getPerfStats",
+    "getPlayerStats",
+    "getQuestState",
+    "getRenderRate",
+    "getSaveManifest",
+    "getSeed",
+    "getStateHash",
+    "getStorageInfo",
+    "getWorldStats",
+    "importSave",
+    "listAnchors",
+    "listEntities",
+    "listSaveSlots",
+    "loadState",
+    "lockOn",
+    "queueInputs",
+    "readSave",
+    "ready",
+    "reanchorFreeRunning",
+    "renderFrame",
+    "reset",
+    "saveRoundTrip",
+    "saveState",
+    "screenshot",
+    "setMode",
+    "setRenderRate",
+    "setSeed",
+    "setTimeOfDay",
+    "setUIVisible",
+    "setWeather",
+    "simulateStorageFailure",
+    "snapshot",
+    "spawn",
+    "stallMainThread",
+    "stepFrames",
+    "teleport",
+    "traceDrain",
+    "traceStart",
+    "traceStop",
+    "version",
+    "writeSave"
+  ],
+  "seeds": [
+    90210,
+    8675309,
+    271828,
+    999983,
+    1,
+    2,
+    3,
+    2147483647,
+    4294967295,
+    65536,
+    123456789,
+    31337,
+    777,
+    5150,
+    24601,
+    112358,
+    999999937,
+    42424242,
+    7,
+    100003
+  ],
+  "states": [
+    "arena_flat",
+    "swamp_canopy"
+  ],
+  "trials": 40,
+  "first_trip_mismatches_hostcanon": 40,
+  "first_trip_mismatches_gamehash": 0,
+  "second_trip_mismatches_gamehash": 0,
+  "trials_live_words_all_uint32": 40,
+  "trials_with_non_volatile_diff": 0,
+  "results": [
+    {
+      "seed": 90210,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "c75cb38ff3525ceb3958d3997f06a84f4e77b2b9d319e464a09c64bc1d81defd",
+        "c75cb38ff3525ceb3958d3997f06a84f4e77b2b9d319e464a09c64bc1d81defd",
+        "c75cb38ff3525ceb3958d3997f06a84f4e77b2b9d319e464a09c64bc1d81defd"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          3779207774
+        ],
+        [
+          "rng.b",
+          3430117918
+        ],
+        [
+          "rng.c",
+          2789941649
+        ],
+        [
+          "rng.d",
+          4113504979
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 90210,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "261c0f44dffb27c6c0bd81650faabca4d7e36ced406b0a01d02b7cec259fc9de",
+        "261c0f44dffb27c6c0bd81650faabca4d7e36ced406b0a01d02b7cec259fc9de",
+        "261c0f44dffb27c6c0bd81650faabca4d7e36ced406b0a01d02b7cec259fc9de"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          3779207774
+        ],
+        [
+          "rng.b",
+          3430117918
+        ],
+        [
+          "rng.c",
+          2789941649
+        ],
+        [
+          "rng.d",
+          4113504979
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 8675309,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "f949f5d909123264bb86974eafb66de72422d71bf87b52ceaf094b5bd896adaf",
+        "f949f5d909123264bb86974eafb66de72422d71bf87b52ceaf094b5bd896adaf",
+        "f949f5d909123264bb86974eafb66de72422d71bf87b52ceaf094b5bd896adaf"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          67498535
+        ],
+        [
+          "rng.b",
+          894015301
+        ],
+        [
+          "rng.c",
+          1941847828
+        ],
+        [
+          "rng.d",
+          3467245256
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 8675309,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "e05e4a2e07e549d9f18d9cd5fbff4237066bc3b46648ab615fecd41b89b5037a",
+        "e05e4a2e07e549d9f18d9cd5fbff4237066bc3b46648ab615fecd41b89b5037a",
+        "e05e4a2e07e549d9f18d9cd5fbff4237066bc3b46648ab615fecd41b89b5037a"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          67498535
+        ],
+        [
+          "rng.b",
+          894015301
+        ],
+        [
+          "rng.c",
+          1941847828
+        ],
+        [
+          "rng.d",
+          3467245256
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 271828,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "629c6f8a6ea3dc28ddc93488bbd8f7e9b7018bd94113e29ad5f813cebc0b5ab7",
+        "629c6f8a6ea3dc28ddc93488bbd8f7e9b7018bd94113e29ad5f813cebc0b5ab7",
+        "629c6f8a6ea3dc28ddc93488bbd8f7e9b7018bd94113e29ad5f813cebc0b5ab7"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          556448771
+        ],
+        [
+          "rng.b",
+          524928107
+        ],
+        [
+          "rng.c",
+          2629170470
+        ],
+        [
+          "rng.d",
+          3899553477
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 271828,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "d9946c2944a803d473b06ea06cb7f0b8bbc2f19e3aa8956243d8f1a41aa4962d",
+        "d9946c2944a803d473b06ea06cb7f0b8bbc2f19e3aa8956243d8f1a41aa4962d",
+        "d9946c2944a803d473b06ea06cb7f0b8bbc2f19e3aa8956243d8f1a41aa4962d"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          556448771
+        ],
+        [
+          "rng.b",
+          524928107
+        ],
+        [
+          "rng.c",
+          2629170470
+        ],
+        [
+          "rng.d",
+          3899553477
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 999983,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "b9ffe067fb06f8993f51c11845bf49f96cb4e6a4c562be37a8506b539c60c168",
+        "b9ffe067fb06f8993f51c11845bf49f96cb4e6a4c562be37a8506b539c60c168",
+        "b9ffe067fb06f8993f51c11845bf49f96cb4e6a4c562be37a8506b539c60c168"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1468332750
+        ],
+        [
+          "rng.b",
+          1229830973
+        ],
+        [
+          "rng.c",
+          574042181
+        ],
+        [
+          "rng.d",
+          1506534242
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 999983,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "9c9aa644d7cc6b9aeb1c252af0c2df77200e0339be5aa2c547361080ec17d320",
+        "9c9aa644d7cc6b9aeb1c252af0c2df77200e0339be5aa2c547361080ec17d320",
+        "9c9aa644d7cc6b9aeb1c252af0c2df77200e0339be5aa2c547361080ec17d320"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1468332750
+        ],
+        [
+          "rng.b",
+          1229830973
+        ],
+        [
+          "rng.c",
+          574042181
+        ],
+        [
+          "rng.d",
+          1506534242
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 1,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "3dd68467f95084b8a9615488bd0a1b36eba755ba2a2933fef7489899ead2be6e",
+        "3dd68467f95084b8a9615488bd0a1b36eba755ba2a2933fef7489899ead2be6e",
+        "3dd68467f95084b8a9615488bd0a1b36eba755ba2a2933fef7489899ead2be6e"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          4269307524
+        ],
+        [
+          "rng.b",
+          2439480051
+        ],
+        [
+          "rng.c",
+          1591552067
+        ],
+        [
+          "rng.d",
+          3011703621
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 1,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "abfe9e9085d4a2755a32e771d606d76b5146fea26fbf455b02133b16b50e945f",
+        "abfe9e9085d4a2755a32e771d606d76b5146fea26fbf455b02133b16b50e945f",
+        "abfe9e9085d4a2755a32e771d606d76b5146fea26fbf455b02133b16b50e945f"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          4269307524
+        ],
+        [
+          "rng.b",
+          2439480051
+        ],
+        [
+          "rng.c",
+          1591552067
+        ],
+        [
+          "rng.d",
+          3011703621
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 2,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "8447d0a73366554ccd920febfc2d51a550c143c80d3bcc2ef0875417072c5327",
+        "8447d0a73366554ccd920febfc2d51a550c143c80d3bcc2ef0875417072c5327",
+        "8447d0a73366554ccd920febfc2d51a550c143c80d3bcc2ef0875417072c5327"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          3443621500
+        ],
+        [
+          "rng.b",
+          1653462310
+        ],
+        [
+          "rng.c",
+          2866173591
+        ],
+        [
+          "rng.d",
+          2191063232
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 2,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "b3528ba58ef98c34f4d7a202961a2c31556c368426c7208dc628f8ba5f9822c2",
+        "b3528ba58ef98c34f4d7a202961a2c31556c368426c7208dc628f8ba5f9822c2",
+        "b3528ba58ef98c34f4d7a202961a2c31556c368426c7208dc628f8ba5f9822c2"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          3443621500
+        ],
+        [
+          "rng.b",
+          1653462310
+        ],
+        [
+          "rng.c",
+          2866173591
+        ],
+        [
+          "rng.d",
+          2191063232
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 3,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "48418b8584aa38138112e1951e296ef190c58d52b263fa066b19e70bdf92a7b7",
+        "48418b8584aa38138112e1951e296ef190c58d52b263fa066b19e70bdf92a7b7",
+        "48418b8584aa38138112e1951e296ef190c58d52b263fa066b19e70bdf92a7b7"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1960653323
+        ],
+        [
+          "rng.b",
+          4106403850
+        ],
+        [
+          "rng.c",
+          1299179686
+        ],
+        [
+          "rng.d",
+          701051372
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 3,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "225f7b5bd0406e78a54ba999ac96b4862e6ef001e69eaade4662cf84de8ff36d",
+        "225f7b5bd0406e78a54ba999ac96b4862e6ef001e69eaade4662cf84de8ff36d",
+        "225f7b5bd0406e78a54ba999ac96b4862e6ef001e69eaade4662cf84de8ff36d"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1960653323
+        ],
+        [
+          "rng.b",
+          4106403850
+        ],
+        [
+          "rng.c",
+          1299179686
+        ],
+        [
+          "rng.d",
+          701051372
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 2147483647,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "5a5b6459e0d7684f364a43b4dd9166aa4acc25a756e7ddb46f2b1399aa1587de",
+        "5a5b6459e0d7684f364a43b4dd9166aa4acc25a756e7ddb46f2b1399aa1587de",
+        "5a5b6459e0d7684f364a43b4dd9166aa4acc25a756e7ddb46f2b1399aa1587de"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          2068974220
+        ],
+        [
+          "rng.b",
+          3358380092
+        ],
+        [
+          "rng.c",
+          2187163230
+        ],
+        [
+          "rng.d",
+          2026769092
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 2147483647,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "9666f297fdcebbd00653d3b808a2f3ef346fc9bc2b11467176ad3f84d7054a45",
+        "9666f297fdcebbd00653d3b808a2f3ef346fc9bc2b11467176ad3f84d7054a45",
+        "9666f297fdcebbd00653d3b808a2f3ef346fc9bc2b11467176ad3f84d7054a45"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          2068974220
+        ],
+        [
+          "rng.b",
+          3358380092
+        ],
+        [
+          "rng.c",
+          2187163230
+        ],
+        [
+          "rng.d",
+          2026769092
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 4294967295,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "c6eb3cf181e983ab392183e4c376971d024e24eeecf6f845f5b23c8512dd0c58",
+        "c6eb3cf181e983ab392183e4c376971d024e24eeecf6f845f5b23c8512dd0c58",
+        "c6eb3cf181e983ab392183e4c376971d024e24eeecf6f845f5b23c8512dd0c58"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          2492668160
+        ],
+        [
+          "rng.b",
+          1286403119
+        ],
+        [
+          "rng.c",
+          4085013518
+        ],
+        [
+          "rng.d",
+          2762329233
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 4294967295,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "8fe85f752f6ad9e2aca8e238edfc23bbe9445f10d178aa57a6439905ea29c382",
+        "8fe85f752f6ad9e2aca8e238edfc23bbe9445f10d178aa57a6439905ea29c382",
+        "8fe85f752f6ad9e2aca8e238edfc23bbe9445f10d178aa57a6439905ea29c382"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          2492668160
+        ],
+        [
+          "rng.b",
+          1286403119
+        ],
+        [
+          "rng.c",
+          4085013518
+        ],
+        [
+          "rng.d",
+          2762329233
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 65536,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "abd885d8b86f9f16c1428a219df302ff68e00fc5a43180199ee348409daae409",
+        "abd885d8b86f9f16c1428a219df302ff68e00fc5a43180199ee348409daae409",
+        "abd885d8b86f9f16c1428a219df302ff68e00fc5a43180199ee348409daae409"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          526623620
+        ],
+        [
+          "rng.b",
+          168786888
+        ],
+        [
+          "rng.c",
+          274416100
+        ],
+        [
+          "rng.d",
+          3052783121
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 65536,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "886dd08002b44cc28e6f85a42ce47d361a585980f99ee9b8ee9d68632f4fcb2f",
+        "886dd08002b44cc28e6f85a42ce47d361a585980f99ee9b8ee9d68632f4fcb2f",
+        "886dd08002b44cc28e6f85a42ce47d361a585980f99ee9b8ee9d68632f4fcb2f"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          526623620
+        ],
+        [
+          "rng.b",
+          168786888
+        ],
+        [
+          "rng.c",
+          274416100
+        ],
+        [
+          "rng.d",
+          3052783121
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 123456789,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "0b0ab60f26a4af6a524341cbf03d2a2970bb207f01472d10237fa76b46952b30",
+        "0b0ab60f26a4af6a524341cbf03d2a2970bb207f01472d10237fa76b46952b30",
+        "0b0ab60f26a4af6a524341cbf03d2a2970bb207f01472d10237fa76b46952b30"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1380282592
+        ],
+        [
+          "rng.b",
+          2004402968
+        ],
+        [
+          "rng.c",
+          217364340
+        ],
+        [
+          "rng.d",
+          418210568
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 123456789,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "d15abdb47d3ce55ff976bd450e746ce0912e5ddc42dccaba3db3b81091c25bbc",
+        "d15abdb47d3ce55ff976bd450e746ce0912e5ddc42dccaba3db3b81091c25bbc",
+        "d15abdb47d3ce55ff976bd450e746ce0912e5ddc42dccaba3db3b81091c25bbc"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1380282592
+        ],
+        [
+          "rng.b",
+          2004402968
+        ],
+        [
+          "rng.c",
+          217364340
+        ],
+        [
+          "rng.d",
+          418210568
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 31337,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "095123202f03d121c729bfad8e28e4868861d221cda208934e4ae8fb04faec0f",
+        "095123202f03d121c729bfad8e28e4868861d221cda208934e4ae8fb04faec0f",
+        "095123202f03d121c729bfad8e28e4868861d221cda208934e4ae8fb04faec0f"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          3702222294
+        ],
+        [
+          "rng.b",
+          2411704914
+        ],
+        [
+          "rng.c",
+          1624664710
+        ],
+        [
+          "rng.d",
+          1736917021
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 31337,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "1e2d98e79e4643edf2d66b281fe8eced1dbedfed84c0f0f7f8c69252cf75f7c4",
+        "1e2d98e79e4643edf2d66b281fe8eced1dbedfed84c0f0f7f8c69252cf75f7c4",
+        "1e2d98e79e4643edf2d66b281fe8eced1dbedfed84c0f0f7f8c69252cf75f7c4"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          3702222294
+        ],
+        [
+          "rng.b",
+          2411704914
+        ],
+        [
+          "rng.c",
+          1624664710
+        ],
+        [
+          "rng.d",
+          1736917021
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 777,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "b8277681dba457e6d2696c5a4a38a72c99f0a4fa946970ecb5df1822d1d20caa",
+        "b8277681dba457e6d2696c5a4a38a72c99f0a4fa946970ecb5df1822d1d20caa",
+        "b8277681dba457e6d2696c5a4a38a72c99f0a4fa946970ecb5df1822d1d20caa"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1710133350
+        ],
+        [
+          "rng.b",
+          3321906369
+        ],
+        [
+          "rng.c",
+          806077973
+        ],
+        [
+          "rng.d",
+          1287659050
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 777,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "430c52f62a47cb435b82cab930f8daf7108b2e1a172235b74a8a4e753b8d4824",
+        "430c52f62a47cb435b82cab930f8daf7108b2e1a172235b74a8a4e753b8d4824",
+        "430c52f62a47cb435b82cab930f8daf7108b2e1a172235b74a8a4e753b8d4824"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1710133350
+        ],
+        [
+          "rng.b",
+          3321906369
+        ],
+        [
+          "rng.c",
+          806077973
+        ],
+        [
+          "rng.d",
+          1287659050
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 5150,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "9fdf7800f51a6c545279c25808922c309bb17f9d284d8588a8f46017b6e513a4",
+        "9fdf7800f51a6c545279c25808922c309bb17f9d284d8588a8f46017b6e513a4",
+        "9fdf7800f51a6c545279c25808922c309bb17f9d284d8588a8f46017b6e513a4"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          791918008
+        ],
+        [
+          "rng.b",
+          3013197883
+        ],
+        [
+          "rng.c",
+          2073067811
+        ],
+        [
+          "rng.d",
+          693230426
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 5150,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "22deeca29f3a5f73c389a24e22eeda7bc195263935275c484cb8ae58796ba72c",
+        "22deeca29f3a5f73c389a24e22eeda7bc195263935275c484cb8ae58796ba72c",
+        "22deeca29f3a5f73c389a24e22eeda7bc195263935275c484cb8ae58796ba72c"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          791918008
+        ],
+        [
+          "rng.b",
+          3013197883
+        ],
+        [
+          "rng.c",
+          2073067811
+        ],
+        [
+          "rng.d",
+          693230426
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 24601,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "825a1fc4e48d3fd592c62fc723d27359b54869d23d180ba3311893499c801a65",
+        "825a1fc4e48d3fd592c62fc723d27359b54869d23d180ba3311893499c801a65",
+        "825a1fc4e48d3fd592c62fc723d27359b54869d23d180ba3311893499c801a65"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          657429641
+        ],
+        [
+          "rng.b",
+          2177251273
+        ],
+        [
+          "rng.c",
+          3804716553
+        ],
+        [
+          "rng.d",
+          2576617577
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 24601,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "adb19b3d97e981fdf0c259eaf938685a88d91b6729e929e626de364cace263ef",
+        "adb19b3d97e981fdf0c259eaf938685a88d91b6729e929e626de364cace263ef",
+        "adb19b3d97e981fdf0c259eaf938685a88d91b6729e929e626de364cace263ef"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          657429641
+        ],
+        [
+          "rng.b",
+          2177251273
+        ],
+        [
+          "rng.c",
+          3804716553
+        ],
+        [
+          "rng.d",
+          2576617577
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 112358,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "caeb420dc528aec4fd3f50fd0c33a9a36e38b16739c498b234a19e3516527cb0",
+        "caeb420dc528aec4fd3f50fd0c33a9a36e38b16739c498b234a19e3516527cb0",
+        "caeb420dc528aec4fd3f50fd0c33a9a36e38b16739c498b234a19e3516527cb0"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          2024071583
+        ],
+        [
+          "rng.b",
+          2626476589
+        ],
+        [
+          "rng.c",
+          2193762043
+        ],
+        [
+          "rng.d",
+          494086156
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 112358,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "9d16c12df9cc80d3c838da50f94927b1079ae15aad879b4fa2325a88aeeb0d97",
+        "9d16c12df9cc80d3c838da50f94927b1079ae15aad879b4fa2325a88aeeb0d97",
+        "9d16c12df9cc80d3c838da50f94927b1079ae15aad879b4fa2325a88aeeb0d97"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          2024071583
+        ],
+        [
+          "rng.b",
+          2626476589
+        ],
+        [
+          "rng.c",
+          2193762043
+        ],
+        [
+          "rng.d",
+          494086156
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 999999937,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "be9a628204407fe99e72f13000696da1c4c313219729bc3024f76604f1a72e93",
+        "be9a628204407fe99e72f13000696da1c4c313219729bc3024f76604f1a72e93",
+        "be9a628204407fe99e72f13000696da1c4c313219729bc3024f76604f1a72e93"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1614802663
+        ],
+        [
+          "rng.b",
+          538665242
+        ],
+        [
+          "rng.c",
+          1245587196
+        ],
+        [
+          "rng.d",
+          151380788
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 999999937,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "d433107d6bda0c45462160bca9367dda3172add36c089406b94363c478a8010e",
+        "d433107d6bda0c45462160bca9367dda3172add36c089406b94363c478a8010e",
+        "d433107d6bda0c45462160bca9367dda3172add36c089406b94363c478a8010e"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1614802663
+        ],
+        [
+          "rng.b",
+          538665242
+        ],
+        [
+          "rng.c",
+          1245587196
+        ],
+        [
+          "rng.d",
+          151380788
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 42424242,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "9efcfe23196aadae385fd410932cb6ce6a93c073262eb4975a1419cc390df932",
+        "9efcfe23196aadae385fd410932cb6ce6a93c073262eb4975a1419cc390df932",
+        "9efcfe23196aadae385fd410932cb6ce6a93c073262eb4975a1419cc390df932"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          3250904034
+        ],
+        [
+          "rng.b",
+          4007726383
+        ],
+        [
+          "rng.c",
+          1380711535
+        ],
+        [
+          "rng.d",
+          1100290599
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 42424242,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "a714d7f8141d20745d835cdee444a501a69267b19d82ca530012ac8cce1d7570",
+        "a714d7f8141d20745d835cdee444a501a69267b19d82ca530012ac8cce1d7570",
+        "a714d7f8141d20745d835cdee444a501a69267b19d82ca530012ac8cce1d7570"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          3250904034
+        ],
+        [
+          "rng.b",
+          4007726383
+        ],
+        [
+          "rng.c",
+          1380711535
+        ],
+        [
+          "rng.d",
+          1100290599
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 7,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "3a0322ae3df7cb98cdc7c73a6f66f292e241a78393ecb808ea2f7d2519550146",
+        "3a0322ae3df7cb98cdc7c73a6f66f292e241a78393ecb808ea2f7d2519550146",
+        "3a0322ae3df7cb98cdc7c73a6f66f292e241a78393ecb808ea2f7d2519550146"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          4166333721
+        ],
+        [
+          "rng.b",
+          2693401545
+        ],
+        [
+          "rng.c",
+          2365806919
+        ],
+        [
+          "rng.d",
+          1648156499
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 7,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "baf713c0c5b29f0623ca583dd5d586b5b7ab9458088d4c35c3960a1ae82405c4",
+        "baf713c0c5b29f0623ca583dd5d586b5b7ab9458088d4c35c3960a1ae82405c4",
+        "baf713c0c5b29f0623ca583dd5d586b5b7ab9458088d4c35c3960a1ae82405c4"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          4166333721
+        ],
+        [
+          "rng.b",
+          2693401545
+        ],
+        [
+          "rng.c",
+          2365806919
+        ],
+        [
+          "rng.d",
+          1648156499
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 100003,
+      "state": "arena_flat",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "4576e5ebeda481005f7209c20761c826224dda95fbe2c54e59dd000e0a63b1d5",
+        "4576e5ebeda481005f7209c20761c826224dda95fbe2c54e59dd000e0a63b1d5",
+        "4576e5ebeda481005f7209c20761c826224dda95fbe2c54e59dd000e0a63b1d5"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1746386502
+        ],
+        [
+          "rng.b",
+          2494776069
+        ],
+        [
+          "rng.c",
+          3859790304
+        ],
+        [
+          "rng.d",
+          2593268751
+        ]
+      ],
+      "live_words_all_uint32": true
+    },
+    {
+      "seed": 100003,
+      "state": "swamp_canopy",
+      "host_canon_sha_trip1": false,
+      "host_canon_sha_trip2": true,
+      "game_hash_equal_trip1": true,
+      "game_hash_equal_trip2": true,
+      "hashes": [
+        "f4610606cdba9473d20cb18b5badc9b761e3acf147c85389a4078ebfc43db5ee",
+        "f4610606cdba9473d20cb18b5badc9b761e3acf147c85389a4078ebfc43db5ee",
+        "f4610606cdba9473d20cb18b5badc9b761e3acf147c85389a4078ebfc43db5ee"
+      ],
+      "diff_fields": [
+        "volatile.frame"
+      ],
+      "non_volatile_diff": {},
+      "live_rng_words": [
+        [
+          "rng.a",
+          1746386502
+        ],
+        [
+          "rng.b",
+          2494776069
+        ],
+        [
+          "rng.c",
+          3859790304
+        ],
+        [
+          "rng.d",
+          2593268751
+        ]
+      ],
+      "live_words_all_uint32": true
+    }
+  ]
+}

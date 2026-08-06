@@ -1,0 +1,107 @@
+{
+  "produced_by": "critic-owned p2-alloc.mjs (CDP HeapProfiler, includeObjectsCollectedByMinor/MajorGC: true)",
+  "repo": "/home/user/elder-souls-claude",
+  "trace_mode": false,
+  "self_test": {
+    "with_flags_bytes": 3818488,
+    "with_flags_b_per_literal": 38.185,
+    "defaults_bytes": 2918748,
+    "defaults_b_per_literal": 29.187,
+    "under_report_factor": 1.3
+  },
+  "fixtures": [
+    {
+      "fixture": "F1 fen",
+      "state": "swamp_canopy",
+      "spawned": 0,
+      "trace": false,
+      "steps_N": 30000,
+      "bytes_at_N": 1648660,
+      "bytes_at_2N": 2251208,
+      "b_per_step_slope": 20.0849,
+      "b_per_step_naive_at_N": 54.9553,
+      "samples_at_N": [
+        2835496,
+        1655868,
+        1648660
+      ],
+      "samples_at_2N": [
+        3227180,
+        2588784,
+        2251208
+      ],
+      "top_urls_at_2N": {
+        "three/three.module.js": 1959744,
+        "three/three.core.js": 986576,
+        "(anonymous)": 239248,
+        "render/sky.js": 30056,
+        "render/renderer.js": 7656,
+        "src/engine.js": 3408,
+        "core/loop.js": 492
+      },
+      "top_game_sites_at_2N": {}
+    },
+    {
+      "fixture": "F5 dungeon",
+      "state": "dungeon_primary",
+      "spawned": 0,
+      "trace": false,
+      "steps_N": 30000,
+      "bytes_at_N": 422928,
+      "bytes_at_2N": 650800,
+      "b_per_step_slope": 7.5957,
+      "b_per_step_naive_at_N": 14.0976,
+      "samples_at_N": [
+        498292,
+        472856,
+        422928
+      ],
+      "samples_at_2N": [
+        787508,
+        689216,
+        650800
+      ],
+      "top_urls_at_2N": {
+        "three/three.module.js": 507720,
+        "three/three.core.js": 180940,
+        "(anonymous)": 57052,
+        "render/sky.js": 30728,
+        "render/renderer.js": 7920,
+        "src/engine.js": 2968,
+        "sim/player.js": 180
+      },
+      "top_game_sites_at_2N": {}
+    },
+    {
+      "fixture": "F4 six enemies",
+      "state": "arena_flat",
+      "spawned": 6,
+      "trace": false,
+      "steps_N": 30000,
+      "bytes_at_N": 791920,
+      "bytes_at_2N": 1545076,
+      "b_per_step_slope": 25.1052,
+      "b_per_step_naive_at_N": 26.3973,
+      "samples_at_N": [
+        854724,
+        919872,
+        791920
+      ],
+      "samples_at_2N": [
+        1597444,
+        1609240,
+        1545076
+      ],
+      "top_urls_at_2N": {
+        "three/three.module.js": 1408424,
+        "(anonymous)": 79740,
+        "three/three.core.js": 66028,
+        "render/sky.js": 30444,
+        "render/renderer.js": 20832,
+        "src/engine.js": 3700,
+        "core/guards.js": 72
+      },
+      "top_game_sites_at_2N": {}
+    }
+  ]
+}
