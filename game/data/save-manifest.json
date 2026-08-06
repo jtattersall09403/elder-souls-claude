@@ -33,12 +33,13 @@
     "dynamic_containers": [
       "character.attributes",
       "character.skills",
-      "progression.upgrades",
-      "quests",
+      "crime.bounty",
+      "death.bloodstain",
       "dialogue.dispositions",
       "factions",
-      "crime.bounty",
-      "flags"
+      "flags",
+      "progression.upgrades",
+      "quests"
     ]
   },
   "groups": [
@@ -161,7 +162,7 @@
       "paths": [
         "death.bloodstain"
       ],
-      "note": "Existence, position, soul quantity and which death it belongs to. Semantics are RI-JRN06's; survival across a save is this item's."
+      "note": "Existence, position, soul quantity and which death it belongs to. Semantics are RI-JRN06's; survival across a save is this item's. `death.bloodstain` is a nullable RECORD and is therefore a declared dynamic container in rules.dynamic_containers: the manifest set-difference stops at it rather than treating its three fields as three separate manifest entries that vanish whenever there is no bloodstain."
     },
     {
       "group": "Affliction",

@@ -127,9 +127,17 @@ export class SaveStore {
 
     const doWrite = async () => {
       const meta = await this._readMeta();
+      const prev = await this._get('saves', slot);
       const gen = meta.generation + 1;
       const record = {
         gen, digest, bytes, chunks: chunks.length,
+        // The PREVIOUS generation's digest and chunk count travel with the record, so the
+        // fallback path in load() can verify what it falls back to. Without this, a
+        // corrupted generation n-1 would be accepted unverified — which is exactly the
+        // silent partial load RI-JRN05 HF3 forbids.
+        prevDigest: prev ? prev.digest : null,
+        prevChunks: prev ? prev.chunks : null,
+        prevGen: prev ? prev.gen : null,
         header: header || {}, writtenAt: new Date().toISOString(),
       };
       await this._transact(['blobs', 'saves', 'meta'], 'readwrite', (tx) => {
@@ -161,13 +169,17 @@ export class SaveStore {
     const record = await this._get('saves', slot);
     if (!record) return { ok: false, reason: 'EMPTY_SLOT' };
 
-    for (const gen of [record.gen, record.gen - 1]) {
+    const candidates = [{ gen: record.gen, digest: record.digest, chunks: record.chunks }];
+    if (record.prevGen) candidates.push({ gen: record.prevGen, digest: record.prevDigest, chunks: record.prevChunks });
+    for (const cand of candidates) {
+      const gen = cand.gen;
       if (gen < 1) break;
-      const text = await this._readChunks(slot, gen, gen === record.gen ? record.chunks : null);
+      const text = await this._readChunks(slot, gen, cand.chunks);
       if (text === null) continue;
       const digest = sha256(text);
-      const expected = gen === record.gen ? record.digest : (record.prevDigest || null);
-      if (expected && digest !== expected) {
+      // Both the current and the previous generation are digest-verified. An unverifiable
+      // generation is skipped, never loaded.
+      if (!cand.digest || digest !== cand.digest) {
         this.notices.push(gen === record.gen ? 'digest-mismatch' : 'digest-mismatch-prev');
         continue;
       }

@@ -78,7 +78,7 @@ export async function launchGame(args = {}) {
   try {
     browser = await chromium.launch({
       headless: true,
-      args: DETERMINISTIC_CHROMIUM_ARGS,
+      args: Array.isArray(args.chromiumArgs) ? args.chromiumArgs : DETERMINISTIC_CHROMIUM_ARGS,
       executablePath: args.chromium ? String(args.chromium) : undefined,
     });
   } catch (e) {

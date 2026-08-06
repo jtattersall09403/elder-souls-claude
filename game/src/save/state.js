@@ -208,7 +208,10 @@ export function applySave(sim, blob, moves, statFor) {
   sim.progression.level = blob.character.level;
   sim.progression.soulsHeld = blob.character.souls_held;
   sim.progression.attributes = { ...blob.character.attributes };
-  sim.progression.skills = { ...blob.character.skills };
+  sim.progression.skills = {};
+  for (const k of Object.keys(blob.character.skills)) {
+    sim.progression.skills[k] = { value: blob.character.skills[k].value, useProgress: blob.character.skills[k].use_progress };
+  }
   sim.progression.soulsSpent = blob.progression.souls_spent;
   sim.progression.hearthsDiscovered = [...blob.progression.hearths_discovered];
   sim.progression.hearthLastRested = blob.progression.hearth_last_rested;
@@ -226,7 +229,23 @@ export function applySave(sim, blob, moves, statFor) {
     stolen: i.stolen, owner: i.owner_of_record, slot: i.equipped_slot, quickSlot: i.quick_slot,
   }));
 
-  sim.quest.quests = deepCopy(blob.quests);
+  // The save uses snake_case; the sim uses camelCase. Restoring the RAW save record here
+  // is the bug this project is most likely to ship: everything loads, everything looks
+  // right, and the next saveState() reads `giverDispositionDelta` off a record that only
+  // has `giver_disposition_delta`, so the field silently becomes 0. RI-JRN05 M1 caught
+  // exactly this. The mapping is therefore explicit in BOTH directions.
+  sim.quest.quests = {};
+  for (const id of Object.keys(blob.quests)) {
+    const q = blob.quests[id];
+    sim.quest.quests[id] = {
+      stage: q.stage,
+      branch: q.branch,
+      failed: !!q.failed,
+      giverDispositionDelta: q.giver_disposition_delta,
+      timeLimitInFrames: q.time_limit_in_frames,
+      flags: { ...q.flags },
+    };
+  }
   sim.quest.completed = [...blob.quests_completed];
   sim.quest.journal = blob.journal.map((e) => ({ n: e.n, date: e.date, quest: e.quest, text: e.text }));
   sim.quest.topicsKnown = [...blob.dialogue.topics_known];

@@ -140,11 +140,20 @@ export class Renderer {
     return true;
   }
 
-  /** A-JRN8: the extended scene census. Counted from the live scene graph, never declared. */
+  /**
+   * A-JRN8: the extended scene census. Counted from the live scene graph, never declared —
+   * and counted only over VISIBLE subtrees, because a light in a cell that is not being
+   * drawn is not a shadow caster this frame and reporting it would overstate the budget.
+   */
   sceneCensus() {
     const materials = new Set();
     let skinned = 0, shadowLights = 0, meshes = 0, instancedTris = 0;
-    this.scene.traverse((o) => {
+    const visit = (root, fn) => {
+      if (!root.visible) return;
+      fn(root);
+      for (const c of root.children) visit(c, fn);
+    };
+    visit(this.scene, (o) => {
       if (o.isMesh || o.isInstancedMesh) {
         meshes++;
         const mm = Array.isArray(o.material) ? o.material : [o.material];
@@ -155,7 +164,7 @@ export class Renderer {
       if (o.isLight && o.castShadow) shadowLights++;
     });
     let textureBytes = 0, geometryBytes = 0;
-    this.scene.traverse((o) => {
+    visit(this.scene, (o) => {
       if (!o.geometry) return;
       for (const name of Object.keys(o.geometry.attributes)) {
         const a = o.geometry.attributes[name];

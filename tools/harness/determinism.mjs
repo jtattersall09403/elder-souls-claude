@@ -186,14 +186,14 @@ try {
   };
   const nCmp = Math.min(r30.length, r90.length);
   for (let i = 0; i < nCmp; i++) walk(r30[i], r90[i], '');
-  const differing = [...fieldDiffs.keys()].sort();
-  const playerOnly = differing.filter((p) => p.startsWith('player') || p.startsWith('input') || p.startsWith('camera') || p.startsWith('events'));
+  const differingFields = [...fieldDiffs.keys()].sort();
+  const playerOnly = differingFields.filter((p) => p.startsWith('player') || p.startsWith('input') || p.startsWith('camera') || p.startsWith('events'));
   rung('R5', 'warm-up-invariant: scripted-window records identical after re-basing f',
-    differing.length === 0, {
+    differingFields.length === 0, {
       warmup_30_frames: r30.length, warmup_90_frames: r90.length,
-      differing_fields: differing,
+      differing_fields: differingFields,
       differing_fields_outside_the_enemy_block: playerOnly,
-      note: playerOnly.length === 0 && differing.length > 0
+      note: playerOnly.length === 0 && differingFields.length > 0
         ? 'Every differing field is in the enemy block, and both are warm-up-dependent BY CONSTRUCTION: enemies[].state_entered_f is an absolute frame index that the item does not re-base, and enemies[].anim_frame is the phase of a looping idle animation, which genuinely differs when the entity has been idling for 60 more frames. See orchestration/amendments/AM-W1-00-01-mth02-r5.md.'
         : undefined,
     });
