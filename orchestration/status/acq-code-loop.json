@@ -1,0 +1,15 @@
+{
+  "task_id": "acq-code-loop",
+  "brief": "orchestration/briefs/acq-code-loop.md",
+  "started": "wave-?",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/70-visual/refs/acquire.py",
+    "corpus/70-visual/refs/_provenance.json",
+    "corpus/70-visual/refs/ACQUISITION-CODE-CRITIQUE.md"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ACQUISITION-SPEC-AMENDMENTS.md, acquire.py, _provenance.json, RI-VIS03",
+  "notes_for_successor": "Three-role loop played internally. Round log lives in ACQUISITION-CODE-CRITIQUE.md."
+}
