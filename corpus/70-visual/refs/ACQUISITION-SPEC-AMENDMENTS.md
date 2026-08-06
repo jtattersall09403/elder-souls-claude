@@ -685,3 +685,58 @@ at the level of the test, and the remaining work is two smaller things:
    has been looking at 91 Dark Souls III screenshots and reaches for a gothic-cathedral
    silhouette, a grey-brown palette and a fog gate. This is the cheapest insurance in the
    document and it costs no bytes.
+
+---
+
+## A19 — `upscale_test` has the same exposure confound, and nobody had noticed *(amends §8a)*
+
+Found while re-scoring for A9. §8a rejects a file with **`upscale_test < 0.004`** — too little
+detail survives a 2/3 down/up round trip, so the image must have been upscaled from something
+smaller. But `upscale_test` is a **mean absolute luminance difference**, and luminance
+differences shrink with exposure exactly as the `block_score` denominator does.
+
+Same controlled experiment, same image, same encoder, only brightness varied:
+
+| | | | | |
+|---|---:|---:|---:|---:|
+| `mean_luminance` | 105.1 | 52.3 | 31.1 | 18.4 |
+| `upscale_test` | 0.010409 | 0.005330 | **0.003262** | **0.002013** |
+| `upscale_test_rel` | 0.01268 | 0.01305 | 0.01345 | 0.01401 |
+
+**The same source image fails §8a's upscale gate twice, purely for being darkened.** A 5× swing
+becomes a ~10% residual under
+
+```python
+upscale_test_rel = upscale_test × (L_REF / max(mean_luminance, L_FLOOR))
+```
+
+**§8a's clause is replaced by:** *reject on `upscale_test_rel < 0.004`.* The raw statistic is
+still computed and recorded.
+
+This matters because it was the **second** clause failing the very files A9 was meant to release:
+4 of 9 `material_closeup` and 6 of 13 `character_closeup` records cited `upscale_test` alongside
+`block_score` in their rejection reason. Fixing only one of the two would have released neither.
+
+### The honest caveat on the exponent, for whoever reviews A9 and A19
+
+The correction is `(L / 128)^k` with **k = 1**, and k is not free. Two criteria disagree and the
+disagreement is worth stating rather than hiding:
+
+| k | corpus-wide `r(luminance, block_score_rel)` | spread across the controlled brightness sweep |
+|---:|---:|---:|
+| 0.00 (no correction) | −0.271 | 0.277 |
+| 0.50 | **+0.019** | 0.089 |
+| **1.00** | +0.274 | **0.021** |
+
+**k = 1 is adopted, on the controlled experiment**, because that experiment holds content fixed
+and varies only exposure — it isolates the causal effect, and at k = 1 the effect is gone. The
+corpus-wide correlation is *confounded*: dark scenes in this corpus are also different scenes
+(caves have less foliage and less real encode damage than hillsides), so zeroing that correlation
+at k = 0.5 would remove a real content effect along with the artefact. The residual +0.27 at
+k = 1 is the statement *bright, detailed frames really are more damaged at a given quality*,
+which is true.
+
+A within-session control confirms the correction is inert where there is nothing to correct: over
+the 24 Witcher 3 interval-run frames (one session, one encoder, luminance 50–113, all
+near-lossless) `r(L, block_score)` is −0.49 and it moves by 0.004 between k = 0 and k = 1,
+because `(block_score − 1) ≈ 0` there. **The correction only acts where there is damage.**

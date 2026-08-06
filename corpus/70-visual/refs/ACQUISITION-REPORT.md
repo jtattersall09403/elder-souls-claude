@@ -1251,6 +1251,33 @@ and dark curves now agreeing instead of diverging by 0.6. Full statement and the
 replacement text: **amendment A9**. `block_score` itself is unchanged and still recorded, so
 nothing earlier is silently rewritten.
 
+**And fixing the metric was not enough**, which is the part worth reading. `pixel_metrics_valid`
+had been *typed into provenance from the old gate*, so correcting `make-manifest.py` changed no
+count at all until the verdicts were re-derived. Re-deriving them surfaced a second bug of exactly
+the same shape: **§8a's `upscale_test < 0.004` clause is confounded with exposure too** — same
+image, same encoder, darkened, and `upscale_test` runs 0.010409 → 0.005330 → 0.003262 → 0.002013,
+failing the gate twice for no reason but brightness (**amendment A19**). Four of nine
+`material_closeup` and six of thirteen `character_closeup` records cited *both* clauses, so fixing
+either alone would have released neither.
+
+**61 records re-scored; 51 flipped `false` → `true`; none flipped the other way.** The old
+`pixel_metrics_reason` is preserved verbatim on every record as
+`pixel_metrics_reason_superseded`, and the raw statistics are untouched.
+
+| profile | floor | countable **before** | countable **after** | verdict |
+|---|---:|---:|---:|---|
+| `exterior_lowlight` | 12 | **8** | **20** | count FAIL → **PASS** |
+| `interior_darkemissive` | 10 | **3** | **21** | count FAIL → **PASS** |
+| `character_closeup` | 10 | 7 | **13** | count FAIL → **PASS** |
+| `material_closeup` | 8 | 5 | **9** | count FAIL → **PASS** |
+| `combat` | 8 | 8 | 11 | PASS → PASS |
+| `exterior_daylight` | 12 | 33 | 39 | PASS → PASS |
+| **`fidelity-bands` population** | — | **69** | **120** | |
+
+**Every §3 count floor on the modern side is now met, and not one byte was downloaded to do it.**
+The critic's estimate was 8 → ~18 and 3 → ~14; the measured result is 8 → 20 and 3 → 21, because
+A19 released the second clause it had not seen.
+
 ## 17.2 `metrics_valid_for` — one flag was answering two questions
 
 `pixel_metrics_valid` conflated *"may this set a `[p10,p90]` fidelity band?"* with *"may this be
