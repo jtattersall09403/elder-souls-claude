@@ -379,6 +379,22 @@ such pieces are tolerable"*: **up to 30% of pieces may legitimately be internal.
 project is building two products, and the finding is a project-level one regardless of every piece's
 own verdict.
 
+**The declared matrix does not itself satisfy `crossing_both_directions`, and this is recorded as a
+debt rather than resolved by lowering the bar.** The 41 declared crossings split 30 W→F / 11 F→W, so
+F→W is 27% of them — below the 1/3 gate even in the impossible case where *every* declared crossing is
+demonstrated. The bar is deliberately not relaxed, because the direction it is short in is the
+expensive one and the one `AR-3` is actually about: a fight outcome changing the world is content
+somebody has to write, and a matrix that is 73% W→F is a game where the world feeds the fight and gets
+nothing back.
+
+> **`F→W` debt: the matrix owes ≥ 4 new F→W cells before the ship wave** (11 → ≥ 15, against 30 W→F,
+> clearing 1/3). Proposing them is in scope for any builder or critic; `ROS→LOR` (what you killed
+> becomes what the province talks about), `ROS→GLD` (a cleared route changes a market's prices, *not*
+> via souls — `S15` still binds), `BOS→TOD`/`BOS→WEA` beyond the single weather cell, and `ROS→EQP`
+> as a world-supply change rather than a drop are the four most obvious candidates and none of them is
+> written yet. Until they exist, a wave that meets the raw crossing floor and fails
+> `crossing_both_directions` has met the letter of §H's table and not its point.
+
 ---
 
 ## Comparison method
