@@ -1,0 +1,79 @@
+{
+  "schema": "elder-souls/crime-bounty@1",
+  "id": "bounty",
+  "source": "RI-CRM01 §1, transcribed verbatim. All values in gold.",
+  "decay": {
+    "per_day": 0,
+    "rule": "Bounty NEVER decays with time. Cleared only by paying, serving, an expiation quest, or a faction (RI-CRM02 §6).",
+    "why": "A decaying bounty makes the optimal response to every crime walking into the wilderness for a while, which is not a consequence, it is a loading screen."
+  },
+  "crimes": [
+    { "n": 1,  "id": "trespass_reported",      "name": "Trespass, reported",                     "bounty": 5,    "per": "report",    "note": "Only from ALARM, never from CHALLENGE (RI-STL02 §4)" },
+    { "n": 2,  "id": "trespass_restricted",    "name": "Trespass, restricted Legion/Provincial",  "bounty": 200,  "per": "report",    "note": "ALARM on sight, no challenge" },
+    { "n": 3,  "id": "theft_petty",            "name": "Petty theft (value_g < 25)",              "bounty": 10,   "per": "item",      "value_term": 1.0 },
+    { "n": 4,  "id": "theft",                  "name": "Theft",                                   "bounty": 25,   "per": "item",      "value_term": 1.0, "note": "Uncapped in value_g; the 11 tier-5 items run 800-3,400 g" },
+    { "n": 5,  "id": "lockpick_observed",      "name": "Lockpicking observed",                    "bounty": 50,   "per": "lock",      "note": "Per lock, not per attempt" },
+    { "n": 6,  "id": "pickpocket_caught",      "name": "Pickpocketing, caught",                   "bounty": 100,  "per": "act",       "disposition": -25, "disposition_gmst": "fDispPickPocketMod" },
+    { "n": 7,  "id": "assault",                "name": "Assault - a blow landed on a non-hostile", "bounty": 150, "per": "encounter", "note": "Per encounter, not per hit" },
+    { "n": 8,  "id": "assault_yield",          "name": "Assault causing unconsciousness / yield",  "bounty": 300,  "per": "encounter" },
+    { "n": 9,  "id": "murder_unnamed",         "name": "Murder - unnamed NPC",                     "bounty": 1000, "per": "victim" },
+    { "n": 10, "id": "murder_named",           "name": "Murder - named NPC",                       "bounty": 1600, "per": "victim",    "note": "S5: named NPCs never respawn. This is permanent." },
+    { "n": 11, "id": "murder_official",        "name": "Murder - guard, Legion soldier, official", "bounty": 2500, "per": "victim" },
+    { "n": 12, "id": "murder_witness",         "name": "Murder - a witness mid-report",            "bounty": 1000, "per": "victim",    "suppressed_multiplier": 2.0, "note": "The S10 clause. The suppressed bounty is applied at x2 IF the killing is witnessed. See RI-CRM01 §3c." },
+    { "n": 13, "id": "resist_arrest",          "name": "Resisting arrest",                         "bounty": 500,  "per": "act",       "additive": true, "note": "Added to the existing bounty, not replacing it" },
+    { "n": 14, "id": "escape_custody",         "name": "Escaping custody / jailbreak",             "bounty": 1500, "per": "act",       "additive": true },
+    { "n": 15, "id": "sapwell_cut",            "name": "Cutting a sapwell without a rootkeeper",   "bounty": 1200, "per": "act",       "also": "interior blood-price", "note": "The only crime that is a crime in BOTH legal systems (RI-LOR05 §4b)" },
+    { "n": 16, "id": "slave_freed",            "name": "Freeing a legally-held slave (Dres charter)", "bounty": 900, "per": "act",    "note": "And it is the right thing to do, and the game says so through other characters" },
+    { "n": 17, "id": "smuggling",              "name": "Smuggling (contraband at a customs post)", "bounty": 400,  "per": "act",       "cargo_term": 2.0 }
+  ],
+  "jurisdictions": [
+    {
+      "id": "imperial",
+      "covers": ["gideon", "stormhold", "blackrose", "archon", "lilmoth", "roads-with-milestones"],
+      "enforces": "Legion and settlement militia; the schedule above",
+      "multiplier": 1.0,
+      "has_jail": true,
+      "rumour_threshold": 2000,
+      "rumour_effect": "your name appears in every settlement's rumour pool"
+    },
+    {
+      "id": "settlement",
+      "covers": ["thorn", "soulrest"],
+      "radius_m": 400,
+      "enforces": "militia only",
+      "multiplier": 0.6,
+      "has_jail": false,
+      "note": "no jail - pay or leave"
+    },
+    {
+      "id": "interior",
+      "covers": ["helstrom", "deep-marshes", "stone-forest", "RG-DEEP"],
+      "enforces": null,
+      "multiplier": 0.0,
+      "has_jail": false,
+      "instead": "blood-price",
+      "note": "No bounty. No guards. No jail."
+    }
+  ],
+  "jurisdiction_rule": "Crossing from one jurisdiction to another does not clear anything, and a guard in Gideon does not care what you did in Thorn - but the rumour travels.",
+  "partial_report": {
+    "multiplier": 0.4,
+    "attributed_to": null,
+    "identified_at_V": 0.30,
+    "note": "An unidentified or hearing-only witness produces bounty at x0.4, attributed to nobody. Being SUSPECTED and being WANTED are different states and the game must have both."
+  },
+  "blood_price": {
+    "multiplier_on_imperial_schedule": 1.4,
+    "created_by": ["killing", "maiming", "theft from a household", "cutting a sapwell"],
+    "witnessed_by": "anyone at all",
+    "held_by": "a named family, forever",
+    "decays": false,
+    "cleared_by_death": false,
+    "cleared_by_imperial_payment": false,
+    "cleared_by": ["paying the family in person", "a rootkeeper arbitration quest", "a ku-vastei ruling", "the family's extinction (which creates a new blood-price with whoever is left)"],
+    "enforcers_min": 2,
+    "enforcers_max": 5,
+    "coast_road_threshold": 2000,
+    "flag_prefix": "bloodprice."
+  }
+}

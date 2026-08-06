@@ -20,6 +20,7 @@
 
 import { rng } from '../core/rng.js';
 import { BIT } from '../input/actions.js';
+import { openUI, closeUI } from './camera.js';
 
 export function stepCombat(sim, input, combat, bus) {
   const frame = sim.frame;
@@ -38,6 +39,19 @@ export function stepCombat(sim, input, combat, bus) {
 
   // Lock-on is a free action at any stamina (RI-CMB03 §B) and is resolved before the fight.
   if (input.pressed & BIT.lock_on) combat.toggleLock(frame, sim.camera.yaw, bus);
+
+  // `menu` is a UI surface and NOT a state (frames.json §actions.menu). It is resolved here,
+  // outside the combat state machine, precisely so that it CANNOT pause: this function returns
+  // into stepOnce() either way and the fixed step keeps running. AR-1 probe A3 ("pause
+  // mid-fight") was scored `not_run` in the W1-09 verdict for want of a menu surface to press;
+  // it is now runnable, and the answer it gets is the Souls-side one — the enemy keeps
+  // swinging, stamina keeps regenerating, and `getFrame()` keeps advancing.
+  if (input.pressed & BIT.menu) {
+    sim.menuOpen = !sim.menuOpen;
+    if (sim.menuOpen) openUI(sim, 'menu'); else closeUI(sim);
+    const e = bus.emit(frame, 'menu_toggle');
+    e.open = sim.menuOpen; e.pauses_simulation = false;
+  }
 
   combat.step(frame, input, sim.camera, bus, sim);
   mirror(sim, combat);

@@ -21,7 +21,11 @@
     "game/src/engine.js: travel network (getTravelNetwork/getTravelState/travelQuote/travelFare/boardTravel/travelRide), walked-it-once gate, burden (setBurden/getBurden), _settleWorld retraction now written to the controller",
     "game/src/harness/api.js: 8 new verbs (travel x6, burden x2)",
     "tools/world/locomotion-audit.mjs (RI-WLD10 M49 band ladder + RI-PRG07 M5 burden + S23 guard)",
-    "tools/world/scale-audit.mjs: M2-ROAD-ABOVE-WATER and M2-ROAD-CUT-AND-FILL added"
+    "tools/world/scale-audit.mjs: M2-ROAD-ABOVE-WATER and M2-ROAD-CUT-AND-FILL added",
+    "tools/world/travel-audit.mjs (RI-TRV01 M1/M2/M3/M5-static/M7 static + M4 walked-it-once gate and M6 ride live)",
+    "tools/world/region-axes.mjs REWRITTEN as region-axes@2: 9 measured axes (7 built geometry/placement, 2 rendered pixels); fauna/architecture/audio/weather/hazard DROPPED with reasons",
+    "tools/world/province-shots.mjs: seeded shuffle + anti-ordering assertion + day/night/worst passes",
+    "tools/world/build-regions.mjs: Blackwood / Thornmarsh / Deep Marshes separated on landform, ground material, flora silhouette and water regime; stone-wastes vs valus-ridge lifted; corrupted fog hex fixed"
   ],
   "findings": [
     "ROOT CAUSE of the drowned road is NOT A* routing through a lake. The natural terrain at (2187,2215) is DRY LAND at 154.01 m. The road's own elevation profile in build-roads.mjs is 69.17 m there -- an 85 m CUTTING that _applyRoads carves into the hill, which then fills with water (surface 135.30). waterSurfaceAt returns null before setRoads and 135.3 after. Same at helstrom-gideon (1652,2754): natural 48.65 m dry, roaded 33.34 m, depth 7.63 m.",
@@ -35,8 +39,11 @@
     "SECOND ROOT CAUSE, not named by the critic: the water band retraction in Engine._settleWorld wrote to sim.player.pos, which combat-bridge.mirror() overwrites from combat.player.pos at the top of every step. The retraction therefore produced a constant positional LAG of v(1-mult)/mult and a STEADY-STATE SPEED OF EXACTLY v. That is why the verdict measured 1.9988 m/s in W2 SUCK and scored RI-WLD10 40/100 \"completely inert\". Writing the controller closes it.",
     "MEASURED after the fix: W0 2.0000, W2 1.7000, W3 1.3000 (RI-WLD10 M49 requires exactly 1.30), W4 0.8600, W5 1.1000 m/s at steady state on sustained-band ground. W1 has no sustained patch in the province; recorded as not-found rather than faked.",
     "RI-PRG07 burden implemented: 2.0000 / 1.8000 / 1.4400 / 0.0000 m/s with transitions at exactly 0.60 / 0.85 / 1.00, suppressed to 1.00 inside COMBAT. Equip load 10->105% still 2.0000 at every tier, which is S23-correct (RI-CMB01 owns that ladder and it lives inside the fight).",
-    "Crossing after all changes: 55.642 min / 6676.5 m / mean 1.9998 m/s / 0.009% below 1.6 (bar 52-65 min, 6300-7600 m). Was 56.574 / 6788.3."
+    "Crossing after all changes: 55.642 min / 6676.5 m / mean 1.9998 m/s / 0.009% below 1.6 (bar 52-65 min, 6300-7600 m). Was 56.574 / 6788.3.",
+    "THIRD DEFECT found by the new instrument: build-regions.mjs line 98 shipped a CORRUPTED HEX '#C9A druck' as clay-moor's fog colour, and it was in game/data/world/regions.json. Fixed to #C9A46A.",
+    "RI-TRV01 static all PASS: 5 modes / 26 stations / 68 services / 17 lines; graph connected, density 0.357, mean 1.93 legs, 7 pairs needing 3+ legs; 7/10 trunk legs have a parallel water service; tariff 12/45/90 exact at 1000/2500/6900 m; 17/17 line tickets equal their hop sums.",
+    "M18 on measured axes: min 6 of 9 (was 8 of 9 on a config file). Before the region edits the new instrument FAILED at 5 (stone-wastes/valus-ridge) -- it is capable of failing."
   ],
-  "next_step": "rebuild the RI-WLD04 M17 blind pack (shuffled+seeded+night+worst weather); then region axes on the built world; then Blackwood/Thornmarsh/Deep-Marshes separation",
+  "next_step": "finish the shot pack, re-run dispersion + region-axes with rendered axes, then walk-based reachability",
   "notes_for_successor": ""
 }

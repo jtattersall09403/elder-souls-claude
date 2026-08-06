@@ -2115,8 +2115,12 @@ export class Engine {
         estus: c.playerCtl.estus, flask_level: c.playerCtl.flaskLevel,
         stamina_drops: p.staminaDrops || 0,
         weapon: p.moves._movesetId, weapon_class: p.moves._classKey,
+        two_handed: !!p.twoHanded, airborne: !!p.airborne,
         pos: [p.pos[0], p.pos[1], p.pos[2]], yaw_deg: p.yaw,
       },
+      // `menu` opens a UI surface and does NOT pause the fixed step — frames.json
+      // §actions.menu, and AR-1 probe A3. `frame` above is the proof: it keeps advancing.
+      menu: { open: !!this.sim.menuOpen, pauses_simulation: false },
       lock: { target: c.lock.target, score: c.lock.score, both_framed: c.lock.bothFramed },
       world_knowledge: { gold: c.world.gold, topicsKnown: c.world.topicsKnown, dispositions: c.world.dispositions, factions: c.world.factions },
       enemies: c.bodies.filter((b) => b !== p).map((b) => ({

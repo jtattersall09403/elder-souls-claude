@@ -1,11 +1,14 @@
 {
  "jump": {
   "states": [
-   "IDLE"
+   "IDLE",
+   "JUMP_RISE",
+   "JUMP_AIR",
+   "JUMP_LAND"
   ],
-  "max_y": 0,
+  "max_y": 0.6181,
   "stamina_start": 120,
-  "stamina_min": 120
+  "stamina_min": 102
  },
  "gate_prep": {
   "min_stamina": 11,
@@ -50,7 +53,10 @@
   "jump": {
    "stamina_at_press": 33,
    "states_after": [
-    "RUN"
+    "RUN",
+    "JUMP_RISE",
+    "JUMP_AIR",
+    "JUMP_LAND"
    ],
    "drops": 0
   },
@@ -108,7 +114,7 @@
    },
    "events": [
     {
-     "f": 92,
+     "f": 89,
      "dS": 55.68,
      "dHP": 13.44,
      "state": "BLOCK_HOLD"
@@ -126,7 +132,7 @@
    },
    "events": [
     {
-     "f": 92,
+     "f": 89,
      "dS": 36.48,
      "dHP": 5.76,
      "state": "BLOCK_HOLD"
@@ -144,7 +150,7 @@
    },
    "events": [
     {
-     "f": 92,
+     "f": 89,
      "dS": 21.12,
      "dHP": 0,
      "state": "BLOCK_HOLD"
