@@ -91,9 +91,11 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_cut', jump1: 'jump_stomp', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_shoulder', art: ['art_stomp', 'art_guard'],
     h2_exclusive: ['2h.jump.r2', '2h.art.2'],
-    // The mace's jumping attack carries hyperarmour: it is the class that lands committed and
-    // does not care. This is the grammar split from HLB, its nearest Dg neighbour once SPR moved.
-    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: ['jump.r1', '2h.jump.r1'],
+    // MCE carries the MINIMUM hyperarmour RI-WPN02 §B allows it (its 1h R2 row is non-null, so
+    // r2 / r2.charged and their two-handed twins, and nothing else). The mace is the BREAK class,
+    // not the trade class, and D11 is the one fingerprint dimension §B leaves to the builder — so
+    // this is where it is separated from AXE, the pair RI-WPN02 'How we lose' 9 predicts.
+    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: [],
   },
   HLB: {
     r1: ['sweep_low', 'sweep_wide', 'thrust_low'],
@@ -102,10 +104,11 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_cut', jump1: 'jump_fall', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'thrust_low', art: ['art_whirl', 'art_guard'],
     h2_exclusive: ['2h.roll.r2', '2h.jump.r2'],
-    // HLB has NO running-heavy hyperarmour: a lane-control class holds space, it does not barge
-    // through. This is the deliberate grammar split from AXE, which is otherwise its nearest
-    // neighbour in RI-WPN02 §D's fingerprint (the pair the item itself predicts, "How we lose" 9).
-    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: [],
+    // HLB has NO running-heavy hyperarmour — a lane-control class holds space, it does not barge
+    // through — but it DOES carry it on the two verbs that hold ground under pressure: the guard
+    // counter and the two-handed rolling attack. That puts HLB between AXE (trade) and MCE (break)
+    // on fingerprint dimension D11, which is what separates all three in RI-WPN02 §D's Dg.
+    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: ['guard.counter', '2h.guard.counter', '2h.roll.r1'],
   },
   WHP: {
     r1: ['lash_circle', 'lash_snap', 'lash_circle'],
