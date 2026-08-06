@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-06T08:59:12.298Z",
-  "complete": 6,
+  "generated": "2026-08-06T08:59:34.376Z",
+  "complete": 7,
   "total": 12,
   "tasks": [
     {
@@ -37,13 +37,12 @@
       "id": "journeys",
       "title": "User-journey corpus, journey-critic fleet, platform budget",
       "state": "partial",
-      "done": 9,
+      "done": 10,
       "expected": 11,
       "missing": [
-        "corpus/88-journeys/JOURNEY-CRITIC-FLEET.md",
-        "corpus/85-platform/RI-PLT03*"
+        "corpus/88-journeys/JOURNEY-CRITIC-FLEET.md"
       ],
-      "next_step": "write RI-PLT03 (load/streaming/hitches)",
+      "next_step": "write JOURNEY-CRITIC-FLEET.md then paths-requested.json",
       "findings": 18
     },
     {
@@ -74,12 +73,10 @@
     {
       "id": "character-stealth-crime",
       "title": "Character creation, race, birthsign; stealth, theft, crime and justice",
-      "state": "partial",
-      "done": 6,
+      "state": "complete",
+      "done": 7,
       "expected": 7,
-      "missing": [
-        "corpus/23-stealth-crime/RI-CRM02*"
-      ],
+      "missing": [],
       "next_step": "LAST ITEM: RI-CRM02 faction crime / sanctioned murder / writs / Morag Tong problem / membership changes guard behaviour. CRM01 DONE and exports: 17-crime bounty schedule, report chain, blood-price, 4 tracking factions, faction-invocation escape hatch (rank>=4, 3 uses). LOCK RULING MADE: no probability roll, deterministic ward-collar; proposed new seam S20 'keep the die where failure is permanent, delete it where failure is a retry' -- MUST appear in final reply as a proposed amendment. STL02 exports: stolen_from flag, 7 trespass classes, 9 fences at 0.35x, CRIME/CHALLENGE escalation feeding CRM01. STL01 exports: V visibility formula, civilian states CALM/WATCHING/CHALLENGE/ALARM, contextWeight table (STL02 owns trespass zones + owned objects), S-4 zone memory, harness extension requests (crouch button, player.stealth block, alert_channel, civilians[], getLightAt, events detect/challenge/search_start/search_end/zone_alert/light_snuffed/distraction). 22-character COMPLETE. CHR03 exports: 9 signs, families given/withheld/turned, The Unlit Water carries shadowscale-claim (feeds CRM02), The Spilled changes respawn well, Dry Well = Atronach. CHR01 DONE: 8 inputs, 14 classes + custom, 12 questionnaire dilemmas, 540 signatures (10 race x 6 class-family x 3 birthsign-family x 3 upbringing-class), birthsign families must be named Given/Withheld/Turned in CHR03 §2 and CHR03 §5 owns the one-time re-cut at the Helstrom Hist. CHR02 exports: 10 races (Saxhleel, Naga, Dunmer, Imperial, Nord, Breton, Redguard, Khajiit, Orsimer, Bosmer), 12 reaction groups RG-DEEP/ROOT/LUKIUL/NAGA/LEDGER/EMPIRE/DRES/BWC/VAKH/COURT/TOWN/OUTLAW, 4 upbringings interior/lukiul/foreign-born/blackrose (CHR01 owns upbringing), guard lawFactor+suspicion table (CRM01/STL01 consume), raceSurcharge price formula.",
       "findings": 8
     },
@@ -110,8 +107,8 @@
       "done": 11,
       "expected": 11,
       "missing": [],
-      "next_step": "write RI-UIX06 diegesis (must propose RI-VIS01 sec.A extension F17/F18 + CC-7). Then regenerate INDEX via tools/corpus-index.mjs.",
-      "findings": 17
+      "next_step": "none - all 11 deliverables written, validated and indexed.",
+      "findings": 20
     },
     {
       "id": "image-acquisition",

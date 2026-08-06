@@ -68,3 +68,25 @@ The corpus is the project's memory. An agent that dies with unwritten work costs
 whole session's budget for that area, and the next agent starts from zero. An agent that dies
 having written four of six items and a good status file costs almost nothing — its successor
 finishes in a fraction of the time.
+
+## Network access (updated mid-wave)
+
+**Outbound internet is now unrestricted.** Earlier agents worked under a policy proxy that
+403'd almost everything, which is why much of the corpus is `provenance: canonical-recall,
+confidence: medium`. That constraint is gone. Reachable and verified: Wikimedia, imgur, Steam,
+YouTube, the Fextralife wikis, GitHub, and general web fetches via `curl`, plus `WebSearch` /
+`WebFetch` through `ToolSearch`.
+
+Two consequences, both binding:
+
+1. **Verify before you recall.** If a number can be checked against a real source, check it.
+   `canonical-recall` is now a last resort, not a default. Anything you verify becomes
+   `community-data` with the URL cited inline.
+2. **`en.uesp.net` still returns 403** — that is UESP's own bot protection, not the proxy. Do
+   not waste effort on it. Use the vendored extract instead:
+   `corpus/uesp_morrowind_blackmarsh_extract.jsonl.xz` (6,299 pages) via `tools/uesp/`, and
+   `corpus/40-dialogue/data/morrowind-dialogue.csv.gz` (69,876 dialogue rows).
+
+If you are resuming a task whose predecessor worked under the old restriction, its provenance
+notes may understate what is now checkable. Upgrading a `canonical-recall` figure to a cited
+`community-data` one is always in scope.

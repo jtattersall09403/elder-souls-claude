@@ -1,0 +1,286 @@
+{
+  "$comment": "SUBSYSTEM PATH REGISTRATION REQUEST from the journeys wave (corpus/88-journeys/ and corpus/85-platform/). subsystems.json is the canonical, append-only taxonomy and is owned by CRT (critic doctrine); an agent outside CRT must not edit it silently. This file is therefore the formal request: every path listed under `new_paths` appears in the `judges:` front-matter of a reference item written in this wave and is currently an ORPHAN under CORPUS-CONTRACT §4 / subsystems.json $comment. Until CRT appends these entries to subsystems.json and regenerates INDEX.md via tools/corpus-index.mjs, tools/corpus-index.mjs will report them in its orphan list. The entries below are pre-formatted in subsystems.json's exact record shape ({path,title,arb,area,critic}) so registration is a copy, not a rewrite.",
+  "version": 1,
+  "requested_by": "journeys wave",
+  "requested_at": "wave-0",
+  "status": "pending CRT registration",
+  "referenced_from": [
+    "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md",
+    "corpus/88-journeys/RI-JRN02-the-first-hour-as-interaction.md",
+    "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+    "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+    "corpus/88-journeys/RI-JRN05-save-and-load.md",
+    "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
+    "corpus/88-journeys/RI-JRN07-a-quest-without-markers.md",
+    "corpus/88-journeys/RI-JRN08-returning-after-a-week.md",
+    "corpus/88-journeys/JOURNEY-CRITIC-FLEET.md",
+    "corpus/85-platform/RI-PLT01-frame-budget.md",
+    "corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md",
+    "corpus/85-platform/RI-PLT03-load-streaming-hitches.md"
+  ],
+
+  "new_roots": [
+    {
+      "root": "journey.",
+      "rationale": "A journey path judges an END-TO-END PLAYER SEQUENCE, not a subsystem. It is deliberately a separate root because its failures are compositional: every subsystem in the chain can pass its own item while the journey through them fails. journey.* items are the only place the corpus scores the seams BETWEEN subsystems, and giving them a root of their own makes that gap visible in INDEX.md rather than hiding it inside whichever subsystem happened to be nearest.",
+      "area": "88-journeys",
+      "note": "A journey path MUST NOT duplicate a subsystem path's bar. Where a journey item needs a subsystem's number it cites the owning item; the division of labour is stated in the blockquote at the top of every RI-JRN*."
+    },
+    {
+      "root": "input.",
+      "rationale": "Input existed only as `platform.input.pipeline` — one path covering the whole of binding, translation, discoverability and device lifecycle. That is far too coarse to score: a build can have a flawless 60 Hz latched input pipeline and still be unplayable because parry is unbound on a gamepad. `platform.input.pipeline` is retained and keeps its original meaning (the timing/latching pipeline). The `input.*` root owns the CONTRACT the pipeline carries: which actions exist, how devices reach them, and whether a player can find them.",
+      "area": "88-journeys",
+      "note": "input.* is device-facing and cross-cutting. It is not a combat root: combat.input.buffer keeps ownership of buffering windows and is not moved here."
+    }
+  ],
+
+  "new_paths": [
+    {
+      "path": "journey.firstlaunch.flow",
+      "title": "First launch to first meaningful choice as one unbroken act",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "requested_by": "RI-JRN01"
+    },
+    {
+      "path": "journey.chargen.diegesis",
+      "title": "Character creation happens inside the fiction, not in a settings menu",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "requested_by": "RI-JRN01"
+    },
+    {
+      "path": "journey.onboarding.explanation",
+      "title": "How much the game explains, and whether it is said by a person in the world",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "requested_by": "RI-JRN01"
+    },
+    {
+      "path": "journey.firsthour.interaction",
+      "title": "The first hour judged by what the hands do, not by what the story says",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.ui",
+      "requested_by": "RI-JRN02"
+    },
+    {
+      "path": "journey.firsthour.competence",
+      "title": "The point at which a new player becomes measurably competent, and that it arrives",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.ui",
+      "requested_by": "RI-JRN02"
+    },
+    {
+      "path": "journey.save.roundtrip",
+      "title": "Save, load, and an empty state diff — end to end, mid-quest, mid-dungeon",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN05",
+      "note": "Correctness is binary. arb is neutral because neither reference game rules on browser persistence; the item defines the bar outright."
+    },
+    {
+      "path": "journey.death.recovery",
+      "title": "Die, lose souls, respawn, run back, recover the bloodstain, as one measured sequence",
+      "arb": "souls",
+      "area": "88-journeys",
+      "critic": "critic.combat",
+      "requested_by": "RI-JRN06",
+      "note": "Judged under seam S6 (ARBITRATION.md): the loss loop is Souls, the persistence of quest/journal/faction state across death is Morrowind. combat.death.corpserun and combat.death.worldreset keep ownership of the rules; this path owns the end-to-end run."
+    },
+    {
+      "path": "journey.quest.unmarked",
+      "title": "A quest completed end to end with no markers, using in-game text alone",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.quests",
+      "requested_by": "RI-JRN07"
+    },
+    {
+      "path": "journey.reentry.orientation",
+      "title": "A returning player rebuilds their own objectives from in-game information alone",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journal",
+      "requested_by": "RI-JRN08"
+    },
+
+    {
+      "path": "input.action.set",
+      "title": "The closed Souls action set exists, is complete, and is reachable on every device",
+      "arb": "souls",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN03",
+      "note": "The 14 action names are fixed by HARNESS.md §4 and may not be extended without a harness amendment."
+    },
+    {
+      "path": "input.desktop.pointerlock",
+      "title": "Pointer lock acquisition, loss, recovery, and what the game does while unlocked",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN03"
+    },
+    {
+      "path": "input.desktop.keyboard",
+      "title": "Physical-key (`code`) binding, layout independence, ghosting, modifier and focus hazards",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN03"
+    },
+    {
+      "path": "input.rebinding.model",
+      "title": "Rebinding: coverage, conflict handling, persistence, and reset",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN03"
+    },
+    {
+      "path": "input.discoverability",
+      "title": "Whether a player who was told nothing can find each action",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.ui",
+      "requested_by": "RI-JRN02, RI-JRN03",
+      "note": "Scored primarily by the naive-agent pass (JOURNEY-CRITIC-FLEET.md §4). The instrumented pass cannot measure this at all — an agent that has read the corpus already knows the binding."
+    },
+    {
+      "path": "input.modality.parity",
+      "title": "Every action and every UI surface is reachable on keyboard+mouse, gamepad, and touch",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN03, RI-JRN04"
+    },
+    {
+      "path": "input.gamepad.mapping",
+      "title": "Gamepad button map for the Souls action set, across standard and non-standard descriptors",
+      "arb": "souls",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN04"
+    },
+    {
+      "path": "input.gamepad.analog",
+      "title": "Deadzones, stick response curves, and analog trigger thresholds with hysteresis",
+      "arb": "souls",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN04"
+    },
+    {
+      "path": "input.gamepad.lifecycle",
+      "title": "Connect, hot-plug, disconnect mid-combat, resume, and held-input release",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN04"
+    },
+    {
+      "path": "input.touch.fallback",
+      "title": "The no-gamepad touch path on a phone, and that it is not a second-class game",
+      "arb": "neutral",
+      "area": "88-journeys",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN04"
+    },
+
+    {
+      "path": "platform.mobile.viewport",
+      "title": "Landscape lock, safe areas, browser-chrome collapse, DPR, and orientation change",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN04"
+    },
+    {
+      "path": "platform.save.storage",
+      "title": "The storage-backend ruling: IndexedDB authoritative, file export mandatory, quota and eviction",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "requested_by": "RI-JRN05",
+      "note": "Distinct from platform.save.persistence, which owns WHAT survives. This path owns WHERE it lives and what happens when the browser takes it away."
+    },
+    {
+      "path": "platform.perf.simtime",
+      "title": "CPU cost of one fixed simulation step, measured with rendering disabled",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "requested_by": "RI-PLT01",
+      "note": "Separated from platform.perf.framerate because it is measurable on a software rasteriser and frame rate is not (RI-PLT01 §A, Tier-S vs Tier-H)."
+    },
+    {
+      "path": "platform.perf.allocation",
+      "title": "Bytes allocated per simulation step and GC attribution to the sim loop",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "requested_by": "RI-PLT01",
+      "note": "Per-frame allocation. Session-scale heap growth is platform.perf.memory and belongs to RI-PLT02; the two failures have different causes and are deliberately separate paths."
+    },
+    {
+      "path": "platform.asset.budget",
+      "title": "Texture, geometry, audio and download budgets for a mid-range phone",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "requested_by": "RI-PLT02"
+    },
+    {
+      "path": "platform.load.ttfp",
+      "title": "Time to first playable frame, and the cost of every subsequent load boundary",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "requested_by": "RI-PLT03",
+      "note": "RI-JRN01 O5 (`T_control`) resolves here and is not redefined there."
+    },
+    {
+      "path": "platform.load.hitches",
+      "title": "Hitch count and duration per traversal minute, and what counts as a declared load boundary",
+      "arb": "neutral",
+      "area": "85-platform",
+      "critic": "critic.platform",
+      "requested_by": "RI-PLT03",
+      "note": "RI-PLT01 M12 (no frame over 100 ms) excludes declared load boundaries; this path owns the definition of that exclusion, so the two items cannot each assume the other bounds it."
+    }
+  ],
+
+  "existing_paths_reused": [
+    { "path": "platform.perf.framerate", "by": "RI-PLT01" },
+    { "path": "platform.perf.memory", "by": "RI-PLT02" },
+    { "path": "platform.load.streaming", "by": "RI-PLT03" },
+    { "path": "platform.determinism.harness", "by": "RI-PLT01" },
+    { "path": "platform.input.pipeline", "by": "RI-JRN03" },
+    { "path": "platform.save.persistence", "by": "RI-JRN05" },
+    { "path": "combat.death.corpserun", "by": "RI-JRN06" },
+    { "path": "combat.death.worldreset", "by": "RI-JRN06" },
+    { "path": "quests.discovery.hooks", "by": "RI-JRN07" },
+    { "path": "journal.navigation.nomarkers", "by": "RI-JRN07, RI-JRN08" },
+    { "path": "journal.entry.voice", "by": "RI-JRN08" }
+  ],
+
+  "new_critics": [
+    {
+      "critic": "critic.journey",
+      "description": "Judges end-to-end player journeys: the opening, the first hour, controls on every device, save/load, death and recovery, an unmarked quest, and re-entry after a week. Runs as a FLEET of one critic per journey with fresh context (JOURNEY-CRITIC-FLEET.md), and half of its roles are NAIVE agents that have not read the corpus. Never judges a subsystem in isolation — that is the owning critic's job — and never accepts a passing subsystem as evidence that the journey through it works.",
+      "requested_by": "RI-JRN01, JOURNEY-CRITIC-FLEET.md",
+      "note": "The remaining journey items are assigned to existing critics (critic.ui, critic.platform, critic.combat, critic.quests, critic.journal) so that the fleet does not become a parallel critic hierarchy. Only RI-JRN01 needs a critic that no existing role covers."
+    }
+  ],
+
+  "harness_amendments_requested": {
+    "note": "Not subsystem paths, listed here so registration and harness amendment are visible in one place. The full, normative request — signatures, semantics, and which items are unmeasurable without each — is JOURNEY-CRITIC-FLEET.md §7. HARNESS.md §10 is the amendment procedure.",
+    "ids": ["A-JRN1", "A-JRN2", "A-JRN3", "A-JRN4", "A-JRN5", "A-JRN6", "A-JRN7", "A-JRN8", "A-JRN9", "A-JRN10", "A-JRN11", "A-JRN12", "A-JRN13", "A-JRN14"]
+  }
+}

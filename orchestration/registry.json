@@ -144,6 +144,15 @@
       ]
     },
     {
+      "id": "souls-verification",
+      "title": "Verify the Souls combat corpus against real community frame data",
+      "brief": "orchestration/briefs/souls-verification.md",
+      "outputs_expected": [
+        "corpus/00-doctrine/PROVENANCE-UPGRADE-02-SOULS.md",
+        "corpus/10-combat/data/souls-frame-data.json"
+      ]
+    },
+    {
       "id": "corpus-audit",
       "title": "Corpus coherence: constants, front-matter repair, wrong-bar amendments",
       "brief": "orchestration/briefs/corpus-audit.md",
