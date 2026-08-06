@@ -1,0 +1,1734 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "round": 2,
+  "part": "crime",
+  "blocks": {
+    "B13-search": {
+      "after_seen": [
+        {
+          "eid": "es",
+          "alert": 100,
+          "alert_state": "AGGRO",
+          "alert_channel": "sight",
+          "los": true,
+          "dist_m": 8,
+          "pos": [
+            0,
+            0,
+            8
+          ],
+          "speed_mps": 0,
+          "search_target": null,
+          "search_radius_m": 0,
+          "alert_hop": 0,
+          "lkp": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "eid": "es2",
+          "alert": 54.2431,
+          "alert_state": "SUSPICIOUS",
+          "alert_channel": "sight",
+          "los": true,
+          "dist_m": 11.662,
+          "pos": [
+            6,
+            0,
+            10
+          ],
+          "speed_mps": 0,
+          "search_target": null,
+          "search_radius_m": 0,
+          "alert_hop": 0,
+          "lkp": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "enter_f": 360,
+      "enter_s": 6,
+      "end_f": 1080,
+      "duration_s": 12,
+      "lkp": [
+        0,
+        0,
+        0
+      ],
+      "plan": [],
+      "walk_max_mps": 2.04,
+      "walk_samples": 720,
+      "ally_after": {
+        "eid": "es2",
+        "alert": 0,
+        "alert_state": "IDLE",
+        "alert_channel": null,
+        "los": true,
+        "dist_m": 90.2,
+        "pos": [
+          6,
+          0,
+          10
+        ],
+        "speed_mps": 0,
+        "search_target": null,
+        "search_radius_m": 0,
+        "alert_hop": 1,
+        "lkp": [
+          0,
+          0,
+          0
+        ]
+      },
+      "events": [
+        {
+          "type": "search_start",
+          "eid": "es",
+          "frame": 479,
+          "lkp": [
+            0,
+            0,
+            0
+          ],
+          "plan": [],
+          "raised": [
+            "es2"
+          ]
+        },
+        {
+          "type": "search_end",
+          "eid": "es",
+          "frame": 1199,
+          "acquired": false,
+          "visited": [],
+          "zone_baseline": 25,
+          "lights_relit": 0
+        }
+      ],
+      "zone_baseline_now": 25,
+      "searcher_after": {
+        "eid": "es",
+        "alert": 25,
+        "alert_state": "SUSPICIOUS",
+        "alert_channel": null,
+        "los": true,
+        "dist_m": 79.967,
+        "pos": [
+          0,
+          0,
+          -0.033
+        ],
+        "speed_mps": 0,
+        "search_target": null,
+        "search_radius_m": 0,
+        "alert_hop": 0,
+        "lkp": [
+          0,
+          0,
+          0
+        ]
+      },
+      "zone_baseline_after": 25,
+      "save_has_zones": true,
+      "save_zones": {
+        "zs": {
+          "baseline": 25,
+          "baseline_until_f": 11999,
+          "ctx_mult": 1.4,
+          "ctx_until_f": 3599,
+          "searches": 1
+        }
+      }
+    },
+    "B14-witness-and-report": {
+      "zone_count": 233,
+      "zone": {
+        "id": "archon.priest0.r0",
+        "settlement": "archon",
+        "class": "faction_interior",
+        "owner": "npc:archon-priest-0",
+        "owner_name": "Ahnassi Dark-Water",
+        "objects": 11,
+        "locks": 1
+      },
+      "n_objects": 11,
+      "a_civ_before": [
+        {
+          "eid": "cw",
+          "group": "civilian",
+          "civ_state": "ALARM",
+          "suspicion": 100,
+          "context_weight": 3,
+          "alert_channel": "sight",
+          "los": true,
+          "dist_m": 3,
+          "pos": [
+            0,
+            0,
+            3
+          ],
+          "yaw_deg": 180,
+          "reporting": false,
+          "fleeing_to": null,
+          "witnessed": 0
+        },
+        {
+          "eid": "gw",
+          "group": "guard",
+          "civ_state": "CALM",
+          "suspicion": 0,
+          "context_weight": 3,
+          "alert_channel": null,
+          "los": true,
+          "dist_m": 120,
+          "pos": [
+            0,
+            0,
+            120
+          ],
+          "yaw_deg": 180,
+          "reporting": false,
+          "fleeing_to": null,
+          "witnessed": 0
+        }
+      ],
+      "a_take": {
+        "taken": true,
+        "theft": true,
+        "scope": "shared",
+        "why": "household or faction stock",
+        "stolen_from": "faction:drowned-court",
+        "crime": "theft_petty",
+        "challenge": false,
+        "disposition_delta": -5.5,
+        "put_back_window_s": 0,
+        "disposition_gmst": "fDispStealing",
+        "observed_by": [
+          "cw"
+        ],
+        "observed_by_source": "derived_from_the_world",
+        "crime_ref": 1,
+        "quote_g": 21,
+        "witnesses": [
+          {
+            "eid": "cw",
+            "identified": true
+          }
+        ]
+      },
+      "a_crime": {
+        "bounty": {
+          "imperial": 0,
+          "settlement": {},
+          "interior": 0
+        },
+        "bloodprice": {},
+        "crimes": [
+          {
+            "id": 1,
+            "crime_id": "theft_petty",
+            "n": 3,
+            "frame": 300,
+            "jurisdiction": "imperial",
+            "settlement": "archon",
+            "value_g": 11,
+            "cargo_g": 0,
+            "victim": "faction:drowned-court",
+            "family": null,
+            "lawful": false,
+            "lawful_by": null,
+            "quote": 21,
+            "landed": false,
+            "suppressed": false
+          }
+        ],
+        "witnesses": [
+          {
+            "eid": "cw",
+            "crime_id": 1,
+            "frame_seen": 300,
+            "identified": true,
+            "reported": false,
+            "kind": "sight",
+            "fled_at": null
+          }
+        ],
+        "death_flags": {},
+        "deaths": [],
+        "favours_owed": [],
+        "writs": [],
+        "hunters": [],
+        "jail": null,
+        "next_crime_id": 2,
+        "stolen_registry": [
+          {
+            "laundered_by": null,
+            "instance": "archon.priest0.r0.0",
+            "item_id": "archon.priest0.r0.0",
+            "name": "incense block",
+            "owner": "faction:drowned-court",
+            "owner_scope": "shared",
+            "value_g": 11,
+            "unique": false,
+            "settlement": "archon",
+            "frame": 300
+          }
+        ],
+        "zones": {
+          "zw": {
+            "baseline": 0,
+            "baseline_until_f": -1,
+            "ctx_mult": 1,
+            "ctx_until_f": -1,
+            "searches": 0
+          }
+        },
+        "standings": {},
+        "gold": 400,
+        "thresholds": {
+          "base": 300,
+          "race_law": 1.35,
+          "faction_law": 1,
+          "arrest_at": 405,
+          "attack_at": 1620,
+          "suspicion": 0.8
+        },
+        "pending_reports": [
+          {
+            "i": 0,
+            "eid": "cw",
+            "crime_ref": 1,
+            "route": "run_to_guard",
+            "latency_f": 2065,
+            "lands_at_f": 2365,
+            "frames_remaining": 2065,
+            "state": "fleeing",
+            "resolved_by": null,
+            "quote_g": 21,
+            "bribe_cost_g": 42
+          }
+        ],
+        "witness_checks": [
+          {
+            "eid": "cw",
+            "crime": 1,
+            "witness": true,
+            "identified": true,
+            "kind": "sight",
+            "dist": 3,
+            "los": true,
+            "V": 0.5335,
+            "civ_state": "ALARM"
+          },
+          {
+            "eid": "gw",
+            "crime": 1,
+            "witness": false,
+            "why": "120.0 m beyond 1.4 x R (25.2 m)",
+            "dist": 120,
+            "los": true,
+            "V": 0.5335,
+            "civ_state": "CALM"
+          }
+        ]
+      },
+      "a_pending": [
+        {
+          "i": 0,
+          "eid": "cw",
+          "crime_ref": 1,
+          "route": "run_to_guard",
+          "latency_f": 2065,
+          "lands_at_f": 2365,
+          "frames_remaining": 2065,
+          "state": "fleeing",
+          "resolved_by": null,
+          "quote_g": 21,
+          "bribe_cost_g": 42
+        }
+      ],
+      "a_bounty": 21,
+      "a_report_latency_f": 2066,
+      "a_report_latency_s": 34.433,
+      "b_take": {
+        "taken": true,
+        "theft": true,
+        "scope": "personal",
+        "why": "one NPC's possession",
+        "stolen_from": "npc:archon-priest-0-elder0",
+        "crime": "theft_petty",
+        "challenge": false,
+        "disposition_delta": -7,
+        "put_back_window_s": 0,
+        "disposition_gmst": "fDispStealing",
+        "observed_by": [
+          "cw"
+        ],
+        "observed_by_source": "derived_from_the_world",
+        "crime_ref": 1,
+        "quote_g": 24,
+        "witnesses": [
+          {
+            "eid": "cw",
+            "identified": true
+          },
+          {
+            "eid": "gw",
+            "identified": true
+          }
+        ]
+      },
+      "b_pending": [
+        {
+          "i": 0,
+          "eid": "cw",
+          "crime_ref": 1,
+          "route": "shout",
+          "latency_f": 72,
+          "lands_at_f": 372,
+          "frames_remaining": 72,
+          "state": "fleeing",
+          "resolved_by": null,
+          "quote_g": 24,
+          "bribe_cost_g": 48
+        },
+        {
+          "i": 1,
+          "eid": "gw",
+          "crime_ref": 1,
+          "route": "guard_witness",
+          "latency_f": 0,
+          "lands_at_f": 300,
+          "frames_remaining": 0,
+          "state": "fleeing",
+          "resolved_by": null,
+          "quote_g": 24,
+          "bribe_cost_g": 48
+        }
+      ],
+      "b_bounty": 24,
+      "b_report_latency_f": 1,
+      "b_report_latency_s": 0.017,
+      "c_take": {
+        "taken": true,
+        "theft": true,
+        "scope": "personal",
+        "why": "one NPC's possession",
+        "stolen_from": "npc:archon-priest-0-elder0",
+        "crime": null,
+        "challenge": false,
+        "disposition_delta": 0,
+        "put_back_window_s": 0,
+        "owner_notices": false,
+        "topic_added": null,
+        "observed_by": [],
+        "observed_by_source": "derived_from_the_world"
+      },
+      "c_crime": {
+        "bounty": {
+          "imperial": 0,
+          "settlement": {},
+          "interior": 0
+        },
+        "bloodprice": {},
+        "crimes": [],
+        "witnesses": [],
+        "death_flags": {},
+        "deaths": [],
+        "favours_owed": [],
+        "writs": [],
+        "hunters": [],
+        "jail": null,
+        "next_crime_id": 1,
+        "stolen_registry": [
+          {
+            "laundered_by": null,
+            "instance": "archon.priest0.r0.2",
+            "item_id": "archon.priest0.r0.2",
+            "name": "incense block",
+            "owner": "npc:archon-priest-0-elder0",
+            "owner_scope": "personal",
+            "value_g": 11,
+            "unique": false,
+            "settlement": "archon",
+            "frame": 300
+          }
+        ],
+        "zones": {
+          "zw": {
+            "baseline": 0,
+            "baseline_until_f": -1,
+            "ctx_mult": 1,
+            "ctx_until_f": -1,
+            "searches": 0
+          }
+        },
+        "standings": {},
+        "gold": 400,
+        "thresholds": {
+          "base": 300,
+          "race_law": 1.35,
+          "faction_law": 1,
+          "arrest_at": 405,
+          "attack_at": 1620,
+          "suspicion": 0.8
+        },
+        "pending_reports": [],
+        "witness_checks": []
+      },
+      "c_bounty_after_60s": 0,
+      "d_civ": [
+        {
+          "eid": "cb",
+          "group": "civilian",
+          "civ_state": "CALM",
+          "suspicion": 0,
+          "context_weight": 3,
+          "alert_channel": null,
+          "los": true,
+          "dist_m": 3,
+          "pos": [
+            0,
+            0,
+            3
+          ],
+          "yaw_deg": 0,
+          "reporting": false,
+          "fleeing_to": null,
+          "witnessed": 0
+        }
+      ],
+      "d_take": {
+        "taken": true,
+        "theft": true,
+        "scope": "shared",
+        "why": "household or faction stock",
+        "stolen_from": "faction:drowned-court",
+        "crime": null,
+        "challenge": false,
+        "disposition_delta": 0,
+        "put_back_window_s": 0,
+        "owner_notices": false,
+        "topic_added": null,
+        "observed_by": [],
+        "observed_by_source": "derived_from_the_world"
+      },
+      "d_crime": {
+        "bounty": {
+          "imperial": 0,
+          "settlement": {},
+          "interior": 0
+        },
+        "bloodprice": {},
+        "crimes": [],
+        "witnesses": [],
+        "death_flags": {},
+        "deaths": [],
+        "favours_owed": [],
+        "writs": [],
+        "hunters": [],
+        "jail": null,
+        "next_crime_id": 1,
+        "stolen_registry": [
+          {
+            "laundered_by": null,
+            "instance": "archon.priest0.r0.3",
+            "item_id": "archon.priest0.r0.3",
+            "name": "wool blanket",
+            "owner": "faction:drowned-court",
+            "owner_scope": "shared",
+            "value_g": 14,
+            "unique": false,
+            "settlement": "archon",
+            "frame": 600
+          }
+        ],
+        "zones": {
+          "zw": {
+            "baseline": 0,
+            "baseline_until_f": -1,
+            "ctx_mult": 1,
+            "ctx_until_f": -1,
+            "searches": 0
+          }
+        },
+        "standings": {},
+        "gold": 400,
+        "thresholds": {
+          "base": 300,
+          "race_law": 1.35,
+          "faction_law": 1,
+          "arrest_at": 405,
+          "attack_at": 1620,
+          "suspicion": 0.8
+        },
+        "pending_reports": [],
+        "witness_checks": []
+      },
+      "d_bounty_after_60s": 0,
+      "e_take": {
+        "taken": true,
+        "theft": true,
+        "scope": "personal",
+        "why": "one NPC's possession",
+        "stolen_from": "npc:archon-priest-0-elder0",
+        "crime": "theft_petty",
+        "challenge": false,
+        "disposition_delta": -5.5,
+        "put_back_window_s": 0,
+        "disposition_gmst": "fDispStealing",
+        "observed_by": [
+          "cw"
+        ],
+        "observed_by_source": "derived_from_the_world",
+        "crime_ref": 1,
+        "quote_g": 21,
+        "witnesses": [
+          {
+            "eid": "cw",
+            "identified": true
+          }
+        ]
+      },
+      "e_pending": [
+        {
+          "i": 0,
+          "eid": "cw",
+          "crime_ref": 1,
+          "route": "run_to_guard",
+          "latency_f": 2065,
+          "lands_at_f": 2365,
+          "frames_remaining": 2065,
+          "state": "fleeing",
+          "resolved_by": null,
+          "quote_g": 21,
+          "bribe_cost_g": 42
+        }
+      ],
+      "e_bribe": {
+        "ok": true,
+        "paid": 42,
+        "frame": 300
+      },
+      "e_bounty_after_bribe": 0
+    },
+    "B15-ownership": {
+      "taken": [
+        {
+          "taken": true,
+          "theft": true,
+          "scope": "shared",
+          "why": "household or faction stock",
+          "stolen_from": "faction:drowned-court",
+          "crime": null,
+          "challenge": false,
+          "disposition_delta": 0,
+          "put_back_window_s": 0,
+          "owner_notices": false,
+          "topic_added": null,
+          "observed_by": [],
+          "observed_by_source": "derived_from_the_world"
+        },
+        {
+          "taken": true,
+          "theft": true,
+          "scope": "personal",
+          "why": "one NPC's possession",
+          "stolen_from": "npc:archon-priest-0-elder0",
+          "crime": null,
+          "challenge": false,
+          "disposition_delta": 0,
+          "put_back_window_s": 0,
+          "owner_notices": false,
+          "topic_added": null,
+          "observed_by": [],
+          "observed_by_source": "derived_from_the_world"
+        },
+        {
+          "taken": true,
+          "theft": true,
+          "scope": "personal",
+          "why": "one NPC's possession",
+          "stolen_from": "npc:archon-priest-0-elder0",
+          "crime": null,
+          "challenge": false,
+          "disposition_delta": 0,
+          "put_back_window_s": 0,
+          "owner_notices": false,
+          "topic_added": null,
+          "observed_by": [],
+          "observed_by_source": "derived_from_the_world"
+        }
+      ],
+      "registry": [
+        {
+          "laundered_by": null,
+          "instance": "archon.priest0.r0.0",
+          "item_id": "archon.priest0.r0.0",
+          "name": "incense block",
+          "owner": "faction:drowned-court",
+          "owner_scope": "shared",
+          "value_g": 11,
+          "unique": false,
+          "settlement": "archon",
+          "frame": 0
+        },
+        {
+          "laundered_by": null,
+          "instance": "archon.priest0.r0.1",
+          "item_id": "archon.priest0.r0.1",
+          "name": "wool blanket",
+          "owner": "npc:archon-priest-0-elder0",
+          "owner_scope": "personal",
+          "value_g": 14,
+          "unique": false,
+          "settlement": "archon",
+          "frame": 0
+        },
+        {
+          "laundered_by": null,
+          "instance": "archon.priest0.r0.2",
+          "item_id": "archon.priest0.r0.2",
+          "name": "incense block",
+          "owner": "npc:archon-priest-0-elder0",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "unique": false,
+          "settlement": "archon",
+          "frame": 0
+        }
+      ],
+      "inventory_rows": [
+        {
+          "id": "archon.priest0.r0.0",
+          "count": 1,
+          "condition": 1,
+          "charge": 0,
+          "stolen": true,
+          "owner_of_record": "faction:drowned-court",
+          "equipped_slot": null,
+          "quick_slot": null
+        },
+        {
+          "id": "archon.priest0.r0.1",
+          "count": 1,
+          "condition": 1,
+          "charge": 0,
+          "stolen": true,
+          "owner_of_record": "npc:archon-priest-0-elder0",
+          "equipped_slot": null,
+          "quick_slot": null
+        },
+        {
+          "id": "archon.priest0.r0.2",
+          "count": 1,
+          "condition": 1,
+          "charge": 0,
+          "stolen": true,
+          "owner_of_record": "npc:archon-priest-0-elder0",
+          "equipped_slot": null,
+          "quick_slot": null
+        }
+      ],
+      "save_registry": [
+        "archon.priest0.r0.0",
+        "archon.priest0.r0.1",
+        "archon.priest0.r0.2"
+      ],
+      "round_trip": {
+        "hash_before": "2431a82f99c4adba77b651e14d2286cfccbd21324912a8169010c63668e265d7",
+        "hash_after": "2431a82f99c4adba77b651e14d2286cfccbd21324912a8169010c63668e265d7",
+        "equal": true,
+        "volatile_excluded": [
+          "volatile.written_at",
+          "volatile.playtime_seconds",
+          "volatile.frame",
+          "volatile.thumbnail",
+          "volatile.ui_focus",
+          "volatile.audio_bus"
+        ],
+        "diff": [],
+        "canonical_bytes": 3891
+      },
+      "fences": null
+    },
+    "B16-parley": {
+      "a_before": {
+        "combat": {
+          "schema": "elder-souls/combat-state@1",
+          "unit": "f@60",
+          "frame": 10,
+          "player": {
+            "state": "IDLE",
+            "anim": "idle",
+            "anim_frame": 10,
+            "move": null,
+            "actionable_at": 0,
+            "hp": 620,
+            "hp_max": 620,
+            "stamina": 120,
+            "stamina_max": 120,
+            "regen_blocked_until": 0,
+            "exhausted": false,
+            "poise_health": 48,
+            "poise_health_max": 48,
+            "invuln": false,
+            "guard": false,
+            "shield": "marsh_oak_medium",
+            "equip_load_pct": 24,
+            "tier": "LIGHT",
+            "estus": 5,
+            "flask_level": 0,
+            "stamina_drops": 0,
+            "weapon": "ssw_garrison_sword",
+            "weapon_class": "straight_sword",
+            "two_handed": false,
+            "airborne": false,
+            "pos": [
+              0,
+              0,
+              0
+            ],
+            "yaw_deg": 0
+          },
+          "menu": {
+            "open": false,
+            "pauses_simulation": false
+          },
+          "lock": {
+            "target": null,
+            "score": null,
+            "both_framed": true
+          },
+          "world_knowledge": {
+            "gold": 0,
+            "topicsKnown": [],
+            "dispositions": {},
+            "factions": {}
+          },
+          "enemies": [
+            {
+              "id": "g1",
+              "statblock": "guard_legion",
+              "state": "REPOSITION",
+              "anim": "e_idle",
+              "anim_frame": 2,
+              "move": null,
+              "hp": 520,
+              "hp_max": 520,
+              "poise_health": 38,
+              "poise_health_max": 38,
+              "stamina": 100,
+              "stamina_max": 100,
+              "guard": false,
+              "dead": false,
+              "yielded": false,
+              "parley": {
+                "grounds": [
+                  "yield",
+                  "gold",
+                  "faction"
+                ],
+                "faction": "legion",
+                "rank_required": 3,
+                "gold_price": 0
+              },
+              "dist_m": 3,
+              "bearing_deg": 0
+            }
+          ],
+          "state_enums": {
+            "player": [
+              "IDLE",
+              "WALK",
+              "RUN",
+              "SPRINT",
+              "ATK_STARTUP",
+              "ATK_ACTIVE",
+              "ATK_RECOVER",
+              "ROLL_STARTUP",
+              "ROLL_IFRAME",
+              "ROLL_RECOVER",
+              "BACKSTEP",
+              "BLOCK_HOLD",
+              "BLOCK_IMPACT",
+              "GUARD_BREAK",
+              "PARRY_ACTIVE",
+              "PARRY_RECOVER",
+              "CRIT_ATTACK",
+              "HEAL_STARTUP",
+              "HEAL_ACTIVE",
+              "HEAL_RECOVER",
+              "STAGGER",
+              "KNOCKDOWN",
+              "DEAD",
+              "PARLEY_STARTUP",
+              "PARLEY_ACTIVE",
+              "PARLEY_RECOVER",
+              "JUMP_RISE",
+              "JUMP_AIR",
+              "JUMP_LAND",
+              "STANCE_SWITCH",
+              "SWAP",
+              "CAST_WINDUP",
+              "CAST_RELEASE",
+              "CAST_RECOVER",
+              "AIRBORNE"
+            ],
+            "enemy": [
+              "IDLE",
+              "REPOSITION",
+              "APPROACH",
+              "ATK_WINDUP",
+              "ATK_ACTIVE",
+              "ATK_INTERVAL",
+              "ATK_RECOVER",
+              "STAGGER",
+              "GUARD_BREAK",
+              "PARRIED",
+              "DEAD",
+              "BLOCK_HOLD",
+              "YIELDED",
+              "PARALYSED"
+            ],
+            "extensions": {
+              "added": [
+                "PARLEY_STARTUP",
+                "PARLEY_ACTIVE",
+                "PARLEY_RECOVER"
+              ],
+              "added_wave1_magic": {
+                "states": [
+                  "CAST_WINDUP",
+                  "CAST_RELEASE",
+                  "CAST_RECOVER",
+                  "AIRBORNE"
+                ],
+                "why": "Seam S19: inside the fight, casting is a Souls action with a startup you cannot take back, an active window in which geometry exists in the world, and a recovery tail. RI-MAG01 §B gives it frame data on exactly ES-CAST/1's terms and RI-MAG01 M1 reads `player.cast.phase` per frame, which requires the phases to be states rather than a flag. `AIRBORNE` is RI-MAG02 §F3: a levitating caster can neither attack, cast (except `slowfall`), block, roll nor parry, and has no i-frames of any kind — a state, not a set of denials scattered across the input handler."
+              },
+              "why": "RI-CMB07 §A's player state enum is closed and fail-closed, and it predates the wave-0 amendment to ARBITRATION §1 / seam S13 (drift ID-01) which makes a non-lethal exit from a fight against anything capable of speech MANDATORY and a humanoid without one a DEFECT. The parley is a committed animated action with startup, active and recovery frames on exactly the terms every other action in the fight has, so it needs states in the same vocabulary. They are DECLARED in the trace META rather than smuggled in, so a conforming reader validates against the declared set and still fails closed on anything unexpected.",
+              "added_wave1_remediation": {
+                "states": [
+                  "JUMP_RISE",
+                  "JUMP_AIR",
+                  "JUMP_LAND",
+                  "STANCE_SWITCH",
+                  "SWAP"
+                ],
+                "why": "The W1-09 verdict §2.3 found `jump`, `two_hand`, `swap_right`, `swap_left` and `menu` ACCEPTED AND INERT: pressing jump produced no state change, max_y 0.0000 over 90 frames and no stamina deduction, against a declared cost of 18. That made RI-CMB02 §C's jump-attack row, RI-CMB01 §B's OVERLOADED jump-attack prohibition and RI-WPN06's whole stance contract structurally unmeasurable — \"the methods are absent rather than present-and-lying\" does not cover a button that IS present and does nothing. They are now real committed actions with real states, real costs and real frame data (frames.json §actions), declared here on exactly the terms the PARLEY_* extension was.",
+                "menu": "NOT a state. `menu` opens a UI surface and DOES NOT PAUSE the fixed step — see frames.json §actions.menu. AR-1 probe A3 (\"pause mid-fight\") was scored not_run for want of a menu surface; it is now runnable and the answer is the Souls-side one."
+              },
+              "not_added": {
+                "EXHAUSTED": "RI-CMB09 §6 asks for EXHAUSTED as a state. It is carried instead as the boolean field p.exhausted plus exhausted_enter / exhausted_exit events, because an exhausted player still WALKS and \"walk only\" is one of the defining properties RI-CMB09 §4 gives the state — collapsing it into p.state would delete the observation the item wants. RI-CMB09 M5's checks are all measurable off the events. Recorded in stamina.json."
+              }
+            }
+          }
+        },
+        "stats": {
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "yaw_deg": 0,
+          "state": "IDLE",
+          "anim": "idle",
+          "anim_frame": 10,
+          "hp": 620,
+          "hp_max": 620,
+          "stamina": 120,
+          "stamina_max": 120,
+          "poise_cur": 48,
+          "poise_max": 48,
+          "estus": 5,
+          "locked_on": null,
+          "level": 1,
+          "souls": 0,
+          "attributes": {
+            "vigour": 10,
+            "endurance": 20,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "equip_load_pct": 24,
+          "roll_class": "LIGHT",
+          "burden_ratio": 0,
+          "burden_tier": "UNBURDENED",
+          "in_combat": true,
+          "water_band": "W0",
+          "breath_s": 60,
+          "breath_max_s": 60,
+          "submerged": false,
+          "airborne": false,
+          "mired": false,
+          "denied_by_water": {
+            "sprint": false,
+            "roll": false
+          },
+          "afflictions": [],
+          "stranded_by": null,
+          "equipped": {
+            "weapon_id": "ssw_garrison_sword",
+            "weapon_name": "Imperial garrison sword",
+            "weapon_class": "SSW",
+            "weight_tier": "light",
+            "reach_m": 1.95,
+            "attack_rating": 118,
+            "stance": "one_hand",
+            "offhand": "o1_sword_shield",
+            "offhand_kind": "shield",
+            "shield": "marsh_oak_medium",
+            "shield_class": "medium",
+            "guard_angle_deg": 75,
+            "slots_declared": 31,
+            "slots_reachable_in_this_configuration": [
+              "art.1",
+              "backstep.r1",
+              "guard.counter",
+              "guardbreak",
+              "jump.r1",
+              "plunge",
+              "r1.1",
+              "r1.2",
+              "r1.3",
+              "r2",
+              "r2.charged",
+              "roll.r1",
+              "run.r1",
+              "run.r2",
+              "shield.bash"
+            ],
+            "chain_root": "r1.1",
+            "distinct_clips": 31
+          },
+          "focus": 94,
+          "focus_max": 94,
+          "focus_locked": true,
+          "attuned": [
+            "spark_dart",
+            "slowfall"
+          ],
+          "effects_active": [],
+          "levitating": false,
+          "altitude_m": 0
+        }
+      },
+      "a_events": [],
+      "a_after": {
+        "combat": {
+          "schema": "elder-souls/combat-state@1",
+          "unit": "f@60",
+          "frame": 130,
+          "player": {
+            "state": "IDLE",
+            "anim": "idle",
+            "anim_frame": 52,
+            "move": null,
+            "actionable_at": 100,
+            "hp": 620,
+            "hp_max": 620,
+            "stamina": 120,
+            "stamina_max": 120,
+            "regen_blocked_until": 0,
+            "exhausted": false,
+            "poise_health": 48,
+            "poise_health_max": 48,
+            "invuln": false,
+            "guard": false,
+            "shield": "marsh_oak_medium",
+            "equip_load_pct": 24,
+            "tier": "LIGHT",
+            "estus": 5,
+            "flask_level": 0,
+            "stamina_drops": 0,
+            "weapon": "ssw_garrison_sword",
+            "weapon_class": "straight_sword",
+            "two_handed": false,
+            "airborne": false,
+            "pos": [
+              0,
+              0,
+              0
+            ],
+            "yaw_deg": 0
+          },
+          "menu": {
+            "open": false,
+            "pauses_simulation": false
+          },
+          "lock": {
+            "target": null,
+            "score": null,
+            "both_framed": true
+          },
+          "world_knowledge": {
+            "gold": 0,
+            "topicsKnown": [],
+            "dispositions": {},
+            "factions": {}
+          },
+          "enemies": [
+            {
+              "id": "g1",
+              "statblock": "guard_legion",
+              "state": "YIELDED",
+              "anim": "e_idle",
+              "anim_frame": 26,
+              "move": null,
+              "hp": 520,
+              "hp_max": 520,
+              "poise_health": 38,
+              "poise_health_max": 38,
+              "stamina": 100,
+              "stamina_max": 100,
+              "guard": false,
+              "dead": false,
+              "yielded": true,
+              "parley": {
+                "grounds": [
+                  "yield",
+                  "gold",
+                  "faction"
+                ],
+                "faction": "legion",
+                "rank_required": 3,
+                "gold_price": 0
+              },
+              "dist_m": 3,
+              "bearing_deg": 0
+            }
+          ],
+          "state_enums": {
+            "player": [
+              "IDLE",
+              "WALK",
+              "RUN",
+              "SPRINT",
+              "ATK_STARTUP",
+              "ATK_ACTIVE",
+              "ATK_RECOVER",
+              "ROLL_STARTUP",
+              "ROLL_IFRAME",
+              "ROLL_RECOVER",
+              "BACKSTEP",
+              "BLOCK_HOLD",
+              "BLOCK_IMPACT",
+              "GUARD_BREAK",
+              "PARRY_ACTIVE",
+              "PARRY_RECOVER",
+              "CRIT_ATTACK",
+              "HEAL_STARTUP",
+              "HEAL_ACTIVE",
+              "HEAL_RECOVER",
+              "STAGGER",
+              "KNOCKDOWN",
+              "DEAD",
+              "PARLEY_STARTUP",
+              "PARLEY_ACTIVE",
+              "PARLEY_RECOVER",
+              "JUMP_RISE",
+              "JUMP_AIR",
+              "JUMP_LAND",
+              "STANCE_SWITCH",
+              "SWAP",
+              "CAST_WINDUP",
+              "CAST_RELEASE",
+              "CAST_RECOVER",
+              "AIRBORNE"
+            ],
+            "enemy": [
+              "IDLE",
+              "REPOSITION",
+              "APPROACH",
+              "ATK_WINDUP",
+              "ATK_ACTIVE",
+              "ATK_INTERVAL",
+              "ATK_RECOVER",
+              "STAGGER",
+              "GUARD_BREAK",
+              "PARRIED",
+              "DEAD",
+              "BLOCK_HOLD",
+              "YIELDED",
+              "PARALYSED"
+            ],
+            "extensions": {
+              "added": [
+                "PARLEY_STARTUP",
+                "PARLEY_ACTIVE",
+                "PARLEY_RECOVER"
+              ],
+              "added_wave1_magic": {
+                "states": [
+                  "CAST_WINDUP",
+                  "CAST_RELEASE",
+                  "CAST_RECOVER",
+                  "AIRBORNE"
+                ],
+                "why": "Seam S19: inside the fight, casting is a Souls action with a startup you cannot take back, an active window in which geometry exists in the world, and a recovery tail. RI-MAG01 §B gives it frame data on exactly ES-CAST/1's terms and RI-MAG01 M1 reads `player.cast.phase` per frame, which requires the phases to be states rather than a flag. `AIRBORNE` is RI-MAG02 §F3: a levitating caster can neither attack, cast (except `slowfall`), block, roll nor parry, and has no i-frames of any kind — a state, not a set of denials scattered across the input handler."
+              },
+              "why": "RI-CMB07 §A's player state enum is closed and fail-closed, and it predates the wave-0 amendment to ARBITRATION §1 / seam S13 (drift ID-01) which makes a non-lethal exit from a fight against anything capable of speech MANDATORY and a humanoid without one a DEFECT. The parley is a committed animated action with startup, active and recovery frames on exactly the terms every other action in the fight has, so it needs states in the same vocabulary. They are DECLARED in the trace META rather than smuggled in, so a conforming reader validates against the declared set and still fails closed on anything unexpected.",
+              "added_wave1_remediation": {
+                "states": [
+                  "JUMP_RISE",
+                  "JUMP_AIR",
+                  "JUMP_LAND",
+                  "STANCE_SWITCH",
+                  "SWAP"
+                ],
+                "why": "The W1-09 verdict §2.3 found `jump`, `two_hand`, `swap_right`, `swap_left` and `menu` ACCEPTED AND INERT: pressing jump produced no state change, max_y 0.0000 over 90 frames and no stamina deduction, against a declared cost of 18. That made RI-CMB02 §C's jump-attack row, RI-CMB01 §B's OVERLOADED jump-attack prohibition and RI-WPN06's whole stance contract structurally unmeasurable — \"the methods are absent rather than present-and-lying\" does not cover a button that IS present and does nothing. They are now real committed actions with real states, real costs and real frame data (frames.json §actions), declared here on exactly the terms the PARLEY_* extension was.",
+                "menu": "NOT a state. `menu` opens a UI surface and DOES NOT PAUSE the fixed step — see frames.json §actions.menu. AR-1 probe A3 (\"pause mid-fight\") was scored not_run for want of a menu surface; it is now runnable and the answer is the Souls-side one."
+              },
+              "not_added": {
+                "EXHAUSTED": "RI-CMB09 §6 asks for EXHAUSTED as a state. It is carried instead as the boolean field p.exhausted plus exhausted_enter / exhausted_exit events, because an exhausted player still WALKS and \"walk only\" is one of the defining properties RI-CMB09 §4 gives the state — collapsing it into p.state would delete the observation the item wants. RI-CMB09 M5's checks are all measurable off the events. Recorded in stamina.json."
+              }
+            }
+          }
+        },
+        "stats": {
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "yaw_deg": 0,
+          "state": "IDLE",
+          "anim": "idle",
+          "anim_frame": 52,
+          "hp": 620,
+          "hp_max": 620,
+          "stamina": 120,
+          "stamina_max": 120,
+          "poise_cur": 48,
+          "poise_max": 48,
+          "estus": 5,
+          "locked_on": null,
+          "level": 1,
+          "souls": 0,
+          "attributes": {
+            "vigour": 10,
+            "endurance": 20,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "equip_load_pct": 24,
+          "roll_class": "LIGHT",
+          "burden_ratio": 0,
+          "burden_tier": "UNBURDENED",
+          "in_combat": false,
+          "water_band": "W0",
+          "breath_s": 60,
+          "breath_max_s": 60,
+          "submerged": false,
+          "airborne": false,
+          "mired": false,
+          "denied_by_water": {
+            "sprint": false,
+            "roll": false
+          },
+          "afflictions": [],
+          "stranded_by": null,
+          "equipped": {
+            "weapon_id": "ssw_garrison_sword",
+            "weapon_name": "Imperial garrison sword",
+            "weapon_class": "SSW",
+            "weight_tier": "light",
+            "reach_m": 1.95,
+            "attack_rating": 118,
+            "stance": "one_hand",
+            "offhand": "o1_sword_shield",
+            "offhand_kind": "shield",
+            "shield": "marsh_oak_medium",
+            "shield_class": "medium",
+            "guard_angle_deg": 75,
+            "slots_declared": 31,
+            "slots_reachable_in_this_configuration": [
+              "art.1",
+              "backstep.r1",
+              "guard.counter",
+              "guardbreak",
+              "jump.r1",
+              "plunge",
+              "r1.1",
+              "r1.2",
+              "r1.3",
+              "r2",
+              "r2.charged",
+              "roll.r1",
+              "run.r1",
+              "run.r2",
+              "shield.bash"
+            ],
+            "chain_root": "r1.1",
+            "distinct_clips": 31
+          },
+          "focus": 94,
+          "focus_max": 94,
+          "focus_locked": true,
+          "attuned": [
+            "spark_dart",
+            "slowfall"
+          ],
+          "effects_active": [],
+          "levitating": false,
+          "altitude_m": 0
+        }
+      },
+      "b_gold0": {
+        "gold_before": 0,
+        "gold_after": 0,
+        "stam_before": 120,
+        "stam_after": 120,
+        "curve": [
+          {
+            "df": -1,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "REPOSITION"
+          },
+          {
+            "df": 0,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "REPOSITION"
+          },
+          {
+            "df": 1,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "REPOSITION"
+          },
+          {
+            "df": 2,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "REPOSITION"
+          },
+          {
+            "df": 3,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "REPOSITION"
+          },
+          {
+            "df": 4,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "REPOSITION"
+          },
+          {
+            "df": 30,
+            "pstate": "PARLEY_STARTUP",
+            "stam": 120,
+            "e0": "REPOSITION"
+          },
+          {
+            "df": 31,
+            "pstate": "PARLEY_STARTUP",
+            "stam": 120,
+            "e0": "REPOSITION"
+          },
+          {
+            "df": 78,
+            "pstate": "PARLEY_RECOVER",
+            "stam": 120,
+            "e0": "YIELDED"
+          },
+          {
+            "df": 79,
+            "pstate": "PARLEY_RECOVER",
+            "stam": 120,
+            "e0": "YIELDED"
+          },
+          {
+            "df": 114,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "YIELDED"
+          },
+          {
+            "df": 115,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "YIELDED"
+          },
+          {
+            "df": 116,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "YIELDED"
+          },
+          {
+            "df": 117,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "YIELDED"
+          },
+          {
+            "df": 118,
+            "pstate": "IDLE",
+            "stam": 120,
+            "e0": "YIELDED"
+          }
+        ],
+        "events": [],
+        "combat_after": {
+          "schema": "elder-souls/combat-state@1",
+          "unit": "f@60",
+          "frame": 130,
+          "player": {
+            "state": "IDLE",
+            "anim": "idle",
+            "anim_frame": 52,
+            "move": null,
+            "actionable_at": 100,
+            "hp": 620,
+            "hp_max": 620,
+            "stamina": 120,
+            "stamina_max": 120,
+            "regen_blocked_until": 0,
+            "exhausted": false,
+            "poise_health": 48,
+            "poise_health_max": 48,
+            "invuln": false,
+            "guard": false,
+            "shield": "marsh_oak_medium",
+            "equip_load_pct": 24,
+            "tier": "LIGHT",
+            "estus": 5,
+            "flask_level": 0,
+            "stamina_drops": 0,
+            "weapon": "ssw_garrison_sword",
+            "weapon_class": "straight_sword",
+            "two_handed": false,
+            "airborne": false,
+            "pos": [
+              0,
+              0,
+              0
+            ],
+            "yaw_deg": 0
+          },
+          "menu": {
+            "open": false,
+            "pauses_simulation": false
+          },
+          "lock": {
+            "target": null,
+            "score": null,
+            "both_framed": true
+          },
+          "world_knowledge": {
+            "gold": 0,
+            "topicsKnown": [],
+            "dispositions": {},
+            "factions": {}
+          },
+          "enemies": [
+            {
+              "id": "g1",
+              "statblock": "guard_legion",
+              "state": "YIELDED",
+              "anim": "e_idle",
+              "anim_frame": 26,
+              "move": null,
+              "hp": 520,
+              "hp_max": 520,
+              "poise_health": 38,
+              "poise_health_max": 38,
+              "stamina": 100,
+              "stamina_max": 100,
+              "guard": false,
+              "dead": false,
+              "yielded": true,
+              "parley": {
+                "grounds": [
+                  "yield",
+                  "gold",
+                  "faction"
+                ],
+                "faction": "legion",
+                "rank_required": 3,
+                "gold_price": 0
+              },
+              "dist_m": 3,
+              "bearing_deg": 0
+            }
+          ],
+          "state_enums": {
+            "player": [
+              "IDLE",
+              "WALK",
+              "RUN",
+              "SPRINT",
+              "ATK_STARTUP",
+              "ATK_ACTIVE",
+              "ATK_RECOVER",
+              "ROLL_STARTUP",
+              "ROLL_IFRAME",
+              "ROLL_RECOVER",
+              "BACKSTEP",
+              "BLOCK_HOLD",
+              "BLOCK_IMPACT",
+              "GUARD_BREAK",
+              "PARRY_ACTIVE",
+              "PARRY_RECOVER",
+              "CRIT_ATTACK",
+              "HEAL_STARTUP",
+              "HEAL_ACTIVE",
+              "HEAL_RECOVER",
+              "STAGGER",
+              "KNOCKDOWN",
+              "DEAD",
+              "PARLEY_STARTUP",
+              "PARLEY_ACTIVE",
+              "PARLEY_RECOVER",
+              "JUMP_RISE",
+              "JUMP_AIR",
+              "JUMP_LAND",
+              "STANCE_SWITCH",
+              "SWAP",
+              "CAST_WINDUP",
+              "CAST_RELEASE",
+              "CAST_RECOVER",
+              "AIRBORNE"
+            ],
+            "enemy": [
+              "IDLE",
+              "REPOSITION",
+              "APPROACH",
+              "ATK_WINDUP",
+              "ATK_ACTIVE",
+              "ATK_INTERVAL",
+              "ATK_RECOVER",
+              "STAGGER",
+              "GUARD_BREAK",
+              "PARRIED",
+              "DEAD",
+              "BLOCK_HOLD",
+              "YIELDED",
+              "PARALYSED"
+            ],
+            "extensions": {
+              "added": [
+                "PARLEY_STARTUP",
+                "PARLEY_ACTIVE",
+                "PARLEY_RECOVER"
+              ],
+              "added_wave1_magic": {
+                "states": [
+                  "CAST_WINDUP",
+                  "CAST_RELEASE",
+                  "CAST_RECOVER",
+                  "AIRBORNE"
+                ],
+                "why": "Seam S19: inside the fight, casting is a Souls action with a startup you cannot take back, an active window in which geometry exists in the world, and a recovery tail. RI-MAG01 §B gives it frame data on exactly ES-CAST/1's terms and RI-MAG01 M1 reads `player.cast.phase` per frame, which requires the phases to be states rather than a flag. `AIRBORNE` is RI-MAG02 §F3: a levitating caster can neither attack, cast (except `slowfall`), block, roll nor parry, and has no i-frames of any kind — a state, not a set of denials scattered across the input handler."
+              },
+              "why": "RI-CMB07 §A's player state enum is closed and fail-closed, and it predates the wave-0 amendment to ARBITRATION §1 / seam S13 (drift ID-01) which makes a non-lethal exit from a fight against anything capable of speech MANDATORY and a humanoid without one a DEFECT. The parley is a committed animated action with startup, active and recovery frames on exactly the terms every other action in the fight has, so it needs states in the same vocabulary. They are DECLARED in the trace META rather than smuggled in, so a conforming reader validates against the declared set and still fails closed on anything unexpected.",
+              "added_wave1_remediation": {
+                "states": [
+                  "JUMP_RISE",
+                  "JUMP_AIR",
+                  "JUMP_LAND",
+                  "STANCE_SWITCH",
+                  "SWAP"
+                ],
+                "why": "The W1-09 verdict §2.3 found `jump`, `two_hand`, `swap_right`, `swap_left` and `menu` ACCEPTED AND INERT: pressing jump produced no state change, max_y 0.0000 over 90 frames and no stamina deduction, against a declared cost of 18. That made RI-CMB02 §C's jump-attack row, RI-CMB01 §B's OVERLOADED jump-attack prohibition and RI-WPN06's whole stance contract structurally unmeasurable — \"the methods are absent rather than present-and-lying\" does not cover a button that IS present and does nothing. They are now real committed actions with real states, real costs and real frame data (frames.json §actions), declared here on exactly the terms the PARLEY_* extension was.",
+                "menu": "NOT a state. `menu` opens a UI surface and DOES NOT PAUSE the fixed step — see frames.json §actions.menu. AR-1 probe A3 (\"pause mid-fight\") was scored not_run for want of a menu surface; it is now runnable and the answer is the Souls-side one."
+              },
+              "not_added": {
+                "EXHAUSTED": "RI-CMB09 §6 asks for EXHAUSTED as a state. It is carried instead as the boolean field p.exhausted plus exhausted_enter / exhausted_exit events, because an exhausted player still WALKS and \"walk only\" is one of the defining properties RI-CMB09 §4 gives the state — collapsing it into p.state would delete the observation the item wants. RI-CMB09 M5's checks are all measurable off the events. Recorded in stamina.json."
+              }
+            }
+          }
+        }
+      },
+      "c_punish": {
+        "hp_before": 620,
+        "hp_after": 620,
+        "events": [],
+        "combat_after": {
+          "schema": "elder-souls/combat-state@1",
+          "unit": "f@60",
+          "frame": 310,
+          "player": {
+            "state": "IDLE",
+            "anim": "idle",
+            "anim_frame": 40,
+            "move": null,
+            "actionable_at": 100,
+            "hp": 620,
+            "hp_max": 620,
+            "stamina": 120,
+            "stamina_max": 120,
+            "regen_blocked_until": 0,
+            "exhausted": false,
+            "poise_health": 48,
+            "poise_health_max": 48,
+            "invuln": false,
+            "guard": false,
+            "shield": "marsh_oak_medium",
+            "equip_load_pct": 24,
+            "tier": "LIGHT",
+            "estus": 5,
+            "flask_level": 0,
+            "stamina_drops": 0,
+            "weapon": "ssw_garrison_sword",
+            "weapon_class": "straight_sword",
+            "two_handed": false,
+            "airborne": false,
+            "pos": [
+              0,
+              0,
+              0
+            ],
+            "yaw_deg": 0
+          },
+          "menu": {
+            "open": false,
+            "pauses_simulation": false
+          },
+          "lock": {
+            "target": null,
+            "score": null,
+            "both_framed": true
+          },
+          "world_knowledge": {
+            "gold": 0,
+            "topicsKnown": [],
+            "dispositions": {},
+            "factions": {}
+          },
+          "enemies": [
+            {
+              "id": "g1",
+              "statblock": "guard_legion",
+              "state": "YIELDED",
+              "anim": "e_idle",
+              "anim_frame": 14,
+              "move": null,
+              "hp": 520,
+              "hp_max": 520,
+              "poise_health": 38,
+              "poise_health_max": 38,
+              "stamina": 100,
+              "stamina_max": 100,
+              "guard": false,
+              "dead": false,
+              "yielded": true,
+              "parley": {
+                "grounds": [
+                  "yield",
+                  "gold",
+                  "faction"
+                ],
+                "faction": "legion",
+                "rank_required": 3,
+                "gold_price": 0
+              },
+              "dist_m": 3,
+              "bearing_deg": 0
+            }
+          ],
+          "state_enums": {
+            "player": [
+              "IDLE",
+              "WALK",
+              "RUN",
+              "SPRINT",
+              "ATK_STARTUP",
+              "ATK_ACTIVE",
+              "ATK_RECOVER",
+              "ROLL_STARTUP",
+              "ROLL_IFRAME",
+              "ROLL_RECOVER",
+              "BACKSTEP",
+              "BLOCK_HOLD",
+              "BLOCK_IMPACT",
+              "GUARD_BREAK",
+              "PARRY_ACTIVE",
+              "PARRY_RECOVER",
+              "CRIT_ATTACK",
+              "HEAL_STARTUP",
+              "HEAL_ACTIVE",
+              "HEAL_RECOVER",
+              "STAGGER",
+              "KNOCKDOWN",
+              "DEAD",
+              "PARLEY_STARTUP",
+              "PARLEY_ACTIVE",
+              "PARLEY_RECOVER",
+              "JUMP_RISE",
+              "JUMP_AIR",
+              "JUMP_LAND",
+              "STANCE_SWITCH",
+              "SWAP",
+              "CAST_WINDUP",
+              "CAST_RELEASE",
+              "CAST_RECOVER",
+              "AIRBORNE"
+            ],
+            "enemy": [
+              "IDLE",
+              "REPOSITION",
+              "APPROACH",
+              "ATK_WINDUP",
+              "ATK_ACTIVE",
+              "ATK_INTERVAL",
+              "ATK_RECOVER",
+              "STAGGER",
+              "GUARD_BREAK",
+              "PARRIED",
+              "DEAD",
+              "BLOCK_HOLD",
+              "YIELDED",
+              "PARALYSED"
+            ],
+            "extensions": {
+              "added": [
+                "PARLEY_STARTUP",
+                "PARLEY_ACTIVE",
+                "PARLEY_RECOVER"
+              ],
+              "added_wave1_magic": {
+                "states": [
+                  "CAST_WINDUP",
+                  "CAST_RELEASE",
+                  "CAST_RECOVER",
+                  "AIRBORNE"
+                ],
+                "why": "Seam S19: inside the fight, casting is a Souls action with a startup you cannot take back, an active window in which geometry exists in the world, and a recovery tail. RI-MAG01 §B gives it frame data on exactly ES-CAST/1's terms and RI-MAG01 M1 reads `player.cast.phase` per frame, which requires the phases to be states rather than a flag. `AIRBORNE` is RI-MAG02 §F3: a levitating caster can neither attack, cast (except `slowfall`), block, roll nor parry, and has no i-frames of any kind — a state, not a set of denials scattered across the input handler."
+              },
+              "why": "RI-CMB07 §A's player state enum is closed and fail-closed, and it predates the wave-0 amendment to ARBITRATION §1 / seam S13 (drift ID-01) which makes a non-lethal exit from a fight against anything capable of speech MANDATORY and a humanoid without one a DEFECT. The parley is a committed animated action with startup, active and recovery frames on exactly the terms every other action in the fight has, so it needs states in the same vocabulary. They are DECLARED in the trace META rather than smuggled in, so a conforming reader validates against the declared set and still fails closed on anything unexpected.",
+              "added_wave1_remediation": {
+                "states": [
+                  "JUMP_RISE",
+                  "JUMP_AIR",
+                  "JUMP_LAND",
+                  "STANCE_SWITCH",
+                  "SWAP"
+                ],
+                "why": "The W1-09 verdict §2.3 found `jump`, `two_hand`, `swap_right`, `swap_left` and `menu` ACCEPTED AND INERT: pressing jump produced no state change, max_y 0.0000 over 90 frames and no stamina deduction, against a declared cost of 18. That made RI-CMB02 §C's jump-attack row, RI-CMB01 §B's OVERLOADED jump-attack prohibition and RI-WPN06's whole stance contract structurally unmeasurable — \"the methods are absent rather than present-and-lying\" does not cover a button that IS present and does nothing. They are now real committed actions with real states, real costs and real frame data (frames.json §actions), declared here on exactly the terms the PARLEY_* extension was.",
+                "menu": "NOT a state. `menu` opens a UI surface and DOES NOT PAUSE the fixed step — see frames.json §actions.menu. AR-1 probe A3 (\"pause mid-fight\") was scored not_run for want of a menu surface; it is now runnable and the answer is the Souls-side one."
+              },
+              "not_added": {
+                "EXHAUSTED": "RI-CMB09 §6 asks for EXHAUSTED as a state. It is carried instead as the boolean field p.exhausted plus exhausted_enter / exhausted_exit events, because an exhausted player still WALKS and \"walk only\" is one of the defining properties RI-CMB09 §4 gives the state — collapsing it into p.state would delete the observation the item wants. RI-CMB09 M5's checks are all measurable off the events. Recorded in stamina.json."
+              }
+            }
+          }
+        }
+      },
+      "d_guard_parley_data": null
+    },
+    "page_errors": []
+  }
+}

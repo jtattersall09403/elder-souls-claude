@@ -169,6 +169,35 @@ starts moving forward on frame 1 — is not an animation with a mass problem; it
 animation that was interpolated from A to B, and every other feel metric will be downstream
 of that. It is also invisible in a screenshot, which is why it is a number here.
 
+> ### E.2 Per-clip motion integrity — ADDED wave 1 (`BAR-CRITIQUE-W1-10-R1` §R5, hole H4)
+>
+> Everything above is measured **per class**, on the class baseline's `r1.1` and `r2`. A
+> roster can hold every band on those 28 clips and ship 1 100 others that snap, slide and
+> teleport, and nothing in `corpus/12-weapons/` would see it. The failures a prior critic
+> actually found elsewhere in this project were of exactly that kind — a straight sword
+> sweeping 615° where 110° was declared, a tip speed 2.69× its declared value, poses moving
+> 2.5 m in a single frame — motion wrong while every number in the table was right.
+>
+> These four rows are measured on **every clip in the game**, via `H.getClipTrack(clipId)`,
+> not on a per-class sample:
+>
+> | Quantity | Definition | Requirement |
+> |---|---|---|
+> | **Pose discontinuity** | max per-frame world displacement of any tracked bone | **≤ 0.25 m** at 60 Hz (15 m/s of bone travel). A larger jump is a pose snap, not motion |
+> | **Tip-speed ceiling** | max tip speed over the clip | ≤ **1.25 ×** the tier's §E peak band ceiling. A clip 2.69× its declared speed is a retimed clip, and it will feel like one |
+> | **Arc conformance** | measured `arc_sweep_deg` vs the slot's declared value | within **±10°**, on every slot of every weapon — not only on `r1.1`. A `slash_h` that sweeps 615° is five revolutions of a hitbox and passes `shape ⇒ 90–200°` only because nobody measured the slot |
+> | **Distinct keyframes** | number of frames at which the tip's velocity direction changes | **≥ 3** per clip. A two-pose lerp has one, and it is the cheapest animation a build can ship while claiming 1 133 of them |
+>
+> - Report the **worst ten clips** on each row, by clip id, in the verdict.
+> - **FAIL** if more than **2%** of clips violate any row.
+> - **HARD FAIL** if any clip's pose discontinuity exceeds **1.0 m** in a frame — at 60 Hz
+>   that is 60 m/s and it is a teleport with a sword attached.
+> - **HARD FAIL** if more than **5%** of clips have fewer than 3 distinct keyframes.
+>
+> This is the check that catches the failure mode this whole area is least protected against:
+> the corpus measures clip *identity* exhaustively (`ARI`, `UNQ`, `SHARE`, forgery, normalised
+> shape) and clip *quality* on a sample of 28.
+
 ### F. The headline measurable — Impact Legibility Score
 
 ```
@@ -285,10 +314,12 @@ labels; classify by nearest neighbour in the normalised triple space; compute `I
 | M2 material multipliers | 15 | All 18 cells exact; every statblock has a material; zero variance |
 | M3 deflection | 10 | Deterministic, correct bypass, exactly **+16 f@60** |
 | M4 whiff arithmetic | 15 | `hit − whiff == hitstop` for all 15 classes |
-| M5 mass census | 20 | Every class inside its §E bands; no piecewise-linear tip curves |
+| M5 mass census | 14 | Every class inside its §E bands; no piecewise-linear tip curves |
+| **M5b per-clip motion integrity (§E.2)** | **6** | ≤2% of clips violating any row, over every clip in the game |
 | M6 `ILS` | 15 | `ILS ≥ 0.80` and the blind test agrees |
 
-Max 100. M7 is pass/fail and gates the whole item (see hard fails).
+Max 100. *(M5's weight split wave 1 by `BAR-CRITIQUE-W1-10-R1` to seat §E.2 without inflating
+the total.)* M7 is pass/fail and gates the whole item (see hard fails).
 
 | Native | Verdict band |
 |---|---|
@@ -314,6 +345,9 @@ Max 100. M7 is pass/fail and gates the whole item (see hard fails).
 - Floating damage numbers (AR-2).
 - Camera shake with net rotation, or shake applied to the world rather than the arm.
 - Tip speed curves piecewise-linear for ≥3 classes.
+- **Any clip with a per-frame bone displacement > 1.0 m (§E.2) — a pose teleport.**
+- **More than 5% of clips with fewer than 3 distinct keyframes (§E.2) — the roster is
+  two-pose lerps.**
 
 **Blind pair:** two sets of ten 8-frame impact sequences, ours and a reference set generated
 from §A/§C, unlabelled. The critic picks which set is a game where hitting things matters, and

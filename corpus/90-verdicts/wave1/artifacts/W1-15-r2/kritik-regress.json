@@ -1,0 +1,161 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "round": 2,
+  "part": "regress",
+  "blocks": {
+    "B23-lock-live": {
+      "draws_field_probe": {
+        "draws": 0,
+        "seed": 1337
+      },
+      "begin": {
+        "tier": 3,
+        "wards": 3,
+        "set": 0,
+        "collar_deg": 0,
+        "ward_deg": 74,
+        "delta_deg": 74,
+        "tell": false,
+        "W_deg": 15,
+        "sweeps": 0,
+        "picks": 12,
+        "broken": 0,
+        "open": false,
+        "failed": false
+      },
+      "presses": [],
+      "press_count": 0,
+      "final": {
+        "tier": 3,
+        "wards": 3,
+        "set": 0,
+        "collar_deg": 240,
+        "ward_deg": 74,
+        "delta_deg": -166,
+        "tell": false,
+        "W_deg": 15,
+        "sweeps": 2,
+        "picks": 12,
+        "broken": 0,
+        "open": false,
+        "failed": false
+      },
+      "draws_before": 0,
+      "draws_after": 0,
+      "draws_delta": 0,
+      "gate_at_start": [
+        {
+          "tier": 1,
+          "offered": true,
+          "prompt": null,
+          "picks_consumed": 0,
+          "shortfall": null
+        },
+        {
+          "tier": 2,
+          "offered": false,
+          "prompt": "You do not know this kind of lock.",
+          "picks_consumed": 0,
+          "shortfall": {
+            "security": 15,
+            "agility": 0
+          }
+        },
+        {
+          "tier": 3,
+          "offered": false,
+          "prompt": "You do not know this kind of lock.",
+          "picks_consumed": 0,
+          "shortfall": {
+            "security": 35,
+            "agility": 6
+          }
+        },
+        {
+          "tier": 4,
+          "offered": false,
+          "prompt": "You do not know this kind of lock.",
+          "picks_consumed": 0,
+          "shortfall": {
+            "security": 55,
+            "agility": 18
+          }
+        },
+        {
+          "tier": 5,
+          "offered": false,
+          "prompt": "You do not know this kind of lock.",
+          "picks_consumed": 0,
+          "shortfall": {
+            "security": 75,
+            "agility": 30
+          }
+        }
+      ]
+    },
+    "B24-pickpocket-die": {
+      "rows": [
+        {
+          "sneak": 5,
+          "caught_of_60": 0,
+          "rng_draws_total": 0
+        },
+        {
+          "sneak": 50,
+          "caught_of_60": 0,
+          "rng_draws_total": 0
+        },
+        {
+          "sneak": 100,
+          "caught_of_60": 0,
+          "rng_draws_total": 0
+        }
+      ],
+      "error": "pickpocket not offered: you are not crouched"
+    },
+    "B25-parley-grounds": {
+      "a_cold": {
+        "yielded": false
+      },
+      "b_named": {
+        "yielded": true,
+        "world": {
+          "gold": 0,
+          "topicsKnown": [
+            "the-drowned-ford"
+          ],
+          "dispositions": {},
+          "factions": {}
+        }
+      },
+      "c_guard_cold": {
+        "yielded": true,
+        "world": {
+          "gold": 0,
+          "topicsKnown": [],
+          "dispositions": {},
+          "factions": {}
+        }
+      },
+      "d_guard_can_attack": {
+        "hp_before": 620,
+        "hp_after": 620,
+        "enemy_states": [],
+        "state_now": "REPOSITION",
+        "any_hit": false,
+        "ev_kinds": [
+          "undefined"
+        ]
+      },
+      "e_punish_scripted": {
+        "hp_before": 620,
+        "hp_after": 620,
+        "events": [],
+        "enemy": "YIELDED",
+        "yielded": true
+      }
+    },
+    "page_errors": []
+  }
+}

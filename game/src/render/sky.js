@@ -172,7 +172,15 @@ export class Sky {
     //   * the floors rise (ambient 0.10 -> 0.30, fog 0.34 -> 0.62). Morrowind's nights are dark and
     //     READABLE; a frame a judge cannot classify is not a dark frame, it is a missing frame.
     const night = 1 - Math.max(0, Math.min(1, day * 2.2));
+    // W1-01 round 3. `ours_night` leave-one-out was 33.3% against M17 step 6's explicit >= 70%.
+    // Two thirds of the DAY separability was tint, and at night there was not even that: every
+    // region rendered as the same near-black. A region's night hue is now taken from the thing it
+    // OWNS — the welkynd blue of Blackwood's pillars, the ember of the Clay Moor's kilns, the amber
+    // of the Hive's comb, the jelly green of the Eastern Rootlands — mixed with its fog. That is a
+    // per-region light SOURCE rather than a per-region exposure, which is the distinction the item
+    // is making when it says a region must be identifiable at night.
     const regionNight = regionFog ? new THREE.Color(regionFog.colour) : hor.clone();
+    if (regionFog && regionFog.glow) regionNight.lerp(new THREE.Color(regionFog.glow), 0.55);
     this.hemi.intensity = w.ambient * Math.max(0.30, day * 0.9 + 0.10);
     this.hemi.color.copy(hor).lerp(regionNight, night * 0.85);
     this.hemi.groundColor.setRGB(0.227, 0.208, 0.153).lerp(regionNight, night * 0.55);

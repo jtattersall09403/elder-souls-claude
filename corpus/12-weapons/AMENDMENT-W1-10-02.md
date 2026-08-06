@@ -8,8 +8,20 @@ reason: corpus_hole
 provenance: constructed
 confidence: high
 filed_by: builder.weapons, wave 1, piece W1-10, round 2 (ULTRACODE)
-status: amendment request — not applied unilaterally (CORPUS-CONTRACT §5)
+status: RULED wave 1 by BAR-CRITIQUE-W1-10-R1 §R1/§R2/§R3 — §A arithmetic UPHELD but Option 1 and Option 2 both REJECTED in favour of a repaired dimension set; §B ADOPTED; §C noted; §D positions split.
 ---
+
+> ## RULING — `BAR-CRITIQUE-W1-10-R1`, wave 1
+>
+> | Clause | Disposition |
+> |---|---|
+> | **§A — `Dg_min ≥ 1.0` is unreachable from §B's own table** | **ARITHMETIC UPHELD, both proposed remedies REJECTED.** Recomputed independently: pinned-only floor **0.38–0.40** (SPR–TSW), best mass-monotone assignment **0.92–0.93**, unconstrained optimum ~1.6 requiring the absurd ladder you describe. You were right that the bar could not be passed honestly, and right to refuse to curve-fit. But the diagnosis stopped one step short: the fault is in the **dimension set**, not the threshold. `Dg` excluded **reach** — which correlates with mass at 0.586 against motion value's 0.889 and stamina's 0.935, and which this item's own "How we lose" #4 calls *geometry, not a number* — and included **BOW**, whose 22.0 m projectile range removes **85%** of reach's discrimination by z-normalisation. Repaired in `RI-WPN02` §D: nine `GRAMMAR_DIMS`, 14 melee classes, and a **recorded reachability witness at `Dg_min = 1.4445`** on a plainly narratable hyperarmour ladder. **`Dg_min ≥ 1.0` stands unmoved.** Option 2 (restate the band at 0.90) is rejected on principle: a threshold reached by lowering it has stopped being a bar. Option 1 (`Rh` as D13) is rejected on arithmetic — see the ruling on `AMENDMENT-W1-10-CRITIC-01`. |
+> | **§B — `r1.3` mandatory vs `max_chain 2`** | **ADOPTED as proposed**, and extended: `RI-WPN01` §A slot 3 is now conditioned on `max_chain ≥ 3`, "terminal for 11 of 15" is corrected to **9**, and a third contradiction neither you nor the critic found is fixed — slot 4 listed **TSW** as `r1.4`-legal while citing the very column that publishes TSW at `max_chain 3`. Consequences written in: mandatory count 23 for CGS/GHM, `S_total` 2065, and `slots_present` reported per class. **The round-2 workaround is not adopted**: `roll.r1 → r1.3` contradicts §A slot 10's published `chains_to`, and a class may diverge from the chain graph only by an explicit `RI-WPN02` §C row. |
+> | **§C — the R2 active/recovery split** | **Noted; no amendment needed, as you say.** The point that the eight extension classes are *not* covered by `RI-CMB02` and must be re-derived if it is ever extended is correct and is the useful half of the filing. |
+> | **§D — over-fragmentation as a warning** | **REJECTED.** The stated tension rests on a bar that does not exist: §C requires `UNQ ≥ 1` and `DEV ≥ 4`, not `UNQ ≥ 4`, and `DEV` is satisfiable by parameter overrides costing no clips. Those floors force `ARI ≈ 0.32–0.35` against a fragmentation bar at 0.60 — 0.25 of clearance — and your own shipped roster proves it: `ARI = 0.4547` with `UNQ` mean 3.70 and zero `DEV_id == 0`. It is the only bar in the area enforcing the second side of "subtly unique" (`WEAPON-CRITIC` §1 corollary 3) and it stays a **fail**. This is the one clause in either filing that argues for an easier standard rather than a better one. |
+> | **§D — `Rh` as a `Dg` dimension** | **PRINCIPLE ADOPTED, INSTRUMENT REJECTED.** You were right that the chain must separate *classes* and not only weapons; that is now G7–G9 in `RI-WPN02` §D. `Rh` itself would have imported `r1_startup` at −0.976 correlation. |
+> | **§D — pad with the last link, not `r1.1`** | **ADOPTED**, and carried into `Chg`, where it matters far more than it did in `Rh`. |
+> | **§D — defer the `Rh_min` hard fail to wave 2** | **The instinct is right and the remedy is not far enough.** Rejected outright rather than deferred; see the companion ruling. |
 
 ## Why this exists
 

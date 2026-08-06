@@ -4,10 +4,12 @@
 general critic charter, which applies here unchanged except where this file *adds*),
 `SCORING.md`, `VERDICT-SCHEMA.md`, and `HARNESS.md`.
 
-Reference items this critic is handed, always all seven:
+Reference items this critic is handed, always all eight:
 `RI-WPN01` (slot contract) · `RI-WPN02` (class differentiation) · `RI-WPN03` (within-class
 subtlety) · `RI-WPN04` (contextual attacks) · `RI-WPN05` (weapon feel) · `RI-WPN06`
-(two-handing, shields, offhand) · `corpus/12-weapons/moveset.schema.json`.
+(two-handing, shields, offhand) · **`RI-WPN07` (weapon character — the situations a weapon is
+wrong for; added wave 1 by `BAR-CRITIQUE-W1-10-R1`)** ·
+`corpus/12-weapons/moveset.schema.json`.
 
 Cited but **not** re-judged: `RI-CMB01` `RI-CMB02` `RI-CMB03` `RI-CMB04` `RI-CMB05`
 `RI-AI05` `RI-CAM04` `RI-CAM06`.
@@ -58,7 +60,8 @@ Three corollaries, all binding:
    not exist**, because it is a lie the data tells. RI-WPN04's `CFS < 1.00` is a hard fail
    for that reason.
 3. **"Subtly unique" is two-sided.** Eighty-seven snowflakes fails as surely as three
-   animations. RI-WPN03's `W_med ∈ [0.35, 1.00]` band and the `ARI > 0.55` clause are not
+   animations. RI-WPN03's `W_med ∈ [0.35, 1.00]` band and the `ARI > 0.60` clause (a **fail**, not a
+   warning — see `BAR-CRITIQUE-W1-10-R1` §R2) are not
    ceremonial; a critic that only ever pushes for *more* difference is not applying this bar.
 
 ---
@@ -79,7 +82,7 @@ weapon.class.reach          weapon.identity.withinclass weapon.animation.reuse
 weapon.context.rolling      weapon.context.running      weapon.context.backstep
 weapon.context.aerial       weapon.feel.hitstop         weapon.feel.material
 weapon.feel.mass            weapon.feel.whiff           weapon.stance.twohand
-weapon.offhand.config       weapon.shield.taxonomy
+weapon.offhand.config       weapon.shield.taxonomy      weapon.identity.character
 ```
 
 It also carries `combat.weapon.identity` and `combat.attack.charge`, both of which were
@@ -114,8 +117,14 @@ exist". Do not proceed to soften this by measuring what does exist.
 If `window.__HARNESS` is absent or missing `player.anim_slot`, `player.hitstop_f`,
 `player.weapon_tip` or the `impact`/`block_success` events, file the harness gap per
 CRITIC-DOCTRINE §7.3, score the affected checks **0**, and say in the verdict which of the
-six items became partially unmeasurable. **Do not substitute source reading for the missing
+seven items became partially unmeasurable. **Do not substitute source reading for the missing
 instrument.** The list of required extensions is in each item's `## Comparison method`.
+
+**And establish CONSUMPTION before anything else.** Call `setLoadout({weapon: id})` for every
+weapon in `game/data/combat/movesets/*.json` and record `equipped_ok / 87` and
+`classes_with_zero_equippable`. If the runtime cannot equip them, **every number in §3.3 is
+`unmeasurable ⇒ 0`** and the verdict says so in its first line. Do not compute a declared-side
+matrix and report it as a score; W1-10 shows how convincing that failure looks.
 
 ### 3.2 Drive every slot of every weapon
 
@@ -137,6 +146,7 @@ Minimum required sweep, in order:
 | 8 | RI-WPN06 M1 | `TDV` per weapon and per class |
 | 9 | RI-WPN05 M1, M4, M6 | hitstop grid, whiff arithmetic, `ILS` |
 | 10 | RI-WPN01 M5 | the archetype answer matrix |
+| 11 | **RI-WPN07 M1–M3** | the class × archetype advantage matrix, `RVS`, and the two reversal artifacts |
 
 **Sampling is permitted only under a declared budget.** If the full sweep will not fit, the
 critic may sample, but the sample is **stratified and adversarial, never random**: every
@@ -145,23 +155,47 @@ class baseline, every signature weapon, **and the three weapons per class with t
 `method_deviations`. A sample of the interesting weapons is the softness failure of this role
 and CRITIC-DOCTRINE §2.4 already bans it.
 
-### 3.3 The seven headline numbers
+### 3.3 The nine headline numbers
 
-Every verdict from this role MUST report these seven, each with the artifact path that
-produced it. A verdict missing any of them is incomplete and is returned.
+**AMENDED wave 1 by `BAR-CRITIQUE-W1-10-R1` §R6.** Every verdict from this role MUST report
+these nine, each with the artifact path that produced it, **and each in two columns —
+`declared` and `observed`.** A verdict missing any of them is incomplete and is returned.
 
 | # | Number | Item | PASS | HARD FAIL |
 |---|---|---|---|---|
 | 1 | `D_min` — min pairwise class fingerprint distance | WPN02 | ≥ 1.6 | **< 1.0** |
-| 2 | `Dg_min` — min pairwise **grammar-only** distance | WPN02 | ≥ 1.0 | **< 0.5** |
-| 3 | `ARI` — animation reuse index | WPN03 | ≥ 0.26 | **< 0.19** |
+| 2 | `Dg_min` — min pairwise **grammar-only** distance, nine `GRAMMAR_DIMS`, 14 melee classes | WPN02 | ≥ 1.0 | **< 0.5** |
+| 3 | `ARI` — animation reuse index | WPN03 | **0.42 ≤ ARI ≤ 0.60** | **< 0.33** |
 | 4 | `SEP` — between-class floor ÷ within-class ceiling | WPN03 | ≥ 1.4 | **< 1.0** |
 | 5 | `CFS` — contextual fidelity score | WPN04 | **= 1.00** | **< 1.00** |
 | 6 | `TDV` — two-hand divergence (median, and per weapon) | WPN06 | ≥ 0.60 | **any weapon = 0**, or median < 0.25 |
 | 7 | `ILS` — impact legibility score | WPN05 | ≥ 0.80 | **< 0.40** |
+| **8** | **`Chg_min` — within-class chain grammar distance** | **WPN03 §D.3** | ≥ 0.15 | *(none in wave 1 — the distribution is being measured)* |
+| **9** | **`RVS` — role reversal score: does each class have situations it is wrong for** | **WPN07** | ≥ 0.70 | **< 0.40** |
 
 Report them as a single block at the top of the verdict, before any prose. They are the
 review, and everything else is explanation.
+
+> ### The CONSUMPTION column is not optional
+>
+> `ARBITRATION.md` §3's CONSUMPTION check landed in wave 1 and never reached this charter —
+> a stalled correction of exactly the kind the intent charter §6 names. W1-10 is the proof:
+> **five of the seven numbers passed on declared data while the runtime could not equip a
+> single one of the 87 weapons**, and both blind tests passed on the same disconnected layer.
+> The critic caught it only by inventing a second column the charter never asked for.
+>
+> Binding, from wave 2 on:
+> 1. **The `observed` column is the score.** A number computable from
+>    `game/data/combat/movesets/*.json` with the game disconnected is `unmeasurable ⇒ 0`, not
+>    "passing on the declared side". The `declared` column is reported for diagnosis only and
+>    can never raise a score.
+> 2. **Name the world-side consumer** for the moveset model, and demonstrate consumption by
+>    **perturbing it and observing an entity change behaviour** — e.g. flip one weapon's
+>    `r1.2` shape and show the enemy taking a different hit reaction. A model with no
+>    demonstrated consumer scores 0 exactly as a missing model does.
+> 3. **Every blind pack in §6 must be generated through `setLoadout()` plus an input script in
+>    the live simulation**, and must carry no design columns. A blind pack that can be built
+>    from JSON is a reading test on a spreadsheet, and its result is **VOID**, not PASS.
 
 ### 3.4 Compute the matrices yourself
 
@@ -230,7 +264,7 @@ Each wave, answer all five in writing:
    nine archetypes" precedent applies here verbatim. A recommendation to cut the roster in
    half is a legitimate verdict outcome and is often the right one.
 
-`bar_pressure` must name at least one **concrete proposed amendment** to one of the seven
+`bar_pressure` must name at least one **concrete proposed amendment** to one of the eight
 items, with the section and the replacement text. "The bar seems fine" is not an answer and
 voids the verdict on the same grounds as "no gap found".
 
@@ -238,7 +272,9 @@ voids the verdict on the same grounds as "no gap found".
 
 ## 6. Mandatory blind comparisons
 
-Two, both from the items, both recorded **before** the reveal (CRITIC-DOCTRINE §5):
+Three, all from the items, all recorded **before** the reveal (CRITIC-DOCTRINE §5).
+**All three packs must be generated through the runtime a player uses and must carry no design
+columns — see §3.3's CONSUMPTION box. A pack buildable from JSON produces a VOID result.**
 
 - **RI-WPN03 M6 — the clustering test.** Twelve unlabelled 20-second traces, four each from
   three classes, all names and damage numbers stripped. Group them into three, then name a
@@ -280,7 +316,8 @@ In addition to everything `VERDICT-SCHEMA.md` requires:
 
 | Field | Requirement |
 |---|---|
-| `headline_numbers` | All seven from §3.3, each with an artifact path |
+| `headline_numbers` | All nine from §3.3, each with an artifact path, **each in a `declared` and an `observed` column, and the `observed` column is the score** |
+| `consumption` | The named world-side consumer of the moveset model, and the perturbation that demonstrated it (ARBITRATION §3) |
 | `artifacts` | The clip-share histogram, ≥1 `Wgrid`, the 15×15 distance matrix, the 5×7 hitstop grid |
 | `bar_pressure` | §5's five answers plus ≥1 concrete proposed amendment |
 | `blind` | Both §6 tests, picks recorded before reveal |
@@ -294,6 +331,6 @@ almost always in the class with the fewest weapons (WHP, FST, CGS, GHM, BOW at f
 each) or in the slots nobody demos (`backstep.r1`, `roll.r2`, `guard.counter`,
 `shield.charge`). Go there first.
 
-If, after the full ladder, every one of the seven numbers passes and both blind tests pass —
+If, after the full ladder, every one of the nine numbers passes and all three blind tests pass —
 then the gap to name is a **bar** gap, not a build gap, and §5 has already told you where to
 look for it.

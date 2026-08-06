@@ -29,6 +29,7 @@ import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { WorldField } from '../../game/src/world/field.js';
+import { SignatureField, SIGNATURE_KINDS } from '../../game/src/world/signature.js';
 import { noise2 } from '../../game/src/world/noise.js';
 
 globalThis.atob = globalThis.atob || ((s) => Buffer.from(s, 'base64').toString('binary'));
@@ -42,6 +43,12 @@ const shotsDir = argv.includes('--shots') ? argv[argv.indexOf('--shots') + 1] : 
 const regionsDoc = rd('game/data/world/regions.json');
 const field = new WorldField(rd('game/data/world/terrain.json'), regionsDoc, rd('game/data/world/water.json'));
 field.setRoads(rd('game/data/world/roads.json'));
+// ROUND 3. The thirteen ONLY-HERE elements are attached, so `field.heightAt` is the surface WITH
+// the craters, the comb treads, the petrified crowns and the root causeways in it — which is what
+// `slope_histogram`, `elevation_profile` and the two new axes below all read.
+const sig = new SignatureField(rd('game/data/world/signatures.json'));
+field.setSignatures(sig);
+const hazardDoc = rd('game/data/world/hazards.json');
 const TIDES = [0, 0.25, 0.5, 0.75];
 
 // ---- colour -------------------------------------------------------------------------------------
@@ -184,6 +191,95 @@ for (const r of regions) {
       mean_canopy_radius_m: acc.canopy ? +(acc.rr / acc.canopy).toFixed(2) : 0,
       declared_canopy_per_100m2: r.props.canopy.per100m2,
       silhouette: `${r.props.canopy.shape}:${r.props.canopy.h}x${r.props.canopy.r}` },
+    // ---- ROUND 3: two axes measured off PLACED instances, and one un-dropped ------------------
+    // The remedy in verdict W1-01 r2 §4 asked for exactly this: "add `signature_silhouette` and
+    // `architecture_placed` axes computed from PLACED INSTANCES rather than from a table row, and
+    // un-drop `architecture`." Neither number below can be satisfied by a table: both are sampled
+    // off `field.heightAt` minus `field.naturalHeightAt` — i.e. off how much of the ground in this
+    // region IS the signature element, and how tall it stands.
+    signature_relief: signatureRelief(r),
+    architecture_placed: architecturePlaced(r),
+    hazard_volumes: hazardVolumes(r),
+  };
+}
+
+/**
+ * How much of this region's ground is its ONLY-HERE element, and what shape it makes.
+ *
+ * Sampled on a 12 m lattice over the region's own cells: the fraction of ground displaced by the
+ * signature landform, the mean and maximum displacement, and whether the displacement is UP (a
+ * spire, a bole, a dome, a terrace, a hull, a causeway) or DOWN (a crater). That last term is why
+ * the Stone Wastes cannot be confused with anything: it is the only region whose signature digs.
+ */
+function signatureRelief(r) {
+  const bb = r.bounds_m;
+  let n = 0, hit = 0, up = 0, down = 0, mx = 0, mn = 0, sum = 0;
+  for (let x = bb.x[0]; x < bb.x[1]; x += 12) {
+    for (let z = bb.z[0]; z < bb.z[1]; z += 12) {
+      if (field.regionIndexAt(x, z) !== r.index) continue;
+      n++;
+      const d = field.heightAt(x, z) - field.naturalHeightAt(x, z);
+      if (Math.abs(d) < 0.05) continue;
+      hit++; sum += Math.abs(d);
+      if (d > 0) { up++; if (d > mx) mx = d; } else { down++; if (d < mn) mn = d; }
+    }
+  }
+  return {
+    samples: n,
+    frac_ground_displaced: n ? +(hit / n).toFixed(5) : 0,
+    frac_up: n ? +(up / n).toFixed(5) : 0,
+    frac_down: n ? +(down / n).toFixed(5) : 0,
+    mean_abs_displacement_m: hit ? +(sum / hit).toFixed(3) : 0,
+    max_up_m: +mx.toFixed(2), max_down_m: +mn.toFixed(2),
+    kind: (r.only_here || {}).id || null,
+  };
+}
+
+/** Structures standing in the region: solid signature instances and road deck spans. */
+function architecturePlaced(r) {
+  const inst = sig.inRegion(r.id);
+  let solid = 0, tallest = 0, glow = 0;
+  for (const it of inst) {
+    const K = SIGNATURE_KINDS[it.kind];
+    if (K.solid_r > 0 || !K.landform) solid++;
+    if (K.glow > 0) glow++;
+    if (it.h > tallest) tallest = it.h;
+  }
+  const bb = r.bounds_m;
+  let deck = 0;
+  for (const leg of field.roads.legs) {
+    for (const sp of leg.deck_spans || []) {
+      const [x, z] = leg.points[Math.floor((sp.from_i + sp.to_i) / 2)];
+      if (x >= bb.x[0] && x < bb.x[1] && z >= bb.z[0] && z < bb.z[1] && field.regionIndexAt(x, z) === r.index) deck += sp.length_m;
+    }
+  }
+  return {
+    structures: solid, deck_span_m: +deck.toFixed(0),
+    per_km2: +(solid / r.area_km2).toFixed(2),
+    tallest_m: +tallest.toFixed(1),
+    glowing: glow,
+  };
+}
+
+/**
+ * Which hazard volumes actually exist in this region, sampled off the volume predicates the
+ * running world uses rather than off `hazards.json`'s region list.
+ *
+ * Un-dropped. The reason it was dropped in `region-axes@2` was verbatim: "hazards exist as a census
+ * and were shown not to fire; until they do, a hazard axis measures a table." They fire now —
+ * `reports/hazard-fire.json`, 19 of 19 — so the axis measures a thing.
+ */
+function hazardVolumes(r) {
+  const here = hazardDoc.hazards.filter((h) => h.regions.includes(r.name));
+  const classes = {};
+  for (const h of here) classes[h.class] = (classes[h.class] || 0) + 1;
+  return {
+    ids: here.map((h) => h.id).sort(),
+    classes,
+    signature: (here.find((h) => h.signature_of === r.name) || {}).id || null,
+    anchored_on_signature: here.filter((h) => ['kiln-ground', 'comb-collapse', 'voriplasm', 'dye-fume',
+      'hist-sap-fume', 'spore-bloom', 'strangler-snare', 'press-gang-water', 'pair-lightning'].includes(h.id)).length,
+    worst_pct_per_s: Math.max(0, ...here.map((h) => (h.damage.kind === 'pct_max_hp_per_s' ? h.damage.value : 0))),
   };
 }
 
@@ -245,6 +341,34 @@ const AXES = [
   { id: 'flora_silhouette_placed', source: 'same lattice: placed crown height and radius, not the table row',
     d: (a, b) => Math.abs(a.flora_placed.mean_canopy_height_m - b.flora_placed.mean_canopy_height_m)
       + 2.0 * Math.abs(a.flora_placed.mean_canopy_radius_m - b.flora_placed.mean_canopy_radius_m), min: 2.0 },
+  { id: 'signature_silhouette', source: 'built terrain: heightAt minus naturalHeightAt on a 12 m lattice — how much of the region\u2019s ground IS its ONLY-HERE element, and which way it displaces',
+    d: (a, b) => {
+      const A = a.signature_relief, B = b.signature_relief;
+      return 40 * Math.abs(A.frac_ground_displaced - B.frac_ground_displaced)
+        + 40 * Math.abs(A.frac_down - B.frac_down)
+        + 0.6 * Math.abs(A.mean_abs_displacement_m - B.mean_abs_displacement_m)
+        + 0.25 * Math.abs(A.max_up_m - B.max_up_m) + 0.25 * Math.abs(A.max_down_m - B.max_down_m);
+    }, min: 1.2 },
+  { id: 'architecture_placed', source: 'placed structures: solid signature instances and road deck spans standing in the region (RI-WLD04 M18 architecture, un-dropped)',
+    d: (a, b) => {
+      const A = a.architecture_placed, B = b.architecture_placed;
+      return Math.abs(A.per_km2 - B.per_km2) * 4
+        + Math.abs(A.tallest_m - B.tallest_m) * 0.4
+        + Math.abs(A.deck_span_m - B.deck_span_m) / 60
+        + ((A.glowing > 0) !== (B.glowing > 0) ? 3 : 0);
+    }, min: 2.0 },
+  { id: 'hazard', source: 'hazard volumes present in the region, by class multiset and signature (un-dropped: reports/hazard-fire.json shows 19/19 firing)',
+    d: (a, b) => {
+      const A = a.hazard_volumes, B = b.hazard_volumes;
+      const inter = A.ids.filter((x) => B.ids.includes(x)).length;
+      const uni = new Set([...A.ids, ...B.ids]).size || 1;
+      const jac = inter / uni;
+      const cls = new Set([...Object.keys(A.classes), ...Object.keys(B.classes)]);
+      let cd = 0;
+      for (const k of cls) cd += Math.abs((A.classes[k] || 0) - (B.classes[k] || 0));
+      return (1 - jac) + cd * 0.25 + (A.signature === B.signature ? 0 : 0.5)
+        + Math.min(1, Math.abs(A.worst_pct_per_s - B.worst_pct_per_s));
+    }, min: 0.6 },
 ];
 const RENDERED_AXES = [
   { id: 'rendered_palette', source: 'rendered pixels: mean CIELAB of the region’s M17 frames, top and upper-middle bands',
@@ -254,10 +378,10 @@ const RENDERED_AXES = [
 ];
 const DROPPED = [
   { axis: 'fauna', reason: 'no enemy or creature is placed in any region in this build; a fauna axis scored off a table row would read 78/78 on an empty province' },
-  { axis: 'architecture', reason: 'two interiors exist against a declared 250, and no per-region architecture is placed in the exterior; there is nothing built to measure' },
+
   { axis: 'audio', reason: 'getWorldStats() reports audioMB 0. There is no audio in this build at all (verdict W1-01 §4d)' },
   { axis: 'weather', reason: 'weather is a per-frame capture parameter, not a property of the built world; it enters through rendered_palette when the M17 night and worst-weather passes are captured' },
-  { axis: 'hazard', reason: 'hazards exist as a census and were shown not to fire (verdict W1-01, RI-WLD11 30/100); until they do, a hazard axis measures a table' },
+
 ];
 
 const ids = regions.map((r) => r.id);

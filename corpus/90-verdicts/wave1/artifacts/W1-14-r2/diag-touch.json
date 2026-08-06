@@ -1,0 +1,559 @@
+{
+  "paralyse_touch": {
+    "geometry": {
+      "kind": "contact",
+      "radius_m": 0.3,
+      "reach_m": 1.6
+    },
+    "events": [
+      {
+        "kind": "cast_start"
+      },
+      {
+        "kind": "focus_spend"
+      },
+      {
+        "kind": "cast_release"
+      },
+      {
+        "kind": "status_proc"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "paralyse",
+        "consumer": "status_buildup.paralysis -> enemy state",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "status_proc"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "paralyse",
+        "consumer": "status_buildup.paralysis -> enemy state",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "status_proc"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "paralyse",
+        "consumer": "status_buildup.paralysis -> enemy state",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "status_proc"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "paralyse",
+        "consumer": "status_buildup.paralysis -> enemy state",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "status_proc"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "paralyse",
+        "consumer": "status_buildup.paralysis -> enemy state",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "paralysis"
+      }
+    ],
+    "status": [
+      {
+        "id": "P",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 0,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 620,
+        "hp_max": 620,
+        "equip_load_pct": 50,
+        "roll_class": "MEDIUM"
+      },
+      {
+        "id": "e0",
+        "buildup": {
+          "paralysis": 0
+        },
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 30,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 412,
+        "hp_max": 412,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      }
+    ],
+    "world_locks": {
+      "locked": [
+        "cistern_grate",
+        "drowned_road_sluice",
+        "hall_side_door",
+        "ledger_strongbox",
+        "warded_ledger_door"
+      ],
+      "unlocked": [
+        "customs_loft_door"
+      ]
+    },
+    "combat": [
+      {
+        "id": "e0",
+        "hp": 412,
+        "state": "REPOSITION",
+        "dead": false
+      }
+    ]
+  },
+  "fire_touch": {
+    "geometry": {
+      "kind": "contact",
+      "radius_m": 0.3,
+      "reach_m": 1.6
+    },
+    "events": [
+      {
+        "kind": "cast_start"
+      },
+      {
+        "kind": "focus_spend"
+      },
+      {
+        "kind": "cast_release"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "fire_damage",
+        "consumer": "target.hp + target.status_buildup",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "status_proc"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "fire_damage",
+        "consumer": "target.hp + target.status_buildup",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "fire_damage",
+        "consumer": "target.hp + target.status_buildup",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "status_proc"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "fire_damage",
+        "consumer": "target.hp + target.status_buildup",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "fire_damage",
+        "consumer": "target.hp + target.status_buildup",
+        "changed": true,
+        "target": "e0"
+      }
+    ],
+    "status": [
+      {
+        "id": "P",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 0,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 620,
+        "hp_max": 620,
+        "equip_load_pct": 50,
+        "roll_class": "MEDIUM"
+      },
+      {
+        "id": "e0",
+        "buildup": {
+          "fire": 14
+        },
+        "procs": {
+          "fire": 269
+        },
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 30,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 282,
+        "hp_max": 412,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      }
+    ],
+    "world_locks": {
+      "locked": [
+        "cistern_grate",
+        "drowned_road_sluice",
+        "hall_side_door",
+        "ledger_strongbox",
+        "warded_ledger_door"
+      ],
+      "unlocked": [
+        "customs_loft_door"
+      ]
+    },
+    "combat": [
+      {
+        "id": "e0",
+        "hp": 282,
+        "state": "REPOSITION",
+        "dead": false
+      }
+    ]
+  },
+  "shield_self": {
+    "geometry": {
+      "kind": "none"
+    },
+    "events": [
+      {
+        "kind": "cast_start"
+      },
+      {
+        "kind": "focus_spend"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "shield",
+        "consumer": "damage_taken_multiplier",
+        "changed": true,
+        "target": "self"
+      },
+      {
+        "kind": "cast_release"
+      }
+    ],
+    "status": [
+      {
+        "id": "P",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 0.15,
+        "armour_rating": 0,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 620,
+        "hp_max": 620,
+        "equip_load_pct": 50,
+        "roll_class": "MEDIUM"
+      }
+    ],
+    "world_locks": {
+      "locked": [
+        "cistern_grate",
+        "drowned_road_sluice",
+        "hall_side_door",
+        "ledger_strongbox",
+        "warded_ledger_door"
+      ],
+      "unlocked": [
+        "customs_loft_door"
+      ]
+    },
+    "combat": []
+  },
+  "open_lock_touch": {
+    "geometry": {
+      "kind": "contact",
+      "radius_m": 0.3,
+      "reach_m": 1.6
+    },
+    "events": [
+      {
+        "kind": "cast_start"
+      },
+      {
+        "kind": "focus_spend"
+      },
+      {
+        "kind": "cast_release"
+      },
+      {
+        "kind": "lock_opened"
+      },
+      {
+        "kind": "world_flag"
+      },
+      {
+        "kind": "lock_opened"
+      },
+      {
+        "kind": "world_flag"
+      },
+      {
+        "kind": "lock_opened"
+      },
+      {
+        "kind": "world_flag"
+      },
+      {
+        "kind": "lock_opened"
+      },
+      {
+        "kind": "world_flag"
+      },
+      {
+        "kind": "lock_opened"
+      },
+      {
+        "kind": "world_flag"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "open_lock",
+        "consumer": "lock register + world.doors_unlocked",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "open_lock",
+        "consumer": "lock register + world.doors_unlocked",
+        "changed": false,
+        "target": "e0"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "open_lock",
+        "consumer": "lock register + world.doors_unlocked",
+        "changed": false,
+        "target": "e0"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "open_lock",
+        "consumer": "lock register + world.doors_unlocked",
+        "changed": false,
+        "target": "e0"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "open_lock",
+        "consumer": "lock register + world.doors_unlocked",
+        "changed": false,
+        "target": "e0"
+      }
+    ],
+    "status": [
+      {
+        "id": "P",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 0,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 620,
+        "hp_max": 620,
+        "equip_load_pct": 50,
+        "roll_class": "MEDIUM"
+      },
+      {
+        "id": "e0",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 30,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 412,
+        "hp_max": 412,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      }
+    ],
+    "world_locks": {
+      "locked": [],
+      "unlocked": [
+        "cistern_grate",
+        "customs_loft_door",
+        "drowned_road_sluice",
+        "hall_side_door",
+        "ledger_strongbox",
+        "warded_ledger_door"
+      ]
+    },
+    "combat": [
+      {
+        "id": "e0",
+        "hp": 412,
+        "state": "REPOSITION",
+        "dead": false
+      }
+    ]
+  },
+  "paralyse_projectile": {
+    "geometry": {
+      "kind": "projectile",
+      "radius_m": 0.22,
+      "speed_mps": 16,
+      "turn_rate_dps": 60,
+      "tracking_cutoff": 0.35,
+      "lifetime_s": 2.5
+    },
+    "events": [
+      {
+        "kind": "cast_start"
+      },
+      {
+        "kind": "focus_spend"
+      },
+      {
+        "kind": "cast_release"
+      },
+      {
+        "kind": "status_proc"
+      },
+      {
+        "kind": "status_buildup"
+      },
+      {
+        "kind": "effect_apply",
+        "effect": "paralyse",
+        "consumer": "status_buildup.paralysis -> enemy state",
+        "changed": true,
+        "target": "e0"
+      },
+      {
+        "kind": "paralysis"
+      }
+    ],
+    "status": [
+      {
+        "id": "P",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 0,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 620,
+        "hp_max": 620,
+        "equip_load_pct": 50,
+        "roll_class": "MEDIUM"
+      },
+      {
+        "id": "e0",
+        "buildup": {
+          "paralysis": 0
+        },
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 30,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 412,
+        "hp_max": 412,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      }
+    ],
+    "world_locks": {
+      "locked": [
+        "cistern_grate",
+        "drowned_road_sluice",
+        "hall_side_door",
+        "ledger_strongbox",
+        "warded_ledger_door"
+      ],
+      "unlocked": [
+        "customs_loft_door"
+      ]
+    },
+    "combat": [
+      {
+        "id": "e0",
+        "hp": 412,
+        "state": "REPOSITION",
+        "dead": false
+      }
+    ]
+  }
+}

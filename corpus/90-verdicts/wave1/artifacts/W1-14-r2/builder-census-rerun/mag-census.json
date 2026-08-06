@@ -1,0 +1,1852 @@
+{
+  "schema": "elder-souls/mag-census@1",
+  "harness_version": 2,
+  "corpus_item": "RI-MAG06",
+  "max_reachable_focus_pool": 124,
+  "summary": {
+    "total": 55,
+    "FUNCTIONS_AS_SPECIFIED": 55,
+    "PARTIAL": 0,
+    "HP_DAMAGE_ONLY": 0,
+    "UNREAD_TIMER": 0,
+    "NOT_OBSERVED": 0,
+    "UNMEASURABLE": 0,
+    "EFFECT-FUNCTION": "55/55",
+    "GENERIC-APPLICATOR": "0/55",
+    "m5_traversal_unread": [],
+    "handlers_present": 55,
+    "handlers_expected": 55
+  },
+  "rows": [
+    {
+      "effect": "fire_damage",
+      "school": "sorcery",
+      "consuming_system": "target.hp + status_buildup",
+      "declared_consumer": "target.hp + target.status_buildup",
+      "carrier": "ember_spit",
+      "carrier_focus_cost": 2,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 3,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 3,
+        "buildup_moved": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "frost_damage",
+      "school": "sorcery",
+      "consuming_system": "target.hp + status_buildup",
+      "declared_consumer": "target.hp + target.status_buildup",
+      "carrier": "rime_touch",
+      "carrier_focus_cost": 2,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 48,
+      "effects_active_row": false,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 48,
+        "buildup_moved": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "shock_damage",
+      "school": "sorcery",
+      "consuming_system": "target.hp + status_buildup",
+      "declared_consumer": "target.hp + target.status_buildup",
+      "carrier": "spark_dart",
+      "carrier_focus_cost": 3,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 17,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 17,
+        "buildup_moved": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "poison_damage",
+      "school": "sorcery",
+      "consuming_system": "target.hp + status_buildup",
+      "declared_consumer": "target.hp + target.status_buildup",
+      "carrier": "rot_bloom",
+      "carrier_focus_cost": 10,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 1,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 1,
+        "buildup_moved": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "damage_health",
+      "school": "sorcery",
+      "consuming_system": "target.hp + status_buildup",
+      "declared_consumer": "target.hp + target.status_buildup",
+      "carrier": "the_unmaking",
+      "carrier_focus_cost": 59,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 106,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 106,
+        "buildup_moved": false
+      },
+      "self_report_disagrees": true
+    },
+    {
+      "effect": "drain_health",
+      "school": "sorcery",
+      "consuming_system": "target.hp_max",
+      "declared_consumer": "target.hp + target.hp_max",
+      "carrier": "leech",
+      "carrier_focus_cost": 14,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 310,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_max_fall": 310
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "absorb_health",
+      "school": "sorcery",
+      "consuming_system": "target.hp + caster.hp",
+      "declared_consumer": "target.hp + caster.hp",
+      "carrier": "sap_thief",
+      "carrier_focus_cost": 13,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 200,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "caster_gained": 200,
+        "target_lost": 200
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "soul_trap",
+      "school": "sorcery",
+      "consuming_system": "gem register + xul_hesh on death",
+      "declared_consumer": "gem register + xul_hesh (on the target's death)",
+      "carrier": "root_theft",
+      "carrier_focus_cost": 21,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "gems_before": 0,
+        "gems_at_cast": 0,
+        "gems_after": 1,
+        "xul_hesh_before": 0,
+        "xul_hesh_after": 1,
+        "fills_on_cast": false
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "shatter",
+      "school": "sorcery",
+      "consuming_system": "breakable register + shortcuts",
+      "declared_consumer": "breakable register + world.shortcuts_opened",
+      "carrier": "shell_splitter",
+      "carrier_focus_cost": 32,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": [],
+        "after": [
+          "cistern_wall_bricks",
+          "ossuary_lid",
+          "root_barrier"
+        ],
+        "save": [
+          "cistern_shortcut",
+          "root_gallery"
+        ]
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "corrode",
+      "school": "sorcery",
+      "consuming_system": "target.armour_rating",
+      "declared_consumer": "target.armour_rating",
+      "carrier": "verdigris",
+      "carrier_focus_cost": 11,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": 30,
+        "after": 0
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "bind_lesser",
+      "school": "sorcery",
+      "consuming_system": "listEntities()",
+      "declared_consumer": "listEntities() + summon register",
+      "carrier": "call_the_drowned",
+      "carrier_focus_cost": 41,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": 1,
+        "mid": 2
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "bind_greater",
+      "school": "sorcery",
+      "consuming_system": "listEntities()",
+      "declared_consumer": "listEntities() + summon register",
+      "carrier": "call_the_deep_drowned",
+      "carrier_focus_cost": 81,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": 1,
+        "mid": 2
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "bound_weapon",
+      "school": "sorcery",
+      "consuming_system": "loadout",
+      "declared_consumer": "loadout (bound weapon)",
+      "carrier": "sap_blade",
+      "carrier_focus_cost": 16,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": null,
+        "mid": {
+          "id": "bound_sap_blade",
+          "attack_rating": 139,
+          "was": "ssw_garrison_sword"
+        }
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "telekinesis",
+      "school": "sorcery",
+      "consuming_system": "interaction reach",
+      "declared_consumer": "interaction reach",
+      "carrier": "long_hand",
+      "carrier_focus_cost": 6,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "before": 1.6,
+        "mid": 38.6
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "restore_health",
+      "school": "root_speech",
+      "consuming_system": "caster.hp",
+      "declared_consumer": "caster.hp",
+      "carrier": "mend_flesh",
+      "carrier_focus_cost": 5,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "healed": 34
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "cure_disease",
+      "school": "root_speech",
+      "consuming_system": "affliction register",
+      "declared_consumer": "quest.afflictions",
+      "carrier": "clean_blood",
+      "carrier_focus_cost": 1,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": [
+          "test_disease"
+        ],
+        "after": [],
+        "removed": true
+      },
+      "self_report_disagrees": true
+    },
+    {
+      "effect": "cure_poison",
+      "school": "root_speech",
+      "consuming_system": "affliction register",
+      "declared_consumer": "quest.afflictions",
+      "carrier": "draw_the_sting",
+      "carrier_focus_cost": 1,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": [
+          "test_poison"
+        ],
+        "after": [],
+        "removed": true
+      },
+      "self_report_disagrees": true
+    },
+    {
+      "effect": "cure_paralysis",
+      "school": "root_speech",
+      "consuming_system": "affliction register",
+      "declared_consumer": "quest.afflictions",
+      "carrier": "loosen_the_joint",
+      "carrier_focus_cost": 1,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": [
+          "test_paralysis"
+        ],
+        "after": [],
+        "removed": true
+      },
+      "self_report_disagrees": true
+    },
+    {
+      "effect": "restore_attribute",
+      "school": "root_speech",
+      "consuming_system": "progression.attributes",
+      "declared_consumer": "progression.attributes",
+      "carrier": "put_it_back",
+      "carrier_focus_cost": 8,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": {
+          "vigour": 10,
+          "endurance": 20,
+          "strength": 4,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10
+        },
+        "after": {
+          "vigour": 10,
+          "endurance": 20,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10
+        }
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "fortify_attribute",
+      "school": "root_speech",
+      "consuming_system": "progression.attributes",
+      "declared_consumer": "progression.attributes",
+      "carrier": "the_strong_arm",
+      "carrier_focus_cost": 17,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": {
+          "vigour": 10,
+          "endurance": 20,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10
+        },
+        "after": {
+          "vigour": 10,
+          "endurance": 20,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 29
+        }
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "fortify_skill",
+      "school": "root_speech",
+      "consuming_system": "the gate being probed (lockGate at tier 3)",
+      "declared_consumer": "magic.skills + stealth.security",
+      "carrier": "sure_hand",
+      "carrier_focus_cost": 29,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "before": false,
+        "during": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "resist_element",
+      "school": "root_speech",
+      "consuming_system": "damage taken from an identical hit",
+      "declared_consumer": "damage_taken_multiplier",
+      "carrier": "thick_skin",
+      "carrier_focus_cost": 4,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "without": 100,
+        "with": 30.52
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "resist_disease",
+      "school": "root_speech",
+      "consuming_system": "damage taken from an identical hit",
+      "declared_consumer": "damage_taken_multiplier",
+      "carrier": "clean_lungs",
+      "carrier_focus_cost": 4,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "without": 100,
+        "with": 30.52
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "sap_ward",
+      "school": "root_speech",
+      "consuming_system": "damage taken from an identical hit",
+      "declared_consumer": "damage_taken_multiplier",
+      "carrier": "the_hists_patience",
+      "carrier_focus_cost": 4,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "without": 100,
+        "with": 0
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "speak_to_the_dead",
+      "school": "root_speech",
+      "consuming_system": "quest.topicsKnown",
+      "declared_consumer": "quest.topicsKnown + quest.flags",
+      "carrier": "ask_the_dead",
+      "carrier_focus_cost": 18,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": [],
+        "after": [
+          "the_drowned_road_rumour"
+        ]
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "hist_sight",
+      "school": "root_speech",
+      "consuming_system": "quest.journal",
+      "declared_consumer": "quest.journal",
+      "carrier": "hist_sight",
+      "carrier_focus_cost": 10,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "before": 0,
+        "after": 1
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "mend_item",
+      "school": "root_speech",
+      "consuming_system": "item condition register",
+      "declared_consumer": "item condition register",
+      "carrier": "make_it_whole",
+      "carrier_focus_cost": 16,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": {
+          "marsh_shortsword": 44,
+          "ward_collar_picks": 61,
+          "ruined_censer": 4,
+          "lacquer_shield": 78
+        },
+        "after": {
+          "marsh_shortsword": 100,
+          "ward_collar_picks": 100,
+          "ruined_censer": 4,
+          "lacquer_shield": 100
+        }
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "calm_beast",
+      "school": "root_speech",
+      "consuming_system": "alert_state + in_combat, zero deaths",
+      "declared_consumer": "alert_state + in_combat",
+      "carrier": "still_the_beast",
+      "carrier_focus_cost": 20,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 0,
+        "deaths": 0,
+        "yielded": true,
+        "alert_state": null,
+        "in_combat": false,
+        "target_changed": false,
+        "disposition_moved": false
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "open_lock",
+      "school": "warding",
+      "consuming_system": "lock register + world.doors_unlocked",
+      "declared_consumer": "lock register + world.doors_unlocked",
+      "carrier": "open",
+      "carrier_focus_cost": 3,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": [
+          "customs_loft_door"
+        ],
+        "after": [
+          "cistern_grate",
+          "customs_loft_door"
+        ],
+        "save": [
+          "cistern_grate"
+        ]
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "lock_lock",
+      "school": "warding",
+      "consuming_system": "lock register",
+      "declared_consumer": "lock register + world.doors_unlocked",
+      "carrier": "seal",
+      "carrier_focus_cost": 4,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": [
+          "cistern_grate",
+          "drowned_road_sluice",
+          "hall_side_door",
+          "ledger_strongbox",
+          "warded_ledger_door"
+        ],
+        "after": [
+          "cistern_grate",
+          "customs_loft_door",
+          "drowned_road_sluice",
+          "hall_side_door",
+          "ledger_strongbox",
+          "warded_ledger_door"
+        ]
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "ward_trap",
+      "school": "warding",
+      "consuming_system": "trap register",
+      "declared_consumer": "trap register",
+      "carrier": "spring_the_trap",
+      "carrier_focus_cost": 1,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": [],
+        "after": [
+          "ledger_threshold_ward",
+          "sluice_pressure_plate",
+          "strongbox_needle"
+        ]
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "buoyancy",
+      "school": "warding",
+      "consuming_system": "water band (S25)",
+      "declared_consumer": "water band (S25)",
+      "carrier": "skin_of_air",
+      "carrier_focus_cost": 11,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "before": {
+          "buoyant": false,
+          "breathes": false,
+          "drown_f": 1800,
+          "drowning": false
+        },
+        "after": {
+          "buoyant": true,
+          "breathes": false,
+          "drown_f": 1800,
+          "drowning": false
+        }
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "breathe_water",
+      "school": "warding",
+      "consuming_system": "water band drown timer",
+      "declared_consumer": "water band (S25) drown timer",
+      "carrier": "gill_speech",
+      "carrier_focus_cost": 5,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "before": {
+          "buoyant": false,
+          "breathes": false,
+          "drown_f": 1800,
+          "drowning": false
+        },
+        "after": {
+          "buoyant": false,
+          "breathes": true,
+          "drown_f": 1800,
+          "drowning": false
+        }
+      },
+      "self_report_disagrees": true
+    },
+    {
+      "effect": "feather",
+      "school": "warding",
+      "consuming_system": "equip_load_pct + roll_class (RI-CMB01 M5 cliff)",
+      "declared_consumer": "equip_load_pct + roll_class",
+      "carrier": "feather",
+      "carrier_focus_cost": 8,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "pct_before": 34,
+        "pct_mid": 0,
+        "class_before": "MEDIUM",
+        "class_mid": "LIGHT",
+        "cliff_pct": [
+          30,
+          70
+        ]
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "burden",
+      "school": "warding",
+      "consuming_system": "equip_load_pct + roll_class (target)",
+      "declared_consumer": "equip_load_pct + roll_class",
+      "carrier": "burden",
+      "carrier_focus_cost": 27,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "status_before": null,
+        "status_mid": [
+          {
+            "id": "P",
+            "buildup": {},
+            "procs": {},
+            "paralysed": false,
+            "mitigation": 1,
+            "armour_rating": 0,
+            "ward_charges": 0,
+            "yielded": false,
+            "silenced": false,
+            "frenzy_target": null,
+            "hp": 620,
+            "hp_max": 620,
+            "equip_load_pct": 24,
+            "roll_class": "LIGHT"
+          },
+          {
+            "id": "e0",
+            "buildup": {},
+            "procs": {},
+            "paralysed": false,
+            "mitigation": 1,
+            "armour_rating": 30,
+            "ward_charges": 0,
+            "yielded": false,
+            "silenced": false,
+            "frenzy_target": null,
+            "hp": 412,
+            "hp_max": 412,
+            "equip_load_pct": 111.76,
+            "roll_class": "OVERLOADED"
+          }
+        ]
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "slowfall",
+      "school": "warding",
+      "consuming_system": "fall terminal velocity + fall damage",
+      "declared_consumer": "fall.terminal_velocity + fall_damage",
+      "carrier": "slowfall",
+      "carrier_focus_cost": 2,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "without": {
+          "max_v": 18,
+          "damage": 144,
+          "terminal": 18
+        },
+        "terminal_mps": 3.5,
+        "max_v": 3.5,
+        "damage": 0,
+        "control_damage": 144
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "levitate",
+      "school": "warding",
+      "consuming_system": "pos[1] + drift + input acceptance",
+      "declared_consumer": "locomotion + pos[1]",
+      "carrier": "the_short_hop",
+      "carrier_focus_cost": 4,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "pos_y_peak": 6.12,
+        "altitude_m": 6.12,
+        "focus_per_metre": 1.5,
+        "drift_mps": 1.388,
+        "drift_cap_mps": 1.4,
+        "walk_mps": 3.173,
+        "drift_ok": true,
+        "states": [
+          "AIRBORNE"
+        ],
+        "denied": {
+          "light": {
+            "stayed_airborne": true,
+            "states": [
+              "AIRBORNE"
+            ]
+          },
+          "heavy": {
+            "stayed_airborne": true,
+            "states": [
+              "AIRBORNE"
+            ]
+          },
+          "block": {
+            "stayed_airborne": true,
+            "states": [
+              "AIRBORNE"
+            ]
+          },
+          "roll": {
+            "stayed_airborne": true,
+            "states": [
+              "AIRBORNE"
+            ]
+          },
+          "parry": {
+            "stayed_airborne": true,
+            "states": [
+              "AIRBORNE"
+            ]
+          }
+        },
+        "denied_all": true,
+        "no_iframes": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "leap",
+      "school": "warding",
+      "consuming_system": "pos[1] peak",
+      "declared_consumer": "jump apex -> pos[1] peak",
+      "carrier": "leap",
+      "carrier_focus_cost": 2,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "unbuffed_peak": 0.578,
+        "buffed_peak": 1.532,
+        "apex_mult": 2.5439,
+        "higher": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "shield",
+      "school": "warding",
+      "consuming_system": "damage taken from an identical hit",
+      "declared_consumer": "damage_taken_multiplier",
+      "carrier": "stone_skin",
+      "carrier_focus_cost": 18,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "without": 100,
+        "with": 53.68
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "wall",
+      "school": "warding",
+      "consuming_system": "collision field (solidAt)",
+      "declared_consumer": "collision field (solidAt)",
+      "carrier": "the_broken_wall",
+      "carrier_focus_cost": 96,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": 0,
+        "mid": 1,
+        "solid_before": false,
+        "solid_mid": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "mark",
+      "school": "warding",
+      "consuming_system": "quest.travel.mark",
+      "declared_consumer": "getPlayerStats().pos destination (quest.travel.mark)",
+      "carrier": "mark",
+      "carrier_focus_cost": 1,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "before": null,
+        "after": [
+          0,
+          0,
+          0
+        ]
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "recall",
+      "school": "warding",
+      "consuming_system": "getPlayerStats().pos",
+      "declared_consumer": "getPlayerStats().pos",
+      "carrier": "recall",
+      "carrier_focus_cost": 25,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "from": [
+          60,
+          0,
+          60
+        ],
+        "to": [
+          0,
+          0,
+          0
+        ],
+        "moved_m": 84.85
+      },
+      "self_report_disagrees": true
+    },
+    {
+      "effect": "intervention",
+      "school": "warding",
+      "consuming_system": "getPlayerStats().pos",
+      "declared_consumer": "getPlayerStats().pos",
+      "carrier": "intervention_imperial",
+      "carrier_focus_cost": 8,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": false,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "from": [
+          20,
+          0,
+          20
+        ],
+        "to": [
+          -40,
+          0,
+          20
+        ],
+        "moved_m": 60
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "invisibility",
+      "school": "veiling",
+      "consuming_system": "stealth.V + break rules",
+      "declared_consumer": "stealth.V (invisibility)",
+      "carrier": "the_water_film",
+      "carrier_focus_cost": 22,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "v_during": 0.0084,
+        "v_after": 0.418,
+        "broke": true,
+        "restored": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "chameleon",
+      "school": "veiling",
+      "consuming_system": "stealth.V",
+      "declared_consumer": "stealth.V (chameleon term)",
+      "carrier": "chameleon",
+      "carrier_focus_cost": 23,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "V_before": 0.418,
+        "V_mid": 0.0836,
+        "raw_before": 0.418,
+        "raw_mid": 0.0836,
+        "pct": 80
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "muffle",
+      "school": "veiling",
+      "consuming_system": "stealth.sound_r_m",
+      "declared_consumer": "stealth.sound_r_m",
+      "carrier": "muffle",
+      "carrier_focus_cost": 5,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": 4.800000000000001,
+        "after": 1.4652
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "silence",
+      "school": "veiling",
+      "consuming_system": "cast attempts (target.silenced)",
+      "declared_consumer": "cast attempts (target.silenced)",
+      "carrier": "silence",
+      "carrier_focus_cost": 24,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "silenced_mid": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "night_eye",
+      "school": "veiling",
+      "consuming_system": "stealth perceived light",
+      "declared_consumer": "stealth light term (perceived L)",
+      "carrier": "night_eye",
+      "carrier_focus_cost": 4,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": true,
+      "has_handler": true,
+      "delta": {
+        "before": 0.22,
+        "after": 1
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "detect_life",
+      "school": "veiling",
+      "consuming_system": "diegetic markers, HUD count 0",
+      "declared_consumer": "diegetic marker set (HUD count stays 0)",
+      "carrier": "warm_smudges",
+      "carrier_focus_cost": 14,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "markers": 1,
+        "hud": 0
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "detect_key",
+      "school": "veiling",
+      "consuming_system": "diegetic markers, HUD count 0",
+      "declared_consumer": "diegetic marker set (HUD count stays 0)",
+      "carrier": "the_key_sense",
+      "carrier_focus_cost": 14,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "markers": 3,
+        "hud": 0
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "charm",
+      "school": "veiling",
+      "consuming_system": "alert_state + disposition",
+      "declared_consumer": "alert_state + disposition",
+      "carrier": "charm",
+      "carrier_focus_cost": 6,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 0,
+        "deaths": 0,
+        "yielded": true,
+        "alert_state": null,
+        "in_combat": false,
+        "target_changed": false,
+        "disposition_moved": true
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "paralyse",
+      "school": "veiling",
+      "consuming_system": "S11 buildup -> enemy state",
+      "declared_consumer": "status_buildup.paralysis -> enemy state",
+      "carrier": "the_grey_fuzz",
+      "carrier_focus_cost": 31,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "per_contact_series": [
+          {
+            "contact": 1,
+            "buildup": 36,
+            "paralysed": false
+          },
+          {
+            "contact": 2,
+            "buildup": 59,
+            "paralysed": false
+          },
+          {
+            "contact": 3,
+            "buildup": 82,
+            "paralysed": false
+          },
+          {
+            "contact": 4,
+            "buildup": 0,
+            "paralysed": true
+          },
+          {
+            "contact": 5,
+            "buildup": 0,
+            "paralysed": false
+          }
+        ],
+        "buildup_after_one": 36,
+        "procced_only_after": 4,
+        "state_stopped": true,
+        "threshold": 100
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "demoralise",
+      "school": "veiling",
+      "consuming_system": "alert_state + in_combat, zero deaths",
+      "declared_consumer": "alert_state + in_combat",
+      "carrier": "demoralise",
+      "carrier_focus_cost": 20,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 0,
+        "deaths": 0,
+        "yielded": true,
+        "alert_state": null,
+        "in_combat": false,
+        "target_changed": false,
+        "disposition_moved": false
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "frenzy",
+      "school": "veiling",
+      "consuming_system": "target",
+      "declared_consumer": "target",
+      "carrier": "frenzy",
+      "carrier_focus_cost": 29,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "hp_fall": 0,
+        "deaths": 0,
+        "yielded": false,
+        "alert_state": null,
+        "in_combat": true,
+        "target_changed": true,
+        "disposition_moved": false
+      },
+      "self_report_disagrees": false
+    },
+    {
+      "effect": "false_face",
+      "school": "veiling",
+      "consuming_system": "stealth.race + civilian suspicion",
+      "declared_consumer": "stealth.race + civilian suspicion",
+      "carrier": "false_face",
+      "carrier_focus_cost": 76,
+      "max_reachable_pool": 124,
+      "uncastable_carriers": [],
+      "class": "FUNCTIONS_AS_SPECIFIED",
+      "hp_delta_on_target": 0,
+      "effects_active_row": true,
+      "changes_traversal": false,
+      "has_handler": true,
+      "delta": {
+        "before": "imperial",
+        "mid": "saxhleel",
+        "disguised": true
+      },
+      "self_report_disagrees": false
+    }
+  ],
+  "notes": [],
+  "consumer_map": {
+    "effects": 55,
+    "handlers": 55,
+    "damage_effects": [
+      "damage_health",
+      "fire_damage",
+      "frost_damage",
+      "poison_damage",
+      "shock_damage"
+    ],
+    "rows": [
+      {
+        "effect": "fire_damage",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": true,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "frost_damage",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": true,
+        "changes_traversal": true,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "shock_damage",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": true,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "poison_damage",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": true,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "damage_health",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": true,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "drain_health",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "absorb_health",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "soul_trap",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "shatter",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "corrode",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "bind_lesser",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "bind_greater",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "bound_weapon",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "telekinesis",
+        "school": "sorcery",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "restore_health",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "cure_disease",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "cure_poison",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "cure_paralysis",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "restore_attribute",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "fortify_attribute",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "fortify_skill",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "resist_element",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "resist_disease",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "sap_ward",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "speak_to_the_dead",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "hist_sight",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "mend_item",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "calm_beast",
+        "school": "root_speech",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "open_lock",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "lock_lock",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "ward_trap",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "buoyancy",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "breathe_water",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "feather",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "burden",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "slowfall",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "levitate",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "leap",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "shield",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "wall",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "mark",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "recall",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "intervention",
+        "school": "warding",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "invisibility",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "chameleon",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "muffle",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "silence",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "night_eye",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": true,
+        "changes_quest_resolution": false
+      },
+      {
+        "effect": "detect_life",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "detect_key",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "charm",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "paralyse",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "demoralise",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "frenzy",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      },
+      {
+        "effect": "false_face",
+        "school": "veiling",
+        "has_handler": true,
+        "is_damage_effect": false,
+        "changes_traversal": false,
+        "changes_quest_resolution": true
+      }
+    ]
+  }
+}

@@ -47,8 +47,8 @@ static analyser validates against.
 |---|---|---|---|---|---|
 | 1 | `r1.1` | `light`, `IDLE` | → `r1.2` | **M** | Chain root. RI-CMB02 §A owns its frames for the seven spine classes. |
 | 2 | `r1.2` | `light` buffered in `r1.1` recovery | → `r1.3` | **M** | RI-CMB02 §C: startup ×0.78, recovery ×1.05, MV ×0.95. |
-| 3 | `r1.3` | `light` buffered in `r1.2` recovery | → `r1.4` or null | **M** | Terminal for 11 of 15 classes. RI-CMB02 §C: recovery ×1.35. |
-| 4 | `r1.4` | `light` buffered in `r1.3` recovery | → `r1.5` or null | O | Legal only for DGR, FST, CSW, TSW (see RI-WPN02 §B chain-length column). |
+| 3 | `r1.3` | `light` buffered in `r1.2` recovery | → `r1.4` or null | **M** *(classes with `max_chain ≥ 3`)* | **AMENDED wave 1, `BAR-CRITIQUE-W1-10-R1` §R3.** Terminal for **9** of 15 classes. RI-CMB02 §C: recovery ×1.35. |
+| 4 | `r1.4` | `light` buffered in `r1.3` recovery | → `r1.5` or null | O | Legal only for DGR, FST, CSW *(**AMENDED wave 1**: TSW struck — RI-WPN02 §B publishes it at `max_chain 3`, and this list contradicted the very column it cited)*. |
 | 5 | `r2` | `heavy`, `IDLE`, tap | → `r2.follow` | **M** | RI-CMB02 §B. |
 | 6 | `r2.charged` | `heavy`, `IDLE`, **hold** | null | **M** | `charge_max_f` 1–30. **This slot is what closes the `combat.attack.charge` hole.** |
 | 7 | `r2.follow` | `heavy` buffered in any `r1.*` recovery | null | O | The mixed finisher. Where a class has one, it must not be a copy of `r2`. |
@@ -79,6 +79,32 @@ plunge guard.counter guardbreak art.1                                  (14 one-h
 2h.roll.r1 2h.backstep.r1 2h.jump.r1 2h.guard.counter                  (11 two-handed)
                                                                        = 25
 ```
+
+> ### AMENDED wave 1 by `BAR-CRITIQUE-W1-10-R1` §R3 — the chain-2 classes
+>
+> `AMENDMENT-W1-10-02` §B is upheld. This section made `r1.3` mandatory on every melee weapon
+> and described it as *"terminal for 11 of 15 classes"*, while `RI-WPN02` §B publishes CGS and
+> GHM at `max_chain` **2** and §C says it again in words. Both could not stand, and a build was
+> forced either to drop a mandatory slot on ten weapons or to publish a chain length
+> contradicting the spine table. Round 1 did the second and was scored for it.
+>
+> **Ruling.** `RI-WPN02` §B's chain column wins — this item does not own frame or chain values
+> (see §"The bar"). `r1.3` and `2h.r1.3` are conditioned on `max_chain ≥ 3`, exactly as `r1.4`
+> already is on the same column. Three consequences, all binding:
+>
+> 1. **The mandatory count for a chain-2 class is 23, not 25.** CGS and GHM — ten weapons —
+>    carry 23. `RI-WPN03` §D.1's `S_total` becomes `72×25 + 10×23 + 5×7 = 2065`, and every
+>    `ARI`, `DEV`, `UNQ` and `slots_present` denominator follows it. M1's census must report
+>    `slots_present / mandatory_for_class`, never `/25`.
+> 2. **`M/O` is a function of the class, so a build may not choose.** A CGS weapon that
+>    declares `r1.3` anyway is not conforming-with-extra; it is publishing a chain length that
+>    contradicts §B, and M3's `chainLen(r1.1)` measurement decides.
+> 3. **The round-2 workaround is not adopted.** Declaring `r1.3` and reaching it only out of a
+>    dodge (`roll.r1 → r1.3`) is ingenious and it is a real design, but it contradicts §A slot
+>    10, which publishes `roll.r1 → r1.2`. A class may diverge from the published `chains_to`
+>    graph **only** by an explicit row in `RI-WPN02` §C, so the divergence is on the record and
+>    a critic measures it rather than discovering it. Improvised chain graphs are how a slot
+>    table stops being a contract.
 
 BOW substitutes `bow.draw bow.quick bow.aimed bow.roll` for the 14 one-handed melee slots
 and has no two-handed stance, giving it a mandatory count of **7** (`bow.*` ×4, `plunge`,
@@ -190,9 +216,12 @@ node tools/analysis/content-stats.mjs --schema corpus/12-weapons/moveset.schema.
      --glob 'game/data/combat/movesets/*.json'
 ```
 - **FAIL** any file that does not validate against `elder-souls/moveset@1`.
-- **FAIL** any melee weapon with fewer than the 25 mandatory slot ids present.
-- Report `slots_present / 25` per weapon, and the histogram over all weapons.
-- **HARD FAIL** if the median is < 25 — the game does not have movesets, it has attacks.
+- **FAIL** any melee weapon with fewer than **its class's** mandatory slot ids present — 25 for
+  a class with `max_chain ≥ 3`, **23** for CGS and GHM, 7 for BOW *(AMENDED wave 1,
+  `BAR-CRITIQUE-W1-10-R1` §R3)*.
+- Report `slots_present / mandatory_for_class` per weapon, and the histogram over all weapons.
+- **HARD FAIL** if the median ratio is < 1.00 — the game does not have movesets, it has
+  attacks.
 
 **M2 — Slot reachability (harness).** For each weapon × each mandatory slot, build the
 scripted input that should produce it, from §A's trigger column:
@@ -289,7 +318,7 @@ Max 100.
 | 8 | 92 |
 
 **Hard fails regardless of score:**
-- Median `slots_present` < 25 across melee weapons.
+- Median `slots_present / mandatory_for_class` < 1.00 across melee weapons.
 - Any weapon with `distinct_anim < 18`.
 - `anim(roll.r1) == anim(r1.1)`, or the same for `backstep.r1` / `run.r1`, on any weapon.
 - `agreement < 1.00` in M6.

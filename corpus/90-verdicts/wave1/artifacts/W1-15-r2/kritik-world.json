@@ -1,0 +1,257 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "round": 2,
+  "part": "world",
+  "blocks": {
+    "B7-facing-cones": {
+      "note": "inf_trash declares sight_cone_deg 120 (half 60); detection.json primary 55 / peripheral 100. The narrower governs, so 57 deg is the only peripheral band this archetype has.",
+      "cases": [
+        {
+          "id": "bearing-0-primary",
+          "yaw": 180,
+          "bearing": 0,
+          "V": 0.128,
+          "sound_r_m": 0,
+          "predicted_per_s": 9.6,
+          "measured_per_s": 9.5968,
+          "peak_alert": 96.2884,
+          "state": "SUSPICIOUS",
+          "channel": "sight",
+          "ratio": 0.9997
+        },
+        {
+          "id": "bearing-40-primary",
+          "yaw": 140,
+          "bearing": 40,
+          "V": 0.128,
+          "sound_r_m": 0,
+          "predicted_per_s": 9.6,
+          "measured_per_s": 9.5968,
+          "peak_alert": 96.2884,
+          "state": "SUSPICIOUS",
+          "channel": "sight",
+          "ratio": 0.9997
+        },
+        {
+          "id": "bearing-57-peripheral",
+          "yaw": 123,
+          "bearing": 57,
+          "V": 0.128,
+          "sound_r_m": 0,
+          "predicted_per_s": 3.36,
+          "measured_per_s": 3.3589,
+          "peak_alert": 33.7009,
+          "state": "SUSPICIOUS",
+          "channel": "peripheral",
+          "ratio": 0.9997
+        },
+        {
+          "id": "bearing-70-outside-statblock-cone",
+          "yaw": 110,
+          "bearing": 70,
+          "V": 0.128,
+          "sound_r_m": 0,
+          "predicted_per_s": 0,
+          "measured_per_s": 0,
+          "peak_alert": 0,
+          "state": "IDLE",
+          "channel": null,
+          "ratio": 1
+        },
+        {
+          "id": "bearing-170-rear-arc",
+          "yaw": 10,
+          "bearing": 170,
+          "V": 0.128,
+          "sound_r_m": 0,
+          "predicted_per_s": 0,
+          "measured_per_s": 0,
+          "peak_alert": 0,
+          "state": "IDLE",
+          "channel": null,
+          "ratio": 1
+        }
+      ]
+    },
+    "B8-M4-no-proximity-leak": {
+      "still_behind_1m_3600f": {
+        "a0": 0,
+        "a1": 0,
+        "peak": 0,
+        "per_s": 0,
+        "state": "IDLE",
+        "channel": null,
+        "los": true,
+        "dist_m": 1
+      },
+      "stealth": {
+        "crouched": false,
+        "light": 0.04,
+        "V": 0.05,
+        "V_raw": 0.0025,
+        "sound_r_m": 0,
+        "surface": "mud",
+        "in_cover": false,
+        "motion": "still",
+        "sneak": 100,
+        "context": "public_street_sheathed",
+        "context_weight": 0,
+        "zone": "zm4",
+        "zone_baseline_alert": 0,
+        "lock": null,
+        "bounty_imperial": 0,
+        "witnesses_pending": 0,
+        "terms": {
+          "L": 0.04,
+          "gamma": 1.36,
+          "M": 0.55,
+          "S": 0.4,
+          "E": 0.9,
+          "A": 1
+        },
+        "security": 5,
+        "agility": 20,
+        "load": "light",
+        "race": "imperial",
+        "gold": 400,
+        "picks": 12,
+        "standings": {},
+        "crouch_refused": null,
+        "hud_elements": 0,
+        "in_cover_source": "derived_from_geometry",
+        "in_cover_fraction": 0,
+        "motion_forced": "still",
+        "zone_context_multiplier": 1,
+        "lights_out": [],
+        "searches": 0,
+        "stolen_registry_n": 0,
+        "magic": {
+          "chameleon_pct": 0,
+          "invisible": false,
+          "muffle_pct": 0,
+          "night_eye_bonus": 0,
+          "perceived_light": 0.04,
+          "disguised": false
+        }
+      },
+      "still_facing_1m_600f": {
+        "a0": 0.2344,
+        "a1": 70.5469,
+        "peak": 70.5469,
+        "per_s": 7.0313,
+        "state": "SUSPICIOUS",
+        "channel": "sight",
+        "los": true,
+        "dist_m": 1
+      },
+      "crouchmove_behind_1m": {
+        "sound_r_m": 0.656,
+        "fill": {
+          "a0": 0,
+          "a1": 0,
+          "peak": 0,
+          "per_s": 0,
+          "state": "IDLE",
+          "channel": null,
+          "los": true,
+          "dist_m": 1
+        }
+      },
+      "walk_behind_1m": {
+        "sound_r_m": 1.575,
+        "fill": {
+          "a0": 1.3333,
+          "a1": 100,
+          "peak": 100,
+          "per_s": 9.8667,
+          "state": "AGGRO",
+          "channel": "hearing",
+          "los": true,
+          "dist_m": 1
+        }
+      }
+    },
+    "B9-peripheral-cap": {
+      "expects": "RI-AI01 §B: the peripheral cone cannot pass alert 70 on its own",
+      "fill": {
+        "a0": 0.8753,
+        "a1": 70,
+        "peak": 70,
+        "per_s": 2.3042,
+        "state": "SUSPICIOUS",
+        "channel": "peripheral",
+        "los": true,
+        "dist_m": 4
+      },
+      "V": 0.6669
+    },
+    "B10-search": {
+      "search_start_f": 1,
+      "search_start_s": 0.017,
+      "search_end_f": 134,
+      "search_duration_s": 2.217,
+      "walk_speed_mps_max": null,
+      "walk_speed_mps_mode": null,
+      "log": [
+        {
+          "df": 0,
+          "alert": 61.4672,
+          "st": "SEARCH",
+          "pos": [
+            0,
+            0,
+            7.967
+          ],
+          "tgt": [
+            0,
+            0,
+            0
+          ],
+          "r": 8,
+          "searches": 1
+        },
+        {
+          "df": 120,
+          "alert": 37.4672,
+          "st": "SEARCH",
+          "pos": [
+            0,
+            0,
+            3.967
+          ],
+          "tgt": [
+            0,
+            0,
+            -8
+          ],
+          "r": 8,
+          "searches": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "search_start",
+          "eid": "es",
+          "frame": 2,
+          "lkp": [
+            0,
+            0,
+            0
+          ],
+          "plan": [],
+          "raised": []
+        },
+        {
+          "type": "search_end",
+          "eid": "es",
+          "frame": 135,
+          "acquired": true,
+          "visited": [],
+          "zone_baseline": 0,
+          "lights_relit": 0
+        }
+      ]
+    }
+  }
+}

@@ -8,8 +8,17 @@ reason: corpus_hole
 provenance: constructed
 confidence: high
 filed_by: critic.weapons, wave 1, piece W1-10
-status: amendment request — not applied unilaterally (CORPUS-CONTRACT §5)
+status: RULED wave 1 by BAR-CRITIQUE-W1-10-R1 §R2 — Defect 1 ADOPTED (bands re-derived), Defect 2 diagnosis UPHELD / instrument REPLACED, Rh_min hard fail REJECTED. Applied to RI-WPN03.
 ---
+
+> ## RULING — `BAR-CRITIQUE-W1-10-R1` §R2, wave 1
+>
+> | Clause | Disposition |
+> |---|---|
+> | **Defect 1 — `ARI`'s bands are unreachable from below** | **ADOPTED.** Arithmetic verified independently. One correction: `C_min` assumed within-class sharing, which §C never required — the true floor was `⌈S_total/4⌉`, lower still. The `SHARE` scope is now tightened to within-class in `RI-WPN03` §C, which makes the floor real; with the chain-2 ruling `C_min = 656`, `ARI_min = 0.3177`. Bands land at **PASS ≥ 0.42, HARD FAIL < 0.33** (0.32 was 0.0015 above the floor and would have been decorative). |
+> | **Defect 2 — nothing measures the chain** | **DIAGNOSIS UPHELD, INSTRUMENT REPLACED.** Under `RI-CMB02` §C's class-uniform chain multipliers, `Rh`'s ratio block is `r1_recovery/r1_startup` × a constant and its gap block correlates **−0.976 with `r1_startup`** — the most mass-correlated quantity in the corpus. Adding it to `GRAMMAR_DIMS` would have re-imported mass into the anti-mass distance and raised `Dg_min` by ~0.14 on no new information. Replaced by `Chg`, the chain **grammar** vector (shape / arc / root / swing plane per link), now `RI-WPN03` §D.3, plus the G7–G9 chain dimensions in `RI-WPN02` §D. |
+> | **`Rh_min < 0.03` as a hard fail** | **REJECTED — not deferred.** Two independent reasons. (i) `Rh` within a class is a function of frame overrides alone, so a weapon whose deviation is a new clip, a new shape or a new arc — the deviations `RI-WPN03` §B calls the expensive, real ones — sits at `Rh` distance 0 from its baseline and would hard-fail. That inverts the area's own thesis that numbers are not variation. (ii) BOW's chain is one link, so `Rh` is all padding and within-class `Rh_min` is structurally 0 for all five bows; the shipped roster has exactly one distinct chain-frame signature across its five. A threshold that fires on a whole class by construction is not a measurement. `Chg` carries a PASS band and no hard fail in wave 1, and any wave-2 hard fail must come from the measured distribution rather than by analogy. |
+> | The `[0.25, 0.90]` band "set by analogy … rather than measured" | **Honesty noted and adopted as a standing rule.** `RI-WPN07`'s provenance note applies the same discipline to its own `RVS ≥ 0.70`. |
 
 ## Why this exists
 

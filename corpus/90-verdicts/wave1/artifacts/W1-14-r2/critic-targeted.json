@@ -1,0 +1,1632 @@
+{
+  "mitigation_kind": {
+    "note": "IDENTICAL scripted PHYSICAL hit of 100. A resist-DISEASE buff must not blunt a sword.",
+    "magnitude_used": 20,
+    "baseline": {
+      "hp": 520,
+      "raw": 100,
+      "applied": 100,
+      "mitigation": 1,
+      "ward_charges": 0,
+      "magic": {
+        "focus": 124,
+        "focus_max": 124,
+        "focus_locked": true,
+        "attuned": [
+          "spark_dart",
+          "slowfall"
+        ],
+        "slots": 6,
+        "catalyst": "great_staff",
+        "cast": null,
+        "effects_active": [],
+        "levitating": false,
+        "airborne": false,
+        "altitude_m": 0,
+        "pos_y_m": 0,
+        "drift_mps": 0,
+        "drift_cap_mps": 1.4,
+        "walk_reference_mps": 2,
+        "projectiles": 0,
+        "volumes": 0,
+        "residues": 0,
+        "xul_hesh": 0,
+        "gems": 0,
+        "custom_spells": 0,
+        "consumers": {
+          "locks": {
+            "locked": [
+              "cistern_grate",
+              "drowned_road_sluice",
+              "hall_side_door",
+              "ledger_strongbox",
+              "warded_ledger_door"
+            ],
+            "unlocked": [
+              "customs_loft_door"
+            ]
+          },
+          "traps": {
+            "armed": [
+              "ledger_threshold_ward",
+              "sluice_pressure_plate",
+              "strongbox_needle"
+            ],
+            "disarmed": []
+          },
+          "breakables": {
+            "intact": [
+              "cistern_wall_bricks",
+              "ossuary_lid",
+              "root_barrier"
+            ],
+            "broken": []
+          },
+          "items": {
+            "marsh_shortsword": 44,
+            "ward_collar_picks": 61,
+            "ruined_censer": 4,
+            "lacquer_shield": 78
+          },
+          "walls": {
+            "walls": 0,
+            "ids": []
+          },
+          "keys": 3,
+          "shrines": [
+            "rootkeeper_shrine_thornmarsh",
+            "chapel_gideon"
+          ],
+          "markers": [],
+          "summons": [],
+          "reach_m": 1.6,
+          "jump_apex_mult": 1,
+          "bound_weapon": null,
+          "soul_marks": [],
+          "fall": {
+            "terminal_mps": 18,
+            "damage_enabled": true,
+            "peak_y_m": 0
+          },
+          "water": {
+            "buoyant": false,
+            "breathes": false,
+            "drown_f": 1800,
+            "drowning": false
+          },
+          "hud_elements": 0
+        },
+        "status": [
+          {
+            "id": "P",
+            "buildup": {},
+            "procs": {},
+            "paralysed": false,
+            "mitigation": 1,
+            "armour_rating": 0,
+            "ward_charges": 0,
+            "yielded": false,
+            "silenced": false,
+            "frenzy_target": null,
+            "hp": 520,
+            "hp_max": 620,
+            "equip_load_pct": 50,
+            "roll_class": "MEDIUM"
+          }
+        ]
+      }
+    },
+    "shield": {
+      "hp": 550.8777777777777,
+      "raw": 100,
+      "applied": 69.122,
+      "mitigation": 0.6912,
+      "ward_charges": 0,
+      "magic": {
+        "focus": 116,
+        "focus_max": 124,
+        "focus_locked": true,
+        "attuned": [
+          "custom_1_probe_shield"
+        ],
+        "slots": 6,
+        "catalyst": "great_staff",
+        "cast": null,
+        "effects_active": [
+          {
+            "effect": "shield",
+            "magnitude": 30.88,
+            "remaining_f": 1106,
+            "source": "custom_1_probe_shield",
+            "consumer_leased": true
+          }
+        ],
+        "levitating": false,
+        "airborne": false,
+        "altitude_m": 0,
+        "pos_y_m": 0,
+        "drift_mps": 0,
+        "drift_cap_mps": 1.4,
+        "walk_reference_mps": 2,
+        "projectiles": 0,
+        "volumes": 0,
+        "residues": 0,
+        "xul_hesh": 0,
+        "gems": 0,
+        "custom_spells": 1,
+        "consumers": {
+          "locks": {
+            "locked": [
+              "cistern_grate",
+              "drowned_road_sluice",
+              "hall_side_door",
+              "ledger_strongbox",
+              "warded_ledger_door"
+            ],
+            "unlocked": [
+              "customs_loft_door"
+            ]
+          },
+          "traps": {
+            "armed": [
+              "ledger_threshold_ward",
+              "sluice_pressure_plate",
+              "strongbox_needle"
+            ],
+            "disarmed": []
+          },
+          "breakables": {
+            "intact": [
+              "cistern_wall_bricks",
+              "ossuary_lid",
+              "root_barrier"
+            ],
+            "broken": []
+          },
+          "items": {
+            "marsh_shortsword": 44,
+            "ward_collar_picks": 61,
+            "ruined_censer": 4,
+            "lacquer_shield": 78
+          },
+          "walls": {
+            "walls": 0,
+            "ids": []
+          },
+          "keys": 3,
+          "shrines": [
+            "rootkeeper_shrine_thornmarsh",
+            "chapel_gideon"
+          ],
+          "markers": [],
+          "summons": [],
+          "reach_m": 1.6,
+          "jump_apex_mult": 1,
+          "bound_weapon": null,
+          "soul_marks": [],
+          "fall": {
+            "terminal_mps": 18,
+            "damage_enabled": true,
+            "peak_y_m": 0
+          },
+          "water": {
+            "buoyant": false,
+            "breathes": false,
+            "drown_f": 1800,
+            "drowning": false
+          },
+          "hud_elements": 0
+        },
+        "status": [
+          {
+            "id": "P",
+            "buildup": {},
+            "procs": {},
+            "paralysed": false,
+            "mitigation": 0.6912,
+            "armour_rating": 0,
+            "ward_charges": 0,
+            "yielded": false,
+            "silenced": false,
+            "frenzy_target": null,
+            "hp": 550.88,
+            "hp_max": 620,
+            "equip_load_pct": 50,
+            "roll_class": "MEDIUM"
+          }
+        ]
+      }
+    },
+    "resist_element": {
+      "hp": 605,
+      "raw": 100,
+      "applied": 15,
+      "mitigation": 0.15,
+      "ward_charges": 0,
+      "magic": {
+        "focus": 118,
+        "focus_max": 124,
+        "focus_locked": true,
+        "attuned": [
+          "custom_1_probe_resist_element"
+        ],
+        "slots": 6,
+        "catalyst": "great_staff",
+        "cast": null,
+        "effects_active": [
+          {
+            "effect": "resist_element",
+            "magnitude": 85,
+            "remaining_f": 1106,
+            "source": "custom_1_probe_resist_element",
+            "consumer_leased": true
+          }
+        ],
+        "levitating": false,
+        "airborne": false,
+        "altitude_m": 0,
+        "pos_y_m": 0,
+        "drift_mps": 0,
+        "drift_cap_mps": 1.4,
+        "walk_reference_mps": 2,
+        "projectiles": 0,
+        "volumes": 0,
+        "residues": 0,
+        "xul_hesh": 0,
+        "gems": 0,
+        "custom_spells": 1,
+        "consumers": {
+          "locks": {
+            "locked": [
+              "cistern_grate",
+              "drowned_road_sluice",
+              "hall_side_door",
+              "ledger_strongbox",
+              "warded_ledger_door"
+            ],
+            "unlocked": [
+              "customs_loft_door"
+            ]
+          },
+          "traps": {
+            "armed": [
+              "ledger_threshold_ward",
+              "sluice_pressure_plate",
+              "strongbox_needle"
+            ],
+            "disarmed": []
+          },
+          "breakables": {
+            "intact": [
+              "cistern_wall_bricks",
+              "ossuary_lid",
+              "root_barrier"
+            ],
+            "broken": []
+          },
+          "items": {
+            "marsh_shortsword": 44,
+            "ward_collar_picks": 61,
+            "ruined_censer": 4,
+            "lacquer_shield": 78
+          },
+          "walls": {
+            "walls": 0,
+            "ids": []
+          },
+          "keys": 3,
+          "shrines": [
+            "rootkeeper_shrine_thornmarsh",
+            "chapel_gideon"
+          ],
+          "markers": [],
+          "summons": [],
+          "reach_m": 1.6,
+          "jump_apex_mult": 1,
+          "bound_weapon": null,
+          "soul_marks": [],
+          "fall": {
+            "terminal_mps": 18,
+            "damage_enabled": true,
+            "peak_y_m": 0
+          },
+          "water": {
+            "buoyant": false,
+            "breathes": false,
+            "drown_f": 1800,
+            "drowning": false
+          },
+          "hud_elements": 0
+        },
+        "status": [
+          {
+            "id": "P",
+            "buildup": {},
+            "procs": {},
+            "paralysed": false,
+            "mitigation": 0.15,
+            "armour_rating": 0,
+            "ward_charges": 0,
+            "yielded": false,
+            "silenced": false,
+            "frenzy_target": null,
+            "hp": 605,
+            "hp_max": 620,
+            "equip_load_pct": 50,
+            "roll_class": "MEDIUM"
+          }
+        ]
+      }
+    },
+    "resist_disease": {
+      "hp": 605,
+      "raw": 100,
+      "applied": 15,
+      "mitigation": 0.15,
+      "ward_charges": 0,
+      "magic": {
+        "focus": 119,
+        "focus_max": 124,
+        "focus_locked": true,
+        "attuned": [
+          "custom_1_probe_resist_disease"
+        ],
+        "slots": 6,
+        "catalyst": "great_staff",
+        "cast": null,
+        "effects_active": [
+          {
+            "effect": "resist_disease",
+            "magnitude": 85,
+            "remaining_f": 1106,
+            "source": "custom_1_probe_resist_disease",
+            "consumer_leased": true
+          }
+        ],
+        "levitating": false,
+        "airborne": false,
+        "altitude_m": 0,
+        "pos_y_m": 0,
+        "drift_mps": 0,
+        "drift_cap_mps": 1.4,
+        "walk_reference_mps": 2,
+        "projectiles": 0,
+        "volumes": 0,
+        "residues": 0,
+        "xul_hesh": 0,
+        "gems": 0,
+        "custom_spells": 1,
+        "consumers": {
+          "locks": {
+            "locked": [
+              "cistern_grate",
+              "drowned_road_sluice",
+              "hall_side_door",
+              "ledger_strongbox",
+              "warded_ledger_door"
+            ],
+            "unlocked": [
+              "customs_loft_door"
+            ]
+          },
+          "traps": {
+            "armed": [
+              "ledger_threshold_ward",
+              "sluice_pressure_plate",
+              "strongbox_needle"
+            ],
+            "disarmed": []
+          },
+          "breakables": {
+            "intact": [
+              "cistern_wall_bricks",
+              "ossuary_lid",
+              "root_barrier"
+            ],
+            "broken": []
+          },
+          "items": {
+            "marsh_shortsword": 44,
+            "ward_collar_picks": 61,
+            "ruined_censer": 4,
+            "lacquer_shield": 78
+          },
+          "walls": {
+            "walls": 0,
+            "ids": []
+          },
+          "keys": 3,
+          "shrines": [
+            "rootkeeper_shrine_thornmarsh",
+            "chapel_gideon"
+          ],
+          "markers": [],
+          "summons": [],
+          "reach_m": 1.6,
+          "jump_apex_mult": 1,
+          "bound_weapon": null,
+          "soul_marks": [],
+          "fall": {
+            "terminal_mps": 18,
+            "damage_enabled": true,
+            "peak_y_m": 0
+          },
+          "water": {
+            "buoyant": false,
+            "breathes": false,
+            "drown_f": 1800,
+            "drowning": false
+          },
+          "hud_elements": 0
+        },
+        "status": [
+          {
+            "id": "P",
+            "buildup": {},
+            "procs": {},
+            "paralysed": false,
+            "mitigation": 0.15,
+            "armour_rating": 0,
+            "ward_charges": 0,
+            "yielded": false,
+            "silenced": false,
+            "frenzy_target": null,
+            "hp": 605,
+            "hp_max": 620,
+            "equip_load_pct": 50,
+            "roll_class": "MEDIUM"
+          }
+        ]
+      }
+    },
+    "sap_ward": {
+      "hp": 620,
+      "raw": 100,
+      "applied": 0,
+      "mitigation": 1,
+      "ward_charges": 1,
+      "magic": {
+        "focus": 123,
+        "focus_max": 124,
+        "focus_locked": true,
+        "attuned": [
+          "custom_1_probe_sap_ward"
+        ],
+        "slots": 6,
+        "catalyst": "great_staff",
+        "cast": null,
+        "effects_active": [],
+        "levitating": false,
+        "airborne": false,
+        "altitude_m": 0,
+        "pos_y_m": 0,
+        "drift_mps": 0,
+        "drift_cap_mps": 1.4,
+        "walk_reference_mps": 2,
+        "projectiles": 0,
+        "volumes": 0,
+        "residues": 0,
+        "xul_hesh": 0,
+        "gems": 0,
+        "custom_spells": 1,
+        "consumers": {
+          "locks": {
+            "locked": [
+              "cistern_grate",
+              "drowned_road_sluice",
+              "hall_side_door",
+              "ledger_strongbox",
+              "warded_ledger_door"
+            ],
+            "unlocked": [
+              "customs_loft_door"
+            ]
+          },
+          "traps": {
+            "armed": [
+              "ledger_threshold_ward",
+              "sluice_pressure_plate",
+              "strongbox_needle"
+            ],
+            "disarmed": []
+          },
+          "breakables": {
+            "intact": [
+              "cistern_wall_bricks",
+              "ossuary_lid",
+              "root_barrier"
+            ],
+            "broken": []
+          },
+          "items": {
+            "marsh_shortsword": 44,
+            "ward_collar_picks": 61,
+            "ruined_censer": 4,
+            "lacquer_shield": 78
+          },
+          "walls": {
+            "walls": 0,
+            "ids": []
+          },
+          "keys": 3,
+          "shrines": [
+            "rootkeeper_shrine_thornmarsh",
+            "chapel_gideon"
+          ],
+          "markers": [],
+          "summons": [],
+          "reach_m": 1.6,
+          "jump_apex_mult": 1,
+          "bound_weapon": null,
+          "soul_marks": [],
+          "fall": {
+            "terminal_mps": 18,
+            "damage_enabled": true,
+            "peak_y_m": 0
+          },
+          "water": {
+            "buoyant": false,
+            "breathes": false,
+            "drown_f": 1800,
+            "drowning": false
+          },
+          "hud_elements": 0
+        },
+        "status": [
+          {
+            "id": "P",
+            "buildup": {},
+            "procs": {},
+            "paralysed": false,
+            "mitigation": 1,
+            "armour_rating": 0,
+            "ward_charges": 1,
+            "yielded": false,
+            "silenced": false,
+            "frenzy_target": null,
+            "hp": 620,
+            "hp_max": 620,
+            "equip_load_pct": 50,
+            "roll_class": "MEDIUM"
+          }
+        ]
+      }
+    },
+    "fire_vs_physical_shield": {
+      "none": {
+        "hp_before": 412,
+        "hp_after": 7,
+        "taken": 405
+      },
+      "shield_physical": {
+        "hp_before": 412,
+        "hp_after": 407,
+        "taken": 5
+      },
+      "resist_element": {
+        "hp_before": 412,
+        "hp_after": 407,
+        "taken": 5
+      }
+    }
+  },
+  "status_procs": {
+    "fire": {
+      "kind": "fire",
+      "samples": [
+        {
+          "i": 0,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 407,
+          "dead": false
+        },
+        {
+          "i": 1,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "fire": 337
+              },
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 402,
+          "dead": false
+        },
+        {
+          "i": 2,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "fire": 409
+              },
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 397,
+          "dead": false
+        },
+        {
+          "i": 3,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "fire": 409
+              },
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        },
+        {
+          "i": 4,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "fire": 409
+              },
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        },
+        {
+          "i": 5,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        },
+        {
+          "i": 6,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        },
+        {
+          "i": 7,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        },
+        {
+          "i": 8,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        },
+        {
+          "i": 9,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        },
+        {
+          "i": 10,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        },
+        {
+          "i": 11,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 392,
+          "dead": false
+        }
+      ],
+      "proc_events": [
+        {
+          "status_kind": "fire",
+          "proc": "BURNING",
+          "until_f": 337
+        },
+        {
+          "status_kind": "fire",
+          "proc": "BURNING",
+          "until_f": 409
+        }
+      ]
+    },
+    "paralysis": {
+      "kind": "paralysis",
+      "samples": [
+        {
+          "i": 0,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "paralysis": 208
+              },
+              "paralysed": true
+            }
+          ],
+          "state": "PARALYSED",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 1,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "paralysis": 279
+              },
+              "paralysed": true
+            }
+          ],
+          "state": "PARALYSED",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 2,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "paralysis": 350
+              },
+              "paralysed": true
+            }
+          ],
+          "state": "PARALYSED",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 3,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "paralysis": 418
+              },
+              "paralysed": true
+            }
+          ],
+          "state": "PARALYSED",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 4,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {
+                "paralysis": 418
+              },
+              "paralysed": true
+            }
+          ],
+          "state": "PARALYSED",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 5,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 6,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 7,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 8,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 9,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 10,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 412,
+          "dead": false
+        },
+        {
+          "i": 11,
+          "meters": [
+            {
+              "id": "P",
+              "procs": {},
+              "paralysed": false
+            },
+            {
+              "id": "e0",
+              "procs": {},
+              "paralysed": false
+            }
+          ],
+          "state": "REPOSITION",
+          "hp": 412,
+          "dead": false
+        }
+      ],
+      "proc_events": [
+        {
+          "status_kind": "paralysis",
+          "proc": "PARALYSED",
+          "until_f": 208
+        },
+        {
+          "status_kind": "paralysis",
+          "proc": "PARALYSED",
+          "until_f": 276
+        },
+        {
+          "status_kind": "paralysis",
+          "proc": "PARALYSED",
+          "until_f": 279
+        },
+        {
+          "status_kind": "paralysis",
+          "proc": "PARALYSED",
+          "until_f": 347
+        },
+        {
+          "status_kind": "paralysis",
+          "proc": "PARALYSED",
+          "until_f": 350
+        },
+        {
+          "status_kind": "paralysis",
+          "proc": "PARALYSED",
+          "until_f": 418
+        }
+      ]
+    },
+    "note": "compare enemy.state across the samples once the proc fires"
+  },
+  "levitation": {
+    "focus_at_cast": 124,
+    "focus_after_climb": 98.62,
+    "fall": {
+      "pos_y_m": 5.5867,
+      "airborne": true,
+      "levitating": true,
+      "vel_mps": 0,
+      "terminal_mps": 18,
+      "fall_damage_enabled": true,
+      "peak_y_m": 5.5867,
+      "jump_apex_mult": 1
+    },
+    "pos_y_m": 5.5867,
+    "altitude_state": null,
+    "state_during": "AIRBORNE",
+    "buttons": [
+      {
+        "button": "light",
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE",
+        "move_after": null,
+        "iframe_after": false
+      },
+      {
+        "button": "heavy",
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE",
+        "move_after": null,
+        "iframe_after": false
+      },
+      {
+        "button": "block",
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE",
+        "move_after": null,
+        "iframe_after": false
+      },
+      {
+        "button": "roll",
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE",
+        "move_after": null,
+        "iframe_after": false
+      },
+      {
+        "button": "parry",
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE",
+        "move_after": null,
+        "iframe_after": false
+      }
+    ],
+    "any_iframe_true_over_60_frames": false,
+    "damage_while_airborne": {
+      "hp_before": 620,
+      "applied": 37,
+      "hp_after": 583
+    },
+    "magic_after_hit": {
+      "levitating": false,
+      "pos_y": 7.72
+    },
+    "drift": {
+      "from": [
+        0,
+        2.387,
+        1.054
+      ],
+      "to": [
+        0,
+        2.387,
+        3.831
+      ],
+      "mps": 1.388,
+      "state": "AIRBORNE"
+    },
+    "walk_control": {
+      "mps": 3.173,
+      "state": "RUN"
+    }
+  },
+  "quest_gate": {
+    "requirements": {
+      "skills": {
+        "warding": 45,
+        "sorcery": 25
+      },
+      "spell_effects": [
+        "open_lock",
+        "shatter"
+      ],
+      "requires_knowing": [],
+      "method": "magic_utility",
+      "journal_index": 90,
+      "violence_required": false
+    },
+    "owned_only": {
+      "id": "mag_the_warded_ledger__magic",
+      "method": "magic_utility",
+      "violence_required": false,
+      "available": false,
+      "why": [
+        "warding 0/45",
+        "sorcery 0/25",
+        "you cannot bring open_lock to bear",
+        "you cannot bring shatter to bear"
+      ],
+      "excludes": []
+    },
+    "cast_effects_before": [],
+    "cast_effects_after": [],
+    "after_futile_casts": {
+      "id": "mag_the_warded_ledger__magic",
+      "method": "magic_utility",
+      "violence_required": false,
+      "available": false,
+      "why": [
+        "warding 0/45",
+        "sorcery 0/25",
+        "you cannot bring open_lock to bear",
+        "you cannot bring shatter to bear"
+      ],
+      "excludes": []
+    },
+    "locks_after": {
+      "locked": [
+        "cistern_grate",
+        "drowned_road_sluice",
+        "hall_side_door",
+        "ledger_strongbox",
+        "warded_ledger_door"
+      ],
+      "unlocked": [
+        "customs_loft_door"
+      ]
+    },
+    "breakables_after": {
+      "intact": [
+        "cistern_wall_bricks",
+        "ossuary_lid",
+        "root_barrier"
+      ],
+      "broken": []
+    },
+    "player_pos": [
+      0,
+      0,
+      0.308
+    ],
+    "resolve": {
+      "ok": false,
+      "reason": "quest not open"
+    },
+    "journal_tail": []
+  },
+  "teleport_in_fight": {
+    "intervention": {
+      "before": {
+        "pos": [
+          0,
+          0,
+          0
+        ],
+        "in_combat": true
+      },
+      "after": {
+        "pos": [
+          -40,
+          0,
+          20.102927
+        ],
+        "in_combat": false
+      },
+      "events": [
+        {
+          "kind": "teleport",
+          "from": [
+            0,
+            0,
+            0.05
+          ],
+          "to": [
+            -40,
+            0,
+            20
+          ],
+          "cause": "intervention"
+        }
+      ],
+      "moved_m": 44.77
+    },
+    "recall": {
+      "from": [
+        60,
+        0,
+        60
+      ],
+      "to": [
+        0,
+        0,
+        0.154
+      ],
+      "in_combat_at_cast": true,
+      "moved_m": 84.74
+    },
+    "shipped_classes": [
+      {
+        "id": "mark",
+        "class": "RITUAL"
+      },
+      {
+        "id": "recall",
+        "class": "RITUAL"
+      },
+      {
+        "id": "intervention_root",
+        "class": "RITUAL"
+      },
+      {
+        "id": "intervention_imperial",
+        "class": "RITUAL"
+      }
+    ]
+  },
+  "emit_kind_bug": {
+    "event_kinds": {
+      "cast_start": 1,
+      "focus_spend": 1,
+      "cast_release": 1,
+      "status_buildup": 5,
+      "effect_apply": 5,
+      "status_proc": 2
+    },
+    "status_buildup_events": [
+      {
+        "f": 26,
+        "kind": "status_buildup",
+        "status_kind": "fire",
+        "on": "e0",
+        "before": 0,
+        "after": 83,
+        "per_contact": 83,
+        "threshold": 100,
+        "procced": false
+      },
+      {
+        "f": 27,
+        "kind": "status_buildup",
+        "status_kind": "fire",
+        "on": "e0",
+        "before": 82.8,
+        "after": 0,
+        "per_contact": 83,
+        "threshold": 100,
+        "procced": true
+      },
+      {
+        "f": 28,
+        "kind": "status_buildup",
+        "status_kind": "fire",
+        "on": "e0",
+        "before": 0,
+        "after": 83,
+        "per_contact": 83,
+        "threshold": 100,
+        "procced": false
+      }
+    ],
+    "any_event_kind_is_an_element": []
+  },
+  "quest_detachment": {
+    "journal_before_reset": 0,
+    "after_reset": 0,
+    "after_hist_sight": 1,
+    "after_questOpen": 1,
+    "tail": [
+      {
+        "n": 10,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ARCH-01",
+        "text": "Sallis wants the harvesters off the lichen beds. He says they are stealing from the vats and that the guild has a charter for the whole strand. He offered me a price before I had said anything."
+      }
+    ]
+  },
+  "control_verbs": {
+    "calm_beast_on_beast": {
+      "hp_before": 286,
+      "hp_after": 286,
+      "in_combat_before": true,
+      "in_combat_after": false,
+      "state_after": "YIELDED",
+      "dead": false,
+      "yielded": true,
+      "entities": 1
+    },
+    "demoralise": {
+      "hp_before": 412,
+      "hp_after": 412,
+      "in_combat_before": true,
+      "in_combat_after": false,
+      "state_after": "YIELDED",
+      "dead": false,
+      "yielded": true,
+      "entities": 1
+    },
+    "charm": {
+      "hp_before": 412,
+      "hp_after": 412,
+      "in_combat_before": true,
+      "in_combat_after": false,
+      "state_after": "YIELDED",
+      "dead": false,
+      "yielded": true,
+      "entities": 1
+    }
+  },
+  "cast_frames": {
+    "CANTRIP": {
+      "declared": null,
+      "rng_before": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      },
+      "rng_after": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      }
+    },
+    "LIGHT": {
+      "declared": null,
+      "rng_before": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      },
+      "rng_after": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      }
+    },
+    "HEAVY": {
+      "declared": null,
+      "rng_before": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      },
+      "rng_after": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      }
+    },
+    "GREAT": {
+      "declared": null,
+      "rng_before": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      },
+      "rng_after": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      }
+    },
+    "RITUAL": {
+      "declared": null,
+      "rng_before": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      },
+      "rng_after": {
+        "violations": 0,
+        "detail": [],
+        "guards": [
+          "Math.random",
+          "Date.now",
+          "performance.now",
+          "new Date()"
+        ],
+        "armedDuring": "exactly one fixed simulation step",
+        "rngSeed": 9001,
+        "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+      }
+    }
+  },
+  "tracking": {
+    "spark_dart": {
+      "samples": 0,
+      "max_dps": null,
+      "rates": [],
+      "speed": null
+    },
+    "ember_spit": {
+      "samples": 0,
+      "max_dps": null,
+      "rates": [],
+      "speed": null
+    },
+    "marshfire": {
+      "samples": 0,
+      "max_dps": null,
+      "rates": [],
+      "speed": null
+    }
+  },
+  "hand_feed": {
+    "player_afflictions_field": [],
+    "after_addAffliction": {
+      "player_afflictions": []
+    },
+    "after_cure": {
+      "player_afflictions": []
+    },
+    "note": "getPlayerStats().afflictions is the hazard system register (VECTOR hazards write it). getQuestState().afflictions is what cure_* splices.",
+    "restore_attribute": {
+      "before": {
+        "vigour": 10,
+        "endurance": 20,
+        "strength": 12,
+        "dexterity": 12,
+        "intelligence": 10,
+        "faith": 10
+      },
+      "after": {
+        "vigour": 10,
+        "endurance": 20,
+        "strength": 12,
+        "dexterity": 12,
+        "intelligence": 10,
+        "faith": 10
+      }
+    }
+  }
+}

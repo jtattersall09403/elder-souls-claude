@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { WorldField } from '../../game/src/world/field.js';
+import { SignatureField } from '../../game/src/world/signature.js';
 import { roadWaterAudit, TIDE_PHASE } from './road-water-audit.mjs';
 
 globalThis.atob = globalThis.atob || ((s) => Buffer.from(s, 'base64').toString('binary'));
@@ -26,6 +27,12 @@ const terrain = rd('game/data/world/terrain.json');
 const regionsDoc = rd('game/data/world/regions.json');
 const roads = rd('game/data/world/roads.json');
 const field = new WorldField(terrain, regionsDoc, rd('game/data/world/water.json'));
+// The thirteen ONLY-HERE elements are part of the ground now (seven of them are landform), so the
+// verticality histogram, the mean slope and the reachability flood fill all see them.
+const signatures = new SignatureField(rd('game/data/world/signatures.json'));
+field.setSignatures(signatures);
+// One number, one file. `sim/traversal.js` reads the same value for the controller's slope gate.
+const MAX_WALK_DEG = rd('game/data/world/traversal.json').slope.max_walkable_deg;
 field.setRoads(roads);
 
 const checks = [];
@@ -169,7 +176,16 @@ for (let cz = 0; cz < field.rows; cz++) {
       const px = cx * field.cell + ux * field.cell, pz = cz * field.cell + uz * field.cell;
       // Land is not the test — a causeway crosses water and is still a road. Depth is the test.
       if (field.depthAt(px, pz) > 1.40) continue;
-      if (field.slopeAt(px, pz, 8) > 40) continue;
+      // ROUND 3: the SAME rule the body obeys. Verdict W1-01 r2: "the province's own passability
+      // model — the S9-NO-FENCES flood fill in scale-audit.mjs — calls slope > 40 deg impassable.
+      // The capsule walks 70.63 deg. Two instruments in this piece disagree by thirty degrees and
+      // neither was asked to reconcile with the other." They are reconciled: 40 deg is now
+      // `game/data/world/traversal.json slope.max_walkable_deg`, read from the file rather than
+      // retyped here, and a built carriageway or bridge deck is passable exactly as it is to the
+      // controller (`sim/traversal.js` exempts both, because a road's grade is declared and capped
+      // below 40 deg by `build-roads.mjs`).
+      if (field.onRoadAt(px, pz)) { ok = true; break; }
+      if (field.slopeAt(px, pz, 8) > MAX_WALK_DEG) continue;
       ok = true; break;
     }
     if (!ok) continue;

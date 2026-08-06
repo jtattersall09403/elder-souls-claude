@@ -19,8 +19,13 @@ const WATER_SEG = 24;
 const RADIUS = 2;                 // 5 x 5 tiles resident => 1.5 km of detailed ground
 const FAR_SEG_X = 96, FAR_SEG_Z = 110;
 const MAX_INSTANCES = { canopy: 700, under: 2600, rock: 420 };
-const MAX_SIG_LIGHTS = 6;         // the region's own lamps at night (RI-WLD04 M17 step 6)
-const SIG_LIGHT_RANGE = 220;
+// The region's own lamps at night (RI-WLD04 M17 step 6). TWO, not six, and the number is a
+// measurement rather than a taste: on the software rasteriser the M17 night pass ran at 11 s per
+// frame with none and 3.75 MINUTES per frame with six, because every extra dynamic light multiplies
+// the per-fragment cost of every instanced mesh in the tile. Two lamps plus the emissive materials
+// plus the region-tinted night ambient in render/sky.js carry the same signal at a twentieth of it.
+const MAX_SIG_LIGHTS = 2;
+const SIG_LIGHT_RANGE = 160;
 
 const c3 = (hex) => new THREE.Color(hex);
 
@@ -409,7 +414,7 @@ export class Province {
       l.color.set(n.K.glow_hex || '#FFFFFF');
       l.distance = SIG_LIGHT_RANGE * 0.55;
       l.decay = 1.6;
-      l.intensity = n.K.glow * this.nightFactor * 260;
+      l.intensity = n.K.glow * this.nightFactor * 420;
       l.visible = l.intensity > 0.01;
     }
     return near.length;

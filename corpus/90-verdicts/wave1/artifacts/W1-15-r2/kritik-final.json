@@ -1,0 +1,748 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "round": 2,
+  "part": "final",
+  "blocks": {
+    "B17-S1-plausible-set": {
+      "item": "RI-STL01 §7 S-1: 'walks to LKP, then visits up to 3 nav-mesh cover volumes within 8 m of LKP ... it checks WHERE YOU COULD HAVE GONE, not random points'",
+      "runs": [
+        {
+          "case": "primary-cone",
+          "yaw": 180,
+          "volumes": [
+            [
+              5,
+              -3
+            ],
+            [
+              -6,
+              -2
+            ],
+            [
+              0,
+              -7
+            ]
+          ],
+          "alert_when_seen": 100,
+          "alert_state_when_seen": "AGGRO",
+          "cover_volumes_declared": 3,
+          "lkp": [
+            0,
+            0,
+            0
+          ],
+          "plan": [],
+          "visited": [],
+          "search_start_events": [
+            {
+              "type": "search_start",
+              "eid": "eprimary-cone",
+              "frame": 959,
+              "lkp": [
+                0,
+                0,
+                0
+              ],
+              "plan": [],
+              "raised": []
+            }
+          ]
+        },
+        {
+          "case": "primary-cone-far-side",
+          "yaw": 180,
+          "volumes": [
+            [
+              7,
+              2
+            ],
+            [
+              -7,
+              2
+            ],
+            [
+              0,
+              6
+            ]
+          ],
+          "alert_when_seen": 100,
+          "alert_state_when_seen": "AGGRO",
+          "cover_volumes_declared": 3,
+          "lkp": [
+            0,
+            0,
+            0
+          ],
+          "plan": [],
+          "visited": [],
+          "search_start_events": [
+            {
+              "type": "search_start",
+              "eid": "eprimary-cone-far-side",
+              "frame": 959,
+              "lkp": [
+                0,
+                0,
+                0
+              ],
+              "plan": [],
+              "raised": []
+            }
+          ]
+        },
+        {
+          "case": "peripheral-cone",
+          "yaw": 123,
+          "volumes": [
+            [
+              5,
+              -3
+            ],
+            [
+              -6,
+              -2
+            ],
+            [
+              0,
+              -7
+            ]
+          ],
+          "alert_when_seen": 70,
+          "alert_state_when_seen": "SUSPICIOUS",
+          "cover_volumes_declared": 3,
+          "lkp": null,
+          "plan": null,
+          "visited": null,
+          "search_start_events": []
+        },
+        {
+          "case": "volumes-beside-the-searcher",
+          "yaw": 180,
+          "volumes": [
+            [
+              6,
+              6
+            ],
+            [
+              -6,
+              6
+            ],
+            [
+              3,
+              7
+            ]
+          ],
+          "alert_when_seen": 100,
+          "alert_state_when_seen": "AGGRO",
+          "cover_volumes_declared": 3,
+          "lkp": [
+            0,
+            0,
+            0
+          ],
+          "plan": [],
+          "visited": [],
+          "search_start_events": [
+            {
+              "type": "search_start",
+              "eid": "evolumes-beside-the-searcher",
+              "frame": 959,
+              "lkp": [
+                0,
+                0,
+                0
+              ],
+              "plan": [],
+              "raised": []
+            }
+          ]
+        }
+      ]
+    },
+    "B18-guard-ladder-vs-parley": {
+      "bands": [
+        {
+          "bounty": 0,
+          "band": {
+            "race": "imperial",
+            "standing": "none",
+            "bounty": 0,
+            "thresholds": {
+              "base": 300,
+              "race_law": 1.35,
+              "faction_law": 1,
+              "arrest_at": 405,
+              "attack_at": 1620,
+              "suspicion": 0.8
+            },
+            "band": 0,
+            "behaviour": "none"
+          }
+        },
+        {
+          "bounty": 100,
+          "band": {
+            "race": "imperial",
+            "standing": "none",
+            "bounty": 100,
+            "thresholds": {
+              "base": 300,
+              "race_law": 1.35,
+              "faction_law": 1,
+              "arrest_at": 405,
+              "attack_at": 1620,
+              "suspicion": 0.8
+            },
+            "band": 1,
+            "behaviour": "greeting_only",
+            "arrest": false,
+            "draws_weapon": false,
+            "parley": null
+          }
+        },
+        {
+          "bounty": 500,
+          "band": {
+            "race": "imperial",
+            "standing": "none",
+            "bounty": 500,
+            "thresholds": {
+              "base": 300,
+              "race_law": 1.35,
+              "faction_law": 1,
+              "arrest_at": 405,
+              "attack_at": 1620,
+              "suspicion": 0.8
+            },
+            "band": 2,
+            "behaviour": "arrest_dialogue",
+            "arrest": true,
+            "draws_weapon": false,
+            "parley": null
+          }
+        },
+        {
+          "bounty": 2000,
+          "band": {
+            "race": "imperial",
+            "standing": "none",
+            "bounty": 2000,
+            "thresholds": {
+              "base": 300,
+              "race_law": 1.35,
+              "faction_law": 1,
+              "arrest_at": 405,
+              "attack_at": 1620,
+              "suspicion": 0.8
+            },
+            "band": 3,
+            "behaviour": "attack_on_sight",
+            "arrest": false,
+            "draws_weapon": true,
+            "parley": "surrender"
+          }
+        }
+      ],
+      "guard_civ": [
+        {
+          "eid": "g1",
+          "group": "guard",
+          "civ_state": "CALM",
+          "suspicion": 0,
+          "context_weight": 0,
+          "alert_channel": null,
+          "los": true,
+          "dist_m": 3,
+          "pos": [
+            0,
+            0,
+            3
+          ],
+          "yaw_deg": 180,
+          "reporting": false,
+          "fleeing_to": null,
+          "witnessed": 0
+        }
+      ],
+      "guard_entity": [
+        {
+          "eid": "g1x",
+          "alert": 100,
+          "alert_state": "AGGRO",
+          "alert_channel": "sight",
+          "los": true,
+          "dist_m": 3,
+          "pos": [
+            0,
+            0,
+            3
+          ],
+          "speed_mps": 0,
+          "search_target": null,
+          "search_radius_m": 0,
+          "alert_hop": 0,
+          "lkp": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "arrest_topics": [
+        {
+          "id": "pay",
+          "text": "I'll pay.",
+          "available": true,
+          "refused": true,
+          "refusal": "You're 2600 gold short, and I can count. Choose again.",
+          "shortfall_g": 2600
+        },
+        {
+          "id": "resist",
+          "text": "I'll not.",
+          "available": true,
+          "refused": false
+        },
+        {
+          "id": "serve",
+          "text": "Take me in.",
+          "available": true,
+          "refused": false
+        }
+      ],
+      "bounty_before": 3000,
+      "standings_before": {},
+      "parley_events": [],
+      "combat_after": [
+        {
+          "id": "g1x",
+          "statblock": "guard_legion",
+          "state": "YIELDED",
+          "anim": "e_idle",
+          "anim_frame": 24,
+          "move": null,
+          "hp": 520,
+          "hp_max": 520,
+          "poise_health": 38,
+          "poise_health_max": 38,
+          "stamina": 100,
+          "stamina_max": 100,
+          "guard": false,
+          "dead": false,
+          "yielded": true,
+          "parley": {
+            "grounds": [
+              "yield",
+              "gold",
+              "faction"
+            ],
+            "faction": "legion",
+            "rank_required": 3,
+            "gold_price": 0
+          },
+          "dist_m": 3,
+          "bearing_deg": 0
+        }
+      ],
+      "bounty_after": 3000,
+      "standings_after": {},
+      "guard_civ_after": [
+        {
+          "eid": "g1",
+          "group": "guard",
+          "civ_state": "CALM",
+          "suspicion": 0,
+          "context_weight": 0,
+          "alert_channel": null,
+          "los": true,
+          "dist_m": 3,
+          "pos": [
+            0,
+            0,
+            3
+          ],
+          "yaw_deg": 180,
+          "reporting": false,
+          "fleeing_to": null,
+          "witnessed": 0
+        }
+      ],
+      "jail_after": null
+    },
+    "B19-parley-punishability": {
+      "press_at_f60": {
+        "hp_before": 620,
+        "hp_after": 620,
+        "events": [],
+        "enemy": {
+          "id": "gp",
+          "statblock": "guard_legion",
+          "state": "YIELDED",
+          "anim": "e_idle",
+          "anim_frame": 8,
+          "move": null,
+          "hp": 520,
+          "hp_max": 520,
+          "poise_health": 38,
+          "poise_health_max": 38,
+          "stamina": 100,
+          "stamina_max": 100,
+          "guard": false,
+          "dead": false,
+          "yielded": true,
+          "parley": {
+            "grounds": [
+              "yield",
+              "gold",
+              "faction"
+            ],
+            "faction": "legion",
+            "rank_required": 3,
+            "gold_price": 0
+          },
+          "dist_m": 2,
+          "bearing_deg": 0
+        }
+      },
+      "press_at_f20": {
+        "hp_before": 620,
+        "hp_after": 620,
+        "events": [],
+        "enemy": {
+          "id": "gp",
+          "statblock": "guard_legion",
+          "state": "YIELDED",
+          "anim": "e_idle",
+          "anim_frame": 8,
+          "move": null,
+          "hp": 520,
+          "hp_max": 520,
+          "poise_health": 38,
+          "poise_health_max": 38,
+          "stamina": 100,
+          "stamina_max": 100,
+          "guard": false,
+          "dead": false,
+          "yielded": true,
+          "parley": {
+            "grounds": [
+              "yield",
+              "gold",
+              "faction"
+            ],
+            "faction": "legion",
+            "rank_required": 3,
+            "gold_price": 0
+          },
+          "dist_m": 2,
+          "bearing_deg": 0
+        }
+      }
+    },
+    "B20-locks-static": {
+      "zones": 233,
+      "locks_declared": 235,
+      "gates": [
+        {
+          "tier": 1,
+          "at_security_5": {
+            "offered": true,
+            "prompt": null,
+            "picks_consumed": 0,
+            "shortfall": null
+          },
+          "at_security_100": {
+            "offered": true,
+            "prompt": null,
+            "picks_consumed": 0,
+            "shortfall": null
+          },
+          "tol_5": 6.75,
+          "tol_100": 34
+        },
+        {
+          "tier": 2,
+          "at_security_5": {
+            "offered": false,
+            "prompt": "You do not know this kind of lock.",
+            "picks_consumed": 0,
+            "shortfall": {
+              "security": 15,
+              "agility": 0
+            }
+          },
+          "at_security_100": {
+            "offered": true,
+            "prompt": null,
+            "picks_consumed": 0,
+            "shortfall": null
+          },
+          "tol_5": 4,
+          "tol_100": 34
+        },
+        {
+          "tier": 3,
+          "at_security_5": {
+            "offered": false,
+            "prompt": "You do not know this kind of lock.",
+            "picks_consumed": 0,
+            "shortfall": {
+              "security": 35,
+              "agility": 6
+            }
+          },
+          "at_security_100": {
+            "offered": true,
+            "prompt": null,
+            "picks_consumed": 0,
+            "shortfall": null
+          },
+          "tol_5": 4,
+          "tol_100": 34
+        },
+        {
+          "tier": 4,
+          "at_security_5": {
+            "offered": false,
+            "prompt": "You do not know this kind of lock.",
+            "picks_consumed": 0,
+            "shortfall": {
+              "security": 55,
+              "agility": 18
+            }
+          },
+          "at_security_100": {
+            "offered": true,
+            "prompt": null,
+            "picks_consumed": 0,
+            "shortfall": null
+          },
+          "tol_5": 4,
+          "tol_100": 26
+        },
+        {
+          "tier": 5,
+          "at_security_5": {
+            "offered": false,
+            "prompt": "You do not know this kind of lock.",
+            "picks_consumed": 0,
+            "shortfall": {
+              "security": 75,
+              "agility": 30
+            }
+          },
+          "at_security_100": {
+            "offered": true,
+            "prompt": null,
+            "picks_consumed": 0,
+            "shortfall": null
+          },
+          "tol_5": 4,
+          "tol_100": 15
+        }
+      ],
+      "determinism_before": {
+        "raw": {
+          "violations": 0,
+          "detail": [],
+          "guards": [
+            "Math.random",
+            "Date.now",
+            "performance.now",
+            "new Date()"
+          ],
+          "armedDuring": "exactly one fixed simulation step",
+          "rngSeed": 1337,
+          "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+        }
+      },
+      "lockId": null,
+      "lockTier": null
+    },
+    "B21-quest-verb-census": {
+      "quests": 33,
+      "target_quests": 180,
+      "meaningful": false,
+      "meaningful_note": "PACIFIST-ALL over 33 of ~180 quests is a property of the sample, not of the design. Quoting it as a pass is what the W1-15 round-1 verdict refused, correctly.",
+      "pacifist_all_pct": 100,
+      "nonviolent_option_pct": 100,
+      "violence_mandatory_pct": 0,
+      "gated_solutions_pct": 100,
+      "knowledge_keys_pct": 15.2,
+      "verb_spread_pct": 27.3,
+      "verb_spread_cap_pct": 40,
+      "resolutions_by_verb": {
+        "confess": 6,
+        "sneak": 7,
+        "trade": 12,
+        "lore_knowledge": 6,
+        "refuse": 3,
+        "steal": 5,
+        "intimidate": 3,
+        "betray": 3,
+        "persuade": 9,
+        "wait": 6,
+        "magic_utility": 24,
+        "bribe": 4
+      },
+      "per_faction": {
+        "unaffiliated": {
+          "confess": 3,
+          "sneak": 5,
+          "trade": 10,
+          "steal": 2,
+          "intimidate": 1,
+          "lore_knowledge": 2,
+          "magic_utility": 18,
+          "persuade": 6,
+          "wait": 5,
+          "bribe": 2
+        },
+        "the_drowned_court": {
+          "lore_knowledge": 1,
+          "trade": 1,
+          "refuse": 1,
+          "steal": 1
+        },
+        "the_ixtu_vakh": {
+          "trade": 1,
+          "refuse": 1,
+          "betray": 1
+        },
+        "the_wet_ledger": {
+          "betray": 1,
+          "confess": 1,
+          "intimidate": 1,
+          "refuse": 1,
+          "steal": 1
+        },
+        "the_dockhands": {
+          "persuade": 1,
+          "wait": 1,
+          "confess": 1,
+          "sneak": 1,
+          "magic_utility": 2,
+          "bribe": 1,
+          "steal": 1
+        },
+        "the_xul_aneekh": {
+          "confess": 1,
+          "betray": 1,
+          "persuade": 1,
+          "sneak": 1
+        },
+        "deep_kin": {
+          "magic_utility": 1,
+          "persuade": 1,
+          "lore_knowledge": 1
+        },
+        "the_imperial_assize": {
+          "magic_utility": 1,
+          "bribe": 1,
+          "lore_knowledge": 1,
+          "intimidate": 1
+        },
+        "the_rootkeepers": {
+          "magic_utility": 2,
+          "lore_knowledge": 1
+        }
+      },
+      "sneak_floor": 22,
+      "sneak_hard_fail_below": 10
+    },
+    "B22-capability": {
+      "piece": "W1-09 — combat core (on W1-00’s harness)",
+      "implemented": [
+        "fixed 60 Hz simulation decoupled from render (HARNESS.md R2/R3)",
+        "seeded PRNG with a runtime guard that throws on Math.random/Date.now/performance.now/new Date inside a step",
+        "the elder-souls/trace@1 record, including the camera channel RI-CAM02/RI-CAM06 need",
+        "the 15-button closed action set (14 from W1-00 + `crouch` from W1-15/AM-W1-15-01), the scripted path, the real desktop path, the 8 f@60 single-slot buffer",
+        "IndexedDB save with the RI-JRN05 §A write protocol, digest, A/B generations, export/import, hostility simulation",
+        "deterministic sky, sun and named weather; the nine viewpoint anchors",
+        "the game/data/** layout of HARNESS.md §5 with a generated index.json",
+        "W1-07: character creation as a scene — 10 attributes, 19 skills, 10 races, 9 birthsigns, 14 classes plus the custom route, the 12-question route, the 12x10 reaction matrix, the price surcharge, the guard law-factor table and the race-conditioned encounter opening",
+        "W1-09: swept-capsule hit resolution over bone-attached hurtboxes, 4 substeps, no distance check and no dice (RI-CMB04)",
+        "W1-09: the RI-CMB01 §B roll ladder at all four equip-load tiers, i-frames as a frame window",
+        "W1-09: RI-CMB02 §A/§B frame data for all 7 classes x R1/R2 with the §D commitment rule",
+        "W1-09: RI-CMB03 stamina, block, guard break and RI-CMB09 exhaustion, symmetric for enemies",
+        "W1-09: RI-CMB05 poise, stagger, hyperarmour, backstab, parry and riposte",
+        "W1-09: RI-CMB06 lock-on with target-relative directional roll and soft-lock steering",
+        "W1-09: RI-CMB08 healing with animation commitment and finite charges",
+        "W1-09: es-combat-trace/1 (RI-CMB07 §A) as a second stream, and the S13 parley"
+      ],
+      "not_implemented": [
+        {
+          "what": "enemy DECISION-MAKING (approach, circle, commit, attack token, punish reads, leash)",
+          "owner": "RI-AI01..07 / wave-1 piece W1-12",
+          "surfaced_as": "enemy statblocks declare ai='scripted'; actions come from the scenario file on declared frames, which is the RI-CMB07 M1 Mode-A instrument. spawn() throws for any archetype declaring behaviour this build cannot run. RI-CMB07 M2 (Mode-B free play against real AI) is therefore NOT measurable in this piece and scores 0, fail-closed."
+        },
+        {
+          "what": "mid-animation combat state across a save/load",
+          "owner": "W1-09, declared limitation",
+          "surfaced_as": "sim/combat-bridge.js header. The combat bodies are the authority and sim.player is a view; a save taken on frame 12 of a roll restores a standing character at the roll position. Correct under seam S6 (you save by resting) and true of both source games, but stated rather than discovered."
+        },
+        {
+          "what": "weapon movesets beyond the 7-class spine, and attack ratings",
+          "owner": "RI-WPN01..06 / wave-1 piece W1-10",
+          "surfaced_as": "movesets/*.json weapon.attack_rating_provenance marks all seven AR values PROVISIONAL; only the straight sword is pinned (to the RI-CMB07 exemplar HIT of 118 at motion value 1.00)."
+        },
+        {
+          "what": "hitstop, mass and impact feel",
+          "owner": "RI-WPN05 / RI-AUD01 / wave-1 piece W1-11",
+          "surfaced_as": "hitstop_frames is read from the moveset and applied, but the camera, audio and animation consequences are W1-11."
+        },
+        {
+          "what": "a quest runtime",
+          "owner": "wave-1 pieces W1-14..W1-16",
+          "surfaced_as": "getQuestState()._declared_incomplete; quest STATE is real and round-trips, quest PROGRESSION does not exist"
+        },
+        {
+          "what": "dialogue, topics, journal writing at runtime",
+          "owner": "wave-1 pieces W1-11..W1-13",
+          "surfaced_as": "data files exist and are analysable; getDialogueState() (A-JRN13) is absent"
+        },
+        {
+          "what": "the province: 13 regions, 8 settlements, 250 interiors, roads",
+          "owner": "wave-1 pieces W1-01..W1-05",
+          "surfaced_as": "getWorldStats()._declared_incomplete — counts come from game/data/**, which is the corpus transcription plus one worked settlement"
+        },
+        {
+          "what": "audio",
+          "owner": "RI-AUD01..03 / wave-1 piece W1-25",
+          "surfaced_as": "audioMB: 0. RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed"
+        },
+        {
+          "what": "a gamepad shim (A-JRN2), viewport control (A-JRN4), heap/GC access (A-JRN9), keyboard-layout emulation (A-JRN12), dialogue state (A-JRN13), resource registry (A-JRN14)",
+          "owner": "runner-side or later pieces",
+          "surfaced_as": "the methods are absent rather than present-and-lying"
+        },
+        {
+          "what": "Tier-H performance numbers (fps, frame time, TTFP wall clock, hitch durations)",
+          "owner": "attested real hardware",
+          "surfaced_as": "getPerfStats()._unmeasurable / getLoadState()._unmeasurable. RI-PLT01 rule T1 forbids emitting these from a SwiftShader run at all"
+        }
+      ],
+      "harness_amendments_implemented": [
+        "A-JRN1 (partial: play-instrumented mode, no UI-text stream)",
+        "A-JRN3",
+        "A-JRN5 (partial: Tier-S fields only)",
+        "A-JRN6",
+        "A-JRN7",
+        "A-JRN8",
+        "A-JRN10",
+        "A-JRN11",
+        "A-JRN15 (partial)"
+      ],
+      "harness_amendments_absent": [
+        "A-JRN2",
+        "A-JRN4",
+        "A-JRN9",
+        "A-JRN12",
+        "A-JRN13",
+        "A-JRN14"
+      ]
+    },
+    "page_errors": []
+  }
+}

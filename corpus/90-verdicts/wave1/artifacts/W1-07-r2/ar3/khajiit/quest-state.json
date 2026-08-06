@@ -1,0 +1,28 @@
+{
+  "active": [],
+  "completed": [],
+  "journal": [],
+  "flags": {},
+  "topicsKnown": [],
+  "dispositions": {},
+  "factions": {},
+  "crime": {
+    "bounty": {
+      "imperial": 0
+    },
+    "witnesses": [],
+    "stolen": [],
+    "hunting": []
+  },
+  "_declared_incomplete": {
+    "owner": "wave-1 pieces W1-14..W1-16 (quests) and W1-11..W1-13 (dialogue)",
+    "implemented": [
+      "quest STATE is real, saved, round-tripped and reported here",
+      "named states in game/data/states/ set it"
+    ],
+    "missing": [
+      "a quest runtime: no quest in this build can be started, advanced or completed by playing"
+    ],
+    "note": "This is state, not simulation. Reporting a fabricated active quest would be measurement fraud (RI-MTH04); reporting the real, empty-by-default state is not."
+  }
+}

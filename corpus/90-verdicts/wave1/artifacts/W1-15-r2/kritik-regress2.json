@@ -1,0 +1,111 @@
+{
+  "schema": "elder-souls/critic-probe@1",
+  "piece": "W1-15",
+  "round": 2,
+  "part": "regress2",
+  "blocks": {
+    "B26-lock-live": {
+      "begin": {
+        "tier": 3,
+        "wards": 3,
+        "set": 0,
+        "collar_deg": 0,
+        "ward_deg": 74,
+        "delta_deg": 74,
+        "tell": false,
+        "W_deg": 15,
+        "sweeps": 0,
+        "picks": 12,
+        "broken": 0,
+        "open": false,
+        "failed": false
+      },
+      "opened_at_frame": 154,
+      "presses": [
+        {
+          "f": 45,
+          "delta": 6.5,
+          "W": 15,
+          "set_before": 0,
+          "res": {
+            "result": "ward_set",
+            "set": 1,
+            "of": 3,
+            "open": false,
+            "delta_deg": 6.5
+          }
+        },
+        {
+          "f": 133,
+          "delta": 6.5,
+          "W": 15,
+          "set_before": 1,
+          "res": {
+            "result": "ward_set",
+            "set": 2,
+            "of": 3,
+            "open": false,
+            "delta_deg": 6.5
+          }
+        },
+        {
+          "f": 153,
+          "delta": 7.5,
+          "W": 15,
+          "set_before": 2,
+          "res": {
+            "result": "ward_set",
+            "set": 3,
+            "of": 3,
+            "open": true,
+            "delta_deg": 7.5
+          }
+        }
+      ],
+      "final": {
+        "tier": 3,
+        "wards": 3,
+        "set": 3,
+        "collar_deg": 229.5,
+        "ward_deg": null,
+        "delta_deg": null,
+        "tell": false,
+        "W_deg": 15,
+        "sweeps": 0,
+        "picks": 12,
+        "broken": 0,
+        "open": true,
+        "failed": false
+      },
+      "draws_before": 0,
+      "draws_after": 0,
+      "draws_delta": 0
+    },
+    "B27-pickpocket": {
+      "rows": [
+        {
+          "sneak": 5,
+          "caught_of_60": 0,
+          "clean": 60,
+          "rng_draws_total": 0,
+          "error": null
+        },
+        {
+          "sneak": 50,
+          "caught_of_60": 0,
+          "clean": 60,
+          "rng_draws_total": 0,
+          "error": null
+        },
+        {
+          "sneak": 100,
+          "caught_of_60": 0,
+          "clean": 60,
+          "rng_draws_total": 0,
+          "error": null
+        }
+      ]
+    },
+    "page_errors": []
+  }
+}

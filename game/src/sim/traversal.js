@@ -138,8 +138,10 @@ export class Traversal {
 
     // ---- 3. the slope gate --------------------------------------------------------------------
     // You cannot walk up a wall. The number is `slope.max_walkable_deg`, and it is deliberately
-    // the SAME 40 deg the province's own S9-NO-FENCES flood fill uses to decide reachability.
-    // A BRIDGE IS NOT A CLIFF. `slopeAt` samples the ground at +-5 m, and a 6 m carriageway on
+    // the SAME 40 deg the province's own S9-NO-FENCES flood fill uses to decide reachability —
+    // `tools/world/scale-audit.mjs` now reads it out of the same file rather than retyping it.
+    //
+    // A BRIDGE AND A ROAD ARE NOT CLIFFS. `slopeAt` samples the ground at +-5 m, and a 6 m carriageway on
     // piers has natural ground 30 m below it 5 m to either side — so the slope gate reads 80
     // degrees in the middle of a flat deck and the slide pushes the walker off its own viaduct.
     // (It did: THE CROSSING stalled at 321 m, on the Stormhold-Helstrom span, before this.) On a
@@ -150,7 +152,7 @@ export class Traversal {
     if (!this.airborne && !swimming && !this.onDeck && !this.onRoad && (dx !== 0 || dz !== 0)) {
       const run = Math.hypot(dx, dz);
       const ux = dx / run, uz = dz / run;
-      // THE GATE IS THE SLOPE IN FRONT OF YOU, over a 3 m baseline.
+      // THE GATE IS THE SLOPE IN FRONT OF YOU, over a 1.5 m baseline.
       //
       // Three instruments were tried before this one and each failed for a reason worth keeping:
       //   * per-frame rise: at 2 m/s a frame covers 33 mm, so a vertical wall produces a 3 cm rise
@@ -162,13 +164,20 @@ export class Traversal {
       //   * omnidirectional `slopeAt(x, z)`: a road on a 2.4 m embankment reads 40 deg+ ACROSS the
       //     carriageway even though it is flat ALONG it, so the road became unwalkable at 502 m.
       // The directional test has none of those failure modes: it is what the body is about to
-      // climb, it is smoothed over 3 m so a step in the field cannot spike it, and it is exactly
+      // climb, it is smoothed over 1.5 m so a step in the field cannot spike it, and it is exactly
       // the quantity `slope.max_walkable_deg` names.
-      const L = 3.0;
+      const L = 1.5;
       const y0 = f.heightAt(x, z);
       const yA = f.heightAt(x + ux * L, z + uz * L);
-      const climbDeg = Math.atan2(yA - y0, L) * DEG;
-      if (climbDeg > C.slope.max_walkable_deg) {
+      const secantDeg = Math.atan2(yA - y0, L) * DEG;
+      // Two readings, and the body is blocked by EITHER. The secant is what is directly in front
+      // of it; the local gradient at a 2.5 m baseline catches a face whose secant happens to cross
+      // a ledge and read shallow. A 2.5 m baseline is short enough to see a crater rim and long
+      // enough not to see a 0.57 m kerb, and the carriageway is exempt above, so it never has to
+      // adjudicate a road embankment.
+      const localDeg = yA > y0 ? f.slopeAt(x + ux * L * 0.5, z + uz * L * 0.5, 2.5) : 0;
+      const climbDeg = Math.max(secantDeg, localDeg);
+      if (yA > y0 && climbDeg > C.slope.max_walkable_deg) {
         // Slide along the contour instead of stopping dead, so a steep face guides rather than
         // glues — but no upward progress is made at all.
         const gx = (f.heightAt(x + 1.2, z) - f.heightAt(x - 1.2, z)) / 2.4;
@@ -203,8 +212,15 @@ export class Traversal {
     if (swimming) {
       // Swimming: the body floats with the waterline at chest, so its Y is the surface minus the
       // submerged fraction of a 1.8 m body. There is no fall while swimming.
+      //
+      // UNLESS IT CANNOT SWIM. RI-WLD10 §3: `OVERLOADED > 100%` — "cannot swim. You walk the
+      // bottom, with a breath clock", and the item cites Hallgerd's Tale for it: "He was drowned
+      // in the Sea of Ghosts because he couldn't get his armor off." `burden` arrives here as the
+      // RI-PRG07 movement multiplier and is exactly 0 in the IMMOBILE tier, so the sink rule needs
+      // no second definition of "overloaded" and cannot drift from the one RI-PRG07 owns.
       this.airborne = false; this.vy = 0; this.apexY = null;
-      p.pos[1] = Math.max(ground, groundOrFloat);
+      this.sinking = burden === 0;
+      p.pos[1] = this.sinking ? ground : Math.max(ground, groundOrFloat);
     } else if (this.airborne) {
       this.vy -= C.fall.gravity_mps2 / 60;
       p.pos[1] += this.vy / 60;
@@ -392,7 +408,7 @@ export class Traversal {
         slope_deg: this.slopeDeg === undefined ? null : +this.slopeDeg.toFixed(2),
         airborne: this.airborne, vertical_mps: +this.vy.toFixed(3),
         sliding: this.slide > 0, slide_mps: +this.slide.toFixed(2),
-        submerged: this.submerged, breath_s: +this.breath.toFixed(2),
+        submerged: this.submerged, sinking: !!this.sinking, breath_s: +this.breath.toFixed(2),
         breath_max_s: this.cfg.water.breath_max_s,
         stamina_drain_per_s: this.staminaDrainPerS || 0,
         regen_suppressed: !!this.regenSuppressed,

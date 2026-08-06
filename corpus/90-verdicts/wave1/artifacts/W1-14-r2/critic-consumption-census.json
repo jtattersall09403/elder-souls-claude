@@ -1,0 +1,4009 @@
+{
+  "schema": "elder-souls/critic-w1-14-r2a@1",
+  "harness_version": 2,
+  "focus_max": 124,
+  "summary": {
+    "total": 55,
+    "moved_anything": 55,
+    "moved_nothing": [],
+    "not_castable": [],
+    "magnitude_ignored": [
+      "cure_poison"
+    ],
+    "magnitude_coupled": 47,
+    "binary_by_data": [
+      "cure_paralysis",
+      "sap_ward",
+      "buoyancy",
+      "breathe_water",
+      "slowfall",
+      "levitate",
+      "mark"
+    ],
+    "distinct_signatures": 34,
+    "signature_collisions": [
+      {
+        "signature": "enemy.dead|enemy.hp|enemy.state|entities.json|gold|player.in_combat|player.pos.json|status.json",
+        "effects": [
+          "fire_damage",
+          "frost_damage",
+          "shock_damage",
+          "poison_damage",
+          "damage_health"
+        ]
+      },
+      {
+        "signature": "gold|player.pos.json|status.json",
+        "effects": [
+          "corrode",
+          "cure_paralysis",
+          "burden",
+          "silence",
+          "paralyse"
+        ]
+      },
+      {
+        "signature": "enemy|enemy.dead|enemy.hp|enemy.hp_max|enemy.state|enemy.yielded|entities.json|entities.len|gold|player.in_combat|player.pos.json|status.json|status.len|world.summons.json|world.summons.len",
+        "effects": [
+          "bind_lesser",
+          "bind_greater"
+        ]
+      },
+      {
+        "signature": "gold|player.pos.json",
+        "effects": [
+          "cure_disease",
+          "cure_poison",
+          "restore_attribute",
+          "mark",
+          "recall",
+          "intervention",
+          "detect_life",
+          "frenzy"
+        ]
+      },
+      {
+        "signature": "gold|player.pos.json|probe.scripted_hit_applied|status.json",
+        "effects": [
+          "resist_element",
+          "resist_disease",
+          "sap_ward",
+          "shield"
+        ]
+      },
+      {
+        "signature": "enemy.state|enemy.yielded|gold|player.in_combat|player.pos.json|quest.flags.json|quest.flags.len|status.json",
+        "effects": [
+          "calm_beast",
+          "demoralise"
+        ]
+      },
+      {
+        "signature": "gold|player.pos.json|quest.flags.json|quest.flags.len|world.locks.locked.json|world.locks.locked.len|world.locks.unlocked.json|world.locks.unlocked.len",
+        "effects": [
+          "open_lock",
+          "lock_lock"
+        ]
+      }
+    ]
+  },
+  "rows": [
+    {
+      "effect": "fire_damage",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 200,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 200,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.hp",
+        "entities.json",
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "enemy.dead|enemy.hp|enemy.state|entities.json|gold|player.in_combat|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 407
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"fire\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":407,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":407,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.dead": {
+          "from": false,
+          "to": true
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 0
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "DEAD"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"fire\":0},\"procs\":{\"fire\":270},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":0,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":0,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1961584
+        }
+      },
+      "magnitude_differing_paths": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "frost_damage",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 200,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 200,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.hp",
+        "entities.json",
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "enemy.dead|enemy.hp|enemy.state|entities.json|gold|player.in_combat|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 407
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"frost\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":407,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":407,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.dead": {
+          "from": false,
+          "to": true
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 0
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "DEAD"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"frost\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":0,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":0,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1961584
+        }
+      },
+      "magnitude_differing_paths": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "shock_damage",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 200,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 200,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.hp",
+        "entities.json",
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "enemy.dead|enemy.hp|enemy.state|entities.json|gold|player.in_combat|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 407
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"shock\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":407,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":407,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.dead": {
+          "from": false,
+          "to": true
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 0
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "DEAD"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"shock\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":0,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":0,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1973877
+        }
+      },
+      "magnitude_differing_paths": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "poison_damage",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 150,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 150,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.hp",
+        "entities.json",
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "enemy.dead|enemy.hp|enemy.state|entities.json|gold|player.in_combat|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 407
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"poison\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":407,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":407,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.dead": {
+          "from": false,
+          "to": true
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 0
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "DEAD"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"poison\":0},\"procs\":{\"poison\":631},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":0,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":0,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1983757
+        }
+      },
+      "magnitude_differing_paths": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "damage_health",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 200,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 100,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.hp",
+        "entities.json",
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "enemy.dead|enemy.hp|enemy.state|entities.json|gold|player.in_combat|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 407
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":407,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":407,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.dead": {
+          "from": false,
+          "to": true
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 0
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "DEAD"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":0,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":0,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1987922
+        }
+      },
+      "magnitude_differing_paths": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.in_combat",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "drain_health",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 400,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 200,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.hp",
+        "enemy.hp_max",
+        "entities.json",
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.hp",
+        "enemy.hp_max",
+        "entities.json",
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "enemy.hp|enemy.hp_max|entities.json|gold|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 402
+        },
+        "enemy.hp_max": {
+          "from": 412,
+          "to": 402
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":402,\"hp_max\":402,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":402,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 1
+        },
+        "enemy.hp_max": {
+          "from": 412,
+          "to": 1
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":1,\"hp_max\":1,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":1,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1977637
+        }
+      },
+      "magnitude_differing_paths": [
+        "enemy.hp",
+        "enemy.hp_max",
+        "entities.json",
+        "gold",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "absorb_health",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 120,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 120,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.hp",
+        "entities.json",
+        "gold",
+        "player.hp",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.hp",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "enemy.dead|enemy.hp|enemy.state|entities.json|gold|player.hp|player.in_combat|player.pos.json|status.json",
+      "detail_lo": {
+        "player.hp": {
+          "from": 300,
+          "to": 310
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 402
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":310,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":402,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":402,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.hp": {
+          "from": 300,
+          "to": 620
+        },
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.dead": {
+          "from": false,
+          "to": true
+        },
+        "enemy.hp": {
+          "from": 412,
+          "to": 0
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "DEAD"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":620,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":0,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.json": {
+          "from": "[{\"eid\":\"e0\",\"hp\":412,\"pos\":[0,0,1.4]}]",
+          "to": "[{\"eid\":\"e0\",\"hp\":0,\"pos\":[0,0,1.4]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1975789
+        }
+      },
+      "magnitude_differing_paths": [
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.state",
+        "entities.json",
+        "gold",
+        "player.hp",
+        "player.in_combat",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "soul_trap",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 60,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 60,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "world.soul_marks.json",
+        "world.soul_marks.len"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "world.soul_marks.json",
+        "world.soul_marks.len"
+      ],
+      "signature": "gold|player.pos.json|world.soul_marks.json|world.soul_marks.len",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.soul_marks.len": {
+          "from": 0,
+          "to": 1
+        },
+        "world.soul_marks.json": {
+          "from": "[]",
+          "to": "[\"e0\"]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999780
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.soul_marks.len": {
+          "from": 0,
+          "to": 1
+        },
+        "world.soul_marks.json": {
+          "from": "[]",
+          "to": "[\"e0\"]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1989279
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "shatter",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 120,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 120,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "world.breakables.broken.json",
+        "world.breakables.broken.len",
+        "world.breakables.intact.json",
+        "world.breakables.intact.len"
+      ],
+      "signature": "gold|player.pos.json|quest.flags.json|quest.flags.len|world.breakables.broken.json|world.breakables.broken.len|world.breakables.intact.json|world.breakables.intact.len",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 3
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"shatter:cistern_wall_bricks\",\"shatter:root_barrier\",\"shatter:ossuary_lid\"]"
+        },
+        "world.breakables.broken.len": {
+          "from": 0,
+          "to": 3
+        },
+        "world.breakables.broken.json": {
+          "from": "[]",
+          "to": "[\"cistern_wall_bricks\",\"ossuary_lid\",\"root_barrier\"]"
+        },
+        "world.breakables.intact.len": {
+          "from": 3,
+          "to": 0
+        },
+        "world.breakables.intact.json": {
+          "from": "[\"cistern_wall_bricks\",\"ossuary_lid\",\"root_barrier\"]",
+          "to": "[]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1985908
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "quest.flags.json",
+        "quest.flags.len",
+        "world.breakables.broken.json",
+        "world.breakables.broken.len",
+        "world.breakables.intact.json",
+        "world.breakables.intact.len"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "corrode",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 100,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 100,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "gold|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":22.28,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1995704
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "bind_lesser",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 90,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 90,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy",
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.hp_max",
+        "enemy.state",
+        "enemy.yielded",
+        "entities.json",
+        "entities.len",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json",
+        "status.len",
+        "world.summons.json",
+        "world.summons.len"
+      ],
+      "moved_paths_hi": [
+        "enemy",
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.hp_max",
+        "enemy.state",
+        "enemy.yielded",
+        "entities.json",
+        "entities.len",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json",
+        "status.len",
+        "world.summons.json",
+        "world.summons.len"
+      ],
+      "signature": "enemy|enemy.dead|enemy.hp|enemy.hp_max|enemy.state|enemy.yielded|entities.json|entities.len|gold|player.in_combat|player.pos.json|status.json|status.len|world.summons.json|world.summons.len",
+      "detail_lo": {
+        "player.in_combat": {
+          "from": false,
+          "to": true
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy": {
+          "from": null
+        },
+        "world.summons.len": {
+          "from": 0,
+          "to": 1
+        },
+        "world.summons.json": {
+          "from": "[]",
+          "to": "[{\"eid\":\"e0\",\"kind\":\"lesser\",\"unfold_f\":40,\"expires_f\":1230}]"
+        },
+        "status.len": {
+          "from": 1,
+          "to": 2
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":12,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":260,\"hp_max\":260,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.len": {
+          "from": 0,
+          "to": 1
+        },
+        "entities.json": {
+          "from": "[]",
+          "to": "[{\"eid\":\"e0\",\"hp\":260,\"pos\":[0,0,2.551]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        },
+        "enemy.dead": {
+          "to": false
+        },
+        "enemy.hp": {
+          "to": 260
+        },
+        "enemy.hp_max": {
+          "to": 260
+        },
+        "enemy.state": {
+          "to": "IDLE"
+        },
+        "enemy.yielded": {
+          "to": false
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": false,
+          "to": true
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy": {
+          "from": null
+        },
+        "world.summons.len": {
+          "from": 0,
+          "to": 1
+        },
+        "world.summons.json": {
+          "from": "[]",
+          "to": "[{\"eid\":\"e0\",\"kind\":\"lesser\",\"unfold_f\":40,\"expires_f\":1230}]"
+        },
+        "status.len": {
+          "from": 1,
+          "to": 2
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":12,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":260,\"hp_max\":260,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.len": {
+          "from": 0,
+          "to": 1
+        },
+        "entities.json": {
+          "from": "[]",
+          "to": "[{\"eid\":\"e0\",\"hp\":260,\"pos\":[0,0,2.551]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1988200
+        },
+        "enemy.dead": {
+          "to": false
+        },
+        "enemy.hp": {
+          "to": 260
+        },
+        "enemy.hp_max": {
+          "to": 260
+        },
+        "enemy.state": {
+          "to": "IDLE"
+        },
+        "enemy.yielded": {
+          "to": false
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "bind_greater",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 90,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 90,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy",
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.hp_max",
+        "enemy.state",
+        "enemy.yielded",
+        "entities.json",
+        "entities.len",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json",
+        "status.len",
+        "world.summons.json",
+        "world.summons.len"
+      ],
+      "moved_paths_hi": [
+        "enemy",
+        "enemy.dead",
+        "enemy.hp",
+        "enemy.hp_max",
+        "enemy.state",
+        "enemy.yielded",
+        "entities.json",
+        "entities.len",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "status.json",
+        "status.len",
+        "world.summons.json",
+        "world.summons.len"
+      ],
+      "signature": "enemy|enemy.dead|enemy.hp|enemy.hp_max|enemy.state|enemy.yielded|entities.json|entities.len|gold|player.in_combat|player.pos.json|status.json|status.len|world.summons.json|world.summons.len",
+      "detail_lo": {
+        "player.in_combat": {
+          "from": false,
+          "to": true
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy": {
+          "from": null
+        },
+        "world.summons.len": {
+          "from": 0,
+          "to": 1
+        },
+        "world.summons.json": {
+          "from": "[]",
+          "to": "[{\"eid\":\"e0\",\"kind\":\"greater\",\"unfold_f\":40,\"expires_f\":1230}]"
+        },
+        "status.len": {
+          "from": 1,
+          "to": 2
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":34,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":640,\"hp_max\":640,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.len": {
+          "from": 0,
+          "to": 1
+        },
+        "entities.json": {
+          "from": "[]",
+          "to": "[{\"eid\":\"e0\",\"hp\":640,\"pos\":[0,0,2.551]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999746
+        },
+        "enemy.dead": {
+          "to": false
+        },
+        "enemy.hp": {
+          "to": 640
+        },
+        "enemy.hp_max": {
+          "to": 640
+        },
+        "enemy.state": {
+          "to": "IDLE"
+        },
+        "enemy.yielded": {
+          "to": false
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": false,
+          "to": true
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy": {
+          "from": null
+        },
+        "world.summons.len": {
+          "from": 0,
+          "to": 1
+        },
+        "world.summons.json": {
+          "from": "[]",
+          "to": "[{\"eid\":\"e0\",\"kind\":\"greater\",\"unfold_f\":40,\"expires_f\":1230}]"
+        },
+        "status.len": {
+          "from": 1,
+          "to": 2
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":34,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":640,\"hp_max\":640,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "entities.len": {
+          "from": 0,
+          "to": 1
+        },
+        "entities.json": {
+          "from": "[]",
+          "to": "[{\"eid\":\"e0\",\"hp\":640,\"pos\":[0,0,2.551]}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1969039
+        },
+        "enemy.dead": {
+          "to": false
+        },
+        "enemy.hp": {
+          "to": 640
+        },
+        "enemy.hp_max": {
+          "to": 640
+        },
+        "enemy.state": {
+          "to": "IDLE"
+        },
+        "enemy.yielded": {
+          "to": false
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "bound_weapon",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 300,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 150,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "world.bound_weapon",
+        "world.bound_weapon.attack_rating",
+        "world.bound_weapon.id",
+        "world.bound_weapon.was"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "world.bound_weapon",
+        "world.bound_weapon.attack_rating",
+        "world.bound_weapon.id",
+        "world.bound_weapon.was"
+      ],
+      "signature": "gold|player.pos.json|world.bound_weapon|world.bound_weapon.attack_rating|world.bound_weapon.id|world.bound_weapon.was",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.bound_weapon": {
+          "from": null
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        },
+        "world.bound_weapon.attack_rating": {
+          "to": 5
+        },
+        "world.bound_weapon.id": {
+          "to": "bound_sap_blade"
+        },
+        "world.bound_weapon.was": {
+          "to": "ssw_garrison_sword"
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.bound_weapon": {
+          "from": null
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1975412
+        },
+        "world.bound_weapon.attack_rating": {
+          "to": 695
+        },
+        "world.bound_weapon.id": {
+          "to": "bound_sap_blade"
+        },
+        "world.bound_weapon.was": {
+          "to": "ssw_garrison_sword"
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "world.bound_weapon.attack_rating"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "telekinesis",
+      "school": "sorcery",
+      "mag_min": 1,
+      "mag_max": 25,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 25,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "world.reach_m"
+      ],
+      "signature": "gold|player.pos.json|world.reach_m",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.reach_m": {
+          "from": 1.6,
+          "to": 38.6
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999218
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "world.reach_m"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "restore_health",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 400,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 100,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.hp",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.hp",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "gold|player.hp|player.pos.json|status.json",
+      "detail_lo": {
+        "player.hp": {
+          "from": 300,
+          "to": 302
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":302,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        }
+      },
+      "detail_hi": {
+        "player.hp": {
+          "from": 300,
+          "to": 454
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":454,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1981141
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "player.hp",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "cure_disease",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 5,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 5,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json"
+      ],
+      "signature": "gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "cure_poison",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 5,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 5,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json"
+      ],
+      "signature": "gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "magnitude_differing_paths": [],
+      "magnitude_coupling": "MAGNITUDE_IGNORED",
+      "moved_anything": true
+    },
+    {
+      "effect": "cure_paralysis",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 1,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": null,
+      "signature": "gold|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{\"paralysis\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "magnitude_coupling": "N/A_BINARY",
+      "moved_anything": true
+    },
+    {
+      "effect": "restore_attribute",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 60,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 60,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json"
+      ],
+      "signature": "gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1996708
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "fortify_attribute",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 40,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 40,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.attributes.faith",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.attributes.faith",
+        "player.pos.json"
+      ],
+      "signature": "gold|player.attributes.faith|player.pos.json",
+      "detail_lo": {
+        "player.attributes.faith": {
+          "from": 10,
+          "to": 12
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999780
+        }
+      },
+      "detail_hi": {
+        "player.attributes.faith": {
+          "from": 10,
+          "to": 72
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1995527
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "player.attributes.faith"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "fortify_skill",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 50,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "stealth.V",
+        "stealth.V_raw"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "stealth.V",
+        "stealth.V_raw"
+      ],
+      "signature": "gold|player.pos.json|stealth.V|stealth.V_raw",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.V": {
+          "from": 0.418,
+          "to": 0.4114
+        },
+        "stealth.V_raw": {
+          "from": 0.418,
+          "to": 0.4114
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999780
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.V": {
+          "from": 0.418,
+          "to": 0.22
+        },
+        "stealth.V_raw": {
+          "from": 0.418,
+          "to": 0.22
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1994586
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "stealth.V",
+        "stealth.V_raw"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "resist_element",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 28,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 28,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "signature": "gold|player.pos.json|probe.scripted_hit_applied|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":0.9537,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        },
+        "probe.scripted_hit_applied": {
+          "from": 100,
+          "to": 95.368
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":0.15,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999136
+        },
+        "probe.scripted_hit_applied": {
+          "from": 100,
+          "to": 15
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "resist_disease",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 28,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 28,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "signature": "gold|player.pos.json|probe.scripted_hit_applied|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":0.9537,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        },
+        "probe.scripted_hit_applied": {
+          "from": 100,
+          "to": 95.368
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":0.15,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999367
+        },
+        "probe.scripted_hit_applied": {
+          "from": 100,
+          "to": 15
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "sap_ward",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 1,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "moved_paths_hi": null,
+      "signature": "gold|player.pos.json|probe.scripted_hit_applied|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":2,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        },
+        "probe.scripted_hit_applied": {
+          "from": 100,
+          "to": 0
+        }
+      },
+      "magnitude_coupling": "N/A_BINARY",
+      "moved_anything": true
+    },
+    {
+      "effect": "speak_to_the_dead",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 72,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 72,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "quest.topics.json",
+        "quest.topics.len"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "quest.topics.json",
+        "quest.topics.len"
+      ],
+      "signature": "gold|player.pos.json|quest.flags.json|quest.flags.len|quest.topics.json|quest.topics.len",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"spoke_to_dead:e0\"]"
+        },
+        "quest.topics.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.topics.json": {
+          "from": "[]",
+          "to": "[\"the_drowned_road_rumour\"]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"spoke_to_dead:e0\"]"
+        },
+        "quest.topics.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.topics.json": {
+          "from": "[]",
+          "to": "[\"the_drowned_road_rumour\"]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1983757
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "hist_sight",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 4,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 4,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "quest.journal"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "quest.journal"
+      ],
+      "signature": "gold|player.pos.json|quest.flags.json|quest.flags.len|quest.journal",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"hist_sight:Q-ARCH-01\"]"
+        },
+        "quest.journal": {
+          "from": 0,
+          "to": 1
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999780
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"hist_sight:Q-ARCH-01\"]"
+        },
+        "quest.journal": {
+          "from": 0,
+          "to": 1
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999663
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "mend_item",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 100,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 100,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "world.items.lacquer_shield",
+        "world.items.marsh_shortsword",
+        "world.items.ward_collar_picks"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "world.items.lacquer_shield",
+        "world.items.marsh_shortsword",
+        "world.items.ward_collar_picks"
+      ],
+      "signature": "gold|player.pos.json|world.items.lacquer_shield|world.items.marsh_shortsword|world.items.ward_collar_picks",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.items.lacquer_shield": {
+          "from": 78,
+          "to": 80
+        },
+        "world.items.marsh_shortsword": {
+          "from": 44,
+          "to": 46
+        },
+        "world.items.ward_collar_picks": {
+          "from": 61,
+          "to": 63
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.items.lacquer_shield": {
+          "from": 78,
+          "to": 100
+        },
+        "world.items.marsh_shortsword": {
+          "from": 44,
+          "to": 100
+        },
+        "world.items.ward_collar_picks": {
+          "from": 61,
+          "to": 100
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1988474
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "world.items.lacquer_shield",
+        "world.items.marsh_shortsword",
+        "world.items.ward_collar_picks"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "calm_beast",
+      "school": "root_speech",
+      "mag_min": 1,
+      "mag_max": 90,
+      "range": "target",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 90,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.state",
+        "enemy.yielded",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.state",
+        "enemy.yielded",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "status.json"
+      ],
+      "signature": "enemy.state|enemy.yielded|gold|player.in_combat|player.pos.json|quest.flags.json|quest.flags.len|status.json",
+      "detail_lo": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "YIELDED"
+        },
+        "enemy.yielded": {
+          "from": false,
+          "to": true
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"fight_ended:calm_beast\"]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":true,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999746
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "YIELDED"
+        },
+        "enemy.yielded": {
+          "from": false,
+          "to": true
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"fight_ended:calm_beast\"]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":true,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1971503
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "open_lock",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 100,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 100,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "world.locks.locked.json",
+        "world.locks.locked.len",
+        "world.locks.unlocked.json",
+        "world.locks.unlocked.len"
+      ],
+      "signature": "gold|player.pos.json|quest.flags.json|quest.flags.len|world.locks.locked.json|world.locks.locked.len|world.locks.unlocked.json|world.locks.unlocked.len",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 5
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"lock:warded_ledger_door:open\",\"lock:ledger_strongbox:open\",\"lock:cistern_grate:open\",\"lock:hall_side_door:open\",\"lock:drowned_road_sluice:open\"]"
+        },
+        "world.locks.locked.len": {
+          "from": 5,
+          "to": 0
+        },
+        "world.locks.locked.json": {
+          "from": "[\"cistern_grate\",\"drowned_road_sluice\",\"hall_side_door\",\"ledger_strongbox\",\"warded_ledger_door\"]",
+          "to": "[]"
+        },
+        "world.locks.unlocked.len": {
+          "from": 1,
+          "to": 6
+        },
+        "world.locks.unlocked.json": {
+          "from": "[\"customs_loft_door\"]",
+          "to": "[\"cistern_grate\",\"customs_loft_door\",\"drowned_road_sluice\",\"hall_side_door\",\"ledger_strongbox\",\"warded_ledger_door\"]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1994388
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "quest.flags.json",
+        "quest.flags.len",
+        "world.locks.locked.json",
+        "world.locks.locked.len",
+        "world.locks.unlocked.json",
+        "world.locks.unlocked.len"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "lock_lock",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 100,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 100,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "world.locks.locked.json",
+        "world.locks.locked.len",
+        "world.locks.unlocked.json",
+        "world.locks.unlocked.len"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "world.locks.locked.json",
+        "world.locks.locked.len",
+        "world.locks.unlocked.json",
+        "world.locks.unlocked.len"
+      ],
+      "signature": "gold|player.pos.json|quest.flags.json|quest.flags.len|world.locks.locked.json|world.locks.locked.len|world.locks.unlocked.json|world.locks.unlocked.len",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"lock:customs_loft_door:sealed\"]"
+        },
+        "world.locks.locked.len": {
+          "from": 5,
+          "to": 6
+        },
+        "world.locks.locked.json": {
+          "from": "[\"cistern_grate\",\"drowned_road_sluice\",\"hall_side_door\",\"ledger_strongbox\",\"warded_ledger_door\"]",
+          "to": "[\"cistern_grate\",\"customs_loft_door\",\"drowned_road_sluice\",\"hall_side_door\",\"ledger_strongbox\",\"warded_ledger_door\"]"
+        },
+        "world.locks.unlocked.len": {
+          "from": 1,
+          "to": 0
+        },
+        "world.locks.unlocked.json": {
+          "from": "[\"customs_loft_door\"]",
+          "to": "[]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"lock:customs_loft_door:sealed\"]"
+        },
+        "world.locks.locked.len": {
+          "from": 5,
+          "to": 6
+        },
+        "world.locks.locked.json": {
+          "from": "[\"cistern_grate\",\"drowned_road_sluice\",\"hall_side_door\",\"ledger_strongbox\",\"warded_ledger_door\"]",
+          "to": "[\"cistern_grate\",\"customs_loft_door\",\"drowned_road_sluice\",\"hall_side_door\",\"ledger_strongbox\",\"warded_ledger_door\"]"
+        },
+        "world.locks.unlocked.len": {
+          "from": 1,
+          "to": 0
+        },
+        "world.locks.unlocked.json": {
+          "from": "[\"customs_loft_door\"]",
+          "to": "[]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1995704
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "ward_trap",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 5,
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 5,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "world.traps.armed.json",
+        "world.traps.armed.len",
+        "world.traps.disarmed.json",
+        "world.traps.disarmed.len"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "world.traps.armed.json",
+        "world.traps.armed.len",
+        "world.traps.disarmed.json",
+        "world.traps.disarmed.len"
+      ],
+      "signature": "gold|player.pos.json|quest.flags.json|quest.flags.len|world.traps.armed.json|world.traps.armed.len|world.traps.disarmed.json|world.traps.disarmed.len",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 3
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"trap:ledger_threshold_ward:disarmed\",\"trap:strongbox_needle:disarmed\",\"trap:sluice_pressure_plate:disarmed\"]"
+        },
+        "world.traps.armed.len": {
+          "from": 3,
+          "to": 0
+        },
+        "world.traps.armed.json": {
+          "from": "[\"ledger_threshold_ward\",\"sluice_pressure_plate\",\"strongbox_needle\"]",
+          "to": "[]"
+        },
+        "world.traps.disarmed.len": {
+          "from": 0,
+          "to": 3
+        },
+        "world.traps.disarmed.json": {
+          "from": "[]",
+          "to": "[\"ledger_threshold_ward\",\"sluice_pressure_plate\",\"strongbox_needle\"]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 3
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"trap:ledger_threshold_ward:disarmed\",\"trap:strongbox_needle:disarmed\",\"trap:sluice_pressure_plate:disarmed\"]"
+        },
+        "world.traps.armed.len": {
+          "from": 3,
+          "to": 0
+        },
+        "world.traps.armed.json": {
+          "from": "[\"ledger_threshold_ward\",\"sluice_pressure_plate\",\"strongbox_needle\"]",
+          "to": "[]"
+        },
+        "world.traps.disarmed.len": {
+          "from": 0,
+          "to": 3
+        },
+        "world.traps.disarmed.json": {
+          "from": "[]",
+          "to": "[\"ledger_threshold_ward\",\"sluice_pressure_plate\",\"strongbox_needle\"]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "buoyancy",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 1,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "world.water.buoyant"
+      ],
+      "moved_paths_hi": null,
+      "signature": "gold|player.pos.json|world.water.buoyant",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.water.buoyant": {
+          "from": false,
+          "to": true
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        }
+      },
+      "magnitude_coupling": "N/A_BINARY",
+      "moved_anything": true
+    },
+    {
+      "effect": "breathe_water",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 1,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "world.water.breathes"
+      ],
+      "moved_paths_hi": null,
+      "signature": "gold|player.pos.json|world.water.breathes",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.water.breathes": {
+          "from": false,
+          "to": true
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "magnitude_coupling": "N/A_BINARY",
+      "moved_anything": true
+    },
+    {
+      "effect": "feather",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 200,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 200,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.equip_load_pct",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.equip_load_pct",
+        "player.pos.json",
+        "player.roll_class",
+        "status.json"
+      ],
+      "signature": "gold|player.equip_load_pct|player.pos.json|player.roll_class|status.json",
+      "detail_lo": {
+        "player.equip_load_pct": {
+          "from": 50,
+          "to": 48.456111
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":48.46,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        }
+      },
+      "detail_hi": {
+        "player.equip_load_pct": {
+          "from": 50,
+          "to": 0
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "player.roll_class": {
+          "from": "MEDIUM",
+          "to": "LIGHT"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":0,\"roll_class\":\"LIGHT\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1958791
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "player.equip_load_pct",
+        "player.roll_class",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "burden",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 200,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 100,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "gold|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":57.72,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":821.94,\"roll_class\":\"OVERLOADED\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1986496
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "slowfall",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 1,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "moved_paths": [
+        "fall.fall_damage_enabled",
+        "fall.terminal_mps",
+        "gold",
+        "player.pos.json",
+        "world.fall.damage_enabled",
+        "world.fall.terminal_mps"
+      ],
+      "moved_paths_hi": null,
+      "signature": "fall.fall_damage_enabled|fall.terminal_mps|gold|player.pos.json|world.fall.damage_enabled|world.fall.terminal_mps",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.fall.damage_enabled": {
+          "from": true,
+          "to": false
+        },
+        "world.fall.terminal_mps": {
+          "from": 18,
+          "to": 3.5
+        },
+        "fall.fall_damage_enabled": {
+          "from": true,
+          "to": false
+        },
+        "fall.terminal_mps": {
+          "from": 18,
+          "to": 3.5
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        }
+      },
+      "magnitude_coupling": "N/A_BINARY",
+      "moved_anything": true
+    },
+    {
+      "effect": "levitate",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 1,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "moved_paths": [
+        "fall.airborne",
+        "fall.levitating",
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": null,
+      "signature": "fall.airborne|fall.levitating|gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "fall.airborne": {
+          "from": false,
+          "to": true
+        },
+        "fall.levitating": {
+          "from": false,
+          "to": true
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999500
+        }
+      },
+      "magnitude_coupling": "N/A_BINARY",
+      "moved_anything": true
+    },
+    {
+      "effect": "leap",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 20,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 20,
+      "binary_by_data": false,
+      "moved_paths": [
+        "fall.jump_apex_mult",
+        "gold",
+        "player.pos.json",
+        "world.jump_apex_mult"
+      ],
+      "moved_paths_hi": [
+        "fall.jump_apex_mult",
+        "gold",
+        "player.pos.json",
+        "world.jump_apex_mult"
+      ],
+      "signature": "fall.jump_apex_mult|gold|player.pos.json|world.jump_apex_mult",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.jump_apex_mult": {
+          "from": 1,
+          "to": 1.13
+        },
+        "fall.jump_apex_mult": {
+          "from": 1,
+          "to": 1.1287
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.jump_apex_mult": {
+          "from": 1,
+          "to": 3.57
+        },
+        "fall.jump_apex_mult": {
+          "from": 1,
+          "to": 3.5731
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999500
+        }
+      },
+      "magnitude_differing_paths": [
+        "fall.jump_apex_mult",
+        "gold",
+        "world.jump_apex_mult"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "shield",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 120,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 120,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "signature": "gold|player.pos.json|probe.scripted_hit_applied|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":0.9846,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        },
+        "probe.scripted_hit_applied": {
+          "from": 100,
+          "to": 98.456
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":0.15,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1981812
+        },
+        "probe.scripted_hit_applied": {
+          "from": 100,
+          "to": 15
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "probe.scripted_hit_applied",
+        "status.json"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "wall",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 150,
+      "range": "target",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 75,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "world.walls.ids.json",
+        "world.walls.ids.len",
+        "world.walls.walls"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "world.walls.ids.json",
+        "world.walls.ids.len",
+        "world.walls.walls"
+      ],
+      "signature": "gold|player.pos.json|world.walls.ids.json|world.walls.ids.len|world.walls.walls",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.walls.ids.len": {
+          "from": 0,
+          "to": 1
+        },
+        "world.walls.ids.json": {
+          "from": "[]",
+          "to": "[\"spell_wall_32\"]"
+        },
+        "world.walls.walls": {
+          "from": 0,
+          "to": 1
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999780
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.walls.ids.len": {
+          "from": 0,
+          "to": 1
+        },
+        "world.walls.ids.json": {
+          "from": "[]",
+          "to": "[\"spell_wall_32\"]"
+        },
+        "world.walls.walls": {
+          "from": 0,
+          "to": 1
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1982797
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "mark",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 1,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": null,
+      "signature": "gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "magnitude_coupling": "N/A_BINARY",
+      "moved_anything": true
+    },
+    {
+      "effect": "recall",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 45,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 45,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json"
+      ],
+      "signature": "gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1983757
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "intervention",
+      "school": "warding",
+      "mag_min": 1,
+      "mag_max": 45,
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 45,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json"
+      ],
+      "signature": "gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[-40,0,20.103]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999844
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[-40,0,20.103]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1993983
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "invisibility",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 120,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 60,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "stealth.V",
+        "stealth.V_raw",
+        "stealth.magic.invisible"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "stealth.V",
+        "stealth.V_raw",
+        "stealth.magic.invisible"
+      ],
+      "signature": "gold|player.pos.json|stealth.V|stealth.V_raw|stealth.magic.invisible",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.V": {
+          "from": 0.418,
+          "to": 0.05
+        },
+        "stealth.V_raw": {
+          "from": 0.418,
+          "to": 0.0084
+        },
+        "stealth.magic.invisible": {
+          "from": false,
+          "to": true
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999746
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.V": {
+          "from": 0.418,
+          "to": 0.05
+        },
+        "stealth.V_raw": {
+          "from": 0.418,
+          "to": 0.0084
+        },
+        "stealth.magic.invisible": {
+          "from": false,
+          "to": true
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1985002
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "chameleon",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 27,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 27,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "stealth.V",
+        "stealth.V_raw",
+        "stealth.magic.chameleon_pct"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "stealth.V",
+        "stealth.V_raw",
+        "stealth.magic.chameleon_pct"
+      ],
+      "signature": "gold|player.pos.json|stealth.V|stealth.V_raw|stealth.magic.chameleon_pct",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.V": {
+          "from": 0.418,
+          "to": 0.3986
+        },
+        "stealth.V_raw": {
+          "from": 0.418,
+          "to": 0.3986
+        },
+        "stealth.magic.chameleon_pct": {
+          "from": 0,
+          "to": 4.632
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999780
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.V": {
+          "from": 0.418,
+          "to": 0.0836
+        },
+        "stealth.V_raw": {
+          "from": 0.418,
+          "to": 0.0836
+        },
+        "stealth.magic.chameleon_pct": {
+          "from": 0,
+          "to": 80
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1997981
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "stealth.V",
+        "stealth.V_raw",
+        "stealth.magic.chameleon_pct"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "muffle",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 30,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 30,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "stealth.magic.muffle_pct"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "stealth.magic.muffle_pct"
+      ],
+      "signature": "gold|player.pos.json|stealth.magic.muffle_pct",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.magic.muffle_pct": {
+          "from": 0,
+          "to": 4.632
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.magic.muffle_pct": {
+          "from": 0,
+          "to": 90
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999218
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "stealth.magic.muffle_pct"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "silence",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 60,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 60,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "gold|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":true,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999746
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":true,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1986788
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "night_eye",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 25,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 25,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "stealth.magic.night_eye_bonus"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "stealth.magic.night_eye_bonus"
+      ],
+      "signature": "gold|player.pos.json|stealth.magic.night_eye_bonus",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.magic.night_eye_bonus": {
+          "from": 0,
+          "to": 0.0618
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999829
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.magic.night_eye_bonus": {
+          "from": 0,
+          "to": 1.5439
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999500
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "stealth.magic.night_eye_bonus"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "detect_life",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 60,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 60,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json"
+      ],
+      "signature": "gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1996052
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "detect_key",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 60,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 60,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "world.markers.json",
+        "world.markers.len"
+      ],
+      "signature": "gold|player.pos.json|world.markers.json|world.markers.len",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999807
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "world.markers.len": {
+          "from": 0,
+          "to": 3
+        },
+        "world.markers.json": {
+          "from": "[]",
+          "to": "[{\"kind\":\"key_glow\",\"at\":[4.5,0,-2],\"key\":\"ledger_room_key\",\"hud\":false},{\"kind\":\"key_glow\",\"at\":[-12,0,-11],\"key\":\"sluice_key\",\"hud\":false},{\"kind\":\"key_glow\",\"at\":[11,0,2],\"key\":\"hall_side_key\",\"hud\":false}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1996052
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "world.markers.json",
+        "world.markers.len"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "charm",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 34,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 34,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.state",
+        "enemy.yielded",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "quest.dispositions.e0",
+        "quest.flags.json",
+        "quest.flags.len",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.state",
+        "enemy.yielded",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "quest.dispositions.e0",
+        "quest.flags.json",
+        "quest.flags.len",
+        "status.json"
+      ],
+      "signature": "enemy.state|enemy.yielded|gold|player.in_combat|player.pos.json|quest.dispositions.e0|quest.flags.json|quest.flags.len|status.json",
+      "detail_lo": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "YIELDED"
+        },
+        "enemy.yielded": {
+          "from": false,
+          "to": true
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"fight_ended:charm\"]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":true,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999780
+        },
+        "quest.dispositions.e0": {
+          "to": 25
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "YIELDED"
+        },
+        "enemy.yielded": {
+          "from": false,
+          "to": true
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"fight_ended:charm\"]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":true,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1996708
+        },
+        "quest.dispositions.e0": {
+          "to": 100
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold",
+        "quest.dispositions.e0"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "paralyse",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 20,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 20,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "status.json"
+      ],
+      "signature": "gold|player.pos.json|status.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"paralysis\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999613
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{\"paralysis\":0},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1995880
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "demoralise",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 34,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 34,
+      "binary_by_data": false,
+      "moved_paths": [
+        "enemy.state",
+        "enemy.yielded",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "status.json"
+      ],
+      "moved_paths_hi": [
+        "enemy.state",
+        "enemy.yielded",
+        "gold",
+        "player.in_combat",
+        "player.pos.json",
+        "quest.flags.json",
+        "quest.flags.len",
+        "status.json"
+      ],
+      "signature": "enemy.state|enemy.yielded|gold|player.in_combat|player.pos.json|quest.flags.json|quest.flags.len|status.json",
+      "detail_lo": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "YIELDED"
+        },
+        "enemy.yielded": {
+          "from": false,
+          "to": true
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"fight_ended:demoralise\"]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":true,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999780
+        }
+      },
+      "detail_hi": {
+        "player.in_combat": {
+          "from": true,
+          "to": false
+        },
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "enemy.state": {
+          "from": "REPOSITION",
+          "to": "YIELDED"
+        },
+        "enemy.yielded": {
+          "from": false,
+          "to": true
+        },
+        "quest.flags.len": {
+          "from": 0,
+          "to": 1
+        },
+        "quest.flags.json": {
+          "from": "[]",
+          "to": "[\"fight_ended:demoralise\"]"
+        },
+        "status.json": {
+          "from": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]",
+          "to": "[{\"id\":\"P\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":0,\"ward_charges\":0,\"yielded\":false,\"silenced\":false,\"frenzy_target\":null,\"hp\":300,\"hp_max\":620,\"equip_load_pct\":50,\"roll_class\":\"MEDIUM\"},{\"id\":\"e0\",\"buildup\":{},\"procs\":{},\"paralysed\":false,\"mitigation\":1,\"armour_rating\":30,\"ward_charges\":0,\"yielded\":true,\"silenced\":false,\"frenzy_target\":null,\"hp\":412,\"hp_max\":412,\"equip_load_pct\":50,\"roll_class\":\"trash\"}]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1997450
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "frenzy",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 34,
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 34,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json"
+      ],
+      "signature": "gold|player.pos.json",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999746
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1995880
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    },
+    {
+      "effect": "false_face",
+      "school": "veiling",
+      "mag_min": 1,
+      "mag_max": 300,
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 75,
+      "binary_by_data": false,
+      "moved_paths": [
+        "gold",
+        "player.pos.json",
+        "stealth.magic.disguised",
+        "stealth.race"
+      ],
+      "moved_paths_hi": [
+        "gold",
+        "player.pos.json",
+        "stealth.magic.disguised",
+        "stealth.race"
+      ],
+      "signature": "gold|player.pos.json|stealth.magic.disguised|stealth.race",
+      "detail_lo": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.magic.disguised": {
+          "from": false,
+          "to": true
+        },
+        "stealth.race": {
+          "from": "imperial",
+          "to": "saxhleel"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1999746
+        }
+      },
+      "detail_hi": {
+        "player.pos.json": {
+          "from": "[0,0,0]",
+          "to": "[0,0,0.154]"
+        },
+        "stealth.magic.disguised": {
+          "from": false,
+          "to": true
+        },
+        "stealth.race": {
+          "from": "imperial",
+          "to": "saxhleel"
+        },
+        "gold": {
+          "from": 2000000,
+          "to": 1975032
+        }
+      },
+      "magnitude_differing_paths": [
+        "gold"
+      ],
+      "magnitude_coupling": "COUPLED",
+      "moved_anything": true
+    }
+  ],
+  "notes": []
+}

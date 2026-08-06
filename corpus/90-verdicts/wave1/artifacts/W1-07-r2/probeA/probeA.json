@@ -1,0 +1,1505 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r2a.mjs",
+  "nodes": [
+    {
+      "i": 0,
+      "node": "hold.hatch-name",
+      "place": "barge-hold",
+      "speaker": "jeeh-ei",
+      "speaker_entity": "jeeh-ei",
+      "speaker_dist_m": 4.442,
+      "npcs_in_sim": 1,
+      "npc_ids": [
+        "jeeh-ei"
+      ],
+      "entities": 3,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Jeeh-Ei",
+          "The hold, two days out of Gideon",
+          "They will take the other one off you at the writ house. Tell me the one they cannot.",
+          "Silence-Under-Salt",
+          "Waits-For-The-Second-Tide",
+          "Counts-The-Drowned",
+          "Small-Root-Deep-Water",
+          "Hears-The-Barge-Coming"
+        ],
+        "text_chars": 234,
+        "opaque_area_frac": 0.3363,
+        "panel_height_frac": 0.4204,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 13,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "f1c3a7396189ddc854f47d2b75d731e2ad484b04e07a13afef39b2594bb78e4b",
+        "canvas_sha": "3a9d5d01fe5be597b74208b91603753a58cf5ba7d9222e0660bc3552b3b91267",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/00-boot.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/00-boot.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 10,
+          "panel_bbox": [
+            0,
+            578,
+            1920,
+            452
+          ],
+          "panel_area_frac_measured": 0.4185,
+          "panel_height_frac_measured": 0.4185,
+          "ink_frac_in_panel": 0.0157,
+          "ink_px": 13582,
+          "dark_frac_whole_frame": 0.6494,
+          "world_unique_colours_outside_panel": 468,
+          "most_common_colour_frac": 0.244
+        }
+      }
+    },
+    {
+      "i": 1,
+      "node": "hold.out",
+      "place": "barge-hold",
+      "speaker": "jeeh-ei",
+      "speaker_entity": "jeeh-ei",
+      "speaker_dist_m": 4.442,
+      "npcs_in_sim": 1,
+      "npc_ids": [
+        "jeeh-ei"
+      ],
+      "entities": 3,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Jeeh-Ei",
+          "The hold, two days out of Gideon",
+          "Go up. The light is bad but it is light. When you are done at the desk, come back down here if I am still here.",
+          "the player walks out of the hold, down the gangplank and into the Writ House. RI-JRN01 O6."
+        ],
+        "text_chars": 243,
+        "opaque_area_frac": 0.1363,
+        "panel_height_frac": 0.1704,
+        "takes_input": false,
+        "selected_index": 0,
+        "option_count": 0,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "3c1a62dcd21d2b0a3c9850e30809b630cb13a28d210277b74d64a78e1512fbe8",
+        "canvas_sha": "32508698c2ec1adf4e91f5a59c5a29a9bc7551ac75cbd77063e3d395b48aef60",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/01-hold.out.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/01-hold.out.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            848,
+            1920,
+            182
+          ],
+          "panel_area_frac_measured": 0.1685,
+          "panel_height_frac_measured": 0.1685,
+          "ink_frac_in_panel": 0.034,
+          "ink_px": 11872,
+          "dark_frac_whole_frame": 0.5228,
+          "world_unique_colours_outside_panel": 601,
+          "most_common_colour_frac": 0.1174
+        }
+      }
+    },
+    {
+      "i": 2,
+      "node": "writ.race-observed",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Altmer. — No, of course not, you are not tall enough and you are not smug enough. Dunmer. I will write Dunmer.",
+          "Correct her."
+        ],
+        "text_chars": 161,
+        "opaque_area_frac": 0.1519,
+        "panel_height_frac": 0.1898,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 1,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "d75e9cf3c53b16b5b9627b2c4dfe4e6479a9366a1d52f8984ca755bc0868ea0d",
+        "canvas_sha": "3477ba748bed1011611e350ace0ef79ca9a22fd539a5f206b2e2f024dbfb7ae8",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/02-writ.race-observed.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/02-writ.race-observed.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0732,
+          "ink_px": 74190,
+          "dark_frac_whole_frame": 0.6491,
+          "world_unique_colours_outside_panel": 390,
+          "most_common_colour_frac": 0.1358
+        }
+      }
+    },
+    {
+      "i": 3,
+      "node": "writ.sex",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat",
+          "you differently for it and I have watched for eleven years.",
+          "Male.",
+          "Female.",
+          "Leave it empty."
+        ],
+        "text_chars": 250,
+        "opaque_area_frac": 0.2474,
+        "panel_height_frac": 0.3093,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 3,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "23d3c80b7d0a88cebe77d3ce53c1b5ef551bb0aabd1621f3ed57a91f74dc797d",
+        "canvas_sha": "cea7b46612a193020e924e33e98e3c60a1a950e367963f2a0f23462f69fa94f2",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/03-writ.sex.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/03-writ.sex.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0245,
+          "ink_px": 24823,
+          "dark_frac_whole_frame": 0.6991,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1263
+        }
+      }
+    },
+    {
+      "i": 4,
+      "node": "writ.upbringing",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Where were you a child? Answer in the name of a water, not a country.",
+          "Black water, no bottom.",
+          "The harbour at Lilmoth.",
+          "A river you have not heard of.",
+          "The ditch under the wall."
+        ],
+        "text_chars": 212,
+        "opaque_area_frac": 0.2496,
+        "panel_height_frac": 0.312,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "0dfeaa297b3db76c29f5549fbde20b364fffb52bb39baad8b77275899ff25a1a",
+        "canvas_sha": "8f6350d75a214ab31a85076944ccc1f2dec2473f632709bb4528e925ca7ce905",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/04-writ.upbringing.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/04-writ.upbringing.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0209,
+          "ink_px": 21214,
+          "dark_frac_whole_frame": 0.7016,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1258
+        }
+      }
+    },
+    {
+      "i": 5,
+      "node": "writ.given-name",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "And the name they will use.",
+          "Neras Athrenil",
+          "Ilvani Sarethi",
+          "Drovas Reln",
+          "Menyi Dalen",
+          "Ravyn Ules"
+        ],
+        "text_chars": 130,
+        "opaque_area_frac": 0.3363,
+        "panel_height_frac": 0.4204,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 8,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "0ba5c257a7dd9eb1e1af0b3ab99e900870b415e118f32eef9b4100f75c4e635e",
+        "canvas_sha": "6341c2807ef2d148d7953c4666a909d9a434d11c8fc88121a8af2b44e323f22a",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/05-writ.given-name.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/05-writ.given-name.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0131,
+          "ink_px": 13312,
+          "dark_frac_whole_frame": 0.7289,
+          "world_unique_colours_outside_panel": 392,
+          "most_common_colour_frac": 0.1345
+        }
+      }
+    },
+    {
+      "i": 6,
+      "node": "writ.class-routes",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Profession. There are three ways to do this and I do not care which, and neither does the box.",
+          "Name a trade the Office already has a word for.",
+          "Tell her what you actually do.",
+          "Ask me something instead. I do not know what to call it."
+        ],
+        "text_chars": 268,
+        "opaque_area_frac": 0.217,
+        "panel_height_frac": 0.2713,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 3,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "f39bdc5d693b8a5d0e141617a8a3007d6a84c5119681cb30c23dfb374438dbe1",
+        "canvas_sha": "34d5e7c469ec47d0f2580e054a626f73ef63124c39fecb9b2265e2c689bc35f2",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/06-writ.class-routes.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/06-writ.class-routes.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0345,
+          "ink_px": 34925,
+          "dark_frac_whole_frame": 0.6869,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1311
+        }
+      }
+    },
+    {
+      "i": 7,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Pay, and count what they take.",
+          "Go around, through the standing water, at night.",
+          "Wait for a larger party and walk in the middle of it.",
+          "Take the house."
+        ],
+        "text_chars": 377,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "6eaeb7a743b1f92f6d288d7b0a6149e09f7e6e73d80256f4647aec91904984d3",
+        "canvas_sha": "31f8484a7722db0676fdc573e78e59ca08b234adeb5a38652fd2311b0959177b",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/07-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/07-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0297,
+          "ink_px": 30113,
+          "dark_frac_whole_frame": 0.7037,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1244
+        }
+      }
+    },
+    {
+      "i": 8,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Sit down beside them and stay until one of you speaks.",
+          "Go down into the well and cut out whatever is fouling it.",
+          "Cut a channel from the live water two ridges over.",
+          "Take what can be carried from the keeper's things and walk on."
+        ],
+        "text_chars": 454,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "6574efd7062eb87d64e2c72646b4e78694763db9347086492919d94f261649a2",
+        "canvas_sha": "3da7e5d734e55bc763d153bdbbc8ac85edf8192d2459d3a0062d214cc6237320",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/08-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/08-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0334,
+          "ink_px": 33835,
+          "dark_frac_whole_frame": 0.7015,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.123
+        }
+      }
+    },
+    {
+      "i": 9,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Cut the collar. It is one cut.",
+          "Carry what will sell and go. He was in the hold when you found him.",
+          "Wait for the crew and put the question to them in front of witnesses.",
+          "Break the hold's ribs so the tide takes the salt as well as the barge."
+        ],
+        "text_chars": 467,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "adf1aa78f71ec453f5d7f12392a5bfac1c92c0b90b6b2ae7e3cc643c4b279994",
+        "canvas_sha": "f50d260940bf869ddb1d107d3514766d773cb54e6d5510398a83e8111e166d87",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/09-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/09-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0333,
+          "ink_px": 33808,
+          "dark_frac_whole_frame": 0.7014,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.123
+        }
+      }
+    },
+    {
+      "i": 10,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Write yourself onto it.",
+          "Wake him and ask what it would take.",
+          "Go over the wall where the buttress is broken.",
+          "Sit where he will see you when he wakes, and be the first thing he deals with."
+        ],
+        "text_chars": 414,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "11e0233a44c43847f1313353eadd8c0f19220e66a48d23091011f5dad7766ed8",
+        "canvas_sha": "d7e38a5af1434bf84dbe05ce442952e1d473922f0051e981cdba13fc06a93182",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/10-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/10-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0314,
+          "ink_px": 31793,
+          "dark_frac_whole_frame": 0.7027,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1235
+        }
+      }
+    },
+    {
+      "i": 11,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Rope, torch, down.",
+          "Take a reading of the air and the stone first, and go tomorrow.",
+          "Tell a rootkeeper before anyone else hears of it.",
+          "Break the hole wider so a cart can be got down."
+        ],
+        "text_chars": 408,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "8063e091bbc559137dc6f9191990415c194a5d008ddec005f1e6bddb3ac7b41c",
+        "canvas_sha": "b122548949ff7a64898808f610b90754328a4cff5c21de6d3a0bdb6a2a11733f",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/11-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/11-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0308,
+          "ink_px": 31223,
+          "dark_frac_whole_frame": 0.703,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1238
+        }
+      }
+    },
+    {
+      "i": 12,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Walk. Carry her.",
+          "Cut a new well. You know how. It is not permitted.",
+          "Burn her, and let the Drowned Court argue about it.",
+          "Sit with her until it is finished either way."
+        ],
+        "text_chars": 393,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "d83c05f389f527ea0d4059473ab394ad3602b5f3bae1379f1027ca4b16461935",
+        "canvas_sha": "3a70051e8cf4225c1e13f9eafef47ece51680962af08ef4c15fab025fdebb376",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/12-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/12-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0301,
+          "ink_px": 30509,
+          "dark_frac_whole_frame": 0.7035,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1242
+        }
+      }
+    },
+    {
+      "i": 13,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Give a share and make it look like more than it is.",
+          "Meet the leader's eye and let them decide.",
+          "Swim the narrows below the crossing with the load on your back.",
+          "Put the first of them in the water."
+        ],
+        "text_chars": 422,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "3c69920ef79467acb38340309a0543de020371a19a75fa081c7dd17dade7509e",
+        "canvas_sha": "ff48684509dc4a492d41f62cf5f1d838c74ed60caae5a9dbaa68871accc50997",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/13-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/13-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0317,
+          "ink_px": 32122,
+          "dark_frac_whole_frame": 0.7025,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1232
+        }
+      }
+    },
+    {
+      "i": 14,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Carry it back.",
+          "Build it a bank here and hope.",
+          "Find who moved it.",
+          "Leave it. The marsh moved it and the marsh may have meant to."
+        ],
+        "text_chars": 354,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "53eed0046705ac6b418e6738d8c54f1c11b1021cbb8a06365c1ad827eceb7d9a",
+        "canvas_sha": "a4724d95cfe66c3909fee005a5afc57c770b0dcbb15779ae0be7783f3f208bc4",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/14-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/14-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0286,
+          "ink_px": 29034,
+          "dark_frac_whole_frame": 0.7044,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.125
+        }
+      }
+    },
+    {
+      "i": 15,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "Climb over them both, fast.",
+          "Take the child up and then go back down.",
+          "Brace the rope with your own body and shout for the bank.",
+          "Cut above yourself so the drop is shorter for everyone."
+        ],
+        "text_chars": 410,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "c817689b56e8cde474af938a0ac2863e9d4413b32771a78a0dcd2147ce6535ac",
+        "canvas_sha": "b7ab4ec6e0d9349ae609170c3c6569e7c415dbeb4f028d135062e60d4b3c5010",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/15-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/15-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0313,
+          "ink_px": 31711,
+          "dark_frac_whole_frame": 0.7028,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1234
+        }
+      }
+    },
+    {
+      "i": 16,
+      "node": "writ.class-questions",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you,",
+          "and it will be a better word than the one you would have picked.",
+          "The crew.",
+          "The box.",
+          "Neither. Stand on the bar and mark where both go.",
+          "Put a line on the box and let the crew pull themselves along it."
+        ],
+        "text_chars": 361,
+        "opaque_area_frac": 0.28,
+        "panel_height_frac": 0.35,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 4,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "9daeac232e6659e5d8c20636edffc1f9e18aa678228baec625b4a00c1b974558",
+        "canvas_sha": "89414ad18c8caeeb65e0b6cbc129f9f487af261a01f7f080c7fb22568c2df861",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/16-writ.class-questions.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/16-writ.class-questions.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0288,
+          "ink_px": 29206,
+          "dark_frac_whole_frame": 0.7042,
+          "world_unique_colours_outside_panel": 391,
+          "most_common_colour_frac": 0.1251
+        }
+      }
+    },
+    {
+      "i": 17,
+      "node": "writ.birthsign",
+      "place": "writ-house",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "speaker_entity": "warden-scribe-tuleeh-ma",
+      "speaker_dist_m": 4.319,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": true,
+        "rendered_text": [
+          "Tuleeh-Ma",
+          "The Writ House at Tidewrack",
+          "Which tide were you drawn on?",
+          "The Full Root",
+          "The Warm Stone",
+          "The Long Root",
+          "The Dry Well",
+          "The Spilled"
+        ],
+        "text_chars": 135,
+        "opaque_area_frac": 0.3015,
+        "panel_height_frac": 0.3769,
+        "takes_input": true,
+        "selected_index": 0,
+        "option_count": 9,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "975405c338c0a15e6c0cc646694efe80d69f47b0b1e19c96bcba891946a2ec3e",
+        "canvas_sha": "3864998c202785b0a49131a7c1ee1d6472c5b82be0e6a47c6aab1d8519112bd4",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/17-writ.birthsign.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/17-writ.birthsign.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1727,
+            587
+          ],
+          "panel_area_frac_measured": 0.4889,
+          "panel_height_frac_measured": 0.5435,
+          "ink_frac_in_panel": 0.0424,
+          "ink_px": 42987,
+          "dark_frac_whole_frame": 0.7025,
+          "world_unique_colours_outside_panel": 392,
+          "most_common_colour_frac": 0.1256
+        }
+      }
+    },
+    {
+      "i": 18,
+      "node": null,
+      "place": "writ-house",
+      "speaker_entity": null,
+      "speaker_dist_m": null,
+      "npcs_in_sim": 2,
+      "npc_ids": [
+        "clerk-avelia-doren",
+        "warden-scribe-tuleeh-ma"
+      ],
+      "entities": 2,
+      "self_reported": {
+        "drawn": false,
+        "rendered_text": [],
+        "text_chars": 0,
+        "opaque_area_frac": 0,
+        "panel_height_frac": 0,
+        "takes_input": false,
+        "selected_index": 0,
+        "option_count": 0,
+        "picked": [],
+        "typed": "",
+        "inputs_taken": 0
+      },
+      "shot": {
+        "page_sha": "712611d07bc3fd29bb41f28a7505f85bf72022392c45326dde1ea594c238ad46",
+        "canvas_sha": "f979a04f3609633eb33dcdf9935d6c9dc4851747e1a9737147d92a7eee931f02",
+        "page_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/18-stamped.png",
+        "canvas_png": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/18-stamped.png",
+        "pixels": {
+          "page_vs_canvas_same_size": true,
+          "page_vs_canvas_diff_px": 0,
+          "page_vs_canvas_diff_frac": 0,
+          "page_vs_canvas_max_channel_diff": 0,
+          "panel_bbox": [
+            0,
+            443,
+            1920,
+            330
+          ],
+          "panel_area_frac_measured": 0.3056,
+          "panel_height_frac_measured": 0.3056,
+          "ink_frac_in_panel": 0.0606,
+          "ink_px": 38380,
+          "dark_frac_whole_frame": 0.5124,
+          "world_unique_colours_outside_panel": 354,
+          "most_common_colour_frac": 0.1359
+        }
+      }
+    }
+  ],
+  "dom": {
+    "body_inner_text": "",
+    "body_child_tags": [
+      "CANVAS",
+      "SCRIPT"
+    ],
+    "element_count": 2,
+    "non_canvas": [
+      {
+        "tag": "SCRIPT",
+        "id": "",
+        "cls": "",
+        "rect": [
+          0,
+          0
+        ],
+        "text": ""
+      }
+    ],
+    "canvases": [
+      {
+        "w": 1920,
+        "h": 1080,
+        "inDom": true,
+        "rect": [
+          1920,
+          1080
+        ]
+      }
+    ]
+  },
+  "notes": [],
+  "character": {
+    "created": true,
+    "given_name": "Neras Athrenil",
+    "hatch_name": "Silence-Under-Salt",
+    "hatch_name_refused": false,
+    "sex": "unrecorded",
+    "race": "dunmer",
+    "upbringing": "interior",
+    "upbringing_given_as": "black water, no bottom",
+    "class_id": "custom",
+    "class_name": "Walks the country, untitled",
+    "class_family": "scout",
+    "class_family_fit": null,
+    "class_route": "questionnaire",
+    "birthsign": "nu-ixtu",
+    "birthsign_second": null,
+    "attributes": {
+      "strength": 12,
+      "endurance": 6,
+      "agility": 16,
+      "speed": 12,
+      "vigour": 10,
+      "willpower": 11,
+      "intellect": 12,
+      "hist-bond": 10,
+      "personality": 14,
+      "luck": 9
+    },
+    "skills": {
+      "blades": 20,
+      "axes-maces": 15,
+      "polearms": 5,
+      "greatweapons": 5,
+      "marksman": 15,
+      "claw-fang": 5,
+      "shieldcraft": 5,
+      "sorcery": 15,
+      "root-speech": 25,
+      "warding": 5,
+      "veiling": 10,
+      "alchemy": 5,
+      "athletics": 25,
+      "acrobatics": 5,
+      "survival": 25,
+      "sneak": 5,
+      "security": 5,
+      "mercantile": 5,
+      "speechcraft": 15
+    },
+    "signature": {
+      "race": "dunmer",
+      "class_family": "scout",
+      "birthsign_family": "withheld",
+      "upbringing_class": "interior",
+      "key": "dunmer|scout|withheld|interior"
+    },
+    "powers": [
+      {
+        "sign": "nu-ixtu",
+        "scale": 1,
+        "power": {
+          "summary": "Max Focus x1.60. You absorb 55% of the magnitude of any spell effect that lands on you, as Focus.",
+          "effects": [
+            {
+              "kind": "focus_max_multiplier",
+              "value": 1.6
+            },
+            {
+              "kind": "spell_absorption",
+              "value": 0.55
+            }
+          ]
+        }
+      }
+    ],
+    "drawbacks": [
+      {
+        "sign": "nu-ixtu",
+        "scale": 1,
+        "drawback": {
+          "kind": "mechanical",
+          "removes_system": "focus_regeneration",
+          "summary": "You have no Focus regeneration of any kind. Ever.",
+          "detail": "Not passive, not from resting, not from Fatigue, not from ENDURANCE. Focus is refilled only by absorption and by consumables. This is the Atronach, ported to our Focus economy and not softened: a Dry Well character who walks into a room with no casters in it has whatever Focus they walked in with.",
+          "assertion": "player.focus is monotonically non-increasing across all frames except on `absorb` and `item` events."
+        }
+      }
+    ],
+    "invariants": {
+      "attribute_total": 112,
+      "attribute_total_ok": true,
+      "race_delta_sum": 12,
+      "class_delta_sum": 0,
+      "skills_above_baseline": 9,
+      "skills_above_baseline_ok": true,
+      "max_skill": 25,
+      "max_skill_ok": true
+    },
+    "flags": [
+      "raised-by-the-marsh"
+    ],
+    "route": "questionnaire",
+    "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Neras Athrenil\nAlso called: Silence-Under-Salt\nObserved as: Dunmer\nRaised at: black water, no bottom\nTrade declared: Walks the country, untitled\nTide drawn on: The Dry Well (Nu-Ixtu)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-SCO\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+  },
+  "writ": {
+    "id": "stamped-writ",
+    "name": "Reed-case writ, stamped",
+    "text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Neras Athrenil\nAlso called: Silence-Under-Salt\nObserved as: Dunmer\nRaised at: black water, no bottom\nTrade declared: Walks the country, untitled\nTide drawn on: The Dry Well (Nu-Ixtu)\nSecond tide: None recorded.\nRecorded: Left empty.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-DUN-SCO\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+  },
+  "derived": {
+    "hp_max": 300,
+    "stamina_max": 64,
+    "stamina_regen_per_s": 40.8,
+    "stamina_regen_per_frame": 0.68,
+    "focus_max": 53,
+    "spell_slots": 2,
+    "equip_load_max": 66.4,
+    "from": {
+      "vigour": 10,
+      "endurance": 6,
+      "willpower": 11,
+      "strength": 12
+    },
+    "birthsign_terms": [
+      {
+        "sign": "nu-ixtu",
+        "kind": "focus_max_multiplier",
+        "applied": 1.6,
+        "scale": 1
+      },
+      {
+        "sign": "nu-ixtu",
+        "kind": "spell_absorption",
+        "applied": 0.55,
+        "scale": 1
+      },
+      {
+        "sign": "nu-ixtu",
+        "kind": "drawback",
+        "removes": "focus_restore_at_hearth",
+        "scale": 1,
+        "via": null
+      }
+    ],
+    "focus_restores_at_hearth": false,
+    "focus_max_base": 33,
+    "spell_absorption": 0.55,
+    "live": {
+      "hp": 300,
+      "hp_max": 300,
+      "stamina": 64,
+      "stamina_max": 64
+    },
+    "focus_live": {
+      "focus": 53,
+      "focus_max": 53
+    },
+    "curves": {
+      "hp_at": {
+        "10": 300,
+        "20": 560,
+        "27": 742,
+        "40": 924,
+        "60": 1044,
+        "99": 1122
+      },
+      "stamina_at": {
+        "10": 80,
+        "20": 120,
+        "30": 145,
+        "40": 157,
+        "99": 180.6
+      }
+    },
+    "skills": {
+      "blades": {
+        "value": 20,
+        "progress": 0,
+        "to_next": 38,
+        "governing": "agility",
+        "levels_since_rest": 0
+      },
+      "axes-maces": {
+        "value": 15,
+        "progress": 0,
+        "to_next": 30,
+        "governing": "strength",
+        "levels_since_rest": 0
+      },
+      "polearms": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "strength",
+        "levels_since_rest": 0
+      },
+      "greatweapons": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "strength",
+        "levels_since_rest": 0
+      },
+      "marksman": {
+        "value": 15,
+        "progress": 0,
+        "to_next": 30,
+        "governing": "agility",
+        "levels_since_rest": 0
+      },
+      "claw-fang": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "agility",
+        "levels_since_rest": 0
+      },
+      "shieldcraft": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "endurance",
+        "levels_since_rest": 0
+      },
+      "sorcery": {
+        "value": 15,
+        "progress": 0,
+        "to_next": 30,
+        "governing": "intellect",
+        "levels_since_rest": 0
+      },
+      "root-speech": {
+        "value": 25,
+        "progress": 0,
+        "to_next": 46,
+        "governing": "hist-bond",
+        "levels_since_rest": 0
+      },
+      "warding": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "willpower",
+        "levels_since_rest": 0
+      },
+      "veiling": {
+        "value": 10,
+        "progress": 0,
+        "to_next": 22,
+        "governing": "willpower",
+        "levels_since_rest": 0
+      },
+      "alchemy": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "intellect",
+        "levels_since_rest": 0
+      },
+      "athletics": {
+        "value": 25,
+        "progress": 0,
+        "to_next": 46,
+        "governing": "speed",
+        "levels_since_rest": 0
+      },
+      "acrobatics": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "agility",
+        "levels_since_rest": 0
+      },
+      "survival": {
+        "value": 25,
+        "progress": 0,
+        "to_next": 46,
+        "governing": "vigour",
+        "levels_since_rest": 0
+      },
+      "sneak": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "agility",
+        "levels_since_rest": 0
+      },
+      "security": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "agility",
+        "levels_since_rest": 0
+      },
+      "mercantile": {
+        "value": 5,
+        "progress": 0,
+        "to_next": 14,
+        "governing": "personality",
+        "levels_since_rest": 0
+      },
+      "speechcraft": {
+        "value": 15,
+        "progress": 0,
+        "to_next": 30,
+        "governing": "personality",
+        "levels_since_rest": 0
+      }
+    }
+  },
+  "page_errors": [],
+  "summary": {
+    "frames": 19,
+    "distinct_page_hashes": 19,
+    "distinct_canvas_hashes": 19,
+    "max_page_vs_canvas_diff_frac": 0,
+    "panel_area_frac_measured_range": [
+      0.1685,
+      0.4889
+    ],
+    "ink_frac_range": [
+      0.0131,
+      0.0732
+    ],
+    "world_colours_range": [
+      354,
+      601
+    ],
+    "max_most_common_colour_frac": 0.244,
+    "npcs_min": 1,
+    "speaker_resolves": 18,
+    "speaker_nodes": 18
+  }
+}

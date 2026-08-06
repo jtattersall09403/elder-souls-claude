@@ -1,0 +1,262 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r2b.mjs",
+  "tests": [
+    {
+      "id": "M1-reaction-matrix-consumption",
+      "route_hit": [
+        "progression/race-reactions.json"
+      ],
+      "baseline_disp": {
+        "helstrom-draught-seller": [
+          "RG-DEEP",
+          74,
+          "friendly"
+        ],
+        "helstrom-net-mender": [
+          "RG-TOWN",
+          44,
+          "neutral"
+        ],
+        "helstrom-reed-seller": [
+          "RG-TOWN",
+          42,
+          "neutral"
+        ],
+        "helstrom-salt-factor": [
+          "RG-DRES",
+          15,
+          "cold"
+        ]
+      },
+      "perturbed_disp": {
+        "helstrom-draught-seller": [
+          "RG-DEEP",
+          74,
+          "friendly"
+        ],
+        "helstrom-net-mender": [
+          "RG-TOWN",
+          44,
+          "neutral"
+        ],
+        "helstrom-reed-seller": [
+          "RG-TOWN",
+          42,
+          "neutral"
+        ],
+        "helstrom-salt-factor": [
+          "RG-DRES",
+          15,
+          "cold"
+        ]
+      },
+      "entities_whose_disposition_moved": [],
+      "price_before": 65,
+      "price_after": 65,
+      "verdict": "NO ENTITY CHANGED"
+    },
+    {
+      "id": "M2-derivation-consumption",
+      "rows": [
+        {
+          "race": "orsimer",
+          "vig": 18,
+          "end": 19,
+          "wil": 11,
+          "hp_max_sheet": 508,
+          "hp_max_live": 508,
+          "stamina_max_live": 116,
+          "focus_max_live": 33,
+          "hits_of_50_to_fall": 11,
+          "died": true,
+          "combat_hp_max_before": 508
+        },
+        {
+          "race": "bosmer",
+          "vig": 6,
+          "end": 10,
+          "wil": 10,
+          "hp_max_sheet": 196,
+          "hp_max_live": 196,
+          "stamina_max_live": 80,
+          "focus_max_live": 30,
+          "hits_of_50_to_fall": 4,
+          "died": true,
+          "combat_hp_max_before": 196
+        },
+        {
+          "race": "dunmer",
+          "vig": 10,
+          "end": 14,
+          "wil": 11,
+          "hp_max_sheet": 300,
+          "hp_max_live": 300,
+          "stamina_max_live": 96,
+          "focus_max_live": 33,
+          "hits_of_50_to_fall": 6,
+          "died": true,
+          "combat_hp_max_before": 300
+        }
+      ],
+      "curves": {
+        "hp_at": {
+          "10": 300,
+          "20": 560,
+          "27": 742,
+          "40": 924,
+          "60": 1044,
+          "99": 1122
+        },
+        "stamina_at": {
+          "10": 80,
+          "20": 120,
+          "30": 145,
+          "40": 157,
+          "99": 180.6
+        }
+      },
+      "verdict": "the fight reads the pool: different VIGOUR, different number of hits to fall"
+    },
+    {
+      "id": "M3-birthsign-consumption",
+      "route_hit": [
+        "progression/birthsigns.json"
+      ],
+      "baseline": {
+        "raj-xul": {
+          "focus_max": 46,
+          "focus_live": {
+            "focus": 46,
+            "focus_max": 46
+          },
+          "restores_at_hearth": true,
+          "hearth": {
+            "rested": true,
+            "focus_restored": true,
+            "focus": 46,
+            "focus_max": 46,
+            "why": null,
+            "rest_clamp_reset": true,
+            "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here."
+          },
+          "magic_focus_max": 46,
+          "spent": null
+        },
+        "nu-ixtu": {
+          "focus_max": 74,
+          "focus_live": {
+            "focus": 74,
+            "focus_max": 74
+          },
+          "restores_at_hearth": false,
+          "hearth": {
+            "rested": true,
+            "focus_restored": false,
+            "focus": 74,
+            "focus_max": 74,
+            "why": "The Dry Well. RI-CHR03: the wells do not fill you. AMENDMENT-W1-07-03.",
+            "rest_clamp_reset": true,
+            "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here."
+          },
+          "magic_focus_max": 74,
+          "spent": null
+        },
+        "kaal-kaal+nu-ixtu": {
+          "focus_max": 60,
+          "restores_at_hearth": false
+        }
+      },
+      "perturbed": {
+        "raj-xul": {
+          "focus_max": 46,
+          "focus_live": {
+            "focus": 46,
+            "focus_max": 46
+          },
+          "restores_at_hearth": true,
+          "hearth": {
+            "rested": true,
+            "focus_restored": true,
+            "focus": 46,
+            "focus_max": 46,
+            "why": null,
+            "rest_clamp_reset": true,
+            "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here."
+          },
+          "magic_focus_max": 46,
+          "spent": null
+        },
+        "nu-ixtu": {
+          "focus_max": 46,
+          "focus_live": {
+            "focus": 46,
+            "focus_max": 46
+          },
+          "restores_at_hearth": false,
+          "hearth": {
+            "rested": true,
+            "focus_restored": false,
+            "focus": 46,
+            "focus_max": 46,
+            "why": "The Dry Well. RI-CHR03: the wells do not fill you. AMENDMENT-W1-07-03.",
+            "rest_clamp_reset": true,
+            "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here."
+          },
+          "magic_focus_max": 46,
+          "spent": null
+        },
+        "kaal-kaal+nu-ixtu": {
+          "focus_max": 46,
+          "restores_at_hearth": false
+        }
+      },
+      "verdict": "the sign multiplier reaches the live focus pool"
+    },
+    {
+      "id": "M4-greeting-consumption",
+      "greeting_verbs_on_harness": [],
+      "npcs_in_state": [
+        {
+          "eid": "helstrom-draught-seller",
+          "group": "RG-DEEP",
+          "topics": 4
+        },
+        {
+          "eid": "helstrom-net-mender",
+          "group": "RG-TOWN",
+          "topics": 3
+        },
+        {
+          "eid": "helstrom-reed-seller",
+          "group": "RG-TOWN",
+          "topics": 3
+        },
+        {
+          "eid": "helstrom-salt-factor",
+          "group": "RG-DRES",
+          "topics": 4
+        }
+      ],
+      "verdict": "NO VERB, NO RUNTIME PATH: greetings.json is loaded and read by nothing"
+    },
+    {
+      "id": "M5-race-gated-topic-consumption",
+      "race_gated_topic_records": 96,
+      "distinct_topic_ids_carried_by_live_npcs": 11,
+      "overlap_count": 9,
+      "overlap_sample": [
+        "the-tides",
+        "the-surcharge",
+        "the-old-cages",
+        "boots",
+        "why-anyone-comes-here",
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "verdict": "a live NPC carries a race-gated topic"
+    }
+  ],
+  "data_files": null
+}

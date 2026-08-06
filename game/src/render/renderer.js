@@ -15,6 +15,7 @@ const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 import { buildScene, makeActor, terrainHeight } from './scene.js';
 import { Sky, WEATHER } from './sky.js';
 import { Province } from '../world/province.js';
+import { SIGNATURE_KINDS } from '../world/signature.js';
 import { SpellVFX } from './spell-vfx.js';
 import { UILayer } from './ui.js';
 
@@ -296,7 +297,11 @@ export class Renderer {
     if (this.cell === 'province' && this.field) {
       const cx = clamp(c.pos[0], 0, this.field.sizeX - 1), cz = clamp(c.pos[2], 0, this.field.sizeZ - 1);
       const r = this.field.regionAt(cx, cz);
-      regionFog = { colour: r.fog.colour, extinction: r.fog.extinction_per_m };
+      // The region's own night colour comes off its ONLY-HERE element, so what little light there
+      // is at 01:00 is light that region owns and no other region has.
+      const K = this.field.sig && SIGNATURE_KINDS[(r.only_here || {}).id];
+      regionFog = { colour: r.fog.colour, extinction: r.fog.extinction_per_m,
+        glow: K && K.glow > 0 ? K.glow_hex : null };
     }
     this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog);
       // The province's own night lamps, driven off the same sun elevation the sky is: at 01:00 the

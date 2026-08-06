@@ -184,13 +184,35 @@ export class WorldField {
         this._bilinear(this.ridgeU, x, z, 1 / 255),
         this._bilinear(this.terrU, x, z, 1 / 255));
     h = this._applySites(x, z, h);
+    // A BRIDGE DECK IS THE TOP OF THE WORLD AT THAT POINT. It is not blended with the hill and it
+    // is not added to by the signature landform: a slab with a petrified bole growing through it
+    // is a defect, and it stalled THE CROSSING at 545 m when a landform delta put the walkable
+    // surface 3 m above the deck the parapet was clamping it to.
+    const deck = this._deckY(x, z);
+    if (deck !== null) return deck;
     h = this._applyRoads(x, z, h);
-    // The ONLY-HERE landform goes on LAST and it is not blended with the road, because a crater
-    // and a viaduct in the same 20 m is a defect in the placement, not a case to average. The
-    // builder keeps every instance clear of the road corridor, and this assertion is that rule
-    // expressed as arithmetic rather than as a comment.
+    // The ONLY-HERE landform goes on last. The builder keeps every instance clear of the road
+    // corridor; this is that rule expressed as arithmetic rather than as a comment.
     if (this.sig) h += this.sig.groundDelta(x, z);
     return h;
+  }
+
+  /** The highest declared deck surface covering (x, z), or null. Hot: called from `heightAt`. */
+  _deckY(x, z) {
+    if (!this.roadGrid) return null;
+    const segs = this.roadGrid.at(x, z);
+    let best = null;
+    for (let i = 0; i < segs.length; i++) {
+      const s = segs[i];
+      if (!s.span) continue;
+      const dx = s.bx - s.ax, dz = s.bz - s.az;
+      const len2 = dx * dx + dz * dz || 1;
+      const t = clamp(((x - s.ax) * dx + (z - s.az) * dz) / len2, 0, 1);
+      if (Math.hypot(x - (s.ax + dx * t), z - (s.az + dz * t)) > s.hw + 0.5) continue;
+      const y = lerp(s.ay, s.by, t);
+      if (best === null || y > best) best = y;
+    }
+    return best;
   }
 
   /** The ground WITHOUT the road: what is under a viaduct. Used for span clearance and for the
@@ -239,7 +261,6 @@ export class WorldField {
     if (!this.roadGrid) return h;
     const segs = this.roadGrid.at(x, z);
     let bestW = 0, bestY = 0;
-    let deckY = null;                      // a structure's surface always beats an earth blend
     for (let i = 0; i < segs.length; i++) {
       const s = segs[i];
       const dx = s.bx - s.ax, dz = s.bz - s.az;
@@ -247,15 +268,9 @@ export class WorldField {
       const t = clamp(((x - s.ax) * dx + (z - s.az) * dz) / len2, 0, 1);
       const px = s.ax + dx * t, pz = s.az + dz * t;
       const d = Math.hypot(x - px, z - pz);
-      if (s.span) {
-        // The carriageway plus a 0.5 m kerb is the walkable slab. Beyond it: nothing. The ground
-        // beneath keeps its own height, so the channel still runs and the gorge is still a gorge.
-        if (d <= s.hw + 0.5) {
-          const y = lerp(s.ay, s.by, t);
-          if (deckY === null || y > deckY) deckY = y;
-        }
-        continue;
-      }
+      // A span segment contributes NO earth. The slab is `_deckY` and the ground beneath keeps its
+      // own height, so the channel still runs and the gorge is still a gorge.
+      if (s.span) continue;
       const outer = s.hw * 3.2;
       if (d >= outer) continue;
       const w = smoothstep(outer, s.hw, d);
@@ -266,11 +281,7 @@ export class WorldField {
       const y = lerp(s.ay, s.by, t);
       if (w > bestW || (w === bestW && y > bestY)) { bestW = w; bestY = y; }
     }
-    const earth = bestW > 0 ? lerp(h, bestY, bestW) : h;
-    // A deck is a slab. It does not blend with the hill, it stands over it — and if the hill is
-    // higher than the deck at this point, the hill wins, because the road is in a cutting there
-    // and the span classification was wrong.
-    return deckY === null ? earth : deckY;
+    return bestW > 0 ? lerp(h, bestY, bestW) : h;
   }
 
   /**
@@ -301,6 +312,9 @@ export class WorldField {
       const lim = s.hw + 0.35;
       if (d1 <= lim) return null;
       if (d1 < 1e-6) return null;
+      // Two spans can overlap where the road doubles back, and stepping from one onto the other is
+      // not stepping off a bridge. Clamp only when the destination is on no deck at all.
+      if (this._deckY(x, z) !== null) return null;
       return [cx + (x - cx) / d1 * lim, cz + (z - cz) / d1 * lim];
     }
     return null;

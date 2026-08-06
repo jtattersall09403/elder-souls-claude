@@ -25,7 +25,7 @@
    "routing": "detour w=23.99 + sinuosity 116 m | detour w=23.99 + sinuosity 156 m",
    "max_grade": 0.422,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [
     {
      "i": 21,
@@ -1327,9 +1327,9 @@
    "built_walk_min": 24.56,
    "sinuosity_built": 1.463,
    "routing": "detour w=3.39 + sinuosity 47 m | detour w=1.05 + sinuosity 108 m | detour w=0.90 + sinuosity 78 m",
-   "max_grade": 0.58,
+   "max_grade": 0.45,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [
     {
      "i": 24,
@@ -1371,17 +1371,17 @@
      "i": 34,
      "from_m": 396,
      "to_m": 408,
-     "grade": 0.132,
-     "deg": 7.5,
+     "grade": 0.301,
+     "deg": 16.7,
      "natural_grade": 0.051,
-     "class": "switchback"
+     "class": "stair"
     },
     {
      "i": 35,
      "from_m": 408,
      "to_m": 420,
-     "grade": 0.3,
-     "deg": 16.7,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.289,
      "class": "stair"
     },
@@ -1389,8 +1389,8 @@
      "i": 36,
      "from_m": 420,
      "to_m": 430,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.694,
      "class": "stair"
     },
@@ -1398,8 +1398,8 @@
      "i": 37,
      "from_m": 430,
      "to_m": 442,
-     "grade": 0.576,
-     "deg": 30,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.576,
      "class": "stair"
     },
@@ -1407,8 +1407,8 @@
      "i": 38,
      "from_m": 442,
      "to_m": 454,
-     "grade": 0.535,
-     "deg": 28.2,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.535,
      "class": "stair"
     },
@@ -1422,20 +1422,11 @@
      "class": "stair"
     },
     {
-     "i": 42,
-     "from_m": 487,
-     "to_m": 499,
-     "grade": 0.228,
-     "deg": 12.8,
-     "natural_grade": 0.228,
-     "class": "stair"
-    },
-    {
      "i": 43,
      "from_m": 499,
      "to_m": 509,
-     "grade": 0.4,
-     "deg": 21.8,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.319,
      "class": "stair"
     },
@@ -1443,8 +1434,8 @@
      "i": 44,
      "from_m": 509,
      "to_m": 521,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.647,
      "class": "stair"
     },
@@ -1452,26 +1443,35 @@
      "i": 45,
      "from_m": 521,
      "to_m": 533,
-     "grade": 0.554,
-     "deg": 29,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.554,
+     "class": "stair"
+    },
+    {
+     "i": 46,
+     "from_m": 533,
+     "to_m": 545,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.107,
      "class": "stair"
     },
     {
      "i": 47,
      "from_m": 545,
      "to_m": 554,
-     "grade": 0.133,
-     "deg": 7.6,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0,
-     "class": "switchback"
+     "class": "stair"
     },
     {
      "i": 48,
      "from_m": 554,
      "to_m": 566,
-     "grade": 0.311,
-     "deg": 17.3,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.051,
      "class": "stair"
     },
@@ -1479,8 +1479,8 @@
      "i": 49,
      "from_m": 566,
      "to_m": 574,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.359,
      "class": "stair"
     },
@@ -1488,8 +1488,8 @@
      "i": 50,
      "from_m": 574,
      "to_m": 586,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.811,
      "class": "stair"
     },
@@ -1497,8 +1497,8 @@
      "i": 51,
      "from_m": 586,
      "to_m": 598,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.73,
      "class": "stair"
     },
@@ -1506,8 +1506,8 @@
      "i": 52,
      "from_m": 598,
      "to_m": 609,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.454,
      "class": "stair"
     },
@@ -1515,8 +1515,8 @@
      "i": 53,
      "from_m": 609,
      "to_m": 621,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.378,
      "class": "stair"
     },
@@ -1524,8 +1524,8 @@
      "i": 54,
      "from_m": 621,
      "to_m": 633,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.106,
      "class": "stair"
     },
@@ -1533,8 +1533,8 @@
      "i": 56,
      "from_m": 645,
      "to_m": 657,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.023,
      "class": "stair"
     },
@@ -1542,9 +1542,18 @@
      "i": 57,
      "from_m": 657,
      "to_m": 669,
-     "grade": 0.485,
-     "deg": 25.9,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.019,
+     "class": "stair"
+    },
+    {
+     "i": 58,
+     "from_m": 669,
+     "to_m": 680,
+     "grade": 0.266,
+     "deg": 14.9,
+     "natural_grade": 0.093,
      "class": "stair"
     },
     {
@@ -1569,8 +1578,8 @@
      "i": 62,
      "from_m": 716,
      "to_m": 728,
-     "grade": 0.47,
-     "deg": 25.2,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.47,
      "class": "stair"
     },
@@ -1578,8 +1587,8 @@
      "i": 63,
      "from_m": 728,
      "to_m": 740,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.906,
      "class": "stair"
     },
@@ -1587,8 +1596,8 @@
      "i": 64,
      "from_m": 740,
      "to_m": 752,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.785,
      "class": "stair"
     },
@@ -1596,8 +1605,8 @@
      "i": 65,
      "from_m": 752,
      "to_m": 764,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.663,
      "class": "stair"
     },
@@ -1605,8 +1614,8 @@
      "i": 66,
      "from_m": 764,
      "to_m": 776,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.728,
      "class": "stair"
     },
@@ -1614,8 +1623,8 @@
      "i": 67,
      "from_m": 776,
      "to_m": 788,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.649,
      "class": "stair"
     },
@@ -1623,8 +1632,8 @@
      "i": 68,
      "from_m": 788,
      "to_m": 800,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.613,
      "class": "stair"
     },
@@ -1632,8 +1641,8 @@
      "i": 69,
      "from_m": 800,
      "to_m": 812,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.651,
      "class": "stair"
     },
@@ -1641,8 +1650,8 @@
      "i": 70,
      "from_m": 812,
      "to_m": 824,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.706,
      "class": "stair"
     },
@@ -1650,8 +1659,8 @@
      "i": 71,
      "from_m": 824,
      "to_m": 836,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.479,
      "class": "stair"
     },
@@ -1659,8 +1668,8 @@
      "i": 72,
      "from_m": 836,
      "to_m": 848,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.737,
      "class": "stair"
     },
@@ -1668,8 +1677,8 @@
      "i": 73,
      "from_m": 848,
      "to_m": 860,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.787,
      "class": "stair"
     },
@@ -1677,8 +1686,8 @@
      "i": 74,
      "from_m": 860,
      "to_m": 871,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.606,
      "class": "stair"
     },
@@ -1686,8 +1695,8 @@
      "i": 75,
      "from_m": 871,
      "to_m": 883,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.428,
      "class": "stair"
     },
@@ -1695,8 +1704,8 @@
      "i": 76,
      "from_m": 883,
      "to_m": 895,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.415,
      "class": "stair"
     },
@@ -1704,8 +1713,8 @@
      "i": 77,
      "from_m": 895,
      "to_m": 907,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.701,
      "class": "stair"
     },
@@ -1713,8 +1722,8 @@
      "i": 78,
      "from_m": 907,
      "to_m": 919,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.407,
      "class": "stair"
     },
@@ -1722,8 +1731,8 @@
      "i": 79,
      "from_m": 919,
      "to_m": 931,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.331,
      "class": "stair"
     },
@@ -1731,17 +1740,71 @@
      "i": 80,
      "from_m": 931,
      "to_m": 943,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.15,
+     "class": "stair"
+    },
+    {
+     "i": 81,
+     "from_m": 943,
+     "to_m": 955,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.034,
+     "class": "stair"
+    },
+    {
+     "i": 82,
+     "from_m": 955,
+     "to_m": 967,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.005,
+     "class": "stair"
+    },
+    {
+     "i": 83,
+     "from_m": 967,
+     "to_m": 979,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 84,
+     "from_m": 979,
+     "to_m": 991,
+     "grade": 0.407,
+     "deg": 22.2,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 85,
+     "from_m": 991,
+     "to_m": 1003,
+     "grade": 0.331,
+     "deg": 18.3,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 86,
+     "from_m": 1003,
+     "to_m": 1015,
+     "grade": 0.364,
+     "deg": 20,
+     "natural_grade": 0,
      "class": "stair"
     },
     {
      "i": 89,
      "from_m": 1039,
      "to_m": 1051,
-     "grade": 0.137,
-     "deg": 7.8,
+     "grade": 0.133,
+     "deg": 7.6,
      "natural_grade": 0.008,
      "class": "switchback"
     },
@@ -1749,8 +1812,8 @@
      "i": 90,
      "from_m": 1051,
      "to_m": 1062,
-     "grade": 0.173,
-     "deg": 9.8,
+     "grade": 0.149,
+     "deg": 8.5,
      "natural_grade": 0.149,
      "class": "switchback"
     },
@@ -1776,8 +1839,8 @@
      "i": 93,
      "from_m": 1086,
      "to_m": 1098,
-     "grade": 0.563,
-     "deg": 29.4,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.563,
      "class": "stair"
     },
@@ -1785,8 +1848,8 @@
      "i": 94,
      "from_m": 1098,
      "to_m": 1110,
-     "grade": 0.484,
-     "deg": 25.8,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.484,
      "class": "stair"
     },
@@ -1794,8 +1857,8 @@
      "i": 95,
      "from_m": 1110,
      "to_m": 1122,
-     "grade": 0.501,
-     "deg": 26.6,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.501,
      "class": "stair"
     },
@@ -1803,8 +1866,8 @@
      "i": 96,
      "from_m": 1122,
      "to_m": 1134,
-     "grade": 0.251,
-     "deg": 14.1,
+     "grade": 0.447,
+     "deg": 24.1,
      "natural_grade": 0.292,
      "class": "stair"
     },
@@ -1929,8 +1992,8 @@
      "i": 126,
      "from_m": 1479,
      "to_m": 1491,
-     "grade": 0.283,
-     "deg": 15.8,
+     "grade": 0.295,
+     "deg": 16.4,
      "natural_grade": 0.325,
      "class": "stair"
     },
@@ -1938,8 +2001,8 @@
      "i": 127,
      "from_m": 1491,
      "to_m": 1503,
-     "grade": 0.462,
-     "deg": 24.8,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.462,
      "class": "stair"
     },
@@ -1965,8 +2028,8 @@
      "i": 130,
      "from_m": 1527,
      "to_m": 1539,
-     "grade": 0.419,
-     "deg": 22.7,
+     "grade": 0.432,
+     "deg": 23.4,
      "natural_grade": 0.419,
      "class": "stair"
     },
@@ -1974,8 +2037,8 @@
      "i": 131,
      "from_m": 1539,
      "to_m": 1551,
-     "grade": 0.464,
-     "deg": 24.9,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.464,
      "class": "stair"
     },
@@ -1983,8 +2046,8 @@
      "i": 132,
      "from_m": 1551,
      "to_m": 1563,
-     "grade": 0.42,
-     "deg": 22.8,
+     "grade": 0.422,
+     "deg": 22.9,
      "natural_grade": 0.42,
      "class": "stair"
     },
@@ -1992,8 +2055,8 @@
      "i": 133,
      "from_m": 1563,
      "to_m": 1575,
-     "grade": 0.453,
-     "deg": 24.4,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.453,
      "class": "stair"
     },
@@ -2001,8 +2064,8 @@
      "i": 136,
      "from_m": 1596,
      "to_m": 1608,
-     "grade": 0.144,
-     "deg": 8.2,
+     "grade": 0.139,
+     "deg": 7.9,
      "natural_grade": 0.132,
      "class": "switchback"
     },
@@ -2016,11 +2079,20 @@
      "class": "stair"
     },
     {
+     "i": 138,
+     "from_m": 1620,
+     "to_m": 1632,
+     "grade": 0.265,
+     "deg": 14.8,
+     "natural_grade": 0.188,
+     "class": "stair"
+    },
+    {
      "i": 139,
      "from_m": 1632,
      "to_m": 1640,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.708,
      "class": "stair"
     },
@@ -2028,8 +2100,8 @@
      "i": 140,
      "from_m": 1640,
      "to_m": 1652,
-     "grade": 0.567,
-     "deg": 29.6,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.567,
      "class": "stair"
     },
@@ -2037,8 +2109,8 @@
      "i": 141,
      "from_m": 1652,
      "to_m": 1664,
-     "grade": 0.494,
-     "deg": 26.3,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.453,
      "class": "stair"
     },
@@ -2046,8 +2118,8 @@
      "i": 142,
      "from_m": 1664,
      "to_m": 1676,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.621,
      "class": "stair"
     },
@@ -2061,20 +2133,11 @@
      "class": "stair"
     },
     {
-     "i": 144,
-     "from_m": 1688,
-     "to_m": 1694,
-     "grade": 0.154,
-     "deg": 8.7,
-     "natural_grade": 0.109,
-     "class": "switchback"
-    },
-    {
      "i": 146,
      "from_m": 1706,
      "to_m": 1718,
-     "grade": 0.463,
-     "deg": 24.8,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.463,
      "class": "stair"
     },
@@ -2082,8 +2145,8 @@
      "i": 147,
      "from_m": 1718,
      "to_m": 1730,
-     "grade": 0.37,
-     "deg": 20.3,
+     "grade": 0.383,
+     "deg": 20.9,
      "natural_grade": 0.37,
      "class": "stair"
     },
@@ -2145,17 +2208,26 @@
      "i": 154,
      "from_m": 1801,
      "to_m": 1812,
-     "grade": 0.21,
-     "deg": 11.9,
+     "grade": 0.205,
+     "deg": 11.6,
      "natural_grade": 0.205,
      "class": "switchback"
+    },
+    {
+     "i": 159,
+     "from_m": 1860,
+     "to_m": 1871,
+     "grade": 0.322,
+     "deg": 17.8,
+     "natural_grade": 0.42,
+     "class": "stair"
     },
     {
      "i": 160,
      "from_m": 1871,
      "to_m": 1883,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.58,
      "class": "stair"
     },
@@ -2163,8 +2235,8 @@
      "i": 161,
      "from_m": 1883,
      "to_m": 1895,
-     "grade": 0.552,
-     "deg": 28.9,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.34,
      "class": "stair"
     },
@@ -2268,20 +2340,11 @@
      "class": "stair"
     },
     {
-     "i": 175,
-     "from_m": 2051,
-     "to_m": 2063,
-     "grade": 0.154,
-     "deg": 8.7,
-     "natural_grade": 0.086,
-     "class": "switchback"
-    },
-    {
      "i": 186,
      "from_m": 2183,
      "to_m": 2195,
-     "grade": 0.576,
-     "deg": 30,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.576,
      "class": "stair"
     },
@@ -2289,8 +2352,8 @@
      "i": 187,
      "from_m": 2195,
      "to_m": 2207,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 1.028,
      "class": "stair"
     },
@@ -2298,8 +2361,8 @@
      "i": 188,
      "from_m": 2207,
      "to_m": 2219,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 1.349,
      "class": "stair"
     },
@@ -2307,8 +2370,8 @@
      "i": 189,
      "from_m": 2219,
      "to_m": 2230,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 1.515,
      "class": "stair"
     },
@@ -2316,8 +2379,8 @@
      "i": 190,
      "from_m": 2230,
      "to_m": 2242,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.803,
      "class": "stair"
     },
@@ -2325,8 +2388,8 @@
      "i": 191,
      "from_m": 2242,
      "to_m": 2254,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.561,
      "class": "stair"
     },
@@ -2334,8 +2397,8 @@
      "i": 192,
      "from_m": 2254,
      "to_m": 2266,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.528,
      "class": "stair"
     },
@@ -2343,8 +2406,8 @@
      "i": 193,
      "from_m": 2266,
      "to_m": 2278,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.387,
      "class": "stair"
     },
@@ -2352,8 +2415,8 @@
      "i": 194,
      "from_m": 2278,
      "to_m": 2290,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.518,
      "class": "stair"
     },
@@ -2361,8 +2424,8 @@
      "i": 195,
      "from_m": 2290,
      "to_m": 2302,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.344,
      "class": "stair"
     },
@@ -2370,8 +2433,8 @@
      "i": 196,
      "from_m": 2302,
      "to_m": 2314,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.383,
      "class": "stair"
     },
@@ -2379,8 +2442,8 @@
      "i": 197,
      "from_m": 2314,
      "to_m": 2326,
-     "grade": 0.561,
-     "deg": 29.3,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.346,
      "class": "stair"
     },
@@ -2388,8 +2451,8 @@
      "i": 198,
      "from_m": 2326,
      "to_m": 2338,
-     "grade": 0.528,
-     "deg": 27.8,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.207,
      "class": "stair"
     },
@@ -2397,8 +2460,8 @@
      "i": 199,
      "from_m": 2338,
      "to_m": 2350,
-     "grade": 0.518,
-     "deg": 27.4,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.193,
      "class": "stair"
     },
@@ -2406,8 +2469,8 @@
      "i": 200,
      "from_m": 2350,
      "to_m": 2362,
-     "grade": 0.518,
-     "deg": 27.4,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.183,
      "class": "stair"
     },
@@ -2424,18 +2487,90 @@
      "i": 202,
      "from_m": 2374,
      "to_m": 2386,
-     "grade": 0.19,
-     "deg": 10.7,
+     "grade": 0.383,
+     "deg": 20.9,
      "natural_grade": 0.005,
-     "class": "switchback"
+     "class": "stair"
     },
     {
      "i": 203,
      "from_m": 2386,
      "to_m": 2398,
-     "grade": 0.18,
-     "deg": 10.2,
+     "grade": 0.346,
+     "deg": 19.1,
      "natural_grade": 0.12,
+     "class": "stair"
+    },
+    {
+     "i": 204,
+     "from_m": 2398,
+     "to_m": 2410,
+     "grade": 0.229,
+     "deg": 12.9,
+     "natural_grade": 0.197,
+     "class": "stair"
+    },
+    {
+     "i": 205,
+     "from_m": 2410,
+     "to_m": 2422,
+     "grade": 0.229,
+     "deg": 12.9,
+     "natural_grade": 0.005,
+     "class": "stair"
+    },
+    {
+     "i": 206,
+     "from_m": 2422,
+     "to_m": 2434,
+     "grade": 0.229,
+     "deg": 12.9,
+     "natural_grade": 0.061,
+     "class": "stair"
+    },
+    {
+     "i": 207,
+     "from_m": 2434,
+     "to_m": 2446,
+     "grade": 0.229,
+     "deg": 12.9,
+     "natural_grade": 0.016,
+     "class": "stair"
+    },
+    {
+     "i": 208,
+     "from_m": 2446,
+     "to_m": 2458,
+     "grade": 0.197,
+     "deg": 11.1,
+     "natural_grade": 0.003,
+     "class": "switchback"
+    },
+    {
+     "i": 209,
+     "from_m": 2458,
+     "to_m": 2470,
+     "grade": 0.197,
+     "deg": 11.1,
+     "natural_grade": 0.126,
+     "class": "switchback"
+    },
+    {
+     "i": 210,
+     "from_m": 2470,
+     "to_m": 2482,
+     "grade": 0.197,
+     "deg": 11.1,
+     "natural_grade": 0.011,
+     "class": "switchback"
+    },
+    {
+     "i": 211,
+     "from_m": 2482,
+     "to_m": 2494,
+     "grade": 0.17,
+     "deg": 9.6,
+     "natural_grade": 0.076,
      "class": "switchback"
     },
     {
@@ -2476,57 +2611,57 @@
     }
    ],
    "grade_class_m": {
-    "carriageway": 1455,
-    "switchback": 322,
-    "stair": 1170
+    "carriageway": 1269,
+    "switchback": 308,
+    "stair": 1370
    },
    "max_cut_m": 3,
-   "max_fill_m": 32.84,
+   "max_fill_m": 40.66,
    "cut_sampled_at_m": 3,
    "deck_spans": [
     {
-     "from_i": 36,
+     "from_i": 35,
      "to_i": 38,
-     "from_m": 430,
+     "from_m": 420,
      "to_m": 454,
-     "length_m": 24,
-     "max_height_m": 4.3,
+     "length_m": 34,
+     "max_height_m": 6.7,
      "kind": "viaduct"
     },
     {
      "from_i": 43,
-     "to_i": 45,
-     "from_m": 509,
-     "to_m": 533,
-     "length_m": 24,
-     "max_height_m": 5.3,
-     "kind": "viaduct"
-    },
-    {
-     "from_i": 48,
      "to_i": 56,
-     "from_m": 566,
+     "from_m": 509,
      "to_m": 657,
-     "length_m": 91,
-     "max_height_m": 13,
+     "length_m": 148,
+     "max_height_m": 19.5,
      "kind": "viaduct"
     },
     {
      "from_i": 62,
-     "to_i": 79,
+     "to_i": 85,
      "from_m": 728,
-     "to_m": 931,
-     "length_m": 203,
-     "max_height_m": 20.5,
+     "to_m": 1003,
+     "length_m": 275,
+     "max_height_m": 40.3,
      "kind": "viaduct"
     },
     {
-     "from_i": 139,
-     "to_i": 142,
-     "from_m": 1640,
-     "to_m": 1676,
+     "from_i": 92,
+     "to_i": 95,
+     "from_m": 1086,
+     "to_m": 1122,
      "length_m": 36,
-     "max_height_m": 4.9,
+     "max_height_m": 5.7,
+     "kind": "viaduct"
+    },
+    {
+     "from_i": 138,
+     "to_i": 142,
+     "from_m": 1632,
+     "to_m": 1676,
+     "length_m": 44,
+     "max_height_m": 7.5,
      "kind": "viaduct"
     },
     {
@@ -2544,20 +2679,20 @@
      "from_m": 1871,
      "to_m": 1919,
      "length_m": 48,
-     "max_height_m": 6,
+     "max_height_m": 6.3,
      "kind": "causeway over water"
     },
     {
      "from_i": 185,
-     "to_i": 200,
+     "to_i": 209,
      "from_m": 2183,
-     "to_m": 2362,
-     "length_m": 179,
-     "max_height_m": 32.8,
+     "to_m": 2470,
+     "length_m": 287,
+     "max_height_m": 40.7,
      "kind": "viaduct"
     }
    ],
-   "deck_span_m": 617,
+   "deck_span_m": 883,
    "half_width_m": 3,
    "waypoints": [
     "Nine-Mud",
@@ -2737,22 +2872,22 @@
     [
      2224.68,
      1135.84,
-     162
+     164.02
     ],
     [
      2219.15,
      1146.49,
-     165.61
+     169.42
     ],
     [
      2209.86,
      1149.57,
-     171.28
+     173.82
     ],
     [
      2198.04,
      1147.53,
-     178.2
+     179.22
     ],
     [
      2186.21,
@@ -2767,7 +2902,7 @@
     [
      2171.48,
      1159.79,
-     188.8
+     188.76
     ],
     [
      2175.32,
@@ -2777,62 +2912,62 @@
     [
      2179.16,
      1182.53,
-     186.03
+     188.51
     ],
     [
      2181.3,
      1192.24,
-     190
+     192.99
     ],
     [
      2169.86,
      1188.63,
-     196.96
+     198.39
     ],
     [
      2158.41,
      1185.02,
-     203.61
+     203.79
     ],
     [
      2146.97,
      1181.41,
-     204.96
+     209.19
     ],
     [
      2147.03,
      1190.27,
-     206.14
+     213.18
     ],
     [
      2149.7,
      1201.97,
-     209.87
+     218.58
     ],
     [
      2148.06,
      1209.83,
-     214.53
+     222.19
     ],
     [
      2136.12,
      1208.56,
-     221.49
+     227.59
     ],
     [
      2124.19,
      1207.29,
-     228.45
+     232.99
     ],
     [
      2116.25,
      1214.83,
-     234.8
+     237.92
     ],
     [
      2109.88,
      1224.96,
-     241.75
+     243.31
     ],
     [
      2104.44,
@@ -2847,12 +2982,12 @@
     [
      2099.6,
      1258.99,
-     241.77
+     243.32
     ],
     [
      2101,
      1270.8,
-     236
+     237.97
     ],
     [
      2105.38,
@@ -2877,142 +3012,142 @@
     [
      2136.27,
      1306.37,
-     223.02
+     223.26
     ],
     [
      2147.51,
      1310.58,
-     216.06
+     217.86
     ],
     [
      2159.01,
      1313.99,
-     209.1
+     212.46
     ],
     [
      2170.56,
      1317.23,
-     202.14
+     207.06
     ],
     [
      2182.12,
      1320.46,
-     195.18
+     201.66
     ],
     [
      2193.65,
      1323.78,
-     188.22
+     196.26
     ],
     [
      2205.11,
      1327.36,
-     181.26
+     190.86
     ],
     [
      2216.49,
      1331.14,
-     174.3
+     185.46
     ],
     [
      2227.79,
      1335.17,
-     167.34
+     180.06
     ],
     [
      2238.95,
      1339.59,
-     160.38
+     174.66
     ],
     [
      2249.81,
      1344.67,
-     153.42
+     169.26
     ],
     [
      2261,
      1348.85,
-     146.5
+     163.89
     ],
     [
      2272.53,
      1351.94,
-     139.57
+     158.51
     ],
     [
      2278.74,
      1362.21,
-     132.61
+     153.11
     ],
     [
      2287.02,
      1370.59,
-     125.78
+     147.81
     ],
     [
      2295.55,
      1378.61,
-     118.99
+     142.54
     ],
     [
      2300.4,
      1389.59,
-     112.03
+     137.14
     ],
     [
      2303.12,
      1401.26,
-     105.08
+     131.75
     ],
     [
      2304.19,
      1413.16,
-     98.15
+     126.38
     ],
     [
      2303.62,
      1425.1,
-     97.03
+     120.99
     ],
     [
      2301.54,
      1436.91,
-     97.03
+     115.6
     ],
     [
      2298.2,
      1448.43,
-     97.03
+     110.2
     ],
     [
      2293.93,
      1459.64,
-     97.03
+     105.32
     ],
     [
      2292.8,
      1471.52,
-     97.03
+     101.36
     ],
     [
      2293.44,
      1483.42,
-     96.99
+     97.03
     ],
     [
      2295.8,
      1495.16,
-     96.71
+     96.6
     ],
     [
      2300.83,
      1506.06,
-     95.85
+     95.52
     ],
     [
      2307.42,
      1516.02,
-     94.22
+     93.93
     ],
     [
      2313.61,
@@ -3032,17 +3167,17 @@
     [
      2338.46,
      1548.51,
-     76.64
+     77.97
     ],
     [
      2346.67,
      1557.26,
-     70.83
+     72.57
     ],
     [
      2354.16,
      1566.63,
-     64.82
+     67.17
     ],
     [
      2361.17,
@@ -3197,7 +3332,7 @@
     [
      2344.45,
      1821.16,
-     60.09
+     60.24
     ],
     [
      2332.45,
@@ -3217,7 +3352,7 @@
     [
      2296.47,
      1819.8,
-     79.47
+     79.64
     ],
     [
      2284.48,
@@ -3227,7 +3362,7 @@
     [
      2272.5,
      1820.77,
-     90.07
+     90.1
     ],
     [
      2261.39,
@@ -3237,12 +3372,12 @@
     [
      2252.45,
      1831.52,
-     96.59
+     96.57
     ],
     [
      2255.5,
      1840.8,
-     96.37
+     96.3
     ],
     [
      2262.55,
@@ -3257,22 +3392,22 @@
     [
      2276.65,
      1869.94,
-     88.41
+     92.88
     ],
     [
      2269.11,
      1870.09,
-     92.78
+     96.27
     ],
     [
      2257.39,
      1867.5,
-     99.59
+     101.67
     ],
     [
      2245.68,
      1864.91,
-     105.51
+     107.07
     ],
     [
      2233.96,
@@ -3287,7 +3422,7 @@
     [
      2216.62,
      1860.61,
-     117.23
+     116.98
     ],
     [
      2224.86,
@@ -3297,7 +3432,7 @@
     [
      2233.1,
      1878.06,
-     111.43
+     111.58
     ],
     [
      2241.34,
@@ -3337,12 +3472,12 @@
     [
      2256.51,
      1939.57,
-     94.74
+     94.69
     ],
     [
      2253.06,
      1951.06,
-     95.75
+     95.73
     ],
     [
      2253.4,
@@ -3362,12 +3497,12 @@
     [
      2257.17,
      1998.06,
-     97.37
+     100.14
     ],
     [
      2246.75,
      2004,
-     104.33
+     105.54
     ],
     [
      2237.52,
@@ -3442,32 +3577,32 @@
     [
      2151.56,
      2150.76,
-     159.15
+     158.42
     ],
     [
      2148.05,
      2162.23,
-     160.43
+     158.61
     ],
     [
      2144.18,
      2173.59,
-     161.08
+     158.61
     ],
     [
      2139.8,
      2184.75,
-     161.15
+     158.61
     ],
     [
      2134.9,
      2195.7,
-     160.55
+     158.61
     ],
     [
      2129.53,
      2206.44,
-     159.52
+     158.61
     ],
     [
      2140.76,
@@ -3497,132 +3632,132 @@
     [
      2191.96,
      2240.75,
-     150.68
+     152.2
     ],
     [
      2202,
      2247.33,
-     143.72
+     146.8
     ],
     [
      2211.98,
      2253.99,
-     136.76
+     141.4
     ],
     [
      2222.72,
      2258.44,
-     130.02
+     136.16
     ],
     [
      2234.68,
      2259.41,
-     123.06
+     130.76
     ],
     [
      2246.27,
      2262.31,
-     116.13
+     125.39
     ],
     [
      2257.75,
      2265.8,
-     109.17
+     119.99
     ],
     [
      2269.31,
      2269.05,
-     102.21
+     114.59
     ],
     [
      2280.75,
      2272.63,
-     95.25
+     109.19
     ],
     [
      2292.12,
      2276.48,
-     88.29
+     103.79
     ],
     [
      2302.88,
      2281.77,
-     81.34
+     98.39
     ],
     [
      2313.07,
      2287.96,
-     74.64
+     93.03
     ],
     [
      2322.08,
      2295.88,
-     68.31
+     87.63
     ],
     [
      2328.73,
      2305.73,
-     62.15
+     82.28
     ],
     [
      2334.03,
      2316.4,
-     55.98
+     76.92
     ],
     [
      2336.5,
      2328.14,
-     51.38
+     72.33
     ],
     [
      2338.09,
      2339.98,
-     49.12
+     67.76
     ],
     [
      2338.18,
      2351.98,
-     46.96
+     63.61
     ],
     [
      2337.93,
      2363.96,
-     46.49
+     60.86
     ],
     [
      2336.73,
      2375.9,
-     45.93
+     58.11
     ],
     [
      2335.54,
      2387.84,
-     45.39
+     55.36
     ],
     [
      2333.78,
      2399.71,
-     45.25
+     52.61
     ],
     [
      2331.99,
      2411.58,
-     44.83
+     50.25
     ],
     [
      2330.06,
      2423.42,
-     44.29
+     47.89
     ],
     [
      2328.07,
      2435.26,
-     43.55
+     45.53
     ],
     [
      2326.3,
      2447.13,
-     42.71
+     43.5
     ],
     [
      2325.33,
@@ -3831,7 +3966,7 @@
    "routing": "detour w=0.39 + sinuosity 35 m | detour w=23.99 + sinuosity 37+8 m | detour w=23.99 + sinuosity 65 m",
    "max_grade": 0.126,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [
     {
      "i": 26,
@@ -4961,7 +5096,7 @@
    "routing": "detour w=23.99 + sinuosity 98+37 m | detour w=0.44 + sinuosity 127 m | detour w=23.99 + sinuosity 69 m",
    "max_grade": 0.131,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [
     {
      "i": 21,
@@ -6068,9 +6203,9 @@
    "built_walk_min": 19.72,
    "sinuosity_built": 1.294,
    "routing": "detour w=0.30 + sinuosity 14 m | detour w=23.99 + sinuosity 68 m | detour w=23.99 + sinuosity 44 m",
-   "max_grade": 0.58,
+   "max_grade": 0.45,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [
     {
      "i": 21,
@@ -6163,11 +6298,20 @@
      "class": "switchback"
     },
     {
+     "i": 60,
+     "from_m": 707,
+     "to_m": 719,
+     "grade": 0.126,
+     "deg": 7.2,
+     "natural_grade": 0.321,
+     "class": "switchback"
+    },
+    {
      "i": 61,
      "from_m": 719,
      "to_m": 731,
-     "grade": 0.389,
-     "deg": 21.3,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.447,
      "class": "stair"
     },
@@ -6175,8 +6319,8 @@
      "i": 62,
      "from_m": 731,
      "to_m": 743,
-     "grade": 0.573,
-     "deg": 29.8,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.573,
      "class": "stair"
     },
@@ -6193,27 +6337,18 @@
      "i": 64,
      "from_m": 755,
      "to_m": 767,
-     "grade": 0.225,
-     "deg": 12.7,
+     "grade": 0.215,
+     "deg": 12.2,
      "natural_grade": 0.215,
-     "class": "stair"
+     "class": "switchback"
     },
     {
      "i": 65,
      "from_m": 767,
      "to_m": 779,
-     "grade": 0.14,
-     "deg": 8,
+     "grade": 0.144,
+     "deg": 8.2,
      "natural_grade": 0.04,
-     "class": "switchback"
-    },
-    {
-     "i": 74,
-     "from_m": 874,
-     "to_m": 886,
-     "grade": 0.133,
-     "deg": 7.6,
-     "natural_grade": 0.06,
      "class": "switchback"
     },
     {
@@ -6229,8 +6364,8 @@
      "i": 76,
      "from_m": 898,
      "to_m": 910,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.596,
      "class": "stair"
     },
@@ -6238,8 +6373,8 @@
      "i": 77,
      "from_m": 910,
      "to_m": 922,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.748,
      "class": "stair"
     },
@@ -6247,8 +6382,8 @@
      "i": 78,
      "from_m": 922,
      "to_m": 934,
-     "grade": 0.58,
-     "deg": 30.1,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.676,
      "class": "stair"
     },
@@ -6256,8 +6391,8 @@
      "i": 79,
      "from_m": 934,
      "to_m": 946,
-     "grade": 0.318,
-     "deg": 17.7,
+     "grade": 0.45,
+     "deg": 24.2,
      "natural_grade": 0.358,
      "class": "stair"
     },
@@ -6265,10 +6400,10 @@
      "i": 80,
      "from_m": 946,
      "to_m": 958,
-     "grade": 0.159,
-     "deg": 9.1,
+     "grade": 0.414,
+     "deg": 22.5,
      "natural_grade": 0.104,
-     "class": "switchback"
+     "class": "stair"
     },
     {
      "i": 81,
@@ -6286,20 +6421,20 @@
     "stair": 132
    },
    "max_cut_m": 3,
-   "max_fill_m": 7.44,
+   "max_fill_m": 10.56,
    "cut_sampled_at_m": 3,
    "deck_spans": [
     {
      "from_i": 75,
-     "to_i": 78,
+     "to_i": 79,
      "from_m": 898,
-     "to_m": 934,
-     "length_m": 36,
-     "max_height_m": 7.4,
+     "to_m": 946,
+     "length_m": 48,
+     "max_height_m": 10.6,
      "kind": "causeway over water"
     }
    ],
-   "deck_span_m": 36,
+   "deck_span_m": 48,
    "half_width_m": 3.6,
    "waypoints": [
     "Rootway Post",
@@ -6609,12 +6744,12 @@
     [
      1693.17,
      2808.89,
-     26.41
+     27.16
     ],
     [
      1685.34,
      2799.8,
-     31.08
+     32.56
     ],
     [
      1678.7,
@@ -6629,22 +6764,22 @@
     [
      1663.46,
      2771.39,
-     45.27
+     45.16
     ],
     [
      1655.24,
      2762.65,
-     46.96
+     46.89
     ],
     [
      1646.45,
      2754.49,
-     47.93
+     47.89
     ],
     [
      1637.19,
      2746.88,
-     48.37
+     48.35
     ],
     [
      1627.53,
@@ -6654,27 +6789,27 @@
     [
      1617.64,
      2732.96,
-     48.61
+     48.57
     ],
     [
      1615.34,
      2744.33,
-     48.61
+     48.32
     ],
     [
      1613.71,
      2756.21,
-     48.42
+     47.54
     ],
     [
      1612.59,
      2768.15,
-     47.77
+     46.35
     ],
     [
      1612.07,
      2780.14,
-     46.51
+     45.64
     ],
     [
      1610.64,
@@ -6689,22 +6824,22 @@
     [
      1605.05,
      2815.34,
-     33.76
+     35.32
     ],
     [
      1603.65,
      2827.22,
-     26.82
+     29.94
     ],
     [
      1600.8,
      2838.55,
-     20.04
+     24.68
     ],
     [
      1594.52,
      2848.78,
-     16.23
+     19.28
     ],
     [
      1586.27,
@@ -7323,7 +7458,7 @@
    "routing": "detour w=0.33 + sinuosity 119 m | detour w=0.77 + sinuosity 30 m | detour w=23.99 + sinuosity 81 m",
    "max_grade": 0.073,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [],
    "grade_class_m": {
     "carriageway": 2533,
@@ -8433,7 +8568,7 @@
    "routing": "detour w=23.99 + sinuosity 100 m | detour w=0.47 + sinuosity 91+63 m",
    "max_grade": 0.12,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [],
    "grade_class_m": {
     "carriageway": 1802,
@@ -9242,7 +9377,7 @@
    "routing": "detour w=23.99 + sinuosity 60 m | detour w=0.01 + sinuosity 76+10 m",
    "max_grade": 0.034,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [],
    "grade_class_m": {
     "carriageway": 1479,
@@ -9939,7 +10074,7 @@
    "routing": "detour w=23.99 + sinuosity 25 m | detour w=23.99 + sinuosity 140 m | detour w=23.99 + sinuosity 190 m",
    "max_grade": 0.096,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [],
    "grade_class_m": {
     "carriageway": 4269,
@@ -11774,7 +11909,7 @@
    "routing": "detour w=23.99 + sinuosity 214 m | detour w=23.99 + sinuosity 3 m",
    "max_grade": 0.056,
    "grade_bar": 0.12,
-   "stair_grade_bar": 0.58,
+   "stair_grade_bar": 0.45,
    "grade_exceptions": [],
    "max_cut_m": 0,
    "max_fill_m": 0,
@@ -12879,7 +13014,7 @@
    "region": "stone-forest",
    "x": 2272.5,
    "z": 1820.77,
-   "y": 90.07,
+   "y": 90.1,
    "at_m": 1563,
    "of_m": 2947
   },

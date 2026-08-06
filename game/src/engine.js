@@ -3528,6 +3528,19 @@ export class Engine {
       equip_load_pct: p.equipLoadPct, roll_class: p.rollClass,
       burden_ratio: +(p.burdenRatio || 0).toFixed(6), burden_tier: burdenTierOf(p.burdenRatio || 0).id,
       in_combat: this.inCombat(),
+      // ---- W1-01 round 3: what the ground and the water are doing to this body ---------------
+      // Round 2 could see hp and stamina and nothing else, so "60 s in 8.28 m of water costs no
+      // breath, no stamina and no state change" was as far as any probe could get. These are the
+      // five quantities that make the world's claim on the body legible without a second call.
+      water_band: p.waterBand || 'W0',
+      breath_s: this.traversal ? +this.traversal.breath.toFixed(2) : null,
+      breath_max_s: this.traversal ? this.traversal.cfg.water.breath_max_s : null,
+      submerged: this.traversal ? this.traversal.submerged : null,
+      airborne: this.traversal ? this.traversal.airborne : null,
+      mired: !!p.mired,
+      denied_by_water: { sprint: !!p.denySprint, roll: !!p.denyRoll },
+      afflictions: (p.afflictions || []).slice(),
+      stranded_by: p.strandedBy || null,
       // ---- W1-10: the `equipped` block the weapons critic asked for --------------------------
       // "No `equipped` block on getPlayerStats()" was one of the nine methods scored 0
       // fail-closed. It reports what is IN THE PLAYER'S HANDS right now, read off the combat

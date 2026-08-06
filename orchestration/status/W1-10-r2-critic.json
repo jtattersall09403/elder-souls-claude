@@ -1,16 +1,31 @@
 {
-  "task_id": "W1-10-r2-critic",
-  "role": "critic",
-  "piece": "W1-10 weapon movesets",
-  "round": 2,
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/90-verdicts/wave1/W1-10-r2.json",
-    "corpus/90-verdicts/wave1/W1-10-r2.md",
-    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read ARBITRATION S22/S26/CONSUMPTION, SCORING S0, WEAPON-CRITIC charter, W1-10 r1 verdict",
-  "notes_for_successor": "Round 1 was 0/10: movesets unreachable from running game. Round 2 claims full remediation. Must build INDEPENDENT tools for equipped_ok, CFS_live, reach. Do not trust tools/weapons/verify-frames.mjs or tools/harness/wpn-census-live.mjs (builder-authored)."
+ "task_id": "W1-10-r2-critic",
+ "role": "critic",
+ "piece": "W1-10 weapon movesets",
+ "round": 2,
+ "state": "measuring",
+ "outputs_expected": [
+  "corpus/90-verdicts/wave1/W1-10-r2.json",
+  "corpus/90-verdicts/wave1/W1-10-r2.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/"
+ ],
+ "outputs_written": [
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.{mjs,json}",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.{mjs,json}",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption.{mjs,json}",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption2.{mjs,json}",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.{mjs,json}"
+ ],
+ "findings": [
+  "INDEPENDENT (kritik-wgrid.mjs, node, critic-authored): CFS_live 1.0000, 20/20 contextual, 0 fallback, 0 absent. Each contextual instance has a DISTINCT slot id, DISTINCT clip id AND DISTINCT frame triple from the standing r1.1 baseline. Round 2's headline SURVIVES independent measurement.",
+  "INDEPENDENT (kritik-browser.mjs, headless Chromium, no route repair): game BOOTS at HEAD, 0 page errors. setLoadout 87/87; getPlayerStats().equipped.weapon_id matches the requested id on 87/87; live reach matches declared on 87/87; 86 distinct reach values; classes_with_zero_equippable []. equipped_ok 87/87 SURVIVES.",
+  "CONSUMPTION PASSES 7/7: perturbing the SHIPPED game/data files changes the fight. startup_f 24->60 moves the hit 36 f later; motion_value x0.25 drops damage 118->29.5; anim id swap changes the clip played AND the contact frame; capsule_length 1.05->0.20 turns a hit into a whiff; profile arc_deg 110->5 turns a hit into a whiff; deleting chains_to collapses r1.1>r1.2>r1.3 to r1.1>r1.1>r1.1; root_dz_m->0 drops attacker displacement 0.35 m -> 0 m.",
+  "node/browser parity CONFIRMED on the airborne sweep: 51/51 cells agree for 4 weapons x 2 buttons. jump.r1 IS reachable (jump frames 20-44); round 1's 'no attack from any frame' is fixed. jump.r2 exists only for UGS among the four probes.",
+  "PARITY: browser per-frame anim_len equals node startup+active+recovery exactly on all 16 fired contextual rows (dagger 39/37/38, ssw 68/64/67, axe 84/79/82, ugs 152/142/149).",
+  "FINDING (nonconformance, new): all 10 CGS/GHM weapons declare r1.3 and reach it via roll.r1->r1.3 and backstep.r1->r1.3. RI-WPN01 \u00a7A as amended wave 1 by BAR-CRITIQUE-W1-10-R1 \u00a7R3 explicitly says 'The round-2 workaround is not adopted' and requires roll.r1->r1.2 / mandatory count 23 for chain-2 classes. NOTE: that amendment's mtime is 22:26, the builder's commit is 22:11 -- the rule postdates the build by 15 minutes.",
+  "BAR CHURN: corpus/12-weapons/RI-WPN01/02/03 are MODIFIED IN THE WORKING TREE (uncommitted, mtimes 22:25-22:28) by the concurrent bar critic. RI-WPN02's Dg is rewritten from 5 dimensions to 9 (GRAMMAR_DIMS G1-G9) over 14 melee classes only; the 1.0 bar is UPHELD and a reachability witness at Dg_min 1.4445 is filed. The cited document BAR-CRITIQUE-W1-10-R1.md DOES NOT EXIST ON DISK yet.",
+  "RI-WPN02 \u00a7B amended: Reach = blade reach with root translation suppressed; threat_m = reach + root_dz derived; S26 contiguity vector is now a MANDATORY verdict artifact; HARD FAIL if non-contiguous; FAIL if reach_min_m > 0.60 m."
+ ],
+ "next_step": "S26 reach + contiguity sweep (mandatory artifact); then independent headline seven; then animation check",
+ "notes_for_successor": "Round 1 was 0/10: movesets unreachable from running game. Round 2 claims full remediation. Must build INDEPENDENT tools for equipped_ok, CFS_live, reach. Do not trust tools/weapons/verify-frames.mjs or tools/harness/wpn-census-live.mjs (builder-authored)."
 }

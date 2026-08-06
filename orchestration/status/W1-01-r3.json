@@ -22,7 +22,15 @@
     "game/src/sim/hazards.js",
     "tools/world/hazard-fire.mjs",
     "game/src/world/signature-geo.js",
-    "tools/world/build-signatures.mjs"
+    "tools/world/build-signatures.mjs",
+    "orchestration/amendments/AM-W1-01-01-wld04-colour-invariant-a7.md",
+    "reports/hazard-fire.json",
+    "reports/region-axes.json",
+    "tools/world/consumption.mjs",
+    "reports/consumption.json",
+    "tools/world/w1-01-r3-probe.mjs",
+    "reports/w1-01-r3.json",
+    "tools/world/region-dispersion.mjs"
   ],
   "findings": [
     "BASELINE CONFIRMED (probe critic-w1-01-r2-loco.mjs re-run at HEAD): L1 70.63 deg walked at full stick, state WALK; L2 150 m drop HP unchanged; L3 8.28 m water -> 1.1 m/s but stamina 120->120.",
@@ -43,8 +51,42 @@
     "camera(): unknown pose keys now THROW with a closed vocabulary [pos, look, fov, mode, lockOn]; pos/look shape and fov range validated; camera({}) is now a pure READ (it used to install an override at the current pose, i.e. asking where the camera was froze it).",
     "HAZARDS: game/src/sim/hazards.js reads hazards.json as the only source of magnitudes. 9 of 19 are ANCHORED on placed signature geometry (kiln domes, comb cliffs, voriplasm, dye vats, boles, welkynd pillars, root arches), 10 are terrain/water/weather conditions. SHELTER table implements RI-WLD11 H3 route/knowledge counters using the region's own ONLY-HERE element: a crater shelters from the salt-storm, the knife-marked stems are the safe path through the thicket, the Imperial road shelters from ridge-exposure.",
     "SIX of the nineteen hazards have damage.kind 'none' by design (RI-WLD11 M57 requires >=6). A health-bar probe cannot measure a VECTOR/GATE/STRANDING firing - that is why round 2's centroid probe read 620->620. They now fire with a consequence (affliction / route_closed) and a hazard_fired event carrying it.",
-    "NIGHT: six regions own an emissive signature element; Province.updateSignatureLights() places up to 6 bounded point lights of the region's own glow colour, driven from the same sun elevation the sky uses. An emissive material alone lights nothing around it, which is why round 2's night frames were near-black."
+    "NIGHT: six regions own an emissive signature element; Province.updateSignatureLights() places up to 6 bounded point lights of the region's own glow colour, driven from the same sun elevation the sky uses. An emissive material alone lights nothing around it, which is why round 2's night frames were near-black.",
+    "HAZARDS FIRING: 19/19 (reports/hazard-fire.json). Attrition, trap, kill, vector, gate and stranding classes all produce a consequence. TRAP re-arm bug found and fixed (a 16% comb collapse fired 60x/s because the volume re-armed on the next frame while the player was still in it).",
+    "M18 rebuilt: 12 MEASURED axes (was 7 measured + 5 dropped). New signature_silhouette (heightAt minus naturalHeightAt on a 12 m lattice) 60/78, architecture_placed (solid signature instances + deck spans) 78/78, hazard UN-DROPPED 78/78. Minimum axes differing across all 78 pairs = 8 (bar 8). fauna/audio/weather still honestly dropped.",
+    "Amendment AM-W1-01-01 filed: A7's instrument should state its pass condition on the COLOUR-STRIPPED control, not on 4x4 mean CIELAB. Argues for a harder bar against this piece's own interest.",
+    "CONSUMPTION (RI-MTH07): tools/world/consumption.mjs builds the world twice from the same modules the browser loads, once shipped and once with one field perturbed. 9/9 perturbations changed the world across 4 models (signatures.json, traversal.json, hazards.json, roads.json deck_spans). Examples: moving one rock_flute_spire 400 m drops the ground at its old position 434.607 -> 418.307 m; deleting the craters takes M19 stone-wastes 16 -> 0; slope.max_walkable_deg 40 -> 85 takes the climb up a 72 deg face 1.04 -> 2.93 m; salt-storm value 1.2 -> 0.1 takes 90 s of standing from 372 -> 31 HP; deleting deck_spans takes onDeckAt from a deck with 8.01 m of clearance to null and raises the >40 deg shoulder count from 52 to 90 of 248 sampled points.",
+    "SLOPE GATE FINAL: directional 1.5 m secant OR slopeAt at a 2.5 m baseline, whichever is greater, uphill only, carriageway and bridge decks exempt. Sweep of 7 faces: gate fires at 42.23/61.30/65.28/71.97 deg; MAX REALISED CLIMB GRADE across the whole sweep is 35.4 deg against the 40 deg bar. Round 2 walked 70.63 deg at full stick.",
+    "FALL: 3 m 0 hp, 5 m 10.63 (1.7%), 10 m 132.75 (21.4%), 20 m 525.12 (84.7%), 60 m and 150 m fatal. Round 2's probe stepped 180 frames, which at 19.6 m/s^2 cannot see a 150 m landing (3.91 s = 235 frames) even against a correct implementation.",
+    "NIGHT LIGHT PERF: six dynamic point lights took the M17 night pass from 11 s/frame to 3.75 MIN/frame on the software rasteriser. Cut to 2 lamps plus a region-glow-tinted night ambient in sky.js.",
+    "Road shoulders re-measured network-wide at 6 m along and 6 offsets across each non-tideway leg (37,506 samples): 1,130 points above 40 deg (3.0%), and 732 of those 1,130 are beside a DECK - i.e. they are the gorge wall the viaduct crosses, not fill the road placed. Only 398 are beside earth road. Round 2 counted 2,537 over-40 shoulder points on an all-earth network.",
+    "S24 water census and RI-WLD11 M57 hazard census both still PASS after the substrateAt road-is-FIRM change and the signature landform: area-weighted WCI 0.294 (bar 0.22-0.42), 5 dry regions, 2 bone dry, 19 hazards, 13/13 signatures, 1 KILL, 8 zero-damage.",
+    "npm gate (corpus-index --check) and tools/check-data.mjs both pass at 324 indexed data files.",
+    "ROAD FINAL (STAIR_GRADE 0.45): network max grade 0.45 = 24.2 deg (round 2: 1.637 = 58.6 deg). THE CROSSING max grade 24.2 deg, max cut 3.00 m at 3 m sampling. Network grade classes: 20,194 m carriageway / 750 m switchback / 1,645 m stair. Tallest EARTH embankment 6.97 m (round 2: 17.52 m). Tallest DECK SPAN 41.17 m over 2,026 m of structure, 15/15 read by field.onDeckAt.",
+    "BUG FOUND LATE: the signature landform delta was being added ON TOP of a bridge deck, putting the walkable surface 3 m above the slab the parapet clamps to, and it stalled the offline crossing at 545 m. field.heightAt now returns the deck outright (field._deckY) and never adds groundDelta over it; clampToDeck no longer clamps when the destination is on another deck (two spans overlap where the road doubles back)."
   ],
-  "next_step": "rebuild region shot pack; run dispersion + structure-only + night LOO",
-  "notes_for_successor": ""
+  "next_step": "region shot pack finishing; then run tools/world/region-dispersion.mjs for raw+structure LOO/Fisher on day and night",
+  "notes_for_successor": "State at hand-off: signatures (13/13 M19), traversal (slope gate/fall/water/mire), hazards (19/19 firing), roads (spans as structures, grade 0.58 max, cut 3.00 at 3 m sampling), camera refusals, M18 12 axes min 8. OUTSTANDING: (1) region shot pack rebuild + dispersion raw/structure-only for day and night is the last headline measurement - run tools/world/province-shots.mjs --out reports/region-shots then tools/world/critic-w1-01-r2-dispersion.mjs and critic-w1-01-r2-structure.mjs. (2) M36-ROAD-RELIEF is 27.3% against a 30% target and I did not move it - it needs a route change, not a deck change, and route changes risk the pinned leg lengths. (3) No audio anywhere, so RI-WLD04 M20 is still 0 and the audio axis is still honestly dropped. (4) No enemy roster in the province, so RI-AI05/RI-PRG06/M21 remain 0 - that is W1-09's. (5) tools/world/w1-01-r3-probe.mjs is written but had not been run at the time of writing.",
+  "headline_numbers": {
+    "M19_only_here_elements": "13/13 in the running world (signatureAudit): 840 instances at the declared counts, 0 outside their own region. 7 of 13 are LANDFORM in field.heightAt(): flute spire +25.2 m, comb cliff +12.8 m, petrified bole +9.5 m, beached hull +8.2 m, kiln dome +7.9 m, glassed crater -8.9 m, root causeway +2.6 m.",
+    "max_walkable_slope": "40.0 deg, declared in game/data/world/traversal.json and read by BOTH sim/traversal.js and scale-audit.mjs S9-NO-FENCES. Sweep of 7 faces: gate fires at 42.23 / 61.30 / 65.28 / 71.97 deg; max realised climb grade 35.4 deg. Round 2: 70.63 deg walked at full stick.",
+    "fall_damage": "3 m 0 hp; 5 m 10.63 (1.7% max); 10 m 132.75 (21.4%); 20 m 525.12 (84.7%); 60 m and 150 m fatal. Round 2: 150 m left HP 620->620.",
+    "water": "W5 realises exactly 1.10 m/s, state SWIM, stamina 4.0/s (declared 4.0), sprint and roll DENIED. Round 2: 60 s in 8.28 m cost nothing and stayed in WALK.",
+    "hazards": "19/19 fire (reports/hazard-fire.json). Round 2: 0 of 19 in 13 x 60 s.",
+    "crossing": "55.441 min / 6,644.3 m / mean 1.9976 m/s / 0.177% below 1.6 m/s. All four M2/M3 checks PASS.",
+    "crossing_grade_and_cut": "max grade 0.45 = 24.2 deg (round 2: 1.637 = 58.6 deg); max cut 3.00 m sub-sampled at 3 m (round 2: 3.62 m while the tool reported 3.0).",
+    "deck_spans": "STRUCTURES. 15/15 read by field.onDeckAt() with >=3.62 m clearance; slab, parapets, piers and springing arches built by province._spans(); parapet collision by field.clampToDeck(). Tallest earth embankment 6.97 m (round 2: 17.52 m).",
+    "M18": "12 measured axes (was 7 measured + 5 dropped), minimum 8 axes differing over all 78 pairs. architecture and hazard un-dropped; new signature_silhouette from placed instances.",
+    "consumption": "9/9 perturbations changed the world across 4 shipped models.",
+    "camera": "camera({yaw,pitch,arm}) THROWS; unknown keys, malformed pos/look and out-of-range fov all throw; camera({}) is a read."
+  },
+  "could_not_close": [
+    "M36-ROAD-RELIEF 27.3% against a >=30% target (fail floor 12%). This is a ROUTE property, not a deck property: it counts 500 m road windows with >=15 m of elevation change. Fixing it means re-routing legs through more relief, and every leg's length and sinuosity is pinned to RI-WLD01 \u00a74's table and checked by M4-LEG-TIMES and the crossing's 52-65 min band. I would need a ruling that the declared leg lengths may move before touching it.",
+    "RI-WLD04 M20 (audio blind test, 39 clips, >=26/39 to pass) is unrunnable: getWorldStats reports audioMB 0 and there is no audio subsystem in the build at all. The `audio` axis in M18 is still honestly DROPPED for the same reason. This needs a wave assignment, not a W1-01 fix.",
+    "RI-AI05, RI-PRG06 and RI-WLD04 M21 all need a placed enemy roster; entitiesLive is still 0 in all thirteen regions. danger_tier 1-5 is still an integer that gates nothing. That is W1-09's roster, and hazards are as far as W1-01 can honestly take regional lethality on its own.",
+    "RI-CAM02 M1-M7 belong to W1-06. I fixed the harness surface (camera() now refuses loudly) but did not run the camera item's methods.",
+    "The M17 human blind test cannot be taken by me: I built the world, so I am contaminated on every frame. Only a fresh-context critic can produce the human number, and the machine numbers in reports/region-dispersion.json are the substitute, not the thing.",
+    "MIRED is aggressive and a critic re-running tools/world/critic-w1-01-r2-loco.mjs will see it. RI-WLD10 \u00a74 says six footfalls on SUCK mires you; I gated it on SUCK WITH WATER IN IT (traversal.json substrate.mire_requires_band = 'W1') and declared the deviation in the file. Set it to 'W0' for the literal reading and roughly a fifth of the province becomes a struggle to cross on foot.",
+    "tools/world/critic-w1-01-r2-loco.mjs's L4 travel block reports 'travelRide: no ride is in progress' after every quote. I did not touch travel and it reproduced at HEAD before any of my changes, so it is either a pre-existing sequencing defect in the probe or in the travel surface. Flagged, not fixed."
+  ]
 }

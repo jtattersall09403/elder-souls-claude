@@ -42,17 +42,17 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-06 22:21:33Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-06 22:40:04Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
 <div class="grid">
-  <div class="card"><div class="n">141</div><div class="l">Reference items</div></div>
-  <div class="card"><div class="n">466</div><div class="l">Subsystems judged</div></div>
-  <div class="card"><div class="n">12</div><div class="l">Verdicts filed</div></div>
-  <div class="card"><div class="n bad">0/12</div><div class="l">Verdicts passing</div></div>
+  <div class="card"><div class="n">142</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">467</div><div class="l">Subsystems judged</div></div>
+  <div class="card"><div class="n">18</div><div class="l">Verdicts filed</div></div>
+  <div class="card"><div class="n bad">0/18</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n warn">10</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">106,537</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">106,598</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">21</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">1,035</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -119,7 +119,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>UIX</code></td><td></td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
 <tr><td><code>VIS</code></td><td>Visual</td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>WLD</code></td><td>World design</td><td>14</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
-<tr><td><code>WPN</code></td><td></td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
+<tr><td><code>WPN</code></td><td></td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 </table>
 
 <h2>Reference items &mdash; the bars we must clear</h2>
@@ -265,6 +265,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>RI-WPN04</code></td><td>Contextual attacks — rolling, backstep, running, jumping, plunging, guard counter</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>weapon.context.rolling weapon.context.running weapon.context.backstep weapon.context.aerial weapon.moveset.slots combat.attack.moveset combat.frames.cancel</code></td></tr>
 <tr><td><code>RI-WPN05</code></td><td>Weapon feel — hitstop, material impact, whiff, and mass in the animation</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>weapon.feel.hitstop weapon.feel.material weapon.feel.mass weapon.feel.whiff combat.feedback.hitstop</code></td></tr>
 <tr><td><code>RI-WPN06</code></td><td>Two-handing, shields, the offhand, and who is allowed to parry</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>weapon.stance.twohand weapon.offhand.config weapon.shield.taxonomy weapon.moveset.slots combat.block.guard combat.block.parry</code></td></tr>
+<tr><td><code>RI-WPN07</code></td><td>Weapon character — the situations a weapon is wrong for, and the reversal that proves it</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>weapon.identity.character weapon.class.differentiation weapon.identity.withinclass combat.weapon.identity</code></td></tr>
 </table>
 
 <h2>Verdicts</h2>
@@ -280,6 +281,12 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td>1</td><td>W1-14</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>w1-15</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td></td><td>W1-14</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
+<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
+<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
+<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
+<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
+<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
+<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
 <tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
 </table>
 

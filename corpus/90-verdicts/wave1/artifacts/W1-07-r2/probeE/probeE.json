@@ -1,0 +1,717 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r2e.mjs",
+  "tests": [
+    {
+      "id": "E1-custom-route-gamepad-crash",
+      "presses": 11,
+      "throw_from_stepFrames": "census: writ.class-custom-neglected cannot repeat strength",
+      "page_errors": [],
+      "log": [
+        {
+          "walked_out_to": "writ.race-observed"
+        },
+        {
+          "node": "writ.race-observed",
+          "after": "writ.sex"
+        },
+        {
+          "node": "writ.sex",
+          "after": "writ.upbringing"
+        },
+        {
+          "node": "writ.upbringing",
+          "after": "writ.given-name"
+        },
+        {
+          "node": "writ.given-name",
+          "after": "writ.class-routes"
+        },
+        {
+          "at": "writ.class-routes",
+          "options": [
+            "Name a trade the Office already has a word for.",
+            "Tell her what you actually do.",
+            "Ask me something instead. I do not know what to call it."
+          ]
+        },
+        {
+          "now": "writ.class-custom-name",
+          "options": [],
+          "kind": "text"
+        },
+        {
+          "node": "writ.class-custom-name",
+          "kind": "text",
+          "offered": [],
+          "picked": [],
+          "sel": 0
+        },
+        {
+          "node": "writ.class-custom-favoured",
+          "kind": "pick",
+          "offered": [
+            "strength",
+            "endurance",
+            "agility",
+            "speed",
+            "vigour",
+            "willpower",
+            "intellect",
+            "hist-bond",
+            "personality",
+            "luck"
+          ],
+          "picked": [],
+          "sel": 0
+        },
+        {
+          "node": "writ.class-custom-favoured",
+          "kind": "pick",
+          "offered": [
+            "strength",
+            "endurance",
+            "agility",
+            "speed",
+            "vigour",
+            "willpower",
+            "intellect",
+            "hist-bond",
+            "personality",
+            "luck"
+          ],
+          "picked": [
+            "strength"
+          ],
+          "sel": 1
+        },
+        {
+          "node": "writ.class-custom-neglected",
+          "kind": "pick",
+          "offered": [
+            "strength",
+            "endurance",
+            "agility",
+            "speed",
+            "vigour",
+            "willpower",
+            "intellect",
+            "hist-bond",
+            "personality",
+            "luck"
+          ],
+          "picked": [],
+          "sel": 0
+        },
+        {
+          "node": "writ.class-custom-neglected",
+          "kind": "pick",
+          "offered": [
+            "strength",
+            "endurance",
+            "agility",
+            "speed",
+            "vigour",
+            "willpower",
+            "intellect",
+            "hist-bond",
+            "personality",
+            "luck"
+          ],
+          "picked": [
+            "strength"
+          ],
+          "sel": 1
+        },
+        {
+          "THREW_ON": "writ.class-custom-neglected",
+          "error": "census: writ.class-custom-neglected cannot repeat strength"
+        }
+      ],
+      "verdict": "ORDINARY BUTTON PRESSES ON THE CUSTOM-CLASS ROUTE THROW OUT OF THE FIXED STEP"
+    },
+    {
+      "id": "E2-gamepad-only-questionnaire-route",
+      "completed": true,
+      "button_presses": 28,
+      "left_stick_walks": 1,
+      "error": null,
+      "page_errors": [],
+      "active_device": "gamepad",
+      "pad_polls": 85,
+      "pad_id": "shim standard gamepad",
+      "character": {
+        "race": "khajiit",
+        "sex": "male",
+        "upbringing": "interior",
+        "given_name": "Ma'zharra",
+        "hatch_name": "Silence-Under-Salt",
+        "birthsign": "raj-xul"
+      },
+      "writ_present": true,
+      "writ_sample": "{\"id\":\"stamped-writ\",\"name\":\"Reed-case writ, stamped\",\"text\":\"PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\\n\\nName recorded: Ma'zharra\\nAlso called: Silence-Unde",
+      "log": [
+        {
+          "node": "hold.hatch-name",
+          "kind": "text",
+          "options": 0,
+          "to": "hold.out",
+          "done": false
+        },
+        {
+          "via": "left stick",
+          "now": "writ.race-observed"
+        },
+        {
+          "node": "writ.race-observed",
+          "kind": "observed",
+          "options": 1,
+          "to": "writ.sex",
+          "done": false
+        },
+        {
+          "node": "writ.sex",
+          "kind": "choice",
+          "options": 3,
+          "to": "writ.upbringing",
+          "done": false
+        },
+        {
+          "node": "writ.upbringing",
+          "kind": "choice",
+          "options": 4,
+          "to": "writ.given-name",
+          "done": false
+        },
+        {
+          "node": "writ.given-name",
+          "kind": "text",
+          "options": 0,
+          "to": "writ.class-routes",
+          "done": false
+        },
+        {
+          "node": "writ.class-routes",
+          "kind": "choice",
+          "options": 3,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.class-questions",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "options": 4,
+          "to": "writ.birthsign",
+          "done": false
+        },
+        {
+          "node": "writ.birthsign",
+          "kind": "choice",
+          "options": 9,
+          "to": null,
+          "done": true
+        }
+      ]
+    },
+    {
+      "id": "E3-keyboard-only-completion",
+      "completed": true,
+      "key_presses": 17,
+      "error": null,
+      "active_device": "keyboard",
+      "character": {
+        "race": "nord",
+        "given_name": "bjon",
+        "birthsign": "raj-xul"
+      },
+      "log": [
+        {
+          "node": "hold.hatch-name",
+          "kind": "text",
+          "to": "hold.out",
+          "typed": "",
+          "done": false
+        },
+        {
+          "via": "W held",
+          "now": "writ.race-observed"
+        },
+        {
+          "node": "writ.race-observed",
+          "kind": "observed",
+          "to": "writ.sex",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.sex",
+          "kind": "choice",
+          "to": "writ.upbringing",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.upbringing",
+          "kind": "choice",
+          "to": "writ.given-name",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.given-name",
+          "kind": "text",
+          "to": "writ.class-routes",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.class-routes",
+          "kind": "choice",
+          "to": "writ.class-questions",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "to": "writ.class-questions",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "to": "writ.class-questions",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "to": "writ.class-questions",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "to": "writ.class-questions",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "to": "writ.class-questions",
+          "typed": "",
+          "done": false
+        },
+        {
+          "node": "writ.birthsign",
+          "kind": "choice",
+          "to": null,
+          "typed": "",
+          "done": true
+        }
+      ]
+    },
+    {
+      "id": "E4-S26-reach-band",
+      "rows": [
+        {
+          "dist_m": 0.4,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 0.6,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 0.8,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 1,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 1.2,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 1.4,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 1.6,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 1.8,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 2,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 2.2,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 2.4,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 2.6,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 2.8,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 3,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 3.2,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        },
+        {
+          "dist_m": 3.4,
+          "chop": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "thrust": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_a": {
+            "dmg": 0,
+            "script_err": null
+          },
+          "combo_b": {
+            "dmg": 0,
+            "script_err": null
+          }
+        }
+      ],
+      "reach": {
+        "chop": {
+          "reaching_m": [],
+          "min": null,
+          "max": null,
+          "contiguous": null
+        },
+        "thrust": {
+          "reaching_m": [],
+          "min": null,
+          "max": null,
+          "contiguous": null
+        },
+        "combo_a": {
+          "reaching_m": [],
+          "min": null,
+          "max": null,
+          "contiguous": null
+        },
+        "combo_b": {
+          "reaching_m": [],
+          "min": null,
+          "max": null,
+          "contiguous": null
+        }
+      },
+      "verdict": "THE STATBLOCK NEVER REACHES A STATIONARY PLAYER AT ANY DISTANCE"
+    }
+  ]
+}

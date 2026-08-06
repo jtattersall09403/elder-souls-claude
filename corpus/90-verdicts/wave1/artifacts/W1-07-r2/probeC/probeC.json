@@ -1,0 +1,402 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r2c.mjs",
+  "tests": [
+    {
+      "id": "C1-matrix-perturbation-vs-entity",
+      "route_hit": [
+        "progression/race-reactions.json"
+      ],
+      "page_errors": [],
+      "baseline_dunmer": {
+        "helstrom-draught-seller": [
+          "RG-DEEP",
+          6,
+          "hostile",
+          {
+            "race": -40,
+            "upbringing": -4,
+            "total": -44
+          }
+        ],
+        "helstrom-net-mender": [
+          "RG-TOWN",
+          24,
+          "cold",
+          {
+            "race": -18,
+            "upbringing": 0,
+            "total": -18
+          }
+        ],
+        "helstrom-reed-seller": [
+          "RG-TOWN",
+          22,
+          "cold",
+          {
+            "race": -18,
+            "upbringing": 0,
+            "total": -18
+          }
+        ],
+        "helstrom-salt-factor": [
+          "RG-DRES",
+          57,
+          "neutral",
+          {
+            "race": 12,
+            "upbringing": 0,
+            "total": 12
+          }
+        ]
+      },
+      "perturbed_dunmer": {
+        "helstrom-draught-seller": [
+          "RG-DEEP",
+          60,
+          "friendly",
+          {
+            "race": 14,
+            "upbringing": -4,
+            "total": 10
+          }
+        ],
+        "helstrom-net-mender": [
+          "RG-TOWN",
+          24,
+          "cold",
+          {
+            "race": -18,
+            "upbringing": 0,
+            "total": -18
+          }
+        ],
+        "helstrom-reed-seller": [
+          "RG-TOWN",
+          22,
+          "cold",
+          {
+            "race": -18,
+            "upbringing": 0,
+            "total": -18
+          }
+        ],
+        "helstrom-salt-factor": [
+          "RG-DRES",
+          57,
+          "neutral",
+          {
+            "race": 12,
+            "upbringing": 0,
+            "total": 12
+          }
+        ]
+      },
+      "baseline_saxhleel": {
+        "helstrom-draught-seller": [
+          "RG-DEEP",
+          74,
+          "friendly",
+          {
+            "race": 14,
+            "upbringing": 10,
+            "total": 24
+          }
+        ],
+        "helstrom-net-mender": [
+          "RG-TOWN",
+          44,
+          "neutral",
+          {
+            "race": 6,
+            "upbringing": -4,
+            "total": 2
+          }
+        ],
+        "helstrom-reed-seller": [
+          "RG-TOWN",
+          42,
+          "neutral",
+          {
+            "race": 6,
+            "upbringing": -4,
+            "total": 2
+          }
+        ],
+        "helstrom-salt-factor": [
+          "RG-DRES",
+          15,
+          "cold",
+          {
+            "race": -30,
+            "upbringing": 0,
+            "total": -30
+          }
+        ]
+      },
+      "entities_whose_disposition_moved": [
+        {
+          "eid": "helstrom-draught-seller",
+          "group": "RG-DEEP",
+          "before": 6,
+          "after": 60
+        }
+      ],
+      "price_dunmer_before": {
+        "r": -44,
+        "buyMult": 1.264,
+        "sellMult": 0.78,
+        "skill_terms": {
+          "buyMult": 1.2085,
+          "sellMult": 0.3668,
+          "disposition": 50,
+          "mercantile": 5,
+          "personality": 6
+        },
+        "skill_buy_mult": 1.2085,
+        "skill_sell_mult": 0.3668,
+        "effective_buy_mult": 1.5275,
+        "effective_sell_mult": 0.2861,
+        "buy": 92,
+        "sell": 17,
+        "buy_surcharge_only": 76,
+        "sell_surcharge_only": 47
+      },
+      "price_dunmer_after": {
+        "r": 10,
+        "buyMult": 0.94,
+        "sellMult": 1.05,
+        "skill_terms": {
+          "buyMult": 1.2085,
+          "sellMult": 0.3668,
+          "disposition": 50,
+          "mercantile": 5,
+          "personality": 6
+        },
+        "skill_buy_mult": 1.2085,
+        "skill_sell_mult": 0.3668,
+        "effective_buy_mult": 1.136,
+        "effective_sell_mult": 0.3851,
+        "buy": 68,
+        "sell": 23,
+        "buy_surcharge_only": 56,
+        "sell_surcharge_only": 63
+      },
+      "verdict_matrix": "PERTURBING THE MATRIX MOVED A PERSON IN THE ROOM"
+    },
+    {
+      "id": "C1b-topics-by-race",
+      "per_npc": [
+        {
+          "eid": "helstrom-draught-seller",
+          "dunmer_topics": [
+            "the-draught",
+            "the-market",
+            "the-tides",
+            "the-surcharge"
+          ],
+          "saxhleel_topics": [
+            "the-draught",
+            "the-market",
+            "the-tides",
+            "the-surcharge"
+          ],
+          "identical": true
+        },
+        {
+          "eid": "helstrom-net-mender",
+          "dunmer_topics": [
+            "the-market",
+            "the-old-cages",
+            "the-tides"
+          ],
+          "saxhleel_topics": [
+            "the-market",
+            "the-old-cages",
+            "the-tides"
+          ],
+          "identical": true
+        },
+        {
+          "eid": "helstrom-reed-seller",
+          "dunmer_topics": [
+            "the-market",
+            "boots",
+            "why-anyone-comes-here"
+          ],
+          "saxhleel_topics": [
+            "the-market",
+            "boots",
+            "why-anyone-comes-here"
+          ],
+          "identical": true
+        },
+        {
+          "eid": "helstrom-salt-factor",
+          "dunmer_topics": [
+            "house-business",
+            "the-factor-house",
+            "the-wine",
+            "the-net-price"
+          ],
+          "saxhleel_topics": [
+            "house-business",
+            "the-factor-house",
+            "the-wine",
+            "the-net-price"
+          ],
+          "identical": true
+        }
+      ],
+      "all_identical": true,
+      "verdict": "THE TOPIC LIST AN NPC OFFERS IS IDENTICAL FOR A DUNMER AND A SAXHLEEL — requires.race/forbids.race is never evaluated"
+    },
+    {
+      "id": "C2-dry-well-drawback-observable",
+      "rows": [
+        {
+          "sign": "raj-xul",
+          "spell_used": "AM-W1-14-01",
+          "focus_max": 56,
+          "before": {
+            "f": 56,
+            "m": 56
+          },
+          "spent": {
+            "f": 56,
+            "m": 56
+          },
+          "hearth": {
+            "rested": true,
+            "focus_restored": true,
+            "focus": 56,
+            "focus_max": 56,
+            "why": null,
+            "rest_clamp_reset": true,
+            "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here."
+          },
+          "after": {
+            "f": 56,
+            "m": 56
+          }
+        },
+        {
+          "sign": "nu-ixtu",
+          "spell_used": "AM-W1-14-01",
+          "focus_max": 90,
+          "before": {
+            "f": 90,
+            "m": 90
+          },
+          "spent": {
+            "f": 90,
+            "m": 90
+          },
+          "hearth": {
+            "rested": true,
+            "focus_restored": false,
+            "focus": 90,
+            "focus_max": 90,
+            "why": "The Dry Well. RI-CHR03: the wells do not fill you. AMENDMENT-W1-07-03.",
+            "rest_clamp_reset": true,
+            "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here."
+          },
+          "after": {
+            "f": 90,
+            "m": 90
+          }
+        }
+      ],
+      "verdict": "see focus before/after: the drawback is only observable if Focus can actually be spent below max"
+    },
+    {
+      "id": "C3-questionnaire-text-rendered",
+      "rows": [
+        {
+          "i": 0,
+          "q": "q1",
+          "question_text": "The salt-road out of the Hills is the only dry way north for a month. There is a house at the crossing that takes a toll, and the men in it wear a mark you have seen on the sides of ships.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 1,
+          "q": "q2",
+          "question_text": "A well you drank at as a child is grey to the rim, and the keeper is still sitting beside it, and has been for some days.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 2,
+          "q": "q3",
+          "question_text": "A tithe-barge has grounded on the flats and the crew have gone for help. In the hold there is salt, and rope, and a man in a collar who says he was put there yesterday. The tide turns in an hour.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 3,
+          "q": "q4",
+          "question_text": "The wall at Blackrose has a gate and the gate has a list, and your name is not on it, and the man who keeps the list is asleep in the sun.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 4,
+          "q": "q5",
+          "question_text": "Water has opened a hole into a xanmeer that was sealed before the Empire had a name for this coast. It is a long drop and the air coming up is old.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 5,
+          "q": "q6",
+          "question_text": "Your kin has been dead four days and the roots here are grey and will not drink her. The nearest living well is two days' walk and she will not last it.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 6,
+          "q": "q7",
+          "question_text": "A river-crew has both banks of the narrows and wants a share of what you are carrying, and their leader is looking at your hands rather than your face.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 7,
+          "q": "q10",
+          "question_text": "There is an egg in the shallows that should not be where it is, and the pool it belongs to is a day behind you, and the water here is warm and rising.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 8,
+          "q": "q11",
+          "question_text": "Three of you are on a rope over a channel and the rope is failing. The one below you is heavier and is holding a child.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        },
+        {
+          "i": 9,
+          "q": "q12",
+          "question_text": "A tax barge has come apart on the bar outside Gideon and the crew are in the water and so is the strongbox, and both are drifting the same way.",
+          "line_drawn": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
+          "drawn": false
+        }
+      ],
+      "distinct_question_texts": 10,
+      "distinct_drawn_lines": 1,
+      "questions_whose_text_reaches_the_frame": 0,
+      "writ_present": false,
+      "writ_rendered_after_stamp": [
+        "Tuleeh-Ma",
+        "The Writ House at Tidewrack",
+        "Which tide were you drawn on?",
+        "The Full Root",
+        "The Warm Stone",
+        "The Long Root",
+        "The Dry Well",
+        "The Spilled"
+      ],
+      "verdict": "NONE OF THE TEN DILEMMAS IS EVER DRAWN. The player sees four answers with no question."
+    }
+  ]
+}

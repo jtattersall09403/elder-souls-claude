@@ -1,0 +1,153 @@
+{
+  "critic": "bar-critic",
+  "area": "12-weapons",
+  "pass": "W1-10-R1",
+  "date": "2026-08-06",
+  "scope": {
+    "reference_items": ["RI-WPN01", "RI-WPN02", "RI-WPN03", "RI-WPN04", "RI-WPN05", "RI-WPN06"],
+    "doctrine": ["WEAPON-CRITIC.md", "moveset.schema.json"],
+    "amendments_ruled": ["AMENDMENT-W1-10-CRITIC-01", "AMENDMENT-W1-10-02"],
+    "worked_example": "corpus/90-verdicts/wave1/W1-10"
+  },
+
+  "verdict": "NOT_SATISFIED",
+  "verdict_note": "These bars can prove that eighty-seven weapons are different. They cannot prove that any of them has an opinion, and in W1-10 they could not tell that not one of the eighty-seven was in the game. Six defects: four in the instruments, two holes where no instrument existed. All six fixed or filed; the area is not cleared until the CONSUMPTION and RI-WPN07 fixes have been RUN once.",
+
+  "biggest_weakness": "The bars verify the artifact and not the game, and the blind tests - the one instrument supposed to be immune to that - are the worst offenders. W1-10 scored 0/10 with the movesets provably unreachable from the running game, and returned PASS on BOTH mandatory blind comparisons plus ARI, SEP, D_min, TDV and ILS. Six of seven headline numbers and both blind tests were green on a layer no player could touch.",
+
+  "referrals": [
+    {
+      "id": "R1",
+      "question": "Is Dg_min >= 1.0 reachable, or is the bar broken?",
+      "ruling": "ARITHMETIC UPHELD, THRESHOLD HELD, DIMENSION SET REPLACED",
+      "verified_independently": {
+        "pinned_only_Dg_min": {"builder": 0.396, "bar_critic": 0.380, "pair": "SPR-TSW"},
+        "best_mass_monotone": {"builder": 0.916, "bar_critic": 0.933},
+        "unconstrained_optimum": {"builder": 1.601, "bar_critic": 1.583}
+      },
+      "defects_found_in_the_instrument": [
+        "Reach misclassified as a mass dimension and excluded. corr with weight tier 0.586 vs motion value 0.889, poise 0.873, stamina 0.935 - the WEAKEST-correlated thing Dg discards, and the item's own How-we-lose #4 calls it geometry.",
+        "BOW inside the z-normalisation population. Its 22.0 m projectile range compresses the melee reach z-span from 3.599 to 0.542 - a 6.64x loss. NOT confined to Dg: D5 is one of the twelve dimensions of D_min and of RI-WPN03's F87, so D_min, D_med, SEP, W_min and W_med have all been read off a broken reach column. This is the bar critic's own finding; neither the weapon critic nor the builder found it.",
+        "Nothing looked past the first hit (AMENDMENT-W1-10-CRITIC-01 Defect 2, upheld)."
+      ],
+      "remedy": "RI-WPN02 section D: nine GRAMMAR_DIMS over the 14 melee classes - four pinned, reach admitted, hyperarmour, plus free chain-grammar dims G7 chain_arc_range, G8 chain_shape_count, G9 chain_root_ratio, all measured from hitbox records.",
+      "reachability_witness": {
+        "as_published": 0.4580,
+        "plus_reach_only": 0.4770,
+        "plus_chain_grammar_only": 0.8047,
+        "repaired_set": 1.4445,
+        "repaired_best_monotone": 2.3485,
+        "note": "All rows over the same 14 melee classes. D11 is a plainly narratable monotone ladder, not an optimised one. Reach alone moves SPR-TSW and does nothing for AXE-MCE; the chain triple does the reverse. Both repairs are required. Both new derived constraints are met on the nose (7/14 and 10/14 against floors of 7 and 10) - the witness is a floor design, not a comfortable one.",
+        "script": "corpus/80-methods/m-wpn02-dg-witness.mjs"
+      },
+      "options_rejected": {
+        "option_2_lower_to_0.90": "REJECTED on principle. 0.90 was chosen because the build measured 0.914. A threshold reached by lowering it has stopped being a bar, and curve-fitting the corpus is worse than curve-fitting the roster because the roster is re-measured every wave.",
+        "option_1_Rh_as_D13": "REJECTED on arithmetic - see R2."
+      }
+    },
+    {
+      "id": "R2",
+      "question": "AMENDMENT-W1-10-CRITIC-01 and -02, clause by clause",
+      "clauses": [
+        {
+          "clause": "CRITIC-01 Defect 1 - ARI bands unreachable from below",
+          "disposition": "ADOPTED",
+          "correction": "C_min = 664 assumed WITHIN-class sharing; section C never said so, so the true floor was ceil(S_total/4) = 517, ARI = 0.2504. SHARE scope now tightened to within-class in RI-WPN03 section C, which is what makes the floor real. With the chain-2 ruling C_min = 656, ARI_min = 0.3177.",
+          "bands": {"pass": ">= 0.42", "hard_fail": "< 0.33", "fragmentation": "> 0.60 FAIL"},
+          "note": "The amendment's proposed 0.32 hard fail sat 0.0015 above the floor and would have been decorative."
+        },
+        {
+          "clause": "CRITIC-01 Defect 2 - nothing measures the chain",
+          "disposition": "DIAGNOSIS UPHELD, INSTRUMENT REJECTED",
+          "arithmetic": "RI-CMB02 section C's chain multipliers are CLASS-UNIFORM (hit2 startup x0.78 recovery x1.05; hit3 recovery x1.35). Therefore Rh's ratio components are r1_recovery/r1_startup times a constant - a rescaling of a dimension Dg already has - and its gap components correlate -0.976 with r1_startup. Adding Rh to GRAMMAR_DIMS would have imported the most mass-correlated quantity in the corpus into the distance that exists to strip mass out. It raises Dg_min 0.458 -> 0.594; raw r1_startup alone gets 0.481 of that for free.",
+          "replacement": "RI-WPN03 section D.3 Chg - the chain measured as a sequence of shapes, arcs, root travel and swing planes, from hitbox records. A chain is a sequence of swings, not a sequence of frame ratios."
+        },
+        {
+          "clause": "CRITIC-01 Rh_min < 0.03 as a hard fail (builder asked to defer to wave 2)",
+          "disposition": "REJECTED OUTRIGHT, NOT DEFERRED",
+          "reasons": [
+            "With class-uniform multipliers, Rh within a class is a function of frame overrides alone. A weapon whose deviation is a new clip, a new shape or a new arc - the expensive overrides RI-WPN03 section B distinguishes from parameter nudges, and exactly what DEV_id buys - sits at Rh distance 0 from its baseline and hard-fails. A hard fail that rewards nudging frames over authoring animation inverts WEAPON-CRITIC section 1 corollary 1.",
+            "BOW's chain is one link, so Rh is all padding and within-class Rh_min is structurally 0 for all five bows. Measured on the shipped roster BOW has ONE distinct chain-frame signature across five weapons. The threshold would have fired immediately on a roster the same corpus calls the strongest thing in the piece."
+          ]
+        },
+        {
+          "clause": "-02 section D - downgrade the over-fragmentation bar to a warning",
+          "disposition": "REJECTED",
+          "reason": "The stated tension rests on a bar that does not exist. Section C requires UNQ >= 1 and DEV >= 4, not UNQ >= 4, and DEV is satisfiable by parameter overrides costing no clips. The floors force ARI to roughly 0.32-0.35 against a fragmentation bar at 0.60 - 0.25 of clearance. The builder's own roster disproves it: ARI 0.4547 with UNQ mean 3.70 and zero DEV_id == 0. It is the only bar in the area enforcing the second side of 'subtly unique' (WEAPON-CRITIC section 1 corollary 3). THIS IS THE ONE CLAUSE IN EITHER FILING THAT ARGUES FOR AN EASIER STANDARD RATHER THAN A BETTER ONE."
+        },
+        {"clause": "-02 section D - make the chain a Dg dimension, not only within-class", "disposition": "PRINCIPLE ADOPTED (as G7-G9), INSTRUMENT REJECTED"},
+        {"clause": "-02 section D - pad with the weapon's own last link", "disposition": "ADOPTED, and it matters more for Chg than it did for Rh"},
+        {"clause": "-02 section C - the R2 active/recovery split", "disposition": "NOTED, no amendment needed; the useful half is that the eight extension classes are not covered by RI-CMB02"}
+      ]
+    },
+    {
+      "id": "R3",
+      "question": "RI-WPN01 section A r1.3 mandatory vs RI-WPN02 section B max_chain 2",
+      "ruling": "ADOPTED as the builder proposed, and a third contradiction it did not find is fixed with it",
+      "changes": [
+        "r1.3 and 2h.r1.3 conditioned on max_chain >= 3, exactly as r1.4 already is",
+        "'terminal for 11 of 15 classes' corrected to 9 (chain-4+ = DGR/FST/CSW; chain-3 = 9 classes; chain-2 = CGS/GHM; BOW = 1)",
+        "THIRD CONTRADICTION, found in this pass: slot 4 listed TSW as r1.4-legal while citing the very column that publishes TSW at max_chain 3. TSW struck.",
+        "Mandatory count 23 for CGS/GHM; S_total = 72*25 + 10*23 + 5*7 = 2065; slots_present reported per class, never /25",
+        "Round-2 workaround (roll.r1 -> r1.3) NOT ADOPTED: it contradicts section A slot 10's published chains_to. A class may diverge from the chain graph only by an explicit RI-WPN02 section C row."
+      ]
+    },
+    {
+      "id": "R4",
+      "question": "Does the corpus contain a Reach (m) ambiguity?",
+      "ruling": "YES - real, live, and about to produce a FALSE FAILURE",
+      "detail": "The column was used as both blade length and effective reach while M1 sub-probe C measured the largest hitting distance, which necessarily includes the root lunge. On UGS the two readings differ by 1.40 m against an M3 tolerance of +/-0.10 m - a factor of fourteen. The item would have failed a correct build, or been fixed by shrinking a blade.",
+      "resolution": [
+        "Reach (m) is BLADE reach, root translation suppressed, so it stays independent of Root dz (a separate fingerprint dimension - otherwise D5 and D7 are partly the same number)",
+        "threat_m = Reach + Root dz, derived never authored, melee spread >= 3.0 m",
+        "S26 form of sub-probe C: C1 blade reach, C2 threat sweep, C3 body corridor, over 0.20-5.00 m, with CONTIGUITY A HARD FAIL and reach_min_m <= 0.60 m",
+        "S26 had never propagated to 12-weapons at all - the area with the largest root translations in the game (UGS 1.40 m R1, 1.90 m R2, against the 1.2 m hole S26 was written for). The old outward sweep was structurally incapable of seeing an interior gap."
+      ]
+    }
+  ],
+
+  "holes_filed": [
+    {"id": "H1", "title": "Nothing measures whether a player can tell a mace from an axe while PLAYING", "remedy": "Every blind pack must be runtime-generated via setLoadout + input script and stripped of design columns (arc, reach, root, shape, frames). A pack buildable from JSON is VOID, not PASS.", "where": "RI-WPN02 blind pair, RI-WPN03 M6, WEAPON-CRITIC section 6"},
+    {"id": "H2", "title": "The heavy attack has no bar of its own - nothing requires it to be a different SHAPE from the light", "remedy": "RI-WPN02 M5b, weight 10: r2 must differ from r1.1 on shape, or arc >= 30 deg, or root >= 0.20 m, or swing-plane inclination >= 30 deg. Frames and motion value do not count.", "where": "RI-WPN02 M5b"},
+    {"id": "H3", "title": "Nothing measures what a Souls player means by a weapon's identity - a set of situations it is WRONG for", "remedy": "New reference item RI-WPN07: 14x10 class x archetype advantage matrix measured from play, BEST/WORST/SPAN/rho/DOM/DUD requirements, headline RVS (PASS >= 0.70, HARD FAIL < 0.40), mandatory policy-sensitivity control, wrong-weapon blind test.", "where": "RI-WPN07", "note": "THE BIGGEST HOLE. RI-WPN02's own opening paragraph promises the reversal and no method measures it. Six items and 28 methods measure dispersion; dispersion is not character."},
+    {"id": "H4", "title": "Animation quality judged on 28 clips out of 1133; and M2's forgery check is defeated by a uniform rescale", "remedy": "RI-WPN03 M2b normalised-shape census (floor 0.20*C distinct path shapes at 10%, W1-10 measured 0.29*C); RI-WPN05 section E.2, four per-clip rows over EVERY clip - pose discontinuity <= 0.25 m/frame, tip-speed ceiling, per-slot arc conformance, >= 3 distinct keyframes.", "where": "RI-WPN03 M2, RI-WPN05 section E.2", "note": "M2b is a stalled correction: the W1-10 critic built this check, reported it, and it never reached the item."},
+    {"id": "H5", "title": "Every combo in the game has the same rhythm envelope by corpus construction", "remedy": "AMENDMENT-W1-10-BAR-01 against RI-CMB02: make the class-uniform chain multipliers a default with a +/-0.20 per-class deviation budget, require >= 6 of 14 melee classes to deviate, extend recovery/startup >= 1.40 to every link.", "where": "AMENDMENT-W1-10-BAR-01 (filed, not applied - RI-CMB02 belongs to critic.combat)"},
+    {"id": "H6", "title": "ARBITRATION section 3's CONSUMPTION check never reached WEAPON-CRITIC", "remedy": "Nine headline numbers in declared/observed columns with the observed column as the score; a CONSUMPTION preflight in section 3.1; a named world-side consumer and a perturbation demonstration as mandatory verdict fields; matching hard fails in RI-WPN02 and RI-WPN03.", "where": "WEAPON-CRITIC sections 3.1, 3.3, 6, 8"}
+  ],
+
+  "the_five_named_verbs": {
+    "light": "COVERED - RI-WPN02 section B frames plus RI-WPN05 section E mass bands, which are genuine quality bars",
+    "heavy": "WAS NOT COVERED as a shape - charge contract measures the charge only. Fixed by M5b (H2)",
+    "combos": "WAS NOT COVERED - only max_chain_len looked past hit one. Fixed by Chg + G7-G9; the tempo half filed as H5",
+    "roll_then_attack": "BEST COVERED - CFS, Wgrid, equip-load tiers, M5 situational superiority",
+    "backstep_then_attack": "BEST COVERED - same machinery",
+    "caveat": "RI-WPN04 M5 situational superiority is the ONLY quality bar among the five, its own How-we-lose #9 predicts it will be skipped, and in W1-10 it was scored 0 fail-closed as unrunnable. The one check asking whether a contextual attack is any GOOD has never been run."
+  },
+
+  "items_amended": [
+    "RI-WPN01 (section A slots 3 and 4, M1, hard fails)",
+    "RI-WPN02 (section B reach definition and constraints, section D GRAMMAR_DIMS and D5, M1 sub-probe C, M2, M5b, scoring, hard fails, blind pair, provenance)",
+    "RI-WPN03 (section C SHARE scope and slot counts, section D.1 ARI bands and floor, new section D.3 Chg, M1, M2b, M6, scoring, hard fails)",
+    "RI-WPN05 (new section E.2 per-clip motion integrity, scoring, hard fails)",
+    "WEAPON-CRITIC.md (item list, subsystem paths, section 3.1 consumption preflight, section 3.2 sweep, section 3.3 nine numbers + consumption box, section 5, section 6 three blind packs, section 8 verdict fields)"
+  ],
+  "items_created": ["RI-WPN07-weapon-character-and-wrongness.md", "AMENDMENT-W1-10-BAR-01.md"],
+  "subsystem_paths_registered": ["weapon.identity.character"],
+  "thresholds_lowered": [],
+  "thresholds_held": ["Dg_min >= 1.0", "CFS = 1.00", "SEP >= 1.4", "W_med in [0.35, 1.00]", "TDV >= 0.60", "D_min >= 1.6"],
+
+  "conditions_for_satisfied": [
+    "Dg_min recomputed over the nine GRAMMAR_DIMS with G7-G9 sourced from hitbox records",
+    "RI-WPN07 M1 run once, the 14x10 rank matrix in a verdict, and M5's policy-sensitivity control passed",
+    "Chg's within-class distribution published so a wave-2 hard fail can be set from data",
+    "Every reach measured under the S26 sub-probe with every class's reachable band contiguous (UGS, GSW, CGS first)",
+    "RI-WPN04 M5 run at least once",
+    "A weapons verdict produced with the observed column populated for all nine headline numbers, a world-side consumer named, and a perturbation demonstration attached"
+  ],
+
+  "provenance": {
+    "arithmetic_confidence": "high - every figure in R1 and R2 is reproducible from RI-WPN02 section B and RI-WPN04 section A by hand",
+    "new_threshold_confidence": "medium - RVS >= 0.70 and Chg's bands are set by argument, not measured, and both items say so in their own provenance notes. Re-derive from wave 2's first full run.",
+    "tree": "5e1a861"
+  }
+}

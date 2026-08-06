@@ -3,14 +3,24 @@
   "role": "critic",
   "piece": "W1-07 character creation and the opening",
   "round": 2,
-  "state": "researching",
+  "state": "measuring",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-07-r2.json",
     "corpus/90-verdicts/wave1/W1-07-r2.md",
     "corpus/90-verdicts/wave1/artifacts/W1-07-r2/"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read round-1 verdict, RI-CHR items, builder status; boot smoke test",
+  "findings": [
+    "BOOT: tools/harness/smoke.mjs PASS at HEAD. Build boots; no index.json breakage this round.",
+    "UI-IS-IN-THE-FRAME: CONFIRMED. probeA captures page.screenshot() and __HARNESS.screenshot() at all 19 nodes; pixel diff = 0 at every node. The dialogue surface is a textured quad composited into the WebGL pass. The DOM has no non-canvas element. The builder's architecture claim holds.",
+    "19/19 distinct screenshot hashes CONFIRMED (both capture paths). 18/18 speaker resolves to a live NPC entity. min 1 NPC per node, 2 in the Writ House.",
+    "DEFECT (new, big): the ten questionnaire dilemmas are NEVER DRAWN. buildCensusModel (game/src/character/scene.js:267) sets line: state.line and never reads state.question.text, so nodes 07-16 all render the same transition line ('Then sit. I will ask you ten things...') above four answers with no question. RI-CHR01 Route C's twelve authored dilemmas are the artifact and none reaches the frame. The builder's own instrument passed 'text rendered' because the OPTIONS differ.",
+    "CONSUMPTION PASS: derivation curves. orsimer VIG18 hp_max 508 live, 11 hits of 50 to fall; bosmer VIG6 196, 4 hits. The fight reads the pool.",
+    "CONSUMPTION PASS: birthsigns. Route-intercepting progression/birthsigns.json and halving nu-ixtu's 1.60 to 1.00 moved live focus_max 74 -> 46. Kaal-Kaal+nu-ixtu = 60 = 46 + 0.5*(74-46): correct halving. focus_restores_at_hearth false for nu-ixtu, true for raj-xul (S27).",
+    "CONSUMPTION FAIL: greetings.json. 300 cells / 1500 lines are loaded into chData.greetings at engine.js:3706 and read by NOTHING. No harness verb matches /greet/. playerRaceClass() is called only inside getReaction() and the audit tool. No NPC ever selects a greeting.",
+    "tools/journey/ still does not exist: journey-run.mjs, beat-extract.mjs, gamepad-shim.mjs absent => RI-JRN01 0 fail-closed by its own binding rule.",
+    "tools/analysis/build-viability.mjs still absent => RI-CHR01 M6, RI-CHR03 M5 unmeasured (RI-MTH06 open)."
+  ],
+  "next_step": "probeC (matrix perturbation redo, dry-well observability, questionnaire text); then AR-3 three-race runs, S26 reach, gamepad-only",
   "notes_for_successor": ""
 }
