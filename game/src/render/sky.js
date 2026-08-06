@@ -70,15 +70,19 @@ export class Sky {
 
     this.sun = new THREE.DirectionalLight(0xfff0d8, 3.0);
     this.sun.castShadow = true;
-    this.sun.shadow.mapSize.set(1024, 1024);
-    this.sun.shadow.camera.near = 1;
-    this.sun.shadow.camera.far = 220;
-    this.sun.shadow.camera.left = -70;
-    this.sun.shadow.camera.right = 70;
-    this.sun.shadow.camera.top = 70;
-    this.sun.shadow.camera.bottom = -70;
-    this.sun.shadow.bias = -0.0009;
-    this.sun.shadow.normalBias = 0.03;
+    this.sun.shadow.mapSize.set(2048, 2048);
+    this.sun.shadow.camera.near = 40;
+    this.sun.shadow.camera.far = 210;
+    this.sun.shadow.camera.left = -60;
+    this.sun.shadow.camera.right = 60;
+    this.sun.shadow.camera.top = 60;
+    this.sun.shadow.camera.bottom = -60;
+    // 120 m of frustum across 2048 texels is 0.059 m per texel, so the normal bias has to
+    // be of that order or every lit surface shadow-acnes itself and the whole scene comes
+    // back black. It is set in world units deliberately: a depth bias alone cannot fix
+    // acne at this ratio, and a black scene is a fail-closed 0 for every fidelity metric.
+    this.sun.shadow.bias = -0.0012;
+    this.sun.shadow.normalBias = 0.25;
     // Three.js does NOT recompute an orthographic shadow frustum from its properties, so
     // this call is load-bearing: without it the shadow camera keeps its default 10x10 m
     // box and the entire scene renders fully shadowed.
