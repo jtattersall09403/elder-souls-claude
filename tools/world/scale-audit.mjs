@@ -150,6 +150,66 @@ for (const l of roads.legs) {
 }
 check('M36-ROAD-RELIEF', tot && win / tot >= 0.30, `${tot ? (win / tot * 100).toFixed(1) : 0}% of 500 m road windows change >= 15 m in elevation (target >= 30, fail < 12)`);
 
+// ---- world.region.gating: the province is gated by lethality, never by walls ----------------------
+// S9 and RI-WLD04's tier table: "the Deep Marshes must be walkable from minute one and must kill
+// you." A tier is an enemy roster, not a fence — so this is a reachability proof. Flood fill the
+// walkable surface from the player's start at Lilmoth, crossing anything up to hip-deep water and
+// up to 40 degrees of slope, and assert that every settlement and every region is reachable.
+const passable = new Uint8Array(field.cols * field.rows);
+for (let cz = 0; cz < field.rows; cz++) {
+  for (let cx = 0; cx < field.cols; cx++) {
+    const x = cx * field.cell + field.cell / 2, z = cz * field.cell + field.cell / 2;
+    if (!field.isLandAt(x, z)) continue;
+    if (field.slopeAt(x, z, 12) > 40) continue;
+    if (field.depthAt(x, z) > 0.95) continue;                  // deeper than W3 is a swim, not a walk
+    passable[cz * field.cols + cx] = 1;
+  }
+}
+const seen = new Uint8Array(field.cols * field.rows);
+{
+  const sx = Math.floor(2766.5 / field.cell), sz = Math.floor(5027.5 / field.cell);
+  const st = [sz * field.cols + sx];
+  seen[st[0]] = 1;
+  while (st.length) {
+    const i = st.pop(), cx = i % field.cols, cz = (i - cx) / field.cols;
+    for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) {
+      const nx = cx + dx, nz = cz + dz;
+      if (nx < 0 || nz < 0 || nx >= field.cols || nz >= field.rows) continue;
+      const k = nz * field.cols + nx;
+      if (seen[k] || !passable[k]) continue;
+      seen[k] = 1; st.push(k);
+    }
+  }
+}
+const unreachableSettlements = settle.filter((s) => !seen[Math.floor(s.declared[1] / field.cell) * field.cols + Math.floor(s.declared[0] / field.cell)]).map((s) => s.name);
+const reachedRegions = new Set();
+let reachedCells = 0, passableCells = 0;
+for (let i = 0; i < seen.length; i++) {
+  if (passable[i]) passableCells++;
+  if (!seen[i]) continue;
+  reachedCells++;
+  const cx = i % field.cols, cz = (i - cx) / field.cols;
+  reachedRegions.add(field.regionAt(cx * field.cell + 12.5, cz * field.cell + 12.5).id);
+}
+const missingRegions = regionsDoc.regions.map((r) => r.id).filter((id) => !reachedRegions.has(id));
+check('S9-NO-FENCES', unreachableSettlements.length === 0 && missingRegions.length === 0,
+  `on foot from the Lilmoth start, ${reachedRegions.size}/13 regions and ${8 - unreachableSettlements.length}/8 settlements are reachable `
+  + `(${(reachedCells / passableCells * 100).toFixed(1)}% of walkable land)`
+  + (unreachableSettlements.length ? `; unreachable: ${unreachableSettlements.join(', ')}` : '')
+  + (missingRegions.length ? `; regions unreachable: ${missingRegions.join(', ')}` : ''));
+
+// ---- the tideway inversion (RI-TRV01 / RI-WLD10 M54) -----------------------------------------------
+const tideway = roads.legs.find((l) => l.tide_gated);
+let lowMax = 0, highMax = 0;
+if (tideway) {
+  for (const [x, z] of tideway.points) {
+    lowMax = Math.max(lowMax, field.depthAt(x, z, 0.0));
+    highMax = Math.max(highMax, field.depthAt(x, z, 0.5));
+  }
+}
+check('TIDEWAY-INVERSION', tideway && lowMax <= 0.95 && highMax > 1.40,
+  tideway ? `Lilmoth-Archon tideway: deepest point ${lowMax.toFixed(2)} m at LOW (walkable, <= W3) and ${highMax.toFixed(2)} m at HIGH (>= W5, blocked)` : 'no tide-gated leg exists');
+
 const doc = {
   schema: 'elder-souls/scale-audit@1', method: 'RI-WLD01 M1/M4/M5 + RI-WLD07 M36',
   measured_at: new Date().toISOString(),
@@ -162,6 +222,9 @@ const doc = {
   mean_slope_deg: +(slopeSum / slopeN).toFixed(3),
   region_max_elevation_m: Object.fromEntries([...regionMax].map(([k, v]) => [k, +v.toFixed(1)])),
   settlements: settle, legs, leg_gaps: legGaps,
+  reachability: { regions_reached: [...reachedRegions].sort(), unreachable_settlements: unreachableSettlements,
+    walkable_cells: passableCells, reached_cells: reachedCells },
+  tideway: tideway ? { leg: tideway.id, deepest_low_m: +lowMax.toFixed(2), deepest_high_m: +highMax.toFixed(2) } : null,
   trunk_network_m: roads.total_trunk_m,
   named_routes: roads.named_routes,
   checks, ok: checks.every((c) => c.pass),

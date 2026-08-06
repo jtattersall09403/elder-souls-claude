@@ -2,7 +2,7 @@
   "task_id": "W1-01",
   "brief": "docs/PLAN.md \u00a73 piece W1-01 \u2014 World shape and the traversal budget",
   "started": "wave-1",
-  "state": "building",
+  "state": "measuring",
   "outputs_expected": [
     "game/data/world/terrain.json",
     "game/data/world/regions.json (rewritten, 13 regions)",
@@ -13,16 +13,33 @@
     "tools/world/* measurement scripts"
   ],
   "outputs_written": [
-    "tools/world/build-landmask.mjs",
-    "game/data/world/landmask.json",
-    "tools/world/build-regions.mjs",
-    "game/data/world/regions.json",
-    "tools/world/build-terrain.mjs",
-    "game/data/world/terrain.json",
-    "tools/world/build-water-hazards.mjs",
-    "game/data/world/water.json",
+    "game/README.md (W1-01 section)",
+    "game/data/states/showcase_patch.json",
     "game/data/world/hazards.json",
-    "game/src/world/noise.js"
+    "game/data/world/landmask.json",
+    "game/data/world/pois.json",
+    "game/data/world/regions.json",
+    "game/data/world/roads.json",
+    "game/data/world/terrain.json",
+    "game/data/world/water.json",
+    "game/src/world/field.js",
+    "game/src/world/noise.js",
+    "game/src/world/province.js",
+    "reports/crossing.json",
+    "reports/region-axes.json",
+    "reports/region-shots/",
+    "reports/scale-audit.json",
+    "tools/harness/viewpoints-province.json",
+    "tools/world/build-landmask.mjs",
+    "tools/world/build-pois.mjs",
+    "tools/world/build-regions.mjs",
+    "tools/world/build-roads.mjs",
+    "tools/world/build-terrain.mjs",
+    "tools/world/build-water-hazards.mjs",
+    "tools/world/crossing.mjs",
+    "tools/world/province-shots.mjs",
+    "tools/world/region-axes.mjs",
+    "tools/world/scale-audit.mjs"
   ],
   "findings": [
     "world-scale.json is authoritative: world box x[0,4822] z[0,5540]; RI-WLD01 prose says 4825x5540 \u2014 use 4825 for the box, tolerance \u00b125m in M1.",
@@ -38,8 +55,13 @@
     "Ocean vs channel: a water cell >=90 m from land is ocean (ramps land to sea level); anything narrower is an incision in the local surface. Without this every river became a 300 m gorge through Valus Ridge.",
     "MEASURED: elevation -41.8..424.2 m; land 14.24 km2; below +5 m 34.8%; above +100 m 19.6%; area-weighted mean slope 8.7 deg; Valus max 424 m, Salt Hills 269 m.",
     "m-wld10-water-census PASSES (WCI 0.294, spread 0.86, 5 dry, 2 bone dry, 2 drowned, 11 classes, 5 tidal). m-wld11-hazard-census PASSES (19 hazards, 13 signatures, 1 KILL, 8 zero-damage).",
-    "hazards.json needs 6 NON-signature hazards or two regions share a hazard shape (M63 static half) \u2014 13 signatures over 6 classes collide by pigeonhole."
+    "hazards.json needs 6 NON-signature hazards or two regions share a hazard shape (M63 static half) \u2014 13 signatures over 6 classes collide by pigeonhole.",
+    "MEASURED crossing: 57.29 min / 6874 m, mean ground speed exactly 2.000 m/s, 0/34372 samples below 1.6 m/s. Jog 35.81 min. Long way 78.35 min.",
+    "walkRoute stick magnitude must be 0.55 - 1e-9: hypot() lands one ulp above 0.55 and combat/player.js switches to the jog, which cost 12% of the frames and 4.5 minutes.",
+    "region-axes: all 78 pairs differ on >= 8 of 9 axes (min pair blackwood/marauders-coast at 8).",
+    "scale-audit: 14/15 checks pass. The one miss is RI-WLD07 \u00a74's road-relief target (26.7% of 500 m road windows change >= 15 m, target 30%, fail floor 12%) \u2014 the marsh legs are genuinely flat and letting A* climb more broke the settlement pads.",
+    "Two exterior cells by design: `province` (the world) and `exterior` (W1-00's seeded 420 m origin patch, kept because HARNESS \u00a76 poses VP01-VP12 absolutely near the origin and HARNESS D6 measures seed sensitivity on a GENERATED cell). Documented in game/README.md."
   ],
-  "next_step": "build roads.json (sinuosity solved to RI-WLD01 \u00a74 path_m), then game/src/world/field.js runtime sampler, then province renderer + streaming, then harness extensions and measurement tools",
+  "next_step": "re-run crossing after the road rebuild; finish the region shot set; final commit",
   "notes_for_successor": "Build order: build-landmask -> build-regions -> build-terrain -> build-water-hazards -> build-roads. All are idempotent. terrain.json is generated, do not hand-edit."
 }
