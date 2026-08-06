@@ -4,11 +4,15 @@
  "started": "wave-?",
  "state": "researching",
  "outputs_expected": [
-  "corpus/50-world/RI-WLD09-opacity-budget.md",
-  "corpus/40-dialogue/RI-DLG08-tonal-range-indifference.md"
+  "corpus/40-dialogue/RI-DLG08-tonal-range-and-the-indifference-ratio.md",
+  "corpus/50-world/RI-WLD09-the-opacity-budget.md",
+  "corpus/80-methods/tone-metrics.py",
+  "corpus/50-world/sealed/SEALED-ANSWERS.md",
+  "corpus/80-methods/opacity-audit.py"
  ],
  "outputs_written": [
-  "corpus/80-methods/tone-metrics.py"
+  "corpus/80-methods/tone-metrics.py",
+  "corpus/40-dialogue/RI-DLG08-tonal-range-and-the-indifference-ratio.md"
  ],
  "findings": [
   "BAR-CRITIQUE-01 gap rank 11 = G11 -> RI-WLD09 (opacity budget). Proposed: register of >=15 unsignposted things, >=3 locations via unobvious route, >=2 quests needing knowledge journal never records, >=5 places world never mentions; >=60% of register undiscovered by 6h first-time player; hard fail on entries merely hidden rather than unexplained. Cross-rule: RI-WLD06 M29 scored only over quest destinations.",
@@ -28,6 +32,6 @@
   "CALIBRATION PROOF: `python3 corpus/80-methods/tone-metrics.py --reference --lint` prints 'clean' -- Morrowind PASSES the anti-register lint as tuned. Measured hard-idiom 4.962/10k, quip 0.029/10k, self-aware 0, tutorial 0, chosen-one 11 distinct texts (0.04%).",
   "Chosen-one deference cannot be a zero bar: Morrowind has 11 such texts ('You are the Prophesied One'), but they are late-main-quest. The bar must be GATED by quest stage, not a count."
  ],
- "next_step": "write corpus/40-dialogue/RI-DLG08",
+ "next_step": "write corpus/50-world/RI-WLD09 + sealed-answer register + opacity-audit.py",
  "notes_for_successor": "Brief closes BAR-CRITIQUE-01 G11 (opacity budget) and G12 (tone existence). Must measure indifference ratio from real corpus csv.gz, not recall."
 }
