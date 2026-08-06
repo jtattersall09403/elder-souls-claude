@@ -161,7 +161,7 @@ export function combatFrame(system, frame, input, events, camera) {
   return rec;
 }
 
-/** Map our 14-button action set onto RI-CMB07 §A's 9-bit mask. */
+/** Map our 15-button action set onto RI-CMB07 §A's 9-bit mask. `crouch` (bit 14) has no combat-trace bit and needs none. */
 function traceMask(input) {
   let m = 0;
   const h = input.held | input.pressed;

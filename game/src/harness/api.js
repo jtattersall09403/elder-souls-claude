@@ -367,7 +367,7 @@ export function installHarness(engine, bootPromise) {
           'fixed 60 Hz simulation decoupled from render (HARNESS.md R2/R3)',
           'seeded PRNG with a runtime guard that throws on Math.random/Date.now/performance.now/new Date inside a step',
           'the elder-souls/trace@1 record, including the camera channel RI-CAM02/RI-CAM06 need',
-          'the 14-button closed action set, the scripted path, the real desktop path, the 8 f@60 single-slot buffer',
+          'the 15-button closed action set (14 from W1-00 + `crouch` from W1-15/AM-W1-15-01), the scripted path, the real desktop path, the 8 f@60 single-slot buffer',
           'IndexedDB save with the RI-JRN05 §A write protocol, digest, A/B generations, export/import, hostility simulation',
           'deterministic sky, sun and named weather; the nine viewpoint anchors',
           'the game/data/** layout of HARNESS.md §5 with a generated index.json',

@@ -25,6 +25,8 @@ export const DEFAULT_BINDINGS = {
   swap_right: ['Digit3', 'WheelUp'],
   swap_left: ['Digit4', 'WheelDown'],
   menu: ['Escape', 'KeyM'],
+  // W1-15 / AM-W1-15-01. RI-STL01's blocking dependency. Both slots were unbound.
+  crouch: ['KeyC', 'KeyZ'],
 };
 
 export const MOVE_BINDINGS = {

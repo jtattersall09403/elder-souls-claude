@@ -1,17 +1,28 @@
 {
   "task_id": "W1-15",
-  "brief": "wave-1 piece W1-15 — Stealth and crime",
+  "brief": "wave-1 piece W1-15 — Stealth, theft, crime and justice",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
+    "game/src/input/actions.js (crouch)",
     "game/src/sim/stealth/*.js",
     "game/src/sim/crime/*.js",
     "game/data/stealth/*.json",
     "game/data/crime/*.json",
+    "game/data/world/interiors/** (ownership, locks, trespass)",
+    "tools/harness/stl-probe.mjs",
+    "tools/analysis/crime-audit.mjs",
     "reports/W1-15-*.md"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ARBITRATION.md S21/S22, SCORING.md §0, HARNESS.md, PLAN.md §3 for W1-15 paths, and the RI-STL/RI-CRM/RI-QST05 items",
-  "notes_for_successor": ""
+  "findings": [
+    "CONFLICT (must be reported, not hidden): ARBITRATION S21 as amended by intent audit 02 says pickpocketing KEEPS its roll; RI-STL02 §5 says 'no roll' and its method 7 asserts 100/100 identical across 100 seeds. ARBITRATION §2 outranks a reference item (ARBITRATION §5 precedence rungs 2 > 3). Resolution built: every GEOMETRY/timing gate stays deterministic (eligibility, slots, weight ceiling, hold duration T, suspicion fill), and exactly ONE seeded die is drawn at the moment of taking — the notice check. Failure is permanent (caught -> CRIME + bounty 100 + fDispPickPocketMod -25), which is precisely S21's surviving-die criterion.",
+    "Engine: fixed step is game/src/sim/step.js; data loads in engine.js loadData() with a bucketFor() path switch — new data dirs must be added there AND to game/data/index.json (generated).",
+    "W1-07 already ships `hostile_below_disposition` in game/src/character/encounter.js — that is the exact hook RI-CRM02 §5's AR-3 encounter flip needs. Do not build a parallel one.",
+    "W1-09 already ships backstab in combat/resolve.js (rear arc + reach + facing). The stealth opener must ROUTE to it, never re-implement it, or OPENER-PURITY fails.",
+    "Headless harness works: `node tools/harness/run-headless.mjs --scenario smoke --frames 60` succeeded in 297 ms, Chromium at /opt/pw-browsers.",
+    "The action set in game/src/input/actions.js is a CLOSED 14-name set; RI-STL01 names `crouch` as a blocking dependency. KeyC is unbound and free."
+  ],
+  "next_step": "add crouch to the closed action set, then author game/data/stealth + game/data/crime",
+  "notes_for_successor": "Scope is 4 reference items x ~12 methods each. Priorities in order: (1) crouch button, (2) detection V formula + sound + civilian model exactly per RI-STL01 §2/§4/§6, (3) lock determinism (rng.draws must not move), (4) bounty persistence across death/save, (5) S10 witness-murder suppression, (6) AR-3 encounter flip. Those six are the binary axes."
 }
