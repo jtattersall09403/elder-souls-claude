@@ -2,10 +2,11 @@
   "task_id": "vis-metrics",
   "brief": "orchestration/briefs/vis-metrics.md",
   "started": "wave-N",
-  "state": "writing-doctrine",
+  "state": "complete",
   "outputs_expected": [
     "tools/metrics/lib/decode.mjs",
     "tools/metrics/lib/vis03.mjs",
+    "tools/metrics/lib/battery.mjs",
     "tools/metrics/image-metrics.mjs",
     "tools/metrics/self-test.mjs",
     "corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md"
@@ -15,7 +16,8 @@
     "tools/metrics/lib/vis03.mjs",
     "tools/metrics/lib/battery.mjs",
     "tools/metrics/image-metrics.mjs",
-    "tools/metrics/self-test.mjs"
+    "tools/metrics/self-test.mjs",
+    "corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md"
   ],
   "findings": [
     "DECODE SOLVED. `npm i jpeg-js @jsquash/avif @jsquash/webp` all install cleanly in tools/ (network is open). @jsquash/avif's default decode() does `fetch` of its wasm and FAILS ('fetch failed'); the fix is to import '@jsquash/avif/decode.js' and call init(undefined, {wasmBinary: fs.readFileSync('node_modules/@jsquash/avif/codec/dec/avif_dec.wasm')}) BEFORE decode. Verified decoding a 320x320 mwscr AVIF. Same pattern for @jsquash/webp. This removes the 'refs must be decoded to PNG in a scratch dir' step from ACQUISITION-REPORT s9.",
@@ -31,8 +33,13 @@
     "MEASURED n=89 Morrowind 320px AVIF contrast population: M1.stops 5.62-8.32 (vs modern 9.51-16.29 -> STILL NO OVERLAP with the corrected instrument; stops remains the single best era discriminator); M9.HighlightDesat p50 1.60 (modern p50 0.86) -> the battery correctly diagnoses 2002 as NO TONEMAPPING; M8.FS_score p50 0.0327 vs modern 0.0460; M4.ED_1 p50 0.126 vs 0.261. M5, M10, M11, M12 all report unmeasurable on all 89 (320px, and no 32-row far band) rather than producing a comparable-looking number.",
     "ACQUISITION-REPORT AMENDMENT 5 IS WITHDRAWN, NOT ADOPTED. Measured M5.NYQ_ratio on native 1024^2 crops is 0.064-0.123 (p90 0.123), comfortably inside RI-VIS03's `max 0.18`. The reported 0.363-0.465 was 100% the 256x256 box-downscale. The band was never broken; the instrument was. DO NOT relax M5 NYQ.",
     "ACQUISITION-REPORT AMENDMENT 3 IS ALSO WITHDRAWN. It proposed raising M7 dY_sky from 0.06 to 0.15 on a measured p10 of 0.248 - but that 0.248 was `sky_gradient.row_mean_range` over the top 40% of ALL rows (mostly trees and buildings). With a real SKY_MASK the measured M7.dY_sky p10 is 0.0031 and p50 is 0.0294. Raising the floor to 0.15 would have failed ~85% of genuine modern frames.",
-    "M10's single-image proxy does not discriminate: 20/24 real Witcher 3 frames hard-fail `R_aerial > 0.85` (measured p50 1.42) and 13/24 hard-fail `dC_depth > 0`. The proxy is dominated by content (a smooth road in the near band vs a detailed treeline in the far band inverts it). RI-VIS03's own two-capture FogDelta upgrade is the only sound form. Recommend demoting the single-image M10 to advisory."
+    "M10's single-image proxy does not discriminate: 20/24 real Witcher 3 frames hard-fail `R_aerial > 0.85` (measured p50 1.42) and 13/24 hard-fail `dC_depth > 0`. The proxy is dominated by content (a smooth road in the near band vs a detailed treeline in the far band inverts it). RI-VIS03's own two-capture FogDelta upgrade is the only sound form. Recommend demoting the single-image M10 to advisory.",
+    "M7-SPAN GATE VALIDATED: adding a SKY_MASK vertical-extent precondition (span >= 0.15*H) removed ALL 6/24 spurious 'FLAT SINGLE-COLOUR SKY' hard fails on real Witcher 3 frames. 9 of 24 frames are now honestly SKIPPED (sliver of sky between trees); on the remaining 15, dY_sky p10/p50/p90 = 0.0113/0.0672/0.1595 and dY_per_span = 0.053/0.219/0.494.",
+    "M9-SHOULDER GATE IS NECESSARY BUT NOT SUFFICIENT: with the highlight_frac >= 0.02 gate applied, 17 of 24 real frames STILL hard-fail 'ShoulderRatio < 0.12 -> LINEAR CLAMP'. The fail premise is inverted - a filmic shoulder puts FEWER pixels in [0.90,0.996), not more. Do not cite M9.ShoulderRatio in any verdict until Codex's set resolves it.",
+    "M8's GUESSED BANDS ARE CONFIRMED BY MEASUREMENT and need no amendment: FS_score >= 0.035 vs measured p10 0.0362; LargestFlat <= 0.06 vs p90 0.0535; TotalFlat <= 0.18 vs p90 0.1499. The headline metric that caps the whole FIDELITY score was guessed almost exactly right.",
+    "Also confirmed correct as written: M1 DR >= 0.72 (p10 0.772), M1 occupancy >= 0.80 (0.857), M2 C_global 0.13-0.28 (0.187-0.278), M2 C_local_p10 >= 0.012 (0.0137), M4 ED_1 0.10-0.34 (0.190-0.344), M5 NYQ <= 0.18 (p90 0.123), M9 ClipFrac <= 0.02 (p90 0.0008), M9 VeilIndex <= 0.10 (p90 0.018), M7 sky_noise 0.0008-0.020 (0.0045-0.0091).",
+    "tools/package.json now has jpeg-js, @jsquash/avif, @jsquash/webp and scripts `metrics` and `metrics:selftest`. `node tools/corpus-index.mjs --check` still passes with the new doctrine file."
   ],
-  "next_step": "write corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md",
-  "notes_for_successor": "Code is done and green (node tools/metrics/self-test.mjs -> 25/25). Measured population JSON is in the scratchpad (out/modern-hud.json, out/morrowind.json, out/cc.json) - if it is gone, regenerate with: node tools/metrics/image-metrics.mjs --in corpus/70-visual/refs/modern/hud --profile exterior_daylight --no-legacy --out <path> (~3 min for 24 frames). Only the doctrine doc remains."
+  "next_step": "none \u2014 task complete. Next actor: run the battery over Codex's modern set per METRICS-IMPLEMENTATION-01 \u00a79, then write corpus/80-methods/make-anti-ref.mjs (without it every shot is capped at 6/10).",
+  "notes_for_successor": "Everything is on disk and green. `node tools/metrics/self-test.mjs` -> 25/25, exit 0. `node tools/metrics/image-metrics.mjs --in <dir> --profile <p> --no-legacy --out <json>` then read aggregate.ri_vis03 for p10/p50/p90 of every RI-VIS03 statistic. RI-VIS03 was NOT edited; all band amendments are proposals in corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md \u00a77. Adopt \u00a77.1 (A1-A3) and \u00a77.2 (the two withdrawals) now; \u00a77.4 needs Codex's HUD-free set."
 }
