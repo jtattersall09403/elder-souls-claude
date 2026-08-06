@@ -1,0 +1,56 @@
+{
+  "schema": "elder-souls/flask@1",
+  "id": "Hist-sap Flask",
+  "unit": "f@60",
+  "owner": "RI-CMB08",
+  "fiction": "A carved gourd of amber sap drawn from a Hist tree. Refilled by resting at a Hist-stump (the rest-site analogue).",
+
+  "charges": {
+    "at_game_start": 5,
+    "maximum": 15,
+    "increase": "+1 per Hist Seed consumed at a rest site (10 seeds exist in the world)",
+    "refilled_by": ["resting at a Hist-stump", "respawning after death"],
+    "refilled_by_gold_or_merchants": false,
+    "refill_by_gold_forbidden_because": "ARBITRATION S15 — gold is the only currency and it buys nothing that shortcuts a fight"
+  },
+
+  "level": { "min": 0, "max": 10, "raised_at": "a rest site, with Sap Amber" },
+  "heal": {
+    "formula_pct_of_max_hp": "0.400 + 0.032 * flask_level",
+    "applied_as": "a RAMP over 62 f@60, not a lump",
+    "ramp_frames": 62,
+    "overheal": "discarded",
+    "table_at_620_max_hp": { "0": 248, "1": 268, "2": 288, "3": 308, "4": 327, "5": 347, "6": 367, "7": 387, "8": 407, "9": 427, "10": 446 }
+  },
+
+  "animation": {
+    "total_f": 130,
+    "ms": 2167,
+    "was_pre_s22": 65,
+    "phases": { "HEAL_STARTUP": [1, 42], "HEAL_ACTIVE": [43, 104], "HEAL_RECOVER": [105, 130] },
+    "stamina_cost": 0,
+    "regen_delay_rearmed_on_frame_1": true,
+    "cancellable": { "frames_1_to_116": false, "frames_117_to_130": "dodge only, no refund" },
+    "movement_frames_1_to_104": { "walk_speed_mult": 0.35, "run": false, "sprint": false, "roll": false },
+    "turn_rate_frames_1_to_104_dps": 90,
+    "interrupted_1_to_42": "stagger; charge lost, 0 HP restored",
+    "interrupted_43_to_104": "stagger; charge lost, HP restored so far is kept",
+    "interrupted_105_to_130": "stagger; heal was already complete",
+    "heal_secure_frames": 104,
+    "heal_secure_note": "the derived number that makes healing computable — the player must be untouchable for 104 f from the press to bank the full heal. Compare against RI-AI03's P_safe; an enemy move offering P_safe >= 120 f@60 affords a full heal with 16 frames of slack.",
+    "usable_while": { "OVERLOADED": true, "staggered": false, "guard_broken": false, "mid_animation": false, "EXHAUSTED": true }
+  },
+
+  "declared_blend": {
+    "ruling": "orchestrator R5",
+    "statement": "RI-CMB08's flask mixes DS1 charge counts (5 at start) with DS3 upgrade rules (+0..+10 by consumable shards). Both are defensible; the blend is declared here rather than presented as one game's design."
+  },
+
+  "forbidden": [
+    "buying flask charges or any in-combat healing with gold (S15)",
+    "flask charges as a difficulty setting",
+    "enemies healing without the same commitment — an enemy that heals must use a >= 104 f@60 committed, interruptible animation and must lose the heal when interrupted",
+    "any ring, buff or stat that reduces the 130 f@60 animation (frame counts are invariant, RI-CMB02 §D.7)",
+    "passive HP regeneration of any kind"
+  ]
+}

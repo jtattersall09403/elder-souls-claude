@@ -1,0 +1,67 @@
+{
+  "schema": "elder-souls/skeleton@1",
+  "owner": "RI-CMB04 §D (hurtbox parents), RI-CMB04 §B (weapon sockets)",
+  "units": "metres; rest offsets are in the PARENT bone's local frame; rotations in clips are Euler XYZ degrees applied in the bone's local frame",
+  "axes": "right-handed, +X right, +Y up, +Z forward. yaw 0 faces +Z, matching the existing controller (pos[0] += sin(yaw)*d, pos[2] += cos(yaw)*d).",
+  "height_m": 1.78,
+
+  "bones": [
+    { "id": "root",       "parent": null,       "offset": [0.000, 0.000, 0.000] },
+    { "id": "pelvis",     "parent": "root",     "offset": [0.000, 0.980, 0.000] },
+    { "id": "spine_00",   "parent": "pelvis",   "offset": [0.000, 0.120, 0.000] },
+    { "id": "spine_02",   "parent": "spine_00", "offset": [0.000, 0.240, 0.000] },
+    { "id": "neck",       "parent": "spine_02", "offset": [0.000, 0.200, 0.000] },
+    { "id": "head",       "parent": "neck",     "offset": [0.000, 0.100, 0.000] },
+    { "id": "clavicle_l", "parent": "spine_02", "offset": [-0.170, 0.140, 0.000] },
+    { "id": "clavicle_r", "parent": "spine_02", "offset": [ 0.170, 0.140, 0.000] },
+    { "id": "upperarm_l", "parent": "clavicle_l", "offset": [-0.050, -0.030, 0.000] },
+    { "id": "upperarm_r", "parent": "clavicle_r", "offset": [ 0.050, -0.030, 0.000] },
+    { "id": "lowerarm_l", "parent": "upperarm_l", "offset": [0.000, -0.280, 0.000] },
+    { "id": "lowerarm_r", "parent": "upperarm_r", "offset": [0.000, -0.280, 0.000] },
+    { "id": "hand_l",     "parent": "lowerarm_l", "offset": [0.000, -0.260, 0.000] },
+    { "id": "hand_r",     "parent": "lowerarm_r", "offset": [0.000, -0.260, 0.000] },
+    { "id": "thigh_l",    "parent": "pelvis",   "offset": [-0.100, -0.040, 0.000] },
+    { "id": "thigh_r",    "parent": "pelvis",   "offset": [ 0.100, -0.040, 0.000] },
+    { "id": "calf_l",     "parent": "thigh_l",  "offset": [0.000, -0.430, 0.000] },
+    { "id": "calf_r",     "parent": "thigh_r",  "offset": [0.000, -0.430, 0.000] },
+    { "id": "foot_l",     "parent": "calf_l",   "offset": [0.000, -0.420, 0.060] },
+    { "id": "foot_r",     "parent": "calf_r",   "offset": [0.000, -0.420, 0.060] }
+  ],
+
+  "chest_node": "spine_02",
+  "chest_node_note": "the node RI-CMB06 §A/§B's line-of-sight ray, aim point and vertical framing are measured against",
+
+  "hurtbox_axes": {
+    "_note": "Each hurtbox capsule runs from its parent bone's ORIGIN along the given local axis for the length declared in hitgeometry.json. That makes 'the capsule follows the bone' literal: the capsule's segment IS a segment of the bone, so RI-CMB04 M1's 'distance from the capsule axis midpoint to its declared parent bone origin' is exactly length/2 on every frame of every pose, which is the invariance M1 checks.",
+    "head":        [0.0,  1.0, 0.0],
+    "torso_upper": [0.0,  1.0, 0.0],
+    "torso_lower": [0.0,  1.0, 0.0],
+    "pelvis":      [0.0,  1.0, 0.0],
+    "upper_arm_l": [0.0, -1.0, 0.0],
+    "upper_arm_r": [0.0, -1.0, 0.0],
+    "forearm_l":   [0.0, -1.0, 0.0],
+    "forearm_r":   [0.0, -1.0, 0.0],
+    "thigh_l":     [0.0, -1.0, 0.0],
+    "thigh_r":     [0.0, -1.0, 0.0],
+    "shin_l":      [0.0, -1.0, 0.0],
+    "shin_r":      [0.0, -1.0, 0.0]
+  },
+
+  "weapon": {
+    "grip_bone": "hand_r",
+    "offhand_bone": "hand_l",
+    "blade_axis_local": [0.0, -1.0, 0.0],
+    "blade_axis_note": "The blade runs along the grip hand's local -Y, so at the identity rest pose the weapon hangs point-down from a lowered hand — the readable 'weapon at rest' silhouette in every reference still. Every clip rotates the hand and forearm to raise, cock and swing it.",
+    "sockets": {
+      "wpn_guard":  { "t": 0.00, "_note": "at the guard, one grip-length down the blade axis from the hand" },
+      "wpn_mid":    { "t": 0.50 },
+      "wpn_tip":    { "t": 1.00 },
+      "wpn_head_a": { "t": 0.72 },
+      "wpn_head_b": { "t": 1.00 }
+    },
+    "socket_rule": "socket_world = hand_world_position + hand_world_rotation * (blade_axis_local * (grip_offset_m + t * capsule_length_m)). capsule_length_m comes from hitgeometry.json per class; grip_offset_m is 0.10 for every class.",
+    "grip_offset_m": 0.10
+  },
+
+  "standing_collider": { "radius_m": 0.32, "height_m": 1.78, "_note": "the MOVEMENT capsule. It is NOT the hurtbox — reusing it as one is RI-CMB04 'How we lose' #5." }
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "elder-souls/hitgeometry@1",
+  "owner": "RI-CMB04 §A/§B/§C/§D/§E/§F",
+  "no_dice_rule": "For a fixed input script and a fixed initial state, the set of (frame, attacker, target, hurtbox, damage) tuples is BIT-IDENTICAL across every RNG seed and every run. No call to any random source occurs on the hit-resolution path. ARBITRATION S1: Morrowind's to-hit roll is deleted. There is no miss chance, no evasion stat, no damage variance, no critical-hit chance, no glancing blow.",
+
+  "step_order": {
+    "_source": "RI-CMB04 §A — BINDING. Steps may not be reordered, merged, or moved to the render loop.",
+    "1": "sample input            -> latch button/stick state for this frame",
+    "2": "advance state machine   -> resolve buffered inputs, transitions, stamina spends",
+    "3": "advance animation       -> anim_frame += 1 (integer; never dt-scaled)",
+    "4": "evaluate skeleton       -> world matrices for every bone, from the clip at anim_frame",
+    "5": "consume root motion     -> apply clip root delta to controller, resolve collision",
+    "6": "rebuild hurtboxes       -> transform each hurtbox capsule from its parent bone",
+    "7": "set hitbox active flags -> from frames.json at this anim_frame",
+    "8": "sweep + query           -> continuous overlap tests, this frame's pose vs last frame's",
+    "9": "resolve                 -> i-frames, block cone, dedup, poise, damage, events",
+    "10": "emit trace record      -> es-combat-trace/1",
+    "_why_4_then_6": "Hurtboxes are DERIVED from the animated pose, every frame, AFTER the animation has been evaluated. A hurtbox that is a static capsule at the character's root is not a hurtbox."
+  },
+
+  "weapon_hitboxes": {
+    "_source": "RI-CMB04 §B",
+    "_columns": ["socket_a", "socket_b", "radius_m", "capsule_length_m", "peak_tip_speed_mps", "per_frame_tip_travel_at_peak_m"],
+    "dagger":           { "socket_a": "wpn_guard",  "socket_b": "wpn_tip",    "radius_m": 0.055, "capsule_length_m": 0.28, "peak_tip_speed_mps": 14.0, "per_frame_tip_travel_m": 0.233 },
+    "straight_sword":   { "socket_a": "wpn_guard",  "socket_b": "wpn_tip",    "radius_m": 0.070, "capsule_length_m": 0.95, "peak_tip_speed_mps": 18.5, "per_frame_tip_travel_m": 0.308 },
+    "spear":            { "socket_a": "wpn_mid",    "socket_b": "wpn_tip",    "radius_m": 0.060, "capsule_length_m": 0.70, "peak_tip_speed_mps": 21.0, "per_frame_tip_travel_m": 0.350 },
+    "axe":              { "socket_a": "wpn_head_a", "socket_b": "wpn_head_b", "radius_m": 0.090, "capsule_length_m": 0.32, "peak_tip_speed_mps": 17.0, "per_frame_tip_travel_m": 0.283 },
+    "halberd":          { "socket_a": "wpn_head_a", "socket_b": "wpn_tip",    "radius_m": 0.085, "capsule_length_m": 0.75, "peak_tip_speed_mps": 22.0, "per_frame_tip_travel_m": 0.367 },
+    "greatsword":       { "socket_a": "wpn_guard",  "socket_b": "wpn_tip",    "radius_m": 0.095, "capsule_length_m": 1.35, "peak_tip_speed_mps": 23.5, "per_frame_tip_travel_m": 0.392 },
+    "ultra_greatsword": { "socket_a": "wpn_guard",  "socket_b": "wpn_tip",    "radius_m": 0.110, "capsule_length_m": 1.70, "peak_tip_speed_mps": 26.0, "per_frame_tip_travel_m": 0.433 },
+    "_why_sweeping_is_mandatory": "Every weapon travels 2.5x to 4x its own capsule radius in a single 60 Hz frame at peak swing speed. Discrete per-frame overlap tests would miss a stationary target for most of the arc."
+  },
+
+  "sweep": {
+    "_source": "RI-CMB04 §C",
+    "substeps": 4,
+    "sampled_poses_per_frame": 5,
+    "effective_sampling_hz": 240,
+    "substeps_are_not_a_quality_setting": "Reducing them to 1 changes which attacks connect, which changes the game. Never wire this to a graphics option.",
+    "interpolation": { "position": "linear", "rotation": "slerp", "why": "linear rotation lerp on a fast arc under-covers the swept region" },
+    "first_active_frame_prev_pose": "the pose on frame first_active - 1, so the sweep starts from BEFORE the hitbox turns on and the leading edge is covered",
+    "broadphase": "AABB of the swept hull, expanded by 0.05 m",
+    "swept_volume": "convex_hull_of_capsules(capsule(A0,B0,r), capsule(A1,B1,r)) = Minkowski sum of hull{A0,B0,A1,B1} with a sphere of radius r. Overlap with a target capsule(P,Q,rt) <=> dist(hull{A0,B0,A1,B1}, segment(P,Q)) <= r + rt. Computed in closed form (segment-vs-tetrahedron), not by iteration.",
+    "max_targets_per_swing": "unlimited; de-dup is per (attack_instance, target)"
+  },
+
+  "hurtboxes": {
+    "_source": "RI-CMB04 §D — eleven capsules per humanoid, each parented to a bone, rebuilt at step 6 every frame.",
+    "parts": [
+      { "id": "head",         "parent_bone": "head",       "radius_m": 0.115, "length_m": 0.14, "damage_mult": 1.00 },
+      { "id": "torso_upper",  "parent_bone": "spine_02",   "radius_m": 0.170, "length_m": 0.22, "damage_mult": 1.00 },
+      { "id": "torso_lower",  "parent_bone": "spine_00",   "radius_m": 0.160, "length_m": 0.20, "damage_mult": 1.00 },
+      { "id": "pelvis",       "parent_bone": "pelvis",     "radius_m": 0.165, "length_m": 0.12, "damage_mult": 1.00 },
+      { "id": "upper_arm_l",  "parent_bone": "upperarm_l", "radius_m": 0.075, "length_m": 0.26, "damage_mult": 1.00 },
+      { "id": "upper_arm_r",  "parent_bone": "upperarm_r", "radius_m": 0.075, "length_m": 0.26, "damage_mult": 1.00 },
+      { "id": "forearm_l",    "parent_bone": "lowerarm_l", "radius_m": 0.065, "length_m": 0.25, "damage_mult": 1.00 },
+      { "id": "forearm_r",    "parent_bone": "lowerarm_r", "radius_m": 0.065, "length_m": 0.25, "damage_mult": 1.00 },
+      { "id": "thigh_l",      "parent_bone": "thigh_l",    "radius_m": 0.100, "length_m": 0.40, "damage_mult": 1.00 },
+      { "id": "thigh_r",      "parent_bone": "thigh_r",    "radius_m": 0.100, "length_m": 0.40, "damage_mult": 1.00 },
+      { "id": "shin_l",       "parent_bone": "calf_l",     "radius_m": 0.080, "length_m": 0.38, "damage_mult": 1.00 },
+      { "id": "shin_r",       "parent_bone": "calf_r",     "radius_m": 0.080, "length_m": 0.38, "damage_mult": 1.00 }
+    ],
+    "_count_note": "RI-CMB04 §D says 'eleven capsules' and then tabulates eight rows of which four are l/r pairs — 4 singles + 4 pairs = 12 capsules. This build ships the TWELVE the table enumerates rather than dropping one to hit the prose count, and says so. The count is prose; the table is the artifact.",
+    "rules": [
+      "Capsules follow bones, INCLUDING during hitstun, rolls and death. A rolling player's capsules are low and forward, which is why a high arc can pass over a roll even OUTSIDE i-frames. That emergent property is desirable and must survive.",
+      "damage_mult is a per-enemy declaration defaulting to 1.00. Weak points live in the enemy statblock, not here. The player has no weak points.",
+      "When several hurtboxes on one target are struck by one swing, the highest damage_mult wins and EXACTLY ONE damage event is emitted.",
+      "Hurtboxes are never scaled by difficulty, level or distance. No aim assist, no forgiveness radius, no 'you were close enough'."
+    ]
+  },
+
+  "resolution_order": {
+    "_source": "RI-CMB04 §E — stopping at the first that applies",
+    "1": "target.invulnerable (frame window) -> emit IFRAME_NEGATE. Nothing else happens.",
+    "2": "target is BLOCK_HOLD AND angle(target.forward, incoming_direction) <= 60 deg AND not unblockable -> emit BLOCK, apply stamina.json block",
+    "3": "already-hit dedup: (attack_instance_id, target_id) seen -> discard silently",
+    "4": "apply poise damage; stagger if broken",
+    "5": "apply damage = motion_value * weapon_ar * hurtbox.damage_mult * (1 - target.absorption[type]) -> emit HIT"
+  },
+
+  "precision_budget": {
+    "_source": "RI-CMB04 §F",
+    "hurtbox_centre_vs_parent_bone_origin_max_m": 0.005,
+    "hit_boundary_vs_analytic_surface_max_m": 0.030,
+    "substep_count": 4,
+    "overlap_events_per_swing_per_target": 1,
+    "damage_variance_across_seeds": 0
+  }
+}
