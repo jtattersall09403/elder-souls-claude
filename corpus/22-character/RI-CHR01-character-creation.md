@@ -267,8 +267,11 @@ This is the item's third bar and the one most likely to be quietly failed.
    train away.
 4. **Class's share of the level-60 character must be small and measurable.** Sum of
    `classDelta` = 0 attributes out of 112 at creation and out of ~170 at L60 (**0%**). Class
-   skill points at creation = 105 above baseline (3×20 + 2×10) out of a level-60 total of
+   skill points at creation = **80** above baseline (3×20 + 2×10) out of a level-60 total of
    ≈ 700 skill points above baseline: **≤ 15% at creation, ≤ 4% at level 60.**
+   *AMENDED wave 1 (`W1-07`, `AMENDMENT-W1-07-02.md` §D): this clause read 105, which its own
+   parenthesis contradicts — 3×20 + 2×10 = 80, and 80 is what all fourteen shipped classes
+   deliver. The bound is met more comfortably at 80 (11.4%), not less; no threshold moves.*
 5. **But class must still be visible.** The prohibitions above make it easy to satisfy the
    letter by making class do nothing. The counterweight: **three caste topics** keyed on the
    class string appear on ≥ 25 NPCs each ("you have the Ledger's hands"), the custom class's

@@ -57,6 +57,15 @@ named skills to their listed value if currently lower (RI-PRG03 base is 5).
 | 9 | **Orsimer** | +5 | +5 | 0 | −1 | +4 | +1 | 0 | 0 | −3 | +1 | Axes & Maces 25, Greatweapons 20, Shieldcraft 20, Survival 10, Athletics 5 | **Berserk** — once per rest, 30 s of +30% melee damage and −30% damage resistance. | Magic **25%**. |
 | 10 | **Bosmer** | −1 | 0 | +5 | +2 | 0 | 0 | +1 | 0 | 0 | +5 | Marksman 25, Sneak 20, Acrobatics 15, Alchemy 15, Survival 10 | **Beast Tongue** — once per rest, calm one beast-archetype enemy for 60 s (a real S13 non-lethal exit against the roster's animals, which have no parley). | Disease **50%**. Poison **50%**. |
 
+> **AMENDED wave 1 (`W1-07`, `AMENDMENT-W1-07-02.md`) — three arithmetic corrections
+> elsewhere in this item.** §3's RG-COURT row is all zeroes (the row this item's own prose and
+> its method 2 both specify; the printed table gave the two Argonian columns +2). §4a's worked
+> row C is **24**, not 28 — §3's matrix and §4b's `r = −26` both give 24, and the band and the
+> stated consequence are unchanged. §4a's aggregate Saxhleel − Dunmer figure is **+11.75**,
+> recomputed from this item's own cells, and method 3's threshold is restated at RI-DLG04's
+> ≥ 8. No race profile, matrix cell other than RG-COURT, coefficient or scoring band elsewhere
+> is touched.
+
 > **AMENDED wave 1 (`W1-07`, `AMENDMENT-W1-07-01.md`) — one cell.** The Imperial row as
 > originally written summed to **11**, not 12, and therefore failed this item's own method-1
 > assertion `sum(attribute_deltas) == 12` and RI-CHR01 §2's 112-point invariant. `PER +4` is
@@ -114,7 +123,7 @@ always be climbed back from by play (§6).
 | **RG-DRES** | **−30** | −26 | **+12** | +4 | 0 | 0 | −2 | −6 | −4 | −2 |
 | **RG-BWC** | −12 | −14 | +2 | +4 | +6 | +2 | +6 | 0 | +6 | **+10** |
 | **RG-VAKH** | 0 | +4 | +2 | +2 | +2 | +2 | +2 | +4 | +2 | +2 |
-| **RG-COURT** | +2 | +2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **RG-COURT** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | **RG-TOWN** | +6 | −6 | **−18** | +2 | 0 | 0 | 0 | −4 | −6 | 0 |
 | **RG-OUTLAW** | 0 | +6 | −4 | −4 | 0 | 0 | 0 | +4 | +2 | 0 |
 
@@ -163,13 +172,13 @@ disposition 50, against a Helstrom (`RG-DEEP`, `interior`-typical) rootkeeper:
 |---|---|---|---:|---|---|
 | A | Saxhleel | interior | **74** | Friendly | Personal topics, faction gossip, best prices |
 | B | Saxhleel | lukiul | **48** | Neutral | Generic topics, quests offered by rank |
-| C | Imperial | foreign-born | **28** | Cold | Terse, punitive barter, **no quest offers** |
+| C | Imperial | foreign-born | **24** | Cold | Terse, punitive barter, **no quest offers** |
 | D | Dunmer | foreign-born | **6** | Hostile | Root nine topics only, no services, no barter |
 | E | Dunmer | lukiul | **0** | Hostile (floor) | Will not speak past the greeting |
 
 **A and D differ by 68 disposition points on identical stats.** RI-DLG04 §E rule 5 requires the
 majority-race player to average ≥ 8 higher than a minority-race player; averaged over all
-twelve groups this matrix delivers Saxhleel − Dunmer = **+15.3**, and Saxhleel − Naga = **+6.9**,
+twelve groups this matrix delivers Saxhleel − Dunmer = **+11.75**, and Saxhleel − Naga = **+3.25**,
 which is deliberately *below* the DLG04 floor for that specific pair because Naga are not a
 minority in Argonia — they are a feared part of the majority. The floor is a floor on the
 *aggregate*, not on every pair, and this item states that reading explicitly so a critic does
@@ -335,7 +344,11 @@ Executable by a fresh agent with this file, `game/data/`, and the harness.
    method 1 with the §4a inputs. **Assert derived disposition for (Saxhleel, interior) vs
    (Dunmer, foreign-born) at the same Helstrom rootkeeper differs by ≥ 60 points**, and that
    the two land in different RI-DLG04 §E bands. **Assert the aggregate Saxhleel − Dunmer mean
-   over all twelve groups is ≥ 12** (DLG04 §E rule 5 needs ≥ 8; we claim 15.3).
+   over all twelve groups is ≥ 8** — RI-DLG04 §E rule 5's floor. *AMENDED wave 1 (`W1-07`,
+   `AMENDMENT-W1-07-02.md` §C): this item claimed +15.3 and asserted ≥ 12 on that basis;
+   recomputed from its own 120 cells the mean is **+11.75**, so the assertion is restated at
+   the floor it was derived from. The 68-point gap, σ ≥ 9.0 and Dunmer/RG-DEEP = −40 are
+   untouched.*
 4. **NPC coverage.** `jq` every file under `game/data/npcs/**`. **Assert 100% of NPCs carry a
    `reaction_group` from §2** and that the population shares are within **±4 percentage
    points** of §2's column. A world where 80% of NPCs are `RG-TOWN` has a matrix that never
