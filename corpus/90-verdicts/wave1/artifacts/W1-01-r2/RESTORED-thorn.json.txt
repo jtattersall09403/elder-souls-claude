@@ -1,0 +1,45 @@
+{
+  "schema": "elder-souls/topics@1",
+  "group": "thorn",
+  "topics": [
+    {
+      "topic": "thorn",
+      "settlement": "thorn",
+      "text": "Thorn was a kingdom once. It is eleven households and a hall with a hole in it now, and the king will still tell you which of his ancestors drowned the Dunmer at the ford.",
+      "links": [
+        "my-kingdom",
+        "the-marsh"
+      ]
+    },
+    {
+      "topic": "my-kingdom",
+      "npc": "king-hlaalu-teeth",
+      "text": "Do not laugh. The roof leaks over the throne and not over the hearth, and that was a choice. A king sits in the rain so his people sit dry.",
+      "links": [
+        "thorn"
+      ]
+    },
+    {
+      "topic": "the-marsh",
+      "settlement": "thorn",
+      "text": "Walk the boards, not the ground. The ground here has opinions.",
+      "links": []
+    },
+    {
+      "topic": "little-advice",
+      "npc": "warden-eshi",
+      "text": "If a thing in the reeds is standing very still, it is not resting.",
+      "links": [
+        "the-marsh"
+      ]
+    }
+  ],
+  "declared_incomplete": {
+    "owner": "wave-1 pieces W1-11..W1-13 (dialogue, topics, rumours)",
+    "missing": [
+      "the topic graph",
+      "per-faction greetings",
+      "disposition gating"
+    ]
+  }
+}

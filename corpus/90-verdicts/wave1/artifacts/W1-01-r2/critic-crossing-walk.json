@@ -1,0 +1,177 @@
+{
+  "schema": "elder-souls/crossing@1",
+  "method": "RI-WLD01 M2 + M3",
+  "measured_at": "2026-08-06T20:25:21.545Z",
+  "git": {
+    "commit": "ead07330c387ddf41b23c3cb7a8132882ef6c57e",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "world": {
+    "areaKm2": 14.309,
+    "worldBoundsM": {
+      "x": [
+        0,
+        4825
+      ],
+      "z": [
+        0,
+        5540
+      ]
+    },
+    "elevationRangeM": [
+      -41.8,
+      424.2
+    ],
+    "roadNetworkM": 25099.7
+  },
+  "declared": {
+    "crossing_m": 6909,
+    "crossing_walk_min": 57.6,
+    "crossing_jog_min": 36,
+    "long_way_walk_min": 79
+  },
+  "built_routes": {
+    "crossing": {
+      "settlements": [
+        "Stormhold",
+        "Helstrom",
+        "Blackrose",
+        "Lilmoth"
+      ],
+      "legs": [
+        "stormhold-helstrom",
+        "helstrom-blackrose",
+        "blackrose-lilmoth"
+      ],
+      "metres": 6861.2,
+      "walk_min": 57.18,
+      "jog_min": 35.74,
+      "note": "RI-WLD01 §5 THE CROSSING — Stormhold south gate to Lilmoth harbour steps."
+    },
+    "long_way": {
+      "settlements": [
+        "Thorn",
+        "Stormhold",
+        "Helstrom",
+        "Blackrose",
+        "Soulrest"
+      ],
+      "legs": [
+        "thorn-stormhold",
+        "stormhold-helstrom",
+        "helstrom-blackrose",
+        "blackrose-soulrest"
+      ],
+      "metres": 9394.3,
+      "walk_min": 78.29,
+      "jog_min": 48.93,
+      "note": "RI-WLD01 §5 THE LONG WAY — Thorn to Soulrest."
+    }
+  },
+  "runs": [
+    {
+      "route": "crossing",
+      "speed": "walk",
+      "done": true,
+      "frames": 199281,
+      "seconds": 3321.35,
+      "minutes": 55.356,
+      "path_m": 6642.1,
+      "declared_route_m": 6861.2,
+      "mean_speed_mps": 1.9998,
+      "min_speed_mps": 0,
+      "max_speed_mps": 2.0001,
+      "speed_samples": 33213,
+      "speed_histogram": {
+        "0-0.5": 3,
+        "0.5-1": 0,
+        "1-1.6": 0,
+        "1.6-1.9": 0,
+        "1.9-1.99": 0,
+        "1.99-2.01": 33210,
+        "2.01-2.5": 0,
+        "2.5-3": 0,
+        "3-3.3": 0,
+        "3.3-99": 0
+      },
+      "frac_samples_below_1_6": 0.00009,
+      "leg_minutes": {
+        "stormhold-helstrom": 23.959,
+        "helstrom-blackrose": 19.379,
+        "blackrose-lilmoth": 12.018
+      },
+      "region_sequence": [
+        {
+          "region": "salt-hills",
+          "frame": 1,
+          "m": 0
+        },
+        {
+          "region": "valus-ridge",
+          "frame": 13775,
+          "m": 458.6
+        },
+        {
+          "region": "stone-forest",
+          "frame": 21522,
+          "m": 716.8
+        },
+        {
+          "region": "blackwood",
+          "frame": 95918,
+          "m": 3196.7
+        },
+        {
+          "region": "deep-marshes",
+          "frame": 112391,
+          "m": 3745.8
+        },
+        {
+          "region": "blackwood",
+          "frame": 118299,
+          "m": 3942.7
+        },
+        {
+          "region": "western-rootlands",
+          "frame": 118392,
+          "m": 3945.8
+        },
+        {
+          "region": "eastern-rootlands",
+          "frame": 181061,
+          "m": 6034.8
+        },
+        {
+          "region": "western-rootlands",
+          "frame": 190118,
+          "m": 6336.7
+        }
+      ],
+      "remaining_points": 1
+    }
+  ],
+  "checks": [
+    {
+      "id": "M2-TIME",
+      "pass": true,
+      "detail": "55.356 min walking, bar 52-65"
+    },
+    {
+      "id": "M2-DISTANCE",
+      "pass": true,
+      "detail": "6642.1 m integrated, bar 6300-7600"
+    },
+    {
+      "id": "M3-SPEED-HONESTY",
+      "pass": true,
+      "detail": "0.009% of 33213 ground-speed samples below 1.6 m/s, bar <= 8%"
+    },
+    {
+      "id": "M3-MEAN-SPEED",
+      "pass": true,
+      "detail": "mean ground speed 1.9998 m/s (walk_mps is 2.0 — the hour is distance, not friction)"
+    }
+  ],
+  "ok": true
+}
