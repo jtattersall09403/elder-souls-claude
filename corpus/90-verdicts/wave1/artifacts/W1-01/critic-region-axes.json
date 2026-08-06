@@ -1,0 +1,1513 @@
+{
+ "schema": "elder-souls/region-axes@1",
+ "method": "RI-WLD04 M18",
+ "axes": [
+  "ground_albedo",
+  "slope_histogram",
+  "flora",
+  "fauna",
+  "architecture",
+  "audio",
+  "weather",
+  "fog_extinction",
+  "hazard"
+ ],
+ "thresholds": {
+  "ground_albedo_dE": 12,
+  "slope_chi2": 0.1,
+  "flora_jaccard": 0.4,
+  "fauna_jaccard": 0.4,
+  "architecture_jaccard": 0.3,
+  "fog_relative": 0.25
+ },
+ "pairs_total": 78,
+ "min_axes_differing": 8,
+ "min_pair": "blackwood / marauders-coast",
+ "pairs_below_6": 0,
+ "pairs_at_or_below_3": 0,
+ "axis_wins": {
+  "ground_albedo": 77,
+  "slope_histogram": 60,
+  "flora": 78,
+  "fauna": 78,
+  "architecture": 78,
+  "audio": 78,
+  "weather": 78,
+  "fog_extinction": 70,
+  "hazard": 78
+ },
+ "region_slope_mean_deg": [
+  {
+   "id": "blackwood",
+   "cells": 3283,
+   "mean_deg": 9.68
+  },
+  {
+   "id": "clay-moor",
+   "cells": 1275,
+   "mean_deg": 3.11
+  },
+  {
+   "id": "crimson-coast",
+   "cells": 982,
+   "mean_deg": 4.17
+  },
+  {
+   "id": "deep-marshes",
+   "cells": 1991,
+   "mean_deg": 2.92
+  },
+  {
+   "id": "eastern-rootlands",
+   "cells": 2272,
+   "mean_deg": 1.55
+  },
+  {
+   "id": "hive",
+   "cells": 465,
+   "mean_deg": 4.61
+  },
+  {
+   "id": "marauders-coast",
+   "cells": 748,
+   "mean_deg": 1.71
+  },
+  {
+   "id": "salt-hills",
+   "cells": 1493,
+   "mean_deg": 17.39
+  },
+  {
+   "id": "stone-forest",
+   "cells": 2859,
+   "mean_deg": 9.31
+  },
+  {
+   "id": "stone-wastes",
+   "cells": 1260,
+   "mean_deg": 2.07
+  },
+  {
+   "id": "thornmarsh",
+   "cells": 1718,
+   "mean_deg": 4.96
+  },
+  {
+   "id": "valus-ridge",
+   "cells": 2711,
+   "mean_deg": 32.73
+  },
+  {
+   "id": "western-rootlands",
+   "cells": 1838,
+   "mean_deg": 1.68
+  }
+ ],
+ "pass": true,
+ "pairs": [
+  {
+   "a": "blackwood",
+   "b": "marauders-coast",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": false,
+    "hazard": true
+   },
+   "dE": 41.7,
+   "chi2": 0.354
+  },
+  {
+   "a": "blackwood",
+   "b": "stone-forest",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 43.7,
+   "chi2": 0.014
+  },
+  {
+   "a": "blackwood",
+   "b": "thornmarsh",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 16.3,
+   "chi2": 0.091
+  },
+  {
+   "a": "clay-moor",
+   "b": "crimson-coast",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 24.4,
+   "chi2": 0.059
+  },
+  {
+   "a": "clay-moor",
+   "b": "deep-marshes",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 53.8,
+   "chi2": 0.004
+  },
+  {
+   "a": "clay-moor",
+   "b": "salt-hills",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": false,
+    "hazard": true
+   },
+   "dE": 38.9,
+   "chi2": 0.474
+  },
+  {
+   "a": "clay-moor",
+   "b": "stone-wastes",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 48.3,
+   "chi2": 0.096
+  },
+  {
+   "a": "clay-moor",
+   "b": "thornmarsh",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 35.4,
+   "chi2": 0.094
+  },
+  {
+   "a": "crimson-coast",
+   "b": "deep-marshes",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 53.9,
+   "chi2": 0.079
+  },
+  {
+   "a": "crimson-coast",
+   "b": "hive",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 69.9,
+   "chi2": 0.009
+  },
+  {
+   "a": "crimson-coast",
+   "b": "thornmarsh",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 43.5,
+   "chi2": 0.041
+  },
+  {
+   "a": "crimson-coast",
+   "b": "western-rootlands",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": false,
+    "hazard": true
+   },
+   "dE": 67.1,
+   "chi2": 0.33
+  },
+  {
+   "a": "deep-marshes",
+   "b": "stone-wastes",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 77.4,
+   "chi2": 0.066
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "hive",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": false,
+    "hazard": true
+   },
+   "dE": 46.8,
+   "chi2": 0.461
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "marauders-coast",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 23.3,
+   "chi2": 0.007
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "stone-wastes",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 42.4,
+   "chi2": 0.046
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "thornmarsh",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": false,
+    "hazard": true
+   },
+   "dE": 28.5,
+   "chi2": 0.367
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "western-rootlands",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 19.4,
+   "chi2": 0.008
+  },
+  {
+   "a": "hive",
+   "b": "thornmarsh",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 60.4,
+   "chi2": 0.051
+  },
+  {
+   "a": "hive",
+   "b": "western-rootlands",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": false,
+    "hazard": true
+   },
+   "dE": 32.3,
+   "chi2": 0.415
+  },
+  {
+   "a": "marauders-coast",
+   "b": "stone-wastes",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 27.8,
+   "chi2": 0.022
+  },
+  {
+   "a": "marauders-coast",
+   "b": "western-rootlands",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 30,
+   "chi2": 0.003
+  },
+  {
+   "a": "salt-hills",
+   "b": "stone-forest",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": false,
+    "hazard": true
+   },
+   "dE": 34.1,
+   "chi2": 0.134
+  },
+  {
+   "a": "salt-hills",
+   "b": "western-rootlands",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": false,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 9.3,
+   "chi2": 0.612
+  },
+  {
+   "a": "stone-forest",
+   "b": "thornmarsh",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 31.5,
+   "chi2": 0.081
+  },
+  {
+   "a": "stone-wastes",
+   "b": "valus-ridge",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": false,
+    "hazard": true
+   },
+   "dE": 12.4,
+   "chi2": 0.902
+  },
+  {
+   "a": "stone-wastes",
+   "b": "western-rootlands",
+   "axes_differing": 8,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": false,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 39.2,
+   "chi2": 0.032
+  },
+  {
+   "a": "blackwood",
+   "b": "clay-moor",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 48.6,
+   "chi2": 0.158
+  },
+  {
+   "a": "blackwood",
+   "b": "crimson-coast",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 56.1,
+   "chi2": 0.13
+  },
+  {
+   "a": "blackwood",
+   "b": "deep-marshes",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 16.8,
+   "chi2": 0.167
+  },
+  {
+   "a": "blackwood",
+   "b": "eastern-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 32.2,
+   "chi2": 0.401
+  },
+  {
+   "a": "blackwood",
+   "b": "hive",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 70.1,
+   "chi2": 0.147
+  },
+  {
+   "a": "blackwood",
+   "b": "salt-hills",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 41.1,
+   "chi2": 0.172
+  },
+  {
+   "a": "blackwood",
+   "b": "stone-wastes",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 68.1,
+   "chi2": 0.284
+  },
+  {
+   "a": "blackwood",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 56.5,
+   "chi2": 0.47
+  },
+  {
+   "a": "blackwood",
+   "b": "western-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 42.9,
+   "chi2": 0.359
+  },
+  {
+   "a": "clay-moor",
+   "b": "eastern-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 48.7,
+   "chi2": 0.23
+  },
+  {
+   "a": "clay-moor",
+   "b": "hive",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 46.4,
+   "chi2": 0.104
+  },
+  {
+   "a": "clay-moor",
+   "b": "marauders-coast",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 35,
+   "chi2": 0.18
+  },
+  {
+   "a": "clay-moor",
+   "b": "stone-forest",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 46.1,
+   "chi2": 0.194
+  },
+  {
+   "a": "clay-moor",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 41.1,
+   "chi2": 0.855
+  },
+  {
+   "a": "clay-moor",
+   "b": "western-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 45.3,
+   "chi2": 0.191
+  },
+  {
+   "a": "crimson-coast",
+   "b": "eastern-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 65.6,
+   "chi2": 0.376
+  },
+  {
+   "a": "crimson-coast",
+   "b": "marauders-coast",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 50.6,
+   "chi2": 0.323
+  },
+  {
+   "a": "crimson-coast",
+   "b": "salt-hills",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 60.1,
+   "chi2": 0.373
+  },
+  {
+   "a": "crimson-coast",
+   "b": "stone-forest",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 55.9,
+   "chi2": 0.12
+  },
+  {
+   "a": "crimson-coast",
+   "b": "stone-wastes",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 66.9,
+   "chi2": 0.235
+  },
+  {
+   "a": "crimson-coast",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 58.8,
+   "chi2": 0.792
+  },
+  {
+   "a": "deep-marshes",
+   "b": "eastern-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 45.5,
+   "chi2": 0.187
+  },
+  {
+   "a": "deep-marshes",
+   "b": "hive",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 82.8,
+   "chi2": 0.131
+  },
+  {
+   "a": "deep-marshes",
+   "b": "marauders-coast",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 49.7,
+   "chi2": 0.141
+  },
+  {
+   "a": "deep-marshes",
+   "b": "salt-hills",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 54.7,
+   "chi2": 0.481
+  },
+  {
+   "a": "deep-marshes",
+   "b": "stone-forest",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 47.9,
+   "chi2": 0.208
+  },
+  {
+   "a": "deep-marshes",
+   "b": "thornmarsh",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 22.7,
+   "chi2": 0.107
+  },
+  {
+   "a": "deep-marshes",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 65.2,
+   "chi2": 0.854
+  },
+  {
+   "a": "deep-marshes",
+   "b": "western-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 58.1,
+   "chi2": 0.151
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "salt-hills",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 17.1,
+   "chi2": 0.655
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "stone-forest",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 29,
+   "chi2": 0.453
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 32.7,
+   "chi2": 0.929
+  },
+  {
+   "a": "hive",
+   "b": "marauders-coast",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 40.5,
+   "chi2": 0.406
+  },
+  {
+   "a": "hive",
+   "b": "salt-hills",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 30.6,
+   "chi2": 0.361
+  },
+  {
+   "a": "hive",
+   "b": "stone-forest",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 54.5,
+   "chi2": 0.124
+  },
+  {
+   "a": "hive",
+   "b": "stone-wastes",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 27,
+   "chi2": 0.311
+  },
+  {
+   "a": "hive",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 31.5,
+   "chi2": 0.777
+  },
+  {
+   "a": "marauders-coast",
+   "b": "salt-hills",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 21,
+   "chi2": 0.618
+  },
+  {
+   "a": "marauders-coast",
+   "b": "stone-forest",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 15.4,
+   "chi2": 0.406
+  },
+  {
+   "a": "marauders-coast",
+   "b": "thornmarsh",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 28.4,
+   "chi2": 0.317
+  },
+  {
+   "a": "marauders-coast",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 15.5,
+   "chi2": 0.913
+  },
+  {
+   "a": "salt-hills",
+   "b": "stone-wastes",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 32.7,
+   "chi2": 0.583
+  },
+  {
+   "a": "salt-hills",
+   "b": "thornmarsh",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 33.6,
+   "chi2": 0.271
+  },
+  {
+   "a": "salt-hills",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 25.2,
+   "chi2": 0.21
+  },
+  {
+   "a": "stone-forest",
+   "b": "stone-wastes",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 36.3,
+   "chi2": 0.342
+  },
+  {
+   "a": "stone-forest",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 25,
+   "chi2": 0.47
+  },
+  {
+   "a": "stone-forest",
+   "b": "western-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 42.2,
+   "chi2": 0.408
+  },
+  {
+   "a": "stone-wastes",
+   "b": "thornmarsh",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 55.6,
+   "chi2": 0.241
+  },
+  {
+   "a": "thornmarsh",
+   "b": "valus-ridge",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 43.6,
+   "chi2": 0.684
+  },
+  {
+   "a": "thornmarsh",
+   "b": "western-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 38.7,
+   "chi2": 0.323
+  },
+  {
+   "a": "valus-ridge",
+   "b": "western-rootlands",
+   "axes_differing": 9,
+   "detail": {
+    "ground_albedo": true,
+    "slope_histogram": true,
+    "flora": true,
+    "fauna": true,
+    "architecture": true,
+    "audio": true,
+    "weather": true,
+    "fog_extinction": true,
+    "hazard": true
+   },
+   "dE": 33.3,
+   "chi2": 0.906
+  }
+ ]
+}

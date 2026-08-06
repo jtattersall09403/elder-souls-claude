@@ -17,7 +17,8 @@
     "game/data/camera/targets.json",
     "tools/camera/gen-cells.mjs",
     "game/src/sim/route.js",
-    "tools/camera/cam-probe.mjs"
+    "tools/camera/cam-probe.mjs",
+    "game/data/camera/reference-framing.json"
   ],
   "findings": [
     "RI-CAM01..07 live in corpus/15-camera/. All 'constructed', extremely specific numbers.",
@@ -33,8 +34,12 @@
     "HARNESS GOTCHA: tap/hold/until are SCENARIO-FILE sugar expanded by tools/lib/scenario.mjs. In-page queueInputs has a CLOSED key set {f,press,release,move,look} and throws on anything else.",
     "HARNESS GOTCHA: teleport(x,z) uses the PROVINCE heightfield. The camera cells are separate fixtures; teleport(0,0) drops the player to y=-41.3 which is under cam-flat-plain's floor plane. Must pass {y: cell.ground_y}.",
     "look:[dx,dy] is DEGREES per frame already; look_stick:[x,y] is the raw stick that gets the deadzone/quadratic curve. Two keys because CAM02 M1 measures the curve and M3 measures the degree path.",
-    "Mouse wheel IS handled (input/real.js:91) but maps to swap_right/swap_left (bindings.js:25-26), not zoom. RI-CAM05 \u00a7F satisfied; probe dispatches real WheelEvents to prove it."
+    "Mouse wheel IS handled (input/real.js:91) but maps to swap_right/swap_left (bindings.js:25-26), not zoom. RI-CAM05 \u00a7F satisfied; probe dispatches real WheelEvents to prove it.",
+    "DEFECT FOUND+FIXED (engine): Engine._settleWorld() ran in _afterStep(), AFTER the camera placed the pivot and AFTER the trace record was built. So camera.pivot.y - player.pos.y in the trace was 42.86 m, not 1.55 m, and the pivot followed a one-frame-stale Y on every slope. RI-CAM01 SA requires the pivot to read the post-locomotion position. Moved into stepOnce, physics slot, before the camera. Verified: delta 1.55 exactly.",
+    "DEFECT FOUND+FIXED (camera): the shoulder offset was scaled by len/4.10, so the RI-CAM01 M1 census read 0.42 only at pitch 0 unlocked (0.344 at -55, 0.369 locked). Now scaled against the length the CAST was run at: exactly 0.42/0.10 unobstructed at every pitch and mode, and still on the cleared ray when collision shortens the boom.",
+    "MEASURED OFF THE REFERENCE CLIP (Godrick, 60fps, 5 frames, 8x8 NDC grid): player anchor sits at NDC y -0.40..-0.75 for a whole big-boss fight -- OUTSIDE the +-0.70 safe rect, ON screen, and upstream does NOT zoom out to fix it. CAM03 SC step 5 read literally is a ratchet to the 7.50 m cap = the strategy-game camera the item's own How-we-lose #5 names. Split into hard (anchor off screen, full range) and soft (TARGET outside safe rect, capped 1.20 m) drivers; player-low-but-on-screen gets no correction. Justified by SC's priority order and by SE having NO safe-rect bar on P_a. Recorded in game/data/camera/reference-framing.json.",
+    "PERF: groundYInCell naive 0.02 m descent from y=12 was 800 contains() x 158 shapes = 126k shape tests/frame and made an 8-yaw route walk take >8 min. Coarse 0.10 m + 10 bisections + locality hint. Measured after: ~1.8 ms per (stepFrames(1)+getCameraFrame) pair, 1298 frames per mangrove lap."
   ],
-  "next_step": "run all 18 probes, fix what they show failing, commit incrementally",
+  "next_step": "read full probe output; fix what fails; write the AR-3 crossing",
   "notes_for_successor": "SUCCESSOR-2. Rig is built and committed. Priority: probes that produce real measured output for RI-CAM01..07. Then close whatever the probes show failing."
 }

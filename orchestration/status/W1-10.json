@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-10",
+  "brief": "wave-1 piece W1-10 — Weapon movesets",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/12-weapons/moveset.schema.json",
+    "game/data/weapons/movesets/*.json (15 weapon classes)",
+    "game/data/weapons/moveset-index.json",
+    "game/src/combat/moveset*.js",
+    "tools/weapons/fingerprint.mjs (behavioural fingerprint distance)",
+    "tools/weapons/anim-reuse.mjs (animation-reuse index)",
+    "reports/W1-10-*.md"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ARBITRATION.md, SCORING.md §0, CORPUS-CONTRACT.md, HARNESS.md, PLAN.md §3, corpus/12-weapons/WEAPON-CRITIC.md + RI-WPN01..06",
+  "notes_for_successor": "FIRST ACTION checkpoint. Nothing built yet."
+}

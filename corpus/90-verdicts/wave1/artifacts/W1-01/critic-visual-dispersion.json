@@ -1,0 +1,307 @@
+{
+  "schema": "critic/visual-dispersion@1",
+  "measured_at": "2026-08-06T17:46:24.072Z",
+  "grid": "4x4",
+  "populations": {
+    "ours": {
+      "label": "ours (13 regions x 3)",
+      "regions": 13,
+      "images": 39,
+      "loo_accuracy": 0.6667,
+      "loo_correct": 26,
+      "chance": 0.0769,
+      "mean_inter_centroid": 103.4,
+      "mean_intra_scatter": 34.35,
+      "fisher_separation": 3.01,
+      "closest_pairs": [
+        {
+          "a": "blackwood",
+          "b": "thornmarsh",
+          "d": 18.9
+        },
+        {
+          "a": "stone-wastes",
+          "b": "valus-ridge",
+          "d": 38.7
+        },
+        {
+          "a": "salt-hills",
+          "b": "western-rootlands",
+          "d": 42.3
+        },
+        {
+          "a": "eastern-rootlands",
+          "b": "salt-hills",
+          "d": 43.6
+        },
+        {
+          "a": "deep-marshes",
+          "b": "thornmarsh",
+          "d": 44.6
+        },
+        {
+          "a": "eastern-rootlands",
+          "b": "marauders-coast",
+          "d": 47.1
+        }
+      ],
+      "confusions": [
+        {
+          "file": "reports/region-shots/frame-01.png",
+          "truth": "blackwood",
+          "predicted": "thornmarsh"
+        },
+        {
+          "file": "reports/region-shots/frame-02.png",
+          "truth": "blackwood",
+          "predicted": "thornmarsh"
+        },
+        {
+          "file": "reports/region-shots/frame-03.png",
+          "truth": "blackwood",
+          "predicted": "thornmarsh"
+        },
+        {
+          "file": "reports/region-shots/frame-07.png",
+          "truth": "crimson-coast",
+          "predicted": "clay-moor"
+        },
+        {
+          "file": "reports/region-shots/frame-08.png",
+          "truth": "crimson-coast",
+          "predicted": "thornmarsh"
+        },
+        {
+          "file": "reports/region-shots/frame-23.png",
+          "truth": "salt-hills",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-24.png",
+          "truth": "salt-hills",
+          "predicted": "eastern-rootlands"
+        },
+        {
+          "file": "reports/region-shots/frame-26.png",
+          "truth": "stone-forest",
+          "predicted": "marauders-coast"
+        },
+        {
+          "file": "reports/region-shots/frame-31.png",
+          "truth": "thornmarsh",
+          "predicted": "blackwood"
+        },
+        {
+          "file": "reports/region-shots/frame-34.png",
+          "truth": "valus-ridge",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-35.png",
+          "truth": "valus-ridge",
+          "predicted": "stone-wastes"
+        },
+        {
+          "file": "reports/region-shots/frame-36.png",
+          "truth": "valus-ridge",
+          "predicted": "salt-hills"
+        },
+        {
+          "file": "reports/region-shots/frame-39.png",
+          "truth": "western-rootlands",
+          "predicted": "salt-hills"
+        }
+      ]
+    },
+    "morrowind": {
+      "label": "morrowind REF-A21-regions",
+      "regions": 9,
+      "images": 39,
+      "loo_accuracy": 0.2564,
+      "loo_correct": 10,
+      "chance": 0.1111,
+      "mean_inter_centroid": 86.09,
+      "mean_intra_scatter": 60.74,
+      "fisher_separation": 1.417,
+      "closest_pairs": [
+        {
+          "a": "ashlands",
+          "b": "red_mountain",
+          "d": 34.2
+        },
+        {
+          "a": "bitter_coast",
+          "b": "grazelands",
+          "d": 36.3
+        },
+        {
+          "a": "sheogorad",
+          "b": "west_gash",
+          "d": 40.4
+        },
+        {
+          "a": "azuras_coast",
+          "b": "sheogorad",
+          "d": 45.6
+        },
+        {
+          "a": "grazelands",
+          "b": "sheogorad",
+          "d": 47.7
+        },
+        {
+          "a": "bitter_coast",
+          "b": "red_mountain",
+          "d": 54.2
+        }
+      ],
+      "confusions": [
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/ascadian_isles__mw-2463721269.jpg",
+          "truth": "ascadian_isles",
+          "predicted": "ashlands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/ashlands__mw-289035345.jpg",
+          "truth": "ashlands",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/azuras_coast__mw-107883636.jpg",
+          "truth": "azuras_coast",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/azuras_coast__mw-403215391.jpg",
+          "truth": "azuras_coast",
+          "predicted": "molag_amur"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/azuras_coast__mw-403215676.jpg",
+          "truth": "azuras_coast",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/bitter_coast__mw-114528470.jpg",
+          "truth": "bitter_coast",
+          "predicted": "ascadian_isles"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/bitter_coast__mw-21736767.jpg",
+          "truth": "bitter_coast",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/bitter_coast__mw-659245370.jpg",
+          "truth": "bitter_coast",
+          "predicted": "grazelands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/grazelands__mw-166396528.jpg",
+          "truth": "grazelands",
+          "predicted": "ascadian_isles"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/grazelands__mw-247233314.jpg",
+          "truth": "grazelands",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/grazelands__mw-71698586.jpg",
+          "truth": "grazelands",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/grazelands__mw-75405035.jpg",
+          "truth": "grazelands",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/molag_amur__mw-213929320.jpg",
+          "truth": "molag_amur",
+          "predicted": "west_gash"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/molag_amur__mw-283618035.jpg",
+          "truth": "molag_amur",
+          "predicted": "azuras_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/molag_amur__mw-304735356.jpg",
+          "truth": "molag_amur",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-2377740817.jpg",
+          "truth": "red_mountain",
+          "predicted": "ashlands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-283272254.jpg",
+          "truth": "red_mountain",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-283272330.jpg",
+          "truth": "red_mountain",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-289707796.jpg",
+          "truth": "red_mountain",
+          "predicted": "bitter_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/red_mountain__mw-406419307.jpg",
+          "truth": "red_mountain",
+          "predicted": "ashlands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-165521399.jpg",
+          "truth": "sheogorad",
+          "predicted": "azuras_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-165521565.jpg",
+          "truth": "sheogorad",
+          "predicted": "molag_amur"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-35624236.jpg",
+          "truth": "sheogorad",
+          "predicted": "west_gash"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-403075968.jpg",
+          "truth": "sheogorad",
+          "predicted": "grazelands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-403076134.jpg",
+          "truth": "sheogorad",
+          "predicted": "grazelands"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/sheogorad__mw-403077882.jpg",
+          "truth": "sheogorad",
+          "predicted": "azuras_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/west_gash__mw-164077747.jpg",
+          "truth": "west_gash",
+          "predicted": "sheogorad"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/west_gash__mw-431528628.jpg",
+          "truth": "west_gash",
+          "predicted": "azuras_coast"
+        },
+        {
+          "file": "corpus/70-visual/refs/morrowind/REF-A21-regions/west_gash__mw-446294602.jpg",
+          "truth": "west_gash",
+          "predicted": "sheogorad"
+        }
+      ]
+    }
+  }
+}

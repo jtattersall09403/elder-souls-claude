@@ -424,6 +424,240 @@ dice() {
   return R;
 },
 
+
+// ---------------------------------------------------------------------------------------
+// C7 — same-run analytic. Records the weapon socket track AND the target hurtboxes in the
+//      SAME run as the sim's hit/miss answer, so collision push-out and root motion cannot
+//      confound the comparison. Executes RI-CMB04 M2 (sim vs analytic, 7 classes x 24
+//      offsets) and M3's phantom-range number, and answers the 0.06 m thin-pole question
+//      analytically off the measured track.
+// ---------------------------------------------------------------------------------------
+geo2() {
+  const H = window.__HARNESS;
+  const cs = () => H.getCombatState();
+  const segSegDist = (p1,q1,p2,q2) => {
+    const d1=[q1[0]-p1[0],q1[1]-p1[1],q1[2]-p1[2]], d2=[q2[0]-p2[0],q2[1]-p2[1],q2[2]-p2[2]];
+    const r=[p1[0]-p2[0],p1[1]-p2[1],p1[2]-p2[2]];
+    const a=d1[0]*d1[0]+d1[1]*d1[1]+d1[2]*d1[2], e=d2[0]*d2[0]+d2[1]*d2[1]+d2[2]*d2[2];
+    const f=d2[0]*r[0]+d2[1]*r[1]+d2[2]*r[2];
+    const c=d1[0]*r[0]+d1[1]*r[1]+d1[2]*r[2];
+    const b=d1[0]*d2[0]+d1[1]*d2[1]+d1[2]*d2[2];
+    const den=a*e-b*b;
+    let s = den>1e-12 ? Math.min(1,Math.max(0,(b*f-c*e)/den)) : 0;
+    let t=(b*s+f)/e;
+    if (t<0){t=0;s=Math.min(1,Math.max(0,-c/a));} else if (t>1){t=1;s=Math.min(1,Math.max(0,(b-c)/a));}
+    const c1=[p1[0]+d1[0]*s,p1[1]+d1[1]*s,p1[2]+d1[2]*s];
+    const c2=[p2[0]+d2[0]*t,p2[1]+d2[1]*t,p2[2]+d2[2]*t];
+    return Math.hypot(c1[0]-c2[0],c1[1]-c2[1],c1[2]-c2[2]);
+  };
+  // one run: swing at a target placed at (x,z); returns sim answer + the recorded track
+  const run = (weapon, x, z, move) => {
+    H.setSeed(2026); H.loadState('arena_flat'); H.setLoadout({ weapon });
+    H.spawn('dummy_passive', x, z, { as: 'T' });
+    H.stepFrames(6);
+    H.queueInputs([{f:1, press:[move||'light']}, {f:3, release:[move||'light']}]);
+    const track = [];
+    let hp0 = null, hit = false, hitFrame = null;
+    for (let k = 0; k < 130; k++) {
+      H.stepFrames(1);
+      const g = H.getHitGeometry();
+      const me = g.actors.find(a => a.id === 'P');
+      const tg = g.actors.find(a => a.id === 'T');
+      const c = cs();
+      const e = c.enemies.find(y => y.id === 'T');
+      if (!e) break;
+      if (hp0 === null) hp0 = e.hp;
+      if (me.hitbox_active) {
+        track.push({ f: k, now: me.weapon.now.slice(), prev: me.weapon.prev.slice(), r: me.weapon.r,
+                     hb: tg ? tg.hurtboxes.map(h => ({ id:h.id, a:h.a.slice(), b:h.b.slice(), r:h.r })) : [] });
+      }
+      if (!hit && e.hp < hp0) { hit = true; hitFrame = k; }
+      if (k > 6 && c.player.state === 'IDLE') break;
+    }
+    return { hit, hitFrame, track };
+  };
+  // continuous analytic over a track, returns {hit, minGap}
+  const analytic = (track, N) => {
+    let hit = false, minGap = Infinity;
+    for (const t of track) {
+      for (let s = 0; s <= N; s++) {
+        const u = s / N;
+        const a = [t.prev[0]+(t.now[0]-t.prev[0])*u, t.prev[1]+(t.now[1]-t.prev[1])*u, t.prev[2]+(t.now[2]-t.prev[2])*u];
+        const b = [t.prev[3]+(t.now[3]-t.prev[3])*u, t.prev[4]+(t.now[4]-t.prev[4])*u, t.prev[5]+(t.now[5]-t.prev[5])*u];
+        for (const h of t.hb) {
+          const d = segSegDist(a,b,h.a,h.b) - (t.r + h.r);
+          if (d < minGap) minGap = d;
+          if (d <= 0) hit = true;
+        }
+      }
+    }
+    return { hit, minGap: +minGap.toFixed(5) };
+  };
+  const R = { m2: [], phantom: [], thin_pole: [] };
+  const WEAPONS = ['dagger','straight-sword','spear','axe','halberd','greatsword','ultra-greatsword'];
+
+  // ---- M2: 7 classes x 24 offsets, sim vs analytic, same run ----
+  for (const w of WEAPONS) {
+    const rows = [];
+    for (let i = 0; i < 24; i++) {
+      const off = +(i * 0.09).toFixed(4);
+      const r = run(w, off, 1.4);
+      const A64 = analytic(r.track, 64);
+      const A4  = analytic(r.track, 4);
+      const A1  = analytic(r.track, 1);
+      rows.push({ offset_m: off, sim_hit: r.hit, analytic_hit: A64.hit, min_gap_m: A64.minGap,
+                  analytic4_hit: A4.hit, analytic1_hit: A1.hit,
+                  agree_continuous: r.hit === A64.hit, agree_4: r.hit === A4.hit });
+    }
+    R.m2.push({ weapon: w, rows,
+      disagree_continuous: rows.filter(r => !r.agree_continuous),
+      disagree_4: rows.filter(r => !r.agree_4) });
+  }
+
+  // ---- M3 phantom range: fine sweep around the lateral and forward boundaries ----
+  for (const [axis, lo, hi] of [['lateral', 1.05, 1.20], ['forward', 2.15, 2.30]]) {
+    for (let v = lo; v <= hi + 1e-9; v += 0.005) {
+      const q = +v.toFixed(4);
+      const r = axis === 'lateral' ? run('straight-sword', q, 1.6) : run('straight-sword', 0, q);
+      const A = analytic(r.track, 64);
+      R.phantom.push({ axis, offset_m: q, sim_hit: r.hit, analytic_hit: A.hit, min_gap_m: A.minGap });
+    }
+  }
+
+  // ---- the 0.06 m thin pole, analytically, off the measured track ----
+  //  For each class, march a 0.06 m-radius vertical pole across the arc in 0.005 m steps at
+  //  the radius where the tip is fastest, and compare the CONTINUOUS swept-hull answer with
+  //  the 4-substep DISCRETE-POSE answer. Any offset where continuous=hit and discrete=miss
+  //  is a 0.06 m weapon-vs-pole tunnel.
+  for (const w of WEAPONS) {
+    const r0 = run(w, 40, 1.4);       // target far away: an unobstructed swing
+    const track = r0.track;
+    if (!track.length) { R.thin_pole.push({ weapon: w, error: 'no active frames' }); continue; }
+    const rw = track[0].r, rp = 0.06;
+    const poleHit = (x, z, N) => {
+      const p0 = [x, 0.0, z], p1 = [x, 2.0, z];
+      for (const t of track) {
+        for (let s = 0; s <= N; s++) {
+          const u = s / N;
+          const a = [t.prev[0]+(t.now[0]-t.prev[0])*u, t.prev[1]+(t.now[1]-t.prev[1])*u, t.prev[2]+(t.now[2]-t.prev[2])*u];
+          const b = [t.prev[3]+(t.now[3]-t.prev[3])*u, t.prev[4]+(t.now[4]-t.prev[4])*u, t.prev[5]+(t.now[5]-t.prev[5])*u];
+          if (segSegDist(a,b,p0,p1) <= rw + rp) return true;
+        }
+      }
+      return false;
+    };
+    const tunnels = [];
+    let tested = 0, contHits = 0;
+    for (let x = -2.0; x <= 2.0001; x += 0.005) {
+      for (let z = 0.4; z <= 2.4001; z += 0.05) {
+        const xx = +x.toFixed(4), zz = +z.toFixed(4);
+        tested++;
+        const c = poleHit(xx, zz, 64);
+        if (c) contHits++;
+        const d4 = poleHit(xx, zz, 4);
+        if (c && !d4) tunnels.push({ x: xx, z: zz });
+      }
+    }
+    R.thin_pole.push({ weapon: w, pole_r_m: rp, weapon_r_m: rw, grid_points: tested,
+      continuous_hits: contHits, tunnels_at_4_substeps: tunnels.length,
+      tunnel_examples: tunnels.slice(0, 12) });
+  }
+  return R;
+},
+
+
+// ---------------------------------------------------------------------------------------
+// C8 — the decisive discriminator: is the shipped sweep CONTINUOUS (convex hull per substep)
+//      or DISCRETE (5 sampled poses)?  Search for target placements where the continuous
+//      swept volume contains the target but the 4-substep DISCRETE-POSE model does not,
+//      then put a real target there and ask the simulation.
+//      A discrete implementation misses them (tunnelling). A hull implementation hits them.
+// ---------------------------------------------------------------------------------------
+discriminate() {
+  const H = window.__HARNESS;
+  const cs = () => H.getCombatState();
+  const segSegDist = (p1,q1,p2,q2) => {
+    const d1=[q1[0]-p1[0],q1[1]-p1[1],q1[2]-p1[2]], d2=[q2[0]-p2[0],q2[1]-p2[1],q2[2]-p2[2]];
+    const r=[p1[0]-p2[0],p1[1]-p2[1],p1[2]-p2[2]];
+    const a=d1[0]*d1[0]+d1[1]*d1[1]+d1[2]*d1[2], e=d2[0]*d2[0]+d2[1]*d2[1]+d2[2]*d2[2];
+    const f=d2[0]*r[0]+d2[1]*r[1]+d2[2]*r[2];
+    const c=d1[0]*r[0]+d1[1]*r[1]+d1[2]*r[2];
+    const b=d1[0]*d2[0]+d1[1]*d2[1]+d1[2]*d2[2];
+    const den=a*e-b*b;
+    let s = den>1e-12 ? Math.min(1,Math.max(0,(b*f-c*e)/den)) : 0;
+    let t=(b*s+f)/e;
+    if (t<0){t=0;s=Math.min(1,Math.max(0,-c/a));} else if (t>1){t=1;s=Math.min(1,Math.max(0,(b-c)/a));}
+    const c1=[p1[0]+d1[0]*s,p1[1]+d1[1]*s,p1[2]+d1[2]*s];
+    const c2=[p2[0]+d2[0]*t,p2[1]+d2[1]*t,p2[2]+d2[2]*t];
+    return Math.hypot(c1[0]-c2[0],c1[1]-c2[1],c1[2]-c2[2]);
+  };
+  const simRun = (weapon, x, z) => {
+    H.setSeed(2026); H.loadState('arena_flat'); H.setLoadout({ weapon });
+    H.spawn('dummy_passive', x, z, { as: 'T' });
+    H.stepFrames(6);
+    H.queueInputs([{f:1, press:['light']}, {f:3, release:['light']}]);
+    let hp0=null, hit=false;
+    for (let k=0;k<130;k++){ H.stepFrames(1);
+      const e = cs().enemies.find(y=>y.id==='T'); if(!e) break;
+      if(hp0===null) hp0=e.hp; if(e.hp<hp0){hit=true;break;}
+      if (k>6 && cs().player.state==='IDLE') break; }
+    return hit;
+  };
+  const R = { weapons: [] };
+  for (const w of ['halberd','spear','straight-sword','ultra-greatsword','greatsword']) {
+    // unobstructed track + the target's rest hurtbox rig at a reference spawn
+    H.setSeed(2026); H.loadState('arena_flat'); H.setLoadout({ weapon: w });
+    H.spawn('dummy_passive', 40, 1.4, { as: 'REF' });
+    H.stepFrames(6);
+    H.queueInputs([{f:1, press:['light']}, {f:3, release:['light']}]);
+    const track = [];
+    let ref = null;
+    for (let k=0;k<130;k++){
+      H.stepFrames(1);
+      const g=H.getHitGeometry();
+      const me=g.actors.find(a=>a.id==='P');
+      const tg=g.actors.find(a=>a.id==='REF');
+      if (!ref && tg) ref = tg.hurtboxes.map(h=>({id:h.id,a:h.a.slice(),b:h.b.slice(),r:h.r}));
+      if (me.hitbox_active) track.push({ now: me.weapon.now.slice(), prev: me.weapon.prev.slice(), r: me.weapon.r });
+      if (k>6 && cs().player.state==='IDLE') break;
+    }
+    if (!track.length || !ref) { R.weapons.push({weapon:w, error:'no track'}); continue; }
+    const rw = track[0].r;
+    // hurtboxes translated to a candidate (x,z): the reference was spawned at (40,1.4)
+    const cover = (dx, dz, N) => {
+      for (const t of track) {
+        for (let s=0;s<=N;s++){
+          const u=s/N;
+          const a=[t.prev[0]+(t.now[0]-t.prev[0])*u, t.prev[1]+(t.now[1]-t.prev[1])*u, t.prev[2]+(t.now[2]-t.prev[2])*u];
+          const b=[t.prev[3]+(t.now[3]-t.prev[3])*u, t.prev[4]+(t.now[4]-t.prev[4])*u, t.prev[5]+(t.now[5]-t.prev[5])*u];
+          for (const h of ref) {
+            const ha=[h.a[0]+dx,h.a[1],h.a[2]+dz], hb=[h.b[0]+dx,h.b[1],h.b[2]+dz];
+            if (segSegDist(a,b,ha,hb) <= rw + h.r) return true;
+          }
+        }
+      }
+      return false;
+    };
+    const cands = [];
+    for (let x=-2.2; x<=2.2001 && cands.length<400; x+=0.0025) {
+      for (let z=0.5; z<=2.5001; z+=0.025) {
+        const dx = +(x-40).toFixed(4), dz = +(z-1.4).toFixed(4);
+        if (cover(dx,dz,64) && !cover(dx,dz,4)) cands.push({ x:+x.toFixed(4), z:+z.toFixed(4) });
+      }
+    }
+    // ask the simulation at up to 25 of them
+    const probed = [];
+    for (const c of cands.slice(0, 25)) probed.push({ x:c.x, z:c.z, sim_hit: simRun(w, c.x, c.z) });
+    R.weapons.push({ weapon: w, hitbox_r_m: rw,
+      candidates_found: cands.length, probed,
+      sim_missed_count: probed.filter(p=>!p.sim_hit).length,
+      verdict: cands.length === 0 ? 'no discriminating placement exists for this target rig'
+        : (probed.every(p=>p.sim_hit) ? 'CONTINUOUS — sim hits every placement the discrete model would miss'
+          : 'DISCRETE — sim misses placements the continuous hull covers (TUNNELLING)') });
+  }
+  return R;
+},
+
 };
 
 const list = which === 'all' ? Object.keys(PROBES) : which.split(',');
