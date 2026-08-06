@@ -91,7 +91,9 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_cut', jump1: 'jump_stomp', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_shoulder', art: ['art_stomp', 'art_guard'],
     h2_exclusive: ['2h.jump.r2', '2h.art.2'],
-    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: [],
+    // The mace's jumping attack carries hyperarmour: it is the class that lands committed and
+    // does not care. This is the grammar split from HLB, its nearest Dg neighbour once SPR moved.
+    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: ['jump.r1', '2h.jump.r1'],
   },
   HLB: {
     r1: ['sweep_low', 'sweep_wide', 'thrust_low'],

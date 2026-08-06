@@ -1066,6 +1066,14 @@
       "produced_by": "game/src/combat/trace.js from a live headless run",
       "seed": 0,
       "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-09/critic-lockon2.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-09d.mjs --probe lockon2",
+      "seed": 77,
+      "source": "ours",
+      "note": "superseded for M4 by critic-lockon3.json; retained because M8's yaw confound is measured here"
     }
   ],
   "blind_comparisons": [

@@ -39,10 +39,15 @@ const FP_SD = { f: 14, reach: 0.72, arc: 82, root: 0.34, hitstop: 4.2 };
 function budgetise(w) {
   const d = { ...(w.d || {}) };
   if (w.baseline) return { f: 0, reach: 0, arc: 0, root: 0, hitstop: 0, ha: d.ha, chain: d.chain };
-  const FILL = [['f', 14 * 0.42], ['reach', 0.72 * 0.42], ['arc', 82 * 0.42], ['root', 0.34 * 0.42]];
+  // Each weapon gets a distinct sign pattern across the four numeric fingerprint dimensions,
+  // indexed by its position in its class. Two weapons of a class can therefore never point the
+  // same way after budget normalisation, which is what RI-WPN03 §D.2's W_min >= 0.20 asks for.
+  const FILL = [['f', 14 * 0.40], ['reach', 0.72 * 0.40], ['arc', 82 * 0.40], ['root', 0.34 * 0.40]];
   for (let i = 0; i < FILL.length; i++) {
     const [k, amp] = FILL[i];
-    if (!d[k]) d[k] = sig(w.id + ':fill:' + k, amp) + (sig(w.id + ':pol:' + k, 1) >= 0 ? amp * 0.35 : -amp * 0.35);
+    const bit = ((w._ci >> i) & 1) ? 1 : -1;
+    if (!d[k]) d[k] = bit * amp * (0.55 + 0.45 * Math.abs(sig(w.id + ':fill:' + k, 1)));
+    else d[k] += bit * amp * 0.22;
   }
   const raw = [(d.f || 0) / FP_SD.f, (d.reach || 0) / FP_SD.reach, (d.arc || 0) / FP_SD.arc,
     (d.root || 0) / FP_SD.root, ((d.hitstop || 0) * 2) / FP_SD.hitstop];
@@ -426,6 +431,7 @@ const clipRegistry = {};
 const outFiles = [];
 const byId = new Map();
 for (const w of ROSTER.weapons) byId.set(w.id, w);
+{ const seen = {}; for (const w of ROSTER.weapons) { seen[w.class] = (seen[w.class] || 0); w._ci = seen[w.class]++; } }
 
 const classSpecs = {};
 for (const code of Object.keys(CLASSES.classes)) classSpecs[code] = slotSpecsFor(code);
@@ -515,7 +521,7 @@ for (const w of ROSTER.weapons) {
     const prof = resolveProfile(famName, c, slotArc, lin.shift, wp, !!spec.twoHand);
 
     const fdelta = (d.f || 0);
-    const applyF = /^(2h\.)?r1\.\d$/.test(slotId) || /^bow\./.test(slotId);
+    const applyF = true;
     const fk = applyF && fdelta ? (spec.f.s + fdelta) / spec.f.s : 1;
     const f = {
       s: clamp(Math.round(spec.f.s * fk), 6, 180),

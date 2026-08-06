@@ -2,30 +2,26 @@
   "task_id": "W1-09-critic",
   "brief": "critic for wave-1 piece W1-09 Combat core",
   "started": "wave-1",
-  "state": "writing-verdict",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-09.json",
     "corpus/90-verdicts/wave1/W1-09.md"
   ],
   "outputs_written": [
-    "tools/harness/critic-w1-09.mjs",
-    "tools/harness/critic-w1-09b.mjs",
-    "tools/harness/critic-w1-09c.mjs",
-    "tools/harness/critic-w1-09d.mjs",
-    "tools/harness/critic-w1-09e.mjs",
-    "tools/harness/critic-w1-09f.mjs",
-    "tools/harness/critic-w1-09g.mjs",
-    "corpus/90-verdicts/wave1/artifacts/W1-09/*.json"
+    "corpus/90-verdicts/wave1/W1-09.json",
+    "corpus/90-verdicts/wave1/W1-09.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-09/ (27 measurement artifacts + 3 blind packs)",
+    "tools/harness/critic-w1-09{,b,c,d,e,f,g,h,i}.mjs"
   ],
   "findings": [
     "RI-CMB01 M1/M2/M5 reproduced INDEPENDENTLY and exactly: 52/60/88/120 f totals, i-frames f5-30 / f5-26 / f7-16 / 0, boundary probe 2 transitions per tier, zero holes, zero leaks, cliffs at 30.00/70.00/100.00.",
     "RI-CMB02 all 14 rows exact including root dz and stamina; dodge-cancel first fires at animation frame 53; buffer exactly 8 f; block and sprint never cancel; chain hit 2 startup 19 fires on frame 75.",
     "RI-CMB04: sim agrees with the continuous swept-hull analytic on 7 classes x 24 offsets, 0 disagreements; boundary 1.120/1.125 m lateral and 2.225/2.230 m forward, within 0.0022 m of the analytic surface (budget 0.030).",
-    "THIN-WEAPON TUNNELLING: does NOT occur. A 0.06 m pole tunnels at 8-282 grid positions per class under the DISCRETE-POSE model that RI-CMB04 §C's substep rationale assumes, but the build sweeps by convex hull: forcing substeps 4 -> 1 changed ZERO outcomes, and the sim hits 5 placements a 2-pose-only test misses. Substep count is therefore observationally decorative (M2's own tell) but sweeping is real.",
-    "MEASURED PEAK TIP SPEED exceeds RI-CMB04 §B's declared column on all 14 rows, by x1.00 to x2.69 (halberd R1 59.1 m/s declared 22.0). Total blade arc per one-handed R1 is 615 deg (straight sword) to 665 deg (halberd) - a windmill, not a swing - and the weapon snaps 1.4-2.5 m in one frame at the idle boundary.",
-    "GUARD BREAK DEFECT: GUARD_BREAK lasts 46 f (spec 40) and stamina REGENERATES at the full 0.75/frame from frame 43 of the break, though RI-CMB03 §A/§D require x0.00 and 'suspended for the whole duration'.",
+    "THIN-WEAPON TUNNELLING: does NOT occur. A 0.06 m pole tunnels at 8-282 grid positions per class under the DISCRETE-POSE model that RI-CMB04 \u00a7C's substep rationale assumes, but the build sweeps by convex hull: forcing substeps 4 -> 1 changed ZERO outcomes, and the sim hits 5 placements a 2-pose-only test misses. Substep count is therefore observationally decorative (M2's own tell) but sweeping is real.",
+    "MEASURED PEAK TIP SPEED exceeds RI-CMB04 \u00a7B's declared column on all 14 rows, by x1.00 to x2.69 (halberd R1 59.1 m/s declared 22.0). Total blade arc per one-handed R1 is 615 deg (straight sword) to 665 deg (halberd) - a windmill, not a swing - and the weapon snaps 1.4-2.5 m in one frame at the idle boundary.",
+    "GUARD BREAK DEFECT: GUARD_BREAK lasts 46 f (spec 40) and stamina REGENERATES at the full 0.75/frame from frame 43 of the break, though RI-CMB03 \u00a7A/\u00a7D require x0.00 and 'suspended for the whole duration'.",
     "STAGGER DEFECT, same root cause: medium stagger 50 f (spec 44), heavy 70 f (spec 64). Every hitstun state is corpus_length + hitstop_frames (6).",
-    "Parry costs 26 stamina with the default medium shield; RI-CMB03 §B says 'Parry attempt 22 flat'. The build adds an undeclared parry_medium_shield: 26.",
+    "Parry costs 26 stamina with the default medium shield; RI-CMB03 \u00a7B says 'Parry attempt 22 flat'. The build adds an undeclared parry_medium_shield: 26.",
     "JUMP IS ABSENT: the button is accepted, no state change, no y displacement, no stamina spend, though stamina.json declares jump: 18. two_hand, swap_right, swap_left and menu are also no-ops.",
     "RI-CMB07 regenerated exemplar: 11 of 24 banded rows OUT OF BAND, including swings taken = 0, damage taken = 0, hp at fight end 620/620, frames at 0 stamina = 0, mean stamina 83%, whiff rate 0.72, punish-window usage rate NULL. The exemplar is a fight in which the player is never hit.",
     "Committed-frame ratio recomputed independently: 0.5517 counting PARLEY_*, 0.5406 excluding them (the builder's figure). Both inside the 0.34-0.56 band, at the top of it.",
@@ -33,6 +29,6 @@
     "Parley: 78 f, resolving frame 31, uncancellable by roll or attack, 10 of 10 gating cases correct, beasts exempt with 0 frames spent. A10 passes: no browsable topic surface exists in this build.",
     "Lock-on M4 passes perfectly: 0.00 deg spread of target-relative roll angle across 8 camera yaws, all 8 bins within 5 deg, roll distance spread 0.016 m."
   ],
-  "next_step": "emit corpus/90-verdicts/wave1/W1-09.json and .md, then node tools/progress.mjs",
+  "next_step": "none - verdict emitted, gap ledger and progress page regenerated",
   "notes_for_successor": "RI-CMB05 M4-M7 and RI-CMB06 M1-M3/M5-M7 were not exercised for budget reasons and are scored on measured weight only; ran_every_assigned_method is false with a note. The FAIL does not rest on that coverage: RI-CMB03 cannot exceed 55/100 and RI-CMB07 cannot exceed 60/100 on measured checks alone."
 }

@@ -232,9 +232,9 @@ function wiggle(p, amp, seedPhase) {
 //   3. grade                                                 (softest: a steep road is still a road)
 const CLEAR_M = 0.40;          // deck stands this far above the highest water it crosses
 const MAX_CUT_M = 3.0;         // a road cutting. Deeper than this is a trench, and trenches fill
-const MAX_FILL_M = 26.0;       // an embankment; above DECK_M of it the road is a deck, not a bank
+const MAX_FILL_M = 8.0;        // an embankment; above DECK_M of it the road is a deck, not a bank
 const DECK_M = 3.0;            // fill above this is emitted as a causeway/bridge span
-const MAX_GRADE = 0.20;
+const MAX_GRADE = 0.30;
 const TIDE_PHASES = [0, 0.25, 0.5, 0.75];
 
 /** The highest this point's water ever stands, over the whole tide cycle; null where never wet. */
@@ -247,9 +247,40 @@ function highWater(x, z) {
   return s;
 }
 
-function solveDeck(p, tideway, extraFloor = null) {
+/**
+ * The highest water anywhere in the road CORRIDOR near point i — not just under the point.
+ *
+ * Water bodies here are narrow channels defined by a noise threshold, so a 3 m sliver of a 15 m
+ * tarn fits between two road points 12 m apart. Sampling only at the points is how the first cut
+ * of this fix still left 67 m of leg 1 over knee-deep water at every tide phase: the deck cleared
+ * the water it was asked about and dived into the water it was not. The corridor is swept at 2 m
+ * along the road and at +/- the half-width across it.
+ */
+function corridorHighWater(p, i, halfWidth) {
+  let s = null;
+  const n = p.length - 1;
+  for (const j of [i - 1, i]) {
+    if (j < 0 || j >= n) continue;
+    const a = p[j], b = p[j + 1];
+    const dx = b[0] - a[0], dz = b[1] - a[1], L = Math.hypot(dx, dz) || 1;
+    const steps = Math.max(1, Math.ceil(L / 2));
+    for (let k = 0; k <= steps; k++) {
+      const t = k / steps;
+      const cx = a[0] + dx * t, cz = a[1] + dz * t;
+      for (const off of [-1, -0.5, 0, 0.5, 1]) {
+        const x = cx + (-dz / L) * off * halfWidth, z = cz + (dx / L) * off * halfWidth;
+        const v = highWater(x, z);
+        if (v !== null && (s === null || v > s)) s = v;
+      }
+    }
+  }
+  if (s === null) s = highWater(p[i][0], p[i][1]);
+  return s;
+}
+
+function solveDeck(p, tideway, halfWidth) {
   const g = p.map(([x, z]) => field.heightAt(x, z));
-  const hw = p.map(([x, z]) => highWater(x, z));
+  const hw = p.map((_, i) => corridorHighWater(p, i, halfWidth));
   // The tideway is the one leg whose identity is that it is BELOW the waterline: 0.85 m under mean
   // water, walkable at LOW, closed at HIGH (RI-TRV01, RI-WLD10 M54). It is exempt by name, not by
   // accident, and the M2-ROAD-ABOVE-WATER check exempts exactly the same leg.
@@ -257,11 +288,7 @@ function solveDeck(p, tideway, extraFloor = null) {
     const y = p.map(([x, z], i) => (field.waterSurfaceAt(x, z, 0) === null ? g[i] : field.waterSurfaceAt(x, z, 0)) - 0.85);
     return { y, max_cut: 0, max_fill: 0, spans: [], span_m: 0 };
   }
-  const floor = p.map((_, i) => {
-    let f = hw[i] === null ? -Infinity : hw[i] + CLEAR_M;
-    if (extraFloor && extraFloor[i] > f) f = extraFloor[i];
-    return f;
-  });
+  const floor = hw.map((v) => (v === null ? -Infinity : v + CLEAR_M));
   let y = g.map((gi, i) => Math.max(gi, floor[i] === -Infinity ? -1e9 : floor[i]));
   for (let k = 0; k < 60; k++) {
     const q = y.slice();
@@ -372,7 +399,8 @@ for (const leg of scale.roads) {
 
   // ---- elevation profile --------------------------------------------------------------------
   const tideway = /tideway/i.test(leg.class);
-  const deck = solveDeck(p, tideway);
+  const halfWidth = tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0;
+  const deck = solveDeck(p, tideway, halfWidth);
   const y = deck.y;
   let maxGrade = 0;
   for (let i = 1; i < y.length; i++) {
@@ -391,7 +419,7 @@ for (const leg of scale.roads) {
     max_grade: +maxGrade.toFixed(3),
     max_cut_m: deck.max_cut, max_fill_m: deck.max_fill,
     deck_spans: deck.spans, deck_span_m: deck.span_m,
-    half_width_m: tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0,
+    half_width_m: halfWidth,
     waypoints: minorsFor(leg.from, leg.to).map((m) => m.name),
     points: pts,
   });

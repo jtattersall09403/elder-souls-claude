@@ -20,7 +20,7 @@
  },
  "parry_capable": false,
  "guardbreak_kind": "kick",
- "reach_m": 1.499,
+ "reach_m": 1.454,
  "arc_sweep_deg": 0,
  "slots": {
   "bow.draw": {
@@ -41,7 +41,7 @@
    "stamina": 14,
    "motion_value": 0.85,
    "poise_damage": 4,
-   "root_dz_m": 0.078,
+   "root_dz_m": -0.067,
    "arc_sweep_deg": 0,
    "shape": "shoot",
    "hyperarmour": {
@@ -83,7 +83,7 @@
    "stamina": 11,
    "motion_value": 0.85,
    "poise_damage": 4,
-   "root_dz_m": 0.078,
+   "root_dz_m": -0.067,
    "arc_sweep_deg": 0,
    "shape": "shoot",
    "hyperarmour": {
@@ -130,7 +130,7 @@
    "stamina": 20,
    "motion_value": 1.6,
    "poise_damage": 6,
-   "root_dz_m": 0.078,
+   "root_dz_m": -0.067,
    "arc_sweep_deg": 0,
    "shape": "shoot",
    "hyperarmour": {
@@ -174,7 +174,7 @@
    "stamina": 10,
    "motion_value": 0.6,
    "poise_damage": 3,
-   "root_dz_m": 0.078,
+   "root_dz_m": -0.067,
    "arc_sweep_deg": 0,
    "shape": "shoot",
    "hyperarmour": {
@@ -209,13 +209,13 @@
    },
    "chains_to": null,
    "chain_index": 1,
-   "startup_f": 53,
+   "startup_f": 50,
    "active_f": 6,
-   "recovery_f": 52,
+   "recovery_f": 49,
    "stamina": 18,
    "motion_value": 1.53,
    "poise_damage": 9,
-   "root_dz_m": 0.238,
+   "root_dz_m": 0.093,
    "arc_sweep_deg": 4,
    "shape": "thrust",
    "hyperarmour": {
@@ -251,13 +251,13 @@
    },
    "chains_to": null,
    "chain_index": 1,
-   "startup_f": 22,
+   "startup_f": 19,
    "active_f": 6,
-   "recovery_f": 28,
+   "recovery_f": 24,
    "stamina": 16,
    "motion_value": 0.35,
    "poise_damage": 24,
-   "root_dz_m": 0.628,
+   "root_dz_m": 0.483,
    "arc_sweep_deg": 0,
    "shape": "grab",
    "hyperarmour": {
@@ -288,14 +288,14 @@
    },
    "chains_to": null,
    "chain_index": 1,
-   "startup_f": 62,
+   "startup_f": 59,
    "active_f": 6,
-   "recovery_f": 60,
+   "recovery_f": 57,
    "stamina": 22,
    "motion_value": 1.44,
    "poise_damage": 8,
-   "root_dz_m": 0.618,
-   "arc_sweep_deg": 10.3,
+   "root_dz_m": 0.473,
+   "arc_sweep_deg": 7.8,
    "shape": "thrust",
    "hyperarmour": {
     "enabled": false
@@ -315,5 +315,5 @@
    ]
   }
  },
- "notes": "Six frames faster to draw and four metres shorter in effective range: the bow you can use while something is already on top of you.\n\nProjectile range 21.9 m (RI-WPN02 §B); reach_m above is the bow's own hitbox reach.\n\nLineage: horn — Horn and sinew. Drawn to the cheek.\nMandatory slots present: 7/7. Total slots: 7.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+ "notes": "Six frames faster to draw and four metres shorter in effective range: the bow you can use while something is already on top of you.\n\nProjectile range 21.85 m (RI-WPN02 §B); reach_m above is the bow's own hitbox reach.\n\nLineage: horn — Horn and sinew. Drawn to the cheek.\nMandatory slots present: 7/7. Total slots: 7.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
 }

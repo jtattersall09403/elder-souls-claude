@@ -1,20 +1,23 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-06T18:17:48Z",
+  "generated": "2026-08-06T18:34:13Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1
   ],
-  "verdicts_read": 3,
+  "verdicts_read": 4,
   "counts": {
-    "total": 3,
-    "open": 3,
+    "total": 4,
+    "open": 4,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
     "invalid": 0
   },
   "open_by_subsystem_path": {
+    "combat.frames.timing": [
+      "GAP-W1-combat-exemplar-has-no-danger"
+    ],
     "platform.determinism.harness": [
       "GAP-W1-platform-prng-never-drawn"
     ],
@@ -30,6 +33,47 @@
   ],
   "load_errors": [],
   "gaps": [
+    {
+      "gap_id": "GAP-W1-combat-exemplar-has-no-danger",
+      "subsystem_path": "combat.frames.timing",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-09-7c41",
+      "opened_in": "corpus/90-verdicts/wave1/W1-09.json",
+      "piece_id": "W1-09",
+      "severity": "blocking",
+      "what": "The regenerated RI-CMB07 exemplar is a 120-second, 7200-frame fight in which the player is never hit. Measured from the shipped statistics file and independently recomputed from the JSONL: swings taken 0 (band 0.05-0.35), damage taken / max HP 0 (band 0.4-1.6), player hp at fight end 620/620, frames at exactly 0 stamina 0 (band 20-600), mean stamina 0.8303 (band 0.55-0.80), 45.87% of frames above 90% stamina (band 0.12-0.45), whiff rate 0.72 (band 0.03-0.25), swings negated by i-frames 0.115 (band 0.4-0.8), longest committed run 155 f (band 180-520), punish-window usage rate null. Eleven of twenty-four banded rows are out of band against RI-CMB07 M2's floor of at most four, over one fight against a floor of five. Of the enemy's 26 swings, 11.5% were dodged and 7.7% blocked; the other 81% simply missed.",
+      "why_it_matters": "The exemplar is the artifact RI-CMB03 M7, RI-CMB05 §B, RI-CMB09 §3 and RI-AI03 all diff against, so a fight with no danger in it makes every one of those checks pass for the wrong reason and hides the real defects underneath - the guard-break window that regenerates stamina and the hitstun lengths that are six frames long, neither of which the exemplar could ever have exposed because the player is never guard-broken and never staggered in it.",
+      "remedy": {
+        "action": "Rewrite the exemplar bot in tools/harness/cmb-exemplar.mjs so it fights inside the enemy's reach band instead of drifting out of it: hold 1.2-2.2 m from the target during ATK_WINDUP rather than retreating, commit to a punish inside every declared recovery window, and take the trade when stamina is short instead of walking away. Add an explicit assertion pass that refuses to write the exemplar unless it clears RI-CMB07 M2, and generate five seeded fights and take the row-wise median as the item requires.",
+        "targets": [
+          "tools/harness/cmb-exemplar.mjs",
+          "reports/w1-09/exemplar/RI-CMB07-exemplar-frames.jsonl",
+          "reports/w1-09/exemplar/RI-CMB07-exemplar-statistics.json"
+        ],
+        "acceptance": "Over the row-wise median of five seeded fights: at least 20 of the 24 banded rows inside band, with rows 13 (swings taken) in 0.05-0.35, 14 (damage taken / max HP) in 0.4-1.6, 16 (frames at exactly 0 stamina) in 20-600, 17 in 0.03-0.20, 18 in 0.12-0.45, 19 in 0.55-0.80 and 25 in 180-520 all inside band individually, row 27 (punish-window usage rate) a number in 0.50-0.95 rather than null, and at least one GUARD_BREAK and one stagger present in the trace so RI-CMB03 M5 and RI-CMB05 M3 have something to measure.",
+        "ref_item": "RI-CMB07",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Rewrite the exemplar bot in tools/harness/cmb-exemplar.mjs so it fights inside the enemy's reach band instead of drifting out of it: hold 1.2-2.2 m from the target during ATK_WINDUP rather than retreating, commit to a punish inside every declared recovery window, and take the trade when stamina is short instead of walking away. Add an explicit assertion pass that refuses to write the exemplar unless it clears RI-CMB07 M2, and generate five seeded fights and take the row-wise median as the item requires.",
+      "remedy_acceptance": "Over the row-wise median of five seeded fights: at least 20 of the 24 banded rows inside band, with rows 13 (swings taken) in 0.05-0.35, 14 (damage taken / max HP) in 0.4-1.6, 16 (frames at exactly 0 stamina) in 20-600, 17 in 0.03-0.20, 18 in 0.12-0.45, 19 in 0.55-0.80 and 25 in 180-520 all inside band individually, row 27 (punish-window usage rate) a number in 0.50-0.95 rather than null, and at least one GUARD_BREAK and one stagger present in the trace so RI-CMB03 M5 and RI-CMB05 M3 have something to measure.",
+      "evidence": [
+        "reports/w1-09/exemplar/RI-CMB07-exemplar-statistics.json",
+        "reports/w1-09/exemplar/RI-CMB07-exemplar-frames.jsonl",
+        "corpus/90-verdicts/wave1/artifacts/W1-09/critic-guardbreak3.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-09/blind-cmb03-pack.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
     {
       "gap_id": "GAP-W1-platform-prng-never-drawn",
       "subsystem_path": "platform.determinism.harness",

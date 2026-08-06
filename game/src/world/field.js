@@ -177,7 +177,12 @@ export class WorldField {
       const outer = s.hw * 3.2;
       if (d >= outer) continue;
       const w = smoothstep(outer, s.hw, d);
-      if (w > bestW) { bestW = w; bestY = lerp(s.ay, s.by, t); }
+      // Where two segments cover a point with equal weight — the road doubling back on itself, or
+      // two legs meeting — the higher deck wins. Taking whichever segment the bucket happened to
+      // list first made the collision height depend on iteration order, and left the ground up to
+      // 0.6 m BELOW the deck the road builder solved: enough to expose a latent water plane.
+      const y = lerp(s.ay, s.by, t);
+      if (w > bestW || (w === bestW && y > bestY)) { bestW = w; bestY = y; }
     }
     return bestW > 0 ? lerp(h, bestY, bestW) : h;
   }

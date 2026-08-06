@@ -456,7 +456,10 @@
    "arc_sweep_deg": 28.5,
    "shape": "smash",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 27,
+    "to_f": 59,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -1170,7 +1173,10 @@
    "arc_sweep_deg": 33.6,
    "shape": "smash",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 29,
+    "to_f": 65,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
