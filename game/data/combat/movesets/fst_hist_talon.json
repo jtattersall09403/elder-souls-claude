@@ -365,7 +365,10 @@
    "arc_sweep_deg": 90,
    "shape": "slash_h",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 4,
+    "to_f": 10,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -406,7 +409,10 @@
    "arc_sweep_deg": 32.8,
    "shape": "smash",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 11,
+    "to_f": 23,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -449,7 +455,10 @@
    "arc_sweep_deg": 305,
    "shape": "spin",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 4,
+    "to_f": 10,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -1111,7 +1120,10 @@
    "arc_sweep_deg": 106.2,
    "shape": "slash_h",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 5,
+    "to_f": 12,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -1153,7 +1165,10 @@
    "arc_sweep_deg": 38.6,
    "shape": "smash",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 12,
+    "to_f": 26,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",
@@ -1197,7 +1212,10 @@
    "arc_sweep_deg": 50.9,
    "shape": "slash_v",
    "hyperarmour": {
-    "enabled": false
+    "enabled": true,
+    "from_f": 4,
+    "to_f": 11,
+    "poise_multiplier": 1.4
    },
    "hitbox": {
     "kind": "capsule_swept",

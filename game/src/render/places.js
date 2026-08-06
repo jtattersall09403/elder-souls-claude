@@ -72,7 +72,8 @@ export function buildBargeHold(root, mats) {
   box(root, mats.plank, 2.0, 0.16, 0.9, -2.3, 0.55, 2.4, 0);
   box(root, mats.cloth, 1.7, 0.14, 0.7, -2.3, 0.70, 2.4, 0);
   box(root, mats.plank, 2.0, 0.16, 0.9, 2.3, 0.55, 1.2, 0);
-  lamp(root, 0, 2.35, 1.6, 0xffb066, 16, 16);
+  lamp(root, 0, 2.35, 1.2, 0xffc07a, 30, 22);
+  lamp(root, 0, 2.35, -3.6, 0xffa860, 16, 14);
   root.visible = false;
   return root;
 }
@@ -136,7 +137,8 @@ export function buildWritHouse(root, mats) {
   const sun = new THREE.DirectionalLight(0xc7d4da, 1.15);
   sun.position.set(0.5, 3.4, 5.6); sun.target.position.set(0, 1.1, 1.2);
   root.add(sun, sun.target);
-  lamp(root, -0.2, 2.5, 1.0, 0xffb877, 14, 14);
+  lamp(root, -0.2, 2.7, 1.0, 0xffc48c, 26, 20);
+  lamp(root, -3.6, 2.4, 2.0, 0xffb877, 12, 10);
   root.visible = false;
   return root;
 }

@@ -567,7 +567,7 @@ for (const w of ROSTER.weapons) {
   const projRange = w.class === 'BOW' ? Math.round((c.reach_m + (d.reach || 0)) * 100) / 100 : null;
 
   const slots = {};
-  const chainLen1h = g.h1_chain + (d.chain || 0);
+  const chainLen1h = g.h1_chain;   // class-owned; see the `chainLen2h` note below
 
   for (const [slotId, spec] of Object.entries(specs)) {
     // per-weapon chain length change (RI-WPN03: `chain` delta adds or removes r1.4 / r1.5)
@@ -706,6 +706,14 @@ for (const w of ROSTER.weapons) {
   //      reaches it out of a dodge instead of off the second standing swing — CGS and GHM get a
   //      third sentence, but only as a read, which is what `max_chain 2` is actually saying;
   //   3. nothing is left dangling: the final sweep nulls any successor that does not exist.
+  //
+  // A per-weapon `d.chain` delta lengthens the TWO-HANDED chain, never the one-handed one.
+  // D4 (one-handed `max_chain`) is a CLASS dimension: it is one of the five in RI-WPN02 §D's
+  // grammar-only distance `Dg` AND one of the twelve in RI-WPN03 §D.2's `F87`. Applying the
+  // delta one-handed measurably moved `ssw_marsh_shortsword` out of its own class — SEP fell to
+  // 0.972 (hard fail at < 1.0) with that weapon as BOTH the `W_max` pair and the `B_min` pair,
+  // landing next to the chain-4 curved swords. RI-WPN06 §B's grip-dependent chain length is the
+  // axis this deviation belongs on, and the weapon still gets its fourth light attack.
   const chainLen2h = g.h2_chain + (d.chain || 0);
   const rewire = (pre, len) => {
     for (let i = 1; i <= 5; i++) {

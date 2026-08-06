@@ -456,6 +456,7 @@ function h_open_lock(M, frame, rec, target) {
     const w = M.w && M.w.sim ? M.w.sim.world : null;
     if (w && !w.doorsUnlocked.includes(l.id)) w.doorsUnlocked.push(l.id);
     M._emit(frame, 'lock_opened', { lock: l.id, tier: l.tier, by: 'open_lock' });
+    M.raiseFlag(frame, `lock:${l.id}:open`);
   }
   return moved('lock register + world.doors_unlocked', before, M.lockCensus(), { opened, magnitude: r2(req) });
 }
@@ -472,6 +473,7 @@ function h_lock_lock(M, frame, rec) {
     const w = M.w && M.w.sim ? M.w.sim.world : null;
     if (w) { const i = w.doorsUnlocked.indexOf(l.id); if (i >= 0) w.doorsUnlocked.splice(i, 1); }
     M._emit(frame, 'lock_closed', { lock: l.id, tier: l.tier, by: 'lock_lock' });
+    M.raiseFlag(frame, `lock:${l.id}:sealed`);
   }
   return moved('lock register + world.doors_unlocked', before, M.lockCensus(), { locked });
 }
@@ -485,6 +487,7 @@ function h_ward_trap(M, frame, rec) {
     t.armed = false;
     disarmed.push(t.id);
     M._emit(frame, 'trap_disarmed', { trap: t.id, kind: t.kind });
+    M.raiseFlag(frame, `trap:${t.id}:disarmed`);
   }
   return moved('trap register', before, M.trapCensus(), { disarmed });
 }
@@ -502,6 +505,7 @@ function h_shatter(M, frame, rec, target) {
     if (w && b.opens_shortcut && !w.shortcutsOpened.includes(b.opens_shortcut)) w.shortcutsOpened.push(b.opens_shortcut);
     if (b.collisionShape && M.w && M.w.sim && M.w.sim.cell) M.removeShape(M.w.sim.cell, b.collisionShape);
     M._emit(frame, 'object_shattered', { object: b.id, opens_shortcut: b.opens_shortcut || null });
+    M.raiseFlag(frame, `shatter:${b.id}`);
   }
   return moved('breakable register + world.shortcuts_opened', before, M.breakableCensus(), { broken });
 }
@@ -613,6 +617,7 @@ function h_calm_beast(M, frame, rec, target) {
     if (b) { b.yielded = false; b.calmedUntil = 0; }
   };
   M._emit(frame, 'fight_ended', { by: 'calm_beast', target: b ? b.id : null, deaths: 0 });
+  M.raiseFlag(frame, 'fight_ended:calm_beast');
   return moved('alert_state + in_combat', before, controlCensus(b, c), { deaths: 0 });
 }
 
@@ -630,6 +635,7 @@ function h_demoralise(M, frame, rec, target) {
   if (c) { c.alert = 0; c.alertState = 'SEARCH'; c.fleeing = true; }
   rec._undo = () => { if (b) { b.fleeingUntil = 0; b.yielded = false; } if (c) c.fleeing = false; };
   M._emit(frame, 'fight_ended', { by: 'demoralise', target: b ? b.id : null, deaths: 0 });
+  M.raiseFlag(frame, 'fight_ended:demoralise');
   return moved('alert_state + in_combat', before, controlCensus(b, c), { deaths: 0 });
 }
 
@@ -670,6 +676,7 @@ function h_charm(M, frame, rec, target) {
     if (q && b) q.dispositions[b.id] = Math.max(0, (q.dispositions[b.id] || 0) - Math.round(rec.magnitude));
   };
   M._emit(frame, 'fight_ended', { by: 'charm', target: b ? b.id : null, deaths: 0 });
+  M.raiseFlag(frame, 'fight_ended:charm');
   return moved('alert_state + disposition', before, { ...controlCensus(b, c), disposition: q ? { ...q.dispositions } : null }, { deaths: 0 });
 }
 
@@ -739,6 +746,7 @@ function h_recall(M, frame, rec) {
     return moved('getPlayerStats().pos', before, before, { refused: 'no_mark' });
   }
   M.teleportTo(frame, q.travel.mark, 'recall');
+  M.raiseFlag(frame, 'teleport:recall');
   return moved('getPlayerStats().pos', before, { pos: b ? b.pos.map(r3) : null, mark: q.travel.mark.slice() });
 }
 

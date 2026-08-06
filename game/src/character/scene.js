@@ -26,16 +26,20 @@
 export const CENSUS_PLACES = {
   'barge-hold': {
     interior: 'barge-hold',
-    player_pos: [0.2, 0, 1.4],
-    player_yaw: 200,
-    camera: { yaw: 200, pitch: -4 },
+    player_pos: [0.3, 0, -1.2],
+    player_yaw: 351,
+    camera: { yaw: 351, pitch: -4 },
     name: 'The hold, two days out of Gideon',
   },
   'writ-house': {
     interior: 'writ-house',
-    player_pos: [0, 0, 0.7],
-    player_yaw: 0,
-    camera: { yaw: 0, pitch: -3 },
+    // Seam S18: third person, always, and the body is in frame. The camera is turned 20 deg
+    // off the line to the speaker so the person you are answering is beside your own head
+    // rather than behind it — over-the-shoulder framing, exactly as RI-CAM05's dialogue rig
+    // wants it, and the reason RI-JRN01 M5's "is a 3D entity visible" check can pass.
+    player_pos: [0.55, 0, 0.5],
+    player_yaw: 20,
+    camera: { yaw: 20, pitch: -3 },
     name: 'The Writ House at Tidewrack',
   },
 };
@@ -46,7 +50,7 @@ export const CENSUS_PLACES = {
  */
 export const CENSUS_CAST = {
   'barge-hold': [
-    { id: 'jeeh-ei', pos: [-2.2, 0, 2.4], yaw: 110, behaviour: 'attend', notice_radius_m: 5.0, height_scale: 0.96 },
+    { id: 'jeeh-ei', pos: [-2.0, 0, 2.6], yaw: 149, behaviour: 'attend', notice_radius_m: 6.0, height_scale: 0.96 },
   ],
   'writ-house': [
     { id: 'warden-scribe-tuleeh-ma', pos: [0, 0, 3.5], yaw: 180, behaviour: 'stand', notice_radius_m: 7.0, height_scale: 1.02 },

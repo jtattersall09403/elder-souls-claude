@@ -117,6 +117,22 @@ file) and MUST run the following two checks in addition to its dimension-specifi
   Every critic must therefore ask: **does this piece create or carry at least one interaction that crosses the seam?** A faction rank that changes what an enemy does. A lore fact that is also a boss's weakness. A disposition that opens a door you would otherwise have to fight through. A spell learned from a book that solves a fight. A quest whose resolution changes an encounter's composition.
   A piece with **zero** boundary-crossing interactions is not automatically failed — some pieces are legitimately internal — but it MUST be reported in the verdict as `seam_sterile: true` with a justification, and the project-level floor in `RI-CMP01` (cross-system payoff matrix) governs how many such pieces are tolerable. Sterility is the failure mode that no amount of per-subsystem excellence detects, and it is the one this project is most likely to die of.
 
+- **CONSUMPTION (not a seam check — read `RI-MTH07`):** AR-1, AR-2 and AR-3 all presuppose that
+  what the piece ships is actually *running*. Wave 1 proved that presupposition wrong four times in
+  four independent subsystems, and no critic caught it from the doctrine alone. Character creation
+  rendered 20 byte-identical screenshots while returning correct values; 87 weapon movesets were
+  unreachable from the running game; 50 of 55 magic effects were a single generic applicator behind
+  distinct labels; the stealth visibility term was computed every frame into the trace while the
+  enemy alert meter filled at a flat rate that never read it. In every case the builder's own
+  probes passed honestly, because a probe that calls a function measures the function.
+  Therefore, for **every model a piece ships**, the verdict must name the **world-side consumer**
+  that reads it, and demonstrate the consumption by **perturbing the model and observing an entity
+  change behaviour**. A model with no demonstrated consumer is `unmeasurable ⇒ 0`, exactly as a
+  missing model is — **from the player's chair they are the same thing.**
+  This is deliberately *not* filed as an AR check. AR-1 and AR-2 ask whether one game's mechanics
+  contaminated the other; S26 rules that diluting them to cover ordinary defects would destroy
+  their diagnostic value. This asks something different and prior: is any of it plugged in?
+
 A critic that reports "no gap found" has failed its own job and its verdict is void.
 Every verdict must name exactly one **single biggest remaining gap** with a concrete,
 buildable remedy.

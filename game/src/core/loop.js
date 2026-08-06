@@ -115,6 +115,11 @@ export class FixedLoop {
     this.stats.rafTicks++;
     const now = wallNow();
 
+    // Devices are polled once per animation frame, before the accumulator runs, so a pad
+    // press lands on the very next fixed step (RI-JRN04 / RI-CMB11 latency). This is the
+    // only place in the build that polls, and it never runs in mode 'harness'.
+    if (this.beforeTick) this.beforeTick();
+
     if (this.rafDrivesSim) {
       let dt = now - this.lastWallMs;
       if (dt < 0) dt = 0;

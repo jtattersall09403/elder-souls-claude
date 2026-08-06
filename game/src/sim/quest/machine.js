@@ -137,7 +137,14 @@ export class QuestEngine {
       locked: new Set(Object.keys(q.flags).filter((k) => k.startsWith('locked:') && q.flags[k]).map((k) => k.slice(7))),
       knowledge: know,
       items: new Set((this.sim.inventory || []).map((i) => i.id)),
-      spellEffects: new Set(this.sim.magic ? [...(this.sim.magic.knownEffects || [])] : []),
+      // RI-MAG06 / RI-MAG04 M6: a `requires.spell_effects` gate is satisfied by an effect the
+      // player has CAST, not by one they own a spell for. Owning `open_lock` and never casting
+      // it is intent; `CRITIC-DOCTRINE` §1.1 says intent is not output. `knownEffects` remains
+      // the SPELLMAKING gate (you may only combine effects you own a spell for), which is a
+      // different question and stays where it was.
+      spellEffects: new Set(this.sim.magic ? [...(this.sim.magic.castEffects || [])] : []),
+      knownSpellEffects: new Set(this.sim.magic ? [...(this.sim.magic.knownEffects || [])] : []),
+      magicWorld: this.sim.magic ? this.sim.magic.world : null,
       gold: this.sim.progression.gold || 0,
     };
   }

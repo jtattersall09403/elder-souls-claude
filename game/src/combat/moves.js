@@ -78,6 +78,10 @@ export const ENEMY_STATE_ENUM = [
   'IDLE', 'REPOSITION', 'APPROACH', 'ATK_WINDUP', 'ATK_ACTIVE', 'ATK_INTERVAL',
   'ATK_RECOVER', 'STAGGER', 'GUARD_BREAK', 'PARRIED', 'DEAD',
   'BLOCK_HOLD', 'YIELDED',
+  // --- W1-14 round 2, seam S11/S19: `paralyse` stops a body ACTING without staggering it,
+  //     killing it or making it invulnerable. RI-MAG05 A3: "the horror is that the animation
+  //     stopped". It is a state for the same reason YIELDED is one — a critic reads it.
+  'PARALYSED',
 ];
 
 /**

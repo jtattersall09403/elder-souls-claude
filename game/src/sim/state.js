@@ -255,6 +255,10 @@ export function quantiseSaveGrid(sim) {
     n.pos[0] = q6(n.pos[0]); n.pos[1] = q6(n.pos[1]); n.pos[2] = q6(n.pos[2]);
     n.yaw = q6(n.yaw);
   }
+  for (let i = 0; i < sim.props.length; i++) {
+    const o = sim.props[i];
+    o.pos[0] = q6(o.pos[0]); o.pos[1] = q6(o.pos[1]); o.pos[2] = q6(o.pos[2]);
+  }
 }
 
 /** The rest of the grid, for the containers no fixed step touches. May allocate. */
@@ -316,6 +320,9 @@ export class SimState {
     // disposition and a list of topics, with no statblock and no hitbox (sim/npc.js).
     // Kept sorted by eid for the same reason `entities` is.
     this.npcs = [];
+    // W1-07 / RI-JRN01 O6: "at least one object that can be picked up" has to be an object
+    // in the world, not an inventory row. Small, world-placed, takeable things.
+    this.props = [];
     this.nextEid = 0;
     this.events = [];           // cleared each step; pooled by sim/events.js
     this.hitstopUntil = 0;

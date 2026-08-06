@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 302,
+  "file_count": 306,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -104,6 +104,20 @@
       "sha256": "be93e653f7a9c3c2"
     },
     {
+      "path": "combat/enemies/drowned_greater.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "drowned_greater",
+      "bytes": 2844,
+      "sha256": "247a0cf376b75498"
+    },
+    {
+      "path": "combat/enemies/drowned_lesser.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "drowned_lesser",
+      "bytes": 2859,
+      "sha256": "f83a1995e7e2b858"
+    },
+    {
       "path": "combat/enemies/dummy_passive.json",
       "schema": "elder-souls/enemy@1",
       "id": "dummy_passive",
@@ -142,8 +156,8 @@
       "path": "combat/hitgeometry.json",
       "schema": "elder-souls/hitgeometry@1",
       "id": null,
-      "bytes": 7923,
-      "sha256": "e6b8dc4dd0773d78"
+      "bytes": 10935,
+      "sha256": "88083ae03b851a8e"
     },
     {
       "path": "combat/input.json",
@@ -359,29 +373,29 @@
       "path": "combat/movesets/fst_hist_talon.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 28126,
-      "sha256": "032bd3eac85759b3"
+      "bytes": 28494,
+      "sha256": "94bf24807b64d727"
     },
     {
       "path": "combat/movesets/fst_marsh_claw.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 28156,
-      "sha256": "8ea157f44d112f32"
+      "bytes": 28524,
+      "sha256": "cc25167109c90d9b"
     },
     {
       "path": "combat/movesets/fst_quarry_caestus.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 28138,
-      "sha256": "7534c72edca4372c"
+      "bytes": 28506,
+      "sha256": "9915fad40e4efa55"
     },
     {
       "path": "combat/movesets/fst_wrapped_fists.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 28084,
-      "sha256": "9ca695052f2e0f6a"
+      "bytes": 28452,
+      "sha256": "d50bbbf95421bc58"
     },
     {
       "path": "combat/movesets/ghm_bog_maul.json",
@@ -1143,8 +1157,8 @@
       "path": "combat/movesets/ssw_marsh_shortsword.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 26081,
-      "sha256": "356642b0e90116b5"
+      "bytes": 25388,
+      "sha256": "ab7c3e0a79087ab7"
     },
     {
       "path": "combat/movesets/ssw_oath_of_drowned.json",
@@ -1564,6 +1578,13 @@
       "sha256": "050eacfe7525a01f"
     },
     {
+      "path": "magic/wards.json",
+      "schema": "elder-souls/magic-wards@1",
+      "id": "magic-wards",
+      "bytes": 4340,
+      "sha256": "ce0ee8be60745c6d"
+    },
+    {
       "path": "npcs/thorn.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
@@ -1671,6 +1692,13 @@
       "id": null,
       "bytes": 4839,
       "sha256": "2e59e4471a1c698d"
+    },
+    {
+      "path": "quests/hooks.json",
+      "schema": "elder-souls/quest-hooks@1",
+      "id": "quest-hooks",
+      "bytes": 6469,
+      "sha256": "d4d28330b0650042"
     },
     {
       "path": "quests/magic-utility.json",
@@ -1930,8 +1958,8 @@
       "path": "weapons/clip-registry.json",
       "schema": "elder-souls/clip-registry@1",
       "id": "clip-registry",
-      "bytes": 752201,
-      "sha256": "00fe571eb6b02360"
+      "bytes": 751585,
+      "sha256": "6e8e5943311b8afc"
     },
     {
       "path": "weapons/fp-sd.json",

@@ -67,6 +67,7 @@ export class Renderer {
     this.camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 6400);
     this.enemyMeshes = new Map();
     this.npcMeshes = new Map();
+    this.propMeshes = new Map();
     // The dialogue surface. Drawn INTO this canvas, not into the DOM — see render/ui.js.
     this.ui = new UILayer(canvas.width, canvas.height);
     this.uiVisible = true;
@@ -108,6 +109,7 @@ export class Renderer {
     this.sky = new Sky(this.scene);
     this.enemyMeshes.clear();          // re-created against the new scene by syncEntities()
     this.npcMeshes.clear();
+    this.propMeshes.clear();
     // The province is authored, not generated, so a seed change must not rebuild it — but the
     // scene graph it was attached to has just been replaced, so it is re-parented.
     if (this.province) { old.remove(this.province.group); this.scene.add(this.province.group); this.cells.province = this.province.group; }
@@ -240,6 +242,31 @@ export class Renderer {
     }
   }
 
+  /** World objects: a thing on a crate that you can pick up (RI-JRN01 O6, M10). */
+  syncProps(sim) {
+    const props = sim.props || [];
+    const seen = new Set();
+    for (const o of props) {
+      seen.add(o.eid);
+      let mesh = this.propMeshes.get(o.eid);
+      if (!mesh) {
+        mesh = new THREE.Mesh(
+          o.shape === 'tall' ? new THREE.CylinderGeometry(0.07, 0.09, 0.34, 8) : new THREE.BoxGeometry(0.24, 0.14, 0.17),
+          o.material === 'metal' ? this.mats.metal : o.material === 'reed' ? this.mats.reed : this.mats.plank);
+        mesh.castShadow = true;
+        mesh.name = 'prop:' + o.eid;
+        this.scene.add(mesh);
+        this.propMeshes.set(o.eid, mesh);
+      }
+      mesh.position.set(o.pos[0], o.pos[1], o.pos[2]);
+      mesh.rotation.y = (o.yaw || 0) * Math.PI / 180;
+      mesh.visible = !o.taken;
+    }
+    for (const [eid, mesh] of this.propMeshes) {
+      if (!seen.has(eid)) { this.scene.remove(mesh); this.propMeshes.delete(eid); }
+    }
+  }
+
   /**
    * Draw the current simulation state.
    * @param {SimState} sim
@@ -251,6 +278,7 @@ export class Renderer {
     this.playerMesh.visible = !c.override;    // a posed camera is usually inside the character
     this.syncEntities(sim);
     this.syncNPCs(sim);
+    this.syncProps(sim);
 
     this.camera.position.set(c.pos[0], c.pos[1], c.pos[2]);
     this._look.set(c.pivot[0], c.pivot[1], c.pivot[2]);
@@ -273,18 +301,23 @@ export class Renderer {
 
     this.three.info.reset();
     this.three.render(this.scene, this.camera);
-    // The dialogue surface is composited over the 3D pass, in the same canvas, before the
-    // counters are read — RI-PLT01 "How we lose" #11 is exactly about a snapshot taken
-    // before the UI pass.
+    // three.js resets `info` at the top of every top-level `render()`, so the world pass is
+    // read here and the UI pass is ADDED to it. RI-PLT01 "How we lose" #11 asks for the
+    // counters after the UI pass, not for the UI pass instead of the world one.
+    const info = this.three.info;
+    const world = {
+      calls: info.render.calls, triangles: info.render.triangles,
+      points: info.render.points, lines: info.render.lines,
+    };
     this.ui.setVisible(this.uiVisible);
     this.ui.render(this.three);
-    // Read the counters AFTER the present, not before (RI-PLT01 "How we lose" #11).
-    const info = this.three.info;
     this.lastStats = {
-      drawCalls: info.render.calls,
-      triangles: info.render.triangles,
-      points: info.render.points,
-      lines: info.render.lines,
+      drawCalls: world.calls + (this.ui.model && this.uiVisible ? info.render.calls : 0),
+      triangles: world.triangles + (this.ui.model && this.uiVisible ? info.render.triangles : 0),
+      points: world.points,
+      lines: world.lines,
+      worldDrawCalls: world.calls,
+      uiDrawCalls: this.ui.model && this.uiVisible ? info.render.calls : 0,
       geometries: info.memory.geometries,
       textures: info.memory.textures,
       programs: (this.three.info.programs || []).length,

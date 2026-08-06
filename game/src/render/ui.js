@@ -98,8 +98,16 @@ export class UILayer {
     return true;
   }
 
-  /** What M5 measures. Computed from the layout, not from a readback. */
-  metrics() { return this.last; }
+  /**
+   * What M5 measures. Computed from the layout, not from a readback — and it performs the
+   * layout if the model changed since the last present, so a harness call taken between
+   * `setModel()` and the next frame reports the surface that is about to be drawn rather
+   * than the one before it.
+   */
+  metrics() {
+    if (this.dirty) { this._redraw(); this.dirty = false; }
+    return this.last;
+  }
 
   // ---- drawing -----------------------------------------------------------------------
 
@@ -192,7 +200,7 @@ export class UILayer {
       c.font = bodyFont(Math.round(bodySize * 1.06));
       c.fillStyle = INK_HOT;
       const typed = (m.typed || '');
-      c.fillText(typed + (m.caret === false ? '' : '▁'), x0 + pad, y);
+      if (typed) c.fillText(typed + '▁', x0 + pad, y);
       c.beginPath();
       c.moveTo(x0 + pad, y + Math.round(9 * s) + 0.5);
       c.lineTo(x0 + pad + Math.round(textW * 0.62), y + Math.round(9 * s) + 0.5);

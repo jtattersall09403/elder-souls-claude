@@ -21,6 +21,7 @@ import { stepCombat } from './combat-bridge.js';
 import { stepWorldCollision } from './world-collision.js';
 import { stepEncounters } from '../character/encounter.js';
 import { stepNPCs } from './npc.js';
+import { stepSkillUse } from '../character/skilluse.js';
 
 export function stepOnce(sim, input, combat, bus) {
   armSim();
@@ -48,6 +49,10 @@ export function stepOnce(sim, input, combat, bus) {
     // so it reads the same positions the trace reports on this frame, and BEFORE the camera so
     // an aggro latch on frame N is visible in frame N's record.
     if (sim.character && sim.encounterData) stepEncounters(sim, combat, bus, sim.encounterData);
+    // W1-07 / RI-PRG03: skills improve by use. An OBSERVER over the events the fight just
+    // emitted — it cannot reach the hit test, which is seam S1, and it cannot credit an
+    // event the fight did not produce.
+    if (sim.character && sim.encounterData) stepSkillUse(sim, combat, bus, sim.encounterData);
     // W1-07: the people. After physics so a person turns to face the position the trace
     // reports this frame, before the camera so a dialogue-facing turn is not one frame late.
     if (sim.npcs.length) stepNPCs(sim, bus);

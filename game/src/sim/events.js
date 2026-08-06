@@ -33,6 +33,12 @@ export const EVENT_TYPES = new Set([
   // and `dialogue_close` already exist (A-JRN7); this is the per-field record RI-CHR01
   // method 1 needs to prove that every character field was set by answering a named person.
   'creation_field',
+  // W1-07: one progress grant, with what it consumed on it. RI-PRG03 §3 prices a connecting
+  // hit at 1 point and §4 refuses a use that consumed nothing; both halves are on the event,
+  // so a critic can recompute the Cost Gate from trace.jsonl without re-probing.
+  'skill_use',
+  // W1-07: the sheet's derived pools changed (creation, an earned attribute point, a rest).
+  'pools_derived',
   // ---------------------------------------------------------------------------------------
   // RI-CMB07 §A's CLOSED event-kind set, for the SECOND stream (`es-combat-trace/1`).
   //

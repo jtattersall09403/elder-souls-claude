@@ -10,6 +10,14 @@ import { EventBus } from './sim/events.js';
 import { stepOnce } from './sim/step.js';
 import { CombatSystem } from './combat/system.js';
 import { MagicSystem } from './sim/magic/system.js';
+// W1-14 round 2. These three modules have existed, complete, since the quest piece landed and
+// nothing has ever constructed them — which is why the W1-14 verdict recorded AR-2 B7 as
+// `not_run` ("no quest in this build can be started, advanced or completed by playing") and
+// scored RI-MAG04 M6 = 0 and M7 = 0/7. Instantiating them is what makes "a quest solvable by
+// magic" a measurement rather than a claim.
+import { QuestBook } from './sim/quest/defs.js';
+import { FactionGates } from './sim/quest/gate.js';
+import { QuestEngine } from './sim/quest/machine.js';
 import { combatMeta, combatFrame } from './combat/trace.js';
 import { mirror } from './sim/combat-bridge.js';
 import { makeRecord } from './sim/record.js';
@@ -40,7 +48,8 @@ import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, mean
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
 import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, placeOfNode } from './character/scene.js';
 import { makeNPC } from './sim/npc.js';
-import { derivePools, applyBirthsignToPools, skillProgressFor, USE_EVENTS } from './character/derive.js';
+import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, USE_EVENTS } from './character/derive.js';
+import { grantUse, governingMap } from './character/skilluse.js';
 
 /** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
 const PERF_SAMPLES = 20000;
@@ -181,7 +190,15 @@ export class Engine {
     // in-progress picks and the typed name; `sim.censusDriver` is what sim/step.js calls so
     // that a census answer arrives through the same latched input a swing does (RI-JRN01 O17).
     this.censusSurface = new CensusSurface(this.data.character);
-    this.sim.censusDriver = (input) => this._censusStep(input);
+    this.sim.censusDriver = (input) => (this._censusStep ? this._censusStep(input) : null);
+    // W1-2x's machine, W1-14's reason for turning it on. The QuestBook load is FAIL-LOUD by
+    // design (defs.js): a quest whose journal indices are out of band, whose prose trips
+    // RI-DLG05 §D, or whose hooks point at an entry that does not exist stops the game booting
+    // rather than failing a critic run later.
+    this.questBook = new QuestBook(this.data.quests);
+    this.factionGates = new FactionGates(this.data.quests['faction-gates'] || { factions: [] });
+    this.questEngine = new QuestEngine(this.questBook, this.factionGates, this.data.quests['quest-hooks'], this.sim);
+    this.sim.questEngine = this.questEngine;
     this.real.onTextChar = (ch) => this._censusTypeChar(ch);
     this.applyNamedState(opts.state || 'default');
     this._travelInit();
@@ -190,6 +207,9 @@ export class Engine {
     this._boundaryEnd('initial');
 
     this.setMode(opts.mode || 'harness');
+    // The gamepad is polled from the animation frame, not from the fixed step: a pad's state
+    // is a device reading and belongs on the same side of the seam a keydown is on.
+    this.loop.beforeTick = () => { if (this.real && this.real.attached) this.real.pollGamepad(); };
     this.loop.start();
     this.renderer.render(this.sim);
     this.readyResolved = true;
@@ -331,6 +351,11 @@ export class Engine {
     // resolves without the scenario having to replay the whole Writ House scene.
     sim.encounterData = this.data.character;
     if (patch.character) this.setCharacter(patch.character);
+    // W1-07: the people and the things. A state file that names an interior and puts nobody
+    // in it is the round-1 failure in data form.
+    this.censusPlace = null;
+    for (const n of patch.npcs || []) this.spawnNPC(n);
+    for (const o of patch.props || []) this.spawnProp(o);
     for (const s of patch.spawn || []) this.spawn(s.id, s.x, s.z, { as: s.as });
     for (const e of patch.encounters || []) this.spawnEncounter(e.id, e.x, e.z, e);
     // Put the player on the ground of whatever cell the state names.
@@ -365,6 +390,16 @@ export class Engine {
     });
     this.combat.magic = this.magic;
     this.sim.magic = this.magic;
+    // RI-MAG06. Until this line the catalogue had nowhere to write but its own timer list,
+    // which is precisely how 50 of 55 effects came to do nothing. `bindWorld` hands the
+    // MagicSystem the eight consuming systems that already exist in this build (the fight, the
+    // stealth terms, the equip load, the quest state, the collision cell, the entity list, the
+    // affliction register and the world-mutation sets) plus the small registers `wards.json`
+    // seeds, and every handler in magic/apply.js reaches its consumer through it.
+    this.magic.bindWorld({
+      sim: this.sim, combat: this.combat, engine: this, bus: this.bus,
+      magicWorld: this.data.magic.wards,
+    });
     this.magic.gold = this.sim.progression.gold || 0;
     if (loadout.willpower !== undefined) this.magic.setWillpower(loadout.willpower);
     if (loadout.catalyst) this.magic.setCatalyst(loadout.catalyst);
@@ -495,8 +530,135 @@ export class Engine {
     if (!this.sim.inventory.some((i) => i.id === 'stamped-writ')) {
       this.sim.inventory.push({ id: 'stamped-writ', count: 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
     }
+    this.applyDerivedPools({ refill: true, why: 'setCharacter' });
     quantiseColdState(this.sim);
     return this.getCharacter();
+  }
+
+  /**
+   * The sheet, read.
+   *
+   * RI-PRG02 §3's curves applied to the composed attributes, then RI-CHR03's birthsign terms
+   * applied on top, then written to the COMBAT BODY — which is the authority (see
+   * `_buildCombat`) — and mirrored back into the view. Round 1 composed all of this correctly
+   * and then wrote none of it anywhere the fight could see, which is why VIGOUR 6 and
+   * VIGOUR 18 both reported `hp_max` 620.
+   *
+   * `refill` tops the pools up; an earned attribute point mid-run raises the ceiling without
+   * healing you, which is the Souls behaviour and also the honest one.
+   */
+  applyDerivedPools(opts = {}) {
+    const ch = this.sim.character;
+    if (!ch) return null;
+    const pools = applyBirthsignToPools(derivePools(this.sim.progression.attributes), ch);
+    const b = this.combat && this.combat.player;
+    if (b) {
+      const hpFrac = b.hpMax > 0 ? b.hp / b.hpMax : 1;
+      const stFrac = b.staminaMax > 0 ? b.stamina / b.staminaMax : 1;
+      b.hpMax = pools.hp_max;
+      b.staminaMax = pools.stamina_max;
+      b.hp = opts.refill ? pools.hp_max : Math.min(pools.hp_max, hpFrac * pools.hp_max);
+      b.stamina = opts.refill ? pools.stamina_max : Math.min(pools.stamina_max, stFrac * pools.stamina_max);
+      // RI-PRG02 §3's regen ramp. RI-CMB03 owns the DELAY (42 f) and the multipliers; only
+      // the rate moves, and it moves to exactly 45.0/s at the END-20 exemplar, so nothing
+      // W1-09 measured changes.
+      if (this.combat.d && this.combat.d.stamina) this.combat.d.stamina.regen.per_frame = pools.stamina_regen_per_frame;
+    }
+    if (this.magic) {
+      this.magic.setWillpower(pools.from.willpower);
+      // The reservoir the sign gives you, not the one WILLPOWER alone would.
+      const wasFull = this.magic.focus >= this.magic.focusMax;
+      this.magic.focusMax = pools.focus_max;
+      if (opts.refill || wasFull) this.magic.focus = pools.focus_max;
+      else this.magic.focus = Math.min(this.magic.focus, pools.focus_max);
+      // RI-CHR03 / AMENDMENT-W1-07-03: the one thing The Dry Well can actually take away.
+      this.magic.focusRestoresAtHearth = pools.focus_restores_at_hearth;
+    }
+    this.sim.pools = pools;
+    if (b) mirror(this.sim, this.combat);
+    this.sim.player.focusMax = pools.focus_max;
+    this.sim.player.focusLocked = !pools.focus_restores_at_hearth;
+    if (this.bus) {
+      const ev = this.bus.emit(this.sim.frame, 'pools_derived');
+      ev.hp_max = pools.hp_max; ev.stamina_max = pools.stamina_max; ev.focus_max = pools.focus_max;
+      ev.vigour = pools.from.vigour; ev.endurance = pools.from.endurance; ev.willpower = pools.from.willpower;
+      ev.focus_restores_at_hearth = pools.focus_restores_at_hearth;
+      ev.why = opts.why || 'derive';
+    }
+    this.sim._poolsDirty = false;
+    return pools;
+  }
+
+  /** Every derived number the sheet produces, with the attribute each came from. */
+  getDerivedStats() {
+    const ch = this.sim.character;
+    if (!ch) return { created: false, _why: 'nothing has been written down yet' };
+    const pools = applyBirthsignToPools(derivePools(this.sim.progression.attributes), ch);
+    const b = this.combat && this.combat.player;
+    return {
+      ...pools,
+      live: b ? { hp: b.hp, hp_max: b.hpMax, stamina: round3e(b.stamina), stamina_max: b.staminaMax } : null,
+      focus_live: this.magic ? { focus: round3e(this.magic.focus), focus_max: this.magic.focusMax } : null,
+      curves: {
+        hp_at: { 10: hpMaxFor(10), 20: hpMaxFor(20), 27: hpMaxFor(27), 40: hpMaxFor(40), 60: hpMaxFor(60), 99: hpMaxFor(99) },
+        stamina_at: { 10: staminaMaxForVig(10), 20: staminaMaxForVig(20), 30: staminaMaxForVig(30), 40: staminaMaxForVig(40), 99: staminaMaxForVig(99) },
+      },
+      skills: this.getSkillSheet(),
+    };
+  }
+
+  /** Every skill, its value, its banked progress and what it takes to move. */
+  getSkillSheet() {
+    const out = {};
+    const gov = governingMap(this.chData);
+    for (const k of Object.keys(this.sim.progression.skills)) {
+      const r = this.sim.progression.skills[k];
+      out[k] = {
+        value: r.value, progress: round3e(r.useProgress || 0), to_next: progressToNext(r.value),
+        governing: gov[k] || null, levels_since_rest: r.levelsSinceRest || 0,
+      };
+    }
+    return out;
+  }
+
+  /**
+   * RI-PRG03 §3's out-of-fight half: a use event the fight cannot emit. `kind` is a key of
+   * `USE_EVENTS` and `ctx.cost` is what it actually consumed — a call with cost 0 is refused
+   * by the Cost Gate and says so.
+   */
+  grantSkillUse(kind, ctx) { return grantUse(this.sim, this.bus, this.chData, kind, ctx || {}); }
+
+  /**
+   * A HEARTH rest. RI-PRG04 owns the rest itself; what is here is the two things W1-07's
+   * items make it responsible for: RI-PRG03 §4's rest clamp resets, and RI-CHR03's Dry Well
+   * drawback decides whether Focus comes back.
+   */
+  hearthRest() {
+    for (const k of Object.keys(this.sim.progression.skills)) {
+      this.sim.progression.skills[k].levelsSinceRest = 0;
+      this.sim.progression.skills[k].restClamped = false;
+    }
+    const pools = this.sim.character
+      ? applyBirthsignToPools(derivePools(this.sim.progression.attributes), this.sim.character)
+      : null;
+    const restores = !pools || pools.focus_restores_at_hearth;
+    let focusBefore = null, focusAfter = null;
+    if (this.magic) {
+      focusBefore = this.magic.focus;
+      if (restores) this.magic.focus = this.magic.focusMax;
+      focusAfter = this.magic.focus;
+    }
+    const b = this.combat && this.combat.player;
+    if (b) { b.hp = b.hpMax; b.stamina = b.staminaMax; }
+    const ev = this.bus.emit(this.sim.frame, 'bonfire_rest');
+    ev.focus_before = focusBefore; ev.focus_after = focusAfter; ev.focus_restored = restores;
+    mirror(this.sim, this.combat);
+    quantiseColdState(this.sim);
+    return {
+      rested: true, focus_restored: restores, focus: focusAfter, focus_max: this.magic ? this.magic.focusMax : null,
+      why: restores ? null : 'The Dry Well. RI-CHR03: the wells do not fill you. AMENDMENT-W1-07-03.',
+      rest_clamp_reset: true,
+    };
   }
 
   getCharacter() {
@@ -512,9 +674,249 @@ export class Engine {
     this.census.reset();
     if (opts.race) this.census.observe(opts.race);
     if (opts.at) { this.census.nodeId = opts.at; this.census.paused = false; this.census._autoAdvance(); }
+    // THE SCENE. Round 1 opened the census as a pure state machine and left the camera
+    // wherever the previous state had put it, which is why nineteen nodes produced twenty
+    // byte-identical frames of an empty field. The census now MOVES you into the room it is
+    // set in, and puts the people who speak in it into it.
+    this._censusPlace(placeOfNode(this.census.node()));
     const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
     ev.npc = 'jeeh-ei'; ev.scene = 'census';
-    return this.census.state();
+    this._censusSync();
+    return this.getCensusState();
+  }
+
+  // ---- the scene, as a place ------------------------------------------------------------
+
+  /**
+   * Put the camera, the body and the cast into the place a census node is asked in.
+   *
+   * Called from `censusBegin`, `censusEnter` and (deferred, never inside the fixed step)
+   * from `_censusApplyPending`, because `_applyCell()` can open a load boundary and a load
+   * boundary reads the wall clock, which the armed determinism guard forbids.
+   */
+  _censusPlace(placeId) {
+    const place = CENSUS_PLACES[placeId];
+    if (!place) throw new Error(`census: node place '${placeId}' has no staging in character/scene.js`);
+    if (this.censusPlace === placeId) return placeId;
+    this.censusPlace = placeId;
+    this.sim.env.interior = place.interior;
+    this.sim.env.showcase = false;
+    this._applyCell();
+    const p = this.sim.player;
+    p.pos[0] = place.player_pos[0]; p.pos[1] = place.player_pos[1]; p.pos[2] = place.player_pos[2];
+    p.yaw = place.player_yaw;
+    const b = this.combat && this.combat.player;
+    if (b) { b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2]; b.yaw = p.yaw; }
+    this.sim.camera.yaw = place.camera.yaw;
+    this.sim.camera.pitch = place.camera.pitch;
+    this.sim.camera.mode = 'free';
+    p.pos[1] = this.groundAt(p.pos[0], p.pos[2]);
+    this.clearNPCs();
+    this.clearProps();
+    for (const c of CENSUS_CAST[placeId] || []) this.spawnNPC({ ...c, from_record: c.id });
+    if (placeId === 'barge-hold') {
+      // O6's takeable, and it is not a coin: a knife somebody did not find, on the crate you
+      // woke up next to. The Writ House loadout already says the player has one.
+      this.spawnProp({ eid: 'hold-knife', name: 'A knife somebody did not find', item: 'dagger', pos: [-2.0, 0.82, 0.2], yaw: 24, material: 'metal', shape: 'tall' });
+      this.spawnProp({ eid: 'hold-gourd', name: 'A tithe-gourd, empty', item: 'tithe-gourd', pos: [1.6, 0.82, -1.6], yaw: 200, material: 'reed' });
+    }
+    this._settleCamera();
+    if (this.combat) mirror(this.sim, this.combat);
+    return placeId;
+  }
+
+  /** Put a person in the world. `from_record` pulls name/race/topics out of npcs/*.json. */
+  spawnNPC(spec) {
+    const merged = { ...spec };
+    const recId = spec.from_record || spec.id || spec.eid;
+    if (recId) {
+      const rec = this.data.npcs['writ-house'] && this.data.npcs['writ-house'].npcs.find((x) => x.id === recId);
+      const rec2 = rec || this._anyNpcRecord(recId);
+      if (rec2) {
+        merged.eid = rec2.id;
+        merged.name = spec.name || rec2.name;
+        merged.title = spec.title || rec2.title || null;
+        merged.race = spec.race || rec2.race;
+        merged.faction = spec.faction || rec2.faction || null;
+        merged.reaction_group = spec.reaction_group || rec2.reaction_group || null;
+        merged.settlement = spec.settlement || rec2.settlement || null;
+        merged.interior = spec.interior || rec2.interior || null;
+        merged.disposition = spec.disposition === undefined ? rec2.disposition : spec.disposition;
+        merged.topics = spec.topics || rec2.topics || [];
+        merged.services = spec.services || rec2.services || [];
+      } else if (!merged.eid) merged.eid = recId;
+    }
+    if (this.sim.findNPC(merged.eid)) return this.sim.findNPC(merged.eid);
+    const n = this.sim.addNPC(makeNPC(merged));
+    const ev = this.bus.emit(this.sim.frame, 'spawn');
+    ev.eid = n.eid; ev.kind = 'npc'; ev.name = n.name; ev.race = n.race;
+    ev.pos = [n.pos[0], n.pos[1], n.pos[2]];
+    return n;
+  }
+
+  _anyNpcRecord(id) {
+    for (const group of Object.values(this.data.npcs)) {
+      if (!group || !group.npcs) continue;
+      const r = group.npcs.find((x) => x.id === id);
+      if (r) return r;
+    }
+    return null;
+  }
+
+  /**
+   * A thing in the world you can pick up. RI-JRN01 O6 requires one in the pre-definition
+   * window and M10 requires world-placed readables; both are the same mechanism.
+   */
+  spawnProp(spec) {
+    const o = {
+      eid: String(spec.eid),
+      name: spec.name || spec.eid,
+      pos: [Number(spec.pos[0]), Number(spec.pos[1]), Number(spec.pos[2])],
+      yaw: Number(spec.yaw || 0),
+      shape: spec.shape || 'box',
+      material: spec.material || 'plank',
+      takeable: spec.takeable !== false,
+      taken: false,
+      item: spec.item || spec.eid,
+      readable: spec.readable || null,
+      reach_m: Number(spec.reach_m === undefined ? 2.2 : spec.reach_m),
+    };
+    for (const e of this.sim.props) if (e.eid === o.eid) return e;
+    this.sim.props.push(o);
+    this.sim.props.sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0));
+    const ev = this.bus.emit(this.sim.frame, 'spawn');
+    ev.eid = o.eid; ev.kind = 'object'; ev.name = o.name; ev.pos = o.pos.slice();
+    return o;
+  }
+
+  clearProps() { this.sim.props.length = 0; return true; }
+
+  /** Pick it up. Emits `item`, exactly as the writ does when it is handed over the desk. */
+  takeProp(eid) {
+    const o = this.sim.props.find((x) => x.eid === eid);
+    if (!o) throw new Error(`takeProp('${eid}'): no such object in the world`);
+    if (o.taken) return { eid, taken: true, already: true };
+    o.taken = true;
+    this.sim.world.itemsTaken.push(o.eid);
+    if (o.takeable) {
+      this.sim.inventory.push({ id: o.item, count: 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
+    }
+    const ev = this.bus.emit(this.sim.frame, 'item');
+    ev.item = o.item; ev.how = 'picked up'; ev.eid = o.eid;
+    quantiseColdState(this.sim);
+    return { eid, taken: true, item: o.item, name: o.name };
+  }
+
+  _takePropPending() {
+    const id = this._propPending;
+    this._propPending = null;
+    if (id) { try { this.takeProp(id); } catch { /* it went away */ } }
+  }
+
+  clearNPCs() {
+    for (const n of this.sim.npcs) { const ev = this.bus.emit(this.sim.frame, 'despawn'); ev.eid = n.eid; ev.kind = 'npc'; }
+    this.sim.npcs.length = 0;
+    return true;
+  }
+
+  /**
+   * What this person thinks of you, right now, derived rather than stored: their written
+   * base disposition, plus the RI-CHR02 matrix term for their reaction group against your
+   * race and upbringing. Changing the player's race changes every number in the room without
+   * anything being respawned, which is the whole claim of RI-CHR02 §4a.
+   */
+  npcDisposition(eid) {
+    const n = this.sim.findNPC(eid);
+    if (!n) throw new Error(`npcDisposition('${eid}'): nobody by that name is in the world`);
+    const ch = this.sim.character;
+    if (!ch || !n.reaction_group) {
+      return { npc: n.eid, name: n.name, base: n.base_disposition, disposition: n.base_disposition, band: null, term: 0, group: n.reaction_group };
+    }
+    const d = derivedDisposition(this.chData, {
+      group: n.reaction_group, race: ch.race, upbringing: ch.upbringing,
+      baseDisposition: n.base_disposition, birthsign: ch.birthsign,
+    });
+    return {
+      npc: n.eid, name: n.name, group: n.reaction_group, base: n.base_disposition,
+      disposition: d.value, band: d.band, term: raceTerm(this.chData, n.reaction_group, ch.race, ch.upbringing),
+      player_race: ch.race, player_upbringing: ch.upbringing,
+    };
+  }
+
+  listNPCs() {
+    return this.sim.npcs.map((n) => ({
+      eid: n.eid, kind: 'npc', name: n.name, title: n.title, race: n.race,
+      settlement: n.settlement, interior: n.interior, reaction_group: n.reaction_group,
+      pos: [n.pos[0], n.pos[1], n.pos[2]], yaw: n.yaw, behaviour: n.behaviour,
+      topics: n.topics.slice(), services: n.services.slice(),
+      base_disposition: n.base_disposition, loiter_frames: n.loiter_frames,
+    }));
+  }
+
+  // ---- the surface ----------------------------------------------------------------------
+
+  /** Rebuild the drawn surface from the census's current node. Never inside the fixed step. */
+  _censusSync() {
+    const st = this.census.state();
+    this.censusSurface.sync(st, this.census);
+    const rec = st.speaker ? this._npcRecord(st.speaker) : null;
+    const model = buildCensusModel(this.chData, st, this.censusSurface, rec);
+    if (this.renderer) this.renderer.ui.setModel(model);
+    for (const n of this.sim.npcs) n.speaking = (n.eid === st.speaker);
+    return model;
+  }
+
+  /**
+   * One fixed step of the dialogue surface. Called by sim/step.js with the latched input.
+   *
+   * It does not answer the census here: an answer can change the place, and changing the
+   * place touches the renderer and the load-boundary clock, neither of which may happen
+   * under the armed determinism guard. The commit is queued and applied in `_afterStep()`,
+   * before the frame record is built, so the `creation_field` event still lands in this
+   * frame's events.
+   */
+  _censusStep(input) {
+    if (!this.censusSurface || !this.censusSurface.open) {
+      // Not in a conversation: `interact` reaches for whatever is in front of you. The take
+      // itself is deferred out of the step for the same reason a census commit is.
+      if (!this._propPending && input.pressedName('interact')) {
+        const p = this.sim.player;
+        let best = null, bestD = Infinity;
+        for (const o of this.sim.props) {
+          if (o.taken) continue;
+          const d = Math.hypot(o.pos[0] - p.pos[0], o.pos[2] - p.pos[2]);
+          if (d <= o.reach_m && d < bestD) { best = o; bestD = d; }
+        }
+        if (best) this._propPending = best.eid;
+      }
+      return;
+    }
+    if (this._censusPending) return;
+    const st = this.census.state();
+    const r = this.censusSurface.step(input, st);
+    if (r && r.committed) {
+      this._censusPending = r;
+      const ev = this.bus.emit(this.sim.frame, 'input_action');
+      ev.action = 'interact'; ev.surface = 'census'; ev.node = st.node; ev.via = r.via;
+    }
+  }
+
+  /** Apply a queued census commit. Runs after the step, before the trace record. */
+  _censusApplyPending() {
+    const r = this._censusPending;
+    if (!r) return;
+    this._censusPending = null;
+    this.censusAnswer(r.value);
+  }
+
+  /** Keyboard text entry. Not a button, so not part of HARNESS.md §4's closed action set. */
+  _censusTypeChar(ch) {
+    if (!this.censusSurface || !this.censusSurface.open) return null;
+    const st = this.census.state();
+    if (!st.input || st.input.kind !== 'text') return null;
+    const typed = this.censusSurface.typeChar(ch);
+    this._censusSync();
+    return typed;
   }
 
   /** Answer the node in front of you. Throws on an illegal answer; nothing is swallowed. */
@@ -526,25 +928,71 @@ export class Engine {
       ev.field = before.sets; ev.node = before.id; ev.speaker = before.speaker; ev.place = before.place;
     }
     if (this.census.done) this._censusFinish();
-    return st;
+    // The scene follows the graph: `hold.out` hands control back in the hold, `writ.enter`
+    // is inside the Writ House, and the camera is in whichever of the two the node is in.
+    const node = this.census.node();
+    if (node) this._censusPlace(placeOfNode(node));
+    this._censusSync();
+    return this.getCensusState();
   }
 
   /** The player has walked into the Writ House. Only reachable after O6's >= 60 s of play. */
   censusEnter() {
-    const st = this.census.enter();
+    this.census.enter();
+    this._censusPlace('writ-house');
     const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
     ev.npc = 'warden-scribe-tuleeh-ma'; ev.scene = 'census';
-    return st;
+    this._censusSync();
+    return this.getCensusState();
   }
 
   getCensusState() {
     const st = this.census.state();
+    const place = this.censusPlace || placeOfNode(this.census.node());
+    const ui = this.renderer ? this.renderer.ui.metrics() : null;
+    const speakerNpc = st.speaker ? this.sim.findNPC(st.speaker) : null;
     return {
       ...st,
       npc_record: st.speaker ? this._npcRecord(st.speaker) : null,
-      interior: 'writ-house',
+      // The three fields round 1 reported as evidence of diegesis were JSON with no rendered
+      // counterpart. These are read back out of the surface that was actually drawn: `ui.text`
+      // is the strings that went through fillText, `opaque_area_frac` is the panel's own
+      // measured geometry, and `speaker_entity` is null unless the speaker is standing here.
+      interior: place,
+      place: st.place || place,
+      camera_cell: this.cellFor(this.sim.env),
+      speaker_entity: speakerNpc
+        ? { eid: speakerNpc.eid, name: speakerNpc.name, pos: speakerNpc.pos.slice(), dist_m: round3e(Math.hypot(speakerNpc.pos[0] - this.sim.player.pos[0], speakerNpc.pos[2] - this.sim.player.pos[2])) }
+        : null,
+      npcs_present: this.sim.npcs.map((n) => n.eid),
+      surface: {
+        drawn: !!(ui && ui.open),
+        rendered_text: ui ? ui.text : [],
+        text_chars: ui ? ui.text_chars : 0,
+        opaque_area_frac: ui ? ui.opaque_area_frac : 0,
+        panel_height_frac: ui ? ui.panel_height_frac : 0,
+        selected_index: this.censusSurface ? this.censusSurface.sel : 0,
+        option_count: ui ? ui.option_count : 0,
+        picked: this.censusSurface ? this.censusSurface.picked.slice() : [],
+        typed: this.censusSurface ? this.censusSurface.typed : '',
+        inputs_taken: this.censusSurface ? this.censusSurface.inputsTaken : 0,
+      },
       routes_offered: this.chData.writHouse.nodes.find((n) => n.id === 'writ.class-routes').input.options.map((o) => o.id),
       full_screen_panels: 0,
+    };
+  }
+
+  /** What is drawn over the world right now, measured from the layout that drew it. */
+  getUIState() {
+    const ui = this.renderer ? this.renderer.ui.metrics() : null;
+    return {
+      surfaces: ui && ui.open ? 1 : 0,
+      full_screen_panels: 0,
+      hud_elements: 0,
+      markers: 0,
+      ...(ui || {}),
+      world_rendered_behind: true,
+      draw_calls: this.renderer ? this.renderer.lastStats.drawCalls : 0,
     };
   }
 
@@ -571,6 +1019,8 @@ export class Engine {
     ev.item = 'stamped-writ'; ev.how = 'granted at the desk';
     const ev2 = this.bus.emit(this.sim.frame, 'dialogue_close');
     ev2.npc = 'warden-scribe-tuleeh-ma'; ev2.scene = 'census';
+    // What she wrote down is now what you are made of. RI-PRG02 §3 and RI-CHR03 §2.
+    this.applyDerivedPools({ refill: true, why: 'census' });
     quantiseColdState(this.sim);
     return ch;
   }
@@ -720,6 +1170,14 @@ export class Engine {
   cellFor(env) {
     if (env.region === 'arena') return 'arena';
     if (env.interior === 'dungeon-primary') return 'dungeon';
+    // W1-07's five rooms (render/places.js). Named explicitly rather than folded into the
+    // generic `interior` cell, because a critic asked to screenshot `helstrom-market` must
+    // get the market and not W1-00's firelit hall wearing its name.
+    if (env.interior === 'barge-hold') return 'barge_hold';
+    if (env.interior === 'writ-house') return 'writ_house';
+    if (env.interior === 'helstrom-market') return 'market';
+    if (env.interior === 'stormhold-street') return 'street';
+    if (env.interior === 'rootlands-well') return 'well';
     if (env.interior) return 'interior';
     // `showcase` is W1-00's 420 m origin neighbourhood, kept as the capture rig for the twelve
     // canonical viewpoints (HARNESS.md §6 poses are absolute and near the origin). Everything
@@ -825,6 +1283,13 @@ export class Engine {
    */
   _afterStep() {
     if (this.firstControlAt === null && this.sim.frame > 0) this.firstControlAt = wallNow();
+    // A census commit latched inside the step is applied here — outside the armed guard, and
+    // strictly before the frame record, so its `creation_field` event is in this frame.
+    if (this._censusPending) this._censusApplyPending();
+    // An earned attribute point changed the sheet; the pools it feeds are re-derived once,
+    // here, rather than every frame.
+    if (this.sim._poolsDirty) this.applyDerivedPools({ refill: false, why: 'earned_attribute' });
+    if (this._propPending) this._takePropPending();
     this._travelTick();
     if (this.trace) {
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
@@ -2181,7 +2646,46 @@ export class Engine {
       gold: p.gold, picks: p.picks, standings: { ...p.standings },
       crouch_refused: p.crouchRefusedReason,
       hud_elements: 0,
+      // Seam S19's five Veiling terms, reported next to the terms they modify so that a critic
+      // reading RI-MAG06 §B's row for `chameleon` / `invisibility` / `muffle` / `night_eye` /
+      // `false_face` sees the cause and the effect in the same object. Every one defaults to
+      // the identity, so a build with no spell active reports exactly what it reported before.
+      magic: {
+        chameleon_pct: +(p.magicChameleonPct || 0).toFixed(3),
+        invisible: !!p.magicInvisible,
+        muffle_pct: +(p.magicMufflePct || 0).toFixed(3),
+        night_eye_bonus: +(p.magicLightBonus || 0).toFixed(4),
+        perceived_light: +(p.perceivedL === undefined ? p.L : p.perceivedL).toFixed(4),
+        disguised: !!p.magicDisguise,
+      },
     };
+  }
+
+  /**
+   * `hist_sight` writes EXACTLY ONE prose journal entry and ZERO HUD markers (RI-MAG06 §B,
+   * RI-MAG02 §H, AR-2). The prose is copied verbatim out of a quest file by Journal.write() —
+   * this method chooses which entry, it never composes one, which is the rule
+   * game/src/sim/quest/journal.js exists to make structurally impossible to break.
+   */
+  histSightWrite(frame) {
+    const qe = this.questEngine;
+    if (!qe) return null;
+    const order = (this.data.quests && this.data.quests['magic-utility-quests'] && this.data.quests['magic-utility-quests'].hist_sight_order) || [];
+    for (const ref of order) {
+      const q = qe.book.has(ref.quest) ? qe.book.get(ref.quest) : null;
+      if (!q) continue;
+      if (qe.journal.has(q.id, ref.index)) continue;
+      const last = qe.journal.lastIndexOf(q.id);
+      if (ref.index <= last) continue;
+      const e = qe.journal.write(q, ref.index, this.sim.env.dayCount, {});
+      if (e) {
+        if (!this.sim.quest.quests[q.id]) this.sim.quest.quests[q.id] = { stage: ref.index, flags: {}, branch: null, failed: false };
+        else this.sim.quest.quests[q.id].stage = Math.max(this.sim.quest.quests[q.id].stage, ref.index);
+        this.sim.quest.flags[`hist_sight:${q.id}`] = true;
+        return { quest: q.id, n: ref.index };
+      }
+    }
+    return null;
   }
 
   setStealthState(patch) {
@@ -2423,7 +2927,17 @@ export class Engine {
   }
 
   listEntities() {
-    return this.sim.entities.map((e) => ({ eid: e.eid, archetype: e.archetype, pos: [e.pos[0], e.pos[1], e.pos[2]], hp: e.hp }));
+    // People are entities. RI-JRN01 M4 asks for ">= 1 other NPC entity and >= 1 takeable item
+    // entity" in the pre-definition window, and M6 resolves the speaking entity to an
+    // `npcs/*.json` record; both are answered from this one list.
+    const out = this.sim.entities.map((e) => ({ eid: e.eid, kind: 'enemy', archetype: e.archetype, pos: [e.pos[0], e.pos[1], e.pos[2]], hp: e.hp }));
+    for (const n of this.sim.npcs) {
+      out.push({ eid: n.eid, kind: 'npc', archetype: 'NPC', name: n.name, race: n.race, pos: [n.pos[0], n.pos[1], n.pos[2]], hp: null, topics: n.topics.length });
+    }
+    for (const o of this.sim.props) {
+      out.push({ eid: o.eid, kind: 'object', archetype: 'OBJECT', name: o.name, takeable: !!o.takeable, taken: !!o.taken, pos: [o.pos[0], o.pos[1], o.pos[2]], hp: null });
+    }
+    return out;
   }
 
   /** Everything W1-09 owns, in one call, for a critic that does not want to expand a trace. */
@@ -2626,3 +3140,4 @@ async function loadData(onBytes) {
 }
 
 function r4c(v) { return Math.round(v * 1e4) / 1e4; }
+function round3e(v) { return Math.round(v * 1000) / 1000; }

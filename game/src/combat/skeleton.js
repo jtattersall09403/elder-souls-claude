@@ -115,12 +115,31 @@ export class Rig {
       damage_mult: part.damage_mult,
       a: [0, 0, 0],
       b: [0, 0, 0],
+      // Previous frame's world pose of the same capsule. The weapon sockets have been
+      // double-buffered since W1-09 shipped because the weapon sweeps; seam ruling S26 makes
+      // the BODY sweep too, so the body needs the same two poses for the same reason.
+      pa: [0, 0, 0],
+      pb: [0, 0, 0],
     }));
+    // The trunk capsules S26's body hazard sweeps, resolved once at construction so the
+    // resolver iterates a small dense array instead of filtering by id every frame.
+    this.hazardParts = [];
+    this._hasPrevHurt = false;
     for (const h of this.hurtboxes) {
       if (h.boneIdx === undefined) {
         throw new Error(`hitgeometry.json hurtbox '${h.id}' names parent bone '${h.parent_bone}', which skeleton.json does not declare.`);
       }
       if (!h.axis) throw new Error(`skeleton.json hurtbox_axes is missing '${h.id}'.`);
+    }
+
+    const hazardIds = (hitGeometry.body_hazard && hitGeometry.body_hazard.parts) || [];
+    for (const id of hazardIds) {
+      const h = this.hurtboxes.find((x) => x.id === id);
+      if (!h) {
+        throw new Error(`hitgeometry.json body_hazard names part '${id}', which §hurtboxes does not declare. ` +
+          'S26 requires the attacker\'s root translation to be covered; a hazard part that does not exist covers nothing.');
+      }
+      this.hazardParts.push(h);
     }
 
     this.gripIdx = this.index.get(skeletonData.weapon.grip_bone);
@@ -180,6 +199,11 @@ export class Rig {
     for (let k = 0; k < this.hurtboxes.length; k++) {
       const h = this.hurtboxes[k];
       const bm = this.world[h.boneIdx];
+      // Roll this capsule's world pose into `pa`/`pb` BEFORE overwriting it — the same
+      // discipline CombatBody.evaluateRig() applies to the weapon sockets, and for the same
+      // reason: S26's body hazard is a sweep between two poses, not a test at one.
+      h.pa[0] = h.a[0]; h.pa[1] = h.a[1]; h.pa[2] = h.a[2];
+      h.pb[0] = h.b[0]; h.pb[1] = h.b[1]; h.pb[2] = h.b[2];
       h.a[0] = bm[9]; h.a[1] = bm[10]; h.a[2] = bm[11];
       xformDir(this._dir, bm, h.axis);
       h.b[0] = h.a[0] + this._dir[0] * h.length;
@@ -191,6 +215,17 @@ export class Rig {
     // and the weapon is rigidly parented to the grip hand, so the sockets are a rigid offset
     // in the hand's world frame. A weapon whose hitbox does not move when the hand moves is
     // not a weapon.
+    // First evaluation of this rig: there is no previous pose, so `prev` IS `now`. A zero-length
+    // sweep is exactly right — the actor has not moved yet.
+    if (!this._hasPrevHurt) {
+      for (let k = 0; k < this.hurtboxes.length; k++) {
+        const h = this.hurtboxes[k];
+        h.pa[0] = h.a[0]; h.pa[1] = h.a[1]; h.pa[2] = h.a[2];
+        h.pb[0] = h.b[0]; h.pb[1] = h.b[1]; h.pb[2] = h.b[2];
+      }
+      this._hasPrevHurt = true;
+    }
+
     const hm = this.world[this.gripIdx];
     xformDir(this._dir, hm, this.bladeAxis);
     this.socketA[0] = hm[9] + this._dir[0] * socketADist;

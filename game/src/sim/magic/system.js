@@ -115,6 +115,11 @@ export class MagicSystem {
     this.water = { buoyant: false, breathes: false, drowning: false, drownF: 1800, drownMaxF: 1800, swimDenied: true, depthM: 0 };
     this.peakY = 0;
     this.drift = { mps: 0, capMps: this.lev.horizontal_drift_mps };
+    // Effects the player has ACTUALLY CAST, ever. This — not `knownEffects` — is what the
+    // quest resolution gate reads (sim/quest/machine.js `context()`), because RI-MAG06's whole
+    // premise is that an effect is what it does. "You cannot bring `open_lock` to bear" should
+    // mean you have never made it happen, not that you failed to buy a scroll.
+    this.castEffects = new Set();
   }
 
   /**
@@ -194,6 +199,20 @@ export class MagicSystem {
     if (this.w.sim) { this.w.sim.player.pos[0] = b.pos[0]; this.w.sim.player.pos[1] = b.pos[1]; this.w.sim.player.pos[2] = b.pos[2]; }
     this._emit(frame, 'teleport', { cause, site: site || null, from: from.map(round2), to: [b.pos[0], b.pos[1], b.pos[2]].map(round2) });
     return { from, to: b.pos.slice() };
+  }
+
+  /**
+   * Raise a world flag. The systems layer RI-QST04 requires: the world says "the ledger door is
+   * open" and `game/data/quests/hooks.json` decides which journal entry that is. This is the
+   * one line that makes a spell able to advance a quest, and it goes through the quest engine's
+   * own `setFlag` so the hook table — not this file — owns the consequence.
+   */
+  raiseFlag(frame, flag) {
+    if (!this.w || !this.w.sim) return null;
+    this.w.sim.quest.flags[flag] = true;
+    this._emit(frame, 'world_flag', { flag });
+    const qe = this.w.engine && this.w.engine.questEngine;
+    return qe ? qe.setFlag(flag, true) : null;
   }
 
   /** `false_face`'s consumer, read out as a number so a census has something to compare. */
@@ -714,6 +733,7 @@ export class MagicSystem {
       // The handler runs BEFORE the row is pushed, so a timed effect's own `_undo` closure is
       // attached to the row that will expire, and an instantaneous effect never leaves a row.
       const h = HANDLERS[t.effect];
+      this.castEffects.add(t.effect);
       let census = null;
       try {
         census = h(this, frame, rec, target, spell);

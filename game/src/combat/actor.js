@@ -76,6 +76,26 @@ export class CombatBody {
     this.dead = false;
     this.yielded = false;
 
+    // ---- seam S19's consuming systems on a body (RI-MAG06 §B) --------------------------------
+    // Declared here, at their identity values, rather than sprung into existence by the first
+    // spell that touches them. A build with no magic in it computes exactly the numbers it
+    // computed before these existed; a critic reading `getMagicState().status` sees the whole
+    // set on every body, including the ones nothing has been cast at, which is what makes the
+    // paired read in RI-MAG06 M2 possible at all.
+    this.mitigation = 1;              // damage-taken multiplier: shield, resist_*, sap_ward
+    this.armourRating = cfg.armourRating || 0;   // flat subtraction: `corrode` lowers it
+    this.wardCharges = 0;             // sap_ward: eats whole blows, then is spent
+    this.status = {};                 // S11 buildup meters, kind -> integer
+    this.statusProc = {};             // kind -> frame the proc ends
+    this.paralysedUntil = 0;
+    this.silenced = false;
+    this.silencedUntil = 0;
+    this.calmedUntil = 0;
+    this.fleeingUntil = 0;
+    this.charmedUntil = 0;
+    this.frenziedUntil = 0;
+    this.frenzyTarget = null;
+
     this._loopFrame = 0;
     this._locomotionMoveDir = 0;
     this.lastRootDelta = 0;

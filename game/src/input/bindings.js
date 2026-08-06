@@ -37,6 +37,39 @@ export const MOVE_BINDINGS = {
   right: ['KeyD', 'ArrowRight'],
 };
 
+/**
+ * Default gamepad bindings — the W3C **standard mapping**, which is what a GameSir X2s
+ * Type-C, an Xbox pad and a DualSense all report.
+ *
+ * Owner note: `RI-JRN04` owns the full mobile/gamepad item. What is here is the minimum
+ * `RI-JRN01` O17 requires and which W1-07 cannot be measured without: the whole opening,
+ * including every creation question, completable on a pad alone. The layout follows Souls'
+ * own: A confirms, B goes back, RB/RT attack, LB/LT block and parry, B rolls.
+ *
+ * Face buttons 0=A(south) 1=B(east) 2=X(west) 3=Y(north); 4=LB 5=RB 6=LT 7=RT;
+ * 8=back 9=start; 10/11=stick clicks; 12-15=D-pad; 16=guide.
+ */
+export const GAMEPAD_BINDINGS = {
+  mapping: 'standard',
+  buttons: {
+    interact: 0,        // A — confirm, talk, pick up. The whole census needs only this.
+    roll: 1,            // B
+    use_item: 2,        // X
+    jump: 3,            // Y
+    parry: 4,           // LB
+    light: 5,           // RB
+    block: 6,           // LT — held, per RI-JRN03 A-HELD
+    heavy: 7,           // RT
+    menu: 9,            // start
+    lock_on: 10,        // L3
+    crouch: 11,         // R3
+    two_hand: 8,        // back
+  },
+  axes: { move_x: 0, move_y: 1, look_x: 2, look_y: 3 },
+  dpad_buttons: { up: 12, down: 13, left: 14, right: 15 },
+  note: 'Left stick and the D-pad both drive `move`, so every list in the game is walkable with a thumb; the right stick goes through RI-CAM02 §A shaping.',
+};
+
 /** RI-JRN03 KB3 — controls a rebind must refuse, because the user agent owns them. */
 export const RESERVED_CONTROLS = [
   'Ctrl+KeyW', 'Ctrl+KeyR', 'Ctrl+KeyT', 'Ctrl+KeyN', 'Ctrl+Shift+KeyI',

@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-06T21:00:19Z",
+  "generated": "2026-08-06T21:15:43Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1
   ],
-  "verdicts_read": 8,
+  "verdicts_read": 10,
   "counts": {
-    "total": 8,
-    "open": 8,
+    "total": 10,
+    "open": 10,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -33,8 +33,14 @@
     "platform.save.persistence": [
       "GAP-W1-platform-save-drops-entity-prev-state"
     ],
+    "crime.witness.model": [
+      "GAP-W1-stealth-crime-model-not-coupled-to-the-world"
+    ],
     "weapon.moveset.slots": [
       "GAP-W1-weapon-movesets-not-wired-to-the-runtime"
+    ],
+    "world.region.identity": [
+      "GAP-W1-world-region-identity-is-a-tint"
     ],
     "world.terrain.form": [
       "GAP-W1-world-trunk-road-below-the-waterline"
@@ -42,6 +48,7 @@
   },
   "warnings": [
     "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-01-r2.json: closure of GAP-W1-world-trunk-road-below-the-waterline is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-09-r2.json: closure of GAP-W1-combat-exemplar-has-no-danger is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
   ],
   "load_errors": [],
@@ -304,6 +311,47 @@
       "age_waves": 0
     },
     {
+      "gap_id": "GAP-W1-stealth-crime-model-not-coupled-to-the-world",
+      "subsystem_path": "crime.witness.model",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-15-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-15.json",
+      "piece_id": "w1-15",
+      "severity": "blocking",
+      "what": "The stealth and crime models are computed beside the world instead of by it, and the coupling is measurably zero at the two places the reference items make load-bearing. (1) DETECTION: an INFANTRY at 8 m reaches alert_state AGGRO at frame 30 — 0.500 s — identically at V = 0.6669 (midday, standing, heavy armour, Sneak 5) and at V = 0.0500 (unlit, crouched, in cover, Sneak 100), with identical alert curves of 40/80/100 at f=10/20/30. RI-STL01 2's own table says those two configurations are 1.03 s and 26.7 s apart. The alert meter fills at a flat +4/frame whenever the player is inside the archetype's sight radius and cone, and never multiplies by V; the control at 30 m confirms a live entity is being driven (alert stays 0). Coupling = 0.00. The same is true of the sound model: r_effective computes to 36.31 m at the loud end and a civilian 2 m away, facing away, registers suspicion 0.00 after 10 s of sprinting in heavy armour across dry reed. (2) WITNESSES: a civilian standing 3 m from the player in full daylight, at contextWeight 3.00, already at civ_state ALARM with suspicion 100, watches takeObject() succeed on an owned object. getCrimeState() returns witnesses: [], the trace reports witnesses_pending 0, no witness event fires, and the bounty is still 0 five seconds later. The crime record exists with landed: false and can never land. Every witness that appears anywhere in this build was created by a critic calling addWitness(crime_id, {eid, identified}). The civilian suspicion machine — which IS wired, and which I measured responding correctly to light (10.4x), context weight (1.86x), distance, sight cone and raceSuspicion (1.49x and 1.69x) — and the crime ledger are two correct systems in the same process that never speak to each other.",
+      "why_it_matters": "Nothing a player does with this piece has a consequence: you cannot sneak past an enemy because the darkness it took a lighting model to compute does not reach the thing hunting you, and you can rob every house in Gideon in front of its owner and never acquire a bounty — so the 17-crime schedule, the report chain, the three arrest answers, jail and the S10 decision are all unreachable in play.",
+      "remedy": {
+        "action": "Two call sites, both inside code this piece owns, plus one trace field. (A) game/src/sim/entities.js, the perception branch: replace `e.alert += 4` with the shipped model — `e.alert += baseFill(sim.stealth.p.V, d, e.sight_radius_m) / 60` from game/src/sim/stealth/detection.js, with the peripheral cone scaled by 0.45 as RI-AI01 §B specifies; add the `alert_channel` field ('sight'|'peripheral'|'hearing') to the enemy trace record so a light failure can be told from a sound failure; and route the continuous sound radius (soundRadiusFor) into the same fill on the hearing channel. (B) game/src/sim/stealth/system.js, in the fixed step: whenever a crime record is created (takeObject, lockBegin, a blow on a non-hostile, standing over a corpse), iterate this.civilians and any guard entities and call this.crime.witness(crime.id, ...) for each whose civ_state advanced to CHALLENGE or ALARM this frame with V >= 0.10 and dist <= 1.4 x R(npc), setting identified from V >= 0.30; then drive reportRoute() from that entity's own path to the nearest guard entity and flip it to the fleeing behaviour.",
+        "targets": [
+          "game/src/sim/entities.js",
+          "game/src/sim/stealth/system.js",
+          "game/src/sim/record.js",
+          "game/src/sim/stealth/detection.js",
+          "game/src/sim/stealth/search.js"
+        ],
+        "acceptance": "(A) RI-STL01 method 2 run exactly as written — one INFANTRY facing the player at 8 m, the five configurations of §2, first frame of alert_state == 'AGGRO' — lands within 5% of {1.03, 3.94, 8.5, 26.7, 26.7} s, and method 4 (crouched, unlit, still, 1.0 m behind a stationary enemy, 3,600 f@60) ends with alert == 0.000. (B) RI-CRM01 method 3 passes end to end with ZERO addWitness() calls in the script: a `witness` event on the crime frame, reported == false, bounty 0 until a `report` event fires, and the 120 m run landing within 10% of 35.3 s. Both are re-measurable with `node tools/harness/critic-w1-15.mjs`, whose RI-STL01-M2-enemy-detection and RI-CRM01-M3-witness-from-the-world blocks are written for exactly this closure; today they read coupling 0.00 and witnesses [].",
+        "ref_item": "RI-STL01",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Two call sites, both inside code this piece owns, plus one trace field. (A) game/src/sim/entities.js, the perception branch: replace `e.alert += 4` with the shipped model — `e.alert += baseFill(sim.stealth.p.V, d, e.sight_radius_m) / 60` from game/src/sim/stealth/detection.js, with the peripheral cone scaled by 0.45 as RI-AI01 §B specifies; add the `alert_channel` field ('sight'|'peripheral'|'hearing') to the enemy trace record so a light failure can be told from a sound failure; and route the continuous sound radius (soundRadiusFor) into the same fill on the hearing channel. (B) game/src/sim/stealth/system.js, in the fixed step: whenever a crime record is created (takeObject, lockBegin, a blow on a non-hostile, standing over a corpse), iterate this.civilians and any guard entities and call this.crime.witness(crime.id, ...) for each whose civ_state advanced to CHALLENGE or ALARM this frame with V >= 0.10 and dist <= 1.4 x R(npc), setting identified from V >= 0.30; then drive reportRoute() from that entity's own path to the nearest guard entity and flip it to the fleeing behaviour.",
+      "remedy_acceptance": "(A) RI-STL01 method 2 run exactly as written — one INFANTRY facing the player at 8 m, the five configurations of §2, first frame of alert_state == 'AGGRO' — lands within 5% of {1.03, 3.94, 8.5, 26.7, 26.7} s, and method 4 (crouched, unlit, still, 1.0 m behind a stationary enemy, 3,600 f@60) ends with alert == 0.000. (B) RI-CRM01 method 3 passes end to end with ZERO addWitness() calls in the script: a `witness` event on the crime frame, reported == false, bounty 0 until a `report` event fires, and the 120 m run landing within 10% of 35.3 s. Both are re-measurable with `node tools/harness/critic-w1-15.mjs`, whose RI-STL01-M2-enemy-detection and RI-CRM01-M3-witness-from-the-world blocks are written for exactly this closure; today they read coupling 0.00 and witnesses [].",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
       "gap_id": "GAP-W1-weapon-movesets-not-wired-to-the-runtime",
       "subsystem_path": "weapon.moveset.slots",
       "opened_wave": 1,
@@ -334,6 +382,55 @@
         "corpus/90-verdicts/wave1/artifacts/W1-10/probeB-contextual-live.json",
         "corpus/90-verdicts/wave1/artifacts/W1-10/probeC-wgrid-cfs.json",
         "corpus/90-verdicts/wave1/artifacts/W1-10/probeF-ar1-stance-m6.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-world-region-identity-is-a-tint",
+      "subsystem_path": "world.region.identity",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-01-r2-world-b4e2",
+      "opened_in": "corpus/90-verdicts/wave1/W1-01-r2.json",
+      "piece_id": "w1-01-r2",
+      "severity": "blocking",
+      "what": "All thirteen regions are the same three primitives — canopy, under, rock — recoloured, and not one of the thirteen declared ONLY-HERE elements exists in the world. Every region in game/data/world/regions.json carries the identical prop schema `canopy+under+rock`, drawing on seven shared canopy shapes and five shared under shapes; the whole 14.31 km2 province renders with textureMB 0, atlasCount 0, 17 materials and 8 programs. `only_here: {id, instances}` — welkynd_pillar x34, petrified_bole x400, rock_flute_spire x14, glassed_crater x16, beached_hull_house x12 and nine more — is an integer literal in tools/world/build-regions.mjs and nothing places an instance, so RI-WLD04 M19 measures 0 of 13. Five of M18's nine axes (fauna, architecture, audio, weather, hazard) are DROPPED rather than measured, which is the same statement in the instrument's own words. The consequence is measurable two ways. A human taking M17 on the now-honest pack scores 4/8 against a pass bar of 85%, and three of the four misses are one miss: frames 023, 042 and 050 are the Stone Wastes — 'glassed salt crust', glass_thorn, whale_bone_frame, salt_block_wall, crater_rim — and all three read as Marauder's Coast, because what is rendered is a khaki flat under a white fog band. And with colour and exposure removed from the machine descriptor, leave-one-out identification falls 74.4% -> 30.8% and Fisher 3.10 -> 1.77: about two-thirds of the measured region separability is carried by tint alone, which is RI-WLD04's own named way to lose.",
+      "why_it_matters": "S24 rules that thirteen regions must each read as a different place and that an implementation where everything is one terrain with a recoloured fog has failed regardless of how good the terrain is — and a player walking the 6.6 km crossing passes through five regions that differ in ground colour and in nothing they can name.",
+      "remedy": {
+        "action": "Place the ONLY-HERE elements as real instances, and give each region at least one prop class that no other region has. Concretely: (1) extend the region prop schema in tools/world/build-regions.mjs and game/src/world/province.js beyond `canopy+under+rock` with a fourth slot `signature`, carrying its own mesh generator per region — a welkynd pillar for Blackwood, a rock-flute spire for Valus Ridge, a whale-bone frame and crater rim for the Stone Wastes, a beached hull house and tide pole for Marauder's Coast, a drowned xanmeer tooth and corpse lily for the Deep Marshes, a stilt row and tideway marker for the Eastern Rootlands; (2) place them at the counts regions.json already declares, from the same seeded lattice the existing props use, so the number in the table becomes the number in the world; (3) add a `signature_silhouette` axis and an `architecture_placed` axis to tools/world/region-axes.mjs, computed from placed instances rather than from a table row, and un-drop `architecture`; (4) give the ground more than one material — at present textureMB is 0, so albedo is a per-region constant and RI-WLD04's 'albedo must come from different materials, not a LUT' cannot be satisfied at all.",
+        "targets": [
+          "tools/world/build-regions.mjs",
+          "game/src/world/province.js",
+          "game/src/render/scene.js",
+          "game/data/world/regions.json",
+          "tools/world/region-axes.mjs"
+        ],
+        "acceptance": "RI-WLD04 M19 reads 13/13: each region's ONLY-HERE element is queryable in the running world at >=8 instances inside its own region and 0 instances in every other region. AND the structure-only re-measurement (critic-structure-only.json, colour and exposure removed) rises from 30.8% to >=55% leave-one-out on the 39 day frames, so region identity survives having the tint taken away. AND M18 measures >=7 axes on every one of the 78 pairs with `architecture` un-dropped and computed from placed instances.",
+        "ref_item": "RI-WLD04",
+        "estimated_size": "L"
+      },
+      "remedy_action": "Place the ONLY-HERE elements as real instances, and give each region at least one prop class that no other region has. Concretely: (1) extend the region prop schema in tools/world/build-regions.mjs and game/src/world/province.js beyond `canopy+under+rock` with a fourth slot `signature`, carrying its own mesh generator per region — a welkynd pillar for Blackwood, a rock-flute spire for Valus Ridge, a whale-bone frame and crater rim for the Stone Wastes, a beached hull house and tide pole for Marauder's Coast, a drowned xanmeer tooth and corpse lily for the Deep Marshes, a stilt row and tideway marker for the Eastern Rootlands; (2) place them at the counts regions.json already declares, from the same seeded lattice the existing props use, so the number in the table becomes the number in the world; (3) add a `signature_silhouette` axis and an `architecture_placed` axis to tools/world/region-axes.mjs, computed from placed instances rather than from a table row, and un-drop `architecture`; (4) give the ground more than one material — at present textureMB is 0, so albedo is a per-region constant and RI-WLD04's 'albedo must come from different materials, not a LUT' cannot be satisfied at all.",
+      "remedy_acceptance": "RI-WLD04 M19 reads 13/13: each region's ONLY-HERE element is queryable in the running world at >=8 instances inside its own region and 0 instances in every other region. AND the structure-only re-measurement (critic-structure-only.json, colour and exposure removed) rises from 30.8% to >=55% leave-one-out on the 39 day frames, so region identity survives having the tint taken away. AND M18 measures >=7 axes on every one of the 78 pairs with `architecture` un-dropped and computed from placed instances.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-023.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-042.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-050.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-017.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-tideway-lilmoth-archon.png"
       ],
       "status": "open",
       "assigned_to_wave": 2,

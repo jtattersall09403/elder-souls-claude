@@ -2,19 +2,45 @@
   "task_id": "W1-14-r2",
   "brief": "wave-1 piece W1-14 round 2 — Magic (seam S19), ULTRACODE. Round 1 scored 2.7/10.",
   "started": "wave-1 round 2",
-  "state": "researching",
+  "state": "building",
   "gap": "GAP-W1-magic-effects-no-behaviour — one generic applicator behind 55 labels. 5/55 function.",
   "outputs_expected": [
-    "tools/harness/mag-census.mjs (RI-MAG06 instrument: consuming-system census)",
-    "game/src/sim/magic/apply.js (per-effect handler registry)",
-    "game/src/sim/combat-bridge.js (restrict damage accumulator to the 5 damage effects)",
-    "levitation as real locomotion (pos[1], drift cap, input drops, no i-frames)",
+    "game/src/sim/magic/apply.js (per-effect handler registry, 55 handlers)",
+    "game/src/sim/combat-bridge.js (damage accumulator restricted to the 5 damage effects)",
+    "game/data/magic/wards.json (the objects the utility verbs act on)",
+    "levitation as real locomotion",
+    "quest runtime instantiated + magic solutions",
+    "tools/harness/mag-census.mjs (RI-MAG06 instrument)",
     "magic VFX (RI-MAG05 PART 1 + PART 2)",
-    "quest solvability by magic (RI-MAG04 M6/M7)",
-    "spells.json economy + tracking arc + castable carriers"
+    "economy: spells.json gold, tracking arc, castable carriers"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "boot at HEAD, confirm api-probe passes, then write the RI-MAG06 census instrument BEFORE any feature code",
-  "notes_for_successor": ""
+  "outputs_written": [
+    "game/src/sim/magic/apply.js",
+    "game/src/sim/magic/system.js (bindWorld, dispatch, leases, real levitation, fall, tracking)",
+    "game/src/sim/combat-bridge.js",
+    "game/src/combat/resolve.js (mitigate())",
+    "game/src/combat/actor.js (mitigation/armour/status fields)",
+    "game/src/combat/player.js (levitation input drops + drift locomotion)",
+    "game/src/combat/moves.js (PARALYSED enemy state)",
+    "game/src/sim/stealth/system.js (Veiling terms consumed by V and sound_r_m)",
+    "game/src/engine.js (bindWorld, QuestEngine, histSightWrite, magic stealth readout)",
+    "game/src/harness/api.js (getMagicWorld/getStatusState/getEffectConsumerMap/getFallState/dropFrom/quest*)",
+    "game/data/magic/wards.json",
+    "game/data/quests/hooks.json + tools/analysis/gen-quest-hooks.mjs",
+    "game/data/combat/enemies/drowned_lesser.json, drowned_greater.json"
+  ],
+  "findings": [
+    "ROOT CAUSE confirmed at combat-bridge.js:72 — `if (e.utility_class === null || e.geometry !== 'none') dmg += outputOf(...)`. That predicate is true for every effect with geometry, i.e. every enemy-side effect. Now closed over DAMAGE_EFFECTS (5) only.",
+    "The build had NO quest runtime: QuestBook/FactionGates/QuestEngine (1155 lines, complete) were never instantiated and game/data/quests/hooks.json never existed. That is why AR-2 B7 was not_run and RI-MAG04 M6=0/M7=0. Now instantiated at engine._boot.",
+    "QuestEngine.context() gated `requires.spell_effects` on magic.knownEffects (a spell you OWN). Changed to magic.castEffects (an effect you have actually CAST) — RI-MAG06's premise applied to the gate.",
+    "No S11 buildup meter existed anywhere in game/src (grep 'buildup' -> 2 hits, both comments). Added BUILDUP in magic/apply.js with per-kind integer thresholds; paralyse is magnitude x4 per contact against a threshold of 100, so the cheapest paralyse spell needs 3 contacts and 0->applied-in-one-frame is structurally impossible.",
+    "No mitigation path existed: resolve.js computed damage and applied it with no multiplier. Added mitigate(B, dmg) at the single site damage is computed, consuming body.mitigation, body.armourRating and body.wardCharges.",
+    "Levitation: altitude was a counter with a Focus tax; pos[1] was never written. stepLevitation now assigns b.pos[1] = groundY + altitude, and a new _levitationLocomotion branch in combat/player.js caps drift at the declared 1.4 m/s with no sprint/jog ladder. _tryStart drops the five denied buttons from cast-classes.json §levitation.airborne_denies.",
+    "Projectile tracking measured 0.000 deg/s because _spawnProjectile never set p.target. Now acquires a body already inside a 20-degree release cone and stops dead at cutoffF.",
+    "Data loader keys game/data/quests/* by doc.id, not filename: hooks.json -> data.quests['quest-hooks'], magic-utility.json -> data.quests['magic-utility-quests'].",
+    "api-probe 33/33 PASS with all of the above wired.",
+    "CONCURRENT-AGENT HAZARD: other agents commit the whole worktree (commit 1c1f98b picked up my in-flight files) and left engine.js referencing a missing _censusStep. I added a defensive `this._censusStep ? ... : null` guard on that line."
+  ],
+  "next_step": "write tools/harness/mag-census.mjs (RI-MAG06 instrument), measure EFFECT-FUNCTION and HP_DAMAGE_ONLY live, then VFX and the economy",
+  "notes_for_successor": "The registry in game/src/sim/magic/apply.js is checked for completeness at boot (assertRegistryComplete): a catalogue effect with no handler throws rather than falling through to a damage number. DAMAGE_EFFECTS is the frozen 5-element set shared by apply.js and combat-bridge.js so the two cannot drift."
 }

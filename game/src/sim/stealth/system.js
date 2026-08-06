@@ -106,8 +106,25 @@ export class StealthCrime {
     if (!p.zone) this.light.defaultAmbient = skyAmbient(sim.env);
     const pos = sim.player ? sim.player.pos : [0, 0, 0];
     p.L = this.light.withTorch(this.light.sample(pos[0], pos[1] + 1.35, pos[2], p.zone), p.carryingTorch);
+    // ---- seam S19 x S21: THE VEILING SCHOOL'S CONSUMING SYSTEM ------------------------------
+    //
+    // The W1-14 critic's decisive Veiling finding was that all five concealment effects left
+    // `getStealthState()` BYTE-IDENTICAL: twelve effects, the whole concealment half of S19,
+    // with zero coupling to the stealth system shipping in the same build. These four lines are
+    // that coupling, and they are HERE rather than inside the magic system for the reason
+    // RI-MAG06 §B gives: the number a critic reads is `V` and `sound_r_m`, so those are the
+    // numbers that have to move — not a parallel "magic visibility" a spell reads back to itself.
+    //
+    // `night_eye` raises the light the CASTER perceives; it does not light the caster up, so it
+    // is applied after the sample that feeds V and never to the V term itself.
+    const rawL = p.L;
+    p.perceivedL = Math.min(1, rawL + (p.magicLightBonus || 0));
     p.V = DET.visibility(this.d.detection, { L: p.L, motion: p.motion, sneak: p.sneak, load: p.load, inCover: p.inCover });
+    if (p.magicChameleonPct) p.V *= 1 - Math.min(80, p.magicChameleonPct) / 100;   // §H clamp at 80
+    if (p.magicInvisible) p.V = this.d.detection.visibility.clamp[0];              // the floor, never 0
+    p.V = Math.round(p.V * 1e6) / 1e6;
     p.soundR = DET.soundRadius(this.d.detection, { motion: p.motion, sneak: p.sneak, load: p.load, surface: p.surface });
+    if (p.magicMufflePct) p.soundR = Math.round(p.soundR * (1 - Math.min(90, p.magicMufflePct) / 100) * 1e6) / 1e6;
 
     // 4. relight timers.
     this.light.step(f);

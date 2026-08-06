@@ -240,6 +240,29 @@ export class PlayerController {
     const tier = this.tier();
     const emit = ctx.emit;
 
+    // RI-MAG02 §F3 — AIRBORNE IS DEFENCELESS, and it is defenceless here, at the input gate,
+    // rather than in a comment. The wave-1 verdict measured `roll` -> BACKSTEP, `block` ->
+    // BACKSTEP and `parry` -> PARRY_ACTIVE while levitating, plus `iframe: true`. The list is
+    // read from `cast-classes.json §levitation.airborne_denies`, so the data file that declares
+    // the rule is the data file that enforces it, and `airborne_permits_cast` is the one hole:
+    // slowfall is what you reach for when the flight runs out over a drop.
+    if (this.magic && this.magic.levitating) {
+      const denies = this.magic.lev.airborne_denies || [];
+      const name = nameOfBit(bit);
+      const castingIsAllowed = (bit === BIT.light || bit === BIT.heavy) && this.magic.hasCatalyst
+        && this.magic.attuned.some((id) => {
+          const s = this.magic.spellOf(id);
+          return s && s.effects.some((e) => (this.magic.lev.airborne_permits_cast || []).includes(e.effect));
+        });
+      if (denies.includes(name) && !castingIsAllowed) {
+        input.droppedInputs++;
+        const e = emit(frame, 'INPUT_DROPPED');
+        e.button = name; e.reason = 'levitating_airborne'; e.altitude_m = Math.round(this.magic.altitude * 100) / 100;
+        e.permits_cast = this.magic.lev.airborne_permits_cast || [];
+        return;
+      }
+    }
+
     if (bit === BIT.roll) {
       const stickMag = Math.hypot(input.moveX, input.moveY);
       const locked = ctx.lockedBody;
@@ -564,6 +587,7 @@ export class PlayerController {
     const C = this.d.stamina;
     const mx = input.moveX, my = input.moveY;
     const mag = Math.hypot(mx, my);
+    if (this.magic && this.magic.levitating) return this._levitationLocomotion(frame, input, ctx, mx, my, mag);
     const wantGuard = (input.held & BIT.block) !== 0;
     // RI-CAM02 §C classifies "stationary" from the speed the character ALREADY HAS, not the
     // one it is about to be given, so the previous frame's value is latched here.
@@ -664,6 +688,49 @@ export class PlayerController {
     if (this.turnInPlaceAnim && this.turnInPlace >= 0 && state === 'IDLE' && this.turnInPlaceActive) {
       b.anim = this.turnInPlaceAnim;
     }
+  }
+
+  /**
+   * RI-MAG02 §F1 — DRIFT, not locomotion.
+   *
+   * The wave-1 build routed a levitating character through the ordinary walk/run/sprint ladder
+   * and the critic measured **4.96 m/s in state SPRINT** against a 1.45 m/s bar and a measured
+   * walk of 3.17 m/s. Flying was strictly faster than walking, which deletes the entire reason
+   * §F's four bounds exist: levitation is supposed to be a way *up*, never a way *across*.
+   *
+   * There is no sprint here, no jog, no guard-walk and no stamina drain, because none of those
+   * verbs exists in the air. There is one speed and it is the declared cap, scaled by the
+   * stick. The turn is the ordinary bounded turn — a levitating character still cannot snap
+   * its facing (RI-CAM02 §C) — and the state is its own, so a trace can see it.
+   */
+  _levitationLocomotion(frame, input, ctx, mx, my, mag) {
+    const b = this.b;
+    const M = this.magic;
+    const cap = M.lev.horizontal_drift_mps;
+    b.guardRaised = false;
+    b.iframe = false;
+    b.iframeKind = null;
+    if (mag > (this.d.locomotion.move_deadzone || 0)) {
+      const dir = this.lock.resolveDirection(b, ctx.lockedBody, mx, my, ctx.cameraYawDeg, false);
+      const mps = cap * Math.min(1, mag);
+      const per = mps / 60;
+      b.pos[0] += Math.sin(dir.dirDeg / DEG) * per;
+      b.pos[2] += Math.cos(dir.dirDeg / DEG) * per;
+      b.speedMps = mps;
+      b.moveDirDeg = dir.dirDeg;
+      let dd = angleDelta(b.yaw, dir.facingDeg);
+      const maxTurn = (this.d.locomotion.turn_rate_stationary_dps || 480) / 60;
+      if (dd > maxTurn) dd = maxTurn; else if (dd < -maxTurn) dd = -maxTurn;
+      b.yaw = norm360(b.yaw + dd);
+    } else {
+      b.speedMps = 0;
+    }
+    M.drift.mps = b.speedMps;
+    M.drift.capMps = cap;
+    b.state = 'AIRBORNE';
+    b.airborne = true;
+    b.poseLocomotion('IDLE', frame);
+    b.anim = 'levitate';
   }
 
   _stickBearing(input, ctx) {

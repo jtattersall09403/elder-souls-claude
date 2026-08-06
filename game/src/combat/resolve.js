@@ -15,6 +15,7 @@ import { sweepCapsuleVsCapsule, sweptAABB, aabbVsCapsule, bearingDeg, angleDelta
 import { computeDamage, applyPoiseDamage, resolveBlock, inHyperArmour } from './rules.js';
 
 const _min = [0, 0, 0], _max = [0, 0, 0];
+const _bmin = [0, 0, 0], _bmax = [0, 0, 0];
 
 /**
  * @param {CombatBody[]} bodies in stable id order
@@ -70,7 +71,7 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
       }
 
       // ---- step 8: sweep -------------------------------------------------------------
-      let bestSub = -1, bestHb = null;
+      let bestSub = -1, bestHb = null, bestVia = null;
       for (let hi = 0; hi < B.rig.hurtboxes.length; hi++) {
         const H = B.rig.hurtboxes[hi];
         if (!aabbVsCapsule(_min, _max, H.a, H.b, H.r)) continue;   // broadphase
@@ -79,6 +80,27 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
         // earliest substep wins; on a tie the higher damage_mult wins (§D.3)
         if (bestSub < 0 || s < bestSub || (s === bestSub && H.damage_mult > bestHb.damage_mult)) {
           bestSub = s; bestHb = H;
+        }
+      }
+
+      // ---- step 8b: S26's body hazard -------------------------------------------------
+      // "An attack's swept volume MUST cover the whole of the attacker's root translation
+      // during its active frames." The weapon sweep above covers where the BLADE went. This
+      // covers where the ATTACKER went. It exists only on frames where the root actually
+      // moved, so an attack with no root motion has no body hazard at all and this can never
+      // degenerate into a proximity test (hitgeometry.json §body_hazard.not_a_distance_check).
+      if (A.lastRootDelta !== 0 && A.rig.hazardParts.length) {
+        for (let ti = 0; ti < A.rig.hazardParts.length; ti++) {
+          const T = A.rig.hazardParts[ti];
+          sweptAABB(T.pa, T.pb, T.a, T.b, T.r, PAD, _bmin, _bmax);
+          for (let hi = 0; hi < B.rig.hurtboxes.length; hi++) {
+            const H = B.rig.hurtboxes[hi];
+            if (!aabbVsCapsule(_bmin, _bmax, H.a, H.b, H.r)) continue;
+            const s = sweepCapsuleVsCapsule(T.pa, T.pb, T.a, T.b, T.r, H.a, H.b, H.r, SUBSTEPS);
+            if (s < 0) continue;
+            // The weapon wins ties: a swing that connects is a swing, not a shoulder-check.
+            if (bestSub < 0 || s < bestSub) { bestSub = s; bestHb = H; bestVia = T.id; }
+          }
         }
       }
       if (bestSub < 0) continue;
@@ -95,6 +117,7 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
         const e = emit(frame, 'IFRAME_NEGATE');
         e.src = A.id; e.dst = B.id; e.atk = A.move.id; e.swing = A.swingSeq;
         e.pstate = B.state; e.part = bestHb.id; e.substep = bestSub; e.t = round3(t);
+        e.via = bestVia || 'weapon';
         continue;
       }
 
@@ -115,7 +138,7 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
         const e = emit(frame, 'BLOCK');
         e.src = A.id; e.dst = B.id; e.atk = A.move.id;
         e.stam_cost = round1(res.stamina_cost); e.chip = Math.round(res.chip);
-        e.stam_left = round1(res.stamina_after); e.guard_break = res.guard_broken;
+        e.stam_left = round1(res.stamina_after); e.guard_break = res.guard_broken; e.via = bestVia || 'weapon';
         if (res.guard_broken) {
           B.guardRaised = false;
           B.stamina = 0;
@@ -140,6 +163,9 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
       const e = emit(frame, 'HIT');
       e.src = A.id; e.dst = B.id; e.wpn = A.move.id; e.dmg = Math.round(dmgBase);
       e.pd = A.move.poise_damage || 0; e.part = bestHb.id; e.substep = bestSub; e.t = round3(t);
+      // S26: `weapon` if the blade connected, otherwise the attacker's own trunk capsule that
+      // ran the target down. A critic reading the trace can separate the two without guessing.
+      e.via = bestVia || 'weapon';
       e.hp_after = Math.round(Math.max(0, B.hp)); e.hyperarmour = pr.hyperarmour;
       e.poise_after = round1(Math.max(0, B.poiseHealth));
 

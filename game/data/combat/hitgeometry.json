@@ -69,6 +69,16 @@
     ]
   },
 
+  "body_hazard": {
+    "_source": "ARBITRATION.md seam ruling S26 (wave 1), which is a POSITIVE REQUIREMENT binding on every attack, player and enemy alike: \"an attack's swept volume MUST cover the whole of the attacker's root translation during its active frames — the convex hull of the poses, not a capsule at the destination. An attack that moves the attacker forward and tests only where it ended has a hole behind it exactly as deep as it travelled.\"",
+    "_what_the_defect_actually_was": "The W1-09 round-2 critic diagnosed the hole as the weapon sweep failing to include the attacker's root delta. Measured frame by frame (tools/harness/cmb-reach.mjs --probe mechanism), that is NOT what happens: CombatBody.evaluateRig() already double-buffers the weapon sockets in WORLD space, root motion is applied to pos[] before the rig is evaluated, and the per-frame swept hull therefore already spans the root delta. The hole is one level up. The champion's chop puts the near end of its weapon capsule 0.95 m in front of its own root at the first active frame and carries the root 0.79 m further forward during the active window, so the blade is ahead of a target standing at 0.8 m for every one of those frames and the attacker walks through the target untouched. The volume the ruling says must be covered — the corridor the ATTACKER'S OWN BODY sweeps — was not tested at all, by anything, on either side of the exchange.",
+    "rule": "While an attack's hitbox is live AND the attacker's root actually translated on this frame, the attacker's own trunk capsules are swept from their previous world pose to their current world pose and tested against the target's hurtboxes with the identical closed-form segment-vs-hull routine the weapon uses. A hit resolves through the identical order (i-frames, block cone, dedup, poise, damage). Being run over by a lunging champion is a hit.",
+    "not_a_distance_check": "This is deliberately NOT `if (dist < r) hit()` — RI-CMB04 'How we lose' #1. Three properties keep it honest and all three are measurable: (1) the capsules are the attacker's OWN animated hurtboxes, rebuilt from the pose every frame, so the hazard moves and deforms with the animation and is not a radius; (2) it exists only while `root_delta_this_frame != 0`, so an attack that does not translate has NO body hazard and therefore no proximity component whatsoever; (3) it is a SWEPT corridor between two poses, so it covers where the attacker went and not where it is.",
+    "parts": ["pelvis", "torso_lower", "torso_upper", "head"],
+    "_why_trunk_only": "The ruling says root TRANSLATION. The trunk is the column that carries the root. Sweeping arms and shins as well would widen the hazard past what the ruling asks for and would start hitting people the attacker merely brushed.",
+    "damage_mult_source": "the TARGET's struck hurtbox, exactly as a weapon hit; the attacker's trunk part is recorded in the event as `via` so a trace can tell a shoulder-check from a sword"
+  },
+
   "resolution_order": {
     "_source": "RI-CMB04 §E — stopping at the first that applies",
     "1": "target.invulnerable (frame window) -> emit IFRAME_NEGATE. Nothing else happens.",

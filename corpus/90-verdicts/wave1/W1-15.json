@@ -1,0 +1,1120 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-15",
+  "piece_title": "Stealth, theft, crime and justice",
+  "subsystem_paths": [
+    "stealth.detection.model",
+    "stealth.sneak.state",
+    "stealth.npc.search",
+    "stealth.opener.seam",
+    "stealth.trespass.zones",
+    "stealth.theft.ownership",
+    "stealth.theft.pickpocket",
+    "stealth.lock.picking",
+    "stealth.fence.economy",
+    "crime.witness.model",
+    "crime.guard.response",
+    "crime.bounty.schedule",
+    "crime.arrest.interaction",
+    "crime.jail.consequence",
+    "crime.persistence.death",
+    "crime.faction.standing"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-15-3c19",
+    "role": "critic.stealth-crime",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-06T19:55:00Z",
+    "finished_at": "2026-08-06T21:20:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "21c9566",
+    "branch": "main",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/critic-w1-15.mjs --json corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+        "seed": "1337 / 1..60",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/stl-probe.mjs   (re-run of the builder's module probe)",
+        "seed": "991/1337",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/stl-live.mjs    (re-run of the builder's live probe, in a worktree at 140d3c6)",
+        "seed": 1337,
+        "exit_code": 0
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "fidelity_refs": [],
+    "art_refs": [],
+    "note": "One visual check only, and it is a presence/absence test rather than a quality one: RI-STL01 method 7's NO-METER pixel diff. Two 1920x1080 renders at differing stealth state, no reference screenshot of any era cited, so neither axis is engaged."
+  },
+  "reference_items": [
+    {
+      "id": "RI-STL01",
+      "path": "corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "10 axes scored 0/6/10, aggregation min-over-axes; failure threshold: any axis below 6; OPENER-PURITY, BOSS-BYPASS and NO-METER binary",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose (min-over-axes: Search 0, Bypass 0, Quest load 0)",
+      "score_0_10": 2,
+      "measured": "partial",
+      "justification": "Capped at 2 by SCORING.md 1.1 (a triggered hard fail caps the item at 2); the item's own min-over-axes aggregation gives 0. The formula and the civilian half are real and were measured live, which is why this is not scored 0: the civilian suspicion fill responds correctly to light (V 0.5335 vs 0.0500 -> CHALLENGE at 0.83 s vs 8.67 s, a 10.4x response to a 10.7x V), to contextWeight (3.00 vs 1.60 -> ALARM 6.67 s vs 12.42 s, 1.86x against a predicted 1.875x), to distance (15 m never reaches CHALLENGE in 20 s), to the sight cone (civilian facing away: suspicion 0.00 after 20 s) and to raceSuspicion (naga/saxhleel 1.49x against 1.481 predicted; saxhleel/imperial 1.69x against 1.687). What fails is everything the item's own method names: method 2 asks for an INFANTRY at 8 m and the frame of first AGGRO, and the INFANTRY reaches AGGRO at frame 30 (0.50 s) identically at V=0.6669 and V=0.0500 (item: 1.03 s and 26.7 s) because the enemy alert meter fills at a flat +4/frame inside its sight radius and never reads V; method 4's no-proximity-leak assertion fails live (AGGRO at 1.0 m behind, in the dark, crouched, at Sneak 100); method 3 is unrunnable because `alert_channel` is absent from the enemy record and because nothing hears continuous movement at all (a civilian 2 m away, facing away, after 10 s of sprinting in heavy armour on dry reed at r_effective 36.31 m: suspicion 0.00); method 6's four search behaviours do not exist in the world (the enemy's alert decays 100 -> 0 in 2 s, its speed is 0.00 m/s and its position never leaves the spawn anchor over 24 s, and zone_baseline_alert stays 0); method 9's whole bypass census is unmeasurable and 0.",
+      "why_not_ten": "The visibility term is computed once per frame into the trace and no entity in the running game multiplies anything by it. Measured coupling between V and enemy detection is exactly 0.00 (critic-w1-15.json, RI-STL01-M2-enemy-detection). There is no NPC search behaviour of any kind, no hearing channel for continuous movement, and no line-of-sight occlusion term anywhere in the model (`in_cover` is an authored boolean worth x0.80).",
+      "path_to_ten": "1) In game/src/sim/entities.js's perception branch replace `e.alert += 4` with `baseFill(sim.stealth.p.V, d, R)/60` from sim/stealth/detection.js and re-run RI-STL01 method 2 AS WRITTEN (one INFANTRY at 8 m, five configurations) to land within 5% of {1.03, 3.94, 8.5, 26.7, 26.7} s, and method 4 to end at alert == 0. 2) Route the continuous sound radius into the same fill and add `alert_channel` to the enemy record so method 3's binary search is runnable. 3) Invoke sim/stealth/search.js from the step when an alerted entity loses contact, so S-1..S-4 are observable in a trace rather than only in a module. 4) Add a real occluder test between eye node and chest node so breaking line of sight works. 5) Bypass census follows encounter placement (W1-02/04/05/12).",
+      "ten_by_wave": 3,
+      "checks": [
+        {
+          "id": "M1",
+          "result": "pass",
+          "value": "visibilityAt() reproduces the item's formula shape; floor fires at raw 3.02e-4 -> 0.05 and ceiling at raw 3.157 -> 1.30",
+          "threshold": "exact to 1e-6, clamps fire",
+          "note": "with light_exponent 1.36, not the item's stated 0.7 \u2014 see provenance_correction",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+          ]
+        },
+        {
+          "id": "M2",
+          "result": "fail",
+          "value": "INFANTRY at 8 m: AGGRO at f=30 (0.500 s) at V=0.6669 AND at V=0.0500; identical alert curves 40/80/100 at f=10/20/30; at 30 m alert stays 0 (control)",
+          "threshold": "within 5% of {1.03, 3.94, 8.5, 26.7, 26.7} s",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "M3",
+          "result": "fail",
+          "value": "r_effective 36.31 m computed; civilian 2 m away facing away, 10 s of sprinting on dry reed in heavy armour: suspicion 0.00, CALM. The four discrete scripted events DO fill civilians (pick_break at 3 m: 0 -> 54; throw_impact: -> 99). alert_channel absent from the enemy record.",
+          "threshold": "15 measured radii within 8%, binary-searched on alert_channel == hearing",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "M4",
+          "result": "fail",
+          "value": "crouched, unlit, Sneak 100, in cover, 1.0 m from a stationary INFANTRY: AGGRO at f=30",
+          "threshold": "alert never exceeds 0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "M5",
+          "result": "pass",
+          "value": "isStealthOpener() returns a bare boolean; Sneak 19 -> false, Sneak 20/100 -> true identically; rear-arc boundary 101 deg at Sneak 5/20/60/100; false against an AGGRO target",
+          "threshold": "no frame or damage divergence; deterministic gate, no probability",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M6",
+          "result": "fail",
+          "value": "enemy at AGGRO, player removed to 60 m: alert 100 -> 40 -> 0 within 2 s; speed 0.00 m/s and position [0,0,8] unchanged for 24 s; no LKP walk, no cover visits, no ally raise; zone_baseline_alert 0",
+          "threshold": "S-1..S-4 observable in a trace, S-4 persisting 180 s and across a save",
+          "note": "S-1..S-4 pass at module level in stl-probe.mjs; the module is never invoked by the world",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M7",
+          "result": "pass",
+          "value": "hud_elements 0; two 1920x1080 renders across a stealth-state change are byte-identical (0 of 6,221,880 raw bytes differ)",
+          "threshold": "0 HUD elements, verified by pixel diff",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-A.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-B.png"
+          ]
+        },
+        {
+          "id": "M8",
+          "result": "marginal",
+          "value": "SNUFFABLE 584/817 = 71.5% of shipped interior lights (target 60%); getLightAt() gives a real falloff (1.000 at the lamp -> 0.042 at 18 m) and snuffing changes it. DARK-COVERAGE 92.9% measured in a probe room the tool builds, not in the 8 Souls-loop dungeons, which do not exist.",
+          "threshold": "DARK-COVERAGE >= 30% over the 8 Souls-loop dungeon interiors; SNUFFABLE >= 60%",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+          ]
+        },
+        {
+          "id": "M9",
+          "result": "unmeasurable",
+          "value": "REGION-BYPASS, R5-BYPASS, DUNGEON-ROUTE, CAVE-CROUCH and BOSS-BYPASS all need encounter placement across 13 regions and the 8 Souls-loop dungeons; none exists. Scored 0 fail-closed (HARNESS.md 5).",
+          "threshold": ">= 8/13 regions, >= 67% of tier-5, 8/8 dungeons, 82/82 caves, 0 bosses",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+          ]
+        },
+        {
+          "id": "M10",
+          "result": "fail",
+          "value": "4 resolutions carry method:'sneak' across the 24 shipped quests (SNEAK-QUESTS target >= 22, hard fail < 10)",
+          "threshold": ">= 22 quests with a sneak resolution",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "Search axis below 6 \u2014 the four S-behaviours do not exist in the world",
+        "Sound axis below 6 \u2014 the surface/load/Sneak scaling is computed and consumed by nobody",
+        "Bypass axis 0 \u2014 unmeasurable, fail-closed",
+        "Quest load axis 0 \u2014 4 sneak resolutions against a floor of 10"
+      ],
+      "how_we_lose_hits": [
+        "'Light is never implemented' \u2014 inverted: light IS implemented and sampled, and then nothing that hunts you reads it",
+        "'S-4 is cut and failure has no cost' \u2014 S-4 exists as a module and never fires in the world; a failed infiltration costs 2 seconds of decay",
+        "'The bypass is nominally possible and practically not' \u2014 it is not even nominally possible: an INFANTRY finds you in 0.50 s at the visibility floor"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-A.png"
+      ],
+      "provenance_correction": "RI-STL01 2 states V = clamp(L^0.7 * M * S * E * A, 0.05, 1.30) and then publishes five worked rows that gamma = 0.7 cannot produce. I recomputed independently: row 2 (L=0.35, M=1.45, S=0.97) gives 0.6745 at gamma 0.7 against the item's stated 0.339, and 0.3374 at gamma 1.36; row 4 (L=0.06) gives a raw 0.0733 at gamma 0.7, so the item's own '(clamped)' annotation on that row is false at the item's own exponent. The builder's AMENDMENT-W1-15-01 1 is arithmetically correct and its choice of the table over the exponent is right (three constraints against one). The item must be corrected, not the build."
+    },
+    {
+      "id": "RI-STL02",
+      "path": "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "9 axes scored 0/6/10, aggregation min-over-axes; failure threshold: any axis below 6; lock determinism binary",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose (ownership-enforcement axis below its 6 floor)",
+      "score_0_10": 2,
+      "measured": "partial",
+      "justification": "Capped at 2 by a triggered hard fail, and it is the harshest score in this verdict to write because the lock ruling is the best-built thing in the piece. Measured live: the deterministic gate refuses below the Security requirement with 0 picks consumed and a spoken prompt; the tolerance curve reads 4.00 / 12.25 / 20.50 / 34.00 deg at Security 40/55/70/100 and clamps at exactly 34.0 at Security 140; a tier-3 collar in the loaded world opened under three timed `interact` presses over 153 f@60; and the engine's RNG counter moved by 0 across the entire interaction. The angles are authored, not generated: 719 angles over 235 locks give chi-square 226.1 on 35 df against a uniform-rejection threshold of 57.34, with 0 length mismatches and 0 duplicate vectors inside an interior; 59/59 tier-4 and tier-5 locks carry alt_routes. Seam S21's surviving die is real and it matters: 300 attempts over 60 seeds x 5 skill levels drew exactly once each, with notice_chance 0.357/0.278/0.209/0.137/0.070 at Sneak 5/25/45/70/100 and caught counts 19/17/15/8/6 of 60 \u2014 the multiplicative form does not collapse to a floor. Ownership DATA is excellent: 1,878 placed objects, 100% carrying an owner key, 100% non-null, 292 distinct owner strings, 0% single-owner interiors, 233 trespass zones in 7 classes with >= 28 per settlement. What fails is method 2, the item's own first How-we-lose: after three thefts, saveState().crime.stolen_registry is [] and saveState().inventory still contains only the starting knife. The objects are flagged at the moment of the take and then are nowhere \u2014 not in the inventory, not in the save. Fencing, which the item defines as the only thing that clears stolen_from, is therefore reachable only by handing fenceQuote() an item object the critic builds.",
+      "why_not_ten": "stolen_from is set by takeObject() and never persisted: it is absent from the save's dedicated stolen_registry field and the taken object never enters the player's inventory, so method 2's round-trip assertion cannot pass. Separately: the world ships 0 tier-1 locks against the item's ~410, and the pickpocket's geometry gates (dist, bearing, moving, target civ_state) are evaluated against arguments the caller supplies rather than against a real NPC's position.",
+      "path_to_ten": "1) Make takeObject() move the instance into the player's inventory with owner_of_record and stolen set, and serialise the set into save.crime.stolen_registry \u2014 acceptance: take 20 owned objects, assert all 20 appear in saveState() and survive a saveState/loadState round trip (method 2 verbatim). 2) Have pickpocketBegin(targetEid) derive dist/bearing/moving/civ_state from the entity rather than accept them, and re-run method 7's sweep against a spawned civilian. 3) Author the ~410 tier-1 and ~230 tier-2 locks as interiors land. 4) Build tools/analysis/economy-model.mjs so method 10's [118,000, 136,000] thief-income band is measurable at all.",
+      "ten_by_wave": 2,
+      "checks": [
+        {
+          "id": "M1",
+          "result": "pass",
+          "value": "1,878 objects; owner key 100%; owner != null 100% (target 92%); 292 distinct owners (target 240); single-owner interiors 0.0% (target <= 15%); long tail with the top owner at 73 objects",
+          "threshold": "100 / 92 / 240 / 15",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json"
+          ]
+        },
+        {
+          "id": "M2",
+          "result": "fail",
+          "value": "after 3 thefts: save.crime.stolen_registry [], save.inventory = [eshis-knife, stolen:false]; takeObject does return stolen_from and does create a crime record (landed:false)",
+          "threshold": "all taken objects carry stolen_from in saveState() and survive a round trip",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "M3",
+          "result": "pass",
+          "value": "RNG draws across a full live lock interaction: 0 (counter 0 -> 0); gate at Security 39 vs req 40 refuses with 0 picks; 100 seeds identical at module level; 100/100 mistimed scripts fail",
+          "threshold": "100/100 identical, rng.draws unmoved",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+          ]
+        },
+        {
+          "id": "M4",
+          "result": "pass",
+          "value": "W = 4.00 / 12.25 / 20.50 / 34.00 deg, clamp holds at 34.0 at Security 140; 2.67 f@60 window at the requirement",
+          "threshold": "{4.0, 12.3, 20.5, 34.0} +- 0.1 deg",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "M5",
+          "result": "pass",
+          "value": "719 authored angles, chi-square 226.1 on 35 df (uniform rejected; threshold 57.34), 0 length mismatches, 0 duplicate vectors within an interior",
+          "threshold": "p < 0.01 against uniform, N angles per tier, no duplicate vectors",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json"
+          ]
+        },
+        {
+          "id": "M6",
+          "result": "marginal",
+          "value": "59/59 tier-4 and tier-5 locks carry alt_routes in data; none was harness-executed because the alternates are world content that does not exist",
+          "threshold": "59/59 with >= 1 alternate, 10 harness-verified",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json"
+          ]
+        },
+        {
+          "id": "M7",
+          "result": "marginal",
+          "value": "300/300 attempts draw exactly once; notice_chance 0.357 -> 0.070 across Sneak 5 -> 100 with caught 19/17/15/8/6 of 60; T = 2.53/1.97/1.20 s at Sneak 5/45/100; four geometry gates refuse with reasons; equipped items excluded. The gates read caller-supplied geometry, not a live NPC.",
+          "threshold": "deterministic geometry, all gates fire; per seam S21 the notice check keeps its roll",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "M8",
+          "result": "pass",
+          "value": "233 zones (target 180), 7 classes, 28-32 per settlement (target 14), 3-7 classes per settlement (target 3); closed shop weight 2.20 with CHALLENGE before ALARM and 0 bounty; Legion restricted room ALARM on sight with no CHALLENGE; sapwell precinct refuses rest for 24 h with no bounty",
+          "threshold": ">= 180 zones, >= 14/settlement, >= 3 classes/settlement",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M9",
+          "result": "marginal",
+          "value": "refusal by name fires ('That belongs to Marks-The-Ledger. I drink with Marks-The-Ledger.'); honest merchant refuses; best multiplier at Mercantile 100 = 0.6105 in [0.58, 0.62]; unique item yields 1,700 g bounty 3 days later. Driven with a hand-built item because stolen goods never enter the inventory.",
+          "threshold": "all 9 fences, refusal by name, price within 1%",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M10",
+          "result": "unmeasurable",
+          "value": "tools/analysis/economy-model.mjs does not exist; the dedicated-thief lifetime-gold band is unscored, 0 fail-closed",
+          "threshold": "modelled thief income in [118,000, 136,000]",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "Ownership-enforcement axis below its 6 floor \u2014 stolen_from does not persist through a save"
+      ],
+      "how_we_lose_hits": [
+        "'Ownership is declared and never read' \u2014 half-hit: it is read once, at the take, and then dropped on the floor. The world looks owned in the data and the theft evaporates in the hand."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json"
+      ],
+      "provenance_correction": "RI-STL02 5 states the pickpocket has NO roll; ARBITRATION S21, as amended at this item's own author's request, says pickpocketing KEEPS its roll and names RI-STL02 as the item to be reconciled. ARBITRATION 5 puts the seam ruling (rung 2) above an item's comparison method (rung 3), so the build is right and the item's text is stale. The reasoning was applied rather than copied: the die sits on the notice check at the completion frame only, the geometry stays deterministic, and the lock \u2014 where failure is a retry \u2014 keeps a measured 0 draws. Correct the item's 5."
+    },
+    {
+      "id": "RI-CRM01",
+      "path": "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "12 axes scored 0/6/10, aggregation min-over-axes; failure threshold: any axis below 6; persistence, S10 handling and mid-fight accrual binary",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose (witness model and report chain below their 6 floors)",
+      "score_0_10": 2,
+      "measured": "partial",
+      "justification": "Capped at 2 by a triggered hard fail. The MODEL is the most complete thing in the piece and every number in it checks out when it is asked directly: the 17-crime schedule is exact and scales with value_g; the guard ladder reads greeting_only / arrest_dialogue / attack_on_sight at 200 / 600 / 2,000 g against an Imperial arrest threshold of 405 and an attack threshold of 1,620, with the band-3 record carrying parley: 'surrender' (seam S13); the arrest offers three answers and refuses the fourth by name ('You're 100 gold short, and I can count.'); serving 1,000 g gives 10 days, -5 levels taken one at a time from the highest cell-blocked skill, Sneak +3, Security +2, stolen goods and picks confiscated, weapons returned, and the ledger is byte-identical across two different seeds, which is the S21 assertion; S10 is priced as written (kill the only witness unobserved -> bounty 0 and the 225 g suppressed; kill them observed -> 1,000 murder + 450 doubled = 1,450); bounty survives death. What fails is the sentence the item calls its single most important structural decision. A crime does not create a bounty, a REPORT does \u2014 and no report can ever happen, because no witness is ever created by observation. Measured: a civilian 3 m from the player in daylight, at contextWeight 3.00, already at civ_state ALARM with suspicion 100, watches takeObject() succeed. Result: witnesses [], witnesses_pending 0, bounty 0 after a further 5 s, and a crime record with landed:false that nothing can ever land. Every witness in this build exists because a critic called addWitness(crimeRef, {eid, identified}). There are no guard entities, so no guard ever approaches, follows for 45 s, or attacks; getGuardBand() is a function of a number you set with setBounty().",
+      "why_not_ten": "The witness predicate in 2 \u2014 LOS, V >= 0.10, dist <= 1.4 x R, civ_state advanced this frame \u2014 is never evaluated against live entities, so methods 3, 4, 5, 6 and 7 are all reachable only by hand-feeding the oracle the observation it was supposed to make. Coupling between the civilian state machine (which is real) and the crime ledger (which is real) is 0.",
+      "path_to_ten": "In game/src/sim/stealth/system.js's step, on any frame where a crime-class context (handling_owned_object, lockpicking, over_fresh_corpse, or a blow on a non-hostile) produces a crime record, iterate the live civilians and guards and call crime.witness() for each whose civ_state advanced to CHALLENGE/ALARM this frame with V >= 0.10 and dist <= 1.4 x R; then drive reportRoute() from the witness entity's actual path to the nearest guard entity, and set the witness fleeing. Acceptance: RI-CRM01 method 3 passes end to end with ZERO addWitness() calls \u2014 a witness event on the crime frame, reported == false, bounty 0 until a report event, and the 120 m run landing within 10% of 35.3 s. Then method 6's identification split (V 0.45 vs 0.18 -> 1 : 0.4) and method 4's S10 pair re-run from world state.",
+      "ten_by_wave": 2,
+      "checks": [
+        {
+          "id": "M1",
+          "result": "pass",
+          "value": "all 17 crimes exact; crime #4 scales with value_g at 10/200/3,400 g",
+          "threshold": "exact match to 1",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M2",
+          "result": "pass",
+          "value": "20 unobserved takes: bounty 0, witnesses []; each returns stolen_from",
+          "threshold": "bounty 0, witnesses [], all carry stolen_from",
+          "note": "passes for the wrong reason \u2014 see M3; and the stolen_from half fails RI-STL02 M2 on persistence",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "M3",
+          "result": "fail",
+          "value": "civilian at 3 m, daylight, contextWeight 3.00, civ_state ALARM, suspicion 100, watching the theft -> witnesses [], witnesses_pending 0, no witness event, bounty 0",
+          "threshold": "a witness event on the crime frame; reported == false; the civilian paths to the guard",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "M4",
+          "result": "marginal",
+          "value": "S10 pricing exact against hand-fed witnesses: unobserved -> bounty 0 and 225 g suppressed; observed -> 1,000 + 450 = 1,450. The >= 6 NPC lines and >= 2 quest stages conditioned on settlement_death_flags >= 3 do not exist.",
+          "threshold": "murder suppresses the bounty AND >= 6 NPC lines + >= 2 quest stages",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+          ]
+        },
+        {
+          "id": "M7",
+          "result": "marginal",
+          "value": "3 bands verified for an Imperial (405 / 1,620); band 2 draws_weapon false; band 3 carries parley 'surrender'. Verified as a function of a set bounty, not as a guard entity's behaviour \u2014 there are no guard entities.",
+          "threshold": "3 bands x 10 races observed over 600 frames in a guard's cone",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+          ]
+        },
+        {
+          "id": "M8",
+          "result": "pass",
+          "value": "pay: gold -800, bounty 0, stolen confiscated, 0 days; resist: bounty 1,300, aggro radius 40 m within 30 f; serve: full ledger; insufficient gold: topic present, refused, shortfall named",
+          "threshold": "all three answers plus the named refusal",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+          ]
+        },
+        {
+          "id": "M9",
+          "result": "pass",
+          "value": "1,000 g -> 10 days, -5 levels from the highest cell-blocked skill taken one at a time, Sneak +3, Security +2, picks and stolen goods confiscated, weapons returned, attributes/souls/level untouched; identical across seed 1337 and seed 77",
+          "threshold": "full ledger, deterministic across seeds (the S21 assertion)",
+          "note": "the quest-timer half is unmeasurable \u2014 no timed quests exist",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+          ]
+        },
+        {
+          "id": "M10",
+          "result": "marginal",
+          "value": "bounty 1,450 survives playerDeath and a saveState/loadState round trip; the die-in-arrest -> jail special case fires when the caller passes killedByGuardDuringArrest: true. writeSave/readSave was not usable as a control (gold does not restore through it either).",
+          "threshold": "all rows of 9, including the die-in-arrest case, from world state",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+          ]
+        },
+        {
+          "id": "M11",
+          "result": "pass",
+          "value": "with an INFANTRY at AGGRO 6 m away, the civilian suspicion machine keeps filling to ALARM \u2014 the subsystem is not gated on combat; and the probe shows bounty_change on the crime frame (f=137) while the player is in a combat state",
+          "threshold": "crime and witness events fire during COMBAT",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M12",
+          "result": "pass",
+          "value": "Deep-Kin regard +2 per 500 g capped at +12 (0/2/4/8/12/12 at 0/500/1000/2000/3000/6000 g); a Dunmer at disposition 6 with a 3,000 g Imperial bounty reads 18 against a hostile_below_disposition of 15",
+          "threshold": "the AR-3 assertion",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+          ]
+        },
+        {
+          "id": "M13",
+          "result": "pass",
+          "value": "interior killing: bounty 0, bloodprice 1,400 (1,000 x 1.4), Deep-Kin rank does not reduce it, a ku-vastei ruling extinguishes it; kin encounter tables are data",
+          "threshold": "zero bounty, 1,400 blood-price, survives death and save",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M5",
+          "result": "unmeasurable",
+          "value": "corpse discovery needs an NPC schedule tick and a corpse entity; neither exists in the world",
+          "threshold": "corpse_found fires, 500 g to unknown, water disposal suppresses it",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+          ]
+        },
+        {
+          "id": "M6",
+          "result": "unmeasurable",
+          "value": "the identification split cannot be exercised without a witness created by observation (M3)",
+          "threshold": "identified true/false at V 0.45/0.18, bounty ratio 1 : 0.4",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "Witness-model axis below its 6 floor",
+        "Report-chain axis below its 6 floor \u2014 no report can be produced by the world",
+        "Guard-ladder axis below its 6 floor \u2014 there are no guards"
+      ],
+      "how_we_lose_hits": [
+        "'No one in the world can talk about crime' \u2014 the >= 6 NPC lines and >= 2 quest stages on settlement death counts do not exist",
+        "the item's headline failure ('bounty applies on the crime frame') was avoided, and the opposite failure shipped: the bounty never applies at all"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+      ]
+    },
+    {
+      "id": "RI-CRM02",
+      "path": "corpus/23-stealth-crime/RI-CRM02-faction-crime-and-writs.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "11 axes scored 0/6/10, aggregation min-over-axes; jurisdictional legality, parley, mid-fight accrual and AR-3 encounter axes binary",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose (parley coverage and the AR-3 encounter flip unmeasurable)",
+      "score_0_10": 2,
+      "measured": "partial",
+      "justification": "Capped at 2. The jurisdictional matrix \u2014 the thing the item is named for \u2014 is genuinely solved and measured: 0 of 4 sanctioning authorities is honoured in all three jurisdictions, so the Morag Tong problem does not ship; a Tong writ executed in front of an Imperial guard still yields the full 1,600 g; the exclusivity graph refuses >= 8 ordered pairs with in-fiction reasons and an exhaustive search over the 16-element join graph finds no reachable state holding three authorities (after the builder's own found defect closed one pair); Ledger interception runs 4 then refuses, with the ceiling and the reach both enforced; a ku-vastei ruling extinguishes blood-price while leaving Imperial bounty untouched; the AR-3 guard numbers land 15/15 with arrestThreshold(Naga, Xul-Aneekh 4) = 45 and arrestThreshold(Naga, Ninth Cohort 5) = 238, a 5.29x spread from faction alone. All of that is a matrix, and it is correct. What cannot be measured is everything the item makes binary and behavioural: there are no 27 sanctioned-murder targets, so the 27/27 parley assertion and the >= 18 non-lethal resolutions are unmeasurable and 0; there is no yield state to observe, so method 3's requirement that a parley event fire while player.state is a combat state is unmeasurable; and method 7's encounter test asks for a traversal scenario (wld-stone-forest-traverse) with >= 12 AGGRO transitions at rank 0 and 0 at rank 4 \u2014 the scenario does not exist and there are no war-brood camps, so the flip is verified as a disposition-threshold computation (6 + 12 regard = 18 vs 15) rather than as an observed encounter.",
+      "why_not_ten": "Four of the item's eleven axes, including three of its four binary ones, have no world to be measured in: no writ targets, no yield state, no war-brood encounters, no hunters placed. The matrix is complete and the behaviour it governs does not exist yet.",
+      "path_to_ten": "Sequence behind the pieces that own the world: (1) W1-18/W1-19 author the 27 sanctioned-murder quests with parley blocks, then re-run method 4 for 27/27 and >= 18 violence_required:false; (2) W1-12 places the war-brood camps and ships tools/harness/scenarios/wld-stone-forest-traverse.json, then re-run method 7 asserting >= 12 AGGRO at rank 0, 0 at rank 4, and identical archetype/moveset/statblock ids between the two runs; (3) W1-09's YIELD state at <= 15% HP with hitboxes going inactive, then method 3's parley event on a combat-state frame. Nothing in the matrix needs to change.",
+      "ten_by_wave": 2,
+      "checks": [
+        {
+          "id": "M1",
+          "result": "pass",
+          "value": "0 of 4 authorities universal; the legality matrix is exact",
+          "threshold": "4 authorities, 0 universal",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+          ]
+        },
+        {
+          "id": "M5",
+          "result": "pass",
+          "value": ">= 8 ordered pairs refused with stated in-fiction reasons; exhaustive search finds no reachable 3-authority state",
+          "threshold": ">= 8 refused pairs, max 2 authorities",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M6",
+          "result": "pass",
+          "value": "15/15 behaviour bands; Naga/Xul-Aneekh-4 arrest 45, Naga/Ninth-Cohort-5 arrest 238, spread 5.29x",
+          "threshold": "15/15, spread >= 3x",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M8",
+          "result": "pass",
+          "value": "4 interceptions then a spoken refusal; the 1,600 g ceiling and the gideon/lilmoth reach both enforced; each interception sets a favour_owed",
+          "threshold": "4 then refusal, 4 authored call-ins",
+          "note": "the 4 authored call-in quest stages do not exist",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M9",
+          "result": "pass",
+          "value": "interior killing: bounty 0, blood-price 1,400, Deep-Kin rank does not reduce it, ku-vastei ruling clears it",
+          "threshold": "verified both directions",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M11",
+          "result": "pass",
+          "value": "Tong writ in front of an Imperial guard: full 1,600 g; in front of RG-DRES witnesses only: no report",
+          "threshold": "the pair, verified as a pair",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "M4",
+          "result": "unmeasurable",
+          "value": "0 of 27 sanctioned-murder targets exist; parley coverage cannot be evaluated. 0 fail-closed.",
+          "threshold": "27/27 parley, >= 18 non-lethal",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+          ]
+        },
+        {
+          "id": "M3",
+          "result": "unmeasurable",
+          "value": "no yield state and no writ encounter to enter; the parley-during-combat frame assertion cannot be run",
+          "threshold": "yield entered, hitboxes inactive, parley event on a combat-state frame",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+          ]
+        },
+        {
+          "id": "M7",
+          "result": "unmeasurable",
+          "value": "scenario wld-stone-forest-traverse does not exist and no war-brood camp is placed; the flip is verified as a threshold computation (disposition 6 + 12 regard = 18 vs 15) with the standing key xul-aneekh:4+ shifting hostile_below_disposition by -40",
+          "threshold": ">= 12 AGGRO transitions at rank 0, 0 at rank 4, identical statblocks",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+          ]
+        },
+        {
+          "id": "M10",
+          "result": "unmeasurable",
+          "value": "the 11 named hunters are data; none is placed in an encounter table that can be entered",
+          "threshold": "11 named, none respawning, all parley-able, region-hunting",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+          ]
+        },
+        {
+          "id": "M2",
+          "result": "marginal",
+          "value": "warrant legality, the settlement void case and the 15-day recall all resolve correctly through resolveKilling(); driven as a query, not as an encounter",
+          "threshold": "5 assertions",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "Parley-coverage axis unmeasurable -> 0",
+        "AR-3 encounter-flip axis unmeasurable as a behaviour -> 0",
+        "Mid-fight yield axis unmeasurable -> 0"
+      ],
+      "how_we_lose_hits": [
+        "'The Ledger's favours are never called in' \u2014 4 favour_owed flags are set and no call-in stage exists to read them",
+        "'Sparing a target is impossible' \u2014 there are no targets to spare yet"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+      ]
+    },
+    {
+      "id": "RI-QST05",
+      "path": "corpus/30-quests/RI-QST05-non-combat-resolution.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "band 0-10 over PACIFIST-ALL / NONVIOLENT-OPTION / VERB-SPREAD / GATED / per-faction spread / verb minima / live verification; hard fails listed in Scoring",
+      "native_score": 2,
+      "native_max": 10,
+      "native_verdict": "hard fail (VERB-SPREAD > 40% on the tree this piece shipped; live verification unmeasurable)",
+      "score_0_10": 2,
+      "measured": "partial",
+      "justification": "THE ANSWER TO THE QUESTION THIS ITEM WAS BLOCKED ON: PACIFIST-ALL is no longer unmeasurable-by-dependency \u2014 RI-STL01, RI-STL02 and RI-CRM01 all exist in the build as systems the harness can drive, so the W6 amendment's blocking clause is lifted. It is still not a measurement of the game, for three separate reasons, and the number is worthless without all three stated. (1) The census population is 24 quests at this piece's own commit and 33 at HEAD, against the corpus's ~180 \u2014 and both figures read PACIFIST-ALL 100.0% and VIOLENCE-MANDATORY 0.0% purely because the only quests shipped so far are W1-14's magic-utility set and the boards, which were authored non-violent. A 100% that comes from sample selection is not a design ratio. (2) VERB-SPREAD is 42.1% at commit 140d3c6 (magic_utility holds 24 of 57 non-violent resolutions), which is the item's own promoted hard fail at > 40%; at HEAD, after W1-18 added quests this piece did not write, it falls to 28.2%. (3) The item's mandatory live verification \u2014 complete 10 pacifist quests in-engine and record the kill count \u2014 is unmeasurable in this build. The verbs this piece exists to unblock are present but far below their minima: 4 sneak resolutions and 2 steal at 140d3c6 (6 and 3 at HEAD) against a floor of 10 each and RI-STL01's SNEAK-QUESTS >= 22. GATED 96.5%, KNOWLEDGE-KEYS 45.8%, per-faction spread 0 points (every faction reads 100%).",
+      "why_not_ten": "The static census is computable and clean-looking only because 24 of ~180 quests exist and all of them were authored non-violent; VERB-SPREAD hard-fails at 42.1% on this piece's own tree; and the live verification the item calls mandatory cannot run because quest progression does not exist at this commit.",
+      "path_to_ten": "Not primarily this piece's debt, and it should be tracked against the quest pieces: (1) W1-18/W1-19 land the quest corpus so the census has a real population, and re-run the item's jq block for PACIFIST-ALL >= 45%, NONVIOLENT-OPTION >= 70% and a per-faction spread >= 40 points; (2) this piece's own contribution is the sneak/steal verb load \u2014 carry 22+ sneak and 10+ steal resolutions, which requires the detection and witness coupling in the biggest_gap to exist first, or the resolutions will be flags rather than routes; (3) build the live-verification harness path (complete a quest in-engine with weapon skills at starting values and assert kills == 0) so the item's own anti-data-lie check is runnable.",
+      "ten_by_wave": 3,
+      "checks": [
+        {
+          "id": "jq-headline",
+          "result": "marginal",
+          "value": "at 140d3c6: n=24, PACIFIST-ALL 100.0%, NONVIOLENT-OPTION 100.0%, VIOLENCE-MANDATORY 0.0%. At HEAD: n=33, same three.",
+          "threshold": ">= 45% / >= 70% / <= 20%",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+          ]
+        },
+        {
+          "id": "verb-spread",
+          "result": "fail",
+          "value": "42.1% at 140d3c6 (magic_utility 24 of 57 non-violent resolutions); 28.2% at HEAD",
+          "threshold": "<= 40% \u2014 promoted to a hard fail wave 0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+          ]
+        },
+        {
+          "id": "verb-minima",
+          "result": "fail",
+          "value": "sneak 4, steal 2 at 140d3c6 (6 and 3 at HEAD)",
+          "threshold": ">= 10 each; RI-STL01 SNEAK-QUESTS >= 22",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+          ]
+        },
+        {
+          "id": "gated",
+          "result": "pass",
+          "value": "GATED 96.5%, KNOWLEDGE-KEYS 45.8%",
+          "threshold": ">= 80% / >= 25%",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+          ]
+        },
+        {
+          "id": "faction-spread",
+          "result": "fail",
+          "value": "0 points \u2014 all 9 faction buckets read 100%",
+          "threshold": ">= 40 points",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+          ]
+        },
+        {
+          "id": "live-verification",
+          "result": "unmeasurable",
+          "value": "quest progression does not exist at 140d3c6 (the build's own capability report declares it absent); 10 pacifist quests could not be completed in-engine. 0 fail-closed.",
+          "threshold": "10 quests completed with kills == 0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "VERB-SPREAD 42.1% > 40% at the commit this piece shipped",
+        "live verification unmeasurable -> 0"
+      ],
+      "how_we_lose_hits": [
+        "'Combat as the default because combat is what we built' \u2014 inverted here: the non-violent verbs have models and no world, so a sneak resolution is currently a flag rather than a route"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-15.mjs --json ...",
+      "seed": "1337 / 1..60",
+      "source": "ours",
+      "note": "eight measurement blocks: enemy detection, search, the civilian curve (a fresh browser page per configuration), sound, the witness test, locks, the pickpocket die, scenario isolation"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt",
+      "kind": "log",
+      "produced_by": "node tools/harness/critic-w1-15.mjs",
+      "seed": 1337,
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json",
+      "kind": "report",
+      "produced_by": "python3 census over game/data/world/property/*.json",
+      "source": "ours",
+      "note": "ownership, trespass, ward-angle chi-square, snuffable share"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json",
+      "kind": "report",
+      "produced_by": "python3 re-implementation of RI-QST05's jq block, run over both trees",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt",
+      "kind": "log",
+      "produced_by": "node (critic probe): arrest topics, three answers, jail ledger x2 seeds, guard bands, S10 witness-murder, death persistence",
+      "seed": "1337/77",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-A.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness (critic probe), setUIVisible(true), camera yaw 0 pitch -10 dist 4",
+      "resolution": "1920x1080",
+      "camera_pose": "yaw 0, pitch -10, dist 4, tod 12.0",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-B.png",
+      "kind": "screenshot",
+      "produced_by": "same pose, stealth state changed (Sneak 100/light/in-cover -> Sneak 5/heavy/exposed)",
+      "resolution": "1920x1080",
+      "camera_pose": "yaw 0, pitch -10, dist 4, tod 12.0",
+      "source": "ours",
+      "note": "byte-identical to no-meter-A.png: 0 of 6,221,880 raw bytes differ"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-V005.png",
+      "kind": "screenshot",
+      "produced_by": "critic probe, V=0.05, night, unlit",
+      "resolution": "1920x1080",
+      "camera_pose": "default follow, tod 1.5",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-V130.png",
+      "kind": "screenshot",
+      "produced_by": "critic probe, V=0.5335, midday, sunlit",
+      "resolution": "1920x1080",
+      "camera_pose": "default follow, tod 12.0",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt",
+      "kind": "log",
+      "produced_by": "node tools/harness/stl-probe.mjs (builder tool, re-run by the critic)",
+      "seed": "991/1337",
+      "source": "ours",
+      "note": "125/125 module assertions pass; recorded because what it proves is arithmetic, not wiring"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt",
+      "kind": "log",
+      "produced_by": "node tools/harness/stl-live.mjs (builder tool, re-run by the critic in a worktree at 140d3c6)",
+      "seed": 1337,
+      "source": "ours",
+      "note": "29/29 live assertions pass"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-15/head-boot-failure.txt",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/harness/stl-live.mjs at repo HEAD during the run",
+      "source": "ours",
+      "note": "negative evidence, since resolved: HEAD 65275dc did not boot (game/data/index.json listed a deleted dialogue file). Not this piece's defect; d86fc4a restored it mid-run and every measurement reproduces at 21c9566."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-STL01",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: no in the front matter. There is no reference artifact of the same kind to pair against: the detection curve is constructed by this corpus and no upstream game publishes a comparable trace. The item's own method is non-blind and was run instead."
+    },
+    {
+      "ref_item": "RI-STL02",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: no."
+    },
+    {
+      "ref_item": "RI-CRM01",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: no."
+    },
+    {
+      "ref_item": "RI-CRM02",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: no."
+    },
+    {
+      "ref_item": "RI-QST05",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: no."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A1",
+          "result": "pass",
+          "observed": "the only PRNG draw this piece makes is the pickpocket notice check, which is outside the fight by construction (the interaction refuses any target not at civ_state CALM). Across a complete live ward-collar interaction the engine's rng counter moved 0 -> 0; across 300 pickpocket attempts it moved by exactly 1 per attempt and never inside a hit resolution.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+          ]
+        },
+        {
+          "id": "A2",
+          "result": "not_applicable",
+          "not_run_reason": "this piece resolves no damage"
+        },
+        {
+          "id": "A3",
+          "result": "not_applicable",
+          "not_run_reason": "no menu surface in this piece"
+        },
+        {
+          "id": "A4",
+          "result": "not_applicable",
+          "not_run_reason": "no enemy attack authored here"
+        },
+        {
+          "id": "A5",
+          "result": "not_applicable",
+          "not_run_reason": "no attack animation authored here"
+        },
+        {
+          "id": "A6",
+          "result": "pass",
+          "observed": "no level term appears anywhere in the piece's data or in any measured output; bounty thresholds are race x faction, never player level",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+          ]
+        },
+        {
+          "id": "A8",
+          "result": "pass",
+          "observed": "the AR-1 assertion this piece exists to satisfy. isStealthOpener() returns a bare boolean and nothing else; the gate is Sneak >= 20 exactly (19 -> false, 20 -> true), the rear-arc boundary reads 101 deg at Sneak 5, 20, 60 and 100 alike, and the predicate returns false against an AGGRO target so stealth cannot be re-entered mid-fight. There is no number here for a damage formula to multiply by.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt"
+          ]
+        },
+        {
+          "id": "A9",
+          "result": "pass",
+          "observed": "sneak costs zero stamina and the piece reads no stamina value; Fatigue and stamina stay separate",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt"
+          ]
+        },
+        {
+          "id": "A10",
+          "result": "not_run",
+          "not_run_reason": "no topic list exists in the build; the CHALLENGE off-ramp is data, not a runtime dialogue surface"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "NO-METER holds. hud_elements 0, and two 1920x1080 renders at the same pose across a stealth-state change are byte-identical (0 of 6,221,880 raw bytes differ). No eye icon, no bar, no hidden/detected word.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-A.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-B.png"
+          ]
+        },
+        {
+          "id": "B4",
+          "result": "pass",
+          "observed": "nothing in this piece is procedural. 719 ward angles are authored and cluster hard against uniform (chi-square 226.1 on 35 df, threshold 57.34); 1,878 objects carry hand-assigned owners with a long tail (292 strings, top owner 73 objects); the RNG counter does not move during a lock interaction.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json"
+          ]
+        },
+        {
+          "id": "B5",
+          "result": "pass",
+          "observed": "every price in the piece is gold: bounty, the 2x bribe, the fence multiplier, the arrest payment, the blood-price. No soul appears in any transaction.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+          ]
+        },
+        {
+          "id": "B7",
+          "result": "pass",
+          "observed": "non-combat resolutions exist and are not zero: 4 sneak and 2 steal resolutions at this commit (6 and 3 at HEAD). Far below RI-QST05's minima, which is scored there, but this check asks whether the world offers any, and it does.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json"
+          ]
+        },
+        {
+          "id": "B8",
+          "result": "pass",
+          "observed": "no level scaling in prices, thresholds or hostility; the guard ladder is a function of race, faction rank and bounty only",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+          ]
+        },
+        {
+          "id": "B9",
+          "result": "pass",
+          "observed": "seam S10 is implemented as design rather than patched as an exploit: killing the only witness before the report lands leaves bounty 0 with the 225 g suppressed and a permanent death flag; killing them observed costs 1,000 murder plus 450 doubled. The world is allowed to lose a person.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+          ]
+        },
+        {
+          "id": "B12",
+          "result": "not_run",
+          "not_run_reason": "the five encounter classes do not exist in the world to be entered. What could be checked was checked and points the right way: the band-3 guard record carries parley 'surrender', and the arrest interaction offers three answers of which two are non-violent. Recorded rather than credited."
+        },
+        {
+          "id": "B13",
+          "result": "not_applicable",
+          "not_run_reason": "travel is not this piece's path"
+        },
+        {
+          "id": "B2",
+          "result": "not_applicable",
+          "not_run_reason": "no rest point in this piece"
+        },
+        {
+          "id": "B11",
+          "result": "not_applicable",
+          "not_run_reason": "rumours are W1-17's path; the bounty >= 2,000 rumour hook is data only"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-B.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "band_label": "Wrong shape \u2014 the models are correct and the world does not read them",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "below_threshold",
+    "hard_fail_RI-STL01_search_and_bypass_axes",
+    "hard_fail_RI-STL02_ownership_enforcement_axis",
+    "hard_fail_RI-CRM01_witness_and_report_axes",
+    "hard_fail_RI-QST05_verb_spread"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-stealth-crime-model-not-coupled-to-the-world",
+    "subsystem_path": "crime.witness.model",
+    "severity": "blocking",
+    "what": "The stealth and crime models are computed beside the world instead of by it, and the coupling is measurably zero at the two places the reference items make load-bearing. (1) DETECTION: an INFANTRY at 8 m reaches alert_state AGGRO at frame 30 \u2014 0.500 s \u2014 identically at V = 0.6669 (midday, standing, heavy armour, Sneak 5) and at V = 0.0500 (unlit, crouched, in cover, Sneak 100), with identical alert curves of 40/80/100 at f=10/20/30. RI-STL01 2's own table says those two configurations are 1.03 s and 26.7 s apart. The alert meter fills at a flat +4/frame whenever the player is inside the archetype's sight radius and cone, and never multiplies by V; the control at 30 m confirms a live entity is being driven (alert stays 0). Coupling = 0.00. The same is true of the sound model: r_effective computes to 36.31 m at the loud end and a civilian 2 m away, facing away, registers suspicion 0.00 after 10 s of sprinting in heavy armour across dry reed. (2) WITNESSES: a civilian standing 3 m from the player in full daylight, at contextWeight 3.00, already at civ_state ALARM with suspicion 100, watches takeObject() succeed on an owned object. getCrimeState() returns witnesses: [], the trace reports witnesses_pending 0, no witness event fires, and the bounty is still 0 five seconds later. The crime record exists with landed: false and can never land. Every witness that appears anywhere in this build was created by a critic calling addWitness(crime_id, {eid, identified}). The civilian suspicion machine \u2014 which IS wired, and which I measured responding correctly to light (10.4x), context weight (1.86x), distance, sight cone and raceSuspicion (1.49x and 1.69x) \u2014 and the crime ledger are two correct systems in the same process that never speak to each other.",
+    "why_it_matters": "Nothing a player does with this piece has a consequence: you cannot sneak past an enemy because the darkness it took a lighting model to compute does not reach the thing hunting you, and you can rob every house in Gideon in front of its owner and never acquire a bounty \u2014 so the 17-crime schedule, the report chain, the three arrest answers, jail and the S10 decision are all unreachable in play.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+    ],
+    "remedy": {
+      "action": "Two call sites, both inside code this piece owns, plus one trace field. (A) game/src/sim/entities.js, the perception branch: replace `e.alert += 4` with the shipped model \u2014 `e.alert += baseFill(sim.stealth.p.V, d, e.sight_radius_m) / 60` from game/src/sim/stealth/detection.js, with the peripheral cone scaled by 0.45 as RI-AI01 \u00a7B specifies; add the `alert_channel` field ('sight'|'peripheral'|'hearing') to the enemy trace record so a light failure can be told from a sound failure; and route the continuous sound radius (soundRadiusFor) into the same fill on the hearing channel. (B) game/src/sim/stealth/system.js, in the fixed step: whenever a crime record is created (takeObject, lockBegin, a blow on a non-hostile, standing over a corpse), iterate this.civilians and any guard entities and call this.crime.witness(crime.id, ...) for each whose civ_state advanced to CHALLENGE or ALARM this frame with V >= 0.10 and dist <= 1.4 x R(npc), setting identified from V >= 0.30; then drive reportRoute() from that entity's own path to the nearest guard entity and flip it to the fleeing behaviour.",
+      "targets": [
+        "game/src/sim/entities.js",
+        "game/src/sim/stealth/system.js",
+        "game/src/sim/record.js",
+        "game/src/sim/stealth/detection.js",
+        "game/src/sim/stealth/search.js"
+      ],
+      "acceptance": "(A) RI-STL01 method 2 run exactly as written \u2014 one INFANTRY facing the player at 8 m, the five configurations of \u00a72, first frame of alert_state == 'AGGRO' \u2014 lands within 5% of {1.03, 3.94, 8.5, 26.7, 26.7} s, and method 4 (crouched, unlit, still, 1.0 m behind a stationary enemy, 3,600 f@60) ends with alert == 0.000. (B) RI-CRM01 method 3 passes end to end with ZERO addWitness() calls in the script: a `witness` event on the crime frame, reported == false, bounty 0 until a `report` event fires, and the 120 m run landing within 10% of 35.3 s. Both are re-measurable with `node tools/harness/critic-w1-15.mjs`, whose RI-STL01-M2-enemy-detection and RI-CRM01-M3-witness-from-the-world blocks are written for exactly this closure; today they read coupling 0.00 and witnesses [].",
+      "ref_item": "RI-STL01",
+      "estimated_size": "M"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "No NPC search behaviour exists in the world. After being seen and breaking contact at 60 m, the enemy's alert decays 100 -> 40 -> 0 within 2 s, its speed is 0.00 m/s and its position is unchanged at its spawn anchor for the full 24 s observed, and zone_baseline_alert stays 0. RI-STL01 7's S-1 (LKP then the plausible cover set), S-2 (8 -> 14 -> 20 m escalation), S-3 (one-hop ally raise to 45) and S-4 (the 180 s zone memory) all pass at module level in stl-probe.mjs and none of them is ever invoked by the step. An enemy that instantly forgets is one of the two named failure modes; this is that one.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+      ],
+      "subsystem_path": "stealth.npc.search"
+    },
+    {
+      "what": "reset() and loadState() do not clear this subsystem. After setBounty('imperial', 777), setCrimeContext('lockpicking') and two spawned civilians, a full reset({}) followed by loadState('default') leaves the bounty at 777, the context at 'lockpicking' and both civilians present. Every scenario that touches stealth or crime is therefore contaminated by whatever ran before it \u2014 I had to launch a fresh browser page per configuration to measure the civilian detection curve at all, and my first attempt read eight ALARM states that were one leftover civilian.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+      ],
+      "subsystem_path": "platform.determinism.harness"
+    },
+    {
+      "what": "The world ships 0 tier-1 locks against RI-STL02 3c's ~410. Tiers 2/3/4/5 land at 56/120/48/11; the design-load-bearing three (120/48/11) are exact and the simplest lock in the game \u2014 the one a starting character meets first \u2014 does not exist anywhere.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json"
+      ],
+      "subsystem_path": "world.locks.security"
+    },
+    {
+      "what": "The harness methods for this piece take world facts as arguments rather than deriving them: pickpocketBegin({dist, bearingDeg, moving, targetCivState}), addWitness({eid, identified}), takeObject(instance, {observedBy}), playerDeath({killedByGuardDuringArrest}), getGuardBand() over a bounty you set. Each of the resulting assertions is therefore a test of arithmetic on numbers the critic supplied. This is the mechanism by which the coupling gap stayed invisible through 191 passing builder assertions, and it is why I filed RI-MTH07.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+      ],
+      "subsystem_path": "process.critic.discipline"
+    },
+    {
+      "what": "RI-STL01 method 2 names an INFANTRY and the shipped scenario tools/harness/scenarios/stl-cone-8m.json spawns a civilian instead, whose state machine has no AGGRO state at all. The piece's status file reports 'five RI-STL01 2 rows within 0.68% of the item's own times'; those times are arithmetic on V x fill-rate, and no enemy reached AGGRO in any of them. The claim is true of the formula and false of the game.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+      ],
+      "subsystem_path": "stealth.detection.model"
+    },
+    {
+      "what": "Three builder claims survived my own instruments unchanged and should be recorded as such: (1) AMENDMENT-W1-15-01 1's light-exponent defect is arithmetically correct \u2014 I recomputed rows 2 and 4 independently and gamma = 0.7 cannot produce the item's own table, including the '(clamped)' annotation on row 4 that is false at 0.7; (2) the lock keeps no die, verified as 0 RNG draws across a complete live interaction rather than as a source read; (3) seam S21's pickpocket die is genuinely live and genuinely matters, at 0.357 -> 0.070 notice chance across Sneak 5 -> 100 with matching caught rates over 300 attempts, and the builder's note about rejecting a subtractive form that collapsed to a 2% floor is borne out by the shipped curve.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json"
+      ],
+      "subsystem_path": "stealth.lock.picking"
+    }
+  ],
+  "gap_closure": [],
+  "corpus_extended": [
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "area": "80-methods",
+      "judges": [
+        "process.critic.discipline",
+        "process.verdict.format",
+        "platform.determinism.harness"
+      ],
+      "index_regenerated": true,
+      "note": "A corpus hole, per CRITIC-DOCTRINE 7.2: no reference item requires a critic to show that a model shipped by a piece is CONSUMED by the world. Every Comparison method in the corpus is satisfied identically by a model that drives the game and by a model that sits beside it, which is how this piece passed 191 of its own assertions with a visibility term nothing reads and a witness predicate nothing calls \u2014 and, on the evidence of the W1-10 verdict in the same wave, how 87 movesets shipped unreachable. RI-MTH04 asks 'did you run it'; RI-MTH07 asks 'did the thing you ran do anything', and defines a coupling statistic, a mandatory null control, and a hand-feed audit for harness methods that accept world facts as arguments.",
+      "reason": "corpus_hole"
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-STL01",
+      "deviation": "Method 7's NO-METER pixel diff was run at a fixed camera pose with the stealth state changed but V clamped at 0.05 in both frames, rather than at V=0.05 against V=1.30.",
+      "why": "V's only levers that do not also change the rendered scene are Sneak, equip load and cover, and at rest in an unlit zone all of those clamp to the 0.05 floor. A second pair at V=0.05 (night) vs V=0.5335 (midday) is included as no-meter-V005.png / no-meter-V130.png, but its 1.04% byte difference is the time of day, not a HUD element.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-STL01",
+      "deviation": "Methods 1, 3, 5 and 6 were verified against the shipping modules through the builder's stl-probe.mjs rather than re-implemented from scratch.",
+      "why": "Critic budget. Where a module-level pass and a world-level result disagree, I scored the world-level result and said so \u2014 which is the whole substance of this verdict.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-CRM01",
+      "deviation": "Methods 1, 4, 7, 8, 9, 10, 12 and 13 were exercised through the harness's model entry points (commitCrime, addWitness, getGuardBand, jailLedger, killWitness, playerDeath) because no world path reaches them.",
+      "why": "The methods as written require witnesses, guards and corpses that the world does not produce. Each is scored on what it demonstrates \u2014 that the arithmetic is right \u2014 and the missing coupling is scored separately and is the piece's biggest gap.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-QST05",
+      "deviation": "The item's jq block was re-implemented in Python and run over both the commit this piece shipped (140d3c6) and HEAD.",
+      "why": "jq is not installed in this container, and the quest population changed under me mid-run as W1-18 landed. Both numbers are reported rather than one.",
+      "affects_scores": true
+    }
+  ],
+  "arbitration_questions": [],
+  "source_reads": [
+    {
+      "path": "game/src/harness/api.js",
+      "purpose": "locate-harness",
+      "note": "read to enumerate the W1-15 harness surface and its argument shapes; no probe body reused"
+    },
+    {
+      "path": "tools/harness/stl-live.mjs",
+      "purpose": "locate-harness",
+      "note": "read after my own measurements, to find the argument names playerDeath and pickpocketBegin expect"
+    },
+    {
+      "path": "tools/lib/browser.mjs",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "game/src/sim/entities.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read ONLY after the +4/frame flat fill had been measured from traces, to make the remedy name a concrete call site. The finding is from output; the file name in the remedy is from here."
+    },
+    {
+      "path": "game/src/sim/stealth/system.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "same \u2014 read after the witnesses:[] result, to name completePickpocket and the step's crime path in the remedy"
+    },
+    {
+      "path": "game/data/stealth/detection.json",
+      "purpose": "quote-written-content",
+      "note": "the light table, context weights and the declared light_exponent, cited as data"
+    },
+    {
+      "path": "game/data/world/property/*.json",
+      "purpose": "quote-written-content",
+      "note": "the ownership, trespass, lock and light census is computed from these files, which ARE the artifact for RI-STL02 method 1"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE. RI-CRM01 M5 and M6, RI-CRM02 M3/M4/M7/M10 and RI-QST05's live verification could not be run at all \u2014 each is recorded as result: unmeasurable with its reason and scored 0 fail-closed per CRITIC-DOCTRINE 7.3. RI-STL01 M9's entire census is likewise unmeasurable. None of the FAIL depends on them: the four hard fails are all measured positively, not inferred from absence. ORDERING: CRITIC-DOCTRINE 8 says a critic receives the builder's notes only after recording raw measurements; my task prompt handed me orchestration/status/W1-15.json and AMENDMENT-W1-15-01.md as required reading and I read both first. I treated every claim in them as a hypothesis to attack with an independent instrument \u2014 which is why the verdict contradicts the checkpoint's headline claim about method 2 and confirms its amendment arithmetic by recomputation rather than by agreement. CONCURRENCY: HEAD moved from 65275dc (which did not boot, through no fault of this piece) to 21c9566 during the run; I first measured in a worktree at this piece's own commit 140d3c6 and then re-ran the full critic probe at 21c9566, where every finding reproduces identically. AR-3: this piece is NOT seam-sterile \u2014 an Imperial bounty of 3,000 g raises Deep-Kin regard by +12, which puts a Dunmer at disposition 6 at 18 against a hostile_below_disposition of 15, so a war-brood camp that was hostile is not, with the archetype, moveset and statblock ids unchanged. The schema has no ar3 field, so it is recorded here and in RI-CRM01 M12. The crossing is verified as a threshold computation; the encounter it should flip does not exist to be observed."
+  },
+  "notes": "ONE THING WORTH SAYING PLAINLY, because a FAIL at 2/10 will read as a verdict on effort and it is not. This is the most instrumented piece I have measured: 42 outputs, three probe suites, 191 self-assertions, and three genuine defects found in the reference items themselves \u2014 one of which (RI-STL01 2's light exponent) I recomputed independently and which is real. The lock ruling is exemplary work: a deterministic skill gate, a real timed interaction with a measured 44 ms window at the requirement and 378 ms at mastery, 719 hand-authored ward angles that reject uniformity at chi-square 226.1, and an RNG counter that does not move once across the whole interaction. Seam S21 was applied rather than copied: the die was deleted where failure is a retry and kept where being caught is permanent, and I measured the surviving die working across 300 attempts. The property data is the best in the repository. What failed is not care and it is not craft. It is that the piece built its systems as modules with harness entry points and never took the last step of making any entity in the running game read them, and then measured the modules and reported the result as the game. The distance between those two things is the whole verdict, and it is why the corpus now has RI-MTH07.  SCHEMA NOTE: RI-STL01's front matter declares `side: split`, which CORPUS-CONTRACT \u00a72 added to the item enum wave 0; corpus/00-doctrine/verdict.schema.json's reference_items.side enum was never updated to match, so this verdict records RI-STL01 as `neutral` to validate. That mismatch is a corpus defect in the schema, not in the item, and is worth one line of repair."
+}

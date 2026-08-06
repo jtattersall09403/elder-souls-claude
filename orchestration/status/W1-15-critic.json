@@ -2,12 +2,29 @@
   "task_id": "W1-15-critic",
   "brief": "CRITIC for wave-1 piece W1-15 \u2014 Stealth and crime (RI-STL01, RI-STL02, RI-CRM01, RI-CRM02, RI-QST05)",
   "started": "wave-1",
-  "state": "writing-verdict",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-15.json",
     "corpus/90-verdicts/wave1/W1-15.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-15.json (schema-valid)",
+    "corpus/90-verdicts/wave1/W1-15.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/census-property.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/census-quests-qst05.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/crime-oracle-ladder.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-A.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-B.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-V005.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/no-meter-V130.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-probe.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/rerun-stl-live.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-15/head-boot-failure.txt",
+    "tools/harness/critic-w1-15.mjs (the critic instrument; reproduces every headline finding)",
+    "corpus/80-methods/RI-MTH07-world-coupling.md (corpus extension; index regenerated 141/141)"
+  ],
   "findings": [
     "Read doctrine + 5 items. Bar files: RI-STL01 (10 methods), RI-STL02 (10), RI-CRM01 (13), RI-CRM02 (11), RI-QST05 (jq census + live verification).",
     "PROCEDURAL NOTE: my task prompt handed me orchestration/status/W1-15.json (builder checkpoint) and I read it + AMENDMENT-W1-15-01 before measuring. CRITIC-DOCTRINE \u00a78 says builder rationale comes after raw measurement. Deviation is directed by the orchestrator; must be recorded in verdict notes and builder claims must be independently re-measured, never credited.",
@@ -26,6 +43,6 @@
     "MEASURED: reset() and loadState() do not clear the stealth/crime subsystem \u2014 bounty 777, context, civilians and suspicion all survive both. Scenario isolation defect.",
     "RI-QST05 at 140d3c6: 24 quests, PACIFIST-ALL 100%, VERB-SPREAD 42.1% (>40% = the item's own hard fail), sneak resolutions 4 (need >=10; RI-STL01 needs >=22). At HEAD: 33 quests, VERB-SPREAD 28.2%, sneak 6. Live verification (complete 10 pacifist quests in-engine) unmeasurable at this commit."
   ],
-  "next_step": "write corpus/90-verdicts/wave1/W1-15.json + .md, run node tools/publish.mjs",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 verdict emitted, gap ledger and publish run",
+  "notes_for_successor": "FAIL 2/10 (gate 7.0). All five items capped at 2 by triggered hard fails. The one gap is GAP-W1-stealth-crime-model-not-coupled-to-the-world. To re-measure closure: node tools/harness/critic-w1-15.mjs \u2014 the RI-STL01-M2-enemy-detection block must show the five worked-row times differing by V, and RI-CRM01-M3-witness-from-the-world must show a non-empty witnesses array with zero addWitness() calls."
 }

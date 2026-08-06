@@ -1,0 +1,315 @@
+{
+  "schema": "elder-souls/quest-hooks@1",
+  "id": "quest-hooks",
+  "corpus_item": "RI-QST04 (behaviour hooks keyed by world_flags), RI-DLG05 §A.3 (every chain seeds a topic)",
+  "generated_by": "tools/analysis/gen-quest-hooks.mjs",
+  "note": "Generated. Do not hand-edit; edit the generator or the quest files it reads.",
+  "entry_topics": [
+    {
+      "quest": "Q-ARCH-01",
+      "index": 10,
+      "adds_topics": [
+        "the-vat-cough"
+      ]
+    },
+    {
+      "quest": "Q-SOUL-02",
+      "index": 10,
+      "adds_topics": [
+        "the-tally-of-the-dead"
+      ]
+    },
+    {
+      "quest": "Q-BLAK-01",
+      "index": 10,
+      "adds_topics": [
+        "the-labour-lease"
+      ]
+    },
+    {
+      "quest": "Q-STRM-01",
+      "index": 10,
+      "adds_topics": [
+        "the-old-quarter"
+      ]
+    },
+    {
+      "quest": "Q-LILM-01",
+      "index": 10,
+      "adds_topics": [
+        "the-leyawiin-charter"
+      ]
+    },
+    {
+      "quest": "Q-SAP-01",
+      "index": 10,
+      "adds_topics": [
+        "the-phial"
+      ]
+    },
+    {
+      "quest": "Q-LEDG-01",
+      "index": 10,
+      "adds_topics": [
+        "the-short-weight"
+      ]
+    },
+    {
+      "quest": "Q-DOCK-01",
+      "index": 10,
+      "adds_topics": [
+        "the-short-pay"
+      ]
+    },
+    {
+      "quest": "Q-DEEP-01",
+      "index": 10,
+      "adds_topics": [
+        "the-cut-roots"
+      ]
+    },
+    {
+      "quest": "Q-MAG-01",
+      "index": 10,
+      "adds_topics": [
+        "the-ledger"
+      ]
+    },
+    {
+      "quest": "Q-MAG-02",
+      "index": 10,
+      "adds_topics": [
+        "the-seized-hull"
+      ]
+    },
+    {
+      "quest": "Q-MAG-03",
+      "index": 10,
+      "adds_topics": [
+        "the-barred-window"
+      ]
+    },
+    {
+      "quest": "Q-MAG-04",
+      "index": 10,
+      "adds_topics": [
+        "the-drowned-wreck"
+      ]
+    },
+    {
+      "quest": "Q-MAG-05",
+      "index": 10,
+      "adds_topics": [
+        "the-upper-shelf"
+      ]
+    },
+    {
+      "quest": "Q-MAG-06",
+      "index": 10,
+      "adds_topics": [
+        "the-causeway"
+      ]
+    },
+    {
+      "quest": "Q-MAG-07",
+      "index": 10,
+      "adds_topics": [
+        "the-conclave"
+      ]
+    },
+    {
+      "quest": "Q-MAG-08",
+      "index": 10,
+      "adds_topics": [
+        "the-counting-house"
+      ]
+    },
+    {
+      "quest": "Q-MAG-09",
+      "index": 10,
+      "adds_topics": [
+        "the-quiet-floor"
+      ]
+    },
+    {
+      "quest": "Q-MAG-10",
+      "index": 10,
+      "adds_topics": [
+        "the-witness"
+      ]
+    },
+    {
+      "quest": "Q-MAG-11",
+      "index": 10,
+      "adds_topics": [
+        "the-guar-in-the-yard"
+      ]
+    },
+    {
+      "quest": "Q-MAG-12",
+      "index": 10,
+      "adds_topics": [
+        "the-two-brothers"
+      ]
+    },
+    {
+      "quest": "Q-MAG-13",
+      "index": 10,
+      "adds_topics": [
+        "the-dead-runner"
+      ]
+    },
+    {
+      "quest": "Q-MAG-14",
+      "index": 10,
+      "adds_topics": [
+        "the-lost-key"
+      ]
+    },
+    {
+      "quest": "Q-MAG-15",
+      "index": 10,
+      "adds_topics": [
+        "the-hollow-count"
+      ]
+    },
+    {
+      "quest": "Q-MAG-16",
+      "index": 10,
+      "adds_topics": [
+        "the-flues"
+      ]
+    },
+    {
+      "quest": "Q-MAG-17",
+      "index": 10,
+      "adds_topics": [
+        "the-rot-house"
+      ]
+    },
+    {
+      "quest": "Q-MAG-18",
+      "index": 10,
+      "adds_topics": [
+        "the-voriplasm"
+      ]
+    },
+    {
+      "quest": "Q-MAG-19",
+      "index": 10,
+      "adds_topics": [
+        "the-naming"
+      ]
+    },
+    {
+      "quest": "Q-MAG-20",
+      "index": 10,
+      "adds_topics": [
+        "the-far-exit"
+      ]
+    },
+    {
+      "quest": "Q-MAG-21",
+      "index": 10,
+      "adds_topics": [
+        "the-cellar-door"
+      ]
+    },
+    {
+      "quest": "Q-MAG-22",
+      "index": 10,
+      "adds_topics": [
+        "the-heirloom"
+      ]
+    },
+    {
+      "quest": "Q-MAG-23",
+      "index": 10,
+      "adds_topics": [
+        "the-stilled-man"
+      ]
+    },
+    {
+      "quest": "Q-MAG-24",
+      "index": 10,
+      "adds_topics": [
+        "the-hollowed-scribe"
+      ]
+    }
+  ],
+  "hooks": [
+    {
+      "flag": "lock:warded_ledger_door:open",
+      "quest": "Q-MAG-01",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "lock:ledger_strongbox:open",
+      "quest": "Q-MAG-01",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "shatter:cistern_wall_bricks",
+      "quest": "Q-MAG-02",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "lock:cistern_grate:open",
+      "quest": "Q-MAG-02",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "trap:ledger_threshold_ward:disarmed",
+      "quest": "Q-MAG-03",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "lock:hall_side_door:open",
+      "quest": "Q-MAG-04",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "lock:drowned_road_sluice:open",
+      "quest": "Q-MAG-05",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "shatter:root_barrier",
+      "quest": "Q-MAG-06",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "teleport:recall",
+      "quest": "Q-MAG-07",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "fight_ended:calm_beast",
+      "quest": "Q-MAG-08",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "fight_ended:demoralise",
+      "quest": "Q-MAG-09",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "fight_ended:charm",
+      "quest": "Q-MAG-10",
+      "journal": 30,
+      "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    }
+  ],
+  "deadlines": []
+}

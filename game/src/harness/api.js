@@ -22,6 +22,9 @@ import { DEFAULT_BINDINGS, RESERVED_CONTROLS, auditBindings } from '../input/bin
 import { canonicalise, stateDiff, leafPaths } from '../core/canonical.js';
 import { VOLATILE_PATHS } from '../save/state.js';
 import { installWeaponsHarness } from './weapons.js';
+// W1-14 round 2: the RI-MAG06 registry, so `getEffectConsumerMap()` reports the build's own
+// declaration rather than a second list that could drift from it.
+import { HANDLERS as MAGIC_HANDLERS, DAMAGE_EFFECTS as MAGIC_DAMAGE_EFFECTS } from '../sim/magic/apply.js';
 
 // W1-14: RI-MAG01's harness amendments are ADDITIONS, so the contract moves 1 -> 2 exactly as
 // that item's provenance note requires. Everything `@1` emitted is still emitted, unchanged.
@@ -343,6 +346,70 @@ export function installHarness(engine, bootPromise) {
     censusAnswer(value) { return engine.censusAnswer(value); },
     /** What a renderer draws and what a critic screenshots. `full_screen_panels` is 0. */
     getCensusState() { return engine.getCensusState(); },
+
+    // ---- W1-07 round 2: the scene, measured rather than declared ----------------------
+    /**
+     * The drawn surface, read back out of the layout that drew it. Round 1's
+     * `full_screen_panels: 0` / `world_visible: true` were JSON fields with no rendered
+     * counterpart; `rendered_text` here is the exact string array that went through
+     * `fillText` into the WebGL canvas the screenshot reads.
+     */
+    getUIState() { return engine.getUIState(); },
+
+    /** Every person standing in the world, with the record they were instantiated from. */
+    listNPCs() { return engine.listNPCs(); },
+
+    /** What this person thinks of you, derived live from the RI-CHR02 matrix. */
+    npcDisposition(eid) { return engine.npcDisposition(eid); },
+
+    /** Put a person in the world (a state file's `npcs` array uses the same path). */
+    spawnNPC(spec) { return engine.spawnNPC(spec || {}); },
+
+    /** Pick up a world object. RI-JRN01 O6/M10's takeables. */
+    takeProp(eid) { return engine.takeProp(eid); },
+
+    /**
+     * RI-PRG02 §3 and RI-CHR03 §2, read: the pools the attributes and the birthsign produce,
+     * the live values in the fight, and the curve anchors the item's method 3 samples.
+     */
+    getDerivedStats() { return engine.getDerivedStats(); },
+
+    /** Every skill, its banked progress and what the next point costs (RI-PRG03 §2). */
+    getSkillSheet() { return engine.getSkillSheet(); },
+
+    /**
+     * RI-PRG03 §3's out-of-fight use events. `ctx.cost` is what the event CONSUMED; a call
+     * with cost 0 is refused by §4's Cost Gate and the refusal is in the return value.
+     */
+    grantSkillUse(kind, ctx) { return engine.grantSkillUse(kind, ctx || {}); },
+
+    /** A HEARTH rest: resets §4's rest clamp, and refills Focus unless the sign forbids it. */
+    hearthRest() { return engine.hearthRest(); },
+
+    // ---- A-JRN2: the gamepad shim ------------------------------------------------------
+    /**
+     * Push a synthetic standard-mapping pad state and poll it. `buttons` is an array of
+     * booleans indexed by the W3C standard mapping; `axes` is [lx, ly, rx, ry].
+     *
+     * This is the SAME code path a real pad takes — `RealInput.pollGamepad()` — so a
+     * gamepad-only run of the opening is a real gamepad-only run and not a keyboard run
+     * wearing a different label. Requires mode 'play' or 'play-instrumented', because
+     * HARNESS.md R4 forbids the real input path in 'harness'.
+     */
+    gamepad(state) {
+      if (!engine.real) throw new Error('gamepad(): no real input path on this engine');
+      if (engine.mode === 'harness') {
+        throw new Error("gamepad(): the real input path is detached in mode 'harness' (HARNESS.md R4). " +
+          "Call setMode('play-instrumented') first, then drive frames with stepFrames().");
+      }
+      return engine.real.pushGamepadState(state === undefined ? null : state);
+    },
+
+    /** Poll whatever pad is actually attached. Returns null when there is none. */
+    gamepadPoll() {
+      if (!engine.real) throw new Error('gamepadPoll(): no real input path on this engine');
+      return engine.real.pollGamepad();
+    },
     /** The object you carry out of the room (RI-JRN01 O10). */
     readWrit() { return engine.readWrit(); },
 
@@ -430,6 +497,86 @@ export function installHarness(engine, bootPromise) {
       else engine.magic._endLevitation(engine.sim.frame, 'harness');
       return engine.magic.report(engine.sim.frame);
     },
+
+    // ---- RI-MAG06: the consuming systems, readable in one call each ------------------------
+    //
+    // RI-MAG06 §B says an effect is judged by reading "the game system the effect claims to
+    // move". These are those systems. Each returns REAL state — the same objects the handlers
+    // in game/src/sim/magic/apply.js write into — and none of them is a magic-side mirror a
+    // spell could satisfy by talking to itself.
+
+    /** Locks, traps, breakables, item condition, keys, shrines, conjured walls, summons, markers. */
+    getMagicWorld() { return engine.magic.worldCensus(); },
+    /** Every live S11 buildup meter, proc, mitigation multiplier and armour rating, per body. */
+    getStatusState() { return engine.magic.statusReport(); },
+    /** Re-seed the lock/trap/breakable/item registers to their authored state. */
+    resetMagicWorld() { return engine.magic.loadWorldData(engine.data.magic.wards); },
+    /**
+     * The RI-MAG06 census, computed by the build itself: for every catalogue effect, the
+     * consuming system its handler names and whether a handler exists at all. This is NOT a
+     * measurement — it is the DECLARATION the critic's own paired read is checked against, and
+     * it is here so that a declared-vs-observed disagreement is visible in one diff.
+     */
+    getEffectConsumerMap() {
+      const out = [];
+      for (const e of engine.data.magic.effects.effects) {
+        out.push({
+          effect: e.id, school: e.school,
+          has_handler: typeof MAGIC_HANDLERS[e.id] === 'function',
+          is_damage_effect: MAGIC_DAMAGE_EFFECTS.has(e.id),
+          changes_traversal: !!e.changes_traversal,
+          changes_quest_resolution: !!e.changes_quest_resolution,
+        });
+      }
+      return {
+        effects: out.length,
+        handlers: out.filter((r) => r.has_handler).length,
+        damage_effects: [...MAGIC_DAMAGE_EFFECTS].sort(),
+        rows: out,
+      };
+    },
+    /** Fall state: what `slowfall` moves, and the peak `leap` reaches. */
+    getFallState() {
+      const b = engine.combat.player;
+      return {
+        pos_y_m: +b.pos[1].toFixed(4),
+        airborne: engine.magic.airborne,
+        levitating: engine.magic.levitating,
+        vel_mps: +engine.magic.fall.velMps.toFixed(3),
+        terminal_mps: engine.magic.fall.terminalMps,
+        fall_damage_enabled: engine.magic.fall.damageEnabled,
+        peak_y_m: +engine.magic.peakY.toFixed(4),
+        jump_apex_mult: +engine.magic.jumpApexMult.toFixed(4),
+      };
+    },
+    /** Drop the player from a height, so `slowfall`'s paired read is a real fall. */
+    dropFrom(height) {
+      const b = engine.combat.player;
+      const h = Number(height);
+      if (!Number.isFinite(h) || h < 0) throw new Error(`dropFrom(${JSON.stringify(height)}): expected a non-negative height in metres`);
+      engine.magic.groundY = 0;
+      b.pos[1] = h;
+      engine.sim.player.pos[1] = h;
+      engine.magic.airborne = true;
+      engine.magic.fall.velMps = 0;
+      engine.magic.peakY = Math.max(engine.magic.peakY, h);
+      return { pos_y_m: h, terminal_mps: engine.magic.fall.terminalMps, fall_damage_enabled: engine.magic.fall.damageEnabled };
+    },
+    /** The invisibility break rule, driven from the five events RI-MAG06 §B names. */
+    breakInvisibility(cause) { return engine.magic.breakInvisibility(engine.sim.frame, String(cause || 'attack')); },
+
+    // ---- the quest runtime (W1-2x owns the content; this is the machine) --------------------
+    questOffers() { return engine.questEngine ? engine.questEngine.offers() : { _declared_incomplete: 'no quest runtime' }; },
+    questOpen(id) { return engine.questEngine.open(String(id)); },
+    questNote(id, index) { return engine.questEngine.note(String(id), Number(index)); },
+    questResolutions(id) { return engine.questEngine.resolutionsFor(String(id)); },
+    questResolve(id, resolutionId) { return engine.questEngine.resolve(String(id), String(resolutionId)); },
+    questFail(id, failureId) { return engine.questEngine.fail(String(id), String(failureId)); },
+    questSetFlag(flag, v) { return engine.questEngine.setFlag(String(flag), v === undefined ? true : v); },
+    questBook() { return engine.questEngine ? engine.questEngine.book.ids.slice() : []; },
+    questEventsDrain() { return engine.questEngine ? engine.questEngine.drain() : []; },
+    /** Which effects the player has actually CAST — what the resolution gate now reads. */
+    getCastEffects() { return [...engine.magic.castEffects].sort(); },
     /**
      * Apply damage to the player. `opts.stagger` routes it through the SAME reaction machinery
      * a real hit uses (`CombatBody.queueReaction`), so an interrupted cast is interrupted by

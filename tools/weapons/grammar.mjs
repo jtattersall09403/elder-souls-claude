@@ -41,7 +41,16 @@ export const CLASS_GRAMMAR = {
     // chain did not exist even on paper. FST has no one-handed roll heavy (roll2 is null), so
     // 2h.roll.r2 is exclusive by construction and costs the class nothing it owns.
     h2_exclusive: ['2h.roll.r2', '2h.art.2'],
-    h2_chain: 3, h1_chain: 5, ha_2h_r1: false, ha_run2: false, ha_extra: [],
+    // FST carries hyperarmour on the three verbs that ARRIVE — the running light, the running
+    // heavy and the rolling attack — and on nothing else. RI-WPN02 §B asks the class "can you
+    // live at zero range?" and gives it 0.90 m, the shortest in the game: it has no spacing tool,
+    // so the whole class problem is getting there, and this is what it buys instead of the reach
+    // it does not have. It is also the split from DGR, its nearest neighbour on §D's fingerprint
+    // distance: the dagger's answer to the same 12 f@60 speed is "never be hit", the fist's is
+    // "be hit on the way in". Both classes previously sat at the 2-slot floor (the charged pair
+    // only) and D11 contributed exactly zero to the pair the whole matrix is measured on.
+    h2_chain: 3, h1_chain: 5, ha_2h_r1: false, ha_run2: true,
+    ha_extra: ['run.r1', '2h.run.r1', 'roll.r1', '2h.roll.r1'],
   },
   CSW: {
     r1: ['cut_horizontal', 'cut_horizontal_rev', 'spin_full', 'cut_diagonal_rise'],
