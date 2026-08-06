@@ -69,6 +69,50 @@ for (const cand of ['corpus/90-verdicts/GAP-LEDGER.json', 'corpus/90-verdicts/ga
   if (existsSync(P(cand))) { try { const j = JSON.parse(readFileSync(P(cand), 'utf8')); gaps = j.gaps || j; } catch { } }
 }
 
+// ---------- bar critique (the gate) ----------
+// The bar critic judges whether the BAR is good enough, not whether the game is.
+// Its verdict gates the whole project: no build wave proceeds while INSUFFICIENT.
+let critiques = [];
+for (const f of walk(P('corpus', '00-doctrine')).filter(f => /BAR-CRITIQUE-\d+\.json$/.test(basename(f)))) {
+  try {
+    const j = JSON.parse(readFileSync(f, 'utf8'));
+    j._n = parseInt((basename(f).match(/(\d+)/) || [, '0'])[1], 10);
+    j._path = relative(ROOT, f);
+    j._md = j._path.replace(/\.json$/, '.md');
+    critiques.push(j);
+  } catch { }
+}
+critiques.sort((a, b) => a._n - b._n);
+const critique = critiques[critiques.length - 1] || null;
+
+// A gate condition is "met" when the corpus artifacts it names now exist.
+// Heuristic but honest: we resolve RI-* ids and file paths mentioned in the text.
+const haveIds = new Set(items.map(i => String(i.id).toUpperCase()));
+const allCorpusPaths = walk(P('corpus')).map(f => relative(ROOT, f));
+function gateStatus(text) {
+  const t = String(text || '');
+  const ids = t.match(/RI-[A-Z]+\d+/g) || [];
+  const dirs = t.match(/corpus\/[\w./-]+/g) || [];
+  const roots = t.match(/\b([a-z]+)\.\*/g) || [];
+  let need = 0, got = 0;
+  for (const id of new Set(ids)) { need++; if (haveIds.has(id.toUpperCase())) got++; }
+  for (const d of new Set(dirs)) { need++; if (allCorpusPaths.some(p => p.startsWith(d.replace(/\/$/, '')))) got++; }
+  for (const r of new Set(roots)) {
+    need++;
+    const root = r.slice(0, -2);
+    if (items.some(i => i.judges.some(j => j.startsWith(root + '.')))) got++;
+  }
+  if (!need) return { state: 'manual', got, need };
+  if (got === need) return { state: 'met', got, need };
+  if (got === 0) return { state: 'open', got, need };
+  return { state: 'partial', got, need };
+}
+const gates = (critique?.gate_conditions || []).map(c => {
+  const text = typeof c === 'string' ? c : (c.condition || c.title || JSON.stringify(c));
+  return { text, ...gateStatus(text) };
+});
+const gatesMet = gates.filter(g => g.state === 'met').length;
+
 // game data stats
 // Content layout is mandated by corpus/80-methods/HARNESS.md §5: game/data/**
 const dataFiles = walk(P('game', 'data')).filter(f => extname(f) === '.json');
@@ -138,6 +182,13 @@ tr:hover td{background:#191510}
 .bar>i{display:block;height:100%;background:var(--gold)}
 code{color:var(--blue);font-size:11px}
 .gapq{color:var(--ink)}.rem{color:var(--dim);font-size:11px}
+.dimtext{color:var(--dim)}
+.gate{border-radius:6px;padding:18px 20px;margin-bottom:8px;border:1px solid var(--line);background:var(--panel)}
+.gate-bad{border-color:#6b2f22;background:linear-gradient(180deg,#241512,#1b1813)}
+.gate-ok{border-color:#3f5230;background:linear-gradient(180deg,#161d12,#1b1813)}
+.verdict{font-size:30px;font-weight:700;letter-spacing:.1em;line-height:1}
+.gate-bad .verdict{color:var(--red)}.gate-ok .verdict{color:var(--green)}
+.gsub{color:var(--dim);font-size:12px;margin-top:10px;line-height:1.7}
 footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid var(--line);margin-top:30px}
 .shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
 .shots figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
@@ -159,7 +210,34 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
   <div class="card"><div class="n">${loc.toLocaleString()}</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">${dataStats.quests}</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">${dataStats.dialogueWords.toLocaleString()}</div><div class="l">Dialogue words</div></div>
+  <div class="card"><div class="n ${critique && /INSUF/i.test(critique.verdict) ? 'bad' : 'ok'}">${critique ? `${gatesMet}/${gates.length}` : '&mdash;'}</div><div class="l">Bar gates met</div></div>
 </div>
+
+${critique ? `
+<h2>The gate &mdash; is our bar good enough?</h2>
+<div class="gate ${/INSUF/i.test(critique.verdict) ? 'gate-bad' : 'gate-ok'}">
+  <div class="verdict">${esc(critique.verdict)}</div>
+  <div class="gsub">Bar critique #${critique._n} &middot; judges whether passing every bar would actually produce the thing that was asked for &middot;
+  <b>${gatesMet}/${gates.length}</b> gate conditions met &middot; ${(critique.gaps || []).length} gaps &middot; ${(critique.wrong_bars || []).length} wrong bars &middot; ${(critique.thin_spots || []).length} thin spots<br>
+  <span class="dimtext">No build wave proceeds while this reads INSUFFICIENT. Full argument: <code>${esc(critique._md)}</code></span></div>
+  <div class="bar" style="margin-top:12px"><i style="width:${gates.length ? Math.round(100 * gatesMet / gates.length) : 0}%"></i></div>
+</div>
+
+<h2>Gate conditions</h2>
+<table><tr><th style="width:90px">Status</th><th>What must be true before building starts</th></tr>
+${gates.map(g => `<tr><td class="${g.state === 'met' ? 'ok' : g.state === 'partial' ? 'warn' : g.state === 'manual' ? 'dimtext' : 'bad'}">${g.state === 'met' ? '&#10003; met' : g.state === 'partial' ? `${g.got}/${g.need}` : g.state === 'manual' ? 'review' : 'open'}</td><td>${esc(g.text)}</td></tr>`).join('\n')}
+</table>
+
+<h2>Gaps the bar could not see <span class="dimtext">(ranked by the critic)</span></h2>
+<table><tr><th style="width:34px">#</th><th>Gap</th><th>Proposed item</th><th>Threshold</th></tr>
+${(critique.gaps || []).map(g => `<tr><td>${esc(g.rank)}</td><td class="gapq">${esc(g.title)}<div class="rem">${esc((g.why || '').slice(0, 260))}</div></td><td><code>${esc(g.proposed_id || '')}</code><div class="rem">${esc(g.area || '')}</div></td><td class="rem">${esc((g.threshold || '').slice(0, 200))}</td></tr>`).join('\n')}
+</table>
+
+<h2>Wrong or gameable bars <span class="dimtext">(a bar that can be gamed is worse than no bar)</span></h2>
+<table><tr><th>Item</th><th>Problem</th><th>Required change</th></tr>
+${(critique.wrong_bars || []).map(w => `<tr><td><code>${esc(w.item || w.id || '')}</code></td><td class="gapq">${esc((w.problem || w.title || '').slice(0, 300))}</td><td class="rem">${esc((w.change || w.fix || '').slice(0, 260))}</td></tr>`).join('\n')}
+</table>
+` : ''}
 
 <h2>Corpus coverage by area</h2>
 <table><tr><th>Area</th><th>Domain</th><th>Items</th><th></th></tr>
