@@ -83,6 +83,12 @@ SKIP_EXT = {'.md', '.json', '.py', '.mjs', '.txt'}
 # value. `pixel_metrics_valid` on their provenance records is false, so §3's floors and every
 # metrics population exclude them automatically.
 TEXT_EXT = {'.xml', '.layout', '.skin', '.cfg', '.lua', '.csv', '.ini'}
+# Video. Pillow cannot open these and it should not try: A5 rule 3 and §5b already make every
+# video record pixel_metrics_valid:false, so the still-image battery is meaningless on them.
+# Recording identity plus a null for every pixel statistic is the honest value; recording an
+# UnidentifiedImageError is not, because a reader cannot tell a codec we skip on purpose from
+# a file that is broken.
+VIDEO_EXT = {'.mp4', '.webm', '.mkv', '.mov', '.m4v'}
 N = 256                        # FFT crop size
 
 
@@ -297,23 +303,23 @@ def jpeg_quality_est(im):
     return round(max(1.0, min(100.0, quality)), 1)
 
 
-def analyse_text(path):
+def analyse_text(path, kind='text'):
     """A non-image reference asset. Record identity; compute no pixel statistic."""
     raw = open(path, 'rb').read()
     return {
         'bytes': len(raw),
         'sha256': hashlib.sha256(raw).hexdigest(),
         'format': os.path.splitext(path)[1].lower().lstrip('.'),
-        'asset_kind': 'text',
+        'asset_kind': kind,
         'lines': raw.count(b'\n') + (1 if raw and not raw.endswith(b'\n') else 0),
         'width': None, 'height': None, 'bit_depth': None, 'has_alpha': None,
         'bytes_per_pixel': None, 'jpeg_quality_est': None,
         'exif_software': 'none', 'exif_datetime': None,
         'xmp_present': False, 'c2pa_present': False,
         'nyq_ratio': None, 'hf_ratio': None, 'upscale_test': None, 'block_score': None,
-        'mean_luminance': None, 'block_score_rel': None,
+        'upscale_test_rel': None, 'mean_luminance': None, 'block_score_rel': None,
         'hud_probe': None, 'hud_probe_edge_max': None, 'has_hud_measured': None,
-        'ui_overlay_kind': 'none',
+        'ui_overlay_kind_probe': 'none',
         'frames': None, 'animated': False,
     }
 
@@ -356,7 +362,7 @@ def analyse(path):
             'nyq_ratio': None, 'hf_ratio': None, 'upscale_test': None, 'block_score': None,
             'mean_luminance': None, 'block_score_rel': None,
             'hud_probe': None, 'hud_probe_edge_max': None, 'has_hud_measured': None,
-            'ui_overlay_kind': 'not-measured-animated',
+            'ui_overlay_kind_probe': 'not-measured-animated',
         })
         return rec
 
@@ -379,7 +385,7 @@ def analyse(path):
     edge_hud = rec['hud_probe_edge_max'] is not None and rec['hud_probe_edge_max'] >= HUD_THRESHOLD
     centre_ui = probe.get('centre') is not None and probe['centre'] >= HUD_THRESHOLD
     rec['has_hud_measured'] = bool(edge_hud)
-    rec['ui_overlay_kind'] = ('both' if edge_hud and centre_ui else
+    rec['ui_overlay_kind_probe'] = ('both' if edge_hud and centre_ui else
                               'edge-hud' if edge_hud else
                               'centre-ui' if centre_ui else 'none')
     return rec
@@ -474,7 +480,12 @@ def walk():
             p = os.path.join(root, f)
             rel = os.path.relpath(p, HERE)
             try:
-                out[rel] = analyse_text(p) if ext in TEXT_EXT else analyse(p)
+                if ext in TEXT_EXT:
+                    out[rel] = analyse_text(p)
+                elif ext in VIDEO_EXT:
+                    out[rel] = analyse_text(p, kind='video')
+                else:
+                    out[rel] = analyse(p)
             except Exception as e:            # noqa: BLE001 - report, never crash the walk
                 out[rel] = {'error': f'{type(e).__name__}: {e}'}
             print(rel, file=sys.stderr)

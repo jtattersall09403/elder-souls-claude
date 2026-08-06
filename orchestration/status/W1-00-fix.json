@@ -2,7 +2,7 @@
   "task_id": "W1-00-fix",
   "brief": "remediation of wave-1 piece W1-00 after critic verdict 3/10 (threshold 6.0)",
   "started": "wave-1-remediation",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "fix: PRNG actually drawn from in-step (GAP-W1-platform-prng-never-drawn)",
     "fix: tools/harness/determinism.mjs R4 excludes .rng.seed + fails when max(rng.draws)==0",
@@ -35,7 +35,9 @@
     "game/src/sim/camera.js \u2014 pitch clamp [-70,+60] -> RI-CAM02 \u00a7B [-55,+38], locked [-50,+32]; per-frame look caps 30/20 deg",
     "corpus/80-methods/m-cam02-control.mjs \u2014 NEW: RI-CAM02 M2/M2b/M3/M5, the item named it and it was absent",
     "tools/platform/calibrate.mjs \u2014 NEW: RI-PLT01 \u00a7A S* cpu_index; REFUSES sim_units and names the corpus hole",
-    "corpus/80-methods/HARNESS.md \u2014 \u00a73 reanchorFreeRunning, \u00a74 closed event shape + the scripted-window contract"
+    "corpus/80-methods/HARNESS.md \u2014 \u00a73 reanchorFreeRunning, \u00a74 closed event shape + the scripted-window contract",
+    "reports/W1-00-remediation.md \u2014 the remediation record with every measured number and its command",
+    "reports/runs/SEED-SWEEP/seed-sweep.json, reports/platform/ALLOC/alloc.json, reports/runs/CAM02/cam02.json, reports/platform/CALIBRATION/calibration.json \u2014 evidence artifacts"
   ],
   "findings": [
     "BASELINE (pre-fix) determinism.mjs: 8/9 rungs pass, R5 fails on ['enemies[].anim_frame','enemies[].state_entered_f']. R4 reported PASS at frames_differing_pct 100 with rng.draws==0. Baseline text: scratchpad/baseline-det.txt",
@@ -57,8 +59,10 @@
     "TRACE RECORD: moved from Engine._step (the FixedLoop.stepOnce callback) to Engine._afterStep, called after stepOnce returns. makeRecord() now THROWS if loop.inFixedStep(). With --trace the record costs ~816 B/step and 0 B of it is on the step stack.",
     "RI-CAM02 M2 now PASSES: max_pitch 38.000000 / min -55.000000 unlocked, 32/-50 locked, 0 bounce frames, 0 creep frames over 1860 frames each. M2b look cap: 400deg swipe -> 30deg in frame 1, 0 carried into frame 2. M3 lag 0, M5 auto-follow 0.000000 deg over 720 frames.",
     "CORPUS HOLE FOUND: RI-PLT01 \u00a7A defines sim_units via cpu_index_reference for phone-mid, and no numeric reference is declared anywhere in the corpus. calibrate.mjs emits cpu_index (0.345 ms, checksum 482219064) and REFUSES sim_units. RI-PLT01 M3 is unscoreable on ANY machine until the constant is declared.",
-    "GAP-W1-platform-prng-never-drawn is NOT closed by me: tools/gap-ledger.mjs rejects a closure with closed_by_builder_of_fix (SCORING.md \u00a75 rule 1). Left open with the evidence."
+    "GAP-W1-platform-prng-never-drawn is NOT closed by me: tools/gap-ledger.mjs rejects a closure with closed_by_builder_of_fix (SCORING.md \u00a75 rule 1). Left open with the evidence.",
+    "REGRESSION CHECKS after the refactor: M8 catch-up bound still [5,0,1,1,1,1] max 5, catchupClamps 1, t_ms/f 16.66667. Determinism trap still throws on all four wall-clock/random calls fired from a getter inside stepFrames, and does NOT throw outside. perf-probe: decoupling hashes identical at 60/30/15/0 Hz, integer-step audit 0 violations. api-probe 33/33 + 8/8 pass. input-probe M-K1..K24 pass. save-audit manifest-extra 0/0 at 4 states. npm run doctrine passes.",
+    "NOTE for successor: a parallel agent is running `git add -A` commits on this branch, so this work is already committed under 'Refs: ...' messages, not under a W1-00 message."
   ],
-  "next_step": "final verification sweep + summary",
-  "notes_for_successor": "Fresh remediation builder. Did not write the original. Env works: node tools/harness/smoke.mjs ok, determinism.mjs takes ~3min."
+  "next_step": "none \u2014 complete",
+  "notes_for_successor": "All fixes landed and verified. GAP-W1-platform-prng-never-drawn deliberately LEFT OPEN: only a later wave critic may close it. The one thing a successor might still want: tools/platform/load-run.mjs + hitch-census.mjs + stream-audit.mjs for RI-PLT03 (named by the item, still absent), and the phone-mid cpu_index_reference constant for RI-PLT01 M3."
 }
