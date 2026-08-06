@@ -1,14 +1,30 @@
 {
   "task_id": "W1-00-critic-r2",
-  "brief": "critic round 2 for wave-1 piece W1-00 (platform/engine spine)",
+  "brief": "critic round 2 for wave-1 piece W1-00 (harness, determinism, persistence)",
   "started": "wave-1-r2",
   "state": "researching",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-00-r2.json",
     "corpus/90-verdicts/wave1/W1-00-r2.md"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read CRITIC-DOCTRINE, SCORING, VERDICT-SCHEMA, r1 verdict, remediation report",
-  "notes_for_successor": "Round 1 failed at 3/10 on two hard fails (PRNG never drawn; save round-trip 36/40). Must re-run everything myself with my own seeds."
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-prefix.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-r5-reanchor-guard.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-00-r2/tool-alloc-probe-60k.json"
+  ],
+  "findings": [
+    "CLAIM 1 PRNG SURVIVES: my own seeds (90210/8675309, 271828/999983, 1/2147483647, 90210/1) all give 100.0% of 3600 frames differing in enemies[].anim_frame, a non-echo field; max(rng.draws)=1, sum=3600 (cumulative counter, one draw per entity at its first step).",
+    "RESIDUAL: the ONLY non-echo field the seed reaches is enemies[].anim_frame. Nothing else in 3600 frames differs. The seed reaches one integer, once per entity, and that integer moves a cosmetic idle-animation counter only.",
+    "CLAIM 2 ROUND TRIP SURVIVES: my own 20 seeds x 2 states = 40 trials, host-side canonicalisation: 0/40 getStateHash mismatches, only diff field is volatile.frame (declared volatile). 34/40 of my trials have >=1 state word >= 2^31 (would have been negative int32 pre-fix) and all pass.",
+    "CLAIM 3 ALLOCATION: pre-fix tree 8714e38 measured with MY probe and the flags ON = 29.64 / 30.21 / 90.96 B/step (F1/F5/F4). Post-fix = -0.88 / -0.35 / +0.069 B/step. So r1's 0.78-1.73 B/step WAS under-reported by ~30-90x. But the builder's 'literal 0' is max(0,slope): its own tool at --steps 20000 prints FAIL 0.0034 (F1) and 0.015 (F5) B/step, and at 60000 prints '9828 B @120k - 10344 B @60k = 0 B'. Zero is a clamped negative slope, not a demonstrated literal zero.",
+    "SELF-TEST MISLABEL: my probe shows escaping literals read 29.0 B/literal with the DEFAULTS and 38.2 with the flags; DYING literals read 0.073 vs 9.16. The under-report is on dying garbage. The builder's shipped self-test prints 29.1 B 'per escaping literal', i.e. it measures the case the defaults already get right, so it would pass with the flags off.",
+    "CLAIM 4 STEPDEPTH GUARD SURVIVES, demonstrated at runtime: snapshot() called from inside stepFrames (via a getter on a queued input) throws 'TRACE RECORD BUILT INSIDE THE FIXED STEP'; Math.random/Date.now throw DETERMINISM VIOLATION in the same window; all three work outside a step.",
+    "CLAIM 5 R5 SURVIVES: my own re-basing of f, events[].f, enemies[].state_entered_f over 600 frames, warm-up 30 vs 90 -> 0 differing fields WITH the reanchor, and enemies[].anim_frame differing on 198/600 frames WITHOUT it. No-enemy scenario also passes now. The reanchor is a genuine sim mutation: getStateHash changes f83383eb->8b09fbe7, survives save/load, and the clock runs on (40->43 in 3 steps).",
+    "CORPUS HOLE CONFIRMED: cpu_index_reference for phone-mid has no numeric value anywhere in corpus/ (only the definition line in RI-PLT01 A). RI-PLT01 M3 (8 pts) unscoreable on any machine. Fail-closed at 0, corpus defect not build defect.",
+    "verdict.schema.json has no ar3 field (additionalProperties:false); r1 recorded AR-3 in notes. Doing the same."
+  ],
+  "next_step": "finish camera probe + rungs/AR probe, then score and write verdict",
+  "notes_for_successor": "Critic-owned probes are in the scratchpad: p1-roundtrip, p2b-alloc, p3-r5, p4-camera, p5-rungs-ar. A pre-fix worktree is at scratchpad/prefix (git worktree at 8714e38) - remove with git worktree remove when done."
 }

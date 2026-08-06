@@ -1,0 +1,154 @@
+{
+  "produced_by": "critic-owned p2b-alloc.mjs — CDP HeapProfiler.startSampling with includeObjectsCollectedByMinorGC/MajorGC: true, single-stepFrames-call slope",
+  "repo": "/home/user/elder-souls-claude",
+  "trace_mode": false,
+  "steps_N": 20000,
+  "self_test": {
+    "escaping_flags_on": 3821804,
+    "escaping_defaults": 2897456,
+    "dying_flags_on": 1054504,
+    "dying_defaults": 7032,
+    "escaping_b_per_literal_flags_on": 38.218,
+    "escaping_b_per_literal_defaults": 28.975,
+    "dying_b_per_literal_flags_on": 10.545,
+    "dying_b_per_literal_defaults": 0.07
+  },
+  "fixtures": [
+    {
+      "fixture": "F1 fen",
+      "state": "swamp_canopy",
+      "spawned": 0,
+      "trace": false,
+      "steps_N": 20000,
+      "bytes_at_N": 173504,
+      "bytes_at_2N": 155864,
+      "b_per_step_slope": -0.882,
+      "samples_at_N": [
+        1067300,
+        214120,
+        173504
+      ],
+      "samples_at_2N": [
+        159252,
+        155864,
+        159828
+      ],
+      "top_sites_at_2N": {
+        "invert @ three/three.core.js:5877": 24000,
+        "copyArray @ three/three.module.js:4527": 23220,
+        "setValueM4 @ three/three.module.js:4733": 15876,
+        "invert @ three/three.core.js:12017": 15432,
+        "getParameters @ three/three.module.js:6825": 12856,
+        "dot @ three/three.core.js:5071": 11004,
+        "(V8 API) @ (anonymous):-1": 4680,
+        "evaluate @ (anonymous):283": 4112,
+        "setFromMatrix4 @ three/three.core.js:5757": 3504,
+        "join @ (anonymous):-1": 3240,
+        "arraysEqual @ three/three.module.js:4513": 3228,
+        "push @ (anonymous):-1": 3156,
+        "transpose @ three/three.core.js:5916": 2808,
+        "apply @ render/sky.js:104": 1944,
+        "copy @ three/three.core.js:7905": 1908
+      },
+      "top_urls_at_2N": {
+        "three/three.core.js": 70780,
+        "three/three.module.js": 65152,
+        "(anonymous)": 19748,
+        "render/sky.js": 2428,
+        "render/renderer.js": 1568,
+        "src/engine.js": 152
+      }
+    },
+    {
+      "fixture": "F5 dungeon",
+      "state": "dungeon_primary",
+      "spawned": 0,
+      "trace": false,
+      "steps_N": 20000,
+      "bytes_at_N": 137336,
+      "bytes_at_2N": 130336,
+      "b_per_step_slope": -0.35,
+      "samples_at_N": [
+        169812,
+        142336,
+        137336
+      ],
+      "samples_at_2N": [
+        143300,
+        130336,
+        138804
+      ],
+      "top_sites_at_2N": {
+        "invert @ three/three.core.js:12017": 64020,
+        "dot @ three/three.core.js:5071": 9756,
+        "copyArray @ three/three.module.js:4527": 8148,
+        "setValueM4 @ three/three.module.js:4733": 6456,
+        "copy @ three/three.core.js:11471": 5700,
+        "setFromProjectionMatrix @ three/three.core.js:26432": 4488,
+        "(V8 API) @ (anonymous):-1": 4420,
+        "evaluate @ (anonymous):283": 4048,
+        "WebGLRenderer.renderBufferDirect @ three/three.module.js:15934": 3720,
+        "arraysEqual @ three/three.module.js:4513": 3576,
+        "painterSortStable @ three/three.module.js:7495": 3228,
+        "setValueV3f @ three/three.module.js:4608": 2460,
+        "setFromRotationMatrix @ three/three.core.js:3805": 2112,
+        "copy @ three/three.core.js:7905": 1968,
+        "normalize @ three/three.core.js:26120": 1608
+      },
+      "top_urls_at_2N": {
+        "three/three.core.js": 98168,
+        "three/three.module.js": 30360,
+        "(anonymous)": 13240,
+        "render/sky.js": 864,
+        "render/renderer.js": 372,
+        "src/engine.js": 224,
+        "core/loop.js": 72
+      }
+    },
+    {
+      "fixture": "F4 six enemies",
+      "state": "arena_flat",
+      "spawned": 6,
+      "trace": false,
+      "steps_N": 20000,
+      "bytes_at_N": 114576,
+      "bytes_at_2N": 115948,
+      "b_per_step_slope": 0.0686,
+      "samples_at_N": [
+        3418916,
+        132988,
+        114576
+      ],
+      "samples_at_2N": [
+        120512,
+        115948,
+        117092
+      ],
+      "top_sites_at_2N": {
+        "copyArray @ three/three.module.js:4527": 31512,
+        "invert @ three/three.core.js:12017": 15024,
+        "setValueM4 @ three/three.module.js:4733": 14040,
+        "dot @ three/three.core.js:5071": 12420,
+        "WebGLRenderer.renderBufferDirect @ three/three.module.js:15934": 6048,
+        "(V8 API) @ (anonymous):-1": 4304,
+        "evaluate @ (anonymous):283": 3944,
+        "arraysEqual @ three/three.module.js:4513": 3576,
+        "setValueV3f @ three/three.module.js:4608": 2460,
+        "painterSortStable @ three/three.module.js:7495": 2040,
+        "setFromEuler @ three/three.core.js:3701": 2040,
+        "copy @ three/three.core.js:11471": 1980,
+        "getMaxScaleOnAxis @ three/three.core.js:12087": 1824,
+        "sort @ (anonymous):-1": 1440,
+        "projectObject @ three/three.module.js:16548": 1260
+      },
+      "top_urls_at_2N": {
+        "three/three.module.js": 63000,
+        "three/three.core.js": 41564,
+        "(anonymous)": 14328,
+        "render/sky.js": 1008,
+        "render/renderer.js": 372,
+        "src/engine.js": 240
+      }
+    }
+  ]
+}

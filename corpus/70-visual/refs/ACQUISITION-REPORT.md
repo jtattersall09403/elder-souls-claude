@@ -1443,3 +1443,24 @@ profile); search for a screenshot of a Morrowind window mid-drag (R2C-22, closed
 route in `TEMPORAL-ACQUISITION.md` or `ACQUISITION-CRITIQUE-R1-code.md`; and **do not quote
 `files_on_disk` as a coverage number** — quote `countable_media` or a `metrics_valid_for` count,
 both of which the manifest now computes for you.
+
+## 17.9 Two instrument bugs found while fixing the first one
+
+Recorded because both were invisible in the catalogue and obvious in the code, which is the
+methodological point the critic closed with.
+
+1. **The machine HUD label was silently overwriting the human one.** `make-manifest.py` joins
+   computed fields *over* provenance, so the probe-derived `ui_overlay_kind` clobbered the
+   eye-verified value on every record — the exact failure the `_computed` / `_provenance` split
+   exists to prevent, arriving through a name collision. The computed field is renamed
+   **`ui_overlay_kind_probe`** and the two now sit side by side, which is also the more useful
+   arrangement: `ui_overlay_kind` (eye) reads combat-hud 61 / menu 42 / none 28, and
+   `ui_overlay_kind_probe` (chroma detector) reads both 271 / edge-hud 124 / centre-ui 48 /
+   none 158. **The disagreement between those two columns is the measure of how far the chroma
+   detector can be trusted**, and it is now a queryable number rather than a warning in prose.
+2. **Video was being recorded as a decode failure.** All 12 `.mp4` reference files carried
+   `error: UnidentifiedImageError` in `_computed.json`, because Pillow was asked to open them.
+   A reader could not distinguish a codec we skip on purpose from a file that is broken. Video
+   is now a first-class non-image asset (`asset_kind: video`) with nulls for every pixel
+   statistic — which is what A5 rule 3 and §5b already required. **`MANIFEST.json` now contains
+   zero error records**, down from 12.

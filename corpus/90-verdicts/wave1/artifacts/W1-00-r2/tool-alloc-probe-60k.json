@@ -1,0 +1,466 @@
+{
+  "schema": "elder-souls/alloc-probe@1",
+  "spec": "RI-PLT01 §C.3 P4 — 0 bytes/step in F1/F5, <= 2 KB/step in F3/F4",
+  "steps_per_scenario": 60000,
+  "repeats": 3,
+  "sampling_interval_bytes": 64,
+  "render": "disabled (setRenderRate(0))",
+  "trace_active": false,
+  "baseline": {
+    "total_bytes": 11964,
+    "bytes_per_iteration": 0.1994,
+    "top": [
+      {
+        "site": "(V8 API) @ :0",
+        "bytes": 4276,
+        "stack": [
+          "(root) @ :0",
+          "(V8 API) @ :0"
+        ]
+      },
+      {
+        "site": "evaluate @ :284",
+        "bytes": 4056,
+        "stack": [
+          "(root) @ :0",
+          "(anonymous) @ :1",
+          "evaluate @ :284"
+        ]
+      },
+      {
+        "site": "(anonymous) @ :1",
+        "bytes": 1440,
+        "stack": [
+          "(root) @ :0",
+          "(anonymous) @ :1",
+          "evaluate @ :284",
+          "(anonymous) @ :1"
+        ]
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "F1",
+      "label": "fen exterior",
+      "state": "swamp_canopy",
+      "enemies": 0,
+      "budget_bytes_per_step": 0,
+      "sampling": {
+        "total_bytes": 23200,
+        "bytes_per_step_raw": 0.3867,
+        "bytes_per_step_net_of_baseline": 0.1873,
+        "samples_estimate": 363,
+        "top_sites": [
+          {
+            "site": "latchForStep @ pipeline.js:162",
+            "bytes": 9828,
+            "stack": [
+              "evaluate @ :284",
+              "(anonymous) @ :1",
+              "stepFrames @ api.js:78",
+              "stepFrames @ engine.js:257",
+              "stepOnce @ loop.js:168",
+              "latchForStep @ pipeline.js:162"
+            ]
+          },
+          {
+            "site": "(V8 API) @ :0",
+            "bytes": 4836,
+            "stack": [
+              "(root) @ :0",
+              "(V8 API) @ :0"
+            ]
+          },
+          {
+            "site": "evaluate @ :284",
+            "bytes": 4060,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284"
+            ]
+          },
+          {
+            "site": "(BYTECODE_COMPILER) @ :0",
+            "bytes": 1096,
+            "stack": [
+              "(root) @ :0",
+              "(BYTECODE_COMPILER) @ :0"
+            ]
+          },
+          {
+            "site": "parseEvaluationResultValue @ :96",
+            "bytes": 1028,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284",
+              "parseEvaluationResultValue @ :96"
+            ]
+          },
+          {
+            "site": "(anonymous) @ :1",
+            "bytes": 744,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1"
+            ]
+          },
+          {
+            "site": "(IDLE_EXTERNAL) @ :0",
+            "bytes": 528,
+            "stack": [
+              "(root) @ :0",
+              "(IDLE_EXTERNAL) @ :0"
+            ]
+          },
+          {
+            "site": "(PARSER) @ :0",
+            "bytes": 376,
+            "stack": [
+              "(root) @ :0",
+              "(PARSER) @ :0"
+            ]
+          }
+        ]
+      },
+      "simulation_path": {
+        "method": "min of 3 samples at 120000 steps MINUS min of 3 at 60000 steps, divided by 60000. The subtraction cancels the per-stepFrames()-call constant; the minimum removes JIT/GC churn, which can only add.",
+        "bytes_at_1x_min": 10344,
+        "bytes_at_1x_all": [
+          10712,
+          10344,
+          10928
+        ],
+        "bytes_at_2x_min": 9828,
+        "bytes_at_2x_all": [
+          11540,
+          10448,
+          9828
+        ],
+        "bytes": 0,
+        "bytes_per_step": 0,
+        "modules": [
+          "/sim/step.js",
+          "/sim/player.js",
+          "/sim/entities.js",
+          "/sim/camera.js",
+          "/sim/events.js",
+          "/sim/state.js",
+          "/input/pipeline.js",
+          "/input/actions.js",
+          "/core/loop.js",
+          "/core/guards.js",
+          "/core/rng.js",
+          "/engine.js"
+        ],
+        "sites": [
+          {
+            "site": "latchForStep @ pipeline.js:162",
+            "bytes": 9828,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284",
+              "(anonymous) @ :1",
+              "stepFrames @ api.js:78",
+              "stepFrames @ engine.js:257",
+              "stepOnce @ loop.js:168",
+              "latchForStep @ pipeline.js:162"
+            ]
+          }
+        ],
+        "note": "Allocation attributed to the simulation's OWN modules during stepFrames(). This is the P4 number: everything else in the profile is CDP, the V8 API, the bytecode compiler and Playwright's serialiser, none of which the game ships."
+      },
+      "trace_record": {
+        "bytes": 0,
+        "bytes_per_step": 0,
+        "sites": [],
+        "note": "sim/record.js. RI-PLT01 C.3 excludes the trace record from P4 BY NAME and requires it to be built OUTSIDE the sim step. Counted here so the exclusion is visible; with --trace this should be non-zero AND every stack should show it outside stepOnce."
+      },
+      "retained": {
+        "before_bytes": 5556636,
+        "after_bytes": 5853384,
+        "after_gc_bytes": 5584544,
+        "retained_growth_bytes_per_step": 0.4651,
+        "note": "P5/P6 leak check. A steady-state loop must not retain."
+      },
+      "pass": true
+    },
+    {
+      "id": "F5",
+      "label": "dungeon interior",
+      "state": "dungeon_primary",
+      "enemies": 0,
+      "budget_bytes_per_step": 0,
+      "sampling": {
+        "total_bytes": 13196,
+        "bytes_per_step_raw": 0.2199,
+        "bytes_per_step_net_of_baseline": 0.0205,
+        "samples_estimate": 206,
+        "top_sites": [
+          {
+            "site": "(V8 API) @ :0",
+            "bytes": 4864,
+            "stack": [
+              "(root) @ :0",
+              "(V8 API) @ :0"
+            ]
+          },
+          {
+            "site": "evaluate @ :284",
+            "bytes": 4112,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284"
+            ]
+          },
+          {
+            "site": "(BYTECODE_COMPILER) @ :0",
+            "bytes": 1368,
+            "stack": [
+              "(root) @ :0",
+              "(BYTECODE_COMPILER) @ :0"
+            ]
+          },
+          {
+            "site": "parseEvaluationResultValue @ :96",
+            "bytes": 968,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284",
+              "parseEvaluationResultValue @ :96"
+            ]
+          },
+          {
+            "site": "(anonymous) @ :1",
+            "bytes": 900,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1"
+            ]
+          },
+          {
+            "site": "(PARSER) @ :0",
+            "bytes": 376,
+            "stack": [
+              "(root) @ :0",
+              "(PARSER) @ :0"
+            ]
+          },
+          {
+            "site": "Map @ :0",
+            "bytes": 156,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284",
+              "parseEvaluationResultValue @ :96",
+              "Map @ :0"
+            ]
+          },
+          {
+            "site": "(IDLE_EXTERNAL) @ :0",
+            "bytes": 144,
+            "stack": [
+              "(root) @ :0",
+              "(IDLE_EXTERNAL) @ :0"
+            ]
+          }
+        ]
+      },
+      "simulation_path": {
+        "method": "min of 3 samples at 120000 steps MINUS min of 3 at 60000 steps, divided by 60000. The subtraction cancels the per-stepFrames()-call constant; the minimum removes JIT/GC churn, which can only add.",
+        "bytes_at_1x_min": 72,
+        "bytes_at_1x_all": [
+          72,
+          10760,
+          96
+        ],
+        "bytes_at_2x_min": 0,
+        "bytes_at_2x_all": [
+          96,
+          0,
+          72
+        ],
+        "bytes": 0,
+        "bytes_per_step": 0,
+        "modules": [
+          "/sim/step.js",
+          "/sim/player.js",
+          "/sim/entities.js",
+          "/sim/camera.js",
+          "/sim/events.js",
+          "/sim/state.js",
+          "/input/pipeline.js",
+          "/input/actions.js",
+          "/core/loop.js",
+          "/core/guards.js",
+          "/core/rng.js",
+          "/engine.js"
+        ],
+        "sites": [],
+        "note": "Allocation attributed to the simulation's OWN modules during stepFrames(). This is the P4 number: everything else in the profile is CDP, the V8 API, the bytecode compiler and Playwright's serialiser, none of which the game ships."
+      },
+      "trace_record": {
+        "bytes": 0,
+        "bytes_per_step": 0,
+        "sites": [],
+        "note": "sim/record.js. RI-PLT01 C.3 excludes the trace record from P4 BY NAME and requires it to be built OUTSIDE the sim step. Counted here so the exclusion is visible; with --trace this should be non-zero AND every stack should show it outside stepOnce."
+      },
+      "retained": {
+        "before_bytes": 5445156,
+        "after_bytes": 6229708,
+        "after_gc_bytes": 5453844,
+        "retained_growth_bytes_per_step": 0.1448,
+        "note": "P5/P6 leak check. A steady-state loop must not retain."
+      },
+      "pass": true
+    },
+    {
+      "id": "F4",
+      "label": "six enemies",
+      "state": "arena_flat",
+      "enemies": 6,
+      "budget_bytes_per_step": 2048,
+      "sampling": {
+        "total_bytes": 13952,
+        "bytes_per_step_raw": 0.2325,
+        "bytes_per_step_net_of_baseline": 0.0331,
+        "samples_estimate": 218,
+        "top_sites": [
+          {
+            "site": "(V8 API) @ :0",
+            "bytes": 5412,
+            "stack": [
+              "(root) @ :0",
+              "(V8 API) @ :0"
+            ]
+          },
+          {
+            "site": "evaluate @ :284",
+            "bytes": 4172,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284"
+            ]
+          },
+          {
+            "site": "(BYTECODE_COMPILER) @ :0",
+            "bytes": 1224,
+            "stack": [
+              "(root) @ :0",
+              "(BYTECODE_COMPILER) @ :0"
+            ]
+          },
+          {
+            "site": "(anonymous) @ :1",
+            "bytes": 1104,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1"
+            ]
+          },
+          {
+            "site": "parseEvaluationResultValue @ :96",
+            "bytes": 964,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284",
+              "parseEvaluationResultValue @ :96"
+            ]
+          },
+          {
+            "site": "(PARSER) @ :0",
+            "bytes": 456,
+            "stack": [
+              "(root) @ :0",
+              "(PARSER) @ :0"
+            ]
+          },
+          {
+            "site": "Map @ :0",
+            "bytes": 160,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284",
+              "parseEvaluationResultValue @ :96",
+              "Map @ :0"
+            ]
+          },
+          {
+            "site": "jsonValue @ :301",
+            "bytes": 84,
+            "stack": [
+              "(root) @ :0",
+              "(anonymous) @ :1",
+              "evaluate @ :284",
+              "_promiseAwareJsonValueNoThrow @ :306",
+              "safeJson @ :307",
+              "jsonValue @ :301"
+            ]
+          }
+        ]
+      },
+      "simulation_path": {
+        "method": "min of 3 samples at 120000 steps MINUS min of 3 at 60000 steps, divided by 60000. The subtraction cancels the per-stepFrames()-call constant; the minimum removes JIT/GC churn, which can only add.",
+        "bytes_at_1x_min": 0,
+        "bytes_at_1x_all": [
+          0,
+          240,
+          96
+        ],
+        "bytes_at_2x_min": 0,
+        "bytes_at_2x_all": [
+          96,
+          72,
+          0
+        ],
+        "bytes": 0,
+        "bytes_per_step": 0,
+        "modules": [
+          "/sim/step.js",
+          "/sim/player.js",
+          "/sim/entities.js",
+          "/sim/camera.js",
+          "/sim/events.js",
+          "/sim/state.js",
+          "/input/pipeline.js",
+          "/input/actions.js",
+          "/core/loop.js",
+          "/core/guards.js",
+          "/core/rng.js",
+          "/engine.js"
+        ],
+        "sites": [],
+        "note": "Allocation attributed to the simulation's OWN modules during stepFrames(). This is the P4 number: everything else in the profile is CDP, the V8 API, the bytecode compiler and Playwright's serialiser, none of which the game ships."
+      },
+      "trace_record": {
+        "bytes": 0,
+        "bytes_per_step": 0,
+        "sites": [],
+        "note": "sim/record.js. RI-PLT01 C.3 excludes the trace record from P4 BY NAME and requires it to be built OUTSIDE the sim step. Counted here so the exclusion is visible; with --trace this should be non-zero AND every stack should show it outside stepOnce."
+      },
+      "retained": {
+        "before_bytes": 5482388,
+        "after_bytes": 5871848,
+        "after_gc_bytes": 5487988,
+        "retained_growth_bytes_per_step": 0.0933,
+        "note": "P5/P6 leak check. A steady-state loop must not retain."
+      },
+      "pass": true
+    }
+  ],
+  "instrument_self_test": {
+    "bytes_per_known_32B_allocation": 29.1,
+    "pass": true
+  },
+  "page_errors": [],
+  "pass": true
+}

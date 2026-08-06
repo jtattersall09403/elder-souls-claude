@@ -1,0 +1,152 @@
+{
+  "produced_by": "critic-owned p3-r5.mjs",
+  "R5_with_reanchor_enemy": {
+    "frames": 600,
+    "differing_fields": {},
+    "examples": {},
+    "pass": true,
+    "reanchor_30": {
+      "frame": 30,
+      "seed": 1337,
+      "entities": [
+        {
+          "eid": "e0",
+          "anim_len": 48,
+          "seeded_phase": 40,
+          "anim_frame": [
+            22,
+            40
+          ],
+          "state_entered_f": [
+            24,
+            30
+          ]
+        }
+      ]
+    },
+    "reanchor_90": {
+      "frame": 90,
+      "seed": 1337,
+      "entities": [
+        {
+          "eid": "e0",
+          "anim_len": 48,
+          "seeded_phase": 40,
+          "anim_frame": [
+            34,
+            40
+          ],
+          "state_entered_f": [
+            24,
+            90
+          ]
+        }
+      ]
+    }
+  },
+  "R5_without_reanchor_enemy": {
+    "frames": 600,
+    "differing_fields": {
+      "enemies[].anim_frame": 198
+    },
+    "examples": {
+      "enemies[].anim_frame": {
+        "i": 0,
+        "a": 23,
+        "b": 35
+      }
+    },
+    "pass": false
+  },
+  "R5_noenemy": {
+    "frames": 600,
+    "differing_fields": {},
+    "examples": {},
+    "pass": true
+  },
+  "reanchor_genuineness": {
+    "before": {
+      "snap": [
+        [
+          "e0",
+          22,
+          24
+        ]
+      ],
+      "hash": "f83383eb77fef66ef5b52e17c5b45500f236a48eb914b862bf44a21415cf006a"
+    },
+    "ra": {
+      "frame": 30,
+      "seed": 1337,
+      "entities": [
+        {
+          "eid": "e0",
+          "anim_len": 48,
+          "seeded_phase": 40,
+          "anim_frame": [
+            22,
+            40
+          ],
+          "state_entered_f": [
+            24,
+            30
+          ]
+        }
+      ]
+    },
+    "after": {
+      "snap": [
+        [
+          "e0",
+          40,
+          30
+        ]
+      ],
+      "hash": "8b09fbe725d1a295580d5558f7385f919b9873e95a161e82055ec0f83054d4f0"
+    },
+    "hashAfterSave": "8b09fbe725d1a295580d5558f7385f919b9873e95a161e82055ec0f83054d4f0",
+    "reloaded": {
+      "snap": [
+        [
+          "e0",
+          40,
+          0
+        ]
+      ],
+      "hash": "8b09fbe725d1a295580d5558f7385f919b9873e95a161e82055ec0f83054d4f0"
+    },
+    "plus3": [
+      [
+        "e0",
+        43
+      ]
+    ]
+  },
+  "stepdepth_guard": {
+    "inside": [
+      "snapshot-ok",
+      "random-ok",
+      "date-ok",
+      "snapshot-ok",
+      "random-ok",
+      "date-ok",
+      "snapshot-ok",
+      "random-ok",
+      "date-ok",
+      "snapshot-threw: TRACE RECORD BUILT INSIDE THE FIXED STEP. RI-PLT01 §C.3 requires the frame record to be built outside the simulation step: it allocates ~2 KB, and a step that allocates is a GC pause during a boss win",
+      "random-threw: DETERMINISM VIOLATION: Math.random() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded rand",
+      "date-threw: DETERMINISM VIOLATION: Date.now() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomn",
+      "snapshot-threw: TRACE RECORD BUILT INSIDE THE FIXED STEP. RI-PLT01 §C.3 requires the frame record to be built outside the simulation step: it allocates ~2 KB, and a step that allocates is a GC pause during a boss win",
+      "random-threw: DETERMINISM VIOLATION: Math.random() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded rand",
+      "date-threw: DETERMINISM VIOLATION: Date.now() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomn",
+      "snapshot-threw: TRACE RECORD BUILT INSIDE THE FIXED STEP. RI-PLT01 §C.3 requires the frame record to be built outside the simulation step: it allocates ~2 KB, and a step that allocates is a GC pause during a boss win",
+      "random-threw: DETERMINISM VIOLATION: Math.random() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded rand",
+      "date-threw: DETERMINISM VIOLATION: Date.now() was called inside a fixed simulation step. HARNESS.md §8 D1–D3 forbid unseeded randomn"
+    ],
+    "outside": {
+      "random": true,
+      "date": true,
+      "snapshot": true
+    }
+  }
+}
