@@ -1,0 +1,214 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r2h.mjs",
+  "tests": [
+    {
+      "id": "H1-questionnaire-named-class-reach",
+      "runs": 240,
+      "answer_histogram": {
+        "a": 600,
+        "b": 600,
+        "c": 600,
+        "d": 600
+      },
+      "roster_size": 14,
+      "named_classes_reached": [],
+      "named_count": 0,
+      "runs_producing_custom": 240,
+      "families": [
+        [
+          "thief",
+          18
+        ],
+        [
+          "scout",
+          51
+        ],
+        [
+          "social",
+          92
+        ],
+        [
+          "fighter",
+          53
+        ],
+        [
+          "root",
+          25
+        ],
+        [
+          "mage",
+          1
+        ]
+      ],
+      "sample_rows": [
+        {
+          "race": "dunmer",
+          "up": "interior",
+          "pat": "abcd",
+          "class_id": "custom",
+          "class_name": "Light-footed, no trade given",
+          "family": "thief",
+          "fit": null
+        },
+        {
+          "race": "saxhleel",
+          "up": "interior",
+          "pat": "badc",
+          "class_id": "custom",
+          "class_name": "Walks the country, untitled",
+          "family": "scout",
+          "fit": null
+        },
+        {
+          "race": "naga",
+          "up": "interior",
+          "pat": "cdab",
+          "class_id": "custom",
+          "class_name": "Talks for a living, no house",
+          "family": "social",
+          "fit": null
+        },
+        {
+          "race": "khajiit",
+          "up": "interior",
+          "pat": "dcba",
+          "class_id": "custom",
+          "class_name": "Salt-road hand, untitled",
+          "family": "fighter",
+          "fit": null
+        },
+        {
+          "race": "nord",
+          "up": "interior",
+          "pat": "acbd",
+          "class_id": "custom",
+          "class_name": "Walks the country, untitled",
+          "family": "scout",
+          "fit": null
+        },
+        {
+          "race": "breton",
+          "up": "interior",
+          "pat": "bdac",
+          "class_id": "custom",
+          "class_name": "Talks for a living, no house",
+          "family": "social",
+          "fit": null
+        }
+      ],
+      "bar": "RI-CHR01 scoring: >= 10 of 14 named classes questionnaire-reachable for 10; >= 6 for the pass floor; < 6 = the 0 band"
+    },
+    {
+      "id": "H2-player-hits-and-skill-progress",
+      "lock_on": {
+        "ok": true
+      },
+      "event_kinds": {
+        "LOCK_BREAK": 1,
+        "lock_break": 1,
+        "ACTION_START": 29,
+        "attack_start": 29,
+        "WHIFF": 28,
+        "whiff": 28,
+        "INPUT_DROPPED": 28,
+        "input_dropped": 28
+      },
+      "player_hits": 0,
+      "sample_hit": null,
+      "blades_before": {
+        "value": 25,
+        "progress": 0,
+        "to_next": 46,
+        "governing": "agility",
+        "levels_since_rest": 0
+      },
+      "blades_after": {
+        "value": 25,
+        "progress": 0,
+        "to_next": 46,
+        "governing": "agility",
+        "levels_since_rest": 0
+      },
+      "enemy_hp_before": 412,
+      "enemy_hp_after": 412,
+      "state_samples": [
+        {
+          "f": 100,
+          "p_state": "IDLE",
+          "p_move": null,
+          "e_hp": 412
+        },
+        {
+          "f": 200,
+          "p_state": "ATK_RECOVER",
+          "p_move": {
+            "id": "r1.1",
+            "startup": 24,
+            "active": 10,
+            "recovery": 40,
+            "total": 74,
+            "iframes": null
+          },
+          "e_hp": 412
+        },
+        {
+          "f": 300,
+          "p_state": "ATK_RECOVER",
+          "p_move": {
+            "id": "r1.1",
+            "startup": 24,
+            "active": 10,
+            "recovery": 40,
+            "total": 74,
+            "iframes": null
+          },
+          "e_hp": 412
+        },
+        {
+          "f": 400,
+          "p_state": "ATK_STARTUP",
+          "p_move": {
+            "id": "r1.1",
+            "startup": 24,
+            "active": 10,
+            "recovery": 40,
+            "total": 74,
+            "iframes": null
+          },
+          "e_hp": 412
+        },
+        {
+          "f": 500,
+          "p_state": "IDLE",
+          "p_move": null,
+          "e_hp": 412
+        },
+        {
+          "f": 600,
+          "p_state": "IDLE",
+          "p_move": null,
+          "e_hp": 412
+        },
+        {
+          "f": 700,
+          "p_state": "IDLE",
+          "p_move": null,
+          "e_hp": 412
+        },
+        {
+          "f": 800,
+          "p_state": "ATK_RECOVER",
+          "p_move": {
+            "id": "r1.1",
+            "startup": 24,
+            "active": 10,
+            "recovery": 40,
+            "total": 74,
+            "iframes": null
+          },
+          "e_hp": 412
+        }
+      ]
+    }
+  ]
+}
