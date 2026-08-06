@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-06T08:57:58Z
+Generated: 2026-08-06T08:58:23Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -26,11 +26,11 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 ## 1. Coverage at a glance
 
 - Canonical subsystem paths: **200**
-- Reference items found: **119** across 18 area(s)
+- Reference items found: **120** across 18 area(s)
 - Subsystems with at least one judging reference item: **177**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 17** (9%)
-- Front-matter problems: 136 error(s), 0 warning(s)
+- Front-matter problems: 138 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -717,6 +717,8 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | `corpus/88-journeys/RI-JRN08-returning-after-a-week.md` | judges: "journey.reentry.orientation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md` | judges: "composition.matrix.coverage" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md` | judges: "composition.seam.crossings" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/95-experience/RI-CMP02-emergence-fuzzing.md` | judges: "composition.emergence.fuzzing" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/95-experience/RI-CMP02-emergence-fuzzing.md` | judges: "composition.emergence.degeneracy" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md` | judges: "experience.opening.hook" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md` | judges: "experience.opening.beats" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/95-experience/RI-EXP02-anecdote-census.md` | judges: "experience.memory.anecdote" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
@@ -852,6 +854,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | RI-JRN07 | A quest end to end without markers — rumour, giver, prose, landmark, resolution, journal | 88-journeys | structure | morrowind | constructed | high | yes | `quests.discovery.hooks` `journal.navigation.nomarkers` | [corpus/88-journeys/RI-JRN07-a-quest-without-markers.md](../../corpus/88-journeys/RI-JRN07-a-quest-without-markers.md) |
 | RI-JRN08 | Returning after a week — can a cold player rebuild their own intentions from in-game information alone? | 88-journeys | structure | morrowind | constructed | high | yes | `journal.entry.voice` `journal.navigation.nomarkers` | [corpus/88-journeys/RI-JRN08-returning-after-a-week.md](../../corpus/88-journeys/RI-JRN08-returning-after-a-week.md) |
 | RI-CMP01 | The cross-system payoff matrix — the seam-sterility floor | 95-experience | structure | neutral | constructed | medium | no | `coherence.systems.composition` | [corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md](../../corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md) |
+| RI-CMP02 | Emergence — the fuzzing protocol for combinations nobody wrote | 95-experience | trace | neutral | constructed | medium | no |  | [corpus/95-experience/RI-CMP02-emergence-fuzzing.md](../../corpus/95-experience/RI-CMP02-emergence-fuzzing.md) |
 | RI-EXP01 | The first-hour beat sheet — what must have happened by minute sixty | 95-experience | structure | neutral | canonical-recall | medium | yes |  | [corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md](../../corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md) |
 | RI-EXP02 | The anecdote census — the memorability instrument | 95-experience | text | neutral | constructed | medium | yes |  | [corpus/95-experience/RI-EXP02-anecdote-census.md](../../corpus/95-experience/RI-EXP02-anecdote-census.md) |
 | RI-EXP03 | Session shape and the twenty-hour pacing curve — including the mid-game sag | 95-experience | graph | neutral | constructed | medium | yes |  | [corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md](../../corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md) |
@@ -986,6 +989,8 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | ERROR | `corpus/88-journeys/RI-JRN08-returning-after-a-week.md` | judges: "journey.reentry.orientation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md` | judges: "composition.matrix.coverage" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md` | judges: "composition.seam.crossings" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/95-experience/RI-CMP02-emergence-fuzzing.md` | judges: "composition.emergence.fuzzing" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/95-experience/RI-CMP02-emergence-fuzzing.md` | judges: "composition.emergence.degeneracy" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md` | judges: "experience.opening.hook" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md` | judges: "experience.opening.beats" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/95-experience/RI-EXP02-anecdote-census.md` | judges: "experience.memory.anecdote" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
