@@ -69,6 +69,7 @@ export class CombatBody {
     this.guardBreakUntil = 0;
     this.parriedUntil = 0;
     this.critTargetId = null;
+    this.pendingReaction = null;
     this.beingCritted = false;
     this.dead = false;
     this.yielded = false;
@@ -153,6 +154,56 @@ export class CombatBody {
 
     if (f >= m.total) return true;
     return false;
+  }
+
+  /**
+   * QUEUE a reaction — stagger, knockdown, guard break or PARRIED.
+   *
+   * **Hitstop lives OUTSIDE the hitstun state.** RI-CMB05 §B gives a stagger an exact length
+   * (44 f@60 medium, 64 f@60 heavy) and RI-CMB03 §D gives a guard break an exact 40 f@60. A
+   * reaction entered on the impact frame does not have that length: the impact frame itself
+   * carries anim_frame 0, and `sim.hitstopUntil` then freezes the whole world for the
+   * attack's declared `hitstop_frames`, during which the reaction's animation clock cannot
+   * advance but its STATE is already on the actor. The observable state therefore ran
+   * `total + hitstop_frames` frames — 46 and 50 and 70 against a corpus that prints 40, 44
+   * and 64 (W1-09 verdict §2.1/§2.2, "one cause, four symptoms").
+   *
+   * The fix is compositional, not per-number: the impact frame and the hold are the IMPACT,
+   * and the hitstun animation begins on the first frame the world runs again. Every reaction
+   * state is then exactly as long as the corpus says it is, at every hitstop value including
+   * zero, and `staggerUntil` / `guardBreakUntil` line up with the state instead of expiring
+   * six frames inside it (which is what let stamina regenerate at the full rate through the
+   * tail of a guard break).
+   */
+  queueReaction(move, frame) {
+    this.pendingReaction = { move, at: frame };
+    this.move = null;
+    this.hitboxActive = false;
+    this.iframe = false;
+    this.iframeKind = null;
+  }
+
+  /** Queue the PARRIED reaction — RI-CMB05 §D, same hitstop rule as every other hitstun. */
+  queueParried(frames, frame) {
+    this.pendingReaction = { parriedFrames: frames, at: frame };
+    this.move = null;
+    this.hitboxActive = false;
+    this.iframe = false;
+    this.iframeKind = null;
+  }
+
+  /**
+   * Start any queued reaction. Called at the top of the first simulation step that is not a
+   * hitstop hold, BEFORE the controllers run, so the controller's own `advance()` takes the
+   * reaction to anim_frame 1 in the same step.
+   */
+  flushReaction(frame) {
+    const p = this.pendingReaction;
+    if (!p) return null;
+    this.pendingReaction = null;
+    if (p.parriedFrames !== undefined) { this.beginParried(p.parriedFrames, frame); return 'parried'; }
+    this.beginReaction(p.move, frame);
+    return p.move.kind;
   }
 
   /**

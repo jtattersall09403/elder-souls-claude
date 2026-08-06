@@ -178,12 +178,14 @@ function smooth(p, passes) {
  * this predicate, so sinuosity can only be bought on ground the road could actually be built on.
  * `t = 0` — the routed point itself — is always admissible, so a leg can never fail to solve.
  */
+let ALLOW_WATER = false;        // set for the one leg RI-WLD01 §4 declares a tideway
 function admissible(x, z) {
   const g = field.heightAt(x, z);
   let s = null;
   for (const ph of [0, 0.25, 0.5, 0.75]) { const v = field.waterSurfaceAt(x, z, ph); if (v !== null && (s === null || v > s)) s = v; }
-  if (s !== null && s - g > 0.45) return false;          // never over knee-deep at any tide phase
-  if (field.slopeAt(x, z, 8) > 28) return false;          // and never on ground a deck cannot hold
+  if (!ALLOW_WATER && s !== null && s - g > 0.45) return false;   // never over knee-deep at any phase
+  if (ALLOW_WATER && s !== null && s - g > 2.6) return false;     // the tideway floods; it is not a trench
+  if (field.slopeAt(x, z, 8) > 28) return false;                  // and never on ground a deck cannot hold
   return true;
 }
 /** Move `q` toward `to` by the largest fraction of the way that stays admissible. */
@@ -235,6 +237,7 @@ const MAX_CUT_M = 3.0;         // a road cutting. Deeper than this is a trench, 
 const MAX_FILL_M = 8.0;        // an embankment; above DECK_M of it the road is a deck, not a bank
 const DECK_M = 3.0;            // fill above this is emitted as a causeway/bridge span
 const MAX_GRADE = 0.30;
+const RAMP_EXTRA_M = 8.0;      // how far a clearance ramp may exceed the ordinary fill limit
 const TIDE_PHASES = [0, 0.25, 0.5, 0.75];
 
 /** The highest this point's water ever stands, over the whole tide cycle; null where never wet. */
@@ -278,7 +281,7 @@ function corridorHighWater(p, i, halfWidth) {
   return s;
 }
 
-function solveDeck(p, tideway, halfWidth) {
+function solveDeck(p, tideway, halfWidth, extraFloor = null) {
   const g = p.map(([x, z]) => field.heightAt(x, z));
   const hw = p.map((_, i) => corridorHighWater(p, i, halfWidth));
   // The tideway is the one leg whose identity is that it is BELOW the waterline: 0.85 m under mean
@@ -288,7 +291,26 @@ function solveDeck(p, tideway, halfWidth) {
     const y = p.map(([x, z], i) => (field.waterSurfaceAt(x, z, 0) === null ? g[i] : field.waterSurfaceAt(x, z, 0)) - 0.85);
     return { y, max_cut: 0, max_fill: 0, spans: [], span_m: 0 };
   }
-  const floor = hw.map((v) => (v === null ? -Infinity : v + CLEAR_M));
+  const floor = hw.map((v, i) => {
+    let f = v === null ? -Infinity : v + CLEAR_M;
+    if (extraFloor && extraFloor[i] > f) f = extraFloor[i];
+    return f;
+  });
+  // A forced water clearance is a RAMP, not a spike. The fill allowance is dilated outward from
+  // every clearance at the grade limit, so a causeway climbs onto its crossing over 50 m instead of
+  // standing 15 m proud of the road either side of it in a single 12 m step.
+  const ramp = floor.slice();
+  for (let i = 1; i < ramp.length; i++) {
+    const d = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]) || 1;
+    ramp[i] = Math.max(ramp[i], ramp[i - 1] - MAX_GRADE * d);
+  }
+  for (let i = ramp.length - 2; i >= 0; i--) {
+    const d = Math.hypot(p[i + 1][0] - p[i][0], p[i + 1][1] - p[i][1]) || 1;
+    ramp[i] = Math.max(ramp[i], ramp[i + 1] - MAX_GRADE * d);
+  }
+  // The dilation is itself capped: a channel whose surface stands above its own banks (the water
+  // model does produce a few) must not be allowed to turn the approach into a 67 m earth wall.
+  const ceil = g.map((gi, i) => Math.max(gi + MAX_FILL_M, Math.min(ramp[i], gi + MAX_FILL_M + RAMP_EXTRA_M)));
   let y = g.map((gi, i) => Math.max(gi, floor[i] === -Infinity ? -1e9 : floor[i]));
   for (let k = 0; k < 60; k++) {
     const q = y.slice();
@@ -302,7 +324,7 @@ function solveDeck(p, tideway, halfWidth) {
       q[i] = clamp(q[i], q[i + 1] - MAX_GRADE * d, q[i + 1] + MAX_GRADE * d);
     }
     for (let i = 0; i < q.length; i++) {
-      q[i] = clamp(q[i], g[i] - MAX_CUT_M, g[i] + MAX_FILL_M);
+      q[i] = clamp(q[i], g[i] - MAX_CUT_M, ceil[i]);
       if (floor[i] > q[i]) q[i] = floor[i];
     }
     y = q;
@@ -346,7 +368,7 @@ const minorsFor = (a, b) => Object.entries(scale.minor_settlements)
     return ((p.x - ax) * dx + (p.z - az) * dz) / L2 - ((q.x - ax) * dx + (q.z - az) * dz) / L2;
   });
 
-const legs = [];
+const routes = [];
 for (const leg of scale.roads) {
   // The sinuosity solve is applied PER SUB-SEGMENT (settlement to minor to minor to settlement),
   // not across the whole leg. Solving it across the leg pushed the road up to 200 m sideways and
@@ -358,6 +380,7 @@ for (const leg of scale.roads) {
   const chordSum = chords.reduce((a, b) => a + b, 0);
   const modes = [];
   let p = [];
+  ALLOW_WATER = /tideway/i.test(leg.class);
   for (let i = 0; i + 1 < way.length; i++) {
     const tgt = leg.path_m * chords[i] / chordSum;
     // The leg length is RI-WLD01 §4's number and it is met by bisection — but the scalar bisected
@@ -384,11 +407,21 @@ for (const leg of scale.roads) {
         const m = (lo + hi) / 2, cand = route(m);
         if (len2d(cand) <= tgt) { lo = m; sp = cand; } else hi = m;
       }
-      let a = 0, b = 400;
-      for (let it = 0; it < 30; it++) { const m = (a + b) / 2; if (len2d(wiggle(sp, m, 0.11 + i * 0.19)) < tgt) a = m; else b = m; }
-      amount = (a + b) / 2;
-      sp = wiggle(sp, amount, 0.11 + i * 0.19);
-      mode = `detour w=${lo.toFixed(2)} + sinuosity ${amount.toFixed(0)} m`;
+      // The lateral solve saturates where `admissible` refuses the displacement, so it is run in
+      // up to four passes at different phases: each pass adds what the ground it is offered will
+      // take. That is what holds the built length on RI-WLD01 §4's number without ever putting a
+      // metre of road somewhere a road cannot go.
+      const amps = [];
+      for (let pass = 0; pass < 4 && len2d(sp) < tgt - 0.5; pass++) {
+        const ph = 0.11 + i * 0.19 + pass * 0.37;
+        let a = 0, b = 400;
+        for (let it = 0; it < 30; it++) { const m = (a + b) / 2; if (len2d(wiggle(sp, m, ph)) < tgt) a = m; else b = m; }
+        if ((a + b) / 2 < 0.5) break;
+        sp = wiggle(sp, (a + b) / 2, ph);
+        amps.push(Math.round((a + b) / 2));
+      }
+      amount = amps[0] || 0;
+      mode = `detour w=${lo.toFixed(2)} + sinuosity ${amps.join('+') || 0} m`;
     }
     modes.push(mode);
     for (let k = (p.length ? 1 : 0); k < sp.length; k++) p.push(sp[k]);
@@ -397,31 +430,71 @@ for (const leg of scale.roads) {
   const amount = 0;
   p = resample(p, 12);
 
-  // ---- elevation profile --------------------------------------------------------------------
   const tideway = /tideway/i.test(leg.class);
-  const halfWidth = tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0;
-  const deck = solveDeck(p, tideway, halfWidth);
-  const y = deck.y;
-  let maxGrade = 0;
-  for (let i = 1; i < y.length; i++) {
-    const d = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]) || 1;
-    maxGrade = Math.max(maxGrade, Math.abs(y[i] - y[i - 1]) / d);
+  routes.push({ leg, p, mode, tideway,
+    halfWidth: tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0 });
+}
+
+// ---- the deck repair loop --------------------------------------------------------------------
+// The deck solve reasons about the field WITHOUT the roads in it, and `field._applyRoads` then
+// blends the ground toward the deck — so the ground the player actually stands on is only known
+// once the roads are attached. Solve, attach, MEASURE, raise where it is still wet, repeat. The
+// loop is the proof: it exits only when the built ground along every centreline, at every one of
+// the four tide phases, is dry (or, on the tideway, exactly as deep as RI-WLD10 M54 declares).
+const legs = [];
+{
+  const decks = routes.map((r) => solveDeck(r.p, r.tideway, r.halfWidth));
+  const floors = routes.map((r) => new Float64Array(r.p.length).fill(-Infinity));
+  let wet = 0;
+  for (let pass = 0; pass < 6; pass++) {
+    const probe = new WorldField(rd('game/data/world/terrain.json'), rd('game/data/world/regions.json'), rd('game/data/world/water.json'));
+    probe.setRoads({ legs: routes.map((r, k) => ({ points: r.p.map((q, i) => [q[0], q[1], decks[k].y[i]]), half_width_m: r.halfWidth, id: r.leg.from })) });
+    wet = 0;
+    for (let k = 0; k < routes.length; k++) {
+      if (routes[k].tideway) continue;
+      const p = routes[k].p;
+      for (let i = 1; i < p.length; i++) {
+        const seg = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]);
+        const n = Math.max(1, Math.ceil(seg / 2));
+        for (let q = 0; q <= n; q++) {
+          const t = q / n;
+          const x = p[i - 1][0] + (p[i][0] - p[i - 1][0]) * t, z = p[i - 1][1] + (p[i][1] - p[i - 1][1]) * t;
+          let d = 0;
+          for (const ph of TIDE_PHASES) d = Math.max(d, probe.depthAt(x, z, ph));
+          if (d <= 0.001) continue;
+          wet++;
+          const want = probe.heightAt(x, z) + d + CLEAR_M;
+          for (const j of [i - 1, i]) if (want > floors[k][j]) floors[k][j] = want;
+        }
+      }
+    }
+    if (!wet) break;
+    for (let k = 0; k < routes.length; k++) decks[k] = solveDeck(routes[k].p, routes[k].tideway, routes[k].halfWidth, floors[k]);
   }
-  const pts = p.map((q, i) => [+q[0].toFixed(2), +q[1].toFixed(2), +y[i].toFixed(2)]);
-  const built = len2d(p);
-  legs.push({
-    id: `${leg.from}-${leg.to}`.toLowerCase(), from: leg.from, to: leg.to, class: leg.class,
-    tide_gated: tideway,
-    straight_m: leg.straight_m, declared_path_m: leg.path_m, built_path_m: +built.toFixed(1),
-    declared_walk_min: leg.walk_min, built_walk_min: +(built / 2.0 / 60).toFixed(2),
-    sinuosity_built: +(built / Math.hypot(S[leg.to].x - S[leg.from].x, S[leg.to].z - S[leg.from].z)).toFixed(3),
-    routing: mode,
-    max_grade: +maxGrade.toFixed(3),
-    max_cut_m: deck.max_cut, max_fill_m: deck.max_fill,
-    deck_spans: deck.spans, deck_span_m: deck.span_m,
-    half_width_m: halfWidth,
-    waypoints: minorsFor(leg.from, leg.to).map((m) => m.name),
-    points: pts,
+  if (wet) process.stderr.write(`WARNING: deck repair did not converge; ${wet} wet corridor samples remain\n`);
+  routes.forEach((r, k) => {
+    const { leg, p, mode, tideway, halfWidth } = r;
+    const deck = decks[k], y = deck.y;
+    let maxGrade = 0;
+    for (let i = 1; i < y.length; i++) {
+      const d = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]) || 1;
+      maxGrade = Math.max(maxGrade, Math.abs(y[i] - y[i - 1]) / d);
+    }
+    const built = len2d(p);
+    legs.push({
+      id: `${leg.from}-${leg.to}`.toLowerCase(), from: leg.from, to: leg.to, class: leg.class,
+      tide_gated: tideway,
+      straight_m: leg.straight_m, declared_path_m: leg.path_m, built_path_m: +built.toFixed(1),
+      declared_walk_min: leg.walk_min, built_walk_min: +(built / 2.0 / 60).toFixed(2),
+      sinuosity_built: +(built / Math.hypot(S[leg.to].x - S[leg.from].x, S[leg.to].z - S[leg.from].z)).toFixed(3),
+      routing: mode,
+      max_grade: +maxGrade.toFixed(3),
+      max_cut_m: deck.max_cut, max_fill_m: deck.max_fill,
+      deck_spans: deck.spans, deck_span_m: deck.span_m,
+      half_width_m: halfWidth,
+      waypoints: minorsFor(leg.from, leg.to).map((m) => m.name),
+      points: p.map((q, i) => [+q[0].toFixed(2), +q[1].toFixed(2), +y[i].toFixed(2)]),
+    });
   });
 }
 
@@ -515,10 +588,13 @@ const doc = {
 };
 writeFileSync(join(ROOT, 'game/data/world/roads.json'), JSON.stringify(doc, null, 1) + '\n');
 
-process.stdout.write(`leg                       decl m   built m    err%   walk min  grade  routing\n`);
+process.stdout.write(`leg                       decl m   built m    err%    sinu(decl)  grade    cut   fill  spans\n`);
 for (const l of legs) {
+  const decl = scale.roads.find((r) => `${r.from}-${r.to}`.toLowerCase() === l.id).sinuosity;
   process.stdout.write(`${(l.from + ' -> ' + l.to).padEnd(24)} ${String(l.declared_path_m).padStart(6)} ${String(l.built_path_m).padStart(9)} `
-    + `${((l.built_path_m / l.declared_path_m - 1) * 100).toFixed(2).padStart(7)}  ${String(l.built_walk_min).padStart(8)}  ${l.max_grade.toFixed(2).padStart(5)}  ${l.routing}\n`);
+    + `${((l.built_path_m / l.declared_path_m - 1) * 100).toFixed(2).padStart(7)}  ${l.sinuosity_built.toFixed(3)} (${decl.toFixed(2)})  `
+    + `${l.max_grade.toFixed(2).padStart(5)}  ${l.max_cut_m.toFixed(1).padStart(5)}  ${l.max_fill_m.toFixed(1).padStart(5)}  `
+    + `${l.deck_spans.length} spans / ${l.deck_span_m} m\n`);
 }
 process.stdout.write(`\nwaystations ${waystations.length} inserted to hold every habitation gap under 8 walking minutes\n`);
 process.stdout.write(`trunk network ${doc.total_trunk_m} m (RI-WLD01: 25,331 m)\n`);

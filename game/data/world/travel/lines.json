@@ -1,0 +1,497 @@
+{
+ "schema": "elder-souls/travel-lines@1",
+ "generator": "tools/world/build-travel.mjs",
+ "derived_from": [
+  "corpus/50-world/travel-network.json",
+  "corpus/50-world/world-scale.json",
+  "game/data/world/roads.json"
+ ],
+ "lines": [
+  {
+   "line_id": "RW-STO-THO",
+   "name": "The Rootway: Stormhold – Thorn",
+   "mode": "rootway",
+   "road_leg": "Stormhold–Thorn",
+   "road_class": "causeway",
+   "stations": [
+    "stormhold",
+    "ixtaxh-tzil",
+    "thorn"
+   ],
+   "hop_count": 2,
+   "line_route_m": 2252,
+   "line_ticket_gold": 30,
+   "line_game_min": 107.2,
+   "sum_of_hop_fares": 30,
+   "walk_real_min": 18.6,
+   "station_names": [
+    "Stormhold",
+    "Ixtaxh-Tzil",
+    "Thorn"
+   ],
+   "hops": [
+    "svc-001-rootway-stormhold-ixtaxh-tzil",
+    "svc-002-rootway-ixtaxh-tzil-thorn"
+   ]
+  },
+  {
+   "line_id": "RW-STO-HEL",
+   "name": "The Rootway: Stormhold – Helstrom",
+   "mode": "rootway",
+   "road_leg": "Stormhold–Helstrom",
+   "road_class": "river road",
+   "stations": [
+    "stormhold",
+    "nine-mud",
+    "the-weeping-ford",
+    "helstrom"
+   ],
+   "hop_count": 3,
+   "line_route_m": 2981,
+   "line_ticket_gold": 37,
+   "line_game_min": 142,
+   "sum_of_hop_fares": 37,
+   "walk_real_min": 24.3,
+   "station_names": [
+    "Stormhold",
+    "Nine-Mud",
+    "The Weeping Ford",
+    "Helstrom"
+   ],
+   "hops": [
+    "svc-003-rootway-stormhold-nine-mud",
+    "svc-004-rootway-nine-mud-the-weeping-ford",
+    "svc-005-rootway-the-weeping-ford-helstrom"
+   ]
+  },
+  {
+   "line_id": "BG-STO-HEL",
+   "name": "Barge line: Stormhold – Helstrom",
+   "mode": "barge",
+   "road_leg": "Stormhold–Helstrom",
+   "road_class": "river road",
+   "stations": [
+    "stormhold",
+    "nine-mud",
+    "the-weeping-ford",
+    "helstrom"
+   ],
+   "hop_count": 3,
+   "line_route_m": 3280,
+   "line_ticket_gold": 34,
+   "line_game_min": 243,
+   "sum_of_hop_fares": 34,
+   "walk_real_min": 24.3,
+   "station_names": [
+    "Stormhold",
+    "Nine-Mud",
+    "The Weeping Ford",
+    "Helstrom"
+   ],
+   "hops": [
+    "svc-006-barge-stormhold-nine-mud",
+    "svc-008-barge-nine-mud-the-weeping-ford",
+    "svc-010-barge-the-weeping-ford-helstrom"
+   ]
+  },
+  {
+   "line_id": "RW-HEL-ARC",
+   "name": "The Rootway: Helstrom – Archon",
+   "mode": "rootway",
+   "road_leg": "Helstrom–Archon",
+   "road_class": "stone road",
+   "stations": [
+    "helstrom",
+    "xal-ithix",
+    "kiln-camp",
+    "archon"
+   ],
+   "hop_count": 3,
+   "line_route_m": 2635,
+   "line_ticket_gold": 34,
+   "line_game_min": 125.5,
+   "sum_of_hop_fares": 34,
+   "walk_real_min": 21.6,
+   "station_names": [
+    "Helstrom",
+    "Xal-Ithix",
+    "Kiln Camp",
+    "Archon"
+   ],
+   "hops": [
+    "svc-012-rootway-helstrom-xal-ithix",
+    "svc-013-rootway-xal-ithix-kiln-camp",
+    "svc-014-rootway-kiln-camp-archon"
+   ]
+  },
+  {
+   "line_id": "RW-HEL-BLA",
+   "name": "The Rootway: Helstrom – Blackrose",
+   "mode": "rootway",
+   "road_leg": "Helstrom–Blackrose",
+   "road_class": "marsh trail",
+   "stations": [
+    "helstrom",
+    "sunken-barrow",
+    "mudwater-landing",
+    "blackrose"
+   ],
+   "hop_count": 3,
+   "line_route_m": 2550,
+   "line_ticket_gold": 32,
+   "line_game_min": 121.4,
+   "sum_of_hop_fares": 32,
+   "walk_real_min": 20.7,
+   "station_names": [
+    "Helstrom",
+    "Sunken Barrow",
+    "Mudwater Landing",
+    "Blackrose"
+   ],
+   "hops": [
+    "svc-015-rootway-helstrom-sunken-barrow",
+    "svc-016-rootway-sunken-barrow-mudwater-landing",
+    "svc-017-rootway-mudwater-landing-blackrose"
+   ]
+  },
+  {
+   "line_id": "BG-HEL-BLA",
+   "name": "Barge line: Helstrom – Blackrose",
+   "mode": "barge",
+   "road_leg": "Helstrom–Blackrose",
+   "road_class": "marsh trail",
+   "stations": [
+    "helstrom",
+    "sunken-barrow",
+    "mudwater-landing",
+    "blackrose"
+   ],
+   "hop_count": 3,
+   "line_route_m": 2805,
+   "line_ticket_gold": 29,
+   "line_game_min": 207.8,
+   "sum_of_hop_fares": 29,
+   "walk_real_min": 20.7,
+   "station_names": [
+    "Helstrom",
+    "Sunken Barrow",
+    "Mudwater Landing",
+    "Blackrose"
+   ],
+   "hops": [
+    "svc-018-barge-helstrom-sunken-barrow",
+    "svc-020-barge-sunken-barrow-mudwater-landing",
+    "svc-022-barge-mudwater-landing-blackrose"
+   ]
+  },
+  {
+   "line_id": "RW-HEL-GID",
+   "name": "The Rootway: Helstrom – Gideon",
+   "mode": "rootway",
+   "road_leg": "Helstrom–Gideon",
+   "road_class": "Imperial road",
+   "stations": [
+    "helstrom",
+    "rootway-post",
+    "tenmarch-bridge",
+    "gideon"
+   ],
+   "hop_count": 3,
+   "line_route_m": 2412,
+   "line_ticket_gold": 29,
+   "line_game_min": 114.9,
+   "sum_of_hop_fares": 29,
+   "walk_real_min": 19.8,
+   "station_names": [
+    "Helstrom",
+    "Rootway Post",
+    "Tenmarch Bridge",
+    "Gideon"
+   ],
+   "hops": [
+    "svc-024-rootway-helstrom-rootway-post",
+    "svc-025-rootway-rootway-post-tenmarch-bridge",
+    "svc-026-rootway-tenmarch-bridge-gideon"
+   ]
+  },
+  {
+   "line_id": "BG-HEL-GID",
+   "name": "Barge line: Helstrom – Gideon",
+   "mode": "barge",
+   "road_leg": "Helstrom–Gideon",
+   "road_class": "Imperial road",
+   "stations": [
+    "helstrom",
+    "tenmarch-bridge",
+    "gideon"
+   ],
+   "hop_count": 2,
+   "line_route_m": 2622,
+   "line_ticket_gold": 32,
+   "line_game_min": 194.2,
+   "sum_of_hop_fares": 32,
+   "walk_real_min": 19.8,
+   "station_names": [
+    "Helstrom",
+    "Tenmarch Bridge",
+    "Gideon"
+   ],
+   "hops": [
+    "svc-027-barge-helstrom-tenmarch-bridge",
+    "svc-029-barge-tenmarch-bridge-gideon"
+   ]
+  },
+  {
+   "line_id": "RW-GID-SOU",
+   "name": "The Rootway: Gideon – Soulrest",
+   "mode": "rootway",
+   "road_leg": "Gideon–Soulrest",
+   "road_class": "coast road",
+   "stations": [
+    "gideon",
+    "hollow-reeds",
+    "bone-ladder",
+    "soulrest"
+   ],
+   "hop_count": 3,
+   "line_route_m": 2571,
+   "line_ticket_gold": 31,
+   "line_game_min": 122.4,
+   "sum_of_hop_fares": 31,
+   "walk_real_min": 21.4,
+   "station_names": [
+    "Gideon",
+    "Hollow-Reeds",
+    "Bone Ladder",
+    "Soulrest"
+   ],
+   "hops": [
+    "svc-031-rootway-gideon-hollow-reeds",
+    "svc-032-rootway-hollow-reeds-bone-ladder",
+    "svc-033-rootway-bone-ladder-soulrest"
+   ]
+  },
+  {
+   "line_id": "BG-GID-SOU",
+   "name": "Barge line: Gideon – Soulrest",
+   "mode": "barge",
+   "road_leg": "Gideon–Soulrest",
+   "road_class": "coast road",
+   "stations": [
+    "gideon",
+    "hollow-reeds",
+    "bone-ladder",
+    "soulrest"
+   ],
+   "hop_count": 3,
+   "line_route_m": 2829,
+   "line_ticket_gold": 28,
+   "line_game_min": 209.6,
+   "sum_of_hop_fares": 28,
+   "walk_real_min": 21.4,
+   "station_names": [
+    "Gideon",
+    "Hollow-Reeds",
+    "Bone Ladder",
+    "Soulrest"
+   ],
+   "hops": [
+    "svc-034-barge-gideon-hollow-reeds",
+    "svc-036-barge-hollow-reeds-bone-ladder",
+    "svc-038-barge-bone-ladder-soulrest"
+   ]
+  },
+  {
+   "line_id": "RW-SOU-BLA",
+   "name": "The Rootway: Soulrest – Blackrose",
+   "mode": "rootway",
+   "road_leg": "Soulrest–Blackrose",
+   "road_class": "rootland track",
+   "stations": [
+    "soulrest",
+    "salt-egg-camp",
+    "blackrose"
+   ],
+   "hop_count": 2,
+   "line_route_m": 1849,
+   "line_ticket_gold": 23,
+   "line_game_min": 88,
+   "sum_of_hop_fares": 23,
+   "walk_real_min": 15.3,
+   "station_names": [
+    "Soulrest",
+    "Salt-Egg Camp",
+    "Blackrose"
+   ],
+   "hops": [
+    "svc-040-rootway-soulrest-salt-egg-camp",
+    "svc-041-rootway-salt-egg-camp-blackrose"
+   ]
+  },
+  {
+   "line_id": "BG-SOU-BLA",
+   "name": "Barge line: Soulrest – Blackrose",
+   "mode": "barge",
+   "road_leg": "Soulrest–Blackrose",
+   "road_class": "rootland track",
+   "stations": [
+    "soulrest",
+    "salt-egg-camp",
+    "blackrose"
+   ],
+   "hop_count": 2,
+   "line_route_m": 2034,
+   "line_ticket_gold": 21,
+   "line_game_min": 150.7,
+   "sum_of_hop_fares": 21,
+   "walk_real_min": 15.3,
+   "station_names": [
+    "Soulrest",
+    "Salt-Egg Camp",
+    "Blackrose"
+   ],
+   "hops": [
+    "svc-042-barge-soulrest-salt-egg-camp",
+    "svc-044-barge-salt-egg-camp-blackrose"
+   ]
+  },
+  {
+   "line_id": "RW-BLA-LIL",
+   "name": "The Rootway: Blackrose – Lilmoth",
+   "mode": "rootway",
+   "road_leg": "Blackrose–Lilmoth",
+   "road_class": "stilt causeway",
+   "stations": [
+    "blackrose",
+    "stilt-row",
+    "lilmoth"
+   ],
+   "hop_count": 2,
+   "line_route_m": 1536,
+   "line_ticket_gold": 18,
+   "line_game_min": 73.1,
+   "sum_of_hop_fares": 18,
+   "walk_real_min": 12.5,
+   "station_names": [
+    "Blackrose",
+    "Stilt-Row",
+    "Lilmoth"
+   ],
+   "hops": [
+    "svc-046-rootway-blackrose-stilt-row",
+    "svc-047-rootway-stilt-row-lilmoth"
+   ]
+  },
+  {
+   "line_id": "BG-BLA-LIL",
+   "name": "Barge line: Blackrose – Lilmoth",
+   "mode": "barge",
+   "road_leg": "Blackrose–Lilmoth",
+   "road_class": "stilt causeway",
+   "stations": [
+    "blackrose",
+    "stilt-row",
+    "lilmoth"
+   ],
+   "hop_count": 2,
+   "line_route_m": 1690,
+   "line_ticket_gold": 16,
+   "line_game_min": 125.2,
+   "sum_of_hop_fares": 16,
+   "walk_real_min": 12.5,
+   "station_names": [
+    "Blackrose",
+    "Stilt-Row",
+    "Lilmoth"
+   ],
+   "hops": [
+    "svc-048-barge-blackrose-stilt-row",
+    "svc-050-barge-stilt-row-lilmoth"
+   ]
+  },
+  {
+   "line_id": "RW-ARC-THO",
+   "name": "The Rootway: Archon – Thorn",
+   "mode": "rootway",
+   "road_leg": "Archon–Thorn",
+   "road_class": "Clay Moor track",
+   "stations": [
+    "archon",
+    "clayfast",
+    "the-red-wells",
+    "thorn"
+   ],
+   "hop_count": 3,
+   "line_route_m": 4333,
+   "line_ticket_gold": 66,
+   "line_game_min": 206.3,
+   "sum_of_hop_fares": 66,
+   "walk_real_min": 35.8,
+   "station_names": [
+    "Archon",
+    "Clayfast",
+    "The Red Wells",
+    "Thorn"
+   ],
+   "hops": [
+    "svc-052-rootway-archon-clayfast",
+    "svc-053-rootway-clayfast-the-red-wells",
+    "svc-054-rootway-the-red-wells-thorn"
+   ]
+  },
+  {
+   "line_id": "RW-LIL-ARC",
+   "name": "The Rootway: Lilmoth – Archon",
+   "mode": "rootway",
+   "road_leg": "Lilmoth–Archon",
+   "road_class": "tideway (tide-gated)",
+   "stations": [
+    "lilmoth",
+    "tideway-shrine",
+    "archon"
+   ],
+   "hop_count": 2,
+   "line_route_m": 2540,
+   "line_ticket_gold": 36,
+   "line_game_min": 121,
+   "sum_of_hop_fares": 36,
+   "walk_real_min": 21,
+   "station_names": [
+    "Lilmoth",
+    "Tideway Shrine",
+    "Archon"
+   ],
+   "hops": [
+    "svc-055-rootway-lilmoth-tideway-shrine",
+    "svc-056-rootway-tideway-shrine-archon"
+   ]
+  },
+  {
+   "line_id": "BG-LIL-ARC",
+   "name": "Barge line: Lilmoth – Archon",
+   "mode": "barge",
+   "road_leg": "Lilmoth–Archon",
+   "road_class": "tideway (tide-gated)",
+   "stations": [
+    "lilmoth",
+    "tideway-shrine",
+    "archon"
+   ],
+   "hop_count": 2,
+   "line_route_m": 2794,
+   "line_ticket_gold": 34,
+   "line_game_min": 207,
+   "sum_of_hop_fares": 34,
+   "walk_real_min": 21,
+   "station_names": [
+    "Lilmoth",
+    "Tideway Shrine",
+    "Archon"
+   ],
+   "hops": [
+    "svc-057-barge-lilmoth-tideway-shrine",
+    "svc-059-barge-tideway-shrine-archon"
+   ]
+  }
+ ]
+}

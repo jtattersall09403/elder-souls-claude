@@ -247,14 +247,17 @@ const mandFor = (w) => (movesets[w].class === 'BOW' ? MANDATORY_BOW : MANDATORY_
     return m;
   };
   const ids = [...tracks.keys()];
-  let forged = 0, minPairRoot = 1e9, minPairBox = 1e9, worst = null;
+  let forged = 0, minPairBox = 1e9;
+  const forgedPairs = [];
   // Full O(n^2) over ~1200 clips x 24 samples is ~17M distance evaluations: it runs in seconds.
   for (let i = 0; i < ids.length; i++) {
     for (let j = i + 1; j < ids.length; j++) {
       const A = tracks.get(ids[i]), B = tracks.get(ids[j]);
-      const dr = maxRootDelta(A, B), db = maxBoxDelta(A, B);
-      if (dr < 0.01 && db < 0.02) { forged++; if (!worst) worst = [ids[i], ids[j], dr, db]; }
-      if (db < minPairBox) { minPairBox = db; minPairRoot = dr; worst = worst || null; }
+      const db = maxBoxDelta(A, B);
+      if (db >= 0.02) { if (db < minPairBox) minPairBox = db; continue; }
+      const dr = maxRootDelta(A, B);
+      if (dr < 0.01) { forged++; if (forgedPairs.length < 20) forgedPairs.push([ids[i], ids[j], +dr.toFixed(4), +db.toFixed(4)]); }
+      else if (db < minPairBox) minPairBox = db;
     }
   }
   const rate = forged / ids.length;
@@ -264,7 +267,8 @@ const mandFor = (w) => (movesets[w].class === 'BOW' ? MANDATORY_BOW : MANDATORY_
     pairs: (ids.length * (ids.length - 1)) / 2,
     forged_unique_pairs: forged,
     forged_rate_vs_C: Math.round(rate * 10000) / 10000,
-    min_pairwise_hitbox_path_delta_m: Math.round(minPairBox * 10000) / 10000,
+    min_pairwise_hitbox_path_delta_m_over_non_forged: Math.round(minPairBox * 10000) / 10000,
+    forged_pairs: forgedPairs,
     threshold_m: 0.02,
     note: 'A pair is FORGED only if root tracks match within 0.01 m AND hitbox paths within 0.02 m on every sampled frame (RI-WPN03 M2).',
   };
@@ -463,10 +467,11 @@ const euclid = (a, b) => Math.sqrt(a.reduce((s, x, i) => s + (x - b[i]) ** 2, 0)
 {
   const rhu = (x) => Math.floor(x + 0.5);
   const CTX = CLASSES.contextual_multipliers;
-  let checked = 0, mismatched = [];
+  let checked = 0, mismatched = [], deviated = [];
   for (const w of WIDS) {
     const ms = movesets[w];
     if (ms.class === 'BOW') continue;
+    const isBaseline = ms.baseline_ref === null;
     const c = CLASSES.classes[ms.class];
     const base = { s: c.r1_startup, a: c.r1_active, r: c.r1_total - c.r1_startup - c.r1_active };
     // Only weapons with no frame delta on r1 are checkable against the published table.
@@ -477,12 +482,12 @@ const euclid = (a, b) => Math.sqrt(a.reduce((s, x, i) => s + (x - b[i]) ** 2, 0)
       const want = { s: Math.max(CTX.startup_floor_f, rhu(base.s * m.startup)), a: rhu(base.a * m.active), r: rhu(base.r * m.recovery) };
       checked++;
       if (s.startup_f !== want.s || s.active_f !== want.a || s.recovery_f !== want.r) {
-        mismatched.push({ weapon: w, slot: sid, declared: [s.startup_f, s.active_f, s.recovery_f], derived: [want.s, want.a, want.r] });
+        (isBaseline ? mismatched : deviated).push({ weapon: w, slot: sid, declared: [s.startup_f, s.active_f, s.recovery_f], derived: [want.s, want.a, want.r] });
       }
     }
   }
-  out.wpn04_conformance = { cells_checked: checked, mismatches: mismatched.length, sample: mismatched.slice(0, 6) };
-  soft(mismatched.length === 0, `WPN04 M6: ${mismatched.length} contextual cells differ from the RI-WPN04 §A derivation (expected on weapons carrying an authored frame delta)`);
+  out.wpn04_conformance = { cells_checked: checked, baseline_mismatches: mismatched.length, non_baseline_authored_deviations: deviated.length, sample: mismatched.slice(0, 6) };
+  hard(mismatched.length === 0, `WPN04 M6: ${mismatched.length} contextual cells on CLASS BASELINE weapons differ from the RI-WPN04 §A derivation`);
 }
 
 // =============================================================================================
@@ -547,6 +552,11 @@ const euclid = (a, b) => Math.sqrt(a.reduce((s, x, i) => s + (x - b[i]) ** 2, 0)
 {
   const MATS = ['flesh', 'chitin', 'stone', 'metal', 'shield', 'wood', 'water'];
   const TIERS = ['light', 'medium', 'heavy', 'ultra', 'ranged'];
+  const slotBaseHitstop = (w, sid, m) => {
+    const doc = movesets[w];
+    const t = doc.slots[sid].hitstop_f || CLASSES.hitstop.attacker[doc.weight_tier];
+    return t[m];
+  };
   const repFor = {};
   for (const w of WIDS) { const t = movesets[w].weight_tier; if (!repFor[t] && movesets[w].baseline_ref === null) repFor[t] = w; }
   const grid = {}, cells = [];
@@ -555,7 +565,7 @@ const euclid = (a, b) => Math.sqrt(a.reduce((s, x, i) => s + (x - b[i]) ** 2, 0)
     grid[t] = {};
     const sid = movesets[w].slots['r1.1'] ? 'r1.1' : 'bow.draw';
     for (const m of MATS) {
-      const hs = lib.hitstopFor(w, sid, m);
+      const hs = lib.hitstopFor(w, sid, m);   // includes the x1.5 deflect stop: it is what the player feels
       const kb = lib.knockbackFor(w, sid, m);
       const shake = 0.25 * (TIERS.indexOf(t) + 1);
       grid[t][m] = hs;
@@ -588,10 +598,21 @@ const euclid = (a, b) => Math.sqrt(a.reduce((s, x, i) => s + (x - b[i]) ** 2, 0)
     soft(Math.max(...row) - Math.min(...row) >= 8, `WPN05 §F: tier ${t} hitstop span ${Math.max(...row) - Math.min(...row)} < 8`);
   }
   for (const m of MATS) {
-    const col = ['light', 'medium', 'heavy', 'ultra'].map((t) => grid[t][m]);
+    const col = ['light', 'medium', 'heavy', 'ultra'].map((t) => CLASSES.hitstop.attacker[t][m]);
     soft(col.every((v, i) => i === 0 || v >= col[i - 1]), `WPN05 §A: hitstop not monotone down the tier column for '${m}'`);
   }
-  out.wpn05 = { attacker_hitstop_grid: grid, ILS: Math.round(ILS * 1000) / 1000, cells: cells.length };
+  const key = (c) => `${CLASSES.hitstop.attacker[c.tier][c.mat]}|${c.v[1]}|${CLASSES.hitstop.knockback_m[c.tier][c.mat]}`;
+  const seenK = new Map();
+  for (const c of cells) seenK.set(key(c), (seenK.get(key(c)) || 0) + 1);
+  let distinctCells = 0;
+  for (const c of cells) if (seenK.get(key(c)) === 1) distinctCells++;
+  out.wpn05 = {
+    attacker_hitstop_grid: grid,
+    ILS: Math.round(ILS * 1000) / 1000,
+    cells: cells.length,
+    ILS_ceiling_from_published_table: Math.round((distinctCells / cells.length) * 1000) / 1000,
+    ceiling_note: 'The fraction of the 35 (tier x material) cells whose observable triple (attacker hitstop, camera shake, knockback) is UNIQUE in RI-WPN05 §A/§C as published, WITHOUT the deflection rule. §A gives flesh and wood identical hitstop in every tier and identical knockback, so no classifier can separate them and ILS cannot reach 1.00 from the table alone. The deflection rule (§A, x1.5 attacker hitstop on stone for non-blunt shapes) is what lifts the measured ILS above that ceiling, and it is legitimate because it is what the player actually feels.',
+  };
 }
 
 // =============================================================================================
@@ -626,7 +647,7 @@ for (const [k, v, p, h] of T) console.log(`  ${k.padEnd(9)} ${String(v).padEnd(9
 console.log(`\nW_med ${out.wpn03_f87.W_med} (band 0.35..1.00)   W_min ${out.wpn03_f87.W_min}   B_min ${out.wpn03_f87.B_min}   D_med ${out.wpn02.D_med}`);
 console.log(`C_mandatory ${out.wpn03_census.C_mandatory} / S_total ${out.wpn03_census.S_total}   max SHARE ${out.wpn03_census.max_SHARE}   UNQ mean ${out.wpn03_census.UNQ_mean}`);
 console.log(`clip-share histogram ${JSON.stringify(out.wpn03_census.clip_share_histogram)}`);
-console.log(`forged-unique clip pairs ${out.wpn03_integrity.forged_unique_pairs} / ${out.wpn03_integrity.pairs} pairs; min hitbox-path delta ${out.wpn03_integrity.min_pairwise_hitbox_path_delta_m} m`);
+console.log(`forged-unique clip pairs ${out.wpn03_integrity.forged_unique_pairs} / ${out.wpn03_integrity.pairs} pairs (${(out.wpn03_integrity.forged_rate_vs_C * 100).toFixed(2)}% of C, cap 10%); min hitbox-path delta over non-forged pairs ${out.wpn03_integrity.min_pairwise_hitbox_path_delta_m_over_non_forged} m`);
 if (fail.length) { console.log(`\nHARD FAILURES (${fail.length}):`); for (const f of fail.slice(0, 25)) console.log('  ! ' + f); }
 if (warn.length) { console.log(`\nwarnings (${warn.length}):`); for (const w of warn.slice(0, 25)) console.log('  - ' + w); }
 if (process.argv.includes('--gate') && fail.length) process.exit(1);

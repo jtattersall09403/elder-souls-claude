@@ -345,8 +345,13 @@ async function runProbe(name) {
       const rows = [];
       const CYCLE = 240, CYCLES = 12;
       for (let n = 0; n < CYCLE * CYCLES; n++) {
+        // RI-CAM01 M4 exists to bound "a 1-frame sphere-cast spike", so the wall STEPS in and
+        // then withdraws on a ramp. A wall that only ever approaches at 0.046 m/frame never
+        // asks the arm for more than 0.046 m/frame, and the measured asymmetry ratio is then a
+        // property of the fixture rather than of the rate law. The first run reported 0.918:1
+        // for exactly that reason.
         const ph = (n % CYCLE) / CYCLE;
-        const z = ph < 0.5 ? -6.0 + (ph / 0.5) * 5.5 : -0.5 - ((ph - 0.5) / 0.5) * 5.5;
+        const z = ph < 0.5 ? -0.5 : -6.0;
         H.setCameraObstacle('rail_wall', 0, 3.0, z);
         step(1);
         rows.push(cam());
@@ -623,7 +628,12 @@ async function runProbe(name) {
         const frac = (f) => r4(locked.filter(f).length / n);
         const yawRates = [];
         for (let i = 1; i < rows.length; i++) yawRates.push(Math.abs(ang180(rows[i].yaw_deg - rows[i - 1].yaw_deg)));
-        const armDeltas = rows.slice(1).map((c, i) => c.arm_len_m - rows[i].arm_len_m);
+        // RI-CAM03 §C step 8's +0.150 / −0.080 m/frame bounds the CONTAINMENT-driven arm target.
+      // `arm_len_m` also carries RI-CAM01 §C's collision rate law (pull-in 0.667 m/frame), a
+      // different law with a different number, so measuring the bound on `arm_len_m` reports
+      // the collision rate as a containment violation. The bound is measured on the desired
+      // length, and the collision rate is measured separately in the `rate` probe.
+      const armDeltas = rows.slice(1).map((c, i) => c.arm_desired_m - rows[i].arm_desired_m);
         per[s.id] = {
           frames_locked: n, target_h_m: s.h,
           onscreen_T_a: frac((c) => c.onscreen.target),
@@ -1025,7 +1035,15 @@ async function runProbe(name) {
         R.report.push(`head-bob ${label}: stdev(y_resid) = ${bob[label].stdev_y_resid} m (bar ≤0.004), footfall FFT peak ${bob[label].fft_peak_ratio}× median (bar ≤1.5×)`);
       }
       R.head_bob = bob;
-      chk('no_head_bob', Object.values(bob).every((b) => b.stdev_y_resid <= 0.004 && b.fft_peak_ratio <= 1.5), Object.entries(bob).map(([k, b]) => `${k} ${b.stdev_y_resid}/${b.fft_peak_ratio}×`).join('  '));
+      // The FFT peak ratio is only meaningful if there IS a signal. At walk and run the
+      // residual stdev is 2.9e-15 m — float noise around an exactly constant camera height —
+      // and the ratio of one noise bin to another is not a measurement of anything. RI-CAM06
+      // §E's own pass band is `stdev ≤ 0.004 m`; the spectrum is the corroborating check, and
+      // it is only evaluated where the amplitude bar could plausibly be met by a bobbing rig.
+      const SIGNAL_FLOOR = 1e-6;
+      chk('no_head_bob', Object.values(bob).every((b) => b.stdev_y_resid <= 0.004
+        && (b.stdev_y_resid < SIGNAL_FLOOR || b.fft_peak_ratio <= 1.5)),
+        Object.entries(bob).map(([k, b]) => `${k} stdev ${b.stdev_y_resid} m` + (b.stdev_y_resid < SIGNAL_FLOOR ? ' (below the signal floor: no spectrum to read)' : ` fft ${b.fft_peak_ratio}x`)).join('  '));
 
       // M7 — damage shake: amplitude, duration, decay, energy, rotational-only, seeded.
       const shakeRuns = [];

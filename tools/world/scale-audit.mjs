@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { WorldField } from '../../game/src/world/field.js';
+import { roadWaterAudit, TIDE_PHASE } from './road-water-audit.mjs';
 
 globalThis.atob = globalThis.atob || ((s) => Buffer.from(s, 'base64').toString('binary'));
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -207,6 +208,30 @@ check('S9-NO-FENCES', unreachableSettlements.length === 0 && missingRegions.leng
   + `(${(reachedCells / passableCells * 100).toFixed(1)}% of walkable land)`
   + (unreachableSettlements.length ? `; unreachable: ${unreachableSettlements.join(', ')}` : '')
   + (missingRegions.length ? `; regions unreachable: ${missingRegions.join(', ')}` : ''));
+
+// ---- M2-ROAD-ABOVE-WATER: ten legs, four tide phases ------------------------------------------------
+// The check whose absence let 502 m of THE CROSSING run along the floor of a 65.6 m lake at LOW
+// tide while the player walked it at 2.0 m/s (verdict W1-01 §8). It used to be measured on exactly
+// one of the ten legs — the declared tideway — and at exactly one tide phase. Both halves of that
+// are now wrong by construction: every leg, every phase.
+const rw = roadWaterAudit(field, roads);
+const rwWorst = Object.entries(rw.tides).flatMap(([t, rows]) => rows.filter((r) => !r.tide_gated).map((r) => ({ t, ...r })))
+  .sort((a, b) => b.max_depth_m - a.max_depth_m)[0];
+check('M2-ROAD-ABOVE-WATER', rw.ok,
+  `${rw.offenders.length} leg/phase offences over ${Object.keys(TIDE_PHASE).length} tide phases x ${roads.legs.length} legs; `
+  + `deepest non-tideway trunk point ${rwWorst.max_depth_m.toFixed(3)} m (${rwWorst.id} at ${rwWorst.t}); `
+  + `over-knee metreage on non-tideway legs `
+  + Object.entries(rw.tides).map(([t, rows]) => `${t} ${rows.filter((r) => !r.tide_gated).reduce((a, r) => a + r.over_knee_m, 0).toFixed(0)} m`).join(', ')
+  + (rw.offenders.length ? `; worst: ${rw.offenders.slice(0, 3).map((o) => `${o.tide} ${o.leg} ${o.max_depth_m} m`).join(', ')}` : ''));
+
+// The road's own geometry, which is what produced the drowned leg: a deck 85 m below the hill it
+// crosses is a trench, and a trench fills.
+const worstCut = Math.max(...roads.legs.map((l) => l.max_cut_m ?? 0));
+const worstFill = Math.max(...roads.legs.map((l) => l.max_fill_m ?? 0));
+check('M2-ROAD-CUT-AND-FILL', worstCut <= 3.5 && worstFill <= 20,
+  `deepest cutting ${worstCut.toFixed(1)} m (pass <= 3.5), tallest embankment/deck ${worstFill.toFixed(1)} m (pass <= 20); `
+  + `${roads.legs.reduce((a, l) => a + (l.deck_spans || []).length, 0)} emitted deck spans totalling `
+  + `${roads.legs.reduce((a, l) => a + (l.deck_span_m || 0), 0)} m`);
 
 // ---- the tideway inversion (RI-TRV01 / RI-WLD10 M54) -----------------------------------------------
 const tideway = roads.legs.find((l) => l.tide_gated);

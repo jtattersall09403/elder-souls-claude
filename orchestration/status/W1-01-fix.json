@@ -2,7 +2,7 @@
   "task_id": "W1-01-fix",
   "brief": "remediation of W1-01 world shape (critic score 3.1 vs gate 7.0, AR-2/B13 fail)",
   "started": "wave-1-remediation",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "road fix (depth-costed A* or causeway) + M2-ROAD-ABOVE-WATER check over 10 legs x 4 tides",
     "re-measured canonical crossing",
@@ -13,15 +13,21 @@
     "RI-AI05 enemy population",
     "reachability = real walk, not grid flood fill"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/world/road-water-audit.mjs (new instrument: M2-ROAD-ABOVE-WATER, 10 legs x 4 tide phases)",
+    "tools/world/build-roads.mjs (deck solve rewritten: cut/fill limits, corridor high-water clearance, deck-repair loop, terrain-aware length solve)",
+    "game/src/world/field.js (_applyRoads tie-break bug: equal-weight segments now take the higher deck)"
+  ],
   "findings": [
     "ROOT CAUSE of the drowned road is NOT A* routing through a lake. The natural terrain at (2187,2215) is DRY LAND at 154.01 m. The road's own elevation profile in build-roads.mjs is 69.17 m there -- an 85 m CUTTING that _applyRoads carves into the hill, which then fills with water (surface 135.30). waterSurfaceAt returns null before setRoads and 135.3 after. Same at helstrom-gideon (1652,2754): natural 48.65 m dry, roaded 33.34 m, depth 7.63 m.",
     "The cause is MAX_GRADE=0.12 in build-roads.mjs: the forward/backward grade clamps slice the profile off any hill the road cannot climb at 12%, and _applyRoads then blends ground DOWN to the deck. There is no cut/fill limit at all.",
     "The critic's remedy (depth-cost the A*) would not have fixed it: depthG is sampled pre-road and is 0 there.",
     "Corpus imposes NO grade constraint on roads; MAX_GRADE=0.12 is the builder's invention. Fixing cut/fill should also raise M36-ROAD-RELIEF (26.7% vs 30%) for free.",
     "The Weeping Ford minor settlement (2129.5,2206.5) is a mandatory waypoint 58 m from the deepest point.",
-    "Static road-water audit reproduces the verdict: LOW stormhold-helstrom max 66.135 m / W5 500 m (verdict: 65.64 / 502 at 12 m point spacing; I subsample to 3 m)."
+    "Static road-water audit reproduces the verdict: LOW stormhold-helstrom max 66.135 m / W5 500 m (verdict: 65.64 / 502 at 12 m point spacing; I subsample to 3 m).",
+    "ROAD FIX LANDED. M2-ROAD-ABOVE-WATER PASSES: 0 m of non-tideway trunk road at W3+ at any of RISING/HIGH/FALLING/LOW. Was 512.5 m over-knee / 500 m over-chest / max 66.135 m on stormhold-helstrom at every phase. Tideway keeps 0.901 m LOW / 1.443 m HIGH. Max cut now 3.0 m (was 90.7 m), max fill 16.0 m (was 87.7 m). Crossing 6889.6 m / 57.41 min (band 52-65 min / 6300-7600 m).",
+    "Residual: 48 m of stormhold-helstrom has >100% grade because the water model produces HANGING water bodies -- narrow channels whose surface stands metres above their own banks (e.g. surface 248.3 m within 3 m of ground at 235.7 m). The deck must climb over them. Filed as a corpus defect, not fixed here."
   ],
-  "next_step": "rewrite the elevation-profile solve in build-roads.mjs with a cut/fill limit + causeway decks; re-run road-water-audit",
+  "next_step": "add M2-ROAD-ABOVE-WATER to scale-audit.mjs; make S9-NO-FENCES a real walk; re-run crossing",
   "notes_for_successor": ""
 }

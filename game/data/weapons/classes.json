@@ -396,7 +396,9 @@
       "quick_startup_f": 36,
       "melee_reach_m": 1.6,
       "melee_reach_note": "RI-WPN02 \u00a7B's 22.0 m is a PROJECTILE range, not a weapon reach: moveset.schema.json caps reach_m at 6.0 and RI-WPN02 \u00a7D's dimension D5 is 'distance at which r1.1 first connects with a dummy'. The bow's own hitbox (the bash and the guardbreak) reaches 1.60 m; 22.0 m is carried as projectile_range_m. Leaving 22.0 in reach_m raised the standard deviation of D5 across the fifteen classes from 0.75 to 5.2 and deleted reach as a differentiator for the fourteen melee classes.",
-      "projectile_range_m": 22.0
+      "projectile_range_m": 22.0,
+      "budget_mult": 1.35,
+      "budget_mult_note": "BOW has no arc and no root displacement (a shot's geometry is the projectile's), so only three of the five numeric fingerprint dimensions are live for it. Its deviation budget is scaled up so that two bows are as far apart in RI-WPN03 \u00a7D.2's F87 space as two swords are."
     }
   },
   "contextual_multipliers": {
@@ -781,6 +783,6 @@
   "delta_scale": 1.0,
   "delta_scale_note": "Global magnitude on every per-weapon numeric delta in roster.json. roster.json authors the DIRECTION and the RANK of each weapon's deviation; this scalar sets how far. Tuned against RI-WPN03 \u00a7D.2's two-sided band (W_med in [0.35,1.00], W_min>=0.20) and SEP = B_min/W_max >= 1.4 \u2014 see reports/W1-10-MEASUREMENTS.md \u00a7sweep for the sweep that chose it.",
   "lineage_arc_scale": 0.35,
-  "deviation_budget": 0.38,
-  "deviation_budget_signature": 0.5
+  "deviation_budget": 0.36,
+  "deviation_budget_signature": 0.48
 }

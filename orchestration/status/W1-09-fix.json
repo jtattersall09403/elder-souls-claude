@@ -1,0 +1,24 @@
+{
+  "task_id": "W1-09-fix",
+  "brief": "remediation of W1-09 Combat core after critic scored 4/10 vs gate 7.0",
+  "verdict": "corpus/90-verdicts/wave1/W1-09.md",
+  "started": "wave-1 remediation",
+  "state": "building",
+  "plan": [
+    "1. hitstun composition: reaction states must span exactly `total` world frames (gb 40, staggers 32/44/64/96)",
+    "2. parry cost 22 flat (drop undeclared parry_medium_shield 26)",
+    "3. implement jump / two_hand / swap_right / swap_left / menu",
+    "4. animation: kill the double idle pose, land attack clips on the idle pose at phase 3, redistribute arc into the active window, cap peak tip speed to RI-CMB04 B",
+    "5. regenerate RI-CMB07 exemplar with real danger, >= 5 fights",
+    "6. close what is closable on RI-CMB05/06/09/11"
+  ],
+  "findings": [
+    "REPRODUCED baseline: guard break 46 f, regen 0.75/f at f123-125 (critic-guardbreak3.json run sprint_frames=600).",
+    "ROOT CAUSE of hitstun overrun: beginReaction() sets state at the impact frame with animFrame=0, then system.js early-returns for hitstop frames, so the state spans 1 (entry) + hitstop-1 (freeze) + total. Also guardBreakUntil = impactFrame+total which now EXPIRES BEFORE the state does, so tickResources' `hitstun` flag goes false while still in GUARD_BREAK -> full-rate regen. One cause, both symptoms.",
+    "ROOT CAUSE of the 1.42-2.54 m single-frame snap at the idle boundary: poseLocomotion() applies the idle_ready LoopClip AND THEN addPose(_idlePose = the same idle_ready archetype), so the idle rig pose is 2x idle_ready. The attack clips end near 1x idle, so the transition jumps a whole idle pose.",
+    "ROOT CAUSE of recovery sweeping more than active: every attack archetype has an overshoot key at phase ~2.35-2.5 (e.g. cut_diagonal upperarm_r.rz 8@2.0 -> 56@2.4 -> 10@3.0) so |d| through recovery exceeds the active band."
+  ],
+  "outputs_written": [],
+  "next_step": "implement fix 1 (pending reactions) in actor.js/resolve.js/system.js",
+  "notes_for_successor": "Do NOT re-litigate: (1) thin-weapon tunnelling ruled non-occurring, leave substeps at 4; (2) stamina-regen amendment EARNED, but bar at frame 366 reads 14.0 not 6.5. Preserve passing evidence: roll ladder+boundary probe, 14 RI-CMB02 rows, dodge-cancel f53, buffer 8, block/sprint non-cancel, swept-geometry phantom <=0.0022m, no RNG on hit path 200 seeds, parley. Re-run the critic's own tools (tools/harness/critic-w1-09*.mjs) to check yourself; they are fast (<60 s each)."
+}

@@ -35,10 +35,11 @@ const BUDGET_SIG = Number(process.env.W110_BUDGET_SIG || CLASSES.deviation_budge
 // Approximate roster-wide standard deviations of the five numeric fingerprint dimensions a
 // weapon delta can move. Used only to make budgets comparable across dimensions; the real
 // z-normalisation is recomputed from the shipped data by tools/weapons/measure.mjs.
-const FP_SD = { f: 14, reach: 0.72, arc: 82, root: 0.34, hitstop: 4.2 };
-function budgetise(w) {
+let FP_SD = { f: 14, reach: 0.72, arc: 82, root: 0.34, hitstop: 4.2 };
+try { FP_SD = { ...FP_SD, ...readJson('game/data/weapons/fp-sd.json').sd }; } catch { /* first run */ }
+function budgetiseRaw(w) {
   const d = { ...(w.d || {}) };
-  if (w.baseline) return { f: 0, reach: 0, arc: 0, root: 0, hitstop: 0, ha: d.ha, chain: d.chain };
+  for (const k of ['f', 'reach', 'arc', 'root', 'hitstop']) d[k] = d[k] || 0;
   // Each weapon gets a distinct sign pattern across the four numeric fingerprint dimensions,
   // indexed by its position in its class. Two weapons of a class can therefore never point the
   // same way after budget normalisation, which is what RI-WPN03 §D.2's W_min >= 0.20 asks for.
@@ -49,17 +50,31 @@ function budgetise(w) {
     if (!d[k]) d[k] = bit * amp * (0.55 + 0.45 * Math.abs(sig(w.id + ':fill:' + k, 1)));
     else d[k] += bit * amp * 0.22;
   }
-  const raw = [(d.f || 0) / FP_SD.f, (d.reach || 0) / FP_SD.reach, (d.arc || 0) / FP_SD.arc,
-    (d.root || 0) / FP_SD.root, ((d.hitstop || 0) * 2) / FP_SD.hitstop];
-  const mag = Math.hypot(...raw);
-  const target = (w.sig ? BUDGET_SIG : BUDGET) * DELTA_SCALE;
-  const k = mag > 1e-9 ? target / mag : 0;
-  const out = { chain: d.chain, ha: d.ha };
-  out.f = Math.round((d.f || 0) * k);
-  out.reach = Math.round((d.reach || 0) * k * 1000) / 1000;
-  out.arc = Math.round((d.arc || 0) * k * 10) / 10;
-  out.root = Math.round((d.root || 0) * k * 1000) / 1000;
-  out.hitstop = Math.abs((d.hitstop || 0) * k) >= 0.45 ? Math.sign(d.hitstop) : 0;
+  return d;
+}
+
+function budgetise(w) {
+  const raw0 = w.d || {};
+  if (w.baseline) return { f: 0, reach: 0, arc: 0, root: 0, hitstop: 0, ha: raw0.ha, chain: raw0.chain };
+  const u = DIRS.get(w.id);
+  const bm = CLASSES.classes[w.class].budget_mult || 1;
+  const target = (w.sig ? BUDGET_SIG : BUDGET) * DELTA_SCALE * bm;
+  const out = { chain: raw0.chain, ha: raw0.ha };
+  out.f = Math.round(u[0] * target * FP_SD.f);
+  out.reach = Math.round(u[1] * target * FP_SD.reach * 1000) / 1000;
+  out.arc = Math.round(u[2] * target * FP_SD.arc * 10) / 10;
+  out.root = Math.round(u[3] * target * FP_SD.root * 1000) / 1000;
+  // A hitstop component smaller than half a tier quantises to zero, and the budget it was
+  // carrying would simply be lost. Redistribute it over the four continuous dimensions instead,
+  // so every weapon really is at its budget radius and RI-WPN03 §D.2's W_min means something.
+  out.hitstop = Math.abs(u[4] * target * FP_SD.hitstop / 2) >= 0.5 ? Math.sign(u[4]) : 0;
+  if (out.hitstop === 0 && Math.abs(u[4]) > 1e-6) {
+    const k = 1 / Math.max(1e-6, Math.hypot(u[0], u[1], u[2], u[3]));
+    out.f = Math.round(u[0] * k * target * FP_SD.f);
+    out.reach = Math.round(u[1] * k * target * FP_SD.reach * 1000) / 1000;
+    out.arc = Math.round(u[2] * k * target * FP_SD.arc * 10) / 10;
+    out.root = Math.round(u[3] * k * target * FP_SD.root * 1000) / 1000;
+  }
   return out;
 }
 const LIN_ARC = Number(process.env.W110_LIN_ARC || CLASSES.lineage_arc_scale || 1);
@@ -275,10 +290,20 @@ function slotSpecsFor(code) {
   ctxSlot('run.r1', g.run1, CTX.run, {
     trig: { button: 'light', modifier: 'none', state: 'SPRINT' }, req: ['sprinting'], answers: ['RANGED', 'CASTER'],
   });
-  ctxSlot('run.r2', g.run2, CTX.run, {
-    trig: { button: 'heavy', modifier: 'none', state: 'SPRINT' }, req: ['sprinting'],
-    answers: ['POISE_MONSTER', 'RANGED'], ha: g.ha_run2,
-  });
+  // A running HEAVY derives from the R2 base row, not the R1 row: RI-WPN04 §A tabulates the
+  // running multipliers against R1 because run.r1 is the slot it publishes, and applying them to
+  // the heavy's own row is the only reading under which run.r2 is a heavy attack at all.
+  {
+    const f = ctxFrames(B.r2, CTX.run);
+    put('run.r2', {
+      fam: g.run2, f, shape: POSES.families[g.run2].shape,
+      mv: c.mv_r1 * 1.55 * CTX.run.mv, stam: rhu(c.stamina_r1 * 1.7 * CTX.run.stamina),
+      poise: rhu(c.poise_dmg_r1 * 1.85 * CTX.run.poise), root: c.root_dz_r1 * 1.7 * CTX.run.root,
+      arc, chains: null, ci: 1,
+      trig: { button: 'heavy', modifier: 'none', state: 'SPRINT' }, req: ['sprinting'],
+      answers: ['POISE_MONSTER', 'RANGED'], ha: g.ha_run2,
+    });
+  }
   ctxSlot('roll.r1', g.roll1, CTX.roll, {
     trig: { button: 'light', modifier: 'none', state: 'ROLL', win: WINDOWS.roll.LIGHT }, req: [],
     answers: ['INFANTRY', 'DUELIST', 'POISE_MONSTER', 'ELITE'], chains: 'r1.2',
@@ -435,6 +460,48 @@ for (const w of ROSTER.weapons) byId.set(w.id, w);
 
 const classSpecs = {};
 for (const code of Object.keys(CLASSES.classes)) classSpecs[code] = slotSpecsFor(code);
+
+// ---- deviation-direction spreading -----------------------------------------------------------
+// RI-WPN03 §D.2's W_min >= 0.20 says no two weapons in the game are behaviourally identical. Two
+// weapons of a class whose authored deltas happen to point the same way land on top of each other
+// once both are normalised onto the class's deviation sphere. This is a deterministic spherical
+// repulsion (the Thomson problem, 60 fixed iterations, no RNG) that separates every class's
+// non-baseline weapons as far apart on that sphere as they will go, while keeping each weapon's
+// AUTHORED direction as its starting point — so a weapon the roster calls "the longest one" still
+// deviates toward reach; it just stops sharing a direction with its neighbour.
+const DIRS = new Map();
+{
+  const byClass = {};
+  for (const w of ROSTER.weapons) (byClass[w.class] = byClass[w.class] || []).push(w);
+  for (const code in byClass) {
+    const members = byClass[code].filter((w) => !w.baseline);
+    const u = members.map((w) => {
+      const d = budgetiseRaw(w);
+      const live = code === 'BOW' ? [1, 1, 0, 0, 1] : [1, 1, 1, 1, 1];
+      const v = [d.f / FP_SD.f, d.reach / FP_SD.reach, d.arc / FP_SD.arc, d.root / FP_SD.root, (d.hitstop * 2) / FP_SD.hitstop].map((x, k) => x * live[k]);
+      const m = Math.hypot(...v) || 1;
+      return v.map((x) => x / m);
+    });
+    for (let it = 0; it < 60; it++) {
+      const next = u.map((a) => a.slice());
+      for (let i = 0; i < u.length; i++) {
+        const f = [0, 0, 0, 0, 0];
+        for (let j = 0; j < u.length; j++) {
+          if (i === j) continue;
+          const dv = u[i].map((x, k) => x - u[j][k]);
+          const dd = Math.max(0.05, Math.hypot(...dv));
+          for (let k = 0; k < 5; k++) f[k] += dv[k] / (dd * dd * dd);
+        }
+        const live = code === 'BOW' ? [1, 1, 0, 0, 1] : [1, 1, 1, 1, 1];
+        const cand = u[i].map((x, k) => (x + 0.02 * f[k]) * live[k]);
+        const m = Math.hypot(...cand) || 1;
+        next[i] = cand.map((x) => x / m);
+      }
+      for (let i = 0; i < u.length; i++) u[i] = next[i];
+    }
+    members.forEach((w, i) => DIRS.set(w.id, u[i]));
+  }
+}
 
 /** Deterministic per-weapon perturbation: a hash of the weapon id, so it is stable and seeded. */
 function weaponPerturb(id, salt) {
@@ -634,6 +701,28 @@ for (const f of outFiles) {
     const cur = fs.existsSync(R(f.path)) ? fs.readFileSync(R(f.path), 'utf8') : null;
     if (cur !== text) { console.error(`DRIFT: ${f.path}`); process.exitCode = 1; }
   } else { fs.writeFileSync(R(f.path), text); written++; }
+}
+// Measure the fingerprint standard deviations this build produced, for the next run's budgets.
+{
+  const cols = { f: [], reach: [], arc: [], root: [], hitstop: [] };
+  for (const f of outFiles) {
+    const d = f.doc, r1 = d.slots['r1.1'] || d.slots['bow.draw'];
+    cols.f.push(r1.startup_f);
+    cols.reach.push(d.reach_m);
+    cols.arc.push(r1.arc_sweep_deg);
+    cols.root.push(r1.root_dz_m);
+    cols.hitstop.push(r1.hitstop_f ? r1.hitstop_f.flesh : CLASSES.hitstop.attacker[d.weight_tier].flesh);
+  }
+  const sd = {};
+  for (const k in cols) {
+    const a = cols[k], m = a.reduce((x, y) => x + y, 0) / a.length;
+    sd[k] = Math.round(Math.sqrt(a.reduce((x, y) => x + (y - m) ** 2, 0) / a.length) * 10000) / 10000;
+  }
+  if (!check) fs.writeFileSync(R('game/data/weapons/fp-sd.json'), JSON.stringify({
+    schema: 'elder-souls/fp-sd@1', id: 'fp-sd',
+    note: 'Measured standard deviations of the five numeric fingerprint dimensions across the shipped 87 weapons. Read back by build-movesets.mjs so that a weapon deviation budget is expressed in the units RI-WPN03 §D.2 measures in. Regenerated on every build; a fixed point after one iteration.',
+    sd,
+  }, null, 1) + '\n');
 }
 const registryDoc = {
   schema: 'elder-souls/clip-registry@1',

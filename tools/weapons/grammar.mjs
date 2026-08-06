@@ -48,7 +48,7 @@ export const CLASS_GRAMMAR = {
   TSW: {
     r1: ['thrust_straight', 'thrust_high', 'thrust_low'],
     r2: 'thrust_high', charged: 'charge_hold_thrust', follow: 'cut_horizontal',
-    run1: 'run_lunge', run2: 'run_lunge', roll1: 'roll_rise', roll2: null,
+    run1: 'run_lunge', run2: 'run_leap', roll1: 'roll_rise', roll2: null,
     back: 'backstep_step', jump1: 'jump_fall', jump2: null, plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'thrust_low', art: ['art_lunge', 'art_guard'],
     h2_exclusive: ['2h.r1.4', '2h.r2.follow'],
@@ -61,12 +61,16 @@ export const CLASS_GRAMMAR = {
     back: 'backstep_step', jump1: 'jump_fall', jump2: null, plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_kick', art: ['art_lunge', 'art_guard'],
     h2_exclusive: ['2h.r2.follow', '2h.art.2'],
-    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: [],
+    // The control class carries hyperarmour on exactly one verb: the guard counter. Sword and
+    // shield is the loadout the straight sword is FOR, and the guard counter is the one attack it
+    // will stand in front of something to throw. It is also the grammar split from MCE, which is
+    // otherwise its nearest neighbour on RI-WPN02 §D's Dg distance.
+    h2_chain: 3, h1_chain: 3, ha_2h_r1: false, ha_run2: false, ha_extra: ['guard.counter', '2h.guard.counter'],
   },
   SPR: {
     r1: ['thrust_straight', 'thrust_low', 'thrust_high'],
     r2: 'thrust_high', charged: 'charge_hold_thrust', follow: 'sweep_low',
-    run1: 'run_lunge', run2: 'run_lunge', roll1: 'roll_rise', roll2: null,
+    run1: 'run_lunge', run2: 'run_leap', roll1: 'roll_rise', roll2: null,
     back: 'backstep_step', jump1: 'jump_fall', jump2: null, plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'thrust_low', art: ['art_guard', 'art_lunge'],
     h2_exclusive: ['2h.r2.follow', '2h.art.2'],
@@ -87,7 +91,7 @@ export const CLASS_GRAMMAR = {
   MCE: {
     r1: ['smash_over', 'smash_side', 'smash_over'],
     r2: 'smash_over', charged: 'charge_hold', follow: 'smash_side',
-    run1: 'run_barge', run2: 'run_barge', roll1: 'roll_rise', roll2: null,
+    run1: 'run_barge', run2: 'run_leap', roll1: 'roll_rise', roll2: null,
     back: 'backstep_cut', jump1: 'jump_stomp', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_shoulder', art: ['art_stomp', 'art_guard'],
     h2_exclusive: ['2h.jump.r2', '2h.art.2'],
@@ -113,7 +117,7 @@ export const CLASS_GRAMMAR = {
   WHP: {
     r1: ['lash_circle', 'lash_snap', 'lash_circle'],
     r2: 'lash_snap', charged: 'charge_hold', follow: 'lash_circle',
-    run1: 'run_pass', run2: 'run_pass', roll1: 'roll_rise', roll2: 'roll_sweep',
+    run1: 'run_pass', run2: 'run_leap', roll1: 'roll_rise', roll2: 'roll_sweep',
     back: 'backstep_cut', jump1: 'jump_fall', jump2: null, plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_kick', art: ['art_whirl', 'art_guard'],
     h2_exclusive: ['2h.roll.r2', '2h.art.2'],
@@ -140,7 +144,7 @@ export const CLASS_GRAMMAR = {
   GHM: {
     r1: ['smash_over', 'smash_side', 'smash_pile'],
     r2: 'smash_pile', charged: 'charge_hold', follow: 'smash_side',
-    run1: 'run_barge', run2: 'run_barge', roll1: 'roll_rise', roll2: null,
+    run1: 'run_barge', run2: 'run_leap', roll1: 'roll_rise', roll2: null,
     back: 'backstep_cut', jump1: 'jump_stomp', jump2: 'jump_stomp', plunge: 'plunge_dive',
     gc: 'guard_counter_shove', gb: 'guardbreak_shoulder', art: ['art_stomp', 'art_whirl'],
     h2_exclusive: ['2h.jump.r2', '2h.art.2'],

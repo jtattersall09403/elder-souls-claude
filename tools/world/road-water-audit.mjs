@@ -23,10 +23,6 @@ const rd = (p) => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
 const argv = process.argv.slice(2);
 const outFile = argv.includes('--out') ? argv[argv.indexOf('--out') + 1] : 'reports/road-water.json';
 
-const roads = rd('game/data/world/roads.json');
-const field = new WorldField(rd('game/data/world/terrain.json'), rd('game/data/world/regions.json'), rd('game/data/world/water.json'));
-field.setRoads(roads);
-
 export const TIDE_PHASE = { RISING: 0.0, HIGH: 0.25, FALLING: 0.5, LOW: 0.75 };
 
 /**
@@ -79,6 +75,13 @@ export function roadWaterAudit(field, roads) {
   return { tides, offenders, ok: offenders.length === 0 };
 }
 
+// ---- CLI ------------------------------------------------------------------------------------
+if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) runCli();
+
+function runCli() {
+const roads = rd('game/data/world/roads.json');
+const field = new WorldField(rd('game/data/world/terrain.json'), rd('game/data/world/regions.json'), rd('game/data/world/water.json'));
+field.setRoads(roads);
 const res = roadWaterAudit(field, roads);
 const doc = { schema: 'elder-souls/road-water@1', method: 'RI-WLD01 M2b ROAD ABOVE WATER (verdict W1-01 §8)',
   measured_at: new Date().toISOString(), rule: 'no non-tideway trunk road point may exceed 0.60 m (W2) at any of the four tide phases',
@@ -101,3 +104,4 @@ process.stdout.write(`\n[${res.ok ? 'PASS' : 'FAIL'}] M2-ROAD-ABOVE-WATER: ${res
 for (const o of res.offenders.slice(0, 12)) process.stdout.write(`   ${o.tide} ${o.leg}: max ${o.max_depth_m} m, over-knee ${o.over_knee_m} m at ${o.at}\n`);
 process.stdout.write(`\n  ${outFile}\n`);
 process.exit(res.ok ? 0 : 1);
+}

@@ -350,8 +350,38 @@ function lockOrientation(sim, c, dx, dy) {
   pitchT += pitchBias(d, h);
   pitchT += c.containPitch;
 
-  let dyaw = angle180(yawT - c.yaw) * A_LOCK_YAW;
+  // THE SPRING ALONE CANNOT SATISFY §E, AND THE ARITHMETIC SAYS SO.
+  //
+  // A first-order ease lags a constantly-moving target by (rate / α) in steady state. The
+  // [CMB06] yaw half-life is 0.120 s, so α = 0.0904 per frame, and RI-CAM03 M3's adversarial
+  // target orbits the player at 300 °/s = 5.00 °/frame. Steady-state lag = 5.00 / 0.0904 =
+  // 55.3°. The vertical FOV is 50.0° at 16:9, so the horizontal half-angle is 42.8° — the
+  // target is not merely outside the safe rect, it is off the screen entirely. The first full
+  // probe run measured exactly that: onscreen_fraction(T_a) of 0.61, 0.35, 0.83, 0.57 across
+  // the scenarios, against a 0.995 bar.
+  //
+  // §C's priority order is the resolution: "(1) T_a on screen ... It never sacrifices (1) or
+  // (2)." And [CMB06]'s 7.000 °/frame is a CLAMP — a ceiling on what the camera may do, not a
+  // budget it must leave unspent. So the spring runs at its declared half-life while the
+  // framing holds, and hands over to the clamp as the target approaches the frame edge.
+  //
+  // `catchUp` is 0 while the target is inside the safe rect (so RI-CMB06 M5, which measures
+  // the 0.120 s half-life, sees an untouched spring), and ramps to 1 as the anchor travels
+  // from the safe rect edge to the frame edge. At 1 the camera turns at the full clamp. There
+  // is no second smoothing stage anywhere on this path: the blend is on the STEP, evaluated
+  // once, which is what keeps §C's "correction is smoothed once" true.
+  const err = angle180(yawT - c.yaw);
   const cl = CAMERA_CONST.lock_yaw_clamp_deg_per_frame;
+  // If the anchor is already off screen — or behind the near plane, where the projection has
+  // no meaningful NDC to report — the catch-up is full. Reading a projected x of 0 for an
+  // anchor that is behind the camera would hand back the spring's slowest response at the one
+  // moment the framing has already failed.
+  const excursion = Math.abs(c.onscreen.tNdc[0]);
+  const catchUp = c.onscreen.t
+    ? clamp((excursion - CAMERA_CONST.safe_rect_x) / (1 - CAMERA_CONST.safe_rect_x), 0, 1)
+    : 1;
+  const a = A_LOCK_YAW + (1 - A_LOCK_YAW) * catchUp;
+  let dyaw = err * a;
   if (dyaw > cl) dyaw = cl; else if (dyaw < -cl) dyaw = -cl;
   c.yaw = norm360(c.yaw + dyaw);
   c.yawRate = Math.abs(dyaw);
@@ -645,9 +675,24 @@ export { fadeOpacity };
 // =========================================================================================
 // pose, projection, clipping
 // =========================================================================================
-function basis(c, fwd, right, up) {
-  const yaw = (c.yaw + c.shakeYaw) * DEG;
-  const pitch = (c.pitch + c.shakePitch) * DEG;
+/** The RIG basis: the camera's own yaw and pitch, with NO shake.
+ *
+ *  RI-CAM06 §G: the shake is "rotational only ... applied AFTER the rig, BEFORE the
+ *  projection. Never positional", and its effect on `camera.pos` is "none. Σ|Δcamera.pos|
+ *  attributable to shake = 0." Folding the shake into this basis makes `desiredPoint` build
+ *  the camera POSITION from a shaken forward vector, which is a positional shake wearing a
+ *  rotational coat — and the probe measured 0.277 m of it over twenty 12-frame events.
+ *  Positional shake is an automatic fail of RI-CAM06 and it also pushes the camera into the
+ *  geometry RI-CAM01's collision step already resolved. */
+function basis(c, fwd, right, up) { basisAt(c.yaw, c.pitch, fwd, right, up); }
+
+/** The VIEW basis: the rig's angles plus the shake. Used for projection and for the
+ *  near-plane clip test — what the player sees — and never for placing the camera. */
+function viewBasis(c, fwd, right, up) { basisAt(c.yaw + c.shakeYaw, c.pitch + c.shakePitch, fwd, right, up); }
+
+function basisAt(yawDeg, pitchDeg, fwd, right, up) {
+  const yaw = yawDeg * DEG;
+  const pitch = pitchDeg * DEG;
   const cp = Math.cos(pitch), sp = Math.sin(pitch);
   fwd[0] = Math.sin(yaw) * cp; fwd[1] = sp; fwd[2] = Math.cos(yaw) * cp;
   right[0] = Math.cos(yaw); right[1] = 0; right[2] = -Math.sin(yaw);
@@ -655,7 +700,7 @@ function basis(c, fwd, right, up) {
   up[1] = right[2] * fwd[0] - right[0] * fwd[2];
   up[2] = right[0] * fwd[1] - right[1] * fwd[0];
 }
-export { basis as cameraBasis };
+export { basis as cameraBasis, viewBasis as cameraViewBasis };
 
 function writePose(c) {
   desiredPoint(c, c.armLen, c.shoulderR, c.shoulderU, _pt, _castRef);
@@ -668,7 +713,7 @@ function writePose(c) {
 function evaluateClip(sim, c, cell) {
   if (cell === EMPTY_CELL) { c.clipThrough = false; return; }
   if (cell.contains(c.pos[0], c.pos[1], c.pos[2])) { c.clipThrough = true; return; }
-  basis(c, _fwd, _right, _up);
+  viewBasis(c, _fwd, _right, _up);
   const hh = CAMERA_CONST.near_m * Math.tan(CAMERA_CONST.fov_deg * DEG / 2);
   const hw = hh * CAMERA_CONST.aspect;
   for (let sx = -1; sx <= 1; sx += 2) {
@@ -684,7 +729,7 @@ function evaluateClip(sim, c, cell) {
 
 /** NDC projection of a world point. Returns true when in front of the near plane. */
 function project(c, world, out) {
-  basis(c, _fwd, _right, _up);
+  viewBasis(c, _fwd, _right, _up);
   const dx = world[0] - c.pos[0], dy = world[1] - c.pos[1], dz = world[2] - c.pos[2];
   const z = dx * _fwd[0] + dy * _fwd[1] + dz * _fwd[2];
   if (z <= CAMERA_CONST.near_m) { out[0] = 0; out[1] = 0; out[2] = z; return false; }
