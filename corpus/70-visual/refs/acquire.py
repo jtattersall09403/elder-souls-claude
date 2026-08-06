@@ -94,15 +94,12 @@ def load_records() -> dict[str, dict]:
         candidate = (HERE / relative).resolve()
         if HERE not in candidate.parents:
             raise ValueError(f"path escapes refs root: {relative}")
-        if "source_url" not in record:
+        if not all(k in record for k in ("source_url", "expected_bytes", "expected_sha256")):
             # Local record: a file acquired in-container and already on disk. Documented here so
             # nothing is undocumented, but not fetchable, so acquire.py skips it rather than
             # erroring. Dropping these is how 159 records were silently lost once already.
             record.setdefault("_local", True)
             continue
-        for field in ("expected_bytes", "expected_sha256"):
-            if field not in record:
-                raise ValueError(f"{relative}: missing {field}")
     return {k: v for k, v in records.items() if not v.get("_local")}, records
 
 

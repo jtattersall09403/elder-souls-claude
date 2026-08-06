@@ -105,6 +105,15 @@ export class Engine {
     return mode;
   }
 
+  // ---- determinism ------------------------------------------------------------------
+
+  /** Reseeds the global PRNG. Honoured by the next loadState/reset (HARNESS.md D6). */
+  setSeed(n) {
+    this.sim.seed = n >>> 0;
+    rng.reseed(this.sim.seed);
+    return this.sim.seed;
+  }
+
   // ---- data --------------------------------------------------------------------------
 
   get moves() { return this.data.moveset.moves; }
