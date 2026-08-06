@@ -774,7 +774,21 @@
       "note": "The renderer half is closed. The frame is not: the projectile renders zero particles in flight and the impact frame is pixel-indistinguishable from idle."
     }
   ],
-  "corpus_extended": [],
+  "corpus_extended": [
+    {
+      "id": "RI-MAG06",
+      "path": "corpus/25-magic/RI-MAG06-effect-behaviour-census.md",
+      "area": "25-magic",
+      "judges": [
+        "magic.effects.catalogue",
+        "magic.effects.utility",
+        "magic.gating.skills"
+      ],
+      "reason": "sharper_discriminator",
+      "note": "Amended, not replaced. RI-MAG06 was filed by the round-1 critic and it worked: the build it was written against now measures 55/55 under two independently written instruments. But its vocabulary asks only 'did this effect move a system', and this round found two failures it cannot see. \u00a7D + M7 add DISTINCT-VERBS (55 handlers produced 33 distinguishable observable signatures; four mitigation effects are one kind-blind multiplier and pass \u00a7A cleanly), computed mechanically from a flattened snapshot so a hand-written probe table cannot reintroduce the declaration the item exists to distrust. \u00a7E + M8 add the ARENA AUDIT: every magic probe in the tree, including the two this critic wrote first, opened with setMagicSkills({...100}), which held open a gate that refuses 25 of 72 shipped spells in every state the game ships. RI-MTH07 \u00a7C3 audits hand-fed ARGUMENTS; this audits hand-fed ARENA SETUP, which is the same failure one line earlier and was uncovered anywhere in the corpus. Both new axes carry bands in the item's own Scoring table and min-over-axes is unchanged.",
+      "index_regenerated": true
+    }
+  ],
   "method_deviations": [
     {
       "ref_item": "RI-MAG01",

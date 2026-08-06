@@ -2,13 +2,19 @@
   "task_id": "W1-14-r2-critic",
   "brief": "critic round 2 for W1-14 (magic)",
   "started": "wave-1",
-  "state": "measuring",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-14-r2.json",
     "corpus/90-verdicts/wave1/W1-14-r2.md",
     "corpus/90-verdicts/wave1/artifacts/W1-14-r2/"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-14-r2.json",
+    "corpus/90-verdicts/wave1/W1-14-r2.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r2/ (9 reports + 6 frames)",
+    "corpus/25-magic/RI-MAG06-effect-behaviour-census.md (amended: \u00a7D DISTINCT-VERBS, \u00a7E arena audit, M7, M8)",
+    "tools/harness/critic-w1-14-r2a..g.mjs + critic-w1-14-r2diag.mjs"
+  ],
   "findings": [
     "BOOT CONFIRMED: smoke.mjs 6/6, api-probe 33/33 at HEAD 4a5f13f.",
     "55/55 SURVIVES. My own instrument (critic-w1-14-r2a.mjs, treatment-after vs control-after over a flattened world snapshot, no per-effect probe table) finds 55/55 effects move at least one world-side leaf path. GENERIC-APPLICATOR is genuinely 0/55: no non-damage effect takes hp.",
@@ -25,6 +31,6 @@
     "getQuestState() still carries _declared_incomplete: 'no quest in this build can be started, advanced or completed by playing' - stale, contradicted by the working QuestEngine.",
     "VFX IS REAL: 3 particle systems, 246 particles, decal appears at impact, draw calls 30/30/29/29/32 (night release 32 with 4 particle draw calls). Not flat."
   ],
-  "next_step": "run regressions, economy recompute, AR checks, blind pairs; then write the verdict",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 complete. FAIL 4.4/10.",
+  "notes_for_successor": "The one probe that matters for the next round is tools/harness/critic-w1-14-r2f.mjs \u2014 it is the only magic probe in the tree that never calls setMagicSkills(). Re-run it FIRST. If it still reports 47/72 attunable, nothing else in the piece has moved that a player can reach."
 }
