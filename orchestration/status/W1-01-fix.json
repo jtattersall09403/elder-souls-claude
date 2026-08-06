@@ -16,7 +16,12 @@
   "outputs_written": [
     "tools/world/road-water-audit.mjs (new instrument: M2-ROAD-ABOVE-WATER, 10 legs x 4 tide phases)",
     "tools/world/build-roads.mjs (deck solve rewritten: cut/fill limits, corridor high-water clearance, deck-repair loop, terrain-aware length solve)",
-    "game/src/world/field.js (_applyRoads tie-break bug: equal-weight segments now take the higher deck)"
+    "game/src/world/field.js (_applyRoads tie-break bug: equal-weight segments now take the higher deck)",
+    "tools/world/build-travel.mjs + game/data/world/travel/{stations,lines,services,tariff}.json (5 modes, 26 stations, 68 services, 17 lines) -- closes AR-2 B13",
+    "game/src/engine.js: travel network (getTravelNetwork/getTravelState/travelQuote/travelFare/boardTravel/travelRide), walked-it-once gate, burden (setBurden/getBurden), _settleWorld retraction now written to the controller",
+    "game/src/harness/api.js: 8 new verbs (travel x6, burden x2)",
+    "tools/world/locomotion-audit.mjs (RI-WLD10 M49 band ladder + RI-PRG07 M5 burden + S23 guard)",
+    "tools/world/scale-audit.mjs: M2-ROAD-ABOVE-WATER and M2-ROAD-CUT-AND-FILL added"
   ],
   "findings": [
     "ROOT CAUSE of the drowned road is NOT A* routing through a lake. The natural terrain at (2187,2215) is DRY LAND at 154.01 m. The road's own elevation profile in build-roads.mjs is 69.17 m there -- an 85 m CUTTING that _applyRoads carves into the hill, which then fills with water (surface 135.30). waterSurfaceAt returns null before setRoads and 135.3 after. Same at helstrom-gideon (1652,2754): natural 48.65 m dry, roaded 33.34 m, depth 7.63 m.",
@@ -26,8 +31,12 @@
     "The Weeping Ford minor settlement (2129.5,2206.5) is a mandatory waypoint 58 m from the deepest point.",
     "Static road-water audit reproduces the verdict: LOW stormhold-helstrom max 66.135 m / W5 500 m (verdict: 65.64 / 502 at 12 m point spacing; I subsample to 3 m).",
     "ROAD FIX LANDED. M2-ROAD-ABOVE-WATER PASSES: 0 m of non-tideway trunk road at W3+ at any of RISING/HIGH/FALLING/LOW. Was 512.5 m over-knee / 500 m over-chest / max 66.135 m on stormhold-helstrom at every phase. Tideway keeps 0.901 m LOW / 1.443 m HIGH. Max cut now 3.0 m (was 90.7 m), max fill 16.0 m (was 87.7 m). Crossing 6889.6 m / 57.41 min (band 52-65 min / 6300-7600 m).",
-    "Residual: 48 m of stormhold-helstrom has >100% grade because the water model produces HANGING water bodies -- narrow channels whose surface stands metres above their own banks (e.g. surface 248.3 m within 3 m of ground at 235.7 m). The deck must climb over them. Filed as a corpus defect, not fixed here."
+    "Residual: 48 m of stormhold-helstrom has >100% grade because the water model produces HANGING water bodies -- narrow channels whose surface stands metres above their own banks (e.g. surface 248.3 m within 3 m of ground at 235.7 m). The deck must climb over them. Filed as a corpus defect, not fixed here.",
+    "SECOND ROOT CAUSE, not named by the critic: the water band retraction in Engine._settleWorld wrote to sim.player.pos, which combat-bridge.mirror() overwrites from combat.player.pos at the top of every step. The retraction therefore produced a constant positional LAG of v(1-mult)/mult and a STEADY-STATE SPEED OF EXACTLY v. That is why the verdict measured 1.9988 m/s in W2 SUCK and scored RI-WLD10 40/100 \"completely inert\". Writing the controller closes it.",
+    "MEASURED after the fix: W0 2.0000, W2 1.7000, W3 1.3000 (RI-WLD10 M49 requires exactly 1.30), W4 0.8600, W5 1.1000 m/s at steady state on sustained-band ground. W1 has no sustained patch in the province; recorded as not-found rather than faked.",
+    "RI-PRG07 burden implemented: 2.0000 / 1.8000 / 1.4400 / 0.0000 m/s with transitions at exactly 0.60 / 0.85 / 1.00, suppressed to 1.00 inside COMBAT. Equip load 10->105% still 2.0000 at every tier, which is S23-correct (RI-CMB01 owns that ladder and it lives inside the fight).",
+    "Crossing after all changes: 55.642 min / 6676.5 m / mean 1.9998 m/s / 0.009% below 1.6 (bar 52-65 min, 6300-7600 m). Was 56.574 / 6788.3."
   ],
-  "next_step": "add M2-ROAD-ABOVE-WATER to scale-audit.mjs; make S9-NO-FENCES a real walk; re-run crossing",
+  "next_step": "rebuild the RI-WLD04 M17 blind pack (shuffled+seeded+night+worst weather); then region axes on the built world; then Blackwood/Thornmarsh/Deep-Marshes separation",
   "notes_for_successor": ""
 }
