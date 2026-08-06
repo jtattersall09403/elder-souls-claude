@@ -1,0 +1,1456 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-00-r2",
+  "piece_title": "W1-00 round 2 — harness, determinism and persistence",
+  "subsystem_paths": [
+    "platform.determinism.harness",
+    "platform.input.pipeline",
+    "platform.perf.simtime",
+    "platform.save.persistence",
+    "platform.save.storage",
+    "platform.perf.framerate",
+    "platform.load.ttfp"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-00-r2-k4m9",
+    "role": "critic.platform",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-06T14:11:00Z",
+    "finished_at": "2026-08-06T15:05:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "445bfa69412bf2f80ea8334e3b9c6a2d1a341ab4",
+    "branch": "main",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/smoke.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "reports/harness-smoke.json"
+      },
+      {
+        "command": "node tools/harness/trace.mjs --scenario cmb-duel-infantry --seed 90210",
+        "seed": 90210,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/trace.mjs --scenario mth-warmup-noenemy --seed 8675309",
+        "seed": 8675309,
+        "exit_code": 0
+      },
+      {
+        "command": "node p1-roundtrip.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json"
+      },
+      {
+        "command": "node p2b-alloc.mjs /home/user/elder-souls-claude --steps=20000",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json"
+      },
+      {
+        "command": "node p2b-alloc.mjs <worktree 8714e38> --steps=20000",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-prefix.json"
+      },
+      {
+        "command": "node p3-r5.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-r5-reanchor-guard.json"
+      },
+      {
+        "command": "node p5-rungs-ar.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+      },
+      {
+        "command": "node p6-plt01.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+      },
+      {
+        "command": "node p4b-camera.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+      },
+      {
+        "command": "node p10-m5.mjs",
+        "seed": 4711,
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload.json"
+      },
+      {
+        "command": "node p9-cold.mjs",
+        "seed": 4711,
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-coldreload.json"
+      },
+      {
+        "command": "node p8-input.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json"
+      },
+      {
+        "command": "node tools/platform/alloc-probe.mjs --steps 60000",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/tool-alloc-probe-60k.json"
+      },
+      {
+        "command": "node tools/platform/alloc-probe.mjs --steps 20000",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/determinism.mjs --scenario cmb-duel-infantry",
+        "exit_code": 0
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Declared before any citation. No screenshot is cited; no fidelity or art-direction claim is made anywhere in this verdict."
+  },
+  "reference_items": [
+    {
+      "id": "RI-MTH01",
+      "path": "corpus/80-methods/RI-MTH01-harness-api-surface.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-100 weighted over 33 API rows; mandatory x1.0, optional x0.5",
+      "native_score": 92,
+      "native_max": 100,
+      "native_verdict": "Below bar — named remedy required",
+      "score_0_10": 6,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "A12 event-shape fail-closed",
+          "result": "pass",
+          "value": "queueInputs({f:0,tap:'light'}) and {f:0,wibble:3} both throw naming the key; unknown button 'nope' throws; {f:0,press:['light']} returns 1",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A12b no-key event",
+          "result": "fail",
+          "value": "queueInputs({f:0}) still returns 1 and does nothing",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "M6 no phantom eid",
+          "result": "pass",
+          "value": "spawn('nope') throws naming the two known archetypes",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A03 getBuildInfo shape",
+          "result": "fail",
+          "value": "commit and builtAt are both null",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "API surface present",
+          "result": "pass",
+          "value": "55 methods enumerated on window.__HARNESS",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json"
+          ]
+        }
+      ],
+      "how_we_lose_hits": [
+        "a fail-quiet accepting method (the no-key event)"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+      ]
+    },
+    {
+      "id": "RI-MTH02",
+      "path": "corpus/80-methods/RI-MTH02-determinism-reproducibility.md",
+      "side": "neutral",
+      "kind": "trace",
+      "native_scale": "0-24, sum over rungs R1-R9",
+      "native_score": 24,
+      "native_max": 24,
+      "native_verdict": "Meets the bar",
+      "score_0_10": 7,
+      "justification": "All nine rungs re-derived by critic-owned probes, not by the build's own ladder: R1/R2 two separate node invocations at seed 90210 -> body_sha256 718194e63b09a503 twice; R3 three stepping patterns -> c80f4aed0b8b; R4 100.000% of frames differ outside .rng.seed on four critic-chosen seed pairs with max(rng.draws)=1, and 0.0% with max(rng.draws)=0 on the no-entity scenario, showing the discriminator has teeth (critic2-seed-sensitivity.json); R5 0 differing fields with my own re-basing and 198 without the re-anchor (critic2-r5-reanchor-guard.json); R6/R7/R8 in critic2-rungs-ar.json; R9 0/40 mismatches (critic2-roundtrip-seedsweep.json). Held at 7 rather than the native ceiling of 8 because R4 passes on the narrowest qualifying quantity: one draw per entity into a cosmetic animation counter.",
+      "measured": "full",
+      "checks": [
+        {
+          "id": "R1",
+          "result": "pass",
+          "value": "718194e63b09a50373175e92bad6501542da77c1901a2cfc9712b2d6b658bcd1",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json"
+          ]
+        },
+        {
+          "id": "R2",
+          "result": "pass",
+          "value": "same hash from a second, separate node process",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json"
+          ]
+        },
+        {
+          "id": "R3",
+          "result": "pass",
+          "value": "c80f4aed0b8b… for stepFrames(1)x600, (60)x10, (600)x1",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "R4",
+          "result": "pass",
+          "value": "100.000% of 3600 frames differ outside .rng.seed; max(rng.draws)=1",
+          "threshold": ">=5% and max(rng.draws)>0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json"
+          ]
+        },
+        {
+          "id": "R5",
+          "result": "pass",
+          "value": "0 differing fields over 600 frames, warm-up 30 vs 90, anim_frame compared",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-r5-reanchor-guard.json"
+          ]
+        },
+        {
+          "id": "R6",
+          "result": "pass",
+          "value": "e8fc08cae64560d1… twice for setSeed->loadState",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "R7",
+          "result": "pass",
+          "value": "e90209f6ef59edbb… with and without 1200 ms host sleeps between chunks",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "R8",
+          "result": "pass",
+          "value": "783a251e4be15f17… at 1920x1080 and 640x360",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "R9",
+          "result": "pass",
+          "value": "0/40 round-trip hash mismatches over 20 critic-chosen seeds x 2 states",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-r5-reanchor-guard.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json"
+      ]
+    },
+    {
+      "id": "RI-MTH04",
+      "path": "corpus/80-methods/RI-MTH04-measurement-integrity.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-30, sum over M1-M8 plus the unmeasured list",
+      "native_score": 28,
+      "native_max": 30,
+      "native_verdict": "Admissible with struck claims",
+      "score_0_10": 6,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "M1 environment gate",
+          "result": "pass",
+          "value": "reports/harness-smoke.json ok:true, Chromium 141.0.7390.37, SwiftShader",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M4 every numeric claim resolves",
+          "result": "pass",
+          "value": "every number in the .md resolves to a field in a committed artifact",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json"
+          ]
+        },
+        {
+          "id": "M5 no source-derived claims",
+          "result": "pass",
+          "value": "game/src never opened; three source_reads declared with permitted purposes",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        },
+        {
+          "id": "M6 no impossible numbers",
+          "result": "marginal",
+          "value": "the build's alloc-probe prints '9828 B - 10344 B = 0 B', i.e. max(0,slope); and FAIL at --steps 20000 vs PASS at 60000 on the same tree",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/tool-alloc-probe-60k.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json"
+          ]
+        },
+        {
+          "id": "unmeasured list present",
+          "result": "pass",
+          "value": "12 rows in method_deviations, each naming what was not run",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/tool-alloc-probe-60k.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+      ]
+    },
+    {
+      "id": "RI-PLT01",
+      "path": "corpus/85-platform/RI-PLT01-frame-budget.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "0-100 weighted; Tier-S total 64, Tier-H 36 and unreachable in this container (T2)",
+      "native_score": 52,
+      "native_max": 100,
+      "native_verdict": "Recognisably attempting it",
+      "score_0_10": 5,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M6",
+          "result": "pass",
+          "value": "600 sim steps and body hash b4d3b4efb0b3ce7b at render rates 60/30/15/0",
+          "threshold": "identical at every rate",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M7",
+          "result": "pass",
+          "value": "pos [2.2685,0,1.3631], stamina 120, camera yaw 120 — identical at all four rates",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M8",
+          "result": "pass",
+          "value": "stall 400.54 ms then steps per rAF [5,1,1,0,1,1]; catchupClamps 1; cap 5",
+          "threshold": "<=5",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M9",
+          "result": "pass",
+          "value": "3600 frames, 0 non-unit f, 0 off-step dt, t_ms/f = 16.666666666666668",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M4",
+          "result": "marginal",
+          "value": "slope -0.88 / -0.35 / +0.069 B/step at 20000 steps with the GC-inclusion flags on; round-1 tree measured 29.64 / 30.21 / 90.96 B/step with the same probe",
+          "threshold": "0 B/step (P4); hard fail at >8 KB/step",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-prefix.json"
+          ],
+          "note": "At or below the instrument resolution (its own baseline is 0.20-0.57 B/iteration). A literal zero is not demonstrable either way."
+        },
+        {
+          "id": "M3",
+          "result": "unmeasurable",
+          "value": "sim_units undefined: no numeric cpu_index_reference for phone-mid exists in the corpus",
+          "threshold": "P1-P3 in sim_units",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ],
+          "note": "Corpus hole, scored 0 fail-closed per SCORING.md 1.1"
+        },
+        {
+          "id": "M5",
+          "result": "unmeasurable",
+          "value": "no GC census taken",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json"
+          ]
+        },
+        {
+          "id": "M1",
+          "result": "pass",
+          "value": "max over 3 states: draw calls 40, triangles 118418, programs 13, materials 13, shadowLights 2",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M2",
+          "result": "pass",
+          "value": "programs 10-13, materials 7-13, stateChanges 31-40",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M15",
+          "result": "pass",
+          "value": "getPerfStats()._unmeasurable.renderCpuMs and getLoadState()._unmeasurable.TTFP both refuse Tier-H numbers on SwiftShader",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M10-M14",
+          "result": "unmeasurable",
+          "value": "Tier-H, forbidden on a software rasteriser by T1",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "the allocation instrument cannot resolve the budget it polices"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-prefix.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+      ]
+    },
+    {
+      "id": "RI-PLT03",
+      "path": "corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "0-100 weighted; 30 Tier-S points need a second region, 30 Tier-H points forbidden here",
+      "native_score": 20,
+      "native_max": 100,
+      "native_verdict": "We lose",
+      "score_0_10": 2,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M-L9/M-L10/M-L13/M-L14",
+          "result": "unmeasurable",
+          "value": "one playable region; 14 loadable states; no border to cross",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        },
+        {
+          "id": "M-L1/M-L7/M-L11",
+          "result": "unmeasurable",
+          "value": "Tier-H on SwiftShader; the build correctly refuses to emit TTFP",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "load-run.mjs / hitch-census.mjs / stream-audit.mjs",
+          "result": "unmeasurable",
+          "value": "all three absent from tools/platform/",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+      ]
+    },
+    {
+      "id": "RI-JRN03",
+      "path": "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "0-100 weighted over M-K1..M-K24 and M-N1..M-N7",
+      "native_score": 35,
+      "native_max": 100,
+      "native_verdict": "We lose",
+      "score_0_10": 4,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M-K5 repeat-driven actions",
+          "result": "pass",
+          "value": "60 repeated keydowns produce exactly 1 attack_start, 1 stamina_spend, 1 input_action",
+          "threshold": "exactly 1",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json"
+          ]
+        },
+        {
+          "id": "M-K8 click-to-play surface",
+          "result": "pass",
+          "value": "no click-to-play / enable-mouse-look text anywhere in the document",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json"
+          ]
+        },
+        {
+          "id": "M-K11 page steals scroll",
+          "result": "pass",
+          "value": "document is not scrollable",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json"
+          ]
+        },
+        {
+          "id": "M-K12 look rate vs render rate",
+          "result": "pass",
+          "value": "camera yaw 120 degrees identical at render 60/30/15/0 Hz",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M-K1/M-K6/M-K7",
+          "result": "unmeasurable",
+          "value": "my probe could not establish pointer lock headlessly, so held actions never engaged and the blur/visibility drift figures are vacuous",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json"
+          ]
+        },
+        {
+          "id": "M-K17..M-K22, M-N1..M-N7",
+          "result": "unmeasurable",
+          "value": "rebinding and discoverability not run; the naive pass needs a separate fresh agent (JC-03N)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+      ]
+    },
+    {
+      "id": "RI-JRN05",
+      "path": "corpus/88-journeys/RI-JRN05-save-and-load.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-100 weighted; only 100 meets the bar. Hard fails cap the item at 2",
+      "native_score": 63,
+      "native_max": 100,
+      "native_verdict": "We lose (HF1 triggered on the M5 clause)",
+      "score_0_10": 2,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1 round-trip hash",
+          "result": "pass",
+          "value": "0/40 mismatches over 20 critic-chosen seeds x 2 states",
+          "threshold": "5/5 equal",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json"
+          ]
+        },
+        {
+          "id": "M2 round-trip field diff",
+          "result": "pass",
+          "value": "the only differing field in all 40 trials is volatile.frame, which is on the declared volatile list; 0 non-volatile diffs",
+          "threshold": "diff empty",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json"
+          ]
+        },
+        {
+          "id": "M3 cold-reload round trip",
+          "result": "pass",
+          "value": "h0 = h1 = ddafb5fb9ae38f2a…; journal 42, flags 3, topics 5 preserved through a real navigation and readSave",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-coldreload.json"
+          ]
+        },
+        {
+          "id": "M5 divergence after load",
+          "result": "fail",
+          "hard_fail": true,
+          "value": "control 5d0830f9b9e3ea71… vs loaded d52edb76370c7c08…; enemies[].prev_state differs on 219 of 600 frames (control \"IDLE\", loaded null); the serialised entity record carries state, anim_frame, anim_phase0 and state_entered_ago_frames but not prev_state",
+          "threshold": "identical",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload-prefix.json"
+          ],
+          "note": "Reproduced identically against a worktree of round 1 commit 8714e38, so pre-existing rather than a regression. world.entities is a durable manifest path and prev_state is on no volatile list (manifest rule V1)."
+        },
+        {
+          "id": "M10 backend attestation",
+          "result": "marginal",
+          "value": "localStorage holds one 63-byte record elder-souls.pointer against a 1024-byte budget, so no payload leaks; but getStorageInfo() returns {} until a save has been written, so backend === indexeddb cannot be attested from a cold read",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-jrn05.json"
+          ]
+        },
+        {
+          "id": "M12 corruption handling",
+          "result": "pass",
+          "value": "6/6 hostile imports rejected with legible text; getStateHash unchanged after every one",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-jrn05.json"
+          ]
+        },
+        {
+          "id": "M14 export/wipe/import",
+          "result": "pass",
+          "value": "h0 = h1 = 90c4a9efc74b2d5d…",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M15 save does not stall the sim",
+          "result": "pass",
+          "value": "300 sim frames stepped during a 504,783-byte write with 0 frame gaps",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-jrn05.json"
+          ]
+        },
+        {
+          "id": "M11 atomicity under kill",
+          "result": "unmeasurable",
+          "value": "not run; round 1 hung the probe twice and I did not re-attempt it",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-jrn05.json"
+          ]
+        },
+        {
+          "id": "M4/M6-M9 completeness block",
+          "result": "unmeasurable",
+          "value": "not re-run; tools/journey/state-diff.mjs does not exist",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "HF1 (M5 clause: post-load trace divergence)"
+      ],
+      "how_we_lose_hits": [
+        "#5 — a derived cache is not restored and the next frames differ from the control; nothing a player does catches it until a boss behaves differently after a reload"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload-prefix.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-coldreload.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-jrn05.json"
+      ]
+    },
+    {
+      "id": "RI-CAM02",
+      "path": "corpus/15-camera/RI-CAM02-free-camera-and-movement-mapping.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "0-100 weighted over M1-M7",
+      "native_score": 45,
+      "native_max": 100,
+      "native_verdict": "We lose",
+      "score_0_10": 4,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M2 pitch clamp",
+          "result": "pass",
+          "value": "unlocked saturates at exactly -55.000 and +38.000, locked at -50.000 and +32.000; a single distinct tail value in all four runs; 0 creep frames; p100(|pitch|) never exceeds the bound",
+          "threshold": "[-55,+38], locked [-50,+32], saturating",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        },
+        {
+          "id": "M2b per-frame look cap",
+          "result": "pass",
+          "value": "a 400-degree swipe on one frame moves camera yaw 45 -> 75, i.e. exactly 30.000 degrees, with 0.000000 carried into later frames",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        },
+        {
+          "id": "M3 zero lag / no smoothing",
+          "result": "pass",
+          "value": "0 non-zero yaw deltas after the first frame",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        },
+        {
+          "id": "M5 no auto-follow",
+          "result": "pass",
+          "value": "0.000000 degrees of camera yaw over 720 frames of a full-circle movement input",
+          "threshold": "<0.5 deg",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        },
+        {
+          "id": "M1 deadzone and response",
+          "result": "unmeasurable",
+          "value": "look is a per-frame degree delta, not a normalised stick magnitude; there is no curve to fit",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        },
+        {
+          "id": "M4 turn rate ceiling",
+          "result": "unmeasurable",
+          "value": "not run; owned by the movement piece",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        },
+        {
+          "id": "M6 auto-recentre",
+          "result": "unmeasurable",
+          "value": "no mechanism in this build",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        },
+        {
+          "id": "M7 camera-relative mapping",
+          "result": "unmeasurable",
+          "value": "not run",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+      ]
+    },
+    {
+      "id": "RI-CAM06",
+      "path": "corpus/15-camera/RI-CAM06-camera-feel.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "0-100 weighted over M1-M9",
+      "native_score": 45,
+      "native_max": 100,
+      "native_verdict": "We lose",
+      "score_0_10": 3,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1 camera/fixed-step coupling",
+          "result": "pass",
+          "value": "the whole record, camera block included, is byte-identical across three stepping patterns and four render rates",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+          ]
+        },
+        {
+          "id": "M4 FOV variance",
+          "result": "pass",
+          "value": "fov_deg is 60 on all 900 frames; range 0",
+          "threshold": "<0.001",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        },
+        {
+          "id": "M5 head-bob",
+          "result": "pass",
+          "value": "camera pos.y takes exactly one value, 1.4515, over 900 frames of a sprint; stdev 0.000000000 m; roll 0 on every frame",
+          "threshold": "<0.004 m",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ],
+          "note": "passes by having no vertical camera behaviour at all rather than by damping one"
+        },
+        {
+          "id": "M6-M9 hitstop / shake / death camera / fog gate",
+          "result": "unmeasurable",
+          "value": "camera.shake is [0,0] and camera.hitstop false on every frame of every run; no mechanism exists",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json"
+      ]
+    },
+    {
+      "id": "RI-CMB07",
+      "path": "corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md",
+      "side": "souls",
+      "kind": "trace",
+      "native_scale": "0-100 weighted over M0-M4",
+      "native_score": 15,
+      "native_max": 100,
+      "native_verdict": "We lose",
+      "score_0_10": 2,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M0 format conformance",
+          "result": "pass",
+          "value": "3600 frames, 0 frame gaps, closed enums throughout; but with a two-value player state vocabulary and an enemy that never attacks",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json"
+          ]
+        },
+        {
+          "id": "M1-M4",
+          "result": "unmeasurable",
+          "value": "exemplar invalidated by seam S22; m-cmb07-expand.mjs, -stats.mjs and -diff.mjs are all absent; the build has no enemy AI",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/trace.mjs --scenario {cmb-duel-infantry,mth-warmup-noenemy} --seed {90210,8675309,271828,999983,1,2147483647}, then critic-owned fielddiff.mjs over each pair",
+      "sha256": "0f029e3d69f773ee91b769aa5931d2177343949dc36eb8a6433fe8e2a59a1d98",
+      "seed": "90210/8675309/271828/999983/1/2147483647"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-roundtrip-seedsweep.json",
+      "kind": "report",
+      "produced_by": "node p1-roundtrip.mjs — 20 critic-chosen seeds x 2 states, host-side canonicalisation and field diff",
+      "sha256": "769298231a3374abca494cd7cff3ad730c88e494529748cb0dafc83c028dfd96",
+      "seed": "20 critic-chosen seeds"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json",
+      "kind": "perf",
+      "produced_by": "node p2b-alloc.mjs <repo> --steps=20000 — CDP HeapProfiler.startSampling with includeObjectsCollectedByMinorGC/MajorGC true, single-stepFrames-call slope",
+      "sha256": "bf9080064e103fe45f30080bf6535f88ceadd1138d9ac75116fe1953550ce6c6",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-prefix.json",
+      "kind": "perf",
+      "produced_by": "node p2b-alloc.mjs <git worktree of 8714e382941dbd4fdc9341dcd2692bff13f04648> --steps=20000",
+      "sha256": "fe16b4b1fc405bbd3cf995f13b515af207c8abe5e0b72cfb7d613e1e99c18dd1",
+      "seed": 1337,
+      "note": "round-1 tree, same instrument, for the true before-figure"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-current.json",
+      "kind": "perf",
+      "produced_by": "node p2-alloc.mjs — the SUPERSEDED chunked-stepping variant, kept because its 7.6-25.1 B/step is render cost, not per-step allocation",
+      "sha256": "654399668d9b9b57cbbe86e0a2c95d266e43eb1f0516f7c2bc89d8a8456d96db",
+      "seed": 1337,
+      "note": "wrong measurement, retained deliberately"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/tool-alloc-probe-60k.json",
+      "kind": "perf",
+      "produced_by": "node tools/platform/alloc-probe.mjs --steps 60000 (builder-authored; recorded, not scored from)",
+      "sha256": "aaabd7842863efcca1e09a4cd235ea12b6ce3755b195bb1882c3ea478af64dae",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-r5-reanchor-guard.json",
+      "kind": "trace",
+      "produced_by": "node p3-r5.mjs — R5 with/without reanchorFreeRunning, re-anchor genuineness, step-depth guard via a getter on a queued input",
+      "sha256": "55376f849610dee5bb30122af89d5148153b4f5bd12b41e05496d54e874810c3",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json",
+      "kind": "trace",
+      "produced_by": "node p5-rungs-ar.mjs — R3/R6/R7/R8, AR-1 A1/A2/A3/A5/A6/A7, RI-MTH01 fail-closed rows",
+      "sha256": "7110edd10ff095468dd1e671c8267ce4a943a7a00f3fb2772b898f78ebbc1219",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-plt01.json",
+      "kind": "perf",
+      "produced_by": "node p6-plt01.mjs — RI-PLT01 M1/M2/M6/M7/M8/M9/M15",
+      "sha256": "78c148cabb9160422262af21a2413bc2eabe022bcdd6042306079f15f3849a68",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json",
+      "kind": "trace",
+      "produced_by": "node p4b-camera.mjs — RI-CAM02 B clamp/cap/lag/auto-follow and RI-CAM06 M4/M5, read from the trace camera block",
+      "sha256": "4008a22f00546e31da9c81a8cd10a5d481b4575587dae9917f8075408885d124",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload.json",
+      "kind": "trace",
+      "produced_by": "node p10-m5.mjs — RI-JRN05 M5 as written: identical 120-frame pre-roll both sides, identical 600-frame script, seed 4711",
+      "sha256": "45585bf36e95dfe684d8ea896f1e6fdc44a2ae51dc51299be597290e32c325d6",
+      "seed": 4711
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload-prefix.json",
+      "kind": "trace",
+      "produced_by": "node p10-m5.mjs against a git worktree of 8714e38 — proves the M5 divergence is pre-existing, not a regression",
+      "sha256": "c70c556f87a7e6942dd65129f1f2b693af9946d82393b47daad559976152fb76",
+      "seed": 4711
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-coldreload.json",
+      "kind": "report",
+      "produced_by": "node p9-cold.mjs — RI-JRN05 M3, real navigation then readSave",
+      "sha256": "015262b00b33a4b32680ee6b3ff05c7bc8290fd9a8efefdc613d6e0a756df11c",
+      "seed": 4711
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-jrn05.json",
+      "kind": "report",
+      "produced_by": "node p7b-jrn05.mjs — RI-JRN05 M10 backend/localStorage, M15 save-during-sim, M12 hostile imports",
+      "sha256": "bd4618fecd03a9724762035823d6a06dfc315f2cb66fef5279536314b84a7442",
+      "seed": 4711
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json",
+      "kind": "report",
+      "produced_by": "node p8-input.mjs — RI-JRN03 keyboard path through real DOM KeyboardEvents in play-instrumented mode",
+      "sha256": "d57b9746f70ed357a869665bf5d828e3c749106f920f0f7a46aaffcdf18d7fe1",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md",
+      "kind": "negative-evidence",
+      "produced_by": "ls / test -e over the eleven instruments and three scenarios the reference items name, plus the region and state census",
+      "sha256": "cadbaf984660d1a143e666e24c05eab9be90f001231c758643bb7bb4f54d254f"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/fielddiff.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source: field-level trace diff",
+      "sha256": "ff2510c212548f9e8d7ba6715b9ff0ae2c508c5fd21ea897d3896b298f1362bb"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p1-roundtrip.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "b95a041961e20fa42498e292b962818b170cb491dd37bc2134def19d59be8696"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p2b-alloc.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "a388ef2b917a91b3c6b1370ba43a00a0610fe1e4c9516d01e3ff60c37258b4e7"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p3-r5.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "4242e65223af9d61825f927f8c498d00478cb7aba57c1d711b8bff1f4c478e52"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p4b-camera.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "36f929324a1e6651767f1a4ece9d9ea3e657d87711f5bfdd10e162e6543e436e"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p5-rungs-ar.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "3e5f7309aad9ef89d239189a06994a93af37464b7fdf4fda28bfeb50d84eefcd"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p6-plt01.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "5b4a0c3b986d1506886ac9459be2c821a7a7dab65cd52c2d6d96e4d46704b90c"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p7b-jrn05.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "8b6f6e36e3773e587c65d2d3669f38b7993249ca1f19f0c38d15ce6e148dbd3d"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p8-input.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "25ad4ae504549121e12dd79e850edbfa3735c3bb85ff9841450804bfdd705f07"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p9-cold.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "73def796de08587772ee2fec52975914584e9503939c5ab95d1aa9cde5aea08f"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-00-r2/p10-m5.mjs",
+      "kind": "log",
+      "produced_by": "critic-owned source",
+      "sha256": "9d1c01ca2606f34dcaf900fbe2a4333379b7e9493c8c35dea54153726cfb6df1"
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-CAM02",
+      "status": "done",
+      "question": "Which pitch(t) series is a camera whose clamp is applied during integration rather than after it?",
+      "pack_artifacts": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+      ],
+      "assignment_seed": "20260806-r2",
+      "blind_pick": "tie",
+      "blind_rationale": "Both series ramp monotonically to a bound and then hold a single bit-exact value for the rest of the window, with zero frames past the bound and zero frames returning towards zero. The discriminator the item names — a frame at -55.3 that shows the clamp being applied after integration — does not occur in either series, so there is nothing left to choose between them on this question.",
+      "reveal": {
+        "A": "ours",
+        "B": "reference"
+      },
+      "picked": "tie",
+      "rerun_triggered": false
+    },
+    {
+      "ref_item": "RI-CAM06",
+      "status": "not_possible",
+      "not_possible_reason": "Our camera-height residual is a bit-exact constant — one distinct value, 1.4515, over 900 frames, stdev 0.000000000 m. Any pack built from it is trivially identifiable by the absence of noise, so the comparison cannot be fair. Round 1 hit the same wall from the other direction and mis-identified the zero-residual series as synthetic."
+    },
+    {
+      "ref_item": "RI-CMB07",
+      "status": "not_possible",
+      "not_possible_reason": "The exemplar is invalidated by seam S22 pending regeneration, m-cmb07-expand/-stats/-diff.mjs are absent, and no enemy in this build attacks, so there is no fight to fingerprint."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A1",
+          "result": "pass",
+          "observed": "50 scripted identical swings at a dummy_passive at 1.6 m: 25 attack_start, 25 hit, 25 input_dropped_not_actionable (refused during recovery, not rolled for). max(rng.draws) = 1 over the whole run and that draw is the entity idle phase taken at its first step, not a hit resolution.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A2",
+          "result": "pass",
+          "observed": "distinct_damage_events: [\"90\"] — stdev 0 over every hit",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A3",
+          "result": "pass",
+          "observed": "menu queued while the enemy is AGGRO, then 120 frames stepped: the world advanced 120 frames",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A4",
+          "result": "not_run",
+          "not_run_reason": "no enemy in this build attacks; there is no windup to measure. Owned by W1-06",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A5",
+          "result": "pass",
+          "observed": "roll injected at recovery frames 2, 5 and 10: attack frames 74 -> 74 -> 74, zero skipped in all three",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A6",
+          "result": "pass",
+          "observed": "same archetype at player level 9 and level 120 (998,000 souls): hp_max 412, poise_max 22 — identical",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A7",
+          "result": "pass",
+          "observed": "0.000000 deg/frame of player yaw during windup|active|recovery with a 10 deg/frame look input held",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "A8",
+          "result": "not_run",
+          "not_run_reason": "no skill system exists"
+        },
+        {
+          "id": "A9",
+          "result": "not_run",
+          "not_run_reason": "no Fatigue bar exists"
+        },
+        {
+          "id": "A10",
+          "result": "not_run",
+          "not_run_reason": "Object.keys(__HARNESS) contains no dialogue verb at all",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "the HUD carries no marker, arrow or waypoint; there is no quest runtime to point at anything",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json"
+          ]
+        },
+        {
+          "id": "B2",
+          "result": "not_run",
+          "not_run_reason": "no travel network exists, so there is no rest-point menu to enumerate",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        },
+        {
+          "id": "B13",
+          "result": "not_run",
+          "not_run_reason": "paired with B2: no transport modality ships, so the pair is un-runnable in both directions. Recorded as not_run rather than pass — a world with no network cannot pass B13",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+          ]
+        },
+        {
+          "id": "B3",
+          "result": "not_run",
+          "not_run_reason": "no dialogue runtime; getActionSet().actions is the closed 14 of HARNESS.md §4 with no parley verb",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json"
+          ]
+        },
+        {
+          "id": "B4",
+          "result": "not_run",
+          "not_run_reason": "no loot tables"
+        },
+        {
+          "id": "B5",
+          "result": "not_run",
+          "not_run_reason": "no merchant. souls: 998000 sits on the player with nothing to spend it on, so seam S15 is untested rather than violated",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        },
+        {
+          "id": "B7",
+          "result": "not_run",
+          "not_run_reason": "no quest runtime"
+        },
+        {
+          "id": "B12",
+          "result": "not_run",
+          "not_run_reason": "the method needs five encounter classes and this build has zero. Recorded as not_run, not pass",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-input.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-absent-instruments.md"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 4.1,
+    "pass_threshold": 6,
+    "aggregation": "mean",
+    "band_label": "4 — Recognisable but wrong (mean of ten items; one triggered hard fail)",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "hard_fail:RI-JRN05/M5(HF1)",
+    "below_pass_threshold:4.1<6.0",
+    "saw_builder_notes_before_blind"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-platform-save-drops-entity-prev-state",
+    "subsystem_path": "platform.save.persistence",
+    "what": "The save does not carry enemies[].prev_state. RI-JRN05 M5 run as written — identical 120-frame pre-roll on both sides, identical 600-frame script, seed 4711, control vs loaded — gives control body_sha256 5d0830f9b9e3ea71… and loaded d52edb76370c7c08…, differing on 219 of 600 frames in exactly that field: control \"IDLE\", loaded null, from frame 0 onward. The serialised entity record carries state, anim_frame, anim_phase0 and state_entered_ago_frames and stops there. world.entities is a durable path in game/data/save-manifest.json and prev_state is on no volatile list, so manifest rule V1 makes it a defect by the manifest's own terms. The same probe against round-1 commit 8714e38 reproduces it exactly, so it is pre-existing and was missed by both the build and the previous verdict, which recorded M5 as passing.",
+    "why_it_matters": "A player who reloads gets an enemy whose state history has been erased, so the first transition after a reload is taken from a different predecessor than the one the unsaved game would have used — RI-JRN05's own \"how we lose\" #5: nothing a player does catches it until a boss behaves differently after a reload.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload-prefix.json"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "Serialise prev_state in the entity record next to state and state_entered_ago_frames and restore it in the load path; add prev_state to the World group field list in game/data/save-manifest.json so RI-JRN05 M4's two-directional set-difference covers it; and extend the R9 rung and RI-JRN05 M5 to compare the full field set of the control and loaded traces rather than only body_sha256 of a window, printing the differing field names — round 1's M5 run passed precisely because it did not.",
+      "targets": [
+        "game/src/ (saveState/loadState entity serialisation)",
+        "game/data/save-manifest.json",
+        "tools/harness/determinism.mjs (R9)",
+        "corpus/88-journeys/RI-JRN05-save-and-load.md (M5)"
+      ],
+      "acceptance": "Re-run RI-JRN05 M5 (or corpus/90-verdicts/wave1/artifacts/W1-00-r2/p10-m5.mjs) at seed 4711 and at one other seed: the control and loaded traces must have identical body_sha256 after re-basing the absolute frame indices, and the field-level diff must be EMPTY. Today it is {\"enemies[].prev_state\": 219} of 600 frames.",
+      "ref_item": "RI-JRN05",
+      "estimated_size": "S"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "The seed reaches exactly one field. rng.draws reaches 1 and stays there over 3,600 frames, and the only differing simulation field across four critic-chosen seed pairs is enemies[].anim_frame. On mth-warmup-noenemy — same world, same script, no entity — seeds 90210 and 8675309 give 0 of 1,800 frames differing outside .rng.seed and max(rng.draws) = 0. HARNESS.md §8 D6 says setSeed() is honoured for world generation and content selection so a seed change visibly changes the run; today it is not.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json"
+      ],
+      "subsystem_path": "platform.determinism.harness"
+    },
+    {
+      "what": "tools/platform/alloc-probe.mjs reports max(0, slope): its own line reads \"9828 B @ 120000 steps - 10344 B @ 60000 steps = 0 B\". It prints FAIL for F1/F5 at --steps 20000 and PASS at --steps 60000 on the same tree.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/tool-alloc-probe-60k.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json"
+      ],
+      "subsystem_path": "platform.perf.simtime"
+    },
+    {
+      "what": "The same tool's self-test measures escaping literals (29.13 B each), which the CDP defaults already report correctly, so it would pass with the flag it exists to verify turned off. The case that needs the flag is dying literals: 0.073 B vs 9.16 B per literal in my run.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-alloc-slope.json"
+      ],
+      "subsystem_path": "platform.perf.simtime"
+    },
+    {
+      "what": "queueInputs({f: 0}) — a frame with no action key at all — still returns 1 and does nothing. Unrecognised keys (tap, wibble) now throw correctly, but the no-key case was not covered by the fix.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+      ],
+      "subsystem_path": "platform.input.pipeline"
+    },
+    {
+      "what": "getBuildInfo().commit and .builtAt are still both null (RI-MTH01 A03).",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+      ],
+      "subsystem_path": "platform.determinism.harness"
+    },
+    {
+      "what": "camera({pos: [1, 2]}) still returns {pos: [1, 2, null], …} rather than throwing.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-rungs-ar.json"
+      ],
+      "subsystem_path": "platform.determinism.harness"
+    },
+    {
+      "what": "getStorageInfo() returns {} until a save has been written in the session, so RI-JRN05 M10's backend === indexeddb cannot be attested from a cold read. After a write, localStorage holds exactly one record, elder-souls.pointer, 63 bytes against a 1024-byte budget.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-jrn05.json"
+      ],
+      "subsystem_path": "platform.save.storage"
+    },
+    {
+      "what": "The camera height residual over 900 frames of a sprint is identically zero — one distinct value 1.4515, roll_deg 0 and camera.shake [0,0] on every frame. RI-CAM06 §E's 0.004 m bar is met by having no vertical camera behaviour rather than by damping one.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-camera.json"
+      ],
+      "subsystem_path": "platform.perf.framerate"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-platform-prng-never-drawn",
+      "status": "closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-seed-sensitivity.json"
+      ],
+      "measured_value": "100.000% of 3600 frames differ outside .rng.seed on four critic-chosen seed pairs; max(rng.draws) = 1 in both runs of every pair",
+      "acceptance_restated": "Re-run trace.mjs --scenario cmb-duel-infantry at two seeds and diff field-by-field: max(rng.draws) > 0 in both runs, and >= 5% of frames differ in at least one field other than .rng.seed.",
+      "closed_by_builder_of_fix": false,
+      "note": "Closed on its own acceptance string, re-measured with seeds the builder did not choose (90210/8675309, 271828/999983, 1/2147483647, 90210/1), against round 1's measured 0.0%. The discriminator was separately shown to have teeth: on mth-warmup-noenemy the same seeds give 0.0% and max(rng.draws) = 0. The residual — that the seed reaches only enemies[].anim_frame — is recorded as a secondary observation, not as a reason to withhold closure. tools/gap-ledger.mjs IGNORES this closure because it is in the same wave (1) that opened the gap, and I am leaving it rejected rather than writing wave: 2 to make it stick — the measurement is on the record with its artifacts for the wave-2 critic on this path to adopt. That a remediation round inside a wave cannot retire a gap it genuinely fixed is itself a process gap, recorded here."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "id": "RI-PLT01",
+      "path": "corpus/85-platform/RI-PLT01-frame-budget.md",
+      "area": "85-platform",
+      "judges": [
+        "platform.perf.simtime"
+      ],
+      "reason": "corpus_hole",
+      "index_regenerated": false,
+      "note": "Verified corpus hole, not written as a new item because the fix is a constant inside an existing item and a critic must not invent it. §A rule S* defines sim_units via cpu_index_reference for the phone-mid class, and no numeric value for that constant exists anywhere in corpus/ — grep returns only the definition line itself. RI-PLT01 M3 (8 points) and RI-PLT03 P6 are therefore unscoreable on any machine, real hardware included. Remedy: declare cpu_index_reference for phone-mid in §A as a number measured by tools/platform/calibrate.mjs's own workload on an attested phone-mid device, with its checksum. Scored 0 fail-closed in the meantime per SCORING.md §1.1."
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-PLT01",
+      "deviation": "Allocation measured runner-side over CDP with includeObjectsCollectedByMinorGC/MajorGC set, at N and 2N in single stepFrames() calls",
+      "why": "A-JRN9 is absent from window.__HARNESS; chunked stepping makes the render cost scale with N, which is what my own first pass wrongly measured (kept in critic2-alloc-current.json)",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-PLT01",
+      "deviation": "M3 not scored, M5 not run",
+      "why": "sim_units is undefined (corpus hole); no GC census taken. Both 0, fail-closed",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-PLT01",
+      "deviation": "M1/M2 sampled over 3 states with a forced render rather than 5 scenarios x 6000 frames",
+      "why": "tools/platform/perf-run.mjs does not exist",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-PLT03",
+      "deviation": "Not re-measured this round; native 20/100 carried from round 1",
+      "why": "load-run.mjs, hitch-census.mjs and stream-audit.mjs are absent (verified by me), one playable region exists (verified by me), Tier-H is forbidden on SwiftShader (verified by me). Nothing in the remediation touches this item",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-JRN03",
+      "deviation": "M-K5/M-K8/M-K11 re-run through the real DOM and M-K12 established by RI-PLT01 M7; native 35/100 otherwise carried from round 1",
+      "why": "My probe could not establish pointer lock headlessly, so held actions never engaged and the blur/visibility drift figures are vacuous rather than passing. Nothing in the remediation touches this item",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-JRN05",
+      "deviation": "M11 not run, scored 0; M4/M6-M9, M13, M16-M19 carried from round 1",
+      "why": "Killing the page mid-write hung round 1's probe and I did not re-attempt it; tools/journey/state-diff.mjs does not exist",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-MTH01",
+      "deviation": "Only the rows round 1 scored below 2, plus getBuildInfo, spawn, camera and the event-shape rows, were re-probed",
+      "why": "The full 33-row census was not re-run; the item is measured: partial and is not scored above the rung the re-run rows support",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-CAM06",
+      "deviation": "Closest executable variant on swamp_canopy",
+      "why": "m-cam06-feel.mjs and the named scenarios cam-open-plain / cam-walk-cistern / wld-walk-lilmoth are absent",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-CMB07",
+      "deviation": "M1-M4 not run",
+      "why": "Exemplar invalidated by seam S22; m-cmb07-expand/-stats/-diff.mjs absent; no enemy AI",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-MTH04",
+      "deviation": "AR-3 carried in notes rather than in arbitration",
+      "why": "verdict.schema.json has no ar3 field and additionalProperties: false; the item's evidence: YAML block likewise has no home in the schema",
+      "affects_scores": false
+    }
+  ],
+  "arbitration_questions": [
+    {
+      "question": "Is a save that omits a durable entity field, where the omission produces a post-load trace divergence in a field that no AI currently reads, a triggered hard fail or a deferred defect?",
+      "souls_side": "RI-JRN05 HF1 is unconditional — \"any post-load trace divergence\" — because the whole point of the round trip is that the loaded world is the saved world, and a field that is wrong now is a boss that behaves differently after a reload later.",
+      "morrowind_side": "prev_state is arguably an honest null for a session that has no previous state, and no system in this build reads it, so the divergence has zero observable consequence today.",
+      "proposed_seam_id": "S-save-derived-history"
+    },
+    {
+      "question": "sim_units is defined in RI-PLT01 §A in terms of cpu_index_reference for the phone-mid class, and that constant has no numeric value anywhere in the corpus. Until it is declared, M3 (8 points) and RI-PLT03 P6 are unscoreable on every machine including real hardware. Who declares it, and does a dimension nobody can measure keep scoring 0 against the build?",
+      "souls_side": "SCORING.md §1.1 is explicit: unmeasurable is 0, fail-closed, and the build carries the loss regardless of whose fault the hole is.",
+      "morrowind_side": "Charging the build for a constant the corpus never wrote makes the item a permanent 8-point tax on every platform verdict until a phone is attested, which is a corpus debt masquerading as a build score."
+    },
+    {
+      "question": "A gap fixed and re-measured inside the same wave, by a critic who did not build the fix, cannot be closed: tools/gap-ledger.mjs requires a LATER wave's critic and ignores the closure. The ledger therefore reports GAP-W1-platform-prng-never-drawn as blocking against a build where it is measurably fixed.",
+      "souls_side": "SCORING.md §5 rule 1 exists so a fix cannot certify itself; loosening it by wave is how closures start being taken by the people who benefit from them.",
+      "morrowind_side": "The rule's stated intent is that closure is a CRITIC act by someone who did not build the fix, which is satisfied here; the wave comparison is a proxy for independence, not the thing itself, and it is now producing a false open gap.",
+      "proposed_seam_id": "S-ledger-same-wave-closure"
+    },
+    {
+      "question": "verdict.schema.json has additionalProperties: false and no ar3 field, while the critic charter requires AR-3 (seam sterility) to be recorded in every verdict. Round 1 carried it in notes and so does this verdict.",
+      "souls_side": "The schema is the contract and a verdict that adds a field is invalid.",
+      "morrowind_side": "A mandatory check with no home in the machine-readable artifact is a check that nothing can aggregate, which is the false-enforcement pattern BAR-CRITIQUE-02 named."
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "tools/lib/browser.mjs",
+      "purpose": "locate-harness",
+      "note": "To launch the game the same way the corpus tools do, from my own probes."
+    },
+    {
+      "path": "tools/harness/scenarios/cmb-duel-infantry.json",
+      "purpose": "locate-harness",
+      "note": "Fixture definition, so my probes could reproduce the scenario setup. Not game source."
+    },
+    {
+      "path": "tools/harness/scenarios/mth-warmup-noenemy.json",
+      "purpose": "locate-harness",
+      "note": "As above."
+    },
+    {
+      "path": "game/data/save-manifest.json",
+      "purpose": "quote-written-content",
+      "note": "The manifest is written content and its rule V1 is quoted verbatim in §2; it is what makes the missing prev_state a defect by the build's own declared terms."
+    },
+    {
+      "path": "tools/platform/calibrate.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read only after a corpus-wide grep had already established that no numeric cpu_index_reference exists; the finding does not rest on it."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is false: RI-PLT03 in full, RI-CMB07 M1-M4, RI-JRN05 M11 and its completeness block, RI-JRN03's rebinding/discoverability/naive blocks and RI-PLT01 M3/M5 were not run. Each is scored 0 fail-closed or carried at its round-1 native with the carry declared in method_deviations; none is extrapolated into a pass. saw_builder_notes_before_blind is true because the brief handed me round 1's verdict and the remediation report; the verdict is PROVISIONAL on that ground and the mitigation applied was to re-derive every load-bearing number with instruments I wrote, at seeds and step counts the builder did not choose, which produced a different answer from the report in three places (§1.3, §2, §4)."
+  },
+  "notes": "AR-3 (seam sterility, ARBITRATION.md §3): seam_sterile = TRUE, carried here because verdict.schema.json has no ar3 field. This piece is the measurement seam itself — a fixed-step loop, a trace format, an input pipeline and a save blob — and carries no boundary-crossing interaction by design. Round 1 recorded the one place it bears on the seam: with rng.draws == 0 nothing that is supposed to vary could be shown to vary. That is now half-fixed. The counter moves, but the seed's reach is one animation counter on one class of object: on mth-warmup-noenemy the counter is still 0 and the seed still changes nothing at all (critic2-seed-sensitivity.json). Reported for the RI-CMP01 project-level floor. — Ordering note (CRITIC-DOCTRINE §8): the gap ledger entry for platform.determinism.harness was read only after every raw measurement in §1-§4 had been taken and after both blind results were recorded; its closure in gap_closure rests on trace fields produced before it was read."
+}

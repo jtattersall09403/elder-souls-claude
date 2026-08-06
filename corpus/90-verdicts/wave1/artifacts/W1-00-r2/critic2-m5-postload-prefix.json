@@ -1,0 +1,130 @@
+{
+  "produced_by": "critic-owned p10-m5.mjs — RI-JRN05 M5 as written: 600 frames, identical script and seed, identical pre-roll on both sides",
+  "frames": 600,
+  "control_body_sha256": "78bff6eceb60c6107542a008f867dae84c3c59911d184b6fecc1c24777f01782",
+  "loaded_body_sha256": "f1b60ec00f30b1ca2b7064302903d06d7d41c2af7934843c45fc429763ffdbba",
+  "identical": false,
+  "differing_fields": {
+    "enemies[].prev_state": 219
+  },
+  "first_divergence": {
+    "frame": 0,
+    "field": "enemies[].prev_state",
+    "control": "IDLE",
+    "loaded": null
+  },
+  "snapshot_at_window_open": {
+    "control": [
+      {
+        "eid": "e0",
+        "archetype": "INFANTRY",
+        "tier": "trash",
+        "state": "FACE",
+        "state_entered_f": 24,
+        "prev_state": "IDLE",
+        "anim": "idle",
+        "anim_frame": 24,
+        "anim_len": 48,
+        "phase": "none",
+        "hit_active": false,
+        "hitboxes": [],
+        "pos": [
+          0,
+          0,
+          7
+        ],
+        "yaw_deg": 180,
+        "yaw_rate_dps": 0,
+        "speed_mps": 0,
+        "target": "player",
+        "dist_m": 7,
+        "los": true,
+        "in_sight_cone": true,
+        "alert": 100,
+        "alert_state": "AGGRO",
+        "attack_token": false,
+        "hp": 412,
+        "hp_max": 412,
+        "poise_cur": 22,
+        "poise_max": 22,
+        "stagger": false,
+        "spawn_anchor": [
+          0,
+          0,
+          7
+        ],
+        "leash_dist_m": 0,
+        "ai": "hold_ground"
+      }
+    ],
+    "loaded": [
+      {
+        "eid": "e0",
+        "archetype": "INFANTRY",
+        "tier": "trash",
+        "state": "FACE",
+        "state_entered_f": -96,
+        "prev_state": null,
+        "anim": "idle",
+        "anim_frame": 24,
+        "anim_len": 48,
+        "phase": "none",
+        "hit_active": false,
+        "hitboxes": [],
+        "pos": [
+          0,
+          0,
+          7
+        ],
+        "yaw_deg": 180,
+        "yaw_rate_dps": 0,
+        "speed_mps": 0,
+        "target": "player",
+        "dist_m": 7,
+        "los": true,
+        "in_sight_cone": true,
+        "alert": 100,
+        "alert_state": "AGGRO",
+        "attack_token": false,
+        "hp": 412,
+        "hp_max": 412,
+        "poise_cur": 22,
+        "poise_max": 22,
+        "stagger": false,
+        "spawn_anchor": [
+          0,
+          0,
+          7
+        ],
+        "leash_dist_m": 0,
+        "ai": "hold_ground"
+      }
+    ]
+  },
+  "saved_entity_record": [
+    {
+      "id": "inf_trash",
+      "eid": "e0",
+      "pos": [
+        0,
+        0,
+        7
+      ],
+      "yaw_deg": 180,
+      "hp": 412,
+      "poise": 22,
+      "alert": 100,
+      "alert_state": "AGGRO",
+      "state": "FACE",
+      "anim_frame": 24,
+      "anchor": [
+        0,
+        0,
+        7
+      ],
+      "stagger": false,
+      "stagger_in_frames": 0,
+      "state_entered_ago_frames": 96
+    }
+  ]
+}

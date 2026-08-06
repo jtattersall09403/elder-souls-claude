@@ -1,0 +1,185 @@
+{
+  "produced_by": "critic-owned fielddiff.mjs over tools/harness/trace.mjs runs (pre-existing corpus tool)",
+  "pairs": [
+    {
+      "a": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/t90210/trace.jsonl",
+      "b": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/t8675309/trace.jsonl",
+      "frames_compared": 3600,
+      "body_sha256": {
+        "a": "718194e63b09a50373175e92bad6501542da77c1901a2cfc9712b2d6b658bcd1",
+        "b": "7df3d3e5e2cb897f1548a771168d9862a3dd81155474db4ff39a5e2f15814661"
+      },
+      "differing_fields": {
+        "enemies[].anim_frame": 3600,
+        "rng.seed": 3600
+      },
+      "first_example": {
+        "enemies[].anim_frame": {
+          "frame": 0,
+          "a": 31,
+          "b": 2
+        },
+        "rng.seed": {
+          "frame": 0,
+          "a": 90210,
+          "b": 8675309
+        }
+      },
+      "frames_differing_any": 3600,
+      "frames_differing_excluding_rng_seed": 3600,
+      "pct_excluding_rng_seed": 100,
+      "max_rng_draws": {
+        "a": 1,
+        "b": 1
+      },
+      "sum_rng_draws": {
+        "a": 3600,
+        "b": 3600
+      }
+    },
+    {
+      "a": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/t271828/trace.jsonl",
+      "b": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/t999983/trace.jsonl",
+      "frames_compared": 3600,
+      "body_sha256": {
+        "a": "d0b426dc5da586ac0902c0f861b4eedfb8435d39a8c7f2fce49fc54b4e6f18ff",
+        "b": "b36a02c16f55569ae68c255609231074f0914c57e2a31d62d320b179ead8a2cd"
+      },
+      "differing_fields": {
+        "enemies[].anim_frame": 3600,
+        "rng.seed": 3600
+      },
+      "first_example": {
+        "enemies[].anim_frame": {
+          "frame": 0,
+          "a": 8,
+          "b": 47
+        },
+        "rng.seed": {
+          "frame": 0,
+          "a": 271828,
+          "b": 999983
+        }
+      },
+      "frames_differing_any": 3600,
+      "frames_differing_excluding_rng_seed": 3600,
+      "pct_excluding_rng_seed": 100,
+      "max_rng_draws": {
+        "a": 1,
+        "b": 1
+      },
+      "sum_rng_draws": {
+        "a": 3600,
+        "b": 3600
+      }
+    },
+    {
+      "a": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/t1/trace.jsonl",
+      "b": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/t2147483647/trace.jsonl",
+      "frames_compared": 3600,
+      "body_sha256": {
+        "a": "662f3978f7950ff8437a0877138d871a3d149862e6b6f5fe747330d03b81bd8c",
+        "b": "a5de7115aca28444220383bb6c5e689955df493ac3f79797d557afaf5fc9315c"
+      },
+      "differing_fields": {
+        "enemies[].anim_frame": 3600,
+        "rng.seed": 3600
+      },
+      "first_example": {
+        "enemies[].anim_frame": {
+          "frame": 0,
+          "a": 13,
+          "b": 36
+        },
+        "rng.seed": {
+          "frame": 0,
+          "a": 1,
+          "b": 2147483647
+        }
+      },
+      "frames_differing_any": 3600,
+      "frames_differing_excluding_rng_seed": 3600,
+      "pct_excluding_rng_seed": 100,
+      "max_rng_draws": {
+        "a": 1,
+        "b": 1
+      },
+      "sum_rng_draws": {
+        "a": 3600,
+        "b": 3600
+      }
+    },
+    {
+      "a": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/t90210/trace.jsonl",
+      "b": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/t1/trace.jsonl",
+      "frames_compared": 3600,
+      "body_sha256": {
+        "a": "718194e63b09a50373175e92bad6501542da77c1901a2cfc9712b2d6b658bcd1",
+        "b": "662f3978f7950ff8437a0877138d871a3d149862e6b6f5fe747330d03b81bd8c"
+      },
+      "differing_fields": {
+        "enemies[].anim_frame": 3600,
+        "rng.seed": 3600
+      },
+      "first_example": {
+        "enemies[].anim_frame": {
+          "frame": 0,
+          "a": 31,
+          "b": 13
+        },
+        "rng.seed": {
+          "frame": 0,
+          "a": 90210,
+          "b": 1
+        }
+      },
+      "frames_differing_any": 3600,
+      "frames_differing_excluding_rng_seed": 3600,
+      "pct_excluding_rng_seed": 100,
+      "max_rng_draws": {
+        "a": 1,
+        "b": 1
+      },
+      "sum_rng_draws": {
+        "a": 3600,
+        "b": 3600
+      }
+    }
+  ],
+  "noenemy": {
+    "a": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/tnoenemy/trace.jsonl",
+    "b": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/tnoenemy2/trace.jsonl",
+    "frames_compared": 1800,
+    "body_sha256": {
+      "a": "18216e7adfec1caf4561ddfe0c0e0e75497929d3516d72bbf4894bcbf524ddb2",
+      "b": "1e6b1d4f89155c84af352383e7e253590cf9c593843e28328144843808e5cd92"
+    },
+    "differing_fields": {
+      "rng.seed": 1800
+    },
+    "first_example": {
+      "rng.seed": {
+        "frame": 0,
+        "a": 90210,
+        "b": 8675309
+      }
+    },
+    "frames_differing_any": 1800,
+    "frames_differing_excluding_rng_seed": 0,
+    "pct_excluding_rng_seed": 0,
+    "max_rng_draws": {
+      "a": 0,
+      "b": 0
+    },
+    "sum_rng_draws": {
+      "a": 0,
+      "b": 0
+    }
+  },
+  "R1_R2": {
+    "seed": 90210,
+    "run_A": "718194e63b09a50373175e92bad6501542da77c1901a2cfc9712b2d6b658bcd1",
+    "run_B_separate_process": "718194e63b09a50373175e92bad6501542da77c1901a2cfc9712b2d6b658bcd1",
+    "equal": true
+  }
+}

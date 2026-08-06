@@ -1,0 +1,29 @@
+{
+  "produced_by": "critic-owned p9-cold.mjs",
+  "before": {
+    "write": {
+      "ok": true,
+      "slot": "critcold",
+      "gen": 1,
+      "bytes": 8439,
+      "digest": "53b1ffb1237f84ae804bc6008253c92738a0c192f2bf047fed72bf028eacb700",
+      "wallMs": 16.399999998509884
+    },
+    "h0": "ddafb5fb9ae38f2a52732af02d0c9d001b2b5e04745abf754163e4ee25015fb1",
+    "journal": 42,
+    "flags": 3,
+    "topics": 5
+  },
+  "after": {
+    "read": {
+      "ok": true,
+      "gen": 1,
+      "degraded": false
+    },
+    "h1": "ddafb5fb9ae38f2a52732af02d0c9d001b2b5e04745abf754163e4ee25015fb1",
+    "journal": 42,
+    "flags": 3,
+    "topics": 5
+  },
+  "M3_equal": true
+}

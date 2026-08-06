@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-06T14:07:44Z",
+  "generated": "2026-08-06T14:58:37Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1
   ],
-  "verdicts_read": 1,
+  "verdicts_read": 2,
   "counts": {
-    "total": 1,
-    "open": 1,
+    "total": 2,
+    "open": 2,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -17,9 +17,14 @@
   "open_by_subsystem_path": {
     "platform.determinism.harness": [
       "GAP-W1-platform-prng-never-drawn"
+    ],
+    "platform.save.persistence": [
+      "GAP-W1-platform-save-drops-entity-prev-state"
     ]
   },
-  "warnings": [],
+  "warnings": [
+    "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
+  ],
   "load_errors": [],
   "gaps": [
     {
@@ -51,6 +56,46 @@
         "corpus/90-verdicts/wave1/artifacts/W1-00/trace-s1337-A.jsonl.gz",
         "corpus/90-verdicts/wave1/artifacts/W1-00/critic-ar1.json",
         "corpus/90-verdicts/wave1/artifacts/W1-00/tool-determinism-ladder.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-platform-save-drops-entity-prev-state",
+      "subsystem_path": "platform.save.persistence",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-00-r2-k4m9",
+      "opened_in": "corpus/90-verdicts/wave1/W1-00-r2.json",
+      "piece_id": "w1-00-r2",
+      "severity": "blocking",
+      "what": "The save does not carry enemies[].prev_state. RI-JRN05 M5 run as written — identical 120-frame pre-roll on both sides, identical 600-frame script, seed 4711, control vs loaded — gives control body_sha256 5d0830f9b9e3ea71… and loaded d52edb76370c7c08…, differing on 219 of 600 frames in exactly that field: control \"IDLE\", loaded null, from frame 0 onward. The serialised entity record carries state, anim_frame, anim_phase0 and state_entered_ago_frames and stops there. world.entities is a durable path in game/data/save-manifest.json and prev_state is on no volatile list, so manifest rule V1 makes it a defect by the manifest's own terms. The same probe against round-1 commit 8714e38 reproduces it exactly, so it is pre-existing and was missed by both the build and the previous verdict, which recorded M5 as passing.",
+      "why_it_matters": "A player who reloads gets an enemy whose state history has been erased, so the first transition after a reload is taken from a different predecessor than the one the unsaved game would have used — RI-JRN05's own \"how we lose\" #5: nothing a player does catches it until a boss behaves differently after a reload.",
+      "remedy": {
+        "action": "Serialise prev_state in the entity record next to state and state_entered_ago_frames and restore it in the load path; add prev_state to the World group field list in game/data/save-manifest.json so RI-JRN05 M4's two-directional set-difference covers it; and extend the R9 rung and RI-JRN05 M5 to compare the full field set of the control and loaded traces rather than only body_sha256 of a window, printing the differing field names — round 1's M5 run passed precisely because it did not.",
+        "targets": [
+          "game/src/ (saveState/loadState entity serialisation)",
+          "game/data/save-manifest.json",
+          "tools/harness/determinism.mjs (R9)",
+          "corpus/88-journeys/RI-JRN05-save-and-load.md (M5)"
+        ],
+        "acceptance": "Re-run RI-JRN05 M5 (or corpus/90-verdicts/wave1/artifacts/W1-00-r2/p10-m5.mjs) at seed 4711 and at one other seed: the control and loaded traces must have identical body_sha256 after re-basing the absolute frame indices, and the field-level diff must be EMPTY. Today it is {\"enemies[].prev_state\": 219} of 600 frames.",
+        "ref_item": "RI-JRN05",
+        "estimated_size": "S"
+      },
+      "remedy_action": "Serialise prev_state in the entity record next to state and state_entered_ago_frames and restore it in the load path; add prev_state to the World group field list in game/data/save-manifest.json so RI-JRN05 M4's two-directional set-difference covers it; and extend the R9 rung and RI-JRN05 M5 to compare the full field set of the control and loaded traces rather than only body_sha256 of a window, printing the differing field names — round 1's M5 run passed precisely because it did not.",
+      "remedy_acceptance": "Re-run RI-JRN05 M5 (or corpus/90-verdicts/wave1/artifacts/W1-00-r2/p10-m5.mjs) at seed 4711 and at one other seed: the control and loaded traces must have identical body_sha256 after re-basing the absolute frame indices, and the field-level diff must be EMPTY. Today it is {\"enemies[].prev_state\": 219} of 600 frames.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-00-r2/critic2-m5-postload-prefix.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

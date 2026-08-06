@@ -1,0 +1,70 @@
+{
+  "produced_by": "critic-owned p7-jrn05.mjs",
+  "M10": {
+    "storage_info": {},
+    "localStorage_items": [
+      [
+        "elder-souls.pointer",
+        63
+      ]
+    ],
+    "localStorage_total_bytes": 63
+  },
+  "M15": {
+    "frames_stepped_during_write": 300,
+    "frame_gaps": 0,
+    "wallMs": 256234.06,
+    "write_result": {
+      "ok": true,
+      "slot": "critslot2",
+      "gen": 2,
+      "bytes": 504783,
+      "digest": "76ebcb7ed9ecf070031d72cd06ab8727bd6511749b383c9055268e1e7206a228",
+      "wallMs": 256233.9849999994
+    },
+    "bytes": 502360
+  },
+  "M5_result": {
+    "frames": 300,
+    "differing_fields": {
+      "enemies[].prev_state": 300
+    },
+    "first_divergence": {
+      "i": 0,
+      "k": "enemies[].prev_state",
+      "a": "IDLE",
+      "b": null
+    },
+    "control_sha": "813fa768b7a58cc20080dec3e57e8056ad551d30c6937b2ecd9fc7aecfee5dca",
+    "loaded_sha": "06785895e2d53c51f5f3b17d88f5dc1c80e09f4ff991c7c584779acbbebf63bb"
+  },
+  "M12": {
+    "png_as_save": {
+      "rejected": "loadState('PNG\r\n\u001a\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'",
+      "state_hash_unchanged": true
+    },
+    "empty": {
+      "rejected": "loadState(''): no such named state. Known: arena_flat, default, dungeon_primary, endgame-200q, interior_firelit, material_showcase, npc_showcase, settlement_primary_street, sv1-midquest, sv5-journal-bloodstain, swamp_can",
+      "state_hash_unchanged": true
+    },
+    "truncated": {
+      "rejected": "loadState('{\"meta\":{\"schema\":\"elder-souls/save@1\",\"schema_version\":1,\"build_commit\":null,\"build_version\":\"0.1.0-w1-00\",\"harness_ver'): no such named state. Known: arena_flat, default, dungeon_primary, endgame-200q, inter",
+      "state_hash_unchanged": true
+    },
+    "byte_flipped": {
+      "rejected": "loadState('{\"meta\":{\"schema\":\"elder-souls/save@1\",\"schema_version\":1,\"build_commit\":null,\"build_version\":\"0.1.0-w1-00\",\"harness_version\":1,\"state_name\":\"sv5-journal-bloodstain\"},\"identity\":{\"name\":\"Nameless\",\"race\":\"argo",
+      "state_hash_unchanged": true
+    },
+    "future_schema": {
+      "rejected": "loadState('{\"meta\":{\"schema\":\"elder-souls/save@1\",\"schema_version\":1,\"build_commit\":null,\"build_version\":\"0.1.0-w1-00\",\"harness_version\":1,\"state_name\":\"sv5-journal-bloodstain\"},\"identity\":{\"name\":\"Nameless\",\"race\":\"argo",
+      "state_hash_unchanged": true
+    },
+    "past_schema": {
+      "rejected": "loadState('{\"meta\":{\"schema\":\"elder-souls/save@1\",\"schema_version\":1,\"build_commit\":null,\"build_version\":\"0.1.0-w1-00\",\"harness_version\":1,\"state_name\":\"sv5-journal-bloodstain\"},\"identity\":{\"name\":\"Nameless\",\"race\":\"argo",
+      "state_hash_unchanged": true
+    }
+  },
+  "M3": {
+    "not_run": "page.reload() timed out at 30 s in this container; M3 scored 0, fail-closed"
+  }
+}

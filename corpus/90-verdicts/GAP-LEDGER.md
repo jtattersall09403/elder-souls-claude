@@ -4,7 +4,7 @@
 > Canonical data: `corpus/90-verdicts/GAP-LEDGER.json`. Source: every verdict's
 > `biggest_gap` (opens) and `gap_closure[]` (closes). Rules: `SCORING.md` §5.
 
-Generated: 2026-08-06T14:07:44Z · verdicts read: 1 · waves: 1
+Generated: 2026-08-06T14:58:37Z · verdicts read: 2 · waves: 1
 
 **The three rules that matter**
 1. Every verdict opens exactly one gap. A verdict with no gap is void.
@@ -15,17 +15,19 @@ Generated: 2026-08-06T14:07:44Z · verdicts read: 1 · waves: 1
 
 | total | open | partially-closed | closed | superseded | invalid |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 1 | 0 | 0 | 0 | 0 |
+| 2 | 2 | 0 | 0 | 0 | 0 |
 
 ## Open gaps — required work for the next wave
 
 | Gap | Subsystem path | Sev | Age (waves) | Opened | What | Remedy → acceptance |
 |---|---|---|---:|---|---|---|
 | `GAP-W1-platform-prng-never-drawn` | `platform.determinism.harness` | blocking | 0 | w1 / w1-00 | The seeded PRNG is reseeded correctly and never drawn from. rng.draws is 0 on every one of 3600 frames in every scenario, state and seed measured. Seeds 1337 and 4242 over a 3600-frame duel differ in exactly one field — .rng.seed, the echo of the input — and in zero simulation fields (r4-seed-sensitivity.txt: 'frames differing in ANY field other than .rng.seed: 0'). RI-MTH02 R4's 5%-of-frames clause is therefore satisfied at 100% by that echo alone, so the rung, tools/harness/determinism.mjs, and any future critic reading either will report seed sensitivity on a build that has none. The build's own ladder prints 'PASS R4 — seed-sensitive ... frames_differing_pct: 100'. | (1) Route at least one simulation quantity through rng.next() inside the fixed step and emit the draw count truthfully — the enemy idle-loop phase offset chosen at spawn is sufficient, cheap, and is exactly the field AM-W1-00-01 wants excluded from R5, so seeding it converts that argument into a measurement. (2) Change tools/harness/determinism.mjs's R4 computation to drop the rng.seed field before counting differing frames, and to fail the rung with reason 'prng_never_drawn' when max(rng.draws) == 0 in either run. (3) Adopt orchestration/amendments/AM-W1-00-C1-mth02-r4-discriminator.md, which states the sharpened rung and moves no threshold. → **Re-run node tools/harness/trace.mjs --scenario cmb-duel-infantry at seeds 1337 and 4242 and diff field-by-field: max(rng.draws) > 0 in both runs, and >= 5% of frames differ in at least one field OTHER than .rng.seed. The second number is currently 0.0% (0 of 3600 frames) and is recorded in r4-seed-sensitivity.txt.** |
+| `GAP-W1-platform-save-drops-entity-prev-state` | `platform.save.persistence` | blocking | 0 | w1 / w1-00-r2 | The save does not carry enemies[].prev_state. RI-JRN05 M5 run as written — identical 120-frame pre-roll on both sides, identical 600-frame script, seed 4711, control vs loaded — gives control body_sha256 5d0830f9b9e3ea71… and loaded d52edb76370c7c08…, differing on 219 of 600 frames in exactly that field: control "IDLE", loaded null, from frame 0 onward. The serialised entity record carries state, anim_frame, anim_phase0 and state_entered_ago_frames and stops there. world.entities is a durable path in game/data/save-manifest.json and prev_state is on no volatile list, so manifest rule V1 makes it a defect by the manifest's own terms. The same probe against round-1 commit 8714e38 reproduces it exactly, so it is pre-existing and was missed by both the build and the previous verdict, which recorded M5 as passing. | Serialise prev_state in the entity record next to state and state_entered_ago_frames and restore it in the load path; add prev_state to the World group field list in game/data/save-manifest.json so RI-JRN05 M4's two-directional set-difference covers it; and extend the R9 rung and RI-JRN05 M5 to compare the full field set of the control and loaded traces rather than only body_sha256 of a window, printing the differing field names — round 1's M5 run passed precisely because it did not. → **Re-run RI-JRN05 M5 (or corpus/90-verdicts/wave1/artifacts/W1-00-r2/p10-m5.mjs) at seed 4711 and at one other seed: the control and loaded traces must have identical body_sha256 after re-basing the absolute frame indices, and the field-level diff must be EMPTY. Today it is {"enemies[].prev_state": 219} of 600 frames.** |
 
 ## Open gaps grouped by subsystem path (the builder hand-off)
 
 - `platform.determinism.harness` — `GAP-W1-platform-prng-never-drawn`
+- `platform.save.persistence` — `GAP-W1-platform-save-drops-entity-prev-state`
 
 ## Closed and superseded
 
@@ -33,4 +35,4 @@ _None yet._
 
 ## Warnings
 
-_None._
+- corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.
