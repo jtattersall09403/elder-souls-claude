@@ -46,38 +46,58 @@ fires when the spells are absent or inert, one that fires when they have become 
 
 ### 1. The four spells
 
-| Spell | School / Jel name | Tier | Gold (`RI-PRG05` §2) | Magicka | Cast | Effect |
-|---|---|---|---:|---:|---:|---|
-| **Mark** | Mysticism · *xul-tei* ("hold the place") | 2 | **900** | 22% of pool | 180 f (3.0 s) | Sets **the** anchor at your feet. There is one. Setting a new Mark destroys the old, with a confirmation you cannot skip. |
-| **Recall** | Mysticism · *xul-vastei* ("the place calls back") | 2 | **900** | 45% of pool | 180 f | Moves you to your Mark. Destination count: **1**. |
-| **Hist Intervention** ("Rootward Return") | Mysticism · *ruxul-tei* | 1 | **220** | 30% of pool | 180 f | Moves you to the **nearest discovered Hist-shrine** — one of the 8 settlement shrines. Destination is computed, never chosen. |
-| **Imperial Intervention** ("Cohort Return") | Mysticism · *sen-vastei* | 1 | **220** | 30% of pool | 180 f | Moves you to the **nearest discovered Legion post** — Stormhold, Gideon or Blackrose. Computed, never chosen. |
+**Division of ownership, agreed with `RI-MAG02`:** that item owns the **effect records, the Focus costs
+and the cast class**; this item owns the **network rules, the placement predicate and the
+teleport-as-solvent detector**. Nothing below re-authors a number `RI-MAG02` already publishes; where
+this item states one, it is quoting `corpus/25-magic/data/effects.json`.
 
-**Total gold to own all four: 2,240 g.** Against `RI-PRG05` §5's running balance (R1 580 · R2 2,960 ·
-R3 5,900 · R4 11,800) that is unaffordable in R1–R2, a genuine sacrifice in R3, and comfortable by R4.
-The intended acquisition order is an Intervention first — it is cheap, it is the one you cast when
-things went wrong — and the Mark/Recall pair second, because 1,800 g is two trainer sessions.
+| Spell (`effects.json` id) | Jel name | School | Min tier / skill | Gold (`RI-PRG05` §2) | Cast | Effect |
+|---|---|---|---|---:|---|---|
+| **`mark`** | *Setting the Knot* | Warding | **3** · Warding ≥ 45 | **3,400** | `RITUAL`, 210 f | Sets **the** anchor at your feet. There is one, game-wide. Setting a new one erases the old. |
+| **`recall`** | *Pulling the Knot* | Warding | **3** · Warding ≥ 45 | **3,400** | `RITUAL`, 210 f | Moves you to your Mark. Destination count: **1**. |
+| **`intervention_root`** | *Asking the Nearest Root* | Warding | **2** · Warding ≥ 25 | **900** | `RITUAL`, 210 f | Moves you to the **nearest discovered rootkeeper's shrine** — one of the 8 settlement shrines. Computed, never chosen. |
+| **`intervention_imperial`** | *Asking the Chapel* | Warding | **2** · Warding ≥ 25 | **900** | `RITUAL`, 210 f | Moves you to the **nearest discovered Nine Divines chapel** — Stormhold, Gideon or Blackrose only. Computed, never chosen. |
 
-**Magicka costs are expressed as a fraction of pool and that is the binding form.** `corpus/25-magic/`
-is empty and no reference item defines the magicka curve; the absolute numbers (26 / 54 / 36 against a
-modelled mid-game pool of 120) are a **budget handed to the magic owner**, to be re-fitted when the pool
-exists. The *ratios* are binding: Recall must cost roughly twice a Mark and must not be castable twice
-without recovery.
+**Cost is Focus (`vei-jul`), and it is computed at cast time, never authored** (`RI-MAG02` §G). The
+magnitude of `recall` *is* the straight-line distance to your Mark in hundreds of metres; `intervention`
+uses the same rule against the nearest qualifying site.
+
+| Distance to destination | `focus_base` | As a fraction of a WIL-30 pool (94) |
+|---:|---:|---:|
+| 500 m | 6 | 6% |
+| 1.5 km | 26 | 28% |
+| 3 km | 57 | 61% |
+| 4 km (map diagonal) | 77 | 82% |
+
+**Focus never regenerates** — not by potion, not by time, not by gold; only a HEARTH rest refills it
+(`RI-MAG01` §A). Those two facts together give travel magic a **diegetic range limit that nobody had to
+draw on a map**: you cannot Recall from further than your Focus reaches, and the only way to get more
+Focus is the rest you were trying to avoid. It also inverts the escape-button shape exactly — an
+Intervention is cheap when you are near help and unaffordable in the Deep Marshes, which is where you
+would want an escape button and is precisely where you cannot have one.
+
+**Total gold to own all four: 8,600 g** — 24% of `RI-PRG05`'s entire 35,900 g lifetime discretionary
+budget. Against its §5 running balance (R1 580 · R2 2,960 · R3 5,900 · R4 11,800 · R5 23,000) the
+intended arc is: **one Intervention in R3** (900 g, a real sacrifice against a trainer), and the
+**Mark/Recall pair not before R5** (6,800 g, one of the largest single commitments in the game, and it
+costs you a weapon line or the land grant). Travel magic is not a convenience you pick up; it is a build
+you commit to, gated on Warding 45 as well as on gold.
 
 **Casting is animated and committed even outside the fight** (S19's first half, applied consistently).
-180 frames, no cancel, no menu, no pause. Taking damage during the cast interrupts it and the magicka is
-spent. This matters because it is what stops Recall being a panic button *mechanically* rather than only
-by rule: three seconds is longer than any enemy in `corpus/10-combat/` needs to reach you.
+`RITUAL` class: **210 frames, zero hyperarmour, zero movement, and the cast aborts on any damage, on
+entering `COMBAT`, and on any movement input** — with Focus refunded, the only refund in the magic area
+(`RI-MAG01` §B). This is why "no recall out of a fight" is largely a consequence of the clock rather
+than a rule someone must remember to write. **Largely, not entirely** — see G3.
 
 ### 2. The twelve destinations, and why twelve is the whole point
 
 | Destination class | Count | How it is chosen |
 |---|---:|---|
-| The Mark anchor | **1** | You stood there and cast Mark. |
-| Hist-shrines (8 settlement shrines) | **8**, minus undiscovered | Nearest discovered. Computed. |
-| Legion posts (Stormhold, Gideon, Blackrose) | **3**, minus undiscovered | Nearest discovered. Computed. |
+| The Mark anchor | **1** | You stood there and cast `mark`. |
+| Rootkeeper's shrines (the 8 settlement shrines) | **8**, minus undiscovered | Nearest discovered. Computed. |
+| Nine Divines chapels (Stormhold, Gideon, Blackrose) | **3**, minus undiscovered | Nearest discovered. Computed. |
 | **Universe** | **12** | |
-| **Available at any single instant** | **3** | Recall, Hist Intervention, Imperial Intervention — each with exactly one determined destination. |
+| **Available at any single instant** | **3** | `recall`, `intervention_root`, `intervention_imperial` — each with exactly one determined destination. |
 
 > **This is the measurable difference between our travel magic and warp-to-map-pin.** A map-pin system
 > offers *n* destinations chosen from a list, where *n* grows with play. Ours offers three spells whose
@@ -86,9 +106,10 @@ by rule: three seconds is longer than any enemy in `corpus/10-combat/` needs to 
 > looks like.
 
 The two Intervention destination sets exist to be *different*. Standing on the Clay Moor track between
-Archon and Thorn, Hist Intervention takes you back to Archon and Imperial Intervention takes you to
-Stormhold, which is an hour the other way. Choosing between them is a reading of the map — the same
-skill `RI-WLD06` asks for, priced at 220 g. A build that ships one Intervention, or two that always
+Archon and Thorn, `intervention_root` takes you back to Archon and `intervention_imperial` takes you to
+Stormhold, which is an hour the other way — and because cost scales with distance to the destination,
+they cost different amounts of Focus from the same spot. Choosing which one to carry is a reading of the
+map and a faction statement (`RI-MAG02` §G). A build that ships one Intervention, or two that always
 resolve to the same place, has shipped one spell twice.
 
 ### 3. The five gates

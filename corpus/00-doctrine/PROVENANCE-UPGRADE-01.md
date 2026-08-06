@@ -184,12 +184,16 @@ thresholds "**not** reproduced here".
 confidence medium, for rank counts. The item asks for the real tables *"transcribed into an appendix."*
 
 **What the source says.** Every faction page carries a full rank table. **Twenty transcribed**, now in
-`morrowind-quest-census.json → faction_rank_tables`. The ladder is *identical across every joinable
-faction*, reskinned only in which attributes and skills it reads:
+`morrowind-quest-census.json → faction_rank_tables`. Morrowind runs **two** ladders, not twenty.
 
-| index | rank name (varies) | required attributes | required skills |
+**Ladder 1 — the joinable guilds and Great Houses** (Fighters Guild, Mages Guild, Thieves Guild,
+Tribunal Temple, Morag Tong, Imperial Legion, Houses Hlaalu / Redoran / Telvanni, and — with a gentler
+secondary column — the Imperial Cult). Identical everywhere, reskinned only in *which* two attributes
+and six skills it reads:
+
+| index | rank name (varies by faction) | required attributes | required skills |
 |---|---|---|---|
-| 0 | Associate / Hireling / … | A 30, B 30 | — |
+| 0 | Associate / Hireling / Novice / … | A 30, B 30 | — |
 | 1 | | 30, 30 | one at 10 |
 | 2 | | 30, 30 | one at 20 |
 | 3 | | 30, 30 | one at 30 and two at 5 |
@@ -198,23 +202,33 @@ faction*, reskinned only in which attributes and skills it reads:
 | 6 | | 32, 32 | one at 60 and two at 20 |
 | 7 | | 33, 33 | one at 70 and two at 25 |
 | 8 | | 34, 34 | one at 80 and two at 30 |
-| 9 | Master / Archmagister / … | **35, 35** | **one at 90 and two at 35** |
+| 9 | Master / Archmagister / Grandmaster / … | **35, 35** | **one at 90 and two at 35** |
 
-Rank counts: **10 (indices 0–9) for all twenty factions except the East Empire Company, which has 9.**
+**Ladder 2 — the unjoinable and special factions** (Ashlanders, Camonna Tong, the Berne / Aundae /
+Quarra vampire clans, Blades, Census and Excise, Imperial Knights). Much steeper: attributes run
+**40 → 80**, and the top rank demands **one skill at 110** and two at 35.
 
-**Verdict: contradicted** on the ceilings — the real top is **35 attribute / 90 skill**, not 33–34 / 70–80
-— and **settled** on rank counts: the honest range "8–10" resolves to exactly **10**.
+Documented deviations, all narrow: House Hlaalu adds *"must have started stronghold"* at rank 7; the
+Imperial Cult's secondary-skill column is gentler (5, 8, 10, 12, 15, 18, 20, 25, 25); the East Empire
+Company has **nine** ranks (0–8) rather than ten; the Dark Brotherhood lists no skill requirement at all.
+Every other faction has **10 ranks, indices 0–9**.
+
+**Verdict: contradicted** on the ceilings — the real top of the joinable ladder is **35 attribute /
+90 skill**, not "33–34 attribute and 70–80 skill" — and **settled** on rank counts: the honest range
+"8–10" resolves to exactly **10** (EEC 9).
 
 **Amendment text for RI-QST03:**
-> Morrowind's advancement gate is a **single universal curve** applied to all twenty factions,
-> differing only in which two attributes and six skills it reads. Attribute requirement: 30 for ranks
-> 0–4, then +1 per rank to **35** at rank 9. Skill requirement: one favoured skill at 10× the rank
-> index, plus two more at 5×(index−2) from rank 3. Ten ranks everywhere (EEC: nine). Full transcription:
+> Morrowind's advancement gate is **two curves, not one per faction.** Joinable guilds and Great Houses
+> share one: attribute requirement 30 for ranks 0–4 then +1 per rank to **35** at rank 9; skill
+> requirement one favoured skill at 10× the rank index, plus two more at 5×(index−2) from rank 3. The
+> unjoinable/special factions share a steeper one (attributes 40→80, top rank one skill at 110). Ten
+> ranks everywhere except the East Empire Company (nine). Full transcription:
 > `corpus/30-quests/data/morrowind-quest-census.json → faction_rank_tables`. `community-data`.
 
 Note what this does to RI-QST03 §B: our constructed 8-rank ladder with per-faction variation is a
-**deliberate deviation from a uniform system**, not a simplification of a varied one. That is a
-defensible choice but it should be argued as one.
+**deliberate deviation from a system that is deliberately uniform**, not a simplification of a varied
+one. Morrowind reskins one curve so that joining a second faction feels like the same climb in a
+different costume — that uniformity is doing work, and abandoning it should be argued, not assumed.
 
 ### B3 — RI-QST07 · "roughly a third of Morrowind's quests are side content"
 
