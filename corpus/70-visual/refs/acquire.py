@@ -91,10 +91,16 @@ def load_records() -> dict[str, dict]:
     if not isinstance(records, dict) or not records:
         raise ValueError("_provenance.json must contain at least one path-keyed record")
     for relative, record in records.items():
-        candidate = (HERE / relative).resolve()
-        if HERE not in candidate.parents:
-            raise ValueError(f"path escapes refs root: {relative}")
-        if not all(k in record for k in ("source_url", "expected_bytes", "expected_sha256")):
+        if "/" in relative:
+            candidate = (HERE / relative).resolve()
+            if HERE not in candidate.parents:
+                raise ValueError(f"path escapes refs root: {relative}")
+        # A key containing "/" is a destination path and may be fetchable. A key without one is a
+        # documentation-only record (an id) describing a file acquired in-container. Both live in
+        # one catalogue so nothing is undocumented; only the former is fetched or verified.
+        if "/" not in relative or not all(
+            k in record for k in ("source_url", "expected_bytes", "expected_sha256")
+        ):
             # Local record: a file acquired in-container and already on disk. Documented here so
             # nothing is undocumented, but not fetchable, so acquire.py skips it rather than
             # erroring. Dropping these is how 159 records were silently lost once already.
