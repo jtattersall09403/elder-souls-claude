@@ -1,0 +1,140 @@
+{
+  "produced_by": "critic-owned p4b-camera.mjs; camera.pitch_deg/yaw_deg read from the §5 trace record",
+  "pitch_unlocked_down": {
+    "frames": 400,
+    "saturated_at": 14,
+    "p100_abs_pitch": 38,
+    "tail_distinct": [
+      38
+    ],
+    "bounce_frames": 2,
+    "creep_frames": 0,
+    "first8": [
+      14,
+      34,
+      38,
+      38,
+      38,
+      38,
+      38,
+      38
+    ]
+  },
+  "pitch_unlocked_up": {
+    "frames": 400,
+    "saturated_at": -26,
+    "p100_abs_pitch": 55,
+    "tail_distinct": [
+      -55
+    ],
+    "bounce_frames": 2,
+    "creep_frames": 0,
+    "first8": [
+      -26,
+      -46,
+      -55,
+      -55,
+      -55,
+      -55,
+      -55,
+      -55
+    ]
+  },
+  "pitch_locked_down": {
+    "frames": 400,
+    "saturated_at": 14,
+    "p100_abs_pitch": 32,
+    "tail_distinct": [
+      32
+    ],
+    "bounce_frames": 1,
+    "creep_frames": 0,
+    "first8": [
+      14,
+      32,
+      32,
+      32,
+      32,
+      32,
+      32,
+      32
+    ]
+  },
+  "pitch_locked_up": {
+    "frames": 400,
+    "saturated_at": -26,
+    "p100_abs_pitch": 50,
+    "tail_distinct": [
+      -50
+    ],
+    "bounce_frames": 2,
+    "creep_frames": 0,
+    "first8": [
+      -26,
+      -46,
+      -50,
+      -50,
+      -50,
+      -50,
+      -50,
+      -50
+    ]
+  },
+  "per_frame_cap": {
+    "yaws": [
+      75,
+      75,
+      75,
+      75,
+      75,
+      75
+    ],
+    "deltas": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "zero_lag": {
+    "deltas": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nonzero_after_first": 0
+  },
+  "no_auto_follow": {
+    "y0": 45,
+    "max_abs_camera_yaw_change_deg": 0,
+    "distinct_yaw": [
+      45
+    ]
+  },
+  "CAM06": {
+    "frames": 900,
+    "fov_distinct": [
+      60
+    ],
+    "fov_range": 0,
+    "roll_max_abs": 0,
+    "cam_y_distinct": [
+      1.4515
+    ],
+    "cam_y_stdev": 0,
+    "shake_nonzero_frames": 0,
+    "hitstop_frames": 0,
+    "max_speed": 72.29997132004965
+  }
+}

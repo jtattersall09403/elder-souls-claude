@@ -1,0 +1,256 @@
+{
+  "produced_by": "critic-owned p6-plt01.mjs",
+  "api": [
+    "advanceWallClock",
+    "aggro",
+    "camera",
+    "clearInputs",
+    "deleteSaveSlot",
+    "despawn",
+    "exportSave",
+    "getActionSet",
+    "getBuildInfo",
+    "getCapabilityReport",
+    "getDeterminismReport",
+    "getFrame",
+    "getInputState",
+    "getLoadState",
+    "getPerfStats",
+    "getPlayerStats",
+    "getQuestState",
+    "getRenderRate",
+    "getSaveManifest",
+    "getSeed",
+    "getStateHash",
+    "getStorageInfo",
+    "getWorldStats",
+    "importSave",
+    "listAnchors",
+    "listEntities",
+    "listSaveSlots",
+    "loadState",
+    "lockOn",
+    "queueInputs",
+    "readSave",
+    "ready",
+    "reanchorFreeRunning",
+    "renderFrame",
+    "reset",
+    "saveRoundTrip",
+    "saveState",
+    "screenshot",
+    "setMode",
+    "setRenderRate",
+    "setSeed",
+    "setTimeOfDay",
+    "setUIVisible",
+    "setWeather",
+    "simulateStorageFailure",
+    "snapshot",
+    "spawn",
+    "stallMainThread",
+    "stepFrames",
+    "teleport",
+    "traceDrain",
+    "traceStart",
+    "traceStop",
+    "version",
+    "writeSave"
+  ],
+  "M6_M7": {
+    "0": {
+      "steps": 600,
+      "records": 600,
+      "body_sha256": "b4d3b4efb0b3ce7bfc2dd2b983766c6842d1a6250b8df7f0cfd78a89e99dcb92",
+      "pos": [
+        2.2685,
+        0,
+        1.3631
+      ],
+      "stamina": 120,
+      "yaw": 118,
+      "cam_yaw": 120,
+      "setRenderRate_present": true
+    },
+    "15": {
+      "steps": 600,
+      "records": 600,
+      "body_sha256": "b4d3b4efb0b3ce7bfc2dd2b983766c6842d1a6250b8df7f0cfd78a89e99dcb92",
+      "pos": [
+        2.2685,
+        0,
+        1.3631
+      ],
+      "stamina": 120,
+      "yaw": 118,
+      "cam_yaw": 120,
+      "setRenderRate_present": true
+    },
+    "30": {
+      "steps": 600,
+      "records": 600,
+      "body_sha256": "b4d3b4efb0b3ce7bfc2dd2b983766c6842d1a6250b8df7f0cfd78a89e99dcb92",
+      "pos": [
+        2.2685,
+        0,
+        1.3631
+      ],
+      "stamina": 120,
+      "yaw": 118,
+      "cam_yaw": 120,
+      "setRenderRate_present": true
+    },
+    "60": {
+      "steps": 600,
+      "records": 600,
+      "body_sha256": "b4d3b4efb0b3ce7bfc2dd2b983766c6842d1a6250b8df7f0cfd78a89e99dcb92",
+      "pos": [
+        2.2685,
+        0,
+        1.3631
+      ],
+      "stamina": 120,
+      "yaw": 118,
+      "cam_yaw": 120,
+      "setRenderRate_present": true
+    }
+  },
+  "M6_pass": true,
+  "M7_pass": true,
+  "M9": {
+    "frames": 3600,
+    "non_unit_f": 0,
+    "off_step_dt": 0,
+    "distinct_dt": [
+      16.666,
+      16.667
+    ],
+    "t_over_f": 16.666666666666668
+  },
+  "M8": {
+    "stall_measured_ms": 400.54,
+    "steps_per_raf": [
+      5,
+      1,
+      1,
+      0,
+      1,
+      1
+    ],
+    "catchupClamps": 1,
+    "actionSetCap": 5
+  },
+  "M1_M2": {
+    "arena_flat": {
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52,
+      "drawCalls": 18,
+      "triangles": 2808,
+      "textureMB": 0,
+      "programs": 8,
+      "materials": 6,
+      "stateChanges": 18,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "geometryMB": 0.097,
+      "audioMB": 0,
+      "atlasCount": 0,
+      "entitiesLive": 0,
+      "region": "arena",
+      "interior": null,
+      "_declared_incomplete": {
+        "owner": "wave-1 pieces W1-01..W1-05 (world, regions, settlements, interiors, roads)",
+        "note": "regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because there is no audio (RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed)."
+      }
+    },
+    "swamp_canopy": {
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52,
+      "drawCalls": 40,
+      "triangles": 118418,
+      "textureMB": 0,
+      "programs": 10,
+      "materials": 13,
+      "stateChanges": 40,
+      "skinnedMeshes": 0,
+      "shadowLights": 1,
+      "geometryMB": 2.317,
+      "audioMB": 0,
+      "atlasCount": 0,
+      "entitiesLive": 0,
+      "region": "thornmarsh",
+      "interior": null,
+      "_declared_incomplete": {
+        "owner": "wave-1 pieces W1-01..W1-05 (world, regions, settlements, interiors, roads)",
+        "note": "regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because there is no audio (RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed)."
+      }
+    },
+    "dungeon_primary": {
+      "regions": 13,
+      "settlements": 24,
+      "pois": 24,
+      "interiors": 1,
+      "npcs": 2,
+      "areaKm2": 14.52,
+      "drawCalls": 31,
+      "triangles": 2864,
+      "textureMB": 0,
+      "programs": 13,
+      "materials": 7,
+      "stateChanges": 31,
+      "skinnedMeshes": 0,
+      "shadowLights": 2,
+      "geometryMB": 0.088,
+      "audioMB": 0,
+      "atlasCount": 0,
+      "entitiesLive": 0,
+      "region": "thornmarsh",
+      "interior": "dungeon-primary",
+      "_declared_incomplete": {
+        "owner": "wave-1 pieces W1-01..W1-05 (world, regions, settlements, interiors, roads)",
+        "note": "regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because there is no audio (RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed)."
+      }
+    }
+  },
+  "M15": {
+    "perf_unmeasurable": {
+      "renderCpuMs": "Tier-H. This container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game (RI-PLT01 §A/T1).",
+      "allocBytesThisStep": "requires --js-flags=--expose-gc and CDP Runtime.getHeapUsage; measured by the runner (A-JRN9), not self-reported."
+    },
+    "load_unmeasurable": {
+      "TTFP": "Tier-H (RI-PLT03 §A). navigationStart→first-controllable wall clock on SwiftShader measures the rasteriser. Report TTFP_model instead, with the GPU constant stated."
+    },
+    "buildinfo": {
+      "name": "elder-souls",
+      "version": "0.1.0-w1-00",
+      "commit": null,
+      "builtAt": null,
+      "harnessVersion": 1,
+      "fixedStepHz": 60,
+      "dataRoot": "game/data",
+      "piece": "W1-00 — harness, determinism and persistence",
+      "threeVersion": "180",
+      "dataFiles": 33
+    }
+  },
+  "JRN05": {
+    "storage": {},
+    "localStorage": {
+      "count": 0,
+      "items": []
+    },
+    "M14": {
+      "h0": "90c4a9efc74b2d5d3b8d1bb4bbf6d4eb2554d992b81402b605768076361100d4",
+      "h1": "90c4a9efc74b2d5d3b8d1bb4bbf6d4eb2554d992b81402b605768076361100d4",
+      "equal": true
+    }
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "produced_by": "critic-owned p5-rungs-ar.mjs",
+  "R3": {
+    "b1": "c80f4aed0b8b92543272728fd04f0a852dbe799e263e48ef080a1e3c774c617c",
+    "b60": "c80f4aed0b8b92543272728fd04f0a852dbe799e263e48ef080a1e3c774c617c",
+    "b600": "c80f4aed0b8b92543272728fd04f0a852dbe799e263e48ef080a1e3c774c617c",
+    "pass": true
+  },
+  "R6": {
+    "seed_then_load": "e8fc08cae64560d1bf69f30e33febaba01ad95bb0da809720d9155691bc00839",
+    "seed_then_load_again": "e8fc08cae64560d1bf69f30e33febaba01ad95bb0da809720d9155691bc00839",
+    "load_then_seed": "e8fc08cae64560d1bf69f30e33febaba01ad95bb0da809720d9155691bc00839",
+    "pass": true
+  },
+  "R7": {
+    "no_sleep": "e90209f6ef59edbb91177588821aca8c0479c359472ba8241972733b0179ae1e",
+    "sleep_1200ms": "e90209f6ef59edbb91177588821aca8c0479c359472ba8241972733b0179ae1e",
+    "pass": true
+  },
+  "R8": {
+    "at_1920x1080": "783a251e4be15f171e71dd41948358bd15a9462c15582ce82f44ecb8653ab693",
+    "at_640x360": "783a251e4be15f171e71dd41948358bd15a9462c15582ce82f44ecb8653ab693",
+    "pass": true
+  },
+  "AR1": {
+    "A1_A2": {
+      "attack_starts": 25,
+      "event_types": {
+        "attack_start": 25,
+        "stamina_spend": 25,
+        "input_action": 25,
+        "hit": 25,
+        "input_dropped_not_actionable": 25
+      },
+      "distinct_damage_events": [
+        "90"
+      ],
+      "max_rng_draws": 1
+    },
+    "A3": {
+      "frames_advanced": 120
+    },
+    "A5": [
+      {
+        "inject_at": 2,
+        "attack_frames_control": 74,
+        "attack_frames_interrupted": 74
+      },
+      {
+        "inject_at": 5,
+        "attack_frames_control": 74,
+        "attack_frames_interrupted": 74
+      },
+      {
+        "inject_at": 10,
+        "attack_frames_control": 74,
+        "attack_frames_interrupted": 74
+      }
+    ],
+    "A6": {
+      "arena_flat": {
+        "hp_max": 412,
+        "poise_max": 22,
+        "player": {
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "yaw_deg": 0,
+          "state": "IDLE",
+          "anim": "idle",
+          "anim_frame": 0,
+          "hp": 500,
+          "hp_max": 500,
+          "stamina": 120,
+          "stamina_max": 120,
+          "poise_cur": 30,
+          "poise_max": 30,
+          "estus": 5,
+          "locked_on": null,
+          "level": 1,
+          "souls": 0,
+          "attributes": {
+            "vigour": 10,
+            "endurance": 20,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "equip_load_pct": 24,
+          "roll_class": "LIGHT"
+        }
+      },
+      "endgame-200q": {
+        "hp_max": 412,
+        "poise_max": 22,
+        "player": {
+          "pos": [
+            0,
+            -0.4748208086597554,
+            0
+          ],
+          "yaw_deg": 0,
+          "state": "IDLE",
+          "anim": "idle",
+          "anim_frame": 0,
+          "hp": 500,
+          "hp_max": 500,
+          "stamina": 120,
+          "stamina_max": 120,
+          "poise_cur": 30,
+          "poise_max": 30,
+          "estus": 5,
+          "locked_on": null,
+          "level": 120,
+          "souls": 998000,
+          "attributes": {
+            "vigour": 10,
+            "endurance": 20,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "equip_load_pct": 24,
+          "roll_class": "LIGHT"
+        }
+      }
+    },
+    "A7": {
+      "max_player_yaw_change_per_frame_during_attack_deg": 0
+    },
+    "A10": {
+      "has_dialogue_verb": []
+    }
+  },
+  "MTH01_failclosed": {
+    "tap_sugar": {
+      "threw": "queueInputs: unrecognised event key 'tap'. HARNESS.md §4 events are {f, press?, release?, move?, look?} and nothing else. 'tap' is scenario-file sugar, expanded"
+    },
+    "wibble": {
+      "threw": "queueInputs: unrecognised event key 'wibble'. HARNESS.md §4 events are {f, press?, release?, move?, look?} and nothing else. Accepting it and doing nothing woul"
+    },
+    "empty": {
+      "ok": 1
+    },
+    "unknown_button": {
+      "threw": "unknown button 'nope'. The action set is closed (HARNESS.md §4): light heavy roll block parry sprint jump use_item interact lock_on two_hand swap_right swap_lef"
+    },
+    "good": {
+      "ok": 1
+    },
+    "spawn_bad": {
+      "threw": "spawn('nope'): no such archetype. Known: dummy_passive, inf_trash. Archetypes are declared in game/data/combat/enemies/*.json; a phantom eid would be a fabricated measurement (RI-MTH01 M6)."
+    },
+    "camera_short": {
+      "ok": "{\"pos\":[1,2,null],\"look\":[0,1.55,0.3500000000000001],\"fov\":60,\"mode\":\"free\",\"lockOn\":null,\"yaw_deg\":240,\"pitch_deg\":-8,\""
+    },
+    "buildinfo": {
+      "name": "elder-souls",
+      "version": "0.1.0-w1-00",
+      "commit": null,
+      "builtAt": null,
+      "harnessVersion": 1,
+      "fixedStepHz": 60,
+      "dataRoot": "game/data",
+      "piece": "W1-00 — harness, determinism and persistence",
+      "threeVersion": "180",
+      "dataFiles": 33
+    }
+  }
+}
