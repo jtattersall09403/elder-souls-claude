@@ -2583,6 +2583,7 @@ async function loadData(onBytes) {
     else if (entry.path === 'dialogue/greetings.json') out.greetings = doc;
     else if (entry.path === 'dialogue/rumours.json') out.rumours = doc;
     else if (entry.path === 'dialogue/creation-questions.json') out.creationQuestions = doc;
+    else if (entry.path === 'dialogue/creation-names.json') out.creationNames = doc;
     else if (entry.path === 'world/encounters.json') out.encounters = doc;
     else if (entry.path.startsWith('progression/')) {
       out.progression = out.progression || {};
@@ -2603,6 +2604,7 @@ async function loadData(onBytes) {
     reactions: out.progression['race-reactions'],
     creation: out.progression['creation'],
     creationQuestions: out.creationQuestions,
+    creationNames: out.creationNames,
     encounters: out.encounters,
     writHouse: out.topics['writ-house'],
     writItems: out.items['writ'],

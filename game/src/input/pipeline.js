@@ -230,6 +230,10 @@ export class InputPipeline {
 
   heldNames() { return maskToNames(this.held, this._names); }
   pressedNames() { return maskToNames(this.pressed, this._names2); }
+
+  /** Was this action pressed on the frame currently latched? Allocation-free. */
+  pressedName(name) { return (this.pressed & bitOf(name)) !== 0; }
+  heldName(name) { return (this.held & bitOf(name)) !== 0; }
 }
 
 /**

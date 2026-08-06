@@ -430,6 +430,27 @@ export class MagicSystem {
       travelF: 0, lifeF: Math.round(g.lifetime_s * 60),
       spawnF: frame, hits: [],
     };
+    // THE DECLARED ARC, ACQUIRED. `spells.json` declares 60 °/s for `LIGHT` and 45 for `HEAVY`
+    // with a tracking cutoff; wave 1 never set `p.target`, so the trace measured 0.000 °/s and
+    // the W1-14 verdict recorded a declared-vs-observed mismatch under M8. The arc is real now,
+    // and it is bounded by the two rules that keep it from being homing: it acquires ONLY a
+    // body already inside the release cone (so the aim latch still decides who is hit), and it
+    // stops dead at `cutoffF` (AP-M3 is an automatic fail for a projectile still turning past
+    // its cutoff). RI-MAG01 M4's residual-aim-error assertion is untouched: that is measured at
+    // the RELEASE frame, before this can have applied a single degree.
+    if (p.turnRate > 0 && p.cutoffF > 0) {
+      const cone = this.d.castClasses.commitment.acquire_cone_deg === undefined ? 20 : this.d.castClasses.commitment.acquire_cone_deg;
+      let best = null, bestErr = cone;
+      const bodies = this.w && this.w.combat ? this.w.combat.bodies : [];
+      for (const t of bodies) {
+        if (t.dead || t.side !== 'E') continue;
+        const want = bearing(t.pos[0] - p.pos[0], t.pos[2] - p.pos[2]);
+        const err = Math.abs(((want - p.yaw + 540) % 360) - 180);
+        if (err < bestErr) { bestErr = err; best = t; }
+      }
+      p.target = best;
+      p.acquireErrDeg = best ? round2(bestErr) : null;
+    }
     this.projectiles.push(p);
     return p;
   }
@@ -786,7 +807,58 @@ export class MagicSystem {
       this.altitude = Math.max(0, this.altitude - want);
       climb = -want * 60;                                  // descent is free; only ascent is metered
     }
-    return { climb_mps: climb, drift_cap_mps: this.lev.horizontal_drift_mps, altitude_m: this.altitude };
+    // THE LINE THE W1-14 CRITIC'S §3 IS ABOUT. `altitude_m` was a counter with a Focus tax
+    // attached and `pos[1]` was 0.000 at 6.00 m of "altitude"; the probe read the meter and
+    // never the position, so three of RI-MAG02 M4.1's four assertions failed unseen. The
+    // altitude meter and the character's world Y are now THE SAME NUMBER, by assignment, here.
+    const b = this.w && this.w.combat ? this.w.combat.player : null;
+    if (b) {
+      b.pos[1] = this.groundY + this.altitude;
+      b.airborne = true;
+      b.iframe = false;                                    // F3: AIRBORNE is defenceless. Always.
+      b.iframeKind = null;
+      if (this.w.sim) this.w.sim.player.pos[1] = b.pos[1];
+    }
+    this.peakY = Math.max(this.peakY, b ? b.pos[1] : this.altitude);
+    return { climb_mps: climb, drift_cap_mps: this.lev.horizontal_drift_mps, altitude_m: this.altitude, pos_y: b ? b.pos[1] : null };
+  }
+
+  /**
+   * Gravity, for the two states that have one: a levitation that has just ended, and any body
+   * above its ground plane. `slowfall` is the only thing that changes the terminal velocity and
+   * the only thing that suppresses fall damage — which is what makes RI-MAG06 §B's slowfall row
+   * (`terminal velocity 3.5 m/s, zero fall damage`) a paired read rather than a claim.
+   */
+  stepFall(frame, groundY) {
+    const b = this.w && this.w.combat ? this.w.combat.player : null;
+    if (!b || this.levitating) return null;
+    const g = groundY === undefined ? 0 : groundY;
+    if (b.pos[1] <= g + 1e-6) {
+      if (this.airborne && this.fall.velMps > 0) this._land(frame, g);
+      this.fall.velMps = 0;
+      this.airborne = false;
+      return null;
+    }
+    this.airborne = true;
+    this.fall.velMps = Math.min(this.fall.terminalMps, this.fall.velMps + 9.81 / 60);
+    b.pos[1] = Math.max(g, b.pos[1] - this.fall.velMps / 60);
+    if (this.w.sim) this.w.sim.player.pos[1] = b.pos[1];
+    if (b.pos[1] <= g + 1e-6) this._land(frame, g);
+    return { vel_mps: round2(this.fall.velMps), terminal_mps: this.fall.terminalMps, pos_y: round4(b.pos[1]) };
+  }
+
+  _land(frame, g) {
+    const b = this.w.combat.player;
+    const v = this.fall.velMps;
+    b.pos[1] = g;
+    this.airborne = false;
+    this.fall.velMps = 0;
+    // Fall damage is proportional to the excess over a free 6 m/s, and `slowfall` sets the
+    // terminal velocity BELOW that, so zero damage is arithmetic rather than a special case.
+    const dmg = this.fall.damageEnabled ? Math.max(0, Math.round((v - 6) * 12)) : 0;
+    if (dmg > 0) { b.hp = Math.max(0, b.hp - dmg); this.onDamaged(frame); }
+    this._emit(frame, 'land', { impact_mps: round2(v), fall_damage: dmg, slowfall: !this.fall.damageEnabled });
+    return dmg;
   }
 
   /** F3: `AIRBORNE` is defenceless, and ANY damage taken ends the effect. You fall. */
@@ -1044,11 +1116,42 @@ export class MagicSystem {
         tc_frame: c.tcFrame, aim_latched: !!c.latched,
         focus_spent: c.focusSpent, stamina_spent: c.staminaSpent, released: c.released,
       } : null,
-      effects_active: this.active.map((a) => ({ effect: a.effect, magnitude: round2(a.magnitude), remaining_f: a.remaining_f, source: a.source })),
+      effects_active: this.active.map((a) => ({ effect: a.effect, magnitude: round2(a.magnitude), remaining_f: a.remaining_f, source: a.source, consumer_leased: !!a._undo })),
       levitating: this.levitating, airborne: this.airborne, altitude_m: round2(this.altitude),
+      // RI-MAG02 M4.1 reads these four, not the meter. `pos_y_m` and `altitude_m` are the same
+      // number by construction (stepLevitation), which is the defect §3 of the wave-1 verdict
+      // was about; `drift_mps` and `drift_cap_mps` are the pair that makes F1 checkable.
+      pos_y_m: this.w && this.w.combat && this.w.combat.player ? round4(this.w.combat.player.pos[1]) : null,
+      drift_mps: round3(this.drift.mps), drift_cap_mps: this.drift.capMps,
+      walk_reference_mps: this.lev.walk_speed_reference_mps,
       projectiles: this.projectiles.length, volumes: this.volumes.length, residues: this.residues.length,
       xul_hesh: this.xulHesh, gems: this.gems.length, custom_spells: this.custom.length,
+      // RI-MAG06: the consuming systems, in the same call, so a census is one read per frame.
+      consumers: this.worldCensus(),
+      status: this.statusReport(),
     };
+  }
+
+  /** Every live S11 meter and proc, player and enemy, in id order (HARNESS D7). */
+  statusReport() {
+    const out = [];
+    const bodies = this.w && this.w.combat ? this.w.combat.bodies : [];
+    for (const b of bodies) {
+      if (!b.status && !b.statusProc && !b.paralysedUntil) continue;
+      out.push({
+        id: b.id,
+        buildup: b.status ? Object.fromEntries(Object.entries(b.status).map(([k, v]) => [k, round2(v)])) : {},
+        procs: b.statusProc ? { ...b.statusProc } : {},
+        paralysed: !!(b.paralysedUntil && b.paralysedUntil > 0),
+        mitigation: round4(b.mitigation === undefined ? 1 : b.mitigation),
+        armour_rating: round2(b.armourRating === undefined ? 0 : b.armourRating),
+        ward_charges: b.wardCharges || 0,
+        yielded: !!b.yielded, silenced: !!b.silenced, frenzy_target: b.frenzyTarget || null,
+        hp: round2(b.hp), hp_max: round2(b.hpMax),
+        equip_load_pct: round2(b.equipLoadPct), roll_class: b.tier,
+      });
+    }
+    return out.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   }
 
   /** Live spell geometry as HARNESS §5 hitbox records. `kind` gains "projectile" and "volume". */
@@ -1104,5 +1207,6 @@ function segmentSphereHit(p0, p1, r, c, tr) {
 
 function bearing(x, z) { return (Math.atan2(x, z) / DEG + 360) % 360; }
 function round2(v) { return Math.round(v * 100) / 100; }
+function round3(v) { return Math.round(v * 1000) / 1000; }
 function round4(v) { return Math.round(v * 1e4) / 1e4; }
 function r4(v) { return Math.round(v * 1e4) / 1e4; }

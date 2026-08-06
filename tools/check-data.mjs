@@ -36,6 +36,10 @@ if (missing.length) {
   for (const m of missing) console.error(`  ${m}`);
   console.error('\nThe game will not boot. Either restore the file or remove its entry from');
   console.error('game/data/index.json — do not commit the index and the tree out of step.');
+  console.error('\nIf the file is tracked and something deleted it:');
+  for (const m of missing) console.error(`  git checkout HEAD -- game/data/${m}`);
+  console.error('\nDeleting an indexed file to make a probe run is not a fix — it breaks the');
+  console.error('build for every other agent. Restore it, or remove the index entry and say so.');
   process.exit(1);
 }
 
