@@ -373,9 +373,16 @@ function solveDeck(p, tideway, halfWidth, extraFloor = null) {
   // of a 30% descent pins the whole profile and the road ends up standing 69 m above the valley on
   // a mile of viaduct. Over +/- 6 points (~72 m) the limit is the terrain's own worst grade.
   const nat = p.map((_, i) => (i === 0 ? 0 : Math.abs(gmax[i] - gmax[i - 1]) / seg[i]));
-  const gl = p.map((_, i) => {
+  const gl = p.map((q, i) => {
     let m = 0;
     for (let j = Math.max(1, i - 6); j <= Math.min(nat.length - 1, i + 6); j++) if (nat[j] > m) m = nat[j];
+    // No stairs inside a settlement. RI-WLD01 M1-SETTLEMENT-FLAT measures the worst slope inside a
+    // 75 m footprint, and a road allowed its mountain grade all the way to the town gate puts a
+    // 23-degree ramp through the market square. Inside a settlement's flat pad the road is a road.
+    for (const st of field.sites) {
+      if (st.kind !== 'settlement') continue;
+      if (Math.hypot(q[0] - st.x, q[1] - st.z) < st.r_flat + 90) return MAX_GRADE;
+    }
     return Math.min(STAIR_GRADE, Math.max(MAX_GRADE, m));
   });
 
@@ -383,11 +390,27 @@ function solveDeck(p, tideway, halfWidth, extraFloor = null) {
   // y = the smallest profile with y >= L whose slope never exceeds the local limit. A forward and
   // a backward running maximum computes it exactly, and the result satisfies BOTH constraints by
   // construction — there is no later pass that can break it.
-  const y = L.slice();
-  for (let i = 1; i < y.length; i++) y[i] = Math.max(y[i], y[i - 1] - gl[i] * seg[i]);
-  for (let i = y.length - 2; i >= 0; i--) y[i] = Math.max(y[i], y[i + 1] - gl[i + 1] * seg[i + 1]);
-  // Any -Infinity left is a point with no water and no ground bound at all; sit it on the ground.
-  for (let i = 0; i < y.length; i++) if (!Number.isFinite(y[i])) y[i] = g[i];
+  // D(L): the SMALLEST grade-feasible profile that still clears the water and honours the cut
+  // limit. Computed as a forward and a backward running maximum, which is exactly the morphological
+  // dilation of L by the grade cone — so |slope| <= gl everywhere by construction.
+  const D = L.slice();
+  for (let i = 1; i < D.length; i++) D[i] = Math.max(D[i], D[i - 1] - gl[i] * seg[i]);
+  for (let i = D.length - 2; i >= 0; i--) D[i] = Math.max(D[i], D[i + 1] - gl[i + 1] * seg[i + 1]);
+  for (let i = 0; i < D.length; i++) if (!Number.isFinite(D[i])) D[i] = g[i];
+  // E(g): the LARGEST grade-feasible profile that never rises above the ground — the erosion of the
+  // ground by the same cone. This is the road that sits ON the terrain and cuts only where the
+  // grade forces it to.
+  const E = g.slice();
+  for (let i = 1; i < E.length; i++) E[i] = Math.min(E[i], E[i - 1] + gl[i] * seg[i]);
+  for (let i = E.length - 2; i >= 0; i--) E[i] = Math.min(E[i], E[i + 1] + gl[i + 1] * seg[i + 1]);
+  // Both are grade-feasible, and the max of two grade-feasible profiles is grade-feasible, so the
+  // answer is grade-feasible AND >= L AND as close to the ground as those two things permit.
+  //
+  // Taking D(L) alone — which is what the first cut of this rewrite did — puts the road exactly
+  // MAX_CUT_M below the ground wherever the ground is flat, because the cut bound IS the binding
+  // constraint there. That drove a 3 m trench through the middle of all eight settlements and
+  // failed M1-SETTLEMENT-FLAT at 23 degrees. A road on level ground sits on the level ground.
+  const y = D.map((v, i) => Math.max(v, E[i]));
   // Two light smoothing passes that may only LOWER fill and may never break a bound, so the deck
   // reads as an engineered profile rather than as the max of two step functions.
   for (let k = 0; k < 3; k++) {

@@ -2,7 +2,7 @@
   "task_id": "W1-07-r2",
   "brief": "W1-07 round 2 at ULTRACODE. Round 1 scored 1.5/10. Close GAP-W1-creation-is-an-api-not-a-scene and the five other named gaps.",
   "started": "wave-2",
-  "state": "building",
+  "state": "complete",
   "gap": "GAP-W1-creation-is-an-api-not-a-scene \u2014 19 census nodes produce 20 byte-identical PNGs; 0 entities; no UI layer of any kind exists in the build.",
   "plan": [
     "P0 instrumentation: a UI layer drawn INTO the WebGL canvas (canvas.toDataURL is the screenshot path, so a DOM overlay would not be captured by __HARNESS.screenshot). Orthographic overlay scene + 2D-canvas texture.",
@@ -33,15 +33,42 @@
     "game/src/engine.js (census placement, derived pools, hearth rest, capture, props, harness verbs)",
     "game/src/character/encounter.js (the engagement director: approach, attack, nets, capture)",
     "game/src/input/{bindings,real,pipeline}.js (gamepad standard mapping, text entry, consumeUI)",
-    "game/src/sim/{state,step,events,combat-bridge}.js"
+    "game/src/sim/{state,step,events,combat-bridge}.js",
+    "game/data/dialogue/greetings.json (300 cells, 1,500 lines, 360 authored fragments, declared)",
+    "tools/dialogue/gen-greetings.mjs (the authored stems + the expander)",
+    "game/data/dialogue/topics/40-race-gated.json (96 race-gated topic records, 32 with forbids.race)",
+    "game/data/dialogue/slavery-lines.json (61 lines, 16 to a Dunmer player)",
+    "game/data/dialogue/rumours.json (16 race-gated rumours over all 8 settlements)",
+    "game/data/states/{helstrom-market,stormhold-street,rootlands-well-graph,barge-hold}.json + npcs/named-states.json",
+    "game/data/states/writ-house.json (now instantiates the two people it names)",
+    "game/data/states/wld-dres-raid-road.json (moved onto dry salt-hills ground)",
+    "game/src/save/state.js (npcs and props are durable)",
+    "tools/harness/w1-07-scene.mjs (the acceptance instrument)",
+    "tools/analysis/creation-audit.mjs (price assertions re-pointed; par clause now derived)",
+    "corpus/22-character/AMENDMENT-W1-07-03.md (what The Dry Well can actually take away)",
+    "reports/w1-07/scene/** (19 screenshots + scene.json), reports/w1-07/ar3-r2/** (3 traces)"
   ],
   "next_step": "AR-3 rerun; then race-gated dialogue volume and getPriceQuote wiring; then regression runs",
   "measured": {
-    "distinct_screenshot_hashes": "19 of 19 across the 19 census nodes at 1920x1080 (bar: >= 15). Round 1: 1 of 20.",
-    "entities_per_node": "1 NPC in the barge hold (jeeh-ei) + 2 takeable objects; 2 NPCs in the Writ House. speaker_entity resolves at every node.",
-    "panel_area": "0.136-0.336 of frame area; cap 0.42 of frame HEIGHT. M5 ceiling is 0.55 of area.",
-    "gamepad_only": "creation completed with 16 A-presses and D-pad only; the walk out of the hold done on the left stick.",
-    "hp_max": "VIG 6 -> 196, 10 -> 300, 18 -> 508, 27 -> 742, 40 -> 924, 99 -> 1122 (RI-PRG02 anchors exact).",
-    "focus": "nu-ixtu (Dry Well) WIL 11: focus_max 53 vs base 33 (x1.60); focus_restores_at_hearth false."
-  }
+    "distinct_screenshot_hashes": "19 of 19 across the 19 census nodes at 1920x1080 (bar >= 15). Round 1: 1 of 20.",
+    "speaker_is_in_the_room": "18/18 nodes where getCensusState().speaker resolves to a live sim.npcs entity standing in the named interior.",
+    "entities_per_node": "min 1 NPC at every node; 2 takeable objects in the pre-definition window (RI-JRN01 O6/M4).",
+    "ui_area": "opaque non-world UI 0.136-0.336 of frame area (M5 ceiling 0.55); panel height capped at 0.42 of frame; 130-467 characters drawn per node.",
+    "gamepad_only": "creation completed on a standard-mapping pad in 37 button presses plus one left-stick walk out of the barge hold. RealInput.pollGamepad is the same code path a real GameSir X2s takes.",
+    "hp_max_spread": "orsimer VIG18 508 / nord VIG17 482 / dunmer VIG10 300 / bosmer VIG6 196. Curve anchors exact: 300/560/742/924/1044/1122 at VIG 10/20/27/40/60/99. Round 1: 620 for everything.",
+    "stamina_spread": "64 (END 6) to 116 (END 19); anchors 80/120/145/157/180.6 at END 10/20/30/40/99.",
+    "focus_and_birthsign": "nu-ixtu WIL11 focus_max 53 vs base 33 (x1.60); kaal-kaal+nu-ixtu 43 (x1.30, half the deviation); focus_restores_at_hearth false for both and true for raj-xul. hearthRest() returns the difference.",
+    "skills_by_use": "35 connecting hits over 3,400 frames bank 35 progress points into Blades (RI-PRG03 \u00a73: 1 point per connecting hit; progressToNext(25)=46). 70 swings at empty air bank 0. grantSkillUse('lock_picked',{cost:0}) is refused by the Cost Gate; {cost:1} moves Security 5->6. The \u00a74 rest clamp holds a skill to +3 levels between rests and hearthRest() resets it (5->8, rest, 8->11).",
+    "ar3": "saxhleel: AGGRO at 27.948 m, 12 attack_start, 3 nets landed, HP 300->156, CAPTURED at f818 (writ and gold taken, moved to the Archon hold, died:false). dunmer: 0 AGGRO, 1 parley_offer, HP untouched, closest 5.26 m. khajiit: AGGRO at 11.956 m, 34 attack_start, 7 nets, 4 HIT, HP->0, DEATH. Round 1: 0 events, closest 18.198 m, 0 attack_start in all three.",
+    "prices": "\u00a74b table reproduced exactly on buy_surcharge_only/sell_surcharge_only (54/70/76, 66/52/47). Mercantile-100/PER-60 Dunmer effective buy 1.0112x (bar [0.98,1.05]) DERIVED from the character; untrained 1.5073x. The two differ by 0.4961; round 1 they were identical.",
+    "dialogue_volume": "greetings 300/300 cells, 1,500 lines (1,400 distinct; RG-COURT is deliberately identical across all five player-race classes because that row is all zeros). 96 race-gated topic records, 32 with forbids.race. 16 race-gated rumours over 8 settlements. 61 slavery lines, 16 to a Dunmer.",
+    "regressions": "creation-audit 89/90 PASS 0 hard failures (1 declared XFAIL, the corpus's own Nord/Orsimer skill-set collision); api-probe 8/8 PASS 0 page errors; save-audit round-trip EQUAL diff=0 on all four fixtures with npcs and props in the blob."
+  },
+  "not_closed": [
+    "RI-JRN01's instrumented pass still scores 0 fail-closed: tools/journey/journey-run.mjs (A-JRN1), beat-extract.mjs and gamepad-shim.mjs do not exist. tools/harness/w1-07-scene.mjs measures M4/M5/M6/M13 directly, but the item's binding rule is the tool, not the number. RI-MTH06 already has this filed.",
+    "tools/analysis/build-viability.mjs still does not exist, so RI-CHR01 M6 and RI-CHR03 M5 remain unrunnable.",
+    "The Saxhleel raid run whiffs 10 of 12 swings at sub-1 m contact range. The capture fires from the nets instead, which is the correct fiction, but the melee hit rate at contact distance is a W1-09 resolver interaction I did not chase.",
+    "greetings.json is 1,500 lines expanded from 360 authored fragments, declared in the file's own provenance block. It is not 1,500 hand-written lines and does not claim to be.",
+    "Nord/Orsimer skill-set collision and unreachable Polearms remain corpus defects, unchanged."
+  ]
 }

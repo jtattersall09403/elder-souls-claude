@@ -58,7 +58,9 @@ for (const id of list) {
       // RI-WPN02 §D D4's mash probe. A static press offset cannot reach the 8 f@60 buffer when
       // the swing lands and HITSTOP holds the animation clock, so the chain is driven the way a
       // player drives it: light every 8 frames for the length of the run.
-      'r1.2': Array.from({ length: 40 }, (_, i) => ({ d: 4 + i * 8, tap: 'light' })),
+      // 80 presses, not 40: an ultra greatsword's three-link chain is 166 + 176 + 200 frames and
+      // the buffer holds ONE action, so a 40-press mash runs out of input before the third link.
+      'r1.2': Array.from({ length: 80 }, (_, i) => ({ d: 4 + i * 8, tap: 'light' })),
       r2: [{ d: 4, tap: 'heavy' }],
       'r2.charged': [{ d: 4, hold: 'heavy', until: 220 }],
       'roll.r1': [{ d: 4, tap: 'roll', move: [0, 1] }, { d: 38, tap: 'light' }],

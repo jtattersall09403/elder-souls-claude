@@ -106,6 +106,16 @@ export const EVENT_TYPES = new Set([
   'theft', 'pickpocket', 'lock_attempt', 'lock_ward_set', 'lock_open', 'pick_break', 'trespass_enter', 'fence_sale',
   'crime', 'witness', 'report', 'bounty_change', 'arrest', 'jail_serve', 'corpse_found', 'bloodprice', 'death_flag',
   'writ',
+  // W1-15 round 2. Two more, and both exist because the round-2 build derives from the world
+  // what the round-1 build was handed:
+  //   `report_route`  — WHICH of RI-CRM01 §3a's five routes a witness took, the guard they are
+  //                     running at, and the latency in f@60. Without it a critic can see a
+  //                     bounty appear and cannot tell a shout from a 120 m run, which is the
+  //                     difference method 3 spends three of its five assertions on.
+  //   `guard_band`    — the RI-CRM01 §4 ladder as an OBSERVED transition rather than a lookup:
+  //                     which band a guard who can see you is in, whether their weapon is drawn,
+  //                     and which parley is open. Round 1 had no guard to emit it.
+  'report_route', 'guard_band',
 ]);
 
 const POOL_SIZE = 128;

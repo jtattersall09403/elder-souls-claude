@@ -392,9 +392,6 @@ export function installHarness(engine, bootPromise) {
      */
     grantSkillUse(kind, ctx) { return engine.grantSkillUse(kind, ctx || {}); },
 
-    /** A HEARTH rest: resets §4's rest clamp, and refills Focus unless the sign forbids it. */
-    hearthRest() { return engine.hearthRest(); },
-
     // ---- A-JRN2: the gamepad shim ------------------------------------------------------
     /**
      * Push a synthetic standard-mapping pad state and poll it. `buttons` is an array of
@@ -470,6 +467,11 @@ export function installHarness(engine, bootPromise) {
     // decides whether the refill happens at all. Two properties with one name in an object
     // literal means the later one silently wins — which it did, and the clamp never reset. One
     // verb now, doing both, with both items' return fields on it.
+    /**
+     * A HEARTH rest. One verb, two owners: RI-MAG01 §A refills the Focus reservoir here and
+     * nowhere else, RI-PRG03 §4 resets the +3-levels-per-rest skill clamp here, and RI-CHR03's
+     * Dry Well decides whether the refill happens at all.
+     */
     hearthRest() { return engine.hearthRest(); },
 
     /** The catalogue, the shipped shelf and the cast class table, for offline recomputation. */
@@ -793,7 +795,7 @@ export function installHarness(engine, bootPromise) {
     spawnGuard(spec) { return engine.spawnGuard(spec || {}); },
     /** RI-CRM01 §3b's four responses to a fleeing witness, driven at the pending report. */
     listPendingReports() { return engine.listPendingReports(); },
-    bribeWitness(i, gold) { return engine.bribeWitness(Number(i), gold === undefined ? null : Number(gold)); },
+    bribeWitness(i, gold) { return engine.bribeWitness(Number(i), (gold === undefined || gold === null) ? null : Number(gold)); },
     talkDownWitness(i, ok) { return engine.talkDownWitness(Number(i), !!ok); },
     /** RI-AI01 §B's instant channels, so a critic can raise a meter without moving the player. */
     raiseEnemyAlert(eid, amount, channel) { return engine.sim.stealth.raiseAlert(engine.sim, String(eid), Number(amount), String(channel || 'shout')); },

@@ -162,6 +162,12 @@ export class WorldField {
   isOceanAt(x, z) { return this.oceanU[this._cellIndex(x, z)] === 1; }
   coastDistAt(x, z) { return this._bilinear(this.coastI, x, z, 16); }
   substrateAt(x, z) {
+    // RI-WLD10 §4's FIRM row is, verbatim: "rock, ROOT-WOOD ROADS, BOARDWALK, packed clay,
+    // xanmeer limestone". A built carriageway is FIRM by that table's own words, whatever the mud
+    // it was laid over. This matters for S17: with the substrate multiplier reading the raster
+    // under the road, THE CROSSING realised a mean of 1.9032 m/s and 9.7% of samples below the
+    // 1.6 m/s honesty floor — the hour would have been part friction. On the road it is 2.0000.
+    if (this.onRoadAt(x, z)) return 'FIRM';
     const d = this.depthAt(x, z);
     const s = this.substrateNames[this.substrateU[this._cellIndex(x, z)]];
     return d > 0 && s === 'FIRM' ? 'SILT' : s;

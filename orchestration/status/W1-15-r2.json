@@ -52,7 +52,18 @@
     "VERB-SPREAD after the quest work: 24.7% (cap 40%). sneak 13 quests / 33, steal 8 / 33.",
     "PERF: the probe at 1920x1080 under SwiftShader is ~60x slower than at 320x240 \u2014 a 3600-frame in-page loop went from >20 min to 2.9 s. Every W1-15 probe must pass --width 320 --height 240 unless it screenshots (NO-METER does, and only that one needs the full viewport).",
     "MEASURED row 1 at the small viewport: AGGRO at f=62 vs the item's 1.03 s (61.8 f) \u2014 0.32% error, V=1.30.",
-    "ROOT CAUSE of the slow probes: Engine.stepFrames() ends with `if (loop.renderRateHz !== 0) loop.renderNow()`. A per-frame probe loop therefore draws one SwiftShader frame per SIM frame. Measured: 600 bare sim frames = 71 ms; 600 frames driven one-at-a-time with the renderer live never returned and killed the page. Fix: H.setRenderRate(0) before any stepping loop. This is worth telling every other builder/critic in the project."
+    "ROOT CAUSE of the slow probes: Engine.stepFrames() ends with `if (loop.renderRateHz !== 0) loop.renderNow()`. A per-frame probe loop therefore draws one SwiftShader frame per SIM frame. Measured: 600 bare sim frames = 71 ms; 600 frames driven one-at-a-time with the renderer live never returned and killed the page. Fix: H.setRenderRate(0) before any stepping loop. This is worth telling every other builder/critic in the project.",
+    "MEASURED (reports/w1-15-coupling.json): RI-STL01 M2 five rows 1.033/3.967/8.467/26.667/26.667 s vs the item's 1.03/3.94/8.5/26.7/26.7 \u2014 worst error 0.68%. V-to-alert COUPLING = 0.9986. Null control at 30 m never alerts.",
+    "MEASURED: M4 no-proximity-leak now PASSES \u2014 3,600 f@60 crouched/unlit/still 1.0 m behind a stationary enemy, peak alert 0.000, state IDLE.",
+    "MEASURED: sound reaches an entity that cannot see the player \u2014 r_eff 36.31 m -> AGGRO at 1.667 s on channel `hearing` at 20 m; r_eff 0.656 m -> alert 0 at both 20 m and 3 m; the `still` null control (r_base 0) -> alert 0 at 3 m. Coupling 1.",
+    "MEASURED: sound reaches a civilian \u2014 2 m, facing away: sprint r_eff 36.31 -> CHALLENGE, suspicion 70 (the hearing ceiling), channel `hearing`. Crouch-walk control r_eff 0.656 -> CALM 0.00.",
+    "MEASURED: a wall blocks sight \u2014 identical rows, one box occluder: open AGGRO at 2.0 s, walled alert 0.00 IDLE los=false. Coupling 1.",
+    "MEASURED: cover derived from geometry \u2014 open ring 0/12 blocked (A=1.00), alcove 11/12 (A=0.80); in_cover_source reports derived_from_geometry.",
+    "MEASURED: search \u2014 SEARCH entered at 6.0 s (RI-AI01 T25), duration exactly 12.00 s, walk speed 2.00 m/s, walks to the LKP; S-4 zone baseline 25 immediately, 25 at 60 s, 0 at 200 s.",
+    "MEASURED: RI-CRM01 method 3 with ZERO addWitness() calls \u2014 witness on the crime frame, reported=false, bounty 0 until the report; 120 m guard -> run_to_guard, latency 2065 f, bounty 17 g at 34.5 s (item 35.3 s, 2.3%); 20 m -> shout latency 72 f = 1.200 s exactly; no guard -> delayed, bounty 0.",
+    "MEASURED: stolen_registry after a theft = ['gideon.fisher0.r0.0'] in getCrimeState AND in saveState().crime.stolen_registry; the inventory row carries stolen:true, owner_of_record:'npc:gideon-fisher-0-sibling0'.",
+    "sim.entities is kept in EID order (HARNESS.md D7), not spawn order. perceptionState()[0] is the alphabetically-first eid \u2014 a probe must address by eid.",
+    "events.js closed vocabulary extended with `report_route` and `guard_band` (A-JRN7 permits extension by amendment)."
   ],
   "next_step": "collect reports/w1-15-coupling.json and fold the measured numbers into the report",
   "notes_for_successor": ""

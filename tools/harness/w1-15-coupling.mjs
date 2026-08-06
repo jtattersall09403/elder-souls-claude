@@ -135,8 +135,11 @@ try {
     H.setStealthState({ sneak: 100, load: 'light', surface: 'mud', inCover: true, zone: 'zl' });
     H.setZoneAmbient('zl', 0.06);
     H.setPlayerMotion('still');
-    // yaw 180 = looking down +z; the player at the origin is directly BEHIND it.
-    H.spawn('inf_trash', 0, 1.0, { as: 'e1', yaw: 180 });
+    // FACING AWAY. `makeEntity`'s default yaw is 180, and at +z that points the entity back
+    // down -z AT the origin — measured, not assumed: an enemy at (0, 8) with yaw 180 has
+    // bearing-to-player 180 - 180 = 0 and sees the player in its primary cone. So facing away
+    // from a player at the origin, from +z, is yaw 0.
+    H.spawn('inf_trash', 0, 1.0, { as: 'e1', yaw: 0 });
     let peak = 0, aggro = false;
     for (let i = 0; i < 360; i++) { H.stepFrames(10); const e = H.perceptionState()[0]; peak = Math.max(peak, e.alert); if (e.alert_state === 'AGGRO') { aggro = true; break; } }
     const e = H.perceptionState()[0];
@@ -169,7 +172,7 @@ try {
       H.setStealthState({ sneak: c.sneak, load: c.load, surface: c.surface, inCover: false, zone: 'zs' });
       H.setZoneAmbient('zs', 0.04);
       H.setPlayerMotion(c.motion);
-      H.spawn('inf_trash', 0, c.dist, { as: 'e1', yaw: 180 });   // facing AWAY
+      H.spawn('inf_trash', 0, c.dist, { as: 'e1', yaw: 0 });     // facing AWAY (see the M4 note)
       let rise = null, chan = null, aggro = null;
       for (let f = 0; f < 1200; f += 5) {
         H.stepFrames(5);
@@ -210,23 +213,23 @@ try {
   const civSound = await ev(() => {
     const H = window.__HARNESS;
     const out = {};
-    for (const q of [{ k: 'loud', sneak: 5, load: 'heavy', surface: 'dry_reed' }, { k: 'quiet', sneak: 100, load: 'light', surface: 'mud' }]) {
+    for (const q of [{ k: 'loud', sneak: 5, load: 'heavy', surface: 'dry_reed', motion: 'sprint' }, { k: 'NULL_CONTROL_quiet', sneak: 100, load: 'light', surface: 'mud', motion: 'crouch_move' }]) {
       H.setSeed(1337); H.loadState('default'); H.teleport(0, 0);
       H.setStealthState({ sneak: q.sneak, load: q.load, surface: q.surface, inCover: false, zone: 'zcs' });
       H.setZoneAmbient('zcs', 0.04);
       H.setCrimeContext('crouched_public');
       H.spawnCivilian({ eid: 'sd2', group: 'civilian', race: 'saxhleel', R: 16, pos: [0, 0, 2], yaw: 0 });   // facing AWAY
-      H.setPlayerMotion('sprint');
+      H.setPlayerMotion(q.motion);
       H.stepFrames(600);
       const c = H.listCivilians().find((x) => x.eid === 'sd2');
-      out[q.k] = { sound_r_m: H.getStealthState().sound_r_m, civ_state: c.civ_state, suspicion: c.suspicion, channel: c.alert_channel, los: c.los };
+      out[q.k] = { motion: q.motion, sound_r_m: H.getStealthState().sound_r_m, civ_state: c.civ_state, suspicion: c.suspicion, channel: c.alert_channel, los: c.los };
     }
     return out;
   });
   rec('RI-STL01-sound-reaches-a-civilian', {
     question: 'round-1 verdict: "a civilian 2 m away, facing away, after 10 s of that sprint, registers suspicion 0.00 and stays CALM"',
     measured: civSound,
-    world_coupling: { coupling: civSound.loud.suspicion > 0 ? 1 : 0, note: 'the quiet row is the null control: r_eff 0.66 m does not reach 2 m' },
+    world_coupling: { model_value_a: civSound.loud.sound_r_m, model_value_b: civSound.NULL_CONTROL_quiet.sound_r_m, observed_a: civSound.loud.suspicion, observed_b: civSound.NULL_CONTROL_quiet.suspicion, coupling: civSound.loud.suspicion > 0 && civSound.NULL_CONTROL_quiet.suspicion === 0 ? 1 : 0, note: 'the control is a crouch-walk at r_eff 0.66 m, which does not reach the civilian at 2 m' },
   });
 
   // =========================================================================================
@@ -298,12 +301,16 @@ try {
     H.addCoverVolume({ id: 'c4', pos: [40, 0, 40], zone: 'warehouse' });   // beyond S-1's 8 m
     H.addCoverVolume({ id: 'c5', pos: [0, 0, 5], zone: 'warehouse' });     // inside the cone
     H.addLightSource({ id: 'lamp1', pos: [2, 2, 6], intensity: 0.8, snuffable: true, zone: 'warehouse' });
+    // NOTE: `sim.entities` is kept in EID order (HARNESS.md D7), not spawn order, so every
+    // read below addresses the searcher by eid. Reading `[0]` here returns `ally`, and the
+    // first draft of this probe measured the wrong enemy's alert curve because of it.
     H.spawn('inf_trash', 0, 8, { as: 'es' });
     H.spawn('inf_trash', 6, 10, { as: 'ally' });                            // S-3: within 12 m
     H.spawn('inf_trash', 0, 60, { as: 'far' });                             // S-3: beyond 12 m
+    const SE = () => H.perceptionState().find((x) => x.eid === 'es');
     // 1. be seen
     let seen = null;
-    for (let f = 0; f < 1200; f += 5) { H.stepFrames(5); if (H.perceptionState()[0].alert_state === 'AGGRO') { seen = f + 5; break; } }
+    for (let f = 0; f < 1200; f += 5) { H.stepFrames(5); if (SE().alert_state === 'AGGRO') { seen = f + 5; break; } }
     const lkp = H.snapshot().player.pos.map((n) => +n.toFixed(2));
     H.snuffLight('lamp1', 200);
     // 2. break contact, hard and far
@@ -314,7 +321,7 @@ try {
     for (let i = 0; i < 1800; i += 5) {
       H.stepFrames(5);
       const ps = H.perceptionState();
-      const e = ps[0];
+      const e = ps.find((x) => x.eid === 'es');
       const d = Math.hypot(e.pos[0] - lkp[0], e.pos[2] - lkp[2]);
       maxSpeed = Math.max(maxSpeed, e.speed_mps); maxDist = Math.max(maxDist, d);
       if (e.alert_state === 'SEARCH' && searchStart === null) {
@@ -428,7 +435,8 @@ try {
     H.setCrimeContext('handling_owned_object');
     H.stepFrames(60);
     const takes = [];
-    for (let i = 0; i < 20; i++) takes.push(H.takeObject(owned[i].instance, {}));
+    const n = Math.min(20, owned.length);
+    for (let i = 0; i < n; i++) takes.push(H.takeObject(owned[i].instance, {}));
     H.stepFrames(600);
     const cs = H.getCrimeState();
     const sv = H.saveState();
@@ -436,7 +444,13 @@ try {
     H.loadSave ? null : null;
     return {
       bounty: cs.bounty, witnesses: cs.witnesses.length,
-      all_20_carry_stolen_from: takes.every((t) => !!t.stolen_from),
+      taken: takes.length,
+      all_carry_stolen_from: takes.every((t) => !!t.stolen_from),
+      // RI-CRM01 method 2 says "assert all 20 carry stolen_from". Any object in the zone whose
+      // owner is null, or whose scope is `public` and was taken unobserved, correctly does NOT
+      // — RI-STL02 §1's scope table. The rows are listed so the exception is visible rather
+      // than a failed boolean.
+      not_theft: takes.filter((t) => !t.stolen_from).map((t) => ({ scope: t.scope, why: t.why })),
       stolen_registry_n: cs.stolen_registry.length,
       stolen_registry_sample: cs.stolen_registry.slice(0, 3),
       save_stolen_registry_n: sv.crime.stolen_registry.length,
