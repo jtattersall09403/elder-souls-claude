@@ -2,7 +2,7 @@
   "task_id": "travel",
   "brief": "orchestration/briefs/travel.md",
   "started": "wave-N",
-  "state": "verifying",
+  "state": "complete",
   "outputs_expected": [
     "corpus/50-world/travel-network.json",
     "corpus/50-world/RI-TRV01-transport-network.md",
@@ -11,7 +11,8 @@
   "outputs_written": [
     "corpus/50-world/travel-network.json",
     "corpus/50-world/RI-TRV01-transport-network.md",
-    "corpus/50-world/RI-TRV02-travel-magic.md"
+    "corpus/50-world/RI-TRV02-travel-magic.md",
+    "corpus/00-doctrine/INDEX.md (regenerated)"
   ],
   "findings": [
     "S7 (ARBITRATION.md L82) MANDATES the network: silt-strider analogue + boat/barge + guild-guide teleport + Mark/Recall + Intervention. Banned = warp-to-map-pin, teleport-to-objective, travel to never-visited. HEARTH shrines explicitly NOT part of travel network.",
@@ -29,8 +30,10 @@
     "Factions (RI-LOR02 \u00a74): Xul-Aneekh (Deep-Kin, Helstrom+Deep Marshes, Hist-speakers) = guild-guide operator; The Wet Ledger (Gideon lukiul/Imperial merchant compact) = barge operator; Ninth Cohort = Legion warrants. Joining Xul-Aneekh closes the Wet Ledger => faction choice changes travel topology (AR-3 seam crossing).",
     "Tide cycle = 12 real minutes, 4 states (RI-WLD08). Timescale 20x, day = 72 real min. Lilmoth-Archon tideway is low-tide-only on foot.",
     "No `magic.*` root exists in subsystems.json (only combat.magic.casting); corpus/25-magic is EMPTY. Magicka pool undefined anywhere -- express spell costs as fraction of pool + absolute budget handed to the magic owner.",
-    "Canonical judges paths available: world.traversal.transport (aliases world.travel, world.transport), world.traversal.roads, world.traversal.time, world.traversal.locomotion, progression.gold.economy, progression.bonfire.function, world.dungeon.design, world.wayfinding.directions, world.settlement.anatomy, combat.magic.casting, quests.resolution.noncombat, world.time.daynight, world.water.marsh."
+    "Canonical judges paths available: world.traversal.transport (aliases world.travel, world.transport), world.traversal.roads, world.traversal.time, world.traversal.locomotion, progression.gold.economy, progression.bonfire.function, world.dungeon.design, world.wayfinding.directions, world.settlement.anatomy, combat.magic.casting, quests.resolution.noncombat, world.time.daynight, world.water.marsh.",
+    "RI-MAG02 (magic agent, concurrent) explicitly cedes travel-network rules to RI-TRV02 and owns effect records/Focus costs/RITUAL class. RI-TRV02 was reconciled to it: Focus not magicka, 210f RITUAL, distance-computed cost, ids mark/recall/intervention_root/intervention_imperial, min_tier 3/3/2/2.",
+    "OPEN CROSS-ITEM ISSUE: RI-MAG02's gold formula round(3.9*focus_base^1.75) degenerates for the teleport four (mark's computed focus_base is 1 => ~4 gold; recall's varies with player position). RI-TRV02 prices by min_tier against RI-PRG05 tier prices (3400/3400/900/900) and requests the amendment."
   ],
-  "next_step": "verify front-matter/sections against CORPUS-CONTRACT, verify judges paths are canonical, check INDEX generator",
-  "notes_for_successor": "DESIGN DECIDED. 5 transport modes + 2 spell pairs. M1 Barge (Wet Ledger poled river barge, PRIMARY, 7 of 10 road legs have water: Stormhold-Helstrom, Helstrom-Gideon, Helstrom-Blackrose, Gideon-Soulrest, Soulrest-Blackrose, Blackrose-Lilmoth, Lilmoth-Archon(tideway, HIGH tide only - inverse of the walking gate)). M2 Coastal packet (Lilmoth-Soulrest across the bay, Lilmoth-Archon round the point, Archon-Bloodmarl Isle), weather-gated. M3 Rootway root-tunnel haulage: silt-strider analogue, ALL 10 road legs, 26 adjacent-station hops, daylight only, severable by plot. M4 Tide-poler local punts, hop-tier only, low/falling tide. M5 Root-speaking = guild guide, Xul-Aneekh rank>=3, star centred on Helstrom to 5 deep-root nodes. Thorn is the ONLY dry settlement (Rootway only) - deliberate, declared. Fares: tier bases from RI-PRG05 (hop<=1600m=12g, leg 1600-3500m=45g, through>3500m=90g) x mode mult {barge .8, poler 1.0, rootway 1.0, packet 1.3, rootspeak 2.5} x faction mult. Fares POSTED, not bartered; disposition<30 => poler refuses (CF-C012 'refusable'). Spells: Mark(t2,900g), Recall(t2,900g), Hist Intervention(t1,220g), Imperial Intervention(t1,220g). Teleport costs 20 game-min + 25% Fatigue (S4) => makes you worse at talking. EVERY check must be written as an explicit N-fail (network missing) / W-fail (warp-to-pin) PAIR."
+  "next_step": "none - complete",
+  "notes_for_successor": "Both RIs written, indexed cleanly (zero orphan judges paths). travel-network.json is GENERATED - regenerate with the script pattern in RI-TRV01 M0 if world-scale.json changes. Amendments requested in reply: ARBITRATION S7 unchanged (no edit needed); RI-PRG04:255 axis rewrite (ID-09); RI-WLD01:185 'no fast travel' wording; RI-WLD05 #22 'the only fast travel'; RI-WLD03 boat/tide row extend to 7 settlements; subsystems.json retitle world.traversal.transport; RI-PRG05 transport price rows -> tariff function."
 }

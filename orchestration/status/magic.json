@@ -16,7 +16,8 @@
     "corpus/25-magic/RI-MAG02-effect-catalogue.md",
     "corpus/25-magic/data/effects.json",
     "corpus/25-magic/data/gen-effects.py",
-    "corpus/25-magic/RI-MAG03-spellmaking-enchanting.md"
+    "corpus/25-magic/RI-MAG03-spellmaking-enchanting.md",
+    "corpus/25-magic/RI-MAG04-magic-as-quest-solution.md"
   ],
   "findings": [
     "subsystems.json has ONE magic path only: combat.magic.casting (souls, 10-combat, critic.combat). New root magic.* must be requested in reply; taxonomy is append-only, owned by CRT.",
@@ -48,8 +49,12 @@
     "SOUL GEM RULING SG-1..SG-6: (1) a gem never contains xul-teekh; sap-debt and gem-soul are different substances and different code quantities; trapping never changes your souls. (2) charge has exactly 2 sinks (enchant, recharge) -> not a currency. (3) FILLED gems have sell_value:null, unsellable by anyone ever; the smugglers who buy them are a QUEST not a merchant. (4) an enchantment adds full value on purchase, ZERO on sale -> no path from magic to gold, protects PRG05's flip invariant. (5) greater/grand souls hand-placed (22/12); a RESPAWNED creature yields a soul one grade LOWER (anti-farm); NPC souls untrappable except one main-quest artifact. (6) xul_hesh counter moves province-wide Argonian disposition, gates two faction lines opposite ways, never touches combat (AR-1).",
     "ELEVEN SANCTIONED BREAKAGES MB-1..MB-11 written in RI-EXP06's register shape with a FAIL-test each. Systemic: MB-1,3,8,10. Permanent unrecoverable world state: MB-5, MB-11. Cross-rule accepted: no new anti-exploit hard fail in 25-magic without naming the MB it leaves open; table of hard-fails-added vs breakage-preserved is in MAG03 \u00a7D.",
     "No Enchant skill added (would break PRG03 \u00a73 budget + PRG02's 27-point figure). Enchanting gated by school skill (self ceiling = floor(0.9*skill)) and by WHO does it (4 journeymen/2 masters/1 recluse at 160 pts).",
-    "Enchant costs: on_use ceil(fb*2.5), on_strike ceil(fb*4.0), constant ceil(fb*18) and constant requires greater/grand soul. Charge per use = fb*4. Gold = round(6.5*points^1.35) x enchanter multiplier."
+    "Enchant costs: on_use ceil(fb*2.5), on_strike ceil(fb*4.0), constant ceil(fb*18) and constant requires greater/grand soul. Charge per use = fb*4. Gold = round(6.5*points^1.35) x enchanter multiplier.",
+    "MAG04 census Q1..Q12 written. Headline: >=11% of Q quests (>=22 at Q=200) have a magic_utility resolution; >=14 distinct effects; top effect <=22%; all 4 schools >=4 quests; 4-10 magic-only-non-violent; 100% ALTERNATIVE-EXISTS (no lockout); >=90% gated; >=3 levitate/slowfall quest resolutions and >=6 routes; >=6 main/faction.",
+    "MAG04 quantifies the AR-3 contribution: X1..X7 crossings, >=4 must be demonstrated IN PLAY with run ids, and the item may never be marked seam_sterile.",
+    "CRITICAL cross-item request: quest.schema.json needs resolutions[].requires.spell_effects (array of effect ids). Without it Q3/Q4/Q5/Q9/Q12 are unmeasurable and score 0 fail-closed. Fallback path documented in MAG04 \u00a7D.",
+    "MAG04 M8: recompute QST05's PACIFIST-ALL with and without magic resolutions; delta must be >=8 percentage points."
   ],
-  "next_step": "write RI-MAG04 (magic as quest solution, AR-3, static analysis over game/data/quests/**)",
+  "next_step": "write RI-MAG05 (VFX bifurcation: ART = spell design language organic/fungal/Hist/wet; FIDELITY = F16 particle quality). Then verify all six mandatory sections + front-matter on all five files.",
   "notes_for_successor": "Deliverable order chosen: MAG01, MAG02(+data/effects.json), MAG03, MAG04, MAG05. Write each to disk immediately."
 }

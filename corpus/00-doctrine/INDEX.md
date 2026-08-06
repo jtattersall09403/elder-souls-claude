@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-06T08:56:54Z
+Generated: 2026-08-06T08:57:58Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -26,11 +26,11 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 ## 1. Coverage at a glance
 
 - Canonical subsystem paths: **200**
-- Reference items found: **116** across 18 area(s)
-- Subsystems with at least one judging reference item: **176**
+- Reference items found: **119** across 18 area(s)
+- Subsystems with at least one judging reference item: **177**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
-- **Corpus holes (no judging item): 18** (9%)
-- Front-matter problems: 132 error(s), 0 warning(s)
+- **Corpus holes (no judging item): 17** (9%)
+- Front-matter problems: 136 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -44,7 +44,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 | `render.*` | 25 | 24 | 0 | 1 |
 | `audio.*` | 4 | 4 | 0 | 0 |
 | `ui.*` | 8 | 8 | 0 | 0 |
-| `platform.*` | 6 | 5 | 0 | 1 |
+| `platform.*` | 6 | 6 | 0 | 0 |
 | `coherence.*` | 8 | 2 | 6 | 0 |
 | `process.*` | 2 | 2 | 0 | 0 |
 
@@ -140,7 +140,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `quests.structure.stages` | Multi-stage quests with real intermediate state | morrowind | [RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md)<br>[RI-DLG05](../../corpus/40-dialogue/RI-DLG05-journal.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: text); tools/corpus/dump-journal.mjs<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
 | `quests.structure.branching` | Branch points that survive to different endings, not cosmetic choice | morrowind | [RI-QST02](../../corpus/30-quests/RI-QST02-deceit-patterns.md)<br>[RI-QST04](../../corpus/30-quests/RI-QST04-quest-anatomy-schema.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: structure) |
 | `quests.structure.deceit` | Quest-givers who lie, omit, or use the player | morrowind | [RI-QST02](../../corpus/30-quests/RI-QST02-deceit-patterns.md) | `critic.quests` | in-item procedure (kind: structure) |
-| `quests.resolution.noncombat` | Quests resolvable by talk, bribe, sneak, theft, or lore knowledge | morrowind | [RI-STL01](../../corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md)<br>[RI-QST05](../../corpus/30-quests/RI-QST05-non-combat-resolution.md)<br>[RI-TRV02](../../corpus/50-world/RI-TRV02-travel-magic.md) | `critic.quests` | in-item procedure (kind: number); tools/harness/run-headless.mjs, tools/analysis/content-stats.mjs<br>in-item procedure (kind: number)<br>in-item procedure (kind: structure); tools/harness/run-headless.mjs |
+| `quests.resolution.noncombat` | Quests resolvable by talk, bribe, sneak, theft, or lore knowledge | morrowind | [RI-STL01](../../corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md)<br>[RI-MAG04](../../corpus/25-magic/RI-MAG04-magic-as-quest-solution.md)<br>[RI-QST05](../../corpus/30-quests/RI-QST05-non-combat-resolution.md)<br>[RI-TRV02](../../corpus/50-world/RI-TRV02-travel-magic.md) | `critic.quests` | in-item procedure (kind: number); tools/harness/run-headless.mjs, tools/analysis/content-stats.mjs<br>in-item M1–M8 (8 checks)<br>in-item procedure (kind: number)<br>in-item procedure (kind: structure); tools/harness/run-headless.mjs |
 | `quests.resolution.exclusive` | Mutually exclusive resolutions that permanently close doors | morrowind | **— HOLE —** | `critic.quests` | _none_ |
 | `quests.faction.joining` | How you join, and that joining means something | morrowind | [RI-LOR01](../../corpus/60-lore/RI-LOR01-canon-dossier.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md)<br>[RI-LOR06](../../corpus/60-lore/RI-LOR06-contradiction-discipline.md) | `critic.quests` | in-item procedure (kind: text); corpus/80-methods/canon-check.py<br>in-item procedure (kind: text)<br>in-item procedure (kind: structure); corpus/80-methods/canon-check.py |
 | `quests.faction.rankgating` | Rank requirements on skills AND attributes | morrowind | [RI-QST01](../../corpus/30-quests/RI-QST01-faction-escalation-shape.md)<br>[RI-QST03](../../corpus/30-quests/RI-QST03-faction-gating.md) | `critic.quests` | in-item procedure (kind: structure)<br>in-item procedure (kind: structure) |
@@ -257,7 +257,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `render.fidelity.ibl` | Image-based / sky lighting and indirect response | modern-fidelity | [RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md) | `critic.fidelity` | in-item procedure (kind: structure) |
 | `render.fidelity.sky` | Sky model, sun/moon, cloud, and its coupling to scene light | modern-fidelity | [RI-VIS02](../../corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md)<br>[RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md)<br>[RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md) | `critic.fidelity` | in-item procedure (kind: image)<br>in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs<br>in-item procedure (kind: structure) |
 | `render.fidelity.vfx` | Particle and effect quality: fire, spray, spell, blood, dust | modern-fidelity | [RI-VIS04](../../corpus/70-visual/RI-VIS04-renderer-feature-checklist.md) | `critic.fidelity` | in-item procedure (kind: structure) |
-| `render.process.bifurcation` | The judging process itself: axis declared, references not crossed (ARBITRATION §4) | neutral | [RI-CAM07](../../corpus/15-camera/RI-CAM07-third-person-character-presentation.md)<br>[RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md) | `critic.fidelity` | in-item M1–M6 (6 checks); corpus/80-methods/m-cam07-presentation.mjs<br>in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: structure) |
+| `render.process.bifurcation` | The judging process itself: axis declared, references not crossed (ARBITRATION §4) | neutral | [RI-CAM07](../../corpus/15-camera/RI-CAM07-third-person-character-presentation.md)<br>[RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md)<br>[RI-UIX06](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) | `critic.fidelity` | in-item M1–M6 (6 checks); corpus/80-methods/m-cam07-presentation.mjs<br>in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: structure)<br>in-item procedure (kind: structure); corpus/80-methods/palette-conformance.mjs, corpus/80-methods/cc-scan.mjs, tools/harness/shoot.mjs, tools/metrics/ui-metrics.mjs, ui-metrics.mjs, cc-scan.mjs |
 | `render.process.measurement` | How a visual number is taken: capture protocol, poses, repeatability | neutral | [RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md) | `critic.fidelity` | in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs |
 | `render.art.palette` | Colour identity per region against Morrowind's palette discipline | art-direction | [RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md)<br>[RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) | `critic.artdirection` | in-item M22–M26 (5 checks)<br>in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: structure)<br>in-item procedure (kind: text)<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs |
 | `render.art.silhouette` | Readable, strange silhouettes for creatures and buildings | art-direction | [RI-CAM07](../../corpus/15-camera/RI-CAM07-third-person-character-presentation.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) | `critic.artdirection` | in-item M1–M6 (6 checks); corpus/80-methods/m-cam07-presentation.mjs<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs |
@@ -287,7 +287,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `ui.menu.inventory` | Inventory screen structure and information density | morrowind | [RI-CAM05](../../corpus/15-camera/RI-CAM05-camera-outside-the-fight.md)<br>[RI-UIX03](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) | `critic.ui` | in-item M0–M7 (8 checks); corpus/80-methods/m-cam05-world-camera.mjs<br>in-item procedure (kind: structure); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs |
 | `ui.menu.journal` | Journal presentation, topic index, quest filtering | morrowind | [RI-UIX04](../../corpus/86-ui/RI-UIX04-journal-ui.md) | `critic.ui` | in-item procedure (kind: structure); tools/corpus/dump-journal.mjs, tools/analysis/journal-ui.mjs, tools/harness/run-headless.mjs |
 | `ui.dialogue.presentation` | Dialogue window: topic list, hyperlinked keywords, portrait, prose | morrowind | [RI-CAM05](../../corpus/15-camera/RI-CAM05-camera-outside-the-fight.md) | `critic.ui` | in-item M0–M7 (8 checks); corpus/80-methods/m-cam05-world-camera.mjs |
-| `ui.style.diegesis` | UI art belongs to the world rather than to a UI kit | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md) | `critic.ui` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs |
+| `ui.style.diegesis` | UI art belongs to the world rather than to a UI kit | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-UIX06](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) | `critic.ui` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: structure); corpus/80-methods/palette-conformance.mjs, corpus/80-methods/cc-scan.mjs, tools/harness/shoot.mjs, tools/metrics/ui-metrics.mjs, ui-metrics.mjs, cc-scan.mjs |
 | `ui.menu.levelup` | The level-up screen: what it shows, what it costs, where it lives | split | [RI-PRG01](../../corpus/20-progression/RI-PRG01-soul-cost-curve.md)<br>[RI-PRG02](../../corpus/20-progression/RI-PRG02-stat-sheet.md)<br>[RI-UIX03](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) | `critic.ui` | in-item procedure (kind: number); corpus/80-methods/sim-souls-yield.md<br>in-item procedure (kind: number)<br>in-item procedure (kind: structure); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs |
 | `ui.menu.books` | Reading a book in-game: presentation, pagination, legibility | morrowind | [RI-LOR03](../../corpus/60-lore/RI-LOR03-in-world-book-structure.md)<br>[RI-UIX05](../../corpus/86-ui/RI-UIX05-books-and-readable-text.md) | `critic.ui` | in-item procedure (kind: text); corpus/80-methods/book-stats.py<br>in-item procedure (kind: number); tools/harness/run-headless.mjs, tools/harness/shoot.mjs, tools/analysis/text-metrics.mjs, tools/analysis/content-stats.mjs, text-metrics.mjs |
 
@@ -296,7 +296,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
 | `platform.perf.framerate` | Frame time budget and stability in a real browser | neutral | [RI-PLT01](../../corpus/85-platform/RI-PLT01-frame-budget.md) | `critic.platform` | in-item M1–M15 (15 checks); tools/platform/calibrate.mjs, tools/platform/perf-run.mjs, tools/platform/alloc-probe.mjs, tools/platform/decoupling.mjs, alloc-probe.mjs |
-| `platform.perf.memory` | Heap and GPU memory ceilings, leak-free over a session | neutral | **— HOLE —** | `critic.platform` | _none_ |
+| `platform.perf.memory` | Heap and GPU memory ceilings, leak-free over a session | neutral | [RI-PLT02](../../corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md) | `critic.platform` | in-item procedure (kind: number); tools/platform/leak-run.mjs, tools/platform/heap-walk.mjs, tools/analysis/asset-budget.mjs, asset-budget.mjs |
 | `platform.load.streaming` | Initial load time and in-session streaming hitches | neutral | [RI-MTH01](../../corpus/80-methods/RI-MTH01-harness-api-surface.md) | `critic.platform` | in-item M1–M7 (7 checks); tools/harness/smoke.mjs, tools/harness/run-headless.mjs, tools/lib/browser.mjs |
 | `platform.input.pipeline` | Browser input path: pointer lock, key repeat, dropped inputs | neutral | [RI-CAM02](../../corpus/15-camera/RI-CAM02-free-camera-and-movement-mapping.md)<br>[RI-MTH01](../../corpus/80-methods/RI-MTH01-harness-api-surface.md)<br>[RI-JRN03](../../corpus/88-journeys/RI-JRN03-desktop-controls.md) | `critic.platform` | in-item M1–M7 (7 checks); corpus/80-methods/m-cam02-control.mjs<br>in-item M1–M7 (7 checks); tools/harness/smoke.mjs, tools/harness/run-headless.mjs, tools/lib/browser.mjs<br>in-item procedure (kind: structure); tools/journey/journey-run.mjs |
 | `platform.save.persistence` | Save/load fidelity of world, quest, and faction state | morrowind | [RI-MTH01](../../corpus/80-methods/RI-MTH01-harness-api-surface.md)<br>[RI-MTH02](../../corpus/80-methods/RI-MTH02-determinism-reproducibility.md)<br>[RI-JRN05](../../corpus/88-journeys/RI-JRN05-save-and-load.md) | `critic.platform` | in-item M1–M7 (7 checks); tools/harness/smoke.mjs, tools/harness/run-headless.mjs, tools/lib/browser.mjs<br>in-item M1–M8 (8 checks); tools/harness/trace.mjs<br>in-item M1–M19 (19 checks); tools/journey/journey-run.mjs, tools/journey/state-diff.mjs, state-diff.mjs |
@@ -330,7 +330,7 @@ Subsystem paths with **no** reference item judging them. Per CORPUS-CONTRACT §4
 builder must not start on one of these. Per §5, a critic that needs one writes the
 item rather than guessing, then regenerates this index.
 
-**18 of 200 paths are holes.**
+**17 of 200 paths are holes.**
 
 | Subsystem path | What it means | Arb | Expected area | Critic |
 |---|---|---|---|---|
@@ -351,7 +351,6 @@ item rather than guessing, then regenerates this index.
 | `lore.canon.argonian` | Argonian culture, Hist, naming, biology, outsider perception | morrowind | `corpus/60-lore/` | `critic.lore` |
 | `lore.canon.geography` | Black Marsh geography and place-names against canon | morrowind | `corpus/60-lore/` | `critic.lore` |
 | `render.art.weirdness` | The dream-logic strangeness budget per screen | art-direction | `corpus/70-visual/` | `critic.artdirection` |
-| `platform.perf.memory` | Heap and GPU memory ceilings, leak-free over a session | neutral | `corpus/80-methods/` | `critic.platform` |
 
 ### 3b. Paths judged by doctrine rather than by a reference item
 
@@ -534,7 +533,7 @@ migration aid, not a second vocabulary.
 | `visual.fidelity` | `render.fidelity.materials` | RI-MTH03 (corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | `visual.process.blindtest` | `render.process.bifurcation` | RI-VIS06 (corpus/70-visual/RI-VIS06-blind-comparison-protocol.md) |
 | `visual.process.contamination` | `render.process.bifurcation` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md) |
-| `visual.process.declaration` | `render.process.bifurcation` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md) |
+| `visual.process.declaration` | `render.process.bifurcation` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md), RI-UIX06 (corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) |
 | `visual.process.judgement` | `render.process.bifurcation` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md), RI-VIS06 (corpus/70-visual/RI-VIS06-blind-comparison-protocol.md) |
 | `visual.process.measurement` | `render.process.measurement` | RI-VIS03 (corpus/70-visual/RI-VIS03-fidelity-image-metrics.md) |
 | `visual.renderer` | `render.fidelity.materials` | RI-VIS01 (corpus/70-visual/RI-VIS01-bifurcation-protocol.md), RI-VIS06 (corpus/70-visual/RI-VIS06-blind-comparison-protocol.md) |
@@ -672,6 +671,9 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | `corpus/25-magic/RI-MAG03-spellmaking-enchanting.md` | judges: "magic.gating.skills" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/25-magic/RI-MAG03-spellmaking-enchanting.md` | judges: "magic.economy.prices" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/25-magic/RI-MAG03-spellmaking-enchanting.md` | judges: "magic.diegesis.lore" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/25-magic/RI-MAG04-magic-as-quest-solution.md` | judges: "magic.quests.solutions" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/25-magic/RI-MAG04-magic-as-quest-solution.md` | judges: "magic.effects.utility" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/25-magic/RI-MAG04-magic-as-quest-solution.md` | judges: "magic.effects.traversal" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.npc-schedules" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ecology" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ambient-events" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
@@ -689,6 +691,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | `corpus/60-lore/RI-LOR06-contradiction-discipline.md` | judges: "critic.method" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/85-platform/RI-PLT01-frame-budget.md` | judges: "platform.perf.simtime" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/85-platform/RI-PLT01-frame-budget.md` | judges: "platform.perf.allocation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| `corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md` | judges: "platform.asset.budget" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.firstlaunch.flow" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.chargen.diegesis" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.onboarding.explanation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
@@ -781,6 +784,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | RI-MAG01 | Combat casting — cast frames per weight class, the Focus/stamina dual cost, commitment, and spell geometry | 25-magic | number | souls | constructed | high | yes | `combat.magic.casting` | [corpus/25-magic/RI-MAG01-combat-casting.md](../../corpus/25-magic/RI-MAG01-combat-casting.md) |
 | RI-MAG02 | The effect catalogue — 55 effects, the cost formula, and the rulings on levitation and teleport | 25-magic | structure | morrowind | constructed | high | no |  | [corpus/25-magic/RI-MAG02-effect-catalogue.md](../../corpus/25-magic/RI-MAG02-effect-catalogue.md) |
 | RI-MAG03 | Spellmaking and enchanting — the maker's systems, the soul-gem ruling, and eleven sanctioned breakages | 25-magic | structure | morrowind | constructed | high | no |  | [corpus/25-magic/RI-MAG03-spellmaking-enchanting.md](../../corpus/25-magic/RI-MAG03-spellmaking-enchanting.md) |
+| RI-MAG04 | Magic as a quest solution — the required census, the diversity rule, and the AR-3 crossing | 25-magic | number | morrowind | constructed | medium | no | `quests.resolution.noncombat` | [corpus/25-magic/RI-MAG04-magic-as-quest-solution.md](../../corpus/25-magic/RI-MAG04-magic-as-quest-solution.md) |
 | RI-QST01 | The escalation shape of a Morrowind faction questline | 30-quests | structure | morrowind | community-data | medium | yes | `quests.faction.escalation` `quests.faction.rankgating` `quests.density.count` | [corpus/30-quests/RI-QST01-faction-escalation-shape.md](../../corpus/30-quests/RI-QST01-faction-escalation-shape.md) |
 | RI-QST02 | How a questline lies to you — the deceit pattern catalogue | 30-quests | structure | morrowind | canonical-recall | medium | yes | `quests.structure.deceit` `quests.giver.characterisation` `quests.structure.branching` `dialogue.topics.truth` `quests.faction.escalation` | [corpus/30-quests/RI-QST02-deceit-patterns.md](../../corpus/30-quests/RI-QST02-deceit-patterns.md) |
 | RI-QST03 | Faction gating — rank requirements, exclusivity, expulsion, lockout | 30-quests | structure | morrowind | community-data | medium | no | `quests.faction.rankgating` `progression.skill.usegrowth` `quests.faction.rivalry` `world.faction.presence` | [corpus/30-quests/RI-QST03-faction-gating.md](../../corpus/30-quests/RI-QST03-faction-gating.md) |
@@ -827,11 +831,13 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | RI-MTH03 | The blind-comparison protocol | 80-methods | structure | neutral | constructed | high | no | `process.critic.discipline` `process.verdict.format` `render.fidelity.materials` `render.art.palette` `dialogue.voice.register` `quests.structure.stages` `combat.feedback.hitstop` | [corpus/80-methods/RI-MTH03-blind-comparison-protocol.md](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
 | RI-MTH04 | Measurement integrity — proving the critic actually ran the thing | 80-methods | structure | neutral | constructed | high | no | `process.critic.discipline` `process.verdict.format` | [corpus/80-methods/RI-MTH04-measurement-integrity.md](../../corpus/80-methods/RI-MTH04-measurement-integrity.md) |
 | RI-PLT01 | The frame budget as a combat-correctness requirement — and what may honestly be measured on a software rasteriser | 85-platform | number | neutral | constructed | high | no | `platform.perf.framerate` `platform.determinism.harness` | [corpus/85-platform/RI-PLT01-frame-budget.md](../../corpus/85-platform/RI-PLT01-frame-budget.md) |
+| RI-PLT02 | Memory, asset budgets, and the ten-minute traversal leak test — sized for a phone | 85-platform | number | neutral | constructed | high | no | `platform.perf.memory` | [corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md](../../corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md) |
 | RI-UIX01 | The combat HUD — what it shows, what it must never show, and stamina as a correctness property | 86-ui | number | souls | constructed | medium | yes | `ui.hud.combat` `combat.stamina.regen` | [corpus/86-ui/RI-UIX01-combat-hud.md](../../corpus/86-ui/RI-UIX01-combat-hud.md) |
 | RI-UIX02 | No-marker enforcement — the automated detector for S8 | 86-ui | structure | morrowind | constructed | high | no | `ui.hud.minimalism` `journal.navigation.nomarkers` | [corpus/86-ui/RI-UIX02-no-marker-enforcement.md](../../corpus/86-ui/RI-UIX02-no-marker-enforcement.md) |
 | RI-UIX03 | Inventory, encumbrance, and the menu-pause rule (S14) — plus the level-up screen | 86-ui | structure | neutral | constructed | medium | yes | `ui.menu.inventory` `ui.menu.levelup` `progression.equipment.encumbrance` | [corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) |
 | RI-UIX04 | The journal screen — chronological, append-only, and not a quest tracker | 86-ui | structure | morrowind | constructed | high | yes | `ui.menu.journal` `journal.entry.numbering` | [corpus/86-ui/RI-UIX04-journal-ui.md](../../corpus/86-ui/RI-UIX04-journal-ui.md) |
 | RI-UIX05 | Books and readable text — pagination, legibility, and reading as a real activity | 86-ui | number | morrowind | constructed | medium | yes | `ui.menu.books` `lore.book.structure` | [corpus/86-ui/RI-UIX05-books-and-readable-text.md](../../corpus/86-ui/RI-UIX05-books-and-readable-text.md) |
+| RI-UIX06 | UI diegesis and the UI bifurcation — style is art direction, rendering quality is fidelity | 86-ui | structure | neutral | constructed | high | yes | `ui.style.diegesis` `render.process.bifurcation` | [corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) |
 | RI-AUD01 | Combat impact audio as frame-critical feedback | 87-audio | number | souls | constructed | medium | yes | `audio.combat.impact` `combat.feedback.hitstop` | [corpus/87-audio/RI-AUD01-combat-impact-audio.md](../../corpus/87-audio/RI-AUD01-combat-impact-audio.md) |
 | RI-AUD02 | Web Audio constraints, scheduling discipline and the voice budget | 87-audio | number | modern-fidelity | constructed | high | no | `audio.combat.impact` `platform.determinism.harness` | [corpus/87-audio/RI-AUD02-web-audio-budget.md](../../corpus/87-audio/RI-AUD02-web-audio-budget.md) |
 | RI-AUD03 | Regional ambience — every region identifiable by sound alone | 87-audio | structure | morrowind | constructed | medium | yes | `audio.ambience.region` `world.region.identity` | [corpus/87-audio/RI-AUD03-regional-ambience.md](../../corpus/87-audio/RI-AUD03-regional-ambience.md) |
@@ -934,6 +940,9 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | ERROR | `corpus/25-magic/RI-MAG03-spellmaking-enchanting.md` | judges: "magic.gating.skills" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/25-magic/RI-MAG03-spellmaking-enchanting.md` | judges: "magic.economy.prices" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/25-magic/RI-MAG03-spellmaking-enchanting.md` | judges: "magic.diegesis.lore" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/25-magic/RI-MAG04-magic-as-quest-solution.md` | judges: "magic.quests.solutions" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/25-magic/RI-MAG04-magic-as-quest-solution.md` | judges: "magic.effects.utility" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/25-magic/RI-MAG04-magic-as-quest-solution.md` | judges: "magic.effects.traversal" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.npc-schedules" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ecology" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/50-world/RI-WLD08-the-living-world.md` | judges: "world.ambient-events" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
@@ -951,6 +960,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | ERROR | `corpus/60-lore/RI-LOR06-contradiction-discipline.md` | judges: "critic.method" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/85-platform/RI-PLT01-frame-budget.md` | judges: "platform.perf.simtime" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/85-platform/RI-PLT01-frame-budget.md` | judges: "platform.perf.allocation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
+| ERROR | `corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md` | judges: "platform.asset.budget" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.firstlaunch.flow" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.chargen.diegesis" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |
 | ERROR | `corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md` | judges: "journey.onboarding.explanation" is not a canonical subsystem path and has no alias (add it to subsystems.json, or fix the item) |

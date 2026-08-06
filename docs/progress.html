@@ -42,20 +42,20 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-06 08:55:18Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-06 08:57:10Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
 <div class="grid">
-  <div class="card"><div class="n">114</div><div class="l">Reference items</div></div>
-  <div class="card"><div class="n">429</div><div class="l">Subsystems judged</div></div>
+  <div class="card"><div class="n">116</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">438</div><div class="l">Subsystems judged</div></div>
   <div class="card"><div class="n">0</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n ok">0</div><div class="l">Open gaps</div></div>
   <div class="card"><div class="n">0</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">0</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">0</div><div class="l">Dialogue words</div></div>
-  <div class="card"><div class="n bad">6/15</div><div class="l">Bar gates met</div></div>
+  <div class="card"><div class="n bad">8/15</div><div class="l">Bar gates met</div></div>
 </div>
 
 
@@ -63,21 +63,21 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <div class="gate gate-bad">
   <div class="verdict">INSUFFICIENT</div>
   <div class="gsub">Bar critique #1 &middot; judges whether passing every bar would actually produce the thing that was asked for &middot;
-  <b>6/15</b> gate conditions met &middot; 13 gaps &middot; 9 wrong bars &middot; 7 thin spots<br>
+  <b>8/15</b> gate conditions met &middot; 13 gaps &middot; 9 wrong bars &middot; 7 thin spots<br>
   <span class="dimtext">No build wave proceeds while this reads INSUFFICIENT. Full argument: <code>corpus/00-doctrine/BAR-CRITIQUE-01.md</code></span></div>
-  <div class="bar" style="margin-top:12px"><i style="width:40%"></i></div>
+  <div class="bar" style="margin-top:12px"><i style="width:53%"></i></div>
 </div>
 
 <h2>Gate conditions</h2>
 <table><tr><th style="width:90px">Status</th><th>What must be true before building starts</th></tr>
 <tr><td class="ok">&#10003; met</td><td>corpus/95-experience/ exists with a critic.experience role, a PLAYTHROUGH-CRITIC.md doctrine granting scoring authority over quality across the whole game, and at least RI-EXP01, RI-EXP02 and RI-EXP04 written to CORPUS-CONTRACT §2 with executable comparison methods. An experience.* root exists in subsystems.json.</td></tr>
-<tr><td class="bad">open</td><td>ARBITRATION.md §3 carries AR-3 (seam sterility) and RI-CMP01 (cross-system payoff matrix) exists with a numeric floor on boundary-crossing interactions.</td></tr>
+<tr><td class="ok">&#10003; met</td><td>ARBITRATION.md §3 carries AR-3 (seam sterility) and RI-CMP01 (cross-system payoff matrix) exists with a numeric floor on boundary-crossing interactions.</td></tr>
 <tr><td class="ok">&#10003; met</td><td>RI-EXP06 (permissiveness budget) exists with &gt;=12 registered sanctioned breakages asserted to work; no new anti-exploit hard fail may be added in 20-progression without naming a register entry it leaves open.</td></tr>
 <tr><td class="ok">&#10003; met</td><td>Magic exists in the corpus: ARBITRATION S19, RI-MAG01 and RI-MAG02 at minimum; magic.* paths exist and combat.magic.casting is no longer a hole.</td></tr>
 <tr><td class="warn">2/3</td><td>RI-CMB09 (impact/hitstop/feedback) and RI-AUD01 (combat audio) exist, and combat.feedback.hitstop no longer lists RI-MTH03 as its judge.</td></tr>
 <tr><td class="warn">1/2</td><td>A camera.* root with &gt;=6 paths exists and RI-CAM01 covers the seam S18 clause list with thresholds measured in the game's three worst geometries, including the own-body-legibility check.</td></tr>
 <tr><td class="bad">open</td><td>corpus/00-doctrine/constants.json exists with one owner per shared constant; RI-MTH05 exists; the traversal-minute contradiction (W4) is resolved by amendment; the 576-enemy budget contradiction is reconciled in one item with explicit arithmetic; an aggregate content-budget sheet exists with a stated feasibility argument.</td></tr>
-<tr><td class="warn">4/5</td><td>stealth.* and crime.* roots exist with RI-STL01 and RI-CRM01; RI-QST05 is amended per W6.</td></tr>
+<tr><td class="ok">&#10003; met</td><td>stealth.* and crime.* roots exist with RI-STL01 and RI-CRM01; RI-QST05 is amended per W6.</td></tr>
 <tr><td class="warn">1/3</td><td>RI-CMB10 (player moveset contract with the archetype answer matrix) and RI-CMB11 (weapon identity) exist; combat.attack.charge and combat.weapon.identity are no longer holes; the arrows priced in RI-PRG05 have a mechanic.</td></tr>
 <tr><td class="ok">&#10003; met</td><td>character.* exists with RI-CHR01; progression.build.identity is no longer a hole.</td></tr>
 <tr><td class="ok">&#10003; met</td><td>RI-WLD09 (opacity budget) and RI-DLG08 (tonal range and indifference ratio) exist.</td></tr>
@@ -125,6 +125,8 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>CAM</code></td><td></td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 <tr><td><code>CHR</code></td><td></td><td>3</td><td style="width:40%"><div class="bar"><i style="width:36%"></i></div></td></tr>
 <tr><td><code>CMB</code></td><td>Souls combat</td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
+<tr><td><code>CMP</code></td><td></td><td>1</td><td style="width:40%"><div class="bar"><i style="width:12%"></i></div></td></tr>
+<tr><td><code>CRM</code></td><td></td><td>1</td><td style="width:40%"><div class="bar"><i style="width:12%"></i></div></td></tr>
 <tr><td><code>DLG</code></td><td>Dialogue &amp; journal</td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
 <tr><td><code>EXP</code></td><td></td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
 <tr><td><code>JRN</code></td><td></td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
@@ -174,6 +176,8 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <tr><td><code>RI-CMB06</code></td><td>Lock-on — acquisition, camera behaviour, directional roll semantics, and soft-lock steering</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.lockon combat.camera combat.player.movement combat.player.tracking combat.input.direction</code></td></tr>
 <tr><td><code>RI-CMB07</code></td><td>The combat trace — machine-readable format and a 59-second hand-authored exemplar fight</td><td>trace</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.trace combat.pacing combat.player.dodge combat.player.stamina combat.player.attack combat.enemy.punishwindows combat.telemetry combat.determinism</code></td></tr>
 <tr><td><code>RI-CMB08</code></td><td>Healing — the Hist-sap Flask, drink commitment frames, heal curve, and refill on rest</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>combat.player.heal combat.resource.charges combat.animation.commitment progression.restsite.refill combat.encounter.pacing</code></td></tr>
+<tr><td><code>RI-CMP01</code></td><td>The cross-system payoff matrix — the seam-sterility floor</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>composition.matrix.coverage composition.seam.crossings coherence.systems.composition</code></td></tr>
+<tr><td><code>RI-CRM01</code></td><td>Crime, witnesses and justice — the bounty schedule, the report chain, the arrest, and what jail takes</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>crime.witness.model crime.bounty.schedule crime.guard.response crime.arrest.interaction crime.jail.consequence crime.persistence.death crime.faction.standing world.persistence.state</code></td></tr>
 <tr><td><code>RI-DLG01</code></td><td>The topic list as a graph — filter stack, first-match-wins, and settlement topic webs</td><td>graph</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td><span class="ok">yes</span></td><td><code>dialogue.topics.graph dialogue.topics.discovery dialogue.topics.filtering dialogue.greeting.variation dialogue.combat.lockout quests.discovery.hooks</code></td></tr>
 <tr><td><code>RI-DLG02</code></td><td>Unique dialogue words per settlement — the headline density metric</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td>&mdash;</td><td><code>dialogue.density.wordcount dialogue.topics.filtering world.settlement.anatomy</code></td></tr>
 <tr><td><code>RI-DLG03</code></td><td>Greetings and rumours — disposition banding and the diegetic quest-discovery mechanism</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>community-data</td><td><span class="ok">yes</span></td><td><code>dialogue.rumour.distribution dialogue.greeting.variation dialogue.disposition.model dialogue.topics.truth quests.discovery.hooks world.persistence.state</code></td></tr>
