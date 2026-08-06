@@ -116,7 +116,7 @@ export function stepEntities(sim, bus) {
       if (sim.frame >= e.staggerUntil) { e.stagger = false; e.state = 'IDLE'; e.animFrame = e.animPhase0 < 0 ? 0 : e.animPhase0; e.phase = 'none'; }
     } else if (e.ai === 'hold_ground') {
       const dx = p.pos[0] - e.pos[0], dz = p.pos[2] - e.pos[2];
-      const d = Math.hypot(dx, dz);
+      const d = Math.sqrt(dx * dx + dz * dz);
       // Perception: real, and the only thing aggro() short-circuits.
       const facing = Math.abs(norm180(Math.atan2(dx, dz) * DEG - e.yaw));
       const sees = d <= e.sight_radius_m && facing <= e.sight_cone_deg / 2;

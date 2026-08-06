@@ -22,6 +22,19 @@ export const STEP_MS = 1000 / FIXED_HZ;
 export const MAX_CATCHUP = 5;
 export const STEP_SAMPLES = 8192;
 
+/**
+ * How deep we are inside a fixed simulation step, counted across the WHOLE of
+ * `stepOnce()` — not just the guarded window.
+ *
+ * `RI-PLT01` §C.3 says the trace record "is built OUTSIDE the sim step". Saying so in a
+ * comment is not a check: the W1-00 build said exactly that, in exactly that place, while a
+ * CDP heap profile showed `makeRecord <- _step <- stepOnce <- stepFrames` and 2,220 B/step
+ * of garbage. So the claim is now enforced at runtime — `sim/record.js` throws if this is
+ * non-zero — and any critic can defeat it by moving one line and watching it throw.
+ */
+let stepDepth = 0;
+export function inFixedStep() { return stepDepth > 0; }
+
 export class FixedLoop {
   /**
    * @param {() => void} step   one fixed simulation step. Takes no time argument, by design.
@@ -150,7 +163,8 @@ export class FixedLoop {
    */
   stepOnce() {
     const t0 = wallNow();
-    this.step();
+    stepDepth++;
+    try { this.step(); } finally { stepDepth--; }
     const t1 = wallNow();
     const s = this.stats;
     s.simStepsTotal++;

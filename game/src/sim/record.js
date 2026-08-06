@@ -4,15 +4,23 @@
 // the reason: two subtly different shapes appear the moment there are two builders, and
 // trace-stats.mjs then silently reads `undefined`.
 //
-// This runs OUTSIDE the fixed step (see harness/api.js), which is what lets the step itself
-// be allocation-free — RI-PLT01 P4 excludes the trace record by name.
+// This runs OUTSIDE the fixed step, which is what lets the step itself be allocation-free —
+// RI-PLT01 P4 excludes the trace record by name, and §C.3 additionally requires it to be
+// built outside the step. It is called from `Engine._afterStep()`, which the two things that
+// advance the simulation (`stepFrames` and the rAF accumulator) call AFTER
+// `FixedLoop.stepOnce()` has returned.
+//
+// The previous build's comment said the same thing and was wrong: the record was built in
+// `Engine._step()`, which IS the `stepOnce()` callback, so a CDP sampling profile showed
+// `makeRecord <- _step <- stepOnce <- stepFrames` and 2,220 B/step inside the step. A comment
+// cannot hold that line, so the first statement of makeRecord() now enforces it.
 //
 // Field contract, verbatim from §5: phase ∈ none|windup|active|recovery|turn|hitstun;
 // alert_state ∈ IDLE|SUSPICIOUS|SEARCH|AGGRO; positions [x,y,z] metres; angles degrees;
 // times milliseconds; stamina and hp absolute with `_max` alongside.
 'use strict';
 
-import { STEP_MS } from '../core/loop.js';
+import { STEP_MS, inFixedStep } from '../core/loop.js';
 import { rng } from '../core/rng.js';
 import { ACTIONS, BIT } from '../input/actions.js';
 
@@ -30,6 +38,13 @@ const evBuf = [];
  * @param {object|null} perf A-JRN5 per-frame perf block, or null
  */
 export function makeRecord(sim, input, bus, opts, perf) {
+  if (inFixedStep()) {
+    throw new Error(
+      'TRACE RECORD BUILT INSIDE THE FIXED STEP. RI-PLT01 §C.3 requires the frame record to ' +
+      'be built outside the simulation step: it allocates ~2 KB, and a step that allocates is ' +
+      'a GC pause during a boss windup. Build it from Engine._afterStep(), not from the ' +
+      'FixedLoop.stepOnce() callback.');
+  }
   const p = sim.player;
   const c = sim.camera;
   const rec = {
@@ -120,7 +135,7 @@ function enemyRecord(e, sim, opts) {
     yaw_rate_dps: r2(e.yawRate),
     speed_mps: r3(e.speed),
     target: e.alertState === 'AGGRO' ? 'player' : null,
-    dist_m: r4(Math.hypot(dx, dz)),
+    dist_m: r4(Math.sqrt(dx * dx + dz * dz)),
     los: true,
     in_sight_cone: inCone(e, -dx, -dz),   // bearing FROM the enemy TO the player
     alert: Math.round(e.alert),
@@ -132,7 +147,7 @@ function enemyRecord(e, sim, opts) {
     poise_max: e.poiseMax,
     stagger: e.stagger,
     spawn_anchor: [r4(e.anchor[0]), r4(e.anchor[1]), r4(e.anchor[2])],
-    leash_dist_m: r3(Math.hypot(e.pos[0] - e.anchor[0], e.pos[2] - e.anchor[2])),
+    leash_dist_m: r3(Math.sqrt((e.pos[0] - e.anchor[0]) * (e.pos[0] - e.anchor[0]) + (e.pos[2] - e.anchor[2]) * (e.pos[2] - e.anchor[2]))),
     ai: e.ai,
   };
 }

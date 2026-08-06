@@ -150,7 +150,7 @@ export function stepPlayer(sim, input, moves, bus) {
   } else {
     // ---- 4. locomotion ------------------------------------------------------------
     const mx = input.moveX, my = input.moveY;
-    const mag = Math.hypot(mx, my);
+    const mag = Math.sqrt(mx * mx + my * my);
     if (mag > 1e-6) {
       // RI-CAM02: camera-relative, using the camera forward PROJECTED onto the ground plane.
       const cy = sim.camera.yaw / DEG;
@@ -158,7 +158,7 @@ export function stepPlayer(sim, input, moves, bus) {
       const rgtX = Math.cos(cy), rgtZ = -Math.sin(cy);
       dir[0] = rgtX * mx + fwdX * my;
       dir[1] = rgtZ * mx + fwdZ * my;
-      const dl = Math.hypot(dir[0], dir[1]) || 1;
+      const dl = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]) || 1;
       dir[0] /= dl; dir[1] /= dl;
 
       const sprinting = (input.held & BIT.sprint) !== 0 && p.stamina > 0;
@@ -205,7 +205,7 @@ function resolveHits(sim, hb, md, bus) {
     const e = sim.entities[i];
     if (e.hp <= 0) continue;
     const dx = e.pos[0] - sim.player.pos[0], dz = e.pos[2] - sim.player.pos[2];
-    const d = Math.hypot(dx, dz);
+    const d = Math.sqrt(dx * dx + dz * dz);
     if (d > md.reach_m + e.radius_m) continue;
     if (e.hitById === hb.id + '@' + sim.player.animStamp) continue;
     e.hitById = hb.id + '@' + sim.player.animStamp;

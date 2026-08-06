@@ -105,10 +105,10 @@ function applyOverride(c) {
   c.pivot[0] = o.look[0]; c.pivot[1] = o.look[1]; c.pivot[2] = o.look[2];
   c.fov = o.fov;
   const dx = o.look[0] - o.pos[0], dy = o.look[1] - o.pos[1], dz = o.look[2] - o.pos[2];
-  const flat = Math.hypot(dx, dz);
+  const flat = Math.sqrt(dx * dx + dz * dz);
   c.yaw = norm360(Math.atan2(dx, dz) / DEG);
   c.pitch = Math.atan2(dy, flat) / DEG;
-  c.dist = Math.hypot(dx, dy, dz);
+  c.dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
   c.shakeYaw = 0; c.shakePitch = 0;
 }
 
