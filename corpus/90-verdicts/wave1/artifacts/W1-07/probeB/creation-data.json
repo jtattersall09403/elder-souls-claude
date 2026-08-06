@@ -1,0 +1,3261 @@
+{
+  "attributes": {
+    "schema": "elder-souls/attributes@1",
+    "id": "attributes",
+    "owner": "W1-07 — character creation",
+    "source": "corpus/20-progression/RI-PRG02-stat-sheet.md §1, §3",
+    "provenance": "constructed",
+    "base_value": 10,
+    "hard_cap": 99,
+    "no_reduction_after_allocation": true,
+    "creation_total_note": "Every character begins with exactly 100 + 12 = 112 attribute points. Race is the only source of net gain (sum of race deltas = +12); class only redistributes (sum of class deltas = 0). RI-CHR01 §2.",
+    "attributes": [
+      {
+        "id": "strength",
+        "name": "STRENGTH",
+        "abbr": "STR",
+        "in_fight": "STR-scaling damage; shield stability; heavy-weapon requirement",
+        "out_of_fight": "Max equip load (RI-PRG07); carry capacity for loot; forcing doors and chests",
+        "soft_cap": 40,
+        "hard_cap_curve": 60,
+        "past_hard_cap": "scaling +0.005/pt; equip load keeps rising linearly (the one uncapped return)"
+      },
+      {
+        "id": "endurance",
+        "name": "ENDURANCE",
+        "abbr": "END",
+        "in_fight": "Max stamina; stamina regen rate; poise floor",
+        "out_of_fight": "Max Fatigue (S4 second bar); recovery from Fatigue-0",
+        "soft_cap": 20,
+        "hard_cap_curve": 30,
+        "past_hard_cap": "+1.2 then +0.4 stamina/pt; regen flat past 25"
+      },
+      {
+        "id": "agility",
+        "name": "AGILITY",
+        "abbr": "AGI",
+        "in_fight": "AGI-scaling damage; bow draw speed; roll distance",
+        "out_of_fight": "Lockpick tier ceiling; pickpocket; trap disarm",
+        "soft_cap": 40,
+        "hard_cap_curve": 60,
+        "past_hard_cap": "scaling +0.005/pt; lockpick tier 5 reached at 60, nothing above"
+      },
+      {
+        "id": "speed",
+        "name": "SPEED",
+        "abbr": "SPD",
+        "in_fight": "NOTHING, explicitly. AR-1 guard: while COMBAT is active, SPEED's contribution to locomotion is clamped to zero.",
+        "out_of_fight": "Out-of-combat move and sprint speed; swim speed; sprint stamina drain; travel-time modifier on the world map",
+        "soft_cap": 35,
+        "hard_cap_curve": 50,
+        "past_hard_cap": "move speed capped at 1.28x base; travel-time modifier caps at -18%",
+        "zero_in_fight_by_design": true
+      },
+      {
+        "id": "vigour",
+        "name": "VIGOUR",
+        "abbr": "VIG",
+        "in_fight": "Max HP; bleed and frost resistance",
+        "out_of_fight": "Disease resistance; drowning time",
+        "soft_cap": 27,
+        "hard_cap_curve": 40,
+        "past_hard_cap": "+2 HP/pt (near-worthless)"
+      },
+      {
+        "id": "willpower",
+        "name": "WILLPOWER",
+        "abbr": "WIL",
+        "in_fight": "Max Focus (FP); spell-slot count; status-resist (curse, fear, madness)",
+        "out_of_fight": "Resistance to intimidation and illusion in dialogue; Fatigue drain rate",
+        "soft_cap": 30,
+        "hard_cap_curve": 50,
+        "past_hard_cap": "+1 spell slot at 15/25/35/50, none after"
+      },
+      {
+        "id": "intellect",
+        "name": "INTELLECT",
+        "abbr": "INT",
+        "in_fight": "Sorcery scaling",
+        "out_of_fight": "Alchemy potency; number of ingredient effects read; gating on scholarly dialogue topics and unreliable-book comprehension",
+        "soft_cap": 40,
+        "hard_cap_curve": 60,
+        "past_hard_cap": "scaling +0.005/pt; 4th ingredient effect at 80 is the last unlock"
+      },
+      {
+        "id": "hist-bond",
+        "name": "HIST-BOND",
+        "abbr": "HIST",
+        "in_fight": "Root/restoration and Hist-invocation scaling; miracle-equivalent access",
+        "out_of_fight": "HEARTH attunement quality (RI-PRG04); Hist-related faction rank thresholds",
+        "soft_cap": 40,
+        "hard_cap_curve": 60,
+        "past_hard_cap": "scaling +0.005/pt"
+      },
+      {
+        "id": "personality",
+        "name": "PERSONALITY",
+        "abbr": "PER",
+        "in_fight": "NOTHING, explicitly.",
+        "out_of_fight": "Base disposition of every NPC; buy/sell price multiplier (RI-PRG05); persuasion success band; faction rank requirements; whether a bribe is even offered",
+        "soft_cap": 45,
+        "hard_cap_curve": 70,
+        "past_hard_cap": "price multiplier hits its 0.80/0.60 clamps at ~70",
+        "zero_in_fight_by_design": true
+      },
+      {
+        "id": "luck",
+        "name": "LUCK",
+        "abbr": "LCK",
+        "in_fight": "Status buildup you inflict (bleed/poison/rot); resistance to instant-death effects",
+        "out_of_fight": "Rare hand-placed cache reveal prompts; gambling and wager outcomes; critical-failure avoidance on lockpicks and alchemy",
+        "soft_cap": 30,
+        "hard_cap_curve": 50,
+        "past_hard_cap": "buildup rate flattens; cache-reveal chance caps"
+      }
+    ]
+  },
+  "skills": {
+    "schema": "elder-souls/skills@1",
+    "id": "skills",
+    "owner": "W1-07 — character creation (replaces the W1-00 three-skill placeholder container)",
+    "source": "corpus/20-progression/RI-PRG03-skills-by-use.md §1-§3",
+    "provenance": "constructed",
+    "base_value": 5,
+    "cap": 100,
+    "creation_rule": "skill_at_creation = max(5, raceSkill, classSkill). Origins may set up to five skills to 15-25; race raises five. RI-CHR01 §2.",
+    "progress_formula": "progressToNext(s) = round(1.6*s + 6)",
+    "attribute_grant_rule": "A skill crossing any multiple of 15 grants +1 to its governing attribute (RI-PRG02 §2).",
+    "groups": [
+      "weapon",
+      "defence",
+      "magic",
+      "body",
+      "social"
+    ],
+    "skills": [
+      {
+        "id": "blades",
+        "name": "Blades",
+        "group": "weapon",
+        "governing": "agility",
+        "gate": "Straight/curved swords, daggers",
+        "use_events": [
+          {
+            "event": "connecting hit on a hostile",
+            "points": 1
+          },
+          {
+            "event": "riposte or backstab",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "id": "axes-maces",
+        "name": "Axes & Maces",
+        "group": "weapon",
+        "governing": "strength",
+        "gate": "Axes, hammers, flails",
+        "use_events": [
+          {
+            "event": "connecting hit on a hostile",
+            "points": 1
+          },
+          {
+            "event": "riposte or backstab",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "id": "polearms",
+        "name": "Polearms",
+        "group": "weapon",
+        "governing": "strength",
+        "gate": "Spears, halberds, glaives",
+        "use_events": [
+          {
+            "event": "connecting hit on a hostile",
+            "points": 1
+          },
+          {
+            "event": "riposte or backstab",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "id": "greatweapons",
+        "name": "Greatweapons",
+        "group": "weapon",
+        "governing": "strength",
+        "gate": "Ultra-greatswords, greataxes, great-hammers",
+        "use_events": [
+          {
+            "event": "connecting hit on a hostile",
+            "points": 1
+          },
+          {
+            "event": "riposte or backstab",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "id": "marksman",
+        "name": "Marksman",
+        "group": "weapon",
+        "governing": "agility",
+        "gate": "Bows, crossbows, thrown",
+        "use_events": [
+          {
+            "event": "connecting shot at range >12 m",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "id": "claw-fang",
+        "name": "Claw & Fang",
+        "group": "weapon",
+        "governing": "agility",
+        "gate": "Argonian claws, fists, katars",
+        "use_events": [
+          {
+            "event": "connecting hit on a hostile",
+            "points": 1
+          },
+          {
+            "event": "riposte or backstab",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "id": "shieldcraft",
+        "name": "Shieldcraft",
+        "group": "defence",
+        "governing": "endurance",
+        "gate": "Shield stability, parry-window access",
+        "use_events": [
+          {
+            "event": "hit absorbed on shield",
+            "points": 1
+          },
+          {
+            "event": "successful parry",
+            "points": 3
+          }
+        ]
+      },
+      {
+        "id": "sorcery",
+        "name": "Sorcery",
+        "group": "magic",
+        "governing": "intellect",
+        "gate": "Destructive/arcane spell tiers",
+        "use_events": [
+          {
+            "event": "cast that produced a measurable effect",
+            "points": 12
+          }
+        ]
+      },
+      {
+        "id": "root-speech",
+        "name": "Root-Speech",
+        "group": "magic",
+        "governing": "hist-bond",
+        "gate": "Restoration and Hist-invocation tiers",
+        "use_events": [
+          {
+            "event": "cast that produced a measurable effect",
+            "points": 12
+          }
+        ]
+      },
+      {
+        "id": "warding",
+        "name": "Warding",
+        "group": "magic",
+        "governing": "willpower",
+        "gate": "Buffs, resist-wards, alteration",
+        "use_events": [
+          {
+            "event": "cast that produced a measurable effect",
+            "points": 12
+          }
+        ]
+      },
+      {
+        "id": "veiling",
+        "name": "Veiling",
+        "group": "magic",
+        "governing": "willpower",
+        "gate": "Illusion, silence, invisibility, fear",
+        "use_events": [
+          {
+            "event": "cast that produced a measurable effect",
+            "points": 12
+          }
+        ]
+      },
+      {
+        "id": "alchemy",
+        "name": "Alchemy",
+        "group": "magic",
+        "governing": "intellect",
+        "gate": "Ingredient effects read; potion potency",
+        "use_events": [
+          {
+            "event": "potion brewed",
+            "points": 35
+          },
+          {
+            "event": "first brew of a novel recipe",
+            "points": 90
+          }
+        ]
+      },
+      {
+        "id": "athletics",
+        "name": "Athletics",
+        "group": "body",
+        "governing": "speed",
+        "gate": "Sprint speed, swim, out-of-fight stamina economy",
+        "use_events": [
+          {
+            "event": "10 s of sprinting or swimming",
+            "points": 3
+          }
+        ]
+      },
+      {
+        "id": "acrobatics",
+        "name": "Acrobatics",
+        "group": "body",
+        "governing": "agility",
+        "gate": "Jump height, fall-damage threshold, ledge routes",
+        "use_events": [
+          {
+            "event": "landed drop >2 m",
+            "points": 8
+          },
+          {
+            "event": "survived fall >5 m",
+            "points": 20
+          }
+        ]
+      },
+      {
+        "id": "survival",
+        "name": "Survival",
+        "group": "body",
+        "governing": "vigour",
+        "gate": "Harvesting, disease resistance, water/food safety",
+        "use_events": [
+          {
+            "event": "creature harvested",
+            "points": 20
+          },
+          {
+            "event": "flora ingredient gathered",
+            "points": 10
+          }
+        ]
+      },
+      {
+        "id": "sneak",
+        "name": "Sneak",
+        "group": "social",
+        "governing": "agility",
+        "gate": "Detection radius, stealth-opener access",
+        "use_events": [
+          {
+            "event": "10 s undetected inside a hostile detection cone",
+            "points": 4
+          },
+          {
+            "event": "stealth opener / backstab from unaware",
+            "points": 30
+          }
+        ]
+      },
+      {
+        "id": "security",
+        "name": "Security",
+        "group": "social",
+        "governing": "agility",
+        "gate": "Lock tiers, trap disarm",
+        "use_events": [
+          {
+            "event": "lock successfully picked",
+            "points": 25
+          },
+          {
+            "event": "failed pick attempt (lockpick consumed)",
+            "points": 6
+          }
+        ]
+      },
+      {
+        "id": "mercantile",
+        "name": "Mercantile",
+        "group": "social",
+        "governing": "personality",
+        "gate": "Buy/sell multipliers, merchant pool access",
+        "use_events": [
+          {
+            "event": "per 25 gold of completed barter turnover",
+            "points": 1
+          }
+        ]
+      },
+      {
+        "id": "speechcraft",
+        "name": "Speechcraft",
+        "group": "social",
+        "governing": "personality",
+        "gate": "Disposition swing per attempt, topic unlocks",
+        "use_events": [
+          {
+            "event": "successful persuade/intimidate/admire attempt",
+            "points": 55
+          },
+          {
+            "event": "failed attempt (disposition lost)",
+            "points": 15
+          }
+        ]
+      }
+    ],
+    "no_class_restriction": "RI-CHR01 §6.2 — all 19 skills are trainable to 100 by every class at the same 12 x level gold rate. There are no major/minor progression-rate multipliers and no class may be named in a skill's gate."
+  },
+  "races": {
+    "schema": "elder-souls/races@1",
+    "id": "races",
+    "owner": "W1-07 — character creation",
+    "source": "corpus/22-character/RI-CHR02-race-and-standing.md §1 (as amended by AMENDMENT-W1-07-01)",
+    "provenance": "constructed",
+    "invariant": "sum(attribute_deltas) == 12 for every race. Race is the only source of net attribute gain at creation.",
+    "skill_rule": "Skill bonuses set the named skills to their listed value if currently lower (base 5).",
+    "not_playable": {
+      "altmer": "A race earns a row in the reaction matrix only if enough NPCs in 3E 427 Black Marsh have an opinion about it to fill one. Altmer presence in the province is a handful of Mages Guild scholars; the honest row would be ten zeroes. RI-CHR02 §1."
+    },
+    "races": [
+      {
+        "id": "saxhleel",
+        "name": "Saxhleel",
+        "gloss": "Argonian, marsh-form",
+        "argonian": true,
+        "attribute_deltas": {
+          "strength": 0,
+          "endurance": 2,
+          "agility": 3,
+          "speed": 1,
+          "vigour": 0,
+          "willpower": 0,
+          "intellect": 1,
+          "hist-bond": 4,
+          "personality": 0,
+          "luck": 1
+        },
+        "skills": {
+          "sneak": 20,
+          "security": 15,
+          "survival": 20,
+          "athletics": 15,
+          "root-speech": 10
+        },
+        "abilities": [
+          {
+            "id": "amphibious",
+            "name": "Amphibious",
+            "kind": "passive",
+            "combat": false,
+            "effect": "Unlimited water breathing; no swim stamina drain; stand and act in deep water."
+          },
+          {
+            "id": "root-listener",
+            "name": "Root-listener",
+            "kind": "passive",
+            "combat": false,
+            "effect": "Sapwell rests cost 0 taint and yield one Hist line per new well."
+          }
+        ],
+        "resistances": {
+          "disease": "immune",
+          "poison": 0.75
+        },
+        "writ_line": "Saxhleel. Marsh-form. The scribe does not write this down; she writes down that she did not have to ask."
+      },
+      {
+        "id": "naga",
+        "name": "Naga",
+        "gloss": "Argonian, naga-form",
+        "argonian": true,
+        "attribute_deltas": {
+          "strength": 4,
+          "endurance": 3,
+          "agility": 2,
+          "speed": 1,
+          "vigour": 2,
+          "willpower": 0,
+          "intellect": 0,
+          "hist-bond": 0,
+          "personality": -2,
+          "luck": 2
+        },
+        "skills": {
+          "claw-fang": 25,
+          "athletics": 20,
+          "survival": 15,
+          "sneak": 10,
+          "marksman": 10
+        },
+        "abilities": [
+          {
+            "id": "amphibious",
+            "name": "Amphibious",
+            "kind": "passive",
+            "combat": false,
+            "effect": "Unlimited water breathing; no swim stamina drain; stand and act in deep water."
+          },
+          {
+            "id": "shed",
+            "name": "Shed",
+            "kind": "once_per_hearth",
+            "combat": true,
+            "effect": "Break out of grapple, paralysis or bind and gain 3 s of poise immunity."
+          }
+        ],
+        "resistances": {
+          "disease": "immune",
+          "poison": 0.75,
+          "frost": -0.25
+        },
+        "writ_line": "Naga. She writes the form down twice, and looks at the door once while she does it."
+      },
+      {
+        "id": "dunmer",
+        "name": "Dunmer",
+        "gloss": "Dark Elf, of Morrowind",
+        "argonian": false,
+        "attribute_deltas": {
+          "strength": 2,
+          "endurance": 0,
+          "agility": 2,
+          "speed": 2,
+          "vigour": 0,
+          "willpower": 1,
+          "intellect": 2,
+          "hist-bond": 0,
+          "personality": 0,
+          "luck": 3
+        },
+        "skills": {
+          "blades": 20,
+          "marksman": 15,
+          "sorcery": 15,
+          "athletics": 10,
+          "veiling": 10
+        },
+        "abilities": [
+          {
+            "id": "ancestor-guardian",
+            "name": "Ancestor Guardian",
+            "kind": "once_per_rest",
+            "combat": true,
+            "effect": "Summon a spirit that fights for 30 s."
+          }
+        ],
+        "resistances": {
+          "fire": 0.75
+        },
+        "writ_line": "Dunmer. She writes it, then puts the pen down, then picks it up again."
+      },
+      {
+        "id": "imperial",
+        "name": "Imperial",
+        "gloss": "Cyrodilic",
+        "argonian": false,
+        "attribute_deltas": {
+          "strength": 1,
+          "endurance": 1,
+          "agility": 1,
+          "speed": 1,
+          "vigour": 1,
+          "willpower": 1,
+          "intellect": 1,
+          "hist-bond": 0,
+          "personality": 5,
+          "luck": 0
+        },
+        "amended_by": "AMENDMENT-W1-07-01 — PER +4 -> +5; the original row summed to 11 and failed RI-CHR02 method 1.",
+        "skills": {
+          "speechcraft": 25,
+          "mercantile": 20,
+          "blades": 15,
+          "shieldcraft": 15,
+          "warding": 10
+        },
+        "abilities": [
+          {
+            "id": "star-of-the-west",
+            "name": "Star of the West",
+            "kind": "once_per_rest",
+            "combat": false,
+            "effect": "Absorb 30 stamina from a target. Out of combat only — an intimidation tool, not a fight tool."
+          },
+          {
+            "id": "voice-of-the-empire",
+            "name": "Voice of the Empire",
+            "kind": "once_per_day",
+            "combat": false,
+            "effect": "One Admire attempt cannot fail."
+          }
+        ],
+        "resistances": {},
+        "writ_line": "Imperial. She writes it in the same hand as the rest of the page, which is the only courtesy in the room."
+      },
+      {
+        "id": "nord",
+        "name": "Nord",
+        "gloss": "of Skyrim",
+        "argonian": false,
+        "attribute_deltas": {
+          "strength": 4,
+          "endurance": 4,
+          "agility": 0,
+          "speed": 0,
+          "vigour": 3,
+          "willpower": 0,
+          "intellect": 0,
+          "hist-bond": 0,
+          "personality": -1,
+          "luck": 2
+        },
+        "skills": {
+          "greatweapons": 25,
+          "axes-maces": 20,
+          "shieldcraft": 15,
+          "survival": 10,
+          "athletics": 10
+        },
+        "abilities": [
+          {
+            "id": "thunder-fist",
+            "name": "Thunder Fist",
+            "kind": "once_per_rest",
+            "combat": true,
+            "effect": "60 shock damage on the next connecting hit."
+          },
+          {
+            "id": "woad",
+            "name": "Woad",
+            "kind": "once_per_rest",
+            "combat": true,
+            "effect": "30 s of +20 poise."
+          }
+        ],
+        "resistances": {
+          "frost": 0.9,
+          "shock": 0.5
+        },
+        "writ_line": "Nord. She asks how long you intend to stay, and writes down whatever you say without believing it."
+      },
+      {
+        "id": "breton",
+        "name": "Breton",
+        "gloss": "of High Rock",
+        "argonian": false,
+        "attribute_deltas": {
+          "strength": -1,
+          "endurance": 0,
+          "agility": 0,
+          "speed": 1,
+          "vigour": 0,
+          "willpower": 4,
+          "intellect": 4,
+          "hist-bond": 1,
+          "personality": 2,
+          "luck": 1
+        },
+        "skills": {
+          "sorcery": 20,
+          "warding": 20,
+          "veiling": 15,
+          "alchemy": 15,
+          "speechcraft": 10
+        },
+        "abilities": [
+          {
+            "id": "dragon-skin",
+            "name": "Dragon Skin",
+            "kind": "once_per_rest",
+            "combat": true,
+            "effect": "40 points of magic shield."
+          }
+        ],
+        "resistances": {
+          "magic": 0.5
+        },
+        "resistance_note": "Magic 50% applies to ALL schools, including your own spells.",
+        "writ_line": "Breton. She asks whether you are with the Guild. She does not write the answer."
+      },
+      {
+        "id": "redguard",
+        "name": "Redguard",
+        "gloss": "of Hammerfell",
+        "argonian": false,
+        "attribute_deltas": {
+          "strength": 3,
+          "endurance": 4,
+          "agility": 3,
+          "speed": 2,
+          "vigour": 2,
+          "willpower": -1,
+          "intellect": -2,
+          "hist-bond": 0,
+          "personality": 0,
+          "luck": 1
+        },
+        "skills": {
+          "blades": 25,
+          "axes-maces": 15,
+          "athletics": 20,
+          "acrobatics": 10,
+          "marksman": 10
+        },
+        "abilities": [
+          {
+            "id": "adrenaline-rush",
+            "name": "Adrenaline Rush",
+            "kind": "once_per_rest",
+            "combat": true,
+            "effect": "30 s of doubled stamina regen."
+          }
+        ],
+        "resistances": {
+          "disease": 0.75,
+          "poison": 0.75
+        },
+        "writ_line": "Redguard. She writes it and asks nothing else, which for a Redguard in this office is unusual and you will find out why."
+      },
+      {
+        "id": "khajiit",
+        "name": "Khajiit",
+        "gloss": "of Elsweyr",
+        "argonian": false,
+        "attribute_deltas": {
+          "strength": 0,
+          "endurance": 0,
+          "agility": 5,
+          "speed": 3,
+          "vigour": 0,
+          "willpower": 0,
+          "intellect": 1,
+          "hist-bond": 0,
+          "personality": 0,
+          "luck": 3
+        },
+        "skills": {
+          "sneak": 25,
+          "acrobatics": 20,
+          "security": 20,
+          "claw-fang": 15,
+          "marksman": 10
+        },
+        "abilities": [
+          {
+            "id": "night-eye",
+            "name": "Night Eye",
+            "kind": "toggle",
+            "combat": false,
+            "effect": "Toggleable, no cost, permanent."
+          },
+          {
+            "id": "land-on-your-feet",
+            "name": "Land on Your Feet",
+            "kind": "passive",
+            "combat": false,
+            "effect": "Fall-damage-free height x2."
+          }
+        ],
+        "resistances": {},
+        "writ_line": "Khajiit. She writes the word and then a second word after it, in a smaller hand, and turns the page before you can read it."
+      },
+      {
+        "id": "orsimer",
+        "name": "Orsimer",
+        "gloss": "Orc",
+        "argonian": false,
+        "attribute_deltas": {
+          "strength": 5,
+          "endurance": 5,
+          "agility": 0,
+          "speed": -1,
+          "vigour": 4,
+          "willpower": 1,
+          "intellect": 0,
+          "hist-bond": 0,
+          "personality": -3,
+          "luck": 1
+        },
+        "skills": {
+          "axes-maces": 25,
+          "greatweapons": 20,
+          "shieldcraft": 20,
+          "survival": 10,
+          "athletics": 5
+        },
+        "abilities": [
+          {
+            "id": "berserk",
+            "name": "Berserk",
+            "kind": "once_per_rest",
+            "combat": true,
+            "effect": "30 s of +30% melee damage and -30% damage resistance."
+          }
+        ],
+        "resistances": {
+          "magic": 0.25
+        },
+        "writ_line": "Orsimer. She writes 'Orc' and then crosses it out and writes 'Orsimer', which is either respect or the ledger's rules."
+      },
+      {
+        "id": "bosmer",
+        "name": "Bosmer",
+        "gloss": "Wood Elf, of Valenwood",
+        "argonian": false,
+        "attribute_deltas": {
+          "strength": -1,
+          "endurance": 0,
+          "agility": 5,
+          "speed": 2,
+          "vigour": 0,
+          "willpower": 0,
+          "intellect": 1,
+          "hist-bond": 0,
+          "personality": 0,
+          "luck": 5
+        },
+        "skills": {
+          "marksman": 25,
+          "sneak": 20,
+          "acrobatics": 15,
+          "alchemy": 15,
+          "survival": 10
+        },
+        "abilities": [
+          {
+            "id": "beast-tongue",
+            "name": "Beast Tongue",
+            "kind": "once_per_rest",
+            "combat": true,
+            "anti_combat": true,
+            "effect": "Calm one beast-archetype enemy for 60 s. A real S13 non-lethal exit against the roster's animals, which have no parley."
+          }
+        ],
+        "resistances": {
+          "disease": 0.5,
+          "poison": 0.5
+        },
+        "writ_line": "Bosmer. She asks if you have been to Blackwood. Everyone asks a Bosmer that."
+      }
+    ],
+    "non_combat_abilities_note": "Two abilities are deliberately non-combat (Star of the West, Night Eye / Land on Your Feet) and one is deliberately anti-combat (Beast Tongue). RI-CHR02 §1; mirrors RI-PRG02's rule that not every line on the sheet may be a damage line."
+  },
+  "classes": {
+    "schema": "elder-souls/classes@1",
+    "id": "classes",
+    "owner": "W1-07 — character creation",
+    "source": "corpus/22-character/RI-CHR01-character-creation.md §4, §6",
+    "provenance": "constructed",
+    "invariant": "sum(attribute_deltas) == 0 for every class. |delta| <= 4 on at most 4 attributes. Class only redistributes; it never adds net points.",
+    "skill_rule": "Three primary skills set to 25, two secondary set to 15, applied as skill = max(5, raceSkill, classSkill).",
+    "families": [
+      "fighter",
+      "thief",
+      "social",
+      "scout",
+      "mage",
+      "root"
+    ],
+    "class_shapes_never_locks": {
+      "prohibition_1": "No content gate may reference class. Not a quest, not a topic, not a door, not a faction, not a trainer, not an item.",
+      "prohibition_2": "No skill may be class-restricted. All 19 skills are trainable to 100 by all classes at the same 12 x level gold rate. No major/minor progression-rate multipliers.",
+      "prohibition_3": "No weapon or armour may be class-restricted. RI-PRG03 §5's grade-shift is the only penalty for using something unfamiliar, and it is a skill penalty any character can train away.",
+      "prohibition_4": "Class's share of the level-60 character: 0 of 112 attribute points at creation (0%), 105 of ~700 skill points above baseline at L60 (<= 15% at creation, <= 4% at level 60).",
+      "prohibition_5_counterweight": "Class must still be VISIBLE. Three caste topics keyed on the class string appear on >= 25 NPCs each; the custom class's free-text name is spoken back by >= 4 NPCs; the writ carries it forever. Class is archaeology — a permanent, referenced fact about where you came from, with no power over where you go."
+    },
+    "caste_topics": [
+      {
+        "id": "the-ledgers-hands",
+        "families": [
+          "social"
+        ],
+        "line": "You have the Ledger's hands. I can see the ink under the nail even when there is no ink."
+      },
+      {
+        "id": "root-under-the-tongue",
+        "families": [
+          "root",
+          "mage"
+        ],
+        "line": "You keep the root under your tongue when you talk. Whoever taught you that did it early."
+      },
+      {
+        "id": "walks-like-a-blade",
+        "families": [
+          "fighter",
+          "scout",
+          "thief"
+        ],
+        "line": "You walk the way people walk when they have been paid to walk somewhere."
+      }
+    ],
+    "classes": [
+      {
+        "id": "salt-blade",
+        "name": "Salt-Blade",
+        "family": "fighter",
+        "attribute_deltas": {
+          "strength": 4,
+          "endurance": 4,
+          "intellect": -4,
+          "personality": -4
+        },
+        "skills": {
+          "blades": 25,
+          "shieldcraft": 25,
+          "athletics": 25,
+          "axes-maces": 15,
+          "survival": 15
+        },
+        "scribe_line": "Salt-Blade. Somebody paid you to stand at the front of something."
+      },
+      {
+        "id": "marsh-knight",
+        "name": "Marsh-Knight",
+        "family": "fighter",
+        "attribute_deltas": {
+          "endurance": 4,
+          "vigour": 4,
+          "agility": -4,
+          "speed": -4
+        },
+        "skills": {
+          "greatweapons": 25,
+          "shieldcraft": 25,
+          "axes-maces": 25,
+          "speechcraft": 15,
+          "survival": 15
+        },
+        "scribe_line": "Marsh-Knight. There is no such order any more, and I have written it down four times this month."
+      },
+      {
+        "id": "hollow-hunter",
+        "name": "Hollow-Hunter",
+        "family": "thief",
+        "attribute_deltas": {
+          "agility": 4,
+          "luck": 4,
+          "vigour": -4,
+          "personality": -4
+        },
+        "skills": {
+          "sneak": 25,
+          "blades": 25,
+          "alchemy": 25,
+          "acrobatics": 15,
+          "marksman": 15
+        },
+        "scribe_line": "Hollow-Hunter. You go into the xanmeers after things and you come out with fewer people than you went in with."
+      },
+      {
+        "id": "wet-foot",
+        "name": "Wet-Foot",
+        "family": "thief",
+        "attribute_deltas": {
+          "agility": 4,
+          "speed": 4,
+          "strength": -4,
+          "vigour": -4
+        },
+        "skills": {
+          "security": 25,
+          "sneak": 25,
+          "acrobatics": 25,
+          "mercantile": 15,
+          "athletics": 15
+        },
+        "scribe_line": "Wet-Foot. That is a word for a thief and I am going to write the word, not the thief."
+      },
+      {
+        "id": "ledger-hand",
+        "name": "Ledger-Hand",
+        "family": "social",
+        "attribute_deltas": {
+          "personality": 4,
+          "intellect": 4,
+          "strength": -4,
+          "vigour": -4
+        },
+        "skills": {
+          "mercantile": 25,
+          "speechcraft": 25,
+          "security": 25,
+          "blades": 15,
+          "alchemy": 15
+        },
+        "scribe_line": "Ledger-Hand. Then you and I do the same work and only one of us is being searched."
+      },
+      {
+        "id": "net-cutter",
+        "name": "Net-Cutter",
+        "family": "social",
+        "attribute_deltas": {
+          "personality": 4,
+          "agility": 4,
+          "strength": -4,
+          "willpower": -4
+        },
+        "skills": {
+          "speechcraft": 25,
+          "sneak": 25,
+          "veiling": 25,
+          "blades": 15,
+          "athletics": 15
+        },
+        "scribe_line": "Net-Cutter. I will write 'agent'. You will thank me for that in about a year."
+      },
+      {
+        "id": "deelith",
+        "name": "Deelith",
+        "family": "social",
+        "gloss": "one who passes on wisdom",
+        "attribute_deltas": {
+          "intellect": 4,
+          "personality": 4,
+          "strength": -4,
+          "endurance": -4
+        },
+        "skills": {
+          "speechcraft": 25,
+          "alchemy": 25,
+          "sorcery": 25,
+          "warding": 15,
+          "mercantile": 15
+        },
+        "scribe_line": "Deelith. One who passes on. The Empire's form has no box for that so it goes in the box marked scholar."
+      },
+      {
+        "id": "reed-walker",
+        "name": "Reed-Walker",
+        "family": "scout",
+        "attribute_deltas": {
+          "speed": 4,
+          "agility": 4,
+          "intellect": -4,
+          "personality": -4
+        },
+        "skills": {
+          "marksman": 25,
+          "survival": 25,
+          "athletics": 25,
+          "sneak": 15,
+          "acrobatics": 15
+        },
+        "scribe_line": "Reed-Walker. You know the ways between here and somewhere the ways do not officially go."
+      },
+      {
+        "id": "xanmeer-delver",
+        "name": "Xanmeer-Delver",
+        "family": "scout",
+        "attribute_deltas": {
+          "agility": 4,
+          "vigour": 4,
+          "personality": -4,
+          "willpower": -4
+        },
+        "skills": {
+          "acrobatics": 25,
+          "security": 25,
+          "marksman": 25,
+          "athletics": 15,
+          "blades": 15
+        },
+        "scribe_line": "Xanmeer-Delver. The Provincial Office calls that looting and the Office is not here."
+      },
+      {
+        "id": "bone-setter",
+        "name": "Bone-Setter",
+        "family": "scout",
+        "attribute_deltas": {
+          "vigour": 4,
+          "intellect": 4,
+          "strength": -4,
+          "luck": -4
+        },
+        "skills": {
+          "survival": 25,
+          "alchemy": 25,
+          "root-speech": 25,
+          "athletics": 15,
+          "warding": 15
+        },
+        "scribe_line": "Bone-Setter. Good. Nobody has set a bone in this office in eleven years and it shows."
+      },
+      {
+        "id": "sap-reader",
+        "name": "Sap-Reader",
+        "family": "mage",
+        "attribute_deltas": {
+          "intellect": 4,
+          "willpower": 4,
+          "strength": -4,
+          "endurance": -4
+        },
+        "skills": {
+          "sorcery": 25,
+          "alchemy": 25,
+          "warding": 25,
+          "veiling": 15,
+          "speechcraft": 15
+        },
+        "scribe_line": "Sap-Reader. You will want to be careful saying that in Gideon and very careful saying it anywhere else."
+      },
+      {
+        "id": "tide-caller",
+        "name": "Tide-Caller",
+        "family": "mage",
+        "attribute_deltas": {
+          "intellect": 4,
+          "endurance": 4,
+          "personality": -4,
+          "luck": -4
+        },
+        "skills": {
+          "sorcery": 25,
+          "warding": 25,
+          "shieldcraft": 25,
+          "blades": 15,
+          "athletics": 15
+        },
+        "scribe_line": "Tide-Caller. The tide does not come when called. I have watched people try from this window."
+      },
+      {
+        "id": "root-speaker",
+        "name": "Root-Speaker",
+        "family": "root",
+        "attribute_deltas": {
+          "hist-bond": 4,
+          "willpower": 4,
+          "strength": -4,
+          "agility": -4
+        },
+        "skills": {
+          "root-speech": 25,
+          "warding": 25,
+          "alchemy": 25,
+          "speechcraft": 15,
+          "survival": 15
+        },
+        "scribe_line": "Root-Speaker. Then you already know what this building is built on and you have not said anything about it, which I appreciate."
+      },
+      {
+        "id": "egg-tender",
+        "name": "Egg-Tender",
+        "family": "root",
+        "attribute_deltas": {
+          "hist-bond": 4,
+          "personality": 4,
+          "strength": -4,
+          "speed": -4
+        },
+        "skills": {
+          "root-speech": 25,
+          "speechcraft": 25,
+          "survival": 25,
+          "alchemy": 15,
+          "mercantile": 15
+        },
+        "scribe_line": "Egg-Tender. There is a box for that. There is a box for that because of how many of you come through here now."
+      }
+    ],
+    "custom_route": {
+      "id": "custom",
+      "hidden_behind_advanced": false,
+      "presentation_rank": 2,
+      "presentation_note": "RI-CHR01 §4 route B. Offered SECOND of three, in the Warden-Scribe's own words, never labelled advanced or expert. Morrowind put it second in a list of three and it produced most of the memorable characters people still describe twenty years later.",
+      "name_field": {
+        "free_text": true,
+        "stored_verbatim": true,
+        "spoken_by_npcs": true,
+        "min_npcs_echoing": 4
+      },
+      "rules": {
+        "favoured_attributes": {
+          "count": 2,
+          "delta": 4
+        },
+        "neglected_attributes": {
+          "count": 2,
+          "delta": -4,
+          "must_be_distinct_from_favoured": true
+        },
+        "primary_skills": {
+          "count": 3,
+          "value": 25
+        },
+        "secondary_skills": {
+          "count": 2,
+          "value": 15
+        },
+        "all_distinct": true,
+        "skill_pool": "all 19"
+      },
+      "legal_configurations": {
+        "formula": "C(10,2) * C(8,2) * C(19,3) * C(16,2)",
+        "terms": [
+          45,
+          28,
+          969,
+          120
+        ],
+        "value": 146588400,
+        "note": "An upper bound, not a design claim. The meaningful count is the 540 signatures of RI-CHR01 §5."
+      }
+    },
+    "known_gap": {
+      "id": "GAP-W1-07-polearms",
+      "statement": "Neither any race in RI-CHR02 §1 nor any of the 14 named classes in RI-CHR01 §4 raises Polearms above baseline. RI-CHR01 method 3 asserts every one of the 19 skills is above baseline in >= 1 of the race x class pairs.",
+      "resolution": "The corpus tables are shipped verbatim rather than silently patched. RI-CHR01 method 2 enumerates '10 races x 15 class options', i.e. 14 named plus the custom route, and Polearms is reachable through the custom route and through the questionnaire (route C weights it in 5 answers). The audit tool reports named-class coverage as 18/19 and full coverage as 19/19 and says which is which.",
+      "not_fixed_by_this_builder_because": "Adding Polearms to a named class would change a binding corpus table for taste rather than arithmetic. AMENDMENT-W1-07-01 was filed for a cell that failed the item's own assertion; this one does not, on the reading that the custom route is the 15th class option."
+    },
+    "family_write_in": {
+      "_note": "What the Warden-Scribe writes in the Trade box when the questions produce a shape that is not one of the fourteen named professions. RI-CHR01 §4 route C: the questionnaire may produce a configuration identical to a named class, and when it does she says the name aloud; when it does not, she still has to write SOMETHING, and she writes what she saw. The custom route (B) overrides this with the player's own free text.",
+      "fighter": "Salt-road hand, untitled",
+      "thief": "Light-footed, no trade given",
+      "social": "Talks for a living, no house",
+      "scout": "Walks the country, untitled",
+      "mage": "Reads, and it shows",
+      "root": "Sits with the wells, no keeper's mark"
+    }
+  },
+  "birthsigns": {
+    "schema": "elder-souls/birthsigns@1",
+    "id": "birthsigns",
+    "owner": "W1-07 — character creation",
+    "source": "corpus/22-character/RI-CHR03-birthsigns.md §1-§6",
+    "provenance": "constructed",
+    "cosmology": "An Argonian is drawn from a hatching pool at a moment, and the roots below that pool are at some state — running full, running out, running the wrong way. That state is your tide, and the rootkeeper who lifts you records it. Non-Argonians are assigned one too: the Warden-Scribe asks 'which tide were you drawn on', converts whatever Imperial sign you name onto the marsh's chart, writes the marsh answer on the writ, and does not care that you disagree.",
+    "question": "Which tide were you drawn on?",
+    "families": [
+      {
+        "id": "given",
+        "name": "Given",
+        "the_tide_was": "full, or rising",
+        "character": "The root had enough and gave freely. Modest, safe, unglamorous.",
+        "drawbacks": "none"
+      },
+      {
+        "id": "withheld",
+        "name": "Withheld",
+        "the_tide_was": "out, or dry",
+        "character": "The root had nothing to give, so something else filled the space.",
+        "drawbacks": "severe, mechanical"
+      },
+      {
+        "id": "turned",
+        "name": "Turned",
+        "the_tide_was": "running backwards",
+        "character": "The tide ran the wrong way and you came up with it. Strange, conditional, political.",
+        "drawbacks": "severe, conditional"
+      }
+    ],
+    "imperial_thirteen": {
+      "status": "exist in-world, zero mechanical effect",
+      "names": [
+        "The Warrior",
+        "The Mage",
+        "The Thief",
+        "The Serpent",
+        "The Lady",
+        "The Steed",
+        "The Lord",
+        "The Apprentice",
+        "The Atronach",
+        "The Ritual",
+        "The Lover",
+        "The Shadow",
+        "The Tower"
+      ],
+      "in_world": "Named in books, used by Imperials, and read for 30 g by a Cyrodilic priest in Gideon who is wrong about everything, verifiably, against your actual sign. That collision is content: it is one of the clearest small demonstrations in the game that this province runs on its own physics.",
+      "mechanical_effect": null
+    },
+    "signs": [
+      {
+        "id": "raj-xul",
+        "name": "The Full Root",
+        "jel": "Raj-Xul",
+        "family": "given",
+        "scribe_line": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you.",
+        "power": {
+          "summary": "The tithe-gourd holds one more swallow.",
+          "effects": [
+            {
+              "kind": "flask_charges",
+              "delta": 1,
+              "note": "+1 tithe-gourd charge at every charge tier (RI-CMB08). At the 4-charge start this is +25% healing throughput; at the 10-charge cap, +10%. Deliberately front-loaded."
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "none"
+        },
+        "balance": {
+          "combat": 3,
+          "world": 0,
+          "risk": "none",
+          "who_takes_it": "first-time players; anyone struggling"
+        }
+      },
+      {
+        "id": "xan-kheel",
+        "name": "The Warm Stone",
+        "jel": "Xan-Kheel",
+        "family": "given",
+        "scribe_line": "You hatched on stone the sun had been at all day. Warm things do not take a chill easily and they do not hold a rot.",
+        "power": {
+          "summary": "You hatched on sun-warmed xanmeer stone.",
+          "effects": [
+            {
+              "kind": "resistance",
+              "element": "fire",
+              "value": 0.5
+            },
+            {
+              "kind": "resistance",
+              "element": "frost",
+              "value": 0.25
+            },
+            {
+              "kind": "status_purge",
+              "cadence": "once_per_hearth",
+              "note": "Purge all status buildup on yourself to zero — bleed, rot, poison, frost (S11's Souls-side meter, combat.status.buildup)."
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "none"
+        },
+        "balance": {
+          "combat": 2,
+          "world": 1,
+          "risk": "none",
+          "who_takes_it": "the Deep Marshes and the fire bosses"
+        }
+      },
+      {
+        "id": "deek-xul",
+        "name": "The Long Root",
+        "jel": "Deek-Xul",
+        "family": "given",
+        "scribe_line": "Your pool sat under a trade road. The root ran a long way to find water and it learned the way back.",
+        "power": {
+          "summary": "Your pool sat under a trade road and the root ran a long way.",
+          "effects": [
+            {
+              "kind": "travel_fare",
+              "multiplier": 0.6,
+              "note": "Travel fares -40% (RI-PRG05: cross-map 90 g -> 54 g)."
+            },
+            {
+              "kind": "merchant_disposition",
+              "delta": 5,
+              "note": "+5 disposition with every merchant, independent of Mercantile."
+            },
+            {
+              "kind": "root_return",
+              "cadence": "once_per_hearth",
+              "note": "Walk back to the last settlement well you rested at — above ground, out of combat, to a place you have been, never into or within a dungeon or arena. S7/S19 compliant, and it is an effect you have, not a map pin."
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "none"
+        },
+        "balance": {
+          "combat": 0,
+          "world": 3,
+          "risk": "none",
+          "who_takes_it": "traders, travellers, RI-QST05 talkers"
+        }
+      },
+      {
+        "id": "nu-ixtu",
+        "name": "The Dry Well",
+        "jel": "Nu-Ixtu",
+        "family": "withheld",
+        "scribe_line": "The root gave you nothing, so nothing runs back into you. What you take from the world is what you will have.",
+        "power": {
+          "summary": "Max Focus x1.60. You absorb 55% of the magnitude of any spell effect that lands on you, as Focus.",
+          "effects": [
+            {
+              "kind": "focus_max_multiplier",
+              "value": 1.6
+            },
+            {
+              "kind": "spell_absorption",
+              "value": 0.55
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "mechanical",
+          "removes_system": "focus_regeneration",
+          "summary": "You have no Focus regeneration of any kind. Ever.",
+          "detail": "Not passive, not from resting, not from Fatigue, not from ENDURANCE. Focus is refilled only by absorption and by consumables. This is the Atronach, ported to our Focus economy and not softened: a Dry Well character who walks into a room with no casters in it has whatever Focus they walked in with.",
+          "assertion": "player.focus is monotonically non-increasing across all frames except on `absorb` and `item` events."
+        },
+        "balance": {
+          "combat": 4,
+          "combat_non_caster": 0,
+          "world": 0,
+          "risk": "very high",
+          "who_takes_it": "dedicated casters only; a trap for everyone else, on purpose"
+        }
+      },
+      {
+        "id": "teekh-nuvei",
+        "name": "The Spilled",
+        "jel": "Teekh-Nuvei",
+        "family": "withheld",
+        "scribe_line": "Your pattern was never fully drunk. Some of it went into the mud beside the pool. The wells will hold you badly and they will not lose you entirely.",
+        "power": {
+          "summary": "The tithe does not stick to you properly.",
+          "effects": [
+            {
+              "kind": "tithe_retained_on_death",
+              "value": 0.4,
+              "note": "You keep 40% of your dropped tithe on death instead of 0."
+            },
+            {
+              "kind": "bloom_never_decays",
+              "note": "Dying again does not lose the first bloom (RI-LOR05 §4)."
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "mechanical",
+          "removes_system": "nearest_well_respawn_and_recall_targeting",
+          "summary": "The wells hold you badly.",
+          "detail": "You respawn at the SECOND-nearest rested sapwell, not the nearest — measured by graph distance over the well network, which in practice means every death costs an extra 90-400 m of walk-back. You cannot be the target of any recall, intervention, resurrection or summon-to effect, including The Long Root's Root-Return if taken via Kaal-Kaal.",
+          "assertion": "Every recall/intervention/resurrect effect targeting the player returns a refusal event, not a silent no-op."
+        },
+        "balance": {
+          "combat": 2,
+          "world": 1,
+          "risk": "high",
+          "who_takes_it": "players who die a lot and know it"
+        }
+      },
+      {
+        "id": "nu-shanei",
+        "name": "The Unlit Water",
+        "jel": "Nu-Shanei",
+        "family": "withheld",
+        "scribe_line": "The pool was dark when they lifted you and there are people who keep a list of those. I am obliged to write it down. I am not obliged to tell you who reads the list.",
+        "power": {
+          "summary": "The Shadow-tide.",
+          "effects": [
+            {
+              "kind": "detection_radius_multiplier",
+              "value": 0.8,
+              "note": "Permanent -20% enemy detection radius, multiplying RI-STL01's Sneak term."
+            },
+            {
+              "kind": "invisibility",
+              "cadence": "once_per_hearth",
+              "duration_s": 20,
+              "note": "True invisibility, broken by attacking, opening a container, or entering a lit interior."
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "conditional",
+          "summary": "The Shadowscales have a claim on you and it is not a metaphor.",
+          "flag": "shadowscale-claim",
+          "removable": false,
+          "detail": "You begin with an unremovable shadowscale-claim flag on the writ. A ku-vastei arbiter finds you at three fixed story points and gives you an order — always a killing, always someone you have met, never someone the game frames as deserving it. Obeying costs a faction. Refusing costs 15 Reputation and makes the arbiter permanently hostile: a named, levelled assassin who thereafter appears in your encounter tables for the rest of the game. There is no third option and no way to clear the flag.",
+          "arbiter_encounters": 3,
+          "refuse_reputation_delta": -15,
+          "refuse_spawns": "ku-vastei-arbiter (named persistent hostile)",
+          "canon": "CF-028 — Argonians born under the sign of the Shadow are taken at birth and given to the Dark Brotherhood as Shadowscales. The only sign in this roster with a canon parent."
+        },
+        "balance": {
+          "combat": 3,
+          "world": 2,
+          "risk": "very high",
+          "who_takes_it": "stealth builds willing to owe someone"
+        }
+      },
+      {
+        "id": "vastei-nu",
+        "name": "The Backward Tide",
+        "jel": "Vastei-Nu",
+        "family": "turned",
+        "scribe_line": "The tide ran up instead of down when you were drawn. The marsh took nothing from you that day and it has been making it back since.",
+        "power": {
+          "summary": "Your first HEARTH rest of each in-game day refunds its tithe.",
+          "effects": [
+            {
+              "kind": "tithe_refund_first_rest_per_day",
+              "note": "You keep the souls you were carrying through that one rest. Over a typical clear this is worth about 8% of lifetime souls (RI-PRG06)."
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "conditional",
+          "summary": "The marsh re-grows more where you have been.",
+          "detail": "Ordinary enemy respawn density on rest is x1.5 for you (S5's Souls-side respawn; RI-LOR05's 'the root drank your tithe and is holding more than it was'). Every corpse-run is harder; every farmed area refills faster. It is a straight trade of souls for danger and it is the only sign that makes the game MORE Souls-like.",
+          "respawn_density_multiplier": 1.5
+        },
+        "balance": {
+          "combat": 0,
+          "world": 4,
+          "risk": "high",
+          "who_takes_it": "levelling-focused builds; anyone confident in the fight"
+        }
+      },
+      {
+        "id": "kaal-kaal",
+        "name": "The Two-Drink",
+        "jel": "Kaal-Kaal",
+        "family": "turned",
+        "scribe_line": "They gave you the sap twice. Somebody was not paying attention, or somebody was paying very close attention. Choose the second tide now; you will carry all of it and half of what it gives.",
+        "power": {
+          "summary": "Choose a second sign at creation. You receive its power at half magnitude.",
+          "effects": [
+            {
+              "kind": "second_sign",
+              "power_scale": 0.5,
+              "drawback_scale": 1
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "conditional",
+          "summary": "You receive that second sign's drawback at FULL magnitude.",
+          "detail": "Choosing The Dry Well gives you x1.30 Focus and 27.5% absorption AND zero Focus regeneration. Choosing The Unlit Water gives you -10% detection radius and a 10 s invisibility AND the full Shadowscale claim. Choosing a Given sign gives you half a modest power and nothing else, which is legal, safe, and the reason this sign is not simply the best one.",
+          "implementation_warning": "The single most likely implementation bug is halving the drawback too. If it lands, Two-Drink is strictly the best sign in the game and eight of the nine are dead."
+        },
+        "balance": {
+          "combat": "variable",
+          "world": "variable",
+          "risk": "variable",
+          "who_takes_it": "second playthroughs"
+        }
+      },
+      {
+        "id": "shuja-vei",
+        "name": "The Grey Sap",
+        "jel": "Shuja-Vei",
+        "family": "turned",
+        "scribe_line": "The well you came out of was already dying. The tree has no purchase on you. You will not be poisoned by it and you will not be spoken to by it, and you will be told which of those you mind about later.",
+        "power": {
+          "summary": "You are immune to sap-taint regardless of race.",
+          "effects": [
+            {
+              "kind": "sap_taint_immunity",
+              "note": "A Nord Grey Sap rests at wells forever and never hallucinates, never reaches band 3, never sees an enemy model lie."
+            }
+          ]
+        },
+        "drawback": {
+          "kind": "conditional",
+          "summary": "The Hist will not speak to you. Not once, not ever.",
+          "detail": "Rootkeeper disposition -25 on top of the RI-CHR02 matrix. Four quests are closed (three have an alternate route through the Drowned Court or the Sap-Cutters; ONE does not), and the sap-taint band-4 'rooted' ending path is unreachable. You have bought safety from the game's most interesting corruption mechanic by giving up its most interesting relationship.",
+          "rootkeeper_disposition_delta": -25,
+          "quests_closed": 4,
+          "quests_closed_with_alternate": 3,
+          "quests_closed_without_alternate": 1,
+          "blocks_recut": true
+        },
+        "balance": {
+          "combat": 1,
+          "world": 2,
+          "world_negative": 3,
+          "risk": "high",
+          "who_takes_it": "non-Argonian players who want the checkpoint without the cost"
+        }
+      }
+    ],
+    "recut": {
+      "name": "vastei-eixa, on the largest scale",
+      "where": "The great Hist at Helstrom, in the hollowed bole. Nowhere else.",
+      "prerequisite_any_of": [
+        "rootkeeper disposition >= 70",
+        "Deep-Kin rank >= 4",
+        "completed the Drowned Court's second questline"
+      ],
+      "cost_souls": "all souls currently carried, to a minimum of 25000",
+      "cost_min_souls": 25000,
+      "cost_time": "one in-game week during which the character is unplayable; the world advances, quest timers run, two quests can expire",
+      "uses_per_save": 1,
+      "cannot": [
+        "clear a shadowscale-claim already acted on",
+        "restore the four quests The Grey Sap closed if they have been failed",
+        "change race, upbringing or class"
+      ],
+      "grey_sap_exception": "A Grey Sap character cannot use this — the Hist will not speak to them. This is stated at creation.",
+      "why": "So that a player who took The Dry Well at minute four and discovered at hour twelve that they hate casting is not required to restart eighty hours of world state. Priced so that it is never a routine optimisation."
+    },
+    "visibility": {
+      "rootkeeper_greetings": "9, one per sign, unprompted, on sight",
+      "birthsign_gated_topics": 4,
+      "birthsign_gated_quests": 1,
+      "spilled_narration": "The keeper of the nearest well tells you, once, that the root would not take you.",
+      "imperial_priest": "Reads your Imperial chart for 30 g in Gideon and is wrong about everything."
+    }
+  },
+  "reactions": {
+    "schema": "elder-souls/race-reactions@1",
+    "id": "race-reactions",
+    "owner": "W1-07 — character creation",
+    "source": "corpus/22-character/RI-CHR02-race-and-standing.md §2-§5",
+    "provenance": "constructed",
+    "range": [
+      -40,
+      14
+    ],
+    "application": "raceReaction[group][race] is added to npc.baseDisposition inside RI-DLG04 §B's derivedDisposition BEFORE every other term. The upbringing term stacks on top of it.",
+    "races": [
+      "saxhleel",
+      "naga",
+      "dunmer",
+      "imperial",
+      "nord",
+      "breton",
+      "redguard",
+      "khajiit",
+      "orsimer",
+      "bosmer"
+    ],
+    "reaction_groups": [
+      {
+        "key": "RG-DEEP",
+        "name": "Xul-Aneekh / Deep-Kin and interior villagers",
+        "where": "Helstrom, Stone Forest, Deep Marshes, Thorn's back tracks",
+        "population_share": 0.21,
+        "hostile_below_disposition": 15
+      },
+      {
+        "key": "RG-ROOT",
+        "name": "Rootkeepers and sapwell-keepers",
+        "where": "everywhere there is a well",
+        "population_share": 0.04
+      },
+      {
+        "key": "RG-LUKIUL",
+        "name": "Coastal assimilated Argonians",
+        "where": "Gideon, Archon, Lilmoth, Soulrest",
+        "population_share": 0.24
+      },
+      {
+        "key": "RG-NAGA",
+        "name": "Naga bands and river-crews",
+        "where": "Marauder's Coast, the Hive, riverine",
+        "population_share": 0.05
+      },
+      {
+        "key": "RG-LEDGER",
+        "name": "The Wet Ledger (lukiul + Imperial factors)",
+        "where": "Gideon, Lilmoth",
+        "population_share": 0.06
+      },
+      {
+        "key": "RG-EMPIRE",
+        "name": "Provincial Office, Ninth Cohort, Blackrose staff",
+        "where": "Gideon, Stormhold, Blackrose, Archon",
+        "population_share": 0.11,
+        "arrests": true
+      },
+      {
+        "key": "RG-DRES",
+        "name": "Dres salt-factors, ship-crews, raid parties",
+        "where": "Crimson Coast, Salt Hills passes, at sea",
+        "population_share": 0.04
+      },
+      {
+        "key": "RG-BWC",
+        "name": "Blackwood Company, early",
+        "where": "Lilmoth, Blackwood",
+        "population_share": 0.02
+      },
+      {
+        "key": "RG-VAKH",
+        "name": "Ixtu-Vakh, the Sap-Cutters",
+        "where": "itinerant",
+        "population_share": 0.02
+      },
+      {
+        "key": "RG-COURT",
+        "name": "The Drowned Court",
+        "where": "Soulrest, and every burial",
+        "population_share": 0.03
+      },
+      {
+        "key": "RG-TOWN",
+        "name": "Unaligned townsfolk, mixed-race, coastal",
+        "where": "all eight settlements",
+        "population_share": 0.15
+      },
+      {
+        "key": "RG-OUTLAW",
+        "name": "Bandits, smugglers, fences, the Lilmoth rot-quarter",
+        "where": "everywhere",
+        "population_share": 0.03
+      }
+    ],
+    "matrix": {
+      "RG-DEEP": {
+        "saxhleel": 14,
+        "naga": 6,
+        "dunmer": -40,
+        "imperial": -22,
+        "nord": -16,
+        "breton": -14,
+        "redguard": -12,
+        "khajiit": -8,
+        "orsimer": -18,
+        "bosmer": -13
+      },
+      "RG-ROOT": {
+        "saxhleel": 12,
+        "naga": 8,
+        "dunmer": -34,
+        "imperial": -16,
+        "nord": -14,
+        "breton": -12,
+        "redguard": -12,
+        "khajiit": -10,
+        "orsimer": -14,
+        "bosmer": -11
+      },
+      "RG-LUKIUL": {
+        "saxhleel": 9,
+        "naga": -4,
+        "dunmer": -28,
+        "imperial": -2,
+        "nord": -6,
+        "breton": -4,
+        "redguard": -4,
+        "khajiit": -6,
+        "orsimer": -10,
+        "bosmer": -5
+      },
+      "RG-NAGA": {
+        "saxhleel": 2,
+        "naga": 14,
+        "dunmer": -30,
+        "imperial": -20,
+        "nord": -12,
+        "breton": -12,
+        "redguard": -8,
+        "khajiit": 2,
+        "orsimer": -6,
+        "bosmer": -9
+      },
+      "RG-LEDGER": {
+        "saxhleel": 4,
+        "naga": -8,
+        "dunmer": -6,
+        "imperial": 8,
+        "nord": 2,
+        "breton": 4,
+        "redguard": 2,
+        "khajiit": -6,
+        "orsimer": -4,
+        "bosmer": 2
+      },
+      "RG-EMPIRE": {
+        "saxhleel": -6,
+        "naga": -20,
+        "dunmer": 2,
+        "imperial": 12,
+        "nord": 8,
+        "breton": 6,
+        "redguard": 6,
+        "khajiit": -10,
+        "orsimer": 4,
+        "bosmer": 0
+      },
+      "RG-DRES": {
+        "saxhleel": -30,
+        "naga": -26,
+        "dunmer": 12,
+        "imperial": 4,
+        "nord": 0,
+        "breton": 0,
+        "redguard": -2,
+        "khajiit": -6,
+        "orsimer": -4,
+        "bosmer": -2
+      },
+      "RG-BWC": {
+        "saxhleel": -12,
+        "naga": -14,
+        "dunmer": 2,
+        "imperial": 4,
+        "nord": 6,
+        "breton": 2,
+        "redguard": 6,
+        "khajiit": 0,
+        "orsimer": 6,
+        "bosmer": 10
+      },
+      "RG-VAKH": {
+        "saxhleel": 0,
+        "naga": 4,
+        "dunmer": 2,
+        "imperial": 2,
+        "nord": 2,
+        "breton": 2,
+        "redguard": 2,
+        "khajiit": 4,
+        "orsimer": 2,
+        "bosmer": 2
+      },
+      "RG-COURT": {
+        "saxhleel": 0,
+        "naga": 0,
+        "dunmer": 0,
+        "imperial": 0,
+        "nord": 0,
+        "breton": 0,
+        "redguard": 0,
+        "khajiit": 0,
+        "orsimer": 0,
+        "bosmer": 0
+      },
+      "RG-TOWN": {
+        "saxhleel": 6,
+        "naga": -6,
+        "dunmer": -18,
+        "imperial": 2,
+        "nord": 0,
+        "breton": 0,
+        "redguard": 0,
+        "khajiit": -4,
+        "orsimer": -6,
+        "bosmer": 0
+      },
+      "RG-OUTLAW": {
+        "saxhleel": 0,
+        "naga": 6,
+        "dunmer": -4,
+        "imperial": -4,
+        "nord": 0,
+        "breton": 0,
+        "redguard": 0,
+        "khajiit": 4,
+        "orsimer": 2,
+        "bosmer": 0
+      }
+    },
+    "load_bearing_cells": [
+      {
+        "cell": "dunmer/RG-DEEP",
+        "value": -40,
+        "reading": "A Dunmer is not disliked in the Helstrom interior; a Dunmer is the shape of the thing that takes children, and RI-LOR02 §1 establishes that this is happening now. -40 drops a default 50-base NPC to 10, the Hostile band, before Personality, crime or weapon-drawn is counted."
+      },
+      {
+        "cell": "naga/RG-EMPIRE",
+        "value": -20,
+        "reading": "Imperial contempt, reproduced in the mouths of Imperial NPCs and in guard behaviour, never as narration. A Naga player is inside the majority and outside the law."
+      },
+      {
+        "cell": "saxhleel/RG-DRES",
+        "value": -30,
+        "reading": "A Saxhleel is not a customer to a Dres factor. They are stock. This is the cell that changes an encounter."
+      },
+      {
+        "cell": "RG-COURT/*",
+        "value": 0,
+        "reading": "One group in twelve is genuinely indifferent: the Drowned Court buries everyone for a fee and has for four hundred years. A matrix with no neutral row is a matrix somebody generated rather than authored."
+      }
+    ],
+    "upbringings": [
+      {
+        "id": "interior",
+        "name": "Interior",
+        "given_as": "black water, no bottom",
+        "who": "Raised in the marsh proper, by kin, in Jel",
+        "signature_class": "interior",
+        "mods": {
+          "RG-DEEP": 10,
+          "RG-ROOT": 8,
+          "RG-LUKIUL": -8,
+          "RG-LEDGER": -6,
+          "RG-EMPIRE": -8,
+          "RG-TOWN": -4
+        }
+      },
+      {
+        "id": "lukiul",
+        "name": "Lukiul",
+        "given_as": "the harbour at Lilmoth / the Gideon cut",
+        "who": "Raised in a coastal town under Imperial law, literate, assimilated",
+        "signature_class": "assimilated",
+        "mods": {
+          "RG-DEEP": -16,
+          "RG-ROOT": -10,
+          "RG-LUKIUL": 10,
+          "RG-LEDGER": 8,
+          "RG-EMPIRE": 4,
+          "RG-TOWN": 6
+        }
+      },
+      {
+        "id": "foreign-born",
+        "name": "Foreign-born",
+        "given_as": "a river you have not heard of",
+        "who": "Raised outside the province entirely",
+        "signature_class": "foreign",
+        "mods": {
+          "RG-DEEP": -4,
+          "RG-ROOT": -2,
+          "RG-LUKIUL": 2,
+          "RG-LEDGER": 4,
+          "RG-EMPIRE": 6
+        }
+      },
+      {
+        "id": "blackrose",
+        "name": "Blackrose",
+        "given_as": "the ditch under the wall",
+        "who": "Born in the prison town, to a guard's family or an inmate's",
+        "signature_class": "assimilated",
+        "mods": {
+          "RG-DEEP": -6,
+          "RG-ROOT": -4,
+          "RG-EMPIRE": 4,
+          "RG-TOWN": -2
+        }
+      }
+    ],
+    "upbringing_note": "Upbringing is legal for any race. It is the mechanism by which a player can PARTLY buy out of their race: a lukiul Dunmer is at -28 -16 = -44 with the Deep-Kin, an interior Dunmer at -40 +10 = -30. The axis never fully cancels the race term, and that is the point.",
+    "price_surcharge": {
+      "formula": "r = raceReaction[merchant.reaction_group][player.race] + upbringingMod[merchant.reaction_group][player.upbringing]; buyMult = clamp(1.00 - 0.006*r, 0.90, 1.30); sellMult = clamp(1.00 + 0.005*r, 0.78, 1.10)",
+      "buy_clamp": [
+        0.9,
+        1.3
+      ],
+      "sell_clamp": [
+        0.78,
+        1.1
+      ],
+      "buy_coeff": -0.006,
+      "sell_coeff": 0.005,
+      "stacks_on": "RI-PRG05's disposition/Mercantile multipliers",
+      "par_clause": "A Dunmer with Mercantile 100 and PERSONALITY 60 still buys at 0.80 x 1.26 = 1.008x in the interior. The best social build in the game buys them back to par with an untrained Saxhleel, and no further.",
+      "repair": "Three quests each permanently zero one group's surcharge for the player. This is the intended repair path and it is content, not a slider."
+    },
+    "guards": {
+      "formula": "arrestThreshold = base[guard.authority] * raceLawFactor[player.race]; attackThreshold = 4 * arrestThreshold; suspicionMultiplier = raceSuspicion[player.race]",
+      "base": {
+        "imperial_authority": 300,
+        "settlement_militia": 150,
+        "interior": null
+      },
+      "interior_note": "The interior does not arrest. RG-DEEP settlements have no bounty, no guards and no jail. They have blood-price (RI-CRM01 §6): a debt owed to a family, payable in gold, in labour, or in a matching death. It never expires and never leaves on respawn.",
+      "race_never_changes_what_is_a_crime": "Only the response. Theft is theft for everyone.",
+      "law_factor": {
+        "imperial": {
+          "lawFactor": 1.35,
+          "arrest_at": 405,
+          "attack_at": 1620,
+          "suspicion": 0.8,
+          "loiter_to_challenge_s": 11.3
+        },
+        "nord": {
+          "lawFactor": 1.15,
+          "arrest_at": 345,
+          "attack_at": 1380,
+          "suspicion": 0.9,
+          "loiter_to_challenge_s": 10
+        },
+        "breton": {
+          "lawFactor": 1.15,
+          "arrest_at": 345,
+          "attack_at": 1380,
+          "suspicion": 0.9,
+          "loiter_to_challenge_s": 10
+        },
+        "redguard": {
+          "lawFactor": 1.15,
+          "arrest_at": 345,
+          "attack_at": 1380,
+          "suspicion": 0.9,
+          "loiter_to_challenge_s": 10
+        },
+        "bosmer": {
+          "lawFactor": 1.15,
+          "arrest_at": 345,
+          "attack_at": 1380,
+          "suspicion": 0.9,
+          "loiter_to_challenge_s": 10
+        },
+        "dunmer": {
+          "lawFactor": 1.1,
+          "arrest_at": 330,
+          "attack_at": 1320,
+          "suspicion": 0.95,
+          "loiter_to_challenge_s": 9.5
+        },
+        "orsimer": {
+          "lawFactor": 0.85,
+          "arrest_at": 255,
+          "attack_at": 1020,
+          "suspicion": 1.2,
+          "loiter_to_challenge_s": 7.5
+        },
+        "saxhleel": {
+          "lawFactor": 0.7,
+          "arrest_at": 210,
+          "attack_at": 840,
+          "suspicion": 1.35,
+          "loiter_to_challenge_s": 6.7
+        },
+        "khajiit": {
+          "lawFactor": 0.55,
+          "arrest_at": 165,
+          "attack_at": 660,
+          "suspicion": 1.55,
+          "loiter_to_challenge_s": 5.8
+        },
+        "naga": {
+          "lawFactor": 0.33,
+          "arrest_at": 99,
+          "attack_at": 396,
+          "suspicion": 2,
+          "loiter_to_challenge_s": 4.5
+        }
+      },
+      "loiter_ratio_claim": {
+        "pair": [
+          "naga",
+          "imperial"
+        ],
+        "value": 2.51,
+        "band": [
+          2.2,
+          2.8
+        ]
+      }
+    },
+    "repair_paths": [
+      {
+        "id": "reputation",
+        "effect": "Global Reputation is race-blind; at Reputation 40 it contributes +40 to persuasion ratings, out-weighing a -40 race term in the persuasion channel though not in disposition."
+      },
+      {
+        "id": "faction-rank",
+        "effect": "RI-DLG04 §B's faction term is (0.5*rank + 1) * 3 * reaction; Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40."
+      },
+      {
+        "id": "surcharge-quests",
+        "effect": "Three quests permanently zero one group's price surcharge each.",
+        "where": [
+          "gideon",
+          "helstrom",
+          "archon"
+        ]
+      },
+      {
+        "id": "twin-lamps-password",
+        "effect": "Race-blind, disposition-blind; opens one topic on ~40 NPCs."
+      },
+      {
+        "id": "sap-taint-band-4",
+        "effect": "Rooted non-Argonians are addressed by rootkeepers regardless of race, and some Argonians will not be in the room."
+      }
+    ],
+    "declared_incomplete": {
+      "owner": "W1-07 built the matrix, the surcharge, the guard table and the encounter rules. The dialogue VOLUME of RI-CHR02 §4c (1,500 greeting lines, 90 race-filtered topics, 60 slavery lines) is owned by wave-1 pieces W1-11..W1-13 and is NOT shipped here.",
+      "missing": [
+        "1,500 greeting lines across 300 (group, band, player_race_class) cells",
+        "90 race-filtered topic records",
+        "60 slavery lines",
+        "the 34 race-gated quests"
+      ],
+      "shipped_here": "the reaction matrix itself, the upbringing table, the surcharge formula, the guard law-factor table, the AR-3 encounter rules, and a worked sample of race-conditioned greeting and slavery lines in dialogue/writ-house.json"
+    }
+  },
+  "creation": {
+    "schema": "elder-souls/creation@1",
+    "id": "creation",
+    "owner": "W1-07 — character creation",
+    "source": "corpus/22-character/RI-CHR01-character-creation.md §1-§7; presentation contract RI-JRN01 §C O6-O10",
+    "provenance": "constructed",
+    "place": {
+      "interior": "writ-house",
+      "settlement": "tidewrack",
+      "name": "The Writ House at Tidewrack"
+    },
+    "diegesis": {
+      "full_screen_panels": 0,
+      "world_rendered_behind": true,
+      "every_input_has_a_named_asker": true,
+      "control_before_definition_s": 60,
+      "terminates_with": "item:stamped-writ",
+      "rule": "RI-JRN01 O7/O8. There is no character creation screen. There is a room, a desk, a woman with a pen, and a form. Every field below is set by answering her."
+    },
+    "inputs": [
+      {
+        "order": 1,
+        "id": "hatch_name",
+        "label": "Hatch-name",
+        "asked_at": "B01",
+        "asked_at_place": "the barge hold",
+        "asked_by": "jeeh-ei",
+        "question": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+        "form": "free text, or a refusal",
+        "reversible": false,
+        "displayed_in_hud": false,
+        "consequence": {
+          "attributes": null,
+          "skills": null,
+          "social": "11 NPCs use it — rootkeepers, a Deep-Kin war-leader, the Hist at sap-taint band 4, and one person you will not expect",
+          "content": "1 topic chain",
+          "fight": false
+        },
+        "refusal_allowed": true,
+        "refusal_is_recorded": true,
+        "note": "A non-Argonian player is asked for it too and may refuse; refusing is recorded and is itself referenced later."
+      },
+      {
+        "order": 2,
+        "id": "race",
+        "label": "Race",
+        "asked_at": "B03",
+        "asked_at_place": "the Writ House",
+        "asked_by": "warden-scribe-tuleeh-ma",
+        "question": null,
+        "form": "Not asked. OBSERVED, and read back to you wrongly at least once.",
+        "reversible": false,
+        "consequence": {
+          "attributes": "+12 total, shaped",
+          "skills": "5 skills raised",
+          "social": "the whole 12x10 reaction matrix; price surcharge; guard lawFactor",
+          "content": "34 race-gated quests",
+          "fight": true
+        },
+        "fight_note": "AR-3. Encounter composition and aggro — RI-CHR02 §4e."
+      },
+      {
+        "order": 3,
+        "id": "sex",
+        "label": "Sex",
+        "asked_at": "B03",
+        "asked_by": "warden-scribe-tuleeh-ma",
+        "form": "recorded on the writ",
+        "reversible": false,
+        "consequence": {
+          "attributes": null,
+          "skills": null,
+          "social": null,
+          "content": null,
+          "fight": false
+        },
+        "mechanical_terms": 0,
+        "note": "Sex has zero mechanical terms and this is deliberate and stated, so that a critic does not go looking for a hidden one and a builder does not invent one to make the field feel earned."
+      },
+      {
+        "order": 4,
+        "id": "upbringing",
+        "label": "Upbringing",
+        "asked_at": "B03",
+        "asked_by": "warden-scribe-tuleeh-ma",
+        "question": "Where were you a child? Answer in the name of a water, not a country.",
+        "form": "four answers, all legal for all ten races",
+        "reversible": false,
+        "consequence": {
+          "attributes": null,
+          "skills": null,
+          "social": "6 reaction-group rows",
+          "content": "9 upbringing-gated topics, 2 quests",
+          "fight": "via disposition-gated parley only"
+        },
+        "table": "progression/race-reactions.json#upbringings"
+      },
+      {
+        "order": 5,
+        "id": "given_name",
+        "label": "Given name",
+        "asked_at": "B03",
+        "asked_by": "warden-scribe-tuleeh-ma",
+        "question": "And the name they will use.",
+        "form": "free text",
+        "reversible": "once",
+        "reversal": {
+          "cost_gold": 250,
+          "where": "any Provincial Office",
+          "as": "a writ amendment",
+          "uses": 1,
+          "note": "NPCs who knew the old name keep using it, and one of them says so."
+        },
+        "consequence": {
+          "attributes": null,
+          "skills": null,
+          "social": "used in ~2,400 dialogue lines via %PCName",
+          "content": null,
+          "fight": false
+        }
+      },
+      {
+        "order": 6,
+        "id": "class",
+        "label": "Class / profession",
+        "asked_at": "B03",
+        "asked_by": "warden-scribe-tuleeh-ma",
+        "question": "And what is it you do? Name it, or make one up and I will write it, or sit there and answer me and I will tell you what you are.",
+        "form": "three routes: name a profession, declare a custom one, or answer the questions",
+        "routes": [
+          "named",
+          "custom",
+          "questionnaire"
+        ],
+        "questionnaire_mandatory": true,
+        "reversible": false,
+        "reversible_note": "Never — AND IT DOES NOT MATTER THAT IT IS NEVER. Costless by construction: nothing is locked, so nothing needs unlocking.",
+        "consequence": {
+          "attributes": "+/-4 across <=4 attributes, net zero",
+          "skills": "5 skills set to 15-25",
+          "social": "3 caste topics",
+          "content": "0 gates",
+          "fight": false
+        }
+      },
+      {
+        "order": 7,
+        "id": "birthsign",
+        "label": "Birthsign",
+        "asked_at": "B03",
+        "asked_by": "warden-scribe-tuleeh-ma",
+        "question": "Which tide were you drawn on?",
+        "form": "nine tides in three families",
+        "reversible": "once",
+        "reversal": {
+          "where": "the great Hist at Helstrom",
+          "terms": "progression/birthsigns.json#recut",
+          "uses": 1
+        },
+        "consequence": {
+          "attributes": null,
+          "skills": null,
+          "social": "2 topics; rootkeepers can read it off you",
+          "content": "4 birthsign-gated topics, 1 quest",
+          "fight": true
+        },
+        "fight_note": "AR-3. The power and the drawback — RI-CHR03."
+      },
+      {
+        "order": 8,
+        "id": "favoured_attributes",
+        "label": "Favoured attributes",
+        "asked_at": "B03",
+        "asked_by": "warden-scribe-tuleeh-ma",
+        "question": "What has carried you this far?",
+        "form": "custom route only; two favoured and two neglected",
+        "only_on_route": "custom",
+        "reversible": false,
+        "consequence": {
+          "attributes": "+4/+4/-4/-4",
+          "skills": null,
+          "social": null,
+          "content": null,
+          "fight": false
+        }
+      }
+    ],
+    "composition": {
+      "attribute_formula": "attribute_at_creation(a) = 10 + raceDelta[race][a] + classDelta[class][a]",
+      "attribute_total_invariant": 112,
+      "attribute_rule": "Race is the only source of net attribute gain at creation; class only redistributes.",
+      "skill_formula": "skill_at_creation(s) = max(5, raceSkill[race][s], classSkill[class][s])",
+      "skills_above_baseline_range": [
+        5,
+        10
+      ],
+      "skill_overlap_note": "Five if race and class overlap completely (a Khajiit Wet-Foot: both push Sneak/Security/Acrobatics), ten if they do not overlap at all (an Orsimer Sap-Reader). Overlapping starts are deeper, non-overlapping starts are wider, and neither is better."
+    },
+    "signature": {
+      "definition": "( race, class_family, birthsign_family, upbringing_class )",
+      "cardinality": {
+        "race": 10,
+        "class_family": 6,
+        "birthsign_family": 3,
+        "upbringing_class": 3
+      },
+      "total": 540,
+      "upbringing_classes": {
+        "interior": "interior",
+        "lukiul": "assimilated",
+        "blackrose": "assimilated",
+        "foreign-born": "foreign"
+      },
+      "why": "Each of the four components is read by a different subsystem — encounters and prices; skills and attributes; a power and a drawback; disposition rows — and a difference in any one is observable in play without inspecting a menu.",
+      "raw_named_route_starts": 5040,
+      "raw_custom_route_starts": 146588400
+    },
+    "irreversibility": [
+      {
+        "field": "hatch_name",
+        "reversible": false,
+        "why": "It is the name the world did not give you. Nothing may take it or trade it."
+      },
+      {
+        "field": "race",
+        "reversible": false,
+        "why": "The entire RI-CHR02 matrix reads it; a race-change item would delete the item."
+      },
+      {
+        "field": "upbringing",
+        "reversible": false,
+        "why": "It is a fact about a past, and the game contains people who were there."
+      },
+      {
+        "field": "sex",
+        "reversible": false,
+        "why": "No mechanical term; a cosmetic-only change would be a UI feature, not a system."
+      },
+      {
+        "field": "given_name",
+        "reversible": true,
+        "uses": 1,
+        "cost_gold": 250,
+        "where": "any Provincial Office",
+        "why": "Writ amendment."
+      },
+      {
+        "field": "class",
+        "reversible": false,
+        "why": "Costless by construction. Nothing is locked, so nothing needs unlocking."
+      },
+      {
+        "field": "birthsign",
+        "reversible": true,
+        "uses": 1,
+        "where": "the great Hist at Helstrom",
+        "why": "The tide can be re-cut; it is vastei-eixa on the largest scale, and it is a quest, not a menu."
+      },
+      {
+        "field": "attributes_skills",
+        "reversible": false,
+        "why": "RI-PRG02: no attribute may be reduced after allocation. Souls-side respec would flatten S2's earned stream."
+      }
+    ],
+    "no_respec": "There is no respec and no rebuild. A player who has built badly at level 40 fixes it by levelling INTO what they need — which the soul curve makes expensive and the use-based skill system makes possible.",
+    "strange_combinations": [
+      {
+        "race": "dunmer",
+        "upbringing": "interior",
+        "exchange": "writ-house.strange.interior-dunmer"
+      },
+      {
+        "race": "saxhleel",
+        "upbringing": "foreign-born",
+        "exchange": "writ-house.strange.foreign-saxhleel"
+      },
+      {
+        "race": "khajiit",
+        "upbringing": "blackrose",
+        "exchange": "writ-house.strange.blackrose-khajiit"
+      }
+    ],
+    "declared_incomplete": {
+      "owner_of_the_rest": "The consequence COUNTS in this file (34 race-gated quests, 2,400 %PCName lines, 11 hatch-name NPCs, 3 caste topics on >= 25 NPCs each) are the corpus's targets and are owned by wave-1 pieces W1-11..W1-16 (dialogue, quests) and W1-04 (settlement population).",
+      "shipped_by_W1-07": [
+        "every creation input, its asker, its question and its consequence table",
+        "the composition arithmetic and the 540-signature enumeration",
+        "the Writ House scene: interior, two named NPCs, the full census dialogue graph, the stamped writ item",
+        "the reaction matrix, the price surcharge, and the AR-3 encounter rules that read race",
+        "a worked sample of each downstream channel rather than its full volume"
+      ]
+    }
+  },
+  "questions": {
+    "schema": "elder-souls/creation-questions@1",
+    "id": "creation-questions",
+    "owner": "W1-07 — character creation",
+    "source": "corpus/22-character/RI-CHR01-character-creation.md §4 route C; purity rule from RI-JRN01 M7",
+    "provenance": "constructed. Q3, Q6, Q9 and Q11 are transcribed verbatim from RI-CHR01 §4, which prints them in full as the reference artifact. The other eight are authored to the same rules.",
+    "asked_by": "warden-scribe-tuleeh-ma",
+    "asked_at": "writ-house",
+    "purity_rule": "No question or answer text may contain any of the 19 skill names, any of the 10 attribute names, the tokens `skill`, `+`, `%`, or any digit. Quantities are written as words. Enforced by tools/analysis/creation-audit.mjs --section questionnaire.",
+    "count": 12,
+    "asked_per_character": 10,
+    "selection": {
+      "rule": "score(q) = (q.upbringing_affinity includes the character's upbringing ? 3 : 0) + (q.race_affinity includes the character's race ? 2 : 0). The two lowest-scoring questions are not asked; ties are broken by the higher question index being dropped first. Deterministic, no RNG — the questionnaire a Saxhleel raised in the interior is asked is not the questionnaire a foreign-born Dunmer is asked.",
+      "asked": 10
+    },
+    "scoring": {
+      "weights": "Each answer weights three skills by +1.",
+      "primaries": "The three highest-weighted skills become primaries (set to 25).",
+      "secondaries": "The next two become secondaries (set to 15).",
+      "favoured_attributes": "The two most-weighted governing attributes become the favoured pair (+4 each).",
+      "neglected_attributes": "The two least-weighted governing attributes become the neglected pair (-4 each). This clause is W1-07's completion of RI-CHR01 §4 route C, which names the favoured pair and is silent on the neglected pair; without it the questionnaire route would violate the sum-zero invariant of RI-CHR01 §2. Ties are broken by the attribute order in progression/attributes.json.",
+      "tie_break": "Skill ties are broken by the skill order in progression/skills.json, which is RI-PRG03 §1's order.",
+      "named_class_echo": "If the resulting five-skill set exactly matches a named class, the Warden-Scribe says the name aloud. That is the moment the route is for."
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "index": 1,
+        "upbringing_affinity": [
+          "interior",
+          "foreign-born"
+        ],
+        "race_affinity": [
+          "dunmer",
+          "nord",
+          "redguard"
+        ],
+        "world_fact": "The Dres mark is on the toll houses as well as on the ships.",
+        "text": "The salt-road out of the Hills is the only dry way north for a month. There is a house at the crossing that takes a toll, and the men in it wear a mark you have seen on the sides of ships.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Pay, and count what they take.",
+            "weights": [
+              "mercantile",
+              "security",
+              "speechcraft"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Go around, through the standing water, at night.",
+            "weights": [
+              "sneak",
+              "claw-fang",
+              "survival"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Wait for a larger party and walk in the middle of it.",
+            "weights": [
+              "shieldcraft",
+              "veiling",
+              "polearms"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Take the house.",
+            "weights": [
+              "axes-maces",
+              "polearms",
+              "greatweapons"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q2",
+        "index": 2,
+        "upbringing_affinity": [
+          "interior"
+        ],
+        "race_affinity": [
+          "saxhleel",
+          "naga"
+        ],
+        "world_fact": "The wells are going grey, and the keepers stay with them.",
+        "text": "A well you drank at as a child is grey to the rim, and the keeper is still sitting beside it, and has been for some days.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Sit down beside them and stay until one of you speaks.",
+            "weights": [
+              "root-speech",
+              "warding",
+              "speechcraft"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Go down into the well and cut out whatever is fouling it.",
+            "weights": [
+              "security",
+              "alchemy",
+              "blades"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Cut a channel from the live water two ridges over.",
+            "weights": [
+              "survival",
+              "axes-maces",
+              "root-speech"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Take what can be carried from the keeper's things and walk on.",
+            "weights": [
+              "sneak",
+              "mercantile",
+              "marksman"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q3",
+        "index": 3,
+        "verbatim_from": "RI-CHR01 §4",
+        "upbringing_affinity": [
+          "lukiul",
+          "blackrose"
+        ],
+        "race_affinity": [
+          "saxhleel",
+          "naga",
+          "dunmer"
+        ],
+        "world_fact": "Slavery is current, not historical.",
+        "text": "A tithe-barge has grounded on the flats and the crew have gone for help. In the hold there is salt, and rope, and a man in a collar who says he was put there yesterday. The tide turns in an hour.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Cut the collar. It is one cut.",
+            "weights": [
+              "security",
+              "sneak",
+              "speechcraft"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Carry what will sell and go. He was in the hold when you found him.",
+            "weights": [
+              "mercantile",
+              "athletics",
+              "survival"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Wait for the crew and put the question to them in front of witnesses.",
+            "weights": [
+              "speechcraft",
+              "mercantile",
+              "warding"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Break the hold's ribs so the tide takes the salt as well as the barge.",
+            "weights": [
+              "axes-maces",
+              "greatweapons",
+              "acrobatics"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q4",
+        "index": 4,
+        "upbringing_affinity": [
+          "blackrose"
+        ],
+        "race_affinity": [
+          "imperial",
+          "breton",
+          "khajiit"
+        ],
+        "world_fact": "Blackrose is a town before it is a prison, and its gate runs on a list.",
+        "text": "The wall at Blackrose has a gate and the gate has a list, and your name is not on it, and the man who keeps the list is asleep in the sun.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Write yourself onto it.",
+            "weights": [
+              "security",
+              "veiling",
+              "mercantile"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Wake him and ask what it would take.",
+            "weights": [
+              "speechcraft",
+              "mercantile",
+              "warding"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Go over the wall where the buttress is broken.",
+            "weights": [
+              "acrobatics",
+              "athletics",
+              "claw-fang"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Sit where he will see you when he wakes, and be the first thing he deals with.",
+            "weights": [
+              "speechcraft",
+              "greatweapons",
+              "survival"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q5",
+        "index": 5,
+        "upbringing_affinity": [
+          "foreign-born",
+          "interior"
+        ],
+        "race_affinity": [
+          "bosmer",
+          "orsimer",
+          "khajiit"
+        ],
+        "world_fact": "The xanmeers predate the Empire's name for the coast, and the water is opening them.",
+        "text": "Water has opened a hole into a xanmeer that was sealed before the Empire had a name for this coast. It is a long drop and the air coming up is old.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Rope, torch, down.",
+            "weights": [
+              "acrobatics",
+              "claw-fang",
+              "marksman"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Take a reading of the air and the stone first, and go tomorrow.",
+            "weights": [
+              "alchemy",
+              "survival",
+              "sorcery"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Tell a rootkeeper before anyone else hears of it.",
+            "weights": [
+              "root-speech",
+              "speechcraft",
+              "veiling"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Break the hole wider so a cart can be got down.",
+            "weights": [
+              "greatweapons",
+              "axes-maces",
+              "athletics"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q6",
+        "index": 6,
+        "verbatim_from": "RI-CHR01 §4",
+        "upbringing_affinity": [
+          "interior"
+        ],
+        "race_affinity": [
+          "saxhleel",
+          "naga"
+        ],
+        "world_fact": "The roots are failing and the burial they are owed is failing with them.",
+        "text": "Your kin has been dead four days and the roots here are grey and will not drink her. The nearest living well is two days' walk and she will not last it.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Walk. Carry her.",
+            "weights": [
+              "athletics",
+              "survival",
+              "root-speech"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Cut a new well. You know how. It is not permitted.",
+            "weights": [
+              "alchemy",
+              "security",
+              "root-speech"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Burn her, and let the Drowned Court argue about it.",
+            "weights": [
+              "sorcery",
+              "speechcraft",
+              "warding"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Sit with her until it is finished either way.",
+            "weights": [
+              "warding",
+              "veiling",
+              "survival"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q7",
+        "index": 7,
+        "upbringing_affinity": [
+          "interior",
+          "lukiul"
+        ],
+        "race_affinity": [
+          "naga",
+          "saxhleel",
+          "redguard"
+        ],
+        "world_fact": "The river-crews hold the narrows and take a share, and everyone knows it.",
+        "text": "A river-crew has both banks of the narrows and wants a share of what you are carrying, and their leader is looking at your hands rather than your face.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Give a share and make it look like more than it is.",
+            "weights": [
+              "mercantile",
+              "veiling",
+              "speechcraft"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Meet the leader's eye and let them decide.",
+            "weights": [
+              "claw-fang",
+              "shieldcraft",
+              "speechcraft"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Swim the narrows below the crossing with the load on your back.",
+            "weights": [
+              "athletics",
+              "survival",
+              "acrobatics"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Put the first of them in the water.",
+            "weights": [
+              "claw-fang",
+              "polearms",
+              "blades"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q8",
+        "index": 8,
+        "upbringing_affinity": [
+          "lukiul",
+          "foreign-born"
+        ],
+        "race_affinity": [
+          "bosmer",
+          "nord",
+          "orsimer",
+          "imperial"
+        ],
+        "world_fact": "The Blackwood Company is recruiting in Lilmoth, early, with clean boots and a long contract.",
+        "text": "A recruiter with clean boots is buying drinks in Lilmoth and says there is work in Blackwood for anyone who can hold a line, and the coin is real, and the contract is long.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Sign, and read it after.",
+            "weights": [
+              "blades",
+              "greatweapons",
+              "mercantile"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Read it, then argue two clauses, then sign.",
+            "weights": [
+              "mercantile",
+              "speechcraft",
+              "security"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Drink with him all evening and sign nothing.",
+            "weights": [
+              "speechcraft",
+              "veiling",
+              "sorcery"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Follow him back to whoever pays him.",
+            "weights": [
+              "sneak",
+              "marksman",
+              "polearms"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q9",
+        "index": 9,
+        "verbatim_from": "RI-CHR01 §4",
+        "upbringing_affinity": [
+          "lukiul",
+          "blackrose",
+          "foreign-born"
+        ],
+        "race_affinity": [
+          "imperial",
+          "breton"
+        ],
+        "world_fact": "The Empire is illiterate in its own province.",
+        "text": "A Legion clerk in Gideon has your name on a list and cannot read the hand it is written in. He asks you what it says.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Read it to him correctly.",
+            "weights": [
+              "speechcraft",
+              "mercantile",
+              "warding"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Read it to him incorrectly.",
+            "weights": [
+              "speechcraft",
+              "sneak",
+              "veiling"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Take the list.",
+            "weights": [
+              "sneak",
+              "security",
+              "acrobatics"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Tell him you cannot read either, and watch what he does.",
+            "weights": [
+              "veiling",
+              "marksman",
+              "survival"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q10",
+        "index": 10,
+        "upbringing_affinity": [
+          "interior"
+        ],
+        "race_affinity": [
+          "saxhleel"
+        ],
+        "world_fact": "Eggs are moved, and the water is warm and rising where it should not be.",
+        "text": "There is an egg in the shallows that should not be where it is, and the pool it belongs to is a day behind you, and the water here is warm and rising.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Carry it back.",
+            "weights": [
+              "root-speech",
+              "athletics",
+              "survival"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Build it a bank here and hope.",
+            "weights": [
+              "survival",
+              "alchemy",
+              "root-speech"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Find who moved it.",
+            "weights": [
+              "sneak",
+              "security",
+              "marksman"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Leave it. The marsh moved it and the marsh may have meant to.",
+            "weights": [
+              "warding",
+              "veiling",
+              "sorcery"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q11",
+        "index": 11,
+        "verbatim_from": "RI-CHR01 §4",
+        "upbringing_affinity": [
+          "interior",
+          "lukiul",
+          "foreign-born",
+          "blackrose"
+        ],
+        "race_affinity": [],
+        "world_fact": "Nothing. It is the one question that is only about you.",
+        "text": "Three of you are on a rope over a channel and the rope is failing. The one below you is heavier and is holding a child.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "Climb over them both, fast.",
+            "weights": [
+              "acrobatics",
+              "athletics",
+              "sneak"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "Take the child up and then go back down.",
+            "weights": [
+              "athletics",
+              "shieldcraft",
+              "root-speech"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Brace the rope with your own body and shout for the bank.",
+            "weights": [
+              "shieldcraft",
+              "survival",
+              "speechcraft"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Cut above yourself so the drop is shorter for everyone.",
+            "weights": [
+              "blades",
+              "acrobatics",
+              "alchemy"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "q12",
+        "index": 12,
+        "upbringing_affinity": [
+          "lukiul",
+          "blackrose"
+        ],
+        "race_affinity": [
+          "imperial",
+          "breton",
+          "dunmer",
+          "khajiit"
+        ],
+        "world_fact": "The tax barges run the Gideon bar, and they come apart on it.",
+        "text": "A tax barge has come apart on the bar outside Gideon and the crew are in the water and so is the strongbox, and both are drifting the same way.",
+        "answers": [
+          {
+            "id": "a",
+            "text": "The crew.",
+            "weights": [
+              "athletics",
+              "axes-maces",
+              "survival"
+            ]
+          },
+          {
+            "id": "b",
+            "text": "The box.",
+            "weights": [
+              "mercantile",
+              "security",
+              "blades"
+            ]
+          },
+          {
+            "id": "c",
+            "text": "Neither. Stand on the bar and mark where both go.",
+            "weights": [
+              "marksman",
+              "veiling",
+              "sorcery"
+            ]
+          },
+          {
+            "id": "d",
+            "text": "Put a line on the box and let the crew pull themselves along it.",
+            "weights": [
+              "polearms",
+              "athletics",
+              "shieldcraft"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "encounters": {
+    "schema": "elder-souls/encounters@1",
+    "id": "encounters",
+    "owner": "W1-07 — character creation (the AR-3 seam crossing)",
+    "source": "corpus/22-character/RI-CHR02-race-and-standing.md §4e; method 8",
+    "provenance": "constructed",
+    "ar3_rule": {
+      "legal_lever": "WHETHER, WHEN and HOW an encounter aggros, and what parley it offers.",
+      "illegal_lever": "Any change to hp, poise, damage, archetype, moveset, frame data or attack selection as a function of the player's race. That is Morrowind reaching into the fight and is an automatic AR-1 fail (RI-CHR02 'how we lose' #4).",
+      "enforcement": "Every member of every encounter below names an EXISTING statblock id. The statblock is loaded once and is invariant to race by construction — there is no per-race statblock and no per-race override field in this schema. tools/analysis/creation-audit.mjs --section ar3 asserts the schema contains no such field."
+    },
+    "encounters": [
+      {
+        "id": "dres-raid-party",
+        "name": "Dres raid party",
+        "regions": [
+          "rootlands",
+          "salt-hills"
+        ],
+        "schedule": "fixed",
+        "reaction_group": "RG-DRES",
+        "members": [
+          {
+            "role": "infantry",
+            "statblock": "inf_trash",
+            "count": 4,
+            "spawn_offsets_m": [
+              [
+                -3,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                2
+              ],
+              [
+                -1.2,
+                0,
+                4.4
+              ],
+              [
+                1.2,
+                0,
+                4.4
+              ]
+            ]
+          },
+          {
+            "role": "net-thrower",
+            "statblock": "inf_trash",
+            "count": 2,
+            "spawn_offsets_m": [
+              [
+                -5.2,
+                0,
+                6
+              ],
+              [
+                5.2,
+                0,
+                6
+              ]
+            ]
+          }
+        ],
+        "member_note": "Six members in wave 1. RI-CHR02 §4e specifies 4-6 INFANTRY + 1 CASTER + 2 net-throwers; the CASTER is absent because W1-07 does not own a caster statblock and inventing one would be inventing frame data. The absence is declared, not hidden.",
+        "race_behaviour": {
+          "saxhleel": {
+            "opening": "hostile",
+            "aggro_at_m": 28,
+            "net_behaviour": "capture",
+            "parley_offer": false,
+            "on_player_defeat": "capture-transport-archon"
+          },
+          "naga": {
+            "opening": "hostile",
+            "aggro_at_m": 28,
+            "net_behaviour": "capture",
+            "parley_offer": false,
+            "on_player_defeat": "capture-transport-archon"
+          },
+          "khajiit": {
+            "opening": "hostile",
+            "aggro_at_m": 12,
+            "net_behaviour": "kill",
+            "parley_offer": false,
+            "on_player_defeat": "death"
+          },
+          "dunmer": {
+            "opening": "hail",
+            "aggro_at_m": null,
+            "net_behaviour": "idle",
+            "parley_offer": true,
+            "parley_kind": "purchase",
+            "on_player_defeat": "death"
+          },
+          "imperial": {
+            "opening": "hail",
+            "aggro_at_m": null,
+            "net_behaviour": "idle",
+            "parley_offer": true,
+            "parley_kind": "purchase",
+            "on_player_defeat": "death"
+          },
+          "nord": {
+            "opening": "hail",
+            "aggro_at_m": null,
+            "net_behaviour": "idle",
+            "parley_offer": true,
+            "parley_kind": "purchase",
+            "on_player_defeat": "death"
+          },
+          "breton": {
+            "opening": "hail",
+            "aggro_at_m": null,
+            "net_behaviour": "idle",
+            "parley_offer": true,
+            "parley_kind": "purchase",
+            "on_player_defeat": "death"
+          },
+          "redguard": {
+            "opening": "hail",
+            "aggro_at_m": null,
+            "net_behaviour": "idle",
+            "parley_offer": true,
+            "parley_kind": "purchase",
+            "on_player_defeat": "death"
+          },
+          "orsimer": {
+            "opening": "hail",
+            "aggro_at_m": null,
+            "net_behaviour": "idle",
+            "parley_offer": true,
+            "parley_kind": "purchase",
+            "on_player_defeat": "death"
+          },
+          "bosmer": {
+            "opening": "hail",
+            "aggro_at_m": null,
+            "net_behaviour": "idle",
+            "parley_offer": true,
+            "parley_kind": "purchase",
+            "on_player_defeat": "death"
+          }
+        },
+        "hail_line": "Hold up. You are not what we are out here for. — Are you buying? We have four and one of them can read.",
+        "capture_line": "Nets. Nets, not blades, that one is worth the walk back.",
+        "khajiit_line": "Take it. Nobody writes a receipt for a cat.",
+        "parley": {
+          "kind": "purchase",
+          "grounds": [
+            "gold",
+            "faction",
+            "name"
+          ],
+          "race_independent_route": "name",
+          "true_name_topic": "the-sallow-wife",
+          "note": "S13 / RI-CHR02 method 11: every parley must have at least one route that is not disposition-gated, or a race term alone can close every non-lethal exit. Here that route is knowledge — the name of the ship — and it is available to a Saxhleel at disposition 0."
+        }
+      },
+      {
+        "id": "deep-kin-war-brood",
+        "name": "Deep-Kin war-brood camp",
+        "regions": [
+          "deep-marshes",
+          "stone-forest"
+        ],
+        "reaction_group": "RG-DEEP",
+        "members": [
+          {
+            "role": "infantry",
+            "statblock": "inf_trash",
+            "count": 3,
+            "spawn_offsets_m": [
+              [
+                -2.4,
+                0,
+                3
+              ],
+              [
+                2.4,
+                0,
+                3
+              ],
+              [
+                0,
+                0,
+                5.5
+              ]
+            ]
+          }
+        ],
+        "hostile_below_disposition": 15,
+        "behaviour_rule": "hostile_below_disposition",
+        "behaviour_note": "RI-CHR02 §4e mechanism 2. Not a race table — a DISPOSITION threshold, which the race term happens to push a Dunmer under all by itself. An entire tier-3/4 region's encounter density is therefore a function of what the Warden-Scribe wrote down.",
+        "aggro_at_m": 18,
+        "parley": {
+          "grounds": [
+            "name",
+            "faction",
+            "gold"
+          ],
+          "race_independent_route": "name",
+          "true_name_topic": "the-twin-lamps",
+          "note": "The Twin Lamps password is race-blind and disposition-blind (RI-CHR02 §6). It is the reason a Dunmer at disposition 6 still has a non-lethal exit here."
+        }
+      }
+    ]
+  }
+}

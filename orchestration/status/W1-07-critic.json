@@ -11,15 +11,22 @@
   ],
   "outputs_written": [
     "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/probeA.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/*.png (21)"
+    "corpus/90-verdicts/wave1/artifacts/W1-07/probeA/shots/*.png (21)",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/*",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/probeB/probeB.json"
   ],
   "findings": [
     "BUILD DOES NOT BOOT AT HEAD: game/data/index.json line 1411 references dialogue/topics/thorn.json which does not exist at HEAD (added by W1-18 commit 65275dc). window.__HARNESS.ready() throws. Measured in a clean git worktree at HEAD with that one index entry removed; recorded as method_deviation. Not W1-07's fault but it is the state of the repo.",
     "HEADLINE: the entire Writ House creation sequence renders NOTHING. 19 census nodes screenshotted at 1920x1080; all 20 PNGs are byte-identical (sha256 7277a273...). No barge hold, no Writ House interior, no Warden-Scribe, no dialogue text, no answer options, no DOM text at all. The player stands in an open green field for the whole of creation. getCensusState() self-reports full_screen:false / world_visible:true / full_screen_panels:0 - those are fields in a JSON return value with no rendered counterpart.",
     "listEntities() returns 0 entities before AND after creation. There is no NPC anywhere. RI-JRN01 M4 requires >=1 other NPC entity and >=1 takeable item entity during the pre-definition window; both are absent.",
     "There is no title surface at all (RI-JRN01 O3): page load goes straight to a world with a body. O1 is trivially satisfied by having no surfaces; O3 is unmet because the O3 element set does not exist.",
-    "readWrit() returns a real, well-written stamped writ carrying all eight answers (RI-JRN01 O10 content is good) - but it is a string returned by an API, never rendered."
+    "readWrit() returns a real, well-written stamped writ carrying all eight answers (RI-JRN01 O10 content is good) - but it is a string returned by an API, never rendered.",
+    "RI-CHR02 method 8 at HEAD: 10/12 assertions PASS, not the 12/12 the builder's checkpoint claims. M8-khajiit-aggro-14m and M8-khajiit-no-capture FAIL: my three runs of the item's literal command produce ZERO Khajiit AGGRO transitions in 1,800 frames. Cause: closest approach is 18.198 m in all three runs (identical), so the <=12 m Khajiit band is never reached. Artifact: artifacts/W1-07/ar3/{saxhleel,dunmer,khajiit}/trace.jsonl + critic-rerun.json.",
+    "AR-3 is sterile in the fight: across all three 1,800-frame runs the player takes ZERO damage and the raid party never closes (distance frozen at 18.20 m from f900 to f1800). After the Saxhleel AGGRO event the enemies sit in REPOSITION for 1,657 frames. Nothing attacks. The race difference is real only in the alert-state trace channel + one parley_offer line.",
+    "getEncounterState('dres-raid-party') reports race:'saxhleel' for dunmer, khajiit AND nord after setCharacter+loadState in the same session. The encounter's race binding is latched at first spawn and is not re-derived on state reload.",
+    "RI-CHR02 method 7 FAILS its par clause: getPriceQuote for a Dunmer with mercantile=100, personality=60 returns buyMult 1.264 - identical to the untrained Dunmer. The item requires [0.98, 1.05]. The price model has the race surcharge and no RI-PRG05 disposition/Mercantile term at all, so 'race is a handicap you can pay down' has no paying-down.",
+    "Three of the four states RI-CHR02's methods name do not exist: helstrom-market (m7), stormhold-street (m9), rootlands-well-graph (RI-CHR03 m3). Only writ-house and wld-dres-raid-road exist. getReaction/getPriceQuote/getGuardTerms are pure oracle functions exposed to the harness; no NPC, merchant or guard in the running build consumes them - writ-house loads with 0 entities."
   ],
-  "next_step": "AR-3 encounter test (RI-CHR02 m8) re-run by me; then reaction/price/guard live probes; then RI-CHR03 drawbacks; then PRG02/PRG03 skill-by-use and S3 purity",
+  "next_step": "probe C: does anything ever attack (AR-3 who-attacks-you); then RI-CHR03 Dry Well monotonicity; RI-PRG02/03 sheet + skills-by-use + S3 purity",
   "notes_for_successor": "Worktree at $SCRATCH/wt-head is a clean HEAD with the thorn.json index entry removed so the game boots. Run probes from there."
 }
