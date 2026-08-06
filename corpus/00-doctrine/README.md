@@ -5,7 +5,7 @@ owner, and everything else is subordinate to them.
 
 | File | What it is | Who must read it |
 |---|---|---|
-| `ARBITRATION.md` | **FROZEN.** The supreme law: inside the fight Souls wins, everywhere else Morrowind wins. Seam rulings S1–S15. AR-1/AR-2. The visual bifurcation. | Everyone |
+| `ARBITRATION.md` | **FROZEN.** The supreme law: inside the fight Souls wins, everywhere else Morrowind wins. Seam rulings S1–S25. AR-1/AR-2. The visual bifurcation. | Everyone |
 | `CORPUS-CONTRACT.md` | **FROZEN.** How every reference item is written: front-matter, the six mandatory sections, provenance honesty, traceability, the extension rule, blind comparison. | Everyone |
 | `CRITIC-DOCTRINE.md` | The critic charter. Mandate, the ban on judging from source, evidence requirements, the anti-softness protocol, AR-1/AR-2 detection procedures, the bifurcation check, escalation, conflict of interest. | Critics, orchestrator |
 | `SCORING.md` | The 0–10 calibration ladder with anchored bands and worked examples for four dimensions, the anti-inflation audit, and the **gap ledger** rules. | Critics, builders, orchestrator |
