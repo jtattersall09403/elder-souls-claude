@@ -234,9 +234,10 @@ export class MovesetLibrary {
     // Cached per (clip, frame triple) rather than per (weapon, slot), because most clips are
     // shared and the solve depends on nothing else.
     const gsign = reg.profile.arc_deg < 0 ? -1 : 1;
+    const gk = this._yawGain(weaponId, slotId, reg, slot);
     const arch = buildSwing(
       { ...reg.profile, arc_deg: gsign * Math.abs(slot.arc_sweep_deg) },
-      { yawGain: this._yawGain(weaponId, slotId, reg, slot) });
+      { yawGain: gk, accGain: Math.min(1, gk) });
 
     c = new Clip(slot.anim, arch, { startup: slot.startup_f + (slot.charge_max_f || 0), active: slot.active_f, total }, 1.0, slot.root_dz_m);
     c.capsuleLength = reg.capsule_length_m;

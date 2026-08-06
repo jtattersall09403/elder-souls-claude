@@ -670,6 +670,7 @@ export class MagicSystem {
       turnRate: g.turn_rate_dps, cutoffF: g.tracking_cutoff === null ? 0 : Math.round(g.tracking_cutoff * g.lifetime_s * 60),
       travelF: 0, lifeF: Math.round(g.lifetime_s * 60),
       spawnF: frame, hits: [],
+      headingDeg: yaw, prevHeadingDeg: yaw, headingDeltaDeg: 0, acquisitionConeDeg: null,
     };
     // THE DECLARED ARC, ACQUIRED. `spells.json` declares 60 °/s for `LIGHT` and 45 for `HEAVY`
     // with a tracking cutoff; wave 1 never set `p.target`, so the trace measured 0.000 °/s and
@@ -691,6 +692,7 @@ export class MagicSystem {
       }
       p.target = best;
       p.acquireErrDeg = best ? round2(bestErr) : null;
+      p.acquisitionConeDeg = cone;
     }
     this.projectiles.push(p);
     return p;
@@ -752,6 +754,7 @@ export class MagicSystem {
       // Tracking, if any, and ONLY before the cutoff. Past it the projectile flies straight;
       // AP-M3 is a projectile still turning past its cutoff and it is an automatic fail.
       p.appliedTurnDps = 0;
+      p.prevHeadingDeg = p.yaw;                     // AP-M3: the heading BEFORE this frame's turn
       if (p.turnRate > 0 && p.travelF < p.cutoffF && p.target) {
         const want = bearing(p.target.pos[0] - p.pos[0], p.target.pos[2] - p.pos[2]);
         const cap = p.turnRate / 60;
@@ -760,6 +763,8 @@ export class MagicSystem {
         p.yaw = (p.yaw + d + 360) % 360;
         p.appliedTurnDps = Math.abs(d) * 60;
       }
+      p.headingDeg = p.yaw;
+      p.headingDeltaDeg = ((p.headingDeg - p.prevHeadingDeg + 540) % 360) - 180;
       const rad = p.yaw * DEG;
       const step = p.speed / 60;
       p.pos[0] += Math.sin(rad) * step;
@@ -1697,7 +1702,20 @@ export class MagicSystem {
         prev_a: [r4(p.prev[0]), r4(p.prev[1]), r4(p.prev[2])],
         prev_b: [r4(p.prev[0]), r4(p.prev[1]), r4(p.prev[2])],
         r: p.r, active_f: p.travelF, speed_mps: p.speed,
-        turn_rate_dps: round2(p.appliedTurnDps || 0), travel_f: p.travelF,
+        // RI-MAG01 AP-M3. The round-2 critic recorded this check `not_run` with the reason
+        // "no harness surface exposes a projectile's heading", and refused to repeat the
+        // builder's headline number — correctly: a number nobody can check is not a
+        // measurement. Everything AP-M3 asks for is here and, more importantly, is now also on
+        // `engine.getHitGeometry()`, which is the surface a critic actually reads.
+        heading_deg: round2(p.headingDeg === undefined ? p.yaw : p.headingDeg),
+        prev_heading_deg: round2(p.prevHeadingDeg === undefined ? (p.headingDeg === undefined ? p.yaw : p.headingDeg) : p.prevHeadingDeg),
+        heading_delta_deg: round3(p.headingDeltaDeg || 0),
+        heading_rate_dps: round2((p.headingDeltaDeg || 0) * 60),
+        turn_rate_dps: round2(p.appliedTurnDps || 0),
+        turn_rate_cap_dps: p.turnRate === undefined ? null : p.turnRate,
+        travel_f: p.travelF, tracking_cutoff_f: p.cutoffF === undefined ? null : p.cutoffF,
+        tracking_live: p.cutoffF === undefined ? null : (p.travelF < p.cutoffF),
+        acquisition_cone_deg: p.acquisitionConeDeg === undefined ? null : p.acquisitionConeDeg,
         hits: p.hits.slice(),
       });
     }

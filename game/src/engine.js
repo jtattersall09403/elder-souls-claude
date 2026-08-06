@@ -1351,6 +1351,15 @@ export class Engine {
       };
       out.actors.push(rec);
     }
+    // RI-MAG01 AP-M3. The round-2 critic could not run this check at all — "MagicSystem
+    // .hitboxRecords() computes per-projectile turn_rate_dps and travel_f, but
+    // engine.getHitGeometry() does not include it and no other harness surface exposes a
+    // projectile's heading", so the builder's headline "60.00 deg/s before the cutoff and 0.000
+    // after" was recorded `not_run` rather than repeated. It is here now, on the surface a
+    // critic already reads, with the heading itself and not merely the rate: heading_deg,
+    // prev_heading_deg, heading_delta_deg, the cap, the cutoff frame and whether tracking is
+    // still live. A number nobody can check is not a measurement.
+    out.spell_geometry = this.magic ? this.magic.hitboxRecords(this.sim.frame) : [];
     return out;
   }
 
@@ -2830,7 +2839,16 @@ export class Engine {
       const b = Math.atan2(dx, dz);
       const cy = this.sim.camera.yaw * Math.PI / 180;
       this.input.reset(this.sim.frame);
-      this.input.queueInputs([{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }], this.sim.frame);
+      // A MIRED body struggles. `sim/player.js` turns a roll press into a mire STRUGGLE (25
+      // stamina, one per 30 f, three of them break you out) and nothing else clears the state —
+      // so a scripted walk that never presses roll can be mired permanently, and the S9 walked
+      // reachability probe was then measuring the probe rather than the province: 0 of 13 regions
+      // entered, every leg aborting on a 900-frame stuck run in shin-deep SUCK. A player presses
+      // the button. The probe must too, or it cannot succeed, which is the mirror of the failure
+      // mode AGENT-PROTOCOL names — a probe that cannot fail.
+      const script = [{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }];
+      if (this.traversal && this.traversal.mired) { script.push({ f: 0, press: ['roll'] }); script.push({ f: 1, release: ['roll'] }); }
+      this.input.queueInputs(script, this.sim.frame);
       const x0 = p.pos[0], z0 = p.pos[2];
       this.loop.stepOnce();
       this._afterStep();

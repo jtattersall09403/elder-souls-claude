@@ -121,6 +121,30 @@ const BURY = {
 };
 const buryOf = (bone, ch) => ((BURY[bone] || {})[ch]);
 
+// ---- and the pose a LUNGE starts in ------------------------------------------------------
+// The CHAMBER: the point already on line, the hands drawn back to the hip, the elbow closed.
+// `RI-CMB04` §B's thrust note says exactly this — "the weapon is chambered beside the hip with
+// the point already on line, the body drops into a lunge, and the whole displacement is LINEAR
+// along the point" — and the shipped curve did not do it, because `swing` scales the cock TOWARDS
+// the fully-extended aim pose, so a thrust solved for peak speed opens its hitbox already half
+// extended. Measured on the shipped build: the dagger's own thrust kept its 0.28 m blade 0.62 m
+// from its wielder's root axis for the whole active window.
+//
+// Same derivation as BURY: the argmin of the worst-case min_axis over the guard-to-tip
+// geometries, subject to the weapon pointing FORWARD (direction cosine along +Z ≥ 0.80, so it is
+// on line and not a chop), not pitched more than 25° off level, the hand between 0.85 m and
+// 1.45 m and drawn back inside 0.30 m. Worst case 0.253 m axis against a 0.43 m budget.
+const CHAMBER = {
+  spine_00: { rx: 2 },
+  spine_02: { rx: 1 },
+  upperarm_r: { rx: 20, rz: -8 },
+  lowerarm_r: { rx: -70 },
+  hand_r: { rx: -20 },
+  upperarm_l: { rx: -30 },
+  lowerarm_l: { rx: -62 },
+};
+const chamberOf = (bone, ch) => ((CHAMBER[bone] || {})[ch]);
+
 // ---- (a) the idle base loop: motion, no arms -------------------------------------------
 const IDLE_LOOP = {
   note:
@@ -214,7 +238,7 @@ const ARCH = {
       'why a spear\'s swept volume is a narrow tube and why stepping 20 cm sideways beats it. The ' +
       'recovery pulls the point back off line and settles on the ready pose.',
     aim: 'hit',
-    cockPhase: 0.5, hitPhase: 1.4, followPhase: 2.2, bury: false,
+    cockPhase: 0.5, hitPhase: 1.4, followPhase: 2.2, bury: false, chamber: true,
     root_forward: [[0.0, 0.0], [0.55, 0.03], [1.0, 0.34], [1.4, 0.9], [2.0, 0.99], [2.3, 1.0], [3.0, 1.0]],
     root_offset_y: [[0.0, 0.0], [1.0, -0.05], [1.5, -0.15], [2.3, -0.12], [3.0, 0.0]],
     tracks: {
@@ -291,10 +315,11 @@ const ARCH = {
  */
 const EXT_CH = { lowerarm_r: 'rx', upperarm_r: 'rx' };
 
-function buildArch(def, t, swing, ext, bury) {
+function buildArch(def, t, swing, ext, bury, cham) {
   const tracks = {};
   const hp = def.bury ? (def.hitFrac === undefined ? 0.5 : def.hitFrac) : 1.0;
   const B = def.bury ? bury : 0;
+  const C = def.chamber ? cham : 0;
   for (const bone of Object.keys(def.tracks)) {
     tracks[bone] = {};
     for (const ch of Object.keys(def.tracks[bone])) {
@@ -327,7 +352,11 @@ function buildArch(def, t, swing, ext, bury) {
       const endActive = (B > 0 && bv !== undefined) ? hit + (bv - hit) * B : hit;
       // the settle: from the pose the swing ENDED in, monotonically onto idle
       const settle = endActive + (end - endActive) * 0.30;
-      const v1 = cock + t * (hit - cock);
+      let v1 = cock + t * (hit - cock);
+      // The pose the hitbox OPENS on. For a lunge that is the chamber, and it is authored
+      // rather than left to fall out of `swing`.
+      const cv = chamberOf(bone, ch);
+      if (C > 0 && cv !== undefined) v1 = v1 + (cv - v1) * C;
       const seg = (a, b, u) => a + (b - a) * u;
       const keys = [
         [0.0, r(start)],
@@ -351,6 +380,20 @@ function buildArch(def, t, swing, ext, bury) {
       keys.push([2.0 + (def.followPhase - 2.0) + 0.78 * (3.0 - def.followPhase), r(base + 0.88 * (end - base))]);
       keys.push([3.0, r(end)]);
       tracks[bone][ch] = keys;
+    }
+  }
+  if (C > 0) {
+    for (const bone of Object.keys(CHAMBER)) {
+      for (const ch of Object.keys(CHAMBER[bone])) {
+        if (tracks[bone] && tracks[bone][ch]) continue;
+        const end = idleOf(bone, ch);
+        const v1 = end + (CHAMBER[bone][ch] - end) * C;
+        tracks[bone] = tracks[bone] || {};
+        tracks[bone][ch] = [
+          [0.0, r(end)], [def.cockPhase, r(v1)], [1.0, r(v1)],
+          [2.0, r(end)], [3.0, r(end)],
+        ];
+      }
     }
   }
   // Bones the BURY pose moves that the archetype's own swing never touched still have to get
@@ -389,6 +432,7 @@ function buildArch(def, t, swing, ext, bury) {
     solved: {
       startup_blend: +t.toFixed(3), swing_scale: +swing.toFixed(3),
       elbow_extension_deg: +ext.toFixed(1), bury: +(def.bury ? bury : 0).toFixed(3),
+      chamber: +(def.chamber ? cham : 0).toFixed(3),
       hit_phase_fraction: hp,
     },
     solved_note:
@@ -567,31 +611,35 @@ for (const name of Object.keys(ARCH)) {
   const rows = rowsFor(name);
   const def = ARCH[name];
   const buryOpts = def.bury ? [1.0, 0.85, 0.7, 0.55] : [0];
+  const chamOpts = def.chamber ? [1.0, 0.85, 0.7, 0.55] : [0];
   let best = null, closest = null;
   for (const bury of buryOpts) {
+   for (const cham of chamOpts) {
     for (let t = 0.00; t <= 0.801; t += 0.05) {
       for (let ext = 0; ext <= 70; ext += 5) {
         let hit = null;
         for (let swing = 1.30; swing >= 0.10; swing -= 0.05) {
-          const a = buildArch(def, t, swing, ext, bury);
+          const a = buildArch(def, t, swing, ext, bury, cham);
           const m = measureArch(name, a, rows);
           const miss = Math.max(0, m.peak - PEAK_MAX) * 6 + Math.max(0, REACH_MIN - m.reach) * 3 + Math.max(0, m.axis - MIN_AXIS_MAX);
-          if (!closest || miss < closest.miss - 1e-9) closest = { a, m, t, swing, ext, bury, miss };
-          if (miss === 0) { hit = { a, m, t, swing, ext, bury }; break; }
+          if (!closest || miss < closest.miss - 1e-9) closest = { a, m, t, swing, ext, bury, cham, miss };
+          if (miss === 0) { hit = { a, m, t, swing, ext, bury, cham }; break; }
         }
         // Prefer the deepest bury, then the largest swing, then the smallest extension.
         if (hit && (!best || hit.swing > best.swing + 1e-9)) best = hit;
         if (hit) break;         // smallest feasible ext at this (bury, t)
       }
     }
-    if (best) break;            // the deepest bury that admits any feasible point wins
+    if (best) break;
+   }
+   if (best) break;             // the deepest bury that admits any feasible point wins
   }
   if (!best) {
     best = closest;
     console.log(`${name.padEnd(16)} NO feasible point: peak ${best.m.peak.toFixed(3)}x (${best.m.peakRow}) reach ${best.m.reach.toFixed(3)}x (${best.m.reachRow}) min_axis ${best.m.axis.toFixed(3)} m (${best.m.axisRow})`);
   }
   solved[name] = best.a;
-  console.log(`${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury}  ` +
+  console.log(`${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham}  ` +
     `peak=${best.m.peak.toFixed(3)}x (${best.m.peakRow})  reach=${best.m.reach.toFixed(3)}x (${best.m.reachRow})  min_axis=${best.m.axis.toFixed(3)} m (${best.m.axisRow})  ` +
     `world_peak=${best.m.world.toFixed(1)} m/s  travel=${best.m.travelRadii.toFixed(2)} radii/frame (${best.m.travelRow})`);
 }

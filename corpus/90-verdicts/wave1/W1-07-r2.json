@@ -1,0 +1,1254 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-07-r2",
+  "piece_title": "W1-07 round 2 \u2014 Character creation and the opening (Writ House census, derivation curves, birthsign composition, the 12x10 reaction matrix, the race-conditioned raid)",
+  "subsystem_paths": [
+    "character.creation.flow",
+    "character.creation.identity",
+    "character.creation.irreversibility",
+    "character.class.custom",
+    "character.race.profile",
+    "character.race.reaction",
+    "character.birthsign.powers",
+    "character.birthsign.drawback",
+    "progression.level.attributes",
+    "progression.skill.usegrowth",
+    "progression.build.identity",
+    "journey.chargen.diegesis"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-07-r2-3e7c",
+    "role": "critic.character",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-06T21:40:00Z",
+    "finished_at": "2026-08-06T23:40:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "4a5f13f",
+    "branch": "working tree at 4a5f13f; probe I re-run in a clean worktree at the same commit after another builder's in-flight quest data made the tree unbootable",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/smoke.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "reports/harness-smoke.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r2a.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r2b.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r2c.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r2e.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r2f.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r2h.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeH/probeH.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r2i.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeI/probeI.json"
+      },
+      {
+        "command": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=<r>,upbringing=foreign-born\"  (r in saxhleel|dunmer|khajiit)",
+        "seed": 1337,
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/manifest.json"
+      },
+      {
+        "command": "node tools/harness/cmb-reach.mjs --enemy inf_trash",
+        "exit_code": 1,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/reach/cmb-reach-inf_trash.txt"
+      },
+      {
+        "command": "node tools/analysis/creation-audit.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "reports/w1-07/creation-audit.json"
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "both-separately",
+    "declared_before_citation": true,
+    "art_refs": [
+      "Morrowind's Census & Excise office at Seyda Neen (art direction only)"
+    ],
+    "fidelity_refs": [
+      "Elden Ring",
+      "Skyrim SE/AE (fidelity only)"
+    ],
+    "note": "Declared before any visual judgement was written. Round 1 declared 'not-visual'; this round must judge visually because the piece's owner asked directly whether the opening stands against Morrowind's. Art direction is judged against Morrowind (the Writ House reads as a room somebody works in; the reed-case shelving is the best decision in the piece). Fidelity is judged against current-generation references (untextured capsule bodies, no faces, no animation beyond a yaw turn \u2014 a greybox). NO image artifact from either reference is cited or used as a bar; both statements are qualitative and no 2002 screenshot is used for fidelity and no modern screenshot for art direction."
+  },
+  "reference_items": [
+    {
+      "id": "RI-CHR01",
+      "path": "corpus/22-character/RI-CHR01-character-creation.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-10 per axis, min-over-axes across 10 axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "Class-roster axis at its 0 band (0 of 14 named classes questionnaire-reachable, floor 6); questionnaire axis at its 0 band as presented in play; distinctness axis unmeasurable (build-viability.mjs absent)",
+      "score_0_10": 4,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1-inputs-diegetic",
+          "result": "pass",
+          "value": "8 of 8 inputs delivered as answers to a named NPC in a named interior with the world rendered behind",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json"
+          ]
+        },
+        {
+          "id": "M3-attribute-arithmetic",
+          "result": "pass",
+          "value": "140 race x class pairs total exactly 112; creation-audit 89/90 with 1 declared XFAIL",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json"
+          ]
+        },
+        {
+          "id": "M5-class-routes-as-presented",
+          "result": "fail",
+          "value": "0 of 10 questionnaire dilemma prompts reach the frame; 10 distinct question texts in the model, 1 distinct drawn line",
+          "threshold": "the questionnaire's questions must be prose about the world, presented in play",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+          ]
+        },
+        {
+          "id": "M5b-named-classes-reachable",
+          "result": "fail",
+          "value": "0 of 14 named classes over 240 runs (10 races x 4 upbringings x 8 answer permutations, histogram a/b/c/d = 600/600/600/600)",
+          "threshold": ">= 6 named classes questionnaire-reachable",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeH/probeH.json"
+          ]
+        },
+        {
+          "id": "M-custom-route",
+          "result": "fail",
+          "value": "writ.class-custom-neglected offers already-taken attributes; picking one throws 'census: writ.class-custom-neglected cannot repeat strength' out of stepFrames, reachable in 8 button presses",
+          "threshold": "custom route present and completable",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json"
+          ]
+        },
+        {
+          "id": "M6-build-viability",
+          "result": "unmeasurable",
+          "value": "tools/analysis/build-viability.mjs does not exist (RI-MTH06 open)",
+          "note": "not charged to the builder; the tool is not this piece's to write"
+        },
+        {
+          "id": "M8-class-never-locks",
+          "result": "pass",
+          "value": "0 content gates read class; 3 caste topics keyed on the class string keep it visible",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/creation-audit.json"
+          ]
+        },
+        {
+          "id": "M9-irreversibility",
+          "result": "pass",
+          "value": "0 data records set an irreversible field",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/creation-audit.json"
+          ]
+        },
+        {
+          "id": "M-signatures",
+          "result": "pass",
+          "value": "540 signatures constructible; probeA character carries a composed signature key dunmer|scout|withheld|interior",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "RI-CHR01/questionnaire-route-unreadable",
+        "RI-CHR01/questionnaire-names-no-class"
+      ],
+      "how_we_lose_hits": [
+        "The questionnaire is cut \u2014 in the form the item did not anticipate: shipped, scored, and invisible"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeH/probeH.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/07-writ.class-questions.png"
+      ],
+      "why_not_ten": "The mandatory questionnaire route reaches the player with neither its questions (0 of 10 prompts drawn; buildCensusModel sets line: state.line and never reads state.question.text) nor its answer (0 of 14 named classes over 240 runs), and the custom route throws out of the fixed step on ordinary input.",
+      "path_to_ten": "Draw state.question.text as the line at questionnaire nodes; give scoreAnswers a tolerant named-class matcher so >= 10 of 14 are reachable and on_match_named_class fires; filter pick-node options against already-taken attributes and wrap _censusApplyPending so a refused answer cannot throw.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-CHR02",
+      "path": "corpus/22-character/RI-CHR02-race-and-standing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10 per axis, min-over-axes across 11 axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "Dialogue-volume axis at 0 by consumption: every floor met in data, no world-side consumer for greetings or race-gated topics",
+      "score_0_10": 4,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1-race-table",
+          "result": "pass",
+          "value": "10 races, every attribute delta sums to 12, skill profiles distinct by value",
+          "note": "Nord/Orsimer share a skill-id set \u2014 a corpus defect in the item's own table, declared XFAIL",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/creation-audit.json"
+          ]
+        },
+        {
+          "id": "M2-matrix-shape",
+          "result": "pass",
+          "value": "12x10 no nulls, sigma 9.894, all rows and columns distinct, RG-COURT all zero",
+          "threshold": "sigma >= 9.0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/creation-audit.json"
+          ]
+        },
+        {
+          "id": "M3-68-point-test",
+          "result": "pass",
+          "value": "Saxhleel interior 74 vs Dunmer foreign-born 6 at the same live RG-DEEP NPC = 68 points, friendly vs hostile; aggregate Saxhleel-Dunmer 11.75",
+          "threshold": ">= 60 points, >= 8 aggregate",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+          ]
+        },
+        {
+          "id": "M5-dialogue-volume",
+          "result": "fail",
+          "value": "data floors met at 0-7% headroom (greetings 1500/1500, topics 96/90, forbids 32/30, rumours 16/16, slavery 61/60 with 16/12 to a Dunmer) and NO world-side consumer: greetings.json is read by nothing and an NPC's topic list is byte-identical for a Dunmer and a Saxhleel",
+          "threshold": "all minimums met with >= 20% headroom for the 10 band, and consumed (RI-MTH07)",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+          ]
+        },
+        {
+          "id": "M6-register-blind",
+          "result": "unmeasurable",
+          "value": "not run: the critic read tools/dialogue/gen-greetings.mjs before sampling and cannot be the blind judge"
+        },
+        {
+          "id": "M7-prices",
+          "result": "pass",
+          "value": "surcharge-only quotes 54/70/76 and 66/52/47 exact; Mercantile-100/PER-60 Dunmer effective buy 1.0112 (bar [0.98,1.05]) derived from the character; untrained 1.5275",
+          "threshold": "within 3%, par clause in [0.98,1.05]",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+          ]
+        },
+        {
+          "id": "M8-ar3-encounter",
+          "result": "pass",
+          "value": "Saxhleel AGGRO 27.948 m + capture at f818; Dunmer 0 AGGRO + parley_offer at 23.975 m kind=purchase; Khajiit AGGRO 11.956 m + DEATH. Statblock/moveset/archetype/tier/hp_max/poise identical across all three",
+          "threshold": "three distinct openings, identical movesets",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/trace.jsonl",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/dunmer/trace.jsonl",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/khajiit/trace.jsonl"
+          ]
+        },
+        {
+          "id": "M9-guard-thresholds",
+          "result": "fail",
+          "value": "the law-factor and suspicion tables are still oracles: stepNPCs' post behaviour counts loiter_frames race-blind and nothing reads suspicionMultiplier",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+          ]
+        },
+        {
+          "id": "M10-no-lockout",
+          "result": "unmeasurable",
+          "value": "quest corpus too thin, and unbootable at the time of measurement"
+        },
+        {
+          "id": "M11-parley-race-coverage",
+          "result": "unmeasurable",
+          "value": "one encounter class shipped; the Dunmer parley fires and its race_independent_route is declared but no parley verb exists to take it"
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "Prices are the only thing that differs \u2014 partially: prices and the encounter differ and reach entities; dialogue does not reach anybody"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/trace.jsonl"
+      ],
+      "why_not_ten": "greetings.json's 300 cells / 1,500 lines and the 96 race-gated topic records have no world-side consumer \u2014 chData.greetings is written at engine.js:3706 and read nowhere, and a live NPC offers a Dunmer and a Saxhleel byte-identical topic lists \u2014 so the dialogue-volume axis is 0 by RI-MTH07 even though every data floor is met.",
+      "path_to_ten": "Give the NPC a greeting selector that keys (reaction_group, band(npcDisposition), playerRaceClass) into greetings.json and draws the line on the same UILayer the census uses, and filter n.topics through requires.race/forbids.race in listNPCs and in whatever offers topics; then raise every \u00a74c floor to >= 20% headroom.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-CHR03",
+      "path": "corpus/22-character/RI-CHR03-birthsigns.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-10 per axis, min-over-axes across 8 axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "Visibility axis at 0 (no \u00a76 channel consumed); drawback-reality axis passes in mechanism and is unobservable in play because Focus never depletes",
+      "score_0_10": 4,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M1-cosmology",
+          "result": "pass",
+          "value": "9 Hist-rooted signs, 3 families, zero Imperial sign names in the roster",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/creation-audit.json"
+          ]
+        },
+        {
+          "id": "M2-drawback-reality",
+          "result": "marginal",
+          "value": "focus_restores_at_hearth false for nu-ixtu and true for raj-xul, and hearthRest() returns the refusal with its reason (S27 honoured). But Focus never falls below max in anything drivable \u2014 90/90 before a cast, 90/90 after, 90/90 after resting \u2014 so the cost is not yet observable",
+          "threshold": "a competent player can lose a run to it",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+          ]
+        },
+        {
+          "id": "M5-build-viability",
+          "result": "unmeasurable",
+          "value": "tools/analysis/build-viability.mjs does not exist (RI-MTH06 open)"
+        },
+        {
+          "id": "M7-visibility",
+          "result": "fail",
+          "value": "no \u00a76 channel is consumed: no birthsign-keyed greeting reaches a speaker, no birthsign-gated topic or quest fires",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+          ]
+        },
+        {
+          "id": "M9-kaal-kaal",
+          "result": "pass",
+          "value": "Kaal-Kaal + Nu-Ixtu focus_max 60 = 46 + 0.5*(74-46), power at half; hearthRest refuses, drawback at full. Proved data-driven: halving the 1.60 in birthsigns.json moved live focus_max 74 -> 46",
+          "threshold": "power halved, drawback full",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "The Unlit Water's claim is never built"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+      ],
+      "why_not_ten": "The Dry Well's S27 drawback is implemented and reported but has no observable consequence \u2014 Focus never falls below max in anything this build can drive, so a refill you never need costs nothing \u2014 and none of \u00a76's visibility channels has a consumer.",
+      "path_to_ten": "Land a Focus spend the census can reach (a starting attuned spell that costs Focus on cast), so that hearthRest's refusal is a number the player watches not come back; then build one birthsign-gated topic and one rootkeeper greeting per sign and route them through the same surface the census draws on.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-PRG02",
+      "path": "corpus/20-progression/RI-PRG02-stat-sheet.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10 per axis, min-over-axes",
+      "native_score": 6,
+      "native_max": 10,
+      "native_verdict": "Curves derived, exact on every published anchor, and consumed by the fight",
+      "score_0_10": 6,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M-hp-curve",
+          "result": "pass",
+          "value": "anchors 300/560/742/924/1044/1122 at VIG 10/20/27/40/60/99 exact; Orsimer VIG18 hp_max 508 live, Bosmer VIG6 196",
+          "threshold": "RI-PRG02 \u00a73",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+          ]
+        },
+        {
+          "id": "M-consumption",
+          "result": "pass",
+          "value": "11 hits of 50 to fell the Orsimer, 4 to fell the Bosmer \u2014 the fight reads the pool, not just getDerivedStats()",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+          ]
+        },
+        {
+          "id": "M-stamina",
+          "result": "pass",
+          "value": "64 (END 6) to 116 (END 19); anchors 80/120/145/157/181 at END 10/20/30/40/99",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+          ]
+        },
+        {
+          "id": "M5-earned-fraction",
+          "result": "unmeasurable",
+          "value": "no run long enough to separate earned from bought progression was possible in this round"
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+      ],
+      "why_not_ten": "The earned/bought split (method 5's [0.19,0.31] fraction) was not measurable, and the sheet's out-of-fight returns (equip load, disposition from Fatigue) still have no consumer I could reach.",
+      "path_to_ten": "Run a levelling trace long enough to compute the earned fraction, and give equip load and Fatigue a world-side read.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10 per axis, min-over-axes",
+      "native_score": 5,
+      "native_max": 10,
+      "native_verdict": "Use events reach the sheet and the Cost Gate holds; the skill-scales-damage half is unmeasured",
+      "score_0_10": 5,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M-hit-banks-progress",
+          "result": "pass",
+          "value": "skill_use fires on every connecting player hit in the live browser build (probeI, 14 of 14 swings at 0.4-1.8 m)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeI/probeI.json"
+          ]
+        },
+        {
+          "id": "M4-cost-gate",
+          "result": "pass",
+          "value": "grantSkillUse('lock_picked',{cost:0}) => {refused:'cost_gate'}; {cost:1} => security 5 -> 6, progress 11, to_next 16",
+          "threshold": "a no-cost action grants nothing",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+          ]
+        },
+        {
+          "id": "M-air-swings",
+          "result": "unmeasurable",
+          "value": "the critic's own air-swing control was invalidated by a world-coordinate spawn error and is withdrawn; the builder's claim of 70 swings at air => 0 points is not independently confirmed"
+        },
+        {
+          "id": "M7-skill-scales-damage",
+          "result": "unmeasurable",
+          "value": "no 5-vs-100 dynamic damage comparison was run"
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeI/probeI.json"
+      ],
+      "why_not_ten": "Only the wiring was confirmed: skill_use fires on a connecting hit and the Cost Gate refuses a free action. The negative control (swings at air bank nothing) and the S3 half where skill scales damage were both unmeasured this round.",
+      "path_to_ten": "Ship a probe that swings at air and at a body in the same run and asserts the progress delta is zero in the first case, and a 5-vs-100 damage comparison on an identical scripted swing.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-JRN01",
+      "path": "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md",
+      "side": "neutral",
+      "kind": "trace",
+      "native_scale": "0-100 weighted, hard fails cap at 2",
+      "native_score": 0,
+      "native_max": 100,
+      "native_verdict": "Unmeasurable, fail-closed: the item's binding rule is the tool and the tool does not exist",
+      "score_0_10": 0,
+      "measured": "unmeasurable",
+      "checks": [
+        {
+          "id": "M1-M19",
+          "result": "unmeasurable",
+          "value": "tools/journey/journey-run.mjs (A-JRN1), beat-extract.mjs and gamepad-shim.mjs do not exist; the item states every check is unmeasurable and scores 0 fail-closed until they do",
+          "hard_fail": true
+        },
+        {
+          "id": "M3-title-composition",
+          "result": "fail",
+          "value": "no title surface exists: DOM under <body> is CANVAS + SCRIPT, accessibility tree has no focusable node, getUIState.surfaces = 0",
+          "note": "measured directly, recorded separately from the fail-closed 0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+          ]
+        },
+        {
+          "id": "M5-creation-diegesis",
+          "result": "pass",
+          "value": "19 of 19 distinct frames, page.screenshot and canvas.toDataURL identical to the pixel; opaque UI 0.136-0.336 of frame (self-reported from layout), most-common colour <= 0.244, world drawn behind at every node",
+          "note": "measured directly, recorded separately from the fail-closed 0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json"
+          ]
+        },
+        {
+          "id": "M6-named-interlocutor",
+          "result": "pass",
+          "value": "18/18 nodes resolve the speaker to a live sim.npcs entity in the named interior",
+          "note": "measured directly",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json"
+          ]
+        },
+        {
+          "id": "M7-class-routes-as-presented",
+          "result": "fail",
+          "value": "the questionnaire route presents 0 of its 10 questions",
+          "note": "measured directly",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+          ]
+        },
+        {
+          "id": "M8-carried-object",
+          "result": "marginal",
+          "value": "readWrit() returns a complete, correct stamped writ; it is still not an object in the world and the stamped node draws no text at all",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json"
+          ]
+        },
+        {
+          "id": "M13-modality-parity",
+          "result": "marginal",
+          "value": "2 of 4 modes complete: keyboard-only in 17 real DOM key presses, gamepad-only in 28 button presses + 1 left-stick walk through RealInput.pollGamepad. Touch and mouse+keyboard not run. The custom-class route throws on both completed modes",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json"
+          ]
+        },
+        {
+          "id": "M11-marker-sweep",
+          "result": "pass",
+          "value": "0 markers, 0 compass, 0 minimap, getUIState.hud_elements 0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "RI-JRN01/instrumented-pass-absent"
+      ],
+      "how_we_lose_hits": [
+        "the bureaucrat is a skin on the menu \u2014 no longer true; the carried object is a string \u2014 still true"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+      ],
+      "why_not_ten": "Scored 0 as the item is written: the instrumented pass's binding rule is tools/journey/journey-run.mjs (A-JRN1) and it does not exist, so every check is unmeasurable and fail-closed. What was measured directly is recorded per-check above and is not substituted for the item's score.",
+      "path_to_ten": "Write tools/journey/journey-run.mjs, beat-extract.mjs and the naive-pass channel; and amend the item to split its fail-closed clause so that M4-M11, M13 and M15 \u2014 which are screenshot-and-state checks any critic can run against window.__HARNESS today \u2014 are released from it, with the critic required to state the instrument. As written the item cannot distinguish twenty identical grey frames from a rendered scene with a named interlocutor.",
+      "ten_by_wave": 3
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/00-boot.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/01-hold.out.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/02-writ.race-observed.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/03-writ.sex.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/04-writ.upbringing.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/05-writ.given-name.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/06-writ.class-routes.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/07-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/08-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/09-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/10-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/11-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/12-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/13-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/14-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/15-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/16-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/17-writ.birthsign.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/18-stamped.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs",
+      "resolution": "1920x1080",
+      "camera_pose": "the census scene camera at the node named in the filename; barge hold or Writ House interior, third person, fixed",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/00-boot.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/01-hold.out.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/02-writ.race-observed.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/03-writ.sex.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/04-writ.upbringing.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/05-writ.given-name.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/06-writ.class-routes.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/07-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/08-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/09-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/10-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/11-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/12-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/13-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/14-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/15-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/16-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/17-writ.birthsign.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/canvas/18-stamped.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs (__HARNESS.screenshot(), canvas.toDataURL)",
+      "resolution": "1920x1080",
+      "camera_pose": "identical to the matching probeA/shots frame; captured through the WebGL canvas rather than the page",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07-r2a.mjs"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07-r2b.mjs"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07-r2c.mjs"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07-r2e.mjs"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07-r2f.mjs"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeG/probeG.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/harness/critic-w1-07-r2g.mjs",
+      "note": "WITHDRAWN: its questionnaire answer pattern only ever selected answers a and c. Kept so the withdrawal is auditable; superseded by probeH."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeH/probeH.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07-r2h.mjs"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeI/probeI.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-07-r2i.mjs (run in a clean worktree at 4a5f13f)"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/trace.jsonl",
+      "kind": "trace",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=saxhleel,upbringing=foreign-born\"",
+      "seed": 1337,
+      "duration_s": 30.0
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/manifest.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=saxhleel,upbringing=foreign-born\"",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/dunmer/trace.jsonl",
+      "kind": "trace",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=dunmer,upbringing=foreign-born\"",
+      "seed": 1337,
+      "duration_s": 30.0
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/dunmer/manifest.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=dunmer,upbringing=foreign-born\"",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/khajiit/trace.jsonl",
+      "kind": "trace",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=khajiit,upbringing=foreign-born\"",
+      "seed": 1337,
+      "duration_s": 30.0
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/khajiit/manifest.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/run-headless.mjs --scenario wld-dres-raid-road --seed 1337 --state \"race=khajiit,upbringing=foreign-born\"",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/reach/cmb-reach-inf_trash.txt",
+      "kind": "log",
+      "produced_by": "node tools/harness/cmb-reach.mjs --enemy inf_trash"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/reach/cmb-reach-inf_trash.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/cmb-reach.mjs --enemy inf_trash --out ..."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r2/creation-audit.json",
+      "kind": "report",
+      "produced_by": "node tools/analysis/creation-audit.mjs (the builder's own audit, re-run by the critic; copied from reports/w1-07/)",
+      "source": "ours",
+      "note": "89/90 assertions PASS, 0 hard failures, 1 declared XFAIL (the corpus's own Nord/Orsimer skill-id collision). Re-run at 4a5f13f and reproduces."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-JRN01",
+      "status": "not_possible",
+      "not_possible_reason": "The item's pack generator tools/journey/beat-extract.mjs does not exist, and the item is at 0 fail-closed. Round 1 ran the pair, the pick landed on ours, and CRITIC-DOCTRINE \u00a72.5's harsher pass was recorded there as reference-wins-on-review."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A6",
+          "result": "pass",
+          "observed": "All six raid-party members carry inf_trash | enemy:inf_trash | INFANTRY | trash | hp_max 412 | poise_max 32 in all three race runs. Race decides only opening, aggro_at_m, parley_offer and on_player_defeat.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/trace.jsonl",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/khajiit/trace.jsonl"
+          ]
+        },
+        {
+          "id": "A1",
+          "result": "pass",
+          "observed": "No to-hit roll anywhere: every miss is a WHIFF with reason no_geometric_overlap."
+        },
+        {
+          "id": "A8",
+          "result": "pass",
+          "observed": "Skill affects banked progress and scaling, never whether a swing connects."
+        },
+        {
+          "id": "A9",
+          "result": "pass",
+          "observed": "No level-scaled enemies; the statblock is identical for every race."
+        },
+        {
+          "id": "A10",
+          "result": "pass",
+          "observed": "No mid-fight pause; the census surface takes buttons without pausing the sim (RI-UIX03)."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/trace.jsonl"
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "38 screenshots, 0 HUD elements, 0 markers, 0 compass, 0 minimap; getUIState.hud_elements 0.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+          ]
+        },
+        {
+          "id": "B3",
+          "result": "pass",
+          "observed": "Round 1 failed this because writ-house instantiated 0 entities and no NPC could be sampled. NPCs now exist and carry topics (3-4 each at helstrom-market, 2 in the Writ House). The sample is thin and the topic list is not race-filtered, which is scored under RI-CHR02 M5 rather than as a seam leak.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+          ]
+        },
+        {
+          "id": "B5",
+          "result": "pass",
+          "observed": "Every price this piece exposes is in gold. The soul-denominated birthsign re-cut is data-only and is the corpus's own prescription; filed as an arbitration question."
+        },
+        {
+          "id": "B12",
+          "result": "pass",
+          "observed": "A fight now begins and ends: the Dunmer run's parley_offer is a real non-lethal opening and the Saxhleel capture is a non-lethal resolution with the writ and purse taken. No parley verb exists to TAKE the offer, which is recorded as a secondary observation.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/dunmer/trace.jsonl",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/trace.jsonl"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 3.8,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "band_label": "Between Skeleton and Recognisable but wrong \u2014 the scene is real and most models now reach an entity; the mandatory questionnaire route is invisible and unnamed, and the largest content set has no reader",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "below_pass_threshold",
+    "hard_fail:RI-CHR01/questionnaire-route-unreadable",
+    "hard_fail:RI-CHR01/questionnaire-names-no-class",
+    "hard_fail:RI-JRN01/instrumented-pass-absent",
+    "consumption_fail:greetings.json",
+    "consumption_fail:race-gated-topics"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed",
+    "subsystem_path": "character.creation.flow",
+    "what": "The questionnaire \u2014 RI-CHR01 \u00a74 Route C, RI-JRN01 O9's mandatory route \u2014 reaches the player with neither its questions nor its answer. (a) buildCensusModel() at game/src/character/scene.js:267 sets `line: state.line` and never reads `state.question.text`, so all ten dilemma nodes draw one identical stock transition line above four unattached answers: 10 distinct question texts in the model, 1 distinct drawn line, 0 of 10 reaching the frame. (b) Across 240 runs covering all 10 races x 4 upbringings x 8 answer permutations with a verified even answer histogram (600 each of a/b/c/d), the route produced a named class 0 times out of 14, against RI-CHR01's pass floor of >= 6 and its 0-band of < 6.",
+    "why_it_matters": "A player taking the route this game's opening is built around is shown forty answers to questions that are never asked, and is never once told what profession they turned out to be \u2014 the moment the route exists for does not occur in any configuration.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeH/probeH.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/07-writ.class-questions.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/16-writ.class-questions.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "1) In buildCensusModel(), when state.input.kind === 'questionnaire', set line: state.question.text and move the scribe's transition line to the aside slot (or to the writ.class-routes answer). The model already carries the text; this is one line. 2) In character/questionnaire.js's scoreAnswers, make the named-class match reachable: compare the resulting 3-primary/2-secondary skill set against classes.json's fourteen with a tolerance (>= 3 of 5 shared skills plus a matching family) rather than requiring an exact set \u2014 census.js already has on_match_named_class and %ClassName wired for the moment it succeeds. 3) In CensusSurface.sync(), filter a pick node's options against attributes already taken by earlier pick nodes so writ.class-custom-neglected cannot offer a favoured attribute, and wrap _censusApplyPending() so a refused answer can never throw out of the frame step.",
+      "targets": [
+        "game/src/character/scene.js",
+        "game/src/character/questionnaire.js",
+        "game/src/character/census.js",
+        "game/src/engine.js"
+      ],
+      "acceptance": "getCensusState().surface.rendered_text contains getCensusState().question.text at 10 of 10 questionnaire nodes and the 10 nodes yield 10 distinct drawn lines; a 240-run sweep over all 10 races x 4 upbringings with an even a/b/c/d answer histogram reaches >= 6 distinct named class_id values (>= 10 for the item's 10 band) and the Warden-Scribe's on_match_named_class line fires on every named match; and the full custom-class route completes on gamepad alone with 0 exceptions out of stepFrames.",
+      "ref_item": "RI-CHR01",
+      "estimated_size": "S"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "greetings.json's 300 cells / 1,500 lines have no world-side consumer. chData.greetings is written at game/src/engine.js:3706 and that is the only occurrence of 'greetings' in game/src/**. playerRaceClass() is called only from getReaction() (a harness oracle) and tools/analysis/creation-audit.mjs. No harness verb matches /greet/.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+      ],
+      "subsystem_path": "character.race.reaction"
+    },
+    {
+      "what": "The 96 race-gated topic records are never evaluated: at helstrom-market every NPC's topic list is byte-identical for a Dunmer and a Saxhleel. sim/npc.js copies spec.topics verbatim and nothing filters on requires.race / forbids.race.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json"
+      ],
+      "subsystem_path": "character.race.reaction"
+    },
+    {
+      "what": "In the live raid encounter the party's swings whiff at resolve-frame separations of 0.60-1.14 m and connect only at 1.14-1.38 m, with lateral offset ~0 \u2014 an effective minimum reaching distance of ~1.14 m against S26's <= 0.35 m acceptance. The Saxhleel run is 12 attack_start / 12 WHIFF / 0 HIT and the party dealt zero damage in 730 frames of contact. The mechanism is this piece's own: engageMember() returns early while b.move is set, so a committed attacker cannot back off and its own root motion carries it from min_standoff_m 1.45 to 0.6-0.9 m during the active frames. tools/harness/cmb-reach.mjs --enemy inf_trash reports ACCEPTANCE FAIL on all seven turtle stand distances (0.287-0.341 of max HP vs 0.40 required); the tool ships in this tree, takes an --enemy flag, and was not run. The builder's attribution to 'a W1-09 resolver interaction' is honest about the symptom but wrong about the ownership.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/trace.jsonl",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/khajiit/trace.jsonl",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/reach/cmb-reach-inf_trash.txt"
+      ],
+      "subsystem_path": "character.race.reaction"
+    },
+    {
+      "what": "A merchant's own derived disposition never reaches their prices: priceQuote() defaults `disposition` to 50 and no call site passes the live value, so a Deep-Kin seller at disposition 6 quotes as though at 50. This is the build's (defensible) resolution of the \u00a74b double-application, and it costs RI-PRG05's 'read by the shop' requirement.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json"
+      ],
+      "subsystem_path": "progression.gold.economy"
+    },
+    {
+      "what": "The guard law-factor and suspicion tables are still oracles: stepNPCs' `post` behaviour counts loiter_frames race-blind and nothing reads suspicionMultiplier.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+      ],
+      "subsystem_path": "character.race.reaction"
+    },
+    {
+      "what": "No title surface exists (RI-JRN01 O1/O3, M3), unchanged from round 1; readWrit() is still not an object in the world and the stamped node draws no text at all; text entry drops characters (BJORN typed on a real keyboard produced 'bjon'); and neither NPC animates beyond a yaw turn across all 19 nodes.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeF/probeF.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json"
+      ],
+      "subsystem_path": "journey.chargen.diegesis"
+    },
+    {
+      "what": "greetings.json is a declared combinatorial expansion of 360 authored fragments and it meets RI-CHR02 \u00a74c's intent rather than padding it: all 300 stances are distinct authored prose in the item's register, 1,400 of 1,500 output lines are distinct, distinct lines per (group, band) across the five player-race classes run 5 to 25 with the only 5 being RG-COURT (all-zero row, correctly identical), and a small authored set recombined at runtime is precisely the shape of Morrowind's own greeting table. What IS chargeable is that every \u00a74c floor is met with 0-7% headroom against the 10 band's >= 20%, which puts the volume axis at 6 before consumption is considered at all.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeB/probeB.json"
+      ],
+      "subsystem_path": "character.race.reaction"
+    },
+    {
+      "what": "Two of this critic's own measurements were withdrawn mid-round and are kept as negative evidence rather than deleted: probeG's questionnaire answer pattern only ever selected answers a and c (superseded by probeH's verified-even histogram), and probeE/probeH's dummy spawns used world coordinates and placed the target 5.7 km from the player, which invalidated a claimed 'the statblock never reaches a stationary player' and a claimed browser/combat-node divergence. probeI is the corrected sweep: the browser lands hits at every distance 0.4-1.8 m and agrees with cmb-reach.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeG/probeG.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeI/probeI.json"
+      ],
+      "subsystem_path": "character.creation.flow"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-creation-is-an-api-not-a-scene",
+      "status": "partially-closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/probeA.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/00-boot.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/02-writ.race-observed.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json"
+      ],
+      "measured_value": "19 of 19 distinct sha256 (bar >= 15); 18/18 speaker resolves to a live NPC entity; min 1 NPC per node; opaque UI 0.136-0.336 of frame (bar <= 0.55); most-common-colour <= 0.244 so no frame is uniform; keyboard-only and gamepad-only both complete",
+      "acceptance_restated": "19 creation-node screenshots yield >= 15 distinct sha256; listEntities() returns >= 1 NPC at every node and that entity's id equals getCensusState().speaker; the line appears as rendered text with opaque UI <= 55% and 0 frames uniform over >= 90%; the sequence completes on keyboard only and on gamepad only",
+      "closed_by_builder_of_fix": false,
+      "note": "Every clause of the acceptance passes, and the UI is genuinely in the rendered frame (page.screenshot and canvas.toDataURL are pixel-identical at all 19 nodes). NOT closed, because the acceptance was written against round 1's failure mode and is satisfied by a scene whose most important text \u2014 the ten questionnaire dilemmas \u2014 is still computed and never drawn, and because one of the three creation routes throws out of the fixed step on ordinary input. The successor gap is GAP-W1-questionnaire-route-is-unreadable-and-unnamed."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "id": "AMENDMENT-PROPOSAL-JRN01-01",
+      "path": "corpus/88-journeys/AMENDMENT-PROPOSAL-JRN01-01.md",
+      "area": "88-journeys",
+      "judges": [
+        "journey.chargen.diegesis"
+      ],
+      "reason": "method_gap",
+      "note": "PROPOSED, NOT APPLIED. RI-JRN01's fail-closed clause binds every check to a tool (A-JRN1 / tools/journey/journey-run.mjs) that has never been written, so the item scores 0 identically for round 1's twenty byte-identical grey frames and round 2's nineteen distinct frames of a named interior with a named interlocutor \u2014 a scale that cannot distinguish those two is measuring the toolchain, not the journey. The proposal narrows the clause to M1/M2/M3/M12/M14 and the naive pass, releases M4-M11/M13/M15 to direct measurement with the instrument named, and strikes the gamepad-shim.mjs reference in favour of __HARNESS.gamepad(), which routes through the same RealInput.pollGamepad() a physical GameSir X2s takes. No threshold, hard fail or ES/OPEN requirement is touched, and the W1-07 round-2 verdict still scores RI-JRN01 0 as the item is written today.",
+      "index_regenerated": false
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-JRN01",
+      "deviation": "Scored 0 fail-closed as the item is written, while recording per-check what was measured directly against window.__HARNESS. The two are kept separate and the direct measurements are NOT substituted for the item's score.",
+      "why": "The item's binding rule is the tool (A-JRN1 / tools/journey/journey-run.mjs), which does not exist. The brief asks for the item to be scored as written and for the piece-local instrument's measurements to be recorded separately, with a recommendation. The recommendation is in W1-07-r2.md \u00a78: split the fail-closed clause so M4-M11, M13 and M15 may be measured directly with the instrument stated.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-CHR02",
+      "deviation": "Method 6 (register blind sort) not run.",
+      "why": "The critic read tools/dialogue/gen-greetings.mjs in full while assessing the builder's declared-expansion challenge, and therefore cannot be the blind judge. Recorded unmeasurable rather than self-assessed.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-CHR01",
+      "deviation": "Method 6 (build viability) and RI-CHR03 method 5 not run.",
+      "why": "tools/analysis/build-viability.mjs does not exist. RI-MTH06 is open and the tool is not this piece's to write; scored unmeasured => 0 per doctrine and explicitly not charged to the builder twice.",
+      "affects_scores": true
+    }
+  ],
+  "arbitration_questions": [
+    {
+      "question": "RI-PRG05's buy_mult already contains -0.0060 x Disposition, and RI-CHR02 \u00a74a puts the race term inside Disposition; \u00a74b then applies a raceSurcharge of 1.00 - 0.006 x r on top, with the identical coefficient. Race is counted twice at the same weight. Which term owns it?",
+      "souls_side": "Not a Souls concern; pricing is outside the fight.",
+      "morrowind_side": "Morrowind owns the economy and disposition-affected prices. Either the surcharge is folded into the disposition term, or the disposition term is computed race-blind for pricing. The build chose the latter by hard-coding disposition 50, which costs RI-PRG05's requirement that disposition be read by the shop.",
+      "proposed_seam_id": "S15b"
+    },
+    {
+      "question": "RI-CHR02 method 7 asserts quotes 'within 3% of {54, 70, 76} gold' at base 60, but those figures are the \u00a74b surcharge multipliers alone. A real untrained quote is 60 x 1.2085 x 1.264 = 92 g. Is the method's table the surcharge or the quote?",
+      "souls_side": "n/a",
+      "morrowind_side": "The method text should read 'surcharge multiplier', not 'quoted price'. The build ships both, correctly labelled (buy_surcharge_only 76, buy 92), which is the right way to hold a disputed bar.",
+      "proposed_seam_id": "none \u2014 an item-text correction, not a seam"
+    },
+    {
+      "question": "AR-2 B5 makes any soul-denominated price an automatic fail (S15), while RI-CHR03 \u00a75 prices the birthsign re-cut at 'all souls currently carried, to a minimum of 25,000'. Still data-only; it will collide when the re-cut is built.",
+      "souls_side": "S15: souls level you and only level you.",
+      "morrowind_side": "RI-CHR03 \u00a75 and RI-CHR01 \u00a77 both prescribe the soul price as the thing that makes the re-cut non-routine.",
+      "proposed_seam_id": "S15a"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is false, with reasons recorded per check and all fail-closed at 0 rather than skipped: RI-CHR01 M6 and RI-CHR03 M5 (build-viability.mjs absent, RI-MTH06 open, not charged to the builder); RI-CHR02 M6 (the critic read gen-greetings.mjs before sampling and cannot be the blind judge); RI-CHR02 M10/M11 (quest corpus too thin, and unbootable at the time); RI-CHR01 M7's 20-signature blind trace study; RI-PRG03 M4's air-swing control and M7's 5-vs-100 damage test; RI-JRN01 M1-M19. blind_done_where_required is false: RI-JRN01 carries blind_pair: yes and its pack generator beat-extract.mjs does not exist; recorded as not_possible, and round 1's pick (which landed on ours, with \u00a72.5's harsher pass recorded there) is not re-used as a pass. saw_builder_notes_before_blind is true \u2014 the brief supplied the builder's claim table and orchestration/status/W1-07-r2.json was read first; mitigation: every headline claim was re-measured with instruments written for this round (critic-w1-07-r2a..i.mjs) rather than with the builder's tools/harness/w1-07-scene.mjs, and one of the builder's claims (the melee whiff) did not survive the re-measurement in the builder's favour. Two of this critic's own numbers were withdrawn mid-round (probeG's biased answer pattern; probeE/H's world-coordinate spawn) and both are documented in the markdown and kept as artifacts rather than deleted. Build churn: another builder's in-flight quest data made the tree unbootable partway through (QuestBook: 9 integrity failures in game/data/quests/**, from magic-utility.json, unrelated to W1-07); retried twice, then ran the remaining probe in a clean worktree at the same commit. Nothing was deleted and no indexed data file was removed."
+  }
+}

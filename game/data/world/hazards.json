@@ -84,7 +84,11 @@
       "applies_to_npcs": true,
       "scales_with_level": false,
       "affliction_kind": "disease",
-      "affliction_name": "The Droops"
+      "affliction_name": "The Droops",
+      "affliction_drains": {
+        "attribute": "agility",
+        "points": 10
+      }
     },
     {
       "id": "comb-collapse",
@@ -306,7 +310,11 @@
       "applies_to_npcs": true,
       "scales_with_level": false,
       "affliction_kind": "disease",
-      "affliction_name": "Vat-lung"
+      "affliction_name": "Vat-lung",
+      "affliction_drains": {
+        "attribute": "endurance",
+        "points": 10
+      }
     },
     {
       "id": "salt-storm",
@@ -493,7 +501,11 @@
       "applies_to_npcs": true,
       "scales_with_level": false,
       "affliction_kind": "disease",
-      "affliction_name": "Ash-lung"
+      "affliction_name": "Ash-lung",
+      "affliction_drains": {
+        "attribute": "vigour",
+        "points": 8
+      }
     },
     {
       "id": "hist-sap-fume",
@@ -521,7 +533,11 @@
       "applies_to_npcs": true,
       "scales_with_level": false,
       "affliction_kind": "disease",
-      "affliction_name": "Sap-dream"
+      "affliction_name": "Sap-dream",
+      "affliction_drains": {
+        "attribute": "intellect",
+        "points": 12
+      }
     }
   ]
 }

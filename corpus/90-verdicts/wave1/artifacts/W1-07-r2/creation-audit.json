@@ -1,0 +1,812 @@
+{
+  "tool": "creation-audit",
+  "section": "all",
+  "total": 89,
+  "passed": 88,
+  "declared_failures": 1,
+  "stale_declarations": 0,
+  "failed": 0,
+  "results": [
+    {
+      "section": "inputs",
+      "id": "CHR01-M1-count",
+      "ok": true,
+      "status": "PASS",
+      "measured": "8 inputs",
+      "expected": "exactly 8",
+      "declared": null
+    },
+    {
+      "section": "inputs",
+      "id": "CHR01-M1-asker-resolves",
+      "ok": true,
+      "status": "PASS",
+      "measured": "8/8 askers resolve to an NPC record",
+      "expected": "every asked_by is a record in game/data/npcs/writ-house.json",
+      "declared": null
+    },
+    {
+      "section": "inputs",
+      "id": "CHR01-M1-node-resolves",
+      "ok": true,
+      "status": "PASS",
+      "measured": "0 inputs name a dialogue node; 0 unresolved",
+      "expected": "every named node exists in dialogue/topics/writ-house.json",
+      "declared": null
+    },
+    {
+      "section": "inputs",
+      "id": "CHR01-M1-beat-resolves",
+      "ok": true,
+      "status": "PASS",
+      "measured": "beats used: B01, B03; places: the barge hold / the Writ House / ",
+      "expected": "every asked_at is an RI-EXP01 beat id (B01 / B03)",
+      "declared": null
+    },
+    {
+      "section": "inputs",
+      "id": "CHR01-M1-asked-as-a-question",
+      "ok": true,
+      "status": "PASS",
+      "measured": "6/8 inputs carry the line the Warden-Scribe says",
+      "expected": "every input except race (observed) and sex (recorded) is spoken aloud — RI-JRN01 O6-O10",
+      "declared": null
+    },
+    {
+      "section": "inputs",
+      "id": "CHR01-M1-sex-has-no-terms",
+      "ok": true,
+      "status": "PASS",
+      "measured": "0 requires/forbids clauses mention sex",
+      "expected": "zero — sex is deliberately mechanically inert (RI-CHR01 §2)",
+      "declared": null
+    },
+    {
+      "section": "inputs",
+      "id": "CHR01-M1-every-input-reads",
+      "ok": true,
+      "status": "PASS",
+      "measured": "7/8 inputs declare a downstream read",
+      "expected": "every input except sex declares >= 1 measurable read",
+      "declared": null
+    },
+    {
+      "section": "inputs",
+      "id": "CHR01-M1-sex-is-inert",
+      "ok": true,
+      "status": "PASS",
+      "measured": "sex reads: (none)",
+      "expected": "none — stated deliberately, so a critic does not hunt for a hidden term",
+      "declared": null
+    },
+    {
+      "section": "races",
+      "id": "CHR02-M1-count",
+      "ok": true,
+      "status": "PASS",
+      "measured": "10 playable races: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer",
+      "expected": "exactly 10",
+      "declared": null
+    },
+    {
+      "section": "races",
+      "id": "CHR02-M1-sum-12",
+      "ok": true,
+      "status": "PASS",
+      "measured": "10/10 rows sum to +12",
+      "expected": "sum(attribute_deltas) == 12 for every race",
+      "declared": null
+    },
+    {
+      "section": "races",
+      "id": "CHR02-M1-skills-raised",
+      "ok": true,
+      "status": "PASS",
+      "measured": "min skills raised = 5",
+      "expected": ">= 4 per race",
+      "declared": null
+    },
+    {
+      "section": "races",
+      "id": "CHR02-M1-abilities",
+      "ok": true,
+      "status": "PASS",
+      "measured": "15 abilities across 10 races",
+      "expected": ">= 1 per race",
+      "declared": null
+    },
+    {
+      "section": "races",
+      "id": "CHR02-scoring-noncombat-abilities",
+      "ok": true,
+      "status": "PASS",
+      "measured": "7 abilities flagged non-combat: Amphibious, Root-listener, Amphibious, Star of the West, Voice of the Empire, Night Eye, Land on Your Feet",
+      "expected": ">= 3 (RI-CHR02 scoring, \"Race profiles\" 10-band)",
+      "declared": null
+    },
+    {
+      "section": "races",
+      "id": "CHR02-M1-distinct-skill-profiles",
+      "ok": true,
+      "status": "PASS",
+      "measured": "10/10 distinct skill profiles (id AND value)",
+      "expected": "10 — no two races start with the same five numbers",
+      "declared": null
+    },
+    {
+      "section": "races",
+      "id": "CHR02-M1-distinct-skillsets",
+      "ok": false,
+      "status": "XFAIL",
+      "measured": "9/10 distinct skill ID sets — collision: nord/orsimer",
+      "expected": "10 — no two races name the same five skills (strict reading of RI-CHR02 M1)",
+      "declared": "Nord and Orsimer name the same five skills (Greatweapons, Axes & Maces, Shieldcraft, Survival, Athletics) in RI-CHR02 §1's own table. Their VALUES differ — Nord 25/20/15/10/10, Orsimer 20/25/20/10/5 — so the two races do not start with the same numbers, and CHR02-M1-distinct-skill-profiles (asserted hard, 10/10) covers that. Changing either row to make the ID sets differ would be inventing a skill assignment the corpus did not write."
+    },
+    {
+      "section": "races",
+      "id": "CHR02-scoring-no-domination",
+      "ok": true,
+      "status": "PASS",
+      "measured": "0 dominating pairs",
+      "expected": "zero — no race is componentwise >= another",
+      "declared": null
+    },
+    {
+      "section": "attributes",
+      "id": "CHR01-M2-class-sum-0",
+      "ok": true,
+      "status": "PASS",
+      "measured": "14/14 classes sum to 0",
+      "expected": "sum(classDelta) == 0 for all 14",
+      "declared": null
+    },
+    {
+      "section": "attributes",
+      "id": "CHR01-M2-class-shape",
+      "ok": true,
+      "status": "PASS",
+      "measured": "max touched attributes = 4, max |delta| = 4",
+      "expected": "|delta| <= 4 on at most 4 attributes",
+      "declared": null
+    },
+    {
+      "section": "attributes",
+      "id": "CHR01-M2-112-points",
+      "ok": true,
+      "status": "PASS",
+      "measured": "150/150 race x class-option pairs total exactly 112 attribute points (10 races x [14 named + custom])",
+      "expected": "150/150 at 112 (100 base + 12 race + 0 class)",
+      "declared": null
+    },
+    {
+      "section": "attributes",
+      "id": "CHR01-M2-custom-sum-zero",
+      "ok": true,
+      "status": "PASS",
+      "measured": "custom route attribute delta sum = 0 (two favoured at +4, two neglected at -4)",
+      "expected": "0 — the custom builder cannot buy net points",
+      "declared": null
+    },
+    {
+      "section": "skills",
+      "id": "CHR01-M3-raised-band",
+      "ok": true,
+      "status": "PASS",
+      "measured": "skills above baseline across 150 pairs: min 5, max 10",
+      "expected": "every pair in [5, 10]",
+      "declared": null
+    },
+    {
+      "section": "skills",
+      "id": "CHR01-M3-max-25",
+      "ok": true,
+      "status": "PASS",
+      "measured": "highest skill at creation = 25",
+      "expected": "<= 25",
+      "declared": null
+    },
+    {
+      "section": "skills",
+      "id": "CHR01-M3-all-19-reachable",
+      "ok": true,
+      "status": "PASS",
+      "measured": "19/19 skills reachable above baseline across the 15 class options (14 named + custom)",
+      "expected": "all 19 — RI-CHR01 M3, denominator per M2 (\"all 10 races x 15 class options\")",
+      "declared": null
+    },
+    {
+      "section": "skills",
+      "id": "CHR01-M3-gap-declared",
+      "ok": true,
+      "status": "PASS",
+      "measured": "known_gap in classes.json names: GAP-W1-07-polearms",
+      "expected": "a declared gap naming polearms — the corpus ships 19 skills and 14 classes that raise 18",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "CHR01-M4-count",
+      "ok": true,
+      "status": "PASS",
+      "measured": "12 questions, 48 answers",
+      "expected": "12 questions, 48 answers",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "CHR01-M4-asked",
+      "ok": true,
+      "status": "PASS",
+      "measured": "10 asked per character",
+      "expected": "10 of 12",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "JRN01-M7-purity",
+      "ok": true,
+      "status": "PASS",
+      "measured": "0 stat tokens in 12 questions + 48 answers",
+      "expected": "zero skill names, attribute names, digits, + or % in any question or answer text",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "CHR01-M4-skill-coverage",
+      "ok": true,
+      "status": "PASS",
+      "measured": "answer appearances per skill: min 5, max 15",
+      "expected": "every one of the 19 skills appears in >= 5 answers",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "CHR01-M4-three-weights",
+      "ok": true,
+      "status": "PASS",
+      "measured": "48/48 answers weight exactly three skills",
+      "expected": "all 48",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "CHR01-M4-exhaustive",
+      "ok": true,
+      "status": "PASS",
+      "measured": "12 distinct asked-sets cover all 40 (race, upbringing) pairs; 12,582,912 routes enumerated",
+      "expected": "every distinct asked-set walked at 4^10 = 1,048,576 routes — enumeration, not sampling",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "CHR01-M4-reachability",
+      "ok": true,
+      "status": "PASS",
+      "measured": "11/14 named classes reachable by exhaustive enumeration",
+      "expected": ">= 10 of 14 (RI-CHR01 §5 metric row)",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "CHR01-M4-enumerator-agrees",
+      "ok": true,
+      "status": "PASS",
+      "measured": "4^6 = 4,096 routes scored by scoreAnswers() -> {root-speaker}; by reachableClasses() -> {root-speaker}",
+      "expected": "identical — the enumerator is the game's scorer, not a second opinion",
+      "declared": null
+    },
+    {
+      "section": "questionnaire",
+      "id": "CHR01-M4-order-independent",
+      "ok": true,
+      "status": "PASS",
+      "measured": "same score object for answers given in both orders: true",
+      "expected": "scoring is order-independent and deterministic",
+      "declared": null
+    },
+    {
+      "section": "signatures",
+      "id": "CHR01-M5-axes",
+      "ok": true,
+      "status": "PASS",
+      "measured": "10 races x 6 class families x 3 birthsign families x 3 upbringing classes",
+      "expected": "10 x 6 x 3 x 3",
+      "declared": null
+    },
+    {
+      "section": "signatures",
+      "id": "CHR01-M5-540",
+      "ok": true,
+      "status": "PASS",
+      "measured": "540 signatures constructed, 0 empty cells",
+      "expected": "540 constructible, 0 empty (hard fail below 400)",
+      "declared": null
+    },
+    {
+      "section": "signatures",
+      "id": "CHR01-M5-custom-in-grid",
+      "ok": true,
+      "status": "PASS",
+      "measured": "969 custom skill shapes classified; 0 landed outside the six families",
+      "expected": "zero — a custom class is one of the six families, or every custom start falls out of the 540",
+      "declared": null
+    },
+    {
+      "section": "signatures",
+      "id": "CHR01-M5-custom-spreads",
+      "ok": true,
+      "status": "PASS",
+      "measured": "6/6 families reachable from the custom route; rarest has 31 shapes",
+      "expected": "all six reachable, none vanishingly rare — a classifier that answers \"scout\" to everything is not a classifier",
+      "declared": null
+    },
+    {
+      "section": "matrix",
+      "id": "CHR02-M2-shape",
+      "ok": true,
+      "status": "PASS",
+      "measured": "12 groups x 10 races = 120 cells, no nulls",
+      "expected": "12 x 10 = 120, complete",
+      "declared": null
+    },
+    {
+      "section": "matrix",
+      "id": "CHR02-M2-range",
+      "ok": true,
+      "status": "PASS",
+      "measured": "range [-40, 14]",
+      "expected": "within [-40, +14]",
+      "declared": null
+    },
+    {
+      "section": "matrix",
+      "id": "CHR02-M2-sigma",
+      "ok": true,
+      "status": "PASS",
+      "measured": "sigma over 120 cells = 9.894 (mean -3.408)",
+      "expected": ">= 9.0 pass floor; >= 12 for the scoring 10-band",
+      "declared": null
+    },
+    {
+      "section": "matrix",
+      "id": "CHR02-M2-neutral-row",
+      "ok": true,
+      "status": "PASS",
+      "measured": "all-zero rows: RG-COURT",
+      "expected": ">= 1 (RG-COURT) — a matrix with no neutral row is a generated matrix",
+      "declared": null
+    },
+    {
+      "section": "matrix",
+      "id": "CHR02-M2-rows-distinct",
+      "ok": true,
+      "status": "PASS",
+      "measured": "12/12 distinct rows",
+      "expected": "all 12 distinct",
+      "declared": null
+    },
+    {
+      "section": "matrix",
+      "id": "CHR02-M2-cols-distinct",
+      "ok": true,
+      "status": "PASS",
+      "measured": "10/10 distinct columns",
+      "expected": "all 10 distinct — \"any two foreign races share a column\" is the 0-band",
+      "declared": null
+    },
+    {
+      "section": "disposition",
+      "id": "CHR02-M4a-worked-table",
+      "ok": true,
+      "status": "PASS",
+      "measured": "all five §4a rows reproduce",
+      "expected": "A=74 B=48 C=28 D=6 E=0, bands as printed",
+      "declared": null
+    },
+    {
+      "section": "disposition",
+      "id": "CHR02-M3-68-point-gap",
+      "ok": true,
+      "status": "PASS",
+      "measured": "Saxhleel/interior 74 - Dunmer/foreign-born 6 = 68 points",
+      "expected": ">= 60 at the same Helstrom rootkeeper",
+      "declared": null
+    },
+    {
+      "section": "disposition",
+      "id": "CHR02-M3-different-bands",
+      "ok": true,
+      "status": "PASS",
+      "measured": "bands: friendly vs hostile",
+      "expected": "different RI-DLG04 §E bands",
+      "declared": null
+    },
+    {
+      "section": "disposition",
+      "id": "CHR02-M3-aggregate-gap",
+      "ok": true,
+      "status": "PASS",
+      "measured": "mean(Saxhleel - Dunmer) over 12 groups = 11.75 (sum 141 / 12)",
+      "expected": ">= 8 — RI-DLG04 §E rule 5's floor. RI-CHR02 §4a claimed 15.3 and method 3 asserted >= 12; neither is producible from the item's own 120 cells (AMENDMENT-W1-07-02)",
+      "declared": null
+    },
+    {
+      "section": "disposition",
+      "id": "CHR02-4c-race-classes",
+      "ok": true,
+      "status": "PASS",
+      "measured": "player_race_class values: saxhleel, naga, dunmer, imperial, other-foreign",
+      "expected": "5 classes keying the greeting pools",
+      "declared": null
+    },
+    {
+      "section": "prices",
+      "id": "CHR02-M7-quotes",
+      "ok": true,
+      "status": "PASS",
+      "measured": "three §4b quotes on a 60 g healing draught",
+      "expected": "buy {54, 70, 76} and sell {66, 52, 47} within 3%",
+      "declared": null
+    },
+    {
+      "section": "prices",
+      "id": "CHR02-M7-par-clause",
+      "ok": true,
+      "status": "PASS",
+      "measured": "Mercantile-100 / PER-60 Dunmer in the interior buys at 1.264 x 0.8 = 1.0112x",
+      "expected": "in [0.98, 1.05] — the best social build reaches par with an untrained Saxhleel, never advantage",
+      "declared": null
+    },
+    {
+      "section": "prices",
+      "id": "CHR02-4b-round-trip",
+      "ok": true,
+      "status": "PASS",
+      "measured": "Dunmer round trip vs Saxhleel = -49.5% (item's §4b column prints -44%; that column is not reproducible from the item's own multipliers under any of the four readings above — declared in KNOWN-GAPS.json)",
+      "expected": "<= -40% — a Dunmer loses at least two fifths of a round trip against a Saxhleel in the interior",
+      "declared": null
+    },
+    {
+      "section": "guards",
+      "id": "CHR02-M9-rows",
+      "ok": true,
+      "status": "PASS",
+      "measured": "10 lawFactor rows",
+      "expected": "one per race",
+      "declared": null
+    },
+    {
+      "section": "guards",
+      "id": "CHR02-M9-arithmetic",
+      "ok": true,
+      "status": "PASS",
+      "measured": "10/10 rows satisfy arrest = round(300 x lawFactor) and attack = 4 x arrest",
+      "expected": "all 10 (RI-CHR02 §5 formula)",
+      "declared": null
+    },
+    {
+      "section": "guards",
+      "id": "CHR02-M9-naga-imperial-ratio",
+      "ok": true,
+      "status": "PASS",
+      "measured": "loiter-to-challenge Imperial 11.3s : Naga 4.5s = 2.51",
+      "expected": "in [2.2, 2.8] (§5 claims 11.3 : 4.5 = 2.51)",
+      "declared": null
+    },
+    {
+      "section": "guards",
+      "id": "CHR02-scoring-guards-distinct",
+      "ok": true,
+      "status": "PASS",
+      "measured": "7 distinct arrest thresholds across 10 races",
+      "expected": ">= 6 — \"guards behave identically for all races\" is the 0-band",
+      "declared": null
+    },
+    {
+      "section": "guards",
+      "id": "CHR02-5-interior-no-arrest",
+      "ok": true,
+      "status": "PASS",
+      "measured": "interior arrest base = null",
+      "expected": "null — the interior does not arrest, it holds blood-price",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-count",
+      "ok": true,
+      "status": "PASS",
+      "measured": "9 signs",
+      "expected": "9 (three per family)",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-families",
+      "ok": true,
+      "status": "PASS",
+      "measured": "given: raj-xul, xan-kheel, deek-xul | withheld: nu-ixtu, teekh-nuvei, nu-shanei | turned: vastei-nu, kaal-kaal, shuja-vei",
+      "expected": "given / withheld / turned, three each",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-real-drawbacks",
+      "ok": true,
+      "status": "PASS",
+      "measured": "2 signs carry a drawback that removes a system or can lose the run",
+      "expected": ">= 2 (the item ships 6 with drawbacks, of which the Atronach-class ones are real)",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-drawback-count",
+      "ok": true,
+      "status": "PASS",
+      "measured": "6 signs with any drawback",
+      "expected": "6 (three mechanical, three conditional)",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-given-clean",
+      "ok": true,
+      "status": "PASS",
+      "measured": "Given family drawbacks: none, none, none",
+      "expected": "none",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-imperial-inert",
+      "ok": true,
+      "status": "PASS",
+      "measured": "13 Imperial signs named in-world; status: exist in-world, zero mechanical effect",
+      "expected": "13 named, zero mechanical effect — the collision is content, not a second system",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-M9-kaal-kaal",
+      "ok": true,
+      "status": "PASS",
+      "measured": "second sign power scale 0.5, drawback scale 1",
+      "expected": "power halved (0.5), drawback at FULL magnitude (1.0) — RI-CHR03 method 9",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-dry-well-removes-focus",
+      "ok": true,
+      "status": "PASS",
+      "measured": "Dry Well drawbacks: focus_regeneration",
+      "expected": "removes focus_regeneration — the Atronach ported and not softened",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-grey-sap-term",
+      "ok": true,
+      "status": "PASS",
+      "measured": "rootkeeper disposition with Grey Sap 45 vs Full Root 70 = -25",
+      "expected": "-25 on top of the RI-CHR02 matrix",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-recut",
+      "ok": true,
+      "status": "PASS",
+      "measured": "re-cut: 1 use per save, min cost 25000 souls, at The great Hist at Helstrom, in the hollowed bole. Nowhere else.; Grey Sap exception present: true",
+      "expected": "exactly one per save, >= 25,000 souls, Grey Sap excluded (the Hist will not speak to them)",
+      "declared": null
+    },
+    {
+      "section": "birthsigns",
+      "id": "CHR03-recut-is-not-a-respec",
+      "ok": true,
+      "status": "PASS",
+      "measured": "the re-cut cannot: clear a shadowscale-claim already acted on | restore the four quests The Grey Sap closed if they have been failed | change race, upbringing or class",
+      "expected": "it may not change race, upbringing or class — RI-CHR01 §7 has no respec anywhere",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "CHR02-M8-distinct-openings",
+      "ok": true,
+      "status": "PASS",
+      "measured": "3 distinct opening behaviours across 10 races",
+      "expected": ">= 3 (hostile-at-28 capture / hail-and-parley / hostile-at-12 kill)",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "CHR02-M8-saxhleel",
+      "ok": true,
+      "status": "PASS",
+      "measured": "Saxhleel: hostile at 28 m, nets capture, defeat = capture-transport-archon",
+      "expected": "hostile at >= 26 m, capture behaviour, defeat = transport not death",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "CHR02-M8-dunmer",
+      "ok": true,
+      "status": "PASS",
+      "measured": "Dunmer: hail, parley offered = true",
+      "expected": "does not aggro; hails and offers a purchase",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "CHR02-M8-khajiit",
+      "ok": true,
+      "status": "PASS",
+      "measured": "Khajiit: hostile at 12 m, nets kill",
+      "expected": "hostile at <= 14 m, no capture pretence",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "AR-1-no-fight-fields-in-race-behaviour",
+      "ok": true,
+      "status": "PASS",
+      "measured": "race_behaviour keys: opening, aggro_at_m, net_behaviour, parley_offer, on_player_defeat, parley_kind",
+      "expected": "no hp/poise/damage/archetype/moveset/frame field may be keyed on race",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "AR-1-statblocks-race-blind",
+      "ok": true,
+      "status": "PASS",
+      "measured": "members: infantry x4 -> inf_trash; net-thrower x2 -> inf_trash",
+      "expected": "one statblock per member role, no per-race override field",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "AR-3-statblocks-exist",
+      "ok": true,
+      "status": "PASS",
+      "measured": "2 member statblocks, 0 missing",
+      "expected": "all resolve to game/data/combat/enemies/*.json",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "CHR02-M11-race-independent-route",
+      "ok": true,
+      "status": "PASS",
+      "measured": "2 encounters with a parley block, 0 without a race-independent route",
+      "expected": "zero — any race-closed parley is a hard fail (we shipped a race that must kill)",
+      "declared": null
+    },
+    {
+      "section": "ar3",
+      "id": "CHR02-M8-mech2",
+      "ok": true,
+      "status": "PASS",
+      "measured": "hostile-on-sight to 1/10 races, including Dunmer: true",
+      "expected": "a minority of races, Dunmer among them — an entire region's encounter density is a function of creation",
+      "declared": null
+    },
+    {
+      "section": "scene",
+      "id": "JRN01-every-node-has-a-speaker",
+      "ok": true,
+      "status": "PASS",
+      "measured": "20 nodes, 20 with a speaker resolving to a record in npcs/writ-house.json",
+      "expected": "every node — a question asked by a dropdown cannot be answered wrongly, reacted to, or remembered",
+      "declared": null
+    },
+    {
+      "section": "scene",
+      "id": "JRN01-every-node-has-a-place",
+      "ok": true,
+      "status": "PASS",
+      "measured": "places: barge-hold, writ-house",
+      "expected": "every node happens somewhere in the world",
+      "declared": null
+    },
+    {
+      "section": "scene",
+      "id": "JRN01-every-node-is-spoken",
+      "ok": true,
+      "status": "PASS",
+      "measured": "20/20 nodes speak (18 with a line, 2 with per-branch lines: writ.race-observed, writ.strange-check)",
+      "expected": "all of them",
+      "declared": null
+    },
+    {
+      "section": "scene",
+      "id": "JRN01-O8-no-full-screen",
+      "ok": true,
+      "status": "PASS",
+      "measured": "0 nodes declaring a full-screen panel; the census reports full_screen=false and world_visible=true on every node",
+      "expected": "zero — RI-JRN01 O8 keeps the world behind the conversation",
+      "declared": null
+    },
+    {
+      "section": "scene",
+      "id": "CHR01-M10-strangeness",
+      "ok": true,
+      "status": "PASS",
+      "measured": "3 strange combinations declared, 3 with a dedicated Warden-Scribe exchange at writ.strange-check",
+      "expected": "3 of 3 — a game that permits an odd combination and never notices it has permitted nothing",
+      "declared": null
+    },
+    {
+      "section": "scene",
+      "id": "CHR01-M1-race-observed",
+      "ok": true,
+      "status": "PASS",
+      "measured": "race is observed, not asked; 10/10 races have a misreading the scribe says aloud",
+      "expected": "all ten — \"read back to you wrongly at least once\"",
+      "declared": null
+    },
+    {
+      "section": "npcs",
+      "id": "CHR02-M4-all-tagged",
+      "ok": true,
+      "status": "PASS",
+      "measured": "5/5 NPCs carry a reaction_group from §2",
+      "expected": "100% — an untagged NPC is one the whole race system cannot see",
+      "declared": null
+    },
+    {
+      "section": "prohibitions",
+      "id": "CHR01-M8-no-class-gate",
+      "ok": true,
+      "status": "PASS",
+      "measured": "0 class GATES (a class key inside requires/forbids/conditions/gate, or requires_class/class_min) in 68 naive '\"class\":' hits across 4 files — the naive hits are road class, water class, hazard class and the census node that WRITES the field",
+      "expected": "zero gates — any content gate reading class is an automatic fail of the piece",
+      "declared": null
+    },
+    {
+      "section": "prohibitions",
+      "id": "CHR01-M8-no-skill-restriction",
+      "ok": true,
+      "status": "PASS",
+      "measured": "skills.json declares no class restriction; no major/minor multiplier appears in classes.json",
+      "expected": "all 19 skills trainable by every class at the same rate",
+      "declared": null
+    },
+    {
+      "section": "prohibitions",
+      "id": "CHR01-M8-class-share",
+      "ok": true,
+      "status": "PASS",
+      "measured": "class contributes 0 of 112 attribute points (0.0%) and at most 80 skill points above baseline (3 x 20 + 2 x 10), which is 11.4% of a ~700-point level-60 skill sheet",
+      "expected": "0 attribute points; 3x20 + 2x10 = 80 skill points; <= 15% of creation and <= 4% of a level-60 sheet",
+      "declared": null
+    },
+    {
+      "section": "prohibitions",
+      "id": "CHR01-M8-caste-topics",
+      "ok": true,
+      "status": "PASS",
+      "measured": "3 caste topics keyed on the class string: the-ledgers-hands, root-under-the-tongue, walks-like-a-blade",
+      "expected": "3 — class must still be VISIBLE, or the prohibitions are satisfied by making class do nothing",
+      "declared": null
+    },
+    {
+      "section": "prohibitions",
+      "id": "CHR01-custom-unhidden",
+      "ok": true,
+      "status": "PASS",
+      "measured": "custom route: hidden_behind_advanced=false, presentation_rank=2 of 3, free-text name stored verbatim=true, 146,588,400 legal configurations",
+      "expected": "present, offered second of three, never labelled advanced — Morrowind put it second in a list of three",
+      "declared": null
+    },
+    {
+      "section": "prohibitions",
+      "id": "CHR01-M9-irreversibility",
+      "ok": true,
+      "status": "PASS",
+      "measured": "0 data records set an irreversible field (hatch_name, race, upbringing, sex, class, attributes_skills)",
+      "expected": "zero — a race-change or respec item is an automatic fail",
+      "declared": null
+    }
+  ]
+}

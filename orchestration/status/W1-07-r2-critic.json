@@ -3,13 +3,19 @@
   "role": "critic",
   "piece": "W1-07 character creation and the opening",
   "round": 2,
-  "state": "writing",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-07-r2.json",
     "corpus/90-verdicts/wave1/W1-07-r2.md",
     "corpus/90-verdicts/wave1/artifacts/W1-07-r2/"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-07-r2.json (schema-valid)",
+    "corpus/90-verdicts/wave1/W1-07-r2.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ (probeA..I, ar3 traces, reach sweeps, 38 screenshots)",
+    "corpus/88-journeys/AMENDMENT-PROPOSAL-JRN01-01.md (proposed, not applied)",
+    "tools/harness/critic-w1-07-r2{a,b,c,d,e,f,g,h,i}.mjs"
+  ],
   "findings": [
     "BOOT: tools/harness/smoke.mjs PASS at HEAD. Build boots; no index.json breakage this round.",
     "UI-IS-IN-THE-FRAME: CONFIRMED. probeA captures page.screenshot() and __HARNESS.screenshot() at all 19 nodes; pixel diff = 0 at every node. The dialogue surface is a textured quad composited into the WebGL pass. The DOM has no non-canvas element. The builder's architecture claim holds.",
@@ -31,6 +37,6 @@
     "Dialogue volume in DATA meets every floor at 0-7% headroom (greetings 1500/1500, topics 96/90, forbids 32/30, rumours 16/16, slavery 61/60 with 16/12 to a Dunmer). The 10 band needs >= 20% headroom, so the axis is at its 6 band even before consumption.",
     "PROBE DEFECT WITHDRAWN: probeG's questionnaire answer pattern only ever selected a and c. Re-run as probeH with an even pattern."
   ],
-  "next_step": "probeC (matrix perturbation redo, dry-well observability, questionnaire text); then AR-3 three-race runs, S26 reach, gamepad-only",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 verdict delivered. FAIL 3.8/10 (round 1: 1.5).",
+  "notes_for_successor": "Biggest gap: GAP-W1-questionnaire-route-is-unreadable-and-unnamed. buildCensusModel (game/src/character/scene.js:267) never reads state.question.text, and scoreAnswers reaches 0 of 14 named classes in 240 runs. Both are small fixes. Second: greetings.json and the 96 race-gated topic records have no consumer. Third: cmb-reach --enemy inf_trash turtle probe FAILS all seven stand distances and the raid party cannot reach a player inside ~1.14 m. Two of my own numbers were withdrawn mid-round (probeG biased answers, probeE/H world-coordinate spawns) \u2014 both documented, both kept as artifacts. __HARNESS.spawn() takes WORLD coordinates, not player-relative; that cost me two probes."
 }

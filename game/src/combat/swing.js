@@ -90,6 +90,11 @@ export function buildSwing(p, opts) {
   // solved per clip against the real rig so that the MEASURED arc equals the DECLARED one, and
   // the swing is scaled about its own centre so its direction is untouched.
   const yawGain = opts && opts.yawGain !== undefined ? opts.yawGain : 1;
+  // `accGain` damps the ACCESSORY yaw — the shoulder roll — for clips whose declared arc is
+  // smaller than the roll alone would produce. Without it a thrust has a floor: even with the arc
+  // chain turned off entirely, the shoulder still swung the blade ~40 degrees. Solved jointly with
+  // `yawGain` through the single monotone parameter in §calibrateYawGain.
+  const accGain = opts && opts.accGain !== undefined ? opts.accGain : 1;
   const cockP = COCK_PHASE[tier] !== undefined ? COCK_PHASE[tier] : 0.5;
   const folP = FOLLOW_PHASE[tier] !== undefined ? FOLLOW_PHASE[tier] : 0.25;
   const settle = SETTLE[tier] !== undefined ? SETTLE[tier] : 0.03;
@@ -130,13 +135,20 @@ export function buildSwing(p, opts) {
   // Pitch keyframes. The blade rises during the cock and falls through the swing; a rising cut
   // (negative plane) does the reverse. `lean_deg` is the torso pitching into the blow.
   const tilt = p.plane_deg;
+  // Phase 3 SETTLES near the follow-through instead of resetting to a quarter of the tilt. The
+  // reset is what made a recovery travel further than the swing on 21 of 28 clips: a mace whose
+  // plane is 81 degrees pitched from 87 back to 20 during recovery, carrying its tip from below
+  // and behind the body round to in front of it, which is 280 degrees of measured bearing after
+  // the hitbox has already switched off. A real recovery lets the weapon lie where the swing put
+  // it and brings it up on the way back to guard, and the way back to guard is the cross-fade's
+  // job, not this clip's.
   const pitchKeys = [
     [0.0, -6],
     [cockP, -tilt * 0.85 - 10],
     [1.0, -tilt * 0.55 - 4],
     [2.0, tilt * 0.75],
     [2.0 + folP, tilt * 1.0 + 6],
-    [3.0, tilt * 0.25],
+    [3.0, tilt * 0.88 + 2],
   ];
 
   const tracks = {};
@@ -161,11 +173,11 @@ export function buildSwing(p, opts) {
   const e = p.extend;
   const upperKeys = [
     [0.0, -14], [cockP, -34 - 30 * (1 - e)], [1.0, -30 - 24 * (1 - e)],
-    [2.0, -8 - 46 * (1 - e)], [2.0 + folP, 2 - 40 * (1 - e)], [3.0, -12 - 14 * (1 - e)],
+    [2.0, -8 - 46 * (1 - e)], [2.0 + folP, 2 - 40 * (1 - e)], [3.0, -2 - 38 * (1 - e)],
   ];
   const lowerKeys = [
     [0.0, -32], [cockP, -68 + 30 * e], [1.0, -58 + 40 * e],
-    [2.0, -78 + 74 * e], [2.0 + folP, -62 + 58 * e], [3.0, -40 + 18 * e],
+    [2.0, -78 + 74 * e], [2.0 + folP, -62 + 58 * e], [3.0, -66 + 52 * e],
   ];
   tracks.upperarm_r.rx = tracks.upperarm_r.rx.map(([ph, v], i) => [ph, r2(v + upperKeys[i][1])]);
   put('lowerarm_r', 'rx', lowerKeys.map(([ph, v]) => [ph, r2(v)]));
@@ -185,8 +197,8 @@ export function buildSwing(p, opts) {
   //
   // A shoulder roll is a consequence of the swing, so it scales with the swing. `sw` is that
   // scale, saturating at a full-arc cut so a 340-degree spin keeps the whole roll.
-  const sw = Math.min(1, Math.abs(arcDecl) / 110);
-  put('clavicle_r', 'rz', [[0.0, 0], [cockP, (-22 - 10 * (1 - e)) * sw], [1.0, -16 * sw], [2.0, (16 + 8 * e) * sw], [2.0 + folP, 20 * sw], [3.0, 3 * sw]]);
+  const sw = Math.min(1, Math.abs(arcDecl) / 110) * accGain;
+  put('clavicle_r', 'rz', [[0.0, 0], [cockP, (-22 - 10 * (1 - e)) * sw], [1.0, -16 * sw], [2.0, (16 + 8 * e) * sw], [2.0 + folP, 20 * sw], [3.0, 17 * sw]]);
 
   // The offhand. A two-handed grip drags the left arm across; a one-handed swing counterbalances
   // it the other way. This is a whole-body difference between the 1h and 2h clip of one move and
@@ -311,12 +323,15 @@ export function calibrateYawGain(p, frames, sockA, sockB, makeRig) {
   const target = Math.abs(p.arc_deg);
   if (!(target > 0.5)) return 1;
   const rig = makeRig();
-  const measure = (g) => measureActiveArc(p, g, frames, sockA, sockB, rig);
-  // The residual is monotone in the gain over the useful range but not linear, so bisect rather
-  // than solve. 26 steps takes the bracket below 1e-7 — far finer than the ±10° tolerance needs,
-  // and cheap: it is 26 x `active` rig evaluations, cached per clip.
-  let lo = 0.02, hi = 12;
+  // ONE monotone knob, so a bisection is valid:
+  //   k <= 1  shrinks the arc chain AND the shoulder roll together (reaches the small arcs)
+  //   k >  1  opens the arc chain alone (reaches the big ones)
+  const measure = (k) => measureActiveArc(p, k, frames, sockA, sockB, rig, undefined, Math.min(1, k));
+  // Not linear, so bisect rather than solve. 26 steps takes the bracket below 1e-6 — far finer
+  // than the ±10° tolerance needs, and cheap: 26 x `active` rig evaluations, cached per clip.
+  let lo = 0.001, hi = 12;
   if (measure(hi) < target) return hi;          // unreachable: report the ceiling honestly
+  if (measure(lo) > target) return lo;          // below the floor the rig can produce; likewise
   for (let i = 0; i < 26; i++) {
     const mid = (lo + hi) / 2;
     if (measure(mid) < target) lo = mid; else hi = mid;
@@ -332,8 +347,8 @@ export function calibrateYawGain(p, frames, sockA, sockB, makeRig) {
  * near-axis guard that drops frames whose horizontal radius is under 0.20 m (below that the
  * bearing is numerically meaningless and a single frame can contribute 180°).
  */
-export function measureActiveArc(p, gain, frames, sockA, sockB, rig, ClipCtor) {
-  const arch = buildSwing(p, { yawGain: gain });
+export function measureActiveArc(p, gain, frames, sockA, sockB, rig, ClipCtor, accGain) {
+  const arch = buildSwing(p, { yawGain: gain, accGain: accGain === undefined ? Math.min(1, gain) : accGain });
   const C = ClipCtor || _Clip;
   const clip = new C('cal', arch, { startup: frames.startup, active: frames.active, total: frames.total }, 1.0, 0);
   const pos = [0, 0, 0];

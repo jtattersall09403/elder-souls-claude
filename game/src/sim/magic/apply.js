@@ -671,21 +671,55 @@ function h_corrode(M, frame, rec, target) {
   b.armourRating = Math.max(0, (b.armourRating === undefined ? 0 : b.armourRating) - rec.magnitude);
   // Armour is the number the resolver divides damage by; corroding it is a lasting change and
   // is deliberately NOT undone — that is what makes it a siege verb rather than a debuff.
-  return moved('target.armour_rating', before, { armour_rating: r2(b.armourRating) });
+  //
+  // Its own record says it "destroys item condition", and `mend_item` now writes
+  // `sim.inventory[].condition`, so this writes the same register in the other direction: the
+  // two are one verb with two signs, which is what `RI-MAG06` §D says to record rather than
+  // excuse. Cast on the player it eats the gear; cast on an enemy it eats the armour.
+  const sim = M.w && M.w.sim ? M.w.sim : null;
+  const onSelf = !target || target === self(M);
+  const invBefore = sim ? sim.inventory.map((i) => ({ id: i.id, condition: r3(i.condition) })) : null;
+  if (onSelf && sim) {
+    for (const i of sim.inventory) {
+      const c = i.condition === undefined ? 1 : i.condition;
+      i.condition = Math.max(0, c - rec.magnitude / 100);
+    }
+  }
+  return moved('target.armour_rating + sim.inventory[].condition',
+    { ...before, inventory: invBefore },
+    { armour_rating: r2(b.armourRating), inventory: sim ? sim.inventory.map((i) => ({ id: i.id, condition: r3(i.condition) })) : null });
 }
 
 function h_mend_item(M, frame, rec) {
-  const before = M.itemCensus();
-  const mended = [];
+  // W1-14 round 3. Wave 1 wrote `M.world.items` — "an item-condition table that exists nowhere
+  // else in the build". The condition the game actually carries is `sim.inventory[].condition`,
+  // which `save/state.js` persists and `getPlayerStats()` reports. Both are written now: the
+  // magic-side table stays because the ward registers seed from `wards.json` and a critic reads
+  // it through `getMagicWorld()`, but the INVENTORY is the register that outlives the arena.
+  const sim = M.w && M.w.sim ? M.w.sim : null;
+  const inv = sim ? sim.inventory : [];
+  const before = { magic_items: M.itemCensus(), inventory: inv.map((i) => ({ id: i.id, condition: r3(i.condition) })) };
+  const mended = [], refused = [];
+  const pts = Math.round(rec.magnitude);
   for (const it of M.world.items.values()) {
     if (it.condition_pct >= 100) continue;
     // RI-MAG06 §B: rises, and REFUSES below 10%. A ruined thing is ruined.
-    if (it.condition_pct < 10) { M._emit(frame, 'mend_refused', { item: it.id, condition_pct: it.condition_pct, floor_pct: 10 }); continue; }
+    if (it.condition_pct < 10) { M._emit(frame, 'mend_refused', { item: it.id, condition_pct: it.condition_pct, floor_pct: 10 }); refused.push(it.id); continue; }
     const before1 = it.condition_pct;
-    it.condition_pct = Math.min(100, it.condition_pct + Math.round(rec.magnitude));
+    it.condition_pct = Math.min(100, it.condition_pct + pts);
     mended.push({ id: it.id, from: before1, to: it.condition_pct });
   }
-  return moved('item condition register', before, M.itemCensus(), { mended });
+  for (const i of inv) {
+    const c = i.condition === undefined ? 1 : i.condition;
+    if (c >= 1) continue;
+    if (c < 0.10) { M._emit(frame, 'mend_refused', { item: i.id, condition_pct: r2(c * 100), floor_pct: 10 }); refused.push(i.id); continue; }
+    const c1 = Math.min(1, c + pts / 100);
+    i.condition = c1;
+    mended.push({ id: i.id, from: r3(c), to: r3(c1) });
+  }
+  return moved('sim.inventory[].condition + item condition register', before,
+    { magic_items: M.itemCensus(), inventory: inv.map((i) => ({ id: i.id, condition: r3(i.condition) })) },
+    { mended, refused });
 }
 
 function h_telekinesis(M, frame, rec) {

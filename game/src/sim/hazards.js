@@ -275,6 +275,21 @@ export class Hazards {
                   name: h.affliction_name || id, source: h.id, caught_at_frame: f,
                 });
                 q.afflictions.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+                // Morrowind's diseases DRAIN. This is also the precondition `restore_attribute`
+                // never had: the round-2 critic recorded it as a real field with "no reachable
+                // precondition — nothing in the build ever lowers an attribute", so an effect
+                // whose whole job is to put one back could not be observed doing it. Catching
+                // the droops now costs you 10 AGILITY until it is cured.
+                const dr = h.affliction_drains;
+                const A = sim.progression && sim.progression.attributes;
+                if (dr && A && A[dr.attribute] !== undefined) {
+                  const took = Math.min(dr.points, Math.max(0, A[dr.attribute] - 1));
+                  A[dr.attribute] -= took;
+                  const rec = q.afflictions.find((a) => a.id === id);
+                  if (rec) rec.drained = { attribute: dr.attribute, points: took };
+                  e.drained_attribute = dr.attribute; e.drained_points = took;
+                  sim._poolsDirty = true;
+                }
               }
               p.afflictions = q.afflictions.map((a) => a.id);
             } else {
