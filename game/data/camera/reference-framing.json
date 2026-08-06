@@ -1,0 +1,51 @@
+{
+  "schema": "elder-souls/camera-reference-framing@1",
+  "owner": "wave-1 piece W1-06",
+  "source": "corpus/70-visual/refs/souls-behaviour/camera/SB-CAM__user-capture-boss-fight-60fps.mov",
+  "source_probe": "1266x710, r_frame_rate 60/1, 1039 frames, 20.208 s (ffprobe)",
+  "subject": "Elden Ring, Godrick the Grafted, locked on, player one-handed straight sword",
+  "method": {
+    "extraction": "ffmpeg -vf select='not(mod(n,60))',drawgrid=w=iw/8:h=ih/8 — one frame per second, overlaid with an 8x8 grid so NDC can be read off the gridlines (gridline k from the left is NDC x = -1 + k/4; from the top, NDC y = 1 - k/4).",
+    "reading": "Anchors read by eye against the gridlines: P_a = the player's chest/spine2, T_a = the boss's chest mass, T_h = the boss's head. Precision is about a fifth of a grid cell, i.e. +/-0.05 NDC. This is a MEASUREMENT OFF A REFERENCE, not a frame-exact extraction, and it is recorded as such — it is used to check the SIGN and the BAND of our own framing, never to set a constant.",
+    "limitation": "5 sampled frames of 1039. A larger sample would tighten the bands; it would not change the four conclusions, each of which is a qualitative fact visible in every frame."
+  },
+  "samples": [
+    { "frame": "f_003 (t=2s)", "range": "mid, ~8 m", "P_a_ndc": [-0.03, -0.40], "T_a_ndc": [-0.03, 0.35], "T_h_on_screen": true, "both_on_screen": true },
+    { "frame": "f_006 (t=5s)", "range": "close, ~3 m", "P_a_ndc": [0.00, -0.75], "T_a_ndc": [0.03, 0.30], "T_h_on_screen": false, "both_on_screen": true },
+    { "frame": "f_009 (t=8s)", "range": "close, ~4 m", "P_a_ndc": [0.05, -0.53], "T_a_ndc": [0.08, 0.50], "T_h_on_screen": false, "both_on_screen": true },
+    { "frame": "f_012 (t=11s)", "range": "mid, boss lunging", "P_a_ndc": [0.08, -0.63], "T_a_ndc": [-0.10, 0.45], "T_h_on_screen": false, "both_on_screen": true },
+    { "frame": "f_016 (t=15s)", "range": "very close, boss overhead", "P_a_ndc": [0.15, -0.70], "T_a_ndc": [0.08, 0.60], "T_h_on_screen": false, "both_on_screen": true }
+  ],
+  "conclusions": [
+    {
+      "id": "R1",
+      "finding": "Both anchors are on screen in 5 of 5 sampled frames, at every range including the closest.",
+      "bears_on": "RI-CAM03 §E onscreen_fraction(T_a) >= 0.995 and (P_a) >= 0.980",
+      "consequence": "The bars are the right shape. Nothing to change."
+    },
+    {
+      "id": "R2",
+      "finding": "The PLAYER anchor sits low: NDC y between -0.40 and -0.75, and at the closest range it is at or past -0.70. It is therefore OUTSIDE the +/-0.70 safe rect for a large part of a big-boss fight, while remaining comfortably on screen — and the upstream camera does NOT extend its boom to bring it back inside.",
+      "bears_on": "RI-CAM03 §C step 5, which extends the arm +0.150 m/frame whenever EITHER anchor is outside the safe rect",
+      "consequence": "BINDING ON THIS BUILD. A literal reading of step 5 makes the arm ratchet to the 7.50 m cap for the whole fight — which is RI-CAM03's own 'How we lose' #5, the strategy-game camera. §C's priority order already says safe-rect containment is priority (4) and the two on-screen guarantees are (1) and (2); this build implements step 5 driven by ON-SCREEN loss first, with the safe rect as a bounded secondary that cannot ratchet. See sim/camera.js containment()."
+    },
+    {
+      "id": "R3",
+      "finding": "The TARGET chest sits high — NDC y +0.30 to +0.60, i.e. roughly 20-35% of screen height measured from the top.",
+      "bears_on": "[CMB06] vertical framing band, 'target chest between 38% and 62% of screen height', and RI-CAM03 §E's >= 0.900 bar on it",
+      "consequence": "Against an 8 m boss the reference sits ABOVE the 38-62% band, because §D's size_bias tilts the camera up. The 38-62% band is a HUMAN-TARGET bar and this build measures it as one; reporting it against a great boss and calling it a failure would be measuring the size term and calling it a defect."
+    },
+    {
+      "id": "R4",
+      "finding": "The boss's head leaves the top of the frame at close range in 4 of 5 samples.",
+      "bears_on": "RI-CAM03 §D 'the documented degradation' — for h >= 6.0 m at d < 4.0 m, T_h may leave the frame",
+      "consequence": "Confirmed against the reference. The degradation is real upstream behaviour and the >= 0.880 T_h bar for large targets is calibrated to it, not a concession."
+    },
+    {
+      "id": "R5",
+      "finding": "Both anchors stay near the vertical midline: |NDC x| <= 0.15 in every sample.",
+      "bears_on": "RI-CAM01 §A's reduced locked shoulder offset (+0.26 m rather than +0.42 m)",
+      "consequence": "Corroborates the reduction: a large lateral bias under lock would push one anchor toward a frame edge, and the reference shows almost no lateral spread."
+    }
+  ]
+}

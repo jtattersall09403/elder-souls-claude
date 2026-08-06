@@ -123,6 +123,12 @@ export const CAMERA_CONST = {
   contain_grab_m: 0.15,
   contain_release_m: 0.08,
   contain_pitch_deg_per_frame: 1.50,
+  // The soft (target-left-the-safe-rect) driver's ceiling. Bounded so it cannot ratchet:
+  // 5.20 m locked far ramp + 1.20 = 6.40 m worst case, short of the 7.50 m cap, which stays
+  // reserved for the hard (anchor-off-screen) driver. See containment().
+  contain_soft_cap_m: 1.20,
+  contain_pitch_max_deg: 18.0,
+  contain_pitch_soft_deg: 6.0,
   arm_half_life_s: 0.250,
   pitch_base_min_deg: -16.0,
   pitch_base_max_deg: -2.0,
@@ -395,16 +401,50 @@ function containment(sim, c, armWant) {
   _tchest[0] = t.pos[0]; _tchest[1] = t.pos[1] + h * 0.72; _tchest[2] = t.pos[2];
 
   const pOk = project(c, _pchest, _ndc);
+  const pOn = pOk && Math.abs(_ndc[0]) <= 1 && Math.abs(_ndc[1]) <= 1;
   const pIn = pOk && Math.abs(_ndc[0]) <= CAMERA_CONST.safe_rect_x && Math.abs(_ndc[1]) <= CAMERA_CONST.safe_rect_y;
   const pY = _ndc[1];
   const tOk = project(c, _tchest, _ndc);
+  const tOn = tOk && Math.abs(_ndc[0]) <= 1 && Math.abs(_ndc[1]) <= 1;
   const tIn = tOk && Math.abs(_ndc[0]) <= CAMERA_CONST.safe_rect_x && Math.abs(_ndc[1]) <= CAMERA_CONST.safe_rect_y;
   const tY = _ndc[1];
 
-  if (!pIn || !tIn) {
+  // TWO DRIVERS, NOT ONE, AND THIS IS THE MOST CONSEQUENTIAL DECISION IN THE FILE.
+  //
+  // §C step 5 reads "if P_a outside safe_rect OR T_a outside safe_rect: arm_want += 0.15 (per
+  // frame, cumulative)". Implemented literally that is a ratchet, and against a large boss it
+  // runs to the 7.50 m cap and stays there — which is RI-CAM03's own *How we lose* #5, the
+  // strategy-game camera, the failure the 7.50 m cap exists to prevent.
+  //
+  // It is not a hypothetical. Measured off the reference clip
+  // (game/data/camera/reference-framing.json, conclusion R2 — Elden Ring, Godrick, 60 fps,
+  // five sampled frames): the PLAYER anchor sits at NDC y between −0.40 and −0.75 for the
+  // whole fight, i.e. outside the ±0.70 safe rect much of the time, on screen throughout, and
+  // the upstream camera never extends its boom to bring it back in.
+  //
+  // The item's own text resolves it, in two places:
+  //   1. §C's priority order — "(1) T_a on screen, (2) P_a on screen, (3) T_h on screen,
+  //      (4) anchors inside safe_rect. It never sacrifices (1) or (2)." Safe-rect containment
+  //      is the LOWEST priority, and the two on-screen guarantees are the hard ones.
+  //   2. §E's measurables — there is a `fraction(T_a ∈ safe_rect) ≥ 0.960` bar and there is
+  //      NO safe-rect bar on P_a anywhere in the item. The player gets an on-screen bar
+  //      (≥ 0.980) and nothing else.
+  //
+  // So: losing an anchor OFF SCREEN is the hard driver and may grab the full arm range.
+  // The TARGET leaving the safe rect is a soft driver, bounded so it cannot ratchet. The
+  // PLAYER low in the frame but on screen is not a fault at all — it is the reference framing.
+  const hard = !pOn || !tOn;
+  const soft = !tIn;
+
+  if (hard) {
     c.containArm += CAMERA_CONST.contain_grab_m;
-    const side = (!tIn ? (tY > 0 ? 1 : -1) : (pY > 0 ? 1 : -1));
-    c.containPitch = clamp(c.containPitch + side * CAMERA_CONST.contain_pitch_deg_per_frame, -18.0, 18.0);
+    const side = (!tOn ? (tY > 0 ? 1 : -1) : (pY > 0 ? 1 : -1));
+    c.containPitch = clamp(c.containPitch + side * CAMERA_CONST.contain_pitch_deg_per_frame,
+      -CAMERA_CONST.contain_pitch_max_deg, CAMERA_CONST.contain_pitch_max_deg);
+  } else if (soft) {
+    c.containArm = Math.min(c.containArm + CAMERA_CONST.contain_grab_m, CAMERA_CONST.contain_soft_cap_m);
+    c.containPitch = clamp(c.containPitch + (tY > 0 ? 1 : -1) * CAMERA_CONST.contain_pitch_deg_per_frame,
+      -CAMERA_CONST.contain_pitch_soft_deg, CAMERA_CONST.contain_pitch_soft_deg);
   } else if (c.containArm > 0 || c.containPitch !== 0) {
     c.containArm = Math.max(0, c.containArm - CAMERA_CONST.contain_release_m);
     c.containPitch *= 0.94;                        // release, slower than grab
