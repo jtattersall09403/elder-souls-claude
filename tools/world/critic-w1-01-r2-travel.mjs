@@ -36,6 +36,6 @@ try{
  out.result=r;
  console.log('stations',r.stations,'services',r.services,'counts',JSON.stringify(r.counts));
  console.log('station sample',JSON.stringify(r.station_sample).slice(0,400));
- for(const b of r.boardings) console.log(b.mode,'|',b.service,'| station',JSON.stringify(b.station),'| fare',b.quote&&b.quote.fare_gold,'| board',b.error?('ERR '+b.error):JSON.stringify(b.board).slice(0,200),'| moved',b.moved_m,'| ride',JSON.stringify(b.ride).slice(0,200));
+ for(const b of r.boardings) console.log(b.mode,'|',b.service,'| station',JSON.stringify(b.station),'| fare',b.quote&&b.quote.fare_gold,'| board',b.error?('ERR '+b.error):JSON.stringify(b.board||null).slice(0,200),'| moved',b.moved_m,'| ride',JSON.stringify(b.ride||null).slice(0,200));
 } finally{ await h.close(); }
 fs.writeFileSync(OUT+'critic-travel-probe.json',JSON.stringify(out,null,1)+'\n');

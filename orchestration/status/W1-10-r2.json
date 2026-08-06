@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-10-r2",
+  "brief": "orchestration/briefs/W1-10*.md (round 2, ULTRACODE)",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "prior_verdict": "corpus/90-verdicts/wave1/W1-10.json (0/10, five hard fails)",
+  "outputs_expected": [
+    "game/... live wiring so all 87 roster ids are equippable",
+    "contextual slot resolution (roll/backstep/sprint/air/block) live",
+    "M6 reconcile legacy class files to game/data/combat/frames.json",
+    "chains_to dangling fixes (82/87)",
+    "matrix conformance FST/CGS/GHM",
+    "exclusive_slots 2h.r2.follow resolution",
+    "two-hand slot buildout",
+    "harness surfaces anim_slot/hitstop_f/weapon_tip/block_success",
+    "position on AMENDMENT-W1-10-CRITIC-01"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read verdict md + critic artifacts + amendment",
+  "notes_for_successor": "Round 1 authored layer (1133 clips, 87 movesets) is GOOD - do not rebuild. The gap is wiring to the running game and measuring live via window.__HARNESS."
+}

@@ -1,0 +1,329 @@
+{
+ "schema": "critic/w1-01-r2-travel@1",
+ "measured_at": "2026-08-06T20:49:26.811Z",
+ "result": {
+  "modes": [
+   "barge",
+   "packet",
+   "poler",
+   "rootspeak",
+   "rootway"
+  ],
+  "counts": {
+   "modes": 5,
+   "stations": 26,
+   "services": 68,
+   "lines": 17,
+   "settlement_stations": 8,
+   "quays": 7
+  },
+  "stations": 26,
+  "services": 68,
+  "station_sample": [
+   {
+    "id": "archon",
+    "name": "Archon",
+    "kind": "settlement",
+    "x": 3785,
+    "z": 3823.5,
+    "region": "crimson-coast",
+    "modes": [
+     "barge",
+     "packet",
+     "poler",
+     "rootway"
+    ],
+    "quay": true,
+    "arrive_at": [
+     3799,
+     3823.5,
+     3.42
+    ]
+   },
+   {
+    "id": "blackrose",
+    "name": "Blackrose",
+    "kind": "settlement",
+    "x": 1905.5,
+    "z": 4450,
+    "region": "western-rootlands",
+    "modes": [
+     "barge",
+     "poler",
+     "rootway"
+    ],
+    "quay": true,
+    "arrive_at": [
+     1919.5,
+     4450,
+     2.68
+    ]
+   },
+   {
+    "id": "bloodmarl-isle",
+    "name": "Bloodmarl Isle",
+    "kind": "landmark",
+    "x": 4520,
+    "z": 2805,
+    "region": "crimson-coast",
+    "modes": [
+     "packet"
+    ],
+    "quay": true,
+    "arrive_at": [
+     4534,
+     2805,
+     0.85
+    ]
+   }
+  ],
+  "boardings": [
+   {
+    "mode": "rootway",
+    "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+    "from": "stormhold",
+    "to": "ixtaxh-tzil",
+    "station": {
+     "id": "stormhold",
+     "pos": [
+      2171.5,
+      761
+     ]
+    },
+    "quote": {
+     "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+     "mode": "rootway",
+     "from": "stormhold",
+     "to": "ixtaxh-tzil",
+     "fare_gold": 15,
+     "fare_gold_modelled": 18,
+     "game_min": 53.6,
+     "route_m": 1254.9,
+     "requires_walked": "stormhold-thorn",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+    },
+    "board": {
+     "boarded": false,
+     "refused": true,
+     "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+     "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+     "mode": "rootway",
+     "from": "stormhold",
+     "to": "ixtaxh-tzil",
+     "fare_gold": 15,
+     "fare_gold_modelled": 18,
+     "game_min": 53.6,
+     "route_m": 1254.9,
+     "requires_walked": "stormhold-thorn",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+    },
+    "error": "travelRide: no ride is in progress"
+   },
+   {
+    "mode": "barge",
+    "service": "svc-006-barge-stormhold-nine-mud",
+    "from": "stormhold",
+    "to": "nine-mud",
+    "station": {
+     "id": "stormhold",
+     "pos": [
+      2171.5,
+      761
+     ]
+    },
+    "quote": {
+     "service": "svc-006-barge-stormhold-nine-mud",
+     "mode": "barge",
+     "from": "stormhold",
+     "to": "nine-mud",
+     "fare_gold": 12,
+     "fare_gold_modelled": 9,
+     "game_min": 84,
+     "route_m": 954.7,
+     "requires_walked": "stormhold-thorn",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+    },
+    "board": {
+     "boarded": false,
+     "refused": true,
+     "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+     "service": "svc-006-barge-stormhold-nine-mud",
+     "mode": "barge",
+     "from": "stormhold",
+     "to": "nine-mud",
+     "fare_gold": 12,
+     "fare_gold_modelled": 9,
+     "game_min": 84,
+     "route_m": 954.7,
+     "requires_walked": "stormhold-thorn",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+    },
+    "error": "travelRide: no ride is in progress"
+   },
+   {
+    "mode": "poler",
+    "service": "svc-007-poler-stormhold-nine-mud",
+    "from": "stormhold",
+    "to": "nine-mud",
+    "station": {
+     "id": "stormhold",
+     "pos": [
+      2171.5,
+      761
+     ]
+    },
+    "quote": {
+     "service": "svc-007-poler-stormhold-nine-mud",
+     "mode": "poler",
+     "from": "stormhold",
+     "to": "nine-mud",
+     "fare_gold": 15,
+     "fare_gold_modelled": 11,
+     "game_min": 126,
+     "route_m": 954.7,
+     "requires_walked": "stormhold-thorn",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+    },
+    "board": {
+     "boarded": false,
+     "refused": true,
+     "reason": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.",
+     "service": "svc-007-poler-stormhold-nine-mud",
+     "mode": "poler",
+     "from": "stormhold",
+     "to": "nine-mud",
+     "fare_gold": 15,
+     "fare_gold_modelled": 11,
+     "game_min": 126,
+     "route_m": 954.7,
+     "requires_walked": "stormhold-thorn",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+    },
+    "error": "travelRide: no ride is in progress"
+   },
+   {
+    "mode": "packet",
+    "service": "svc-061-packet-lilmoth-soulrest",
+    "from": "lilmoth",
+    "to": "soulrest",
+    "station": {
+     "id": "lilmoth",
+     "pos": [
+      2766.5,
+      5027.5
+     ]
+    },
+    "quote": {
+     "service": "svc-061-packet-lilmoth-soulrest",
+     "mode": "packet",
+     "from": "lilmoth",
+     "to": "soulrest",
+     "fare_gold": 58,
+     "fare_gold_modelled": 67,
+     "game_min": 138.1,
+     "route_m": 3106.6,
+     "requires_walked": "blackrose-lilmoth",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the blackrose-lilmoth road. No one sells passage over ground you have not crossed."
+    },
+    "board": {
+     "boarded": false,
+     "refused": true,
+     "reason": "You have not walked the blackrose-lilmoth road. No one sells passage over ground you have not crossed.",
+     "service": "svc-061-packet-lilmoth-soulrest",
+     "mode": "packet",
+     "from": "lilmoth",
+     "to": "soulrest",
+     "fare_gold": 58,
+     "fare_gold_modelled": 67,
+     "game_min": 138.1,
+     "route_m": 3106.6,
+     "requires_walked": "blackrose-lilmoth",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the blackrose-lilmoth road. No one sells passage over ground you have not crossed."
+    },
+    "error": "travelRide: no ride is in progress"
+   },
+   {
+    "mode": "rootspeak",
+    "service": "svc-064-rootspeak-helstrom-soulrest",
+    "from": "helstrom",
+    "to": "soulrest",
+    "station": {
+     "id": "helstrom",
+     "pos": [
+      2262.5,
+      2773.5
+     ]
+    },
+    "quote": {
+     "service": "svc-064-rootspeak-helstrom-soulrest",
+     "mode": "rootspeak",
+     "from": "helstrom",
+     "to": "soulrest",
+     "fare_gold": 38,
+     "fare_gold_modelled": 31,
+     "game_min": 20,
+     "route_m": 3199.6,
+     "requires_walked": "stormhold-helstrom",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the stormhold-helstrom road. No one sells passage over ground you have not crossed."
+    },
+    "board": {
+     "boarded": false,
+     "refused": true,
+     "reason": "You have not walked the stormhold-helstrom road. No one sells passage over ground you have not crossed.",
+     "service": "svc-064-rootspeak-helstrom-soulrest",
+     "mode": "rootspeak",
+     "from": "helstrom",
+     "to": "soulrest",
+     "fare_gold": 38,
+     "fare_gold_modelled": 31,
+     "game_min": 20,
+     "route_m": 3199.6,
+     "requires_walked": "stormhold-helstrom",
+     "walked": false,
+     "gold": 0,
+     "purchasable": false,
+     "refusal": "You have not walked the stormhold-helstrom road. No one sells passage over ground you have not crossed."
+    },
+    "error": "travelRide: no ride is in progress"
+   }
+  ],
+  "state0": {
+   "present": true,
+   "legs_walked": [],
+   "leg_progress_m": {},
+   "gold": 0,
+   "purchasable": [],
+   "refused": 68,
+   "riding": null,
+   "rides_taken": 0,
+   "log": []
+  }
+ }
+}
