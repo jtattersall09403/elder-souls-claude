@@ -2820,14 +2820,14 @@ export class Engine {
    * 1 cm while a full stick was held is a frame the flood fill cannot see.
    */
   walkPath(points, opts = {}) {
-    const o = Object.assign({ speed: 'walk', maxFrames: 400000, lookahead_m: 4.5, arrive_m: 3.0, stuckAbort: 900 }, opts);
+    const o = Object.assign({ speed: 'walk', maxFrames: 400000, lookahead_m: 4.5, arrive_m: 3.0, stuckAbort: 900, miredAbort: 36000 }, opts);
     if (!this.field) throw new Error('walkPath: no province is loaded');
     if (!Array.isArray(points) || points.length < 2) throw new Error('walkPath(points): expected at least two [x, z] points');
     const mag = o.speed === 'jog' ? 1.0 : 0.55 - 1e-9;
     const p = this.sim.player;
     this.teleport(points[0][0], points[0][1]);
     p.pos[1] = this.field.heightAt(points[0][0], points[0][1]);
-    let idx = 1, frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null;
+    let idx = 1, frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0;
     const visited = new Set([this.field.regionAt(p.pos[0], p.pos[2]).id]);
     const deepest = { depth_m: 0, at: null };
     while (frames < o.maxFrames) {
@@ -2854,7 +2854,17 @@ export class Engine {
       this._afterStep();
       const step = Math.hypot(p.pos[0] - x0, p.pos[2] - z0);
       dist += step; frames++;
-      if (step < 0.01) { stuck++; worstStuck = Math.max(worstStuck, stuck); if (stuck >= o.stuckAbort) { aborted = 'stuck'; break; } } else stuck = 0;
+      // A body that is MIRED and struggling is paying a declared cost, not stuck. Counting those
+      // frames as "stuck" is what made every S9 walked leg abort inside a delta the flood fill
+      // calls 99.3% walkable: three struggles at 25 stamina take 90 frames of zero movement, and
+      // waiting for the stamina to pay for them takes more. They are counted and reported
+      // separately, and a walk that spends more than `miredAbort` frames mired aborts as MIRED —
+      // which is a finding about the province, not a stall.
+      if (this.traversal && this.traversal.mired) {
+        miredFrames++;
+        if (miredFrames >= o.miredAbort) { aborted = 'mired'; break; }
+        stuck = 0;
+      } else if (step < 0.01) { stuck++; worstStuck = Math.max(worstStuck, stuck); if (stuck >= o.stuckAbort) { aborted = 'stuck'; break; } } else stuck = 0;
       visited.add(this.field.regionAt(p.pos[0], p.pos[2]).id);
       const dep = this.field.depthAt(p.pos[0], p.pos[2]);
       if (dep > deepest.depth_m) { deepest.depth_m = +dep.toFixed(3); deepest.at = [+p.pos[0].toFixed(1), +p.pos[2].toFixed(1)]; }
@@ -2867,7 +2877,7 @@ export class Engine {
       mean_speed_mps: frames ? +(dist / (frames / 60)).toFixed(4) : 0,
       end: [+end[0].toFixed(1), +end[1].toFixed(1)], target: [+target[0].toFixed(1), +target[1].toFixed(1)],
       offset_m: +Math.hypot(end[0] - target[0], end[1] - target[1]).toFixed(2),
-      longest_stuck_frames: worstStuck, regions_entered: [...visited].sort(),
+      longest_stuck_frames: worstStuck, mired_frames: miredFrames, regions_entered: [...visited].sort(),
       deepest_water_on_the_walk: deepest,
     };
   }

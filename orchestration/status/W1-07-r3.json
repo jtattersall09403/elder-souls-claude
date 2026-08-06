@@ -1,0 +1,26 @@
+{
+  "task_id": "W1-07-r3",
+  "brief": "W1-07 round 3 at ULTRACODE. Round 2 scored 3.8/10. Close GAP-W1-questionnaire-route-is-unreadable-and-unnamed plus the consumption failures.",
+  "started": "wave-3",
+  "state": "researching",
+  "gap": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed — 0 of 10 question texts reach the frame; 0 of 14 named classes over 240 runs.",
+  "plan": [
+    "P0 confirm boot (smoke.mjs) before touching anything",
+    "P1 draw state.question.text at questionnaire nodes (buildCensusModel scene.js:267)",
+    "P2 named-class matcher so >= 10 of 14 named classes are questionnaire-reachable; Warden-Scribe says the name",
+    "P3 custom-class route: filter already-taken attributes; never throw out of stepFrames",
+    "P4 greetings.json consumer: NPC greeting selector keyed (reaction_group, disposition band, player race) drawn on the census UILayer",
+    "P5 race-gated topic consumer: filter topics through requires.race/forbids.race",
+    "P6 Focus spend so S27 Dry Well drawback is observable; birthsign visibility channel",
+    "P7 title surface; the writ as an object in the world",
+    "P8 interlocutor faces/animation",
+    "P9 raise every dialogue floor to >= 20% headroom",
+    "P10 cmb-reach.mjs against own encounter statblock; fix what is ours",
+    "P11 tools/journey/journey-run.mjs + beat-extract.mjs + gamepad-shim.mjs (RI-JRN01 A-JRN1)",
+    "P12 delete-the-fix regression check on every fix"
+  ],
+  "findings": [],
+  "outputs_written": [],
+  "next_step": "smoke test, then read game/src/character/scene.js and census data",
+  "notes_for_successor": ""
+}

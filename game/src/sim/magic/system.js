@@ -45,6 +45,9 @@ export const SKILL_TO_SCHOOL = Object.freeze({
 export const CHAMELEON_CLAMP_PCT = 80;
 export const RESIST_CLAMP_PCT = 85;
 
+/** RI-MAG05 L4: how long the moment of contact is visible. 0.6 s at 60 Hz. */
+export const IMPACT_FRAMES = 36;
+
 /**
  * What each S11 proc costs, in authored constants rather than literals scattered through the
  * step. All integers and fixed periods: a proc is a schedule, never a per-frame draw.
@@ -148,6 +151,8 @@ export class MagicSystem {
     this.airborne = false;
     this.silenced = false;
     this.residues = [];                  // RI-MAG05 L7: every spell leaves residue for 20-90 s
+    // RI-MAG05 L4/L5: the MOMENT of contact, as world state the renderer can draw. See _impact().
+    this.impacts = [];
 
     // ---- the maker's systems ----------------------------------------------------------------
     this.custom = [];                    // spells commissioned at a spellwright, in save order
@@ -777,6 +782,7 @@ export class MagicSystem {
           p.hits.push(t.id);
           onHit(t, this.spellOf(p.spell), { kind: 'projectile', at: [p.pos[0], p.pos[1], p.pos[2]], frame });
           this.projectiles.splice(i, 1);
+          this._impact(frame, p.spell, p.pos, 1.25);
           this._residue(frame, p.spell, p.pos);
           consumed = true;
           break;
@@ -792,18 +798,23 @@ export class MagicSystem {
         if (w) {
           onHit(null, this.spellOf(p.spell), { kind: 'projectile', at: w.at, frame, world: w.id });
           this.projectiles.splice(i, 1);
+          this._impact(frame, p.spell, w.at, 1.25);
           this._residue(frame, p.spell, w.at);
           consumed = true;
         }
       }
-      if (this.projectiles[i] === p && p.travelF >= p.lifeF) { this.projectiles.splice(i, 1); this._residue(frame, p.spell, p.pos); }
+      if (this.projectiles[i] === p && p.travelF >= p.lifeF) {
+        this.projectiles.splice(i, 1);
+        this._impact(frame, p.spell, p.pos, 0.9);      // a spell that expends itself in the air
+        this._residue(frame, p.spell, p.pos);
+      }
     }
 
     // --- volumes: re-arm on an INTEGER FRAME PERIOD. Never a per-frame probability.
     for (let i = this.volumes.length - 1; i >= 0; i--) {
       const v = this.volumes[i];
       if (frame < v.activeFrom) continue;
-      if (frame > v.activeTo) { this.volumes.splice(i, 1); this._residue(frame, v.spell, v.centre); continue; }
+      if (frame > v.activeTo) { this.volumes.splice(i, 1); this._impact(frame, v.spell, v.centre, v.r); this._residue(frame, v.spell, v.centre); continue; }
       if (v.lastTickF >= 0 && frame - v.lastTickF < v.ticksEveryF) continue;
       v.lastTickF = frame;
       let touched = false;
@@ -870,6 +881,8 @@ export class MagicSystem {
       if (a.effect === 'detect_life') HANDLERS.detect_life(this, frame, a, null, null);
     }
 
+    // --- impacts age out. Short, so the burst reads as a hit and not as a fire that was lit.
+    for (let i = this.impacts.length - 1; i >= 0; i--) if (--this.impacts[i].remaining_f <= 0) this.impacts.splice(i, 1);
     // --- residue decays (RI-MAG05 L7: 20-90 s of char, rime, scorch, wet patch, spore bloom).
     for (let i = this.residues.length - 1; i >= 0; i--) if (--this.residues[i].remaining_f <= 0) this.residues.splice(i, 1);
   }
@@ -1061,6 +1074,28 @@ export class MagicSystem {
     for (const t of this.world.traps.values()) if (t.armed) consider(t);
     for (const b of this.world.breakables.values()) if (b.intact) consider(b);
     return best ? { id: best.id, at: [best.pos[0], best.pos[1], best.pos[2]] } : null;
+  }
+
+  /**
+   * THE IMPACT. RI-MAG05 §L4/L5, and the round-2 verdict's plainest visual finding:
+   * "`frames/04-impact.png` is PIXEL-INDISTINGUISHABLE from the idle frame. The decal counter
+   * says 1; nothing is on the ground."
+   *
+   * The reason was structural rather than artistic. A projectile that connected was spliced out
+   * of `projectiles` and a residue was pushed — and a residue draws a flat ground decal and
+   * nothing else. There was no simulation record of the moment of contact for the renderer to
+   * draw, so the impact frame had nothing in it that the idle frame did not. This is that
+   * record: a short-lived burst at the contact point, in the world, on the sim clock, which
+   * `spell-vfx.js` reads exactly as it reads a volume.
+   */
+  _impact(frame, spellId, at, radius) {
+    this.impacts.push({
+      spell: spellId, at: [at[0], at[1], at[2]],
+      r: radius === undefined ? 1.1 : radius,
+      spawnF: frame, remaining_f: IMPACT_FRAMES, total_f: IMPACT_FRAMES,
+    });
+    if (this.impacts.length > 24) this.impacts.shift();
+    this._emit(frame, 'spell_impact', { spell: spellId, at: at.map(round2), frames: IMPACT_FRAMES });
   }
 
   _residue(frame, spellId, at) {
@@ -1650,6 +1685,7 @@ export class MagicSystem {
       drift_mps: round3(this.drift.mps), drift_cap_mps: this.drift.capMps,
       walk_reference_mps: this.lev.walk_speed_reference_mps,
       projectiles: this.projectiles.length, volumes: this.volumes.length, residues: this.residues.length,
+      impacts: this.impacts.length,
       xul_hesh: this.xulHesh, gems: this.gems.length, custom_spells: this.custom.length,
       // RI-MAG06: the consuming systems, in the same call, so a census is one read per frame.
       consumers: this.worldCensus(),

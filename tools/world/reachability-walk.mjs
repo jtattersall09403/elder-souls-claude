@@ -41,6 +41,13 @@ const COLS = field.cols, ROWS = field.rows, CELL = field.cell;
 // Deliberately NOT the flood fill's rule. Water is COSTED, not thresholded, and slope is costed
 // too, so the planner will happily propose a route through shin-deep water — and the walk then
 // says whether the body agrees.
+//
+// ROUND 4: WET SUCK IS COSTED TOO, and it has to be. RI-WLD10 §4's own sentence about the mire is
+// that it is "survivable, expensive, and something a competent player WALKS AROUND". A planner
+// that prices water and slope but treats sucking mud as free is not modelling a competent player;
+// it is walking one into a bog and then reporting that the province is unreachable. It is a COST
+// and not a threshold, so where mud is the only way through the route still takes it and the walk
+// still says whether the body agrees — which is the whole design of this instrument.
 const cost = new Float32Array(COLS * ROWS);
 const PLAN_TIDE = 0.75;      // LOW. The tide is a real gate; "reachable on foot" is read at low water.
 for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
@@ -51,7 +58,8 @@ for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
     const px = x * CELL + ux * CELL, pz = z * CELL + uz * CELL;
     const d = field.depthAt(px, pz, PLAN_TIDE);
     const sl = field.slopeAt(px, pz, 12);
-    const c = sl > 45 || d > 1.35 ? Infinity : 1 + 0.25 * sl + 6 * d;
+    const mud = field.substrateAt(px, pz) === 'SUCK' && d >= 0.01 ? 9 : 0;
+    const c = sl > 45 || d > 1.35 ? Infinity : 1 + 0.25 * sl + 6 * d + mud;
     if (c < best) best = c;
   }
   cost[z * COLS + x] = best;

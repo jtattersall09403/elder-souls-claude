@@ -57,6 +57,14 @@
 import * as THREE from '../../vendor/three/three.module.js';
 
 const MAX_PARTICLES = 1600;          // per system; the whole-frame ceiling is enforced by pooling
+/** A stable integer from a string, for a per-entity particle seed. No clock, no RNG. */
+function hashStr(v) {
+  let h = 2166136261;
+  const t = String(v);
+  for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return (h >>> 0) % 100000;
+}
+
 const MAX_DECALS = 60;               // RI-MAG05 §B2: <= 60 live residue decals
 
 /** Deterministic hash -> [0,1). No PRNG, no clock. */
@@ -555,6 +563,27 @@ export class SpellVFX {
       }
     }
 
+    // ---- L4/L5: THE IMPACT. The round-2 verdict: "frames/04-impact.png is pixel-
+    // indistinguishable from the idle frame. The decal counter says 1; nothing is on the
+    // ground." A projectile that connected was spliced out of the sim and replaced by a
+    // residue, and a residue is a flat ground stain — so the frame the spell LANDED had
+    // nothing in it. `M.impacts` is the moment of contact as world state, and this is it drawn:
+    // a bright core that collapses, a ring of thrown matter, and the ground bloom under it,
+    // all three systems, for 36 f@60.
+    for (const im of M.impacts) {
+      const pal = this.paletteFor(im.spell);
+      const t = 1 - im.remaining_f / im.total_f;          // 0 at contact, 1 at the end
+      const punch = Math.max(0, 1 - t * t);                // fast in, slow out
+      const r = im.r * (0.35 + t * 1.85);                  // the shell expands
+      this._emitCore(im.at[0], im.at[1] + 0.55, im.at[2], pal, 0.6 + punch * 0.9,
+        Math.round(60 + 150 * punch), im.r * (0.25 + t * 0.8), im.spawnF);
+      this._emitTrailRing([im.at[0], im.at[1], im.at[2]], r, pal, im.spawnF + 3);
+      this._emitImpact([im.at[0], im.at[1], im.at[2]], r, pal, Math.round(90 + 210 * punch), im.spawnF);
+      // and the bloom on the floor beneath it, from the first frame — L5's ragged mask, not a
+      // radial mandala, and it is IN FRAME because it is under the thing that just exploded.
+      this._pushDecal([im.at[0], 0, im.at[2]], im.r * (0.9 + t * 0.7), pal, 0.85 * (1 - t * 0.5), im.spawnF);
+    }
+
     // ---- L7: residue. Every spell leaves a stain for 3,600 f@60, and it is finally drawn. -----
     for (const r of M.residues) {
       const pal = this.paletteFor(r.spell);
@@ -564,6 +593,21 @@ export class SpellVFX {
 
     // ---- V10: the mesh effects, each driven by a live effect ---------------------------------
     this._meshEffects(sim, M);
+
+    // ---- the diegetic detect smudges (RI-MAG06 §B, S8) ---------------------------------------
+    // `detect_life` and `detect_key` write `M.markers`, and the round-2 verdict found nothing
+    // read them: "No renderer pass, no entity." S8 forbids a HUD marker, so the answer is not a
+    // HUD marker — it is a warm smudge hanging in the WORLD where the living thing is, drawn
+    // with the same scene-lit particle system everything else uses, occluded by geometry like
+    // anything else, and carrying `hud: false`. You see it because it is there, not because a
+    // layer drew it over the top of the picture.
+    for (const mk of M.markers) {
+      const pal = mk.kind === 'key_glow'
+        ? { core: '#F2E3A8', mid: '#C9B06A', decay: '#8A7842' }
+        : { core: '#E0705A', mid: '#A34C43', decay: '#5E2E2C' };
+      this._emitCore(mk.at[0], (mk.at[1] || 0) + 1.05, mk.at[2], pal, 0.35, 34, 0.30, mk.eid ? hashStr(mk.eid) : 7);
+      this._emitImpact([mk.at[0], (mk.at[1] || 0) + 0.5, mk.at[2]], 0.34, pal, 22, mk.eid ? hashStr(mk.eid) + 1 : 8);
+    }
 
     // ---- V8: refraction, for the Veiling school ----------------------------------------------
     if (M.active.some((a) => a.effect === 'invisibility' || a.effect === 'chameleon')) {
