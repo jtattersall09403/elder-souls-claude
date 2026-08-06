@@ -3,7 +3,7 @@ id: RI-UIX03
 title: Inventory, encumbrance, and the menu-pause rule (S14) — plus the level-up screen
 kind: structure
 side: neutral
-judges: [ui.menu.inventory, ui.menu.levelup, progression.equipment.encumbrance]
+judges: [ui.menu.inventory, ui.menu.levelup, combat.pause.policy, progression.equipment.encumbrance]
 provenance: constructed
 confidence: medium
 blind_pair: yes

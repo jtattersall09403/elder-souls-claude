@@ -2,7 +2,7 @@
   "task_id": "audio-ui",
   "brief": "orchestration/briefs/audio-ui.md",
   "started": "wave-N",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/87-audio/RI-AUD01-combat-impact-audio.md",
     "corpus/87-audio/RI-AUD02-web-audio-budget.md",
@@ -26,7 +26,8 @@
     "corpus/86-ui/RI-UIX02-no-marker-enforcement.md",
     "corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md",
     "corpus/86-ui/RI-UIX04-journal-ui.md",
-    "corpus/86-ui/RI-UIX05-books-and-readable-text.md"
+    "corpus/86-ui/RI-UIX05-books-and-readable-text.md",
+    "corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md"
   ],
   "findings": [
     "All 12 canonical paths (audio.combat.impact, audio.ambience.region, audio.music.policy, audio.voice.policy, ui.hud.combat, ui.hud.minimalism, ui.menu.inventory, ui.menu.journal, ui.menu.levelup, ui.menu.books, ui.dialogue.presentation, ui.style.diegesis) EXIST in corpus/00-doctrine/subsystems.json. No new paths needed.",
@@ -41,8 +42,15 @@
     "MEASURED: morrowind-dialogue.csv.gz = 69,876 rows / 1,866,989 words / mean 26.7 wpl -> 207 hours of VO at 150wpm. This is the hard argument that full VO is out of scope. Column is 'DialogueText' (idx 9).",
     "MEASURED: argonian-dialogue-corpus.json = 3,888 lines, 151 distinct named speakers, ZERO matches for hiss/sss/Jel/rasp/click. Morrowind never wrote Argonian accent phonetically - register is syntax ('I am Ahaht. Slave.'). Rule: hiss lives in audio, never in text.",
     "MUSIC COVERAGE BUDGET SET: 8-20% of session wall-clock (target 12%), boss-free session 4-12%; hard fail >30% (wall-to-wall) or <4% (Souls world-policy leakage/AR-2). Ordinary-enemy combat music = exactly 0 frames. Boss music onset within +/-30 frames of fog_gate_crossed.",
-    "INDEX.md scope map: ui.hud.minimalism and ui.menu.journal were HOLES (now filled by RI-UIX02/RI-UIX04). RI-DLG05 already owns journal PROSE (voice/numbering/directions/nomarkers) -> RI-UIX04 must own only PRESENTATION. RI-WLD06 owns positive no-marker obligations (landmarks/signposts/prose) -> RI-UIX02 owns only the DETECTORS. RI-LOR03 owns book structure -> RI-UIX05 owns only reading UI. RI-PRG01/02 own level-up curve+stats -> RI-UIX06... no, RI-UIX-levelup content folds into UIX03? NOTE: brief lists ui.menu.levelup as a canonical path; assign it to RI-UIX03 (inventory) or UIX06. Decision: judge ui.menu.levelup from RI-UIX03 (menus that do not pause) is wrong -> put it on RI-UIX01? FINAL: ui.menu.levelup judged by RI-UIX03 as a menu-screen sibling."
+    "INDEX.md scope map: ui.hud.minimalism and ui.menu.journal were HOLES (now filled by RI-UIX02/RI-UIX04). RI-DLG05 already owns journal PROSE (voice/numbering/directions/nomarkers) -> RI-UIX04 must own only PRESENTATION. RI-WLD06 owns positive no-marker obligations (landmarks/signposts/prose) -> RI-UIX02 owns only the DETECTORS. RI-LOR03 owns book structure -> RI-UIX05 owns only reading UI. RI-PRG01/02 own level-up curve+stats -> RI-UIX06... no, RI-UIX-levelup content folds into UIX03? NOTE: brief lists ui.menu.levelup as a canonical path; assign it to RI-UIX03 (inventory) or UIX06. Decision: judge ui.menu.levelup from RI-UIX03 (menus that do not pause) is wrong -> put it on RI-UIX01? FINAL: ui.menu.levelup judged by RI-UIX03 as a menu-screen sibling.",
+    "All 11 items pass tools/corpus-index.mjs with ZERO errors; INDEX.md regenerated. 137 remaining errors are pre-existing in 88-journeys and 95-experience (other agents' orphan paths) - NOT mine.",
+    "G5 status: RI-AUD01 now judges combat.feedback.hitstop. But RI-MTH03 STILL lists that path in its own front-matter, so G5's second clause ('no longer lists RI-MTH03 as its judge') needs RI-MTH03 edited by its owner. Did not edit (brief forbids editing others' items).",
+    "ui.dialogue.presentation has NO dedicated UI item - covered only by RI-CAM05 (a camera item). Candidate for a future RI-UIX07.",
+    "RI-UIX06 files a formal corpus extension against RI-VIS01: proposes F17 (UI text raster fidelity), F18 (UI scaling/layout integrity), F19 (UI compositing correctness) for append to RI-VIS01 sec.A, plus CC-7 'the diegetic-blur excuse' for sec.C and three straddle rulings for sec.D. Until appended, UI rendering quality is UNASSIGNED in sec.A and a critic judging it is out of process.",
+    "SUCCESSOR VERIFICATION PASS: all 11 items re-checked for CORPUS-CONTRACT front-matter (8 keys) + all 6 mandatory sections - ALL OK. INDEX.md regenerated; zero errors attributable to 86-ui or 87-audio.",
+    "HOLE CLOSED: combat.pause.policy was listed '-- HOLE --' in INDEX.md sec scope map despite RI-UIX03 resolving S14 with exact frame arithmetic (M-P2: frame delta exactly 120 over 120 in combat, any delta <120 fails). Added combat.pause.policy to RI-UIX03 judges; INDEX regenerated; hole now closed. This was the only remaining unclaimed canonical path in this area's reach.",
+    "CONFLICT: HARNESS.md sec.6 pins deviceScaleFactor:1 for ALL screenshots (for FFT/edge-metric commensurability) and forces --disable-lcd-text --font-render-hinting=none. Under those flags F18/M-F17.2 (the DPR-2 upscaled-canvas detector, the single check that catches a CanvasTexture UI) is STRUCTURALLY UNMEASURABLE. RI-UIX06 requests UI shots form their own viewpoint set with their own pinned config, never compared against world shots. Without that HARNESS amendment the UI FIDELITY half of the pair cannot be scored at all."
   ],
-  "next_step": "write RI-UIX06 diegesis (must propose RI-VIS01 sec.A extension F17/F18 + CC-7). Then regenerate INDEX via tools/corpus-index.mjs.",
-  "notes_for_successor": "SUCCESSOR-1 NOTE: RI-UIX05 was found complete on disk (11 sections, 18.5KB) - predecessor died after writing it but before updating outputs_written. Verified and recorded. Only RI-UIX06 outstanding."
+  "next_step": "none - all 11 deliverables written, validated and indexed.",
+  "notes_for_successor": "Area complete. Owed tooling that does not exist and blocks measurement: tools/analysis/{audio-sync,audio-budget,music-coverage,ui-census,ui-forbidden,marker-scan,ui-layer,marker-diff,journal-ui,text-metrics}.mjs, tools/metrics/ui-metrics.mjs, tools/blind/audio-pack.mjs, --blank-world flag on shoot.mjs, CC-7 phrases in cc-scan.mjs. Harness amendments requested in-item: audioLog, audioCapture, audioStats, audioUnlock, musicState, getUIState, openMenu/closeMenu, setUIVisible promoted to mandatory, trace events music_start/music_stop/fog_gate_crossed, ui-combat/ui-world/ui-screens/ui-book viewpoint sets, deviceScaleFactor:2 for UI shots, named per-quest-stage loadState targets. NOTE: HARNESS.md sec.3 currently lists audio under 'Cannot, and must not be claimed' - that sentence must be amended or every AUD item correctly scores 0."
 }

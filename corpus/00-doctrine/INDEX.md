@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-06T08:58:23Z
+Generated: 2026-08-06T08:59:05Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -27,14 +27,14 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 
 - Canonical subsystem paths: **200**
 - Reference items found: **120** across 18 area(s)
-- Subsystems with at least one judging reference item: **177**
+- Subsystems with at least one judging reference item: **178**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
-- **Corpus holes (no judging item): 17** (9%)
+- **Corpus holes (no judging item): 16** (8%)
 - Front-matter problems: 138 error(s), 0 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
-| `combat.*` | 48 | 43 | 0 | 5 |
+| `combat.*` | 48 | 44 | 0 | 4 |
 | `progression.*` | 18 | 17 | 0 | 1 |
 | `quests.*` | 22 | 19 | 0 | 3 |
 | `dialogue.*` | 14 | 14 | 0 | 0 |
@@ -108,7 +108,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `combat.input.latency` | Press-to-first-active-frame latency | souls | **— HOLE —** | `critic.combat` | _none_ |
 | `combat.feedback.hitstop` | Hitstop, impact vfx/sfx, damage legibility | souls | [RI-WPN05](../../corpus/12-weapons/RI-WPN05-weapon-feel-impact.md)<br>[RI-CAM06](../../corpus/15-camera/RI-CAM06-camera-feel.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md)<br>[RI-AUD01](../../corpus/87-audio/RI-AUD01-combat-impact-audio.md) | `critic.combat` | in-item M1–M8 (8 checks); corpus/80-methods/m-wpn05-impact.mjs<br>in-item M1–M9 (9 checks); corpus/80-methods/m-cam06-feel.mjs<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs<br>in-item M1–M8 (6 checks); tools/harness/run-headless.mjs, tools/analysis/audio-sync.mjs, tools/blind/audio-pack.mjs |
 | `combat.difficulty.lethality` | Regions gated by lethality; NO level-scaling to the player (seam S9) | souls | [RI-AI05](../../corpus/10-combat/RI-AI05-roster-archetypes.md)<br>[RI-WLD04](../../corpus/50-world/RI-WLD04-region-identity.md) | `critic.combat` | in-item M1–M8 (8 checks)<br>in-item M17–M21 (5 checks) |
-| `combat.pause.policy` | World does not pause during combat; inventory is not a safe haven (seam S14) | souls | **— HOLE —** | `critic.combat` | _none_ |
+| `combat.pause.policy` | World does not pause during combat; inventory is not a safe haven (seam S14) | souls | [RI-UIX03](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) | `critic.combat` | in-item procedure (kind: structure); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs |
 
 ### `progression.*`
 
@@ -330,7 +330,7 @@ Subsystem paths with **no** reference item judging them. Per CORPUS-CONTRACT §4
 builder must not start on one of these. Per §5, a critic that needs one writes the
 item rather than guessing, then regenerates this index.
 
-**17 of 200 paths are holes.**
+**16 of 200 paths are holes.**
 
 | Subsystem path | What it means | Arb | Expected area | Critic |
 |---|---|---|---|---|
@@ -338,7 +338,6 @@ item rather than guessing, then regenerates this index.
 | `combat.stamina.exhaustion` | Zero-stamina state and its punish window | souls | `corpus/10-combat/` | `critic.combat` |
 | `combat.status.buildup` | In-fight status meters and procs (seam S11 Souls half) | split | `corpus/10-combat/` | `critic.combat` |
 | `combat.input.latency` | Press-to-first-active-frame latency | souls | `corpus/10-combat/` | `critic.combat` |
-| `combat.pause.policy` | World does not pause during combat; inventory is not a safe haven (seam S14) | souls | `corpus/10-combat/` | `critic.combat` |
 | `progression.affliction.economy` | Named diseases, curses, in-world causes and cures (seam S11 Morrowind half) | morrowind | `corpus/20-progression/` | `critic.progression` |
 | `quests.resolution.exclusive` | Mutually exclusive resolutions that permanently close doors | morrowind | `corpus/30-quests/` | `critic.quests` |
 | `quests.faction.expulsion` | Expulsion, disgrace, and the path back | morrowind | `corpus/30-quests/` | `critic.quests` |
@@ -836,7 +835,7 @@ the item, or append the path to `subsystems.json`, then regenerate.
 | RI-PLT02 | Memory, asset budgets, and the ten-minute traversal leak test — sized for a phone | 85-platform | number | neutral | constructed | high | no | `platform.perf.memory` | [corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md](../../corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md) |
 | RI-UIX01 | The combat HUD — what it shows, what it must never show, and stamina as a correctness property | 86-ui | number | souls | constructed | medium | yes | `ui.hud.combat` `combat.stamina.regen` | [corpus/86-ui/RI-UIX01-combat-hud.md](../../corpus/86-ui/RI-UIX01-combat-hud.md) |
 | RI-UIX02 | No-marker enforcement — the automated detector for S8 | 86-ui | structure | morrowind | constructed | high | no | `ui.hud.minimalism` `journal.navigation.nomarkers` | [corpus/86-ui/RI-UIX02-no-marker-enforcement.md](../../corpus/86-ui/RI-UIX02-no-marker-enforcement.md) |
-| RI-UIX03 | Inventory, encumbrance, and the menu-pause rule (S14) — plus the level-up screen | 86-ui | structure | neutral | constructed | medium | yes | `ui.menu.inventory` `ui.menu.levelup` `progression.equipment.encumbrance` | [corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) |
+| RI-UIX03 | Inventory, encumbrance, and the menu-pause rule (S14) — plus the level-up screen | 86-ui | structure | neutral | constructed | medium | yes | `ui.menu.inventory` `ui.menu.levelup` `combat.pause.policy` `progression.equipment.encumbrance` | [corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) |
 | RI-UIX04 | The journal screen — chronological, append-only, and not a quest tracker | 86-ui | structure | morrowind | constructed | high | yes | `ui.menu.journal` `journal.entry.numbering` | [corpus/86-ui/RI-UIX04-journal-ui.md](../../corpus/86-ui/RI-UIX04-journal-ui.md) |
 | RI-UIX05 | Books and readable text — pagination, legibility, and reading as a real activity | 86-ui | number | morrowind | constructed | medium | yes | `ui.menu.books` `lore.book.structure` | [corpus/86-ui/RI-UIX05-books-and-readable-text.md](../../corpus/86-ui/RI-UIX05-books-and-readable-text.md) |
 | RI-UIX06 | UI diegesis and the UI bifurcation — style is art direction, rendering quality is fidelity | 86-ui | structure | neutral | constructed | high | yes | `ui.style.diegesis` `render.process.bifurcation` | [corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) |

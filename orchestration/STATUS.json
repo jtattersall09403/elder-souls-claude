@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-06T08:56:35.533Z",
-  "complete": 5,
+  "generated": "2026-08-06T08:59:12.298Z",
+  "complete": 6,
   "total": 12,
   "tasks": [
     {
@@ -37,42 +37,39 @@
       "id": "journeys",
       "title": "User-journey corpus, journey-critic fleet, platform budget",
       "state": "partial",
-      "done": 8,
+      "done": 9,
       "expected": 11,
       "missing": [
         "corpus/88-journeys/JOURNEY-CRITIC-FLEET.md",
-        "corpus/85-platform/RI-PLT02*",
         "corpus/85-platform/RI-PLT03*"
       ],
-      "next_step": "write RI-PLT02 (memory/assets) then RI-PLT03 (load/hitches) then JOURNEY-CRITIC-FLEET.md + paths-requested.json",
+      "next_step": "write RI-PLT03 (load/streaming/hitches)",
       "findings": 18
     },
     {
       "id": "experience",
       "title": "Played-experience critic, anecdote census, cross-system composition",
       "state": "partial",
-      "done": 5,
+      "done": 6,
       "expected": 8,
       "missing": [
-        "corpus/95-experience/RI-CMP02*",
         "corpus/95-experience/RI-CMP03*",
         "corpus/95-experience/CROSS-SYSTEM-BUILDER-BRIEF.md"
       ],
-      "next_step": "write RI-CMP02 emergence fuzzing (>=20 combination probes F01..F26, outcome classes E0..E5, generator + regression set, no_op_fraction<=0.35, degenerate_fraction=0)",
-      "findings": 17
+      "next_step": "write RI-CMP03 build identity payoff (6 archetypes, full-game viability, route_divergence Jaccard >=0.40, verb-profile KL, talker acid test, blind archetype identification >=0.67) then CROSS-SYSTEM-BUILDER-BRIEF.md",
+      "findings": 18
     },
     {
       "id": "magic",
       "title": "Magic: casting, effect catalogue, spellmaking, enchanting, quest use",
       "state": "partial",
-      "done": 3,
+      "done": 4,
       "expected": 5,
       "missing": [
-        "corpus/25-magic/RI-MAG04*",
         "corpus/25-magic/RI-MAG05*"
       ],
-      "next_step": "write RI-MAG04 (magic as quest solution, AR-3, static analysis over game/data/quests/**)",
-      "findings": 30
+      "next_step": "write RI-MAG05 (VFX bifurcation: ART = spell design language organic/fungal/Hist/wet; FIDELITY = F16 particle quality). Then verify all six mandatory sections + front-matter on all five files.",
+      "findings": 34
     },
     {
       "id": "character-stealth-crime",
@@ -93,8 +90,8 @@
       "done": 2,
       "expected": 2,
       "missing": [],
-      "next_step": "verify front-matter/sections against CORPUS-CONTRACT, verify judges paths are canonical, check INDEX generator",
-      "findings": 16
+      "next_step": "none - complete",
+      "findings": 18
     },
     {
       "id": "opacity-tone",
@@ -109,14 +106,12 @@
     {
       "id": "audio-ui",
       "title": "Audio design and user-interface corpus",
-      "state": "partial",
-      "done": 10,
+      "state": "complete",
+      "done": 11,
       "expected": 11,
-      "missing": [
-        "corpus/86-ui/RI-UIX06*"
-      ],
-      "next_step": "write RI-UIX05 books/readable text, then RI-UIX06 diegesis (must propose RI-VIS01 sec.A extension F17/F18 + CC-7). Then regenerate INDEX via tools/corpus-index.mjs --check.",
-      "findings": 13
+      "missing": [],
+      "next_step": "write RI-UIX06 diegesis (must propose RI-VIS01 sec.A extension F17/F18 + CC-7). Then regenerate INDEX via tools/corpus-index.mjs.",
+      "findings": 17
     },
     {
       "id": "image-acquisition",
@@ -127,7 +122,7 @@
       "missing": [
         "corpus/70-visual/refs/ACQUISITION-REPORT.md"
       ],
-      "next_step": "move unconfirmed->rejected, add integrity flags, write LICENCE-NOTE.md + ACQUISITION-REPORT.md + RI-VIS09",
+      "next_step": "SUCCESSOR-2 active: metrics+manifest confirmed DONE on disk. Remaining: LICENCE-NOTE.md, ACQUISITION-REPORT.md, RI-VIS09, band comparison vs RI-VIS03.",
       "findings": 23
     },
     {
