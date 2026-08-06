@@ -12,7 +12,11 @@
     "corpus/00-doctrine/CORPUS-COHERENCE-02.md edit log"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read BAR-CRITIQUE-02.md in full, then SCORING.md 1.2",
+  "findings": [
+    "SCORING.md 1.2 mandated form is `| Ladder | 4 | 6 | 8 |` + `| Native | ... |`. ZERO items use that exact orientation. The 6 weapons items use a TRANSPOSED table `| Ladder | Native score |` with rows 4/6/8 - the critic counted those as 'verbatim'.",
+    "Substantively-compliant forms found in corpus: (A) transposed weapons table; (B) band table with a `Ladder ceiling` column containing 8/6/4; (C) prose line 'native X -> ladder 4; native Y -> ladder 6; native Z -> ladder 8'. RI-MTH05 uses a gate table plus a Native|Ladder anchor table.",
+    "Plan: amend SCORING.md 1.2 to accept any block that binds ladder anchors 4,6,8 to native values (the critic's own cheaper option in N1), implement a detector in corpus-index.mjs (check C6) accepting forms A/B/C, and add the mandated Form-A row to every item the detector fails."
+  ],
+  "next_step": "write detector, enumerate failing items",
   "notes_for_successor": ""
 }
