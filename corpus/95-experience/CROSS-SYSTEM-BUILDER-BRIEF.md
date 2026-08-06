@@ -52,11 +52,21 @@ avoid triggering it, and `RI-CMP01` is the project-level floor `AR-3` defers to.
 have claimed nothing. Aim for at least one **mechanical seam-crossing** cell; aim higher if your piece
 touches quests, factions, bosses or world state.
 
+**Both ends must be on opposite sides of the seam.** A boss's death changing its faction's *patrols*
+(`BOS→ROS`) is fight-to-fight and is **not** a crossing, however much it reads like one. The source
+must be world-side and the target the fight, or the source the fight and the target the world.
+
+> **If you can only build one crossing, build an F→W one.** The declared matrix is 30 W→F and only
+> 11 F→W and is short of its own both-directions gate by ≥ 4 cells (`RI-CMP01` §H, the F→W debt).
+> W→F is cheap — a rank is a number and an aggro check is a number. F→W is content: a fight outcome
+> has to *change the world*, which means somebody writes the changed world. That somebody is you, and
+> an F→W claim is worth more to this project right now than three W→F ones.
+
 ---
 
 ## 4. The matrix, and how to claim a cell
 
-The full 19×19 matrix, its 42 declared seam crossings and its 22 structural cells are in
+The full 19×19 matrix, its 41 declared seam crossings (30 W→F, 11 F→W) and its 22 structural cells are in
 **`corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md`** §B–§F. The nineteen systems:
 
 `FAC` faction rank · `DIS` disposition · `GLD` gold · `SKL` skills · `SPL` spells · `LOR` lore

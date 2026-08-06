@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-06T09:06:45.171Z",
+  "generated": "2026-08-06T09:08:38.224Z",
   "complete": 11,
   "total": 13,
   "tasks": [
@@ -50,8 +50,8 @@
       "done": 8,
       "expected": 8,
       "missing": [],
-      "next_step": "write CROSS-SYSTEM-BUILDER-BRIEF.md (short, handed to every builder), then a final consistency pass over front-matter + judges paths",
-      "findings": 20
+      "next_step": "none - all 8 deliverables written and verified. Outstanding items are NOT this task's to perform: (1) orchestrator/CRT must append the 15 experience.* and 6 composition.* paths in notes_for_successor to corpus/00-doctrine/subsystems.json (append-only, critic.experience, arb neutral) - until then those judges: values are orphans; (2) RI-WLD05's owner must apply or reject the W1 amendment proposed in RI-EXP04's appendix, plus its two referred defects (E column sums to 20 not 22; element 29 is audio-only therefore permanently unmeasurable); (3) PLAYTHROUGH-CRITIC.md's owner must append harness amendment A-EXP2 (10 new trace events) and decide on SAB-F; (4) the RI-CMP01 F->W debt (>=4 new F->W cells) is open work for builders/critics, not a document fix.",
+      "findings": 22
     },
     {
       "id": "magic",
@@ -123,22 +123,21 @@
         "corpus/00-doctrine/PROVENANCE-UPGRADE-02-SOULS.md",
         "corpus/10-combat/data/souls-frame-data.json"
       ],
-      "next_step": "search DS regen delay ~0.7s; then poise DS1 vs DS3 vs ER; parry frames; estus frames; soul level formula",
-      "findings": 17
+      "next_step": "verify estus (DS1/DS3/ER charges, upgrade levels, heal amounts, drink frames); lock-on camera auto-rotate; parry/backstab frames; then WRITE deliverables",
+      "findings": 23
     },
     {
       "id": "corpus-audit",
       "title": "Corpus coherence: constants, front-matter repair, wrong-bar amendments",
-      "state": "started-nothing-written",
-      "done": 0,
+      "state": "partial",
+      "done": 1,
       "expected": 3,
       "missing": [
         "corpus/00-doctrine/constants.json",
-        "corpus/80-methods/RI-MTH05*",
-        "corpus/00-doctrine/CORPUS-COHERENCE-01.md"
+        "corpus/80-methods/RI-MTH05*"
       ],
-      "next_step": "survey repo: tools/corpus-index.mjs, subsystems.json, ARBITRATION.md, BAR-CRITIQUE-01",
-      "findings": 0
+      "next_step": "read BAR-CRITIQUE-01.md (W1-W8) and INTENT-AUDIT-01.md; then RI-AI07 vs RI-WLD01 traversal minute",
+      "findings": 5
     }
   ]
 }

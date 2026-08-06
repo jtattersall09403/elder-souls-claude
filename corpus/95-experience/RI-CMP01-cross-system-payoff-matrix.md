@@ -527,9 +527,15 @@ constructed matrix cannot beat a reference that was never measured.
   it will still happen partially.
 - **Crossings are all in one direction.** W→F is easy: a faction rank is a number and an aggro check
   is a number. F→W is content: a boss dying has to *change the world*, which means somebody writes the
-  changed world. Twenty-six of our 42 declared crossings are W→F and sixteen are F→W, and under time
-  pressure the ratio will get worse. `crossing_both_directions` is the defence and it is a soft gate;
-  hard fail 2 is the hard one.
+  changed world. **Thirty of our 41 declared crossings are W→F and only eleven are F→W** — the
+  declared matrix already fails its own `crossing_both_directions` gate before a line of it is built
+  (§H records the debt), and under time pressure the ratio will get worse, not better.
+  `crossing_both_directions` is the defence and it is a soft gate; hard fail 2 is the hard one.
+- **Fight-to-fight cells get counted as crossings.** `BOS→ROS` — a boss's death changing its faction's
+  patrols — reads exactly like a seam crossing and is not one, because both ends are inside the fight.
+  It is the cheapest cell in the matrix to build and the easiest to miscount, §D calls it out by name,
+  and the tooling classifies from §A rather than from any table; a hand-maintained count will still
+  get this wrong at least once.
 - **`ROS` and `BOS` columns get filled with aggro tweaks.** Every W→F cell resolves to "the enemy's
   `alert_state` differs", because that is the cheapest observable in the trace. A matrix of nineteen
   aggro flags passes the count and is one interaction wearing nineteen hats. The tier system is a
@@ -592,7 +598,8 @@ confidence varies sharply:
   cells most likely to be claimed and least likely to fire, and a critic should probe them first for
   exactly that reason.
 
-**The declared totals (206 / 60.2% / 42 / 22 / score 298) are arithmetic over §B and are exact.** They
+**The declared totals (206 / 60.2% / 41 / 22 / score 297, splitting 30 W→F / 11 F→W) are arithmetic
+over §B and are exact**, and were verified by recount against the grid rather than asserted. They
 are not a claim about the game; they are a claim about this document, and they will be wrong the moment
 a builder proposes a better mechanism for a cell marked `none`. That is expected: the matrix is a
 starting position, `RI-CMP01.cells.json` is the living artifact, and this file is the rule for how the

@@ -2,11 +2,19 @@
 
 **Agent:** `image-acquisition` (in-container). **Brief:** `orchestration/briefs/image-acquisition.md`.
 **Specification followed:** `docs/REFERENCE-IMAGE-REQUEST.md`.
-**Delivered:** 103 files in slot folders + 8 in `rejected/`.
+**Delivered:** 119 files in slot folders + 8 in `rejected/`.
+**Revision 2** (2026-08-06, successor agent). Three previously-unfilled REF-A slots were filled
+and the metrics were recomputed over the enlarged set. **What changed and what is new is in §13;
+read that before §4, which revision 1 wrote when REF-A13 was still empty.**
 
 This report is written to be read by someone deciding whether the bands in RI-VIS03 can be
 calibrated. **The headline is in §1 and §6: the Morrowind art-direction side is now real and
 usable; the modern fidelity side is not, and the reason is structural, not effort.**
+
+**Revision 2 adds a second headline, in §13.2: the statistics we can actually compute are not the
+statistics RI-VIS03 defines.** Even a complete image set would not calibrate M5, and M8's two
+hard-fail statistics are not computed by any tool in this repository. That, not the shortage of
+pixels, is now the binding constraint.
 
 ---
 
@@ -43,7 +51,7 @@ constraint, not search effort, is what shapes everything below.
 | `modern/combat` | 8 / 2 / 4 | **0** | **SHORT** |
 | `modern/material_closeup` | 8 / 2 / 6 | **0** | **SHORT** |
 | `modern/hud` | no floor (kept, never compared) | **24** (Witcher 3) | n/a |
-| `morrowind/` (15 of 17 slots) | 3–5 per slot | **73** | **PASS** on every filled slot |
+| `morrowind/` (**18 of 19 slots**) | 3–5 per slot | **89** | **PASS** on every filled slot |
 | `anti-generic/` | 4–6 | **5** | **PASS** |
 | `context/` (ESO Shadowfen / Murkmire) | 6–10 | **0** | **SHORT** |
 | `video/` | 4–8 clips | **0** | **SHORT** |
@@ -73,11 +81,13 @@ to `modern/hud/` by §5a) or was rejected.
 | REF-A10 | Plant life close, ≥4 images | yes | 5 | mushroom stack, mushroom field, ash-yam rows, tree-stone, Dren plantation |
 | REF-A11 | Bitter Coast swamp | yes | 5 | Seyda Neen ×2, swampy islands, far swamps, lighthouse at night |
 | **REF-A12** | **The UI** — inventory, dialogue topics, journal, map | **NO** | 0 | **structurally unfillable from this source** — see §4 |
-| **REF-A13** | Armour and clothing on NPCs at close range | **NO** | 0 | see §4 |
+| REF-A13 | Armour and clothing on NPCs at close range | **yes (rev 2)** | 5 | Ordinator in Indoril armour (front), High Ordinator (**from behind**), road guard, a female NPC in skirt-and-cuirass, two figures at the Mournhold armoury |
 | REF-A14 | Weapons, close | yes | 5 | Daedric tanto, Sixth House hammer, spear statue, dagger, weaponsmith's stands |
-| REF-A15 | Books, scrolls, Daedric script | yes | 4 | open books ×3, scroll pile; one candidate rejected |
+| REF-A15 | Books, scrolls, Daedric script | yes | **5** | open books ×3, scroll pile, **+ the Gnaar Mok Daedric signboard (rev 2)**; one candidate rejected |
 | REF-A16 | Silt strider | yes | 4 | Molag Mar port, morning mist, coastal, sleeping |
 | REF-A17 | Imperial fort / Census office | **partial** | 5 | five Imperial **exteriors**; **no Census office interior** |
+| REF-A18 | Dusk or night exterior | **yes (rev 2)** | 5 | Masser + starfield over a statue, Suran quay at dusk, Molag Amur night sky, Ascadian sunset over water, Suran at night |
+| REF-A19 | Stilted / waterside settlement | **yes (rev 2)** | 5 | Gnaar Mok on pilings, Ald Velothi docks in fog, Hla Oad ×3 (boat, central tree in rain, dusk) |
 
 ### `refs/modern/` — fidelity
 
