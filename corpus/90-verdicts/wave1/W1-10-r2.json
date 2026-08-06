@@ -1,0 +1,1129 @@
+{
+ "schema_version": 1,
+ "piece_id": "W1-10-r2",
+ "piece_title": "Weapon movesets and the answer matrix \u2014 round 2",
+ "subsystem_paths": [
+  "weapon.moveset.slots",
+  "weapon.moveset.schema",
+  "weapon.moveset.answers",
+  "weapon.charge.heavy",
+  "weapon.class.taxonomy",
+  "weapon.class.differentiation",
+  "weapon.class.reach",
+  "weapon.identity.withinclass",
+  "weapon.animation.reuse",
+  "weapon.context.rolling",
+  "weapon.context.running",
+  "weapon.context.backstep",
+  "weapon.context.aerial",
+  "weapon.feel.hitstop",
+  "weapon.feel.material",
+  "weapon.feel.mass",
+  "weapon.feel.whiff",
+  "weapon.stance.twohand",
+  "weapon.offhand.config",
+  "weapon.shield.taxonomy",
+  "combat.weapon.identity",
+  "combat.attack.charge"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-10-r2-weapons-kritik",
+  "role": "critic.weapons",
+  "started_at": "2026-08-06T22:15:00Z",
+  "finished_at": "2026-08-07T00:05:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true,
+  "note": "I read orchestration/status/W1-10-r2.json before generating the blind pack. The pack is machine-generated at runtime from motion columns only and the key was written sealed and opened only after corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blind-PICKS.md was on disk, so the picks are not contaminated by that reading; recorded rather than concealed."
+ },
+ "build": {
+  "commit_sha": "5e1a861",
+  "branch": "main",
+  "harness_commands": [
+   "node tools/harness/smoke.mjs",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption2.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption2.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach-browser.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach-browser.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-gap-attribution.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-gap-attribution.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json",
+   "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blindpack.mjs"
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "Declared before any citation. This role judges slot grammar, clip identity, motion and reach. Where motion is judged it is judged behaviourally against corpus/70-visual/refs/souls-behaviour/anim/, never for fidelity."
+ },
+ "reference_items": [
+  {
+   "id": "RI-WPN01",
+   "path": "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md",
+   "side": "souls",
+   "kind": "structure",
+   "native_scale": "0-100 weighted (M1 20 / M2 25 / M3 15 / M4 15 / M5 15 / M6 10); >=88 meets the bar",
+   "native_score": 74,
+   "native_max": 100,
+   "native_verdict": "below bar",
+   "score_0_10": 6,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "87/87 schema-valid; every weapon carries its class's full mandatory set (25, or 23 for CGS/GHM, or 7 for BOW)",
+     "threshold": "all mandatory present for the class",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ari-tdv-ils.json"
+     ],
+     "note": "S_total 2065 under the wave-1 chain-2 ruling; zero weapons missing a mandatory slot."
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "87/87 equippable live; getPlayerStats().equipped.weapon_id matches the requested id on 87/87; live reach matches declared on 87/87; 86 distinct reach values; classes_with_zero_equippable []",
+     "threshold": "87/87",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json"
+     ],
+     "note": "Measured in headless Chromium against the shipping build with NO route repair. Round 1's 0/87 is closed."
+    },
+    {
+     "id": "M3",
+     "result": "pass",
+     "value": "straight sword drives 22 slots to 22 distinct slot ids; distinct_anim 19 against a floor of 18; anim(roll.r1) != anim(r1.1) on every weapon probed",
+     "threshold": "distinct_anim >= 18; anim(roll.r1) != anim(r1.1)",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json"
+     ],
+     "note": "Round 1's named hard-fail clause no longer fires."
+    },
+    {
+     "id": "M5",
+     "result": "partial",
+     "value": "guardbreak, art.1 and shield.bash reachable; plunge NOT reachable from any scripted jump (fall height never attains the 3.0 m minimum without a ledge fixture)",
+     "threshold": "every mandatory slot reachable",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json"
+     ],
+     "note": "plunge is one of the mandatory 25 and no fixture in game/data/states/ produces a 3 m fall. Scored as a reachability miss, not a hard fail, because the slot resolves correctly when the precondition is met."
+    },
+    {
+     "id": "M6",
+     "result": "fail",
+     "value": "the chain graph conforms to the declared chains_to on the mash probe, but all 10 CGS/GHM weapons declare r1.3 and reach it via roll.r1 -> r1.3 and backstep.r1 -> r1.3",
+     "threshold": "the published chains_to graph (RI-WPN01 A slots 10 and 12: roll.r1 -> r1.2, backstep.r1 -> r1.2)",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.json"
+     ],
+     "note": "RI-WPN01 A as amended wave 1 by BAR-CRITIQUE-W1-10-R1 R3 states the round-2 workaround 'is not adopted' and that a chain-2 class carries 23 mandatory slots. The amendment postdates the build by ~15 minutes and is recorded as a live nonconformance, not as a builder failure to read a standing rule."
+    }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [
+    "#15 partially: plunge declared on all 87 and unreachable in every shipped fixture"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json"
+   ],
+   "why_not_ten": "Two of the mandatory 25 are not honoured in play: plunge is unreachable from any shipped fixture, and the CGS/GHM chain graph diverges from the published chains_to without the RI-WPN02 C row the amended item requires.",
+   "path_to_ten": "Add a ledge fixture to game/data/states/ (a 3.5 m drop with a target below) so plunge is drivable, and either restore roll.r1 -> r1.2 / backstep.r1 -> r1.2 on CGS and GHM and drop r1.3 from those ten weapons, or file the divergence as an explicit RI-WPN02 C class row.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN02",
+   "path": "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 25 / M2 20 / M3 20 / M4 10 / M5 10 / M5b 10 / M6 5); >=85 meets the bar",
+   "native_score": 24,
+   "native_max": 100,
+   "native_verdict": "loses outright",
+   "score_0_10": 2,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "M1-C1",
+     "result": "fail",
+     "value": "blade reach measured live with root suppressed, 0.20-5.00 m at 0.05 m: reach_min_m > 0.60 m on 5 of 14 melee classes (AXE 0.85, GHM 0.80, HLB 1.00, MCE 0.75, SPR 1.40)",
+     "threshold": "reach_min_m <= 0.60 m for every melee class",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json"
+     ],
+     "note": "S26: a weapon that cannot hit a target standing against you."
+    },
+    {
+     "id": "M1-C2",
+     "result": "fail",
+     "value": "the reachable band is NOT contiguous. Interior dead bands on 10 of 13 SPR/HLB weapons plus AXE: spr_drowned_harpoon 1.30-1.60 m, hlb_marsh_glaive 1.05-1.30, hlb_saltcutter 1.20-1.40, hlb_garrison_bill 1.15-1.30, hlb_fen_hook 1.15-1.25, hlb_reed_partisan 1.15-1.25, spr_fishers_gig 1.20-1.25, spr_root_pike 1.15-1.20, spr_mire_trident 1.20, spr_reed_gig 1.15, axe_bog_cleaver 1.00",
+     "threshold": "contiguous == true for every class",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach-browser.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-gap-attribution.json"
+     ],
+     "note": "HARD FAIL under RI-WPN02 M1 sub-probe C as amended wave 1, and under ARBITRATION S26 directly. Confirmed in node and in the browser with identical vectors."
+    },
+    {
+     "id": "M1-threat",
+     "result": "fail",
+     "value": "|threat_m - (reach_m + root_dz_m)| > 0.10 m on 10 of 14 classes; worst UGS -0.80 m. threat_m melee spread 2.05 m",
+     "threshold": "|error| <= 0.10 m; threat spread >= 3.0 m",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json"
+     ],
+     "note": "The lunge is not fully converted into reach."
+    },
+    {
+     "id": "M2",
+     "result": "fail",
+     "value": "OBSERVED D_min 1.3934 (MCE-HLB), D_med 4.3396; classes with no neighbour closer than 1.6: 10 of 15. DECLARED D_min 1.6409 (AXE-MCE), 15 of 15",
+     "threshold": "D_min >= 1.6; >= 13 of 15 isolated at 1.6",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json"
+     ],
+     "note": "Computed by me under the wave-1 amended instrument (D5 = measured blade reach, BOW substituted with the melee mean before the 15-class vector). The observed column is the score."
+    },
+    {
+     "id": "M2-Dg",
+     "result": "pass",
+     "value": "OBSERVED Dg_min 1.5981 (CGS-GHM), Dg_med 3.8459 over the nine GRAMMAR_DIMS and 14 melee classes. DECLARED 1.7272",
+     "threshold": "Dg_min >= 1.0",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json"
+     ],
+     "note": "Under the superseded five-dimension set the observed value is 0.628. The builder's refusal to curve-fit is vindicated: BAR-CRITIQUE-W1-10-R1 R1 upheld its arithmetic and repaired the instrument, and the roster passes the repaired one without being touched."
+    },
+    {
+     "id": "M3",
+     "result": "fail",
+     "value": "24 of 28 driven r1.1/r2 clips are outside the +/-10 degree arc tolerance. TSW r1.1 declares 6.5 and the rig sweeps 69.6; SPR r1.1/r2 declare 19 and sweep 62.8/69.8; SSW r2 declares 19 and sweeps 87.2; CGS r1.1 declares 340 and sweeps 218.8",
+     "threshold": "measured arc within +/-10 degrees of declared",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json"
+     ],
+     "note": "Measured three independent ways (capsule-midpoint travel, tip travel, tip chord) with a near-axis guard, and scored on whichever of the three is closest to the declared value. Thrusting classes do not thrust on the rig."
+    },
+    {
+     "id": "M3-reachspread",
+     "result": "fail",
+     "value": "measured melee blade-reach spread 1.90 m (DGR/FST 0.90 to WHP 2.80); declared spread 2.73 m",
+     "threshold": ">= 2.5 m",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json"
+     ],
+     "note": "Declared reach is not the reach the game produces: HLB declares 2.865 m and reaches 1.45 m; CGS 2.75 -> 1.40; TSW 2.087 -> 0.95."
+    },
+    {
+     "id": "M5b",
+     "result": "partial",
+     "value": "chain_shape_count >= 2 on 8 of 14 classes (floor 7); chain_arc_range >= 20 degrees on 14 of 14 (floor 10)",
+     "threshold": "both derived constraints",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json"
+     ],
+     "note": "New wave-1 constraints; the roster meets both."
+    }
+   ],
+   "hard_fails": [
+    "M1 sub-probe C: the reachable band is not contiguous on 11 weapons across three classes (S26)"
+   ],
+   "how_we_lose_hits": [
+    "#4 reach as a declared number rather than a consequence of the bone chain \u2014 HIT"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json"
+   ],
+   "why_not_ten": "A hard fail: eleven weapons across SPR, HLB and AXE have an interior hole in their reachable band, and the arc and reach columns the fingerprint is built from are declared values the rig does not produce (24 of 28 arcs outside tolerance, HLB reach out by 1.42 m).",
+   "path_to_ten": "Extend the weapon hit capsule from the grip to the tip rather than only over the outer hitbox_span_m (game/data/weapons/classes.json \u2014 SPR 0.70 m on a 2.70 m capsule is the direct cause), or give the S26 body corridor the same span; then re-run the C1/C2/C3 sweep and require contiguous == true and reach_min_m <= 0.60 on all 14 classes. Re-derive arc_sweep_deg in game/data/combat/movesets/*.json from the measured rig track instead of authoring it independently, target +/-10 degrees.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN03",
+   "path": "corpus/12-weapons/RI-WPN03-within-class-subtlety.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 25 / M2 20 / M2b 10 / M3 25 / M6 20); >=85 meets the bar",
+   "native_score": 72,
+   "native_max": 100,
+   "native_verdict": "below bar",
+   "score_0_10": 6,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "ARI 0.4533 (C 936 distinct clips over S_total 2065), within-class SHARE scope; share histogram 1:316 2:210 3:311 4:99, nothing above 4",
+     "threshold": "0.42 <= ARI <= 0.60; HARD FAIL < 0.33",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ari-tdv-ils.json"
+     ],
+     "note": "Recomputed by me under the amended bands and the amended S_total. Neither fragmented nor collapsed."
+    },
+    {
+     "id": "M6",
+     "result": "fail",
+     "value": "runtime-generated motion-only blind pack: grouping 10 of 12 correct \u2014 T4 (GHM) and T5 (TSW) exchanged. Four valid within-group behavioural differences named against a floor of three",
+     "threshold": "exactly correct grouping plus >= 3 nameable within-group differences",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blind-PICKS.md",
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/blind-KEY-SEALED.json"
+     ],
+     "note": "Round 1 scored this 'exactly correct' on a pack built from JSON. On a pack carrying only player position, yaw, weapon socket world positions, target hp and the input stream, SPR separates perfectly and TSW and GHM do not. The bar critic's R6 prediction is confirmed empirically."
+    }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ari-tdv-ils.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blind-PICKS.md"
+   ],
+   "why_not_ten": "The mandatory clustering blind test scores 10 of 12 when the pack is generated at runtime from motion alone: a thrusting sword and a great hammer were not separable on one trace each.",
+   "path_to_ten": "Widen the motion separation between the chain-2 heavy classes and the thrusting classes \u2014 the discriminating axes in the pack were tip vertical range and lateral/radial ratio, and GHM and TSW overlap on both. Target: a runtime motion-only M6 pack grouped 12 of 12.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN04",
+   "path": "corpus/12-weapons/RI-WPN04-contextual-attacks.md",
+   "side": "souls",
+   "kind": "trace",
+   "native_scale": "0-100 weighted (M1 30 / M2 25 / M3 20 / M5 15 / M6 10); >=90 meets the bar",
+   "native_score": 82,
+   "native_max": 100,
+   "native_verdict": "below bar",
+   "score_0_10": 7,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "CFS_live 1.0000 \u2014 20 of 20 contextual instances resolve to their own slot id, their own clip id AND their own frame triple. 0 fallback, 0 absent",
+     "threshold": "CFS == 1.00",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json"
+     ],
+     "note": "Measured with my own instrument, one run per (weapon, state, frame). Independently re-measured in the browser off the per-frame trace's player.anim_slot. Round 1's 0.0000 is closed."
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "backstep.r1, jump.r1, jump.r2 and the guard verbs all fire. jump.r1 reachable across jump frames 20-44 on all four weight tiers; jump.r2 on UGS",
+     "threshold": "the four slots round 1 found absent must fire",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json"
+     ],
+     "note": "Node and browser agree on 51 of 51 sweep cells for 4 weapons x 2 buttons."
+    },
+    {
+     "id": "M3",
+     "result": "pass",
+     "value": "the Wgrid varies with equip-load tier and shows the 8 f@60 pre-window buffer firing the contextual slot on the window's first frame, and the post-window press producing the standard r1.1 after the state ends",
+     "threshold": "per-tier windows per B",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json"
+     ],
+     "note": ""
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "situational superiority never run",
+     "threshold": "each contextual slot must be the right answer somewhere",
+     "hard_fail": false,
+     "evidence": [],
+     "note": "Scored 0 fail-closed. The one check in this area that asks whether a contextual attack is any GOOD has still never been run in either round; BAR-CRITIQUE-W1-10-R1 H2 names this."
+    },
+    {
+     "id": "M6",
+     "result": "partial",
+     "value": "4 of 20 CFS instances are the BLOCK row, which resolves to shield.bash playing shield_bash_medium identically on all four weapons",
+     "threshold": "the contextual slot must be a property of the weapon",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json"
+     ],
+     "note": "Correct by RI-WPN06 C \u2014 shield.bash belongs to the offhand \u2014 but it means a fifth of the headline CFS is measuring the shield rather than the moveset. Reported, not scored as a failure."
+    }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [
+    "#9 M5 skipped as too expensive \u2014 HIT, for the second round running"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json"
+   ],
+   "why_not_ten": "M5, the only quality bar among the contextual checks, is unmeasurable for want of the enemy fixtures it needs, and scores 0 fail-closed.",
+   "path_to_ten": "Build the M5 fixture set \u2014 one encounter per contextual slot in which that slot is measurably the best answer \u2014 and run it. Target: every one of the ten contextual slots superior in at least one scripted situation.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN05",
+   "path": "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 20 / M2 20 / M4 10 / M6 25 / E.2 25); >=85 meets the bar",
+   "native_score": 12,
+   "native_max": 100,
+   "native_verdict": "loses outright",
+   "score_0_10": 0,
+   "measured": "unmeasurable",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "fail",
+     "value": "only the flesh column of the 5x7 attacker hitstop grid is read by the fight; game/src/combat/moves.js:166 hard-codes .flesh. Setting every non-flesh cell to 99 changes nothing",
+     "threshold": "the full 5x7 grid must be observable",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json"
+     ],
+     "note": "CONSUMPTION failure. 5 of 6 perturbations of the impact/material model are INERT."
+    },
+    {
+     "id": "M2",
+     "result": "fail",
+     "value": "materials.multipliers set to 0.01 across every material and damage type changes damage by 0",
+     "threshold": "the material multiplier must change damage",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json"
+     ],
+     "note": "materialMultiplier() is imported by exactly one file in the tree: game/src/harness/weapons.js \u2014 the harness. 0 of 14 enemy statblocks declares a material."
+    },
+    {
+     "id": "M6",
+     "result": "unmeasurable",
+     "value": "ILS 0 on the observed column",
+     "threshold": "ILS >= 0.80",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json"
+     ],
+     "note": "The declared grid computes to 0.71-0.83 depending on the shake channel, but it is computed from a library function the fight never calls with any material but flesh. Unmeasurable => 0."
+    },
+    {
+     "id": "E.2",
+     "result": "fail",
+     "value": "22 of 28 driven clips exceed the 0.25 m/frame pose-step ceiling; whp_hide_lash r1.1 displaces a socket 1.026 m in one frame; recovery arc exceeds active arc on 21 of 28 clips; peak tip speed 61.6 m/s",
+     "threshold": "pose step <= 0.25 m/f; no pose teleport > 1.0 m",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json"
+     ],
+     "note": "Round 1 reported 'recovery arc exceeds active arc in 7 of 14 movesets'. It is now 21 of 28 clips \u2014 the defect got wider, not narrower. A pose teleport > 1.0 m is an E.2 hard fail."
+    }
+   ],
+   "hard_fails": [
+    "M1/M2/M6: the impact and material model has no world-side consumer",
+    "E.2: a 1.026 m single-frame pose teleport on whp_hide_lash r1.1"
+   ],
+   "how_we_lose_hits": [
+    "#7 no hitstop \u2014 partially: hitstop exists but only on flesh",
+    "#8 materials never authored \u2014 inverted: materials ARE authored and are never read"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json"
+   ],
+   "why_not_ten": "The whole impact and material model is a data island: the fight reads one cell of a 35-cell table and nothing else, and no enemy in the game carries a material for it to apply to.",
+   "path_to_ten": "Give every enemy statblock in game/data/combat/enemies/*.json a material; read it at hit time in game/src/combat/resolve.js through MovesetLibrary.hitstopFor / victimHitstopFor / knockbackFor / materialMultiplier / deflects instead of the hard-coded .flesh at moves.js:166; then re-run the perturbation suite and require 6 of 6 CONSUMED. Separately, resample every clip so no socket moves more than 0.25 m in a frame.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WPN06",
+   "path": "corpus/12-weapons/RI-WPN06-two-handing-shields-parry.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M1 30 / M2 20 / M3 20 / M4 15 / M5 15); >=85 meets the bar",
+   "native_score": 80,
+   "native_max": 100,
+   "native_verdict": "below bar",
+   "score_0_10": 7,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "value": "TDV median 0.8333, min 0.5, max 1.0 over the 12 mirrored slots under B's full disjunction; no weapon at 0; FST correctly n/a",
+     "threshold": "median >= 0.60; HARD FAIL any weapon = 0 or median < 0.25",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json"
+     ],
+     "note": "Live confirmation: two-handing plays a different slot AND a different clip, with maximum tip-path divergence 0.40 m (dagger r1.1) to 3.05 m (UGS r2). Two-handing is not a multiplier."
+    },
+    {
+     "id": "M2",
+     "result": "pass",
+     "value": "every melee class declares at least 2 two-hand-exclusive slots",
+     "threshold": "at least 2 per melee class",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json"
+     ],
+     "note": "Round 1's M2 hard fail is closed."
+    },
+    {
+     "id": "M3",
+     "result": "pass",
+     "value": "6 of 14 melee classes change chain length with grip",
+     "threshold": "at least 4 of 14",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json"
+     ],
+     "note": ""
+    },
+    {
+     "id": "M4",
+     "result": "pass",
+     "value": "every shield id and every RI-WPN06 class resolves through setLoadout({shield}); BLOCK_SUCCESS exists in sim/events.js and is emitted by resolve.js:179; guard.counter fires",
+     "threshold": "shield taxonomy reachable, guard counter reachable",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json"
+     ],
+     "note": "Round 1's 'BLOCK_SUCCESS never existed anywhere' is closed."
+    },
+    {
+     "id": "M5",
+     "result": "unmeasurable",
+     "value": "O2 dual-wield resolves but was not driven to a landed off-hand hit",
+     "threshold": "all three offhand configurations driven",
+     "hard_fail": false,
+     "evidence": [],
+     "note": "Scored 0 fail-closed."
+    }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json"
+   ],
+   "why_not_ten": "M5 is unmeasurable: the O2 dual-wield configuration equips but no off-hand attack was driven to a landed hit, so off.r1.1 / off.r1.2 / off.r2 are declared-only.",
+   "path_to_ten": "Drive the three offhand configurations in wpn-loadout-o1/o2/o3 to landed hits and report the off-hand slots' observed clips and frames.",
+   "ten_by_wave": 2
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "MY Wgrid. One run per (weapon, state, frame k) across five enclosing states and four weight tiers, 247 runs. CFS_live 1.0000: 20 contextual, 0 fallback, 0 absent, each with a distinct slot id, clip id and frame triple."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "The shipping game in headless Chromium, no route repair, 0 page errors. equipped_ok 87/87 with the live weapon id, class and reach read back. CFS re-measured off the per-frame trace's player.anim_slot."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "51-frame jump sweep, 4 weapons x 2 buttons, node AND browser. jump.r1 reachable at jump frames 20-44; node and browser agree on 51 of 51 cells. Round 1's 'no attack from any frame' is closed."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption.json",
+   "kind": "report",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "CONSUMPTION part 1: seven perturbations of the shipped moveset and clip-registry files. 5 CONSUMED directly."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption2.json",
+   "kind": "report",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption2.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "CONSUMPTION part 2: chains_to and root_dz_m, exercised with the mash probe and a displacement measurement. Both CONSUMED. 7/7 for the moveset model."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json",
+   "kind": "negative-evidence",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "CONSUMPTION part 3: the RI-WPN05 impact and material model. 5 of 6 perturbations INERT. THE BIGGEST GAP'S PRIMARY EVIDENCE."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "S26 / RI-WPN02 M1-C as amended: 14 melee classes x 97 distances x 2 root conditions = 2 716 fights. The mandatory contiguity vector for every class."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach-browser.json",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach-browser.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "The same sweep in the shipping game for 6 weapons. Gap vectors identical to node's."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-gap-attribution.json",
+   "kind": "report",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-gap-attribution.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "Who owns the dead band: every SPR and HLB weapon, plus root_dz_m and capsule_length_m perturbation series. Attribution to W1-10's data confirmed."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.json",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "Per-frame world-space socket positions for 15 class baselines: observed arcs, roots, tip speeds, pose steps, keyframe counts, and the G7-G9 chain grammar."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json",
+   "kind": "graph",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "Arc conformance measured three independent ways with a near-axis guard. 24 of 28 clips outside the +/-10 degree tolerance; recovery arc exceeds active arc on 21 of 28."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json",
+   "kind": "report",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "The 15x15 D matrix and the 14x14 Dg matrix, DECLARED and OBSERVED, under the wave-1 amended dimension sets. Closest pairs listed."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ari-tdv-ils.json",
+   "kind": "report",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ari-tdv-ils.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "ARI under the amended bands and S_total, with the clip-share histogram."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json",
+   "kind": "report",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "TDV to RI-WPN06 B's own disjunction and ILS to RI-WPN05 F's own definition, plus the two per-class two-hand requirements."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json",
+   "kind": "report",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "AR-1 determinism over 60 identical swings, eight cancellation tests, the stance-switch sequence; AR-2 roster census; AR-3 material/statblock join."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blind-PICKS.md",
+   "kind": "blind-pack",
+   "produced_by": "written before the key was opened",
+   "seed": 1337,
+   "source": "ours",
+   "note": "My groupings, my rationale and my six named within-group differences, recorded before reveal."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/blind-KEY-SEALED.json",
+   "kind": "blind-pack",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blindpack.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "The sealed key. Reveal: grouping 10 of 12, T4 and T5 exchanged."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/blind-m6-T1.json",
+   "kind": "blind-pack",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blindpack.mjs",
+   "seed": 1337,
+   "source": "ours",
+   "note": "One of twelve runtime-generated motion-only traces (1 200 frames; columns f, px, pz, yaw, ax, ay, az, bx, by, bz, target_hp). Asserted free of clip ids, slot ids, shapes, arcs, reach, frame counts, class names and damage numbers."
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-WPN03",
+   "status": "done",
+   "question": "Twelve unlabelled 20-second traces, four each from three classes; group them into three and name a concrete behavioural difference for at least three of the six within-group pairs.",
+   "pack_artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/blind-m6-T1.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/blind-KEY-SEALED.json"
+   ],
+   "assignment_seed": 20260806,
+   "blind_pick": "ours",
+   "blind_rationale": "PICK, recorded in corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blind-PICKS.md before the key was opened: G1={T2,T6,T7,T12} G2={T1,T4,T9,T11} G3={T3,T5,T8,T10}. G1 separates on peak tip speed 77.5-79.5 m/s against 26.9-40.4, maximum tip radius 2.38-2.78 m against 1.38-1.72, tip vertical range 2.86-3.70 m. The remaining eight split on tip vertical range against lateral/radial ratio, and I recorded at the time that the margin was one trace wide.",
+   "reveal": "SPR={T2,T6,T7,T12} TSW={T1,T5,T9,T11} GHM={T3,T4,T8,T10}. Grouping 10 of 12 \u2014 T4 (GHM) and T5 (TSW) exchanged. SPR recovered exactly; TSW and GHM did not separate. Four of my six named within-group differences are valid within-class pairs, against a floor of three; the two invalid ones are the pairs straddling the swap.",
+   "picked": "ours",
+   "rerun_triggered": false,
+   "not_possible_reason": "",
+   "note": "Pack GENERATED AT RUNTIME through setLoadout() plus one input script, carrying player position, yaw, weapon socket world positions, target hp and the input stream and nothing else, per WEAPON-CRITIC 6 as amended by BAR-CRITIQUE-W1-10-R1 R6. Round 1's static pack scored 'exactly correct'; the same test on motion alone does not."
+  },
+  {
+   "ref_item": "RI-WPN02",
+   "status": "done",
+   "question": "Three unlabelled traces from three classes; describe three fighting styles.",
+   "pack_artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/blind-m2-A.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/blind-m2-B.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/blind-m2-C.json"
+   ],
+   "assignment_seed": 20260806,
+   "blind_pick": "ours",
+   "blind_rationale": "A: reach 1.46 m, lateral/radial 0.98, 3 hits at a 98 f cadence, most ground covered \u2014 circle close and sweep flat and often. B: reach 2.48 m, peak tip 71.8 m/s, biggest vertical range, least ground covered \u2014 stand still and hold a lane from outside the others' reach. C: shortest reach 1.37 m and the highest peak tip speed in the pack, 81.6 m/s, over the smallest vertical range \u2014 mass through a short arc; get inside and hit once.",
+   "reveal": "A = csw_naga_sickle (CSW), B = hlb_garrison_bill (HLB), C = mce_bog_iron_mace (MCE). Three classes, three nameable styles, from motion alone. PASS.",
+   "picked": "ours",
+   "rerun_triggered": false,
+   "not_possible_reason": "",
+   "note": "Also runtime-generated and design-column-free. This half of the blind protocol survives the amended standard."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "pass",
+     "note": "60 scripted identical swings all deal exactly 118 damage. One distinct damage value across the set; no dice anywhere on the weapon path."
+    },
+    {
+     "id": "A2",
+     "result": "pass",
+     "note": "Deflection is a pure function of shape, poise damage and material (moveset.js deflects()); no probabilistic branch exists."
+    },
+    {
+     "id": "A5",
+     "result": "pass",
+     "note": "Eight cancellation tests: roll, two_hand, block, parry, heavy and light injected at frame 8 of ATK_STARTUP and frame 28 of ATK_ACTIVE. r1.1 ran its full 73 f in all eight. No attack is cancellable during startup or active."
+    },
+    {
+     "id": "A7",
+     "result": "pass",
+     "note": "The stance switch is a committed 36 f@60 action and cannot be used as a cancel."
+    },
+    {
+     "id": "A8",
+     "result": "pass",
+     "note": "No weapon-skill accuracy term exists; hit-or-miss is geometry only (confirmed by the reach sweep, which is a pure function of distance)."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json"
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B1",
+     "result": "pass",
+     "note": "87 hand-authored weapon ids, each with a written name and notes. No procedural generation, no randomised stats."
+    },
+    {
+     "id": "B2",
+     "result": "pass",
+     "note": "No floating damage number event kind exists in game/src/sim/events.js and none appeared in any driven attack."
+    },
+    {
+     "id": "B3",
+     "result": "pass",
+     "note": "No item description carries lore that NPC dialogue should carry."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json"
+   ]
+  },
+  "ar3": {
+   "status": "fail",
+   "checks": [
+    {
+     "id": "C1",
+     "result": "fail",
+     "note": "This area's declared seam crossing is RI-WPN05 B's material system \u2014 a lore fact that is also a combat answer. It is authored on the weapon side (8 materials, per-damage-type multipliers, class bypass, deterministic deflection) and it is read by nothing. 0 of 14 enemy statblocks in game/data/combat/enemies/ declares a material, and setting every material multiplier to 0.01 changes damage by 0."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json"
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 2,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "weights": {
+   "RI-WPN01": 1,
+   "RI-WPN02": 1,
+   "RI-WPN03": 1,
+   "RI-WPN04": 1,
+   "RI-WPN05": 1,
+   "RI-WPN06": 1
+  },
+  "band_label": "Wrong shape in two places that matter \u2014 the movesets now reach the game and behave as declared in the slot dimension, and the two dimensions the player feels through the hitbox and through impact are still not connected to anything.",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "HARD FAIL, RI-WPN02 M1 sub-probe C / ARBITRATION S26: the reachable band is not contiguous. Eleven weapons across SPR, HLB and AXE have an interior dead band \u2014 spr_drowned_harpoon cannot hit a stationary target between 1.30 m and 1.60 m. Confirmed in node and in the browser with identical vectors. SCORING 1.1 caps the item at 2 and the aggregation is min.",
+  "HARD FAIL, RI-WPN05 M1/M2/M6 under the CONSUMPTION check: the impact and material model has no world-side consumer. Five of six perturbations of the hitstop grid, the material multipliers, the knockback table and the deflection multiplier are INERT; only the flesh column is read, hard-coded at game/src/combat/moves.js:166; and materialMultiplier / deflects / knockbackFor / victimHitstopFor are imported by exactly one file in the tree \u2014 the harness.",
+  "HARD FAIL, RI-WPN05 E.2: whp_hide_lash r1.1 displaces a weapon socket 1.026 m in a single frame, which E.2 makes a pose teleport.",
+  "FAIL, RI-WPN02 M3: 24 of 28 driven clips are outside the +/-10 degree arc tolerance, measured three ways. Thrusting classes do not thrust on the rig \u2014 TSW r1.1 declares 6.5 degrees and sweeps 69.6.",
+  "FAIL, RI-WPN02 M2 on the observed column: D_min 1.3934 against a 1.6 bar, and 10 of 15 classes have a neighbour closer than 1.6 against a requirement of at most 2.",
+  "FAIL, RI-WPN03 M6: the mandatory clustering blind test scores 10 of 12 when the pack is generated at runtime from motion alone.",
+  "AR-3 fail / seam_sterile: this area's only declared seam crossing is authored and unread.",
+  "Below the wave-1 gate of 7.0."
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-weapon-impact-and-material-model-has-no-consumer",
+  "subsystem_path": "weapon.feel.material",
+  "what": "The RI-WPN05 impact and material model is a data island, exactly as the 87 movesets were in round 1. Five of six perturbations of the shipped tables change nothing in the fight: setting every non-flesh cell of the 5x7 attacker hitstop grid to 99 f, setting every material damage multiplier to 0.01, setting every knockback value to 9 m, and setting the deflection multiplier to 20x all produce a byte-identical fight (dmg 118, hit at frame 32, hitstop held 3 frames). Only the flesh column is read, and it is read from a hard-coded `.flesh` lookup at game/src/combat/moves.js:166. MovesetLibrary.materialMultiplier, .deflects, .knockbackFor and .victimHitstopFor are imported by exactly one file in the repository \u2014 game/src/harness/weapons.js, the harness. And there is nothing for them to apply to: 0 of the 14 enemy statblocks in game/data/combat/enemies/ declares a material at all.",
+  "why_it_matters": "This is round 1's verdict repeating itself one layer down, and it is invisible for the same reason: the builder fixed the half of the piece the round-1 gap named and the impact half was never examined, so every probe that reads the library reports a healthy 5x7 grid. From the player's chair a mace, an axe and a spear hit a stone golem, a chitin-shelled beast and a Hist-bonded plant creature with identical feedback \u2014 same hitstop, same knockback, no deflection, no damage-type advantage. The material system is also this area's ONLY seam crossing under AR-3: a lore fact (root-golems are stone, the Hist-bonded are plant) that is supposed to be a combat answer a merchant can sell you. Unread, the crossing does not exist, and the weapon area becomes internally excellent and externally sterile.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json",
+   "game/src/combat/moves.js:166 \u2014 hitstop_frames: (s.hitstop_f || lib.classes.hitstop.attacker[moveset.weight_tier] || {}).flesh || 6",
+   "grep for materialMultiplier|deflects|knockbackFor|victimHitstopFor across game/src/ returns only game/src/harness/weapons.js"
+  ],
+  "severity": "blocking",
+  "remedy": {
+   "action": "Make the fight read the material at hit time, and give it a material to read.",
+   "targets": [
+    "game/data/combat/enemies/*.json \u2014 add a `material` (one of flesh, chitin, stone, metal, plant, water, wood) to all 14 statblocks; the lore assignment is already written down in RI-WPN05 B.",
+    "game/src/combat/resolve.js \u2014 at the frame a hit resolves, look the victim's material up and call MovesetLibrary.hitstopFor / victimHitstopFor / knockbackFor / materialMultiplier / deflects, instead of consuming the pre-baked move.hitstop_frames.",
+    "game/src/combat/moves.js:165-166 \u2014 stop collapsing the per-slot hitstop table to its flesh column; pass hitstop_f_table through to the resolver, which currently stores it and never reads it.",
+    "game/src/sim/record.js \u2014 expose the resolved material and the resolved hitstop on the impact record so the grid is observable rather than inferred."
+   ],
+   "acceptance": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs reports 6 of 6 CONSUMED; the 5x7 attacker hitstop grid is recoverable from traces against seven material-carrying dummies with every cell differing from the flesh column where RI-WPN05 A says it should; ILS >= 0.80 on the observed column; and AR-3 seam_sterile becomes false with a driven demonstration (a mace beating a stone enemy that a rapier cannot).",
+   "ref_item": "RI-WPN05",
+   "estimated_size": "M"
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "The interior dead bands are attributable to this piece, and the W1-09 round-3 builder's attribution is correct. The gap moves with root_dz_m (0 -> none, 0.20 -> [0.95,1.45], 0.575 -> [1.30,1.60], 0.80 -> [1.50,1.70], 1.20 -> none) and with the clip's capsule_length_m, both W1-10-owned. The mechanism is game/data/weapons/classes.json's hitbox_span_m: SPR declares 0.70 m of hit volume on a 2.70 m capsule, so only the outer quarter of the shaft can damage, and a target standing in the shaft band is inside the blade and outside the S26 body corridor. It is not confined to spear and halberd \u2014 axe_bog_cleaver has one too, and the same span values are why AXE, GHM, HLB, MCE and SPR all fail reach_min_m <= 0.60.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-gap-attribution.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json"
+   ],
+   "subsystem_path": "weapon.class.reach"
+  },
+  {
+   "what": "Declared reach is not the reach the game produces, and the fingerprint is built on the declared column. HLB declares 2.865 m and its blade reaches 1.45 m; CGS declares 2.75 and reaches 1.40; TSW declares 2.087 and reaches 0.95; GSW 2.741 -> 1.75; UGS 3.033 -> 2.35. The tolerance is +/-0.10 m. Measured melee blade-reach spread is 1.90 m against a required 2.5, and threat_m spread 2.05 m against a required 3.0 \u2014 both PASS on the declared numbers and FAIL on the measured ones.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json"
+   ],
+   "subsystem_path": "weapon.class.reach"
+  },
+  {
+   "what": "Round 1 observed 'recovery arc exceeds active arc in 7 of 14 movesets'. It is now 21 of 28 driven clips, and in several cases by a wide margin \u2014 MCE r1.1 sweeps 114 degrees while its hitbox is live and 330 after it switches off; UGS r2 sweeps 130 active and 341 in recovery. The visible swing and the damaging window have come apart, which is a legibility defect a player reads as a hit that should have landed.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json"
+   ],
+   "subsystem_path": "weapon.animation.reuse"
+  },
+  {
+   "what": "Dg_min PASSES, and the builder was right to file arithmetic rather than curve-fit. Under the bar critic's repaired nine-dimension GRAMMAR_DIMS over 14 melee classes the roster measures Dg_min 1.5981 observed and 1.7272 declared against a 1.0 bar, without a line of the roster being changed. Under the superseded five-dimension set the same roster measures 0.628 observed. The instrument was wrong, not the design. Recorded so the refusal to curve-fit is on the record as correct.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json"
+   ],
+   "subsystem_path": "weapon.class.differentiation"
+  },
+  {
+   "what": "All ten CGS and GHM weapons declare r1.3 and reach it via roll.r1 -> r1.3 and backstep.r1 -> r1.3. RI-WPN01 A as amended wave 1 publishes roll.r1 -> r1.2 and states that this workaround 'is not adopted'. The amendment's mtime is 22:26 and the builder's commit is 22:11, so this is a rule created fifteen minutes after the build, not a rule the builder ignored. Recorded as a live nonconformance with that timing stated.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.json",
+    "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md"
+   ],
+   "subsystem_path": "weapon.moveset.slots"
+  },
+  {
+   "what": "plunge is one of the mandatory 25 and is unreachable in every shipped fixture: no state file in game/data/states/ produces a fall of the 3.0 m the slot requires, so a 51-frame sweep of the jump on four weight tiers never resolves it. It is declared on all 87 weapons.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json"
+   ],
+   "subsystem_path": "weapon.context.aerial"
+  },
+  {
+   "what": "Four of the twenty CFS instances \u2014 the whole BLOCK row \u2014 resolve to shield.bash playing shield_bash_medium, byte-identically on all four probe weapons. That is correct under RI-WPN06 C, because shield.bash belongs to the offhand, but it means a fifth of the headline contextual score is measuring the shield rather than the weapon. Worth a companion clause in RI-WPN04.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json"
+   ],
+   "subsystem_path": "weapon.offhand.config"
+  },
+  {
+   "what": "Over twelve runtime blind traces of about ten scripted attacks each, against a STATIONARY dummy at 2.2 m, hit counts run 0 to 4 and two traces (spr_reed_gig, ghm_stone_breaker) land nothing at all. No number in the seven asks how often a scripted swing at a motionless target at ordinary spacing connects, and the answer is: less than half the time.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blind-PICKS.md"
+   ],
+   "subsystem_path": "weapon.class.reach"
+  },
+  {
+   "what": "getBuildInfo().piece still reads 'W1-09 \u2014 combat core' and version '0.2.0-w1-09'. The build stamp was not advanced in round 1 and has not been advanced in round 2.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json"
+   ],
+   "subsystem_path": "weapon.moveset.schema"
+  },
+  {
+   "what": "tools/lib/combat-node.mjs reproduces the browser exactly on every row I checked: 51 of 51 airborne sweep cells, all 16 fired contextual rows (browser anim_len equals node startup+active+recovery to the frame), and the reach gap vectors for spear, halberd, axe and straight sword. The W1-09 builder's claim holds and the tool is safe to rely on.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach-browser.json"
+   ],
+   "subsystem_path": "weapon.moveset.slots"
+  }
+ ],
+ "gap_closure": [
+  {
+   "gap_id": "GAP-W1-weapon-movesets-not-wired-to-the-runtime",
+   "status": "closed",
+   "note": "Verified independently: setLoadout accepts 87/87 in the shipping browser build with the live weapon id, class and reach reading back correctly and classes_with_zero_equippable empty; CFS_live 1.0000 with 20 of 20 contextual instances carrying their own slot id, clip id and frame triple; backstep.r1, jump.r1 and jump.r2 all fire; distinct_anim 19 against a floor of 18; and seven of seven perturbations of the moveset model change the fight. The moveset model now has a demonstrated world-side consumer.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption2.json"
+   ]
+  }
+ ],
+ "corpus_extended": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.mjs",
+   "what": "A critic-owned S26 contiguity instrument for the weapon area: blade reach with root suppressed, threat sweep with it on, contiguity vector and reach_min per class, over 0.20-5.00 m at 0.05 m. RI-WPN02 M1-C as amended makes the contiguity vector a mandatory verdict artifact and no tool in tools/ produced one for the player roster."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blindpack.mjs",
+   "what": "A runtime blind-pack generator carrying motion columns only, with a programmatic assertion that no design column leaks. WEAPON-CRITIC 6 as amended now requires this and nothing in tools/ builds it."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs",
+   "what": "A perturbation suite for the impact and material model. Proposed for promotion into tools/ as a CI gate, since it is the check that would have caught this round's biggest gap in minutes."
+  }
+ ],
+ "method_deviations": [
+  {
+   "what": "Full sweep not run at 87 weapons x 25 slots x 2 stances.",
+   "why": "Budget. Stratified adversarially per WEAPON-CRITIC 3.2: all 15 class baselines for the fingerprint, motion and reach censuses; all 13 SPR and HLB weapons for the contiguity attribution; all 87 for equip, ARI and TDV; the four weight-tier probes for the Wgrid and the airborne sweep."
+  },
+  {
+   "what": "Most measurement was taken through tools/lib/combat-node.mjs rather than the browser.",
+   "why": "Speed \u2014 the reach sweep alone is 2 716 fights. Parity was verified first, not assumed: 51 of 51 airborne cells, 16 of 16 contextual clip lengths and the six browser reach vectors all agree exactly. Every headline finding was re-confirmed in headless Chromium."
+  },
+  {
+   "what": "ILS is reported under a uniqueness reading rather than RI-WPN05 F's literal text.",
+   "why": "F specifies a nearest-neighbour classifier over 35 cells that must recover (tier, material). Leave-one-out over 35 unique points recovers 0 by construction, so the literal text is unrunnable. Filed as a bar defect; the reading used is round 1's, and it does not affect the score because ILS is unmeasurable => 0 on the observed column regardless."
+  },
+  {
+   "what": "The reference items RI-WPN01, RI-WPN02, RI-WPN03, RI-WPN05 and WEAPON-CRITIC.md were being rewritten in the working tree while this review ran (mtimes 22:25-22:39; the build's commit is 22:11), and RI-WPN07 did not exist when the build was made.",
+   "why": "Concurrent bar-critic pass. Scored against the bar as currently written, per the dispatch, with the timing recorded wherever a nonconformance is created by a rule younger than the build."
+  },
+  {
+   "what": "RI-WPN07's RVS was not measured.",
+   "why": "The item was created after the build and after this review began. Recorded as a wave-2 debt rather than scored, per the orchestrator's instruction not to retro-penalise. It is nonetheless the check most likely to change this area's verdict next round."
+  }
+ ],
+ "arbitration_questions": [
+  {
+   "question": "Does an authored model that no code path outside the harness reads make a piece seam_sterile under AR-3, even though the model itself is present and correct?",
+   "position": "Yes, and this verdict applies that reading. ARBITRATION 3's CONSUMPTION clause already says that from the player's chair a model with no demonstrated consumer and a missing model are the same thing. AR-3 asks whether the piece carries an interaction that crosses the seam; an interaction nothing performs is not carried. Recorded as an arbitration question rather than assumed, because AR-3's text speaks of the interaction being 'declared rather than exercised' as a lesser state, and this is the second round running that this area has been scored on that basis."
+  }
+ ],
+ "source_reads": [
+  {
+   "file": "game/src/combat/moveset.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read after the perturbation suite had already shown which models were inert, to name the consumer and the line."
+  },
+  {
+   "file": "game/src/combat/moves.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Line 166's hard-coded .flesh, found only after kritik-consumption3 showed the non-flesh columns were inert."
+  },
+  {
+   "file": "game/src/combat/player.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "The slot dispatch, read after CFS_live 1.0000 had been measured, to confirm no fallback branch remains."
+  },
+  {
+   "file": "game/src/harness/api.js",
+   "purpose": "locate-harness",
+   "note": "To find the trace and stats surfaces my own probes drive."
+  },
+  {
+   "file": "tools/lib/combat-node.mjs",
+   "purpose": "locate-harness",
+   "note": "To confirm it imports the game's modules unmodified before relying on it."
+  }
+ ],
+ "self_audit": {
+  "found_a_gap": true,
+  "escalation_ladder_applied": true,
+  "notes": "Ladder rungs used, in order. (1) Ran the seven headline numbers with my own instruments and found CFS_live, equipped_ok, ARI, TDV, Dg_min and the moveset CONSUMPTION check all genuinely passing \u2014 round 2's headline claims survive independent measurement. (2) Changed the sample, per WEAPON-CRITIC 8's known good rung: went to the classes with the largest lunges and the smallest hit spans rather than the ones the probes demo, which is where the S26 contiguity hard fail was. (3) Stopped trusting the declared column and measured arc, reach and root off the rig, which is where 24 of 28 arc mismatches and the 1.42 m halberd reach error were. (4) Re-ran the round-1 gap's own detector one layer down \u2014 asked which OTHER model in this piece is imported only by the harness \u2014 which is where the biggest gap was. Two builder-authored instruments (tools/weapons/verify-frames.mjs and tools/harness/wpn-census-live.mjs) were deliberately never executed; every number in this verdict comes from a tool written for this review or from the game itself.",
+  "instruments_written": 12,
+  "builder_tools_used": []
+ },
+ "notes": {
+  "seam_sterile": true,
+  "seam_sterile_justification": "This area's only declared seam crossing is RI-WPN05 B's material system, and it is authored and unread: 0 of 14 enemy statblocks carries a material, materialMultiplier is imported only by the harness, and zeroing every material multiplier changes no damage. A lore fact that is supposed to be a combat answer currently answers nothing. Round 1 recorded this as 'declared rather than exercised' and scored seam_sterile false; that was too generous and this verdict corrects it.",
+  "headline_numbers": {
+   "note": "Nine numbers per WEAPON-CRITIC 3.3 as amended, in two columns. The observed column is the score.",
+   "D_min": {
+    "declared": 1.6409,
+    "observed": 1.3934,
+    "pass": ">= 1.6",
+    "hard_fail": "< 1.0",
+    "verdict": "FAIL on observed",
+    "artifact": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json"
+   },
+   "Dg_min": {
+    "declared": 1.7272,
+    "observed": 1.5981,
+    "pass": ">= 1.0",
+    "hard_fail": "< 0.5",
+    "verdict": "PASS",
+    "artifact": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json",
+    "note": "Nine GRAMMAR_DIMS, 14 melee classes. Under the superseded five-dimension set: 0.628 observed."
+   },
+   "ARI": {
+    "declared": 0.4533,
+    "observed": 0.4533,
+    "pass": "0.42-0.60",
+    "hard_fail": "< 0.33",
+    "verdict": "PASS",
+    "artifact": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ari-tdv-ils.json"
+   },
+   "SEP": {
+    "declared": null,
+    "observed": null,
+    "pass": ">= 1.4",
+    "hard_fail": "< 1.0",
+    "verdict": "NOT RUN \u2014 the F87 fingerprint was not recomputed under the amended D5; recorded as an incomplete number rather than carried over from round 1's 1.4469, which BAR-CRITIQUE-W1-10-R1 R1 shows was read off a broken reach column",
+    "artifact": ""
+   },
+   "CFS": {
+    "declared": 1.0,
+    "observed": 1.0,
+    "pass": "= 1.00",
+    "hard_fail": "< 1.00",
+    "verdict": "PASS",
+    "artifact": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json"
+   },
+   "TDV": {
+    "declared": 0.8333,
+    "observed": 0.8333,
+    "pass": ">= 0.60",
+    "hard_fail": "any weapon = 0 or median < 0.25",
+    "verdict": "PASS",
+    "artifact": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json",
+    "note": "median 0.8333, min 0.5, max 1.0, none at 0; live tip-path divergence 0.40-3.05 m confirms distinct motion."
+   },
+   "ILS": {
+    "declared": 0.7143,
+    "observed": 0.0,
+    "pass": ">= 0.80",
+    "hard_fail": "< 0.40",
+    "verdict": "HARD FAIL \u2014 unmeasurable => 0; the fight reads one cell of the 35",
+    "artifact": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json"
+   },
+   "Chg_min": {
+    "declared": null,
+    "observed": null,
+    "pass": ">= 0.15",
+    "hard_fail": "none in wave 1",
+    "verdict": "NOT RUN \u2014 the item was created during this review",
+    "artifact": ""
+   },
+   "RVS": {
+    "declared": null,
+    "observed": null,
+    "pass": ">= 0.70",
+    "hard_fail": "< 0.40",
+    "verdict": "NOT RUN \u2014 RI-WPN07 was created during this review; recorded as a wave-2 debt, not scored",
+    "artifact": ""
+   }
+  },
+  "bar_pressure": {
+   "q1_is_a_passing_score_the_thing_the_user_asked_for": "Not yet, and the honest answer changed shape this round. Taken at random, hlb_saltcutter differs from its class baseline by a longer sweep and a 0.495 m lunge \u2014 and a player cannot feel either, because the halberd's blade reaches 1.45 m against a declared 2.865 and has a hole in the middle of the band. The user asked for weapons that are subtly unique in the hand. The roster IS subtly unique on paper and the two channels through which a player would feel it \u2014 where the weapon reaches, and what it feels like when it lands \u2014 are the two that are broken. The bar is right; it is now measuring the right thing for the first time, which is why the score fell rather than rose.",
+   "q2_which_threshold_does_no_work": "SEP. Its within-class ceiling is dominated by whichever pair of same-class weapons happens to share the most clips, and the SHARE cap already bounds that from above, so SEP is largely a restatement of ARI with a different denominator. It has never been the deciding number in either round. Proposed replacement: report SEP over the OBSERVED F87 only, and add a companion floor on the second-nearest between-class distance so one well-separated pair cannot carry it.",
+   "q3_which_threshold_is_gameable_and_how_cheaply": "arc_sweep_deg, and this round proves it is not hypothetical \u2014 it is already wrong. D6 and G3 are read from a declared JSON field that 24 of 28 clips do not honour, so `sed -i 's/\"arc_sweep_deg\": 19/\"arc_sweep_deg\": 340/'` across the SPR movesets would move D_min, Dg_min and the M5 shape census without changing a frame of animation. The companion check is already written for reach and must be extended: RI-WPN02 M3 must read arc from the hitbox records, never from the declaration, exactly as M1-C now reads reach. That is my concrete proposed amendment.",
+   "q4_the_tenth_hour_version": "A player ten hours in complains that swings that visually connect do not damage. Nothing in the seven numbers asks how often a swing at a stationary target at ordinary spacing lands, and the blind pack answered it by accident: 0 to 4 hits from about ten scripted attacks per trace, and two of twelve traces landing nothing at all. Proposed new measure, `CR` (connect rate): the fraction of scripted r1.1 presses that damage a stationary dummy placed at the class's own declared reach minus 0.20 m. Floor 0.95. It is one line of harness work and it would have failed this build in round 1.",
+   "q5_is_the_roster_the_right_size": "Yes, and more confidently than round 1 could say it. ARI 0.4533 sits mid-band under the amended floor, the share histogram tops out at four, and the runtime motion-only blind pack \u2014 a far harder test than round 1's \u2014 still separated one class of three perfectly and named four real within-class behavioural differences. The remedy is not fewer weapons. It is the same weapons with hit volumes that match their blades and impact that reads the thing it hits.",
+   "proposed_amendment": {
+    "item": "RI-WPN02",
+    "section": "D, dimension table, row D6",
+    "replacement_text": "D6 `arc_sweep_deg` \u2014 total angular travel of the hitbox capsule's midpoint about the player's Y axis across the ACTIVE window, **measured from the hitbox records of a driven attack and never read from the moveset declaration**, computed with a near-axis guard (frames whose horizontal radius from the root is below 0.20 m are excluded) and cross-checked against the tip's angular travel; where the two estimators differ by more than 15 degrees the slot is reported as unmeasurable rather than scored. The same discipline S26 imposes on reach applies here: a geometry dimension inferred from a declared value is not a measurement. **FAIL** if more than 2 of the 14 melee class baselines' `r1.1` arcs differ from their declaration by more than 10 degrees \u2014 this build measures 24 of 28 driven clips outside tolerance while the declared column passes every check."
+   },
+   "second_proposed_amendment": {
+    "item": "RI-WPN05",
+    "section": "F",
+    "replacement_text": "`ILS` is computed over the 35 cells by requiring that each cell's observable triple (attacker_hitstop, camera_shake_peak, knockback_m) be **unique across the grid**; a cell whose triple is shared with any other cell is not recovered. The previous wording specified a nearest-neighbour classifier, which over 35 distinct points recovers zero by construction and made the headline number unrunnable as written. `ILS` is scored on the OBSERVED grid only \u2014 a grid computed by calling the library rather than by reading it out of a trace against a material-carrying target is `unmeasurable => 0`."
+   }
+  },
+  "sampling": {
+   "rule": "Stratified and adversarial per WEAPON-CRITIC 3.2. Full population (87) for equip, ARI, TDV and the schema census. All 15 class baselines for the fingerprint, motion, arc and reach censuses. All 13 SPR and HLB weapons for the contiguity attribution. The four weight-tier probes (dagger, straight-sword, axe, ultra-greatsword) for the Wgrid, the airborne sweep and the browser parity check. Twelve traces across GHM/SPR/TSW and three across CSW/HLB/MCE for the blind tests.",
+   "counts": {
+    "weapons_equipped": 87,
+    "classes_reach_swept": 14,
+    "reach_fights": 2716,
+    "clips_motion_measured": 28,
+    "wgrid_runs": 247,
+    "blind_traces": 15
+   }
+  },
+  "what_survived_the_harsh_lens": "Recorded because CRITIC-DOCTRINE 2.1 requires the ladder to be visible and because five checks that could have caught this build did not. The 87 movesets really are in the game: 87/87 equip in the shipping browser build, CFS_live is genuinely 1.0000 with distinct slot, clip and frame triple on all twenty instances, jump.r1 and backstep.r1 genuinely fire, seven of seven perturbations of the moveset model change the fight, node and browser agree on every cell I compared, AR-1 is clean on 60 identical swings and eight cancellation tests, TDV is real motion and not a multiplier, and Dg_min passes the repaired instrument without the roster being touched. Round 2 did what it said it did. The gap is somewhere else."
+ }
+}

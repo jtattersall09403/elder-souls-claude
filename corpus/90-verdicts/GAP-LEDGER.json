@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-06T21:15:43Z",
+  "generated": "2026-08-06T22:58:50Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1
   ],
-  "verdicts_read": 10,
+  "verdicts_read": 13,
   "counts": {
-    "total": 10,
-    "open": 10,
+    "total": 13,
+    "open": 13,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -21,11 +21,18 @@
     "journey.chargen.diegesis": [
       "GAP-W1-creation-is-an-api-not-a-scene"
     ],
+    "crime.guard.response": [
+      "GAP-W1-crime-enforcement-is-a-free-win"
+    ],
     "combat.hitbox.sweep": [
-      "GAP-W1-enemy-attacks-cannot-reach-contact-range"
+      "GAP-W1-enemy-attacks-cannot-reach-contact-range",
+      "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage"
     ],
     "magic.effects.utility": [
       "GAP-W1-magic-effects-no-behaviour"
+    ],
+    "magic.gating.skills": [
+      "GAP-W1-magic-skill-frozen"
     ],
     "platform.determinism.harness": [
       "GAP-W1-platform-prng-never-drawn"
@@ -49,7 +56,12 @@
   "warnings": [
     "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-01-r2.json: closure of GAP-W1-world-trunk-road-below-the-waterline is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
-    "corpus/90-verdicts/wave1/W1-09-r2.json: closure of GAP-W1-combat-exemplar-has-no-danger is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
+    "corpus/90-verdicts/wave1/W1-09-r2.json: closure of GAP-W1-combat-exemplar-has-no-danger is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-09-r3.json: closure of GAP-W1-enemy-attacks-cannot-reach-contact-range is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-09-r3.json: closure of GAP-W1-combat-exemplar-has-no-danger is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-14-r2.json: closure of GAP-W1-magic-effects-no-behaviour is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-14-r2.json: gap_closure references unknown gap_id GAP-W1-magic-vfx-nothing-renders.",
+    "corpus/90-verdicts/wave1/W1-15-r2.json: closure of GAP-W1-stealth-crime-model-not-coupled-to-the-world is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
   ],
   "load_errors": [],
   "gaps": [
@@ -139,6 +151,49 @@
       "age_waves": 0
     },
     {
+      "gap_id": "GAP-W1-crime-enforcement-is-a-free-win",
+      "subsystem_path": "crime.guard.response",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-15-r2-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-15-r2.json",
+      "piece_id": "w1-15",
+      "severity": "blocking",
+      "what": "The only guard in the build cannot attack and surrenders for nothing: guard_legion declares ai 'hold_ground' (combat/enemy.js only runs an action for ai === 'scripted', so an AGGRO guard held at 2.0 m for 900 frames deals 0 damage and never leaves REPOSITION) and its parley declares gold_price 0 against base_disposition 35, which makes combat/parley.js's GOLD ground unconditional — so one `interact` press yields a band-3 attack-on-sight guard at full HP for 0 gold and 0 stamina, leaving the imperial bounty at 3000 and jail null.",
+      "why_it_matters": "Everything else this piece built downstream of a crime — the 17-crime schedule, the derived witness, the five report routes, the three-band ladder, the three arrest answers, the jail ledger, S6 persistence — is correct, measured and reachable, and all of it is discarded by a single button press against an enemy that could not have hurt you anyway. From the player's chair crime has no consequence, which is the exact failure RI-CRM01 exists to prevent and the exact shape RI-MTH07 warns about one level up: the model is computed, consumed, and then thrown away by the interaction that resolves it. It also makes ARBITRATION S13's non-lethal exit meaningless as a design object — a parley that always succeeds is not a choice, and the round-1 finding that the guard ladder was 'a function of a number setBounty() wrote' is only half closed: the band is now real behaviour, and the behaviour is nothing.",
+      "remedy": {
+        "action": "In game/data/combat/enemies/guard_legion.json set parley.gold_price to a live figure (the current imperial bounty, or a fixed value >= 200 g) and raise the GOLD ground's disposition requirement for guards to 40 so a cold surrender fails; in game/src/combat/player.js::_resolveParley route an accepted surrender against a guard into engine.arrestTopics()/answerArrest() so the three answers fire and the bounty is paid, served or refused rather than left standing; and give guard_legion an AI that swings — ai 'scripted' with a scenario file today, W1-12's behaviour when it lands.",
+        "acceptance": "A probe that (a) sets imperial bounty to 3000, spawns guard_legion at 2.0 m and steps 900 frames records >= 1 HIT event against the player; (b) presses `interact` with 0 gold and records PARLEY_REFUSE, not YIELDED; (c) presses `interact` with gold >= the quoted price and records YIELDED followed by a bounty of 0 and a non-null jail ledger entry, or a serve/resist branch; and (d) shows getCrimeState().bounty.imperial changing across the interaction in every accepted case.",
+        "targets": [
+          "game/data/combat/enemies/guard_legion.json",
+          "game/src/combat/parley.js",
+          "game/src/combat/player.js",
+          "game/src/sim/stealth/system.js"
+        ],
+        "owner": "W1-15 (with W1-09 for the parley resolution path and W1-12 for guard behaviour)",
+        "estimated_wave": 2
+      },
+      "remedy_action": "In game/data/combat/enemies/guard_legion.json set parley.gold_price to a live figure (the current imperial bounty, or a fixed value >= 200 g) and raise the GOLD ground's disposition requirement for guards to 40 so a cold surrender fails; in game/src/combat/player.js::_resolveParley route an accepted surrender against a guard into engine.arrestTopics()/answerArrest() so the three answers fire and the bounty is paid, served or refused rather than left standing; and give guard_legion an AI that swings — ai 'scripted' with a scenario file today, W1-12's behaviour when it lands.",
+      "remedy_acceptance": "A probe that (a) sets imperial bounty to 3000, spawns guard_legion at 2.0 m and steps 900 frames records >= 1 HIT event against the player; (b) presses `interact` with 0 gold and records PARLEY_REFUSE, not YIELDED; (c) presses `interact` with gold >= the quoted price and records YIELDED followed by a bounty of 0 and a non-null jail ledger entry, or a serve/resist branch; and (d) shows getCrimeState().bounty.imperial changing across the interaction in every accepted case.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
       "gap_id": "GAP-W1-enemy-attacks-cannot-reach-contact-range",
       "subsystem_path": "combat.hitbox.sweep",
       "opened_wave": 1,
@@ -167,6 +222,49 @@
         "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-mech.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-turtle.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09-r2/critic-r2-spacing.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage",
+      "subsystem_path": "combat.hitbox.sweep",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-09-r3-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-09-r3.json",
+      "piece_id": "w1-09-r3",
+      "severity": "major",
+      "what": "The round-2 hole in the weapon volume is untouched; it has been covered by a second volume that pays the weapon's damage. Ablation, measured on a copy of the loaded data with no file edited: delete `hitgeometry.json §body_hazard` and the champion's minimum reaching distance against a stationary player returns to chop 1.2 m, thrust 1.6 m, combo_a 1.1 m, combo_b 1.2 m — round 2's numbers to the decimal. With the block present, every hit inside those radii carries `via: \"body\"`, and a body hit deals the attack's full weapon damage: chop 96 at 0.05 m via body is the same 96 as at 3.65 m via weapon, thrust 75, combo_a 63. It is the same on the player's side — the dagger's blade cannot cut inside 0.75 m and the straight sword's inside 0.80 m, so 14 of the dagger's 19 connecting distances and 15 of the straight sword's 36 are torso-checks. Two of the seven player classes fail S26's contiguity clause outright, and the gaps sit exactly at the seam between the two volumes: the spear's body corridor stops at 1.15 m and its blade starts at 1.30 m, leaving 1.20-1.25 m dead; the halberd's stops at 1.10 m and starts at 1.35 m, leaving 1.15-1.30 m dead. Reproduced identically in headless Chromium and in the node arena. And it is what the fight is made of: in the shipping game, 5 to 7 of the 8 blows that kill a motionless player are `via: body`.",
+      "why_it_matters": "A player who walks inside the champion watches a 1.75 m greatsword sweep over their head and loses 96 hit points to the chest that walked through them, and a spearman standing at 1.22 m cannot be hit by anything at all.",
+      "remedy": {
+        "action": "Two changes, in this order. (1) Fix the weapon volume rather than compensating for it. At the champion's first active frame the chop's socket capsule spans z = [1.34, 2.57] with the root at z = 0.384, i.e. the blade's near end is 0.95 m in front of its own root and never re-enters the 0.4-1.1 m band. Give the enemy archetypes' `chop_overhead` and `thrust` clip archetypes in game/data/combat/clips.json a low phase — a follow-through that brings the guard socket down through the attacker's own front quarter — so the swept hull covers the band the attacker is walking through. Verify with `--root-dz 0`, which isolates the blade from the corridor. (2) Stop the body corridor paying the weapon's damage. Give `hitgeometry.json §body_hazard` its own `motion_value` and `poise_damage` (a shoulder-check is a shove, not a cut) and resolve it against `struck_part` with that value in game/src/combat/resolve.js step 8b, so a trace reader and a player can tell the two apart. Then re-run the contiguity acceptance: with the weapon volume fixed, the spear's and halberd's dead ring disappears because the blade band now starts inside the corridor's outer edge.",
+        "targets": [
+          "game/data/combat/clips.json (§archetypes.chop_overhead, §archetypes.thrust — the low phase)",
+          "game/data/combat/hitgeometry.json (§body_hazard — its own motion_value and poise_damage)",
+          "game/src/combat/resolve.js (step 8b — use the body hazard's own damage terms)",
+          "game/data/combat/movesets/** (W1-10's spear and halberd R1 clips, whose weapon-only minimum is 1.30 m and 1.35 m)",
+          "tools/harness/cmb-reach.mjs (add an --ablate body_hazard mode so the weapon volume can be graded on its own)"
+        ],
+        "acceptance": "With `hitgeometry.json §body_hazard` removed, `min_hit_distance_m <= 0.35 m` for all four champion attacks and for all seven player weapon classes, `root_dz_m` unchanged. With it present, every attack's hit band is contiguous from 0.05 m for all eleven attacks (4 enemy + 7 player), no interior gap at any 0.05 m step. A body hit's `dmg` is strictly less than the same attack's weapon `dmg` in the trace. And in the browser turtle, the majority of hits taken carry `via: \"weapon\"` rather than `via: \"body\"`.",
+        "ref_item": "RI-CMB04",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Two changes, in this order. (1) Fix the weapon volume rather than compensating for it. At the champion's first active frame the chop's socket capsule spans z = [1.34, 2.57] with the root at z = 0.384, i.e. the blade's near end is 0.95 m in front of its own root and never re-enters the 0.4-1.1 m band. Give the enemy archetypes' `chop_overhead` and `thrust` clip archetypes in game/data/combat/clips.json a low phase — a follow-through that brings the guard socket down through the attacker's own front quarter — so the swept hull covers the band the attacker is walking through. Verify with `--root-dz 0`, which isolates the blade from the corridor. (2) Stop the body corridor paying the weapon's damage. Give `hitgeometry.json §body_hazard` its own `motion_value` and `poise_damage` (a shoulder-check is a shove, not a cut) and resolve it against `struck_part` with that value in game/src/combat/resolve.js step 8b, so a trace reader and a player can tell the two apart. Then re-run the contiguity acceptance: with the weapon volume fixed, the spear's and halberd's dead ring disappears because the blade band now starts inside the corridor's outer edge.",
+      "remedy_acceptance": "With `hitgeometry.json §body_hazard` removed, `min_hit_distance_m <= 0.35 m` for all four champion attacks and for all seven player weapon classes, `root_dz_m` unchanged. With it present, every attack's hit band is contiguous from 0.05 m for all eleven attacks (4 enemy + 7 player), no interior gap at any 0.05 m step. A body hit's `dmg` is strictly less than the same attack's weapon `dmg` in the trace. And in the browser turtle, the majority of hits taken carry `via: \"weapon\"` rather than `via: \"body\"`.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-ablate-push-lateral-dice.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-via-browser.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,
@@ -215,6 +313,47 @@
         "corpus/90-verdicts/wave1/artifacts/W1-14/battery2.json",
         "corpus/90-verdicts/wave1/artifacts/W1-14/touch.json",
         "corpus/90-verdicts/wave1/artifacts/W1-14/levitation.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-magic-skill-frozen",
+      "subsystem_path": "magic.gating.skills",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-14-r2-7c31",
+      "opened_in": "corpus/90-verdicts/wave1/W1-14-r2.json",
+      "piece_id": "W1-14-r2",
+      "severity": "blocking",
+      "what": "MagicSystem.skills is a private object initialised to {sorcery:30, root_speech:30, warding:30, veiling:30} that no gameplay path writes. Measured in four shipped states (default, arena_flat, dungeon_primary, helstrom-market): 47 of 72 shipped spells attunable and 25 refused — all 17 tier-3 and all 8 tier-4 — and setAttuned() drops them silently. 40 casts at a live target, a HEARTH rest, H.setSkills() on the character sheet and H.grantSkillUse('cast_effective') all leave the tier-3 attune at 0/1 and quoteSpell().attunable_now false; only H.setMagicSkills(), a harness call with no in-game counterpart, flips it to 1/1 and true. Spellmaking is capped at two effects for the whole game ('3 effects needs skill 50; your best relevant school is 30'). In the other direction, RI-MAG04's magic resolutions gate on sim.progression.skills, which is {} in every shipped state and which the magic system never writes: the coupling between the character's magic skill and the magic system is 0.00 in both directions, with the null control clean (perturbing magic.skills 30->100 does flip the gate, so the probe is driving a live gate and not a stub).",
+      "why_it_matters": "A mage who plays this game for forty hours casts exactly the spells they could cast in the first minute — a third of the shipped catalogue, every tier-3 and tier-4 spell, and every three-effect spell they might commission are locked behind a number that nothing they do can move, and the quest resolutions magic exists to unlock read a different, empty number.",
+      "remedy": {
+        "action": "Make MagicSystem.skills a VIEW of sim.progression.skills rather than a private copy: replace the literal at game/src/sim/magic/system.js:59 with a getter that reads sim.progression.skills (mapping root_speech <-> root-speech, which are spelled differently in the two files today), so _effectiveSkillFor, focusCost, the tier gate and quoteSpell's effect-count all read the character sheet. Then close the loop that fills the sheet: add `skill` to the effect_apply and spell_hit event payloads in game/src/sim/magic/system.js and game/src/sim/combat-bridge.js so game/src/character/skilluse.js:stepSkillUse banks the SPELL'S OWN school instead of hardcoding 'sorcery'; and make setAttuned() emit an `attune_refused` event with the shortfall instead of silently returning a shorter list. Ensure sim.progression.skills is non-empty in the shipped states (engine.js:575 fills it from ch.skills, which is empty when no character has been composed) — coordinate with W1-07, whose census owns that seeding, and record the seam if it cannot be done here.",
+        "targets": [
+          "game/src/sim/magic/system.js",
+          "game/src/sim/combat-bridge.js",
+          "game/src/character/skilluse.js",
+          "game/src/harness/api.js",
+          "game/data/states/*.json"
+        ],
+        "acceptance": "Re-run tools/harness/critic-w1-14-r2f.mjs, which never calls setMagicSkills(). Required: (a) in every shipped state, the attunable count rises when the character sheet's warding/sorcery rise, and 72/72 are attunable at skill 100; (b) 40 casts of a warding spell at a live target raise sim.progression.skills.warding by a non-zero amount and emit >= 1 skill_use event with skill == 'warding' (not 'sorcery'); (c) a three-effect spell is quotable once any relevant school reaches 50; (d) H.questResolutions('Q-MAG-01') reports the magic resolution available after the skills were reached BY CASTING, with no setSkills or setMagicSkills call anywhere in the probe; (e) setAttuned() on an under-skilled spell emits an attune_refused event naming the shortfall.",
+        "ref_item": "RI-PRG03"
+      },
+      "remedy_action": "Make MagicSystem.skills a VIEW of sim.progression.skills rather than a private copy: replace the literal at game/src/sim/magic/system.js:59 with a getter that reads sim.progression.skills (mapping root_speech <-> root-speech, which are spelled differently in the two files today), so _effectiveSkillFor, focusCost, the tier gate and quoteSpell's effect-count all read the character sheet. Then close the loop that fills the sheet: add `skill` to the effect_apply and spell_hit event payloads in game/src/sim/magic/system.js and game/src/sim/combat-bridge.js so game/src/character/skilluse.js:stepSkillUse banks the SPELL'S OWN school instead of hardcoding 'sorcery'; and make setAttuned() emit an `attune_refused` event with the shortfall instead of silently returning a shorter list. Ensure sim.progression.skills is non-empty in the shipped states (engine.js:575 fills it from ch.skills, which is empty when no character has been composed) — coordinate with W1-07, whose census owns that seeding, and record the seam if it cannot be done here.",
+      "remedy_acceptance": "Re-run tools/harness/critic-w1-14-r2f.mjs, which never calls setMagicSkills(). Required: (a) in every shipped state, the attunable count rises when the character sheet's warding/sorcery rise, and 72/72 are attunable at skill 100; (b) 40 casts of a warding spell at a live target raise sim.progression.skills.warding by a non-zero amount and emit >= 1 skill_use event with skill == 'warding' (not 'sorcery'); (c) a three-effect spell is quotable once any relevant school reaches 50; (d) H.questResolutions('Q-MAG-01') reports the magic resolution available after the skills were reached BY CASTING, with no setSkills or setMagicSkills call anywhere in the probe; (e) setAttuned() on an under-skilled spell emits an attune_refused event naming the shortfall.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-gate.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-by-use.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,
