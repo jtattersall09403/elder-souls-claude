@@ -1,0 +1,541 @@
+{
+  "skill_registers": {
+    "progression_before": {},
+    "progression_after_20_sorcery_casts": {},
+    "progression_after_20_more_warding_casts": {},
+    "magic_skills_after_40_casts": "not reported by getMagicState()",
+    "magic_skill_gate_probe": {
+      "refused": false,
+      "notes": [],
+      "effects": [
+        {
+          "effect": "shield",
+          "magnitude": 100,
+          "duration_s": 20,
+          "area_r_m": 0
+        }
+      ],
+      "range": "self",
+      "class": "LIGHT",
+      "schools": [
+        "warding"
+      ],
+      "focus_base": 77,
+      "band_tier": 4,
+      "tier": 4,
+      "skill_req": 65,
+      "focus_cost": 62,
+      "gold": 12640,
+      "castable_now": true,
+      "attunable_now": false,
+      "over_reservoir": false
+    },
+    "note": "MagicSystem.skills is a private object; getMagicState() may not report it. The quote above reports skill_req and attunable_now, which read it.",
+    "quote_after_setSkills_100": {
+      "refused": false,
+      "notes": [],
+      "effects": [
+        {
+          "effect": "shield",
+          "magnitude": 100,
+          "duration_s": 20,
+          "area_r_m": 0
+        }
+      ],
+      "range": "self",
+      "class": "LIGHT",
+      "schools": [
+        "warding"
+      ],
+      "focus_base": 77,
+      "band_tier": 4,
+      "tier": 4,
+      "skill_req": 65,
+      "focus_cost": 62,
+      "gold": 12640,
+      "castable_now": true,
+      "attunable_now": false,
+      "over_reservoir": false
+    },
+    "quote_after_setMagicSkills_100": {
+      "refused": false,
+      "notes": [],
+      "effects": [
+        {
+          "effect": "shield",
+          "magnitude": 100,
+          "duration_s": 20,
+          "area_r_m": 0
+        }
+      ],
+      "range": "self",
+      "class": "LIGHT",
+      "schools": [
+        "warding"
+      ],
+      "focus_base": 77,
+      "band_tier": 4,
+      "tier": 4,
+      "skill_req": 65,
+      "focus_cost": 51,
+      "gold": 12640,
+      "castable_now": true,
+      "attunable_now": true,
+      "over_reservoir": false
+    }
+  },
+  "quest_played": {
+    "offers_cold": [
+      {
+        "id": "Q-MAG-01",
+        "title": "The Warded Ledger",
+        "giver": "harbourmistress-tesh",
+        "offerable": false,
+        "why": [
+          "the topic \"the ledger\" has not come up yet"
+        ],
+        "gate": null
+      }
+    ],
+    "open_attempts": [
+      {
+        "step": "cold",
+        "result": {
+          "ok": false,
+          "reason": "the topic \"the ledger\" has not come up yet",
+          "gate": null
+        }
+      },
+      {
+        "step": "after learnTopic",
+        "result": {
+          "ok": true,
+          "quest": "Q-MAG-01",
+          "stage": 10
+        }
+      }
+    ],
+    "gate_before_casting": {
+      "id": "mag_the_warded_ledger__magic",
+      "method": "magic_utility",
+      "violence_required": false,
+      "available": false,
+      "why": [
+        "you cannot bring open_lock to bear",
+        "you cannot bring shatter to bear"
+      ],
+      "excludes": []
+    },
+    "cast_effects": [
+      "open_lock",
+      "shatter"
+    ],
+    "gate_after_casting": {
+      "id": "mag_the_warded_ledger__magic",
+      "method": "magic_utility",
+      "violence_required": false,
+      "available": true,
+      "why": [],
+      "excludes": []
+    },
+    "resolve": {
+      "ok": true,
+      "quest": "Q-MAG-01",
+      "resolution": "mag_the_warded_ledger__magic",
+      "journal_index": 90,
+      "faction_reputation": {
+        "the_dockhands": 5,
+        "the_imperial_assize": -4
+      },
+      "world_flags": [],
+      "unlocked": [],
+      "locked": [],
+      "npc_disposition": {
+        "harbourmistress-tesh": 8
+      },
+      "kills_npc": []
+    },
+    "journal_tail": [
+      {
+        "n": 10,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-MAG-01",
+        "text": "Tesh says the ledger that would prove the gem-running is behind a warded door in the customs loft. She says it as if the door were weather."
+      },
+      {
+        "n": 90,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-MAG-01",
+        "text": "The ward comes apart like a knot and the hinge pins come off with it. The ledger is where she said, and the last four pages are in a different hand."
+      }
+    ],
+    "player_pos_at_resolution": [
+      0,
+      0,
+      0.308
+    ],
+    "completed": [
+      "Q-MAG-01"
+    ],
+    "note": "the resolution above was taken standing in arena_flat, not in the Lilmoth customs loft"
+  },
+  "detect_life": {
+    "markers_before": [],
+    "markers_after": [],
+    "hud_elements": 0
+  },
+  "frenzy": {
+    "status_before": [
+      {
+        "id": "P",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 0,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 620,
+        "hp_max": 620,
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT"
+      },
+      {
+        "id": "e0",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 30,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 412,
+        "hp_max": 412,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      },
+      {
+        "id": "e1",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 30,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 412,
+        "hp_max": 412,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      }
+    ],
+    "status_after": [
+      {
+        "id": "P",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 0,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 620,
+        "hp_max": 620,
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT"
+      },
+      {
+        "id": "e0",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 30,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 412,
+        "hp_max": 412,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      },
+      {
+        "id": "e1",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "mitigation": 1,
+        "armour_rating": 30,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "hp": 412,
+        "hp_max": 412,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      }
+    ],
+    "enemies_after": [
+      {
+        "id": "e0",
+        "hp": 412,
+        "state": "REPOSITION",
+        "dead": false
+      },
+      {
+        "id": "e1",
+        "hp": 412,
+        "state": "REPOSITION",
+        "dead": false
+      }
+    ]
+  },
+  "mark_recall": {
+    "at_mark": [
+      0,
+      0,
+      0
+    ],
+    "moved_to": [
+      60,
+      0,
+      60
+    ],
+    "after_recall": [
+      0,
+      0,
+      0
+    ],
+    "moved_m": 84.85,
+    "shipped": {
+      "mark": "mark/RITUAL",
+      "recall": "recall/RITUAL"
+    }
+  },
+  "vfx": {
+    "idle": {
+      "drawCalls": 27,
+      "triangles": 4376,
+      "vfx": {
+        "particles": 0,
+        "systems": 0,
+        "decals": 0,
+        "meshes": 0,
+        "particleDrawCalls": 0
+      }
+    },
+    "release": {
+      "drawCalls": 30,
+      "triangles": 4376,
+      "vfx": {
+        "particles": 246,
+        "systems": 3,
+        "decals": 0,
+        "meshes": 0,
+        "particleDrawCalls": 3
+      }
+    },
+    "inflight": {
+      "drawCalls": 30,
+      "triangles": 4376,
+      "vfx": {
+        "particles": 246,
+        "systems": 3,
+        "decals": 0,
+        "meshes": 0,
+        "particleDrawCalls": 3
+      }
+    },
+    "residue_20s": {
+      "drawCalls": 29,
+      "triangles": 4380,
+      "vfx": {
+        "particles": 0,
+        "systems": 0,
+        "decals": 1,
+        "meshes": 0,
+        "particleDrawCalls": 1
+      }
+    },
+    "feature_report": {
+      "features": {
+        "V1_soft_particles": {
+          "present": true,
+          "how": "depth prepass -> DepthTexture, per-fragment linearised depth fade in PARTICLE_FRAG"
+        },
+        "V2_correct_sorting": {
+          "present": true,
+          "how": "transparent + depthWrite:false + per-system renderOrder + three back-to-front transparent sort"
+        },
+        "V3_not_additive_only": {
+          "present": true,
+          "how": "trail and impact are NormalBlending; only the core is AdditiveBlending"
+        },
+        "V4_scene_lit": {
+          "present": true,
+          "how": "uAmbient and uSun taken from the live Sky every frame; non-emissive systems multiply by them"
+        },
+        "V5_hdr_emissive": {
+          "present": true,
+          "how": "core emits tint * (1 + 2.2 * intensity), brought back by the renderer ACES tonemap"
+        },
+        "V6_resolution": {
+          "present": true,
+          "how": "particles render at native resolution; no upsample stage to be chunky"
+        },
+        "V7_motion_vectors": {
+          "present": false,
+          "why": "this renderer has no temporal pass (no TAA) for motion vectors to feed. Declared absent rather than claimed; F-M1 permits 2 of 10 missing and V7 is not one of the three mandatory rows."
+        },
+        "V8_distortion": {
+          "present": true,
+          "how": "REFRACT_FRAG samples the prepass colour buffer with normal-displaced UVs for invisibility/chameleon"
+        },
+        "V9_decals": {
+          "present": true,
+          "how": "InstancedMesh of irregular bloom masks, polygon-offset, depth-tested, laid on the ground plane"
+        },
+        "V10_mesh_effects": {
+          "present": true,
+          "count": 4,
+          "which": [
+            "rime growth",
+            "sap running upward",
+            "summon unfolding",
+            "conjured wall"
+          ]
+        },
+        "mandatory_present": true,
+        "score_shape": "9 of 10 present; V1, V2, V4 all present (F-M1 mandatory rows)"
+      },
+      "live": {
+        "particles": 0,
+        "systems": 0,
+        "decals": 1,
+        "meshes": 0,
+        "particleDrawCalls": 1
+      },
+      "budget": {
+        "particles_per_spell_max": 900,
+        "particles_per_spell_max_GREAT": 1600,
+        "particles_frame_max": 4000,
+        "particle_draw_calls_per_spell_max": 6,
+        "particle_draw_calls_frame_max": 24,
+        "distinct_systems_per_spell_min": 3,
+        "residue_decals_per_spell_min": 1,
+        "residue_decals_live_max": 60
+      },
+      "palette": {
+        "sorcery_marshfire": {
+          "core": "#F0B24E",
+          "mid": "#C86A2A",
+          "decay": "#6B3A18",
+          "residue": "#241C14",
+          "residue_kind": "char, glossy",
+          "idea": "Burning sap-resin. Sticks, drips, pools, keeps burning where it pooled. Never #FF6600."
+        },
+        "sorcery_saltrime": {
+          "core": "#D9CFC0",
+          "mid": "#B8C4A8",
+          "decay": "#97A08A",
+          "residue": "#C6CEBE",
+          "residue_kind": "salt bloom",
+          "idea": "Salt and stilled water. Crystal growth along surfaces, not a projectile of ice. Never cyan."
+        },
+        "sorcery_wamasu_arc": {
+          "core": "#E8DCF2",
+          "mid": "#C77CE8",
+          "decay": "#86F06A",
+          "residue": "#2A2620",
+          "residue_kind": "scorch pits",
+          "idea": "Violet-white strike, GREEN afterimage burned into the eye. The green is the tell and it is why this is not lightning."
+        },
+        "sorcery_wither": {
+          "core": "#86F06A",
+          "mid": "#4A6B3A",
+          "decay": "#1F2622",
+          "residue": "#2E3A2C",
+          "residue_kind": "bloom of grey fuzz",
+          "idea": "Rot accelerated. A visible fungal fruiting on whatever it touched."
+        },
+        "root_speech": {
+          "core": "#F0B24E",
+          "mid": "#D8A050",
+          "decay": "#8E6A32",
+          "residue": "#6B5330",
+          "residue_kind": "sap bead",
+          "idea": "Sap, wet, with real surface tension. It runs UPWARD along the body, against gravity. That single inversion carries the school."
+        },
+        "warding": {
+          "core": "#D8C070",
+          "mid": "#A9AF90",
+          "decay": "#6A745E",
+          "residue": "#B3B49E",
+          "residue_kind": "stone dust",
+          "idea": "Xanmeer gold. Carved-relief geometry made of settling dust, not of light. The only school permitted straight edges - and they are BROKEN edges."
+        },
+        "veiling": {
+          "core": "#7CE0E8",
+          "core_max_intensity": 0.25,
+          "mid": "heat shimmer, no colour",
+          "decay": null,
+          "residue": null,
+          "idea": "Mostly refraction and a thin swarm. If you can see it clearly, it has failed."
+        }
+      },
+      "design_language": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5",
+        "L6",
+        "L7",
+        "L8"
+      ],
+      "intensity_by_phase": {
+        "note": "Normalised emissive intensity, sampled at phase 0 (frame 1), 1 (last startup frame), 2 (last active frame), 3 (last frame). L6 requires max(startup) < 0.45 x max(active).",
+        "CANTRIP": [
+          0.02,
+          0.16,
+          1,
+          0.1
+        ],
+        "LIGHT": [
+          0.02,
+          0.24,
+          1,
+          0.12
+        ],
+        "HEAVY": [
+          0.03,
+          0.34,
+          1,
+          0.16
+        ],
+        "GREAT": [
+          0.04,
+          0.4,
+          1,
+          0.2
+        ],
+        "RITUAL": [
+          0.02,
+          0.3,
+          0.7,
+          0.05
+        ]
+      }
+    }
+  }
+}

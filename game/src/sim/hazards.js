@@ -134,19 +134,34 @@ export class Hazards {
     return null;
   }
 
-  /** The context every predicate reads. One object, rebuilt per frame, never allocated per hazard. */
+  /**
+   * The context every predicate reads. ONE object for the lifetime of the session, mutated in
+   * place — `RI-PLT01` P4: "every object and array is created once, at reset(), and mutated in
+   * place for the rest of the run. The simulation step allocates nothing." This runs 207,000 times
+   * during THE CROSSING and returning a fresh literal would have been 207,000 objects.
+   */
   _context(sim) {
     const f = this.field;
+    const c = this._ctx || (this._ctx = {});
     const x = sim.player.pos[0], z = sim.player.pos[2];
     const r = f.regionAt(x, z);
     const depth = f.depthAt(x, z);
+    const slope = f.slopeAt(x, z);
     const tide = f.tideState();
-    return {
-      x, z, region: r.id, y: f.heightAt(x, z), slope: f.slopeAt(x, z),
-      depth, band: BANDS[[0.0, 0.01, 0.21, 0.51, 0.96, 1.41].filter((v) => depth >= v).length - 1],
-      weather: sim.env.weather, hour: sim.env.timeOfDay, tide,
-      rising: tide === 'RISING', openSky: f.slopeAt(x, z) < 20,
-    };
+    c.x = x; c.z = z; c.region = r.id; c.y = f.heightAt(x, z); c.slope = slope;
+    c.depth = depth;
+    c.band = BANDS[[0.0, 0.01, 0.21, 0.51, 0.96, 1.41].filter((v) => depth >= v).length - 1];
+    c.weather = sim.env.weather; c.hour = sim.env.timeOfDay; c.tide = tide;
+    c.rising = tide === 'RISING'; c.openSky = slope < 20;
+    return c;
+  }
+
+  /** A report row for hazard `id`, reused across frames. Same P4 discipline. */
+  _row(id) {
+    this._rows = this._rows || new Map();
+    let r = this._rows.get(id);
+    if (!r) { r = { id }; this._rows.set(id, r); }
+    return r;
   }
 
   /** The distance to the nearest instance of a hazard's anchor, or null if it has none. */
@@ -188,7 +203,8 @@ export class Hazards {
     const suppressed = this._suppressed(sim);
     const ctx = this._context(sim);
     const here = this.byRegion.get(ctx.region) || [];
-    const report = [];
+    const report = this._report || (this._report = []);
+    report.length = 0;
     const p = sim.player;
 
     for (const h of here) {
@@ -294,17 +310,17 @@ export class Hazards {
         }
       }
 
-      report.push({
-        id: h.id, class: h.class, region: ctx.region,
-        inside, approach_m: Number.isFinite(approach) ? +approach.toFixed(1) : null,
-        told_at_frame: this.told.has(h.id) ? this.told.get(h.id) : null,
-        first_damage_frame: cur ? cur.damageFrom : null,
-        damage_dealt: cur ? +cur.dealt.toFixed(2) : 0,
-        fired: !!(cur && cur.fired),
-        sheltered: !!(SHELTER[h.id] && SHELTER[h.id](ctx, this.sig, this.field)),
-        declared: h.damage,
-        suppressed_by: suppressed,
-      });
+      const row = this._row(h.id);
+      row.class = h.class; row.region = ctx.region; row.inside = inside;
+      row.approach_m = Number.isFinite(approach) ? +approach.toFixed(1) : null;
+      row.told_at_frame = this.told.has(h.id) ? this.told.get(h.id) : null;
+      row.first_damage_frame = cur ? cur.damageFrom : null;
+      row.damage_dealt = cur ? +cur.dealt.toFixed(2) : 0;
+      row.fired = !!(cur && cur.fired);
+      row.sheltered = !!(SHELTER[h.id] && SHELTER[h.id](ctx, this.sig, this.field));
+      row.declared = h.damage;
+      row.suppressed_by = suppressed;
+      report.push(row);
     }
     this.lastReport = report;
     return report;
