@@ -231,8 +231,9 @@ def main():
     cpath = os.path.join(HERE, '_computed.json')
     if '--check' in sys.argv:
         old = json.load(open(cpath)) if os.path.exists(cpath) else {}
-        drift = [k for k in set(old) | set(computed)
-                 if old.get(k, {}).get('sha256') != computed.get(k, {}).get('sha256')]
+        # Compare complete records, not only hashes: changing an algorithm must make
+        # --check fail even when the underlying media bytes are unchanged.
+        drift = [k for k in set(old) | set(computed) if old.get(k) != computed.get(k)]
         if drift:
             print('DRIFT:', *drift, sep='\n  ')
             return 1
