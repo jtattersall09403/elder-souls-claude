@@ -86,33 +86,55 @@ export function matchNamedClass(data, primary, secondary) {
 
 /**
  * RI-CHR01 method 4: exhaustively enumerate every route through a given question set and
- * report which named classes are reachable. 4^10 = 1,048,576 per (race, upbringing) pair,
- * which is trivial, but the reachable SET is what matters, so we walk the product with an
- * incremental weight vector rather than materialising anything.
+ * report which named classes are reachable. The literal product is 4^10 = 1,048,576 routes,
+ * but only the SKILL-WEIGHT VECTOR decides the outcome, and answers commute — so two routes
+ * that reach the same vector reach the same class. We therefore walk the product level by
+ * level, deduplicating on the vector, which is exhaustive (every route's vector is generated)
+ * and about two orders of magnitude cheaper. `routes_enumerated` is reported so a critic can
+ * see that the whole product was covered rather than sampled.
  */
-export function reachableClasses(data, askedQuestions) {
+export function reachableClasses(data, askedQuestions, opts = {}) {
   const skillOrder = skillIds(data);
   const idx = new Map(skillOrder.map((s, i) => [s, i]));
-  const w = new Int32Array(skillOrder.length);
+  const n = skillOrder.length;
+  let level = new Map([['', new Int8Array(n)]]);
+  let routes = 1;
+  for (const q of askedQuestions) {
+    const next = new Map();
+    for (const w of level.values()) {
+      for (const ans of q.answers) {
+        const w2 = Int8Array.from(w);
+        for (const s of ans.weights) w2[idx.get(s)]++;
+        const k = w2.join(',');
+        if (!next.has(k)) next.set(k, w2);
+      }
+    }
+    level = next;
+    routes *= 4;
+  }
+  const table = namedClassTable(data);
   const found = new Set();
-  const qs = askedQuestions;
-  const n = qs.length;
+  const order = skillOrder.map((s, i) => i);
+  for (const w of level.values()) {
+    const ranked = order.slice().sort((a, b) => (w[b] - w[a]) || (a - b)).slice(0, 5).map((i) => skillOrder[i]);
+    const key = `${ranked.slice(0, 3).slice().sort().join(',')}|${ranked.slice(3, 5).slice().sort().join(',')}`;
+    const m = table.get(key);
+    if (m) found.add(m);
+  }
+  const out = [...found].sort();
+  if (opts.detail) return { classes: out, routes_enumerated: routes, distinct_weight_vectors: level.size };
+  return out;
+}
 
-  const rec = (i) => {
-    if (i === n) {
-      const ranked = skillOrder.slice().sort((a, b) => (w[idx.get(b)] - w[idx.get(a)]) || (idx.get(a) - idx.get(b)));
-      const m = matchNamedClass(data, ranked.slice(0, 3), ranked.slice(3, 5));
-      if (m) found.add(m);
-      return;
-    }
-    for (const ans of qs[i].answers) {
-      for (const s of ans.weights) w[idx.get(s)]++;
-      rec(i + 1);
-      for (const s of ans.weights) w[idx.get(s)]--;
-    }
-  };
-  rec(0);
-  return [...found].sort();
+/** primary/secondary skill-set key -> class id, built once. */
+function namedClassTable(data) {
+  const t = new Map();
+  for (const c of data.classes.classes) {
+    const p = Object.keys(c.skills).filter((k) => c.skills[k] === 25).sort().join(',');
+    const s = Object.keys(c.skills).filter((k) => c.skills[k] === 15).sort().join(',');
+    t.set(`${p}|${s}`, c.id);
+  }
+  return t;
 }
 
 /** RI-JRN01 M7 / RI-CHR01 method 4: the purity sweep, run over the shipped text. */

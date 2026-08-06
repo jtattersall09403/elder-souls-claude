@@ -678,3 +678,34 @@ const PROBES = {
     return R;
   },
 };
+
+// ============================================================================================
+// Driver. Runs after PROBES is initialised (it is a `const`, so it cannot be touched earlier),
+// and writes the result file after EVERY probe — a run that dies on probe 7 still leaves the
+// first six on disk, which is the difference between a partial measurement and none.
+// ============================================================================================
+const out = { schema: 'elder-souls/cmb-probe@1', unit: 'f@60', generated: new Date().toISOString(), probes: {} };
+const dest = args.out
+  ? path.resolve(String(args.out))
+  : path.join(REPO_ROOT, 'reports', 'w1-09', `cmb-probe-${which.replace(/[^a-z0-9]+/g, '-')}.json`);
+fs.mkdirSync(path.dirname(dest), { recursive: true });
+
+for (const name of run) {
+  const fn = PROBES[name];
+  if (!fn) { console.error(`unknown probe '${name}'`); process.exitCode = EXIT.USAGE; continue; }
+  const t0 = Date.now();
+  log(`probe: ${name}`);
+  try {
+    out.probes[name] = await handle.page.evaluate(fn);
+    log(`  ok (${Date.now() - t0} ms)`);
+  } catch (e) {
+    out.probes[name] = { __err: String(e && e.message || e) };
+    console.error(`  FAILED: ${e && e.message}`);
+    process.exitCode = EXIT.HARNESS_ERROR;
+  }
+  fs.writeFileSync(dest, JSON.stringify(out, null, 2) + '\n');
+}
+await handle.close();
+
+if (args.json) process.stdout.write(JSON.stringify(out, null, 2) + '\n');
+else process.stdout.write(`written: ${path.relative(REPO_ROOT, dest)}\n`);

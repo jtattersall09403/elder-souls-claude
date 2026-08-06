@@ -342,17 +342,17 @@ export class Engine {
     const c = this.combat;
     const prev = c.player;
     this._loadout = Object.assign({}, this._loadout || {}, patch || {});
-    const others = c.bodies.filter((b) => b !== prev).map((b) => ({ b, ctl: c.enemies.get(b.id) }));
-    const b = c.createPlayer(this._loadout);
-    b.pos[0] = prev.pos[0]; b.pos[1] = prev.pos[1]; b.pos[2] = prev.pos[2];
-    b.yaw = prev.yaw;
-    b.equipLoadPct = prev.equipLoadPct;
-    b.tier = c.tierOf(b);
-    for (const { b: eb, ctl } of others) { c.bodies.push(eb); if (ctl) c.enemies.set(eb.id, ctl); }
+    const others = c.bodies.filter((x) => x !== prev).map((x) => ({ body: x, ctl: c.enemies.get(x.id) }));
+    const nb = c.createPlayer(this._loadout);
+    nb.pos[0] = prev.pos[0]; nb.pos[1] = prev.pos[1]; nb.pos[2] = prev.pos[2];
+    nb.yaw = prev.yaw;
+    nb.equipLoadPct = prev.equipLoadPct;
+    nb.tier = c.tierOf(nb);
+    for (const o of others) { c.bodies.push(o.body); if (o.ctl) c.enemies.set(o.body.id, o.ctl); }
     c.bodies.sort((x, y) => (x.id < y.id ? -1 : x.id > y.id ? 1 : 0));
-    b.evaluateRig(0);
+    nb.evaluateRig(0);
     mirror(this.sim, this.combat);
-    return { weapon: b.moves._movesetId, weapon_class: b.moves._classKey, shield: b.shieldId, stamina_max: b.staminaMax, tier: b.tier };
+    return { weapon: nb.moves._movesetId, weapon_class: nb.moves._classKey, shield: nb.shieldId, stamina_max: nb.staminaMax, tier: nb.tier };
   }
 
   setEquipLoad(pct) {
