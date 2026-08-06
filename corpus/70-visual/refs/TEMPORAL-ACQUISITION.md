@@ -10,8 +10,13 @@ Written by the temporal reference builder, wave post-acquisition. Status file:
 > **Two round-1 conclusions are overturned here and should not be repeated.**
 > 1. `ACQUISITION-CRITIQUE-R1.md` "Negative results" says *"The true GIF bytes are **not
 >    obtainable**"* from `static.wikia.nocookie.net`. **False.** See route 1a.
-> 2. `ACQUISITION-REPORT.md` §15.6 says *"**YouTube is closed to this container**"*. **False in
->    effect.** See route 3.
+> 2. `ACQUISITION-REPORT.md` §15.6 says *"**YouTube is closed to this container**"*. Its
+>    *conclusion* holds — no byte of YouTube media was obtained — but its *reason* is wrong and
+>    the wrong reason cost this round hours. YouTube **search** is open, YouTube **storyboards**
+>    download, and the bot wall is defeatable for extraction; what actually blocks the media is
+>    the container's egress proxy breaking the `googlevideo` URL binding. See §3.
+> 3. And the conclusion that followed from it — that video was therefore unobtainable — **is
+>    false**. Nine clips and 207 animation GIFs were vendored, none of them from YouTube.
 
 ---
 
@@ -22,7 +27,7 @@ Written by the temporal reference builder, wave post-acquisition. Status file:
 | 1a | Fandom wiki API + `?format=original` | `darksouls.fandom.com`, `eldenring.fandom.com` | **WORKS — best route, original bytes** | **207 GIFs, 398.5 MB, 19,600 frames** |
 | 1b | Fandom wiki API, other wikis | `darksouls3.fandom.com` (alias), `elderscrolls.fandom.com` | **dead** | 0 — no Morrowind in-engine animation exists there |
 | 2 | Imgur | `i.imgur.com`, `api.imgur.com` | **blocked on a credential** — 401, search API needs a Client-ID | 0 |
-| 3 | YouTube via an Invidious host string + `yt-dlp` | `yewtu.be`, `invidious.nerdvpn.de` | **WORKS, then IP rate-limits** | proved, not harvested |
+| 3 | YouTube via an Invidious host string + `yt-dlp` | `yewtu.be`, `invidious.nerdvpn.de` | **metadata only** — extraction works, media transfer 403s / TLS-fails | 0 bytes of media |
 | 3b | YouTube direct | `youtube.com` | **DEAD** — bot wall on 8 clients | but **search works**, and **storyboards download** |
 | 4 | Vimeo | `vimeo.com` | **DEAD** — OAuth 401, search 403 | 0 |
 | 4b | Bilibili | `api.bilibili.com` | **DEAD** — 412, needs WBI signature + cookies | 0 (reachable second-hand via route 5) |
@@ -133,13 +138,13 @@ Arena and Daggerfall cutscene GIFs, *Legends* card art, Skyrim shop signs and fo
 
 | Destination | Files | Content |
 |---|---:|---|
-| `souls-behaviour/telegraph/ds1-moves/` | 177 | Dark Souls 1 per-boss, per-move attack animations, 23 bosses |
-| `souls-behaviour/telegraph/` | 7 | Elden Ring enemy weapon-art telegraphs (Leyndell Knight/Soldier), Lansseax lightning, Fingercreeper, Astel |
-| `souls-behaviour/attacks/` | 12 | Player-side: ER longsword neutral/strong attack chains, ER skills, DS3 Warcry/Soul Greatsword/Perseverance/Dark Hand, DS1 projectile spreads |
-| `souls-behaviour/stance/` | 3 | ER Quickstep forward/backward/attack-forward — dodge locomotion |
-| `souls-behaviour/impact/` | 4 | DS3 Parry standard / fist / extended, ER Carian Retaliation |
-| `souls-behaviour/death/` | 2 | DS Mimic death, ER bloodstain |
-| `souls-behaviour/arena/` | 1 | DS bonfire flame loop |
+| `souls-behaviour/anim/ds1-boss-moves/` | 177 | Dark Souls 1 per-boss, per-move attack animations, 23 bosses |
+| `souls-behaviour/anim/telegraph/` | 7 | Elden Ring enemy weapon-art telegraphs (Leyndell Knight/Soldier), Lansseax lightning, Fingercreeper, Astel |
+| `souls-behaviour/anim/attacks/` | 12 | Player-side: ER longsword neutral/strong attack chains, ER skills, DS3 Warcry/Soul Greatsword/Perseverance/Dark Hand, DS1 projectile spreads |
+| `souls-behaviour/anim/stance/` | 3 | ER Quickstep forward/backward/attack-forward — dodge locomotion |
+| `souls-behaviour/anim/impact/` | 4 | DS3 Parry standard / fist / extended, ER Carian Retaliation |
+| `souls-behaviour/anim/death/` | 2 | DS Mimic death, ER bloodstain |
+| `souls-behaviour/anim/arena/` | 1 | DS bonfire flame loop |
 
 **20 further DS1 boss-move GIFs were catalogued and deliberately not vendored** because they
 exceed the per-file cap the GIF budget implies. They are trivially fetchable later — the URL
@@ -182,7 +187,30 @@ Also **not** vendored, and the reasons, so nobody re-evaluates them:
 
 ## 3. YouTube
 
-### 3.1 Invidious host string + `yt-dlp` — **WORKS, but rate-limited**
+### 3.1 Invidious host string + `yt-dlp` — **metadata yes, media NO**
+
+**Read this correction before acting on the rest of §3.1.** The Invidious host string does defeat
+the bot wall for *extraction*, and it is the reason this section was originally written as a
+success. It never yielded a byte of media. Three separate failure modes, all after successful
+extraction:
+
+| step | result |
+|---|---|
+| `-F` / `--print` (format list, title, duration) | **works** — full DASH ladder returned |
+| `-f 18` native download of the media URL | `HTTP Error 403: Forbidden` from `googlevideo` |
+| `-f 18` on a later attempt | `[SSL: CERTIFICATE_VERIFY_FAILED] self-signed certificate in certificate chain` — the container's egress proxy MITMs TLS and yt-dlp does not use the system trust store for the media host |
+| `--download-sections` (ffmpeg pulls the URL) | `ffmpeg exited with code -11` — **the static ffmpeg segfaults on https input through this proxy** |
+
+The TLS failure has a fix — `export SSL_CERT_FILE=/root/.ccr/ca-bundle.crt` — and with it set the
+error reverts to a plain `403`. A googlevideo stream URL is bound to the session that minted it,
+and this container's egress does not preserve that binding. **So even a `cookies.txt` may not be
+sufficient on its own**; whoever supplies one should test a single download before assuming the
+route is open. Fetching the finished file in a normal browser (§10 item 2) is the safe form of the
+ask.
+
+What follows is what the route *does* deliver — discovery — and it is still worth having.
+
+### 3.1a Extraction behaviour
 
 Passing an Invidious host in the URL changes yt-dlp's extraction path and it succeeds where
 `youtube.com` does not:
@@ -229,8 +257,9 @@ Instance survey (`https://api.invidious.io/instances.json`, 12 instances listed)
 | `web_creator` | *Please sign in* |
 | `ios`, `mweb`, `web_embedded` | player response returned, but **storyboard formats only** |
 
-This confirms and extends `ACQUISITION-REPORT.md` §15.6. **A `cookies.txt` exported from a
-signed-in browser is the single change that would open all of it** — see §10.
+This confirms and extends `ACQUISITION-REPORT.md` §15.6. A `cookies.txt` exported from a signed-in browser is the obvious next thing to try, but see the
+correction in §3.1: the failure is downstream of authentication, so a cookie jar may not be
+sufficient by itself.
 
 ### 3.3 Two things that *do* work on youtube.com, and are worth knowing
 
@@ -315,7 +344,7 @@ cp ffmpeg-*-static/{ffmpeg,ffprobe} /usr/local/bin/
 | `video/V3-locomotion__ghost-of-tsushima-combat.mp4` | Ghost of Tsushima | 854×480 60 fps, 147 s | **VIS04 wind** (best published wind reference obtainable), CAM07 rear view, WPN01/05 |
 | `video/V2-static__ghost-of-tsushima-720p.mp4` | Ghost of Tsushima | 1280×720, 12 s | VIS04/VIS03 at the set's highest resolution |
 | `video/V2b-static__rdr2-ragdoll-720p.mp4` | RDR2 | 1280×720 30 fps, 16 s | VIS08 §C — the keyframe→physics handover, a state change no still can show |
-| `souls-behaviour/attacks/SB-VID__ds3-iudex-gundyr-boss.mp4` | Dark Souls III | 1280×720, 29 s | A5 attacks/telegraph/impact **and** CAM01/03/06 lock-on reframing |
+| `souls-behaviour/anim/attacks/SB-VID__ds3-iudex-gundyr-boss.mp4` | Dark Souls III | 1280×720, 29 s | A5 attacks/telegraph/impact **and** CAM01/03/06 lock-on reframing |
 | `video/MW1-traversal__morrowind-balmora-to-suran-jump.mp4` | Morrowind | 960×720, 26 s | Morrowind LOD and fog band **as the camera moves** |
 | `video/MW2-press__morrowind-g4tv-2002.mp4` | Morrowind | 640×480 24 fps, 121 s | Morrowind water surface + first-person swing arc; **2002 broadcast, predates every graphics mod** |
 | `video/MW3-locomotion__morrowind-third-person-walk.mp4` | Morrowind | 640×480, 122 s | Morrowind third-person walk cycle and camera-behind framing |
@@ -427,15 +456,13 @@ game that ran at something else. `V1b` is deliberately a low-frame-rate capture.
 
 Everything below is blocked on a credential or a browser, not on effort. Ordered by leverage.
 
-**1. One file beats everything else on this list: a YouTube `cookies.txt`.**
-In a signed-in browser, export cookies for `youtube.com` (any "Get cookies.txt" extension), drop it
-in the repo, and every remaining video need is met at 1080p/4K60 with `yt-dlp --cookies`. Two
-minutes. It converts §3 from "a handful per session" to "unlimited", and it is the only thing
-standing between us and 720p+ versions of all six clips below.
-
-**2. If direct downloads are easier than a cookie jar — six specific videos.** All six were found
-with `ytsearch` (§3.3) and all six are already confirmed to exist; only the *download* is blocked.
-Any 20–40 s span of each is enough; 1080p60 preferred, no re-encode.
+**1. Six specific YouTube videos, downloaded in your browser.** This is the ask, and it is
+deliberately not "give me a cookies.txt" — §3.1 shows the block is downstream of authentication
+(the `googlevideo` URL 403s for this container even after successful extraction), so a cookie jar
+might not fix it and a file that is already downloaded certainly does. All six were found with
+`ytsearch`, all six are confirmed to exist, and each takes one click with any browser downloader.
+**Any 20–40 s span is enough; 1080p60 preferred; please do not re-encode or trim in an editor —
+the raw download is what we want.**
 
 | video id | length | what it is | bar it fills |
 |---|---:|---|---|
@@ -446,21 +473,33 @@ Any 20–40 s span of each is enough; 1080p60 preferred, no re-encode.
 | `c9akEr9y7XA` | 301 s | *Elden Ring — Godrick the Grafted boss fight (4K 60 fps)* | `RI-CAM01/03/06` — lock-on reframing **and camera shake**, the one gap left in §9. Take 00:40–01:15. |
 | `iNgDzC_pOi8` | 1035 s | *Dark Souls 3: Weapons Showcase — all movesets and weapon arts* | `RI-WPN01`–`04` per weapon **class** (the GIFs are per *move*, mostly boss-side). Any 30 s span. |
 
-**3. A free Imgur Client-ID** (imgur.com/account/settings/apps, ~2 minutes). Imgur *serves* fine;
+**2. A free Imgur Client-ID** (imgur.com/account/settings/apps, ~2 minutes). Imgur *serves* fine;
 only its search API is closed, and it needs nothing but a registration. This opens the one
 community-clip source that is neither YouTube nor archive.org.
 
-**4. Two Morrowind screenshots, if you own the game** — the only S4 gap left (§8):
+**3. Two Morrowind screenshots, if you own the game** — the only S4 gap left (§8):
 the **same view from the same spot**, once in clear weather and once in a storm or at night.
 Two minutes in-game, and it closes the weather-transition substitute that nothing published fills.
 
-**5. One Digital Foundry LOD or frame-rate analysis clip**, from any host that is not YouTube.
+**4. One Digital Foundry LOD or frame-rate analysis clip**, from any host that is not YouTube.
 DF footage is the only material that is *authored* to make LOD transitions visible; everything we
 have makes them visible by accident.
 
 Nothing on this list is *required* for a bar that is currently unfilled — §9 shows every A8 bar
-resolved except `RI-CAM06` camera shake. Items 1, 2 and 5 raise the **resolution** of evidence that
-already exists; item 2's `c9akEr9y7XA` and item 5 close CAM06; item 4 closes S4.
+resolved except `RI-CAM06` camera shake. Item 1 raises the **resolution** of M11/M12 evidence that
+is currently all 480p; item 1's `c9akEr9y7XA` and item 4 close CAM06; item 3 closes S4; item 2
+opens a source rather than filling a bar.
+
+If only one thing gets done, make it **`c9akEr9y7XA`, 00:40–01:15**. It is the only item on this
+list that closes an open bar rather than improving a closed one.
+
+## 10a. Note on paths
+
+A concurrent builder reorganised the animation GIFs from the A5 subfolders into a single
+`souls-behaviour/anim/` tree (`anim/ds1-boss-moves/`, `anim/telegraph/`, `anim/attacks/`,
+`anim/stance/`, `anim/impact/`, `anim/death/`, `anim/arena/`) and updated `_provenance.json`
+accordingly. Paths in this file are the post-move ones. `acquire.py --check` passes on
+**640 of 640** reference files after the move.
 
 ## 11. Accepted as IMPOSSIBLE, restated
 
@@ -470,7 +509,7 @@ Only one thing survives every route in this file:
   writing in `ACQUISITION-REPORT.md` §15.6, and this round changes nothing about it: no clip in
   existence is published at a known, unaltered frame cadence with a frame counter on screen. The
   dependent bar (`RI-WPN05`) must be stated as an **ordering** — dagger < ultra greatsword — and
-  never as absolute frames. The `souls-behaviour/impact/` GIFs and `SB-VID__ds3-iudex-gundyr-boss`
+  never as absolute frames. The `souls-behaviour/anim/impact/` GIFs and `SB-VID__ds3-iudex-gundyr-boss`
   bound the *appearance* of a connecting hit; they do not bound its duration.
 
 Every other gap A8 named is now either filled or reduced to a two-minute browser action in §10.

@@ -2,19 +2,19 @@
   "task_id": "temporal-refs",
   "brief": "inline (TEMPORAL REFERENCE BUILDER)",
   "started": "wave-post-acq",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/70-visual/refs/TEMPORAL-ACQUISITION.md",
     "corpus/70-visual/refs/video/**",
     "corpus/70-visual/refs/souls-behaviour/** (temporal additions)"
   ],
   "outputs_written": [
-    "corpus/70-visual/refs/TEMPORAL-ACQUISITION.md (WIP, s0-s1 written)",
-    "corpus/70-visual/refs/souls-behaviour/telegraph/ds1-moves/ (170 DS1 per-move boss animation GIFs)",
-    "corpus/70-visual/refs/souls-behaviour/{attacks,stance,impact,death,arena,telegraph}/ (30 more GIFs: DS3 parries/weapon arts, ER movesets/quickstep/enemy AoW)",
-    "200 records merged into corpus/70-visual/refs/_provenance.json; acquire.py --check = 578/578 OK",
-    "corpus/70-visual/refs/video/ (5 clips, 90.3 MB, archive.org derivatives, exact bytes)",
-    "corpus/70-visual/refs/temporal-substitutes/ (4 Steam burst series, 46 frames, 12.9 MB)"
+    "corpus/70-visual/refs/TEMPORAL-ACQUISITION.md (476 lines; the route map, per-bar coverage, and the human short list)",
+    "corpus/70-visual/refs/souls-behaviour/anim/** \u2014 207 animation GIFs, 398.5 MB, 19,600 frames (moved there from the A5 subfolders by a concurrent builder)",
+    "corpus/70-visual/refs/video/** \u2014 8 clips + souls-behaviour/anim/attacks/SB-VID__ds3-iudex-gundyr-boss.mp4; 134.6 MB total, all byte-exact from archive.org",
+    "corpus/70-visual/refs/temporal-substitutes/** \u2014 4 Steam burst screenshot series, 46 frames, 12.9 MB",
+    "207+46+9 records merged into corpus/70-visual/refs/_provenance.json; acquire.py --check = 640/640 OK",
+    "corpus/70-visual/refs/ACQUISITION-PROGRESS.md \u2014 pointer appended"
   ],
   "findings": [
     "BREAKTHROUGH: static.wikia.nocookie.net DOES serve original GIF bytes. Append `?format=original` to the bare image path (https://static.wikia.nocookie.net/<wiki>/images/x/xx/Name.gif?format=original) -> 200, content-type image/gif, byte length EXACTLY equal to the API's imageinfo `size`. Verified on File:Artorias - Heavy Slam.gif: 605902 bytes GIF89a 210x118, vs 220726-byte animated WebP on every other variant. ACQUISITION-CRITIQUE-R1's finding 'the true GIF bytes are not obtainable' is FALSE and should be corrected. `/revision/latest?format=original` also works. Bare path, ?cb=, Accept: image/gif, vignette.wikia host, browser UA -> all still WebP.",
@@ -33,8 +33,10 @@
     "Invidious via yt-dlp WORKS but is IP-rate-limited: yewtu.be resolved 2 videos then every host (yewtu.be, invidious.nerdvpn.de, invidious.tiekoetter.com) returned the bot wall for the rest of the session. invidious.f5.si = 'Unsupported URL'; yt.chocolatemoo53.com = 403; inv.zoomerville.com API = 403; api.invidious.io lists only 12 instances, 1 api-enabled. Treat as a low-throughput route: a handful of videos per session, not a bulk one.",
     "yt-dlp ytsearch (flat-playlist) works even when downloads are bot-walled: `yt-dlp --flat-playlist --print '%(id)s|%(duration)s|%(title)s' ytsearchN:<query>` returns IDs/titles/durations. Use it for DISCOVERY, then fetch elsewhere.",
     "YouTube STORYBOARDS are reachable when nothing else is: player clients ios/mweb/web_embedded return ONLY storyboard formats, but `yt-dlp -f sb0` downloads them (320x180 mhtml frame grid, ~1 fps). That is a free frame strip for any YouTube video. Downloaded one as proof (270 KB for a 33 s video).",
-    "STEAM BURSTS CONFIRMED AND EYEBALLED. /app/<id>/screenshots/?browsefilter=mostrecent + group by author + sid runs. ER author 'LGZ' burst: frames 1-3 are the SAME doorway at three progressively nearer camera distances = a direct LOD-at-distance substitute. RDR2 24-frame burst contains a deer-at-dawn triple shot from three camera positions and a 2-frame hand-raised/lowered pair."
+    "STEAM BURSTS CONFIRMED AND EYEBALLED. /app/<id>/screenshots/?browsefilter=mostrecent + group by author + sid runs. ER author 'LGZ' burst: frames 1-3 are the SAME doorway at three progressively nearer camera distances = a direct LOD-at-distance substitute. RDR2 24-frame burst contains a deer-at-dawn triple shot from three camera positions and a 2-frame hand-raised/lowered pair.",
+    "CORRECTION to my earlier finding: the Invidious/yt-dlp route yields METADATA ONLY. Extraction (format list, title, duration) works via https://yewtu.be/watch?v=<id>, but no byte of media was ever obtained: -f 18 native download -> HTTP 403 from googlevideo; a later attempt -> [SSL: CERTIFICATE_VERIFY_FAILED] self-signed certificate in chain; --download-sections -> 'ffmpeg exited with code -11' (static ffmpeg SEGFAULTS on https input through this proxy). Fix for the TLS one: export SSL_CERT_FILE=/root/.ccr/ca-bundle.crt (then it reverts to plain 403). The googlevideo stream URL is session/IP-bound and this container's egress does not preserve the binding, so a cookies.txt may NOT be sufficient.",
+    "ffmpeg CAN cut local files fine; it only segfaults on https input. Always download first, cut locally."
   ],
-  "next_step": "more archive.org searches (water/LOD/souls combat), then finish TEMPORAL-ACQUISITION.md",
-  "notes_for_successor": "Constraints: <=40MB/file, <=250MB total for video/. Never re-encode. pixel_metrics_valid:false on all temporal media."
+  "next_step": "finish manifest rebuild, commit",
+  "notes_for_successor": "Read TEMPORAL-ACQUISITION.md first; it is the durable output. Key operational facts: (1) static.wikia.nocookie.net serves ORIGINAL GIF bytes with ?format=original - nothing else works. (2) archive.org h.264 derivatives under 40MB fetched WHOLE are the best video route; search sort[]=item_size asc, then /metadata/<id>. (3) YouTube media is unreachable from this container even after the bot wall is defeated - googlevideo 403s and the static ffmpeg segfaults on https input; ffmpeg cuts LOCAL files fine. (4) ffmpeg is not installed and apt fails; use the johnvansickle static build. (5) Budgets used: GIF 398.5 of 400 MB; video 134.6 of 250 MB. (6) The only open bar is RI-CAM06 camera shake, closed by one manual download (YouTube c9akEr9y7XA, 00:40-01:15)."
 }
