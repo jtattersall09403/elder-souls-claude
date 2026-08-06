@@ -1,0 +1,2517 @@
+{
+ "schema": "elder-souls/magic-effects@1",
+ "id": "magic-effects",
+ "source": "corpus/25-magic/data/effects.json (RI-MAG02, binding). Mirrored verbatim: every id, school, weight, min_tier, geometry, magnitude/duration/area legality and ruling is the corpus record unchanged. RI-MAG02 M1 diffs the two files by id and this file exists so that diff is exact.",
+ "schema_version": 1,
+ "corpus_item": "RI-MAG02",
+ "generated_for": "Elder Souls - Black Marsh. Morrowind systems, Souls combat.",
+ "provenance": "constructed",
+ "note": "The combinatorial effect list IS the system. Named spells are merely popular points in this space. Any spell a player can build from these parameters must work, including ones no designer authored (RI-MAG03 MB-1).",
+ "cost_formula": {
+  "focus_base": "ceil( weight * ( M^1.30 + 0.7*D^0.95 + 0.55*M^0.80*D^0.45 ) * (1 + 0.09*A^1.25) * range_mult / 10 )",
+  "focus_cost": "ceil( focus_base * class_mult * catalyst_mult * (1 - skill_discount) )",
+  "terms": {
+   "M": "magnitude in the effect's declared unit",
+   "D": "duration in seconds; 0 for instantaneous",
+   "A": "area radius in metres; 0 for self/touch/single-target",
+   "range_mult": {
+    "self": 0.7,
+    "touch": 0.85,
+    "target": 1.0,
+    "projectile": 1.15,
+    "area_at_range": 1.25
+   },
+   "class_mult": {
+    "CANTRIP": 0.5,
+    "LIGHT": 1.0,
+    "HEAVY": 2.1,
+    "GREAT": 4.4,
+    "RITUAL": 1.0
+   },
+   "catalyst_mult": {
+    "great_staff": 0.8,
+    "rod": 1.0,
+    "enchanted_weapon": 1.15,
+    "none": 1.35
+   },
+   "skill_discount": "0.005 * (skill - tier_req), clamped to [0, 0.35] (RI-PRG03 \u00a76)"
+  },
+  "cross_term_rationale": "The 0.55*M^0.80*D^0.45 term is the only reason 'magnitude 100 for 1 second' is not the dominant strategy. Without it the magnitude and duration axes are separable and the optimal spell is always a 1-second nuke. Removing this term is an automatic fail of RI-MAG03."
+ },
+ "tier_bands": [
+  {
+   "tier": 1,
+   "focus_base": "<= 12",
+   "skill_req": 0
+  },
+  {
+   "tier": 2,
+   "focus_base": "13-30",
+   "skill_req": 25
+  },
+  {
+   "tier": 3,
+   "focus_base": "31-65",
+   "skill_req": 45
+  },
+  {
+   "tier": 4,
+   "focus_base": "66-120",
+   "skill_req": 65
+  },
+  {
+   "tier": 5,
+   "focus_base": ">= 121",
+   "skill_req": 85
+  }
+ ],
+ "gold_price": {
+  "formula": "round( 3.9 * focus_base^1.75 )",
+  "anchored_to": "RI-PRG05 \u00a72 published spell prices: tier-1 220 g, tier-2 900 g, tier-3 3400 g, at focus_base 10 / 22 / 48 respectively. Fitted exponent 1.75; residuals under 3%.",
+  "worked": {
+   "10": 220,
+   "22": 874,
+   "48": 3425,
+   "80": 8346,
+   "140": 22218
+  }
+ },
+ "hard_rules": [
+  "No effect restores Focus. Not one. (RI-MAG01 \u00a7A)",
+  "No effect has a magnitude RANGE. One magnitude, deterministic. (S1)",
+  "No effect has a failure chance, a resist roll, or a proc chance. (S1)",
+  "No effect emits a HUD marker, waypoint or compass arrow. (S8, AR-2)",
+  "No effect converts, yields, reduces or substitutes for sap-debt. (S15)",
+  "No effect grants i-frames.",
+  "Fortified/temporary values satisfy EVERY gate at evaluation time (RI-EXP06 B-02). Bounded by consequence: a rank so bought is real and its quests are at that tier; an attunement so made is dropped at the next HEARTH rest. Never by refusal.",
+  "Resist and chameleon clamps (85%, 80%) are global and unstackable-past."
+ ],
+ "effects": [
+  {
+   "id": "fire_damage",
+   "name": "Marshfire",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 1.5,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 200,
+    "output_per_point": 1.8
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 30
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 8
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 1,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": {
+    "kind": "burn",
+    "per_contact": 10
+   },
+   "notes": "Burning sap-resin that sticks and drips. Out of fight: burns off voriplasm, dries a flooded passage, destroys evidence (a quest verb).",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 13
+   }
+  },
+  {
+   "id": "frost_damage",
+   "name": "Saltrime",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 1.5,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 200,
+    "output_per_point": 1.7
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 30
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 8
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 1,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "traversal",
+   "changes_traversal": true,
+   "changes_quest_resolution": false,
+   "status_buildup": {
+    "kind": "frost",
+    "per_contact": 12
+   },
+   "notes": "Stills standing water into a crossable rime plate for the effect's duration. Two marsh routes and one dungeon shortcut use this.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 13
+   }
+  },
+  {
+   "id": "shock_damage",
+   "name": "Wamasu-arc",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 1.4,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 200,
+    "output_per_point": 1.8
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 6
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 1,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": {
+    "kind": "shock",
+    "per_contact": 8
+   },
+   "notes": "Arcs to conductors: standing water, wet chitin, iron. Chain is DETERMINISTIC (nearest N conductors within r, sorted by eid). Opens two Dwemer-analogue mechanisms.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 6
+   }
+  },
+  {
+   "id": "poison_damage",
+   "name": "Wither",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 1.3,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 150,
+    "output_per_point": 1.2
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 120
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 6
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 1,
+   "geometry": "volume",
+   "in_fight": true,
+   "out_of_fight": false,
+   "utility_class": null,
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": {
+    "kind": "rot",
+    "per_contact": 14
+   },
+   "notes": "Lingering volume; ticks on a fixed 12-frame period, never a per-frame roll.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 11
+   }
+  },
+  {
+   "id": "damage_health",
+   "name": "Unmaking",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 2.2,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 200,
+    "output_per_point": 2.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile"
+   ],
+   "min_tier": 2,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": false,
+   "utility_class": null,
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Unelemental. Ignores elemental resistance, costs more.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 10
+   }
+  },
+  {
+   "id": "drain_health",
+   "name": "Hollowing",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 1.1,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 400,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 120
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target"
+   ],
+   "min_tier": 2,
+   "geometry": "contact",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Temporarily lowers MAX health, not current. Self-cast is the classic breakage: drain your own health to survive a fall or a threshold check, then let it expire. SANCTIONED (RI-MAG03 MB-7).",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 9
+   }
+  },
+  {
+   "id": "absorb_health",
+   "name": "Drinking",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 2.6,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 120,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target"
+   ],
+   "min_tier": 3,
+   "geometry": "contact",
+   "in_fight": true,
+   "out_of_fight": false,
+   "utility_class": null,
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Transfers, never creates. Overheal discarded (RI-CMB08 \u00a7B).",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 11
+   }
+  },
+  {
+   "id": "soul_trap",
+   "name": "Root-theft",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 3.0,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 60,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 60
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile"
+   ],
+   "min_tier": 3,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": false,
+   "utility_class": "economy",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "`xul-hesh`. The great Argonian obscenity (RI-LOR05 \u00a73). Mechanically fine, politically radioactive.",
+   "rulings": [
+    "Fills a soul gem if the target dies while marked. NEVER yields, reduces or converts sap-debt (S15). Increments the xul_hesh counter. See RI-MAG03 \u00a7C."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 25
+   }
+  },
+  {
+   "id": "shatter",
+   "name": "Bonebreak",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 1.9,
+   "magnitude": {
+    "unit": "poise",
+    "min": 1,
+    "max": 120,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 4
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 2,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Poise damage, zero HP damage. The caster's stagger tool, and the only spell that opens a barred door by breaking it \u2014 which is a crime with witnesses.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 8
+   }
+  },
+  {
+   "id": "corrode",
+   "name": "Souring",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 1.2,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 100,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile"
+   ],
+   "min_tier": 2,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Destroys item condition. Out of fight: eats through a rusted grate, ruins a contract, spoils a shipment. Disarms an enemy by destroying their weapon (a non-lethal exit).",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 6
+   }
+  },
+  {
+   "id": "bind_lesser",
+   "name": "Call the Small",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 2.4,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 90,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 90
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "A marsh thing unfolds out of the water. Never a portal flash. Ally obeys RI-AI01; counts toward encounter grouping.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 16
+   }
+  },
+  {
+   "id": "bind_greater",
+   "name": "Call the Deep",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 4.2,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 90,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 90
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 4,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "One at a time, game-wide. A second cast dismisses the first.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 28
+   }
+  },
+  {
+   "id": "bound_weapon",
+   "name": "Chitin-that-is-not",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 2.0,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 300,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Morrowind's exact bargain: free excellence early, a dead end late.",
+   "rulings": [
+    "Fixed frame data and fixed scaling grade. NO upgrade path (RI-PRG08), no grade improvement, weight 0. Strong in R1-R2, obsolete by R4. SANCTIONED early power spike (RI-MAG03 MB-6)."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 14
+   }
+  },
+  {
+   "id": "telekinesis",
+   "name": "Long Hand",
+   "school": "sorcery",
+   "skill": "Sorcery",
+   "governing_attribute": "INTELLECT",
+   "weight": 1.8,
+   "magnitude": {
+    "unit": "metre",
+    "min": 1,
+    "max": 25,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 60
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": true,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Theft through a window, a lever across a chasm, a lock on the far side of a portcullis. SANCTIONED (RI-MAG03 MB-4).",
+   "rulings": [
+    "Extends interact/steal/lockpick reach. Does NOT extend any hitbox and cannot be used on a hostile inside COMBAT."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 12
+   }
+  },
+  {
+   "id": "restore_health",
+   "name": "Mending",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 2.8,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 400,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 60
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 6
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target",
+    "area_at_range"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "The caster's alternative to RI-CMB08's flask, not a replacement for it.",
+   "rulings": [
+    "Does not refill the tithe-gourd and is not refilled by it. A heal cast is a full CANTRIP/LIGHT cast with \u00a7B commitment - it is slower than drinking, cheaper in charges, and costs Focus you cannot get back."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 19
+   }
+  },
+  {
+   "id": "cure_disease",
+   "name": "Clean Water",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 2.0,
+   "magnitude": {
+    "unit": "tier",
+    "min": 1,
+    "max": 5,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "S11's Morrowind half. Curing a named NPC's named disease is a quest resolution in its own right.",
+   "reference_cost": {
+    "at_magnitude": 5,
+    "duration_s": 0,
+    "focus_base": 2
+   }
+  },
+  {
+   "id": "cure_poison",
+   "name": "Draw the Sour",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 1.6,
+   "magnitude": {
+    "unit": "tier",
+    "min": 1,
+    "max": 5,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Clears rot/poison buildup to zero.",
+   "reference_cost": {
+    "at_magnitude": 5,
+    "duration_s": 0,
+    "focus_base": 1
+   }
+  },
+  {
+   "id": "cure_paralysis",
+   "name": "Loosening",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 2.2,
+   "magnitude": {
+    "unit": "tier",
+    "min": 1,
+    "max": 1,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Cannot be self-cast while paralysed (you cannot act). Exists so a companion or an enchanted item can.",
+   "reference_cost": {
+    "at_magnitude": 1,
+    "duration_s": 0,
+    "focus_base": 1
+   }
+  },
+  {
+   "id": "restore_attribute",
+   "name": "Re-cutting",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 2.4,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 60,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Restores attribute damage from disease and drain. Never raises an attribute above its true value.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 9
+   }
+  },
+  {
+   "id": "fortify_attribute",
+   "name": "Swelling",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 3.4,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 40,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 3,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Earlier drafts of this item forbade fortify from satisfying rank and attunement gates. That was a prohibition where RI-EXP06 requires a cost, and it is withdrawn. See RI-MAG03 \u00a7E.",
+   "rulings": [
+    "AMENDED to reconcile with RI-EXP06 B-02, which is authoritative on permissiveness. Fortified values satisfy EVERY gate at the instant it is evaluated - action gates (locks, persuasion, alchemy, traversal, carry), faction rank thresholds, and spell-tier attunement alike. A temporary skill is still a skill.",
+    "The bound is CONSEQUENCE, not refusal. A rank bought on a buff is REAL and persists (RI-EXP06 B-02): the next quest is at that tier, S9 forbids scaling it down, and RI-QST03's expulsion machinery is live. An attunement made on a buff is real UNTIL THE NEXT HEARTH REST, at which point attunement is re-evaluated against base values and an over-tier spell is dropped from its slot. Nothing is refused; everything is priced."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 23
+   }
+  },
+  {
+   "id": "fortify_skill",
+   "name": "Sure Hand",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 3.0,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 50,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 3,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": true,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Fortify Security +30 to open a tier-5 seal you have no business opening. SANCTIONED and must keep working (RI-MAG03 MB-2, RI-EXP06 B-02/PB-02).",
+   "rulings": [
+    "Same amended treatment as fortify_attribute: satisfies every gate at evaluation time, bounded by consequence rather than refusal (RI-EXP06 B-02).",
+    "Fortified skill does NOT grant skill progress - RI-PRG03's Cost Gate is untouched, because a fortified use consumed nothing of yours."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 20
+   }
+  },
+  {
+   "id": "resist_element",
+   "name": "Thick Hide",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 1.7,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 28,
+    "output_per_point": 3.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": true,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Also the answer to two environmental hazards: the Clay Kilns' flues and the salt-storms.",
+   "rulings": [
+    "Hard clamp at 85%. No stack of any effects, potions, enchantments or gear may exceed it. Immunity is not purchasable."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 12
+   }
+  },
+  {
+   "id": "resist_disease",
+   "name": "Clean Blood",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 1.4,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 28,
+    "output_per_point": 3.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": true,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Marsh-fever fog (WLD05 element 24) without a mask.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 10
+   }
+  },
+  {
+   "id": "sap_ward",
+   "name": "Holding the Wound",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 5.0,
+   "magnitude": {
+    "unit": "band",
+    "min": 1,
+    "max": 1,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 4,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "survival",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "The only mechanical answer to the tithe-curse. Deliberately scarce: taint is a cost, not a nuisance.",
+   "rulings": [
+    "Lowers sap-taint by exactly one band (RI-LOR05 \u00a74a). Requires a rootkeeper's consent as a quest prerequisite; usable at most 3 times in a playthrough. Argonian PCs cannot cast it - they have no taint - and the Hist notices when a foreigner does."
+   ],
+   "reference_cost": {
+    "at_magnitude": 1,
+    "duration_s": 0,
+    "focus_base": 1
+   }
+  },
+  {
+   "id": "speak_to_the_dead",
+   "name": "Asking the Mud",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 4.0,
+   "magnitude": {
+    "unit": "hour",
+    "min": 1,
+    "max": 72,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch"
+   ],
+   "min_tier": 3,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "knowledge",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Lore-as-key, cast as a spell. Feeds `requires.knowledge` on quest resolutions.",
+   "rulings": [
+    "Returns ONE authored line from the corpse's record - what it was doing when it died. It is an unreliable narrator (RI-LOR06): the corpse may be wrong, and two corpses may disagree. Never returns quest state, never returns a location marker."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 17
+   }
+  },
+  {
+   "id": "hist_sight",
+   "name": "The Tree Points",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 3.6,
+   "magnitude": {
+    "unit": "km",
+    "min": 1,
+    "max": 4,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 120
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 3,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "knowledge",
+   "changes_traversal": true,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Navigation without markers, as a spell. The most easily ruined effect in the catalogue.",
+   "rulings": [
+    "S8 GUARD: emits NO marker, NO compass arrow, NO waypoint. It writes ONE prose journal line in the Hist's idiom giving a direction and a landmark, exactly as an NPC's directions do (RI-WLD06). A HUD marker here is an AR-2 automatic fail."
+   ],
+   "reference_cost": {
+    "at_magnitude": 4,
+    "duration_s": 30,
+    "focus_base": 8
+   }
+  },
+  {
+   "id": "mend_item",
+   "name": "Knitting",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 2.6,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 100,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "economy",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Must not delete repair from the economy. The 10% floor is the guard.",
+   "rulings": [
+    "Restores CONDITION only. Cannot raise an item past 100%, cannot repair an item below 10% (that needs a smith), and cannot repair an enchanted item's charge. Repair remains 27% of RI-PRG05's necessary spend for a non-caster; for a caster it converts a gold cost into a Focus cost, which is the trade."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 9
+   }
+  },
+  {
+   "id": "calm_beast",
+   "name": "Stillness",
+   "school": "root_speech",
+   "skill": "Root-Speech",
+   "governing_attribute": "HIST-BOND",
+   "weight": 2.8,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 90,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 90
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 8
+   },
+   "ranges": [
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 2,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "social",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Beasts only. Does not work on anything that can speak; use `charm` for those.",
+   "rulings": [
+    "Drops a beast out of COMBAT to its leash behaviour (RI-AI01). Works on beasts and mindless things - which S13 exempts from parley - so it is the caster's version of the non-lethal exit ARBITRATION \u00a71 requires."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 27
+   }
+  },
+  {
+   "id": "open_lock",
+   "name": "Unbinding",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.4,
+   "magnitude": {
+    "unit": "lock_point",
+    "min": 1,
+    "max": 100,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile"
+   ],
+   "min_tier": 1,
+   "geometry": "projectile",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "The single most quest-relevant effect in the catalogue.",
+   "rulings": [
+    "Magnitude 20 x lock tier (RI-PRG03 \u00a76). Tier 5 = magnitude 100 = 48 Focus base = 101 as HEAVY. DETERMINISTIC: at or above the tier's magnitude it always opens; below it, nothing happens and no Focus is spent (the cast is dropped like an under-req attunement). No pick is consumed and Security gains NO skill progress (Cost Gate)."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 6
+   }
+  },
+  {
+   "id": "lock_lock",
+   "name": "Binding",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.2,
+   "magnitude": {
+    "unit": "lock_point",
+    "min": 1,
+    "max": 100,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "contact",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Locking a door behind you is a real tactic against a non-leashing pursuer, and a real crime against a shopkeeper.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 6
+   }
+  },
+  {
+   "id": "ward_trap",
+   "name": "Quieting",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.5,
+   "magnitude": {
+    "unit": "tier",
+    "min": 1,
+    "max": 5,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile"
+   ],
+   "min_tier": 1,
+   "geometry": "projectile",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Disarms a trap at range. Deterministic tier check, no roll.",
+   "reference_cost": {
+    "at_magnitude": 5,
+    "duration_s": 0,
+    "focus_base": 2
+   }
+  },
+  {
+   "id": "buoyancy",
+   "name": "Skin of Air",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 2.4,
+   "magnitude": {
+    "unit": "unit",
+    "min": 1,
+    "max": 1,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "traversal",
+   "changes_traversal": true,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "This is a MARSH. Water-walking is the highest-value traversal effect in the game and it re-draws the map.",
+   "rulings": [
+    "Walk on standing water at ordinary speed. Ends instantly on entering COMBAT with anything in the water. Does not work on moving water above Athletics-30 current strength (RI-PRG03 \u00a76) - the marsh's rivers still say no."
+   ],
+   "reference_cost": {
+    "at_magnitude": 1,
+    "duration_s": 30,
+    "focus_base": 4
+   }
+  },
+  {
+   "id": "breathe_water",
+   "name": "Second Throat",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.6,
+   "magnitude": {
+    "unit": "unit",
+    "min": 1,
+    "max": 1,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "traversal",
+   "changes_traversal": true,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Four submerged interiors and one loop-dungeon entrance are gated on this or on an Argonian PC (who has it innately and pays nothing).",
+   "reference_cost": {
+    "at_magnitude": 1,
+    "duration_s": 30,
+    "focus_base": 3
+   }
+  },
+  {
+   "id": "feather",
+   "name": "Lightening",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.9,
+   "magnitude": {
+    "unit": "kg",
+    "min": 1,
+    "max": 200,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": true,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Carry capacity out of fight; roll tier in fight. Both are real and both are measurable.",
+   "rulings": [
+    "AR-1 GUARD: equip load is evaluated once, at the frame of a dodge press (RI-CMB01 \u00a7C rule 8). Feather CHANGES the equip-load tier, so a feathered caster genuinely rolls LIGHT. This is legal and intended. What is NOT legal is feather altering i-frame counts by any path other than the four declared tiers - the cliff at 30.00%/70.00% must remain a cliff (RI-CMB01 M5)."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 13
+   }
+  },
+  {
+   "id": "burden",
+   "name": "Weighting",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.9,
+   "magnitude": {
+    "unit": "kg",
+    "min": 1,
+    "max": 200,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 120
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile"
+   ],
+   "min_tier": 2,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "The cleanest example in the catalogue of magic reaching into the fight without contaminating it.",
+   "rulings": [
+    "On an enemy: moves its equip-load tier, which changes its roll/step distance and recovery per RI-CMB01's table. It NEVER changes the enemy's windup, tracking cutoff, hitbox or telegraph (RI-AI02 is untouchable). A burdened enemy is slower to reposition and exactly as readable."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 16
+   }
+  },
+  {
+   "id": "slowfall",
+   "name": "Leaf-Falling",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 2.6,
+   "magnitude": {
+    "unit": "unit",
+    "min": 1,
+    "max": 1,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 120
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "traversal",
+   "changes_traversal": true,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "2 Focus for 20 s. Deliberately the cheapest useful effect in the game.",
+   "rulings": [
+    "Terminal velocity 3.5 m/s; fall damage zero while active. This is the traversal WORKHORSE, not levitation: with -40 m to +420 m of relief (RI-WLD07 \u00a74), descent is the cheap direction and ascent is the expensive one, and that asymmetry is the whole shape of caster traversal."
+   ],
+   "reference_cost": {
+    "at_magnitude": 1,
+    "duration_s": 30,
+    "focus_base": 4
+   }
+  },
+  {
+   "id": "levitate",
+   "name": "Standing Off the Ground",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 9.0,
+   "magnitude": {
+    "unit": "unit",
+    "min": 1,
+    "max": 1,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 180
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 4,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "traversal",
+   "changes_traversal": true,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "The level-design breaker, ruled in rather than out. Bounded by arithmetic, architecture, weather-of-the-air and defencelessness - four independent bounds, none of which is a message telling the player no.",
+   "rulings": [
+    "TIER 4 (Warding req 65). Not a starting toy.",
+    "NEUTRAL BUOYANCY, NOT THRUST. Horizontal drift 1.4 m/s - SLOWER than the 2.0 m/s walk speed S17 fixes. Levitation is a route-opener, never a time-saver over open ground, and therefore never competes with the S7 travel network.",
+    "This does NOT conflict with RI-EXP06 PB-03's '<40% of the walked time' test, which is about VERTICAL objectives. Levitation is slower per metre travelled and collapses the metres: a roof reached by 400 m of stairs is 12 m of climb at 0.8 m/s. The straight line is what is cheap, never the speed.",
+    "ASCENT IS METERED. Climb rate 0.8 m/s and it costs an ADDITIONAL 1.5 Focus per metre of net altitude gained, charged continuously. A 40 m ascent costs 60 Focus on top of the spell. Since Focus never regenerates (RI-MAG01 \u00a7A), altitude is bought out of a reservoir you also need to fight with. This is the primary bound and it is arithmetic, not a fence.",
+    "AIRBORNE IS DEFENCELESS. While levitating the player is state AIRBORNE: no attack, no cast except slowfall, no block, no roll, no i-frames of any kind. Enemies target normally. TAKING ANY DAMAGE ENDS THE EFFECT - you fall, and a levitating mage without slowfall attuned is a mage who dies. Levitating over hostiles is suicide, not a bypass.",
+    "THE CEILING IS DIEGETIC, NEVER AN INVISIBLE WALL. Every interior, every root-tunnel and all 8 Souls-loop dungeons (RI-WLD07 \u00a72) are ENCLOSED - levitation works there and is useless there, because the ceiling is 4 m away. Outdoors, ~70% of the exterior map is under a collidable canopy at 25-40 m. There is no `no_levitation_zone` flag anywhere in the data and a build that adds one fails this item.",
+    "THE CANOPY IS NOT A BLOCKING VOLUME (RI-EXP06 PB-03 explicitly reds on one). It is authored, visible, renderable tree geometry with the same collider every arrow and every falling body uses. It has GAPS - clearings, river channels, burn scars, the xanmeer plazas - and you can fly up through them and over the top. It blocks nothing that a physical canopy would not block, and a critic can see it in the frame.",
+    "ABOVE THE CANOPY THERE ARE HACKWINGS. Flying clear of the canopy puts you in the hackwing layer (WLD05 element 12): a real R5-tier flock aggroes on a fixed timer, and you cannot fight while levitating. Cliff racers made levitating over Vvardenfell miserable by accident; here it is designed.",
+    "LOAD-BEARING, NOT TOLERATED. >=6 map routes and >=3 quest resolutions must be reachable only-or-most-easily by levitate/slowfall, asserted by RI-MAG04. An effect that exists and opens nothing has been deleted by neglect."
+   ],
+   "reference_cost": {
+    "at_magnitude": 1,
+    "duration_s": 30,
+    "focus_base": 14
+   }
+  },
+  {
+   "id": "leap",
+   "name": "Kicking Off",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.6,
+   "magnitude": {
+    "unit": "metre",
+    "min": 1,
+    "max": 20,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 30
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "traversal",
+   "changes_traversal": true,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Pairs with slowfall. Nine map shortcuts are Acrobatics>=45; leap is the second route to all nine (RI-PRG03 method 8's no-lockout rule, satisfied by magic).",
+   "rulings": [
+    "Jump height only. Forbidden inside COMBAT (dropped input) - a jumping caster would break RI-AI02's spacing assumptions and RI-CMB02's jump-attack frame data at once."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 11
+   }
+  },
+  {
+   "id": "shield",
+   "name": "Second Shell",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 2.2,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 120,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 180
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": null,
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "The caster's armour. Deliberately does nothing about stagger, which is what the fight is actually made of.",
+   "rulings": [
+    "Flat damage reduction, applied after RI-CMB05's poise maths and before RI-CMB08's HP accounting. Does NOT grant poise, does NOT grant hyperarmour, does NOT reduce poise damage. A caster who tanks by casting shield still gets staggered on schedule."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 15
+   }
+  },
+  {
+   "id": "wall",
+   "name": "Standing Fire",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 2.6,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 150,
+    "output_per_point": 1.4
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 60
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 6
+   },
+   "ranges": [
+    "target",
+    "area_at_range"
+   ],
+   "min_tier": 3,
+   "geometry": "volume",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Area denial, and one of the two ways a caster controls a Souls-loop dungeon's chokepoints.",
+   "rulings": [
+    "A persistent volume with a 20-frame ground decal before it goes active (RI-MAG01 \u00a7E) and a fixed 12-frame tick. Blocks a corridor; enemies path around it if a path exists and through it if none does - it is terrain to the AI, never an aggro-lock."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 25
+   }
+  },
+  {
+   "id": "mark",
+   "name": "Setting the Knot",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 3.0,
+   "magnitude": {
+    "unit": "unit",
+    "min": 1,
+    "max": 1,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 3,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "teleport",
+   "changes_traversal": true,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "Half of Morrowind's most beloved pair. The travel agent (RI-TRV02) owns the network detector; this record owns the effect's parameters.",
+   "rulings": [
+    "RITUAL class. 210 frames. Aborts on damage, on COMBAT, on any movement input.",
+    "ONE mark exists at a time, game-wide. Setting a new one erases the old one.",
+    "Cannot be set indoors, in any of the 8 loop-dungeons, in any boss arena, inside a locked area, or anywhere the player has not already stood outdoors and above ground. Enforced by the placement predicate in RI-TRV02, which OWNS the travel network's rules; this item owns only the effect.",
+    "S7/S19 compliant: it is a node in the travel network, not a solvent."
+   ],
+   "reference_cost": {
+    "at_magnitude": 1,
+    "duration_s": 0,
+    "focus_base": 1
+   }
+  },
+  {
+   "id": "recall",
+   "name": "Pulling the Knot",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 9.0,
+   "magnitude": {
+    "unit": "hundred_metres",
+    "min": 1,
+    "max": 45,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 3,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "teleport",
+   "changes_traversal": true,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Costs more the further you have gone. That is the entire balance.",
+   "rulings": [
+    "RITUAL class. Magnitude is NOT authored - it is COMPUTED at cast time as the straight-line distance to the mark in hundreds of metres. Cost therefore scales with distance: 500 m costs 6 Focus, 4 km costs 77.",
+    "This gives the effect a completely diegetic range limit: you cannot recall from further than your Focus reaches, and you cannot get more Focus without resting, and resting is what you were trying to avoid.",
+    "Aborts on damage / COMBAT / movement input, so `recall out of a fight` is impossible by construction, not by rule. This is S19's central prohibition and it is enforced by RI-MAG01 \u00a7B's RITUAL clock.",
+    "Arrives AT THE MARK, which by mark's own predicate is outdoors, above ground and already visited."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 31
+   }
+  },
+  {
+   "id": "intervention",
+   "name": "Asking the Nearest Root",
+   "school": "warding",
+   "skill": "Warding",
+   "governing_attribute": "WILLPOWER",
+   "weight": 5.0,
+   "magnitude": {
+    "unit": "hundred_metres",
+    "min": 1,
+    "max": 45,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": false,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "teleport",
+   "changes_traversal": true,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "The cheap, unreliable, faction-flavoured one. Owned jointly with RI-TRV02.",
+   "rulings": [
+    "RITUAL class, same abort conditions. Magnitude computed as distance to the NEAREST qualifying site, so it is cheap when you are near help and useless when you are not - the inverse of what an escape button would be.",
+    "Two variants exist and they go to different networks: `intervention_root` (nearest rootkeeper's shrine) and `intervention_imperial` (nearest Nine Divines chapel - Gideon, Stormhold, Blackrose only). Choosing which one to carry is a faction statement.",
+    "Never a HEARTH. HEARTH shrines are checkpoints and level-up stations and are NOT part of the travel network (S7, explicit)."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 0,
+    "focus_base": 18
+   }
+  },
+  {
+   "id": "invisibility",
+   "name": "Not-Here",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 4.4,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 120,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 120
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 3,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Total concealment, instantly forfeited. The Souls-legal version of the most abusable effect in Morrowind.",
+   "rulings": [
+    "BREAKS on any of: attacking, casting, interacting with an actor, opening a container, or entering COMBAT. Never affects a hitbox or a hurtbox - an invisible player is hit by exactly the same geometry (AR-1). Against an enemy already in AGGRO it drops alert to SEARCH, never to IDLE: things that have seen you keep looking."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 30
+   }
+  },
+  {
+   "id": "chameleon",
+   "name": "Bark-Skin",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 3.2,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 27,
+    "output_per_point": 3.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "The sustainable stealth effect. Stacks multiplicatively with Sneak and floors at the same 0.40 as Sneak 100.",
+   "rulings": [
+    "Hard clamp at 80%. Multiplies detection RADIUS (RI-PRG03 \u00a76's Sneak term), never detection outcome. Does not break on action. Deliberately weaker than invisibility and deliberately never total: 100% chameleon is Morrowind's single worst breakage and it is closed here by a clamp, not by removal."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 22
+   }
+  },
+  {
+   "id": "muffle",
+   "name": "Soft Foot",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.5,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 30,
+    "output_per_point": 3.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Kills the sound channel of detection only. The chitin hounds (WLD05 element 20) hunt by ground-vibration and are immune - which is the point of having two channels.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 10
+   }
+  },
+  {
+   "id": "silence",
+   "name": "Tongue-Tying",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 3.4,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 60,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 60
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 6
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 3,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "The anti-caster tool, and a quest verb: silencing a ritual is a resolution.",
+   "rulings": [
+    "On an enemy caster: cast inputs are DROPPED, no resource spent, and the caster falls back to its melee move and its non-retreat reposition (which RI-MAG01 \u00a7F requires every caster to have). It never freezes the enemy and never removes its telegraphs. On the player: identical, and it must arrive via a buildup meter, never instantly (AP-M4)."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 28
+   }
+  },
+  {
+   "id": "night_eye",
+   "name": "Wet Eye",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 1.3,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 25,
+    "output_per_point": 4.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 600
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self",
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "traversal",
+   "changes_traversal": true,
+   "changes_quest_resolution": false,
+   "status_buildup": null,
+   "notes": "The marsh at night is genuinely dark and one canonical viewpoint depends on it.",
+   "rulings": [
+    "Raises exposure on the tonemap; it does NOT add lights, does not flatten the scene, and does not defeat the dark-dungeon viewpoint's fidelity metrics (RI-VIS03). A night-eye that turns night into day has broken the art direction (RI-VIS05) to solve a UI problem."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 9
+   }
+  },
+  {
+   "id": "detect_life",
+   "name": "Warm Water",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 2.0,
+   "magnitude": {
+    "unit": "metre",
+    "min": 1,
+    "max": 60,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 120
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "knowledge",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Also the counter to invisible and chameleoned NPCs, which is what makes the Veiling school argue with itself.",
+   "rulings": [
+    "S8 GUARD: renders living things as diegetic warm smudges in the world at their real positions - NOT icons on a compass, NOT a minimap, NOT through-wall outlines with names. No marker, ever."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 14
+   }
+  },
+  {
+   "id": "detect_key",
+   "name": "Cold Iron",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 2.0,
+   "magnitude": {
+    "unit": "metre",
+    "min": 1,
+    "max": 60,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 120
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 2,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "knowledge",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Keys, enchantments and filled soul gems. The last of those is how you find a xul-hesh operation without being told where it is.",
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 14
+   }
+  },
+  {
+   "id": "charm",
+   "name": "Warm Word",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 2.8,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 34,
+    "output_per_point": 3.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "touch",
+    "target"
+   ],
+   "min_tier": 1,
+   "geometry": "contact",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "social",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Speechcraft's rival. Cheaper than a bribe (RI-PRG05: 45 + 9/point) above ~20 points, and unlike a bribe it can be witnessed as a crime.",
+   "rulings": [
+    "Raises disposition by the magnitude for the duration. RI-DLG04 owns disposition; this effect writes into it and nothing else. A charmed NPC's opinion REVERTS when it expires, and any faction/quest state changed while charmed PERSISTS - which is the exploit, and it is sanctioned (RI-MAG03 MB-5)."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 23
+   }
+  },
+  {
+   "id": "paralyse",
+   "name": "Stillness of the Deep",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 5.5,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 20,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 20
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 4
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 4,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "access",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Morrowind's most notorious effect. Kept, made deterministic, made a meter, and made a legitimate way to end a fight without a corpse.",
+   "rulings": [
+    "ON ENEMIES: applies BUILDUP to S11's paralysis meter, never an instant state. Buildup per contact = magnitude x 4; the meter's threshold and decay are RI-CMB05's. A paralysed enemy is a free critical (RI-CMB05 \u00a7riposte) and that is the payoff.",
+    "ON THE PLAYER: identical model. Any enemy spell that paralyses the player in one contact with no buildup is AP-M4 and an automatic fail.",
+    "PARALYSIS IS NON-LETHAL. ARBITRATION \u00a71 names `paralysis` explicitly as a legitimate non-lethal outcome. A paralysed humanoid can be robbed, walked past, or parleyed with when it wears off - it is a fight EXIT, and MUST be usable as one.",
+    "Bosses and R5 named enemies have a paralysis resistance that raises the threshold, never an immunity flag. Nothing in this game is immune to a system; things are expensive."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 45
+   }
+  },
+  {
+   "id": "demoralise",
+   "name": "Cold Water",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 2.4,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 34,
+    "output_per_point": 3.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 60
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 8
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 2,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "social",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "The caster's disengage. Also how you clear a room you are not allowed to kill anyone in.",
+   "rulings": [
+    "Drives a target to FLEE (RI-AI01's leash behaviour, forced). It does NOT delete the enemy, does not despawn it, and does not grant its sap-debt. A routed enemy comes back, or does not, and either way the fight ended without a corpse - which is exactly what ARBITRATION \u00a71 requires to exist."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 20
+   }
+  },
+  {
+   "id": "frenzy",
+   "name": "Water's Edge",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 3.2,
+   "magnitude": {
+    "unit": "point",
+    "min": 1,
+    "max": 34,
+    "output_per_point": 3.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 60
+   },
+   "area": {
+    "allowed": true,
+    "max_r_m": 8
+   },
+   "ranges": [
+    "touch",
+    "target",
+    "projectile",
+    "area_at_range"
+   ],
+   "min_tier": 3,
+   "geometry": "projectile",
+   "in_fight": true,
+   "out_of_fight": true,
+   "utility_class": "social",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Named for the massacre in CF-006. Frenzying a guard into killing your target is the single most Morrowind thing this catalogue can do and it must keep working.",
+   "rulings": [
+    "Forces a target to attack the nearest valid actor other than itself, resolved DETERMINISTICALLY by distance then eid. It does not target-lock to the player and it does not make the target invincible.",
+    "CRIME ATTRIBUTION: if any actor with line of sight saw the cast (`witnessed_cast`), every consequence of what the frenzied actor does is attributed to the PLAYER - bounty, faction standing, and S10's thread-of-prophecy-severed if the victim was quest-critical. If nobody saw, nobody knows.",
+    "SANCTIONED BREAKAGE and it produces permanent unrecoverable world state (RI-MAG03 MB-5)."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 26
+   }
+  },
+  {
+   "id": "false_face",
+   "name": "Borrowed Scale",
+   "school": "veiling",
+   "skill": "Veiling",
+   "governing_attribute": "WILLPOWER",
+   "weight": 4.6,
+   "magnitude": {
+    "unit": "second",
+    "min": 1,
+    "max": 300,
+    "output_per_point": 1.0
+   },
+   "duration": {
+    "allowed": true,
+    "min_s": 1,
+    "max_s": 300
+   },
+   "area": {
+    "allowed": false,
+    "max_r_m": 0
+   },
+   "ranges": [
+    "self"
+   ],
+   "min_tier": 4,
+   "geometry": "none",
+   "in_fight": false,
+   "out_of_fight": true,
+   "utility_class": "social",
+   "changes_traversal": false,
+   "changes_quest_resolution": true,
+   "status_buildup": null,
+   "notes": "Infiltration as a spell. Four faction quests have a false_face resolution and all four have a non-magic alternative.",
+   "rulings": [
+    "Reads to NPCs as a member of a nominated faction at a nominated rank, for greeting/topic-filter/trespass purposes only (RI-DLG01 \u00a7topic filtering).",
+    "It does NOT grant faction rank, does NOT satisfy a rank gate (same base-vs-fortified boundary as fortify_attribute), and does NOT survive contact with anyone who KNOWS you - any NPC whose disposition record already names you sees through it instantly and says so.",
+    "Breaks on entering COMBAT and on any crime witnessed."
+   ],
+   "reference_cost": {
+    "at_magnitude": 20,
+    "duration_s": 30,
+    "focus_base": 31
+   }
+  }
+ ]
+}
