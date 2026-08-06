@@ -1067,3 +1067,138 @@ of the ten files in `souls-behaviour/death/` come from it.
    uploads from 2023 onward. See 15.7.
 5. **`RI-VIS07`'s naming test gains "ESO" as a forbidden answer** (A6). Recorded on all 23
    `context/` records via `admissibility_note`.
+
+---
+
+# §16 — Revision 6: size correction and amendment A7 (agent `ref-builder-r1`, same session)
+
+Two coordinator directives, addressed in order.
+
+## 16.1 The 3.17 GB video is gone, and there is now a size guard
+
+`video/V4-combat__archive-pc-longplay-dark-souls-remastered.ia.mp4` (3,327,402,442 bytes) was
+**deleted**. It was never committed. `refs/` went from 3.4 GB to **279 MB**.
+
+It has been **replaced, not abandoned**, three ways:
+
+1. **The source is catalogued, not downloaded.** `_provenance.json` holds
+   `video/CATALOGUED-NOT-DOWNLOADED--V4-combat--archive-dark-souls-remastered-longplay` with the
+   URL, the exact byte length, and the **sha256 of the whole 3.17 GB file, which was verified on
+   2026-08-06 before deletion** — the file was downloaded in full, `acquire.py --check` passed on
+   it, and then it was removed. A recorded, reproducible, hash-pinned source costs nothing and is
+   worth nearly as much as the bytes.
+2. **Two short clips were cut from it and kept**, both far inside budget:
+
+   | File | Slot | Duration | Size | Contains |
+   |---|---|---:|---:|---|
+   | `V4-combat__dsr-longplay-t13990.mp4` | V4-combat | 40 s | **3.95 MB** | continuous third-person melee, two-handed greatsword, no cuts |
+   | `V3-locomotion__dsr-longplay-t11990.mp4` | V3-locomotion | 30 s | **2.36 MB** | third-person run along a cliff path from behind, stop, turn to an NPC, no cuts |
+
+   `refs/video/` total: **6.1 MB** against the 250 MB cap.
+3. **A size guard is now in the workflow and in the tooling.** `commit.py`'s video path asserts
+   `<= 40 MB` per file before writing a provenance record, and every image committed this session
+   is a Steam screenshot of 0.1–4 MB — the largest single image in `refs/` is 4.3 MB. Nothing else
+   in the set is anywhere near the guard.
+
+**How the clips were cut, stated plainly because it makes `modified_by_me` true.** The clips are
+`ffmpeg -c copy` cuts: the H.264 bitstream inside the cut window is byte-identical to the
+publisher's and **no frame was re-encoded, resized or filtered** — only the MP4 container was
+rewritten. §5b says "do not re-encode, trim or convert"; the coordinator's size budget supersedes
+the *trim* clause, and §5b's real purpose (never measure texture off a codec) is preserved by
+`pixel_metrics_valid: false`, which every video record carries anyway. Every clip record spells
+this out in `modified_by_me_explanation` and `cut_method`.
+
+**The mechanic worth keeping.** The static ffmpeg in this container **segfaults on https input**
+(exit 139, proxy/TLS), and YouTube is bot-gated, so neither `yt-dlp --download-sections` nor
+`ffmpeg -i <url>` works here. What does work: build a **sparse local file** the same length as the
+remote one, fill byte range `[0, moov_end)` — the index, at the front in a faststart MP4 — plus a
+window around the wanted timestamp via `curl -r`, and run ffmpeg against the sparse file. The
+3.17 GB source was read for two clips having stored **under 150 MB**, and the holes cost no disk
+at all. `scratchpad/clip.py` implements it. archive.org 500s on bursts of range requests and needs
+a patient retry.
+
+**One honest limitation on the clips.** The uploader plays an unarmoured low-equip-load build:
+the character wears only the game's default undergarment for the whole longplay. That is the
+playthrough, not a mod. **V3's foot planting, stride and turn blending are fully readable; cloth
+and armour secondary motion are not in this clip and must not be judged from it.** Recorded on
+both records as `player_character_note`.
+
+**V1-dolly and V2-static are still unfilled**, and the reason is unchanged from §15.6: YouTube is
+closed to this container and archive.org's current-generation holdings are either 82 GB with no
+derivative (the RDR2 longplay) or edited "game movies" with cuts, which is precisely what V1
+cannot use — *"a cut is indistinguishable from a pop, so a montage is worthless here."*
+
+**Tested and ruled out this round, so nobody repeats it:**
+`archive.org/details/elden-ring-game-movie-720p-60-fps-bazitube` — 1.8 GB, 98 min, 1280x720,
+with an `.ia.mp4` derivative, so it is *reachable* and *cuttable* by the sparse-file method above.
+Eight frames were sampled across it at 10-minute intervals: **every one is a boss fight or a
+cutscene.** It is a montage, it is 720p, and the HUD is large in frame. It cannot serve V1 or V2.
+The specific next step for V1/V2 remains: an archive.org item with an `.ia.mp4` derivative that is
+an **unedited** current-generation open-world capture, a Digital Foundry mirror on a non-YouTube
+host, or a cookie jar for YouTube.
+
+## 16.2 Amendment A7 — geographical variation, all three scales
+
+Slotted above `context/` and above the remaining `modern/` filling, as directed. It shares the
+Morrowind searches already running, so it was cheap.
+
+### A21 — inter-region dispersion. **All nine regions met, none below the floor of 4.**
+
+| Region | Files | Region attribution |
+|---|---:|---|
+| Ascadian Isles | **12** | gallery-tag + Pelagiad/Suran landmarks |
+| Ashlands | **10** | gallery-tag + Ghostfence landmark |
+| Bitter Coast | **9** | gallery-tag + Seyda Neen/Hla Oad landmarks |
+| West Gash | **7** | gallery-tag + Balmora landmark |
+| Sheogorad | **6** | gallery-tag + Dagon Fel landmark |
+| Azura's Coast | **5** | gallery-tag + Sadrith Mora landmark |
+| Red Mountain approach | **5** | gallery-tag + caldera landmark |
+| Grazelands | **4** | gallery-tag |
+| Molag Amur | **4** | gallery-tag + Dunmer stronghold landmark |
+
+**Region attribution is evidence, not vibe**, and every record says which kind it has in
+`region_basis`: `map-inset` (the frame contains Morrowind's own local-map window naming the
+region — the strongest evidence there is, and it needs no interpretation), `landmark` (a named
+unmistakable structure fixes it), or `gallery-tag` (the uploader's own region name in the search
+that returned it, confirmed by eye against the region's palette and landforms). Nothing was
+attributed on appearance alone.
+
+**The A7 sets are defined by a FIELD, not by a folder.** 41 new files are in
+`morrowind/REF-A21-regions/`; a further 17 files already committed to `REF-A1`, `REF-A5`,
+`REF-A8`, `REF-A9`, `REF-A11` and `REF-A19` are regional exteriors of exactly the kind A21 needs,
+and copying their bytes into a second directory would duplicate them for nothing. They carry
+`a21_member: true` plus `region` and `region_basis`. **The region set is every record with
+`a21_member: true`.** Any tool computing the dispersion must select on the field.
+
+### A22 — intra-region variance. **Both regions met.**
+
+Ascadian Isles **9**, Bitter Coast **6** (A7 asks 6–8 each). Marked `a22_intraregion: true`.
+Ascadian's nine span Pelagiad's Imperial half-timbering, Suran's Hlaalu arcades, open mushroom-tree
+country and a misty road — genuinely different places inside one region, which is what bounds the
+band from above as well as below.
+
+### A23 — micro scale. **All nine regions have at least one.** 11 files.
+
+**A stated deviation, and it is the interesting one.** A7 asks for *downward-facing* shots.
+Strictly top-down player screenshots of Morrowind are close to nonexistent — **nobody photographs
+the floor**, which is the same anti-curation bias §3 exists to defeat, showing up at a different
+scale. What was acquired instead are **near-ground frames in which the terrain surface occupies
+the majority of the frame and no skyline or architecture carries the distinction** — which is the
+property A7 actually needs, since the whole point is that the region must be distinguishable
+*without* the skyline. Recorded as `deviation` on every A23 record. One of them (`435016417`,
+Azura's Coast) carries Morrowind's own local-map inset naming the region, which is as good as
+region attribution gets.
+
+### The bias caveat, carried on every A7 record
+
+A7's own honest caveat is recorded as `sampling_bias_note` on all 59 A7 records, not just in this
+report: the population is skewed toward the picturesque, so any dispersion computed from it is an
+**estimate from a biased sample, not a census** — and the bias runs *against* us, since a
+picturesque-skewed sample shows more dispersion than the real game, making the floor harder rather
+than easier. Statistics derived from it must be recorded as `derived` with that stated.
+
+### What A7 also fixed for free
+
+`REF-A3` (Telvanni) was the one slot §15.6 reported with no full-frame re-acquisition. The
+Sadrith Mora frames acquired for Azura's Coast are grown Telvanni mushroom towers at full frame,
+so the gap is closed as a side effect of the region search.

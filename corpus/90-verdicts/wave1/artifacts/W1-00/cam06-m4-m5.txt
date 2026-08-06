@@ -1,0 +1,10 @@
+RI-CAM06 M4 (FOV variance) / part of M5 (roll), from reports/runs/CRIT-DET-A/trace.jsonl
+scenario cmb-duel-infantry, seed 1337, frames: 3600
+fov_deg min/max/range: 60 60 0  bar: max-min <= 0.001
+camera roll_deg max |.|: 0  bar: exactly 0.000
+
+RI-CAM06 M5 (head-bob), 900-frame straight run on swamp_canopy, seed 1337, render disabled
+frames: 900  max player speed_mps: 3.2
+stdev(camera y residual) m: 0.0  bar: <= 0.004 (fail > 0.012)
+camera roll_deg max |.|: 0  bar: exactly 0.000
+distinct camera pos.y values: [1.4515]

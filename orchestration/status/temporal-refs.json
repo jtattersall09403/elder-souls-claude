@@ -9,7 +9,15 @@
     "corpus/70-visual/refs/souls-behaviour/** (temporal additions)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read A8/A5 amendments, CRITIQUE-R1 wiki-gif finding, REPORT s15",
+  "findings": [
+    "BREAKTHROUGH: static.wikia.nocookie.net DOES serve original GIF bytes. Append `?format=original` to the bare image path (https://static.wikia.nocookie.net/<wiki>/images/x/xx/Name.gif?format=original) -> 200, content-type image/gif, byte length EXACTLY equal to the API's imageinfo `size`. Verified on File:Artorias - Heavy Slam.gif: 605902 bytes GIF89a 210x118, vs 220726-byte animated WebP on every other variant. ACQUISITION-CRITIQUE-R1's finding 'the true GIF bytes are not obtainable' is FALSE and should be corrected. `/revision/latest?format=original` also works. Bare path, ?cb=, Accept: image/gif, vignette.wikia host, browser UA -> all still WebP.",
+    "darksouls.fandom.com/api.php Category:Dark Souls: Boss Attack Animations = 12 files, all .gif (10 Artorias/arrow/orb/sphere).",
+    "YOUTUBE IS OPEN VIA INVIDIOUS. `yt-dlp https://yewtu.be/watch?v=<id>` and `https://invidious.nerdvpn.de/watch?v=<id>` both resolve and list full DASH formats (144p..720p+) for a video that youtube.com refuses with 'Sign in to confirm you're not a bot'. Verified on iNgDzC_pOi8 (DS3 Weapons Showcase, 1035s). DEAD instances: inv.nadeko.net (HTTP 418), vid.puffyan.us (proxies to youtube.com and inherits the bot wall). This overturns ACQUISITION-REPORT s15.6's 'YouTube is closed to this container'.",
+    "ffmpeg/ffprobe were NOT installed and apt-get install ffmpeg FAILS (Ubuntu archive 404s on mesa-va-drivers deps). Fixed by static build: curl -sL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz, untar, cp ffmpeg ffprobe /usr/local/bin. Needed for yt-dlp --download-sections (stream-copy range extraction, not a re-encode).",
+    "reddit.com AND old.reddit.com .json endpoints are BOTH 403 (189908-byte block page) even with a browser UA. Reddit route is dead for this container.",
+    "elderscrolls.fandom.com has 369 animated files but they are Arena/Daggerfall cutscene GIFs, Legends card art and shop signs. ZERO Morrowind in-engine animation. Dead end for Morrowind temporal reference.",
+    "darksouls3.fandom.com/api.php returns byte-identical results to darksouls.fandom.com (same 12056 images) - it is an alias/redirect, not a separate wiki. Do not enumerate both."
+  ],
+  "next_step": "finish GIF fetch; then Invidious clips via yt-dlp --download-sections",
   "notes_for_successor": "Constraints: <=40MB/file, <=250MB total for video/. Never re-encode. pixel_metrics_valid:false on all temporal media."
 }

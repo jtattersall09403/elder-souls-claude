@@ -1,0 +1,37 @@
+{
+  "schema": "critic/w1-00-r3@1",
+  "at": "2026-08-06T13:13:43.427Z",
+  "R3_batch": {
+    "chunk_1": "441398ab20babd1dab85dfa61fe255b5f655c05ebf216f5fdf031625dc4bba79",
+    "chunk_60": "441398ab20babd1dab85dfa61fe255b5f655c05ebf216f5fdf031625dc4bba79",
+    "chunk_1800": "441398ab20babd1dab85dfa61fe255b5f655c05ebf216f5fdf031625dc4bba79",
+    "all_equal": true,
+    "frames": 1800
+  },
+  "CAM06_M1": {
+    "cam_chunk_1": "eb22ca7de65121fbe72574c9d66e66dbed9e10cbced2871aaf5b3934497b09e1",
+    "cam_chunk_60": "eb22ca7de65121fbe72574c9d66e66dbed9e10cbced2871aaf5b3934497b09e1",
+    "cam_chunk_1800": "eb22ca7de65121fbe72574c9d66e66dbed9e10cbced2871aaf5b3934497b09e1",
+    "byte_identical": true
+  },
+  "R6_load_order": {
+    "documented_order": "setSeed() then loadState() (HARNESS.md D6)",
+    "seed_then_state": "441398ab20babd1dab85dfa61fe255b5f655c05ebf216f5fdf031625dc4bba79",
+    "state_then_seed": "441398ab20babd1dab85dfa61fe255b5f655c05ebf216f5fdf031625dc4bba79",
+    "equal": true,
+    "seed_then_state_reproduces": true
+  },
+  "R5_warmup": {
+    "warm30": "441398ab20babd1dab85dfa61fe255b5f655c05ebf216f5fdf031625dc4bba79",
+    "warm90": "fbf3b66133ef10e908750a73e403b47eb879e4bdb766cdf09da514acdb475735",
+    "equal": false
+  },
+  "R5_field_census": {
+    "frames_differing": 2,
+    "of": 1800,
+    "fields": {
+      "events[i].f": 2
+    }
+  },
+  "page_errors": []
+}

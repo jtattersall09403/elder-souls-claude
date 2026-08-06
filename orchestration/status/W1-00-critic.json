@@ -2,15 +2,16 @@
   "task_id": "W1-00-critic",
   "brief": "critic for wave-1 piece W1-00 (harness, determinism, persistence)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-00.json",
     "corpus/90-verdicts/wave1/W1-00.md"
   ],
   "outputs_written": [
-    "corpus/90-verdicts/wave1/artifacts/W1-00/harness-smoke.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-00/critic-api-probe.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-00/r4-seed-sensitivity.txt"
+    "corpus/90-verdicts/wave1/W1-00.json",
+    "corpus/90-verdicts/wave1/W1-00.md",
+    "orchestration/amendments/AM-W1-00-C1-mth02-r4-discriminator.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-00/ (33 artifacts)"
   ],
   "findings": [
     "SHA judged: 8714e382941dbd4fdc9341dcd2692bff13f04648. game/ and tools/ clean; dirt is critic artifacts only.",
@@ -31,8 +32,13 @@
     "RI-PLT01 M6 decoupling PASS: 3600 steps and identical record hash at render rates 60/30/15/0. M7 rate independence PASS: pos/stamina/cam yaw identical at all four rates. M8 catch-up PASS: 400 ms stall -> max 5 sim steps in one rAF, catchupClamps=1.",
     "Determinism trap: Math.random/Date.now/performance.now are wrapped globally and THROW inside a fixed step (verified by injecting a getter that fires during stepFrames). They return real values OUTSIDE a step. A-JRN9 (forceGC/getHeapUsage) is absent.",
     "getWorldStats is NOT hard-coded once renderFrame() precedes the read (drawCalls 18/91/31/66/40/28/61/82/61 across 9 states). It IS stale if read without a render.",
-    "content-stats.mjs counts pois=27, interiors=0; getWorldStats reports pois=24, interiors=1 on the same data."
+    "content-stats.mjs counts pois=27, interiors=0; getWorldStats reports pois=24, interiors=1 on the same data.",
+    "VERDICT: FAIL, overall 3/10 (mean), threshold 6.0. Two hard fails: RI-MTH02 R4 (seed reaches nothing) and RI-JRN05 HF1 (round-trip hash unstable on 36 of 40 seed/state trials).",
+    "AR-1 pass, AR-2 pass, AR-3 seam_sterile: true with justification.",
+    "Blind: CAM06 tie, CAM02 landed on the reference, CMB07 not_possible (exemplar invalidated by S22). No pick landed on ours.",
+    "Two of my own instruments were wrong and were corrected before scoring: M-K7 (overrode visibilityState without document.hidden -> looked like an HF2 latch with 23.25 m drift; with both overridden it releases in 1 frame) and M5 (unmatched pre-roll -> looked like 5/5 post-load divergence; matched, the only difference is events[].f).",
+    "readSave() returns {ok,gen,degraded} and APPLIES the save rather than returning the blob; loadState() of its return throws. Looked like HF9 until checked. Naming defect, not data loss."
   ],
-  "next_step": "finish probe7 (M3 cold reload, M11 kill-during-write), probe8 (camera + MTH02 R3/R5/R6/R7/R8), probe10 (TTFP/AR/CMB07 M0), then blind packs and the verdict.",
-  "notes_for_successor": "Artifacts under corpus/90-verdicts/wave1/artifacts/W1-00/. Critic-owned probe scripts live in .critic-tmp/ (delete before finishing). Builder authored determinism.mjs/api-probe.mjs/input-probe.mjs/save-audit.mjs/perf-probe.mjs \u2014 do not treat their output as independent evidence; re-derive."
+  "next_step": "done",
+  "notes_for_successor": "Verdict, artifacts and the R4 sharpened-discriminator amendment are on disk. Not re-taken: RI-JRN05 M11 (kill-during-write; the probe hung twice on CDP Page.crash) and the RI-JRN03 naive pass (needs fleet role JC-03N, a separate empty-context agent). Both are named in method_deviations."
 }
