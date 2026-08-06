@@ -37,9 +37,9 @@ deletes a route through the game.
 
 So: four spells, exactly twelve possible destinations in the entire world, **at most three of them
 available at any instant, and not one of them chosen from a list**. Bought with gold at `RI-PRG05`
-prices, cast as an animated committed action, costing magicka, twenty in-world minutes and a quarter of
-your Fatigue — the same arrival tax `RI-TRV01` charges root-speaking, because a spell that moves you is
-a travel service and is priced like one. Every check below is written as a **pair**: one assertion that
+prices, cast as a 210-frame committed `RITUAL`, costing Focus that never regenerates and twenty
+in-world minutes of the world's clock — the same arrival tax `RI-TRV01` charges root-speaking, because a
+spell that moves you is a travel service and is priced like one. Every check below is written as a **pair**: one assertion that
 fires when the spells are absent or inert, one that fires when they have become a warp.
 
 ## The reference artifact
@@ -219,11 +219,17 @@ Archon and Thorn, with all shrines and posts discovered, cast each.
   destination set was implemented (absence) or both spells were collapsed into "nearest safe place"
   (a generic warp). Either way the choice S19 asks for is gone.
 
-**P5 — Affordability (static).** Sum the four gold prices against `RI-PRG05` §5's running balance.
-- **Assert** 2,240 g is **not** affordable at the R2 balance (2,960 g) alongside that region's necessary
-  spend, **and is** affordable by R4 (11,800 g).
-- **W-fail:** total < 600 g — travel magic bought in the first hour trivialises the R1–R3 poverty arc and
-  short-circuits `RI-TRV01`'s network before the player has walked a single leg.
+**P5 — Affordability and skill gating (static).** Sum the four gold prices against `RI-PRG05` §5's
+running balance and check the Warding requirements.
+- **Assert** the Mark/Recall pair (6,800 g) is **not** affordable before the R4 balance (11,800 g), and
+  **is** affordable by R5 (23,000 g), alongside that region's necessary spend.
+- **Assert** one Intervention (900 g) **is** affordable in R3 (5,900 g).
+- **Assert** `mark`/`recall` require Warding ≥ 45 and the Interventions Warding ≥ 25, and **assert** a
+  character below those skills cannot buy or cast them (`RI-MAG02` tier bands, `RI-PRG03` §6).
+- **N-fail:** total > 25,000 g — travel magic priced out of every real playthrough is travel magic that
+  does not exist. **W-fail:** total < 1,500 g, **or** no skill gate — travel magic bought in the first
+  hour trivialises the R1–R3 poverty arc and short-circuits `RI-TRV01`'s network before the player has
+  walked a single leg.
 
 **P6 — The spells are a route through the world (static).** Scan `game/data/quests/`.
 - **Assert ≥ 4 quests** declare a resolution path that uses Mark/Recall or an Intervention.
@@ -235,14 +241,18 @@ Archon and Thorn, with all shrines and posts discovered, cast each.
 ### Solvent detectors — has teleport become a level-design solvent?
 
 **D1 — Recall out of a fight (live).** Scenario `trv-combat-gate`.
-1. Aggro an enemy (`aggro(eid)`), stand at 6 m, cast Recall. **Assert refused**, `reason:"in combat"`,
-   zero magicka spent, `player.pos` unchanged.
-2. Sprint to **60 m** while the enemy remains `alert_state:"AGGRO"` targeting the player. Cast again.
-   **Assert still refused.** This is the sub-check that separates a de-aggro gate from a distance gate,
-   and a naive implementation passes step 1 and fails step 2.
-3. Break line of sight, wait for `alert_state:"IDLE"`, wait 300 frames, cast. **Assert it now succeeds.**
-- **N-fail:** step 3 fails — the gate is a wall and the spell is unusable.
-- **W-fail:** step 1 or 2 succeeds. **Hard fail.**
+1. Aggro an enemy (`aggro(eid)`), stand at 6 m, cast `recall`. **Assert refused**, `reason:"in combat"`,
+   zero Focus spent, `player.pos` unchanged. (The `RITUAL` clock would also abort it; assert the
+   *refusal* fires first, so the player is told why rather than losing 210 frames.)
+2. **The long-range hole.** Aggro an enemy, then use `teleport()` to place the player **200 m** away
+   while the enemy remains `alert_state:"AGGRO"` targeting the player. Stand perfectly still — no
+   movement input, so the `RITUAL` clock does not abort — and cast. **Assert still refused.** This is
+   the sub-check that separates G3 from `RI-MAG01`'s clock, and an implementation that relies on the
+   clock alone passes step 1 and fails step 2.
+3. Repeat step 2 with the enemy leashed-but-not-de-aggroed. **Assert still refused.**
+4. Break line of sight, wait for `alert_state:"IDLE"`, wait 300 frames, cast. **Assert it now succeeds.**
+- **N-fail:** step 4 fails — the gate is a wall and the spell is unusable.
+- **W-fail:** steps 1, 2 or 3 succeed. **Hard fail.**
 - Additionally scan **every** trace produced anywhere in the wave: **assert zero `teleport` events occur
   within 300 frames of any `attack_start`, `hit`, `stagger` or `enemy_state{AGGRO}` event.**
 
@@ -304,7 +314,7 @@ either direction fails. Maximum **26**.
 | Axis | 10 | 6 (pass floor) | 0 (we lose) |
 |---|---|---|---|
 | **P1 Catalogue** | 4 spells, prices exact, ≥3 vendors each | 4 spells, ≥2 vendors | fewer than 4 ⇒ **0, fail-closed** · a fifth teleport spell or a list-destination ⇒ **hard fail** |
-| **P2 Round trip** | all six assertions pass | arrival + magicka + clock pass | Recall refused in the clean case ⇒ **hard fail (absence)** · instant/free/clock-less ⇒ **hard fail (warp)** |
+| **P2 Round trip** | all six assertions pass | arrival + distance-scaled Focus + clock pass | Recall refused in the clean case ⇒ **hard fail (absence)** · instant/free/clock-less ⇒ **hard fail (warp)** |
 | **P3 Intervention discovery** | fizzle, then correct nearest, twice | correct nearest | arrival at an undiscovered shrine ⇒ **hard fail** |
 | **P4 Two Interventions** | destinations ≥1,500 m apart | destinations differ | identical destinations |
 | **P5 Affordability** | unaffordable ≤R2, affordable by R4 | affordable by R5 | total < 600 g |
@@ -354,9 +364,13 @@ score is **0**, not 14/26 for seven solvent detectors that had nothing to detect
   each other**, and it does not trip a single anti-warp check.
 - **Magicka costs get tuned down** until Recall is castable four times without recovery, at which point
   the spell is a movement ability and the map is a hub-and-spoke.
-- **The 180-frame committed cast becomes instant out of combat.** "It's not a fight, why animate it?"
-  Because the commitment is what makes the combat gate redundant rather than load-bearing, and because
-  S19 owns casting *everywhere*, not only inside the fight.
+- **The 210-frame `RITUAL` cast becomes instant out of combat.** "It's not a fight, why animate it?"
+  Because the commitment is most of the enforcement — `RI-MAG01` §B's abort-on-damage/COMBAT/movement
+  clock *is* the reason "no recall out of a fight" needs no flag — and because S19 owns casting
+  *everywhere*, not only inside the fight. Shorten it and G3 becomes the only defence left.
+- **`RI-MAG02`'s gold formula is applied literally to these four.** `round(3.9 × focus_base^1.75)` on a
+  computed magnitude prices `mark` at about 4 gold and makes `recall`'s shelf price depend on where the
+  player is standing. Someone will ship that, and travel magic becomes the cheapest thing in the game.
 - **The two Interventions are merged.** One "Return" spell that goes to the nearest safe place. Cheaper
   to build, half the content, and it deletes the only navigational decision the spellbook contains.
 - **D2 is run only against the 8 loop dungeons.** The 82 caves have locked doors and hand-placed named
@@ -377,7 +391,7 @@ shipped two Intervention effects with two different destination sets (Almsivi to
 temple, Divine to the nearest Imperial cult shrine) so that choosing between them was a map decision.
 **No number from Morrowind is used here.** Its magicka costs, its spell prices, its Mysticism
 requirements and its destination lists are all deliberately not carried over, because they belong to a
-different economy.
+different economy. Our school is Warding, our resource is Focus, and our costs are computed.
 
 **Derived from this corpus** (high confidence): the gold prices are `RI-PRG05` §2's tier-1 and tier-2
 spell prices, unchanged; the affordability windows are its §5 running balance; the 8 Hist-shrine and 3
@@ -390,14 +404,26 @@ the network rather than beside it.
 **Constructed and binding** (ours, and just as binding): the four-spell catalogue and its Jel names; the
 twelve-destination universe and the three-at-any-instant rule; the five gates and their exact
 thresholds (60 m sky raycast, 300-frame de-aggro window, 25 m objective clearance, 60 m HEARTH
-separation); the 180-frame committed cast; the fraction-of-pool magicka costs; and every scoring
-threshold above.
+separation); the arrival advance of 20 in-world minutes and the decision *not* to add a Fatigue
+penalty; the deferral of the Mark/Recall pair to R5 affordability; and every scoring threshold above.
 
-**The known soft spot** is magicka. `corpus/25-magic/` is empty, no item defines the pool or its growth,
-and `subsystems.json` has no `magic.*` root at all — only `combat.magic.casting`. The absolute magicka
-numbers here are a budget, not a measurement, and P2 currently asserts only that magicka *decreases* by
-the declared amount rather than that the amount is right. When the magic owner lands, re-fit the three
-costs to the real pool, keep the ratios (Recall ≈ 2 × Mark ≈ 1.5 × Intervention), and re-run P2.
+**Adopted wholesale from `RI-MAG02` and `RI-MAG01`** (landed concurrently, wave N), by their explicit
+cession — *"the network's rules are owned by RI-TRV02, not by this item; this item owns the effect
+records, the costs and the class"*: the four effect ids and Jel names, the Warding school, the `RITUAL`
+class and its 210-frame abort-on-damage/COMBAT/movement clock with Focus refunded, the Focus resource
+and its non-regeneration, the distance-computed magnitude and its `focus_base` table, the min tiers
+(3/3/2/2), and the `intervention_root` / `intervention_imperial` split. **This item authored none of
+those and must not be read as a second opinion on them.** An earlier draft of this item, written before
+`corpus/25-magic/` existed, used "magicka", a 180-frame cast, authored fractional costs and the ids
+`intervention_hist` / tier-2 pricing; all of that is superseded and none of it survives above.
+
+**The one open reconciliation** is the gold price. `RI-MAG02` prices spells as
+`round(3.9 × focus_base^1.75)`, which is correct for effects with an authored magnitude but degenerate
+for these four: `mark`'s computed `focus_base` is 1, giving a purchase price of about 4 gold, and
+`recall`'s varies with where you are standing, which a shop cannot quote. This item therefore prices all
+four **by `min_tier` against `RI-PRG05` §2's published tier prices** (tier 3 → 3,400 g, tier 2 → 900 g),
+and requests the amendment in the reply. If `RI-MAG02` rules otherwise, its ruling wins on price and P1
+is amended; the network rules and every detector below are unaffected either way.
 
 **One structural request, recorded here so it is not lost:** the harness has no way to cast a spell. The
 closed button set (`HARNESS.md` §4) has no `cast`, and `queueInputs` is the only input path. Every live

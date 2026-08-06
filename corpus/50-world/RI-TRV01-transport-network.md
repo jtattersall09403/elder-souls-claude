@@ -56,6 +56,13 @@ refusable, severable as a plot event. Sapwells never teleport."* M3 is the corpu
 (`RI-WLD03:105–113`, "the root-network is our silt-strider", a post in all eight settlements;
 `RI-WLD05` #22).
 
+**A sixth mode exists and is owned elsewhere.** Travel magic — `mark`, `recall`, `intervention_root`,
+`intervention_imperial` — is part of this network under S7 and S19, and it obeys these rules: known
+places only, above ground, out of combat, never into or within a dungeon, and it advances the world
+clock by 20 in-world minutes exactly as root-speaking does. Its gates, its detector and its positive
+tests are `RI-TRV02`; its effect records, Focus costs and cast class are `RI-MAG02`. Nothing in this
+item may be scored as a pass on the strength of the spells existing, or vice versa.
+
 Each mode is broken by a *different* thing. That is the design: there is no single failure that strands
 you, and there is no single mode that trivialises the map. The Rootway always runs but not at night; the
 barge runs at night but only four times a day and not in a storm; the poler goes anywhere shallow but

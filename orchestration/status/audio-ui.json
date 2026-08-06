@@ -25,7 +25,8 @@
     "corpus/86-ui/RI-UIX01-combat-hud.md",
     "corpus/86-ui/RI-UIX02-no-marker-enforcement.md",
     "corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md",
-    "corpus/86-ui/RI-UIX04-journal-ui.md"
+    "corpus/86-ui/RI-UIX04-journal-ui.md",
+    "corpus/86-ui/RI-UIX05-books-and-readable-text.md"
   ],
   "findings": [
     "All 12 canonical paths (audio.combat.impact, audio.ambience.region, audio.music.policy, audio.voice.policy, ui.hud.combat, ui.hud.minimalism, ui.menu.inventory, ui.menu.journal, ui.menu.levelup, ui.menu.books, ui.dialogue.presentation, ui.style.diegesis) EXIST in corpus/00-doctrine/subsystems.json. No new paths needed.",
@@ -42,6 +43,6 @@
     "MUSIC COVERAGE BUDGET SET: 8-20% of session wall-clock (target 12%), boss-free session 4-12%; hard fail >30% (wall-to-wall) or <4% (Souls world-policy leakage/AR-2). Ordinary-enemy combat music = exactly 0 frames. Boss music onset within +/-30 frames of fog_gate_crossed.",
     "INDEX.md scope map: ui.hud.minimalism and ui.menu.journal were HOLES (now filled by RI-UIX02/RI-UIX04). RI-DLG05 already owns journal PROSE (voice/numbering/directions/nomarkers) -> RI-UIX04 must own only PRESENTATION. RI-WLD06 owns positive no-marker obligations (landmarks/signposts/prose) -> RI-UIX02 owns only the DETECTORS. RI-LOR03 owns book structure -> RI-UIX05 owns only reading UI. RI-PRG01/02 own level-up curve+stats -> RI-UIX06... no, RI-UIX-levelup content folds into UIX03? NOTE: brief lists ui.menu.levelup as a canonical path; assign it to RI-UIX03 (inventory) or UIX06. Decision: judge ui.menu.levelup from RI-UIX03 (menus that do not pause) is wrong -> put it on RI-UIX01? FINAL: ui.menu.levelup judged by RI-UIX03 as a menu-screen sibling."
   ],
-  "next_step": "write RI-UIX05 books/readable text, then RI-UIX06 diegesis (must propose RI-VIS01 sec.A extension F17/F18 + CC-7). Then regenerate INDEX via tools/corpus-index.mjs --check.",
-  "notes_for_successor": ""
+  "next_step": "write RI-UIX06 diegesis (must propose RI-VIS01 sec.A extension F17/F18 + CC-7). Then regenerate INDEX via tools/corpus-index.mjs.",
+  "notes_for_successor": "SUCCESSOR-1 NOTE: RI-UIX05 was found complete on disk (11 sections, 18.5KB) - predecessor died after writing it but before updating outputs_written. Verified and recorded. Only RI-UIX06 outstanding."
 }

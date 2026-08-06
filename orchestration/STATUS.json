@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-06T08:54:30.316Z",
+  "generated": "2026-08-06T08:56:35.533Z",
   "complete": 5,
   "total": 12,
   "tasks": [
@@ -30,64 +30,60 @@
       "done": 7,
       "expected": 7,
       "missing": [],
-      "next_step": "add per-faction rank tables to quest census (RI-QST03 appendix debt), then write corpus/00-doctrine/PROVENANCE-UPGRADE-01.md",
-      "findings": 36
+      "next_step": "none - task complete",
+      "findings": 42
     },
     {
       "id": "journeys",
       "title": "User-journey corpus, journey-critic fleet, platform budget",
       "state": "partial",
-      "done": 7,
+      "done": 8,
       "expected": 11,
       "missing": [
-        "corpus/88-journeys/RI-JRN08*",
         "corpus/88-journeys/JOURNEY-CRITIC-FLEET.md",
         "corpus/85-platform/RI-PLT02*",
         "corpus/85-platform/RI-PLT03*"
       ],
-      "next_step": "write RI-JRN08 (returning after a week)",
+      "next_step": "write RI-PLT02 (memory/assets) then RI-PLT03 (load/hitches) then JOURNEY-CRITIC-FLEET.md + paths-requested.json",
       "findings": 18
     },
     {
       "id": "experience",
       "title": "Played-experience critic, anecdote census, cross-system composition",
       "state": "partial",
-      "done": 4,
+      "done": 5,
       "expected": 8,
       "missing": [
-        "corpus/95-experience/RI-CMP01*",
         "corpus/95-experience/RI-CMP02*",
         "corpus/95-experience/RI-CMP03*",
         "corpus/95-experience/CROSS-SYSTEM-BUILDER-BRIEF.md"
       ],
-      "next_step": "write RI-CMP01 cross-system payoff matrix: 19x19 grid (FAC DIS GLD SKL SPL LOR STL QST WLD TOD WEA EQP LVL UPG ROS BOS DUN SCH JRN), tiers trivial(0)/mechanical(1)/structural(3), seam-crossing x2, cells score 0 unless a harness probe demonstrates firing; per-wave tiered floor; reconcile BAR-CRITIQUE's >=35% (declared) vs demonstrated floor; keep hard fail <4 demonstrated crossing cells",
-      "findings": 16
+      "next_step": "write RI-CMP02 emergence fuzzing (>=20 combination probes F01..F26, outcome classes E0..E5, generator + regression set, no_op_fraction<=0.35, degenerate_fraction=0)",
+      "findings": 17
     },
     {
       "id": "magic",
       "title": "Magic: casting, effect catalogue, spellmaking, enchanting, quest use",
       "state": "partial",
-      "done": 2,
+      "done": 3,
       "expected": 5,
       "missing": [
-        "corpus/25-magic/RI-MAG03*",
         "corpus/25-magic/RI-MAG04*",
         "corpus/25-magic/RI-MAG05*"
       ],
-      "next_step": "write RI-MAG03 (spellmaking + enchanting + soul gem ruling SG-1..SG-6 + sanctioned breakages MB-1..MB-10)",
-      "findings": 26
+      "next_step": "write RI-MAG04 (magic as quest solution, AR-3, static analysis over game/data/quests/**)",
+      "findings": 30
     },
     {
       "id": "character-stealth-crime",
       "title": "Character creation, race, birthsign; stealth, theft, crime and justice",
       "state": "partial",
-      "done": 5,
+      "done": 6,
       "expected": 7,
       "missing": [
-        "corpus/23-stealth-crime/RI-CRM01*",
         "corpus/23-stealth-crime/RI-CRM02*"
       ],
-      "next_step": "STL02 DONE. Now CRM01 (crime/witness/bounty/arrest/jail/persistence), then CRM02 (faction crime/writs/Morag Tong). LOCK RULING MADE: no probability roll, deterministic ward-collar; proposed new seam S20 'keep the die where failure is permanent, delete it where failure is a retry' -- MUST appear in final reply as a proposed amendment. STL02 exports: stolen_from flag, 7 trespass classes, 9 fences at 0.35x, CRIME/CHALLENGE escalation feeding CRM01. STL01 exports: V visibility formula, civilian states CALM/WATCHING/CHALLENGE/ALARM, contextWeight table (STL02 owns trespass zones + owned objects), S-4 zone memory, harness extension requests (crouch button, player.stealth block, alert_channel, civilians[], getLightAt, events detect/challenge/search_start/search_end/zone_alert/light_snuffed/distraction). 22-character COMPLETE. CHR03 exports: 9 signs, families given/withheld/turned, The Unlit Water carries shadowscale-claim (feeds CRM02), The Spilled changes respawn well, Dry Well = Atronach. CHR01 DONE: 8 inputs, 14 classes + custom, 12 questionnaire dilemmas, 540 signatures (10 race x 6 class-family x 3 birthsign-family x 3 upbringing-class), birthsign families must be named Given/Withheld/Turned in CHR03 §2 and CHR03 §5 owns the one-time re-cut at the Helstrom Hist. CHR02 exports: 10 races (Saxhleel, Naga, Dunmer, Imperial, Nord, Breton, Redguard, Khajiit, Orsimer, Bosmer), 12 reaction groups RG-DEEP/ROOT/LUKIUL/NAGA/LEDGER/EMPIRE/DRES/BWC/VAKH/COURT/TOWN/OUTLAW, 4 upbringings interior/lukiul/foreign-born/blackrose (CHR01 owns upbringing), guard lawFactor+suspicion table (CRM01/STL01 consume), raceSurcharge price formula.",
+      "next_step": "LAST ITEM: RI-CRM02 faction crime / sanctioned murder / writs / Morag Tong problem / membership changes guard behaviour. CRM01 DONE and exports: 17-crime bounty schedule, report chain, blood-price, 4 tracking factions, faction-invocation escape hatch (rank>=4, 3 uses). LOCK RULING MADE: no probability roll, deterministic ward-collar; proposed new seam S20 'keep the die where failure is permanent, delete it where failure is a retry' -- MUST appear in final reply as a proposed amendment. STL02 exports: stolen_from flag, 7 trespass classes, 9 fences at 0.35x, CRIME/CHALLENGE escalation feeding CRM01. STL01 exports: V visibility formula, civilian states CALM/WATCHING/CHALLENGE/ALARM, contextWeight table (STL02 owns trespass zones + owned objects), S-4 zone memory, harness extension requests (crouch button, player.stealth block, alert_channel, civilians[], getLightAt, events detect/challenge/search_start/search_end/zone_alert/light_snuffed/distraction). 22-character COMPLETE. CHR03 exports: 9 signs, families given/withheld/turned, The Unlit Water carries shadowscale-claim (feeds CRM02), The Spilled changes respawn well, Dry Well = Atronach. CHR01 DONE: 8 inputs, 14 classes + custom, 12 questionnaire dilemmas, 540 signatures (10 race x 6 class-family x 3 birthsign-family x 3 upbringing-class), birthsign families must be named Given/Withheld/Turned in CHR03 §2 and CHR03 §5 owns the one-time re-cut at the Helstrom Hist. CHR02 exports: 10 races (Saxhleel, Naga, Dunmer, Imperial, Nord, Breton, Redguard, Khajiit, Orsimer, Bosmer), 12 reaction groups RG-DEEP/ROOT/LUKIUL/NAGA/LEDGER/EMPIRE/DRES/BWC/VAKH/COURT/TOWN/OUTLAW, 4 upbringings interior/lukiul/foreign-born/blackrose (CHR01 owns upbringing), guard lawFactor+suspicion table (CRM01/STL01 consume), raceSurcharge price formula.",
       "findings": 8
     },
     {
@@ -114,10 +110,9 @@
       "id": "audio-ui",
       "title": "Audio design and user-interface corpus",
       "state": "partial",
-      "done": 9,
+      "done": 10,
       "expected": 11,
       "missing": [
-        "corpus/86-ui/RI-UIX05*",
         "corpus/86-ui/RI-UIX06*"
       ],
       "next_step": "write RI-UIX05 books/readable text, then RI-UIX06 diegesis (must propose RI-VIS01 sec.A extension F17/F18 + CC-7). Then regenerate INDEX via tools/corpus-index.mjs --check.",
@@ -126,15 +121,14 @@
     {
       "id": "image-acquisition",
       "title": "Acquire real reference images via the one reachable channel (GitHub)",
-      "state": "started-nothing-written",
-      "done": 0,
+      "state": "partial",
+      "done": 1,
       "expected": 2,
       "missing": [
-        "corpus/70-visual/refs/MANIFEST.json",
         "corpus/70-visual/refs/ACQUISITION-REPORT.md"
       ],
-      "next_step": "run image-metrics over acquired set, write MANIFEST.json, make-manifest.py, LICENCE-NOTE.md, ACQUISITION-REPORT.md, RI-VIS09",
-      "findings": 20
+      "next_step": "move unconfirmed->rejected, add integrity flags, write LICENCE-NOTE.md + ACQUISITION-REPORT.md + RI-VIS09",
+      "findings": 23
     },
     {
       "id": "corpus-audit",
