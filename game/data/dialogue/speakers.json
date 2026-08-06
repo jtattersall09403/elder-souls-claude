@@ -1,0 +1,121 @@
+{
+  "schema": "elder-souls/dialogue-speakers@1",
+  "id": "speakers",
+  "owner": "W1-17. RI-DLG06 §B — the six archetype slots and their fingerprint targets.",
+  "provenance": "targets are constructed (RI-DLG06 §B); they are calibrated on §A's MEASURED Morrowind figures, and the measurement method was validated against §A's named-speaker table before any of our text was written — see tools/dialogue/voice-metrics.mjs and the run in reports/W1-17-measurements.md.",
+
+  "method_calibration": {
+    "note": "Before authoring a line we re-measured RI-DLG06 §A's named-speaker table out of corpus/40-dialogue/data/morrowind-dialogue.csv.gz with the same code that measures our corpus. It reproduces: Divayth Fyr w/sent 6.54 (item: 6.5), <=6w 59.4% (item: 59.4%); Caius Cosades 8.89 (9.0), 42.5% (41.9%); Aryon 10.40 (10.4); Ajira 8.52 (9.3); Sharn 8.11 (8.4). The measurement is therefore not our own invention marking its own homework.",
+    "cannot_reproduce": "RI-DLG06 §A's FIRST table (by class filter) cannot be recomputed from the vendored CSV: it carries Race, Gender, SpeakerId, FactionId, FactionRank and DialogueText, and no class column. Its 6.0 -> 17.9 spread is taken on the item's word. Our own spread is measured over our own corpus and does not depend on it."
+  },
+
+  "address_forms": {
+    "supplicant": "rootkeeper — what the well's clergy call anyone who has come to ask for something. Ordinator's 'pilgrim'.",
+    "provincial": "magister — a House Dres term for a person born in the province they are administering. The outlander-class term, aimed the other way round.",
+    "friend": "sapcutter — the trader's universal, meaningless, warm address. Khajiit's 'friend'.",
+    "dry-one": "mudborn — a beggar's address to somebody whose feet are not in the water. The deferential form; invented for this setting because Morrowind's 'sera' is Dunmer and would be a tourist in Argonia.",
+    "citizen": "legionary — the Cohort's rank-neutral address, which is also a legal category.",
+    "(none)": "archivist — addresses the TOPIC, not the person. The absence is the fingerprint."
+  },
+
+  "archetypes": [
+    {
+      "id": "rootkeeper",
+      "slot": 1,
+      "function": "Zealot / law-enforcer (RI-DLG06 §B row 1, Ordinator-analogue)",
+      "who": "The clergy of the sapwells. They tend the Hist, they keep the covenant, and in the interior they are also the only law there is.",
+      "targets": { "w_sent": [16, 19], "le6w_pct": [0, 10], "gt20w_pct": [25, 100], "w_entry": [20, 30], "sttr_min": 0.48 },
+      "address": { "form": "supplicant", "per_1k_min": 8.0 },
+      "grammar_tic": {
+        "name": "impersonal passive + legal imperative with an object",
+        "regex": "\\b(is|are|was|were) (not )?(permitted|tended|required|owed|forbidden|kept|returned|declared|answered|counted)\\b",
+        "second_regex": "^(Return|Declare|Name|Kneel|Answer|Give|Bring|Leave|Speak)\\b[^.!?]*\\.",
+        "why": "The rootkeeper never says 'I want'. The covenant wants. The well is owed. Agency is removed from the sentence and placed in an institution — which is precisely how a Temple Ordinator talks."
+      },
+      "lexicon": ["covenant", "sap", "well", "tended", "permitted", "offering", "unclean", "reverence", "obligation", "atonement", "supplicant"]
+    },
+    {
+      "id": "magister",
+      "slot": 2,
+      "function": "Wizard-lord / arcane aristocrat (RI-DLG06 §B row 2, Telvanni-analogue)",
+      "who": "House Dres magisters and factors, administering estates in a province that has legally stopped being theirs and has not been told.",
+      "targets": { "w_sent": [10, 13], "le6w_pct": [20, 30], "gt20w_pct": [0, 6], "w_entry": [25, 35], "sttr_min": 0.44 },
+      "address": { "form": "provincial", "per_1k_min": 0.8, "friend_per_1k_max": 0.2 },
+      "grammar_tic": {
+        "name": "subordinate clause opening; conditional mood; never explains",
+        "regex": "^(If|Were|Should|Had|Unless|Whether|Since|Given)\\b",
+        "second_regex": "\\b(presumably|conceivably|one assumes|I am told|it is said|in principle)\\b",
+        "why": "The magister front-loads a condition and lets the consequence trail, and hedges every fact he did not personally arrange. He answers a question with the terms on which he would consider answering it."
+      },
+      "lexicon": ["arrangement", "estate", "tedious", "provincial", "apparatus", "inheritance", "conjecture", "negligible", "presumably", "factor"]
+    },
+    {
+      "id": "sapcutter",
+      "slot": 3,
+      "function": "Foreign trader / smuggler (RI-DLG06 §B row 3, Khajiit-analogue)",
+      "who": "The Sap-Cutters' itinerant buyers, and everyone else working a cart between towns. Not a race — a trade.",
+      "targets": { "w_sent": [7, 9], "le6w_pct": [35, 45], "gt20w_pct": [0, 2], "w_entry": [15, 25], "sttr": [0.38, 0.46] },
+      "address": { "form": "friend", "per_1k_min": 5.0, "pcname_per_1k_min": 5.0 },
+      "grammar_tic": {
+        "name": "third-person self-reference",
+        "regex": "\\b(this one|this cutter|this cart|this seller|this buyer)\\b",
+        "per_1k_min": 2.5,
+        "why": "RI-DLG06 §A: 'The strongest voice signals in Morrowind are grammatical, not lexical.' The Khajiit fingerprint is not a word list, it is a person who will not say 'I'. Ours is the same construction on a different mouth: a trader who talks about the trade instead of the trader."
+      },
+      "lexicon": ["cart", "coin", "cheap", "buys", "sells", "bundle", "tonight", "cousin", "careful", "weighs"]
+    },
+    {
+      "id": "mudborn",
+      "slot": 4,
+      "function": "Beggar / destitute (RI-DLG06 §B row 4)",
+      "who": "The dispossessed of the boardwalks: silt-blinded, fever-thinned, sleeping above the tide and below everyone.",
+      "targets": { "w_sent": [12, 15], "le6w_pct": [0, 10], "gt20w_pct": [12, 20], "w_entry": [25, 40], "sttr_min": 0.45 },
+      "address": { "form": "dry-one", "per_1k_min": 1.0 },
+      "grammar_tic": {
+        "name": "conditional pleading and gratitude formula; the sentence runs on rather than stopping",
+        "regex": "\\b(if you (could|would|had)|only a|just a|a little|bless you|blessings on|kindness)\\b",
+        "why": "The beggar's sentence cannot afford a full stop, because a full stop is a place where the listener leaves. RI-DLG06 §A's beggar band is LONG sentences and very few short ones, which is counter-intuitive until you have been talked at by one."
+      },
+      "lexicon": ["hungry", "kindly", "nothing", "blessing", "boards", "spare", "fever", "warm", "sleep", "silt"]
+    },
+    {
+      "id": "legionary",
+      "slot": 5,
+      "function": "Guard / soldier (RI-DLG06 §B row 5)",
+      "who": "The Ninth Cohort and the settlement militias. Under-supplied, under-paid, and standing in water.",
+      "targets": { "w_sent": [7, 9], "le6w_pct": [45, 100], "gt20w_pct": [0, 4], "w_entry": [18, 26], "sttr": [0.38, 0.45] },
+      "address": { "form": "citizen", "familiar_per_1k_max": 0.2 },
+      "grammar_tic": {
+        "name": "imperative mood, procedural legal noun as the object",
+        "regex": "^(Halt|Move|Stand|State|Show|Declare|Keep|Step|Report|Hand)\\b",
+        "second_regex": "\\b(writ|papers|contraband|muster|patrol|fine|bounty|arrest|manifest|curfew)\\b",
+        "why": "A guard's sentence is a procedure with a person attached. Morrowind's guard lexicon — thirsty x109, violated x102, booze x91, surrender x64, sentence x64 — is half tavern and half statute, and so is ours."
+      },
+      "lexicon": ["halt", "cohort", "writ", "papers", "contraband", "muster", "patrol", "arrest", "fine", "curfew"]
+    },
+    {
+      "id": "archivist",
+      "slot": 6,
+      "function": "Scholar / archivist (RI-DLG06 §B row 6, Savant-analogue)",
+      "who": "Imperial surveyors, chapel clerks, the Provincial Office's records men, and the two or three Argonians who have read everything written about them.",
+      "targets": { "w_sent": [16, 19], "le6w_pct": [0, 8], "gt20w_pct": [28, 100], "w_entry": [45, 65], "sttr_min": 0.50 },
+      "address": { "form": null, "note": "no address form at all; the fingerprint is the ABSENCE" },
+      "grammar_tic": {
+        "name": "nominalisation and qualification",
+        "regex": "\\b(generally|in most accounts|it is attested|the evidence|so far as|by most|the assumption|one variant|presumed|reportedly)\\b",
+        "second_regex": "\\b\\w+(tion|sion|ment|ance|ence|ity)\\b",
+        "why": "The scholar converts every verb into a noun and then qualifies the noun. He is the only archetype in the set who will tell you he might be wrong, and the only one who takes 55 words to do it."
+      },
+      "lexicon": ["attested", "accounts", "manuscript", "chronology", "presumed", "variant", "evidently", "catalogue", "survey", "sequence"]
+    }
+  ],
+
+  "separation_requirements": {
+    "global_spread_min": 8.0,
+    "pairwise": "for every pair, |Δ w/sent| >= 2.0 OR |Δ <=6w| >= 15pp OR |Δ STTR| >= 0.06",
+    "lexicon_min_markers": 5,
+    "lexicon_min_lift": 5.0,
+    "address_rule": ">= 1 address form at >= 1.0/1k that is <= 0.3/1k in at least four of the other five",
+    "checked_by": "tools/dialogue/voice-metrics.mjs"
+  }
+}

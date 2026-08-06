@@ -1,0 +1,35 @@
+{
+  "task_id": "W1-18",
+  "brief": "Quest engine and journal (wave-1)",
+  "started": "wave-1",
+  "state": "building",
+  "outputs_expected": [
+    "game/src/sim/quest/calendar.js",
+    "game/src/sim/quest/defs.js",
+    "game/src/sim/quest/gate.js",
+    "game/src/sim/quest/journal.js",
+    "game/src/sim/quest/machine.js",
+    "game/src/sim/quest/screen.js",
+    "game/src/render/journal-overlay.js",
+    "game/data/quests/**",
+    "tools/corpus/dump-journal.mjs",
+    "tools/analysis/journal-ui.mjs",
+    "tools/analysis/quest-audit.mjs"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "corpus/30-quests/quest.schema.json ALREADY EXISTS (686 lines, draft 2020-12, additionalProperties:false). Do not rewrite it; extend additively only, and record any amendment in RI-QST04 '## Schema amendments' per its amendment rule.",
+    "Existing quest data: game/data/quests/magic-utility.json (wrapper {schema,id,quests:[...]}, 12 RI-MAG04 quests, each element validates against quest.schema.json) and game/data/quests/the-boards.json which uses a DIFFERENT legacy shape (elder-souls/quest@1, stages/outcomes) and does NOT validate. RI-QST04's check 0 is 'any file failing validation = hard fail', so the-boards must be migrated or wrapped.",
+    "engine loadData() buckets any game/data/quests/*.json into out.quests[doc.id].",
+    "sim.quest already exists (game/src/sim/state.js makeQuestState): quests{}, completed[], journal[] as [{n,date,quest,text}], flags{}, topicsKnown[], dispositions{}, factions{}. Save carries it (game/src/save/state.js) with journal ORDER SEMANTIC. Journal entries need flags+display_name added for RI-DLG05 A -> save schema change.",
+    "There is NO UI layer in the build at all: no getUIState(), no openMenu(), no DOM overlay, renderer.screenshotDataURL() returns the WebGL canvas only. RI-UIX04 says 'Unimplemented scores 0'. W1-21 owns ui.* generally but RI-UIX04 judges W1-18 too -> must build the journal screen + getUIState() with RENDER ORDER PRESERVED and navigable[].",
+    "RI-UIX04 JU2 interleave_ratio >= 0.5 must be measured on a fixture of EXACTLY >=4 quests / >=12 entries (the threshold is derived for that size). Scenario name mandated: 'ui-journal', seed 1337.",
+    "RI-DLG05 mandates tools/corpus/dump-journal.mjs --out journal.tsv with columns journal_id/index/flags/display_name/date_written/text, and a prohibition grep that must return empty.",
+    "Calendar: play opens Second Seed, 3E 427 (RI-LOR02 sec1). sim.env has dayCount + timeOfDay only -> need a calendar module mapping dayCount to '16 Last Seed, 3E 427'.",
+    "Setting: 8 settlements (Gideon, Blackrose, Lilmoth, Soulrest, Archon, Stormhold, Thorn, Helstrom); factions Xul-Aneekh, Wet Ledger, Ixtu-Vakh, Drowned Court (RI-LOR02 sec3/sec4).",
+    "RI-QST09 needs X2>=12 quests with cross-quest closure, X3>=6 faction closure, X4>=3 world/service closure -> a corpus of ~25-30 quests is required, not 5.",
+    "RI-QST03 secB: gates are reputation + one of 2 favoured attributes + 2 distinct favoured skills + world-state. Never level/souls/gold-on-hand."
+  ],
+  "next_step": "write game/src/sim/quest/* modules",
+  "notes_for_successor": "Build order: calendar -> defs -> gate -> journal -> machine -> screen -> engine wiring -> harness verbs -> data -> tools. Commit after each."
+}
