@@ -16,7 +16,16 @@
     "game/src/ui/census.js"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ARBITRATION.md, SCORING.md, HARNESS.md, PLAN.md §3, and the RI-CHR*/RI-PRG* reference items",
-  "notes_for_successor": ""
+  "findings": [
+    "RI-CHR01 §1 = 8 inputs (hatch-name, race, sex, upbringing, given name, class, birthsign, favoured attributes). Composition rule: attr = 10 + raceDelta + classDelta; sum(raceDelta)=12, sum(classDelta)=0 -> ALWAYS 112 points. skill = max(5, raceSkill, classSkill), 5..10 skills above baseline.",
+    "RI-CHR01 §5 signature = race(10) x class_family(6) x birthsign_family(3) x upbringing_class(3) = 540.",
+    "CORPUS CONTRADICTION FOUND: RI-PRG03 ships 19 skills including *Polearms*, but NO race in RI-CHR02 §1 and NO named class in RI-CHR01 §4 raises Polearms. RI-CHR01 method 3 asserts 'every one of the 19 skills is above baseline in >=1 race x class pair' — unsatisfiable on the named-class route as written. Resolution taken: ship the corpus tables verbatim, declare the gap in game/data/progression/KNOWN-GAPS.json, and prove Polearms IS reachable via route B (custom) and route C (questionnaire), which method 2 implies by counting '15 class options' (14 named + custom).",
+    "Corpus-mandated data paths: progression/creation.json, progression/races.json, progression/race-reactions.json, progression/birthsigns.json, progression/classes.json, dialogue/creation-questions.json.",
+    "Existing game/data/progression/skills.json (W1-00) has only 3 placeholder skills and levels.json declares 6 Souls attributes — both must be replaced with RI-PRG03's 19 and RI-PRG02's 10.",
+    "Engine loadData() buckets progression/*.json by doc.schema into out.progression — new files need bucket wiring in game/src/engine.js loadData().",
+    "game/src/combat/parley.js already reads world.dispositions keyed by npc_id — that is the natural AR-3 seam: race term -> disposition -> in-fight parley ground test at 60Hz.",
+    "Trace event vocabulary is closed: ... spawn despawn enemy_state quest_stage journal topic item load. parley_offer is NOT in it; RI-CHR02 method 8 demands a parley_offer event -> extensible by amendment, emitted as events[].type='parley_offer'."
+  ],
+  "next_step": "write game/data/progression/{attributes,skills,races,race-reactions,birthsigns,classes,creation}.json",
+  "notes_for_successor": "Corpus read is done; every table needed is in corpus/22-character/RI-CHR0{1,2,3}.md, corpus/20-progression/RI-PRG0{2,3}.md, corpus/88-journeys/RI-JRN01. Transcribe them EXACTLY — critics recompute the arithmetic."
 }

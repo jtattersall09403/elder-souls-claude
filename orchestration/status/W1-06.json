@@ -1,16 +1,25 @@
 {
   "task_id": "W1-06",
-  "brief": "wave-1 piece W1-06 — Camera (third-person rig, spring arm, lock-on containment law, camera-relative movement, directional rolls, soft-lock, pitch clamps, dialogue/menu/interior camera)",
+  "brief": "wave-1 piece W1-06 — Camera",
   "started": "wave-1",
   "state": "researching",
   "outputs_expected": [
-    "game/src/sim/camera/*.js",
+    "game/src/sim/camera.js (rewrite: spring arm, shoulder, containment)",
+    "game/src/sim/camera-collision.js",
     "game/data/camera/*.json",
-    "corpus/70-visual/RI-CAM01..07 evidence / measurements",
-    "tools/camera/* harness probes"
+    "tools/camera/* probes",
+    "corpus/80-methods/m-cam0*.mjs (if absent)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ARBITRATION.md S18, SCORING.md, HARNESS.md, docs/PLAN.md §3 W1-06, then survey game/ engine",
-  "notes_for_successor": "Just started. Nothing built yet."
+  "findings": [
+    "RI-CAM01..07 live in corpus/15-camera/. All 'constructed', extremely specific numbers.",
+    "Existing game/src/sim/camera.js (148 lines) is a stub: pivot+yaw/pitch+shake only. fov 60 (bar says 50.0), arm 3.60 constant (bar: 4.10 free), NO shoulder offset, NO collision/spring arm, NO lock framing, clipThrough hardcoded false.",
+    "game/src/combat/lockon.js exists (171 lines) — CMB06 acquisition/switch likely there; must adopt verbatim.",
+    "KEY NUMBERS CAM01: pivot 1.55m above ground contact; shoulder +0.42R/+0.10U free, +0.26R/+0.10U locked; arm free 4.10; locked ramp 3.60@<=4m -> 5.20@14m; max 7.50; min 0.90; sphere cast r=0.28 from PIVOT; pitch arm scale 1.00@0, 0.82@-55, 0.94@+38; FOV 50.0 constant; near 0.10 far 1200; pull-in 40.0 m/s (0.667 m/f), push-out 3.0 m/s (0.050 m/f), dwell 6 frames, ratio 13.3:1; penetration guard unbounded same-frame; fade <1.30m -> 0 opacity at 0.90m, shadow retained; vertical pivot spring half-life 0.250s (0.400 airborne), clamp +/-0.55m; horizontal pivot RIGID.",
+    "CAM02: deadzone 0.15 radial, sat 0.95, m''=m'^2; yaw 180 deg/s, pitch 120 deg/s; mouse 0.120/0.100 deg/px, caps 30/20 deg/frame; pitch clamp -55/+38 free, -50/+32 locked; walk 2.0 m/s at |s| 0.16-0.55; turn <=720 deg/s moving, <=480 stationary, turn_in_place 18f clip if |err|>100 stationary; auto-recentre ONLY on sprint after 20-frame gate, yaw half-life 0.350s clamp 90 deg/s, pitch target -6.0 half-life 0.600s, same-frame disengage, no residual.",
+    "CAM03: safe_rect NDC x+-0.75 y+-0.70; onscreen_fraction(T_a)>=0.995, P_a>=0.980, T_h>=0.970 (h<6) / 0.880 (h>=6); containment arm +0.150/-0.080 m/frame, pitch +-1.50 deg/frame, arm half-life 0.250s, cap 7.50; pitch_base=clamp(-16+0.8(d-3),-16,-2); size_bias=2.20*max(0,h-2.5); k(h)=clamp((h-2.5)/4,0,0.75), A.y lerp weight 0.35+k*0.65; yaw rate clamp 7.000 deg/frame; latency: acquire 30f, reframe 22f, switch 18f, head return 24f; reticle <=24px no scaling, no off-screen arrow.",
+    "CAM04: 9 roll clips (roll_f/fr/r/br/b/bl/l/fl/backstep); unlocked=snap+roll_f only; locked=hold facing+bin clip; Tc=min(floor(0.80W), W-8); b1=ceil(0.40W); band1 3.00 deg/f, band2 0.75 deg/f, then 0; GLOBAL CAP 45.0 deg; 8 locomotion clips locked; |err|<=12 deg p100, autofail >25."
+  ],
+  "next_step": "read CAM05/06/07, then game/src/sim/state.js, player.js, harness/api.js, record.js, lockon.js, render/scene.js; measure boss clip framing with ffmpeg",
+  "notes_for_successor": "Engine exists at game/. camera is in sim/ (correct). Rewrite in place, do not fork."
 }

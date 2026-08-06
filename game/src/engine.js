@@ -976,6 +976,45 @@ export class Engine {
     return this.sim.entities.map((e) => ({ eid: e.eid, archetype: e.archetype, pos: [e.pos[0], e.pos[1], e.pos[2]], hp: e.hp }));
   }
 
+  /** Everything W1-09 owns, in one call, for a critic that does not want to expand a trace. */
+  getCombatState() {
+    const c = this.combat;
+    const p = c.player;
+    return {
+      schema: 'elder-souls/combat-state@1',
+      unit: 'f@60',
+      frame: this.sim.frame,
+      player: {
+        state: p.state, anim: p.anim, anim_frame: p.animFrame,
+        move: p.move ? { id: p.move.id, startup: p.move.startup, active: p.move.active, recovery: p.move.recovery, total: p.move.total, iframes: p.move.iframes } : null,
+        actionable_at: p.actionableAt,
+        hp: p.hp, hp_max: p.hpMax,
+        stamina: p.stamina, stamina_max: p.staminaMax,
+        regen_blocked_until: p.regenBlockUntil,
+        exhausted: p.exhausted,
+        poise_health: p.poiseHealth, poise_health_max: p.poiseHealthMax,
+        invuln: p.iframe, guard: p.guardRaised, shield: p.shieldId,
+        equip_load_pct: p.equipLoadPct, tier: c.tierOf(p),
+        estus: c.playerCtl.estus, flask_level: c.playerCtl.flaskLevel,
+        stamina_drops: p.staminaDrops || 0,
+        weapon: p.moves._movesetId, weapon_class: p.moves._classKey,
+        pos: [p.pos[0], p.pos[1], p.pos[2]], yaw_deg: p.yaw,
+      },
+      lock: { target: c.lock.target, score: c.lock.score, both_framed: c.lock.bothFramed },
+      world_knowledge: { gold: c.world.gold, topicsKnown: c.world.topicsKnown, dispositions: c.world.dispositions, factions: c.world.factions },
+      enemies: c.bodies.filter((b) => b !== p).map((b) => ({
+        id: b.id, statblock: b.statId, state: b.state, anim: b.anim, anim_frame: b.animFrame,
+        move: b.move ? b.move.id : null, hp: b.hp, hp_max: b.hpMax,
+        poise_health: b.poiseHealth, poise_health_max: b.poiseHealthMax,
+        stamina: b.stamina, stamina_max: b.staminaMax,
+        guard: b.guardRaised, dead: b.dead, yielded: b.yielded,
+        parley: b.parley ? { grounds: b.parley.grounds, faction: b.parley.faction, rank_required: b.parley.rank_required, gold_price: b.parley.gold_price, true_name_topic: b.parley.true_name_topic } : null,
+        dist_m: c.distTo(b), bearing_deg: c.bearingFromPlayer(b),
+      })),
+      state_enums: CombatSystem.stateEnums(),
+    };
+  }
+
   getPlayerStats() {
     const p = this.sim.player;
     return {
@@ -1036,7 +1075,7 @@ async function loadData(onBytes) {
     return JSON.parse(text);
   };
   const index = await fetchJson('index.json');
-  const out = { index, enemies: {}, npcs: {}, interiors: {}, settlements: {}, states: {}, topics: {}, quests: {}, books: {}, items: {} };
+  const out = { index, enemies: {}, npcs: {}, interiors: {}, settlements: {}, states: {}, topics: {}, quests: {}, books: {}, items: {}, combat: {}, movesets: {} };
   const bucketFor = (path) => {
     if (path.startsWith('combat/enemies/')) return 'enemies';
     if (path.startsWith('npcs/')) return 'npcs';
@@ -1057,7 +1096,8 @@ async function loadData(onBytes) {
     else if (entry.path === 'world/pois.json') out.pois = doc;
     else if (entry.path === 'save-manifest.json') out.saveManifest = doc;
     else if (entry.path === 'combat/input.json') out.input = doc;
-    else if (entry.path.startsWith('combat/movesets/')) out.moveset = doc;
+    else if (entry.path.startsWith('combat/movesets/')) out.movesets[doc.id] = doc;
+    else if (entry.path.startsWith('combat/')) out.combat[entry.path.slice('combat/'.length).replace(/\.json$/, '')] = doc;
     else if (entry.path === 'dialogue/greetings.json') out.greetings = doc;
     else if (entry.path === 'dialogue/rumours.json') out.rumours = doc;
     else if (entry.path.startsWith('progression/')) (out.progression = out.progression || {})[doc.schema] = doc;

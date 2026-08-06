@@ -35,14 +35,19 @@ import { rng } from '../core/rng.js';
 
 const DEG = 180 / Math.PI;
 
-export const IMPLEMENTED_AI = new Set(['none', 'hold_ground']);
+// W1-09 added `scripted`: enemy actions come from the scenario file on declared frames, which
+// is the instrument RI-CMB07 M1 Mode-A specifies ("the enemy executes its 18 scripted actions
+// on the exact frames given ... No AI, no randomness, seed 0"). Enemy DECISION-MAKING is still
+// RI-AI01..07 / wave-1 piece W1-12 and is still refused here.
+export const IMPLEMENTED_AI = new Set(['none', 'hold_ground', 'scripted']);
 
 export function makeEntity(stat, eid, x, z, frame) {
   if (!IMPLEMENTED_AI.has(stat.ai)) {
     throw new Error(
       `spawn('${stat.id}'): archetype declares ai='${stat.ai}', which wave-1 piece W1-00 does ` +
-      'not implement. Enemy behaviour is owned by RI-AI01..07 / piece W1-06. Refusing to spawn ' +
-      'an entity that would look like an enemy and behave like furniture.');
+      `not implement. Implemented: ${[...IMPLEMENTED_AI].join(', ')}. Enemy decision-making is ` +
+      'owned by RI-AI01..07 / wave-1 piece W1-12. Refusing to spawn an entity that would look ' +
+      'like an enemy and behave like furniture.');
   }
   return {
     eid,

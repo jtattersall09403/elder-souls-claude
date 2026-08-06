@@ -89,6 +89,34 @@ export function installHarness(engine, bootPromise) {
     // queueInputs(). Returns exactly what it changed, for the run report.
     reanchorFreeRunning() { return engine.reanchorFreeRunning(); },
     traceStart(opts) { return engine.traceStart(opts); },
+
+    // ================= W1-09 combat core =================================================
+    // RI-CMB07's es-combat-trace/1, emitted as a SECOND STREAM from the same run — the
+    // arrangement §A already specifies for the RI-AI01 enemy stream. elder-souls/trace@1
+    // stays exactly as W1-00 shipped it.
+    combatTraceStart(opts) { return engine.combatTraceStart(opts || {}); },
+    combatTraceDrain() { return engine.combatTraceDrain(); },
+    combatTraceMeta() { return engine.combatTraceMeta(); },
+    combatTraceStop() { return engine.combatTraceStop(); },
+
+    /**
+     * RI-CMB04's mandatory debug channel. The item is explicit: "If that channel does not
+     * exist, this item scores 0 — the geometry is unauditable and therefore not a bar." It
+     * dumps every hurtbox capsule, every bone origin and both the current and previous weapon
+     * socket pair, in world space, so a critic can recompute the analytic sweep offline and
+     * diff it against what the simulation decided.
+     */
+    getHitGeometry() { return engine.getHitGeometry(); },
+
+    /** Seam S23's crossing: RI-PRG07 sets the number, RI-CMB01 decides what it does in a fight. */
+    setEquipLoad(pct) { return engine.setEquipLoad(pct); },
+
+    /** RI-CMB07 M1 Mode-A: the enemy executes scripted actions on the exact frames given. */
+    queueEnemyScript(eid, script) { return engine.queueEnemyScript(eid, script); },
+
+    /** AR-3: the out-of-fight state the in-fight parley reads. */
+    setWorldKnowledge(patch) { return engine.setWorldKnowledge(patch || {}); },
+    getCombatState() { return engine.getCombatState(); },
     traceDrain() { return engine.traceDrain(); },
     traceStop() { return engine.traceStop(); },
 
@@ -228,9 +256,20 @@ export function installHarness(engine, bootPromise) {
           'IndexedDB save with the RI-JRN05 §A write protocol, digest, A/B generations, export/import, hostility simulation',
           'deterministic sky, sun and named weather; the nine viewpoint anchors',
           'the game/data/** layout of HARNESS.md §5 with a generated index.json',
+          'W1-09: swept-capsule hit resolution over bone-attached hurtboxes, 4 substeps, no distance check and no dice (RI-CMB04)',
+          'W1-09: the RI-CMB01 §B roll ladder at all four equip-load tiers, i-frames as a frame window',
+          'W1-09: RI-CMB02 §A/§B frame data for all 7 classes x R1/R2 with the §D commitment rule',
+          'W1-09: RI-CMB03 stamina, block, guard break and RI-CMB09 exhaustion, symmetric for enemies',
+          'W1-09: RI-CMB05 poise, stagger, hyperarmour, backstab, parry and riposte',
+          'W1-09: RI-CMB06 lock-on with target-relative directional roll and soft-lock steering',
+          'W1-09: RI-CMB08 healing with animation commitment and finite charges',
+          'W1-09: es-combat-trace/1 (RI-CMB07 §A) as a second stream, and the S13 parley',
         ],
         not_implemented: [
-          { what: 'enemy AI (approach, circle, commit, punish windows, leash)', owner: 'RI-AI01..07 / wave-1 piece W1-06', surfaced_as: "enemy statblocks declare ai='hold_ground'; spawn() throws for any archetype declaring behaviour this build cannot run" },
+          { what: 'enemy DECISION-MAKING (approach, circle, commit, attack token, punish reads, leash)', owner: 'RI-AI01..07 / wave-1 piece W1-12', surfaced_as: "enemy statblocks declare ai='scripted'; actions come from the scenario file on declared frames, which is the RI-CMB07 M1 Mode-A instrument. spawn() throws for any archetype declaring behaviour this build cannot run. RI-CMB07 M2 (Mode-B free play against real AI) is therefore NOT measurable in this piece and scores 0, fail-closed." },
+          { what: 'mid-animation combat state across a save/load', owner: 'W1-09, declared limitation', surfaced_as: 'sim/combat-bridge.js header. The combat bodies are the authority and sim.player is a view; a save taken on frame 12 of a roll restores a standing character at the roll position. Correct under seam S6 (you save by resting) and true of both source games, but stated rather than discovered.' },
+          { what: 'weapon movesets beyond the 7-class spine, and attack ratings', owner: 'RI-WPN01..06 / wave-1 piece W1-10', surfaced_as: 'movesets/*.json weapon.attack_rating_provenance marks all seven AR values PROVISIONAL; only the straight sword is pinned (to the RI-CMB07 exemplar HIT of 118 at motion value 1.00).' },
+          { what: 'hitstop, mass and impact feel', owner: 'RI-WPN05 / RI-AUD01 / wave-1 piece W1-11', surfaced_as: 'hitstop_frames is read from the moveset and applied, but the camera, audio and animation consequences are W1-11.' },
           { what: 'a quest runtime', owner: 'wave-1 pieces W1-14..W1-16', surfaced_as: 'getQuestState()._declared_incomplete; quest STATE is real and round-trips, quest PROGRESSION does not exist' },
           { what: 'dialogue, topics, journal writing at runtime', owner: 'wave-1 pieces W1-11..W1-13', surfaced_as: 'data files exist and are analysable; getDialogueState() (A-JRN13) is absent' },
           { what: 'the province: 13 regions, 8 settlements, 250 interiors, roads', owner: 'wave-1 pieces W1-01..W1-05', surfaced_as: 'getWorldStats()._declared_incomplete — counts come from game/data/**, which is the corpus transcription plus one worked settlement' },

@@ -20,9 +20,27 @@ export const EVENT_TYPES = new Set([
   // RI-CMB11 §5
   'input_dropped', 'input_dropped_no_stamina', 'input_dropped_not_actionable',
   'input_buffered', 'input_overflow',
+  // W1-09 additions to the §5 vocabulary, lower-case like the rest of it
+  'guard_break', 'guard_up', 'whiff', 'exhausted_enter', 'exhausted_exit', 'winded',
+  'parley_accept', 'parley_refuse', 'parley_exempt', 'lock_on', 'lock_break', 'lock_switch',
+  // ---------------------------------------------------------------------------------------
+  // RI-CMB07 §A's CLOSED event-kind set, for the SECOND stream (`es-combat-trace/1`).
+  //
+  // Two vocabularies now share one bus, and that is deliberate rather than sloppy: RI-CMB07
+  // §A specifies es-combat-trace/1 as "a second stream from the same run, not a competing
+  // format", and the two streams are joined on the frame index. They are DISJOINT BY CASE —
+  // HARNESS.md §5 is lower_snake, RI-CMB07 §A is UPPER_SNAKE — so no name is ambiguous and
+  // both sets stay closed and fail-closed. Every W1-09 event is emitted in BOTH forms where
+  // §5 has an equivalent (see game/src/combat/system.js), so nothing that read the W1-00
+  // vocabulary stops working.
+  'LOCK_ON', 'LOCK_BREAK', 'LOCK_SWITCH', 'ACTION_START', 'GUARD_UP', 'HIT', 'CRIT_HIT',
+  'CRIT_RELEASE', 'WHIFF', 'IFRAME_NEGATE', 'AVOID', 'BLOCK', 'GUARD_BREAK', 'STAGGER',
+  'PARRY', 'RIPOSTE', 'ESTUS_START', 'ESTUS_DONE', 'DEATH',
+  'INPUT_DROPPED', 'INPUT_BUFFERED', 'EXHAUSTED_ENTER', 'EXHAUSTED_EXIT', 'WINDED',
+  'PARLEY_ACCEPT', 'PARLEY_REFUSE', 'PARLEY_EXEMPT',
 ]);
 
-const POOL_SIZE = 64;
+const POOL_SIZE = 128;
 
 export class EventBus {
   constructor() {

@@ -1,0 +1,63 @@
+{
+  "schema": "elder-souls/enemy@1",
+  "id": "beast_slitherfang",
+  "name": "Slitherfang",
+  "archetype": "BEAST",
+  "tier": "trash",
+  "ai": "scripted",
+  "unit": "f@60",
+  "hp": 286,
+  "poise": 24,
+  "stamina_max": 0,
+  "radius_m": 0.5,
+  "sight_radius_m": 16.0,
+  "sight_cone_deg": 160,
+  "reach_m": 2.0,
+  "idle_anim_frames": 36,
+  "winded_after": 3,
+  "winded_frames": 75,
+  "reads_exhaustion": false,
+  "weapon": {
+    "radius_m": 0.11,
+    "socket_a_dist_m": 0.1,
+    "socket_b_dist_m": 0.9,
+    "attack_rating": 104,
+    "socket_a": "wpn_head_a",
+    "socket_b": "wpn_head_b",
+    "capsule_length_m": 0.8,
+    "length_m": 0.9
+  },
+  "attacks": {
+    "lunge": {
+      "anim": "e_lunge",
+      "archetype": "thrust",
+      "startup": 36,
+      "active": 8,
+      "recovery": 48,
+      "poise_damage": 18,
+      "motion_value": 0.66,
+      "root_dz_m": 2.2,
+      "hitstop_frames": 5,
+      "hitbox_radius_m": 0.11
+    },
+    "whip": {
+      "anim": "e_whip",
+      "archetype": "sweep_wide",
+      "startup": 30,
+      "active": 12,
+      "recovery": 42,
+      "poise_damage": 14,
+      "motion_value": 0.48,
+      "root_dz_m": 0.3,
+      "hitstop_frames": 4,
+      "hitbox_radius_m": 0.11,
+      "unblockable": false
+    }
+  },
+  "parley": null,
+  "provenance": {
+    "parley": "parley: null, DELIBERATELY. Seam S13: 'Beasts and mindless things are exempt \u2014 they have no parley and Souls owns them entirely.' The exemption is a declaration, not an omission: the input is dropped with a named reason and a PARLEY_EXEMPT event, so a critic can tell a designed exemption from a forgotten one.",
+    "winded": "RI-CMB09 \u00a74 enemy symmetry: beasts have no stamina bar and instead go WINDED after >= 3 attacks in 6 s, with the same tell and the same x0.50 poise, for 75 f@60.",
+    "frame_data": "PROVISIONAL. Owner RI-AI05 / wave-1 piece W1-12."
+  }
+}

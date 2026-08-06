@@ -112,9 +112,17 @@ export class CombatSystem {
    */
   step(frame, input, camera, bus, sim) {
     this.frame = frame;
+    // Every combat event is emitted in RI-CMB07 §A's UPPER_SNAKE vocabulary (the
+    // es-combat-trace/1 stream) and, where HARNESS.md §5 has an equivalent, in §5's
+    // lower_snake vocabulary too (the elder-souls/trace@1 stream). Two streams, one run,
+    // joined on the frame index — the arrangement RI-CMB07 §A already specifies.
     const emit = (f, kind) => {
       const e = bus.emit(f, kind);
-      this.eventLog.push(e);
+      const alias = LEGACY_ALIAS[kind];
+      if (alias) {
+        const a = bus.emit(f, typeof alias === 'function' ? alias(e) : alias);
+        a.mirrors = kind;
+      }
       return e;
     };
     const lockedBody = this.lock.target ? this.bodyOf(this.lock.target) : null;
@@ -135,9 +143,6 @@ export class CombatSystem {
       world: this.world,
     };
 
-    // lock toggle (free, at any stamina, RI-CMB03 §B)
-    if (input.pressed & (1 << 9)) { /* lock_on bit handled by caller via toggleLock() */ }
-
     // steps 1–7, player then enemies in stable id order (HARNESS.md D7)
     this.playerCtl.step(frame, input, ctx);
     for (const b of this.bodies) {
@@ -154,9 +159,6 @@ export class CombatSystem {
     if (brk) { const e = emit(frame, 'LOCK_BREAK'); e.reason = brk; }
     if (camera) this.lock.measureFraming(camera, this.player, this.lock.target ? this.bodyOf(this.lock.target) : null, camera.fov, 16 / 9);
 
-    // running totals a critic can read without expanding the trace
-    for (const e of this.eventLog) { /* counted on emit below */ }
-    this.eventLog.length = 0;
   }
 
   toggleLock(frame, cameraYawDeg, bus) {
@@ -188,3 +190,31 @@ export class CombatSystem {
     return bearingDeg(body.pos[0] - this.player.pos[0], body.pos[2] - this.player.pos[2]);
   }
 }
+
+/** RI-CMB07 §A kind -> HARNESS.md §5 kind, so the W1-00 stream keeps its vocabulary. */
+const LEGACY_ALIAS = {
+  HIT: 'hit',
+  CRIT_HIT: (e) => (e.kind === 'riposte' ? 'riposte' : 'backstab'),
+  BLOCK: 'block',
+  PARRY: 'parry',
+  STAGGER: 'stagger',
+  DEATH: 'death',
+  GUARD_BREAK: 'guard_break',
+  GUARD_UP: 'guard_up',
+  WHIFF: 'whiff',
+  IFRAME_NEGATE: 'iframe_dodge',
+  ESTUS_START: 'heal',
+  ACTION_START: (e) => (e.tag === 'dodge' ? 'roll_start' : 'attack_start'),
+  INPUT_DROPPED: (e) => (e.reason === 'no_stamina' ? 'input_dropped_no_stamina'
+    : e.reason === 'not_actionable' ? 'input_dropped_not_actionable' : 'input_dropped'),
+  INPUT_BUFFERED: 'input_buffered',
+  EXHAUSTED_ENTER: 'exhausted_enter',
+  EXHAUSTED_EXIT: 'exhausted_exit',
+  WINDED: 'winded',
+  PARLEY_ACCEPT: 'parley_accept',
+  PARLEY_REFUSE: 'parley_refuse',
+  PARLEY_EXEMPT: 'parley_exempt',
+  LOCK_ON: 'lock_on',
+  LOCK_BREAK: 'lock_break',
+  LOCK_SWITCH: 'lock_switch',
+};

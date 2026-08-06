@@ -5,12 +5,28 @@
   "archetype": "DUMMY",
   "tier": "prop",
   "ai": "none",
-  "hp": 9999,
-  "poise": 9999,
+  "unit": "f@60",
+  "hp": 99999,
+  "poise": 99999,
+  "stamina_max": 1,
   "radius_m": 0.45,
   "sight_radius_m": 0.0,
   "sight_cone_deg": 0,
   "reach_m": 0.0,
   "idle_anim_frames": 1,
-  "note": "A post. It does nothing, which is exactly what a post does. Used by tools/harness/scenarios/cmb-stamina-drain.json."
+  "lockable": true,
+  "weapon": {
+    "radius_m": 0.095,
+    "socket_a_dist_m": 0.3,
+    "socket_b_dist_m": 1.45,
+    "attack_rating": 120,
+    "socket_a": "wpn_guard",
+    "socket_b": "wpn_tip",
+    "capsule_length_m": 1.15,
+    "length_m": 1.45
+  },
+  "attacks": {},
+  "parley": null,
+  "note": "A post. It does nothing, which is exactly what a post does. It carries the full 12-capsule hurtbox rig, so it is the fixture RI-CMB04 M2/M3's lateral-offset sweeps are run against.",
+  "parley_note": "parley: null \u2014 a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_mindless` rather than silently doing nothing."
 }

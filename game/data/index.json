@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 33,
+  "file_count": 55,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -13,19 +13,53 @@
       "declared_incomplete": true
     },
     {
+      "path": "combat/clips.json",
+      "schema": "elder-souls/clips@1",
+      "id": null,
+      "bytes": 22496,
+      "sha256": "4addf347a4f073b7"
+    },
+    {
+      "path": "combat/enemies/beast_slitherfang.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "beast_slitherfang",
+      "bytes": 1863,
+      "sha256": "acf132a5278f6c81"
+    },
+    {
       "path": "combat/enemies/dummy_passive.json",
       "schema": "elder-souls/enemy@1",
       "id": "dummy_passive",
-      "bytes": 419,
-      "sha256": "2ef7d64682abc342"
+      "bytes": 1025,
+      "sha256": "b46e71060c70e758"
     },
     {
       "path": "combat/enemies/inf_trash.json",
       "schema": "elder-souls/enemy@1",
       "id": "inf_trash",
-      "bytes": 994,
-      "sha256": "cf36bf917739ddd1",
-      "declared_incomplete": true
+      "bytes": 3317,
+      "sha256": "cfb3c60f95998f36"
+    },
+    {
+      "path": "combat/flask.json",
+      "schema": "elder-souls/flask@1",
+      "id": "Hist-sap Flask",
+      "bytes": 2930,
+      "sha256": "35ca0553f470edf2"
+    },
+    {
+      "path": "combat/frames.json",
+      "schema": "elder-souls/frames@1",
+      "id": "ES-FRAMES/1",
+      "bytes": 7739,
+      "sha256": "2c0fa7332da770fe"
+    },
+    {
+      "path": "combat/hitgeometry.json",
+      "schema": "elder-souls/hitgeometry@1",
+      "id": null,
+      "bytes": 7923,
+      "sha256": "e6b8dc4dd0773d78"
     },
     {
       "path": "combat/input.json",
@@ -35,11 +69,95 @@
       "sha256": "5952ea08af20b0da"
     },
     {
+      "path": "combat/lockon.json",
+      "schema": "elder-souls/lockon@1",
+      "id": "ES-LOCK/1",
+      "bytes": 6002,
+      "sha256": "8129edd20b9746b1"
+    },
+    {
+      "path": "combat/movesets/axe.json",
+      "schema": "elder-souls/moveset@1",
+      "id": "axe",
+      "bytes": 2285,
+      "sha256": "d4339854e77019e3"
+    },
+    {
+      "path": "combat/movesets/dagger.json",
+      "schema": "elder-souls/moveset@1",
+      "id": "dagger",
+      "bytes": 2744,
+      "sha256": "b95720039fa14833"
+    },
+    {
+      "path": "combat/movesets/greatsword.json",
+      "schema": "elder-souls/moveset@1",
+      "id": "greatsword",
+      "bytes": 2809,
+      "sha256": "3adb7c3f1597d239"
+    },
+    {
+      "path": "combat/movesets/halberd.json",
+      "schema": "elder-souls/moveset@1",
+      "id": "halberd",
+      "bytes": 2297,
+      "sha256": "96e093aa9e2cb0bc"
+    },
+    {
+      "path": "combat/movesets/spear.json",
+      "schema": "elder-souls/moveset@1",
+      "id": "spear",
+      "bytes": 2272,
+      "sha256": "50425800a120055b"
+    },
+    {
       "path": "combat/movesets/straight-sword.json",
       "schema": "elder-souls/moveset@1",
       "id": "straight-sword",
-      "bytes": 2496,
-      "sha256": "c5c9fda2b35bc9b9"
+      "bytes": 2337,
+      "sha256": "1cbd78dd2e713f7a"
+    },
+    {
+      "path": "combat/movesets/ultra-greatsword.json",
+      "schema": "elder-souls/moveset@1",
+      "id": "ultra-greatsword",
+      "bytes": 2838,
+      "sha256": "cd0f5fad2398c9da"
+    },
+    {
+      "path": "combat/parley.json",
+      "schema": "elder-souls/parley@1",
+      "id": null,
+      "bytes": 6830,
+      "sha256": "3e49155601f29148"
+    },
+    {
+      "path": "combat/poise.json",
+      "schema": "elder-souls/poise@1",
+      "id": "ES-POISE/1",
+      "bytes": 7151,
+      "sha256": "df8c75dfd8dfea61"
+    },
+    {
+      "path": "combat/roll.json",
+      "schema": "elder-souls/roll@1",
+      "id": "ES-ROLL/1",
+      "bytes": 5630,
+      "sha256": "c7feae84781a110b"
+    },
+    {
+      "path": "combat/skeleton.json",
+      "schema": "elder-souls/skeleton@1",
+      "id": null,
+      "bytes": 4305,
+      "sha256": "20d4cd1e2fc84c94"
+    },
+    {
+      "path": "combat/stamina.json",
+      "schema": "elder-souls/stamina@1",
+      "id": "ES-STAM/1",
+      "bytes": 7574,
+      "sha256": "51636260f40a6f65"
     },
     {
       "path": "dialogue/greetings.json",
@@ -119,11 +237,18 @@
       "declared_incomplete": true
     },
     {
+      "path": "states/arena_duel.json",
+      "schema": "elder-souls/state@1",
+      "id": "arena_duel",
+      "bytes": 1124,
+      "sha256": "c187b41759fc8c60"
+    },
+    {
       "path": "states/arena_flat.json",
       "schema": "elder-souls/state@1",
       "id": "arena_flat",
-      "bytes": 777,
-      "sha256": "6adef076a005f8e5"
+      "bytes": 1357,
+      "sha256": "e5b340d8060f16e5"
     },
     {
       "path": "states/default.json",
@@ -217,12 +342,26 @@
       "sha256": "eceaedfd481cf0cc"
     },
     {
+      "path": "world/hazards.json",
+      "schema": "elder-souls/hazards@1",
+      "id": null,
+      "bytes": 11114,
+      "sha256": "21bba2e855a71c2c"
+    },
+    {
       "path": "world/interiors/thorn-hall.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-hall",
       "bytes": 1047,
       "sha256": "44f7c350b25a7055",
       "declared_incomplete": true
+    },
+    {
+      "path": "world/landmask.json",
+      "schema": "elder-souls/landmask@1",
+      "id": null,
+      "bytes": 7847,
+      "sha256": "2b0127b3822be51f"
     },
     {
       "path": "world/pois.json",
@@ -234,10 +373,10 @@
     },
     {
       "path": "world/regions.json",
-      "schema": "elder-souls/regions@1",
+      "schema": "elder-souls/regions@2",
       "id": null,
-      "bytes": 13417,
-      "sha256": "02feb40f7beb5889"
+      "bytes": 37047,
+      "sha256": "673d21538aa0bab7"
     },
     {
       "path": "world/settlements/thorn.json",
@@ -246,6 +385,20 @@
       "bytes": 2161,
       "sha256": "3011cf23b15172b2",
       "declared_incomplete": true
+    },
+    {
+      "path": "world/terrain.json",
+      "schema": "elder-souls/terrain@1",
+      "id": null,
+      "bytes": 872546,
+      "sha256": "4000288b96384ffa"
+    },
+    {
+      "path": "world/water.json",
+      "schema": "elder-souls/water@1",
+      "id": null,
+      "bytes": 8667,
+      "sha256": "8468075e27a9f648"
     }
   ]
 }

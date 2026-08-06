@@ -1,8 +1,7 @@
 {
   "schema": "elder-souls/state@1",
-  "id": "arena_flat",
-  "title": "Flat featureless arena. The combat scenario fixtures in tools/harness/scenarios/ load this, and viewpoint VP12 anchors on it.",
-  "note": "Named states double as the viewpoint anchors in tools/harness/viewpoints.json: shoot.mjs calls loadState(viewpoint.anchor) before posing the camera, so every anchor id MUST be a loadable state or the viewpoint is unshootable and the metric it feeds scores 0, fail-closed (HARNESS.md \u00a76).",
+  "id": "arena_duel",
+  "title": "Flat arena, the exemplar build, one armed Marsh sentry at 4.2 m. The fixture every W1-09 combat scenario loads.",
   "env": {
     "timeOfDay": 12.0,
     "weather": "clear",
@@ -22,7 +21,6 @@
     "pitch": -8.0,
     "mode": "free"
   },
-  "spawn": [],
   "loadout": {
     "weapon": "straight-sword",
     "shield": "marsh_oak_medium",
@@ -34,5 +32,13 @@
     "estus": 5,
     "gold": 0,
     "_note": "The RI-CMB07 exemplar build: Endurance 20 -> 120 stamina (RI-CMB03 \u00a7A), 620 max HP, a straight sword (RI-CMB02's reference class, the one Ps=25 f@60 is pinned to), a Marsh-oak medium shield (stability 0.62 / absorption 0.94 \u2014 the shield RI-CMB03 \u00a7C's worked guard-break example uses), and 24% equip load, which is LIGHT."
-  }
+  },
+  "spawn": [
+    {
+      "id": "inf_trash",
+      "x": 0,
+      "z": 4.2,
+      "as": "E1"
+    }
+  ]
 }

@@ -90,6 +90,32 @@ const target = REG.map((r) => r.area_km2);
 const wgt = new Float64Array(N);
 const WARP = 170;
 
+// Anchors: a region must contain its own label position, and a settlement must be in the region
+// `settlements.json` says it is in. The warped power diagram gets neither for free — the corpus's
+// own AABBs do not contain Lilmoth, and a 240 m warp can flip the cell a label sits in — so both
+// are pinned. `RI-WLD01` §3 is authoritative on where a settlement is; `regions.json` is
+// authoritative on which region it is in; neither may be quietly renegotiated by a Voronoi.
+const ANCHORS = [];
+REG.forEach((r, i) => ANCHORS.push({ r: i, x: r.centroid_m[0], z: r.centroid_m[1], radius: 240 }));
+{
+  const byName = new Map(REG.map((r, i) => [r.name.toLowerCase().replace(/[^a-z]/g, ''), i]));
+  for (const [nm, st] of Object.entries(scale.settlements)) {
+    const key = String(st.region).toLowerCase().replace(/[^a-z]/g, '');
+    const ri = byName.get(key);
+    if (ri === undefined) throw new Error(`settlement ${nm} names unknown region "${st.region}"`);
+    ANCHORS.push({ r: ri, x: st.x, z: st.z, radius: 420 });
+  }
+}
+function anchorBonus(r, px, pz) {
+  let b = 0;
+  for (const a of ANCHORS) {
+    if (a.r !== r) continue;
+    const d = Math.hypot(px - a.x, pz - a.z);
+    if (d < a.radius) b += 3.2e6 * (1 - d / a.radius);
+  }
+  return b;
+}
+
 function warped(x, z) {
   return [
     x + (noise2(x / 430, z / 430, 9001) - 0.5) * 2 * WARP + (noise2(x / 155, z / 155, 9013) - 0.5) * 2 * WARP * 0.42,
@@ -109,6 +135,10 @@ for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
   wx[i] = a; wz[i] = b;
 }
 const region = new Uint8Array(COLS * ROWS);
+const pxG = new Float32Array(COLS * ROWS), pzG = new Float32Array(COLS * ROWS);
+for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
+  pxG[z * COLS + x] = x * CELL + CELL / 2; pzG[z * COLS + x] = z * CELL + CELL / 2;
+}
 function assign() {
   const area = new Float64Array(N);
   for (let i = 0; i < COLS * ROWS; i++) {
@@ -116,7 +146,7 @@ function assign() {
     let best = 0, bestC = Infinity;
     for (let r = 0; r < N; r++) {
       const dx = p - CX[r], dz = q - CZ[r];
-      const c = dx * dx + dz * dz - wgt[r] + 5.0 * outside2(p, q, AABB[r], 380);
+      const c = dx * dx + dz * dz - wgt[r] + 5.0 * outside2(p, q, AABB[r], 380) - anchorBonus(r, pxG[i], pzG[i]);
       if (c < bestC) { bestC = c; best = r; }
     }
     region[i] = best;
