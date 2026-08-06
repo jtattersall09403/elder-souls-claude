@@ -1,0 +1,386 @@
+{
+  "critic": "bar-critic",
+  "date": "2026-08-06",
+  "artifact": "docs/REFERENCE-IMAGE-REQUEST.md (v2, 24899 bytes, 423 lines, commit 7dbf8b3)",
+  "companion_document": "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-02.md",
+  "previous_review": "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-01.{md,json}",
+  "verdict": "INSUFFICIENT",
+
+  "verdict_summary": "A large, good-faith rewrite: 13 of 17 changes landed, 8 of 14 gates are met, and the two hardest changes (the byte-integrity mandate at §4 and the per-folder count floors with the anti-curation rule at §3) are present and in force. INSUFFICIENT for four reasons, three of them created by the rewrite: (1) §3's interval-run rule now contradicts §4 and §8a and is impossible in three of the six folders — half of every modern folder is specified by a rule the document elsewhere forbids obeying; (2) §8a states no numeric rejection thresholds, defines upscale_test circularly, and the §9 exemplar record carries a nyq_ratio that §8a says is grounds for rejection; (3) §8b was downgraded from a commit gate to a label ('single-source images are kept but flagged'), turning off the only check that catches a competently generated landscape; (4) the §10 stop condition was inverted from an anti-padding abort rule into a completion rule, so nothing now forbids padding a shortfall with degraded copies. All fixes are paragraph-sized; no restructuring is required.",
+
+  "changes_applied": [
+    {
+      "rank": 1,
+      "status": "applied",
+      "evidence": "§4 'File integrity — the single most important section': exact bytes, no conversion/resize/crop/rotation/metadata-stripping, 'follow the original link' with the 4K-downscale-is-supersampling justification, 'curl -O ... never a screenshot of a browser window', no resolution minimum in refs/morrowind/, 'prefer native captures at whatever resolution they were taken. Record the resolution; do not chase it.' SDR-only relocated to §5a and §6. grep confirms 'quality >=90' and '1920x1080 minimum' are both gone.",
+      "note": "Faithful. Two sub-rules dropped: the mechanical bytes_per_pixel < 0.5 recompression test (replaced by the weaker 'if the only available copy is visibly recompressed') and the provenance_chain: rehosted instruction — the field survives orphaned in the §9 exemplar. Restored at RC10."
+    },
+    {
+      "rank": 2,
+      "status": "applied",
+      "evidence": "§3 carries the floor table verbatim (12/12/10/10/8/8 with min distinct games and min distinct locations), the anti-curation paragraph, run-<source-slug>-t<seconds> naming, the \"sampling\" field, and 'refs/morrowind/ is different ... Three to five images per slot'. Priority rule 4: 'Count matters as much as correctness. We estimate 10th/90th percentiles per scene class.' grep: 'two hundred' absent.",
+      "note": "Faithful in text. See new_defect ND1 — the rule as scoped cannot be obeyed by either available route."
+    },
+    {
+      "rank": 3,
+      "status": "partial",
+      "evidence": "§5b 'refs/video/ — short clips, motion only': 4-8 clips, 20-60 s, four clip types as bullets (dolly, stationary, locomotion, melee), 'downloaded as-is (do not re-encode, trim or convert)', the source-preference order, and \"pixel_metrics_valid\": false with the inter-frame-codec justification plus the new sentence that frame-exact temporal calibration is a recorded known limit.",
+      "note": "Substance kept, enforcement thinned. Clip IDs (V1-dolly..V4-combat) dropped, so §10 item 2's per-slot table has nothing to report against; 'no cuts' dropped, so a montage satisfies the dolly clip while being useless for LOD-pop; the required per-clip metadata list reduced to 'source URL and any stated bitrate'. Restored with cut C4 at RC13."
+    },
+    {
+      "rank": 4,
+      "status": "partial",
+      "evidence": "§5a runs REF-M1..M7 then M9..M20. M9 Witcher 3 Crookback Bog, M10 Skyrim Hjaalmarch, M11 Elden Ring Aeonia/Lake of Rot, M12 RDR2 Bayou Nwa, M13 moonlit night, M14 rain/storm, M15 active melee combat, M16 material close-ups (six surfaces named). New M18 (spell/magic VFX) and M20 (heavy fog) are good additions and M18 closes F16.",
+      "note": "Three losses. Horizon Forbidden West dropped (four engines still survive: RAGE / REDengine / Creation / FromSoft, so tolerable). REF-M19 gutted — 'camera low, so one frame contains near water seen steeply and far water at a grazing angle' became 'a shoreline / shallow water edge where water meets land', which is the generic shot the slot existed not to be (RC7). The diffuse/overcast-noon reference lost its slot ID entirely, demoted to a sub-clause inside REF-M3's cell: uncountable, unreportable, uncitable by RI-VIS02's pairing table (RC8)."
+    },
+    {
+      "rank": 5,
+      "status": "applied",
+      "evidence": "Lines 30-53, 'READ THIS EVEN IF YOU READ NOTHING ELSE', ten numbered rules. Sections §1 project / §2 folders / §3 how many / §4 integrity / §5 what to collect / §6 framing / §7 vanilla / §8 verification / §9 manifest / §10 report+commit. Every cross-reference resolves: rule 4->§3, rule 5->§3, rule 6->§7, rule 8->§8; §2 -> §5b/§5c/§5d.",
+      "note": "Faithful. One loss: the triage sentence 'if you run out of time or budget, satisfy rules 1-5 on fewer slots rather than rules 6-10 on more'. Given the scope this run will be partial and the document no longer says what to sacrifice. Restored with an explicit folder priority order at RC5."
+    },
+    {
+      "rank": 6,
+      "status": "partial",
+      "evidence": "§5e runs REF-A1..A17. A9 Velothi/Temple stone (keeps 'the most important row in this table'), A10 flora with at least four images, A11 Bitter Coast as its own slot, A12 the UI, A13 armour/clothing + A14 weapons + A15 books/scrolls/Daedric script (a sensible three-way split of my A12/A13), A16 silt strider, A6 raised to 'at least four separate images'. New A17 (Imperial fort / Census office interior) is a good addition.",
+      "note": "Two rows dropped outright: the dusk-or-night Morrowind exterior and the stilted/waterside settlement. All seventeen A-slots are now daylight, against a palette specification that declares dusk and night targets; and our fen villages are specified as 'stilted lashed' with nothing in the set showing that vocabulary. The Telvanni interior also vanished, so 'three interiors of three vocabularies' rests on A4 + A17 plus a maybe from A7. Restored at RC9."
+    },
+    {
+      "rank": 7,
+      "status": "partial-misses-the-point",
+      "evidence": "§8 'Verification — script first, then eyes'. 8a requires a committed refs/make-manifest.py producing the full field list including has_alpha, jpeg_quality_est, exif_software, exif_datetime, xmp_present, c2pa_present, nyq_ratio, upscale_test, block_score, 'without you typing any of it'. 8c requires three named identifying features with rejection if fewer. 8d is the human look, last. Promotional and photo-mode screening relocated to §5a and §6.",
+      "note": "Misses the point in two places. (a) No numeric thresholds anywhere — 'near zero', 'high' — and upscale_test is defined circularly as 'ratio of high-frequency energy to what the stated resolution implies', which is not an algorithm; the rejection instruction therefore cannot be executed (RC3). (b) 8b turned from a commit gate into a label (see ND4, RC4). Also dropped: upscaler (DLSS/FSR/XeSS) recording, which matters because reconstruction moves nyq_ratio as much as a resize does; and photo_mode / photo_effects_disabled."
+    },
+    {
+      "rank": 8,
+      "status": "applied",
+      "evidence": "§7 'Vanilla-only, and how to tell': V1 no grass, V2 no distant land, V3 no cast shadows, V4 water does not mirror the world, V5 blocky texels, V6 no post effects, V7 plausible resolution — all seven, with \"vanilla_tests\" recording, 'any single failure means modded', both OpenMW engine values, the no-resolution-minimum rule, and the refs/morrowind/unconfirmed/ fallback.",
+      "note": "Faithful. The best-applied change in the document."
+    },
+    {
+      "rank": 9,
+      "status": "applied",
+      "evidence": "§6 'Framing — this decides whether a comparison is fair at all': 16:9, normal FOV, foreground present, sky visible for exteriors, no photo-mode effects, SDR, reject ultrawide/extreme telephoto/top-down or map views, plus 'The light decides the folder, not the slot label. ... Sort by what the image is.'",
+      "note": "Faithful in rules, weakened in record-keeping: aspect_mismatch, foreground_present and sky_visible are gone from §9, so nothing downstream can filter or audit on them. Restored at RC10."
+    },
+    {
+      "rank": 10,
+      "status": "applied",
+      "evidence": "§2 is the layout verbatim — modern/ with all six profile folders plus hud/, morrowind/ with a folder per REF-A slot plus unconfirmed/, anti-generic/, context/, video/, rejected/, MANIFEST.json, ACQUISITION-REPORT.md, make-manifest.py — closing with 'corpus/70-visual/refs/anti/ is reserved for a file our own harness generates. Do not create it and do not write into it.' Matches RI-VIS02's refs/anti/threejs-default.png and RI-VIS03's --anti path.",
+      "note": "Faithful. One omission: LICENCE-NOTE.md is required by §9 but absent from the tree, in a section headed 'use exactly this, invent nothing'. One-line fix at RC14."
+    },
+    {
+      "rank": 11,
+      "status": "applied",
+      "evidence": "§5a REF-M6 row, near verbatim: 'A third-person character seen FROM BEHIND, in the world ... 40-70% of frame height ... Not an equipment-menu render, not a turntable, not a front portrait. At least half this folder must be back or three-quarter-rear views.' with the RI-CAM07 justification.",
+      "note": "Faithful."
+    },
+    {
+      "rank": 12,
+      "status": "applied",
+      "evidence": "§5c 'refs/anti-generic/ — what we must NOT look like': four to six images, all five archetypes retained, 'the thing we measure ourselves away from. Never cited as a target.'",
+      "note": "Faithful. The \"side\": \"anti-generic\" marking was dropped — tolerable since rule 3 makes the folder the enforcement, but the side field in §9 now has no defined vocabulary anywhere in the document. Fixed at RC10."
+    },
+    {
+      "rank": 13,
+      "status": "applied",
+      "evidence": "§5d 'refs/context/ — orientation only, cited by nobody': six to ten ESO Shadowfen/Murkmire screenshots, both arguments intact (not fidelity because a 2014 MMO engine would drag the bands down and hand a builder 'we are within the reference population'; not art direction because ours descends from Morrowind plus our own spec and ESO is somebody else's transposition), ending on 'so we can deliberately not converge on it'.",
+      "note": "Faithful. \"side\": \"context-neither\" and forbidden_for dropped (RC10). Count reduced to four as feasibility cut C3 (RC14)."
+    },
+    {
+      "rank": 14,
+      "status": "partial",
+      "evidence": "§9 carries the record with id, path, slot, side, profile, sampling, game, depicts, identified_by, source_url, source_page, author_or_uploader, corroboration, provenance_chain, capture_date, format, bytes, dimensions, bytes_per_pixel, nyq_ratio, upscale_test, block_score, exif_software, c2pa_present, promotional, has_hud, hdr, modded, vanilla_confidence, vanilla_tests, engine, pixel_metrics_valid, sha256 — headed 'Script-produced numeric fields must come from the script, not from you'. The per-record licence_note was correctly replaced by a single LICENCE-NOTE.md at refs/ root with the copyright position stated once.",
+      "note": "modified_by_me dropped — the one per-file assertion of rule 1 and the cheapest anti-tampering device in the document. Also dropped: has_alpha, jpeg_quality_est, heavily_recompressed, photo_mode, photo_effects_disabled, upscaler, aspect_mismatch, foreground_present, sky_visible. provenance_chain and side both survive in the exemplar with no defining prose anywhere. Restored at RC10."
+    },
+    {
+      "rank": 15,
+      "status": "partial",
+      "evidence": "§10 items 1-5: per-folder count table with PASS/SHORT ('the first thing we will read'), per-slot filled/unfilled table, rejection log keeping my justification verbatim ('This tells us what the internet does not have ... the only artifact that would reveal a systematic degradation problem before we build twelve bands on top of it'), every doubtful image, anything you could not do. Copyright position correctly moved to LICENCE-NOTE.md.",
+      "note": "The stop condition was INVERTED. Rank 15 asked for an abort rule — stop and report rather than pad a shortfall. §10 now reads 'when every folder meets its floor and every slot is filled or reported, stop. Do not keep collecting', which is a completion rule. Nothing forbids padding. §4's 'if a whole folder can only be filled with degraded copies, say so' is a partial substitute and does not cover the case that matters (a quarter of a folder padded). Restored at RC2."
+    },
+    {
+      "rank": 16,
+      "status": "applied",
+      "evidence": "All six cuts made — grep confirms absence of 'two hundred', the q90 clause, 'photo mode is ideal', '-alt1', and the per-record licence_note; capture_date survives as '2019-05 or unknown', i.e. demoted to optional. All three do-not-cuts survive: §1's two-axis explanation with 'Both are fatal. The folders are how we prevent it.', the repo/branch header plus 'Do not modify any file outside corpus/70-visual/refs/', and the closing 'Above all' anti-fabrication paragraph.",
+      "note": "Faithful."
+    },
+    {
+      "rank": 17,
+      "status": "not-applied",
+      "evidence": "corpus/70-visual/RI-VIS02:42 still reads 'Provenance discipline: image files are not vendored into this repo (copyright).' RI-VIS02 still defines only REF-M1..M8 (headings at lines 50, 88, 118, 151, 183, 213, 234, 248); REF-M9..M20 appear nowhere in corpus/70-visual/. `grep -rn \"REF-A[0-9]\" corpus/70-visual/` returns nothing — the entire REF-A series is prompt-invented. RI-VIS02's pairing table (line ~296) still maps combat_midfight -> REF-M6 + REF-M2 and exterior_marsh_noon -> REF-M3.",
+      "note": "Orchestrator-owed, not prompt text, and it does NOT block sending the prompt — Codex reads only the prompt. But items 1-3 must land before anyone reads the delivered set, or the manifest will cite IDs no corpus item defines while sitting in a repo whose own doctrine says these files are not vendored."
+    }
+  ],
+
+  "gates": [
+    {"condition": "G1 byte-integrity mandate; commit exact bytes, no resize either direction, no conversion, no re-encode, no metadata stripping, SDR only, original over re-host; q90 and 1920x1080 clauses gone", "met": true, "note": "§4 plus §5a/§6 for SDR. bytes_per_pixel floor and the rehosted rule dropped; not gating."},
+    {"condition": "G2 per-folder hard floor table (12/12/10/10/8/8) with min distinct games and locations; 'ten beat two hundred' gone", "met": true, "note": "§3, exact."},
+    {"condition": "G3 anti-curation rule: half of each folder interval-sampled, run-<slug>-t<seconds> naming, \"sampling\" field", "met": true, "note": "Present in text but unworkable as scoped — see ND1. Must be limited to the three exterior/interior folders and to native screenshot series."},
+    {"condition": "G4 refs/video/ with dolly, stationary, locomotion and combat clips, every video record pixel_metrics_valid: false", "met": true, "note": "§5b. Clip IDs and 'no cuts' should be restored (ND13) but the gate as written is met."},
+    {"condition": "G5 fidelity slots for diffuse noon, night, falling weather, active combat, >=5 material surfaces, a low shoreline shot with both steep and grazing water in one frame, >=5 wetlands from >=4 engines", "met": false, "note": "Night (M13), weather (M14), combat (M15), materials (M16 names six surfaces) and wetlands (M4/M9/M10/M11/M12 across four engines) all present. Diffuse noon has no slot — it is a sub-clause of M3. The shoreline two-angle requirement is gone from M19."},
+    {"condition": "G6 REF-M6 requires back and three-quarter-rear in-world views and excludes menu renders, character sheets and turntables", "met": true, "note": "§5a REF-M6, near verbatim."},
+    {"condition": "G7 art-direction slots: Velothi stone, >=4 flora, Bitter Coast own slot, the interface, armour/weapons/clothing, silt strider, >=3 interiors of 3 vocabularies, dusk-or-night exterior, stilted settlement, REF-A6 to four creatures", "met": false, "note": "Eight of ten present. The dusk-or-night Morrowind exterior and the stilted/waterside settlement are both absent, and the Telvanni interior was dropped so 'three interiors of three vocabularies' is weakened."},
+    {"condition": "G8 mechanical verification: committed script with stated automatic-rejection thresholds, three-way corroboration, identified_by with three named features, the human look last", "met": false, "note": "Script, fields, identified_by and eyes-last all present. But no numeric thresholds are stated, upscale_test is unimplementable as defined, and corroboration became a label rather than a commit gate with first-party and pre-2023-page removed from the enum."},
+    {"condition": "G9 seven mechanical vanilla tests recorded as vanilla_tests, OpenMW handled, no resolution minimum in that folder", "met": true, "note": "§7, fully."},
+    {"condition": "G10 framing requirements stated plus upscaler recorded plus light-decides-folder", "met": false, "note": "Framing rules and light-decides-folder are present and correct. upscaler is absent from the entire document — DLSS/FSR/XeSS are never mentioned, and reconstruction alters nyq_ratio directly. One-line fix at RC10."},
+    {"condition": "G11 layout uses refs/modern/<profile>/ and refs/morrowind/, reserves refs/anti/, adds anti-generic, context, video, hud, unconfirmed, rejected", "met": true, "note": "§2, exactly, and the reservation matches RI-VIS02/RI-VIS03's actual path."},
+    {"condition": "G12 anti-generic/ and context/ both exist with the side markings and forbidden_for list", "met": true, "note": "Met in substance — both folders exist with the right counts and framing. Not met in marking: neither section instructs any manifest field, and \"side\" has no defined vocabulary. Low risk (rule 3 makes folders the enforcement) but fixed at RC10."},
+    {"condition": "G13 numbered priority block of <=10 rules covering the ten named non-negotiables, with the rest of the document numbered for cross-reference", "met": true, "note": "Lines 30-53; every cross-reference resolves. 'No HUD' migrated out of the ten into §5a/§2 and the triage sentence was cut — restore at RC5."},
+    {"condition": "G14 report requires count-vs-floor table, rejection log, could-not-obtain section, copyright stated once, and the stop condition (report a shortfall rather than pad it)", "met": false, "note": "Items 1-5 and the copyright position are all present. The stop condition is a completion rule, not the anti-padding abort rule that was asked for."}
+  ],
+
+  "gates_summary": {"met": 8, "not_met": 6, "not_met_list": ["G5", "G7", "G8", "G10", "G14"], "partial": ["G12 (substance met, marking not)", "G3 (met but unworkable as scoped)"]},
+
+  "new_defects": [
+    {
+      "id": "ND1",
+      "severity": "critical",
+      "title": "§3's interval-run rule contradicts §4 and §8a, and is impossible in three of the six folders",
+      "detail": "§3 requires at least half of every modern folder (30 of the 60 images) to come from 'one continuous gameplay video or one continuous screenshot series' sampled at fixed intervals. By video: extracting a frame means encoding a new file, which breaks rule 1 and §4, and the frames carry inter-frame codec artefacts that §5b itself declares invalid for texture and anti-aliasing statistics and that §8a would reject on nyq_ratio and block_score — half of every modern folder would be rejected by the prompt's own script. v1's guard sentence ('a still extracted from a clip must never be placed in refs/modern/') was dropped in the rewrite. By screenshot series: an unbiased run cannot produce material_closeup ('one surface filling the frame' is a selected shot by definition), cannot reliably produce character_closeup at >=40% of frame height (over-the-shoulder gameplay puts the character at 25-35%), and cannot be relied on for combat. Four of the eight images in the material_closeup floor are specified as something that does not exist.",
+      "fix": "RC1"
+    },
+    {
+      "id": "ND2",
+      "severity": "high",
+      "title": "The stop condition was inverted; nothing forbids padding a shortfall",
+      "detail": "Rank 15's abort rule became a completion rule. With an over-scoped ask and §8b now permitting uncorroborated images ('kept but flagged'), the cheapest path to a PASS count table is to pad the last slots of each folder with re-hosted, promotional or single-source images. That is precisely the failure BAR-CRITIQUE-IMAGES-01 was written about: a complete-looking set with a degraded quarter we cannot identify afterwards.",
+      "fix": "RC2"
+    },
+    {
+      "id": "ND3",
+      "severity": "high",
+      "title": "§8a states no numeric thresholds, upscale_test is unimplementable, and the §9 exemplar contradicts §8a's own rejection rule",
+      "detail": "'Near zero', 'high' and 'flags an image enlarged' are not thresholds, so 'flag and move to rejected/' cannot be executed. upscale_test is defined as 'ratio of high-frequency energy to what the stated resolution implies', which is circular — the stated resolution implies nothing measurable. And the §9 exemplar, a 2560x1440 PNG at 9.1 bpp (i.e. a pristine file), records nyq_ratio: 0.031, which under §8a ('any with a nyq_ratio near zero in refs/modern/') is grounds for rejection. An agent copying the exemplar produces a manifest its own script disagrees with.",
+      "fix": "RC3"
+    },
+    {
+      "id": "ND4",
+      "severity": "high",
+      "title": "§8b corroboration downgraded from a commit gate to a label",
+      "detail": "v1: first-party / two-hosts / pre-2023-page, and 'an image satisfying none of the three is not committed'. v2: \"two-hosts\" | \"one-host\" | \"none\", and 'single-source images are kept but flagged'. This is the only check in the document that catches a competently generated landscape, because such an image looks correct and has no history — which is exactly what 'corroboration: none' records while still admitting the file. Losing first-party also means a publisher's own store-page screenshot, the best provenance available, must be logged as the weak value one-host.",
+      "fix": "RC4"
+    },
+    {
+      "id": "ND5",
+      "severity": "medium-high",
+      "title": "The triage line was cut from the priority block",
+      "detail": "'If you run out of time or budget, satisfy rules 1-5 on fewer slots rather than rules 6-10 on more' is gone. Given the scope this run will be partial, and the document no longer says what to sacrifice. An agent short on budget will thin every folder evenly — six folders each just under their floor calibrate nothing.",
+      "fix": "RC5"
+    },
+    {
+      "id": "ND6",
+      "severity": "medium",
+      "title": "REF-M17 contradicts its own folder definition",
+      "detail": "§2 defines interior_darkemissive as 'caves and interiors lit mainly by emissive sources'; REF-M17 is 'a cave or ruin interior lit by a daylight shaft'. Only two slots feed a floor of ten, so up to half that folder could be daylight-lit interiors — a different lighting regime inside a per-profile band. It would inflate the p10-p90 spread of M1 and M6 for that profile with variance that has nothing to do with rendering, the exact error §6 forbids one paragraph later.",
+      "fix": "RC6"
+    },
+    {
+      "id": "ND7",
+      "severity": "medium",
+      "title": "REF-M19 lost the clause that justified the slot",
+      "detail": "'A shoreline / shallow water edge where water meets land' is a photograph anyone would take. The slot existed because the water metric compares grazing-angle and steep-downward water inside a single frame, which requires a low camera close to the surface. As written M19 duplicates M4 with less mist.",
+      "fix": "RC7"
+    },
+    {
+      "id": "ND8",
+      "severity": "medium",
+      "title": "The diffuse/overcast-noon reference has no slot ID",
+      "detail": "Folded into REF-M3's cell as 'Also get an overcast-noon Skyrim exterior'. It cannot be counted in §10's per-slot table, cannot be reported unfilled, and cannot be cited by RI-VIS02's pairing table for exterior_marsh_noon. Overcast noon is our declared default weather — the lighting condition the game spends most of its time in — and it is now a parenthetical inside a row about god rays.",
+      "fix": "RC8"
+    },
+    {
+      "id": "ND9",
+      "severity": "medium",
+      "title": "Two art-direction rows dropped; the Morrowind set is now entirely daylight",
+      "detail": "The dusk/night exterior (RI-VIS05 §C declares dusk and night colour targets, which now have nothing to anchor them) and the stilted/waterside settlement (our fen villages are specified as 'stilted lashed'; A8's town street does not show it). Two table rows.",
+      "fix": "RC9"
+    },
+    {
+      "id": "ND10",
+      "severity": "medium",
+      "title": "Manifest fields with no defining rule, and rules with no recording field",
+      "detail": "provenance_chain appears once, in the §9 exemplar, with no vocabulary and no rule that produces it — the agent will copy 'original' onto everything. side appears once with one value and no enumeration, and §5c/§5d no longer instruct any marking. modified_by_me is gone, removing the single per-file assertion of rule 1. §6's framing rules and §5a's photo-mode rule are recorded nowhere (aspect_mismatch, foreground_present, sky_visible, photo_mode) so they cannot be audited. upscaler is absent from the entire document, and DLSS/FSR/XeSS reconstruction moves nyq_ratio as much as a resize does.",
+      "fix": "RC10"
+    },
+    {
+      "id": "ND11",
+      "severity": "low",
+      "title": "LICENCE-NOTE.md is required by §9 but missing from §2's tree",
+      "detail": "§2 says 'use exactly this, invent nothing'.",
+      "fix": "RC14"
+    },
+    {
+      "id": "ND12",
+      "severity": "low",
+      "title": "The REF-M8 gap is unexplained",
+      "detail": "The §5a table jumps M7 -> M9. An agent will either renumber to close the gap (breaking every corpus reference to M9+) or invent an M8. The ID belongs to RI-VIS02's generated Three.js anti-reference at refs/anti/threejs-default.png.",
+      "fix": "RC12"
+    },
+    {
+      "id": "ND13",
+      "severity": "low",
+      "title": "Video clips have no IDs, no filename convention, no no-cuts rule and no metadata list",
+      "detail": "§10 item 2 requires a per-slot filled/unfilled table; §5b's bullets are unnumbered, so there is nothing to report against, and the manifest record shape for a video is undefined. Without 'no cuts' a montage satisfies the dolly clip — and a cut is indistinguishable from a pop-in event, which is the only thing that clip measures.",
+      "fix": "RC13"
+    },
+    {
+      "id": "ND14",
+      "severity": "low",
+      "title": "§3's 'pick one continuous series' reads as a conflict with the distinct-games minimum",
+      "detail": "One series per folder plus 'min 3 distinct games / 6 distinct locations' looks impossible on first read. It is not — six run frames from one game's route plus six selected frames from two other games satisfies both — but the agent may abandon one of the two rules rather than see it. One clarifying sentence, folded into RC1.",
+      "fix": "RC1"
+    }
+  ],
+
+  "consistency_check": {
+    "slots_total": "§5a is REF-M1..M7 + M9..M20 = 19 slots; §5e is REF-A1..A17 = 17 slots, contiguous",
+    "every_slot_maps_to_an_existing_folder": true,
+    "slot_distribution_by_profile": {"exterior_daylight": ["M2", "M3", "M7", "M9", "M10", "M12", "M19"], "exterior_lowlight": ["M1", "M4", "M11", "M13", "M14", "M20"], "interior_darkemissive": ["M5", "M17"], "character_closeup": ["M6"], "combat": ["M15", "M18"], "material_closeup": ["M16"]},
+    "floors_sum": 60,
+    "floors_vs_slots_coherent": true,
+    "floors_vs_slots_note": "12/7 slots ~ 1.7 each for daylight, 12/6 = 2 each for lowlight, 10/2 = 5 each for interior, 10 and 8 on the single-slot folders. No floor unreachable, no slot orphaned. §5a's opening sentence sets the right precedence — 'Fill the folder floors in §3. The slots below say what to look for' — and §10's 'every slot is filled or reported' is consistent with it.",
+    "orphaned_slots": [],
+    "unreachable_folders": [],
+    "folder_routes": "six profiles + hud/ from §5a; morrowind/<slot>/ and unconfirmed/ from §5e and §7; anti-generic/ §5c; context/ §5d; video/ §5b; rejected/ §4 and §8a; refs/anti/ correctly reserved and matching RI-VIS02's refs/anti/threejs-default.png",
+    "numeric_incoherences": ["§9 exemplar nyq_ratio 0.031 vs §8a's reject-near-zero rule (ND3)", "the REF-M8 gap is unexplained (ND12)"],
+    "morrowind_count_check": "A6 and A10 say 'at least four images', compatible with §5e's 'three to five per slot'"
+  },
+
+  "feasibility": {
+    "achievable": false,
+    "demand": {"modern_images": 60, "morrowind_images": "51-85 (17 slots x 3-5)", "anti_generic": "4-6", "context": "6-10", "images_total": "121-161", "video_clips": "4-8", "plus": "make-manifest.py implementing FFT, EXIF, C2PA and JPEG quantisation-table analysis; a 130-170-record manifest; a five-section report"},
+    "reasoning": "Every image additionally needs a full-size original located and downloaded, a two-host corroboration search, three named identifying features, and — for the ~50 Morrowind files — seven vanilla tests recorded individually. That is three to five distinct web operations per file, i.e. 400-700 operations, before the script is written. The predicted outcome is a thin version of everything, which is worse than a complete version of the essentials, and worse still here because a folder at 60% of its floor produces a band that looks computed and is not.",
+    "priority_order": [
+      "modern/exterior_daylight — anchors M2, M4, M5, M10 and half of M1/M3; our game is an outdoor game",
+      "modern/exterior_lowlight — anchors M1, M6, M7, M9, M10; our signature scenes live here and dark scenes are where flat shading hides",
+      "anti-generic/ — 4 images, any game, any quality, no corroboration burden, and the only thing that can tell us whether ForbiddenHits > 0.06 is a strict bar or an unreachable one; highest value per unit of effort in the document",
+      "morrowind/ core rows A9, A10, A11, A2, A3, A6, A12 — the seven that carry the transposition chain and the two named failure modes ('the green trap', the xanmeer's ancestry)",
+      "modern/material_closeup — cheap to find, and the blind protocol crops both sides to a subject-neutral surface patch; without it that protocol has nothing to crop",
+      "modern/interior_darkemissive",
+      "modern/character_closeup — expensive (HUD-free rear views are rare) but RI-CAM07 depends on it entirely",
+      "modern/combat — combat_midfight currently has no reference at all; eighth only because HUD-free combat frames are the hardest to find",
+      "video/ — reduce to V1-dolly and V2-static, the two nobody can substitute with a still",
+      "morrowind/ remaining rows A1, A4, A5, A7, A8, A13, A14, A15, A16, A17",
+      "context/ (ESO Shadowfen/Murkmire) — first to go; explicitly cited by nobody"
+    ],
+    "recommended_cuts": [
+      "C1 — Morrowind per-slot count from 3-5 to 2-3, with 4-5 only for A6, A9, A10, A11, A12. Takes that block from 51-85 files to ~40 and puts the surplus where multiple samples buy something. (RC11)",
+      "C2 — corroborate the series, not the frame, for \"sampling\": \"interval-run\" files; one search covering six images instead of six searches. Loses nothing, since frames from one attested album share provenance. (folded into RC4)",
+      "C3 — context/ from 6-10 images down to 4. (RC14)",
+      "C4 — video/ from 4-8 clips to 2 required (V1-dolly, V2-static) plus 2 wanted (V3, V4). (folded into RC13)",
+      "C5 — DO NOT lower the six modern/ floors. They are the only numbers in the document with a statistical justification and lowering them defeats the acquisition. If the agent cannot reach them, the abort rule at RC2 is how we find out honestly."
+    ],
+    "net_after_cuts": "~109 images + 2-4 clips. Large but achievable in one pass by a competent agent, and the priority order protects the outcome if it is not."
+  },
+
+  "remaining_changes": [
+    {
+      "rank": "RC1",
+      "action": "replace",
+      "target": "§3, the paragraph beginning '**The anti-curation rule — read this twice.**' through '...one magnificent one.'; plus priority rule 5",
+      "replacement_text": "**The anti-curation rule — read this twice.** It applies to three folders only: `exterior_daylight`, `exterior_lowlight` and `interior_darkemissive`. In each of those, **at least half** the images must come from an *unbiased run*: pick one continuous **native screenshot series** — a Steam screenshot showcase, an imgur or Flickr album, a gallery upload set from a single play session — and take every Nth image **regardless of whether the frame is attractive**. Skip a sampled image only if it is a menu, cutscene, loading screen, HUD-covered, or almost entirely black. Name these `run-<source-slug>-<index>.<ext>` and set `\"sampling\": \"interval-run\"`. The rest may be deliberately chosen and are marked `\"sampling\": \"selected\"`.\n\n**Never extract a frame from a video into `refs/modern/`.** Extracting a frame means encoding a new file, which breaks §4, and every frame of a compressed video carries codec artefacts that §8a rejects. Video lives in `refs/video/` and is measured for motion only, never for texture, anti-aliasing or colour.\n\n`character_closeup`, `combat` and `material_closeup` are **exempt** from the interval-run rule: an unbiased run cannot produce a surface filling the frame or a character at 40% of frame height. Fill those three deliberately — but spread them across as many games, locations, characters and armour sets as you can. Variety is what the band needs; one game's art director is not a population.\n\nOne series per folder is enough for the run half. The selected half is where the distinct-games and distinct-locations minimums get satisfied: six run frames from one game's route plus six chosen frames from two other games meets 3 games and 6 locations comfortably.\n\nThis exists because the natural instinct — find the most beautiful shot of each place — produces a set of 99th-percentile frames. **We would rather have twelve ordinary frames than one magnificent one.**\n\nAND amend priority rule 5 to read:\n\n5. **Half of each modern *exterior and interior* folder must be interval-sampled from a native screenshot series, not hand-picked, and never cut from a video** (§3). A set of beautiful frames produces a bar nobody can reach, which is a bar everybody ignores.",
+      "why": "ND1 and ND14. Without this, thirty of the sixty modern images are specified by a rule the document elsewhere forbids obeying, and the likeliest resolution — video frame extraction — silently destroys the four hard-fail metrics this acquisition exists to calibrate. This is the one blocking fix."
+    },
+    {
+      "rank": "RC2",
+      "action": "replace",
+      "target": "§10, '**Stop condition:** when every folder meets its floor and every slot is filled or reported, stop. Do not keep collecting.'",
+      "replacement_text": "**Stop conditions — there are two.**\n\n*Completion.* When every folder meets its floor and every slot is filled or reported, stop. Do not keep collecting.\n\n*Abort.* If, after genuine effort, more than half the folders in §3 are below their floor, **stop and report rather than padding the shortfall.** Do not fill the gap with re-hosted, promotional, uncorroborated or visibly recompressed images to make the count table read PASS. A half-filled honest set is repairable — we go and get the rest. A full set with a quarter of it quietly degraded is not, because we will never know which quarter, and every band we compute on top of it will look exactly as legitimate as a real one.",
+      "why": "ND2. Rank 15's abort rule was inverted into a completion rule, removing the only thing that makes an honest shortfall preferable to a padded success."
+    },
+    {
+      "rank": "RC3",
+      "action": "replace",
+      "target": "§8a's nyq_ratio / upscale_test / block_score definitions and the 'Flag and move to rejected/' paragraph; plus the three statistics in the §9 exemplar",
+      "replacement_text": "nyq_ratio        = 2-D FFT of the luminance channel; energy in radial frequency\n                   [0.45,0.50) divided by energy in [0.20,0.45). A native capture\n                   typically lands in 0.05-0.30. **Below 0.02 in refs/modern/ means the\n                   image was downscaled or blurred and its real edge detail is gone.**\nupscale_test     = box-downsample the luminance to 2/3 size, bilinear-upsample it back\n                   to the original size, take the mean absolute difference in 0..1\n                   luminance. A native capture typically lands in 0.01-0.05.\n                   **Below 0.004 means the image carries no detail at its stated\n                   resolution: it was enlarged from a smaller original.**\nblock_score      = mean |horizontal gradient| across 8-pixel-aligned column boundaries\n                   divided by the same across non-aligned boundaries. Native or lightly\n                   compressed: 0.95-1.10. **Above 1.15 means JPEG block artefacts are\n                   visible in the pixels we measure.**\n\nMove to `rejected/`: any file with `upscale_test < 0.004`; any `refs/modern/` file with `nyq_ratio < 0.02`; any file with `block_score > 1.15` (unless nothing better exists for that slot, in which case keep it and set `\"heavily_recompressed\": true`); any file whose `exif_software` names an editor (Photoshop, GIMP, ImageMagick, \"Save for Web\") or a generative tool; any file with `c2pa_present` or AI-generator metadata. Record every rejection and its failing statistic in the rejection log.\n\nIf your environment cannot compute one of these statistics, write `\"unknown\"` in the manifest, say so in the report, and do the human check instead. **Do not estimate a number you did not compute** — an invented `nyq_ratio` is worse than a missing one, because we would trust it.\n\nAND in §9 change `\"nyq_ratio\": 0.031, \"upscale_test\": 0.98, \"block_score\": 0.004,` to:\n\n  \"nyq_ratio\": 0.118, \"upscale_test\": 0.019, \"block_score\": 1.02,",
+      "why": "ND3. As written the rejection instruction cannot be executed, upscale_test cannot be implemented, and the exemplar record is one the script would reject — so an agent copying it produces a manifest at odds with its own script."
+    },
+    {
+      "rank": "RC4",
+      "action": "replace",
+      "target": "all of §8b",
+      "replacement_text": "**8b — Source corroboration.** For every file, one of these three must be true, and you record which one in `\"corroboration\"`:\n\n  - `\"first-party\"` — the source is the publisher, the developer, the official wiki, or the game's own store page;\n  - `\"two-hosts\"` — you found the same image, or the same scene from the same capture, on two independent sites that are not mirrors of each other;\n  - `\"pre-2023-page\"` — the hosting page carries a visible date before 2023-01-01.\n\n**An image satisfying none of the three goes in `rejected/`.** This is the anti-AI-generation check and it is far more reliable than looking at the image, because a competently generated landscape looks completely correct and has no history — which is exactly what \"I could only find it in one place, recently\" means.\n\nFor `\"sampling\": \"interval-run\"` files, corroborate the **series once** and record the same value on every frame taken from it. Do not repeat the search per frame.",
+      "why": "ND4 and feasibility cut C2. 'Kept but flagged' means kept, and the flag is a field nobody downstream is instructed to filter on. The per-series clause saves roughly thirty searches at no cost to provenance."
+    },
+    {
+      "rank": "RC5",
+      "action": "add",
+      "target": "immediately after priority rule 10, before the following '---'",
+      "replacement_text": "If you run out of time or budget, satisfy rules 1-5 on fewer folders rather than rules 6-10 on more. A complete, honest `exterior_daylight` is worth more than six folders at 60%. Folder priority, highest first: `exterior_daylight`, `exterior_lowlight`, `anti-generic/`, the Morrowind rows marked **core** in §5e, `material_closeup`, `interior_darkemissive`, `character_closeup`, `combat`, `video/`, the remaining Morrowind rows, `context/`.",
+      "why": "ND5 and the feasibility ruling. This run will be partial; this is the sentence that decides whether the partial set is usable or six folders of nothing."
+    },
+    {
+      "rank": "RC6",
+      "action": "replace",
+      "target": "the §5a REF-M17 row",
+      "replacement_text": "| `REF-M17` | **A second dark interior lit by emissive sources** — a different game from REF-M5: a torchlit crypt, a forge, a lantern-lit cave, glowing fungus or lava. If a daylight shaft is the dominant light source, the shot is not a dark interior and belongs in `exterior_daylight` | `interior_darkemissive` |",
+      "why": "ND6. The band for this profile is a per-profile band; a daylight-shaft interior belongs to a different lighting population and would widen M1 and M6 with variance that is not about rendering — the error §6 forbids one paragraph later."
+    },
+    {
+      "rank": "RC7",
+      "action": "replace",
+      "target": "the §5a REF-M19 row",
+      "replacement_text": "| `REF-M19` | **Water at a shoreline, camera low and close to the surface**, so that one frame contains both **near water seen steeply from above** and **far water seen at a grazing angle**. Our water metric compares those two regions inside a single frame; a wide vista of a lake cannot supply it | `exterior_daylight` or `exterior_lowlight` |",
+      "why": "ND7. As written M19 is a duplicate of M4 with less mist, and the two-region water comparison has no reference at all."
+    },
+    {
+      "rank": "RC8",
+      "action": "add-and-amend",
+      "target": "a new row at the end of the §5a table; and REF-M3's cell",
+      "replacement_text": "ADD: | `REF-M21` | **A flat, overcast, no-direct-sun exterior at midday**, any of the four games. Deliberately undramatic: no god rays, no low sun, no golden hour | Overcast noon is our declared default weather and every other exterior slot here is dramatic directional sun. Diffuse light is the hardest lighting to fake and we currently have no reference for it at all | `exterior_daylight` |\n\nAMEND REF-M3: delete '**Also get an overcast-noon Skyrim exterior** — overcast is our default weather and this slot is otherwise all dramatic sun' and end the cell with '(this is a directional-light, high-chroma reference; REF-M21 is its diffuse counterpart and both are required)'.",
+      "why": "ND8. A requirement that is not a slot cannot be counted in §10's per-slot table, cannot be reported unfilled, and cannot be paired by RI-VIS02 for exterior_marsh_noon — which is the lighting condition our game spends most of its time in. M21 is used rather than renumbering so no existing ID moves."
+    },
+    {
+      "rank": "RC9",
+      "action": "add-and-amend",
+      "target": "two new rows in the §5e table; and the REF-A4 row",
+      "replacement_text": "ADD:\n| `REF-A18` | **A dusk or night exterior** — any region; moons and stars in frame if possible | Our palette specification declares dusk and night colour targets and every other row in this table is daylight. Nothing else in the set can anchor them |\n| `REF-A19` | **A stilted or waterside settlement** — Hla Oad, Vos, Seyda Neen's shacks, or any village built over water | Our fen villages are specified as \"stilted lashed\" and this is the source vocabulary. The town street in REF-A8 does not show it |\n\nAMEND REF-A4:\n| `REF-A4` | **Interiors, at least two of different kinds** — a Dunmer house, shop or temple, *and* a Telvanni tower interior (grown, organic, no right angles): lighting and clutter | Interiors differ by faction and class, and that difference is the property we are copying. One interior cannot show it |",
+      "why": "ND9 and gate G7. All seventeen current A-slots are daylight, against a palette spec with declared dusk and night targets."
+    },
+    {
+      "rank": "RC10",
+      "action": "add",
+      "target": "§4's bullet list; §5a's requirements paragraph; the §9 record and the paragraph beneath it",
+      "replacement_text": "ADD to §4's bullets:\n- **Record how you got it.** `\"provenance_chain\": \"original\"` if you downloaded the file from the page that first published it; `\"rehosted\"` if the only reachable copy was a mirror, a Reddit or imgur re-post, or a wiki upload of somebody else's screenshot. Rehosted files are kept but are not used for band calibration, so mark them honestly.\n\nADD to §5a's requirements paragraph:\nIf a source page or video description says an upscaler was in use (DLSS, FSR, XeSS), prefer a different image — reconstruction invents high-frequency detail, which is exactly what we measure. Either way, record `\"upscaler\": \"dlss\" | \"fsr\" | \"xess\" | \"off\" | \"unknown\"`.\n\nADD to the §9 record:\n  \"modified_by_me\": false,\n  \"upscaler\": \"unknown\",\n  \"photo_mode\": false,\n  \"aspect_mismatch\": false,\n  \"foreground_present\": true,\n  \"sky_visible\": true,\n\nADD beneath the §9 record:\n**`modified_by_me` must be `false` on every record.** If it is ever `true`, say in the report exactly what you did and why — a `true` here means the file cannot be used for measurement.\n\n`\"side\"` is one of `\"modern-fidelity\"`, `\"morrowind-art\"`, `\"anti-generic\"`, `\"context-neither\"`, `\"video\"`, and **must agree with the folder the file is in**. Files in `anti-generic/` and `context/` are never cited as targets by anything: `\"context-neither\"` files additionally carry `\"forbidden_for\": [\"fidelity-bands\", \"art-direction-judgement\", \"blind-pairing\"]`.",
+      "why": "ND10, and gates G10 and G12. Three of these fields are the only machine-readable trace of rules the document states elsewhere; provenance_chain and side are currently orphaned in the exemplar with no defining prose; and upscaler covers the one capture setting that moves nyq_ratio as much as a resize does."
+    },
+    {
+      "rank": "RC11",
+      "action": "replace",
+      "target": "§5e's opening line, '**Three to five images per slot.** No resolution minimum.'",
+      "replacement_text": "**Two to three images per slot.** No resolution minimum. Five slots are **core** and get **four to five** because they carry design language that one or two images cannot demonstrate: **REF-A6** (creatures), **REF-A9** (Velothi stone), **REF-A10** (flora), **REF-A11** (Bitter Coast), **REF-A12** (the UI). If you are running short, fill the core five completely and report the rest thin — do not spread the shortfall evenly.",
+      "why": "Feasibility cut C1. Takes the Morrowind block from 51-85 vanilla-verified files to ~40 and puts the surplus where multiple samples actually buy something. Vanilla-verified Morrowind images at this specificity are the hardest single lift in the document."
+    },
+    {
+      "rank": "RC12",
+      "action": "add",
+      "target": "immediately beneath the §5a slot table",
+      "replacement_text": "**There is deliberately no REF-M8.** That ID belongs to an anti-reference our own harness generates into `refs/anti/`. Do not create it, do not write into `refs/anti/`, and do not renumber this table to close the gap — every ID here is cited by name elsewhere in our corpus.",
+      "why": "ND12. An unexplained gap in a numbered table invites either renumbering (which breaks every corpus reference) or invention."
+    },
+    {
+      "rank": "RC13",
+      "action": "replace",
+      "target": "§5b's four bullets and the 'Prefer, in order' paragraph",
+      "replacement_text": "| Clip | Must contain | What we measure |\n|---|---|---|\n| `V1-dolly` | camera moving forward continuously through open landscape for >= 20 s, **no cuts**, no HUD | LOD pop-in and streaming — a cut is indistinguishable from a pop, so a montage is worthless here |\n| `V2-static` | camera **stationary** for >= 15 s looking at water and vegetation, **no cuts** | temporal variance, wind at more than one frequency, ambient particles |\n| `V3-locomotion` | third-person character walking, running, stopping and turning 180 degrees, seen from behind | foot planting, foot sliding, blend between clips |\n| `V4-combat` | >= 15 s of continuous third-person melee, no cuts | impact, hit reaction, attack commitment, effects |\n\n**V1 and V2 are required. V3 and V4 are wanted; skip them before you skip anything in §5a.** Name files `V1-dolly__<source-slug>.<ext>`. Prefer, in order: a publisher's or developer's own channel; Digital Foundry or a comparable technical channel; a high-bitrate gameplay capture that states its setup. Record `duration_s`, `container`, `video_codec`, `bitrate_kbps`, `fps`, `width`, `height`, `source_url`, `uploader`, `game`, and `\"pixel_metrics_valid\": false`.",
+      "why": "ND13 and feasibility cut C4. Without IDs there is nothing for §10's per-slot table to report; without 'no cuts' a montage passes as a dolly clip and measures nothing."
+    },
+    {
+      "rank": "RC14",
+      "action": "edit",
+      "target": "§2's tree; §5d's opening line",
+      "replacement_text": "§2 — add beneath `make-manifest.py`:\n  LICENCE-NOTE.md            copyright position for every file (§9)\n\n§5d — change '**Six to ten screenshots of The Elder Scrolls Online: Shadowfen and Murkmire.**' to '**Four screenshots of The Elder Scrolls Online: Shadowfen and Murkmire.**'",
+      "why": "ND11 (§2 says 'invent nothing' but §9 requires a file the tree does not list) and feasibility cut C3 (this folder is explicitly cited by nobody and is last in the priority order)."
+    }
+  ],
+
+  "orchestrator_owed_outside_the_prompt": [
+    "RI-VIS02:42 still reads 'Provenance discipline: image files are not vendored into this repo (copyright).' The moment Codex commits, that sentence is false. Amend it to state the new position and point at the refs/ layout.",
+    "RI-VIS02 defines REF-M1..M8 only; REF-M9..M21 exist nowhere in the corpus. `grep -rn \"REF-A[0-9]\" corpus/70-visual/` returns nothing — the entire REF-A series is prompt-invented. Register both series or the delivered manifest cites IDs no item defines.",
+    "RI-VIS02's pairing table still maps combat_midfight -> REF-M6 + REF-M2. Repoint it at REF-M15, and point exterior_marsh_noon at REF-M3 + REF-M21.",
+    "Record in RI-VIS03, RI-VIS08 and RI-CAM07 that M11, M12's TemporalVar, RI-VIS08 §C and RI-CAM07 §C8 cannot be externally calibrated at frame-exact fidelity — §5b now says this on the prompt side and the corpus should agree, so 'uncalibrated' is never mistaken for 'forgotten'.",
+    "RI-CAM07's player_back_closeup / player_front_closeup and RI-VIS08's creature_closeup are still absent from RI-VIS01's fixed eight capture slots, so REF-M6 will have a reference with no counterpart on our side.",
+    "None of these blocks sending the prompt — Codex reads only the prompt — but items 1-3 must land before anyone reads the delivered set."
+  ]
+}

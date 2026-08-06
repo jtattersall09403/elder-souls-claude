@@ -1,0 +1,21 @@
+{
+  "task_id": "uesp-mining",
+  "brief": "orchestration/briefs/uesp-mining.md",
+  "started": "wave-0",
+  "state": "researching",
+  "outputs_expected": [
+    "tools/uesp/uesp-query.mjs",
+    "tools/uesp/uesp-infobox.mjs",
+    "tools/uesp/uesp-stats.mjs",
+    "tools/uesp/README.md",
+    "corpus/60-lore/data/blackmarsh-canon.json",
+    "corpus/60-lore/data/argonian-names.json",
+    "corpus/30-quests/data/morrowind-quest-census.json",
+    "corpus/50-world/data/morrowind-world-census.json",
+    "corpus/00-doctrine/PROVENANCE-UPGRADE-01.md"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read corpus/README.txt, decompress extract to /tmp, survey structure",
+  "notes_for_successor": "Extract must be decompressed to /tmp ONLY (xz -dc). Never into repo."
+}
