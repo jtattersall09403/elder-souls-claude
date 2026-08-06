@@ -1,0 +1,82 @@
+{
+  "tool": "ar3-encounter-test",
+  "runs": {
+    "saxhleel": "20260806T201630Z-wld-dres-raid-road-s1337-a1d11b",
+    "dunmer": "20260806T201639Z-wld-dres-raid-road-s1337-4c4ed2",
+    "khajiit": "20260806T201649Z-wld-dres-raid-road-s1337-23c159"
+  },
+  "results": [
+    {
+      "id": "M8-same-run",
+      "ok": true,
+      "measured": "one seed (1337), one data-tree hash, 1800/1800/1800 frames",
+      "expected": "identical seed, identical data, 1,800 frames each"
+    },
+    {
+      "id": "M8-one-field-apart",
+      "ok": true,
+      "measured": "fields that differ between the three overrides: race",
+      "expected": "exactly one: race"
+    },
+    {
+      "id": "M8-saxhleel-aggro-26m",
+      "ok": true,
+      "measured": "6 AGGRO transitions, distances 27.996, 27.996, 27.972, 27.972, 27.981, 27.981 m",
+      "expected": ">= 1 transition, all at dist_m >= 26"
+    },
+    {
+      "id": "M8-saxhleel-capture",
+      "ok": true,
+      "measured": "net behaviour on the Saxhleel run: capture",
+      "expected": "capture — a defeat here is transport to Archon's holds, not death"
+    },
+    {
+      "id": "M8-dunmer-no-aggro",
+      "ok": true,
+      "measured": "0 AGGRO transitions in 1800 frames",
+      "expected": "zero in 1,800 frames"
+    },
+    {
+      "id": "M8-dunmer-parley",
+      "ok": true,
+      "measured": "1 parley_offer events; kinds: purchase",
+      "expected": ">= 1 parley_offer — it hails you and the parley it offers is a purchase"
+    },
+    {
+      "id": "M8-khajiit-aggro-14m",
+      "ok": false,
+      "measured": "first Khajiit AGGRO at (none)",
+      "expected": "<= 14 m — a Khajiit is worth taking too, without the pretence"
+    },
+    {
+      "id": "M8-khajiit-no-capture",
+      "ok": false,
+      "measured": "Khajiit net behaviour: ",
+      "expected": "not capture"
+    },
+    {
+      "id": "M8-three-behaviours",
+      "ok": true,
+      "measured": "opening signatures: saxhleel=27.996m+0parley  dunmer=no-aggro+1parley  khajiit=no-aggro+0parley",
+      "expected": "three distinct openings — zero behavioural difference makes the AR-3 claim fraudulent"
+    },
+    {
+      "id": "M8-identical-statblocks",
+      "ok": true,
+      "measured": "6 entities per run; statblock/moveset/archetype/tier fingerprints identical across the three runs: true",
+      "expected": "identical — a per-race statblock, moveset or tier is an automatic AR-1 fail"
+    },
+    {
+      "id": "M8-one-moveset-set",
+      "ok": true,
+      "measured": "movesets in play: enemy:inf_trash",
+      "expected": "the same set in all three runs"
+    },
+    {
+      "id": "M8-behaviour-profiles-differ",
+      "ok": true,
+      "measured": "3/3 distinct (events, first-aggro range, net behaviour, parley kind) profiles",
+      "expected": "3 — the same road, the same enemies, three different things happening on it"
+    }
+  ]
+}
