@@ -159,9 +159,19 @@ const passable = new Uint8Array(field.cols * field.rows);
 for (let cz = 0; cz < field.rows; cz++) {
   for (let cx = 0; cx < field.cols; cx++) {
     const x = cx * field.cell + field.cell / 2, z = cz * field.cell + field.cell / 2;
-    if (!field.isLandAt(x, z)) continue;
-    if (field.slopeAt(x, z, 12) > 40) continue;
-    if (field.depthAt(x, z) > 0.95) continue;                  // deeper than W3 is a swim, not a walk
+    // Sub-sample: a 6 m causeway across a channel is a road a player walks and a 25 m raster cell
+    // cannot see. Five probes per cell, and W4 (chest-deep) still counts as walking — W5 is where
+    // your feet leave the bottom.
+    const probes = [[0.5, 0.5], [0.2, 0.2], [0.8, 0.2], [0.2, 0.8], [0.8, 0.8]];
+    let ok = false;
+    for (const [ux, uz] of probes) {
+      const px = cx * field.cell + ux * field.cell, pz = cz * field.cell + uz * field.cell;
+      // Land is not the test — a causeway crosses water and is still a road. Depth is the test.
+      if (field.depthAt(px, pz) > 1.40) continue;
+      if (field.slopeAt(px, pz, 8) > 40) continue;
+      ok = true; break;
+    }
+    if (!ok) continue;
     passable[cz * field.cols + cx] = 1;
   }
 }
@@ -203,8 +213,8 @@ const tideway = roads.legs.find((l) => l.tide_gated);
 let lowMax = 0, highMax = 0;
 if (tideway) {
   for (const [x, z] of tideway.points) {
-    lowMax = Math.max(lowMax, field.depthAt(x, z, 0.0));
-    highMax = Math.max(highMax, field.depthAt(x, z, 0.5));
+    lowMax = Math.max(lowMax, field.depthAt(x, z, 0.75));    // trough of A/2*sin(2*pi*phase)
+    highMax = Math.max(highMax, field.depthAt(x, z, 0.25));   // peak
   }
 }
 check('TIDEWAY-INVERSION', tideway && lowMax <= 0.95 && highMax > 1.40,

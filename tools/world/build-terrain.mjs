@@ -37,6 +37,26 @@ const maskBytes = Buffer.from(mask.bits, 'base64');
 const land = new Uint8Array(COLS * ROWS);
 for (let i = 0; i < COLS * ROWS; i++) land[i] = (maskBytes[i >> 3] >> (i & 7)) & 1;
 
+// A settlement stands on ground. The map's ring marker for Lilmoth sits over the estuary it is
+// built on, so the 25 m segmentation puts the city in the water — and a landmask that says the
+// start town is not land makes the province unwalkable from the first step. Every settlement and
+// minor settlement footprint is therefore land before anything downstream (the coast distance, the
+// region areas, the water solve, the census) reads the mask.
+const PAD_R = { capital: 150, city: 135, town: 105, village: 80 };
+const padSites = [
+  ...Object.values(scale.settlements).map((s) => ({ x: s.x, z: s.z, r: PAD_R[s.tier] })),
+  ...Object.values(scale.minor_settlements).map((s) => ({ x: s.x, z: s.z, r: 40 })),
+];
+let padded = 0;
+for (const p of padSites) {
+  const c0 = Math.max(0, Math.floor((p.x - p.r) / CELL)), c1 = Math.min(COLS - 1, Math.floor((p.x + p.r) / CELL));
+  const z0 = Math.max(0, Math.floor((p.z - p.r) / CELL)), z1 = Math.min(ROWS - 1, Math.floor((p.z + p.r) / CELL));
+  for (let cz = z0; cz <= z1; cz++) for (let cx = c0; cx <= c1; cx++) {
+    if (Math.hypot(cx * CELL + CELL / 2 - p.x, cz * CELL + CELL / 2 - p.z) > p.r) continue;
+    if (!land[cz * COLS + cx]) { land[cz * COLS + cx] = 1; padded++; }
+  }
+}
+
 // ---- signed distance to the coast, metres (positive inland) ----------------------------------
 function edt(pred) {
   const INF = 1e9;
@@ -470,6 +490,11 @@ for (const [name, s] of Object.entries(scale.landmarks)) {
 }
 
 // ---- pack ------------------------------------------------------------------------------------------
+const packBits = (bits) => {
+  const out = new Uint8Array(Math.ceil(bits.length / 8));
+  for (let i = 0; i < bits.length; i++) if (bits[i]) out[i >> 3] |= (1 << (i & 7));
+  return Buffer.from(out).toString('base64');
+};
 const b64 = (typed) => Buffer.from(typed.buffer, typed.byteOffset, typed.byteLength).toString('base64');
 const baseDm = new Int16Array(COLS * ROWS);
 const reliefU = new Uint8Array(COLS * ROWS);
@@ -528,6 +553,7 @@ const doc = {
   sea_reach_m: SEA_REACH,
   elevation_range_m: [+minH.toFixed(1), +maxH.toFixed(1)],
   land_cells: landCells,
+  land_cells_added_by_settlement_pads: padded,
   land_km2: +(landCells * CELL * CELL / 1e6).toFixed(3),
   land_above_sea_km2: +(aboveSea * CELL * CELL / 1e6).toFixed(3),
   frac_land_below_5m: +(below5 / landCells).toFixed(3),
@@ -552,7 +578,7 @@ const doc = {
     base_dm: b64(baseDm), relief: b64(reliefU), ridge: b64(ridgeU), terrace: b64(terrU),
     region: b64(region), substrate: b64(substrate), woff_cm: b64(woffCm), coast16_m: b64(coast16),
     wtop_dm: b64(wtopDm), ocean: b64(oceanCell), chan_noise: b64(chanNoiseU8),
-    sea: b64(seaOf), land: mask.bits,
+    sea: b64(seaOf), land: packBits(land),
   },
 };
 writeFileSync(join(ROOT, 'game/data/world/terrain.json'), JSON.stringify(doc) + '\n');

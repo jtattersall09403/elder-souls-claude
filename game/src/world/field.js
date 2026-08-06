@@ -192,6 +192,11 @@ export class WorldField {
   // ---- water ------------------------------------------------------------------------------
   /** Which sea a point belongs to: 0 none, 1 Topal Bay, 2 the Padomaic. */
   seaAt(x, z) {
+    // A tidal region declares which sea it belongs to (RI-WLD10 §9) and that declaration wins:
+    // the Eastern Rootlands are Padomaic even though they sit in the south-west quadrant of the
+    // box. Open water outside any tidal region falls back to the geographic split.
+    const r = this.regionU[this._cellIndex(x, z)];
+    if (this.tidal[r] && this.seaOfRegion[r]) return this.seaOfRegion[r];
     return (x > 3250 || (x > 2750 && z < 2400)) ? 2 : 1;
   }
 
@@ -201,12 +206,19 @@ export class WorldField {
     return (this.tideRange[sea] / 2) * Math.sin(2 * Math.PI * phase);
   }
 
+  /**
+   * RI-WLD10 §7 gives the surface as `h(t) = A/2 · sin(2π t / 720 s)`, so t = 0 is MID-RISING,
+   * the peak is a quarter of the way through the cycle and the trough three quarters. Naming the
+   * phases off the sine rather than off intuition matters: the first cut called phase 0 "LOW" and
+   * phase 0.5 "HIGH", which are the two points where the tide height is exactly zero — the tideway
+   * measured identical at both and looked like a tide that did not move.
+   */
   tideState(phase = this.tidePhase) {
     const p = ((phase % 1) + 1) % 1;
-    if (p < 0.125 || p >= 0.875) return 'LOW';
-    if (p < 0.375) return 'RISING';
-    if (p < 0.625) return 'HIGH';
-    return 'FALLING';
+    if (p < 0.125 || p >= 0.875) return 'RISING';
+    if (p < 0.375) return 'HIGH';
+    if (p < 0.625) return 'FALLING';
+    return 'LOW';
   }
 
   /**
@@ -232,13 +244,15 @@ export class WorldField {
     }
     const g = this.heightAt(x, z);
     const table = this.baseAt(x, z) + this._bilinear(this.woffI, x, z, 0.01);
-    let surf = table;
-
     const sea = this.seaAt(x, z);
     const tidalHere = this.tidal[r] === 1 || !this.isLandAt(x, z);
     const coast = this.coastDistAt(x, z);
     const damp = tidalHere ? (coast <= 0 ? 1 : 1 - smoothstep(0, this.inlandDamping, coast)) : 0;
     const tide = this.tideHeight(sea, phase) * damp;
+    // The tide moves the standing-water plane too, not only the open sea — otherwise a tidal delta
+    // has a tide on its channels and none on its flats, and the Lilmoth-Archon tideway never
+    // inverts. Amplitude outside a tidal region is exactly 0.00 m (RI-WLD10 §7, checked by M54).
+    let surf = table + tide;
 
     const wt = this._bilinear(this.wtopI, x, z, 0.1);
     if (wt > -300) {

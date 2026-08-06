@@ -184,7 +184,9 @@ for (const leg of scale.roads) {
   let y = p.map(([x, z]) => {
     const surf = field.waterSurfaceAt(x, z, 0);
     const g = field.heightAt(x, z);
-    if (tideway) return (surf === null ? g : surf) - 0.75;
+    // 0.85 m below mean water: at LOW the whole tideway is <= W3 and walkable, at HIGH its deepest
+    // stretch passes 1.41 m and the walk is closed while the barge runs (RI-TRV01, RI-WLD10 M54).
+    if (tideway) return (surf === null ? g : surf) - 0.85;
     return surf === null ? g : Math.max(g, surf + 0.40);
   });
   // Smooth the profile, hold it clear of the water, and cap the grade. A road that a walker
@@ -207,6 +209,8 @@ for (const leg of scale.roads) {
     }
     y = q;
   }
+  // The tideway's elevation IS its identity and the smoothing must not negotiate it away.
+  if (tideway) for (let i = 0; i < y.length; i++) y[i] = (surfAt[i] === null ? field.heightAt(p[i][0], p[i][1]) : surfAt[i]) - 0.85;
   let maxGrade = 0;
   for (let i = 1; i < y.length; i++) {
     const d = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]) || 1;

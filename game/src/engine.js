@@ -1427,7 +1427,7 @@ export class Engine {
    */
   setTide(stateOrPhase) {
     if (!this.field) throw new Error('setTide: no province is loaded');
-    const names = { LOW: 0.0, RISING: 0.25, HIGH: 0.5, FALLING: 0.75 };
+    const names = { RISING: 0.0, HIGH: 0.25, FALLING: 0.5, LOW: 0.75 };   // h = A/2 * sin(2*pi*phase)
     let phase;
     if (typeof stateOrPhase === 'string') {
       if (!(stateOrPhase in names)) throw new Error(`setTide('${stateOrPhase}'): states are ${Object.keys(names).join(', ')}`);
