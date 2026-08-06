@@ -14,8 +14,39 @@
     "corpus/50-world/data/morrowind-world-census.json",
     "corpus/00-doctrine/PROVENANCE-UPGRADE-01.md"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read corpus/README.txt, decompress extract to /tmp, survey structure",
-  "notes_for_successor": "Extract must be decompressed to /tmp ONLY (xz -dc). Never into repo."
+  "outputs_written": [
+    "tools/uesp/uesp-infobox.mjs",
+    "tools/uesp/uesp-query.mjs",
+    "tools/uesp/uesp-stats.mjs",
+    "tools/uesp/README.md",
+    "corpus/30-quests/data/morrowind-quest-census.json",
+    "tools/uesp/mine-quests.mjs",
+    "corpus/50-world/data/morrowind-world-census.json",
+    "tools/uesp/mine-world.mjs"
+  ],
+  "findings": [
+    "Extract decompressed to /tmp/uesp/extract.jsonl (20.7MB, 6299 lines). NEVER into repo.",
+    "Namespaces: Morrowind 3513, Online 1151, Lore 982, Bloodmoon 331, Tribunal 295, Stormhold 25, Arena 2.",
+    "Key templates: Quest Header (489 instances = the quest census spine), Journal Entries (510), NPC Summary (1496), Morrowind Town Table (40 settlements), Faction Summary (27), Online NPC Summary (548), Online Place Summary (193), Lore Entry (834).",
+    "SETTLED RI-QST03 DEBT: Morrowind:Fighters Guild carries a full per-rank requirement table. FG has 10 ranks 0-9 (Associate..Master). Attribute reqs Str/End 30,30,30,30,30,31,32,33,34,35; skill reqs -,10,20,30+2@5,40+2@10,50+2@15,60+2@20,70+2@25,80+2@30,90+2@35. RI-QST01/03's '8-10 ranks' resolves to exactly 10 for FG; RI-QST03's '~33-34 attribute and 70-80 skill ceilings' is WRONG at the top - real ceiling is 35 attribute / 90 skill.",
+    "Quest Header param frequency: description 489, Loc 488, Giver 487, ID 486, Reward 459, Disp 332, Prev 319, Rep 313, Next 307, ReqRank 222, Difficulty 94, SuggLevel 33.",
+    "40 settlement pages carry Morrowind Town Table (incl. Tribunal:Mournhold, Bloodmoon Thirsk/Skaal/Fort Frostmoth/Raven Rock, 3 player strongholds, 3 forts, 4 Ashlander camps).",
+    "QUEST CENSUS DONE: 488 quest pages with {{Quest Header}} (Morrowind base 396, Tribunal 38, Bloodmoon 54).",
+    "RI-QST05 DEBT SETTLED (as far as UESP allows): base-game upper bound completable without a required kill = 264/396 = 66.7%; lower bound (also excluding quests routed through hostile-by-construction locations) = 223/396 = 56.3%. RI-QST05 claimed ~44% with honest range 35-45%. REAL IS ABOUT TWO THIRDS - the corpus UNDER-estimated Morrowind's pacifism by ~20 points.",
+    "Classifier hand-audited twice (30 + 22 quests), 5 then 3 errors found and fixed; residual ~5-10%, errors now bidirectional.",
+    "Per-faction quest PAGE counts (base game): House Redoran 36, Mages Guild 33, Fighters Guild 31, House Hlaalu 31, House Telvanni 29, Imperial Cult 25, Morag Tong 25, Main Quest 23, Thieves Guild 23, Tribunal Temple 23, Imperial Legion 19. RI-QST01's '~23 Thieves Guild quests' CONFIRMED exactly. RI-QST01's '20-30 per line' band is slightly narrow: real range 19-36.",
+    "Pacifist fraction varies hugely BY FACTION: Mages Guild 88%, Thieves Guild 87%, Tribunal Temple 87%, House Hlaalu 77%, House Telvanni 76%, Imperial Legion 68%, Main Quest 65%, House Redoran 64%, Imperial Cult 64%, Fighters Guild 32%, Vampire 29%, Daedric 29%, Morag Tong 24%. This is a design finding: Morrowind buys its pacifism by making whole LINES non-violent, not by giving every quest an alternative.",
+    "RI-QST07 CONTRADICTED: it derives ~139 side quests (~a third of 427). Real: base game 396 pages = 23 main + 275 faction = 298, leaving 98 non-faction/side pages = 24.7%, i.e. about a QUARTER not a third.",
+    "RI-QST08: 263 of 448 quests with a reward field (58.7%) name at least one item in the Reward. That is an UPPER bound on 'unique reward' fraction (some named items are common). RI-QST08's 40% floor is below Morrowind's figure.",
+    "Quest stages: median 4, mean 5.15, max 28 journal indices per quest page. Gold rewards: median 500, min 10, max 693,750 (Tribunal Museum aggregate).",
+    "Gating: 221/488 quests carry a ReqRank, 319 carry a Prev quest, 266 carry a reputation delta, 312 a disposition delta.",
+    "WORLD CENSUS DONE: 40 settlement pages. NPC pages resolved to a settlement: 1048 of 1429 NPC pages.",
+    "RI-WLD03 CHECK - Balmora: 85 named NPC pages (RI-WLD03 cites ~94; close, our count is NPC PAGES so ~10% low is expected). Vivec 187, Ald'ruhn 111, Mournhold 87, Ebonheart 56, Sadrith Mora 53, Gnisis 31, Caldera 29, Suran 26, Seyda Neen 25.",
+    "RI-WLD03 CONTRADICTED on trainers and shops. Its capital target is 5 skill trainers and 7 shops. Real Balmora: 39 NPCs offer training and 36 offer barter (of 85). Vivec: 46 trainers, 67 merchants. Morrowind's service NPCs are UBIQUITOUS, not scarce - a capital target of 5 trainers is an order of magnitude below Morrowind.",
+    "RI-WLD03's '2,824 NPCs on Vvardenfell' cannot be confirmed from the extract: the extract holds 1,429 NPC Summary pages total across Morrowind+Tribunal+Bloodmoon. UESP pages only named NPCs; 2,824 is presumably a Construction Set record count. Flag as unsettled.",
+    "Settlement services listed by UESP Town Table: median 3, max 9 (Balmora and Vivec). Balmora's 9: Alchemist, Blacksmith, Bookseller, Clothier, Enchanter, Pawnbroker, Tavern (3), Trader, Tribunal Temple.",
+    "Interiors with their own Place page: median 5 per settlement, max 15 (Balmora). UESP does not page every house, so this is a FLOOR not a total - RI-WLD03's 26-named-interiors capital target cannot be falsified from UESP."
+  ],
+  "next_step": "mine-blackmarsh.mjs -> corpus/60-lore/data/blackmarsh-canon.json; cross-check vs canon-facts.json",
+  "notes_for_successor": "Toolkit is done and verified. uesp-infobox.mjs exports loadExtract/parseTemplates/findTemplate/sections/wikitables/links/stripWiki. Mining scripts go in tools/uesp/mine-*.mjs so datasets are reproducible."
 }

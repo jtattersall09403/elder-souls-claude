@@ -16,7 +16,11 @@
     "corpus/85-platform/RI-PLT02-memory-and-assets.md",
     "corpus/85-platform/RI-PLT03-load-and-hitches.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/88-journeys/RI-JRN05-save-and-load.md",
+    "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+    "corpus/85-platform/RI-PLT01-frame-budget.md"
+  ],
   "findings": [
     "RI-JRN01 exists and is the shape template: front-matter (id,title,kind,side,judges,provenance,confidence,blind_pair) + blockquote division-of-labour note + 6 mandatory sections. It cites corpus/88-journeys/paths-requested.json which DOES NOT EXIST YET -> I must create it.",
     "RI-JRN01 already declares harness amendments A-JRN1 (real input mode, first_input/first_control events, UI-text stream), A-JRN2 (gamepad shim), A-JRN4 (viewport/orientation). I must keep numbering consistent and extend (A-JRN3, A-JRN5...).",
@@ -26,8 +30,16 @@
     "subsystems.json existing platform.* paths: platform.perf.framerate, platform.perf.memory, platform.load.streaming, platform.input.pipeline, platform.save.persistence, platform.determinism.harness. NO journey.* or input.* paths exist -> all journey.*/input.* are NEW and must be listed in reply + paths-requested.json.",
     "BAR-CRITIQUE-01 Rank 13 = G13: proposes RI-PLT01 judging [platform.perf.framerate, platform.perf.memory], thresholds p50<=16.7ms, p99<=33ms, 0 frames >100ms, heap slope <=2MB/min over 60min, hard fail = sim coupled to render. CRITIC-DOCTRINE \u00a72.4.3 bans 'good for a browser game' unless a platform.* item sets the budget.",
     "ARBITRATION S18 third-person always; S15 gold only currency; S6 death=Souls corpse run but quest/journal/faction state persists (Morrowind owns save-state semantics) -> directly binding on RI-JRN05 and RI-JRN06.",
-    "SCORING.md \u00a71.2: native band sets ladder ceiling; unmeasurable=0 fail-closed."
+    "SCORING.md \u00a71.2: native band sets ladder ceiling; unmeasurable=0 fail-closed.",
+    "W3C Standard Gamepad mapping (canonical-recall, corroborated by w3c.github.io/gamepad + adamjones.me): buttons 0=A 1=B 2=X 3=Y 4=L1 5=R1 6=L2(analog) 7=R2(analog) 8=Back/View 9=Start/Menu 10=L3 11=R3 12=DUp 13=DDown 14=DLeft 15=DRight 16=Guide(optional); axes 0=LX 1=LY 2=RX 3=RY, buttons [0..1], axes [-1..1], gamepad.mapping==='standard'.",
+    "GameSir X2s Type-C (community-data): telescopic USB-C wired, 16-input twin-stick asymmetric layout, Hall-effect sticks AND Hall-effect analog triggers (256-level), microswitch shoulders, hair-trigger mode via Capture+LT/RT held 2s. Type-C model is wired (low latency). Defaults on Android to a DualSense-like HID mode with a switchable user-mapping mode. Sources: slashgear.com/1546147, gamesir.com/products/gamesir-x2s, laptopmag review, techradar review, manuals.plus x2s manual.",
+    "CONSEQUENCE: because the X2s can enumerate as DualSense-like HID, mapping!=='standard' is a REAL failure mode -> RI-JRN04 must specify a fallback remap path keyed on gamepad.id, not assume standard mapping.",
+    "Chrome/Android, Samsung Internet and Firefox Android all expose the Gamepad API; controllers commonly do not appear in navigator.getGamepads() until a button is pressed (user-gesture gating) -> a 'no controller detected' screen that appears before first press is a defect.",
+    "Direct WebFetch of w3c.github.io, gamesir.com, manuals.plus all returned 403 as the brief predicted; all X2s facts are from WebSearch result summaries, labelled community-data.",
+    "RULING (RI-JRN05 \u00a7A): IndexedDB = sole authoritative store; localStorage BANNED for save data (allowed only as a <=1KB pointer record); file export/import MANDATORY as the eviction-proof second path; no server. Write protocol = single readwrite IDB txn over blobs+saves+meta with monotonic generation + sha256 digest + A/B double-buffered slots.",
+    "BUTTON MAP DECIDED (RI-JRN04 \u00a7C): souls-default = 5:light 7:heavy(analog,charge>=0.85) 4:block(hold) 6:parry(analog) 1:roll(tap<12f)/sprint(hold>=12f) 0:interact 2:use_item 3:two_hand(hold) 10:jump 11:lock_on 14:swap_left 15:swap_right 9:menu; 12/13/8 reserved; 16 always unbound. souls-handheld profile moves jump->0, interact->3 tap / two_hand->3 hold, keeps 10 as secondary interact. Deadzones: L radial 0.14 in / 0.92 out linear; R 0.10 in, curve m^2.0; triggers T_fire 0.35 T_release 0.20 T_full 0.85 with hysteresis; read .value never .pressed.",
+    "RI-PLT01 ruling: Tier-S (software-valid, scoreable in this container) = draw calls, triangles, programs, materials, state changes, texture/geometry MB, skinned meshes, shadow lights, bytes-allocated-per-sim-step, GC counts+attribution, sim CPU time in calibrated sim_units (render disabled, +/-25% error bar), sim/render decoupling, frame-rate independence, trace determinism. Tier-H (needs real GPU + attested manifest) = fps, p50/p99/p99.9 frame time, worst-frame-in-combat<=33ms, >100ms frames, GC pause DURATION, overdraw/fill, GPU memory, shader compile stalls, compositor, thermals, input-to-photon. Tier-S weight 64 / Tier-H 36; unmeasurable Tier-H stays in denominator (rule T2) so a container-only run caps at 64 -> ladder 5."
   ],
-  "next_step": "WebSearch GameSir X2s Type-C Gamepad API mapping; then write RI-JRN02 first",
+  "next_step": "write RI-JRN03 (desktop controls)",
   "notes_for_successor": ""
 }

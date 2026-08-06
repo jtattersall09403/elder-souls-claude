@@ -4,16 +4,19 @@
   "started": "wave-2",
   "state": "researching",
   "outputs_expected": [
-    "corpus/95-experience/RI-EXP03-session-shape-pacing-curve.md",
+    "corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md",
     "corpus/95-experience/RI-EXP04-novelty-curve.md",
     "corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md",
     "corpus/95-experience/RI-EXP06-permissiveness-budget.md",
-    "corpus/96-composition/RI-CMP01-cross-system-payoff-matrix.md",
-    "corpus/96-composition/RI-CMP02-emergence-fuzzing.md",
-    "corpus/96-composition/RI-CMP03-build-identity-payoff.md",
-    "corpus/96-composition/CROSS-SYSTEM-BUILDER-BRIEF.md"
+    "corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md",
+    "corpus/95-experience/RI-CMP02-emergence-fuzzing.md",
+    "corpus/95-experience/RI-CMP03-build-identity-payoff.md",
+    "corpus/95-experience/CROSS-SYSTEM-BUILDER-BRIEF.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md",
+    "corpus/95-experience/RI-EXP04-novelty-curve.md"
+  ],
   "findings": [
     "PLAYTHROUGH-CRITIC.md \u00a74 ALREADY answers 'how does an agent honestly report on fun': 5 reasons agents can't (no hedonic ground truth, trained agreeableness, confabulation, no scarcity, no body/ears); banned adjective list; Family A revealed preference V1-V6; Family B structural necessity S1-S6 (fail-closed asymmetry); Family C adversarial first-person C1-C6; \u00a74.5 THE SABOTAGE CONTROL SAB-N/E/P/C is the load-bearing answer (instrument validity is empirical, calibration failure => VOID not FAIL). My items must EXTEND this, not restate it: each new RI must name which sabotage detects it and its margin.",
     "RI-EXP01 shape: front-matter + The bar (with one-sentence builder target in blockquote) + The reference artifact (\u00a7A Morrowind table, \u00a7B Dark Souls table, \u00a7C shared derivation, \u00a7D OUR binding table + derived-target metric table + partial order) + Comparison method (numbered steps, real tool paths tools/experience/*.mjs, isolation levels) + Scoring (weight table, native->ladder anchors, numbered hard fails) + How we lose (bulleted, brutal) + Provenance note (says which part is untrustworthy).",
@@ -22,8 +25,14 @@
     "BAR-CRITIQUE Rank2 (G2) numeric proposal for RI-CMP01: >=35% pairs non-none, >=8 fight-boundary-crossing cells, hard fail <4 crossing cells. Rank3 (G3) RI-EXP06: >=12 entries, >=4 systemic, >=2 producing permanent unrecoverable world state; cross-rule: no new anti-exploit hard fail without naming the register entry it does not close.",
     "ARBITRATION AR-3 exists in \u00a73 and explicitly defers to 'the project-level floor in RI-CMP01 (cross-system payoff matrix)' \u2014 I own that floor.",
     "SCORING: native band sets ladder ceiling (meets bar->8, below bar->6, loses->4); hard fail caps item at 2; unmeasurable->0; >=7 needs justification artifact.",
-    "PLAYTHROUGH-CRITIC \u00a72 lists DEAD triggers naming RI-EXP04 (novelty curve) and RI-EXP06 (permissiveness) hard fails \u2014 so my EXP04/EXP06 hard fails are already wave-blocking by charter."
+    "PLAYTHROUGH-CRITIC \u00a72 lists DEAD triggers naming RI-EXP04 (novelty curve) and RI-EXP06 (permissiveness) hard fails \u2014 so my EXP04/EXP06 hard fails are already wave-blocking by charter.",
+    "CORRECTION: all 8 deliverables live in corpus/95-experience/ (brief's deliverable heading says so), NOT a new 96-composition dir.",
+    "subsystems.json has NO experience.* root and NO composition.* root. EXP01/EXP02's judges paths are currently ORPHANS. coherence.systems.composition DOES exist (00-doctrine, critic.coherence) and CMP01 can co-claim it. New roots must be listed in reply, not silently added.",
+    "W1 amendment target: RI-WLD05 line 20 ('>=22 of 30 encounterable in first 30 minutes') and its M24 audit + score table rows at lines 155-157 and the How-we-lose line 168. BAR-CRITIQUE already proposes <=12/30 in first 30 min, >=26/30 by hour 10, no 90-min window after hour 2 with zero firsts, keep M23 >=6-instances.",
+    "Harness amendment needed for pacing histograms: trace events[] closed vocab lacks book_read, barter, menu, craft, parley, crime, travel_node. Name it A-EXP2 (A-EXP1 already claimed by PLAYTHROUGH-CRITIC 5.1).",
+    "RI-EXP03 WRITTEN. Key decisions banked: judges=[experience.session.shape, experience.session.pacing, experience.session.sag]; needs harness amendment A-EXP2 (events: book_read, barter_open/close, menu_open/close, craft, parley, crime_witnessed, travel_node, first_visit); sag contract SAG-1..SAG-7 with SAG-2 (>=6 open threads counted from TRACE KNOWLEDGE STATE not quest files) as the flagship; survival mechanisms SAGSURV-1..4 derived from Morrowind Act II informants (h7-12) and DS post-Lordvessel (h11-16); sabotage = SAB-E, margin entropy >=50%.",
+    "RI-EXP04 WRITTEN. W1 amendment proposal drafted in its section H (proposal only, RI-WLD05 NOT edited): first-30-min <=12 of 30 (was >=22), >=26 by hour 10, 30 by hour 18, LT1 no empty 90-min window after hour 2, keep M23 and the >=8 systemic. Advisory 12-element split named: {1,2,6,12,13,15,18,21,22,25,26,30}. TWO DEFECTS FOUND IN RI-WLD05 (referred, not fixed): (a) the E column ticks sum to 20, not the asserted 22 \u2014 item fails its own threshold by its own table; (b) element 29 'the Hive's chord' is pure audio, unreachable through HARNESS per its own 3 and PLAYTHROUGH-CRITIC 4.7, so permanently unmeasurable yet counted toward the 30 and the 15 systemic."
   ],
-  "next_step": "read BAR-CRITIQUE G1 (2.1-2.3) + wrong bar W1, RI-WLD05, subsystems.json, HARNESS.md, RI-JRN01; then write RI-EXP03 first",
+  "next_step": "write RI-EXP05 endings and the last hour (PONR at >=94% of run, diegetic signalling >=2 channels, 0 modal dialogs; anticlimax operationalised as LOW SPECTACLE + HIGH SPECIFICITY: cutscene<=90s, boss phases<=3, ending text cites >=3 player-specific facts; antagonist_refuted_by_game must be false; blind pair vs Vivec/Dagoth Ur + Gwyn; sabotage SAB-C margin >=70%)",
   "notes_for_successor": "First action taken: status file created before any reading."
 }

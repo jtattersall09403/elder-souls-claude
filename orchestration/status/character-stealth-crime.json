@@ -12,7 +12,7 @@
     "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
     "corpus/23-stealth-crime/RI-CRM02-faction-crime-and-writs.md"
   ],
-  "outputs_written": [],
+  "outputs_written": ["corpus/22-character/RI-CHR02-race-and-standing.md", "corpus/22-character/RI-CHR01-character-creation.md"],
   "findings": [
     "subsystems.json is a LIST of {path,title,arb,area,critic}, 200 entries, version 1. NO character.*, stealth.*, crime.* roots exist yet -> all must be listed in reply as new. Existing adjacent paths I can reuse: world.property.ownership, world.locks.security, progression.build.identity, progression.skill.usegrowth, progression.skill.gating, dialogue.disposition.model, quests.resolution.noncombat, quests.faction.expulsion.",
     "RI-PRG02 stat sheet: 10 attributes VIGOUR/ENDURANCE/STRENGTH/AGILITY/SPEED/WILLPOWER/INTELLECT/HIST-BOND/PERSONALITY/LUCK, all start 10, cap 99. AGILITY governs lockpick tier ceiling, pickpocket, trap disarm. PERSONALITY governs base disposition + prices. Origins in 30-quests may shift +-4 across at most 4 attributes NET ZERO -- character creation must respect that constraint.",
@@ -23,6 +23,6 @@
     "ARBITRATION §1 amended: consequences (crime, witnesses, bounty, faction standing) KEEP ACCRUING MID-FIGHT. S13 parley must exist. S10 you can kill anyone incl. witnesses. S6 death = drop souls, respawn at HEARTH, but quest state/journal/faction standing PERSIST -> bounty must persist across death (it is world/faction state, not soul state).",
     "HARNESS: trace event vocabulary is CLOSED and extensible by amendment. Existing: attack_start hit block parry riposte backstab stagger death roll_start iframe_dodge stamina_spend heal bonfire_rest level_up spawn despawn enemy_state quest_stage journal topic item load. NO stealth/crime events -> I must request amendments (detect_state, crime, bounty, pickpocket, lock, arrest, etc). alert_state IDLE|SUSPICIOUS|SEARCH|AGGRO already exists in enemy frame record -- RI-STL01 can build directly on it."
   ],
-  "next_step": "read argonian dialogue corpus register + RI-WLD03 settlements + RI-PRG05 gold; then write RI-CHR02 first (biggest item)",
+  "next_step": "write RI-CHR03 birthsigns. CHR01 DONE: 8 inputs, 14 classes + custom, 12 questionnaire dilemmas, 540 signatures (10 race x 6 class-family x 3 birthsign-family x 3 upbringing-class), birthsign families must be named Given/Withheld/Turned in CHR03 §2 and CHR03 §5 owns the one-time re-cut at the Helstrom Hist. CHR02 exports: 10 races (Saxhleel, Naga, Dunmer, Imperial, Nord, Breton, Redguard, Khajiit, Orsimer, Bosmer), 12 reaction groups RG-DEEP/ROOT/LUKIUL/NAGA/LEDGER/EMPIRE/DRES/BWC/VAKH/COURT/TOWN/OUTLAW, 4 upbringings interior/lukiul/foreign-born/blackrose (CHR01 owns upbringing), guard lawFactor+suspicion table (CRM01/STL01 consume), raceSurcharge price formula.",
   "notes_for_successor": "Ruling decided: lockpicking keeps NO probability roll (deterministic tier gate + skill-expressive input), consistent with RI-PRG03 method 7. Write items in order CHR02, CHR01, CHR03, STL01, STL02, CRM01, CRM02 -- CHR02 is the AR-3 contributor and most valuable."
 }

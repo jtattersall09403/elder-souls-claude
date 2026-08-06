@@ -11,7 +11,9 @@
     "corpus/25-magic/RI-MAG04-magic-as-quest-solution.md",
     "corpus/25-magic/RI-MAG05-magic-vfx.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/25-magic/RI-MAG01-combat-casting.md"
+  ],
   "findings": [
     "subsystems.json has ONE magic path only: combat.magic.casting (souls, 10-combat, critic.combat). New root magic.* must be requested in reply; taxonomy is append-only, owned by CRT.",
     "RI-PRG02 already fixes the caster stats: WILLPOWER = max Focus (FP) + spell-slot count (slots at WIL 15/25/35/50) + status resist; INTELLECT = Sorcery scaling; HIST-BOND = Root/restoration + Hist-invocation scaling. So the resource is ALREADY named Focus/FP in the corpus -> RI-MAG01 must rule FP, not stamina, and reconcile.",
@@ -27,8 +29,13 @@
     "RI-AI02 telegraph law: hard floor W >= 12 frames for EVERY attack incl. ranged (S6 ranged projectile min W 24f, Tc <= 0.70W with aim lock at Tc). AP6 bans teleport/blink >1.2m in one frame. This binds enemy casters directly.",
     "BAR-CRITIQUE-01 G4 thresholds (binding target): >=40 effects; >=12 effects with an out-of-fight use that changes traversal or quest resolution; hard fail if every effect is damage/heal or if spellmaking absent. Enchant materials never purchasable, never respawn-farmable.",
     "BAR-CRITIQUE-01 G2/AR-3 threshold for RI-CMP01: >=35% of system pairs non-none, >=8 fight-boundary-crossing cells, hard fail below 4. RI-MAG04 is a direct contributor.",
-    "RI-EXP06 (permissiveness budget) does not exist yet; the experience agent owns it. Its rule: >=12 sanctioned breakages, >=4 systemic, >=2 producing permanent unrecoverable world state; no new anti-exploit hard fail without naming the register entry it leaves open."
+    "RI-EXP06 (permissiveness budget) does not exist yet; the experience agent owns it. Its rule: >=12 sanctioned breakages, >=4 systemic, >=2 producing permanent unrecoverable world state; no new anti-exploit hard fail without naming the register entry it leaves open.",
+    "RULING (MAG01, written): resource is Focus AND stamina. Focus = ammunition (WILLPOWER pool 30@WIL10 -> 94@WIL30 soft -> 112@WIL50 -> 124@99), spent frame 1, NEVER regenerates (only HEARTH rest + respawn). Stamina = tempo, flat per class, re-arms CMB03's 42-frame regen delay. Stamina-only rejected (sterile, strands WILLPOWER, kills PRG03 Cost Gate); Focus-only rejected (AR-1: cast+roll in same window).",
+    "MAG01 cast classes ES-CAST/1: CANTRIP 14/3/20=37 stam10 Fx0.50; LIGHT 24/4/28=56 stam16 Fx1.00; HEAVY 36/6/40=82 stam24 Fx2.10 HA f22-42; GREAT 52/8/60=120 stam34 Fx4.40 HA f32-60; RITUAL 150/12/48=210. Ps={15,25,37,53}. Tc=ceil(0.65*startup). Recovery commit constant 0.60 (weapons use 0.45).",
+    "RITUAL class is the S19 enforcement device: Mark/Recall/Intervention are RITUAL, 150f startup, abort on damage/COMBAT/movement input with Focus REFUNDED (only refund case). No 'cannot cast in combat' flag needed - the clock does it.",
+    "Casting input = light/heavy with catalyst in right hand (Souls mapping, no new button). ONE new button requested: spell_cycle. Attuning is HEARTH-only.",
+    "Enchanted items have their OWN charge pool recharged from soul gems -> that is the caster's sustain, which is why enchanting is load-bearing not optional."
   ],
-  "next_step": "read RI-WLD05 (levitation), RI-QST05 + quest.schema.json (for MAG04), RI-VIS01 (bifurcation, for MAG05); then write RI-MAG01",
+  "next_step": "write RI-MAG02 + data/effects.json (>=40 effects, >=12 out-of-fight; levitation + teleport rulings)",
   "notes_for_successor": "Deliverable order chosen: MAG01, MAG02(+data/effects.json), MAG03, MAG04, MAG05. Write each to disk immediately."
 }

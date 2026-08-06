@@ -1,0 +1,29 @@
+{
+  "task_id": "bar-critic-images-03",
+  "brief": "Third review of docs/REFERENCE-IMAGE-REQUEST.md (v3, commit e8c5b13) after RC1-RC14 applied",
+  "started": "wave-3",
+  "state": "complete",
+  "outputs_expected": [
+    "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-03.md",
+    "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-03.json"
+  ],
+  "outputs_written": [
+    "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-03.md",
+    "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-03.json"
+  ],
+  "findings": [
+    "VERDICT: INSUFFICIENT. All 14 RC texts are present, all 14 gates now met, but 5 splice artefacts + 1 loophole remain. Six small literal fixes, no new research.",
+    "SD1 UNTERMINATED CODE FENCE: v3 line 327 opens ``` and the closing fence was deleted by the RC3 splice. Fences are at lines 80,101,327,375(```json),411. Per CommonMark a fence with an info string cannot close a block, so ```json at 375 does not close it -> the block runs 327..411, swallowing 8a's rejection rules, all of 8b, 8c, 8d and the whole 9 exemplar into one code block. Fix: insert a bare ``` line between line 344 and 345.",
+    "SD2 (MATERIAL) 3 vs 5e CONTRADICTION ON MORROWIND COUNT: 3 lines 135-136 still say 'Three to five images per slot' while 5e line 250 (RC11) says 'Two to three images per slot'. RC11 was applied to 5e only. This reverses feasibility cut C1 for any agent that reads 3 first (it is the section headed 'How many'). 19 A-slots x 3-5 = 57-95 files vs the intended 48-67.",
+    "SD3 REF-M21 ROW HAS 4 CELLS in the 3-column 5a table (line 193). GFM truncates excess cells, so the profile cell `exterior_daylight` is dropped on render. Rationale text is sitting in the Profile column.",
+    "SD4 REF-A4/A18/A19 ROWS HAVE 3 CELLS in the 2-column 5e table (lines 257, 271, 272). Rationale cells dropped on render. Lower materiality (5e has no profile column).",
+    "SD5 LOST CROSS-REFERENCE: 3 (RC1) renames interval frames `run-<source-slug>-<index>.<ext>`; 9 line 418 still says `run-<source-slug>-t<seconds>.<ext>`. A screenshot series has no seconds.",
+    "LOOPHOLE (MATERIAL) 11 RUNG 4: 'A frame extracted from video' is still permitted for any slot, which directly contradicts rule 1, rule 5 and 3's new absolute 'Never extract a frame from a video into refs/modern/'. 11 was added in commit b07f064, between v2 and v3, so RC1 never covered it. Chains with 8a's 'unless nothing better exists' escape hatch. Also: no rule says degraded files (pixel_metrics_valid false / heavily_recompressed) are excluded from the 3 floor counts, so a padded folder can read PASS. Also 11 rungs 1-2 are unscoped and would admit a non-Morrowind game into refs/morrowind (partly self-defending via 7).",
+    "GATES: all 14 from critique 01 now met in text (G3 now workable, G5 via REF-M21+REF-M19, G7 via A18/A19/A4, G8 via numeric thresholds + 8b as commit gate, G10 via upscaler, G12 via side vocabulary, G13 via triage sentence, G14 via abort rule).",
+    "CONSISTENCY: 20 M slots (M1-M7, M9-M21), 19 A slots (A1-A19), 4 V clips. No orphan slots, no unreachable folders. Profile distribution vs floors coherent. REF-M8 gap explained by RC12.",
+    "FEASIBILITY: ~116-137 images + 2-4 clips (up from my ~109 estimate because RC9 added A18/A19). Achievable in one pass ONLY if SD2 is fixed; with 3's 3-5 standing it is not.",
+    "DELIVERED: verdict INSUFFICIENT. 14/14 RCs present in text (11 clean, RC8/RC9/RC11 with splice damage, RC1 undermined by 11). 14/14 gates met. Remaining: RC15 code fence, RC16 3 vs 5e Morrowind count, RC17 REF-M21 row cells, RC18 A4/A18/A19 row cells, RC19 filename cross-ref, RC20 11 loophole (3 edits), RC21 rehosted clause (non-gating)."
+  ],
+  "next_step": "none - review delivered. Verdict INSUFFICIENT with 6 gating + 1 non-gating literal fixes (RC15-RC21).",
+  "notes_for_successor": "Do NOT edit docs/REFERENCE-IMAGE-REQUEST.md. SD2 and the 11 rung-4 loophole are the two blocking items; SD1/SD3/SD4/SD5 are mechanical. Note SD3/SD4 were caused by my own RC8/RC9 replacement text, which gave rows with one cell too many for the target tables \u2014 own that in the critique."
+}

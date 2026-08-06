@@ -9,16 +9,23 @@
     "corpus/70-visual/refs/reference-metrics.json",
     "corpus/70-visual/RI-VIS09-reference-image-set.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/70-visual/refs/morrowind/ (73 images across 15 REF-A slots + 2 unconfirmed) - DONE"
+  ],
   "findings": [
     "Disk at start: 23G avail on /, repo 39M.",
     "NETWORK: git clone --depth 1 of arbitrary public GitHub repos WORKS. raw.githubusercontent.com works with curl -L (200 on a real path). objects.githubusercontent.com CONNECTs (404 at root) so release assets may work. BLOCKED at CONNECT (403): codeload.github.com, user-images.githubusercontent.com, staticdelivery.nexusmods.com. media.githubusercontent.com CONNECTs but 404s.",
     "DEAD END: OpenMW/openmw source repo has only 15 images, none are game screenshots (launcher/wizard chrome only). Deleted.",
-    "LEAD: dehero/mwscr - 'Original screenshots and videos from TES III Morrowind. No third-party mods. No color filters. No interface.' Mostly captured in OpenMW = engine:openmw-vanilla-assets, acceptable per REQUEST §7. PRIME Morrowind source.",
+    "LEAD: dehero/mwscr - 'Original screenshots and videos from TES III Morrowind. No third-party mods. No color filters. No interface.' Mostly captured in OpenMW = engine:openmw-vanilla-assets, acceptable per REQUEST \u00a77. PRIME Morrowind source.",
     "LEAD: elfhuo-github/sksebp-og.github.io - Witcher 3 Next-Gen enhancement GitHub Pages site, may hold W3 comparison shots.",
-    "TOOLING NOTE: tools/metrics/image-metrics.mjs only reads PNG (pngjs). JPEG refs must be decoded to PNG in a SCRATCH dir for measurement; originals stay byte-exact per REQUEST §4.",
-    "TOOLING NOTE: image-metrics.mjs metric names do NOT match RI-VIS03 M1-M12 exactly. Mapping: dynamic_range.stops~M1, rms_contrast.local_mean_16px~M2 (16px tiles not 32px), saturation.mean = HSV S not CIELAB C* (M3 not directly comparable), edge_density.frac_above_threshold~M4 ED_1, fft.high_band_ratio~M5 HFR but band is r>0.25 Nyq not [0.20,0.45), flat_shading.flat_tile_frac~M8, sky_gradient~M7."
+    "TOOLING NOTE: tools/metrics/image-metrics.mjs only reads PNG (pngjs). JPEG refs must be decoded to PNG in a SCRATCH dir for measurement; originals stay byte-exact per REQUEST \u00a74.",
+    "TOOLING NOTE: image-metrics.mjs metric names do NOT match RI-VIS03 M1-M12 exactly. Mapping: dynamic_range.stops~M1, rms_contrast.local_mean_16px~M2 (16px tiles not 32px), saturation.mean = HSV S not CIELAB C* (M3 not directly comparable), edge_density.frac_above_threshold~M4 ED_1, fft.high_band_ratio~M5 HFR but band is r>0.25 Nyq not [0.20,0.45), flat_shading.flat_tile_frac~M8, sky_gradient~M7.",
+    "MWSCR RESULT: dehero/mwscr full shallow clone = 70MB. Contains ONLY downscaled AVIF previews: 1002 shots + 143 inbox + 443 trash + 6 wallpapers, ALL <=569x320 px (947 of the shots are exactly 320x320 square crops), 11-70KB each. Originals live on mwscr.dehero.site / Instagram / Telegram - mwscr.dehero.site is BLOCKED (CONNECT 403). So: real vanilla-Morrowind pixels, but thumbnails only. Verified by eye: 2016-11-20-4-aldruhn-under-skar.avif is a genuine in-game render of Skar interior.",
+    "MWSCR filename keyword census (shots+inbox+wallpapers) covers almost every REF-A slot: silt-strider 5, redoran 5, aldruhn 5, telvanni 5, sadrith 6, tel- 21, mushroom 10, dwemer 8, kwama 3, netch 5, guar 22, ashland 6, molag 17, velothi 5, tomb 16, temple 8, bitter-coast 8, vivec 15, balmora 7, suran 14, pelagiad 8, fort 13, census 2, imperial 8, parasol 3.",
+    "PIL 12.3.0 is installed and DECODES AVIF. So avif->png for measurement works (scratch only; originals committed byte-exact).",
+    "NO ffmpeg / imagemagick / vips in container. playwright + pngjs + pixelmatch in tools/node_modules.",
+    "MORROWIND SIDE DONE: 73 AVIF previews from dehero/mwscr placed in refs/morrowind/REF-A1..A17 (A12 UI unfillable - mwscr policy is 'no interface'; A13 armour/clothing has no filename hook and was not filled). 1 rejected (REF-A15 paper-trail, subject too small). 2 Sindorius/morrowind-improved 1920x1080 JPEGs in unconfirmed/ (fail V3/V5 - texture replacer + cast shadows likely). All verified by eye via PIL contact sheets."
   ],
-  "next_step": "clone dehero/mwscr, extract Morrowind slot images",
+  "next_step": "modern-fidelity acquisition: hunt GitHub for current-gen game screenshots",
   "notes_for_successor": "RI-VIS03 exterior_daylight bands to compare against: M1 DR>=0.72 meanYp 0.28-0.58; M2 C_global 0.13-0.28 C_local_med>=0.045; M3 meanC 12-32 chroma_frac>=0.55; M4 ED_1 0.10-0.34; M5 HFR 0.06-0.24 NYQ<=0.18 alpha 1.6-2.6; M8 FS>=0.035 LargestFlat<=0.06 TotalFlat<=0.18."
 }

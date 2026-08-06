@@ -1,0 +1,412 @@
+{
+  "critic": "bar-critic",
+  "date": "2026-08-06",
+  "artifact": "docs/REFERENCE-IMAGE-REQUEST.md (v3, 35754 bytes, 496 lines, commit e8c5b13)",
+  "companion_document": "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-03.md",
+  "previous_reviews": [
+    "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-01.{md,json}",
+    "corpus/00-doctrine/BAR-CRITIQUE-IMAGES-02.{md,json}"
+  ],
+  "verdict": "INSUFFICIENT",
+  "verdict_summary": "All 14 RC changes are present in the text and all 14 gate conditions from critique 01 are now met. Internal consistency passes: 43 reportable slots, no orphan, no unreachable folder. What blocks approval is five splice artefacts left by the scripted application of the edits, and one loophole in a section no RC was aimed at. Two are material: §3 still says 'Three to five images per slot' for Morrowind while §5e says 'Two to three' (RC11 was applied to §5e only), which silently reverses the largest feasibility cut in the document; and §11 rung 4 still authorises extracting a frame from video for any slot, three sections after §3 says 'Never extract a frame from a video into refs/modern/'. The other four are an unterminated code fence that swallows 80 lines including all of §8b/8c/8d, and three tables where a spliced row carries one cell too many (two of those caused by my own replacement text at RC8 and RC9). Six literal edits, no new research required.",
+  "rc_verification": [
+    {
+      "rank": "RC1",
+      "landed": true,
+      "evidence": "§3 L125-133: 'It applies to three folders only: exterior_daylight, exterior_lowlight and interior_darkemissive... pick one continuous **native screenshot series**'. L127: '**Never extract a frame from a video into refs/modern/.**' L129 the three-folder exemption, L131 the one-series clause. Priority rule 5 at L45-46 amended verbatim.",
+      "note": "Clean and complete. Undermined from outside by §11 rung 4 (see RC20). The rename to run-<source-slug>-<index> was not carried into §9 (see RC19)."
+    },
+    {
+      "rank": "RC2",
+      "landed": true,
+      "evidence": "§10 L441-445: '**Stop conditions - there are two.**' / *Completion.* / *Abort.* '...more than half the folders in §3 are below their floor, **stop and report rather than padding the shortfall.**'",
+      "note": "Verbatim. The abort rule is restored correctly."
+    },
+    {
+      "rank": "RC3",
+      "landed": true,
+      "evidence": "§8a L332-344 gives all three definitions with typical bands 0.05-0.30 / 0.01-0.05 / 0.95-1.10 and thresholds 0.02 / 0.004 / 1.15; L346 the rejection paragraph; L348 the do-not-estimate clause; §9 L396 now reads '\"nyq_ratio\": 0.118, \"upscale_test\": 0.019, \"block_score\": 1.02'.",
+      "note": "Content correct and the exemplar now passes its own script. The splice deleted the closing code fence - SD1."
+    },
+    {
+      "rank": "RC4",
+      "landed": true,
+      "evidence": "§8b L350-358: three-value enum first-party / two-hosts / pre-2023-page; '**An image satisfying none of the three goes in rejected/.**'; per-series corroboration clause at L358.",
+      "note": "Verbatim. §8b is a commit gate again rather than a label."
+    },
+    {
+      "rank": "RC5",
+      "landed": true,
+      "evidence": "L56, immediately after rule 10 and before the '---'. Full folder priority ladder, exterior_daylight first, context/ last.",
+      "note": "Verbatim. The cross-reference 'the Morrowind rows marked **core** in §5e' resolves - §5e L250 marks five rows core."
+    },
+    {
+      "rank": "RC6",
+      "landed": true,
+      "evidence": "§5a L189: '**A second dark interior lit by emissive sources** - a different game from REF-M5... If a daylight shaft is the dominant light source, the shot is not a dark interior and belongs in exterior_daylight'.",
+      "note": "Verbatim. The old daylight-shaft wording is gone."
+    },
+    {
+      "rank": "RC7",
+      "landed": true,
+      "evidence": "§5a L191: both regions required in one frame - '**near water seen steeply from above**' and '**far water seen at a grazing angle**'; profile widened to 'exterior_daylight or exterior_lowlight'.",
+      "note": "Verbatim. Both target folders exist, so the widened profile is reachable."
+    },
+    {
+      "rank": "RC8",
+      "landed": "partial",
+      "evidence": "§5a L193 REF-M21 present with the flat-overcast-midday text; REF-M3 at L176 amended to '(this is a directional-light, high-chroma reference; REF-M21 is its diffuse counterpart and both are required)' with the old sub-clause deleted.",
+      "note": "SPLICE DAMAGE SD3: the row carries four cells in a three-column table, so the profile cell 'exterior_daylight' is the one dropped on render. Caused by my own RC8 replacement text, which wrote the rationale as a fourth column the table does not have. Fixed at RC17."
+    },
+    {
+      "rank": "RC9",
+      "landed": "partial",
+      "evidence": "§5e L271 REF-A18 dusk/night, L272 REF-A19 stilted settlement, L257 REF-A4 amended to 'at least two of different kinds ... *and* a Telvanni tower interior'.",
+      "note": "SPLICE DAMAGE SD4: all three rows carry three cells in a two-column table, so the rationale cells drop on render. Caused by my own RC9 replacement text. Fixed at RC18."
+    },
+    {
+      "rank": "RC10",
+      "landed": true,
+      "evidence": "§4 L154 provenance_chain bullet; §5a L204 upscaler paragraph; §9 L402-407 adds modified_by_me, upscaler, photo_mode, aspect_mismatch, foreground_present, sky_visible; L413 the modified_by_me paragraph; L415 the side vocabulary plus forbidden_for.",
+      "note": "All six fields and both paragraphs present and correctly placed. One residual over-strictness in the rehosted clause - RC21, non-gating."
+    },
+    {
+      "rank": "RC11",
+      "landed": "partial",
+      "evidence": "§5e L250: '**Two to three images per slot.** No resolution minimum. Five slots are **core** and get **four to five** ... **REF-A6**, **REF-A9**, **REF-A10**, **REF-A11**, **REF-A12** ... do not spread the shortfall evenly.'",
+      "note": "Verbatim in §5e. SPLICE DAMAGE SD2: §3 L135-136 carries a duplicate statement of the same rule and still says 'Three to five images per slot'. This is the most damaging item in the review - it reverses feasibility cut C1. Fixed at RC16."
+    },
+    {
+      "rank": "RC12",
+      "landed": true,
+      "evidence": "§5a L195, immediately beneath the slot table: '**There is deliberately no REF-M8.**... do not renumber this table to close the gap - every ID here is cited by name elsewhere in our corpus.'",
+      "note": "Verbatim, correctly positioned, and consistent with §2's reservation of refs/anti/ at L103-104."
+    },
+    {
+      "rank": "RC13",
+      "landed": true,
+      "evidence": "§5b L212-217 the four-row clip table with V1-dolly, V2-static, V3-locomotion, V4-combat and every 'no cuts' clause intact; L219 '**V1 and V2 are required. V3 and V4 are wanted; skip them before you skip anything in §5a.**' plus the metadata field list.",
+      "note": "Verbatim. Column count correct here (3/3). The old '4-8 clips, 20-60 seconds each' bullets were removed cleanly. The clip IDs are what let §10's per-slot table report video at all."
+    },
+    {
+      "rank": "RC14",
+      "landed": true,
+      "evidence": "§2 L100 'LICENCE-NOTE.md            copyright position for every file (§9)' aligned beneath make-manifest.py; §5d L237 '**Four screenshots of The Elder Scrolls Online: Shadowfen and Murkmire.**'",
+      "note": "Verbatim. §9 L420's 'A single LICENCE-NOTE.md at refs/ root' now has a matching entry in the tree, closing ND11."
+    }
+  ],
+  "rc_summary": {
+    "present_in_text": 14,
+    "landed_cleanly": 11,
+    "landed_with_splice_damage_to_surroundings": [
+      "RC8",
+      "RC9",
+      "RC11"
+    ],
+    "landed_but_contradicted_by_an_untouched_section": [
+      "RC1"
+    ],
+    "misapplied_in_substance": []
+  },
+  "gates": [
+    {
+      "condition": "G1 byte-integrity mandate; commit exact bytes, no resize either direction, no conversion, no re-encode, no metadata stripping, SDR only, original over re-host; q90 and 1920x1080 clauses gone",
+      "met": true,
+      "note": "§4 L148-161, rule 1 at L34-37, SDR at §5a L200 and §6 L285. provenance_chain (RC10) closes the original-over-re-host half that was dropped in v2."
+    },
+    {
+      "condition": "G2 per-folder hard floor table (12/12/10/10/8/8) with min distinct games and locations",
+      "met": true,
+      "note": "§3 L116-123, exact, 4-column table well formed."
+    },
+    {
+      "condition": "G3 anti-curation rule: half of each folder interval-sampled, run naming, sampling field",
+      "met": true,
+      "note": "§3 L125-133. Was 'met but unworkable as scoped' in review 02; RC1 makes it workable. Naming now disagrees with §9 (SD5) but the rule itself is sound."
+    },
+    {
+      "condition": "G4 refs/video/ with dolly, stationary, locomotion and combat clips, every video record pixel_metrics_valid: false",
+      "met": true,
+      "note": "§5b L212-224. RC13 added the IDs, so §10's per-slot table can report them."
+    },
+    {
+      "condition": "G5 fidelity slots for diffuse noon, night, falling weather, active combat, >=5 material surfaces, a low shoreline shot with both steep and grazing water in one frame, >=5 wetlands from >=4 engines",
+      "met": true,
+      "note": "Diffuse noon = REF-M21 (RC8), the gap that failed this in review 02. Shoreline two-angle = REF-M19 (RC7). Night M13, weather M14, combat M15/M18, materials M16 (six surfaces, floor 8 across 6 locations), wetlands M4/M9/M10/M11/M12 across RAGE, REDengine, Creation and FromSoft."
+    },
+    {
+      "condition": "G6 REF-M6 requires back and three-quarter-rear in-world views and excludes menu renders, character sheets and turntables",
+      "met": true,
+      "note": "§5a L179, unchanged and still correct."
+    },
+    {
+      "condition": "G7 art-direction slots: Velothi stone, >=4 flora, Bitter Coast own slot, the interface, armour/weapons/clothing, silt strider, >=3 interiors of 3 vocabularies, dusk-or-night exterior, stilted settlement, REF-A6 to four creatures",
+      "met": true,
+      "note": "The two absences that failed this in review 02 are filled: REF-A18 dusk/night L271, REF-A19 stilted settlement L272. REF-A4 now demands a Dunmer AND a Telvanni interior, which with REF-A17's Imperial fort gives three vocabularies. A9 L262, A10 L263 (>=4), A11 L264, A12 L265, A13/A14 L266-267, A16 L269, A6 L259 (>=4)."
+    },
+    {
+      "condition": "G8 mechanical verification: committed script with stated automatic-rejection thresholds, three-way corroboration, identified_by with three named features, the human look last",
+      "met": true,
+      "note": "Thresholds at §8a L332-346 are real numbers a script can branch on; upscale_test is now an implementable procedure; §8b restored as a commit gate with all three routes; §8c L360-363; §8d L365-368. The most substantive failure in review 02, fully repaired."
+    },
+    {
+      "condition": "G9 seven mechanical vanilla tests recorded as vanilla_tests, OpenMW handled, no resolution minimum in that folder",
+      "met": true,
+      "note": "§7 L294-318, unchanged."
+    },
+    {
+      "condition": "G10 framing requirements stated plus upscaler recorded plus light-decides-folder",
+      "met": true,
+      "note": "§6 L285-290 framing and 'The light decides the folder, not the slot label'; upscaler at §5a L204 and §9 L403 (RC10). The absence that failed this gate is closed."
+    },
+    {
+      "condition": "G11 layout uses refs/modern/<profile>/ and refs/morrowind/, reserves refs/anti/, adds anti-generic, context, video, hud, unconfirmed, rejected",
+      "met": true,
+      "note": "§2 L80-104, now including LICENCE-NOTE.md."
+    },
+    {
+      "condition": "G12 anti-generic/ and context/ both exist with the side markings and forbidden_for list",
+      "met": true,
+      "note": "Substance at §5c/§5d; the marking that was missing in review 02 is at §9 L415, with the side vocabulary enumerated and required to agree with the folder."
+    },
+    {
+      "condition": "G13 numbered priority block of <=10 rules covering the ten named non-negotiables, with the rest of the document numbered for cross-reference",
+      "met": true,
+      "note": "L32-56. The triage sentence is restored at L56 (RC5). Every § cross-reference in the ten rules resolves to a real section."
+    },
+    {
+      "condition": "G14 report requires count-vs-floor table, rejection log, could-not-obtain section, copyright stated once, and the stop condition (report a shortfall rather than pad it)",
+      "met": true,
+      "note": "§10 L429-445. The abort rule (RC2) is the piece that was inverted in v2."
+    }
+  ],
+  "gates_summary": {
+    "met": 14,
+    "not_met": 0,
+    "not_met_list": [],
+    "note": "All 14 gate conditions from critique 01 and all 14 new defects from critique 02 are addressed in the text of v3. The verdict is INSUFFICIENT for splice damage and for §11, not for a missing requirement."
+  },
+  "splice_damage": [
+    {
+      "id": "SD1",
+      "severity": "high",
+      "kind": "unterminated code fence",
+      "location": "§8a, line 327 opens; no closing fence before line 411",
+      "detail": "Fences in v3 sit at lines 80, 101, 327, 375 (```json) and 411. The RC3 replacement consumed the closing fence that followed the old block_score definition and did not restore it. Under CommonMark/GFM a closing fence may not carry an info string, so ```json at 375 does not close the block. The code block therefore runs 328-410 and swallows §8a's rejection instruction, §8a's do-not-estimate clause, ALL of §8b (the anti-AI commit gate), §8c, §8d, and §9's opening line plus the entire MANIFEST exemplar - rendered as monospace with every ** inert, introduced by the sentence 'It walks every file and produces, per file, without you typing any of it:'. An agent taking that framing at face value reads §8b as a field description rather than a rejection rule.",
+      "fix": "Insert a single line containing exactly ``` between current lines 344 and 345.",
+      "caused_by": "RC3 splice"
+    },
+    {
+      "id": "SD2",
+      "severity": "high",
+      "kind": "section contradicts section / unupdated duplicate rule",
+      "location": "§3 L135-136 vs §5e L250",
+      "detail": "§5e (RC11) says 'Two to three images per slot' with four to five for the five core rows. §3 L135-136 still says 'Three to five images per slot'. RC11 targeted §5e's opening line only, and §3 carries a duplicate statement of the same rule. §3 is the section headed 'How many, and how to choose them', which is where an agent looks for a count. At §3's numbers, 19 slots x 3-5 = 57-95 vanilla-verified files with seven individually recorded vanilla tests each, against §5e's 48-67 - reversing feasibility cut C1, the largest cut in the document, and consuming the budget the priority ladder assigns to material_closeup, interior_darkemissive, character_closeup and combat.",
+      "fix": "Replace §3 L135-136 - see remaining change RC16.",
+      "caused_by": "RC11 applied to one of two locations"
+    },
+    {
+      "id": "SD3",
+      "severity": "medium",
+      "kind": "table column-count mismatch",
+      "location": "§5a L193, REF-M21",
+      "detail": "§5a's table is | Slot | What it shows | Profile | and every row L174-L192 has three cells. L193 has four. GFM truncates cells beyond the header count, so the cell dropped on render is 'exterior_daylight' - the profile, the routing - and the rationale prose sits in the Profile column in its place. REF-M21 becomes the only slot in the table with no folder assignment. Partly self-healing via §6's 'the light decides the folder', but §10's per-slot table and the manifest's profile field both want that value.",
+      "fix": "Replace L193 with a three-cell row - see remaining change RC17.",
+      "caused_by": "my own RC8 replacement text, which wrote the rationale as a fourth column the table does not have"
+    },
+    {
+      "id": "SD4",
+      "severity": "low",
+      "kind": "table column-count mismatch",
+      "location": "§5e L257 (REF-A4), L271 (REF-A18), L272 (REF-A19)",
+      "detail": "§5e's table is | Slot | What it shows | and these three rows carry three cells. The third cell - the rationale - is dropped on render. Nothing load-bearing is lost because §5e has no profile column, but what disappears is precisely the justification for the rows ('nothing else in the set can anchor them', 'the town street in REF-A8 does not show it'), and an agent deciding what to cut when short will cut the row whose reason it cannot see.",
+      "fix": "Replace all three rows with two-cell versions - see remaining change RC18.",
+      "caused_by": "my own RC9 replacement text"
+    },
+    {
+      "id": "SD5",
+      "severity": "low",
+      "kind": "lost cross-reference",
+      "location": "§9 L417-418 vs §3 L125",
+      "detail": "RC1 renamed interval-sampled frames from run-<source-slug>-t<seconds>.<ext> to run-<source-slug>-<index>.<ext>, because a screenshot series has no seconds. §3 L125 carries the new name; §9 L418 still carries the old one. An agent following §9 names a file after a timecode that does not exist for its source.",
+      "fix": "Replace §9 L417-418 - see remaining change RC19.",
+      "caused_by": "RC1 applied to §3 only"
+    }
+  ],
+  "substitution_ladder_review": {
+    "is_a_loophole": true,
+    "why_it_was_missed": "§11 was added in commit b07f064, after review 02 was written and before v3's edits were applied. None of RC1-RC14 was aimed at it, and it was drafted against the looser v2 text that RC1 and RC4 subsequently tightened into absolute rules.",
+    "leaks": [
+      {
+        "id": "L1",
+        "severity": "material",
+        "name": "rung 4 readmits video frames to refs/modern/",
+        "detail": "§11 L469-471 permits 'A frame extracted from video' for any slot, and every §5a slot lands in refs/modern/. This contradicts rule 1 (L34, no re-encode, commit the exact bytes), rule 5 (L45, 'never cut from a video') and §3 L127 ('Never extract a frame from a video into refs/modern/'). Nothing downstream catches it: §8a's block_score > 1.15 rejection carries the escape hatch 'unless nothing better exists for that slot', and rung 4's own precondition is 'only if no still exists', so the two clauses chain and the file is kept; §8b is satisfied by the video channel as 'first-party'. This is exactly ND1/ND14, the defect RC1 exists to close."
+      },
+      {
+        "id": "L2",
+        "severity": "material",
+        "name": "degraded files still count toward the §3 floors",
+        "detail": "Nothing in §3, §10 or §11 excludes a file marked pixel_metrics_valid: false or heavily_recompressed: true from the per-folder count. A folder holding three video frames reports 12 against a floor of 12, §10's count table - 'the first thing we will read' - reads PASS, and the abort rule at RC2 never fires, while the population the band is computed from is 9. Worse than an honest shortfall, because the shortfall becomes invisible."
+      },
+      {
+        "id": "L3",
+        "severity": "moderate",
+        "name": "rungs 1 and 2 are unscoped",
+        "detail": "'Same requirement, different game. The profile matters more than the title' is written for §5a and illustrated with an Elden Ring example, but nothing limits it to REF-M slots. Applied to a REF-A slot it authorises a non-Morrowind image into refs/morrowind/, the axis-mixing failure §1 calls fatal; read strictly it could also admit an older game into refs/modern/. Partly self-defending via §7's vanilla tests (grass, distant land, cast shadows, texture resolution), but 'partly' is not the standard for the rule the folder layout exists to enforce."
+      }
+    ],
+    "does_not_leak": [
+      "Modded Morrowind: barred explicitly at L489, 'Never trade vanilla-ness for image quality in that folder.'",
+      "Uncorroborated images: no rung admits one; rung 5 'leave it empty and say so' is the correct terminal.",
+      "Rehosted images: §11 is silent and does not override §4's provenance_chain rule."
+    ],
+    "fix": "Three edits - see remaining change RC20 (a) rung 4 restricted to refs/morrowind/, anti-generic/ and context/; (b) a scope paragraph after rung 5 stating that the ladder changes the subject and never the standard; (c) a floor-counting paragraph in §3."
+  },
+  "consistency_check": {
+    "slots_total": "§5a is REF-M1..M7 + M9..M21 = 20 slots; §5e is REF-A1..A19 = 19, contiguous; §5b is V1..V4 = 4. 43 reportable slots.",
+    "ref_m8_absent_and_explained": true,
+    "every_slot_maps_to_an_existing_folder": true,
+    "slot_distribution_by_profile": {
+      "exterior_daylight": [
+        "M2",
+        "M3",
+        "M7",
+        "M9",
+        "M10",
+        "M12",
+        "M21",
+        "M19 (or lowlight)"
+      ],
+      "exterior_lowlight": [
+        "M1",
+        "M4",
+        "M11",
+        "M13",
+        "M14",
+        "M20",
+        "M19 (or daylight)"
+      ],
+      "interior_darkemissive": [
+        "M5",
+        "M17"
+      ],
+      "character_closeup": [
+        "M6"
+      ],
+      "combat": [
+        "M15",
+        "M18"
+      ],
+      "material_closeup": [
+        "M16"
+      ]
+    },
+    "floors_sum": 60,
+    "floors_vs_slots_coherent": true,
+    "floors_vs_slots_note": "RC8 added M21 to the folder that already had the most slots and RC7 gave M19 a choice of two; neither creates an unreachable floor or an over-subscribed one. interior_darkemissive remains the tightest at 5 images per slot, and RC6 is what makes that honest - M17 is now genuinely a second dark interior rather than a daylight-shaft cave that would have widened the band with variance that is not about rendering.",
+    "orphaned_slots": [],
+    "unreachable_folders": [],
+    "folder_routes": "six profiles plus hud/ from §5a L199; morrowind/<slot>/ from §5e and unconfirmed/ from §7 L318; rejected/ from §4 L159 and §8a L346; anti-generic/ §5c; context/ §5d; video/ §5b; refs/anti/ correctly reserved and never written.",
+    "every_slot_reportable": "Yes. All 43 have an ID. RC12 means the M8 gap will not read as an omission in §10's per-slot table; RC13 means V1-V4 have names to appear under, which was broken in v2.",
+    "numeric_incoherences": [
+      "RESOLVED: the §9 exemplar's three statistics now sit inside the bands §8a calls native and would pass every §8a rejection.",
+      "OPEN: §3 L135-136 vs §5e L250 give different Morrowind per-slot counts (SD2).",
+      "OPEN: §3 L125 vs §9 L418 give different interval-run filename conventions (SD5)."
+    ],
+    "morrowind_count_check": "REF-A6 and REF-A10 both say 'at least four images' and both are core rows at 4-5, so they are consistent with §5e. REF-A4 needs at least two interiors and is non-core at 2-3, also consistent. All consistent with §5e; none consistent with §3's surviving 3-5."
+  },
+  "feasibility": {
+    "achievable": true,
+    "conditional_on": "SD2 being fixed. As v3 literally reads, with §3 L135 governing, it is NOT achievable.",
+    "demand_as_written_now": {
+      "modern": 60,
+      "morrowind": "57-95 (19 slots x 3-5 per §3)",
+      "anti_generic": "4-6",
+      "context": 4,
+      "images_total": "125-165",
+      "video": "2 required + 2 wanted"
+    },
+    "demand_with_sd2_fixed": {
+      "modern": 60,
+      "morrowind": "48-67 (14 non-core x 2-3, 5 core x 4-5)",
+      "anti_generic": "4-6",
+      "context": 4,
+      "images_total": "116-137",
+      "video": "2 required + 2 wanted"
+    },
+    "notes": [
+      "Review 02 projected ~109 after cuts. The real figure is higher because RC9 added two Morrowind slots that were not in that arithmetic - a cost I asked for knowingly and the right trade, since A18 and A19 are the only anchors for the declared dusk/night palette targets and for the stilted-village vocabulary.",
+      "116-137 with the priority ladder at L56 and the abort rule at §10 is workable in one pass. 125-165 is the same over-ask review 02 ruled infeasible, concentrated in the most expensive block in the document.",
+      "Three things protect a partial run: RC5's folder priority ladder means it is partial in the right order; RC2's abort rule means a run that cannot reach the floors says so instead of padding; RC20(c) means the count table cannot report PASS on a folder padded with unmeasurable files.",
+      "NO FURTHER CUTS RECOMMENDED. Specifically do not lower the six modern floors - they are the only numbers in the document with a statistical justification, and lowering them defeats the acquisition rather than making it cheaper.",
+      "Workload note, not a defect: RC1 requires half of interior_darkemissive (5 images) to come from an interval-sampled native screenshot series, and screenshot albums skew heavily to exteriors, making that the tightest single constraint in §3. Satisfiable - a dungeon or underground run supplies it, and §6's light-decides-folder lets one run's frames distribute across all three interval-sampled folders - but expect it to be the folder that reports short."
+    ]
+  },
+  "remaining_changes": [
+    {
+      "rank": "RC15",
+      "gating": true,
+      "action": "insert",
+      "target": "§8a - a line containing exactly ``` between current lines 344 and 345, i.e. after '                   visible in the pixels we measure.**' and before the blank line preceding 'Move to `rejected/`:'",
+      "replacement_text": "```",
+      "why": "SD1. The RC3 splice consumed the closing code fence. As it stands the block runs from line 328 to line 411 and renders §8a's rejection rules, all of §8b, §8c, §8d and the whole §9 exemplar as the output of a script rather than as instructions."
+    },
+    {
+      "rank": "RC16",
+      "gating": true,
+      "action": "replace",
+      "target": "§3 L135-136, '`refs/morrowind/` is different: it is judged on design language, not statistics. **Three to five\\nimages per slot**, deliberately chosen, is right.'",
+      "replacement_text": "`refs/morrowind/` is different: it is judged on design language, not statistics. **Two to three\nimages per slot** — four to five for the five rows marked **core** in §5e — deliberately chosen,\nis right. §5e is authoritative on those counts; this paragraph only explains why they are smaller\nthan the modern floors.",
+      "why": "SD2. RC11 was applied to §5e only and §3 carries a duplicate statement of the same rule. §3 is the section an agent reads for a count, so as written the largest feasibility cut in the document is reversed and the Morrowind block goes back to 57-95 vanilla-verified files."
+    },
+    {
+      "rank": "RC17",
+      "gating": true,
+      "action": "replace",
+      "target": "§5a L193, the REF-M21 row",
+      "replacement_text": "| `REF-M21` | **A flat, overcast, no-direct-sun exterior at midday**, any of the four games. Deliberately undramatic: no god rays, no low sun, no golden hour. Overcast noon is our declared default weather and every other exterior slot here is dramatic directional sun; diffuse light is the hardest lighting to fake and we currently have no reference for it at all | `exterior_daylight` |",
+      "why": "SD3. Four cells in a three-column table; GFM drops the excess, so the cell lost is the profile `exterior_daylight` and the rationale prose takes its place in the Profile column. My own RC8 text caused it."
+    },
+    {
+      "rank": "RC18",
+      "gating": true,
+      "action": "replace",
+      "target": "§5e L257 (REF-A4), L271 (REF-A18), L272 (REF-A19) - all three rows",
+      "replacement_text": "| `REF-A4` | **Interiors, at least two of different kinds** — a Dunmer house, shop or temple, *and* a Telvanni tower interior (grown, organic, no right angles): lighting and clutter. Interiors differ by faction and class, and that difference is the property we are copying; one interior cannot show it |\n\n| `REF-A18` | **A dusk or night exterior** — any region; moons and stars in frame if possible. Our palette specification declares dusk and night colour targets and every other row in this table is daylight; nothing else in the set can anchor them |\n\n| `REF-A19` | **A stilted or waterside settlement** — Hla Oad, Vos, Seyda Neen's shacks, or any village built over water. Our fen villages are specified as \"stilted lashed\" and this is the source vocabulary; the town street in REF-A8 does not show it |",
+      "why": "SD4. Three cells in a two-column table; the rationale cells drop on render, and they are the reason the rows exist. My own RC9 text caused it. (Rows go back in their existing positions - A4 at 257, A18 and A19 at the end of the table - with no blank lines between them.)"
+    },
+    {
+      "rank": "RC19",
+      "gating": true,
+      "action": "replace",
+      "target": "§9 L417-418, 'Filenames: `REF-M4__rdr2-bluewater-marsh-dawn.png` (double underscore separator), or\\n`run-<source-slug>-t<seconds>.<ext>` for interval-sampled frames.'",
+      "replacement_text": "Filenames: `REF-M4__rdr2-bluewater-marsh-dawn.png` (double underscore separator), or\n`run-<source-slug>-<index>.<ext>` for interval-sampled frames, exactly as named in §3.",
+      "why": "SD5. RC1 renamed these frames because a screenshot series has no seconds; §9 still carries the timecode form. An agent following §9 names a file after a timecode that does not exist for its source."
+    },
+    {
+      "rank": "RC20",
+      "gating": true,
+      "action": "replace-and-add",
+      "target": "(a) §11 rung 4, L469-471; (b) a new paragraph after rung 5 and before '**What we need from you is not a full set'; (c) a new paragraph in §3 immediately beneath the floors table, after L123 and before the anti-curation paragraph",
+      "replacement_text": "(a) REPLACE §11 rung 4:\n\n4. **A frame extracted from video — for `refs/morrowind/`, `anti-generic/` and `context/` only.**\n   **Never for `refs/modern/`.** §3 forbids it absolutely there: extracting a frame encodes a new\n   file, which breaks rule 1 and §4, and every frame of a compressed video carries the codec\n   artefacts §8a rejects. For a REF-M slot, skip this rung and go straight to rung 5. Where it is\n   allowed, mark `\"provenance_chain\": \"video-frame\"` and `\"pixel_metrics_valid\": false` — such a\n   file is usable for composition, palette and design language only.\n\n(b) ADD after rung 5:\n\n**The ladder changes the subject, never the standard.** A substituted file is still subject to §4\n(exact bytes, original rather than re-host), §7 (all seven vanilla tests for anything in\n`refs/morrowind/`), §8a (the same automatic rejections at the same thresholds) and §8b (the same\nthree-way corroboration gate). Rungs 1 and 2 mean a different *current-generation* game for a\nREF-M slot — never an older one — and for a REF-A slot they never mean a game other than\nMorrowind: a REF-A slot that cannot be filled with vanilla Morrowind goes to rung 5, not to\nanother title.\n\n(c) ADD to §3 beneath the floors table:\n\n**Only files with `\"pixel_metrics_valid\": true` count toward these floors.** A video frame, or a\nfile the script kept but marked `\"heavily_recompressed\": true`, may be retained for composition and\ndesign language but does not count toward the number in this table. A folder padded to its floor\nwith files we cannot measure is worse than a folder honestly reported short: the count table in\n§10 reads PASS, the abort rule never fires, and the band computed from it looks exactly like a\nreal one.",
+      "why": "The §11 loophole. Rung 4 as written authorises for every REF-M slot precisely what §3 L127, rule 1 and rule 5 forbid, and the §8a 'unless nothing better exists' escape hatch chains with rung 4's 'only if no still exists' so nothing downstream catches the result. (c) closes the second half of the same problem: without it a folder padded with unmeasurable files reports PASS and the abort rule never fires."
+    },
+    {
+      "rank": "RC21",
+      "gating": false,
+      "action": "replace",
+      "target": "§4 L154, the provenance_chain bullet",
+      "replacement_text": "- **Record how you got it.** `\"provenance_chain\": \"original\"` if you downloaded the file from the\n  page that first published it; `\"rehosted\"` if the only reachable copy was a mirror, a Reddit or\n  imgur re-post, or a wiki upload of somebody else's screenshot. Rehosted copies are acceptable and\n  count toward the §3 floors provided they pass §8a — §8a is what protects calibration, and a\n  re-host that passes it is measurement-identical to the original. Mark them honestly anyway, so we\n  can re-check that subset first if a band later looks strange.",
+      "why": "My own RC10 text said rehosted files 'are not used for band calibration', which is stricter than the rest of the document and stricter than necessary: what threatens calibration is re-encoding and downscaling, and §8a measures both directly. As written it discards usable data for a provenance reason §8a has already settled, and it sits awkwardly beside RC20(c). NON-GATING - the failure mode is losing good data, not admitting bad data - but apply it while you are in the file."
+    }
+  ],
+  "what_is_good_in_v3": [
+    "§8a is now a real specification. upscale_test went from a circular sentence to a procedure implementable in six lines of numpy, with a typical band and a threshold. The hardest single change asked for, and it landed exactly.",
+    "§8b is a commit gate again, with three routes rather than one, and the per-series clause removes roughly thirty redundant searches without weakening provenance at all.",
+    "RC1 solved a problem I posed badly. I identified that the anti-curation rule was unobeyable; the resolution - scope it to three folders, require native screenshot series, exempt the three folders where an unbiased run is incoherent, forbid video frames outright - is cleaner than the constraint I described.",
+    "The priority ladder at L56 and the abort rule at §10 are together what make a partial run a usable result rather than a wasted one.",
+    "RC12's paragraph on the deliberate M8 gap prevents a whole class of future damage for two lines of prose."
+  ],
+  "bottom_line": "Six literal edits stand between this document and a green light. Two matter - the Morrowind count contradiction in §3 and §11 rung 4 - and four are splice tidy-up, two of which repair my own replacement text from review 02. Apply RC15-RC21, re-read §3 and §11 side by side once to confirm they agree, and this is ready to run. Nothing left to research and nothing left to argue about."
+}

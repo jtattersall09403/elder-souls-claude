@@ -122,6 +122,13 @@ you happened to find — the same as having no band at all.
 | `combat` | 8 | 2 | 4 |
 | `material_closeup` | 8 | 2 | 6 |
 
+**Only files with `"pixel_metrics_valid": true` count toward these floors.** A video frame, or a
+file the script kept but marked `"heavily_recompressed": true`, may be retained for composition and
+design language but does not count toward the number in this table. A folder padded to its floor
+with files we cannot measure is worse than a folder honestly reported short: the count table in
+§10 reads PASS, the abort rule never fires, and the band computed from it looks exactly like a
+real one.
+
 **The anti-curation rule — read this twice.** It applies to three folders only: `exterior_daylight`, `exterior_lowlight` and `interior_darkemissive`. In each of those, **at least half** the images must come from an *unbiased run*: pick one continuous **native screenshot series** — a Steam screenshot showcase, an imgur or Flickr album, a gallery upload set from a single play session — and take every Nth image **regardless of whether the frame is attractive**. Skip a sampled image only if it is a menu, cutscene, loading screen, HUD-covered, or almost entirely black. Name these `run-<source-slug>-<index>.<ext>` and set `"sampling": "interval-run"`. The rest may be deliberately chosen and are marked `"sampling": "selected"`.
 
 **Never extract a frame from a video into `refs/modern/`.** Extracting a frame means encoding a new file, which breaks §4, and every frame of a compressed video carries codec artefacts that §8a rejects. Video lives in `refs/video/` and is measured for motion only, never for texture, anti-aliasing or colour.
@@ -132,8 +139,10 @@ One series per folder is enough for the run half. The selected half is where the
 
 This exists because the natural instinct — find the most beautiful shot of each place — produces a set of 99th-percentile frames. **We would rather have twelve ordinary frames than one magnificent one.**
 
-`refs/morrowind/` is different: it is judged on design language, not statistics. **Three to five
-images per slot**, deliberately chosen, is right.
+`refs/morrowind/` is different: it is judged on design language, not statistics. **Two to three
+images per slot** — four to five for the five rows marked **core** in §5e — deliberately chosen,
+is right. §5e is authoritative on those counts; this paragraph only explains why they are smaller
+than the modern floors.
 
 ---
 
@@ -151,7 +160,12 @@ reference — it is a measurement of the resizer.
   original" / "full size". A 4K image downscaled to 1080p *is* supersampling and will read as
   better anti-aliasing than the game actually produces.
 - **Downloading is `curl -O` or equivalent, never a screenshot of a browser window.**
-- **Record how you got it.** `"provenance_chain": "original"` if you downloaded the file from the page that first published it; `"rehosted"` if the only reachable copy was a mirror, a Reddit or imgur re-post, or a wiki upload of somebody else's screenshot. Rehosted files are kept but are not used for band calibration, so mark them honestly.
+- **Record how you got it.** `"provenance_chain": "original"` if you downloaded the file from the
+  page that first published it; `"rehosted"` if the only reachable copy was a mirror, a Reddit or
+  imgur re-post, or a wiki upload of somebody else's screenshot. Rehosted copies are acceptable and
+  count toward the §3 floors provided they pass §8a — §8a is what protects calibration, and a
+  re-host that passes it is measurement-identical to the original. Mark them honestly anyway, so we
+  can re-check that subset first if a band later looks strange.
 - **No minimum resolution in `refs/morrowind/`**, and larger is not better there — a 1024×768
   vanilla shot beats a 4K modded one.
 - In `refs/modern/`, prefer native captures at whatever resolution they were taken. Record the
@@ -190,7 +204,7 @@ folder each belongs in. Several slots feed one folder — that is intended.
 | `REF-M18` | **Spell or magic VFX during combat**: particles, emissive, distortion | `combat` |
 | `REF-M19` | **Water at a shoreline, camera low and close to the surface**, so that one frame contains both **near water seen steeply from above** and **far water seen at a grazing angle**. Our water metric compares those two regions inside a single frame; a wide vista of a lake cannot supply it | `exterior_daylight` or `exterior_lowlight` |
 | `REF-M20` | **Heavy fog or mist**, atmospheric depth doing the work | `exterior_lowlight` |
-| `REF-M21` | **A flat, overcast, no-direct-sun exterior at midday**, any of the four games. Deliberately undramatic: no god rays, no low sun, no golden hour | Overcast noon is our declared default weather and every other exterior slot here is dramatic directional sun. Diffuse light is the hardest lighting to fake and we currently have no reference for it at all | `exterior_daylight` |
+| `REF-M21` | **A flat, overcast, no-direct-sun exterior at midday**, any of the four games. Deliberately undramatic: no god rays, no low sun, no golden hour. Overcast noon is our declared default weather and every other exterior slot here is dramatic directional sun; diffuse light is the hardest lighting to fake and we currently have no reference for it at all | `exterior_daylight` |
 
 **There is deliberately no REF-M8.** That ID belongs to an anti-reference our own harness generates into `refs/anti/`. Do not create it, do not write into `refs/anti/`, and do not renumber this table to close the gap — every ID here is cited by name elsewhere in our corpus.
 
@@ -254,7 +268,7 @@ depicted as — **and so we can deliberately not converge on it.**
 | `REF-A1` | Ascadian Isles or Bitter Coast **exterior vista** |
 | `REF-A2` | **Redoran architecture** — the giant crab/shell buildings (Ald'ruhn) |
 | `REF-A3` | **Telvanni architecture** — grown mushroom towers (Sadrith Mora / Tel Vos) |
-| `REF-A4` | **Interiors, at least two of different kinds** — a Dunmer house, shop or temple, *and* a Telvanni tower interior (grown, organic, no right angles): lighting and clutter | Interiors differ by faction and class, and that difference is the property we are copying. One interior cannot show it |
+| `REF-A4` | **Interiors, at least two of different kinds** — a Dunmer house, shop or temple, *and* a Telvanni tower interior (grown, organic, no right angles): lighting and clutter. Interiors differ by faction and class, and that difference is the property we are copying; one interior cannot show it |
 | `REF-A5` | **Ash storm** in the Ashlands / Molag Amur |
 | `REF-A6` | **Creatures, at least four separate images**: cliff racer, netch, kwama, guar |
 | `REF-A7` | **A Dwemer ruin**, interior or exterior |
@@ -268,8 +282,8 @@ depicted as — **and so we can deliberately not converge on it.**
 | `REF-A15` | **Books, scrolls and written pages**, plus Daedric script signage |
 | `REF-A16` | **A silt strider** — the single most recognisable "not generic fantasy" object in the game |
 | `REF-A17` | **An Imperial fort or Census office interior** — the coloniser's architecture beside the natives' |
-| `REF-A18` | **A dusk or night exterior** — any region; moons and stars in frame if possible | Our palette specification declares dusk and night colour targets and every other row in this table is daylight. Nothing else in the set can anchor them |
-| `REF-A19` | **A stilted or waterside settlement** — Hla Oad, Vos, Seyda Neen's shacks, or any village built over water | Our fen villages are specified as "stilted lashed" and this is the source vocabulary. The town street in REF-A8 does not show it |
+| `REF-A18` | **A dusk or night exterior** — any region; moons and stars in frame if possible. Our palette specification declares dusk and night colour targets and every other row in this table is daylight; nothing else in the set can anchor them |
+| `REF-A19` | **A stilted or waterside settlement** — Hla Oad, Vos, Seyda Neen's shacks, or any village built over water. Our fen villages are specified as "stilted lashed" and this is the source vocabulary; the town street in REF-A8 does not show it |
 
 ---
 
@@ -342,6 +356,7 @@ block_score      = mean |horizontal gradient| across 8-pixel-aligned column boun
                    divided by the same across non-aligned boundaries. Native or lightly
                    compressed: 0.95-1.10. **Above 1.15 means JPEG block artefacts are
                    visible in the pixels we measure.**
+```
 
 Move to `rejected/`: any file with `upscale_test < 0.004`; any `refs/modern/` file with `nyq_ratio < 0.02`; any file with `block_score > 1.15` (unless nothing better exists for that slot, in which case keep it and set `"heavily_recompressed": true`); any file whose `exif_software` names an editor (Photoshop, GIMP, ImageMagick, "Save for Web") or a generative tool; any file with `c2pa_present` or AI-generator metadata. Record every rejection and its failing statistic in the rejection log.
 
@@ -415,7 +430,7 @@ One record per file. Script-produced numeric fields must come from the script, n
 `"side"` is one of `"modern-fidelity"`, `"morrowind-art"`, `"anti-generic"`, `"context-neither"`, `"video"`, and **must agree with the folder the file is in**. Files in `anti-generic/` and `context/` are never cited as targets by anything: `"context-neither"` files additionally carry `"forbidden_for": ["fidelity-bands", "art-direction-judgement", "blind-pairing"]`.
 
 Filenames: `REF-M4__rdr2-bluewater-marsh-dawn.png` (double underscore separator), or
-`run-<source-slug>-t<seconds>.<ext>` for interval-sampled frames.
+`run-<source-slug>-<index>.<ext>` for interval-sampled frames, exactly as named in §3.
 
 A single `LICENCE-NOTE.md` at `refs/` root covers copyright for all files — do not repeat a
 licence paragraph per record. It must state plainly: these are screenshots of commercial games,
@@ -466,10 +481,20 @@ that works:
 2. **Same requirement, different location in the same game.** Record it the same way.
 3. **Adjacent conditions.** A dusk marsh instead of a dawn marsh; overcast instead of rain. Record
    what actually differs in `"deviation"`.
-4. **A frame extracted from video.** Only if no still exists. Mark `"provenance_chain":
-   "video-frame"` and `"pixel_metrics_valid": false` — a compressed video frame cannot be used for
-   texture or anti-aliasing statistics, only for composition, palette and design language.
-5. **Leave it empty and say so.** This is a legitimate and final answer.
+4. **A frame extracted from video — for `refs/morrowind/`, `anti-generic/` and `context/` only.**
+   **Never for `refs/modern/`.** §3 forbids it absolutely there: extracting a frame encodes a new
+   file, which breaks rule 1 and §4, and every frame of a compressed video carries the codec
+   artefacts §8a rejects. For a REF-M slot, skip this rung and go straight to rung 5. Where it is
+   allowed, mark `"provenance_chain": "video-frame"` and `"pixel_metrics_valid": false` — such a
+   file is usable for composition, palette and design language only.
+
+**The ladder changes the subject, never the standard.** A substituted file is still subject to §4
+(exact bytes, original rather than re-host), §7 (all seven vanilla tests for anything in
+`refs/morrowind/`), §8a (the same automatic rejections at the same thresholds) and §8b (the same
+three-way corroboration gate). Rungs 1 and 2 mean a different *current-generation* game for a
+REF-M slot — never an older one — and for a REF-A slot they never mean a game other than
+Morrowind: a REF-A slot that cannot be filled with vanilla Morrowind goes to rung 5, not to
+another title.
 
 **What we need from you is not a full set — it is an accurate map of what exists.** For every slot
 you could not fill as written, tell us in the report: what you searched, what you found instead,

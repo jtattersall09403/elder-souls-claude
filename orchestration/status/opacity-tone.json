@@ -7,13 +7,27 @@
   "corpus/50-world/RI-WLD09-opacity-budget.md",
   "corpus/40-dialogue/RI-DLG08-tonal-range-indifference.md"
  ],
- "outputs_written": [],
+ "outputs_written": [
+  "corpus/80-methods/tone-metrics.py"
+ ],
  "findings": [
   "BAR-CRITIQUE-01 gap rank 11 = G11 -> RI-WLD09 (opacity budget). Proposed: register of >=15 unsignposted things, >=3 locations via unobvious route, >=2 quests needing knowledge journal never records, >=5 places world never mentions; >=60% of register undiscovered by 6h first-time player; hard fail on entries merely hidden rather than unexplained. Cross-rule: RI-WLD06 M29 scored only over quest destinations.",
   "BAR-CRITIQUE-01 gap rank 12 = G12 -> RI-DLG08. Proposed 6 registers (deadpan, portentous, petty, cruel, absurd, bureaucratic), 18 exemplars; entropy >=2.0 bits; indifference ratio 0.45-0.75; bathos count >=6; hard fail any register >60%.",
   "W1 (RI-WLD05): critique's own proposed change = <=12 of 30 in first 30 min, >=26 by hour 10, no 90-min window after hour 2 with zero first-time elements; delegate curve to RI-EXP04.",
-  "W2 (RI-WLD02): critique's proposed change = per-region density contract; >=12% of road km with TTNIT >3 min; >=2 regions with median TTNIT >2 min; retain D1/D2 as settled-region thresholds."
+  "W2 (RI-WLD02): critique's proposed change = per-region density contract; >=12% of road km with TTNIT >3 min; >=2 regions with median TTNIT >2 min; retain D1/D2 as settled-region thresholds.",
+  "MEASURED (corpus/40-dialogue/data/morrowind-dialogue.csv.gz, 69,876 rows -> 28,051 distinct texts / 691,257 words after exact-text dedupe): w/entry mean 24.64 median 19; w/sent mean 8.08 sd 5.90 median 7; p90=16 p95=20 p99=28; <=6w 48.1%, 7-12w 34.4%, 13-20w 13.3%, >20w 4.2%, >30w 0.6%.",
+  "MEASURED exclamation: 3.01 '!' per 100 sentences; only 5.18% of distinct texts contain any '!'.",
+  "MEASURED player address: 61.09% of distinct texts contain a 2nd-person pronoun; 15.57% contain a %PC* placeholder; 62.77% contain ANY player reference. Structural non-address rate = 0.3723 (distinct) / 0.4054 (row-level). NOTE: BAR-CRITIQUE-01's proposed indifference band 0.45-0.75 uses THIS definition and MORROWIND FAILS IT (0.37). The critique's band is wrong.",
+  "MEASURED 2nd-person tokens 52.69/1k words; %PC placeholders 6.43/1k words.",
+  "MEASURED stance (lexicon cascade, 3 warm tiers / 3 cold tiers): WARM 12.54%, COLD 4.89%, MIXED 0.41%, FLAT 82.16%. Praise-of-player tier (W3) only 1.58%. Gratitude tier 3.20%. Service-courtesy tier 8.43%. => AFFIRMATION RATE 0.1254, INDIFFERENCE RATIO (1-affirmation) = 0.8746, FRICTION RATE 0.0489. Over player-directed texts only: WARM 19.44%, COLD 6.66%, FLAT 73.29%, IR 0.8056.",
+  "MEASURED subordination: 14.36% of sentences carry >=1 subordinator/relativiser; 0.163 subordinators per sentence; 20.10 per 1k words; 0.459 commas per sentence; 0.68 semicolons per 1k words. Morrowind is PARATACTIC, not subordinating.",
+  "MEASURED adjective proxy (suffix+closed-list heuristic) 4.65 per 100 words. Contractions 35.05/1k words, 44.3% of texts contain one -- Morrowind is NOT uniformly over-formal.",
+  "MEASURED modern idiom: NOT zero. 921 hits / 13.32 per 10k words across a 41-probe list. 'okay' 262 (249 distinct texts, in Morrowind.esm not just expansions), 'kind of' 183, 'whatever' 83, 'stuff' 79, 'guy' 47, 'yeah' 36. An absolute zero-idiom anti-register bar would fail Morrowind. Must be a calibrated band.",
+  "CORPUS SHAPE: FactionId populated on only 2,204/69,876 rows -> faction-sliced tone stats are thin. Source split: Morrowind 54,524 / Tribunal 9,858 / Bloodmoon 5,053 / entertainers 284 / master_index 84 / Siege at Firemoth 44 / EBQ_Artifact 29. No Topic/DialogueType column exists in the vendored CSV -- greetings cannot be separated from topics.",
+  "WROTE corpus/80-methods/tone-metrics.py -- stdlib-only instrument; `--reference` measures the Morrowind csv.gz, `--ours game/data` harvests every text/body/line/response/entry/greeting/rumour string from game/data/**/*.json, `--lint` exits 1 on anti-register violation.",
+  "CALIBRATION PROOF: `python3 corpus/80-methods/tone-metrics.py --reference --lint` prints 'clean' -- Morrowind PASSES the anti-register lint as tuned. Measured hard-idiom 4.962/10k, quip 0.029/10k, self-aware 0, tutorial 0, chosen-one 11 distinct texts (0.04%).",
+  "Chosen-one deference cannot be a zero bar: Morrowind has 11 such texts ('You are the Prophesied One'), but they are late-main-quest. The bar must be GATED by quest stage, not a count."
  ],
- "next_step": "read RI-WLD06, RI-DLG01..07, subsystems.json, HARNESS.md, SCORING.md; then measure corpus csv.gz",
+ "next_step": "write corpus/40-dialogue/RI-DLG08",
  "notes_for_successor": "Brief closes BAR-CRITIQUE-01 G11 (opacity budget) and G12 (tone existence). Must measure indifference ratio from real corpus csv.gz, not recall."
 }

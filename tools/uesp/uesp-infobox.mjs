@@ -233,7 +233,10 @@ export function stripWiki(text) {
   for (let i = 0; i < 8; i++) {
     const next = s.replace(/\{\{[^{}]*\}\}/g, (m) => {
       // keep the display text of link-ish templates
-      const mm = /^\{\{(?:Lore Link|Place Link|Quest Link|Item Link|Book Link|Effect Link|MW_SkillLink|Small|Nst|nst)\|([^|}]*)/i.exec(m);
+      // keep the visible text of link-ish and inline-value templates. {{Year|2E 560}}
+      // is load-bearing for every dated lore claim, so dropping it silently would
+      // turn "lasting 43 years, from 2E 560 to 2E 603" into "lasting 43 years, from to".
+      const mm = /^\{\{(?:Lore Link|Place Link|Quest Link|Item Link|Book Link|Effect Link|MW_SkillLink|Small|Nst|nst|Year|year|Huh|huh|Sic|sic|Hover)\|([^|}]*)/i.exec(m);
       return mm ? mm[1] : '';
     });
     if (next === s) break;
