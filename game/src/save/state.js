@@ -93,6 +93,25 @@ export function buildSave(sim, build) {
       hearth_last_rested: sim.progression.hearthLastRested,
       upgrades: sortedMap(sim.progression.upgrades),
     },
+    // Seam S19. The commissioned spells are the load-bearing entry: RI-MAG03 M1 requires a
+    // spell the player made to appear in saveState(), because a maker's system whose output
+    // does not survive a save is a preview of a maker's system. `focus` is durable and is NOT
+    // topped up on load — RI-MAG01 §A permits exactly two things to raise it and neither is a
+    // file read.
+    magic: sim.magic ? {
+      focus: r6(sim.magic.focus),
+      attuned: sim.magic.attuned.slice(),
+      catalyst: sim.magic.hasCatalyst ? sim.magic.catalyst : null,
+      known_effects: [...sim.magic.knownEffects].sort(),
+      custom_spells: sim.magic.custom.map((c) => ({
+        id: c.id, name: c.name, class: c.class, range: c.range,
+        effects: c.effects.map((e) => ({ effect: e.effect, magnitude: e.magnitude, duration_s: e.duration_s, area_r_m: e.area_r_m })),
+        focus_base: c.focus_base, tier: c.tier, skill_req: c.skill_req, gold_price: c.gold_price,
+      })),
+      gems: sim.magic.gems.map((g) => ({ grade: g.grade, filled: !!g.filled, charge: g.charge })),
+      xul_hesh: sim.magic.xulHesh,
+      soul_history: [...sim.magic.soulHistory.entries()].sort().map(([k, v]) => ({ instance: k, traps: v })),
+    } : { focus: 0, attuned: [], catalyst: null, known_effects: [], custom_spells: [], gems: [], xul_hesh: 0, soul_history: [] },
     quests: sortedQuestMap(sim.quest.quests),
     quests_completed: [...sim.quest.completed].sort(),
     journal: sim.quest.journal.map((e) => ({ n: e.n, date: e.date, quest: e.quest, text: e.text })), // ORDER IS SEMANTIC
@@ -268,6 +287,24 @@ export function applySave(sim, blob, moves, statFor) {
   sim.progression.hearthsDiscovered = [...blob.progression.hearths_discovered];
   sim.progression.hearthLastRested = blob.progression.hearth_last_rested;
   sim.progression.upgrades = { ...blob.progression.upgrades };
+  if (sim.magic && blob.magic) {
+    const M = sim.magic;
+    M.custom = blob.magic.custom_spells.map((c) => ({
+      ...c, custom: true,
+      schools: [...new Set(c.effects.map((e) => M.effects[e.effect].school))].sort(),
+      school: M.effects[c.effects[0].effect].school,
+      band_tier: c.tier, stamina: M.classes[c.class].stamina,
+      geometry: M._geometryFor({ range: c.range, class: c.class }, { effects: c.effects }),
+      frames: { ...M.classes[c.class], unit: 'f@60' },
+    }));
+    M.knownEffects = new Set(blob.magic.known_effects);
+    M.gems = blob.magic.gems.map((g) => ({ ...g }));
+    M.xulHesh = blob.magic.xul_hesh;
+    M.soulHistory = new Map(blob.magic.soul_history.map((r) => [r.instance, r.traps]));
+    if (blob.magic.catalyst) M.setCatalyst(blob.magic.catalyst); else { M.catalyst = 'none'; M.hasCatalyst = false; }
+    M.setAttuned(blob.magic.attuned);
+    M.focus = blob.magic.focus;
+  }
 
   p.hp = blob.character.hp; p.hpMax = blob.character.hp_max;
   p.stamina = blob.character.stamina; p.staminaMax = blob.character.stamina_max;

@@ -146,6 +146,7 @@ export class CombatSystem {
     const ctx = {
       emit,
       bodies: this.bodies,
+      enemies: this.enemies,   // seam S19: a RITUAL aborts the moment anything is AGGRO
       lockedBody,
       cameraYawDeg: camera ? camera.yaw : 0,
       player: this.player,

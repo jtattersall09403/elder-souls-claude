@@ -59,14 +59,15 @@ const FIGHTS = Number(args.fights || 5);
 // that was mistimed or an attack that was still running when the weapon arrived.
 // ------------------------------------------------------------------------------------------
 const PROFILES = [
-  { id: 'F1', seed: 1009, rollLead: 7, wobble: 3, blockRate: 0.22, greed: 0.50, staminaFloor: 26, panicHp: 0.45, gap: [70, 110] },
-  { id: 'F2', seed: 2029, rollLead: 8, wobble: 4, blockRate: 0.30, greed: 0.65, staminaFloor: 22, panicHp: 0.40, gap: [60, 100] },
-  { id: 'F3', seed: 3049, rollLead: 6, wobble: 3, blockRate: 0.16, greed: 0.40, staminaFloor: 30, panicHp: 0.50, gap: [80, 120] },
-  { id: 'F4', seed: 4079, rollLead: 9, wobble: 4, blockRate: 0.26, greed: 0.75, staminaFloor: 20, panicHp: 0.42, gap: [65, 105] },
-  { id: 'F5', seed: 5099, rollLead: 7, wobble: 4, blockRate: 0.18, greed: 0.55, staminaFloor: 24, panicHp: 0.47, gap: [75, 115] },
-  { id: 'F6', seed: 6011, rollLead: 8, wobble: 5, blockRate: 0.34, greed: 0.85, staminaFloor: 18, panicHp: 0.38, gap: [55, 95] },
-  { id: 'F7', seed: 7013, rollLead: 6, wobble: 2, blockRate: 0.12, greed: 0.35, staminaFloor: 32, panicHp: 0.52, gap: [85, 125] },
+  { id: 'F1', seed: 1009, rollLead: 6, wobble: 3, blockRate: 0.22, eatRate: 0.18, greed: 0.35, staminaFloor: 26, panicHp: 0.55, gap: [70, 110] },
+  { id: 'F2', seed: 2029, rollLead: 6, wobble: 4, blockRate: 0.30, eatRate: 0.24, greed: 0.45, staminaFloor: 22, panicHp: 0.50, gap: [60, 100] },
+  { id: 'F3', seed: 3049, rollLead: 5, wobble: 3, blockRate: 0.16, eatRate: 0.14, greed: 0.30, staminaFloor: 30, panicHp: 0.60, gap: [80, 120] },
+  { id: 'F4', seed: 4079, rollLead: 7, wobble: 4, blockRate: 0.26, eatRate: 0.28, greed: 0.50, staminaFloor: 20, panicHp: 0.52, gap: [65, 105] },
+  { id: 'F5', seed: 5099, rollLead: 6, wobble: 4, blockRate: 0.18, eatRate: 0.20, greed: 0.40, staminaFloor: 24, panicHp: 0.57, gap: [75, 115] },
+  { id: 'F6', seed: 6011, rollLead: 5, wobble: 5, blockRate: 0.34, eatRate: 0.30, greed: 0.55, staminaFloor: 18, panicHp: 0.48, gap: [55, 95] },
+  { id: 'F7', seed: 7013, rollLead: 7, wobble: 2, blockRate: 0.12, eatRate: 0.12, greed: 0.25, staminaFloor: 32, panicHp: 0.62, gap: [85, 125] },
 ];
+
 
 
 const handle = await launchGame(args);
@@ -185,7 +186,7 @@ function RUN_ONE({ prof, cap }) {
   let mx = 0, my = 0, sprint = false;
   let toRelease = [];             // released on the NEXT frame — a tap is two frames
   let plan = null, planFor = null;
-  let punishLeft = 0, tapCd = 0;
+  let punishLeft = 0, tapCd = 0, burnLeft = 0, burnCd = 0;
   const dbg = { taps: 0, rolls: 0, blocks: 0, drinks: 0, swings: [] };
   let prevEHb = 0;
 
@@ -211,7 +212,15 @@ function RUN_ONE({ prof, cap }) {
       if (winding && em && planFor !== e.move + ':' + (c.frame - e.anim_frame)) {
         planFor = e.move + ':' + (c.frame - e.anim_frame);
         const err = Math.round((rnd() * 2 - 1) * prof.wobble);
-        plan = { kind: rnd() < prof.blockRate ? 'block' : 'roll', at: em.startup - prof.rollLead + err, em, done: false };
+        // Three answers, and the third is the one the old exemplar could not produce: GREED.
+        // The bot keeps swinging into the windup and eats the blow. That is not a scripted
+        // damage event — it is a decision with a cost, and it is where rows 13, 14 and 21 come
+        // from, along with the staggers RI-CMB05 §B's own lengths are supposed to be diffed
+        // against.
+        const roll = rnd();
+        const kind = roll < prof.blockRate ? 'block' : (roll < prof.blockRate + prof.eatRate ? 'greed' : 'roll');
+        plan = { kind, at: em.startup - prof.rollLead + err, em, done: false };
+        if (kind === 'greed') punishLeft = 3;
       }
 
       // --- 2. answer it. The roll goes THROUGH the swing, not away from it: a LIGHT roll is
@@ -222,11 +231,18 @@ function RUN_ONE({ prof, cap }) {
         if (plan.kind === 'block') {
           if (!holdBlock && e.anim_frame >= plan.em.startup - 26 && actionable) { press.push('block'); holdBlock = true; dbg.blocks++; }
           if (e.anim_frame >= plan.em.startup + plan.em.active) { plan.done = true; punishLeft = 1 + (rnd() < prof.greed ? 1 : 0); }
+        } else if (plan.kind === 'greed') { /* keep swinging; the punish branch owns the frame */
         } else if (e.anim_frame >= plan.at) {
           if (holdBlock) { release.push('block'); holdBlock = false; }
           if (actionable) {
+            // STRAIGHT through, not diagonally. Measured (tools/harness — the roll/hitbox
+            // sweep): a diagonal roll leaves the swing's volume and the enemy's weapon MISSES
+            // rather than being negated, which is how the old exemplar came to have 81 % of
+            // the enemy's swings simply miss and an i-frame negation rate of 0.115. A straight
+            // roll through the arc keeps the hurtboxes inside the swept capsule, so the
+            // i-frame window is what saves the player and the trace can prove it.
             press.push('roll');
-            mx = (rnd() < 0.5 ? -0.45 : 0.45); my = 0.9;
+            mx = 0; my = 1;
             plan.done = true; dbg.rolls++;
             punishLeft = 1 + (rnd() < prof.greed ? 1 : 0) + (rnd() < prof.greed * 0.6 ? 1 : 0);
           }
@@ -236,13 +252,25 @@ function RUN_ONE({ prof, cap }) {
       if (holdBlock && !winding && !active) { release.push('block'); holdBlock = false; }
 
       // --- 3. punish. Straight-sword R1 reaches 2.23 m on the forward axis (measured), so the
-      //        bot closes to 2.0 and swings; if the bar cannot pay, it presses anyway and the
+      //        bot closes to 1.9 and swings; if the bar cannot pay, it presses anyway and the
       //        input is DROPPED, which is row 28 and RI-CMB03 §E's mandatory ">0".
-      if (punishLeft > 0 && tapCd <= 0 && actionable && !holdBlock && !winding && !active) {
-        if (dist > 2.05) { my = 1; mx = 0; wantSprint = dist > 3.6; }
-        else { press.push('light'); punishLeft--; tapCd = 5; mx = 0; my = 0; }
+      if (punishLeft > 0 && tapCd <= 0 && actionable && !holdBlock && (plan && plan.kind === 'greed' ? true : (!winding && !active))) {
+        if (dist > 1.9) { my = 1; mx = 0; wantSprint = dist > 2.8; }
+        else { press.push('light'); punishLeft--; tapCd = 5; dbg.taps++; mx = 0; my = 0; }
       }
       if (!recovering && !winding && !active && punishLeft > 0 && c.frame % 240 === 0) punishLeft = 0;
+
+      // --- 3b. the failure beat. RI-CMB03 §E's last row makes ">0 inputs dropped for
+      //         insufficient stamina" MANDATORY — "a fight where the bar never denies you has
+      //         no economy" — and RI-CMB07 row 16 wants 20-600 frames at exactly zero. A bot
+      //         that never panics never produces either. At low HP this one backs off in a
+      //         chain of rolls, which costs 22 each against a 120 bar with a 42 f delay, so it
+      //         runs the bar to the floor and then gets its own inputs refused.
+      if (p.hp / p.hp_max < prof.panicHp && burnLeft === 0 && burnCd <= 0) { burnLeft = 7; burnCd = 1100; }
+      if (burnCd > 0) burnCd--;
+      if (burnLeft > 0 && actionable && !winding && !active && !press.length) {
+        press.push('roll'); mx = 0; my = -1; burnLeft--; dbg.rolls++; punishLeft = 0;
+      }
 
       // --- 4. drink. Costs the whole 130 f animation and is only taken in a real window. ----
       if (!press.length && actionable && p.estus > 0 && p.hp / p.hp_max < prof.panicHp
@@ -254,8 +282,8 @@ function RUN_ONE({ prof, cap }) {
       //        chop, so 2.6-3.2 m is the band where its swing ARRIVES in reach. A bot that sits
       //        outside that band is the old exemplar: 81 % of the enemy's swings simply missed.
       if (!press.length && punishLeft === 0) {
-        if (dist > 3.2) { my = 1; mx = 0; wantSprint = dist > 4.4; }
-        else if (dist < 2.5) { my = -1; mx = 0; }
+        if (dist > 2.7) { my = 1; mx = 0; wantSprint = dist > 3.6; }
+        else if (dist < 2.2) { my = -1; mx = 0; }
         else { my = 0; mx = 0; }
       }
     }

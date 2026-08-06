@@ -54,8 +54,10 @@ try {
     const castAndSample = (spellId, frames, extraInputs) => {
       arena({ attuned: [spellId], catalyst: 'rod' });
       const f0 = H.getFrame();
-      const script = [{ f: f0 + 2, press: ['light'] }];
-      if (extraInputs) for (const e of extraInputs) script.push({ f: f0 + 2 + e.at, press: [e.button] });
+      // NOTE: queueInputs event frames are RELATIVE to the frame queueInputs was called on
+      // (InputPipeline.scriptBase). Every offset in this file is relative for that reason.
+      const script = [{ f: 2, press: ['light'] }];
+      if (extraInputs) for (const e of extraInputs) script.push({ f: 2 + e.at, press: [e.button] });
       H.queueInputs(script);
       const rows = [];
       for (let i = 0; i < frames; i++) {
@@ -78,8 +80,10 @@ try {
     // ================= RI-MAG01 M1 — cast census ==============================================
     const census = [];
     for (const cls of ['CANTRIP', 'LIGHT', 'HEAVY', 'GREAT', 'RITUAL']) {
-      const spell = D.spells.spells.find((s) => s.class === cls && s.geometry.kind !== 'none')
-                 || D.spells.spells.find((s) => s.class === cls);
+      // The cheapest spell of the class: RI-MAG01 M1 measures FRAMES, and a cast that drops
+      // for want of Focus measures nothing. (`GREAT` × 4.4 makes most GREAT spells
+      // uncastable at WIL 30, which is itself the point of RI-MAG02 §D's class multiplier.)
+      const spell = D.spells.spells.filter((s) => s.class === cls).sort((a, b) => a.focus_base - b.focus_base)[0];
       const r = castAndSample(spell.id, classById[cls].total + 20);
       const castRows = r.rows.filter((x) => x.cast);
       const windup = castRows.filter((x) => x.phase === 'windup').length;
@@ -110,24 +114,28 @@ try {
     {
       arena({ attuned: ['spark_dart'] });
       const before = H.snapshot().player;
-      const f0 = H.getFrame();
-      H.queueInputs([{ f: f0 + 1, press: ['light'] }]);
-      H.stepFrames(1);
-      const at1 = H.snapshot().player;
-      H.stepFrames(1);
-      const at2 = H.snapshot().player;
-      const spell = spellById.spark_dart;
-      const expectFocus = spell.focus_cost.rod;
+      const expectFocus = H.spellCost('spark_dart');       // at this caster's LIVE skill discount
       const expectStam = classById.CANTRIP.stamina;
-      // regen delay: RI-CMB03 §A's 42 f@60, re-armed by the cast
+      H.queueInputs([{ f: 1, press: ['light'] }]);
+      const trail = [];
+      for (let i = 0; i < 80; i++) {
+        H.stepFrames(1);
+        const s2 = H.snapshot().player;
+        trail.push({ focus: s2.focus, stamina: s2.stamina, blocked: s2.stamina_regen_blocked });
+      }
+      const castIdx = trail.findIndex((t) => t.focus < before.focus);
+      const at1 = trail[castIdx];
+      const at0 = castIdx > 0 ? trail[castIdx - 1] : before;
+      const at2 = trail[castIdx + 1];
       let blocked = 0;
-      for (let i = 0; i < 60; i++) { H.stepFrames(1); if (H.snapshot().player.stamina_regen_blocked) blocked++; else break; }
+      for (let i = castIdx; i < trail.length && trail[i].blocked; i++) blocked++;
       rec('MAG01_M2_dual_cost', at1.focus === before.focus - expectFocus
-        && Math.abs((before.stamina - at1.stamina) - expectStam) < 0.001
-        && blocked >= 40, {
-        focus_before: before.focus, focus_after_frame1: at1.focus, focus_expected_spend: expectFocus,
-        stamina_before: before.stamina, stamina_after_frame1: at1.stamina, stamina_expected_spend: expectStam,
-        regen_blocked_frames_after_cast: blocked, regen_delay_declared_f: 42,
+        && Math.abs((at0.stamina - at1.stamina) - expectStam) < 0.001
+        && blocked === 42, {
+        focus_before: before.focus, focus_frame_before_cast: at0.focus, focus_after_frame1: at1.focus,
+        focus_frame2: at2 ? at2.focus : null, focus_expected_spend: expectFocus,
+        stamina_frame_before_cast: at0.stamina, stamina_after_frame1: at1.stamina, stamina_expected_spend: expectStam,
+        regen_blocked_frames_from_cast_frame_inclusive: blocked, regen_delay_declared_f: 42,
         note: 'Both resources on frame 1. The regen-delay re-arm is the assertion that stops "cast, roll, cast" being the correct play forever.',
       });
 
@@ -135,7 +143,7 @@ try {
       arena({ attuned: ['the_unmaking'] });
       const fb = H.snapshot().player.focus;
       const g0 = H.getFrame();
-      H.queueInputs([{ f: g0 + 1, press: ['light'] }]);
+      H.queueInputs([{ f: 1, press: ['light'] }]);
       H.stepFrames(18);                       // 18 of 36 startup frames
       const mid = H.snapshot().player;
       H.damagePlayer(400);                    // hurt mid-startup
@@ -148,30 +156,22 @@ try {
         note: 'RI-MAG01 §D: interrupted during startup the Focus is consumed and never refunded, and the spell did not happen.',
       });
 
-      // starvation: the input is DROPPED, not queued, and does not fire later
-      arena({ attuned: ['the_unmaking'] });
-      const need = spellById.the_unmaking.focus_cost.rod;
-      // burn the reservoir down below the cost by casting the cheap spell repeatedly
-      H.setAttuned(['spark_dart']);
+      // starvation: the input is DROPPED, not queued, and does not fire later.
+      // WIL 10 is a 30-Focus reservoir; a GREAT-class spell costs more than that outright.
+      arena({ attuned: ['call_the_deep_drowned'], wil: 10 });
       const st = H.getMagicState();
-      const drain = st.focus - (need - 1);
-      // Direct, honest drain: cast spark_dart until under threshold.
-      let guard = 0;
-      while (H.getMagicState().focus > need - 1 && guard++ < 200) {
-        const gf = H.getFrame();
-        H.queueInputs([{ f: gf + 1, press: ['light'] }]);
-        H.stepFrames(40);
-      }
-      H.setAttuned(['the_unmaking']);
-      const focusNow = H.getMagicState().focus;
+      const need = st.focus + 1;
+      const liveCost = H.quoteSpell({ effects: spellById.call_the_deep_drowned.effects, range: 'self', class: 'GREAT' });
       const hf = H.getFrame();
       H.magicEventsDrain();
-      H.queueInputs([{ f: hf + 1, press: ['light'] }]);
-      H.stepFrames(200);
+      H.queueInputs([{ f: 1, press: ['light'] }]);
+      H.stepFrames(300);
       const ev = H.magicEventsDrain();
       const started = ev.some((e) => e.kind === 'cast_start');
-      rec('MAG01_M2_starvation_drops', !started && focusNow < need, {
-        focus: focusNow, cost: need, cast_started_within_200f: started,
+      const focusAfter = H.getMagicState().focus;
+      rec('MAG01_M2_starvation_drops', !started && focusAfter === st.focus, {
+        focus: st.focus, focus_max: st.focus_max, cost: liveCost.focus_cost,
+        cast_started_within_300f: started, focus_unchanged: focusAfter === st.focus,
         note: 'No partial cast, no debt, no queue, and the input does not fire later.',
       });
     }
@@ -179,15 +179,17 @@ try {
     // ================= RI-MAG01 M3 — Focus never regenerates ==================================
     {
       arena({ attuned: ['spark_dart'] });
+      // Spend first, so that the ONE legitimate rise (a HEARTH rest) is observable at the end.
+      for (let k = 0; k < 6; k++) { const g = H.getFrame(); H.queueInputs([{ f: 1, press: ['light'] }]); H.stepFrames(45); }
       const f0 = H.getFrame();
       // walk, sprint, roll, block, heal, wait, pass time — 3,600 frames of everything.
       const script = [];
       for (let k = 0; k < 30; k++) {
-        script.push({ f: f0 + k * 120 + 5, press: ['roll'] });
-        script.push({ f: f0 + k * 120 + 30, press: ['use_item'] });
-        script.push({ f: f0 + k * 120 + 60, press: ['sprint'], move: [0, 1] });
-        script.push({ f: f0 + k * 120 + 110, release: ['sprint'] });
-        script.push({ f: f0 + k * 120 + 90, press: ['jump'] });
+        script.push({ f: k * 120 + 5, press: ['roll'] });
+        script.push({ f: k * 120 + 30, press: ['use_item'] });
+        script.push({ f: k * 120 + 60, press: ['sprint'], move: [0, 1] });
+        script.push({ f: k * 120 + 90, press: ['jump'] });
+        script.push({ f: k * 120 + 110, release: ['sprint'] });
       }
       H.queueInputs(script);
       let prev = H.snapshot().player.focus;
@@ -203,6 +205,7 @@ try {
       if (afterMidnight > prev + 1e-9) rises++;
       const beforeRest = H.snapshot().player.focus;
       H.hearthRest();
+      H.stepFrames(1);                       // snapshot() reads the mirrored view, refreshed in a step
       const afterRest = H.snapshot().player.focus;
       rec('MAG01_M3_focus_never_regenerates', rises === 0 && afterRest > beforeRest, {
         frames_observed: 4200, unexplained_rises: rises,
@@ -256,7 +259,7 @@ try {
         const c = classById.HEAVY;
         const f0 = H.getFrame();
         H.lockOn('T');
-        H.queueInputs([{ f: f0 + 1, press: ['light'] }]);
+        H.queueInputs([{ f: 1, press: ['light'] }]);
         H.stepFrames(c.Tc + 1);
         // Move the target hard sideways AFTER the latch frame.
         const dx = 6 * (trial % 2 === 0 ? 1 : -1);
@@ -295,7 +298,7 @@ try {
           const hp0 = H.listEntities().find((e) => e.eid === 'T').hp;
           const f0 = H.getFrame();
           if (rngBefore === null) rngBefore = H.getDeterminismReport().rngSeed;
-          H.queueInputs([{ f: f0 + 1, press: ['light'] }]);
+          H.queueInputs([{ f: 1, press: ['light'] }]);
           H.stepFrames(60);
           const t = H.listEntities().find((e) => e.eid === 'T');
           if (t && t.hp < hp0) dmgs.push(hp0 - t.hp);
@@ -317,7 +320,7 @@ try {
         arena({ attuned: [spell.id] });
         const c = classById[cls];
         const f0 = H.getFrame();
-        H.queueInputs([{ f: f0 + 1, press: ['light'] }]);
+        H.queueInputs([{ f: 1, press: ['light'] }]);
         H.stepFrames(c.startup + 2);
         const samples = [];
         for (let i = 0; i < 40; i++) {
@@ -355,7 +358,7 @@ try {
       const start = H.getMagicState();
       const f0 = H.getFrame();
       // hold jump: ascend. Measure focus per metre.
-      H.queueInputs([{ f: f0 + 1, press: ['jump'] }]);
+      H.queueInputs([{ f: 1, press: ['jump'] }]);
       H.stepFrames(300);
       const climbed = H.getMagicState();
       const dAlt = climbed.altitude_m - start.altitude_m;
@@ -367,7 +370,7 @@ try {
       // AIRBORNE denies everything
       H.magicEventsDrain();
       const g0 = H.getFrame();
-      H.queueInputs([{ f: g0 + 1, press: ['light'] }, { f: g0 + 6, press: ['roll'] }, { f: g0 + 12, press: ['parry'] }]);
+      H.queueInputs([{ f: 1, press: ['light'] }, { f: g0 + 6, press: ['roll'] }, { f: g0 + 12, press: ['parry'] }]);
       H.stepFrames(40);
       const evs = H.magicEventsDrain();
       const castedWhileAirborne = evs.some((e) => e.kind === 'cast_start');
@@ -401,12 +404,12 @@ try {
         const before = H.getMagicState().focus;
         const f0 = H.getFrame();
         const posBefore = H.snapshot().player.pos.slice();
-        H.queueInputs([{ f: f0 + 1, press: ['light'] }]);
+        H.queueInputs([{ f: 1, press: ['light'] }]);
         H.stepFrames(40);
         const spent = H.getMagicState().focus;
         if (cause === 'damage') H.damagePlayer(1);
         else if (cause === 'combat') { H.spawn('inf_trash', 0, 5, { as: 'T' }); H.aggro('T'); H.stepFrames(1); }
-        else { H.queueInputs([{ f: H.getFrame() + 1, press: ['roll'] }]); H.stepFrames(2); }
+        else { H.queueInputs([{ f: 1, press: ['roll'] }]); H.stepFrames(2); }
         H.stepFrames(4);
         const after = H.getMagicState();
         const posAfter = H.snapshot().player.pos.slice();
@@ -418,16 +421,26 @@ try {
         };
       }
       // recall's magnitude is COMPUTED, not authored
+      const W = D.effects.effects.find((e) => e.id === 'recall').weight;
       const quotes = [[0, 500], [0, 1500], [0, 3000], [0, 4000]].map(([x, z]) => {
         const q = H.recallQuote(x, z);
-        return { mark_at_m: z, M: q.M, focus_base: q.focus_base, published: { 500: 6, 1500: 26, 3000: 57, 4000: 77 }[z] };
+        const formula = Math.ceil(W * Math.pow(q.M, 1.30) * 0.70 / 10);
+        return { mark_at_m: z, M: q.M, focus_base: q.focus_base, formula, corpus_published: { 500: 6, 1500: 26, 3000: 57, 4000: 77 }[z] };
       });
+      // NOTE: RI-MAG02 §G's published table (6 / 26 / 57 / 77) does not reproduce from
+      // RI-MAG02 §D's own formula at two of its four points. `ceil(9.0 × M^1.30 × 0.70 / 10)`
+      // gives 6 / 22 / 53 / 77 for M = 5 / 15 / 30 / 40; the M=5 and M=40 rows agree exactly
+      // and the M=15 and M=30 rows are 4 low. This build follows the FORMULA, because
+      // RI-MAG02 M2 asserts every shipped cost recomputes from §D exactly and a table that
+      // disagrees with the formula cannot also be satisfied. Reported, not fudged.
+      const formulaAgrees = quotes.every((q) => Math.abs(q.focus_base - q.formula) < 1e-9);
       rec('MAG02_M5_teleport', allRitual
         && Object.values(aborts).every((a) => a.refunded && !a.cast_still_running)
-        && quotes.every((q) => Math.abs(q.focus_base - q.published) <= 1), {
+        && formulaAgrees, {
         all_ritual_class: allRitual,
         aborts,
         recall_computed_magnitude: quotes,
+        corpus_table_vs_corpus_formula: 'RI-MAG02 §G publishes 6/26/57/77; RI-MAG02 §D\'s formula gives 6/22/53/77. Two of four rows in the item disagree with the item. This build follows the formula (RI-MAG02 M2 requires it) and files the discrepancy.',
         note: 'RI-MAG02 §G: `RITUAL` is 210 f@60 with zero hyperarmour and zero movement, and aborts on damage, on COMBAT and on movement with the Focus refunded. "No recall out of a fight" is a consequence of the clock, not a flag anyone had to remember to write.',
       });
     }
@@ -478,24 +491,34 @@ try {
         note: 'FAIL if any legal combination is refused for any reason other than the four declared gates. A whitelist of designer-approved combinations is an automatic fail of RI-MAG03; there is no such list in this build.',
       });
 
-      // and one of them is actually cast
+      // MB-3, end to end: commission a coordinate that appears nowhere in spells.json, save it,
+      // attune it, cast it, and load it back. A clean arena FIRST, because loadState('<named>')
+      // rebuilds the fight and therefore the MagicSystem; a spell commissioned before that call
+      // would not survive it. One commissioned AFTER it survives a save/load round trip, which
+      // is what RI-MAG03 M1 actually requires ("assert each appears in saveState()").
+      arena({});
+      H.setGold(50000);
+      H.setMagicSkills({ sorcery: 100, root_speech: 100, warding: 100, veiling: 100 });
+      for (const s2 of D.spells.spells) H.learnSpell(s2.id);
       const mk = H.makeSpell(tuples[6], 'Traveller\'s Remedy');
-      let castOk = false;
+      let castOk = false, inSave = false, roundTrips = false;
       if (!mk.refused) {
-        arena({});
-        H.setMagicSkills({ sorcery: 100, root_speech: 100, warding: 100, veiling: 100 });
+        const blob = H.saveState();
+        inSave = !!(blob.magic && blob.magic.custom_spells.some((c) => c.id === mk.spell.id));
         const att = H.setAttuned([mk.spell.id]);
-        const f0 = H.getFrame();
         H.magicEventsDrain();
-        H.queueInputs([{ f: f0 + 1, press: ['light'] }]);
+        H.queueInputs([{ f: 1, press: ['light'] }]);
         H.stepFrames(80);
         const ev = H.magicEventsDrain();
         castOk = att.includes(mk.spell.id) && ev.some((e) => e.kind === 'cast_start' && e.spell === mk.spell.id)
           && ev.some((e) => e.kind === 'effect_apply');
+        H.loadState(blob);
+        roundTrips = H.getMagicState().custom_spells > 0;
       }
-      rec('MAG03_MB3_commissioned_spell_casts', castOk, {
+      rec('MAG03_MB3_commissioned_spell_casts', castOk && inSave && roundTrips, {
         made: mk.refused ? null : { id: mk.spell.id, focus_base: mk.spell.focus_base, tier: mk.spell.tier, effects: mk.spell.effects },
-        cast_and_applied: castOk,
+        refusal: mk.refused ? mk : null,
+        cast_and_applied: castOk, present_in_saveState: inSave, survives_save_load_round_trip: roundTrips,
         note: 'MB-3: the breakage that IS the system. A three-effect spell that appears nowhere in spells.json, commissioned, attuned and cast in one run.',
       });
     }
@@ -569,7 +592,7 @@ try {
       H.lockOn('B');
       const f0 = H.getFrame();
       H.magicEventsDrain();
-      H.queueInputs([{ f: f0 + 1, press: ['light'] }]);
+      H.queueInputs([{ f: 1, press: ['light'] }]);
       H.stepFrames(120);
       const ev = H.magicEventsDrain();
       const ent = H.listEntities().find((e) => e.eid === 'B');
@@ -584,7 +607,7 @@ try {
       H.setEquipLoad(31.0);
       const tierBefore = H.snapshot().player.roll_class;
       const f1 = H.getFrame();
-      H.queueInputs([{ f: f1 + 1, press: ['light'] }]);
+      H.queueInputs([{ f: 1, press: ['light'] }]);
       H.stepFrames(60);
       const st = H.getMagicState();
       const featherMag = (st.effects_active.find((a) => a.effect === 'feather') || {}).magnitude;

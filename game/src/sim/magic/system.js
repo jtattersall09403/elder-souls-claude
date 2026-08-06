@@ -255,7 +255,7 @@ export class MagicSystem {
     } else {
       this._applySelf(frame, s);
     }
-    this._emit(frame, 'cast_release', { spell: s.id, kind: g.kind, aim_yaw: round2(c.aimYaw) });
+    this._emit(frame, 'cast_release', { spell: s.id, geometry_kind: g.kind, aim_yaw: round2(c.aimYaw) });
     return made;
   }
 

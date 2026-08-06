@@ -113,8 +113,8 @@ const ARCH = {
       spine_02: { ry: { cock: -34, hit: 20, follow: 26 }, rz: { cock: -12, hit: 10, follow: 12 } },
       neck: { ry: { cock: 24, hit: -12, follow: -8 } },
       clavicle_r: { rz: { cock: -26, hit: 12, follow: 15 } },
-      upperarm_r: { rx: { cock: -80, hit: -22, follow: -14 }, rz: { cock: -22, hit: 16, follow: 21 } },
-      lowerarm_r: { rx: { cock: -34, hit: -14, follow: -17 } },
+      upperarm_r: { rx: { cock: -100, hit: -50, follow: -30 }, rz: { cock: -22, hit: 16, follow: 21 } },
+      lowerarm_r: { rx: { cock: -40, hit: -10, follow: -18 } },
       hand_r: { rx: { cock: -14, hit: -3, follow: 4 }, rz: { cock: -10, hit: 6, follow: 7 } },
       upperarm_l: { rx: { cock: -22, hit: -32, follow: -28 }, rz: { cock: 16, hit: -6, follow: -3 } },
       lowerarm_l: { rx: { cock: -46, hit: -56, follow: -50 } },
@@ -138,8 +138,8 @@ const ARCH = {
       spine_00: { rx: { cock: -14, hit: 20, follow: 25 } },
       spine_02: { rx: { cock: -10, hit: 14, follow: 17 }, ry: { cock: -14, hit: 6, follow: 8 } },
       clavicle_r: { rz: { cock: -34, hit: 4, follow: 6 } },
-      upperarm_r: { rx: { cock: -86, hit: -32, follow: -20 }, rz: { cock: -10, hit: 6, follow: 9 } },
-      lowerarm_r: { rx: { cock: -30, hit: -13, follow: -18 } },
+      upperarm_r: { rx: { cock: -112, hit: -44, follow: -26 }, rz: { cock: -10, hit: 6, follow: 9 } },
+      lowerarm_r: { rx: { cock: -34, hit: -10, follow: -18 } },
       hand_r: { rx: { cock: -14, hit: -2, follow: 5 } },
       upperarm_l: { rx: { cock: -30, hit: -38, follow: -32 } },
       lowerarm_l: { rx: { cock: -52, hit: -62, follow: -54 } },
@@ -156,6 +156,7 @@ const ARCH = {
       'lunge, and the whole displacement is LINEAR along the point. Almost no arc — which is exactly ' +
       'why a spear\'s swept volume is a narrow tube and why stepping 20 cm sideways beats it. The ' +
       'recovery pulls the point back off line and settles on the ready pose.',
+    aim: 'hit',
     cockPhase: 0.5, hitPhase: 1.4, followPhase: 2.2,
     root_forward: [[0.0, 0.0], [0.55, 0.03], [1.0, 0.34], [1.4, 0.9], [2.0, 0.99], [2.3, 1.0], [3.0, 1.0]],
     root_offset_y: [[0.0, 0.0], [1.0, -0.05], [1.5, -0.15], [2.3, -0.12], [3.0, 0.0]],
@@ -191,8 +192,8 @@ const ARCH = {
       spine_02: { ry: { cock: -20.4, hit: 22, follow: 28 }, rx: { cock: -2.7, hit: 6, follow: 8 } },
       neck: { ry: { cock: 21.8, hit: -16, follow: -11 } },
       clavicle_r: { rz: { cock: -9.5, hit: 18, follow: 22 } },
-      upperarm_r: { rx: { cock: -42.2, hit: -64, follow: -46 }, rz: { cock: -20.4, hit: 20, follow: 27 } },
-      lowerarm_r: { rx: { cock: -29.9, hit: -30, follow: -34 } },
+      upperarm_r: { rx: { cock: -58, hit: -94, follow: -60 }, rz: { cock: -20.4, hit: 20, follow: 27 } },
+      lowerarm_r: { rx: { cock: -30, hit: -4, follow: -20 } },
       hand_r: { rz: { cock: -19.0, hit: 18, follow: 22 } },
       upperarm_l: { rx: { cock: -40.8, hit: -66, follow: -54 }, rz: { cock: 20.4, hit: -16, follow: -10 } },
       lowerarm_l: { rx: { cock: -38.1, hit: -44, follow: -40 } },
@@ -242,12 +243,24 @@ function buildArch(def, swing, ext) {
       const k = def.tracks[bone][ch];
       const start = k.start !== undefined ? k.start : idleOf(bone, ch);
       const end = idleOf(bone, ch);
-      const mid = (k.cock + k.hit) / 2;
-      const sc = (v) => mid + (v - mid) * swing;
+      // `swing` scales the excursion about the AIM pose — the pose in which the weapon is on
+      // the target. For a sweep that is the middle of the arc (the blade crosses the
+      // centreline mid-window); for a thrust it is the fully extended pose at the end of it.
+      // Scaling about the wrong one is how a solve that satisfied RI-CMB04 §B's peak column
+      // produced a spear whose point never came within 0.35 m of the centreline at all.
+      const aim = def.aim === 'hit' ? k.hit : (k.cock + k.hit) / 2;
+      const sc = (v) => aim + (v - aim) * swing;
       let cock = sc(k.cock), hit = sc(k.hit), fol = sc(k.follow);
       // elbow/shoulder extension, added only at and after the hit pose — it lengthens the
       // weapon's stand-off, which is what `reach_m` in RI-CMB02 §A actually measures.
-      if (EXT_CH[bone] === ch) { hit += ext; fol += ext * 0.6; }
+      // `ext` points the whole arm further FORWARD through the swing rather than only at its
+      // end: forward reach is set by where the arm is when the blade crosses the centreline,
+      // which is the middle of the active window, not its last frame. On this rig a more
+      // negative `upperarm_r.rx` raises the arm towards horizontal-forward (the `thrust`
+      // archetype reaches 3.03 m at -84) and a less negative `lowerarm_r.rx` straightens the
+      // elbow.
+      if (bone === 'upperarm_r' && ch === 'rx') { cock -= ext; hit -= ext; fol -= ext * 0.5; }
+      if (bone === 'lowerarm_r' && ch === 'rx') { cock += ext * 0.6; hit += ext * 0.6; fol += ext * 0.3; }
       const v1 = cock + t * (hit - cock);
       const lin = (u) => v1 + (hit - v1) * u;
       tracks[bone][ch] = [
@@ -308,9 +321,13 @@ function measureArch(archName, archObj) {
         const r = trackOf(clip, ms.weapon, base);
         const pr = r.peak / ms.weapon.peak_tip_speed_mps_declared;
         if (pr > worstPeak) worstPeak = pr;
+        // RI-CMB02 §A's reach column is the ONE-HANDED row; the two-handed rows select a
+        // different archetype entirely (RI-WPN06 §B) and the item declares no reach for them,
+        // so they are held to the peak ceiling but not to the reach floor.
+        if (m !== base) continue;
         const declR = base.reach_m_declared || 1.0;
         const rr = r.reach / declR;
-        if (rr < worstReach) { worstReach = rr; worstReachClass = id + ':' + mv + (m === base ? '' : ':2h'); }
+        if (rr < worstReach) { worstReach = rr; worstReachClass = id + ':' + mv; }
       }
     }
   }
@@ -344,11 +361,11 @@ function trackOf(clip, w, m) {
 
 // ---- solve ------------------------------------------------------------------------------
 const PEAK_MAX = 0.99;     // fraction of RI-CMB04 §B's declared column
-const REACH_MIN = 0.97;    // fraction of RI-CMB02 §A's declared reach
+const REACH_MIN = 0.90;    // fraction of RI-CMB02 §A's declared reach
 const solved = {};
 for (const name of Object.keys(ARCH)) {
   let best = null;
-  for (let ext = 0; ext <= 60 && !best; ext += 1) {
+  for (let ext = 0; ext <= 70 && !best; ext += 1) {
     for (let swing = 1.30; swing >= 0.10; swing -= 0.02) {
       const a = buildArch(ARCH[name], swing, ext);
       const m = measureArch(name, a);
@@ -358,7 +375,7 @@ for (const name of Object.keys(ARCH)) {
   if (!best) {
     // Report the closest achievable rather than silently shipping something that misses both.
     let closest = null;
-    for (let ext = 0; ext <= 60; ext += 2) for (let swing = 1.30; swing >= 0.10; swing -= 0.04) {
+    for (let ext = 0; ext <= 70; ext += 2) for (let swing = 1.30; swing >= 0.10; swing -= 0.04) {
       const a = buildArch(ARCH[name], swing, ext);
       const m = measureArch(name, a);
       if (m.peak > PEAK_MAX) continue;

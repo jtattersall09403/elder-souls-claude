@@ -120,6 +120,21 @@
       ]
     },
     {
+      "group": "Magic",
+      "class": "durable",
+      "paths": [
+        "magic.focus",
+        "magic.attuned",
+        "magic.catalyst",
+        "magic.known_effects",
+        "magic.custom_spells",
+        "magic.gems",
+        "magic.xul_hesh",
+        "magic.soul_history"
+      ],
+      "note": "Seam S19. `magic.custom_spells` is the one that matters: RI-MAG03 M1 requires a commissioned spell to appear in saveState(), because a spellmaking system whose output does not survive a save is a preview, not a system. `magic.focus` is durable and is NOT restored to full on load \u2014 RI-MAG01 \u00a7A allows exactly two things to raise it and loading is not one of them."
+    },
+    {
       "group": "Quests",
       "class": "durable",
       "paths": [

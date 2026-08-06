@@ -401,6 +401,13 @@ export function installHarness(engine, bootPromise) {
       };
     },
 
+    /** The Focus this spell would actually deduct RIGHT NOW, at this caster's skill and catalyst. */
+    spellCost(id) { return engine.magic.costOf(engine.magic.spellOf(String(id))); },
+
+    /** Gold is the only currency (S15); spellmaking and enchanting spend it and nothing else. */
+    setGold(n) { engine.sim.progression.gold = Number(n); engine.magic.gold = Number(n); return engine.magic.gold; },
+    getGold() { return engine.magic.gold; },
+
     /** Price an ARBITRARY coordinate in the parameter space. There is no whitelist to consult. */
     quoteSpell(spec) { return engine.magic.quoteSpell(spec); },
     /** Commission it. RI-MAG03 M1's headline test drives this 20 times with unauthored tuples. */

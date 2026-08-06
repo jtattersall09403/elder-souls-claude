@@ -80,7 +80,9 @@
     { "hold": "xul-aneekh>=2",    "cannot_hold": ["wet-ledger", "ninth-cohort"],                      "why": "The Deep-Kin position is that the coast is a wound" },
     { "hold": "wet-ledger>=3",    "cannot_hold": ["xul-aneekh", "sap-cutters"],                       "why": "The Ledger's business survives on not being either" },
     { "hold": "morag-tong",       "cannot_hold": ["ninth-cohort>=3", "ku-vastei"],                    "why": "A ku-vastei will not rule for a Tong asset" },
-    { "hold": "sap-cutters",      "cannot_hold": ["xul-aneekh", "rootkeepers", "wet-ledger"],         "why": "Everyone hates them (RI-LOR02 §4.3)" }
+    { "hold": "sap-cutters",      "cannot_hold": ["xul-aneekh", "rootkeepers", "wet-ledger"],         "why": "Everyone hates them (RI-LOR02 §4.3)" },
+    { "hold": "wet-ledger>=3",    "cannot_hold": ["ku-vastei"],                                       "why": "The Ledger's product is that no report is ever made. A ku-vastei Ruling is a public record of the killing, spoken aloud to a family. The two are not merely incompatible services, they are opposite ones, and the Ledger will not pay for a silence you intend to break.",
+      "provenance": "ADDED BY W1-15. RI-CRM02 §8's census asserts max_simultaneous_authorities = 2 and §4's exclusivity table permits THREE: Warrant (ninth-cohort>=4) + Ledger (wet-ledger>=3) + a ku-vastei petition, with no row forbidding any of the three pairs. The probe found it by exhaustive search over the join graph (tools/harness/stl-probe.mjs, CRM02-M5b). The census is the design claim the item is scored on, so one further exclusion is required; this is the one whose in-fiction reason falls out of the two institutions' own products. AMENDMENT-W1-15-01 §2 records it." }
   ],
 
   "faction_law_factor": {

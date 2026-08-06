@@ -32,7 +32,7 @@ export class ZoneMemory {
     const z = this.get(zone);
     z.searches++;
     if (acquired) return z;
-    const s = this.data.search.s4;
+    const s = this.data.s4;
     z.baseline = s.baseline_alert;
     z.baselineUntilF = frame + s.baseline_hold_s * HZ;
     z.ctxMult = s.context_multiplier;
@@ -72,7 +72,7 @@ export class ZoneMemory {
  */
 export class Search {
   constructor(data, { eid, lkp, startFrame, zone, coverVolumes, ownCone }) {
-    const s = data.search;
+    const s = data;
     this.data = data;
     this.eid = eid;
     this.lkp = lkp;
@@ -90,7 +90,7 @@ export class Search {
 
   /** S-2: the search radius grows across the window, then leashes. */
   radiusAt(frame) {
-    const s = this.data.search.s2;
+    const s = this.data.s2;
     const t = (frame - this.startFrame) / (this.endFrame - this.startFrame);
     for (let i = s.bands.length - 1; i >= 0; i--) if (t >= s.bands[i].from) return s.bands[i].radius_m;
     return s.bands[0].radius_m;
@@ -98,8 +98,8 @@ export class Search {
 
   /** The point the searcher is walking toward on this frame. */
   targetAt(frame) {
-    if (frame < this.startFrame + this.data.search.s1.lkp_dwell_s * HZ) return this.lkp;
-    const i = Math.min(this.plan.length - 1, Math.floor((frame - this.startFrame - this.data.search.s1.lkp_dwell_s * HZ) / (this.data.search.s1.per_volume_s * HZ)));
+    if (frame < this.startFrame + this.data.s1.lkp_dwell_s * HZ) return this.lkp;
+    const i = Math.min(this.plan.length - 1, Math.floor((frame - this.startFrame - this.data.s1.lkp_dwell_s * HZ) / (this.data.s1.per_volume_s * HZ)));
     if (i < 0 || !this.plan.length) return this.lkp;
     if (this.legIndex !== i) { this.legIndex = i; this.visited.push(this.plan[i].id); }
     return this.plan[i].pos;
@@ -115,7 +115,7 @@ export class Search {
  * recomputable, which is what RI-STL01 method 6 asks a critic to do from the nav mesh.
  */
 export function plausibleSet(data, lkp, coverVolumes, ownCone) {
-  const s = data.search.s1;
+  const s = data.s1;
   const out = [];
   for (const v of coverVolumes) {
     const d = dist2(lkp, v.pos);
@@ -129,7 +129,7 @@ export function plausibleSet(data, lkp, coverVolumes, ownCone) {
 
 /** S-3: one hop, bounded, never chains. */
 export function propagate(data, searcherPos, allies) {
-  const s = data.search.s3;
+  const s = data.s3;
   const raised = [];
   for (const a of allies) {
     if (dist2(searcherPos, a.pos) > s.radius_m) continue;
@@ -153,7 +153,7 @@ function crossesCone(a, b, cone) {
     const p = [a[0] + (b[0] - a[0]) * t, 0, a[2] + (b[2] - a[2]) * t];
     const dx = p[0] - cone.pos[0], dz = p[2] - cone.pos[2];
     const d = Math.sqrt(dx * dx + dz * dz);
-    if (d > cone.radius_m) continue;
+    if (d > cone.radius_m || d < 0.5) continue;
     let ang = Math.atan2(dx, dz) * 180 / Math.PI - cone.yaw;
     ang = ((ang % 360) + 540) % 360 - 180;
     if (Math.abs(ang) <= cone.half_deg) return true;

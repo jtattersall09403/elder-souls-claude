@@ -352,6 +352,7 @@ export class Engine {
     });
     this.combat.magic = this.magic;
     this.sim.magic = this.magic;
+    this.magic.gold = this.sim.progression.gold || 0;
     if (loadout.willpower !== undefined) this.magic.setWillpower(loadout.willpower);
     if (loadout.catalyst) this.magic.setCatalyst(loadout.catalyst);
     if (loadout.attuned) this.magic.setAttuned(loadout.attuned);
