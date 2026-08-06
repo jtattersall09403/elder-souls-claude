@@ -97,6 +97,9 @@ export class Engine {
     // rAF-driven stepping ('play') needs the same post-step observation stepFrames() does,
     // and it must land OUTSIDE FixedLoop.stepOnce(), not inside it.
     this.loop.afterStep = () => this._afterStep();
+    // The province's ground/water claim, reachable from inside the fixed step (sim/step.js).
+    // A bound closure rather than an import because the field lives on the engine.
+    this.sim.settleWorld = () => this._settleWorld();
   }
 
   // ---- boot ---------------------------------------------------------------------------
@@ -760,7 +763,6 @@ export class Engine {
    * `stepFrames` describe the simulation and not the instrument.
    */
   _afterStep() {
-    this._settleWorld();
     if (this.firstControlAt === null && this.sim.frame > 0) this.firstControlAt = wallNow();
     if (this.trace) {
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
@@ -790,6 +792,11 @@ export class Engine {
    */
   _settleWorld() {
     if (!this.field || this.cellFor(this.sim.env) !== 'province') return;
+    // A camera fixture (`setCameraCell`) is authored geometry that is NOT in the province
+    // heightfield — a spiral stair, a boardwalk on stilts, a pillar hall. While one is active
+    // the fixture's own collision set is the ground, and the field's claim would drag the
+    // character 41 m below `cam-flat-plain`'s floor plane.
+    if (this.sim.cellId) return;
     const p = this.sim.player;
     const x = p.pos[0], z = p.pos[2];
     const px = this._prevX === undefined ? x : this._prevX;
@@ -1015,11 +1022,13 @@ export class Engine {
     const fwd = [0, 0, 0], right = [0, 0, 0], up = [0, 0, 0];
     cameraBasis(c, fwd, right, up);
     const L = len === undefined ? c.armDesired : Number(len);
-    const k = Math.min(1, L / CAMERA_CONST.arm_free_m);
+    // The cast runs to the FULL desired point, shoulder included and unscaled — same as
+    // sim/camera.js's desiredPoint at `len == castRef`. The shoulder only shrinks when
+    // collision has already shortened the boom, and then along this very ray.
     const to = [
-      c.pivot[0] - fwd[0] * L + (right[0] * c.shoulderR + up[0] * c.shoulderU) * k,
-      c.pivot[1] - fwd[1] * L + (right[1] * c.shoulderR + up[1] * c.shoulderU) * k,
-      c.pivot[2] - fwd[2] * L + (right[2] * c.shoulderR + up[2] * c.shoulderU) * k,
+      c.pivot[0] - fwd[0] * L + right[0] * c.shoulderR + up[0] * c.shoulderU,
+      c.pivot[1] - fwd[1] * L + right[1] * c.shoulderR + up[1] * c.shoulderU,
+      c.pivot[2] - fwd[2] * L + right[2] * c.shoulderR + up[2] * c.shoulderU,
     ];
     const t = cell.sphereCast(c.pivot, to, CAMERA_CONST.cast_radius_m);
     return { t, hit: t < 1, desired_len_m: L, cast_len_m: L * t, cell: this.sim.cellId || null };

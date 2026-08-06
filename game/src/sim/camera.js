@@ -194,6 +194,9 @@ const _from = [0, 0, 0], _to = [0, 0, 0], _pt = [0, 0, 0];
 const _fwd = [0, 0, 0], _right = [0, 0, 0], _up = [0, 0, 0];
 const _aim = [0, 0, 0], _pchest = [0, 0, 0], _tchest = [0, 0, 0], _thead = [0, 0, 0];
 const _ndc = [0, 0, 0];
+/** The boom length this frame's sphere cast was run at — the reference the shoulder offset
+ *  is measured against (see desiredPoint). Recomputed every frame; never state, never saved. */
+let _castRef = CAMERA_CONST.arm_free_m;
 
 export function stepCamera(sim) {
   const c = sim.camera;
@@ -487,7 +490,8 @@ function solveArm(sim, c, cell) {
   c.shoulderR = sr; c.shoulderU = su;
 
   _from[0] = c.pivot[0]; _from[1] = c.pivot[1]; _from[2] = c.pivot[2];
-  desiredPoint(c, target, sr, su, _to);
+  _castRef = target;
+  desiredPoint(c, target, sr, su, _to, _castRef);
 
   const tHit = cell.sphereCast(_from, _to, CAMERA_CONST.cast_radius_m);
   c.armHit = tHit < 1;
@@ -517,9 +521,9 @@ function solveArm(sim, c, cell) {
   // step 5's 0.90 m floor, because step 7 comes after step 5 and correctness wins over
   // smoothing. Every frame it fires is flagged, which is the flag RI-CAM01 M4 already names.
   c.armGuard = false;
-  desiredPoint(c, c.armLen, sr, su, _pt);
+  desiredPoint(c, c.armLen, sr, su, _pt, _castRef);
   if (cell !== EMPTY_CELL && cell.distance(_pt[0], _pt[1], _pt[2]) < CAMERA_CONST.guard_radius_m) {
-    desiredPoint(c, c.armDesired, sr, su, _to);
+    desiredPoint(c, c.armDesired, sr, su, _to, c.armDesired);
     const tg = cell.sphereCast(_from, _to, CAMERA_CONST.guard_radius_m);
     let g = c.armDesired * tg - 0.005;
     // Never inside the character's own head — RI-CAM05 §F's second invariant, 0.35 m.
@@ -532,10 +536,27 @@ function solveArm(sim, c, cell) {
   c.distTarget = c.armDesired;
 }
 
-function desiredPoint(c, len, sr, su, out) {
+/** The camera point for a boom of `len`, with the shoulder offset applied at the camera end.
+ *
+ *  THE SHOULDER IS CONSTANT. RI-CAM01 §A fixes it at +0.42 / +0.10 m (free) and +0.26 / +0.10
+ *  (locked) in the camera basis, and §C step 2 writes the desired point as
+ *  `pivot + (−forward · desired_len) + shoulder_offset` with no scale term. M1's static census
+ *  fails a build that reports anything else.
+ *
+ *  This build previously scaled the shoulder by `len / 4.10`, which meant the census read
+ *  0.42 only at pitch 0 and unlocked — at −55° the pitch-dependent arm scale alone shrank it
+ *  to 0.344, and under lock at 3.60 m to 0.369. The scale existed for a real reason: when
+ *  collision shortens the boom, a fixed shoulder moves the camera OFF the ray the sphere cast
+ *  just cleared, and it can land in the wall beside it.
+ *
+ *  Both are satisfied by scaling against the length the cast was run at rather than against
+ *  the free arm. Unobstructed, `len == castRef` and the shoulder is exactly its declared value
+ *  at every pitch, in every mode. Obstructed, the camera slides along the cleared ray, which
+ *  is what the cast measured in the first place. */
+function desiredPoint(c, len, sr, su, out, castRef) {
   basis(c, _fwd, _right, _up);
-  const k = len / CAMERA_CONST.arm_free_m;
-  const s = k > 1 ? 1 : k;                      // the shoulder shrinks with the arm, on the ray
+  const ref = castRef === undefined ? len : castRef;
+  const s = ref > 1e-6 ? Math.min(1, len / ref) : 1;
   out[0] = c.pivot[0] - _fwd[0] * len + (_right[0] * sr + _up[0] * su) * s;
   out[1] = c.pivot[1] - _fwd[1] * len + (_right[1] * sr + _up[1] * su) * s;
   out[2] = c.pivot[2] - _fwd[2] * len + (_right[2] * sr + _up[2] * su) * s;
@@ -577,7 +598,7 @@ function basis(c, fwd, right, up) {
 export { basis as cameraBasis };
 
 function writePose(c) {
-  desiredPoint(c, c.armLen, c.shoulderR, c.shoulderU, _pt);
+  desiredPoint(c, c.armLen, c.shoulderR, c.shoulderU, _pt, _castRef);
   c.pos[0] = _pt[0]; c.pos[1] = _pt[1]; c.pos[2] = _pt[2];
   c.fov = CAMERA_CONST.fov_deg;                  // one constant, every state, forever
 }

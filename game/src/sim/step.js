@@ -33,6 +33,16 @@ export function stepOnce(sim, input, combat, bus) {
     // The pivot must read the POST-physics controller position (RI-CAM01 §A), so the body is
     // pushed out of the world between the fight and the camera, never after it.
     stepWorldCollision(sim, combat);
+    // The province's claim on the player's Y — standing on the terrain, and the water band's
+    // speed retraction — is PHYSICS, and RI-CAM01 §A requires the pivot to read the character
+    // position "once, after locomotion resolves". It used to run in Engine._afterStep(), i.e.
+    // AFTER the camera had already placed the pivot and AFTER the frame record was built, with
+    // two consequences: the camera followed a Y that was one frame stale on every slope, and
+    // `camera.pivot.y − player.pos.y` in the trace was not 1.55 m, so RI-CAM01 M1's own
+    // measurable was wrong in the artifact a critic reads. It is now inside the step, in the
+    // physics slot, ahead of the camera. It allocates nothing, draws no RNG and reads no clock,
+    // which is what makes it safe under the armed determinism guard.
+    if (sim.settleWorld) sim.settleWorld();
     // W1-07 AR-3: race-conditioned encounter opening. Runs AFTER the fight and after physics
     // so it reads the same positions the trace reports on this frame, and BEFORE the camera so
     // an aggro latch on frame N is visible in frame N's record.
