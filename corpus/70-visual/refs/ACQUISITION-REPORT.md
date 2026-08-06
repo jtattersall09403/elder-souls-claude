@@ -1376,7 +1376,14 @@ Part 2, A12–A14**; no reference item owned by another agent was edited.
 |---|---|---|
 | **A12** | Cell-by-cell validation of `RI-WPN05` §A's 5×7 hitstop grid against real footage. Nothing published states a hitstop figure for any FromSoftware title, and filling 35 cells needs a controlled capture in a game we do not own | **Ordering at ±40 ms** from the per-move GIFs, **a ±16.7 ms spot check** from `video/`, and existence-and-asymmetry as `canonical-recall`. §A stays `constructed`; **no critic may score it as failing for want of a reference**, and it becomes `derived` only if a wave measures ≥3 cells of one tier row at ≤16.7 ms |
 | **A13** | `REF-A12` as images. OpenMW's MyGUI layout data is a *different artifact*, not a degraded one | The image expectation is **deleted, not failed**. `REF-A12` is a complete text asset; every pixel-level UI question moves to `REF-A12b` (33 files, 11 sub-kinds, 8 resolutions). MyGUI's constants are corroboration, never ground truth |
-| **A14** | A true dolly capture for `RI-VIS03` **M11** (LOD pop). Wiki GIFs are fixed-camera 210×118; the `video/` clips at 854×480 / 806 kbps put a small geometric event inside the codec noise floor | **M11's band becomes `derived`, confidence low**, and is re-stated as a **regression** bar — our build against our previous build, not against a reference `[p10,p90]`. The static half (far plane, and the M4 cross-check for a short draw distance hidden by fog) is unaffected. Named unrun search: register a free `gamersyde.com` account and read the JS-injected direct MP4 URLs |
+| **A14** | **Absolute** LOD-pop amplitude for `RI-VIS03` **M11**. A dolly capture now exists (288 s of Elden Ring Liurnia at 60 fps, plus 436 s on deliberately low-end hardware) but both are 854×480 at ~700 kbps, which puts a small geometric event inside the codec noise floor | M11 **splits**. Detection and ordering are **scored normally** against the constrained-hardware reference. Amplitude becomes **`derived`, confidence low, and a regression bar** — our build against our previous build, never reported as reference-calibrated. The static half (far plane, M4 fog cross-check) is unaffected. Named unrun search: a free `gamersyde.com` account for the JS-injected native-resolution MP4 URLs |
+
+**A14 was rewritten before it was filed, and the reason is worth recording.** Its first draft
+accepted M11 as fully IMPOSSIBLE because `video/` held no dolly capture. That was true when the
+draft was written and **false four minutes later** — the concurrent temporal agent landed
+`V1-dolly__elden-ring-liurnia.mp4` mid-write. It was caught by re-running `ffprobe` over `video/`
+before committing rather than by trusting the sentence. A stale IMPOSSIBLE is exactly the failure
+A3 exists to prevent, and a builder can write one as easily as a critic can.
 
 **A12's IMPOSSIBLE is narrower than the critic's.** It said frame-exact calibration is impossible
 because the instrument tops out at 70 ms. That is false: `video/V4-combat__dsr-longplay-t13990.mp4`

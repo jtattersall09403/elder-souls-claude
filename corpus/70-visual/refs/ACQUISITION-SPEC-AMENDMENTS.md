@@ -549,44 +549,60 @@ across 11 sub-kinds and 8 distinct resolutions in both 4:3 and 16:9.**
 
 ---
 
-## A14 — IMPOSSIBLE accepted: a true dolly capture for `RI-VIS03` **M11**. **The M11 band becomes `derived`.** *(closes R2C-02)*
+## A14 — IMPOSSIBLE accepted: **absolute** LOD-pop calibration for `RI-VIS03` **M11**. The bar drops from amplitude to detection and ordering. *(closes R2C-02)*
 
-**M11 (LOD pop and draw-distance stability) is the one bar that survived every temporal route
-and is still unserved**, and it is worth being precise about why, because everything around it
-was solved:
+> **This amendment was rewritten before it was filed.** Its first draft accepted M11 as fully
+> IMPOSSIBLE on the ground that no dolly capture existed. **That was true when the draft was
+> written and false four minutes later** — the concurrent temporal agent landed
+> `video/V1-dolly__elden-ring-liurnia.mp4` while this file was being written. Verified on the
+> bytes rather than on the claim, and the amendment narrowed accordingly. A stale IMPOSSIBLE is
+> exactly the failure A3 exists to prevent, and it is just as bad when a builder writes it.
 
-- Wiki animation GIFs (route 1) are 210×118 combat clips of a fixed camera on a boss. LOD pop is
-  a function of **camera translation through a large scene**; these contain none.
-- The two vendored `video/` clips are 854×480 at 806 kbps. LOD pop is a small-amplitude
-  geometric event; at that bitrate and resolution it is inside the codec's noise floor.
-- `gamersyde.com` (HTTP 200, own-capture high-bitrate MP4) is the one route that would serve it,
-  and its download links need a free account and are JS-injected. **This is recorded as the
-  named unrun search**, not as a dead end.
+### What now exists, measured with `ffprobe` rather than assumed
 
-The remaining substitute — two screenshots of the same landmark at two distances (A8's own
-suggestion) — measures *draw distance*, which M11 shares a section with, but it cannot measure
-*pop*, because pop is defined by the transition.
+| clip | geometry | what it is |
+|---|---|---|
+| `V1-dolly__elden-ring-liurnia.mp4` | 854×480, **60/1 fps**, 697 kbps, **17,274 frames / 287.9 s** | one continuous Liurnia traversal, mounted and on foot, across grassland and shallow lake, day and night, camera translating throughout |
+| `V1b-dolly__elden-ring-low-end-pc.mp4` | 854×480, 29.97 fps, 699 kbps, 13,079 frames / 436.4 s | the same game on a **deliberately hardware-constrained machine**, which is the clip where streaming and LOD transitions are *expected* to be visible rather than hidden |
+
+So M11 has a temporal instrument, and the second clip is the right kind of instrument: a
+low-end run makes pop gross.
+
+### What is still impossible, and it is a narrower thing
+
+**Absolute LOD-pop amplitude, and any `[p10,p90]` band computed from it.** Both clips are
+854×480 at ~700 kbps. LOD pop is, in the general case, a small-amplitude geometric event —
+a shadow cascade stepping, a mesh swapping one silhouette for a slightly different one — and at
+that resolution and bitrate those sit inside the codec's noise floor. A frame-difference spike
+there cannot be separated from a bitrate spike. Neither clip is a native-resolution capture and
+none was obtainable: `gamersyde.com` (HTTP 200) publishes own-capture high-bitrate MP4 but its
+download links need a free account and are JS-injected. **That is the named unrun search.**
 
 **Replacement text for `RI-VIS03` M11's band:**
 
-> **M11 — LOD pop and draw-distance stability.** *(temporal; needs a dolly capture)*
+> **M11 — LOD pop and draw-distance stability.** *(temporal; dolly capture required)*
 >
-> **Reference status: `derived`, confidence low (amendment A14).** No dolly capture of a
-> current-generation title was obtainable — see `TEMPORAL-ACQUISITION.md` for the seven routes
-> tried. The band is therefore **not** calibrated against a reference population and **must not
-> be reported as if it were.** It is set from the project's own renderer as a *regression* bar:
-> M11 measures our build against **our previous build**, and its pass condition is "no worse than
-> last wave", not "within the reference `[p10,p90]`". The static half of the section —
-> **far-plane distance and the M4 cross-check for a short draw distance concealed by fog** — is
-> unaffected and stays as written.
+> **The reference population exists** (`refs/video/V1-dolly__*`, `V1b-dolly__*`: 288 s and 436 s
+> of continuous camera translation, the second on constrained hardware) **but it is 854×480 at
+> ~700 kbps.** M11 therefore splits (amendment A14):
 >
-> **The risk:** a renderer that pops badly in absolute terms can pass a regression bar forever by
-> popping equally badly every wave. The tripwire is the cross-check already in this section: a
-> short draw distance always shows up in M4 edge density and in the far-plane value, whatever
-> M11 reports. **Unblocking search, if a later wave wants it:** register a free `gamersyde.com`
-> account, re-fetch an article page, and read the JS-injected direct MP4 download URLs.
-
----
+> 1. **Detection and ordering — scored normally.** Gross pop events (a visible mesh or shadow
+>    transition during smooth camera translation) are countable in the reference clips, and a
+>    hardware-constrained reference run establishes what "obviously popping" looks like. Our
+>    build must not exceed the constrained reference's event rate. This is a real bar and it is
+>    met or failed.
+> 2. **Amplitude — `derived`, confidence low, and it is a REGRESSION bar.** The magnitude of a
+>    pop cannot be calibrated against a 700 kbps reference, so M11's amplitude compares our
+>    build to **our previous build**: the pass condition is "no worse than last wave", not
+>    "within the reference `[p10,p90]`". **It must not be reported as reference-calibrated.**
+> 3. **The static half is unaffected** — far-plane distance, and the M4 cross-check for a short
+>    draw distance concealed by fog, are measured from stills and stand as written.
+>
+> **The risk:** a renderer that pops badly in absolute terms can pass clause 2 forever by popping
+> equally badly every wave. Clause 1 is the tripwire, and so is the M4 cross-check.
+> **Unblocking search:** register a free `gamersyde.com` account, re-fetch an article page, and
+> read the JS-injected direct MP4 download URLs. That is the one route to a native-resolution
+> capture and it has not been run.
 
 ## A15 — The interval-run weighting rule *(applies critic ruling 1; closes R2C-17)*
 

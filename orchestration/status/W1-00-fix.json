@@ -30,7 +30,12 @@
     "orchestration/amendments/AM-W1-00-02-...md \u2014 NEW, replaces AM-W1-00-01",
     "orchestration/amendments/AM-W1-00-01-...md \u2014 marked WITHDRAWN with the three conceded defects",
     "orchestration/amendments/AM-W1-00-C1-...md \u2014 marked APPLIED with post-adoption measurements",
-    "Math.hypot -> Math.sqrt in every sim hot path (camera/entities/player/record)"
+    "Math.hypot -> Math.sqrt in every sim hot path (camera/entities/player/record)",
+    "game/src/input/pipeline.js \u2014 queueInputs fail-closed on unrecognised event KEYS (RI-MTH01 A12/M6, verdict \u00a78.1)",
+    "game/src/sim/camera.js \u2014 pitch clamp [-70,+60] -> RI-CAM02 \u00a7B [-55,+38], locked [-50,+32]; per-frame look caps 30/20 deg",
+    "corpus/80-methods/m-cam02-control.mjs \u2014 NEW: RI-CAM02 M2/M2b/M3/M5, the item named it and it was absent",
+    "tools/platform/calibrate.mjs \u2014 NEW: RI-PLT01 \u00a7A S* cpu_index; REFUSES sim_units and names the corpus hole",
+    "corpus/80-methods/HARNESS.md \u2014 \u00a73 reanchorFreeRunning, \u00a74 closed event shape + the scripted-window contract"
   ],
   "findings": [
     "BASELINE (pre-fix) determinism.mjs: 8/9 rungs pass, R5 fails on ['enemies[].anim_frame','enemies[].state_entered_f']. R4 reported PASS at frames_differing_pct 100 with rng.draws==0. Baseline text: scratchpad/baseline-det.txt",
@@ -49,8 +54,11 @@
     "ALLOC: CDP HeapProfiler.startSampling defaults includeObjectsCollectedByMinor/MajorGC to FALSE, so it reports SURVIVORS only. Measured: 100k escaping {a,b,c} literals read as 7,572 B (0.08 B each) with defaults vs 2,934,752 B (29.3 B each, correct) with the flags. A traced run reading 5 B/step actually allocates 815 B/step. alloc-probe.mjs now self-tests and refuses to measure if the profiler is blind.",
     "ALLOC RESULT: simulation-path allocation is 0 B at BOTH 60,000 and 120,000 steps in F1 swamp_canopy, F5 dungeon_primary and F4 arena_flat+6. Literal zero, slope zero. Was 0.78-1.73 B/step.",
     "Sites fixed: Math.hypot (variadic, allocates) -> Math.sqrt; loop stepMsSamples [] .push -> Float64Array ring; perf.simMsSamples [] -> Float64Array ring; stats.lastStepMs/stepMsTotal object doubles -> Float64Array.",
-    "TRACE RECORD: moved from Engine._step (the FixedLoop.stepOnce callback) to Engine._afterStep, called after stepOnce returns. makeRecord() now THROWS if loop.inFixedStep(). With --trace the record costs ~816 B/step and 0 B of it is on the step stack."
+    "TRACE RECORD: moved from Engine._step (the FixedLoop.stepOnce callback) to Engine._afterStep, called after stepOnce returns. makeRecord() now THROWS if loop.inFixedStep(). With --trace the record costs ~816 B/step and 0 B of it is on the step stack.",
+    "RI-CAM02 M2 now PASSES: max_pitch 38.000000 / min -55.000000 unlocked, 32/-50 locked, 0 bounce frames, 0 creep frames over 1860 frames each. M2b look cap: 400deg swipe -> 30deg in frame 1, 0 carried into frame 2. M3 lag 0, M5 auto-follow 0.000000 deg over 720 frames.",
+    "CORPUS HOLE FOUND: RI-PLT01 \u00a7A defines sim_units via cpu_index_reference for phone-mid, and no numeric reference is declared anywhere in the corpus. calibrate.mjs emits cpu_index (0.345 ms, checksum 482219064) and REFUSES sim_units. RI-PLT01 M3 is unscoreable on ANY machine until the constant is declared.",
+    "GAP-W1-platform-prng-never-drawn is NOT closed by me: tools/gap-ledger.mjs rejects a closure with closed_by_builder_of_fix (SCORING.md \u00a75 rule 1). Left open with the evidence."
   ],
-  "next_step": "HARNESS.md docs, GAP-LEDGER close, RI-PLT03/RI-CAM02 items, doctrine gate",
+  "next_step": "final verification sweep + summary",
   "notes_for_successor": "Fresh remediation builder. Did not write the original. Env works: node tools/harness/smoke.mjs ok, determinism.mjs takes ~3min."
 }
