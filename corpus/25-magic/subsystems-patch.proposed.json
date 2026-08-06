@@ -1,0 +1,166 @@
+{
+ "$comment": "PROPOSED append-only patch to corpus/00-doctrine/subsystems.json, from the `magic` agent (RI-MAG01..05). Closes BAR-CRITIQUE-01 G4. The taxonomy owner (CRT) applies this; the magic agent did not edit subsystems.json.",
+ "append_to_subsystems": [
+  {
+   "path": "magic.casting.frames",
+   "title": "Cast frames per spell weight class: startup/release/recovery, Ps",
+   "arb": "souls",
+   "area": "25-magic",
+   "critic": "critic.combat"
+  },
+  {
+   "path": "magic.casting.resource",
+   "title": "The dual cost: Focus as ammunition, stamina as tempo",
+   "arb": "split",
+   "area": "25-magic",
+   "critic": "critic.combat"
+  },
+  {
+   "path": "magic.casting.commitment",
+   "title": "Cast commitment, aim latch, cancel policy, interrupt cost",
+   "arb": "souls",
+   "area": "25-magic",
+   "critic": "critic.combat"
+  },
+  {
+   "path": "magic.casting.geometry",
+   "title": "Spell hitboxes: contact, projectile sweep, volume. Never dice",
+   "arb": "souls",
+   "area": "25-magic",
+   "critic": "critic.combat"
+  },
+  {
+   "path": "magic.casting.enemy",
+   "title": "Enemy casters under RI-AI02's telegraph law",
+   "arb": "souls",
+   "area": "25-magic",
+   "critic": "critic.combat"
+  },
+  {
+   "path": "magic.effects.catalogue",
+   "title": "The combinatorial effect list; breadth and school balance",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.magic"
+  },
+  {
+   "path": "magic.effects.parameters",
+   "title": "Magnitude/duration/area/range axes and their legality",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.magic"
+  },
+  {
+   "path": "magic.effects.utility",
+   "title": "Out-of-fight effects as tools: access, knowledge, social, survival",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.magic"
+  },
+  {
+   "path": "magic.effects.traversal",
+   "title": "Levitation, slowfall, water-walking, water-breathing as routes",
+   "arb": "split",
+   "area": "25-magic",
+   "critic": "critic.magic"
+  },
+  {
+   "path": "magic.effects.teleport",
+   "title": "Mark/Recall/Intervention as part of the S7 network (S19)",
+   "arb": "split",
+   "area": "25-magic",
+   "critic": "critic.world"
+  },
+  {
+   "path": "magic.spellmaking.combination",
+   "title": "Combining effects into spells no designer authored",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.magic"
+  },
+  {
+   "path": "magic.spellmaking.cost",
+   "title": "The Focus cost formula and its gold price",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.magic"
+  },
+  {
+   "path": "magic.enchanting.items",
+   "title": "Enchant kinds, capacity, charge and recharge",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.magic"
+  },
+  {
+   "path": "magic.enchanting.soulgems",
+   "title": "Soul gems against S15: the firewall and the anti-farm rule",
+   "arb": "split",
+   "area": "25-magic",
+   "critic": "critic.progression"
+  },
+  {
+   "path": "magic.gating.skills",
+   "title": "School skill gates on attunement, tier and enchanting",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.progression"
+  },
+  {
+   "path": "magic.economy.prices",
+   "title": "Spell, spellmaking and enchanting prices against RI-PRG05",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.progression"
+  },
+  {
+   "path": "magic.quests.solutions",
+   "title": "Magic as a quest resolution: census, diversity, no lockout",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.quests"
+  },
+  {
+   "path": "magic.vfx.artdirection",
+   "title": "Spell design language: organic, fungal, Hist-derived, wet",
+   "arb": "art-direction",
+   "area": "25-magic",
+   "critic": "critic.artdirection"
+  },
+  {
+   "path": "magic.vfx.fidelity",
+   "title": "Particle quality: soft, sorted, lit, resolved, budgeted",
+   "arb": "modern-fidelity",
+   "area": "25-magic",
+   "critic": "critic.fidelity"
+  },
+  {
+   "path": "magic.diegesis.lore",
+   "title": "Magic's in-world account; xul-hesh and its consequences",
+   "arb": "morrowind",
+   "area": "25-magic",
+   "critic": "critic.lore"
+  }
+ ],
+ "append_to_critics": {
+  "critic.magic": "Judges the effect catalogue, spellmaking, enchanting and utility magic outside the fight. Must run the static analyser over game/data/magic/** and the quest analyser over game/data/quests/**, never source."
+ },
+ "fallback_if_no_new_critic": {
+  "note": "If critic.magic is not added, route magic.effects.*, magic.spellmaking.* and magic.enchanting.items to critic.progression, and magic.quests.solutions to critic.quests. magic.casting.* MUST stay with critic.combat in either case - they are inside the fight and AR-1 applies.",
+  "reassign": {
+   "magic.effects.catalogue": "critic.progression",
+   "magic.effects.parameters": "critic.progression",
+   "magic.effects.utility": "critic.progression",
+   "magic.effects.traversal": "critic.progression",
+   "magic.spellmaking.combination": "critic.progression",
+   "magic.spellmaking.cost": "critic.progression",
+   "magic.enchanting.items": "critic.progression"
+  }
+ },
+ "already_canonical_and_used_unchanged": [
+  "combat.magic.casting",
+  "quests.resolution.noncombat",
+  "render.fidelity.vfx",
+  "render.art.weirdness"
+ ]
+}
