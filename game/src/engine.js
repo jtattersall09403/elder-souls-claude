@@ -16,7 +16,7 @@ import { buildCells, EMPTY_CELL } from './sim/collision.js';
 import {
   CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS,
   openUI as cameraOpenUI, closeUI as cameraCloseUI, beginFogGate, beginDeathCamera,
-  pitchArmScale, projectNDC, cameraBasis,
+  pitchArmScale, projectNDC, cameraBasis, triggerShake,
 } from './sim/camera.js';
 import { PLAYER_RADIUS_M } from './sim/world-collision.js';
 import { beginRoute, endRoute, groundYInCell } from './sim/route.js';
@@ -1044,6 +1044,40 @@ export class Engine {
   }
 
   cameraRouteEnd() { endRoute(this.sim); return true; }
+
+  /**
+   * Place an entity, per frame, without going through its AI. RI-CAM03 M3's adversarial
+   * target — 300 °/s orbit, a 14→1.5 m charge in 40 frames, a 9 m leap behind the player —
+   * is a *scripted* motion the containment law did not choose, which is the only honest way
+   * to measure a containment guarantee. The combat body is the authority, so both are written.
+   */
+  setEntityPos(eid, x, z, opts = {}) {
+    const e = this.sim.findEntity(eid);
+    if (!e) throw new Error(`setEntityPos('${eid}'): no such entity`);
+    e.pos[0] = Number(x); e.pos[2] = Number(z);
+    if (opts.y !== undefined) e.pos[1] = Number(opts.y);
+    const b = this.combat && this.combat.bodyOf(eid);
+    if (b) { b.pos[0] = e.pos[0]; b.pos[1] = e.pos[1]; b.pos[2] = e.pos[2]; b.hasPrev = false; }
+    return { eid, pos: [e.pos[0], e.pos[1], e.pos[2]] };
+  }
+
+  /**
+   * The `camera` block of `elder-souls/trace@1` for the current frame, and nothing else.
+   * A camera probe reads this tens of thousands of times; `snapshot()` builds every enemy,
+   * every hitbox and the event pool with it, and the cost showed up as probe wall-time rather
+   * than as anything a critic would see. Same builder, same fields, same rounding — it is the
+   * trace record, narrowed.
+   */
+  getCameraFrame() {
+    const rec = makeRecord(this.sim, this.input, this.bus, { enemies: false, hitboxes: false, events: false });
+    return { f: rec.f, camera: rec.camera, player_pos: rec.player.pos, player_yaw_deg: rec.player.yaw_deg };
+  }
+
+  /** RI-CAM06 M7's fixture: fire the damage shake at a stated fraction of hp_max. */
+  triggerCameraShake(hpFraction) {
+    triggerShake(this.sim, Number(hpFraction));
+    return { amp_deg: this.sim.camera.shakeAmp, until: this.sim.camera.shakeUntil };
+  }
 
   cameraRouteState() {
     const r = this.sim.route;

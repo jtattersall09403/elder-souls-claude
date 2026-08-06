@@ -155,6 +155,10 @@ export function installHarness(engine, bootPromise) {
     cameraRoute(opts) { return engine.cameraRoute(opts || {}); },
     cameraRouteEnd() { return engine.cameraRouteEnd(); },
     cameraRouteState() { return engine.cameraRouteState(); },
+    // RI-CAM03 M3's scripted adversarial target, and RI-CAM06 M7's shake fixture.
+    getCameraFrame() { return engine.getCameraFrame(); },
+    setEntityPos(eid, x, z, opts) { return engine.setEntityPos(eid, x, z, opts || {}); },
+    triggerCameraShake(hpFraction) { return engine.triggerCameraShake(hpFraction); },
     setUIVisible(v) { return engine.renderer.setUIVisible(v); },
 
     // ---- queries ----------------------------------------------------------------------------

@@ -65,10 +65,16 @@ export class Clip {
   }
 
   phaseAt(f) {
-    if (this.startup > 0 && f <= this.startup) return (f - 1) / this.startup;
-    if (this.active > 0 && f <= this.startup + this.active) {
-      return 1 + (f - this.startup - 1) / this.active;
+    // A move with no ACTIVE band — an OVERLOADED stumble, a HEAVY backstep — would otherwise
+    // JUMP the 1..2 band of the curve, delivering most of its root displacement in a single
+    // frame. That is a teleport wearing an animation. When there is no active window the whole
+    // clip is mapped linearly across 0..3 instead, so the curve is sampled in full.
+    if (this.active <= 0) {
+      if (this.total <= 1) return 0;
+      return 3 * Math.min(1, Math.max(0, (f - 1) / (this.total - 1)));
     }
+    if (this.startup > 0 && f <= this.startup) return (f - 1) / this.startup;
+    if (f <= this.startup + this.active) return 1 + (f - this.startup - 1) / this.active;
     const k = f - this.startup - this.active - 1;
     return 2 + Math.min(1, Math.max(0, k / this.tail));
   }

@@ -40,7 +40,7 @@
       "asked_at": "B03", "asked_by": "warden-scribe-tuleeh-ma",
       "form": "recorded on the writ",
       "reversible": false,
-      "consequence": { "attributes": null, "skills": null, "social": "0 terms", "content": "0 gates", "fight": false },
+      "consequence": { "attributes": null, "skills": null, "social": null, "content": null, "fight": false },
       "mechanical_terms": 0,
       "note": "Sex has zero mechanical terms and this is deliberate and stated, so that a critic does not go looking for a hidden one and a builder does not invent one to make the field feel earned."
     },
@@ -65,6 +65,7 @@
     {
       "order": 6, "id": "class", "label": "Class / profession",
       "asked_at": "B03", "asked_by": "warden-scribe-tuleeh-ma",
+      "question": "And what is it you do? Name it, or make one up and I will write it, or sit there and answer me and I will tell you what you are.",
       "form": "three routes: name a profession, declare a custom one, or answer the questions",
       "routes": ["named", "custom", "questionnaire"],
       "questionnaire_mandatory": true,

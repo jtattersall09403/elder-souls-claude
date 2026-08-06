@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 87,
+  "file_count": 89,
   "files": [
     {
       "path": "books/the-drowned-ford.json",
@@ -37,8 +37,8 @@
       "path": "combat/clips.json",
       "schema": "elder-souls/clips@1",
       "id": null,
-      "bytes": 22496,
-      "sha256": "4addf347a4f073b7"
+      "bytes": 22551,
+      "sha256": "acd3ab691526377b"
     },
     {
       "path": "combat/enemies/beast_slitherfang.json",
@@ -95,6 +95,13 @@
       "id": "inf_trash",
       "bytes": 3317,
       "sha256": "cfb3c60f95998f36"
+    },
+    {
+      "path": "combat/enemies/probe_pulse.json",
+      "schema": "elder-souls/enemy@1",
+      "id": "probe_pulse",
+      "bytes": 1706,
+      "sha256": "df4a6e72f370da63"
     },
     {
       "path": "combat/flask.json",
@@ -220,7 +227,7 @@
       "schema": "elder-souls/creation-questions@1",
       "id": "creation-questions",
       "bytes": 13722,
-      "sha256": "90ce9a96e484235c"
+      "sha256": "0212ca08d675e8b7"
     },
     {
       "path": "dialogue/greetings.json",
@@ -378,6 +385,13 @@
       "id": "arena_flat",
       "bytes": 1357,
       "sha256": "e5b340d8060f16e5"
+    },
+    {
+      "path": "states/arena_probe.json",
+      "schema": "elder-souls/state@1",
+      "id": "arena_probe",
+      "bytes": 1150,
+      "sha256": "880f8004f4570387"
     },
     {
       "path": "states/cam_boardwalk.json",

@@ -30,7 +30,10 @@ export function spendStamina(actor, cost, frame, delayFrames) {
  * Returns the amount actually added, so the caller can assert the slope.
  */
 export function regenStamina(actor, frame, C, ctx) {
-  if (frame < actor.regenBlockUntil) return 0;
+  // `>` and not `>=`. RI-CMB03 M1 is explicit: "FAIL if f_resume - f0 != 43 (delay is 42
+  // frames, so regen first SHOWS on the 43rd)". The 42 blocked frames are f0+1 .. f0+42 and
+  // the first frame that regenerates is f0+43. One frame, and it is measured to +/-0.
+  if (frame <= actor.regenBlockUntil) return 0;
   if (actor.stamina >= actor.staminaMax) return 0;
   let rate = C.regen.per_frame;
   if (ctx.guardRaised) rate *= C.regen.multipliers.guard_raised;

@@ -97,42 +97,61 @@ export function reachableClasses(data, askedQuestions, opts = {}) {
   const skillOrder = skillIds(data);
   const idx = new Map(skillOrder.map((s, i) => [s, i]));
   const n = skillOrder.length;
-  let level = new Map([['', new Int8Array(n)]]);
-  let routes = 1;
-  for (const q of askedQuestions) {
-    const next = new Map();
-    for (const w of level.values()) {
-      for (const ans of q.answers) {
-        const w2 = Int8Array.from(w);
-        for (const s of ans.weights) w2[idx.get(s)]++;
-        const k = w2.join(',');
-        if (!next.has(k)) next.set(k, w2);
-      }
-    }
-    level = next;
-    routes *= 4;
-  }
-  const table = namedClassTable(data);
+  const table = maskClassTable(data, idx);
   const found = new Set();
-  const order = skillOrder.map((s, i) => i);
-  for (const w of level.values()) {
-    const ranked = order.slice().sort((a, b) => (w[b] - w[a]) || (a - b)).slice(0, 5).map((i) => skillOrder[i]);
-    const key = `${ranked.slice(0, 3).slice().sort().join(',')}|${ranked.slice(3, 5).slice().sort().join(',')}`;
-    const m = table.get(key);
-    if (m) found.add(m);
-  }
+  const w = new Int32Array(n);
+  const qs = askedQuestions;
+  // Answers pre-resolved to skill indices, so the hot loop touches no strings and no Maps.
+  const answerIdx = qs.map((q) => q.answers.map((a) => a.weights.map((s) => idx.get(s))));
+  const depth = qs.length;
+  const top = new Int32Array(5);
+  let routes = 0;
+
+  const leaf = () => {
+    routes++;
+    // Top five by (weight desc, RI-PRG03 §1 order asc). A five-slot insertion beats a sort by
+    // an order of magnitude and the tie-break is identical to scoreAnswers().
+    let k = 0;
+    for (let i = 0; i < n; i++) {
+      const wi = w[i];
+      let j = k < 5 ? k : 5;
+      while (j > 0 && (wi > w[top[j - 1]])) { if (j < 5) top[j] = top[j - 1]; j--; }
+      if (j < 5) { top[j] = i; if (k < 5) k++; }
+    }
+    let m3 = 0, m2 = 0;
+    for (let i = 0; i < 3; i++) m3 |= 1 << top[i];
+    for (let i = 3; i < 5; i++) m2 |= 1 << top[i];
+    const hit = table.get(m3 * 524288 + m2);
+    if (hit) found.add(hit);
+  };
+
+  const rec = (i) => {
+    if (i === depth) { leaf(); return; }
+    const opts2 = answerIdx[i];
+    for (let a = 0; a < opts2.length; a++) {
+      const ws = opts2[a];
+      for (let s = 0; s < ws.length; s++) w[ws[s]]++;
+      rec(i + 1);
+      for (let s = 0; s < ws.length; s++) w[ws[s]]--;
+    }
+  };
+  rec(0);
+
   const out = [...found].sort();
-  if (opts.detail) return { classes: out, routes_enumerated: routes, distinct_weight_vectors: level.size };
+  if (opts.detail) return { classes: out, routes_enumerated: routes };
   return out;
 }
 
-/** primary/secondary skill-set key -> class id, built once. */
-function namedClassTable(data) {
+/** (top-3 mask, top-2 mask) -> class id, built once. 19 skills fits in 19 bits. */
+function maskClassTable(data, idx) {
   const t = new Map();
   for (const c of data.classes.classes) {
-    const p = Object.keys(c.skills).filter((k) => c.skills[k] === 25).sort().join(',');
-    const s = Object.keys(c.skills).filter((k) => c.skills[k] === 15).sort().join(',');
-    t.set(`${p}|${s}`, c.id);
+    let m3 = 0, m2 = 0;
+    for (const k of Object.keys(c.skills)) {
+      if (c.skills[k] === 25) m3 |= 1 << idx.get(k);
+      else if (c.skills[k] === 15) m2 |= 1 << idx.get(k);
+    }
+    t.set(m3 * 524288 + m2, c.id);
   }
   return t;
 }
