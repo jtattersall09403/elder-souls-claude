@@ -1,0 +1,33 @@
+{
+  "schema": "elder-souls/enemy@1",
+  "id": "inf_trash",
+  "name": "Marsh sentry",
+  "archetype": "INFANTRY",
+  "tier": "trash",
+  "ai": "hold_ground",
+  "hp": 412,
+  "poise": 22,
+  "radius_m": 0.4,
+  "sight_radius_m": 14.0,
+  "sight_cone_deg": 120,
+  "reach_m": 2.4,
+  "idle_anim_frames": 48,
+  "declared_incomplete": {
+    "owner": "RI-AI01..RI-AI07 / wave-1 piece W1-06 (enemy archetypes and AI)",
+    "implemented": [
+      "perception (sight radius + cone, alert ramp)",
+      "turn to face",
+      "poise and stagger",
+      "death, and staying in enemies[] as state DEAD"
+    ],
+    "missing": [
+      "approach",
+      "circle/reposition",
+      "commit (it never attacks)",
+      "attack token",
+      "punish windows",
+      "leash"
+    ],
+    "note": "W1-00 owns the harness, not the AI. An INFANTRY that circled and swung would be a fabricated measurement (RI-MTH04). The gap is declared here so a critic reading cmb-duel-infantry's trace knows why the enemy never attacks."
+  }
+}

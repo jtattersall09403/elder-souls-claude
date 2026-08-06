@@ -1,0 +1,158 @@
+// The FrameRecord — `elder-souls/trace@1`, HARNESS.md §5.
+//
+// ONE function builds both `snapshot()` and every trace line. RI-MTH01 "How we lose" #5 is
+// the reason: two subtly different shapes appear the moment there are two builders, and
+// trace-stats.mjs then silently reads `undefined`.
+//
+// This runs OUTSIDE the fixed step (see harness/api.js), which is what lets the step itself
+// be allocation-free — RI-PLT01 P4 excludes the trace record by name.
+//
+// Field contract, verbatim from §5: phase ∈ none|windup|active|recovery|turn|hitstun;
+// alert_state ∈ IDLE|SUSPICIOUS|SEARCH|AGGRO; positions [x,y,z] metres; angles degrees;
+// times milliseconds; stamina and hp absolute with `_max` alongside.
+'use strict';
+
+import { STEP_MS } from '../core/loop.js';
+import { rng } from '../core/rng.js';
+import { ACTIONS, BIT } from '../input/actions.js';
+
+const r4 = (v) => Math.round(v * 1e4) / 1e4;
+const r2 = (v) => Math.round(v * 1e2) / 1e2;
+const r3 = (v) => Math.round(v * 1e3) / 1e3;
+
+const evBuf = [];
+
+/**
+ * @param {SimState} sim
+ * @param {InputPipeline} input
+ * @param {EventBus} bus
+ * @param {object} opts {enemies, hitboxes, events, camera, perf}
+ * @param {object|null} perf A-JRN5 per-frame perf block, or null
+ */
+export function makeRecord(sim, input, bus, opts, perf) {
+  const p = sim.player;
+  const c = sim.camera;
+  const rec = {
+    f: sim.frame,
+    t_ms: +(sim.frame * STEP_MS).toFixed(3),
+    input: {
+      move: [r4(input.moveX), r4(input.moveY)],
+      look: [r4(input.lookXConsumed || 0), r4(input.lookYConsumed || 0)],
+      held: input.heldNames().slice(),
+      pressed: input.pressedNames().slice(),
+      // RI-CMB11 §5 additions
+      dispatch_lag: input.dispatchLag,
+      buffered: input.bufferedAction ? bitName(input.bufferedAction) : null,
+      catchup_steps: input.catchupSteps,
+    },
+    player: {
+      pos: [r4(p.pos[0]), r4(p.pos[1]), r4(p.pos[2])],
+      yaw_deg: r2(p.yaw),
+      move_dir_deg: r2(p.moveDirDeg),        // RI-CAM02's requested field
+      state: p.state,
+      anim: p.anim,
+      anim_frame: p.animFrame,
+      anim_len: p.animLen,
+      phase: p.phase,
+      speed_mps: r3(p.speedMps),
+      stamina: r3(p.stamina),
+      stamina_max: p.staminaMax,
+      stamina_regen_blocked: sim.frame < p.regenBlockUntil,
+      hp: p.hp,
+      hp_max: p.hpMax,
+      poise_cur: p.poise,
+      poise_max: p.poiseMax,
+      iframe: p.iframe,
+      iframe_kind: p.iframeKind,
+      grounded: p.grounded,
+      estus: p.estus,
+      locked_on: p.lockOn,
+      equip_load_pct: r2(p.equipLoadPct),
+      roll_class: p.rollClass,
+      hitboxes: opts.hitboxes === false ? [] : p.hitboxes.map(cloneHitbox),
+    },
+    camera: {
+      pos: [r4(c.pos[0]), r4(c.pos[1]), r4(c.pos[2])],
+      pivot: [r4(c.pivot[0]), r4(c.pivot[1]), r4(c.pivot[2])],
+      yaw_deg: r4(c.yaw),
+      pitch_deg: r4(c.pitch),
+      roll_deg: 0,                                  // RI-CAM06 §E: exactly 0, everywhere
+      fov_deg: r4(c.fov),
+      dist_m: r4(c.dist),
+      mode: c.mode,
+      shake: [r4(c.shakeYaw), r4(c.shakePitch)],    // rotational only
+      hitstop: c.hitstop,
+      clip_through: c.clipThrough,
+      lock_on: p.lockOn,
+    },
+    enemies: opts.enemies === false ? [] : sim.entities.map((e) => enemyRecord(e, sim, opts)),
+    events: opts.events === false ? [] : bus.snapshotInto(evBuf).slice(),
+    rng: { draws: rng.draws, seed: rng.seed },
+    env: {
+      time_of_day: r3(sim.env.timeOfDay),
+      weather: sim.env.weather,
+      region: sim.env.region,
+      interior: sim.env.interior,
+    },
+  };
+  if (perf) rec.perf = perf;
+  return rec;
+}
+
+function enemyRecord(e, sim, opts) {
+  const p = sim.player;
+  const dx = e.pos[0] - p.pos[0], dz = e.pos[2] - p.pos[2];
+  return {
+    eid: e.eid,
+    archetype: e.archetype,
+    tier: e.tier,
+    state: e.state,
+    state_entered_f: e.stateEnteredF,
+    prev_state: e.prevState,
+    anim: e.anim,
+    anim_frame: e.animFrame,
+    anim_len: e.animLen,
+    phase: e.phase,
+    hit_active: e.hitActive,
+    hitboxes: opts.hitboxes === false ? [] : e.hitboxes.map(cloneHitbox),
+    pos: [r4(e.pos[0]), r4(e.pos[1]), r4(e.pos[2])],
+    yaw_deg: r2(e.yaw),
+    yaw_rate_dps: r2(e.yawRate),
+    speed_mps: r3(e.speed),
+    target: e.alertState === 'AGGRO' ? 'player' : null,
+    dist_m: r4(Math.hypot(dx, dz)),
+    los: true,
+    in_sight_cone: inCone(e, dx, dz),
+    alert: Math.round(e.alert),
+    alert_state: e.alertState,
+    attack_token: e.attackToken,
+    hp: e.hp,
+    hp_max: e.hpMax,
+    poise_cur: e.poise,
+    poise_max: e.poiseMax,
+    stagger: e.stagger,
+    spawn_anchor: [r4(e.anchor[0]), r4(e.anchor[1]), r4(e.anchor[2])],
+    leash_dist_m: r3(Math.hypot(e.pos[0] - e.anchor[0], e.pos[2] - e.anchor[2])),
+    ai: e.ai,
+  };
+}
+
+function inCone(e, dx, dz) {
+  const bearing = Math.atan2(dx, dz) * 180 / Math.PI;
+  let d = (bearing - e.yaw) % 360; if (d > 180) d -= 360; if (d < -180) d += 360;
+  return Math.abs(d) <= e.sight_cone_deg / 2;
+}
+
+function cloneHitbox(h) {
+  return {
+    id: h.id, owner: h.owner, kind: h.kind,
+    a: [r4(h.a[0]), r4(h.a[1]), r4(h.a[2])],
+    b: [r4(h.b[0]), r4(h.b[1]), r4(h.b[2])],
+    r: h.r, active_f: h.active_f, dmg: h.dmg, poise_dmg: h.poise_dmg, hits: h.hits.slice(),
+  };
+}
+
+function bitName(bit) {
+  for (let i = 0; i < ACTIONS.length; i++) if (BIT[ACTIONS[i]] === bit) return ACTIONS[i];
+  return null;
+}

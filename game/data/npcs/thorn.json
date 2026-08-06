@@ -1,0 +1,68 @@
+{
+  "schema": "elder-souls/npcs@1",
+  "group": "thorn",
+  "npcs": [
+    {
+      "id": "king-hlaalu-teeth",
+      "name": "Hlaalu-Teeth",
+      "race": "argonian",
+      "class": "noble",
+      "faction": null,
+      "settlement": "thorn",
+      "disposition": 40,
+      "interior": "thorn-hall",
+      "schedule": [
+        {
+          "from": "06:00",
+          "to": "22:00",
+          "at": "thorn-hall"
+        },
+        {
+          "from": "22:00",
+          "to": "06:00",
+          "at": "thorn-hall"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "the-rotted-hall",
+        "my-kingdom"
+      ],
+      "services": []
+    },
+    {
+      "id": "warden-eshi",
+      "name": "Eshi",
+      "race": "argonian",
+      "class": "warden",
+      "faction": null,
+      "settlement": "thorn",
+      "disposition": 30,
+      "interior": null,
+      "schedule": [
+        {
+          "from": "06:00",
+          "to": "20:00",
+          "at": "thorn-gate"
+        },
+        {
+          "from": "20:00",
+          "to": "06:00",
+          "at": "thorn-hall"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "the-marsh",
+        "little-advice"
+      ],
+      "services": []
+    }
+  ],
+  "declared_incomplete": {
+    "owner": "wave-1 piece W1-04",
+    "missing": [
+      "the other 28 named NPCs of a village-tier settlement"
+    ]
+  }
+}

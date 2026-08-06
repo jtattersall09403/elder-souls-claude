@@ -1,0 +1,72 @@
+{
+  "schema": "elder-souls/settlement@1",
+  "id": "thorn",
+  "name": "Thorn",
+  "tier": "village",
+  "region": "thornmarsh",
+  "pos": [
+    3820.0,
+    0,
+    859.0
+  ],
+  "identity": "A kingdom that shrank. Thorn's 'king' is an old Argonian holding court in a rotted hall with eleven subjects and a genuine, legally-valid Imperial charter. Industry: the needle-forest - thornwood cut for Dunmer bows and Imperial spears. Tension: Morrowind is one day's walk north and remembers what it used to take from here. Layout tells you: the hall is at the centre and everything else is a lean-to against it - this was built for a court that no longer exists.",
+  "targets": {
+    "buildings": 10,
+    "named_interiors": 7,
+    "enterable_pct": 70,
+    "named_npcs": 12,
+    "scheduled_npc_pct": 70,
+    "shops": 2,
+    "taverns": 1,
+    "temple_shrine": 1,
+    "guild_halls": 0,
+    "trainers": 1,
+    "quest_givers": 3,
+    "rumour_variants": 6,
+    "bonfire": 1,
+    "road_gates": 2,
+    "unique_architecture_kit": "shared+2 unique props",
+    "souls_loop_dungeon_attached": 0
+  },
+  "buildings": [
+    {
+      "id": "thorn-hall",
+      "name": "The Rotted Hall",
+      "enterable": true,
+      "interior": "thorn-hall",
+      "kind": "hall"
+    },
+    {
+      "id": "thorn-stilt-01",
+      "name": "Stilt house, east",
+      "enterable": false,
+      "kind": "dwelling"
+    },
+    {
+      "id": "thorn-stilt-02",
+      "name": "Stilt house, west",
+      "enterable": false,
+      "kind": "dwelling"
+    }
+  ],
+  "interiors": [
+    "thorn-hall"
+  ],
+  "inhabitants": [
+    "king-hlaalu-teeth",
+    "warden-eshi"
+  ],
+  "services": [],
+  "declared_incomplete": {
+    "owner": "wave-1 piece W1-04 (settlements, interiors and the people in them)",
+    "missing": [
+      "the other 15 buildings",
+      "the other 17 named NPCs",
+      "shops",
+      "taverns",
+      "schedules",
+      "the attached souls-loop dungeon"
+    ],
+    "note": "Targets above are the corpus's floor for this tier and are NOT met by this file. W1-00 ships the settlement SHAPE so the data analyser and the harness have something real to read; it does not pretend to have built a town."
+  }
+}

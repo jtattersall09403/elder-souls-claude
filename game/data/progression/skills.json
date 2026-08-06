@@ -1,0 +1,24 @@
+{
+  "schema": "elder-souls/skills@1",
+  "provenance": "Seam S3: skills improve by use and gate access/utility, never to-hit. Owned by RI-PRG01/RI-PRG02; this file is the wave-1 container.",
+  "skills": [
+    {
+      "id": "long-blade",
+      "name": "Long Blade",
+      "governing": "strength",
+      "use_progress": "per landed hit"
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "governing": "intelligence",
+      "use_progress": "per lock attempted"
+    },
+    {
+      "id": "speechcraft",
+      "name": "Speechcraft",
+      "governing": "faith",
+      "use_progress": "per persuasion attempt"
+    }
+  ]
+}

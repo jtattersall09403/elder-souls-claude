@@ -1,0 +1,69 @@
+{
+  "schema": "elder-souls/interior@1",
+  "id": "thorn-hall",
+  "name": "The Rotted Hall",
+  "settlement": "thorn",
+  "cell_kind": "named",
+  "exterior_door": [
+    3820.0,
+    0,
+    857.0
+  ],
+  "bounds_m": {
+    "x": [
+      -6,
+      6
+    ],
+    "y": [
+      0,
+      4.2
+    ],
+    "z": [
+      -8,
+      8
+    ]
+  },
+  "light": {
+    "kind": "hearth",
+    "pos": [
+      0,
+      0.6,
+      3.0
+    ],
+    "colour_hex": "#ffb066",
+    "intensity": 2.4
+  },
+  "contents": [
+    {
+      "id": "thorn-hall-chest-01",
+      "kind": "container",
+      "pos": [
+        -3.4,
+        0,
+        5.2
+      ],
+      "locked": false
+    },
+    {
+      "id": "thorn-hall-door-01",
+      "kind": "door",
+      "pos": [
+        0,
+        0,
+        -7.6
+      ],
+      "locked": false
+    }
+  ],
+  "inhabitants": [
+    "king-hlaalu-teeth"
+  ],
+  "anchor": "interior_firelit",
+  "declared_incomplete": {
+    "owner": "wave-1 piece W1-04",
+    "missing": [
+      "furnishing pass",
+      "continuity with the exterior silhouette (RI-WLD13)"
+    ]
+  }
+}

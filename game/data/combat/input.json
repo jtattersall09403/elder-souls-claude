@@ -1,0 +1,29 @@
+{
+  "schema": "elder-souls/input@1",
+  "buttons": [
+    "light",
+    "heavy",
+    "roll",
+    "block",
+    "parry",
+    "sprint",
+    "jump",
+    "use_item",
+    "interact",
+    "lock_on",
+    "two_hand",
+    "swap_right",
+    "swap_left",
+    "menu"
+  ],
+  "buffer_frames": 8,
+  "buffer_slots": 1,
+  "catchup_cap_steps": 5,
+  "fixed_step_hz": 60,
+  "held_only": [
+    "block",
+    "sprint"
+  ],
+  "unit": "f@60",
+  "provenance": "Button set: HARNESS.md §4 (closed). Buffer 8 f@60 and one slot: RI-CMB09 §1 / RI-CMB01 C6, explicitly excluded from the S22 rebase. Catch-up cap 5: RI-PLT01 §C.4 R3 and RI-CMB11 §3."
+}
