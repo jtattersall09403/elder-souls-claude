@@ -107,6 +107,11 @@ export class FixedLoop {
       }
     } else {
       this.lastWallMs = now;
+      // Harness mode: the internal loop neither advances the simulation NOR draws. A
+      // continuously-rendering rAF starves the compositor on a software rasteriser and
+      // page.screenshot() times out — and it is pure waste, since every harness render is
+      // explicitly requested by stepFrames() or renderFrame().
+      return;
     }
 
     this.maybeRender(now);

@@ -134,3 +134,45 @@ declares its property partition "exhaustive and closed" — which made it struct
 ask for this. That partition needs a third branch, or an explicit statement that behavioural
 reference sits outside it. **Filed as a required corpus amendment, not a licence to proceed
 informally.**
+
+## A6 — ESO Black Marsh: raised in scope, unchanged in standing
+
+**Amends §5d**, which asks for four ESO screenshots as "orientation only, cited by nobody" and puts
+`context/` last in the priority order. It is currently at **zero files**.
+
+**What stays exactly as it was.** ESO Shadowfen/Murkmire is **not a fidelity reference** — a 2014
+MMO engine in `refs/modern/` would drag our `[p10,p90]` bands down and hand a builder the argument
+"we are within the reference population", which is `RI-VIS03`'s named failure arriving through the
+front door. It is **not an art-direction reference** either — ours descends from Morrowind plus our
+own written transposition, and ESO is somebody else's transposition of the same source. The
+`forbidden_for: ["fidelity-bands", "art-direction-judgement", "blind-pairing"]` rule stands. **No
+critic scores against these images.**
+
+**What changes.** Four images was set for a folder nobody reads. But these are the **only existing
+visual depiction of the actual region our game is set in**, and seam **S20** already rules ESO
+material admissible precisely for the things a picture shows: *geography, rivers, ruins and
+xanmeers, species and creatures, flora, the Hist's nature*. That is builder reference, not critic
+reference, and the distinction was collapsed.
+
+So:
+
+1. **Raise the target from 4 to 12–16**, covering the subjects builders must actually depict:
+   **xanmeer ziggurats** (stepped, half-sunk, vine-taken), **Hist trees** at scale, **Argonian
+   settlement architecture** (stilted, lashed, organic), **marsh vegetation and water**, **naga and
+   Argonian character design**, and **root-tunnel interiors**.
+2. **Re-file it as `side: "subject-reference"`**, not `"context-neither"`. The old name described
+   what it *isn't*; the new one describes what it *is for*. `forbidden_for` is unchanged.
+3. **Raise its priority** from last to **mid**. Wave-1 pieces `W1-02` (regions and the strange),
+   `W1-03` (water and the amphibious body) and `W1-14` (magic VFX) are being built *now* and have
+   no visual reference for their subject at all. A builder guessing what a xanmeer looks like is a
+   worse outcome than a builder looking at one.
+4. **Every file carries a visible warning in its record**: `"builder_reference_only": true`, with a
+   note that this is 2E 582 material under S20 — admissible for what the land and its species look
+   like, inadmissible for politics, power, named individuals and prices.
+
+**The risk this creates, stated plainly.** Handing builders ESO imagery invites convergence on
+ESO's Black Marsh, which is exactly what the earlier ruling guarded against. The guard is
+`RI-VIS07`'s naming test — a fresh judge shown our screenshot must not answer "ESO" any more than
+they may answer "Skyrim". **Add ESO to that test's forbidden answers.** Subject reference tells a
+builder what a xanmeer *is*; our own art-direction spec, transposed from Morrowind, tells them what
+ours *looks like*.

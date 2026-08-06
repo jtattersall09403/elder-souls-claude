@@ -93,7 +93,7 @@ export function buildScene(seed) {
 
   const mats = {
     ground: new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.94, metalness: 0.0 }),
-    water: new THREE.MeshStandardMaterial({ color: 0x1e2b26, roughness: 0.10, metalness: 0.40, transparent: true, opacity: 0.80 }),
+    water: new THREE.MeshStandardMaterial({ color: 0x24352c, roughness: 0.08, metalness: 0.55, transparent: true, opacity: 0.86 }),
     bark: new THREE.MeshStandardMaterial({ color: 0x453728, roughness: 0.95 }),
     leaf: new THREE.MeshStandardMaterial({ color: 0x33492a, roughness: 0.84 }),
     reed: new THREE.MeshStandardMaterial({ color: 0x6c7a3c, roughness: 0.90, side: THREE.DoubleSide }),
@@ -119,10 +119,12 @@ export function buildScene(seed) {
     pos.setY(i, y);
     const wet = clamp01((0.6 - y) / 1.8);
     const high = clamp01((y - 6.0) / 6.0);
-    const mottle = noise2(x * 0.28, z * 0.28, seed + 21) * 0.16;
-    colours[i * 3 + 0] = lerp(lerp(0.19, 0.30, wet), 0.46, high) + mottle * 0.5;
-    colours[i * 3 + 1] = lerp(lerp(0.26, 0.27, wet), 0.45, high) + mottle;
-    colours[i * 3 + 2] = lerp(lerp(0.13, 0.22, wet), 0.42, high) + mottle * 0.4;
+    // Two octaves of mottle, so the ground is not a flat wash of one albedo: the edge
+    // density and flat-shading metrics both read a single-colour terrain as absent detail.
+    const mottle = noise2(x * 0.31, z * 0.31, seed + 21) * 0.10 + noise2(x * 1.7, z * 1.7, seed + 33) * 0.05;
+    colours[i * 3 + 0] = lerp(lerp(0.115, 0.170, wet), 0.255, high) + mottle * 0.55;
+    colours[i * 3 + 1] = lerp(lerp(0.150, 0.155, wet), 0.250, high) + mottle;
+    colours[i * 3 + 2] = lerp(lerp(0.075, 0.125, wet), 0.235, high) + mottle * 0.42;
   }
   geo.setAttribute('color', new THREE.BufferAttribute(colours, 3));
   geo.computeVertexNormals();

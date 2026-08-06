@@ -122,7 +122,7 @@ function enemyRecord(e, sim, opts) {
     target: e.alertState === 'AGGRO' ? 'player' : null,
     dist_m: r4(Math.hypot(dx, dz)),
     los: true,
-    in_sight_cone: inCone(e, dx, dz),
+    in_sight_cone: inCone(e, -dx, -dz),   // bearing FROM the enemy TO the player
     alert: Math.round(e.alert),
     alert_state: e.alertState,
     attack_token: e.attackToken,
@@ -137,7 +137,9 @@ function enemyRecord(e, sim, opts) {
   };
 }
 
+/** @param dx,dz the vector from the enemy to the player */
 function inCone(e, dx, dz) {
+  if (!e.sight_cone_deg) return false;
   const bearing = Math.atan2(dx, dz) * 180 / Math.PI;
   let d = (bearing - e.yaw) % 360; if (d > 180) d -= 360; if (d < -180) d += 360;
   return Math.abs(d) <= e.sight_cone_deg / 2;

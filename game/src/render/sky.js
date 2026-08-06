@@ -10,11 +10,11 @@ import * as THREE from '../../vendor/three/three.module.js';
 
 /** The named weather states. Closed set — `setWeather` throws on anything else. */
 export const WEATHER = {
-  clear: { fogDensity: 0.0022, sunIntensity: 3.2, ambient: 1.05, tint: [1.00, 1.00, 1.00], overcast: 0.00, rain: 0.0 },
-  overcast: { fogDensity: 0.0060, sunIntensity: 1.0, ambient: 1.45, tint: [0.86, 0.88, 0.92], overcast: 0.80, rain: 0.0 },
-  rain: { fogDensity: 0.0110, sunIntensity: 0.6, ambient: 1.30, tint: [0.72, 0.78, 0.84], overcast: 0.92, rain: 0.6 },
-  storm: { fogDensity: 0.0180, sunIntensity: 0.35, ambient: 0.95, tint: [0.55, 0.62, 0.72], overcast: 1.00, rain: 1.0 },
-  fog: { fogDensity: 0.0320, sunIntensity: 0.9, ambient: 1.60, tint: [0.80, 0.82, 0.80], overcast: 0.70, rain: 0.0 },
+  clear: { fogDensity: 0.0026, sunIntensity: 2.1, ambient: 0.62, tint: [1.00, 1.00, 1.00], overcast: 0.00, rain: 0.0 },
+  overcast: { fogDensity: 0.0062, sunIntensity: 0.7, ambient: 0.95, tint: [0.86, 0.88, 0.92], overcast: 0.80, rain: 0.0 },
+  rain: { fogDensity: 0.0112, sunIntensity: 0.45, ambient: 0.85, tint: [0.72, 0.78, 0.84], overcast: 0.92, rain: 0.6 },
+  storm: { fogDensity: 0.0180, sunIntensity: 0.28, ambient: 0.62, tint: [0.55, 0.62, 0.72], overcast: 1.00, rain: 1.0 },
+  fog: { fogDensity: 0.0320, sunIntensity: 0.65, ambient: 1.05, tint: [0.80, 0.82, 0.80], overcast: 0.70, rain: 0.0 },
 };
 
 const SKY_VERT = `

@@ -159,22 +159,44 @@ try {
   // ---- R5: warm-up invariance ----------------------------------------------------------------
   const w30 = await run({ warmup: 30, frames: 600 });
   const w90 = await run({ warmup: 90, frames: 600 });
-  const rebase = (recs) => {
+  // RI-MTH02 R5's literal procedure: "Re-base `f` by subtracting the first frame index in
+  // each, drop the `rng.draws` field, and compare the remaining records."
+  const rebaseLiteral = (recs) => {
     const f0 = recs[0].f;
     return recs.map((r) => {
       const c2 = JSON.parse(JSON.stringify(r));
       c2.f -= f0; c2.t_ms = null; delete c2.rng;
-      if (c2.player) { c2.player.stamina_regen_blocked = null; }
-      for (const e of c2.enemies || []) { e.state_entered_f -= f0; }
       for (const ev of c2.events || []) { ev.f -= f0; }
-      return JSON.stringify(c2);
+      return c2;
     });
   };
-  const r30 = rebase(w30.records), r90 = rebase(w90.records);
-  let firstDiff = -1;
-  for (let i = 0; i < Math.min(r30.length, r90.length); i++) if (r30[i] !== r90[i]) { firstDiff = i; break; }
+  const r30 = rebaseLiteral(w30.records), r90 = rebaseLiteral(w90.records);
+  // Census: WHICH fields differ, not just whether any do. A verdict needs the field name.
+  const fieldDiffs = new Map();
+  const walk = (x, y, path) => {
+    if (x && y && typeof x === 'object' && typeof y === 'object' && !Array.isArray(x) && !Array.isArray(y)) {
+      for (const k of new Set([...Object.keys(x), ...Object.keys(y)])) walk(x[k], y[k], path ? `${path}.${k}` : k);
+      return;
+    }
+    if (Array.isArray(x) && Array.isArray(y) && x.length === y.length) {
+      for (let i = 0; i < x.length; i++) walk(x[i], y[i], `${path}[]`);
+      return;
+    }
+    if (JSON.stringify(x) !== JSON.stringify(y)) fieldDiffs.set(path, (fieldDiffs.get(path) || 0) + 1);
+  };
+  const nCmp = Math.min(r30.length, r90.length);
+  for (let i = 0; i < nCmp; i++) walk(r30[i], r90[i], '');
+  const differing = [...fieldDiffs.keys()].sort();
+  const playerOnly = differing.filter((p) => p.startsWith('player') || p.startsWith('input') || p.startsWith('camera') || p.startsWith('events'));
   rung('R5', 'warm-up-invariant: scripted-window records identical after re-basing f',
-    firstDiff === -1, { warmup_30_frames: r30.length, warmup_90_frames: r90.length, first_differing_index: firstDiff });
+    differing.length === 0, {
+      warmup_30_frames: r30.length, warmup_90_frames: r90.length,
+      differing_fields: differing,
+      differing_fields_outside_the_enemy_block: playerOnly,
+      note: playerOnly.length === 0 && differing.length > 0
+        ? 'Every differing field is in the enemy block, and both are warm-up-dependent BY CONSTRUCTION: enemies[].state_entered_f is an absolute frame index that the item does not re-base, and enemies[].anim_frame is the phase of a looping idle animation, which genuinely differs when the entity has been idling for 60 more frames. See orchestration/amendments/AM-W1-00-01-mth02-r5.md.'
+        : undefined,
+    });
 
   // ---- R6: load order -----------------------------------------------------------------------
   const lo1 = await run({ loadOrder: 'seed-then-load' });
