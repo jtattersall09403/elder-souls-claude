@@ -1,0 +1,357 @@
+{
+  "schema": "critic/w1-13-r3@1",
+  "git": {
+    "commit": "9de10c36356cc7a92d257c4de6d438ff11131562",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "taken_at": "2026-08-07T22:07:53.771Z",
+  "judges": "W1-13 round 3",
+  "checks": {
+    "c1_pool_consumption": {
+      "question": "RULES.md 5 — does the pool fix change what an ENTITY DOES, or only what a field says?",
+      "blow": 700,
+      "shipped": {
+        "has_character": false,
+        "vigour": 18,
+        "hp_max_before": 620,
+        "hp_max_after": 828,
+        "hp_at_full_after": 828,
+        "blow": 700,
+        "hp_after_the_blow": 128,
+        "died": false,
+        "death_surface_came_up": false,
+        "deaths_this_session": 0
+      },
+      "fix_deleted": {
+        "has_character": false,
+        "vigour": 18,
+        "hp_max_before": 620,
+        "hp_max_after": 620,
+        "hp_at_full_after": 620,
+        "blow": 700,
+        "hp_after_the_blow": 0,
+        "died": true,
+        "death_surface_came_up": true,
+        "deaths_this_session": 1
+      },
+      "the_level_bought_survival": true,
+      "both_arms_agree": false,
+      "note": "One blow, one browser, identical frames. The only difference between the arms is the round-2 body of applyDerivedPools, monkeypatched back."
+    },
+    "c2_projectpoint_under_a_posed_camera": {
+      "question": "bloom-sight.json reports on_screen:false on all 96 rows, including 16 rows with up to 27,134 amber px. Which observable is lying?",
+      "rows": [
+        {
+          "bearing_deg": 0,
+          "eye": [
+            3846.57,
+            4.7639,
+            3959.5
+          ],
+          "look": [
+            3834.57,
+            4.072445202376868,
+            3959.5
+          ],
+          "amber_px": 4777,
+          "projected": {
+            "ndc": [
+              0,
+              0
+            ],
+            "z": -2.672157061694616,
+            "in_front": false,
+            "on_screen": false
+          },
+          "sim_camera_after_the_pose": {
+            "pos": [
+              3846.57,
+              4.7639,
+              3959.5
+            ],
+            "pivot": [
+              3834.57,
+              4.072445202376868,
+              3959.5
+            ],
+            "yaw": 15,
+            "pitch": -20.329029,
+            "has_override": true
+          },
+          "yaw_implied_by_the_pose_deg": -90,
+          "yaw_the_projection_used_deg": 15,
+          "yaw_error_deg": 105,
+          "pos_was_applied": true,
+          "yaw_was_applied": false,
+          "cam_state_returned": {
+            "pos": [
+              3846.57,
+              4.7639,
+              3959.5
+            ],
+            "look": [
+              3834.57,
+              4.072445202376868,
+              3959.5
+            ],
+            "fov": 50,
+            "mode": "free",
+            "lockOn": null,
+            "yaw_deg": 15,
+            "pitch_deg": -20.329029,
+            "roll_deg": 0,
+            "overridden": true
+          },
+          "cam_before": null
+        },
+        {
+          "bearing_deg": 90,
+          "eye": [
+            3834.57,
+            4.5084,
+            3971.5
+          ],
+          "look": [
+            3834.57,
+            4.072445202376868,
+            3959.5
+          ],
+          "amber_px": 1075,
+          "projected": {
+            "ndc": [
+              0,
+              0
+            ],
+            "z": -10.71767950045467,
+            "in_front": false,
+            "on_screen": false
+          },
+          "sim_camera_after_the_pose": {
+            "pos": [
+              3834.57,
+              4.5084,
+              3971.5
+            ],
+            "pivot": [
+              3834.57,
+              4.072445202376868,
+              3959.5
+            ],
+            "yaw": 15,
+            "pitch": -20.329029,
+            "has_override": true
+          },
+          "yaw_implied_by_the_pose_deg": 180,
+          "yaw_the_projection_used_deg": 15,
+          "yaw_error_deg": 165,
+          "pos_was_applied": true,
+          "yaw_was_applied": false,
+          "cam_state_returned": {
+            "pos": [
+              3834.57,
+              4.5084,
+              3971.5
+            ],
+            "look": [
+              3834.57,
+              4.072445202376868,
+              3959.5
+            ],
+            "fov": 50,
+            "mode": "free",
+            "lockOn": null,
+            "yaw_deg": 15,
+            "pitch_deg": -20.329029,
+            "roll_deg": 0,
+            "overridden": true
+          },
+          "cam_before": null
+        },
+        {
+          "bearing_deg": 180,
+          "eye": [
+            3822.57,
+            4.7934,
+            3959.5
+          ],
+          "look": [
+            3834.57,
+            4.072445202376868,
+            3959.5
+          ],
+          "amber_px": 1788,
+          "projected": {
+            "ndc": [
+              4.4207638297040965,
+              0.2732124764491238
+            ],
+            "z": 3.1628433949552757,
+            "in_front": true,
+            "on_screen": false
+          },
+          "sim_camera_after_the_pose": {
+            "pos": [
+              3822.57,
+              4.7934,
+              3959.5
+            ],
+            "pivot": [
+              3834.57,
+              4.072445202376868,
+              3959.5
+            ],
+            "yaw": 15,
+            "pitch": -20.329029,
+            "has_override": true
+          },
+          "yaw_implied_by_the_pose_deg": 90,
+          "yaw_the_projection_used_deg": 15,
+          "yaw_error_deg": 75,
+          "pos_was_applied": true,
+          "yaw_was_applied": false,
+          "cam_state_returned": {
+            "pos": [
+              3822.57,
+              4.7934,
+              3959.5
+            ],
+            "look": [
+              3834.57,
+              4.072445202376868,
+              3959.5
+            ],
+            "fov": 50,
+            "mode": "free",
+            "lockOn": null,
+            "yaw_deg": 15,
+            "pitch_deg": -20.329029,
+            "roll_deg": 0,
+            "overridden": true
+          },
+          "cam_before": null
+        },
+        {
+          "bearing_deg": 270,
+          "eye": [
+            3834.57,
+            4.7256,
+            3947.5
+          ],
+          "look": [
+            3834.57,
+            4.072445202376868,
+            3959.5
+          ],
+          "amber_px": 2607,
+          "projected": {
+            "ndc": [
+              -0.33764407386718154,
+              0.6598939504504435
+            ],
+            "z": 11.096047925314608,
+            "in_front": true,
+            "on_screen": true
+          },
+          "sim_camera_after_the_pose": {
+            "pos": [
+              3834.57,
+              4.7256,
+              3947.5
+            ],
+            "pivot": [
+              3834.57,
+              4.072445202376868,
+              3959.5
+            ],
+            "yaw": 15,
+            "pitch": -20.329029,
+            "has_override": true
+          },
+          "yaw_implied_by_the_pose_deg": 0,
+          "yaw_the_projection_used_deg": 15,
+          "yaw_error_deg": 15,
+          "pos_was_applied": true,
+          "yaw_was_applied": false,
+          "cam_state_returned": {
+            "pos": [
+              3834.57,
+              4.7256,
+              3947.5
+            ],
+            "look": [
+              3834.57,
+              4.072445202376868,
+              3959.5
+            ],
+            "fov": 50,
+            "mode": "free",
+            "lockOn": null,
+            "yaw_deg": 15,
+            "pitch_deg": -20.329029,
+            "roll_deg": 0,
+            "overridden": true
+          },
+          "cam_before": null
+        }
+      ],
+      "pixels_say_visible_on": 4,
+      "projection_says_on_screen_on": 1,
+      "every_row_has_the_eye_applied": true,
+      "no_row_has_the_yaw_applied": true,
+      "finding": "engine.camera({pos,look}) writes c.pos and c.pivot and NEVER writes c.yaw/c.pitch; engine.projectPoint -> sim/camera.js project() -> viewBasis(c) builds the view basis from c.yaw/c.pitch alone. So projectPoint is blind to every posed camera in the project."
+    },
+    "c3_drawn_purse": {
+      "question": "path_to_ten item 8 — is the drawn purse still a constant zero?",
+      "before": {
+        "drawn": "0 gold",
+        "progression_gold": 0,
+        "stealth_gold": 400,
+        "magic_gold": 0,
+        "combat_world_gold": 0,
+        "sim_loadout_gold": "(sim.loadout undefined)",
+        "sim_gold": "(sim.gold undefined)"
+      },
+      "after": {
+        "drawn": "0 gold",
+        "progression_gold": 777,
+        "stealth_gold": 400,
+        "magic_gold": 777,
+        "combat_world_gold": 0,
+        "sim_loadout_gold": "(sim.loadout undefined)",
+        "sim_gold": "(sim.gold undefined)"
+      },
+      "drawn_moved": false,
+      "still_zero": true
+    },
+    "c4_clock_consumption": {
+      "question": "RULES.md 5 for the clock hold — does an ENTITY behave differently, or does only the clock field differ? clock.json read getEnvironment().phase (night on both sides) and getWorldStats().settlement (null) and concluded nothing.",
+      "night_window_opens_at_h": 21,
+      "shipped": {
+        "deaths": 4,
+        "hour_before": 20.967222,
+        "hour_after": 20.967593,
+        "hours_burned": 0.000371,
+        "crossed_the_night_window_at_21h": false,
+        "souls_before": 0,
+        "souls_after": 42,
+        "souls_paid_for_one_ordinary_kill": 42,
+        "phase": "night"
+      },
+      "fix_deleted": {
+        "deaths": 4,
+        "hour_before": 20.967222,
+        "hour_after": 21.023148,
+        "hours_burned": 0.055926,
+        "crossed_the_night_window_at_21h": true,
+        "souls_before": 0,
+        "souls_after": 57,
+        "souls_paid_for_one_ordinary_kill": 57,
+        "phase": "night"
+      },
+      "the_same_enemy_paid_differently": true,
+      "only_the_unheld_arm_crossed_the_hour": true
+    }
+  },
+  "ok": true
+}

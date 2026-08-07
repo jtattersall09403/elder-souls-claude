@@ -1,0 +1,36 @@
+{
+  "task_id": "W1-17-act5-r2",
+  "role": "builder",
+  "brief": "W1-17 Act V argument, round 2 -- respond to corpus/90-verdicts/wave1/W1-17-act5-r1.md (FAIL 3/10, hard fail on RI-DLG01). No browser: box at 42 headless_shell / loadavg 30, far over RULES.md rule 21's ~8 cap.",
+  "started": "2026-08-07",
+  "state": "in_progress",
+  "outputs_expected": [
+    "game/src/character/converse.js (add provenance to infoFor()/Conversation.state())",
+    "tools/check-dialogue-topics.mjs (NEW -- duplicate topic id detector, warning-only, tools/check-prose.mjs's neighbourhood)",
+    "tools/quests/act5-argument-probe.mjs (assert WHICH record answered, not just that text returned)",
+    "game/data/npcs/mainline.json (remove the two dormant leak topic ids from keeper-ei-vashan / gallery-intake-keepers)",
+    "reports/blog-feed.jsonl (one line)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "Predecessor status files read: orchestration/status/W1-17.json (original piece), W1-17-act5-argument.json (round-1 build, state complete), critic-w1-17-act5.json (round-1 critic, done). No prior W1-17-act5-r2 agent -- this is round 2's first pass.",
+    "Verdict corpus/90-verdicts/wave1/W1-17-act5-r1.md / .json: FAIL 3/10. RI-DLG01 hard fail -- 'the-steward-of-the-count' (Q-MAIN-26's own entry topic) is one of 3 ids main-quest-argument.json shares with 50-mainline.json; converse.js buildTopicIndex() merges same-id records across files BY DESIGN and infoFor() scores by specificity; the 11-year-old third-person stub (d:20, no race filter, score 9.2) outscores the just-authored race-specific first-person greeting (no d field, score 8.5) for any player race outside {saxhleel,naga,dunmer} clearing disposition 20 -- reproducibly 3/11 of the piece's own documented signatures, 2 of which are in its own shipped probe's (tools/quests/act5-argument-probe.mjs) test set, which reported ok:true because it only checks that SOME text returns, never that it is THIS FILE's text.",
+    "Dormant risk in the same verdict: actor 'rootkeeper' (a:'rootkeeper') is shared by 30 NPC records (grep confirmed) across 14 topic files -- it is the generic well-keeper archetype, not exclusive to ixtu-meer, so renaming ixtu-meer off it would cut him from a lot of legitimate shared dialogue and is NOT the fix. keeper-ei-vashan (mainline.json:1035) carries 'the sill' and gallery-intake-keepers (mainline.json:1055) carries 'the opening of the count' in their OWN topics[] arrays -- 2 of main-quest-argument.json's 12 ids. Both would deliver ixtu-meer's climactic first-person text verbatim once given a spawn point, because infoFor() actor-matches on 'rootkeeper' and the info's own race/knowledge gates don't distinguish npc identity.",
+    "CHECKED: W1-GIVER-PRESENCE (orchestration/status/W1-GIVER-PRESENCE.json) is state=complete and DID land the population mechanism this session (populateSettlement/populateSite now reachable from a state load, 39 quest-givers posted). keeper-ei-vashan and gallery-intake-keepers are NOT quest givers (they are deceit-reveal witnesses only, revealed_by channel talk_to_target), so build-giver-posts.mjs's generator did not post them and they remain settlement:null today -- confirmed by re-reading their current records. The general population mechanism this verdict warned about is live NOW, not hypothetical; only the specific generator that ran so far happened not to target these two. The risk is real and current, not closed by W1-GIVER-PRESENCE landing.",
+    "CHECKED: revealed_by/talk_to_target reveals (rev_the_keepers_accounts, rev_ei_vashans_count, rev_the_three_accounts) fire via QuestEngine.reveal(questId, revealId) (game/src/sim/quest/machine.js:512), driven by hooks.json h.reveal bindings or harness questReveal() -- NOT by converse.js topic resolution. Removing 'the sill' / 'the opening of the count' from these two NPCs' own topics[] arrays does not touch that mechanism at all; it only stops these two generic archetypes from ADVERTISING and ANSWERING two Act-V-exclusive topic ids that were never going to have a correct answer in their mouths anyway (the only two infos for those ids are the 50-mainline.json stub, about ixtu-meer in the third person, and main-quest-argument.json's ixtu-meer-only first-person info).",
+    "Scope decision, per the dispatch: 'Fix the class, not the id.' NOT renaming/deleting the shared topic ids in 50-mainline.json / main-quest-argument.json -- that's the narrow instance-fix the dispatch explicitly says is not the job. The two required fixes are (1) provenance on any probe asserting a topic answer, (2) a duplicate-topic-id detector living near tools/check-prose.mjs, warning-only per tools/check-quests.mjs's header (a shared content gate over data a dozen pieces own must not fail closed -- 6 pre-existing cross-file id collisions already on the tree, not just this one). The dormant actor/topic leak on the two witness NPCs IS closed directly (data-only NPC record edit, no prose touched).",
+    "converse.js infoFor() computes `best.from` internally (buildTopicIndex already tags each info with `from: doc.group`) but never returns it; Conversation.state() likewise never surfaces it, following the same pattern that already added said_cell/said_source/said_route for the identical reason ('a probe could not see the field that would have caught this'). Adding said_from is the minimal, additive, established-pattern fix.",
+    "No browser used or needed. pgrep -c headless_shell = 42, loadavg 30.58 at start of this round -- confirmed and re-confirmed, well over RULES.md rule 21's ~8 cap. All verification is Node-level: import and execute the shipped converse.js / core/topics.js functions directly against shipped data, same method the round-1 critic used."
+  ],
+  "next_step": "1) edit converse.js to add from/said_from provenance (additive field only). 2) write tools/check-dialogue-topics.mjs, self-test it (prove it goes red on the known 6 collisions, quiet on a tree with none). 3) edit act5-argument-probe.mjs to assert said_from per topic against the file's own group. 4) edit game/data/npcs/mainline.json to drop the two leaking topic ids. 5) re-run the Node-level reproduction (like gen-converse-node-repro.mjs) to confirm said_from correctly identifies the stub vs the real file, and confirm the two witness NPCs can no longer deliver any of the 12 topic ids. 6) run check-data.mjs / check-quests.mjs / check-content.mjs / check-prose.mjs (all no-browser) and record results. 7) write blog-feed.jsonl line. Do not commit.",
+  "notes_for_successor": "Do not rewrite main-quest-argument.json's prose -- the writing was praised and is not in question. Do not delete or rename the-steward-of-the-count/the-sill/the-opening-of-the-count in either file -- that is the narrow fix the dispatch explicitly withheld from this round; the hard fail from round 1 is expected to STILL be present and reported honestly, not silently fixed by renaming. boot-check.mjs and any tools/harness/* probe need a browser (launchGame); none were run this round -- say so plainly rather than fake a result.",
+  "files_touched": [],
+  "files_claimed": [
+    "game/src/character/converse.js",
+    "tools/check-dialogue-topics.mjs",
+    "tools/quests/act5-argument-probe.mjs",
+    "game/data/npcs/mainline.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": []
+}

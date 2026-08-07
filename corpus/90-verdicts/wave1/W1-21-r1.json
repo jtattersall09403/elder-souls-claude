@@ -22,7 +22,8 @@
     "commit_sha": "07f8b75",
     "branch": "main",
     "dirty": true,
-    "note": "tree carries uncommitted in-flight work from several concurrent pieces, including W1-MAP, which is the piece that created the map this verdict judges"
+    "note": "tree carries uncommitted in-flight work from several concurrent pieces, including W1-MAP, which is the piece that created the map this verdict judges",
+    "head_moved_during_the_run": "Measured at 07f8b75. A neighbouring agent committed b2ac587 while I was writing up. `git diff 07f8b75 b2ac587 -- game/src/ui/ game/src/sim/discovery.js game/src/save/state.js game/src/engine.js tools/metrics/ui-metrics.mjs tools/analysis/` touches ONE file and it is tools/analysis/ambience-determinism.mjs, a new audio tool. Every file this verdict judges is byte-identical at b2ac587, so the findings stand at HEAD as well as at the commit they were taken on. Checked rather than assumed (RULES 12); note also that a neighbour's `git add -A` staged my deliverables without my committing anything (RULES 17, 28)."
   },
   "bifurcation": {
     "axis": "fidelity",

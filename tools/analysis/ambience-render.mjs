@@ -295,16 +295,42 @@ try {
                crossfade: s.crossfade, target: s.bed_lufs_target };
     }, { x: r.centroid_m[0], z: r.centroid_m[1] });
 
-    const cap = await page.evaluate(async ({ id, seconds, rate }) =>
-      window.__HARNESS.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day' }),
-    { id: r.id, seconds: SECONDS, rate: RATE });
+    // TWO CAPTURES, AND ROUND 3 ADDED THE SECOND ONE BECAUSE THEY ANSWER DIFFERENT QUESTIONS.
+    //
+    // `cap` is the clip as a listener standing in the region hears it — emitters included, because
+    // §C's grading key separates four of the thirteen regions by exactly those strikes and round 2
+    // made the placed listener the default for that reason. It is what the SPECTRUM and the
+    // separation proxy are measured on.
+    //
+    // `lvlCap` is the bed ALONE (`listener: null`). It is what the LEVEL is measured on, and the
+    // split exists because without it "the loudness of a bed" is not a well-defined quantity.
+    // Round 2 calibrated `bed_gain_db` from a capture taken after `H.teleport()` put the player
+    // inside the region — where the Clay Moor's kiln, a continuous emitter with `audible_m` 520,
+    // is in earshot and adds about 5.6 dB. The round-1 critic's probe captures without teleporting,
+    // from a default position 3.1 km away, where the kiln contributes nothing. So the two
+    // instruments measured the same bed as −24.66 and −31.82 LUFS-I, a SEVEN-DECIBEL disagreement,
+    // and round 2 reported the gap as a regression it had introduced. It was not a drift: the
+    // calibration target and the gate disagreed about whether a landmark counts as part of the bed.
+    //
+    // It cannot be both. An emitter's contribution is a function of where you are standing — that
+    // is the whole of R7 and the thing B6's transect asserts — so it belongs to B6 and not to B5.
+    // `bed_gain_db` is now calibrated and gated on the bed without landmarks, which is a quantity
+    // the data can actually own. Note that this reading makes clay-moor FAIL where the old one
+    // passed; it was not chosen because it was the comfortable answer.
+    const grab = ({ id, seconds, rate, listener }) => page.evaluate(async (o) =>
+      window.__HARNESS.ambienceCapture(o),
+    { region: id, seconds, sampleRate: rate, tod: 'day', ...(listener === null ? { listener: null } : {}) });
 
-    if (!cap || !cap.ok) {
+    const cap = await grab({ id: r.id, seconds: SECONDS, rate: RATE });
+    const lvlCap = await grab({ id: r.id, seconds: SECONDS, rate: RATE, listener: null });
+
+    if (!cap || !cap.ok || !lvlCap || !lvlCap.ok) {
       out.regions[r.id] = { world, capture: cap || { ok: false }, error: 'capture failed' };
       exitCode = 1;
       continue;
     }
     const m = mono(cap);
+    const lvlM = mono(lvlCap);
     const spec = bandSpectrum(m, cap.sampleRate);
     out.regions[r.id] = {
       world_region_from_field: world.region,
@@ -315,7 +341,11 @@ try {
       samples: m.length,
       peak: +peak(m).toFixed(5),
       silent: peak(m) < 1e-4,
-      lufs_i: +lufsIntegrated(m, cap.sampleRate).toFixed(2),
+      // The level is the BED's, taken without landmarks. See the two-capture note above.
+      lufs_i: +lufsIntegrated(lvlM, lvlCap.sampleRate).toFixed(2),
+      // Kept alongside it, because the gap between the two IS the emitter's contribution at the
+      // region centroid and a reader should not have to run a second tool to see it.
+      lufs_i_with_emitters: +lufsIntegrated(m, cap.sampleRate).toFixed(2),
       lufs_target: cap.bed_lufs_target,
       // The trim ALREADY in the data. `--calibrate` computes `target - measured + this`, so a
       // second calibration pass converges instead of oscillating around the first one's answer.
@@ -385,8 +415,13 @@ try {
       const res = {};
       for (const [id, t] of Object.entries(trims)) {
         E.ambience.beds[id].bed_gain_db = t;
-        const c = await E.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day' });
-        res[id] = c.ok ? { pcm16_interleaved_b64: c.pcm16_interleaved_b64, sampleRate: c.sampleRate } : null;
+        // `listener: null` HERE TOO, and it must match the capture the trim was solved from or
+        // the calibration lands the bed on a target it was never measured against. That mismatch
+        // is exactly what produced round 2's clay-moor "regression".
+        const c = await E.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day', listener: null });
+        const cs = await E.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day' });
+        res[id] = c.ok ? { pcm16_interleaved_b64: c.pcm16_interleaved_b64, sampleRate: c.sampleRate,
+                           spec_b64: cs.ok ? cs.pcm16_interleaved_b64 : null } : null;
       }
       return res;
     }, { trims, seconds: SECONDS, rate: RATE });
@@ -397,7 +432,13 @@ try {
       out.regions[id].bed_gain_db = trims[id];
       out.regions[id].lufs_i = +lufsIntegrated(m, c.sampleRate).toFixed(2);
       out.regions[id].peak = +peak(m).toFixed(5);
-      out.regions[id]._bands = bandSpectrum(m, c.sampleRate).bands;
+      // The spectrum stays the LANDMARKED clip's — it is the separation proxy's input and §C's
+      // key leans on the emitters. Only the level comes from the bed-alone capture.
+      if (c.spec_b64) {
+        const ms = mono({ pcm16_interleaved_b64: c.spec_b64 });
+        out.regions[id].lufs_i_with_emitters = +lufsIntegrated(ms, c.sampleRate).toFixed(2);
+        out.regions[id]._bands = bandSpectrum(ms, c.sampleRate).bands;
+      } else out.regions[id]._bands = bandSpectrum(m, c.sampleRate).bands;
     }
   }
 
@@ -408,7 +449,24 @@ try {
   });
   out.gates.G4_level = { pass: inBand.length >= 11, value: `${inBand.length}/${ids.length}`, threshold: '>=11',
     what: 'gated K-weighted LUFS-I within +/-4 LU of the bed\'s declared target',
-    caveat: 'The +/-4 LU tolerance is W1-22\'s, not RI-AUD03\'s. B5 asks for absolute -28..-24; that is a MIX calibration against a real output chain, and this build has no master bus, no combat audio to leave headroom for, and no monitoring. Reporting a calibrated absolute figure here would be inventing a mix. What is checked instead is that each bed lands where its own data says it should — which is the part that is knowable today.' };
+    caveat: 'The +/-4 LU tolerance is W1-22\'s, not RI-AUD03\'s. B5 asks for absolute -28..-24; that is a MIX calibration against a real output chain, and this build has no master bus, no combat audio to leave headroom for, and no monitoring. Reporting a calibrated absolute figure here would be inventing a mix. What is checked instead is that each bed lands where its own data says it should — which is the part that is knowable today. ROUND 3: G4b below now ALSO checks the absolute band, because the +/-4 LU window turned out to be so much wider than the achieved spread (every bed but one lands within 0.43 LU of its target) that it could not fail on anything short of a catastrophe, and it passed 13/13 through the whole of the clay-moor mis-calibration.' };
+
+  // GATE 4b — ROUND 3. B5 AS THE ITEM ACTUALLY WRITES IT, in the builder's own tool.
+  //
+  // This check was not the builder's; it was the round-1 critic's `C_B5_strict`, and it is the one
+  // that caught round 2's clay-moor problem while G4 above reported 13/13 green. A gate a piece
+  // only ever fails in someone else's instrument is a gate the piece does not have. It is written
+  // here verbatim from RI-AUD03 B5 — absolute integrated loudness in -28..-24 for every region,
+  // with the Stone Wastes exempt at -34 +-2 by §B's own "the quietest place in the game" — and it
+  // is measured on the bed-alone capture for the reason given at the top of the region loop.
+  const b5Band = (id, l) => id === 'stone-wastes' ? (l >= -36 && l <= -32) : (l >= -28 && l <= -24);
+  const strict = ids.filter((id) => b5Band(id, out.regions[id].lufs_i));
+  const strictOut = ids.filter((id) => !b5Band(id, out.regions[id].lufs_i))
+                       .map((id) => `${id} ${out.regions[id].lufs_i} (target ${out.regions[id].lufs_target})`);
+  out.gates.G4b_level_strict = { pass: strict.length === ids.length, value: `${strict.length}/${ids.length}`,
+    threshold: `${ids.length}/${ids.length}`, out_of_band: strictOut,
+    what: 'RI-AUD03 B5 verbatim: integrated LUFS-I of every region clip in -28..-24 absolute, Stone Wastes exempt at -34 +-2. Measured on the bed without landmarks.',
+    hard_fail_any_above_minus18: ids.some((id) => out.regions[id].lufs_i > -18) };
 
   // ---- C: THE CONTROL -------------------------------------------------------------------------
   // RI-AUD03's own first-named failure: one swamp loop. Replace every L1 with a single shared

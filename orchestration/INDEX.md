@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b2ac587`: 477 tools, 153 reference
+so it cannot drift. Generated at `a5551ef`: 477 tools, 153 reference
 items, 25 pieces in flight.
 
 Its purpose is to stop 25+ concurrent agents each paying separately to discover the
@@ -755,10 +755,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-13-r3` | running | factorial (pre-r3-render / aim-only / eye-only) still running; then 2x2 shot, finish verdi | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
+| `W1-17-act5-r2` | in_progress | 1) edit converse.js to add from/said_from provenance (additive field only). 2) write tools | — |
 | `W1-23-r2` | ? | read corpus/90-verdicts/wave1/W1-23-r1.md in full, then locate lore registry files and con | — |
-| `critic-w1-13-r3` | running | two browser runs in flight in parallel under loadavg ~28 / 54 headless_shell: the 6-arm bl | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-22-r3` | in-progress | (2) ambience-render --calibrate: clay-moor 5.8 LU under its own target, deep-marshes 0.003 | `tools/analysis/ambience-determinism.mjs` `game/src/audio/synth.js` `game/src/audio/ambience.js` `reports/w1-22/` |
-| `critic-w1-11` | writing-verdict | write corpus/90-verdicts/wave1/W1-11-r1.{md,json}, validate, blog line | `orchestration/status/critic-w1-11.json` `tools/audio/critic-m6-fixture-sweep.mjs` `corpus/90-verdicts/wave1/artifacts/W1-11-r1/` `docs/shots/2026-08-07-W1-11-r1-critic-m6-passes-on-the-broken-panner.png` |
 | `critic-w1-17-act5` | ? | none. Successor (round 2, after the fix): re-run corpus/90-verdicts/wave1/artifacts/W1-17- | `corpus/90-verdicts/wave1/W1-17-act5-r1.md` `corpus/90-verdicts/wave1/W1-17-act5-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-prose-output.txt` |
 | `critic-w1-04` | running | write corpus/90-verdicts/wave1/W1-04-r1.{md,json}, copy shot to docs/shots, blog line, ver | `orchestration/status/critic-w1-04.json` |
 | `W1-SOULS-r3` | running | re-run full oracle after the idempotence fix; then delete-the-fix legs (souls rec.ref, pop | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |

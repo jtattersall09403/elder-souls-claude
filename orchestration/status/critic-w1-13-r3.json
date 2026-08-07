@@ -5,7 +5,7 @@
   "state": "running",
   "started": "2026-08-07",
   "commit": "b1c92d1 at start; HEAD moved to 3ba93e0 mid-run (other agents banking). W1-13 files themselves are committed and clean in git status.",
-  "next_step": "two browser runs in flight in parallel under loadavg ~28 / 54 headless_shell: the 6-arm bloom factorial and critic-w1-13-r3.mjs (C1-C4). Then the 2x2 shot, then finish W1-13-r3.md + .json, validate, blog line.",
+  "next_step": "factorial (pre-r3-render / aim-only / eye-only) still running; then 2x2 shot, finish verdict md+json, validate, blog line",
   "files_touched": [
     "orchestration/status/critic-w1-13-r3.json",
     "tools/harness/critic-w1-13-r3.mjs",
@@ -29,7 +29,11 @@
     "clock CONSUMPTION is not demonstrated: phase night->night in BOTH arms, settlement:null. The header names settlement.js#isOpen and npc.js#slotAt and measures neither.",
     "levelling.json and levelling-r3b.json carry NO git field (RULES 12).",
     "the leg that leaves the inventory screen open is still not fixed: world_runs_legs_jrn06-death reports ui_mode_on_entry inventory. The gate catches it.",
-    "aggregation re-counted by hand: 42 rows, 23 pass, 0 fail, 4 unmeasurable, 15 descriptive. ok:false is !anyUnmeasurable \u2014 the builder reading is literally correct."
+    "aggregation re-counted by hand: 42 rows, 23 pass, 0 fail, 4 unmeasurable, 15 descriptive. ok:false is !anyUnmeasurable \u2014 the builder reading is literally correct.",
+    "C1 CONSUMPTION for the pools: SHIPPED hp_max 620->828 after VIGOUR x8 and a 700 blow leaves hp 128, ALIVE. FIX DELETED hp_max 620->620 and the same blow kills (death surface up). A level buys survival. The build never ran this.",
+    "C2 projectPoint: the posed camera writes c.pos but c.yaw stays pinned at 15 deg on all four bearings; wanted yaw -90/180/90/0. 4/4 read amber, 1/4 report on_screen, and bearing 180 returns in_front:true with NDC x=4.42. The verb answers about a different camera and does so plausibly.",
+    "C3 item 8: drawn inventory.gold is \"0 gold\" before and after setGold(777). Unmet, measured live.",
+    "C4 CONSUMPTION for the clock: 4 deaths at 20:58. SHIPPED stays 20.9676 (before the 21:00 night window) and an ordinary kill pays 42 souls. FIX DELETED walks to 21.0231 and the SAME kill pays 57 = 42 x 1.35. The consumer clock.json reported as absent is one query away and it moves."
   ],
   "contention_note": "36 headless_shell, loadavg 30 at 22:05. Every figure I cite is a pixel count, a soul count, a metre or a boolean and is load-independent. No timing figure is cited as evidence anywhere.",
   "provisional_score": "6/10 FAIL (round 2 was 5). RI-JRN06 native 88 -> ladder 6; RI-PRG04 min-over-axes 6, set by Clock cost, the axis nobody has measured in three rounds."

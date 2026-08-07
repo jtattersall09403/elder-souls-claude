@@ -20,7 +20,7 @@ const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
 const rep = JSON.parse(readFileSync(argOf('--in') || join(ROOT, 'reports/runs/W1-19-R3/reveal-route-audit.json'), 'utf8'));
 const OUT = argOf('--out') || join(ROOT, 'docs/shots/2026-08-07-w1-19-r3-the-reveals-no-play-produces.png');
 
-const W = 1100, H = 640;
+const W = 1280, H = 800;
 const px = new Uint8Array(W * H * 3).fill(0x12);
 const set = (x, y, r, g, b) => { if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 3; px[i] = r; px[i + 1] = g; px[i + 2] = b; };
 const rect = (x, y, w, h, r, g, b) => { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) set(x + i, y + j, r, g, b); };
@@ -69,7 +69,7 @@ text('W1-19 ROUND 3 / QUEST RESOLUTIONS DEMAND A REVEAL / CAN PLAY PRODUCE IT', 
 
 // ---- the channel bars ------------------------------------------------------------------------
 const ch = Object.entries(rep.by_channel).sort((a, b) => b[1].total - a[1].total);
-const X0 = 250, X1 = 760, Y0 = 130;
+const X0 = 230, X1 = 640, Y0 = 130;
 const maxV = Math.max(...ch.map(([, v]) => v.total));
 const rowH = 34;
 text('BY CHANNEL: HOW THE FICTION SAYS YOU LEARN IT', 40, 104, 0xCC, 0xC4, 0x9A, 2);
@@ -80,8 +80,8 @@ ch.forEach(([name, v], i) => {
   const wOk = Math.round((v.routed / maxV) * (X1 - X0));
   rect(X0, y, wTot, 18, 0x6E, 0x2B, 0x2B);                    // demanded but unroutable = red
   if (wOk > 0) rect(X0, y, wOk, 18, 0x2E, 0x7A, 0x44);        // routed = green
-  text(`${v.routed}/${v.total}`, X0 + wTot + 12, y + 6, 0x9A, 0x9A, 0x92, 2);
-  if (v.routed === 0) text('NO READER IN GAME/SRC', X0 + wTot + 90, y + 6, 0x7A, 0x50, 0x50, 2);
+  text(`${v.routed}/${v.total}`, X0 + (X1 - X0) + 20, y + 6, 0x9A, 0x9A, 0x92, 2);
+  if (v.routed === 0) text('NO READER IN GAME/SRC', X0 + (X1 - X0) + 110, y + 6, 0x7A, 0x50, 0x50, 2);
 });
 
 // ---- the two instruments ---------------------------------------------------------------------
@@ -89,18 +89,18 @@ const BY = Y0 + ch.length * rowH + 40;
 text('THE SAME COMMIT, TWO INSTRUMENTS, ONE LINE APART', 40, BY, 0xCC, 0xC4, 0x9A, 2);
 const box = (x, y, w, h, r, g, b) => { rect(x, y, w, 2, r, g, b); rect(x, y + h, w, 2, r, g, b); rect(x, y, 2, h, r, g, b); rect(x + w, y, 2, h + 2, r, g, b); };
 
-box(40, BY + 26, 480, 92, 0x6E, 0x2B, 0x2B);
+box(40, BY + 26, 570, 100, 0x6E, 0x2B, 0x2B);
 text('MAINLINE-CHAIN-FLOOR, AS SHIPPED IN ROUND 2', 56, BY + 40, 0xCC, 0xAA, 0xAA, 2);
 text('40/40 SIGNATURES COMPLETE BOTH CHAINS', 56, BY + 62, 0xEE, 0xCC, 0xCC, 2);
 text('IT CALLED H.QUESTREVEAL() ON EVERY STEP', 56, BY + 90, 0x9A, 0x7A, 0x7A, 2);
 
-box(576, BY + 26, 480, 92, 0x2E, 0x7A, 0x44);
-text('THE SAME TOOL, THAT ONE LINE REMOVED', 592, BY + 40, 0xAA, 0xCC, 0xAA, 2);
-text('0/40 - ALL STOP AT Q-MAIN-06', 592, BY + 62, 0xCC, 0xEE, 0xCC, 2);
-text('WHICH IS WHERE THE WALK ALWAYS SAID THEY STOP', 592, BY + 90, 0x7A, 0x9A, 0x7A, 2);
+box(650, BY + 26, 570, 100, 0x2E, 0x7A, 0x44);
+text('THE SAME TOOL, THAT ONE LINE REMOVED', 666, BY + 40, 0xAA, 0xCC, 0xAA, 2);
+text('0/40 - ALL STOP AT Q-MAIN-06', 666, BY + 62, 0xCC, 0xEE, 0xCC, 2);
+text('WHERE THE WALK ALWAYS SAID THEY STOP', 666, BY + 90, 0x7A, 0x9A, 0x7A, 2);
 
 // ---- the footer numbers ----------------------------------------------------------------------
-const FY = BY + 140;
+const FY = BY + 160;
 text(`${rep.unrouted} OF ${rep.demanded_reveals} REVEALS A RESOLUTION DEMANDS HAVE NO ROUTE IN PLAY`, 40, FY, 0xEE, 0xEE, 0xE4, 2);
 text(`${rep.fully_blocked_quests.length} QUESTS HAVE EVERY RESOLUTION BLOCKED, ALL OF THEM MAINLINE:`, 40, FY + 24, 0x9A, 0x9A, 0x92, 2);
 text(rep.fully_blocked_quests.map((q) => q.id).join(', '), 40, FY + 46, 0xCC, 0xAA, 0x6A, 2);

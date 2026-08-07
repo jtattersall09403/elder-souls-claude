@@ -2,20 +2,19 @@
  "task_id": "critic-w1-11",
  "role": "critic",
  "judges": "W1-11",
- "state": "writing-verdict",
+ "state": "complete",
  "started": "2026-08-07",
- "next_step": "write corpus/90-verdicts/wave1/W1-11-r1.{md,json}, validate, blog line",
+ "next_step": "DONE. Verdict FAIL 4/10 at 5c4c5b0. Biggest gap GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch (audio.combat.impact, severity major, size S) with tool tools/audio/critic-m6-fixture-sweep.mjs shipped as its own regression test (exit 3 on the finding, exit 0 on LEGACY_NEVER_PASSES). Hard fail recorded: RI-WPN05/M5b, 63 clips over the 1.00 m socket step at HEAD after W1-MASS reported complete. Two arbitration questions filed (per-slot hitstop override licence; ILS observability when the camera shake has no consumer). One corpus amendment FILED NOT APPLIED against RI-AUD01 M6.",
  "files_touched": [
   "orchestration/status/critic-w1-11.json",
   "tools/audio/critic-m6-fixture-sweep.mjs",
-  "corpus/90-verdicts/wave1/artifacts/W1-11-r1/",
-  "docs/shots/2026-08-07-W1-11-r1-critic-m6-passes-on-the-broken-panner.png"
- ],
- "files_claimed": [
   "corpus/90-verdicts/wave1/W1-11-r1.md",
   "corpus/90-verdicts/wave1/W1-11-r1.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-11-r1/",
+  "docs/shots/2026-08-07-W1-11-r1-critic-m6-passes-on-the-broken-panner.png",
   "reports/blog-feed.jsonl"
  ],
+ "files_claimed": [],
  "notes": [
   "M6 FIXTURE FINDING (mine, HEAD 5c4c5b0, node arena): the legacy attacker-position pan rule scores r from -0.0759 to +1.0000 across five fixtures. On 'enemy stationary in the world, player turning on the spot' the BROKEN rule passes M6 outright (r=1.0000, 100 impacts). distance_m_max is 0.0000 on every legacy arm and is the only invariant that discriminates. Tool: tools/audio/critic-m6-fixture-sweep.mjs, exits 3 on the finding.",
   "RI-AUD01 is 7 of 9, not 5 of 5: M2 (blind distinguishability) and M8 (sparseness/LUFS) have no instrument. tools/blind/audio-pack.mjs is still an absence-reporter and now reports UNCONFIRMED (exit 20) because audio shipped and its declaration was not updated.",
@@ -28,5 +27,12 @@
  "redundant_with": [
   "W1-11",
   "W1-MASS"
- ]
+ ],
+ "gates_run": {
+  "boot-check": 0,
+  "check-data": 0,
+  "corpus-index": 0,
+  "publish": 0,
+  "verdict-validate": "OK, 2 warnings (both ungated hard-fail gates, both named in status_reasons)"
+ }
 }

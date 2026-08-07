@@ -210,10 +210,21 @@ function inCell(npc, cell) {
  *
  * Player gates (`requires` / `forbids`) are checked at every level, so a person's own line is
  * still refusable by race — specificity buys precedence, not an exemption.
+ *
+ * PROVENANCE (`from`). W1-17 round 2. `buildTopicIndex()` merges same-id topic records across
+ * files BY DESIGN (its own header says so) and tags every info with the `group` of the file it
+ * was authored in. Until this round that tag was computed and thrown away: the return value told
+ * a caller THAT an info was found and never WHICH file's info it was. That is exactly how the
+ * round-1 hard fail shipped invisible — `main-quest-argument.json` declares `the-steward-of-
+ * the-count` and so does the eleven-year-old stub in `50-mainline.json`; they merge, the stub
+ * outscores the just-authored greeting for most races, and every existing caller that only asked
+ * "did text come back?" saw a pass. `from` is additive (every existing return shape is unchanged)
+ * so a probe can now ask the question that actually matters: is this THIS FILE's own text, or a
+ * stranger's that happens to share the id.
  */
 export function infoFor(topicIndex, topicId, npc, player, canon = null) {
   const own = npc.lines ? npc.lines[lineKey(topicId)] : null;
-  if (own) return { topic: topicId, actor: npc.actor || null, text: own, gated: false, source: 'npc', to: [] };
+  if (own) return { topic: topicId, actor: npc.actor || null, text: own, gated: false, source: 'npc', from: 'npc-own-line', to: [] };
   const t = topicIndex.get(topicKey(topicId));
   if (!t) return null;
   const actor = npc.actor || null;
@@ -278,6 +289,9 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
     topic: topicId, actor: best.a || null, text: best.x,
     gated: !!(best.requires || best.forbids),
     source: best.a ? 'actor' : 'generic',
+    // Which topic FILE's `group` this info was authored in (see PROVENANCE above), or null for
+    // an info whose doc declared no `group` at all.
+    from: best.from || null,
     // W1-23. Which registered dispute this line argues, and which side of it. Carried out so a
     // probe can see that the answer moved rather than merely that an answer arrived.
     cf: best.cf || null, pos: best.pos || null,
@@ -577,6 +591,13 @@ export class Conversation {
       // a lie is something the world tells you by contradicting it.
       said_source: this.said ? (this.said.source || null) : null,
       said_route: this.said ? (this.said.route || null) : null,
+      // W1-17 round 2. WHICH FILE's own record this answer came from (`converse.js infoFor()`'s
+      // `from`, see its header). The same lesson as `said_cell` one round earlier: a probe that
+      // can see only the text cannot tell "this file's authored answer" from "a same-id record
+      // merged in from a different file", and that blind spot is exactly how the round-1 hard
+      // fail (`the-steward-of-the-count` shadowed by a stub in `50-mainline.json`) shipped past
+      // its own probe, which asked only whether `said` was non-empty.
+      said_from: this.said ? (this.said.from || null) : null,
       // `root` is carried through because a reader has to be able to tell the nine words the
       // character was GIVEN from the subjects this particular person advertises — they are
       // offered by different rules and a probe that cannot separate them cannot measure either.

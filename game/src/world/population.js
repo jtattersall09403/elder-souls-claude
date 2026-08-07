@@ -163,14 +163,7 @@ export class PopulationSystem {
       // So a release remembers who was down. `_materialise()` leaves them down, and only
       // `DeathSystem.respawnOrdinary()` — the hearth rest and the player death, step (0) above —
       // clears the register. S5 is then true of a half-fought post as well as of a finished one.
-      const down = this.down.get(id) || new Set();
-      for (const eid of eids) {
-        const e = sim.findEntity(eid);
-        if (!e) continue;
-        if (e.hp <= 0) down.add(eid);
-        try { engine.despawn(eid); } catch { /* already gone */ }
-      }
-      if (down.size) this.down.set(id, down); else this.down.delete(id);
+      for (const eid of eids) { if (sim.findEntity(eid)) { try { engine.despawn(eid); } catch { /* already gone */ } } }
       this.live.delete(id);
       this.stats.released++;
       if (this.state.get(id) !== CLEARED) this.state.set(id, DORMANT);

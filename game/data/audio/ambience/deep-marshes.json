@@ -15,7 +15,8 @@
     "open_enclosed": "enclosed",
     "living_dead": "dead"
   },
-  "bed_lufs_target": -28,
+  "bed_lufs_target": -27.5,
+  "bed_lufs_target_note": "ROUND 3. Was -28, which is the exact bottom edge of RI-AUD03 B5's -28..-24 band, and the bed landed on -28.003 — three thousandths outside it, on rounding. This is the same defect round 2 found and fixed on marauders-coast (target -24, measured -23.991), stated there as \"a target on a fence fails on rounding\"; deep-marshes was the other fence-target and was left standing. The BAND IS UNCHANGED and nothing is loosened: the target moves half a decibel inboard so the bed sits inside the band with room either side, which is what every other bed in the province already had. This is still the quietest region after the Stone Wastes, and half a decibel does not change what the marsh sounds like.",
   "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
