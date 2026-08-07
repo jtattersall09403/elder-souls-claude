@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `e06f551`: 457 tools, 153 reference
+so it cannot drift. Generated at `d17f207`: 457 tools, 153 reference
 items, 20 pieces in flight.
 
 Its purpose is to stop 20+ concurrent agents each paying separately to discover the
@@ -735,11 +735,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-VIABILITY-SPLIT` | in_progress | walk baseline running; then --sabotage no-bootstrap and grant-everything; then blog line + | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` `corpus/22-character/RI-CHR03-birthsigns.md` |
+| `W1-22-r2` | building | event-level calibration running; then acceptance run + both sabotage arms; then re-run the | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` `game/data/audio/ambience/*.json` `game/data/audio/ambience/interiors/*.json` |
 | `W1-13-r3` | building | bloom-sight null control -> clock.mjs (delete-the-fix + consumption) -> boot-check -> FULL | `orchestration/status/W1-13-r3.json` |
 | `W1-SOULS-r3` | running | enumerate every eid-keyed per-session observer in the tree (souls, engine._greetCount, mag | `orchestration/status/W1-SOULS-r3.json` |
-| `W1-22-r2` | building | event-level calibration running; then acceptance run + both sabotage arms; then re-run the | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` `game/data/audio/ambience/*.json` `game/data/audio/ambience/interiors/*.json` |
 | `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
-| `W1-VIABILITY-SPLIT` | in_progress | run the screen end-to-end so the fence scrubs the residual claim strings; then build the w | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |

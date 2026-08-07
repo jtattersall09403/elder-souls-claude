@@ -332,7 +332,19 @@ function validate(file) {
   }
 
   // --- closure
-  for (const c of v.gap_closure || []) {
+  // `gap_closure` is specified as an array. Two verdicts shipped it as an object keyed by gap id,
+  // and iterating an object threw — which took the CORPUS-WIDE `--all` gate down at the 19th of
+  // 36 verdicts, so eighteen were never validated at all and nobody knew. A shared gate that dies
+  // on one piece's malformed field silently stops checking everybody else's; that is the same
+  // failure `tools/check-quests.mjs` exists to prevent, one level up. Accept both shapes, and
+  // report the wrong one as an error against the verdict that wrote it rather than as a crash.
+  const closureRows = Array.isArray(v.gap_closure)
+    ? v.gap_closure
+    : (v.gap_closure && typeof v.gap_closure === 'object'
+      ? (E('gap_closure must be an array, not an object keyed by gap id (SCORING.md §5)'),
+        Object.entries(v.gap_closure).map(([gap_id, c]) => ({ gap_id, ...(c || {}) })))
+      : []);
+  for (const c of closureRows) {
     if (!ENUM.closure.includes(c.status)) E(`gap_closure ${c.gap_id}: status invalid`);
     if (c.closed_by_builder_of_fix === true) E(`gap_closure ${c.gap_id}: closed_by_builder_of_fix=true — a gap cannot be closed by the agent that built the fix (SCORING.md §5)`);
     if (!Array.isArray(c.evidence) || c.evidence.length === 0) E(`gap_closure ${c.gap_id}: evidence[] required — closure is a re-measurement, not an assertion`);
@@ -379,8 +391,13 @@ if (targets.length === 0 && !process.argv.includes('--all')) {
 let failed = 0;
 for (const t of targets) {
   const p = t.startsWith('/') ? t : join(ROOT, t);
-  const { errors, warns } = validate(p);
   const name = rel(p);
+  // One malformed verdict must not stop the sweep. It did: an unhandled throw on the 19th of 36
+  // left eighteen unvalidated and reported nothing, so the corpus-wide gate had been half-running
+  // for as long as that field had been wrong. A crash on one file is a finding ABOUT that file.
+  let errors, warns;
+  try { ({ errors, warns } = validate(p)); }
+  catch (e) { errors = [`validator threw on this file — ${e.message}`]; warns = []; }
   if (errors.length === 0) console.log(`OK    ${name}${warns.length ? `  (${warns.length} warning(s))` : ''}`);
   else { failed++; console.log(`FAIL  ${name}  — ${errors.length} error(s)`); }
   for (const e of errors) console.log(`   ERROR  ${e}`);

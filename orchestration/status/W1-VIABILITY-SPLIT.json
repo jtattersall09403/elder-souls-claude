@@ -3,10 +3,16 @@
   "state": "in_progress",
   "started": "2026-08-07",
   "summary": "Split per NEXT-DISPATCH \u00a7R. SCREEN: build-viability.mjs renamed to tools/analysis/impossibility-screen.mjs, verdict vocabulary changed to impossible/abstained/not_screened_out, and a code fence (vocabulary + shape + exit) that makes a positive claim unemittable. WALK: tools/quests/viability-walk.mjs, stratified sample played cold in the engine.",
-  "next_step": "run the screen end-to-end so the fence scrubs the residual claim strings; then build the walk",
+  "next_step": "walk baseline running; then --sabotage no-bootstrap and grant-everything; then blog line + shot",
   "files_touched": [
     "orchestration/status/W1-VIABILITY-SPLIT.json",
-    "tools/analysis/impossibility-screen.mjs"
+    "tools/analysis/impossibility-screen.mjs",
+    "tools/quests/viability-walk.mjs",
+    "corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md",
+    "corpus/22-character/RI-CHR01-character-creation.md",
+    "corpus/22-character/RI-CHR03-birthsigns.md",
+    "corpus/95-experience/RI-CMP03-build-identity-payoff.md",
+    "reports/impossibility-screen.json"
   ],
   "files_claimed": [
     "tools/analysis/impossibility-screen.mjs",
@@ -27,6 +33,13 @@
     "BASELINE at a5a637d: node tools/corpus-index.mjs C8 = 26 warn / 0 error; check-quests PASS.",
     "Box loaded at start: pgrep -c headless_shell = 42, loadavg 23.19 -> Node-side work first.",
     "FENCE FALSIFIER FOUND A REAL HOLE IN THE FENCE: case F3 ({signatures_playable: 486}) walked straight through, because `_` is a word character so \\bplayable\\b never matches inside a snake_case key -- and every key in the artifact is snake_case. Fixed by normalising `_` before the scan. Rule 4 paid for itself on its first run.",
-    "The renamed screen is 4 rules: vocabulary (claim words, on artifact + stdout + stderr), shape (row verdict is a 3-value string, never a boolean; forbidden keys incl. `target`), exit (0 only when nothing condemned and nothing abstained), and one enumerable exemption for the pointer literal `tools/quests/viability-walk.mjs`."
+    "The renamed screen is 4 rules: vocabulary (claim words, on artifact + stdout + stderr), shape (row verdict is a 3-value string, never a boolean; forbidden keys incl. `target`), exit (0 only when nothing condemned and nothing abstained), and one enumerable exemption for the pointer literal `tools/quests/viability-walk.mjs`.",
+    "SCREEN LANDED. git mv tools/analysis/build-viability.mjs -> tools/analysis/impossibility-screen.mjs. Full 540 walk at a5a637d: 45 SCREENED OUT / 0 not screened out / 495 abstained. Same three numbers as TOOL-COVERAGE-R4's baseline (45 not viable / 495 unmeasurable), now labelled as what they are and with no positive figure anywhere in the artifact or on stdout.",
+    "THE FENCE CAUGHT THE SHIPPING TOOL THREE TIMES on its way to a clean run: $.supersedes, $.model_attestation.how_to_mint and $.model_sensitivity.method each carried a claim word. Exit 21 each time, nothing written. That is the fence working on real output, not on a test fixture.",
+    "unmeasurable_because was [] on every run beside unmeasurable:495 (R4 \u00a710 minor). Now filled from the abstentions the walk recorded.",
+    "GRANT FENCE FALSIFIER GREEN BOTH WAYS: 5/5 denied verbs throw (setGold, questSetFlag, learnTopic, spawnNPC, setFactionStanding) and the allowed control verb works.",
+    "SOURCE AUDIT FALSIFIER GREEN BOTH WAYS: a planted `window.__ENGINE` reference goes red, the clean file goes green. It counts code lines only (comment-only lines excluded) so the header can name both doors.",
+    "C8 back to 26 warn / 0 error after retargeting RI-MTH06 SS A, RI-CHR01 M6, RI-CHR03 M5 and RI-CMP03 step 2.",
+    "NOT MINE, REPORTED: reports/viability.json is UNTRACKED and was regenerated at 16:58 today by the PRE-RENAME tool (schema elder-souls/build-viability@2, target 486, viable 0) from some other process. I did not delete it -- it is a neighbour's live output. It is the last quotable viability figure on this tree and the fence cannot reach it."
   ]
 }
