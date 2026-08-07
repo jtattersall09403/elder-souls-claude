@@ -276,7 +276,13 @@ try {
     const trial = async (sign) => {
       await h.h('loadState', 'default');
       await h.h('setRenderRate', 0);
-      await h.h('setCharacter', { name: 'Probe', race: 'saxhleel', sign, profession: 'scout' });
+      // The real field names, from Engine.setCharacter(): race / upbringing / class / birthsign.
+      // `sign` and `profession` were invented and `class: null` threw out of composeCharacter,
+      // which is how this probe found out that setCharacter is strict rather than forgiving.
+      await h.h('setCharacter', {
+        race: 'saxhleel', upbringing: 'interior', class: 'salt-blade',
+        birthsign: sign, given_name: 'Probe', hatch_name: 'Probe',
+      });
       await h.h('stepFrames', 2);
       const hr = (await h.h('listHearths')).hearths.find((x) => x.kind === 'settlement');
       await h.h('teleport', hr.pos[0], hr.pos[2]);
@@ -315,8 +321,10 @@ try {
         rest_says: rest.focus_restored, rest_why: rest.why,
       };
     };
-    const ordinary = await trial('the-tower');
-    const dryWell = await trial('the-dry-well');
+    // `nu-ixtu` is The Dry Well (RI-CHR03 / game/data/progression/birthsigns.json §signs);
+    // `raj-xul` is The Full Root, an ordinary sign with no Focus term on the refill.
+    const ordinary = await trial('raj-xul');
+    const dryWell = await trial('nu-ixtu');
     record({
       model: 'RI-CHR03 birthsign term `focus_restores_at_hearth` (seam S27)',
       consumer: 'game/src/engine.js applyDerivedPools() -> magic.focusRestoresAtHearth; hearthRest() gates the refill on it, and _deathTick() gates the RESPAWN refill on the same term. Drawn by W1-21 as the hud.focus bar fill.',
@@ -515,8 +523,18 @@ try {
   await h.close();
   process.exit(coupled === models.length ? 0 : EXIT.MEASUREMENT_FAIL);
 } catch (e) {
+  // A partial report is written even on a throw. The alternative — dying with six measured
+  // models in memory — is the failure AGENT-PROTOCOL is entirely about, and a probe that
+  // discards its own evidence when the seventh model errors is a probe that has to be re-run
+  // from zero every time.
+  const coupled = models.filter((m) => m.coupling === 1).length;
+  writeJson(path.join(outDir, 'consumption.json'), {
+    schema: 'elder-souls/consumption@1', piece: 'W1-13', partial: true,
+    failed_after_models: models.length, error: String(e && e.message || e),
+    models_coupled: coupled, models, page_errors: h.errors,
+  });
   await h.close();
-  log(`w1-13-consume FAILED: ${e && e.message}`);
+  log(`w1-13-consume FAILED after ${models.length} model(s): ${e && e.message}`);
   process.stderr.write(String(e && e.stack || e) + '\n');
   process.exit(EXIT.INTERNAL);
 }

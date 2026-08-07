@@ -767,13 +767,20 @@ for (const name of Object.keys(ARCH)) {
     // LOCAL REFINEMENT. The coarse pass located the basin; this walks it at the resolution the
     // answer actually lives at. `sweep_wide` moves from `lie 6 / swing 0.13` to the 0.14-0.21
     // band the coarse grid steps straight over.
+    // Every knob is refined, not just `t` and `ext`: `sweep_wide`'s only feasible corner sits at
+    // `hitFrac 0.50`, which is not on the coarse list [0.2, 0.3, 0.45, 0.6] at all, and holding
+    // the coarse pass's `hitFrac` fixed while refining the others would step straight past it.
     const b0 = best;
-    for (let t = Math.max(0, b0.t - 0.10); t <= Math.min(0.80, b0.t + 0.10) + 1e-9; t += 0.05) {
-      for (let ext = Math.max(0, b0.ext - 10); ext <= Math.min(70, b0.ext + 10); ext += 5) {
-        const hit = cell(t, Math.min(1.30, b0.swing + 0.09), Math.max(0.05, b0.swing - 0.09), 0.01,
-          ext, b0.bury, b0.cham, b0.hitFrac);
-        if (hit && better(hit, best)) best = hit;
-      }
+    const span = (v, d, step, lo, hi) => { const o = []; for (let x = Math.max(lo, v - d); x <= Math.min(hi, v + d) + 1e-9; x += step) o.push(+x.toFixed(3)); return o; };
+    const tS = span(b0.t, 0.10, 0.05, 0, 0.80);
+    const eS = span(b0.ext, 10, 5, 0, 70);
+    const hS = def.bury ? span(b0.hitFrac, 0.10, 0.05, 0.10, 0.90) : [1];
+    const bS = def.bury ? span(b0.bury, 0.15, 0.05, 0.10, 1.00) : [0];
+    const cS = def.chamber ? span(b0.cham, 0.15, 0.05, 0.10, 1.00) : [0];
+    for (const t of tS) for (const ext of eS) for (const hitFrac of hS) for (const bury of bS) for (const cham of cS) {
+      const hit = cell(t, Math.min(1.30, b0.swing + 0.09), Math.max(0.05, b0.swing - 0.09), 0.01,
+        ext, bury, cham, hitFrac);
+      if (hit && better(hit, best)) best = hit;
     }
   }
   solved[name] = best.a;

@@ -2,7 +2,7 @@
  "task_id": "W1-10-r3-critic",
  "brief": "critic round 3 on W1-10 weapon movesets",
  "started": "wave-1",
- "state": "writing",
+ "state": "complete",
  "outputs_expected": [
   "corpus/90-verdicts/wave1/W1-10-r3.json",
   "corpus/90-verdicts/wave1/W1-10-r3.md",
@@ -33,8 +33,11 @@
   "CR BUG: tools/weapons/connect-rate.mjs counts re-seats not presses; every healthy weapon reads exactly 10/12 = 0.833 with 10 hits from 10 presses. CR_mean 0.4219 is deflated. The zeros are real.",
   "BLIND: M6 grouping 12/12 correct (GHM/TSW/SPR) but T6/T7 = spr_fishers_gig / spr_mire_trident are the same motion 1-2 frames apart, declared indistinguishable BEFORE the reveal => FAIL of the within-group clause.",
   "RI-WPN07 RVS: wrote tools/weapons/rvs-matrix.mjs per TOOL-LOOP rule 1; exits 2. 8 of 10 archetypes missing, policy-competent.json missing, H.runPolicy missing. corpus_debt against W1-12, weight 0.",
-  "SCORE 3/10 FAIL (gate 7.0), min over RI-WPN01..06."
+  "SCORE 3/10 FAIL (gate 7.0), min over RI-WPN01..06.",
+  "MOVING-TARGET RESULT, FINAL: six of twelve class baselines land ZERO across the whole sweep against a target retreating at 2.0 m/s (hlb, cgs, ugs, ghm, axe, mce) while landing 7-11 of 11-17 against a still one. Nothing fails when the target CLOSES. CAVEAT: the probe writes the target's pos each frame (what setEntityPos does, not what CombatBody.advance does), so the swept hurtbox prev is not maintained as locomotion would; recorded as a LEAD needing a scripted-locomotion re-run, not a closed finding.",
+  "Also measured under every regime: every one of the twelve tops out short of its declaration even STILL — HLB 1.76 vs 2.85, CGS 1.73 vs 2.75, GHM 1.34 vs 2.148, TSW 1.13 vs 2.087, WHP 2.58 vs 3.60. Independent corroboration of the usable-reach census by a driven fight.",
+  "Filed corpus/12-weapons/AMENDMENT-W1-10-CRITIC-02.md: (A) Reach (m) -> usable blade reach inside a 0.30-1.70 m torso band with reach_shortfall_m > 0.30 a FAIL; (B) WEAPON-CRITIC 3.3 gains an animation-blind control; (C) TDV == 0 hard fail scoped to weapons declaring a 2h stance (it fires on all 5 BOWs by construction); (D) does CONSUMPTION require a RENDERED consumer for a model the player looks at — also filed as an arbitration question."
  ],
- "next_step": "fold the completed motion sweep numbers into W1-10-r3.md 5 and revalidate",
- "notes_for_successor": ""
+ "next_step": "",
+ "notes_for_successor": "Verdict is on disk and schema-valid (node tools/verdict-validate.mjs). NOT committed. Round-4 builder should start at the renderer: game/src/render/scene.js makeActor() and renderer.js:398-399. The blade-into-ground defect and the connect-rate defect both become visible the moment the swing is drawn. Do NOT re-run tools/weapons/connect-rate.mjs for a headline number until its `presses++` denominator bug is fixed. tools/weapons/rvs-matrix.mjs is on disk and exits 2 until W1-12 ships 8 more archetype dummies, corpus/80-methods/policy-competent.json exists and H.runPolicy is implemented."
 }
