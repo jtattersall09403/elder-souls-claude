@@ -5,12 +5,19 @@
   "state": "researching",
   "outputs_expected": [
     "docs/PLAN.md (amended)",
-    "orchestration/DECOMPOSITION-W1-PATHS.md (new-piece definitions + amendments)"
+    "docs/DECOMPOSITION-W1-AMENDMENT-01.md (new-piece definitions + amendments)"
   ],
   "outputs_written": [],
   "findings": [
-    "BAR-CRITIQUE-W1-07-R1 claims 37 of 38 journey.*/input.*/experience.* paths declared by no wave-1 piece. To be verified."
+    "VERIFIED: subsystems.json now has 330 paths (PLAN.md still says 325). 254 are wave 1 (PLAN says 250).",
+    "VERIFIED: journey.* 13 + input.* 10 + experience.* 15 = 38. Exactly one (journey.chargen.diegesis) appears in any corpus/90-verdicts/wave1/*.json subsystem_paths. 37 of 38 confirmed unowned BY A DISPATCHED PIECE.",
+    "CRITICAL NUANCE the critic did not separate: docs/PLAN.md §3 DOES assign 36 of those 38 to pieces W1-08 (all 10 input.*), W1-25 (7 experience.*), W1-19 (3 experience.ending.*), W1-26 (11 journey.*). Those three pieces have NEVER BEEN DISPATCHED: no orchestration/status/ file, no brief, no verdict. Only 7 of 28 wave-1 pieces have any verdict at all (W1-00, W1-01, W1-07, W1-09, W1-10, W1-14, W1-15).",
+    "GENUINELY UNOWNED BY THE PLAN — 4 wave-1 paths in no PLAN.md piece: journey.opening.exchange, journey.opening.legibility (RI-JRN09, filed today), combat.exchange.reactability, combat.exchange.divergence (RI-CMB12). These are the real orphans.",
+    "OTHER ORPHANED FAMILIES: 80 paths total are in no plan piece. 76 of them are wave 2/3/4 and legitimately undecomposed (PLAN §6 says wave-2+ decomposition happens at the wave boundary). Only the 4 above are wave-1.",
+    "PATHS JUDGED BY NO REFERENCE ITEM (6): coherence.faction.crossref, coherence.difficulty.continuity, coherence.economy.balance, coherence.progression.pacing (4, claimed judged-by-doctrine), journey.process.naive, journey.process.fleet (2). The journey.process.* pair is a REAL CORPUS HOLE - they are wave-1, assigned to W1-26, and JOURNEY-CRITIC-FLEET.md is a doctrine doc not an RI. Verify.",
+    "PLAN-vs-VERDICT DRIFT is systemic. W1-07 claimed 4 paths belonging to W1-16/W1-26 and dropped 2 of its own (character.race.access, character.race.dialogue). W1-09 dropped 5 (combat.attack.charge, damage.model, damage.scaling, heal.charges, pause.policy) and claimed 3 others. W1-10 claimed 9 paths it does not own, 4 of which (weapon.class.differentiation, weapon.identity.withinclass, weapon.animation.reuse, weapon.context.aerial) have NO plan owner and are wave 2. W1-01 claimed world.region.identity (W1-02's).",
+    "DROPPED-BY-VERDICT paths are the second silent hole: character.race.access, character.race.dialogue, combat.attack.charge (later picked up by W1-10), combat.damage.model, combat.damage.scaling, combat.heal.charges, combat.pause.policy - in a plan piece, in a dispatched verdict's plan entry, and in no verdict's declared set."
   ],
-  "next_step": "run tools/corpus-index.mjs; enumerate subsystems.json paths vs piece declared_paths across all wave-1 pieces",
-  "notes_for_successor": ""
+  "next_step": "read RI-JRN02..09, RI-EXP01-06, RI-PLT03, RI-CMB12 judges fields; decide piece split for W1-26; write DECOMPOSITION-W1-AMENDMENT-01.md",
+  "notes_for_successor": "Scratchpad scripts: /tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/{audit,drift}.mjs and rows.json (per-path plan/verdict/judges table). Re-run them after editing PLAN.md to confirm zero wave-1 orphans."
 }

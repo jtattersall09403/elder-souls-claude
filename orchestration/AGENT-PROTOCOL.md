@@ -104,6 +104,23 @@ not publish a number that has only ever been seen outside the browser — and no
 exist**; the flag is silently ignored. Check that a flag you are relying on is implemented before
 you cite it.
 
+## If a method names a tool that does not exist, build it
+
+Binding on builders and critics alike. See `orchestration/TOOL-LOOP.md` for the full rule.
+
+**67 of the 82 tools named across the corpus did not exist on disk.** Items that name a phantom
+tool still *score*, so four builders were charged for the corpus's missing instruments — one piece
+could not reach its gate by arithmetic, and another item had never been run on any build.
+
+So: **write the tool then and there.** The item's `## Comparison method` is the specification —
+build what it describes, not a simpler thing wearing its name. If the tool cannot be written
+honestly because the system it measures does not exist, make it report that absence and exit
+non-zero; never stub it to pass. A critic that writes a tool mid-run must declare it under
+`method_deviations`. A builder that writes a tool still does not grade itself with it.
+
+Run `node tools/corpus-index.mjs` and read the C8 warnings to see what is missing. C8 is a warning
+in wave 1 and a hard error from wave 2.
+
 ## Two failure modes that have each cost a full round
 
 1. **The verdict may name a dead call site.** The W1-15 round-1 verdict named `sim/entities.js`

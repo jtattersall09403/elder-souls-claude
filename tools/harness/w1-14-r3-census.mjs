@@ -223,15 +223,16 @@ try {
       // conditional, because S29's travel fence refuses `recall`/`mark`/`intervention` while a
       // hostile is aggroed, and a census that aggroes for a self-range spell is measuring the
       // fence rather than the effect.
+      // S29'S COOLDOWN, WAITED OUT, AND WAITED OUT WITH THE ROOM EMPTY. `damagePlayer()` above
+      // IS a hostile action and the fence holds for 300 frames after the last one — so the first
+      // census cast `recall` and `intervention` four frames after being hit for 220 and read the
+      // refusal as the effect doing nothing. The settle happens BEFORE the bodies are spawned,
+      // because a body standing 1.4 m from a crouched player aggroes itself inside 320 frames
+      // of perception and re-arms the very fence the settle exists to clear.
+      if (!withEnemy) H.stepFrames(320);
       const e0 = H.spawn('inf_trash', 0, 1.4);
       const e1 = H.spawn('inf_trash', 2.6, 5.2);
       if (withEnemy) { eid = e0; H.aggro(e0); H.aggro(e1); }
-      // S29'S COOLDOWN, WAITED OUT. `damagePlayer()` above IS a hostile action, and the fence
-      // holds for 300 frames after the last one — so the first census cast `recall` and
-      // `intervention` four frames after being hit for 220 and read the refusal as the effect
-      // doing nothing. 320 frames of quiet, before the paired read starts, in BOTH the control
-      // and the treatment.
-      if (!withEnemy) H.stepFrames(320);
       H.magicEventsDrain();
       return eid;
     };
@@ -297,11 +298,12 @@ try {
         // refused differs from the LOW one at every path the low cast moved, so the row scored
         // `COUPLED` on the strength of the high cast NOT HAPPENING.
         const ev = H.magicEventsDrain();
-        const applied = ev.filter((x) => x.type === 'effect_apply' && (x.effect === undefined || x.effect === e.id));
-        const refusals = ev.filter((x) => /refus|denied|dropped/i.test(String(x.type)))
-          .map((x) => ({ type: x.type, reason: x.reason || x.gate || x.fence || null, effect: x.effect || null }));
+        const applied = ev.filter((x) => x.kind === 'effect_apply' && (x.effect === undefined || x.effect === e.id));
+        const refusals = ev.filter((x) => /refus|denied|dropped|abort/i.test(String(x.kind)))
+          .map((x) => ({ kind: x.kind, reason: x.reason || x.gate || x.fence || null, effect: x.effect || null,
+                         need: x.need === undefined ? undefined : x.need, had: x.had === undefined ? undefined : x.had }));
         return { before, after, spell: sid, delivered: cast ? applied.length > 0 : null, refusals,
-                 events: ev.map((x) => x.type) };
+                 events: [...new Set(ev.map((x) => x.kind))] };
       };
 
       let ctl, a, b;

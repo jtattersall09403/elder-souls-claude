@@ -115,14 +115,19 @@ export function chartHtml() {
   const meanLatest = +(cards.reduce((a, c) => a + c.last, 0) / cards.length).toFixed(1);
   const atGate = cards.filter(c => c.last >= GATE).length;
 
+  // Every line starts at zero. Before a domain's first verdict its measured score genuinely was
+  // nothing — not "unknown", not "assumed adequate" — so the origin is the honest starting point
+  // and it makes the climb legible. The origin carries `origin: true` so the renderer can draw
+  // that first segment faded: it is a known starting condition, not a measurement anyone took.
   const data = JSON.stringify(series.map((s, i) => ({
     name: s.name, colour: SERIES[i % SERIES.length],
-    pts: s.pts.map(p => ({
-      x: p.t ? (p.t - t0) / span : 0, y: p.score, round: p.round,
-      piece: p.piece.toUpperCase(), status: p.status,
-      when: p.t ? new Date(p.t).toISOString().slice(11, 16) + 'Z' : '',
-      day: p.t ? new Date(p.t).toISOString().slice(5, 10) : '',
-    })),
+    pts: [{ x: 0, y: 0, origin: true, round: 0, piece: '', status: '', when: '', day: '' }].concat(
+      s.pts.map(p => ({
+        x: p.t ? (p.t - t0) / span : 0, y: p.score, round: p.round,
+        piece: p.piece.toUpperCase(), status: p.status,
+        when: p.t ? new Date(p.t).toISOString().slice(11, 16) + 'Z' : '',
+        day: p.t ? new Date(p.t).toISOString().slice(5, 10) : '',
+      }))),
   })));
 
   const fmt = ms => new Date(ms).toISOString().slice(5, 16).replace('T', ' ') + 'Z';
@@ -164,7 +169,7 @@ table.sc-tbl td.d{color:var(--ink)}
     <button id="sc-b-small" aria-pressed="true">Per domain</button>
     <button id="sc-b-over" aria-pressed="false">All together</button>
     <button id="sc-b-tbl" aria-pressed="false">Table</button>
-    <span class="sc-note">Each point is one critic verdict. The gold line is the wave-1 pass mark of ${GATE}; the target is ${TARGET} everywhere. Scores can fall as well as rise — a later critic often measures something the earlier one could not.</span>
+    <span class="sc-note">Each point is one critic verdict. The gold line is the wave-1 pass mark of ${GATE}; the target is ${TARGET} everywhere. Every line starts at zero, because before a domain's first verdict nothing had been measured; that opening run-in is dashed since nobody took a reading across it. Scores can fall as well as rise — a later critic often measures something the earlier one could not, or finds an earlier score was given too generously. This page redraws on every verdict either way.</span>
   </div>
   <div id="sc-small" class="sc-grid"></div>
   <div id="sc-over" class="sc-big sc-hide"></div>
@@ -196,12 +201,19 @@ table.sc-tbl td.d{color:var(--ink)}
     // gate + target references, recessive
     g.appendChild(el('line',{x1:l,x2:w-r,y1:scaleY(GATE,h,pad),y2:scaleY(GATE,h,pad),stroke:'#c8a253','stroke-width':1,'stroke-dasharray':'3 3','opacity':.5}));
     g.appendChild(el('line',{x1:l,x2:w-r,y1:scaleY(TARGET,h,pad),y2:scaleY(TARGET,h,pad),stroke:'#7d9a5a','stroke-width':1,'opacity':.35}));
-    var pts=s.pts.map(function(p){return [scaleX(s.pts.length>1?p.x:.5,w,l,r),scaleY(p.y,h,pad)];});
+    var pts=s.pts.map(function(p){return [scaleX(p.x,w,l,r),scaleY(p.y,h,pad)];});
+    // The run-in from the zero origin to the first real verdict is drawn faded — it spans a
+    // period nobody measured, and a solid line there would assert a trend that was never taken.
     if(pts.length>1){
-      var d=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
+      g.appendChild(el('path',{d:'M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1)+'L'+pts[1][0].toFixed(1)+' '+pts[1][1].toFixed(1),
+        fill:'none',stroke:colour,'stroke-width':thin?2:2.5,opacity:.32,'stroke-dasharray':'4 4','stroke-linecap':'round'}));
+    }
+    if(pts.length>2){
+      var d=pts.slice(1).map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
       g.appendChild(el('path',{d:d,fill:'none',stroke:colour,'stroke-width':thin?2:2.5,'stroke-linejoin':'round','stroke-linecap':'round'}));
     }
     s.pts.forEach(function(p,i){
+      if(p.origin) return;                       // the origin is a starting condition, not a data point
       var c=el('circle',{cx:pts[i][0],cy:pts[i][1],r:thin?4.5:5,fill:colour,stroke:'#1b1813','stroke-width':2});
       c.style.cursor='pointer';
       c.addEventListener('mousemove',function(e){showTip(e,'<b>'+s.name+'</b><br>'+p.piece+' round '+p.round+'<br>score <b>'+p.y+'</b> / 10<br><span style="color:#9a8f79">'+p.day+' '+p.when+'</span>');});
@@ -214,14 +226,17 @@ table.sc-tbl td.d{color:var(--ink)}
   // ---- small multiples: one domain per panel, single series, identity from the heading ----
   var host=document.getElementById('sc-small');
   D.forEach(function(s){
-    var last=s.pts[s.pts.length-1].y, first=s.pts[0].y, dlt=+(last-first).toFixed(1);
+    // pts[0] is the zero origin, so the first *measured* score is pts[1] and the round count
+    // excludes the origin — otherwise every domain would claim one more round than it has.
+    var real=s.pts.filter(function(p){return !p.origin;});
+    var last=real[real.length-1].y, first=real[0].y, dlt=+(last-first).toFixed(1);
     var div=document.createElement('div');div.className='sc-panel';
     var col=last>=GATE?'#7d9a5a':(last>=4?'#c8a253':'#b4553f');
     div.innerHTML='<h4>'+s.name+'</h4><div class="now" style="color:'+col+'">'+last+
       ' <span style="font-size:11px;color:#9a8f79">/ 10</span></div>'+
-      '<div class="sub">'+(dlt>0?'▲ +'+dlt:(dlt<0?'▼ '+dlt:'no change'))+' over '+s.pts.length+' round'+(s.pts.length>1?'s':'')+'</div>';
+      '<div class="sub">'+(dlt>0?'▲ +'+dlt:(dlt<0?'▼ '+dlt:'no change'))+' over '+real.length+' round'+(real.length>1?'s':'')+'</div>';
     var w=230,h=76,pad=10,l=2,r=2;
-    var svg=el('svg',{viewBox:'0 0 '+w+' '+h,role:'img','aria-label':s.name+' latest score '+last+' out of 10'});
+    var svg=el('svg',{viewBox:'0 0 '+w+' '+h,role:'img','aria-label':s.name+' latest score '+last+' out of 10 over '+real.length+' critic rounds'});
     svg.appendChild(line(s,w,h,pad,l,r,col,true));
     div.appendChild(svg);host.appendChild(div);
   });
