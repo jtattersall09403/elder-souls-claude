@@ -230,6 +230,25 @@ async function tryH(handle, method, ...callArgs) {
  * engine at boot. The caller closes its own handle first, so this never raises the number of
  * browsers running at once above one.
  */
+/**
+ * A CENSUS TAKEN BY STANDING, not by walking.
+ *
+ * A1 owns the arrival claim — that the population builds itself under a walking player — and it
+ * pays for it with a 600–1,200 m walk. A5 and A6 do not need arrival: A5 asks whether the
+ * PLACEMENT FILE drives the world and A6 asks whether the BODIES behave, and both are answered
+ * standing still at a coordinate. Walking for them cost this tool two runs killed at 25+ minutes
+ * on a box carrying 48 concurrent browsers, so they teleport to a fixed point and step.
+ *
+ * `spawn_per_step` is 1, so materialising every candidate inside `spawn_radius_m` takes as many
+ * steps as there are candidates; 400 is far more than the 14-post resident cap needs.
+ */
+async function standingCensus(handle, at, frames = 400) {
+  await handle.h('teleport', at[0], at[1]);
+  await handle.h('clearInputs');
+  await handle.h('stepFrames', frames);
+  return handle.page.evaluate(() => window.__POP.look());
+}
+
 async function withFreshBrowser(fn) {
   const h2 = await launchGame({ width: 320, height: 240, ...args });
   try { await bootPage(h2); return await fn(h2); }
@@ -272,6 +291,17 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
   const originalPosts = fs.readFileSync(POSTS_PATH);       // A5 restores these exact bytes
   let handle = null;
   let restored = true;
+
+  // A `finally` DOES NOT RUN WHEN THE PROCESS IS KILLED, and this tool proved it the hard way.
+  // A5 was killed mid-arm on a saturated box (48 concurrent browsers, loadavg 20) and left the
+  // perturbed 253-post placement sitting in `game/data/world/`, where the next agent to boot the
+  // game — or the capture daemon, which reads the tree at boot — would have photographed a world
+  // this tool invented. A cleanup that only survives the happy path is not a cleanup.
+  const emergencyRestore = (sig) => {
+    if (!restored) { try { fs.writeFileSync(POSTS_PATH, originalPosts); } catch { /* nothing left to try */ } }
+    process.exit(sig === 'SIGINT' ? 130 : 143);
+  };
+  for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(sig, () => emergencyRestore(sig));
 
   try {
     handle = await launchGame({ width: 320, height: 240, ...args });
@@ -401,8 +431,14 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
     // A5 MODEL — regenerate the placement from a perturbed model, RELOAD, walk the same road.
     //    This is the arm that proves `game/data/world/population.json` is what fills the world.
     // -------------------------------------------------------------------------------------
-    if (want('A5') && baseline) {
+    if (want('A5')) {
       log('A5 regenerating population-posts.json at higher density …');
+      // The census point: a fixed coordinate on the trunk, chosen from the CANONICAL file before
+      // anything is perturbed, so both halves stand in exactly the same place.
+      const censusAt = JSON.parse(originalPosts.toString()).posts
+        .filter((p) => p.kind === 'road')
+        .map((p) => [p.x, p.z])[Math.floor(0.4 * 122)];
+      const before = await standingCensus(handle, censusAt);
       // THE FLAG IS SET BEFORE THE MUTATION, NOT AFTER, and the first run of this tool is why.
       // `restored = false` used to sit on the line below the generator call; the generator wrote
       // the file and THEN the call threw (it prints "wrote …" ahead of its JSON, so `JSON.parse`
@@ -417,30 +453,34 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
       // SECOND browser SEQUENTIALLY — the first is closed before the second opens, so the
       // concurrent-browser count never rises — rather than `page.reload()`, which
       // TOOL-COVERAGE-R1 §2 recorded hanging 3 of 3 times on this build.
-      const dense = await withFreshBrowser(async (h2) => walkCensus(h2, METRES, { label: 'dense' }));
+      const dense = await withFreshBrowser(async (h2) => standingCensus(h2, censusAt));
 
       // Restore the canonical bytes and confirm the world comes back to the baseline count.
       fs.writeFileSync(POSTS_PATH, originalPosts);
       restored = true;
-      const back = await withFreshBrowser(async (h2) => walkCensus(h2, METRES, { label: 'restored' }));
+      const back = await withFreshBrowser(async (h2) => standingCensus(h2, censusAt));
       // The instrument returns to the browser it came in with, so the later arms still run on
       // one long-lived page.
       handle = await launchGame({ width: 320, height: 240, ...args });
       await bootPage(handle);
 
+      const n = (s) => ({ posts: s.population.live_posts, bodies: s.population.live_bodies, total_posts: s.population.posts_total, total_bodies: s.population.bodies_total });
       report.arms.A5 = {
-        perturbation: '--encounters-per-tm 1.7 (model default is in population.json budget)',
+        perturbation: '--encounters-per-tm 1.7 (the model default is population.json budget.encounters_per_tm = 0.88)',
+        census_at: censusAt, method: 'stand at one coordinate and step 400 frames — no walking; A1 owns the arrival claim',
         generated: { posts: gen.posts, bodies: gen.bodies, souls: gen.souls },
-        dense: dense.final, restored: back.final, baseline: baseline.final,
+        before: n(before), dense: n(dense), restored: n(back),
       };
-      const ok = dense.final.spawned > baseline.final.spawned && back.final.spawned === baseline.final.spawned;
-      (ok ? pass : fail)('A5 MODEL CONSUMPTION: a denser population.json puts more bodies on the same road', {
-        baseline_posts_spawned: baseline.final.spawned,
-        dense_posts_spawned: dense.final.spawned,
-        restored_posts_spawned: back.final.spawned,
-        baseline_bodies_live_end: baseline.final.live_bodies, dense_bodies_live_end: dense.final.live_bodies,
+      const ok = n(dense).bodies > n(before).bodies && n(back).bodies === n(before).bodies
+        && n(dense).total_posts > n(before).total_posts;
+      (ok ? pass : fail)('A5 MODEL CONSUMPTION: a denser population.json puts more bodies on the same ground', {
+        stood_at: censusAt,
+        canonical_file_posts: n(before).total_posts, canonical_bodies_here: n(before).bodies,
+        dense_file_posts: n(dense).total_posts, dense_bodies_here: n(dense).bodies,
+        restored_file_posts: n(back).total_posts, restored_bodies_here: n(back).bodies,
+        generated_bodies_whole_world: gen.bodies,
         file_restored_byte_identical: true,
-        note: 'the file was regenerated on disk, the page reloaded, and the SAME walk taken — nothing in the probe placed anything',
+        note: 'the file was regenerated ON DISK, a fresh page booted, and the player stood at the SAME coordinate — nothing in the probe placed anything',
       });
     }
 
@@ -454,17 +494,15 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
       await handle.page.evaluate(INSTALL);
       await handle.h('setPopulation', { enabled: true, reset: true });
 
-      // Walk until at least one post is resident, then stop and watch it.
-      let r = await handle.h('walkRoute', { route: ROUTE, speed: SPEED, restart: true, chunkFrames: 1, stream: false });
-      let res = [];
-      let guard = 0;
-      while (res.length === 0 && guard++ < 120 && !r.done) {
-        r = await handle.h('walkRoute', { route: ROUTE, speed: SPEED, chunkFrames: 600, stream: false });
-        res = await handle.page.evaluate(() => window.__POP.resident());
-        await handle.page.evaluate(() => window.__POP.topUp());
-      }
-      await handle.h('clearInputs');
-      const arrival = await handle.page.evaluate(() => window.__POP.look());
+      // STAND WHERE A POST IS, don't walk until you trip over one. A6 is about behaviour, not
+      // about arrival — A1 owns arrival and pays for it with a walk. Walking here cost this tool
+      // two runs killed at 25+ minutes on a box carrying 48 concurrent browsers, for a fact that
+      // a teleport establishes in 400 frames.
+      const a6At = JSON.parse(originalPosts.toString()).posts
+        .filter((p) => p.kind === 'road')
+        .map((p) => [p.x, p.z])[Math.floor(0.55 * 122)];
+      const arrival = await standingCensus(handle, a6At);
+      const res = await handle.page.evaluate(() => window.__POP.resident());
       // CLOSE THE DISTANCE. The first run of this arm did not, and it is the single most
       // instructive failure in this tool: a post materialises at up to `spawn_radius_m` = 170 m,
       // and the widest `sight_radius_m` on the roster is 20 m. So the arm watched a slitherfang

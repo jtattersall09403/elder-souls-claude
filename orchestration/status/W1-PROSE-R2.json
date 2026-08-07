@@ -39,7 +39,9 @@
     "game/data/dialogue/topics/20-tier-a.json — 27 authored rewrites. CLEARS EVERY BAR.",
     "game/data/dialogue/greetings/20-tier-a.json — 13 authored rewrites. CLEARS EVERY BAR.",
     "tools/prose/mkspec.mjs + tools/prose/apply-info-rewrites.mjs — second address shape: a greetings record by its own id (indices into a partly generator-fed greetings array are not a stable address). Self-tests on both, incl. the concurrent-edit refusal.",
-    ".githooks/pre-commit — check-prose WIRED IN as a non-blocking warning, scoped to commits touching game/data/{dialogue,books,quests}/, on the check-quests precedent. ~1.2s, JSON only, no browser."
+    ".githooks/pre-commit — check-prose WIRED IN as a non-blocking warning, scoped to commits touching game/data/{dialogue,books,quests}/, on the check-quests precedent. ~1.2s, JSON only, no browser.",
+    "game/data/dialogue/topics/40-race-gated.json — 23 authored rewrites. CLEARS EVERY BAR.",
+    "game/data/dialogue/topics/45-speaker-coverage.json — 24 authored rewrites. CLEARS EVERY BAR."
   ],
   "findings": [
     "THE PUNCHLINE IS MEASURABLE AFTER ALL, and the judge said no regex would find it. Operationalised as CLOSING STING on the final sentence of a line: (b) a short (<=14w) closing sentence opening with Which/That is/And that/Nobody/No one, or (c) a trailing `, which/and that` clause or a `which is how/why/what/the` recast. Dialogue: ours 43.50 per 10k vs Morrowind 1.63 = 26.6x. Books 2.45 vs 0.05 = 45x. Journal 35.91 vs 6.06 = 5.9x. This is a bigger separator than `eleven` ever was.",

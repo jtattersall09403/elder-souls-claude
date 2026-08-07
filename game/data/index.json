@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 545,
+  "file_count": 548,
   "files": [
     {
       "path": "audio/ambience/blackwood.json",
@@ -148,15 +148,15 @@
       "path": "books/the-arms-of-the-province.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 51884,
-      "sha256": "292875d179e70dcf"
+      "bytes": 52282,
+      "sha256": "f892d0c8dc280167"
     },
     {
       "path": "books/the-body-and-the-dark.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 43396,
-      "sha256": "a0e3c277dd38250d"
+      "bytes": 43629,
+      "sha256": "f889db3a991b8314"
     },
     {
       "path": "books/the-casebook-of-the-assize.json",
@@ -176,8 +176,8 @@
       "path": "books/the-drill-book.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 69214,
-      "sha256": "0204c9c892125a58"
+      "bytes": 69383,
+      "sha256": "9087007fa131e64c"
     },
     {
       "path": "books/the-drowned-ford.json",
@@ -198,15 +198,15 @@
       "path": "books/the-ford-arguments.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 38980,
-      "sha256": "eeb21d09e458cc17"
+      "bytes": 39043,
+      "sha256": "2132f9a977f672dc"
     },
     {
       "path": "books/the-long-service.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 32746,
-      "sha256": "7e082ccbef8e00dc"
+      "bytes": 32956,
+      "sha256": "974024dfb356eca2"
     },
     {
       "path": "books/the-long-tail.json",
@@ -223,11 +223,18 @@
       "sha256": "8eef3ccde6a48220"
     },
     {
+      "path": "books/the-peoples.json",
+      "schema": "elder-souls/books@1",
+      "id": null,
+      "bytes": 17473,
+      "sha256": "9c94a0d0d2d0e107"
+    },
+    {
       "path": "books/the-schools-and-the-quarrels.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 58161,
-      "sha256": "8c1ec2d5fc67f6d1"
+      "bytes": 58525,
+      "sha256": "b66457c41345bd94"
     },
     {
       "path": "books/the-short-arms.json",
@@ -1731,8 +1738,8 @@
       "path": "dialogue/greetings/20-tier-a.json",
       "schema": "elder-souls/greetings@2",
       "id": null,
-      "bytes": 28101,
-      "sha256": "ce9a51e1a24d3e38"
+      "bytes": 27799,
+      "sha256": "302110d92b65a44e"
     },
     {
       "path": "dialogue/greetings.json",
@@ -1810,43 +1817,43 @@
       "path": "dialogue/topics/20-tier-a.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 21347,
-      "sha256": "3a251975fa033bc5"
+      "bytes": 28801,
+      "sha256": "06cf5d43c809ea35"
     },
     {
       "path": "dialogue/topics/21-tier-b.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 14189,
-      "sha256": "9ab7ac5a805fc19f"
+      "bytes": 19211,
+      "sha256": "d4e36075d55fe76e"
     },
     {
       "path": "dialogue/topics/22-tier-c.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 13777,
-      "sha256": "6f79227575722210"
+      "bytes": 13834,
+      "sha256": "61d9747f4a7924cd"
     },
     {
       "path": "dialogue/topics/30-texture.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 31231,
-      "sha256": "cd573ba989a3d12f"
+      "bytes": 31359,
+      "sha256": "0a0ca478019af82a"
     },
     {
       "path": "dialogue/topics/40-race-gated.json",
       "schema": "elder-souls/topics@1",
       "id": null,
-      "bytes": 39866,
-      "sha256": "84d6ce0429f82057"
+      "bytes": 40172,
+      "sha256": "77215bce210c1897"
     },
     {
       "path": "dialogue/topics/45-speaker-coverage.json",
       "schema": "elder-souls/topics@1",
       "id": "speaker-coverage",
-      "bytes": 20196,
-      "sha256": "d0cdadf056ec8eb9"
+      "bytes": 24799,
+      "sha256": "29e1db4cb5f720d9"
     },
     {
       "path": "dialogue/topics/50-factions.json",
@@ -1859,8 +1866,8 @@
       "path": "dialogue/topics/50-mainline.json",
       "schema": "elder-souls/dialogue-topics@1",
       "id": null,
-      "bytes": 47484,
-      "sha256": "817be6860e83c9c8"
+      "bytes": 47501,
+      "sha256": "3f7a36b2260aeb35"
     },
     {
       "path": "dialogue/topics/55-utility.json",
@@ -1889,6 +1896,13 @@
       "id": null,
       "bytes": 6830,
       "sha256": "9dcf1bb6072a2ea5"
+    },
+    {
+      "path": "dialogue/topics/75-tribes.json",
+      "schema": "elder-souls/dialogue-topics@2",
+      "id": null,
+      "bytes": 21965,
+      "sha256": "fbf446933bd47444"
     },
     {
       "path": "dialogue/topics/main-quest-argument.json",
@@ -1952,8 +1966,8 @@
       "path": "lore/canon.json",
       "schema": "canon@1",
       "id": "canon",
-      "bytes": 81813,
-      "sha256": "029d263489c82bba"
+      "bytes": 105477,
+      "sha256": "e67a216640c58804"
     },
     {
       "path": "magic/cast-classes.json",
@@ -2112,6 +2126,13 @@
       "bytes": 2668,
       "sha256": "56dcf2f8e95f1631",
       "declared_incomplete": true
+    },
+    {
+      "path": "npcs/tribes.json",
+      "schema": "elder-souls/npc-roster@1",
+      "id": "tribes",
+      "bytes": 10569,
+      "sha256": "821727bb252f1d3c"
     },
     {
       "path": "npcs/writ-house.json",
@@ -3779,8 +3800,8 @@
       "path": "world/signposts.json",
       "schema": "signposts/1",
       "id": null,
-      "bytes": 60491,
-      "sha256": "238c6f1ffdb5a228"
+      "bytes": 63244,
+      "sha256": "7e5ed08cf2b8c927"
     },
     {
       "path": "world/terrain.json",

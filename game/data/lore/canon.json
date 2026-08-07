@@ -21,18 +21,18 @@
     "voiced_by": "book:<book id> | dialogue:<topic id>#<actor> | npc:<npc id>"
   },
   "counts": {
-    "facts": 71,
+    "facts": 83,
     "by_tier": {
       "hard-canon": 28,
       "soft-canon": 9,
       "apocryphal": 1,
-      "constructed": 33
+      "constructed": 45
     },
-    "disputed": 21,
+    "disputed": 27,
     "deliberately_open": 1,
-    "positions": 48,
-    "voiced_sources": 93,
-    "argued_on_topics": 42
+    "positions": 66,
+    "voiced_sources": 136,
+    "argued_on_topics": 48
   },
   "facts": [
     {
@@ -2507,6 +2507,700 @@
         "lore.canon.history"
       ],
       "measured": "Counted over all of game/data on 2026-08-07: lease/Blackrose 2,240 hits; House Dres 245; slave/slavery 42; soul-gem or soul trade 15."
+    },
+    {
+      "id": "CF-D022",
+      "claim": "Does the soul of an Argonian who dies far from his own Hist reach it?",
+      "tier": "constructed",
+      "in_world_sources": [
+        "The Grange Book",
+        "The Descents",
+        "Told at the Weir"
+      ],
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "dying-far-from-the-tree"
+      ],
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content",
+        "quests.faction.escalation"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Grange Book (Archein Weighs-The-Rains)",
+          "stance": "Distance is nothing to a root. A man who dies at Tear is home before the letter is, and the tree is no poorer for the journey.",
+          "held_by": [
+            "the Archein estate-holders of Blackwood",
+            "the lease clerks at Gideon",
+            "most of the Provincial Office by inheritance"
+          ],
+          "holders": {
+            "actors": [
+              "archein-holder",
+              "archein-factor"
+            ],
+            "factions": [
+              "archein"
+            ]
+          },
+          "voiced_by": [
+            "book:the-grange-book",
+            "dialogue:dying-far-from-the-tree#archein-holder",
+            "dialogue:dying-far-from-the-tree#archein-factor"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Descents (kept at the rootpost, Lilmoth)",
+          "stance": "The nearest root still awake takes what it can reach. It is not his tree. He is issued out again a stranger, and the tree that made him is short by one in that year's count.",
+          "held_by": [
+            "the Miredancers of the Eastern Rootlands",
+            "the Sap-Speakers, in the record"
+          ],
+          "holders": {
+            "actors": [
+              "sap-speaker",
+              "miredancer-elder"
+            ],
+            "factions": [
+              "miredancers"
+            ]
+          },
+          "voiced_by": [
+            "book:the-descents",
+            "dialogue:dying-far-from-the-tree#sap-speaker",
+            "dialogue:dying-far-from-the-tree#miredancer-elder"
+          ]
+        },
+        {
+          "id": "C",
+          "in_world_source": "Told at the Weir (Ranaso Quick-Tally, under-factor)",
+          "stance": "Distance costs. What comes back comes back short, the ground where he fell goes heavy, and there is no unit for how short.",
+          "held_by": [
+            "the Agacephs of the Deep Marshes",
+            "the Naga-Kur, who carry their dead home at a price they pay in the open"
+          ],
+          "holders": {
+            "actors": [
+              "agaceph-guide",
+              "agaceph-weir",
+              "deadwater-warrior"
+            ],
+            "factions": [
+              "agacephs",
+              "dead-water"
+            ]
+          },
+          "voiced_by": [
+            "book:told-at-the-weir",
+            "dialogue:dying-far-from-the-tree#agaceph-guide",
+            "dialogue:dying-far-from-the-tree#agaceph-weir",
+            "dialogue:dying-far-from-the-tree#deadwater-warrior"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "1ceb5c59567e4b0f00c3741a94d6fcbb0d0451ff0fc3ddf80aa411cc53519ba6"
+    },
+    {
+      "id": "CF-D023",
+      "claim": "Is the tree behind the wall on the Gideon estates a Hist of its own, or a cutting?",
+      "tier": "constructed",
+      "in_world_sources": [
+        "The Grange Book",
+        "Told at the Weir",
+        "The Descents"
+      ],
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "the-wall-at-the-grange"
+      ],
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Grange Book (Archein Weighs-The-Rains)",
+          "stance": "Ours, and older than the Office. Entered on the survey as a Hist and tithed as a Hist. The wall went up over theft and not over shame.",
+          "held_by": [
+            "the Archein",
+            "the Gideon survey office",
+            "the rootkeepers who have inspected it and signed"
+          ],
+          "holders": {
+            "actors": [
+              "archein-holder",
+              "archein-factor"
+            ],
+            "factions": [
+              "archein"
+            ]
+          },
+          "voiced_by": [
+            "book:the-grange-book",
+            "dialogue:the-wall-at-the-grange#archein-holder",
+            "dialogue:the-wall-at-the-grange#archein-factor"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "Told at the Weir (Ranaso Quick-Tally, under-factor)",
+          "stance": "A cutting, carried off the Rootlands in a wet sack and put in a hole. It grows and it drinks and it holds nothing. The water under it runs clear, and clear means the root is going sideways.",
+          "held_by": [
+            "the Agacephs",
+            "most of the interior when the subject comes up"
+          ],
+          "holders": {
+            "actors": [
+              "agaceph-guide",
+              "agaceph-weir"
+            ],
+            "factions": [
+              "agacephs"
+            ]
+          },
+          "voiced_by": [
+            "book:told-at-the-weir",
+            "dialogue:the-wall-at-the-grange#agaceph-guide",
+            "dialogue:the-wall-at-the-grange#agaceph-weir"
+          ]
+        },
+        {
+          "id": "C",
+          "in_world_source": "Sap-Speaker Neekh-Otei, and the Miredancer elders with her",
+          "stance": "A true tree that has stopped answering, which is a third thing and worse than either of the other two.",
+          "held_by": [
+            "the Miredancers",
+            "the Sap-Speaker, who would rather it were a cutting"
+          ],
+          "holders": {
+            "actors": [
+              "sap-speaker",
+              "miredancer-elder"
+            ],
+            "factions": [
+              "miredancers"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:the-wall-at-the-grange#sap-speaker",
+            "dialogue:the-wall-at-the-grange#miredancer-elder"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
+    },
+    {
+      "id": "CF-D024",
+      "claim": "Is a hatchling given the sap from a vessel, away from the tree, given a soul?",
+      "tier": "constructed",
+      "in_world_sources": [
+        "The Grange Book",
+        "The Descents"
+      ],
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "sap-from-a-cup"
+      ],
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content",
+        "lore.religion.metaphysics"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Grange Book (Archein Weighs-The-Rains)",
+          "stance": "Sap is sap. Same tree, same hatchling, and the vessel is a vessel. The yard is also safer than the root, and half a wild hatching goes into the water.",
+          "held_by": [
+            "the Archein",
+            "the estate-hatched, who are the argument's own evidence"
+          ],
+          "holders": {
+            "actors": [
+              "archein-holder",
+              "archein-factor"
+            ],
+            "factions": [
+              "archein"
+            ]
+          },
+          "voiced_by": [
+            "book:the-grange-book",
+            "dialogue:sap-from-a-cup#archein-holder",
+            "dialogue:sap-from-a-cup#archein-factor"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Descents (kept at the rootpost, Lilmoth)",
+          "stance": "The tree must be over it, with the roots under it, and it must see. What comes out of a cup is a body with something borrowed in it, and a loan has a term.",
+          "held_by": [
+            "the Miredancers",
+            "the Agacephs, who put it in one sentence and will not argue past it",
+            "most rootkeepers off the record"
+          ],
+          "holders": {
+            "actors": [
+              "sap-speaker",
+              "miredancer-elder",
+              "agaceph-weir"
+            ],
+            "factions": [
+              "miredancers",
+              "agacephs"
+            ]
+          },
+          "voiced_by": [
+            "book:the-descents",
+            "dialogue:sap-from-a-cup#sap-speaker",
+            "dialogue:sap-from-a-cup#miredancer-elder",
+            "dialogue:sap-from-a-cup#agaceph-weir"
+          ]
+        },
+        {
+          "id": "C",
+          "in_world_source": "The burial figures of the Drowned Court at Soulrest",
+          "stance": "They get a soul and they come back short. The Court has the figures and the figures run four hundred years: estate-hatched and cup-given die a little young and bury a little heavy.",
+          "held_by": [
+            "the Drowned Court",
+            "the sextons at Soulrest who keep the ledgers"
+          ],
+          "holders": {
+            "factions": [
+              "drowned-court"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:sap-from-a-cup#archivist"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "50ce773610762b1fd951193696af9472cfd5c217fd6bb6005291b876af1bbe84"
+    },
+    {
+      "id": "CF-D025",
+      "claim": "Was the Duskfall one night, or generations?",
+      "tier": "constructed",
+      "in_world_sources": [
+        "The Descents",
+        "A Survey of the Peoples of the Interior"
+      ],
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "when": {
+        "year": null,
+        "era": "pre-Duskfall",
+        "note": "Undated in every in-world source and deliberately so. The dispute is about the SHAPE of the event, not its date, and no position here supplies a year."
+      },
+      "topics": [
+        "the-duskfall-count"
+      ],
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Xeeth of the Stone Forest, and the Sarpa generally",
+          "stance": "One night. Every stepped ruin in the province went over the same way, north-east shoulder first, and that can only be seen from the air.",
+          "held_by": [
+            "the Sarpa",
+            "one Imperial surveyor who has written it down and not published it"
+          ],
+          "holders": {
+            "actors": [
+              "sarpa-flier"
+            ],
+            "factions": [
+              "sarpa"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:the-duskfall-count#sarpa-flier"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Descents (kept at the rootpost, Lilmoth)",
+          "stance": "Generations. The tablets change hand three times inside the falling, and a hand changes when a person dies.",
+          "held_by": [
+            "the Miredancers",
+            "the Sap-Speakers, who hold the tablets"
+          ],
+          "holders": {
+            "actors": [
+              "sap-speaker",
+              "miredancer-elder"
+            ],
+            "factions": [
+              "miredancers"
+            ]
+          },
+          "voiced_by": [
+            "book:the-descents",
+            "dialogue:the-duskfall-count#miredancer-elder",
+            "dialogue:the-duskfall-count#sap-speaker"
+          ]
+        },
+        {
+          "id": "C",
+          "in_world_source": "The Paatru of the Clay Moor",
+          "stance": "Three burnings, not one. The clay carries three black seams with clean clay between them, at the same depths anywhere on the moor.",
+          "held_by": [
+            "the Paatru",
+            "anyone who has dug a pit on the Clay Moor in the dry season"
+          ],
+          "holders": {
+            "actors": [
+              "paatru-clay",
+              "paatru-edge"
+            ],
+            "factions": [
+              "paatru"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:the-duskfall-count#paatru-clay",
+            "dialogue:the-duskfall-count#paatru-edge"
+          ]
+        }
+      ],
+      "player_discoverable": "late",
+      "truth_seal": "46e4de12b955a1a7686b809fbbe0abd6ce8ffc94ebe781c9da5780b593828a3f"
+    },
+    {
+      "id": "CF-D026",
+      "claim": "Does the bone a Dead-Water warrior wears hold the dead back from the root?",
+      "tier": "constructed",
+      "in_world_sources": [
+        "The Descents"
+      ],
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "what-the-bone-holds"
+      ],
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content",
+        "lore.religion.metaphysics"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Dead-Water Koor-Nakh, at the Thorn gate",
+          "stance": "It holds her here and she fights. The shield turned twice and I was there for both.",
+          "held_by": [
+            "the Naga-Kur of the Thornmarsh",
+            "the war-bands of the Hive"
+          ],
+          "holders": {
+            "actors": [
+              "deadwater-warrior"
+            ],
+            "factions": [
+              "dead-water"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:what-the-bone-holds#deadwater-warrior"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Drowned Court at Soulrest",
+          "stance": "The pattern left at the moment of death. A bone is a bone after that — good bone, honoured bone, still bone. The Court has looked, professionally, for four hundred years.",
+          "held_by": [
+            "the Drowned Court",
+            "the sextons and their ledgers"
+          ],
+          "holders": {
+            "factions": [
+              "drowned-court"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:what-the-bone-holds#archivist"
+          ]
+        },
+        {
+          "id": "C",
+          "in_world_source": "The Descents (kept at the rootpost, Lilmoth)",
+          "stance": "Nothing in the bone, and the going is delayed while the bone is above ground, and the delay is paid at the far end by somebody who was not asked.",
+          "held_by": [
+            "the Miredancers",
+            "the Sap-Speaker, who says it once and does not say it twice"
+          ],
+          "holders": {
+            "actors": [
+              "sap-speaker",
+              "miredancer-elder"
+            ],
+            "factions": [
+              "miredancers"
+            ]
+          },
+          "voiced_by": [
+            "book:the-descents",
+            "dialogue:what-the-bone-holds#sap-speaker",
+            "dialogue:what-the-bone-holds#miredancer-elder"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "a62151569b1ef70143a92a8d0146d8c75e337cf0bdf3d703b672bb1c4be2c070"
+    },
+    {
+      "id": "CF-D027",
+      "claim": "What were the elevated stone walkways between the xanmeers built for?",
+      "tier": "constructed",
+      "in_world_sources": [
+        "A Survey of the Peoples of the Interior",
+        "Told at the Weir"
+      ],
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "when": {
+        "year": null,
+        "era": "pre-Duskfall",
+        "note": "Built before the Duskfall by builders whose method is lost (CF-040). Every position here is an inference from wear, from a level, or from a memory nobody can date."
+      },
+      "topics": [
+        "the-high-walks"
+      ],
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content",
+        "world.settlement.anatomy"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Xeeth of the Stone Forest, and the Sarpa generally",
+          "stance": "Roosts. A hand and a half wide, running where no foot needs to go, worn on the outer edge where a claw sits. We were up there.",
+          "held_by": [
+            "the Sarpa"
+          ],
+          "holders": {
+            "actors": [
+              "sarpa-flier"
+            ],
+            "factions": [
+              "sarpa"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:the-high-walks#sarpa-flier"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "Told at the Weir (Ranaso Quick-Tally, under-factor)",
+          "stance": "Roads. Door to door, with kerbs, and steps at both ends. Nothing flew.",
+          "held_by": [
+            "the Agacephs",
+            "every interior guide who has walked one"
+          ],
+          "holders": {
+            "actors": [
+              "agaceph-guide",
+              "agaceph-weir"
+            ],
+            "factions": [
+              "agacephs"
+            ]
+          },
+          "voiced_by": [
+            "book:told-at-the-weir",
+            "dialogue:the-high-walks#agaceph-guide",
+            "dialogue:the-high-walks#agaceph-weir"
+          ]
+        },
+        {
+          "id": "C",
+          "in_world_source": "A Survey of the Peoples of the Interior (Decius Arral, antiquarian)",
+          "stance": "Aqueducts. Eight runs measured with a level and a cord, each falling one part in four hundred along its whole length. A road does not need a fall.",
+          "held_by": [
+            "the Provincial Office's antiquarians",
+            "the Gideon court, on Arral's authority and without reading him"
+          ],
+          "holders": {
+            "actors": [
+              "antiquarian"
+            ],
+            "factions": [
+              "provincial-office"
+            ]
+          },
+          "voiced_by": [
+            "book:a-survey-of-the-peoples-of-the-interior",
+            "dialogue:the-high-walks#antiquarian"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "fddf8c7c854b1e5aec9e253ed95034e1749a0bff4f85323692b2852040ff0a5e"
+    },
+    {
+      "id": "CF-C025",
+      "claim": "The Agacephs of the Deep Marshes will not chase an animal, will not eat one that was chased, keep no sapwell, and will not give a direction — they take you, and you still do not learn the way.",
+      "tier": "constructed",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content"
+      ]
+    },
+    {
+      "id": "CF-C026",
+      "claim": "The Paatru of the Clay Moor kill strangers in the wet season, because the clay holds the year's eggs; in the dry they trade at the moor's edge. They eat eggs that did not take, buried in clay. Their Hist is in a pit and they go down to it on a rope. They will not cross another people's bridge and they take nobody in.",
+      "tier": "constructed",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content"
+      ]
+    },
+    {
+      "id": "CF-C027",
+      "claim": "The Sarpa of the Stone Forest eat carrion, keep a Hist that is a stump and say the true tree is overhead, weigh Imperial coin and drop it, and will not come down into a place they have not been asked into. They have seen every xanmeer in the province from above.",
+      "tier": "constructed",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content"
+      ]
+    },
+    {
+      "id": "CF-C028",
+      "claim": "The Archein keep an estate Hist behind a wall and bring hatchlings sap in a copper cup; they eat Imperial food in courses from a written menu; they deal through a factor and never at the quay, and hold that distinction to be the whole of their honour.",
+      "tier": "constructed",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content"
+      ]
+    },
+    {
+      "id": "CF-C029",
+      "claim": "The Miredancers name a Sap-Speaker who descends to the roots or the canopy, is fed only by the tree, and pays for it in gold tongue and bark-scale. The eighteenth Speaker has descended four times and brought back nothing, and will descend again.",
+      "tier": "constructed",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content"
+      ]
+    },
+    {
+      "id": "CF-C030",
+      "claim": "The Dead-Water keep no Hist and drink at whichever tree they are nearest to; they take from other Argonian villages and are forgiven; they will not leave a body under any conditions; and it is they, not the weather, who close the tracks around Thorn.",
+      "tier": "constructed",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.canon.argonian",
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "dialogue.topics.truth",
+        "books.content"
+      ]
     }
   ]
 }

@@ -38,6 +38,38 @@ export function applyOne(doc, topicId, index, before, after) {
   return { ok: true };
 }
 
+// The general array shape: a flat top-level array (`lines`, `race_gated`), by id where the
+// records carry one and by index where they do not. Writes back to whichever of `x`/`text` the
+// record actually uses, so it cannot silently add a second field the reader never looks at.
+export function applyOneArray(doc, arrayName, id, index, before, after) {
+  const arr = doc[arrayName];
+  if (!Array.isArray(arr)) return { ok: false, why: `no array "${arrayName}" in this file` };
+  const rec = id != null ? arr.find((x) => x && x.id === id) : arr[index];
+  if (!rec) return { ok: false, why: `${arrayName}: no entry ${id != null ? `with id "${id}"` : `#${index}`}` };
+  const key = rec.x !== undefined ? 'x' : 'text';
+  if (before != null && rec[key] !== before) {
+    return { ok: false, why: `${arrayName}[${id ?? index}] is not what the rewrite expected — it has been edited since. On disk: ${JSON.stringify(rec[key]).slice(0, 120)}` };
+  }
+  rec[key] = after;
+  return { ok: true };
+}
+
+// The third address shape: an id-bearing record in `rumours: { <town>: [...] }`. Bare-string
+// rumours have no stable address and are deliberately not reachable.
+export function applyOneRumour(doc, id, before, after) {
+  let hit = null;
+  for (const arr of Object.values(doc.rumours || {})) {
+    const f = (arr || []).find((x) => x && typeof x === 'object' && x.id === id);
+    if (f) { hit = f; break; }
+  }
+  if (!hit) return { ok: false, why: `no rumour with id "${id}"` };
+  if (before != null && hit.x !== before) {
+    return { ok: false, why: `rumour ${id} is not what the rewrite expected — it has been edited since. On disk: ${JSON.stringify(hit.x).slice(0, 120)}` };
+  }
+  hit.x = after;
+  return { ok: true };
+}
+
 // The second address shape: a record in a `greetings` array, by its own id. Greetings files are
 // appended to and partly generator-fed, so an index into them is not a stable address; the id is.
 export function applyOneGreeting(doc, id, before, after) {
@@ -73,6 +105,24 @@ function selfTest() {
   t(!applyOneGreeting(mkg(), 'nope', 'one', 'X').ok, 'refuses an unknown greeting id');
   const gstale = applyOneGreeting(mkg(), 'g1', 'SOMETHING ELSE', 'X');
   t(!gstale.ok && /edited since/.test(gstale.why), 'refuses a greeting whose text has changed under it (concurrent edit)');
+
+  const mkr = () => ({ rumours: { thorn: ['bare', { id: 'r1', x: 'one' }], gideon: [{ id: 'r2', x: 'two' }] } });
+  let rd = mkr();
+  t(applyOneRumour(rd, 'r2', 'two', 'TWO').ok && rd.rumours.gideon[0].x === 'TWO', 'applies an id-bearing rumour found in another town');
+  t(rd.rumours.thorn[1].x === 'one' && rd.rumours.thorn[0] === 'bare', 'and leaves the sibling rumour and the bare string alone');
+  t(!applyOneRumour(mkr(), 'nope', 'one', 'X').ok, 'refuses an unknown rumour id');
+  const rstale = applyOneRumour(mkr(), 'r1', 'SOMETHING ELSE', 'X');
+  t(!rstale.ok && /edited since/.test(rstale.why), 'refuses a rumour whose text has changed under it (concurrent edit)');
+
+  const mka = () => ({ lines: [{ text: 'one' }, { text: 'two' }], race_gated: [{ id: 'rg1', x: 'gated' }] });
+  let ad = mka();
+  t(applyOneArray(ad, 'lines', null, 1, 'two', 'TWO').ok && ad.lines[1].text === 'TWO', 'array shape writes back to `text` when that is the field in use');
+  t(ad.lines[1].x === undefined, 'and does NOT add a stray `x` the reader would never look at');
+  ad = mka();
+  t(applyOneArray(ad, 'race_gated', 'rg1', null, 'gated', 'G').ok && ad.race_gated[0].x === 'G', 'array shape writes back to `x` when that is the field in use');
+  t(!applyOneArray(mka(), 'nope', null, 0, 'one', 'X').ok, 'refuses an array the file does not have');
+  const astale = applyOneArray(mka(), 'lines', null, 0, 'SOMETHING ELSE', 'X');
+  t(!astale.ok && /edited since/.test(astale.why), 'refuses an array entry whose text has changed under it');
   console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed');
   return bad ? 1 : 0;
 }
@@ -98,6 +148,27 @@ function main() {
     const raw = fs.readFileSync(abs, 'utf8');
     const doc = JSON.parse(raw);
     for (const r of list) {
+      if (r.array != null) {
+        const arr = doc[r.array] || [];
+        const rec = r.id != null ? arr.find((x) => x && x.id === r.id) : arr[r.index];
+        const before = rec ? (rec.x !== undefined ? rec.x : rec.text) : undefined;
+        const res = applyOneArray(doc, r.array, r.id, r.index, r.before ?? before, r.after);
+        if (!res.ok) { problems.push(`${rel} ${r.array}[${r.id ?? r.index}]: ${res.why}`); continue; }
+        records.push({ file: rel, array: r.array, id: r.id, index: r.index, rule: spec.rule, before, after: r.after });
+        continue;
+      }
+      if (r.rumour != null) {
+        let cur = null;
+        for (const arr of Object.values(doc.rumours || {})) {
+          const f = (arr || []).find((x) => x && typeof x === 'object' && x.id === r.rumour);
+          if (f) { cur = f; break; }
+        }
+        const before = cur?.x;
+        const res = applyOneRumour(doc, r.rumour, r.before ?? before, r.after);
+        if (!res.ok) { problems.push(`${rel} rumour ${r.rumour}: ${res.why}`); continue; }
+        records.push({ file: rel, rumour: r.rumour, rule: spec.rule, before, after: r.after });
+        continue;
+      }
       if (r.greeting != null) {
         const before = (doc.greetings || []).find((x) => x.id === r.greeting)?.x;
         const res = applyOneGreeting(doc, r.greeting, r.before ?? before, r.after);

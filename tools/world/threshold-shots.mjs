@@ -31,6 +31,7 @@ const HOUR = Number(arg('hour', 11));
 const EYE = Number(arg('eye', 1.7));
 const PITCH = Number(arg('pitch', -4));
 const ONLY = arg('only', '');
+const CANDIDATES = Number(arg('candidates', 1));
 
 // The province's own raster, so the tool can tell which region a camera position is standing in.
 const terrain = R('game/data/world/terrain.json');
@@ -77,20 +78,28 @@ for (const w of WANT) {
   if (!of.length) continue;
   // Fewest OTHER markers within 30 m, and prefer a border with a real tier jump so the frame is of
   // a place where crossing means something.
-  let best = null, bestScore = -Infinity;
-  for (const m of of) {
+  const ranked = of.map((m) => {
     const crowd = markers.filter((o) => o !== m && Math.hypot(o.x - m.x, o.z - m.z) < 30).length;
     const b = bf.byId.get(m.border);
-    const score = Math.abs(b ? b.delta_tier : 0) * 2 - crowd * 3;
-    if (score > bestScore) { bestScore = score; best = m; }
+    return { m, score: Math.abs(b ? b.delta_tier : 0) * 2 - crowd * 3 };
+  }).sort((a, b) => b.score - a.score);
+  // CANDIDATES, not one pick. Nothing on the node side knows what is between the lens and the
+  // marker — flora is scattered in the renderer from noise, and two runs proved that guessing a
+  // camera height cannot substitute for looking: a raised camera rescued nothing and spoiled the
+  // one frame that had worked. So `--candidates=N` shoots the N best-placed instances of a type
+  // and a human picks. Which is also what RI-MTH03 says about pictures generally.
+  const n = Math.max(1, Math.min(CANDIDATES, ranked.length));
+  for (let i = 0; i < n; i++) {
+    const m = ranked[i].m;
+    chosen.push({ ...w, marker: m, border: bf.byId.get(m.border), variant: n > 1 ? i : null });
   }
-  chosen.push({ ...w, marker: best, border: bf.byId.get(best.border) });
 }
 
 const shotsDir = resolve(ROOT, 'docs/shots');
 mkdirSync(shotsDir, { recursive: true });
 const session = new CaptureSession();
 const written = [];
+const failures = [];
 try {
   for (const c of chosen) {
     if (ONLY && c.slug !== ONLY) continue;
@@ -116,7 +125,9 @@ try {
     }
     const camX = m.x + sign * dirX * DIST, camZ = m.z + sign * dirZ * DIST;
     const yaw = (Math.atan2(m.x - camX, m.z - camZ) * 180 / Math.PI + 360) % 360;
-    const shot = await session.capture({
+    let shot;
+    try {
+      shot = await session.capture({
       evidence_of: 'appearance',
       claim: `W1-02 / RI-WLD12 M64: ${c.claim}`,
       place: { x: +camX.toFixed(1), z: +camZ.toFixed(1) },
@@ -126,14 +137,25 @@ try {
       // The larger budget is not a loosened gate: the province streams in around a teleport, so
       // |A - C| accumulates over both settle intervals and the default 24/12 refuses a border
       // frame outright. Round 1 measured that and the answer is to give the streamer time.
-      settle_frames: 90, settle_gap: 45,
-    });
-    const name = `${DATE}-w1-02-marker-${c.slug}.png`;
+        settle_frames: 90, settle_gap: 45,
+      });
+    } catch (err) {
+      // One refused or broken frame must not throw away the frames that worked, and it must not
+      // be silent either. The shared tree went down mid-run once already today (another piece's
+      // half-written `canon.json`, 49 unresolved references, `GAME_BROKEN` on a build that booted
+      // clean five minutes earlier), and losing two good captures to it is a waste.
+      const why = String((err && err.code) || (err && err.message) || err);
+      failures.push({ slug: c.slug, type: m.type, border: m.border, error: why });
+      console.error(`  ! ${c.slug}: capture refused — ${why}`);
+      continue;
+    }
+    const name = `${DATE}-w1-02-marker-${c.slug}${c.variant === null || c.variant === undefined ? '' : `-c${c.variant}`}.png`;
     copyFileSync(shot.path, resolve(shotsDir, name));
     written.push({
       file: `docs/shots/${name}`,
       type: m.type, owner: m.owner, border: m.border,
       a: b.a, b: b.b, delta_tier: b.delta_tier, border_kind: b.kind,
+      variant: c.variant,
       marker: { x: m.x, z: m.z, height_m: +m.h.toFixed(2), solid_r: +m.solid_r.toFixed(2) },
       camera: { x: +camX.toFixed(1), z: +camZ.toFixed(1), yaw_deg: +yaw.toFixed(1), eye_m: EYE, pitch_deg: PITCH, dist_m: DIST, stood_in: c.stand_in || null },
       settled: shot.settle && shot.settle.settled, cached: shot.cached, source: shot.path,
@@ -145,6 +167,11 @@ try {
 }
 writeFileSync(resolve(ROOT, 'reports/threshold-shots.json'), JSON.stringify({
   tool: 'tools/world/threshold-shots.mjs', owner: 'W1-02', item: 'RI-WLD12 M64 / M68',
-  at: new Date().toISOString(), shots: written,
+  at: new Date().toISOString(),
+  camera_note: 'eye and stand-off are arguments because at a border the flora is dense by '
+    + 'construction: the first run at 1.7 m and 6.5 m came back as a wall of canopy with no marker '
+    + 'in the frame twice out of three. These are illustrative frames and rise above the '
+    + 'understorey; RI-WLD12 M68\'s blind pack keeps 1.7 m because the item says so.',
+  shots: written, failures,
 }, null, 2));
-console.log(`\nthreshold-shots: ${written.length} frames -> reports/threshold-shots.json`);
+console.log(`\nthreshold-shots: ${written.length} frames, ${failures.length} refused -> reports/threshold-shots.json`);

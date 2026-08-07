@@ -1,0 +1,224 @@
+{
+  "schema": "elder-souls/capture@1",
+  "protocol": "elder-souls/capture@1",
+  "cache_key": "37abdd9f9a8e006fd684be2931c14a3f35a78256daca659bb021b7fd3e898f8d",
+  "path": "/home/user/elder-souls-claude/reports/runs/capture-cache/game@b560d7bcd3f947dc/37abdd9f9a8e006fd684be2931c14a3f35a78256daca659bb021b7fd3e898f8d.png",
+  "bytes": 156057,
+  "sha256": "8c084fe194d3304cc06347e966129bb231f91a8d24f3ff390ca4f08fa7f453c7",
+  "captured_at": "2026-08-07T18:30:11.899Z",
+  "spec": {
+    "v": 1,
+    "viewpoint": null,
+    "viewpoints_file": null,
+    "state": "default",
+    "seed": 1337,
+    "place": {
+      "x": 3196,
+      "z": 4620,
+      "y": null
+    },
+    "pose": {
+      "yaw_deg": 180,
+      "pitch_deg": 3,
+      "eye_m": 1.7,
+      "fov": 70
+    },
+    "camera": null,
+    "time": 9,
+    "weather": "clear",
+    "tide": null,
+    "width": 1280,
+    "height": 720,
+    "ui": false,
+    "menu": null,
+    "ops": [
+      [
+        "setPopulation",
+        {
+          "enabled": false,
+          "reset": true
+        }
+      ]
+    ],
+    "settle_frames": 24,
+    "settle_gap": 12,
+    "settle_threshold": 0.005,
+    "settle_always_c": false,
+    "__no_camera_stream": false
+  },
+  "env_observed": {
+    "time_of_day": 9,
+    "weather": "clear",
+    "tide": {
+      "phase": 0,
+      "state": "RISING",
+      "height_m": {
+        "topal": 0,
+        "padomaic": 0
+      },
+      "cycle_real_min": 12,
+      "mean_range_m": {
+        "topal": 0.66,
+        "padomaic": 1.2
+      }
+    }
+  },
+  "world_reloaded": false,
+  "provenance": {
+    "arrival": "placed",
+    "evidence_of": "composition",
+    "placement": "teleport + camera pose; the player did not walk here",
+    "build_key": "game@b560d7bcd3f947dc",
+    "git_sha": "78aebc7a413f3de8e4375c2ed7d667907e116744",
+    "git_dirty": true,
+    "game_content_sha256": "b560d7bcd3f947dc5d1121eaff20a2d83c69c420416dfc408e9de5fe4107d5f9",
+    "served_from_cache": false,
+    "build_pinned": false,
+    "tree_has_since_moved_to": null,
+    "ruling": "ARBITRATION.md S34(a) — admissible as evidence of APPEARANCE only. A verdict citing this capture for an ARRIVAL claim (reachability, traversal, the crossing, RI-JRN*, or anything timing something) is VOID.",
+    "camera_at": [
+      3196,
+      4620
+    ]
+  },
+  "arrival_gate": {
+    "evidence_of": "composition",
+    "purpose_class": "appearance",
+    "audit": {
+      "declared": "composition",
+      "declared_class": "appearance",
+      "scanned_strings": 34,
+      "scan_truncated": false,
+      "free_text": [
+        {
+          "path": "claim",
+          "value": "how a stretch of the trunk highway is composed with the hostile population system switched off — the empty frame, for comparison with the populated one"
+        }
+      ],
+      "layers_run": [
+        "A-declaration",
+        "A-prose-shape",
+        "B-reference-item",
+        "C-contradiction"
+      ]
+    }
+  },
+  "build": {
+    "build_key": "game@b560d7bcd3f947dc",
+    "game_content_sha256": "b560d7bcd3f947dc5d1121eaff20a2d83c69c420416dfc408e9de5fe4107d5f9",
+    "game_files": 686,
+    "game_bytes": 16356775,
+    "git_sha": "78aebc7a413f3de8e4375c2ed7d667907e116744",
+    "git_dirty": true,
+    "git": {
+      "commit": "78aebc7a413f3de8e4375c2ed7d667907e116744",
+      "branch": "claude/morrowind-souls-threejs-game-mou39v",
+      "dirty": true
+    }
+  },
+  "settle": {
+    "settled": true,
+    "method": "S34 settle proof, rebuilt after CAPTURE-SERVICE-R1. Three frames A(t), B(t+gap), C(t+2*gap); B is the frame that ships. G1 read-only residency, G2 streamer quiescence, and G3 in three parts: deceleration max(0,d1-d2), acceleration max(0,d2-d1), and accumulation |A-C| / max(d1,d2). Every gate fails closed.",
+    "gates": {
+      "G1_residency": {
+        "ran": true,
+        "pass": true,
+        "queued": 0,
+        "tiles_resident": 30,
+        "read_only": true,
+        "why": null,
+        "want": 25
+      },
+      "G2_quiescence": {
+        "ran": true,
+        "pass": true,
+        "built": 0,
+        "tiles_queued": 0,
+        "why": null
+      },
+      "G3_stability": {
+        "frame_c_taken": true,
+        "d1": 0.094715,
+        "d2": 0.101659,
+        "d13": 0.093557,
+        "set": {
+          "changed_1": 491,
+          "changed_2": 527,
+          "changed_13": 485,
+          "both": 345,
+          "either": 673,
+          "total_blocks": 5184,
+          "overlap": 0.7026476578411406,
+          "jaccard": 0.512630014858841
+        },
+        "threshold": 0.005,
+        "G3a_deceleration": {
+          "ran": true,
+          "pass": true,
+          "excess": 0,
+          "why": null
+        },
+        "G3b_acceleration": {
+          "ran": true,
+          "pass": true,
+          "rise": 0.006944,
+          "ratio": 1.07332,
+          "rise_abs": 0.005,
+          "rise_ratio": 1.5,
+          "why": null
+        },
+        "G3c_accumulation": {
+          "ran": true,
+          "pass": true,
+          "gamma": 0.920304,
+          "overlap": 0.702648,
+          "jaccard": 0.51263,
+          "acc_ratio": 1.35,
+          "why": null
+        },
+        "pass": true
+      }
+    },
+    "settle_frames": 24,
+    "gap_frames": 12,
+    "threshold": 0.005,
+    "bounds": {
+      "threshold": 0.005,
+      "rise_abs": 0.005,
+      "rise_ratio": 1.5,
+      "acc_ratio": 1.35,
+      "acc_floor": 0.004
+    },
+    "metric": "|X-Y| = fraction of 4x4 blocks of a 384x216 thumbnail whose mean RGB moved > 8/255 on any channel",
+    "calibration": {
+      "measured": "reports/capture/SETTLE-CALIBRATION.json — threshold, rise_abs, rise_ratio",
+      "not_measured": "acc_ratio and acc_floor: no observed gamma exists in this project's data, because the R1 calibration never computed |A-C|. Bounded two-sidedly in reports/capture/SETTLE-SHAPES.json, not fitted to a population."
+    },
+    "measured": {
+      "d1": 0.094715,
+      "d2": 0.101659,
+      "d13": 0.093557,
+      "excess": 0,
+      "rise": 0.006944,
+      "gamma": 0.920304,
+      "overlap": 0.702648,
+      "d1_px_changed_frac": 0.058461,
+      "d1_changed_blocks": 491,
+      "total_blocks": 5184
+    },
+    "failed": [],
+    "settle_attempts": 2,
+    "settle_frames_spent": 120
+  },
+  "phase_ms": {
+    "setup_ms": 10,
+    "place_ms": 1868,
+    "pose_ms": 6,
+    "stream_ms": 1,
+    "screenshot_ms": 321,
+    "settle_ms": 50134
+  },
+  "page_errors": 0,
+  "render_ms": 52044,
+  "mac": "eda5b71eb96ad8e095cd816655aa5eb20fe3d39b86ec3aeeeaa8f3f4f92df964"
+}

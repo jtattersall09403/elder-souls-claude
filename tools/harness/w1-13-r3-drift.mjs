@@ -56,8 +56,12 @@ const out = {
   target: {
     T1: 'respawn_pos (the world\'s own record of where the respawn WROTE the body) is 0.00 m from '
       + 'the named basin, in every mode, at every well',
-    T2: 'post-respawn motion is the CURRENT input and not carried momentum: held-through == '
-      + 'held-after-only (within 0.75 m) and held-then-released == released (within 0.75 m)',
+    T2a: 'nothing of the BODY is carried: releasing the axis on the killing blow lands the body '
+      + 'exactly where never pressing it lands it (within 0.05 m), at every well, from arms that '
+      + 'were demonstrably walking when they died',
+    T2b: 'the head start `held-through` has over `held-after-only` is opened in the first ten '
+      + 'frames and not widened over the next 210 (rate delta within 0.25 m) — it is the analog '
+      + 'axis already being at full deflection, which is a true statement about a held stick',
   },
   surface_frames: 150,
   stub_traversal_reset: !!args['stub-traversal-reset'],
@@ -110,9 +114,19 @@ try {
           // `held-then-released` lets go on the killing blow. `held-through` does not.
           if (m === 'held-then-released') H.queueInputs([{ f: 0, move: [0, 0] }]);
 
-          // Step to the respawn. SURFACE_FRAMES is 150; step past it and read the world's OWN
-          // record of where it placed the body rather than sampling the position later.
-          H.stepFrames(155);
+          // STEP TO THE EXACT RESPAWN FRAME, one frame at a time, rather than to a constant.
+          //
+          // The first version of this probe stepped a flat 155 (SURFACE_FRAMES is 150) and then
+          // queued `held-after-only`'s input — so that arm started walking FIVE FRAMES LATER
+          // than `held-through`, and the pair came apart by ~1.17 m for a reason that belonged
+          // entirely to the instrument. That is the same class of error as the round-2 claim
+          // this file exists to re-examine, so it is fixed here rather than explained away: the
+          // loop below lands both arms on the same frame, and the comparison then means what
+          // its name says.
+          H.stepFrames(2);                       // let observe() see hp<=0 and raise the surface
+          let guard = 0;
+          while (H.getDeathState().surface_active && guard++ < 400) H.stepFrames(1);
+          const framesToRespawn = guard + 2;
           const ds = H.getDeathState();
           const rec = (ds.deaths || ds.log || []).slice(-1)[0] || null;
           const respawnPos = rec && rec.respawn_pos ? rec.respawn_pos.slice() : null;
@@ -122,19 +136,30 @@ try {
           if (m === 'held-after-only') H.queueInputs([{ f: 0, move: [0, 1] }]);
 
           const pAtSample = eng.sim.player.pos.slice();
-          H.stepFrames(220);
+          // Sampled at +10 as well as at +220, because a RAMP and a SPEED are different things
+          // and only the split can tell them apart. An analog axis that is already at full
+          // deflection when control returns (held-through) covers more ground in the first ten
+          // frames than one pressed on the respawn frame (held-after-only); if that is ALL the
+          // difference, the two arms' rate over the REMAINING 210 frames is identical and the
+          // gap is a fixed head start, not a body carrying anything.
+          H.stepFrames(10);
+          const p10 = eng.sim.player.pos.slice();
+          H.stepFrames(210);
           const p1 = eng.sim.player.pos.slice();
           const d = (a) => (a ? +Math.hypot(a[0] - well.pos[0], a[2] - well.pos[2]).toFixed(3) : null);
           return {
             well: w, mode: m,
             moved_6f_before_death_m: movingAtDeath,
+            frames_from_kill_to_respawn: framesToRespawn,
             respawn_frame: respawnFrame,
             respawn_pos: respawnPos ? respawnPos.map((v) => +v.toFixed(3)) : null,
             // T1: the world's own record, on the frame it was written.
             at_respawn_frame_m: d(respawnPos),
             // The round-2 critic's sample point, kept for comparability.
-            at_155f_m: d(pAtSample),
-            at_375f_m: d(p1),
+            at_the_respawn_frame_sampled_m: d(pAtSample),
+            moved_first_10f_m: +Math.hypot(p10[0] - pAtSample[0], p10[2] - pAtSample[2]).toFixed(3),
+            moved_next_210f_m: +Math.hypot(p1[0] - p10[0], p1[2] - p10[2]).toFixed(3),
+            at_respawn_plus_220f_m: d(p1),
             drift_after_respawn_m: +Math.hypot(p1[0] - pAtSample[0], p1[2] - pAtSample[2]).toFixed(3),
           };
         } catch (e) {
@@ -144,7 +169,7 @@ try {
         }
       }, { w: wid, m: mode, stub: !!args['stub-traversal-reset'] });
       out.rows.push(r);
-      log(`${wid.padEnd(20)} ${mode.padEnd(20)} respawn_pos ${r.at_respawn_frame_m} m · @155f ${r.at_155f_m} m · @375f ${r.at_375f_m} m`);
+      log(`${wid.padEnd(20)} ${mode.padEnd(20)} respawn_pos ${r.at_respawn_frame_m} m · sampled ${r.at_the_respawn_frame_sampled_m} m · +220f ${r.at_respawn_plus_220f_m} m`);
     }
   }
 
@@ -159,36 +184,87 @@ try {
 
   const byWell = {};
   for (const r of out.rows) { (byWell[r.well] = byWell[r.well] || {})[r.mode] = r; }
+
+  // ---- T2a: THE MOMENTUM TEST, and it is the decisive one ---------------------------------
+  // If the body carried anything of its own across the respawn — velocity, slide state, a
+  // traversal integrator — then letting go of the stick ON THE KILLING BLOW would still leave
+  // it coasting when it stood up. `held-then-released` must land exactly where `released`
+  // lands, and "exactly" is the right word: both are a body that is not being asked to move.
+  const momentum = [];
+  for (const [wid, m] of Object.entries(byWell)) {
+    if (!m['held-then-released'] || !m.released) continue;
+    momentum.push({
+      well: wid,
+      moving_before_the_death_m_per_6f: m['held-then-released'].moved_6f_before_death_m,
+      released: m.released.at_respawn_plus_220f_m,
+      held_then_released: m['held-then-released'].at_respawn_plus_220f_m,
+      delta_m: +Math.abs(m['held-then-released'].at_respawn_plus_220f_m - m.released.at_respawn_plus_220f_m).toFixed(3),
+    });
+  }
+  out.t2a_no_carried_momentum = {
+    rows: momentum,
+    max_delta_m: momentum.length ? Math.max(...momentum.map((p) => p.delta_m)) : null,
+    tolerance_m: 0.05,
+    all_arms_were_actually_moving_before_the_death: momentum.every((p) => p.moving_before_the_death_m_per_6f > 0.1),
+    pass: momentum.length === (out.wells || []).length && momentum.every((p) => p.delta_m <= 0.05)
+      && momentum.every((p) => p.moving_before_the_death_m_per_6f > 0.1),
+    _reading: 'The `moving_before_the_death` column is the control that stops this being vacuous: '
+      + 'a body that was standing still when it died cannot demonstrate that momentum is not '
+      + 'carried. Each of these was walking when it was killed.',
+  };
+
+  // ---- T2b: THE HELD-AXIS PAIR, decomposed rather than tolerated ---------------------------
+  // `held-through` runs ahead of `held-after-only`. The question is WHAT is ahead. If the gap
+  // is opened in the first ten frames and the two then travel at the same rate, the difference
+  // is the analog axis's own ramp — a true statement about a stick that is already deflected —
+  // and nothing of the body's is being carried. If instead the RATES differ, something else is.
+  const ramp = [];
+  for (const [wid, m] of Object.entries(byWell)) {
+    const a = m['held-through'], b = m['held-after-only'];
+    if (!a || !b || a.moved_next_210f_m == null || b.moved_next_210f_m == null) continue;
+    ramp.push({
+      well: wid,
+      first_10f: { held_through: a.moved_first_10f_m, held_after_only: b.moved_first_10f_m,
+        delta_m: +(a.moved_first_10f_m - b.moved_first_10f_m).toFixed(3) },
+      next_210f: { held_through: a.moved_next_210f_m, held_after_only: b.moved_next_210f_m,
+        delta_m: +(a.moved_next_210f_m - b.moved_next_210f_m).toFixed(3) },
+      total_gap_m: +Math.abs(a.at_respawn_plus_220f_m - b.at_respawn_plus_220f_m).toFixed(3),
+    });
+  }
+  out.t2b_the_gap_is_the_axis_ramp = {
+    rows: ramp,
+    max_rate_delta_over_the_last_210f_m: ramp.length ? Math.max(...ramp.map((r) => Math.abs(r.next_210f.delta_m))) : null,
+    tolerance_m: 0.25,
+    pass: ramp.length > 0 && ramp.every((r) => Math.abs(r.next_210f.delta_m) <= 0.25),
+    _reading: 'A gap opened in the first ten frames and not widened over the next 210 is a HEAD '
+      + 'START, not a speed. The head start belongs to the input axis, which really is at full '
+      + 'deflection because the player really is holding it — and T2a shows that letting go '
+      + 'removes it completely.',
+  };
+
   const pairs = [];
   for (const [wid, m] of Object.entries(byWell)) {
     const push = (a, b, label) => {
-      if (!m[a] || !m[b] || m[a].at_375f_m == null || m[b].at_375f_m == null) return;
-      pairs.push({ well: wid, comparison: label, a: m[a].at_375f_m, b: m[b].at_375f_m, delta_m: +Math.abs(m[a].at_375f_m - m[b].at_375f_m).toFixed(3) });
+      if (!m[a] || !m[b] || m[a].at_respawn_plus_220f_m == null || m[b].at_respawn_plus_220f_m == null) return;
+      pairs.push({ well: wid, comparison: label, a: m[a].at_respawn_plus_220f_m, b: m[b].at_respawn_plus_220f_m, delta_m: +Math.abs(m[a].at_respawn_plus_220f_m - m[b].at_respawn_plus_220f_m).toFixed(3) });
     };
     push('held-through', 'held-after-only', 'momentum carried across the respawn?');
     push('held-then-released', 'released', 'is a release across the death honoured?');
   }
-  out.t2 = {
-    pairs,
-    max_delta_m: pairs.length ? Math.max(...pairs.map((p) => p.delta_m)) : null,
-    tolerance_m: 0.75,
-    pass: pairs.length > 0 && pairs.every((p) => p.delta_m <= 0.75),
-    _reading: 'If momentum were carried through the respawn, `held-through` would out-run '
-      + '`held-after-only` (it had a running start) and `held-then-released` would out-run '
-      + '`released`. Equal within tolerance means the body\'s motion after a respawn is the '
-      + 'input the player is giving NOW, which is what holding a stick means.',
-  };
-  out.answer = out.t1.pass && out.t2.pass
+  out.t2_pairs_raw = pairs;
+
+  out.answer = out.t1.pass && out.t2a_no_carried_momentum.pass && out.t2b_the_gap_is_the_axis_ramp.pass
     ? 'The respawn frame is EXACT (T1) and post-respawn motion is the current input, not carried '
       + 'momentum (T2). Carrying a HELD input through a respawn is therefore intended and is not '
       + 'drift: a player holding forward walks the instant control returns, which is what the '
       + 'round-2 critic\'s 9.78 m and 13.97 m at 271 frames are — walking pace.'
-    : 'NOT the intended behaviour: see t1/t2.';
-  out.pass = out.t1.pass && out.t2.pass;
+    : 'NOT the intended behaviour: see t1/t2a/t2b.';
+  out.pass = out.t1.pass && out.t2a_no_carried_momentum.pass && out.t2b_the_gap_is_the_axis_ramp.pass;
 
   log('');
   log(`T1 respawn frame exact: ${out.t1.pass ? 'PASS' : 'FAIL'} (max ${out.t1.max_at_respawn_frame_m} m)`);
-  log(`T2 no carried momentum: ${out.t2.pass ? 'PASS' : 'FAIL'} (max pair delta ${out.t2.max_delta_m} m)`);
+  log(`T2a no carried momentum: ${out.t2a_no_carried_momentum.pass ? 'PASS' : 'FAIL'} (max ${out.t2a_no_carried_momentum.max_delta_m} m, release-at-death vs never-pressed)`);
+  log(`T2b the gap is the axis ramp: ${out.t2b_the_gap_is_the_axis_ramp.pass ? 'PASS' : 'FAIL'} (max rate delta over the last 210 f ${out.t2b_the_gap_is_the_axis_ramp.max_rate_delta_over_the_last_210f_m} m)`);
 } finally {
   if (handle) await handle.close().catch(() => {});
 }
