@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-SOULS",
+  "brief": "souls economy: souls have no source; wire kill-award, verify levelling loop end-to-end",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "game/src/** kill-award soul source",
+    "tools/** soul economy instrument (breakable)",
+    "reports/** re-run of tools/quests/attr-scale-audit.mjs",
+    "docs/shots/<dated>.png",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "START: pgrep -c headless_shell = 12, loadavg 11.27 10.19 8.22 -- ABOVE the cap of 8. Doing design+data phase first with no browser."
+  ],
+  "next_step": "read RI-PRG01/02/04 and ARBITRATION S2/S6",
+  "notes_for_successor": ""
+}

@@ -432,14 +432,41 @@ NPC these lines introduce ships with `id`, `actor`, `race`, `class`, `faction`,
 
 ## 8. What this round does not do — declared, not hidden
 
-| Bar | Target | This round | Note |
+**Round 2 update, 2026-08-07.** Five of the seven rows below closed. The table is kept in full
+rather than rewritten, because a gap that closed is worth more on the record next to the one that
+did not.
+
+| Bar | Target | Round 1 | Round 2 | Note |
+|---|---|---|---|---|
+| `RI-QST01` quests per line | 24–28 (hard fail < 18) | 9 | **18 / 18 / 18** | Above the hard fail, below the target band. 26 quests written, plus `Q-XULA-02`, which round 1 declared and did not have |
+| `RI-QST01` mean quests per rank | 3.0 (hard fail < 2.0) | 1.125–1.25 | **2.250 on all three** | An undeclared hard fail in round 1; the round-1 verdict found it |
+| `RI-QST01` hidden / `weird` quests | +2 per line | 0 of 6 | **2 of 6 per line, 6 total** | `discovery: found` and `discovery: overheard` |
+| `RI-QST01` joinable factions at ship | 4 | 3 carried | 3 carried | Still open. The fourth should be the Rootkeepers, whose ladder already exists |
+| `RI-QST01` total faction quests | 96–112 | ~38 | **~65 across the whole book** | Still short |
+| `RI-QST03` expulsion / readmission | implemented per tier | **absent** | **shipped** | `game/data/progression/faction-discipline.json`; `QuestEngine.context()` puts an expulsion into `ctx.locked` so `canOffer()` speaks it, and `QuestEngine.readmit()` takes the price. Never triggered by a refusal — see §7 |
+| `RI-CRM02` §5 `factionLawFactor` | AR-3 crossing | scored **orphan** | **shipped** | Half of the round-1 finding was wrong in an instructive way: the model *was* implemented in `sim/crime/justice.js`. It read `sim.stealth.p.standings`, which had exactly one writer in the build and that writer was `__HARNESS.setFactionStandings()`. `Engine.syncFactionStandings()` is the world's writer |
+| `RI-CRM02` writ quests | 27 sanctioned-murder | 1 | **1** | **Still the largest open gap in this piece.** `Q-ASSZ-05` remains the only one. The ku-vastei Ruling as a second sanctioning authority is unbuilt |
+| Fold `deep_kin` into `the_xul_aneekh` | one body, one id | not done | not done | Would orphan `Q-MAG-07`, another piece's quest |
+
+### The refusal no longer ends the ladder
+
+`RI-QST02` D4 requires a refusal to be *"a way to win, not a way to lose"*. In round 1 the three
+rank-6 refusals — `res_refuse_hulen`, `res_refuse`, `res_tell_the_hollow` — were the only endings
+that did **not** vacate the seat, and the rank-7 gate's `world_state` term is exactly that
+vacancy. A refuser was capped at rank 6 forever with no alternative offered.
+
+Each refusal now raises a `*_refused` flag; a `hooks.json` `adds_topics` edge turns that flag into
+a topic; the topic opens a **new rank-6 quest** that reaches the same vacancy by a mechanism that
+does not need the player to have said yes:
+
+| Line | Refusal | Second route | How the seat empties |
 |---|---|---|---|
-| `RI-QST01` quests per line | 24–28 (hard fail < 18) | **9** | The single largest gap. The *shape* is complete — every rank band 0–7 is populated and the escalation, dissenter, deceit and succession beats all land — but the volume is a third of the bar. Three more passes at this line count would clear it. |
-| `RI-QST01` joinable factions at ship | 4 | 3 carried, 9 with ladders | The fourth carried line should be the Rootkeepers, whose ladder already exists |
-| `RI-QST01` total faction quests | 96–112 | ~38 across the whole book | |
-| `RI-QST03` expulsion / readmission | implemented per tier | **not implemented** | §D's expulsion tiers have no data file and no code path. Declared as an open gap, not papered over |
-| `RI-CRM02` writ quests | 27 sanctioned-murder quests | **0 authored here** | The Assize line's rank-5 quest issues a Warrant of Attainder as a quest object, which is the hook; the other 26 are unwritten |
-| Fold `deep_kin` into `the_xul_aneekh` | one body, one id | **not done** | Would orphan `Q-MAG-07`, another piece's quest. Recorded for the coherence pass |
+| Wet Ledger | `res_refuse` | `Q-LEDG-14` *What The Table Does When You Say No* | A two-house article in the Ledger's own founding papers that four seats have declined to read for forty years |
+| Imperial Assize | `res_refuse_hulen` | `Q-ASSZ-14` *The Prefect Who Cannot Be Removed* | A prefect's commission whose nine-year term ran out two years ago, in a province with nobody left to present to |
+| Xul-Aneekh | `res_tell_the_hollow` | `Q-XULA-13` *A Silence Is Also An Answer* | Four fourth-days pass with no hollow putting a question to the speaker, and the seat falls silent by arithmetic |
+
+All three are non-violent, all three have their own refusal on the end of them, and none of them
+is reachable by a player who did not refuse.
 
 ---
 

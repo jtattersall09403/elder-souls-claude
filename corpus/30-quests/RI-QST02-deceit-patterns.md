@@ -241,12 +241,45 @@ Run against `game/src/data/quests/*.json` after schema validation (see RI-QST04)
       game/src/data/quests/*.json
    ```
 4. **D6 — target who talks:**
+
+   **METHOD DEFECT, FILED BY W1-FACTIONS ROUND 2 AGAINST THIS ITEM, NOT AGAINST A BUILD.**
+   The query below selects on `kill_required_npcs`, which is **empty on all 120 quests in the
+   shipped tree**. It therefore returns the empty set, `talkable/n` is `0/0`, and D6 has been
+   passing *vacuously* since the item was written — a probe that cannot fail bought a false pass.
+   The round-1 faction critic found it by evaluating D6's **prose** definition instead, which is
+   the one the *Test* line above actually states: "`kill_required_npcs` non-empty **or** a
+   `combat` resolution against a named NPC". On the prose definition the tree measured **7 of 25
+   = 28%**, against this item's own **< 30% hard fail** floor.
+
+   Populating `kill_required_npcs` is **not** the fix, and this is worth writing down because it
+   is the obvious move: `QuestMachine.npcDied()` reads that field to *sever* any open quest whose
+   `kill_required_npcs` includes a dead NPC. Filling it on quests whose resolution **is** killing
+   that NPC would fail every one of them at the moment it succeeded. The field means "this quest
+   dies if this person does", not "this person is the target".
+
+   So the selector is corrected here to the item's own prose, and the vacuous form is kept below
+   it as a warning:
+
    ```
-   jq -s 'map(select((.kill_required_npcs // []) | length > 0))
+   # CORRECT — the item's prose definition, over the quests and not over the FILES.
+   # A third independent reason the old query was vacuous: every file in game/data/quests/ is an
+   # OBJECT with a `.quests` array, so `map(select(...))` was mapping over six file headers. The
+   # flatten is not cosmetic; without it this same corrected selector still returns 0 of 0.
+   jq -s '[.[] | (.quests // (if type=="array" then . else [] end))[]]
+          | map(select(((.kill_required_npcs // []) | length > 0)
+                    or ([.resolutions[]? | select(.method=="combat" or .violence_required==true)] | length > 0)))
           | {n: length,
              talkable: (map(select([.deceit.revealed_by[]? | select(.channel=="talk_to_target")] | length > 0)) | length)}' \
-      game/src/data/quests/*.json
+      game/data/quests/*.json
+   # -> {"n": 25, "talkable": 8}  (32.0%, measured 2026-08-07 on 120 quests)
+
+   # VACUOUS — do not use. kill_required_npcs is empty on every shipped quest, so this is 0/0.
+   # jq -s 'map(select((.kill_required_npcs // []) | length > 0)) | ...'
    ```
+
+   The path in the original query (`game/src/data/quests/`) is also wrong; the quests are at
+   `game/data/quests/`. A method that names a path with no files in it returns the empty set for
+   a second, independent reason.
 5. **D4 — refusal as a win state:**
    ```
    jq -s 'map(select([.resolutions[] | select(.method=="refuse")] | length > 0) | .id)' \
