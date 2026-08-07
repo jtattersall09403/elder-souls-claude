@@ -80,12 +80,14 @@ export function parseDeclaredSystems(what) {
   const dropped = [];
   for (const s of sentences) {
     if (LANDED.test(s)) { dropped.push(s.trim()); continue; }
-    // 2. The build's own list separators inside an absence sentence.
-    for (let seg of s.split(/,| and (?=[a-z])/)) {
-      seg = seg
-        .replace(/\([^)]*\)/g, ' ')      // strip "(A-JRN9)", "(fps, frame time, ...)"
-        .replace(/[.;]\s*$/, '')
-        .trim();
+    // 2. Strip the parentheticals FIRST — "(fps, frame time, TTFP wall clock, hitch durations)"
+    //    carries commas of its own, and splitting before stripping turns one system into four
+    //    fragments ("Tier-H performance numbers (fps", "frame time", …). The amendment ids
+    //    inside those parentheses are recovered separately by `amendmentsNamedIn`.
+    const flat = s.replace(/\([^)]*\)/g, ' ');
+    // 3. The build's own list separators between systems.
+    for (let seg of flat.split(/,| and (?=[a-z])/)) {
+      seg = seg.replace(/[.;]\s*$/, '').replace(/\s+/g, ' ').trim();
       if (seg) out.push(seg);
     }
   }

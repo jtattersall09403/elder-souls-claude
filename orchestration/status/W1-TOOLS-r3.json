@@ -2,7 +2,7 @@
   "task_id": "W1-TOOLS-r3",
   "brief": "inline (round 3 tool builder; rebuild the 8 tools TOOL-COVERAGE-R2 rejected)",
   "started": "wave-1 round 3",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "tools/analysis/build-viability.mjs (raw seeded disposition; record-less givers = FAIL)",
     "tools/lib/absence.mjs (validate needs against live surface; parse not_implemented as a list)",
@@ -20,10 +20,14 @@
     "tools/platform/perf-run.mjs",
     "tools/platform/decoupling.mjs",
     "tools/experience/session-run.mjs",
-    "tools/experience/lib/capabilities.mjs",
-    "tools/platform/{heap-walk,leak-run,stream-audit}.mjs (needs)",
-    "tools/analysis/{asset-budget,audio-budget,audio-sync,music-coverage}.mjs (needs+probe)",
-    "tools/blind/audio-pack.mjs (needs+probe)"
+    "tools/experience/lib/capabilities.mjs (new)",
+    "tools/journey/cadence.mjs",
+    "tools/journey/competence.mjs",
+    "tools/journey/gamepad-shim.mjs",
+    "tools/platform/{heap-walk,leak-run,stream-audit,hitch-census,load-run}.mjs (needs validation + Tier-S declarations)",
+    "tools/analysis/{asset-budget,audio-budget,audio-sync,music-coverage}.mjs",
+    "tools/blind/audio-pack.mjs",
+    "reports/platform/decoupling.json (RI-PLT01 M6/M7 measured on the repo tree)"
   ],
   "findings": [
     "BASELINE r3: node tools/harness/boot-check.mjs PASS at start of pass. Load 1.19-5.6 on four cores.",
@@ -49,8 +53,21 @@
     "decoupling verified on the running engine: 120 steps at rate 60 -> 120 renders, at rate 0 -> 0 renders, IDENTICAL body_sha256 e389e9060b43860a, identical M7 (player_z 4.8113, camera_yaw 344.5078 - non-trivial, so M7 is not a vacuous control). --break-decoupling injects an init script making stepFrames run n+1 steps when the rate is 0, which is the shape of HF2.",
     "TOOL 7 session-run REBUILT on a new tools/experience/lib/capabilities.mjs which classifies the WHOLE live surface into 10 capability classes and FAILS CLOSED on anything unclassified. Profiles now refuse CAPABILITIES; the method list is derived from the live surface at install time. first-hour refuses 107 of 325 methods, against RI-EXP01's 6 literal names (which are asserted to be a subset on every run, so the item's list is a lower bound that cannot be dropped).",
     "session-run RED+GREEN on the running engine: CONTROL spawnNPC really puts an NPC in the world (listNPCs 0 -> 1) before the profile; after install all ten of TOOL-COVERAGE-R2 \u00a78's bypasses (spawnNPC, spawnEncounter, spawnCivilian, spawnGuard, spawnProp, restoreState, travelRide, boardTravel, setTravelMark, __breakTravelFence) are refused and recorded, and the ENTITY-SIDE check shows listNPCs 1 -> 1 across a refused spawnNPC. GREEN: listEntities/getPlayerStats/getUIState/stepFrames/queueInputs still work. --self-test 14/14.",
-    "THE FAIL-CLOSED FUSE FIRED FOR REAL, unprompted: the harness surface grew 319 -> 325 methods DURING this pass and session-run --self-test REFUSED, naming explainDisposition, questDef and setFactionStanding as unclassified-and-therefore-refused. Classified and re-run 14/14. That is the exact failure mode round 2 had (six names against a growing surface) demonstrated to be closed."
+    "THE FAIL-CLOSED FUSE FIRED FOR REAL, unprompted: the harness surface grew 319 -> 325 methods DURING this pass and session-run --self-test REFUSED, naming explainDisposition, questDef and setFactionStanding as unclassified-and-therefore-refused. Classified and re-run 14/14. That is the exact failure mode round 2 had (six names against a growing surface) demonstrated to be closed.",
+    "TOOL 5 cadence REBUILT. (a) NOTHING satisfies C1 by name any more: every non-locomotion action must be corroborated by one of C1's five world facts within 60 frames. The round-2 FLAG_TOGGLE free pass is gone. Added FLAG_FIELDS - a change in player.locked_on/stance/guard_raised/weapon_id/attuned/state or ui.menu_open between records IS clause 3 observed. (b) C7 traversal_fraction is measured from player.speed_mps / player.pos displacement, with teleports (>30 m/s) excluded and reported. (c) LATENT BUG FOUND AND FIXED: round 2 read `r.frame`, and every shipped trace numbers frames `f` - so on every real trace every frame index was 0 and every gap was computed against a constant. Both keys accepted; no key at all -> unmeasurable.",
+    "cadence RED+GREEN: the critic's own sweep re-run - all twelve shipped actions (roll, menu, lock_on, spell_cycle, light, block, interact, crouch, two_hand, swap_right, sprint, jump) mashed for an hour in an empty room now give C1 FAIL / gap 3600 s / traversal_fraction 1.0 (round 2 gave four of them PASS / 0.17 s / 0). CONTROL: the same five actions corroborated by the world (a roll that dodged a hit, a menu press that opened a surface, a lock_on that flipped player.locked_on, a spell_cycle that landed a cast, a crouch that changed player.stance) all PASS. --self-test 16/16, and it runs clean on the real trace at reports/journeys/w1-13-jrn06.",
+    "TOOL 6 competence REBUILT. loadoutFrom() reads {weapon_id, weapon_class, offhand_kind, equip_load_pct, roll_class, attuned} - the fields the shipped trace actually emits - with player.loadout still honoured where present and GEAR_UNCHECKABLE kept for when even these are missing. `stance` is REPORTED but does not block: two-handing the same sword is not a shopping trip, and blocking on it would void every real fight (the 'cannot pass' failure in a different coat). Same `f` vs `frame` bug fixed here: round 2's window filter used r.frame, so every encounter window was empty on every real trace.",
+    "competence RED+GREEN on the shipped trace shape: unchanged kit -> gear.changed=false, no blocker, the comparison proceeds (round 2 returned GEAR_UNCHECKABLE here on EVERY real run); weapon+burden change -> GEAR_CHANGED, void; stance-only change -> reported_not_blocking, proceeds. --self-test 13/13. On the real trace it blocks at NO_AI and NO_ENCOUNTER_PAIR, both genuine build gaps with named owners.",
+    "TOOL 7 gamepad-shim REBUILT: a ninth and tenth check that look at the WORLD. Hold the shim's stick, setMode('play-instrumented') (beforeTick polls devices only on the rAF tick), step 120 frames, read snapshot().player.pos. GREEN: the player moved 5.44 m. NULL CONTROL: stick at rest, same 120 frames, rAF loop LIVE, drift 0.00 m.",
+    "gamepad-shim RED: new --break-router installs a second init script that zeroes the axes where the engine's router reads them while gamepadPoll() keeps reporting a perfect [0,-1,0,0] observation. Result: page sees the pad, mapping preserved, poll axes change - ALL EIGHT round-2 checks stay green - and the player moves 0.00 m. That is exactly TOOL-COVERAGE-R2 \u00a77's 'a pad that moves nothing passes 8/8'. --self-test 12/12. (The break needed Object.defineProperty, not assignment, because the shim installs getGamepads non-writable - found by running the falsification and watching it fail to falsify.)",
+    "ABSENCE LIBRARY falsified BOTH WAYS, six cases, all pass: BUG 3 RED (a running quest runtime + one invented name 'getQuestLedger' -> EXIT 22 NEEDS_UNVALIDATED with no verdict; round 2 said ABSENT/20); BUG 3 CONTROL (the same reporter with only live names does not refuse on needs); BUG 4 RED x2 ('dialogue state' and 'resource registry' -> ABSENT/20; round 2 said ARRIVED/21 = 'delete this file'); GREEN (gamepad, with a positive-evidence probe that drives setSyntheticPads and reads gamepadPoll -> ARRIVED/21); GREEN CONTROL (the SAME arrived system with NO evidence probe -> UNCONFIRMED/20, fail-closed).",
+    "parseDeclaredSystems() also had to strip parentheticals BEFORE splitting on commas, or 'Tier-H performance numbers (fps, frame time, TTFP wall clock, hitch durations)' became four fragments. Found by running the parser on all five shipped not_implemented entries.",
+    "All 11 remaining absence reporters still report ABSENT/20 on this tree after the needs validation.",
+    "hitch-census and load-run now DECLARE the Tier-S half they do not measure (GC counts/attribution P5-P6; the body_sha256 load test P9) with the quantity, the reason it is not covered by their ABSENT verdict, and an owner. They were NOT rebuilt - TOOL-COVERAGE-R2 \u00a74's wider ruling is recorded, not discharged.",
+    "decoupling MEASURED ON THE REPO TREE: RI-PLT01 M6 PASS - 300 sim steps at every rate, ONE body_sha256 (bff89889c0d1a2f7) across 60/30/15/0 Hz, renders 300/150/75/0 (the control moved). M7 PASS - player_x, player_z, stamina, hp, camera_yaw_deg identical to 6 dp at all four rates. Written to reports/platform/decoupling.json.",
+    "C8 = 26, unchanged (all eight rebuilt tools already existed on disk). node tools/corpus-index.mjs, 0 errors.",
+    "boot-check PASS before and after. Final self-tests: build-viability 20/20, cadence 16/16, competence 13/13, session-run 14/14, gamepad-shim 12/12, perf-run T1 PASS, decoupling 7/7, absence falsification 6/6."
   ],
-  "next_step": "cadence, competence, gamepad-shim; then run the 12 absence reporters and re-run boot-check",
-  "notes_for_successor": "Work tool by tool. Each tool: rebuild, then falsify BOTH ways (break->red, fix->green) on the running engine. Shadow tree for data patches, never game/data."
+  "next_step": "hand to the tool critic",
+  "notes_for_successor": "THE TREE MOVES UNDER YOU. During this pass another agent (a) added a boot assertion that made the game unbootable for ~1 hour, (b) landed 19 quest-giver records + reaction groups, and (c) WIRED derivedDisposition INTO THE QUEST-OFFER PATH via Engine._questDispositionModel -> QuestEngine.dispositionModel -> _dispositionToward -> context().dispositions. Round 2's model and round 3's first model were both correct when written and both wrong hours later. The fix is in build-viability: it DETECTS the model from three named source anchors, refuses when they disagree, and --cross-check verifies the static arithmetic against __HARNESS.getGateDispositions()/explainDisposition() on the running build (240 (signature, giver) pairs, 0 disagreements). DO NOT hard-code either model again. session-run's fail-closed capability classifier fired for real when the surface grew 319 -> 325 mid-pass; if it refuses, classify the new names in tools/experience/lib/capabilities.mjs, do not widen a class to make it green."
 }

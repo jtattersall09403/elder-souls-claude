@@ -60,7 +60,17 @@ const exit = await reportAbsence({
   system: 'Tier-H performance numbers',
   owner: 'attested real hardware (RI-PLT01 T1); RI-PLT03',
   measures: 'time to first playable and time to first input under a throttled network on attested hardware, cold and warm',
-  needs: ["getLoadState", "getPerfStats"],
+  needs: ['getLoadState', 'getPerfStats'],
+  // TOOL-COVERAGE-R2 §4's wider ruling. RI-PLT01 P9's `body_sha256` load test is Tier-S and is
+  // scoreable here; this file refuses only the Tier-H wall-clock TTFP. The two are not the same
+  // measurement and this ABSENT verdict does not cover the first.
+  tier_s_half_not_measured_here: {
+    quantity: 'the deterministic load test: identical body_sha256 across cold and warm loads ' +
+              '(RI-PLT01 P9 / RI-PLT03, Tier-S)',
+    why_not_here: 'this reporter refuses the Tier-H wall-clock time to first playable. The ' +
+                  'hash comparison needs no attested hardware and is not covered by that refusal.',
+    owner: 'tool round 4, per TOOL-COVERAGE-R2 §4',
+  },
 }, args);
 
 process.exit(exit);

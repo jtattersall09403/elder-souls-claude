@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-07T11:08:01Z
+Generated: 2026-08-07T11:32:36Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 

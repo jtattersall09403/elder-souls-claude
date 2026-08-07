@@ -59,7 +59,21 @@ const exit = await reportAbsence({
   system: 'Tier-H performance numbers',
   owner: 'attested real hardware (RI-PLT01 T1); RI-PLT03 M-L4/M-L5',
   measures: 'every frame over the budget, bucketed by cause (stream-in, GC, shader compile, decode), with duration and count per bucket',
-  needs: ["getPerfStats", "getLoadState"],
+  needs: ['getPerfStats', 'getLoadState'],
+  // TOOL-COVERAGE-R2 §4's wider ruling, recorded here rather than silently carried:
+  // this file refuses the Tier-H NUMBER, which is correct, but RI-PLT01 P7 makes GC pause
+  // COUNTS AND ATTRIBUTION Tier-S — scoreable in this container. That half is NOT measured by
+  // this file and is NOT covered by this ABSENT verdict. `tools/platform/decoupling.mjs` is the
+  // worked example of the split (M6 promoted from a refusal to a real Tier-S instrument in tool
+  // round 3); the same is owed here and was not done in that round.
+  tier_s_half_not_measured_here: {
+    quantity: 'GC collection counts and their attribution to the sim window or outside it ' +
+              '(RI-PLT01 M5/P5/P6, Tier-S, weight 4)',
+    why_not_here: 'this reporter refuses the Tier-H hitch DURATIONS (P7). The counts are a ' +
+                  'different measurement with a different tier and must not be read as covered ' +
+                  'by this refusal.',
+    owner: 'tool round 4, per TOOL-COVERAGE-R2 §4',
+  },
 }, args);
 
 process.exit(exit);
