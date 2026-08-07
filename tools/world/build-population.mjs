@@ -273,7 +273,14 @@ for (const p of pois.pois) {
     const post = {
       id: `pop-${String(++postSeq).padStart(4, '0')}`,
       kind: 'garrison',
-      poi: p.id,
+      // `rings_poi`, NOT `poi`. RI-WLD02 §1 defines a POI as an authored entity that is
+      // "visible or discoverable", "has a reason" and "is authored", and its exclusion list
+      // names "respawning ordinary enemies with no loot" outright — which is exactly what a
+      // garrison post is. The item then says a critic finding scatter props tagged `poi` fails
+      // the piece outright. A field literally called `poi` on 22 generated hostile posts is a
+      // POI census waiting to be inflated by a grep; the name says reference, because that is
+      // what it is: the landmark this ring surrounds. Nothing in game/src reads it either way.
+      rings_poi: p.id,
       x: Math.round(x * 100) / 100,
       z: Math.round(z * 100) / 100,
       region: reg.id,

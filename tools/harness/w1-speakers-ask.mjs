@@ -234,11 +234,28 @@ try {
         H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]);
         H.stepFrames(12);
         const st = H.getConversationState();
+        // WHEN THIS FAILS IT MUST SAY WHY. "no conversation" is true of a person out of reach,
+        // a person the sim is not drawing, a prop or a signpost that took the button first,
+        // and a body standing in a different interior — four different defects with one
+        // symptom, and guessing between them costs a browser run each time.
+        const pp = E.sim.player.pos;
+        const gap = Math.hypot(n.pos[0] - pp[0], n.pos[2] - pp[2]);
         walked = {
           opened: !!(st && st.open),
           npc: st && st.npc ? st.npc : null,
-          reach_m: Math.hypot(n.pos[0] - E.sim.player.pos[0], n.pos[2] - E.sim.player.pos[2]),
+          reach_m: gap,
           topics: st && st.topics ? st.topics.map((t) => t.id) : [],
+          why: {
+            visible: !!n.visible,
+            notice_radius_m: n.notice_radius_m,
+            reach_allowed_m: Math.min(n.notice_radius_m == null ? 3.0 : n.notice_radius_m, 3.0),
+            within_reach: gap <= Math.min(n.notice_radius_m == null ? 3.0 : n.notice_radius_m, 3.0),
+            npc_interior: n.interior || null,
+            world_interior: E.sim.env ? (E.sim.env.interior || null) : null,
+            y_gap: Math.abs(n.pos[1] - pp[1]),
+            prop_in_reach: E.sim.props.filter((o) => !o.taken && Math.hypot(o.pos[0] - pp[0], o.pos[2] - pp[2]) <= o.reach_m).map((o) => o.eid),
+            talk_pending: E._talkPending || null,
+          },
         };
         if (walked.opened) {
           // All nine, not one. A single topic can agree by luck; nine cannot.

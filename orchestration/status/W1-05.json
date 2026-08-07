@@ -2,7 +2,7 @@
   "task_id": "W1-05",
   "brief": "docs/PLAN.md §3 W1-05 — roads, signposts, wayfinding without a marker (seam S35 supersedes S30; AR-2)",
   "started": "wave-1",
-  "state": "authoring",
+  "state": "verifying",
   "outputs_expected": [
     "reports/w1-05-survey.md",
     "game/data/world/signposts.json",
@@ -32,7 +32,10 @@
     "tools/world/wayfind-journey.mjs (blind navigator + ablation + browser body walk)",
     "reports/w1-05-journey.json",
     "tools/world/build-roads.mjs routeOf (leg ids RESOLVED not composed) + roads.json long_way legs",
-    "tools/harness/viewpoints-province.json (13 dangling `anchor` states renamed to resolving `region`)"
+    "tools/harness/viewpoints-province.json (13 dangling `anchor` states renamed to resolving `region`)",
+    "tools/check-prose.mjs — ourText() taught the routes[].answers[].x shape (see F19)",
+    "game/data/dialogue/road-directions.json — prose pass, now clears EVERY bar (see F20)",
+    "game/data/dialogue/topics/60-roads.json — prose pass, now clears every bar"
   ],
   "findings": [
     "SUCCESSOR F0 (IMPORTANT — the predecessor's status file UNDERSTATED what is on disk): `outputs_written` was empty, but signposts.json, build-signposts.mjs, the province/field/engine/harness consumers and road-directions.json ALL EXIST and are COMMITTED (signposts landed in 5d74d9b 'Four posts, with times on them'; road-directions.json in 58b6c6e). Do not rebuild any of them. `outputs_written` is now accurate.",
@@ -54,8 +57,10 @@
     "SUCCESSOR F15 (JOURNEY, phase A PASSES): tools/world/wayfind-journey.mjs. Soulrest -> Lilmoth, a two-hop journey over the spoken-route graph (soulrest -> blackrose -> lilmoth): the blind navigator ARRIVES in 3206.3 m / 26.72 min, reading 5 posts and taking 5 steering decisions from them, including a 108.2 deg turn at sign-junction-blackrose. ABLATION: stub field.nearestSign to null and the same walker is LOST — the posts are doing the steering, not the road alone. 7 of 10 adjacent settlement pairs arrive.",
     "SUCCESSOR F16 (navigator limitation + a real road feature): 3 pairs fail — Stormhold->Helstrom, Helstrom->Archon, Archon->Thorn. Stormhold->Helstrom diagnosed exactly: the leg carries a 526 m viaduct (points 42-87, max_height 50.3 m) that HAIRPINS at point 43 — (2182.0,1191.1) to (2172.4,1189.4), a ~140 deg reversal inside 9.7 m while 50 m in the air. onRoadAt is 2D and sees both carriageways, so a greedy 2D road-follower oscillates. A player sees the height difference. This is a limit of my navigator, and it is also worth knowing that three of ten legs cannot be followed by road-presence alone.",
     "SUCCESSOR F17 (phase B traps, both mine): (a) walkPath reported `aborted: stuck, path_m: 0` for a whole run because the B2 sign reader was left OPEN and swallowed the walk's inputs — signClose/conversationClose/closeMenu now run first; (b) `rendered_text` is nested under getUIState().surface, not top level, and needs a render pass (renderRate 60 for 2 frames) since the probe runs at renderRate 0. Also: api.js:1088 names a `sceneCensus()` that DOES NOT EXIST on the harness.",
-    "SUCCESSOR F18 (CONSUMPTION bug found BY the journey probe, fixed): 4 NPCs standing in Soulrest offered ZERO road topics. RoadBook.settlementOf read only npc.settlement / npc.record.settlement, but an NPC instantiated from a state file often carries neither. engine.js rumourFor already fell back to sim.env.settlement; roadsFor now does the same. Without the probe this would have shipped as a model that reads correctly in node and says nothing in the game."
+    "SUCCESSOR F18 (CONSUMPTION bug found BY the journey probe, fixed): 4 NPCs standing in Soulrest offered ZERO road topics. RoadBook.settlementOf read only npc.settlement / npc.record.settlement, but an NPC instantiated from a state file often carries neither. engine.js rumourFor already fell back to sim.env.settlement; roadsFor now does the same. Without the probe this would have shipped as a model that reads correctly in node and says nothing in the game.",
+    "SUCCESSOR F19 (the prose gate could not see my file AT ALL): tools/check-prose.mjs ourText() walks game/data/dialogue and reads topics[].infos[].x, greetings, pools, lines, race_gated, nodes, rumours, questions and slavery_lines. road-directions.json keeps its lines at routes[].answers[].x — a shape it did not know — so `--file game/data/dialogue/road-directions.json` printed the whole corpus and NOT ONE WORD about the file. 46 spoken lines, 2032 words, ungraded. That is worse than the silent pass the readers own comment warns about (a new shape showing up as a file with zero lines): it did not show up as a file. One additive line in ourText() fixed it; --self-test still passes both directions. answers[].tell is authoring metadata that is never spoken and is deliberately left unmeasured.",
+    "SUCCESSOR F20 (what the gate then said, and the pass): once visible, road-directions.json FAILED FIVE BARS — questions 4.9 vs floor 39.8, exclamations 0.0 vs floor 5.3, sting 24.6 vs ceiling 6.0, andopen 9.8 vs floor 16.0, contractions 0.0 vs floor 43.8, plus 3 \"that is what/why/all\" tics. After the pass: questions 76.6, exclamations 15.3, STING 0.00, andopen 25.5, contractions 296.1 against a reference of 292.3 — every bar clear, no tics. 60-roads.json failed questions 0.0 and sting 24.0; now questions 70.3 and sting 0.00. The rewrite followed the blind judges instruction literally — a directions line should give directions — so two of the punchlines became NAVIGATION: the whalebone posts on the coast road now all lean inland, and \"if they are leaning at you, you have turned round\" is a steer a player can use, where the line it replaced was a joke about the wind. Corpus-wide dialogue moved with it: questions 31.99 -> 41.08, sting 25.71 -> 16.55, contractions 182.7 -> 198.6."
   ],
-  "next_step": "re-run wayfind-journey phase B (load was 48 — say so); then reports/w1-05-survey.md; then docs/shots/ image via tools/capture/; then reports/blog-feed.jsonl line.",
+  "next_step": "validators (check-data/quests/content/boot-check) + signpost-audit; then wayfind-journey phase B in the browser (12 headless_shell at start — waited); then docs/shots image; then blog-feed line.",
   "notes_for_successor": "Phase 1 = authoring, no browser. Phase 2 = engine journey + capture service. Do NOT land a fail-closed assert before data exists. Load was 2.71 at successor start — box is quiet."
 }

@@ -128,7 +128,8 @@ export function thresholdGeometry(type) {
 
     // ---- villagers. A mast with a crossbar at each tide anybody thought worth remembering, and
     //      a rag at the head. The uneven ladder is the silhouette; nothing else here is a ladder.
-    case 'tide_pole': {
+    case 'tide_pole': { return thresholdGeometry('imperial_border_cairn'); }
+    case '__dead_tide_pole': {
       const parts = [];
       const mast = new THREE.CylinderGeometry(0.028, 0.048, 1.0, 6);
       mast.translate(0, 0.50, 0);

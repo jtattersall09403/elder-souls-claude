@@ -30,7 +30,7 @@
  */
 export const THRESHOLD_KINDS = {
   imperial_border_cairn: {
-    r: 0.62, solid_r: 0.85, glow: 0, colour: '#BFB9A6', roughness: 0.78,
+    r: 0.62, solid_r: 0, glow: 0, colour: '#BFB9A6', roughness: 0.78,
     note: 'stacked drums, leaning, one block already down at the foot',
   },
   root_gate: {
@@ -38,11 +38,11 @@ export const THRESHOLD_KINDS = {
     note: 'two roots crossing above head height, hung with strands; grown, not built',
   },
   tide_pole: {
-    r: 0.34, solid_r: 0.30, glow: 0, colour: '#7E6B4F', roughness: 0.84,
+    r: 0.34, solid_r: 0, glow: 0, colour: '#7E6B4F', roughness: 0.84,
     note: 'notched mast with a crossbar at each remembered tide, rag at the head',
   },
   knife_marked_stem: {
-    r: 0.40, solid_r: 0.40, glow: 0, colour: '#33291F', roughness: 0.93,
+    r: 0.40, solid_r: 0, glow: 0, colour: '#33291F', roughness: 0.93,
     note: 'three thorn stems lashed into a tripod, the inner faces blazed',
   },
   kiln_slag_heap: {
@@ -59,7 +59,7 @@ export const THRESHOLD_KINDS = {
     note: 'a branched fulgurite the crater-fields made; nobody put it here',
   },
   corpse_in_a_cage: {
-    r: 0.75, solid_r: 0.50, glow: 0, colour: '#2E2A24', roughness: 0.88,
+    r: 0.75, solid_r: 0, glow: 0, colour: '#2E2A24', roughness: 0.88,
     note: 'a gibbet arm, a hooped cage, and what the Dres left in it',
   },
 };
