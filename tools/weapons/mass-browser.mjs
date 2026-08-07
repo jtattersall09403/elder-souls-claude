@@ -208,6 +208,12 @@ try {
             follow_through_frac: folD ? +(folN / folD).toFixed(3) : null,
             recovery_frames_counted: folD,
             recovery_frames_moving: rec.filter((i) => spd[i] !== null && spd[i] > 0.05).length,
+            // Kept so the picture is drawn from the measurement rather than from a second
+            // reading of the same fixture. Indexed alongside frames[]; spd[0] is null.
+            speed_series: spd.map((v) => (v === null ? null : +v.toFixed(2))),
+            phase_series: frames.map((F) => (!F.move ? 'idle'
+              : F.af <= F.startup ? 'startup'
+                : F.af <= F.startup + F.active ? 'active' : 'recovery')),
           });
         } catch (e) { out.errors.push(`${s.id} moving=${moving}: ` + String(e && e.message).slice(0, 200)); }
       }
@@ -242,6 +248,46 @@ try {
 
   report.page_errors = handle.errors.length;
   report.page_error_sample = handle.errors.slice(0, 3);
+
+  // ---- P4. one picture, drawn from the numbers above and over a real frame ------------------
+  // RULES.md 27. The panel is built from `report.series` — the measurement — and laid over a
+  // REAL rendered frame of the subject mid-swing, so the picture cannot drift from the run that
+  // produced it. This tool steps the simulation, so it launches its own browser (RULES.md 20)
+  // and this is the same one, kept.
+  if (SHOT) {
+    try {
+      const shotPath = path.resolve(SHOT);
+      ensureDir(path.dirname(shotPath));
+      await handle.page.setViewportSize({ width: 1100, height: 620 });
+      await handle.page.evaluate(async (payload) => {
+        const H = window.__HARNESS;
+        const { subject, atFrame, panelHTML } = payload;
+        // Re-run the moving swing and stop ON the peak frame, so the blade in the picture is
+        // the blade at the speed the caption claims.
+        H.setSeed(1337); H.loadState('arena_duel'); H.setLoadout({ weapon: subject });
+        H.setRenderRate(0); H.stepFrames(4);
+        for (const e of H.listEntities()) if (e.kind === 'enemy') H.despawn(e.eid);
+        const eid = H.spawn('mat_flesh', 0, 1.6, { as: 'MASS' });
+        let theta = -40, dir = 1;
+        H.queueInputs([{ f: 1, press: ['heavy'] }, { f: 4, release: ['heavy'] }]);
+        for (let f = 0; f <= atFrame; f++) {
+          theta += 2.2 * dir; if (theta > 40) { theta = 40; dir = -1; } else if (theta < -40) { theta = -40; dir = 1; }
+          const cs = H.getCombatState();
+          const rad = ((cs.player.yaw_deg + theta) * Math.PI) / 180;
+          H.setEntityPos(eid, cs.player.pos[0] + 1.6 * Math.sin(rad), cs.player.pos[2] + 1.6 * Math.cos(rad));
+          H.stepFrames(1);
+        }
+        H.renderFrame();
+        const d = document.createElement('div');
+        d.id = '__mass_panel';
+        d.innerHTML = panelHTML;
+        document.body.appendChild(d);
+        await new Promise((r) => setTimeout(r, 120));
+      }, { subject: SHOT_SUBJECT, atFrame: shotFrame(report, SHOT_SUBJECT), panelHTML: buildPanel(report, SHOT_SUBJECT) });
+      await handle.page.screenshot({ path: shotPath });
+      report.shot = path.relative(process.cwd(), shotPath);
+    } catch (e) { report.shot_error = String(e && e.message).slice(0, 300); }
+  }
 } finally {
   await handle.close();
 }

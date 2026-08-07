@@ -4,7 +4,7 @@
   "judges": "W1-02",
   "state": "in-progress",
   "started_at": "2026-08-07",
-  "next_step": "read the ten judging items; pre-register blind procedure; audit wld12 blind pack for leaks; then answer it",
+  "next_step": "RI-WLD08 weather/daynight numbers; ONLY-HERE M19; RI-WLD14 F1-F8; RI-WLD09; then the M68 blind pack (builder still capturing, 19/48 at 20:57)",
   "judging_items_assembled_from_front_matter": {
     "bind_by_current_taxonomy_path": [
       "RI-AUD03 [audio.ambience.region, world.region.identity]",
@@ -20,10 +20,13 @@
       "RI-WLD04 judges world.regions/world.weather (not world.region.identity/world.weather.systems)",
       "RI-WLD05 judges world.strangeness/world.architecture (not world.strangeness.budget/.architecture)"
     ],
-    "note": "Verified by me from front-matter across all corpus/*/RI-*.md, not from PLAN.md and not from a directory listing. Confirms builder's finding independently. Judged anyway: PLAN §3 names all ten."
+    "note": "Verified by me from front-matter across all corpus/*/RI-*.md, not from PLAN.md and not from a directory listing. Confirms builder's finding independently. Judged anyway: PLAN \u00a73 names all ten."
   },
   "files_touched": [
-    "orchestration/status/critic-w1-02.json"
+    "orchestration/status/critic-w1-02.json",
+    "reports/critic-w1-02/c-m65.json",
+    "reports/critic-w1-02/c-m65b.json",
+    "reports/critic-w1-02/c-m65-sabotage.json"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-02-r1.md",
@@ -32,5 +35,17 @@
     "reports/blog-feed.jsonl",
     "reports/critic-w1-02/"
   ],
-  "redundant_with": ["W1-02"]
+  "redundant_with": [
+    "W1-02"
+  ],
+  "findings_so_far": [
+    "CONFIRMED FIXED (brief item): environment.js emitted day_phase/weather_change, absent from the closed vocabulary, and killed every stepping probe. Names are now in events.js. My probe steps 300k frames clean; deleting the two entries throws. BUT the repair was made by W1-SOULS (commit dcf1d36), not by W1-02, and W1-02's status file never records that it shipped the breakage.",
+    "M65 INDEPENDENTLY REPLICATED (weight 30): using the shipped engine traverse and my own scoring, stddev min 16.49 / median 22.82 / max 62.03, span 54-214, zero texture swaps, zero bar failures, 1 partial (marauders-coast--western-rootlands 6/9). Matches the builder exactly. My sabotage control (collapse all axis offsets) goes 24/24 red.",
+    "MY OWN INSTRUMENT DEFECT, self-caught: a straight-line perpendicular walk reported 2 spurious auto-fails; the builder had already documented that a straight perpendicular bends on a curving frontier. Not reported as a world defect.",
+    "CHECKED AND NOT A FINDING: 12 borders violate a strict 9-way canonical order, but all 12 are hazard/tier transpositions, which the builder's declared {hazard,tier} tie accommodates and RI-WLD12 \u00a72 does not forbid.",
+    "DEFECT: all 10 MARKED borders are 123-172 m wide. RI-WLD12 \u00a71's table puts MARKED at 60-120 m. The builder's status file scores them against the GRADED row (120-180 m). Number checked against the wrong row of the item's own table. Zero GRADED borders exist, so B3 is vacuous.",
+    "GAP: RI-WLD12 M67 (continuity C1-C5, weight 14) and M69 (weight 6) have NO instrument anywhere in tools/. 20 of 100 points of the SOLE judge of world.region.transition are unmeasured.",
+    "GAP: M66 covers T1/T2 and the 40 m rule only. T3 (nothing gates the crossing - an AUTOMATIC FAIL in RI-WLD12), T4 (sightline >=100 m) and T5 (>=3 tier descents) are unmeasured. T1 is scored off the declared announcement.channels array in borders.json, not off the world, and the item's 'within 100 m of the crossing' clause is never checked.",
+    "GAP: RI-WLD04 M18's weather axis is still listed in reports/region-axes.json dropped_axes with the reason 'weather is a per-frame capture parameter, not a property of the built world'. W1-02 made that false by shipping game/data/world/weather.json (13 per-region machines). The world got better and the instrument was not re-armed."
+  ]
 }

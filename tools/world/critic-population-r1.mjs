@@ -114,15 +114,22 @@ const INSTALL = () => {
       return E.sim.entities.filter((e) => e.populationPost)
         .map((e) => ({ eid: e.eid, id: e.id, hp: e.hp, post: e.populationPost, tier: e.populationTier }));
     },
-    /** Kill by DAMAGE through the combat bodies, not by writing hp on the sim record. */
+    /**
+     * Kill through `combat.bodyOf()` — THE AUTHORITY. `sim/combat-bridge.js#mirror` rewrites
+     * `e.hp` on the sim record from the combat body every step, so writing the sim record
+     * alone is a kill that un-happens on the next frame. The round-1 draft of this arm did
+     * exactly that, reported `killed: 2` and banked zero souls, and the zero was the
+     * instrument, not the world. Returns only bodies that were actually confirmed dead.
+     */
     killAllPopulation() {
       const killed = [];
-      for (const e of E.sim.entities) {
+      for (const e of E.sim.entities.slice()) {
         if (!e.populationPost || e.hp <= 0) continue;
-        const b = E.combat && E.combat.bodies && E.combat.bodies.get ? E.combat.bodies.get(e.eid) : null;
-        if (b) { b.hp = 0; b.state = 'DEAD'; b.dead = true; }
-        e.hp = 0; e.state = 'DEAD'; e.dead = true;
-        killed.push({ eid: e.eid, id: e.id, post: e.populationPost });
+        const b = E.combat.bodyOf(String(e.eid));
+        if (!b) continue;
+        b.hp = 0; b.dead = true; b.state = 'DEAD'; b.move = null; b.hitboxActive = false;
+        e.hp = 0; e.state = 'DEAD';
+        killed.push({ eid: e.eid, id: e.id, post: e.populationPost, souls_declared: (E.data.enemies[e.id] || {}).souls });
       }
       return killed;
     },
