@@ -3,6 +3,22 @@
   "brief": "corpus/90-verdicts/wave1/W1-19-r1.md",
   "started": "wave-1 round 2",
   "state": "building",
+  "successor_generation": 2,
+  "files_i_am_editing": [
+    "game/data/quests/hooks.json",
+    "game/data/quests/*.json (main + the three Q-*-08 journal writes)",
+    "game/data/dialogue/topics/50-mainline.json",
+    "game/data/dialogue/rumours.json",
+    "game/src/sim/quest/topic-supply.js",
+    "game/src/sim/quest/journal.js",
+    "game/src/sim/dialogue/disposition.js",
+    "tools/quests/mainline-findability.mjs",
+    "tools/quests/mainline-chain-floor.mjs"
+  ],
+  "not_touching": [
+    "game/src/engine.js (W1-LIBRARY has an uncommitted edit in the tree)",
+    "faction questline data files (another agent owns quest givers)"
+  ],
   "outputs_written": [
     "game/src/sim/quest/topic-supply.js (new: reader for info.to, opens_by.overheard_from, q.directions, rumours.json)",
     "game/src/character/converse.js (infoFor returns `to`; Conversation.setSupply; directions + rumour topics)",
@@ -13,16 +29,18 @@
     "game/data/dialogue/topics/50-mainline.json (new: 46 topic records, ~120 infos)",
     "game/data/dialogue/rumours.json (main-quest rumours per settlement with adds_topics)",
     "game/data/states/soulrest-quay.json (new: the place a player can walk to)",
-    "tools/dialogue/build-graph.mjs (unblocked: merges duplicate topic ids like the engine; reads rumours.json)"
+    "tools/dialogue/build-graph.mjs (unblocked)",
+    "game/src/sim/dialogue/disposition.js (factionTerm membership split; reputeTerm weighted mean)",
+    "tools/quests/mainline-chain-floor.mjs (new: chain floor + hand-feed-free completion)"
   ],
   "findings": [
-    "REPRO: cold-boot offerability was still 0/32 after the topics.js fold — the fold closed the SPELLING half only; 23/32 edges still pointed at themselves. Fold IS wired into gate.js (import present).",
-    "REPRO: 29/40 signatures finish (mainline-race-trace.mjs), gate margins all exactly 0 at 9 clamped gates, Q-MAIN-01/res_carry drives faction 0 -> -12.",
-    "NEW ZERO-COUPLING MODEL FOUND: `info.to` (Morrowind AddTopic) is authored on 456 of 638 infos in game/data/dialogue/topics/**, 181 distinct targets, and had ZERO code consumers. That is the fifth dead model in this area and the largest.",
-    "NEW: there was no Soulrest. No named state in game/data/states/** placed Aveline Rell or any overheard_from NPC anywhere a player could stand.",
-    "ROOT CAUSE of the faction cliff: factionTerm() treats ANY faction the player has a reputation ROW for as a MEMBERSHIP (it never reads `member`), then takes the argmin reaction over them. So the term is monotonically non-increasing in quests completed: reputation +4 with the Drowned Court costs 12 points with House Dres and nothing can repair it.",
-    "LIVE PROOF: soulrest-quay cold boot = 0 topics / 0 offers; greet bone-ladder-carter -> learns 'the drowned tally' -> Q-MAIN-01 offerable. Nothing hand-fed."
+    "REPRO gen-1: cold-boot offerability 0/32; gate margins all exactly 0 at 9 clamped gates; Q-MAIN-01/res_carry drives faction 0 -> -12.",
+    "info.to (Morrowind AddTopic) was authored on 456 of 638 infos with ZERO code consumers — the largest dead model in this area.",
+    "ROOT CAUSE of the faction cliff: factionTerm() read any reputation ROW as a MEMBERSHIP (never read `member`), then argmin'd — monotonically non-increasing in quests completed.",
+    "GEN-2 MEASURED 2026-08-07: gate.js DOES import topicsInclude from core/topics.js — the fold is wired to the quest gate now.",
+    "GEN-2 MEASURED: findability --state soulrest-quay: cold 0 topics / 0 offerable / 32 blocked; after greeting the 5 people present and asking what they discuss -> 26 topics, Q-MAIN-01 offerable, 13/32 still blocked. Nothing hand-fed.",
+    "GEN-2 MEASURED: check-quests reports 3 quests seeding no topic from a journal write: Q-ASSZ-08, Q-LEDG-08, Q-XULA-08 (RI-DLG05 A.3) — outstanding quest-layer work."
   ],
-  "next_step": "gate margins: write mainline-chain-floor.mjs, decide the clamp, fix factionTerm membership semantics",
-  "notes_for_successor": "check-content.mjs passes. build-graph.mjs now runs (was throwing on duplicate topic id the-marsh-fever; 40 ids are duplicated across files and the LIVE reader merges them, so the tool was wrong, not the data)."
+  "next_step": "run mainline-chain-floor.mjs (+ its three sabotage controls); close the 3 Q-*-08 journal-write topic seeds; make q.directions observable (0 heard live); add supplied_only_by_itself / no_supplier_at_all to findability",
+  "notes_for_successor": "gen-1 died mid-run; it had ALREADY landed the factionTerm split and written mainline-chain-floor.mjs even though its next_step said otherwise. Read the code before redoing anything. S35: a map exists but no quest may put anything on it — findability must NOT route through the map."
 }

@@ -1,0 +1,153 @@
+{
+  "schema": "elder-souls/topics@1",
+  "group": "roads",
+  "owner": "W1-05 — roads, signposts and getting there without a marker",
+  "key_legend_ref": "game/data/dialogue/topics/00-roots.json",
+  "note": "The eight road topics, one per settlement, so that `the road to Gideon` is a keyword the province actually holds rather than a string invented at runtime. Seam S35 permits a map and confines it to ground already walked, which means that on a first journey the map is blank ahead of you and these words are how you get anywhere; RI-WLD06 L3 makes the spoken direction the third wayfinding layer under the road itself and the signposts on it. The LOCATED answers — the ones that actually take you somewhere, keyed to the settlement you are standing in and to who you asked — are not here. They live in `game/data/dialogue/road-directions.json` and are supplied by `RoadBook` in `game/src/sim/quest/topic-supply.js`, which wins in `Conversation.say()` because `extra` is consulted before the topic index. What is here is the OTHER case, and it is the common one: you asked somebody who does not walk that road. A woman in Lilmoth asked about the Stormhold road has an opinion about Stormhold and no directions to it, and saying so out loud is a better answer than silence — the same reasoning `world/opacity.json` is built on. Every place named in these infos is a record in `game/data/world/pois.json` or a settlement in `game/data/world/settlements/`; `tools/world/signpost-audit.mjs` checks that and fails if one dangles.",
+  "topics": [
+    {
+      "id": "the-road-to-gideon",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Gideon is where the paving stops being ours and starts being theirs. If you are not standing in Helstrom you are not on the road to it, whatever anyone tells you. Get to Helstrom, find the milepost outside the west gate, and walk until the stone runs out.",
+          "to": ["the-cart-roads", "the-milestones"]
+        },
+        {
+          "a": "merchant",
+          "x": "Everything I sell that came off a wheel came through Gideon. The road is west out of Helstrom and it is the only one in this province a cart survives, which is why it costs what it costs to have anything at all down here.",
+          "to": ["the-cart-roads"]
+        },
+        {
+          "x": "Not from here you don't. Gideon sits off the west edge of everything I know. Ask in Helstrom — they are on the Legion road there and they will point you the right way without charging you for it."
+        }
+      ]
+    },
+    {
+      "id": "the-road-to-helstrom",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "Helstrom is where the roads agree to meet, and it is the only place in the province where that is true. Whatever corner you are in, there is a way to it, and if you keep asking as you go you will be handed along from one person to the next until you are standing in the Stone Forest looking up.",
+          "to": ["the-stone-forest"]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "Everything goes to Helstrom eventually. Water does. So do you, if you walk long enough and do not go into the water first.",
+          "to": ["the-stone-forest"]
+        },
+        {
+          "x": "Inland and up. That is as much as I can give you standing here. Somebody on the road itself will do better — they always do."
+        }
+      ]
+    },
+    {
+      "id": "the-road-to-blackrose",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Blackrose is a prison with a town grown round it and the road to it is not a road, it is a trail through standing water. We do not maintain it and we do not recommend it. If you must, you go south out of Helstrom, and you go in daylight.",
+          "to": ["blackrose-prison"]
+        },
+        {
+          "a": "healer",
+          "x": "People come back from Blackrose with their feet in a state I can do very little about. Wherever you pick the trail up, do not pick it up at dusk.",
+          "to": ["blackrose-prison"]
+        },
+        {
+          "x": "South, but not from here. You want somebody in Helstrom or in Lilmoth for that — both have a way to it and both ways are wet."
+        }
+      ]
+    },
+    {
+      "id": "the-road-to-lilmoth",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "You will smell Lilmoth a good while before you see it, and once you are near the coast you cannot really miss it — it is the only thing on that shore big enough to be called anything. Getting to the coast is the whole of the problem.",
+          "to": ["the-drowned-road"]
+        },
+        {
+          "a": "dres-factor",
+          "x": "South and south and then further south than you think, until the ground stops pretending. I have made that journey more times than I would choose to and it has never once been shorter than I remembered.",
+          "to": ["the-drowned-road"]
+        },
+        {
+          "x": "Downriver, in the end. Everything is downriver of here. Ask on the coast road — anyone walking it is going to Lilmoth or coming from it, there is nothing else down there."
+        }
+      ]
+    },
+    {
+      "id": "the-road-to-archon",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Archon keeps to itself in the Deep Marshes and the ways to it are ways, not roads. There is no stone on any of them. Whoever takes you in will tell you the turns; nobody writes them down because writing them down has never once helped.",
+          "to": ["the-deep-marshes"]
+        },
+        {
+          "a": "outlaw",
+          "x": "Archon. Now that is a place a man can be left alone in. You will not find it from here — you find it from Thorn, or from the Lilmoth track if you have the stomach for the Lilmoth track.",
+          "to": ["the-deep-marshes"]
+        },
+        {
+          "x": "Into the marsh proper, and I have never been. Ask at Thorn. They are close enough to it to have an honest answer."
+        }
+      ]
+    },
+    {
+      "id": "the-road-to-thorn",
+      "infos": [
+        {
+          "a": "town-elder",
+          "x": "Thorn sits on the far side of the moor from most things, and the moor is what makes it hard, not the distance. Whoever sends you should send you with the turns, because the ground up there gives you nothing to steer by for a long stretch.",
+          "to": ["the-clay-moor"]
+        },
+        {
+          "a": "mercenary",
+          "x": "Thorn pays late and pays anyway. You come at it off the Stormhold track or up from Archon, and both of those you want to be walking in the morning, not the afternoon.",
+          "to": ["the-clay-moor"]
+        },
+        {
+          "x": "North and east of everything down here. Not a walk you start from this town. Stormhold has the track to it."
+        }
+      ]
+    },
+    {
+      "id": "the-road-to-stormhold",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Stormhold is a garrison and it is where the province stops being anybody's guess. The way there is signed at every junction that matters, which is not many junctions, but they are the right ones.",
+          "to": ["the-milestones", "our-arrangement-with-the-legion"]
+        },
+        {
+          "a": "innkeeper",
+          "x": "Half the people who drink here are on their way to Stormhold or have just come from it and are still complaining. Ask one of them — they will be delighted to be asked.",
+          "to": ["the-cart-roads"]
+        },
+        {
+          "x": "North, a long way north, and I could not tell you the turns. Whoever put you on the road at all will know them better than I do."
+        }
+      ]
+    },
+    {
+      "id": "the-road-to-soulrest",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "Soulrest is on the water and it is quiet in a way that people who are not from there find unpleasant. You come to it along the shore. There is no other way and there never was.",
+          "to": ["the-drowned-road"]
+        },
+        {
+          "a": "archivist",
+          "x": "Soulrest is older than the road to it, which is true of a great deal in this province and is worth remembering when someone tells you a road is ancient.",
+          "to": ["the-drowned-road"]
+        },
+        {
+          "x": "The coast. That is honestly all I have. Gideon or Blackrose will do you better — both of them look out that way."
+        }
+      ]
+    }
+  ]
+}

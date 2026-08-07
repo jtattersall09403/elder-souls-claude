@@ -19,9 +19,11 @@
     "game/src/engine.js \u2014 _readBook() (the world-side consumer), _bookKnowledgeIndex(), getQuestState().booksRead/bookKnowledge",
     "game/src/sim/quest/machine.js \u2014 QuestEngine.bookKnowledge + ctx.knowledge union",
     "game/src/save/state.js \u2014 dialogue.books_read written and read back",
-    "game/data/save-manifest.json \u2014 dialogue.books_read declared durable + id-sorted"
+    "game/data/save-manifest.json \u2014 dialogue.books_read declared durable + id-sorted",
+    "game/src/engine.js \u2014 orchestrator's fail-closed guard REMOVED (method exists; its {} fallback was the wrong type for .get())"
   ],
   "findings": [
+    "RE-VERIFIED after the restart, in a real browser at 320x240 with setRenderRate(0): seam probe topics_before 0 / topics_after 116 / gained 116, 60/60 books opened; consume probe shows the 'you have not learned book_*' clause in the control and ABSENT after reading on all 3 quests. check-data/check-content/boot-check clean; check-quests' 1 problem (3 quests seed no topic) is pre-existing and not this piece's.",
     "SEAM CLOSED, measured with the critic's own probe: critic-w1-library-seam.mjs now reports topics_before 0, topics_after 116, gained 116 (was 0/0/0). seam_sterile is now FALSE by measurement.",
     "KNOWLEDGE GATES: critic-w1-library-consume.mjs now shows the 'you have not learned book_*' clause present in the control and ABSENT after reading, on all 3 quests. Residual refusals are skill floors and reveals from other channels, which are other systems'.",
     "THE READ SITE WAS IN THE WRONG FILE. Engine.openMenu() is the HARNESS door. A player reads by selecting a readable in the inventory and pressing confirm: UISystem._confirm() calls this.open('book', ...) directly and never passes through Engine.openMenu(). The old _booksRead recorder sat in the engine wrapper, so it could not see the only route a person takes. The hook is now in UISystem.open().",
@@ -30,7 +32,7 @@
     "PAGINATION baseline re-measured in bare Node at 1920x1080: 324 pages, linear p10 62.3, median 126, p90 153, min 3, max 172. 12 books end on a page under 25 words.",
     "BOOK LENGTHS: linear-interpolation p90 = 1128.6 against RI-LOR03's >= 1200 fail band (floor-index estimator says 1259). The gap in the sorted lengths is 933 -> 1259; the corpus is inside the bar only by estimator choice, as the critic said."
   ],
-  "next_step": "paginator last-page balancing; then estimator fix in both tools; then rebuild self-tests against a deranged corpus",
+  "next_step": "perturbation demo (break the hook, confirm red); then paginator last-page balancing; estimator fix; contradiction pair; tool self-tests vs deranged corpus",
   "notes_for_successor": "",
   "files_touched_prose": []
 }

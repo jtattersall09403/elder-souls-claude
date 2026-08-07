@@ -35,8 +35,9 @@
     "ROTATE COUPLED: portrait 3cf4307910309435 vs landscape 6cf0c0d22ebf5bf0.",
     "DELETE-THE-FIX: severing Engine._uiCtx().touch/.rotate returns the handheld hash to EXACTLY the desktop hash (73c633ee15bc82aa) \u2014 the round-1 byte-identical failure reproduces.",
     "ROOT CAUSE FOUND BEYOND THE MISSING DRAW: L9 (coarse pointer => touch fallback) was applied ONCE in RealInput.attach(), so a device-class change afterwards (incl. the critic ablation) left the fallback off. Now a Viewport.onDeviceClass subscription.",
-    "SIBLING COLLISION: W1-26-r2 owns game/src/render/text-register.js, glyphs.js, renderer.js and getRenderedText(). It has landed declare()/coverage()/complete/blind and the ctx.__esNoteText vector hook. Do NOT duplicate; consume it."
+    "SIBLING COLLISION: W1-26-r2 owns game/src/render/text-register.js, glyphs.js, renderer.js and getRenderedText(). It has landed declare()/coverage()/complete/blind and the ctx.__esNoteText vector hook. Do NOT duplicate; consume it.",
+    "SUCCESSOR-2 2026-08-07: predecessor's draw work is ON DISK and committed (game/src/ui/touch-overlay.js etc). boot-check PASS, load 2.95. Sibling W1-26-r2 HAS landed the real text register (declare/instrument/coverage/noteVector + glyphs __esNoteText); renderer declares dialogue/title/menus. Remedy step (1) is therefore DONE by the sibling \u2014 my job is steps (2) and (3) plus S35 reconcile."
   ],
-  "next_step": "implement the 13 missing check ids in tools/journey/input-checks.mjs with self-test legs; then tools/verdict-validate.mjs ungated hard fail",
+  "next_step": "read RI-JRN03/RI-JRN04 scoring tables for the 13 ids; implement them in tools/journey/input-checks.mjs with self-test legs; M-K20 unmeasurable-on-empty + positive control",
   "notes_for_successor": ""
 }

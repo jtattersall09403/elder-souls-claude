@@ -194,3 +194,110 @@ export function learnTopics(topicsKnown, topics) {
   }
   return added;
 }
+
+/**
+ * THE ROAD BOOK — the reader for `game/data/dialogue/road-directions.json`.
+ *
+ * Owner: W1-05. Binding: RI-WLD06 L3 (the spoken direction), RI-MTH07 / ARBITRATION §3
+ * (CONSUMPTION), seam S35.
+ *
+ * WHY IT IS SEPARATE FROM `buildDirectionsIndex` ABOVE. That index reads `q.directions` — one
+ * string per main quest, offered by the giver once the quest is open, and it answers exactly one
+ * question: *where is the thing I have been sent to?* It says nothing at all to a player who has
+ * been sent nowhere. Under seam S35 the map is a record of ground already walked, so it is blank
+ * ahead of you on a first journey and cannot get you anywhere new; the road book is what is left,
+ * and it has to work for somebody with an empty journal who simply wants to reach Gideon.
+ *
+ * WHAT IT KEYS ON. Two things, both of which the person standing in front of you actually has:
+ * the settlement they belong to, and their `actor` archetype. The routes in the file are directed
+ * — `helstrom-to-gideon` is not the same sentence as `gideon-to-helstrom` — so only the routes
+ * LEADING OUT of where you are standing are offered. That is not a technicality. A man in Lilmoth
+ * asked the way to Stormhold is being asked about a road he has never set foot on, and the honest
+ * answer is the one in `dialogue/topics/60-roads.json`, not a route description he could not
+ * possibly give.
+ *
+ * WHY THE ANSWERS ARE NOT ALL TRUE. Twenty of the forty-six are, twenty-two are `vague` — real
+ * directions from real people mostly are — and four are `wrong`. RI-JRN07 U4: *"a world where
+ * everyone is honest is not this world."* Every wrong answer carries `tell` and `tell_ids`, which
+ * name the signpost, waystation or leg in the built world that contradicts it, so a careful
+ * player can catch the lie by checking rather than by reloading. `tools/world/signpost-audit.mjs`
+ * resolves every one of those ids against the shipped data and fails if one dangles: a lie
+ * nobody can catch is not a feature, it is a defect.
+ *
+ * PERTURBATION (this is what makes it a consumer rather than a diagram). Change the `x` of any
+ * answer in `road-directions.json` and the sentence a specific person in a specific town speaks
+ * changes with it; delete the file's `routes` array and eight topics disappear from every
+ * settlement's conversations at once. Neither is true of a model nothing reads.
+ */
+export class RoadBook {
+  constructor(doc) {
+    /** settlement id -> [{ topic, route, to, leg, answers }] */
+    this.bySettlement = new Map();
+    this.routes = ((doc && doc.routes) || []).slice();
+    for (const r of this.routes) {
+      if (!r || !r.from || !r.topic) continue;
+      const row = this.bySettlement.get(r.from) || [];
+      row.push(r);
+      this.bySettlement.set(r.from, row);
+    }
+  }
+
+  /**
+   * The settlement this person belongs to. An NPC entity carries it flattened or on `record`
+   * depending on how it was spawned, exactly as `rumourFor` in `engine.js` has to handle.
+   */
+  static settlementOf(npc) {
+    if (!npc) return null;
+    return npc.settlement || (npc.record && npc.record.settlement) || null;
+  }
+
+  /**
+   * Which answer THIS person gives. The archetype match wins; an answer with no `a` is what
+   * anybody says when nothing more particular applies, which is the same precedence
+   * `character/converse.js#infoFor` uses for the topic index, and it is deliberate that the two
+   * agree — a second precedence rule is a second thing to keep honest.
+   *
+   * Deterministic in the NPC id when several answers tie, for the reason `RumourBook.pick` is:
+   * a replay must say the same words, and a direction that changes when you ask twice is worse
+   * than a wrong one.
+   */
+  static answerFor(route, npc) {
+    const answers = (route && route.answers) || [];
+    if (!answers.length) return null;
+    const actor = (npc && (npc.actor || (npc.record && npc.record.actor))) || null;
+    const keyed = answers.filter((a) => a.a && a.a === actor);
+    const pool = keyed.length ? keyed : answers.filter((a) => !a.a);
+    const use = pool.length ? pool : answers;
+    if (use.length === 1) return use[0];
+    let h = 2166136261;
+    const s = String((npc && npc.eid) || '');
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return use[(h >>> 0) % use.length];
+  }
+
+  /**
+   * Every road out of where this person is standing, as topic rows ready for the conversation's
+   * `extra` list. Returns `[]` for somebody who belongs to no settlement, which is correct: a
+   * hermit on the Clay Moor is not a signpost.
+   */
+  forNpc(npc) {
+    const settlement = RoadBook.settlementOf(npc);
+    if (!settlement) return [];
+    const out = [];
+    for (const route of this.bySettlement.get(settlement) || []) {
+      const a = RoadBook.answerFor(route, npc);
+      if (!a || !a.x) continue;
+      out.push({
+        id: route.topic,
+        text: a.x,
+        route: route.id,
+        to_place: route.to,
+        leg: route.leg || null,
+        truth: a.truth || 'true',
+      });
+    }
+    return out;
+  }
+
+  get size() { return this.routes.length; }
+}

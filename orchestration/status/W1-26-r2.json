@@ -2,7 +2,7 @@
   "task_id": "W1-26-r2",
   "brief": "corpus/90-verdicts/wave1/W1-26-r1.md (FAIL 1.3/10)",
   "started": "wave-1 round 2",
-  "state": "measuring",
+  "state": "successor-resumed: verifying instruments red-on-purpose, then shots+blog",
   "outputs_expected": [
     "game/src/render/text-register.js \u2014 sees EVERY drawing surface incl. the vector-stroked glyph path; blind surfaces declared, never an empty set masquerading as clean",
     "game/src/ui/glyphs.js \u2014 drawText() reports to the register",
@@ -47,8 +47,9 @@
     "AFTER O6: hold opens at hold.come-to, paused, no question on the frame; 60 frames of forward input move 3.2000 m; 61 s of wandering leaves the scene paused; walking over and pressing interact opens it; available_play_s_before_first_field = 63.5 s against O6's >= 60 s.",
     "AFTER naming: writ.class-verdict is its own beat on all three routes. Coupling 1 \u2014 two answer patterns give Wet-Foot vs Hollow-Hunter, both lines drawn, null control identical.",
     "Delete-the-fix: 4 of 4 reproduce. Removing ctx.__esNoteText re-blinds the vector path (fillText unaffected); declaring an uninstrumented surface flips complete to false and names it; moving the naming line back into `spoken` under page pressure loses it while the node's own line survives; re-drawing 'Take A tithe-gourd, empty' through the real vector path trips M9's imperative clause.",
-    "THIRD instrument trap, new: UILayer repaints ON DEMAND, so a probe that queues 50 frames of caret movement and calls getUIState() ONCE paints only the last window and reads back as 'scrolling revealed nothing'. Step, repaint, step."
+    "THIRD instrument trap, new: UILayer repaints ON DEMAND, so a probe that queues 50 frames of caret movement and calls getUIState() ONCE paints only the last window and reads back as 'scrolling revealed nothing'. Step, repaint, step.",
+    "SUCCESSOR (r2 continuation, 2026-08-07): predecessor's code+tools survive on disk and are COMMITTED (b7d249a swept them in). Tree at start: loadavg 4.68 (quiet, well under the ~12 distortion threshold). Uncommitted in tree = other agents' work (engine.js bookKnowledge guard removal by W1-LIBRARY, 50-factions.json). Not mine, left alone."
   ],
-  "next_step": "shots + blog line; re-run w1-26-opening.mjs and the full scene probe on a quiet tree",
+  "next_step": "read ARBITRATION S35 + RI-MTH07; run the four gate checks; re-run w1-26-opening.mjs and w1-26-r2-scene.mjs on the quiet tree; make each instrument go red on purpose myself; CONSUMPTION for the census model; shots + blog",
   "notes_for_successor": "Do NOT re-derive the ui.js wrap() space-dropping bug (strip all whitespace both sides). Do NOT take the register watermark after getCensusState()/censusAnswer() \u2014 they repaint and clear dirty. Do NOT queue many caret moves and repaint once \u2014 UILayer repaints on demand and you will measure one window. queueInputs() REPLACES the script: pass the whole array in ONE call or you deliver one frame of input. The scene now has TWO hand-back nodes (hold.come-to resume_by 'talk', hold.out resume_by 'walk'); any walker using a one-shot `entered` flag will stop dead at the second and report zeros. RI-EXP01 is NOT closed: 8 of 15 derived targets are not computable from a trace and the missing input is a dispatchable agent at isolation enforced. I did not read RI-EXP01 so as not to disqualify myself from being that agent."
 }
