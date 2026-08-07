@@ -62,12 +62,43 @@ export class CombatSystem {
     this.lock = new LockOn(data.lockon);
     this.eventLog = [];
     this.frame = 0;
+    /** W1-11 — `audio.combat.impact`. Set by `Engine` (or a probe) via `setAudio()`. */
+    this.audio = null;
     this.world = { gold: 0, dispositions: {}, factions: {}, topicsKnown: [] };
     this.stats = { hitsLanded: 0, iframeNegates: 0, blocks: 0, guardBreaks: 0, parries: 0, whiffs: 0, staminaDrops: 0 };
   }
 
   static stateEnums() {
     return { player: PLAYER_STATE_ENUM, enemy: ENEMY_STATE_ENUM, extensions: STATE_ENUM_EXTENSIONS };
+  }
+
+  /**
+   * W1-11. Attach the impact-audio driver. Null is a legal state and means the build is silent;
+   * `getAudioState().available` reports it so a silent build cannot be mistaken for a passing
+   * one (RI-AUD01: "Unimplemented audio scores 0, not 'not assessed'").
+   */
+  setAudio(driver) { this.audio = driver || null; return this; }
+
+  /**
+   * The listener frame handed to the audio driver, RI-AUD02 §E S6.
+   *
+   * The listener is at the CHARACTER, not at the orbit camera, and the bearing every pan is
+   * derived from is taken against the PLAYER's yaw. S6's symptom when this is wrong is
+   * unmistakable once named and invisible until then: every sound in the world pans back and
+   * forth as the player orbits a stationary enemy, and it feels like 3D audio working. The
+   * camera pose is deliberately not reachable from here.
+   */
+  _audioWorld() {
+    const p = this.player;
+    if (!this._audioWorldObj) {
+      this._audioWorldObj = {
+        playerPos: [0, 0, 0], playerYawDeg: 0,
+        posOf: (id) => { const b = this.bodyOf(id); return b ? b.pos : null; },
+      };
+    }
+    const w = this._audioWorldObj;
+    if (p) { w.playerPos = p.pos; w.playerYawDeg = p.yaw; }
+    return w;
   }
 
   /**
@@ -282,6 +313,20 @@ export class CombatSystem {
         const a = bus.emit(f, typeof alias === 'function' ? alias(e) : alias);
         a.mirrors = kind;
       }
+      // W1-11 — `audio.combat.impact`. THE WORLD-SIDE CONSUMER OF THE IMPACT AUDIO MODEL.
+      //
+      // RI-AUD01 §B: "`audio.frame` for an impact event MUST equal the `f` of the trace event
+      // that caused it. Not the animation-start frame. Not the next frame. Not 'whenever the
+      // rAF callback got round to it'." This call is INSIDE `sweepAndResolve`'s call stack —
+      // the geometry has decided, the event object is filled, and the audio decision is taken
+      // before the resolver returns. There is no queue between the two and there cannot be one.
+      //
+      // The named failure this placement forecloses is §B's: firing off the animation event
+      // track, which plays the impact on a whiff, plays it before the geometry decided, and
+      // plays the same sound into flesh, chitin and a raised shield. `ImpactAudio` keeps that
+      // defect behind `trigger_source: 'anim'` precisely so the probe that detects it can be
+      // shown going red — see tools/audio/impact-probe.mjs --sabotage anim.
+      if (this.audio) this.audio.onEvent(f, kind, e, this._audioWorld());
       return e;
     };
     const lockedBody = this.lock.target ? this.bodyOf(this.lock.target) : null;

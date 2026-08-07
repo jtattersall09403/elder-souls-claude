@@ -121,7 +121,29 @@ try {
       }
     }
 
-    const defs = {}; for (const id of H.questBook()) defs[id] = H.questDef(id);
+    // ================= C0 — IS THERE ANYBODY TO ASK? ====================================
+    // machine.js:472, shipped at HEAD: `open()` refuses a quest whose giver is not in the world.
+    // The round-2 reports on disk were taken before that gate went live. Census it directly.
+    const allDefs = {}; for (const id of H.questBook()) allDefs[id] = H.questDef(id);
+    const FACS = ['the_wet_ledger', 'the_imperial_assize', 'the_xul_aneekh'];
+    const c0 = { by_line: {}, present: [], absent: [] };
+    for (const f of FACS) {
+      const ids = H.questBook().filter((id) => allDefs[id] && allDefs[id].rank_gate && allDefs[id].rank_gate.faction === f);
+      const rows = ids.map((id) => ({ quest: id, giver: (allDefs[id].giver || {}).npc_id || null }));
+      const seen = {};
+      for (const row of rows) {
+        if (!row.giver) continue;
+        if (seen[row.giver] === undefined) { H.questPresenceGate('on'); const o = H.questOpen(row.quest); seen[row.giver] = !(o && o.gate === 'giver_presence'); }
+        (seen[row.giver] ? c0.present : c0.absent).push(`${row.quest}/${row.giver}`);
+      }
+      c0.by_line[f] = { quests: rows.length, givers: Object.keys(seen).length, givers_in_world: Object.values(seen).filter(Boolean).length };
+    }
+    R.c0_givers = c0;
+    // For everything below, SUSPEND the presence gate. That separates the faction round's own
+    // work (the ladder, the gate, the refuser's route) from a defect it did not introduce.
+    R.presence_gate_suspended_for_the_rest = H.questPresenceGate('report');
+
+    const defs = allDefs;
     const inLine = (id) => defs[id] && defs[id].rank_gate && defs[id].rank_gate.faction === LINE;
     const lineDefs = () => H.questBook().filter(inLine).map((id) => defs[id])
       .sort((a, b) => (a.rank_gate.min_rank - b.rank_gate.min_rank) || String(a.id).localeCompare(String(b.id)));
@@ -294,6 +316,14 @@ try {
   out.sections = r;
   out.page_errors = perr;
 
+  // ---- C0 — the world-side consumer of `giver` --------------------------------------------
+  const c0 = r.c0_givers || { by_line: {}, absent: [] };
+  const tot = Object.values(c0.by_line).reduce((a, b) => a + b.givers, 0);
+  const inw = Object.values(c0.by_line).reduce((a, b) => a + b.givers_in_world, 0);
+  check('C0_the_quest_givers_exist_in_the_world', c0.absent.length === 0,
+    `${inw}/${tot} distinct faction quest givers are in the world; ${c0.absent.length} of ${c0.absent.length + c0.present.length} quests are given by nobody. ` +
+    Object.entries(c0.by_line).map(([f, v]) => `${f} ${v.givers_in_world}/${v.givers}`).join(', '));
+
   // ---- C1 ---------------------------------------------------------------------------------
   const c1 = r.c1_earned;
   check('C1a_career_walk_reached_rank_7', c1.rank === 7, `derived rank ${c1.rank} at reputation ${c1.reputation}, ${c1.resolved}/${c1.attempted} resolutions applied`);
@@ -328,7 +358,7 @@ try {
   check('C4a_playing_the_line_wrote_a_standing_the_guard_reads', Object.keys(st).length > 0,
     `sim.stealth.p.standings after the walk = ${JSON.stringify(st)} (${c4.writes_to_standings_during_walk} harness pokes during the walk)`);
   const bands = (r.c4b || {}).bands || {};
-  const arr = (k) => bands[k] && (bands[k].arrest_at != null ? bands[k].arrest_at : (bands[k].arrestAt != null ? bands[k].arrestAt : null));
+  const arr = (k) => (bands[k] && bands[k].thresholds && bands[k].thresholds.arrest_at != null) ? bands[k].thresholds.arrest_at : null;
   const reachable = ['none', 'wet-ledger:1-2', 'wet-ledger:3+', 'xul-aneekh:1-3', 'xul-aneekh:4+'].map(arr).filter((x) => x != null);
   const all = Object.keys(bands).map(arr).filter((x) => x != null);
   const sp = (a) => (a.length ? Math.max(...a) / Math.min(...a) : 0);

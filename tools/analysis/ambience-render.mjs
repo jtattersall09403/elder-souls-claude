@@ -1,0 +1,504 @@
+#!/usr/bin/env node
+// RI-AUD03 — THE AUDIBILITY EVIDENCE. W1-22, `audio.ambience.region`.
+//
+// The whole reason this file exists rather than a bigger census: **an event count is not a
+// sound.** A previous round measured `audioMB 0` while eight of nine audio axes were scored by
+// reading identifier strings out of `regions.json`, and every one of those axes would have gone
+// on scoring green against a build that made no noise at all. Audio is unusually easy to fake a
+// green on, so the question this tool asks is deliberately the one a fake cannot answer:
+//
+//     *What does the waveform look like?*
+//
+// It launches ONE browser, drives the shipped engine, and for each of the thirteen regions:
+//
+//   W  the WORLD check. Teleport into the region, step the fixed loop, and read
+//      `getAmbienceState()`. This proves the DRIVER — that `Engine._afterStep()` asked
+//      `field.regionAt()` and the bed followed. Not the data: the running world.
+//   R  the RENDER. `ambienceCapture()` renders the bed offline through the same graph builder
+//      the live driver uses, and hands back real PCM.
+//   M  the MEASUREMENT. Node-side: gated K-weighted loudness (BS.1770-4), spectral centroid,
+//      and a 24-band log-spaced spectrum. Nothing here trusts a number the engine reported
+//      about itself; every figure is computed from samples.
+//
+// then, across the thirteen:
+//
+//   S  PAIRWISE SEPARATION over all 78 unordered pairs, from the spectra. This is a MACHINE
+//      proxy for RI-AUD03 B2, not B2 itself — B2 needs 78 fresh human/agent judges and is a
+//      critic's to run. It is reported as `separation_proxy` and must never be quoted as B2.
+//   C  THE CONTROL. Every L1 is replaced with one shared synth — RI-AUD03's own named failure,
+//      "one swamp loop" — and everything is re-measured. If separation does not collapse, the
+//      instrument is measuring nothing and its green is worthless.
+//   B  A BORDER CROSSING. Walk the player across a real region boundary and require the bed to
+//      change (RI-WLD12 M70).
+//   E  AN EMITTER TRANSECT. 200 m past the bell buoy: pan and gain must vary monotonically with
+//      bearing and distance (B6).
+//   P  THE PERTURBATION (RI-MTH07). Move one L1 partial in the DATA, re-render, and require the
+//      measured spectrum to move. This is the consumption demonstration: a bed nothing reads
+//      would render identically.
+//
+//   node tools/analysis/ambience-render.mjs [--seconds 6] [--out reports/...json] [--json]
+
+import { writeFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { launchGame } from '../lib/browser.mjs';
+import { parseArgs, wantsHelp, usage } from '../lib/cli.mjs';
+
+const USAGE = `
+ambience-render.mjs — render the thirteen regional beds to PCM and measure them.
+
+USAGE
+  node tools/analysis/ambience-render.mjs [--seconds <n>] [--rate <hz>] [--out <file>] [--json]
+
+Exit 0 = every gate passed. 1 = a gate failed. 2 = the build could not be driven.
+`;
+
+const args = parseArgs(process.argv.slice(2));
+if (wantsHelp(args)) { usage(USAGE); process.exit(0); }
+const SECONDS = Number(args.seconds || 6);
+const RATE = Number(args.rate || 16000);
+
+const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
+const regions = JSON.parse(readFileSync(join(ROOT, 'game/data/world/regions.json'), 'utf8')).regions;
+
+// ---- DSP, Node side -------------------------------------------------------------------------
+// Everything below operates on samples the browser handed back. None of it asks the engine what
+// it thinks it played.
+
+/** In-place iterative radix-2 FFT. `re`/`im` are Float64Array of length 2^k. */
+function fft(re, im) {
+  const n = re.length;
+  for (let i = 1, j = 0; i < n; i++) {
+    let bit = n >> 1;
+    for (; j & bit; bit >>= 1) j ^= bit;
+    j ^= bit;
+    if (i < j) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
+  }
+  for (let len = 2; len <= n; len <<= 1) {
+    const ang = -2 * Math.PI / len;
+    const wr = Math.cos(ang), wi = Math.sin(ang);
+    for (let i = 0; i < n; i += len) {
+      let cr = 1, ci = 0;
+      for (let k = 0; k < len / 2; k++) {
+        const ur = re[i + k], ui = im[i + k];
+        const vr = re[i + k + len / 2] * cr - im[i + k + len / 2] * ci;
+        const vi = re[i + k + len / 2] * ci + im[i + k + len / 2] * cr;
+        re[i + k] = ur + vr; im[i + k] = ui + vi;
+        re[i + k + len / 2] = ur - vr; im[i + k + len / 2] = ui - vi;
+        const ncr = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = ncr;
+      }
+    }
+  }
+}
+
+const NBANDS = 24;
+const FMIN = 40, FMAX = 8000;
+
+/**
+ * Average magnitude spectrum over Hann-windowed 2048-sample frames, folded into 24 log-spaced
+ * bands and normalised to unit sum. Normalisation is deliberate: it strips LEVEL out of the
+ * comparison, so two regions cannot be called "different" merely because one is louder. That is
+ * the mistake RI-AUD03 §C guards against by normalising the blind clips to −23 LUFS, and the
+ * machine proxy has to make it too or it measures the volume knob.
+ */
+function bandSpectrum(x, sampleRate) {
+  const N = 2048;
+  const bands = new Float64Array(NBANDS);
+  const win = new Float64Array(N);
+  for (let i = 0; i < N; i++) win[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / (N - 1));
+  const edges = [];
+  for (let b = 0; b <= NBANDS; b++) edges.push(FMIN * Math.pow(FMAX / FMIN, b / NBANDS));
+  let frames = 0;
+  for (let off = 0; off + N <= x.length; off += N) {
+    const re = new Float64Array(N), im = new Float64Array(N);
+    for (let i = 0; i < N; i++) re[i] = x[off + i] * win[i];
+    fft(re, im);
+    for (let k = 1; k < N / 2; k++) {
+      const f = k * sampleRate / N;
+      if (f < FMIN || f >= FMAX) continue;
+      const mag = Math.sqrt(re[k] * re[k] + im[k] * im[k]);
+      let b = Math.floor(NBANDS * Math.log(f / FMIN) / Math.log(FMAX / FMIN));
+      if (b < 0) b = 0; if (b >= NBANDS) b = NBANDS - 1;
+      bands[b] += mag;
+    }
+    frames++;
+  }
+  if (!frames) return { bands: Array.from(bands), centroid_hz: 0, frames: 0 };
+  let total = 0;
+  for (let b = 0; b < NBANDS; b++) total += bands[b];
+  let cent = 0;
+  if (total > 0) {
+    for (let b = 0; b < NBANDS; b++) {
+      const fc = Math.sqrt(edges[b] * edges[b + 1]);
+      cent += fc * bands[b] / total;
+      bands[b] /= total;
+    }
+  }
+  return { bands: Array.from(bands), centroid_hz: cent, frames };
+}
+
+/** Cosine distance between two normalised band spectra, in [0, 1]. */
+function specDistance(a, b) {
+  let dot = 0, na = 0, nb = 0;
+  for (let i = 0; i < a.length; i++) { dot += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i]; }
+  if (na === 0 || nb === 0) return 1;
+  return 1 - dot / Math.sqrt(na * nb);
+}
+
+/**
+ * ITU-R BS.1770-4 gated loudness, K-weighted. The two-stage K filter (a high-shelf and a
+ * high-pass), 400 ms blocks with 75% overlap, absolute gate at −70 LUFS then a relative gate
+ * 10 LU below the ungated mean. Coefficients are the standard's, retuned to the actual sample
+ * rate by bilinear-transform frequency warping so a 16 kHz render is not measured with 48 kHz
+ * coefficients — which would put the shelf in the wrong place and make every level wrong by a
+ * consistent amount that looks like a design choice.
+ */
+function lufsIntegrated(x, fs) {
+  const kw = kFilter(x, fs);
+  const block = Math.round(0.4 * fs), hop = Math.round(0.1 * fs);
+  const loud = [];
+  for (let off = 0; off + block <= kw.length; off += hop) {
+    let s = 0;
+    for (let i = 0; i < block; i++) s += kw[off + i] * kw[off + i];
+    const ms = s / block;
+    loud.push(ms > 0 ? -0.691 + 10 * Math.log10(ms) : -Infinity);
+  }
+  const abs = loud.filter((l) => l > -70);
+  if (!abs.length) return -Infinity;
+  const meanPow = (arr) => arr.reduce((a, l) => a + Math.pow(10, (l + 0.691) / 10), 0) / arr.length;
+  const ungated = -0.691 + 10 * Math.log10(meanPow(abs));
+  const rel = abs.filter((l) => l > ungated - 10);
+  if (!rel.length) return ungated;
+  return -0.691 + 10 * Math.log10(meanPow(rel));
+}
+
+function kFilter(x, fs) {
+  // Stage 1: high shelf, +4 dB at ~1681 Hz. Stage 2: high pass at ~38 Hz.
+  const y1 = biquadShelf(x, fs, 1681.97, 4.0, 1 / Math.sqrt(2));
+  return biquadHP(y1, fs, 38.13, 0.5);
+}
+function biquadShelf(x, fs, f0, gainDb, q) {
+  const A = Math.pow(10, gainDb / 40), w = 2 * Math.PI * f0 / fs;
+  const cw = Math.cos(w), sw = Math.sin(w), al = sw / (2 * q);
+  const b0 = A * ((A + 1) + (A - 1) * cw + 2 * Math.sqrt(A) * al);
+  const b1 = -2 * A * ((A - 1) + (A + 1) * cw);
+  const b2 = A * ((A + 1) + (A - 1) * cw - 2 * Math.sqrt(A) * al);
+  const a0 = (A + 1) - (A - 1) * cw + 2 * Math.sqrt(A) * al;
+  const a1 = 2 * ((A - 1) - (A + 1) * cw);
+  const a2 = (A + 1) - (A - 1) * cw - 2 * Math.sqrt(A) * al;
+  return runBiquad(x, b0 / a0, b1 / a0, b2 / a0, a1 / a0, a2 / a0);
+}
+function biquadHP(x, fs, f0, q) {
+  const w = 2 * Math.PI * f0 / fs, cw = Math.cos(w), sw = Math.sin(w), al = sw / (2 * q);
+  const b0 = (1 + cw) / 2, b1 = -(1 + cw), b2 = (1 + cw) / 2;
+  const a0 = 1 + al, a1 = -2 * cw, a2 = 1 - al;
+  return runBiquad(x, b0 / a0, b1 / a0, b2 / a0, a1 / a0, a2 / a0);
+}
+function runBiquad(x, b0, b1, b2, a1, a2) {
+  const y = new Float64Array(x.length);
+  let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+  for (let i = 0; i < x.length; i++) {
+    const v = b0 * x[i] + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2;
+    x2 = x1; x1 = x[i]; y2 = y1; y1 = v; y[i] = v;
+  }
+  return y;
+}
+
+function mono(cap) {
+  const n = cap.L.length;
+  const m = new Float64Array(n);
+  for (let i = 0; i < n; i++) m[i] = 0.5 * (cap.L[i] + cap.R[i]);
+  return m;
+}
+function peak(a) { let p = 0; for (let i = 0; i < a.length; i++) p = Math.max(p, Math.abs(a[i])); return p; }
+
+// ---- drive the build ---------------------------------------------------------------------------
+const out = { tool: 'tools/analysis/ambience-render.mjs', seconds: SECONDS, sample_rate: RATE, gates: {}, regions: {}, notes: [] };
+let handle;
+let exitCode = 0;
+
+try {
+  handle = await launchGame({ ...args, width: 320, height: 240 });
+  const page = handle.page;
+  const pageErrors = [];
+  page.on('pageerror', (e) => pageErrors.push(String(e).slice(0, 300)));
+  const up = await page.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 }).then(() => true).catch(() => false);
+  if (!up) { console.error('ambience-render: the game did not boot.'); process.exit(2); }
+
+  // Rendering off for everything except nothing — we take no screenshots. AGENT-PROTOCOL:
+  // a stepping loop that renders is the single most expensive thing in this project.
+  await page.evaluate(() => window.__HARNESS.setRenderRate(0));
+
+  const surfaces = await page.evaluate(() => ['getAmbienceState', 'ambienceCapture', 'ambienceLog', 'ambienceEmitters']
+    .map((k) => [k, typeof window.__HARNESS[k]]));
+  out.harness_surfaces = Object.fromEntries(surfaces);
+  if (surfaces.some(([, t]) => t !== 'function')) {
+    console.error('ambience-render: harness surfaces missing:', JSON.stringify(out.harness_surfaces));
+    process.exit(2);
+  }
+
+  // ---- W + R + M ------------------------------------------------------------------------------
+  for (const r of regions) {
+    const world = await page.evaluate(async ({ x, z }) => {
+      const H = window.__HARNESS;
+      H.setTimeOfDay(13);
+      H.teleport(x, z, {});
+      H.stepFrames(120);
+      const s = H.getAmbienceState();
+      return { region: s.region, layers: s.layers, denies: s.denies, voices_peak: s.voices_peak,
+               over_cap: s.over_cap, events: s.events, context: s.context, suppressed: s.suppressed,
+               crossfade: s.crossfade, target: s.bed_lufs_target };
+    }, { x: r.centroid_m[0], z: r.centroid_m[1] });
+
+    const cap = await page.evaluate(async ({ id, seconds, rate }) =>
+      window.__HARNESS.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day' }),
+    { id: r.id, seconds: SECONDS, rate: RATE });
+
+    if (!cap || !cap.ok) {
+      out.regions[r.id] = { world, capture: cap || { ok: false }, error: 'capture failed' };
+      exitCode = 1;
+      continue;
+    }
+    const m = mono(cap);
+    const spec = bandSpectrum(m, cap.sampleRate);
+    out.regions[r.id] = {
+      world_region_from_field: world.region,
+      driver_followed: world.region === r.id,
+      layers: world.layers,
+      voices_peak: world.voices_peak,
+      over_voice_cap: world.over_cap,
+      samples: m.length,
+      peak: +peak(m).toFixed(5),
+      silent: peak(m) < 1e-4,
+      lufs_i: +lufsIntegrated(m, cap.sampleRate).toFixed(2),
+      lufs_target: cap.bed_lufs_target,
+      centroid_hz: +spec.centroid_hz.toFixed(1),
+      events_fired: cap.fired.length,
+      key: cap.key,
+      _bands: spec.bands,
+    };
+  }
+
+  const ids = regions.map((r) => r.id).filter((id) => out.regions[id] && out.regions[id]._bands);
+
+  // GATE 1 — the driver followed the world into every region.
+  const followed = ids.filter((id) => out.regions[id].driver_followed);
+  out.gates.G1_driver_followed = { pass: followed.length === regions.length, value: `${followed.length}/${regions.length}`,
+    what: 'Engine._afterStep() -> field.regionAt() -> AmbienceDriver picked up the region the player stands in' };
+
+  // GATE 2 — every region makes a sound. This is the one that could not have passed yesterday.
+  const audible = ids.filter((id) => !out.regions[id].silent);
+  out.gates.G2_audible = { pass: audible.length === regions.length, value: `${audible.length}/${regions.length}`,
+    what: 'peak sample amplitude > 1e-4 in the rendered PCM. Not an event count: a waveform.' };
+
+  // GATE 3 — thirteen different sounds (the machine proxy for B2).
+  const pairs = [];
+  for (let i = 0; i < ids.length; i++) {
+    for (let j = i + 1; j < ids.length; j++) {
+      pairs.push({ a: ids[i], b: ids[j], d: +specDistance(out.regions[ids[i]]._bands, out.regions[ids[j]]._bands).toFixed(4) });
+    }
+  }
+  pairs.sort((p, q) => p.d - q.d);
+  const SEP = 0.15;
+  const sep = pairs.filter((p) => p.d >= SEP).length / pairs.length;
+  out.pairs_total = pairs.length;
+  out.closest_pairs = pairs.slice(0, 5);
+  out.gates.G3_separation_proxy = { pass: sep >= 0.80, value: +sep.toFixed(3), threshold: 0.80,
+    what: `fraction of the ${pairs.length} unordered region pairs whose LEVEL-NORMALISED 24-band spectra differ by cosine distance >= ${SEP}`,
+    caveat: 'A MACHINE PROXY FOR RI-AUD03 B2, NOT B2. B2 is 78 fresh judges answering SAME/DIFFERENT and is a critic\'s to run. Never quote this number as B2.' };
+
+  // GATE 4 — bed level inside §A's band (B5's own check, on real loudness).
+  const inBand = ids.filter((id) => {
+    const r = out.regions[id], t = r.lufs_target;
+    return r.lufs_i >= t - 4 && r.lufs_i <= t + 4;
+  });
+  out.gates.G4_level = { pass: inBand.length >= 11, value: `${inBand.length}/${ids.length}`, threshold: '>=11',
+    what: 'gated K-weighted LUFS-I within +/-4 LU of the bed\'s declared target',
+    caveat: 'The +/-4 LU tolerance is W1-22\'s, not RI-AUD03\'s. B5 asks for absolute -28..-24; that is a MIX calibration against a real output chain, and this build has no master bus, no combat audio to leave headroom for, and no monitoring. Reporting a calibrated absolute figure here would be inventing a mix. What is checked instead is that each bed lands where its own data says it should — which is the part that is knowable today.' };
+
+  // ---- C: THE CONTROL -------------------------------------------------------------------------
+  // RI-AUD03's own first-named failure: one swamp loop. Replace every L1 with a single shared
+  // synth, re-render, re-measure. If G3 does not collapse, G3 is not measuring what it claims.
+  const ctlSpecs = await page.evaluate(async ({ seconds, rate }) => {
+    const E = window.__ENGINE;
+    const beds = E.ambience.beds;
+    const ids = Object.keys(beds);
+    const shared = JSON.parse(JSON.stringify(beds[ids[0]].layers.L1));
+    shared.id = 'swamp_amb_loop';
+    const saved = {};
+    for (const id of ids) { saved[id] = beds[id].layers.L1; beds[id].layers.L1 = JSON.parse(JSON.stringify(shared)); }
+    const caps = {};
+    for (const id of ids) {
+      const c = await E.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day' });
+      caps[id] = c.ok ? { L: c.L, R: c.R, sampleRate: c.sampleRate } : null;
+    }
+    for (const id of ids) beds[id].layers.L1 = saved[id];
+    return caps;
+  }, { seconds: SECONDS, rate: RATE });
+
+  const ctlBands = {};
+  for (const [id, c] of Object.entries(ctlSpecs)) {
+    if (!c) continue;
+    const m = new Float64Array(c.L.length);
+    for (let i = 0; i < m.length; i++) m[i] = 0.5 * (c.L[i] + c.R[i]);
+    ctlBands[id] = bandSpectrum(m, c.sampleRate).bands;
+  }
+  const cIds = Object.keys(ctlBands);
+  let cPairs = 0, cSep = 0;
+  for (let i = 0; i < cIds.length; i++) {
+    for (let j = i + 1; j < cIds.length; j++) {
+      cPairs++;
+      if (specDistance(ctlBands[cIds[i]], ctlBands[cIds[j]]) >= SEP) cSep++;
+    }
+  }
+  const ctlSep = cPairs ? cSep / cPairs : 1;
+  out.control_one_swamp_loop = { separation_proxy: +ctlSep.toFixed(3), pairs: cPairs };
+  out.gates.G5_control_collapses = { pass: ctlSep < sep - 0.15, value: +ctlSep.toFixed(3),
+    what: 'with every L1 forced to one shared asset, separation must COLLAPSE. If it does not, G3 is not measuring region identity and its green means nothing.',
+    live_value: +sep.toFixed(3) };
+
+  // ---- B: a real border crossing --------------------------------------------------------------
+  const border = await page.evaluate(async () => {
+    const H = window.__HARNESS, E = window.__ENGINE, f = E.field;
+    // Find a genuine boundary by sampling along a line between two region centroids.
+    const A = E.data.regions.regions.find((r) => r.id === 'stone-forest');
+    const B = E.data.regions.regions.find((r) => r.id === 'valus-ridge');
+    if (!A || !B) return { ok: false, why: 'regions missing' };
+    let cross = null;
+    const steps = 400;
+    for (let i = 1; i <= steps; i++) {
+      const t0 = (i - 1) / steps, t1 = i / steps;
+      const p0 = [A.centroid_m[0] + (B.centroid_m[0] - A.centroid_m[0]) * t0, A.centroid_m[1] + (B.centroid_m[1] - A.centroid_m[1]) * t0];
+      const p1 = [A.centroid_m[0] + (B.centroid_m[0] - A.centroid_m[0]) * t1, A.centroid_m[1] + (B.centroid_m[1] - A.centroid_m[1]) * t1];
+      const r0 = f.regionAt(p0[0], p0[1]), r1 = f.regionAt(p1[0], p1[1]);
+      if (r0 && r1 && r0.id !== r1.id) { cross = { p0, p1, from: r0.id, to: r1.id }; break; }
+    }
+    if (!cross) return { ok: false, why: 'no boundary found on the transect' };
+    H.teleport(cross.p0[0], cross.p0[1], {});
+    H.stepFrames(60);
+    const before = H.getAmbienceState();
+    H.teleport(cross.p1[0], cross.p1[1], {});
+    H.stepFrames(1);
+    const after = H.getAmbienceState();
+    const log = H.ambienceLog(40).filter((e) => e.type === 'region_change');
+    return { ok: true, cross, before: { region: before.region, L1: before.layers && before.layers.L1, crossfade: before.crossfade },
+             after: { region: after.region, L1: after.layers && after.layers.L1, crossfade: after.crossfade },
+             region_change_events: log.length, last_event: log[log.length - 1] || null };
+  });
+  out.border_crossing = border;
+  out.gates.G6_border = {
+    pass: !!(border.ok && border.before.region !== border.after.region && border.before.L1 !== border.after.L1
+             && border.after.crossfade < 1),
+    what: 'RI-WLD12 M70: the bed changes at a border. Requires a DIFFERENT L1 on the far side and a crossfade in progress, not merely a different region name.',
+  };
+
+  // ---- E: the emitter transect (B6) ------------------------------------------------------------
+  const transect = await page.evaluate(() => {
+    const H = window.__HARNESS;
+    // Walk east past the bell buoy at (398, 4486), facing north, from 300 m west to 300 m east.
+    const rows = [];
+    for (let d = -300; d <= 300; d += 20) {
+      const r = H.ambienceEmitters(398 + d, 4486, 0, 'marauders-coast');
+      const e = r.emitters.find((x) => x.id === 'bell_buoy');
+      rows.push({ x: 398 + d, distance_m: e ? +e.distance_m.toFixed(1) : null,
+                  pan: e ? +e.pan.toFixed(4) : null, gain: e ? +e.gain.toFixed(4) : null, audible: e ? e.audible : false });
+    }
+    // And a turn on the spot 200 m west: the bell must sweep across the stereo field.
+    const turn = [];
+    for (let yaw = 0; yaw < 360; yaw += 45) {
+      const r = H.ambienceEmitters(198, 4486, yaw, 'marauders-coast');
+      const e = r.emitters.find((x) => x.id === 'bell_buoy');
+      turn.push({ yaw, pan: e ? +e.pan.toFixed(3) : null });
+    }
+    // Out of range: 800 m away, beyond the 600 m cutoff.
+    const far = H.ambienceEmitters(398 - 800, 4486, 0, 'marauders-coast').emitters.find((x) => x.id === 'bell_buoy');
+    return { rows, turn, far_audible: far ? far.audible : null };
+  });
+  out.emitter_transect = transect;
+  {
+    const rows = transect.rows.filter((r) => r.audible);
+    // Pan must cross zero exactly once and be monotonically increasing as we pass west→east.
+    let mono = true;
+    for (let i = 1; i < rows.length; i++) if (rows[i].pan < rows[i - 1].pan - 1e-9) mono = false;
+    const gainsRise = rows.length > 2 && Math.max(...rows.map((r) => r.gain)) > 4 * Math.min(...rows.map((r) => r.gain));
+    const sweeps = new Set(transect.turn.map((t) => Math.sign(t.pan))).size >= 2;
+    out.gates.G7_emitter = { pass: mono && gainsRise && sweeps && transect.far_audible === false,
+      pan_monotonic_along_transect: mono, gain_varies_with_distance: gainsRise,
+      pan_sweeps_when_the_player_turns: sweeps, silent_beyond_audible_m: transect.far_audible === false,
+      what: 'RI-AUD03 B6 / R7. A landmark you can steer by must move across the stereo field as you pass it AND as you turn your head, and must stop at its stated range.' };
+  }
+
+  // ---- P: THE PERTURBATION (RI-MTH07) ----------------------------------------------------------
+  // Move ONE number in ONE bed and require the rendered spectrum to move. A bed that nothing
+  // reads renders identically no matter what the data says — which is the exact defect
+  // fourteen subsystems in this build have shipped.
+  const perturb = await page.evaluate(async ({ seconds, rate }) => {
+    const E = window.__ENGINE;
+    const bed = E.ambience.beds['valus-ridge'];
+    const before = await E.ambienceCapture({ region: 'valus-ridge', seconds, sampleRate: rate, tod: 'day' });
+    const saved = JSON.parse(JSON.stringify(bed.layers.L1.synth.partials_hz));
+    bed.layers.L1.synth.partials_hz = saved.map((f) => f * 3);   // up an octave and a fifth
+    const after = await E.ambienceCapture({ region: 'valus-ridge', seconds, sampleRate: rate, tod: 'day' });
+    bed.layers.L1.synth.partials_hz = saved;
+    const restored = await E.ambienceCapture({ region: 'valus-ridge', seconds, sampleRate: rate, tod: 'day' });
+    return {
+      before: { L: before.L, R: before.R, sampleRate: before.sampleRate },
+      after: { L: after.L, R: after.R, sampleRate: after.sampleRate },
+      restored: { L: restored.L, R: restored.R, sampleRate: restored.sampleRate },
+      from: saved, to: saved.map((f) => f * 3),
+    };
+  }, { seconds: SECONDS, rate: RATE });
+
+  const pm = (c) => { const m = new Float64Array(c.L.length); for (let i = 0; i < m.length; i++) m[i] = 0.5 * (c.L[i] + c.R[i]); return m; };
+  const sBefore = bandSpectrum(pm(perturb.before), perturb.before.sampleRate);
+  const sAfter = bandSpectrum(pm(perturb.after), perturb.after.sampleRate);
+  const sRestored = bandSpectrum(pm(perturb.restored), perturb.restored.sampleRate);
+  out.perturbation = {
+    region: 'valus-ridge', layer: 'L1', field: 'synth.partials_hz',
+    from_hz: perturb.from, to_hz: perturb.to,
+    centroid_before_hz: +sBefore.centroid_hz.toFixed(1),
+    centroid_after_hz: +sAfter.centroid_hz.toFixed(1),
+    centroid_restored_hz: +sRestored.centroid_hz.toFixed(1),
+    spectral_distance_before_after: +specDistance(sBefore.bands, sAfter.bands).toFixed(4),
+    spectral_distance_before_restored: +specDistance(sBefore.bands, sRestored.bands).toFixed(6),
+  };
+  out.gates.G8_consumption = {
+    pass: out.perturbation.spectral_distance_before_after > 0.05
+          && out.perturbation.spectral_distance_before_restored < 1e-6,
+    what: 'RI-MTH07. Tripling one L1\'s partials must move the rendered spectrum, and restoring them must return it EXACTLY. The second half is what rules out a coincidence: a render that is not a function of the data cannot come back to the same place.',
+  };
+
+  out.page_errors = pageErrors;
+  const failed = Object.entries(out.gates).filter(([, g]) => !g.pass).map(([k]) => k);
+  out.pass = failed.length === 0;
+  out.failed_gates = failed;
+  if (failed.length) exitCode = 1;
+} catch (e) {
+  out.error = String(e && e.stack || e).slice(0, 1200);
+  exitCode = 2;
+} finally {
+  if (handle) await handle.close().catch(() => {});
+}
+
+// Drop the raw band arrays from the printed report; they are noise for a reader.
+const printable = JSON.parse(JSON.stringify(out));
+for (const r of Object.values(printable.regions || {})) delete r._bands;
+
+if (args.out) {
+  mkdirSync(dirname(join(ROOT, String(args.out))), { recursive: true });
+  writeFileSync(join(ROOT, String(args.out)), JSON.stringify(printable, null, 2) + '\n');
+}
+if (args.json) console.log(JSON.stringify(printable, null, 2));
+else {
+  console.log(`ambience-render: ${SECONDS}s per region at ${RATE} Hz`);
+  for (const [id, r] of Object.entries(printable.regions || {})) {
+    console.log(`  ${id.padEnd(20)} peak ${String(r.peak).padStart(8)}  LUFS-I ${String(r.lufs_i).padStart(7)} (target ${r.lufs_target})  centroid ${String(r.centroid_hz).padStart(7)} Hz  events ${r.events_fired}  driver:${r.driver_followed ? 'ok' : 'MISSED'}`);
+  }
+  console.log('');
+  for (const [k, g] of Object.entries(printable.gates || {})) {
+    console.log(`  ${g.pass ? 'PASS' : 'FAIL'} ${k}  ${g.value !== undefined ? g.value : ''}`);
+  }
+  if (printable.error) console.log(`  ERROR ${printable.error}`);
+  console.log(`  => ${printable.pass ? 'PASS' : 'FAIL'}${printable.failed_gates && printable.failed_gates.length ? ' (' + printable.failed_gates.join(', ') + ')' : ''}`);
+}
+process.exit(exitCode);

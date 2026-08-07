@@ -113,8 +113,12 @@ export function countExclamations(t) { return (t.match(/!/g) || []).length; }
 // Morrowind writes epigrams at the same rate we do and slightly more of them in its books. Gating
 // on it would have driven a rewrite that made the prose worse and moved nothing. The separator is
 // not wit; it is the habit of appending an interpretation to a fact.
-export const STING_OPENERS = /^(which|that is|that was|and that|but that|nor that|not that|only that|all of it|nobody|no one|none of)\b/i;
-export const STING_TRAILING = /,\s*(which|and that|but that)\b/i;
+// NOTE THE CONTRACTED FORMS. The first version of these matched `That is` and not `That's`, so
+// running a contraction sweep over the corpus would have HIDDEN stings from the sting cap while
+// changing nothing a reader sees — the exact "same fingerprint in a hat" move round 1 spent its
+// whole run arguing against, arriving this time through the instrument instead of the prose.
+export const STING_OPENERS = /^(which|that(['’]s| is| was)|and that|but that|nor that|not that|only that|all of it|nobody|no one|none of)\b/i;
+export const STING_TRAILING = /,\s*(which|and that|but that)(['’]s|\b)/i;
 export const STING_RECAST = /\bwhich is (how|why|what|the|exactly|not)\b/i;
 
 export function stingKinds(text) {
