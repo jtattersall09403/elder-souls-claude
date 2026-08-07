@@ -54,7 +54,7 @@ sorts the disagreements under W1-23's ruling; §5 is what happens to the provinc
 | **Miredancers** | *Gee-Rusleel* | The Eastern Rootlands | Lilmoth |
 | **Dead-Water** | *Naga-Kur* | The Thornmarsh and the Hive | Thorn |
 
-### Why not invent
+#### Why not invent
 
 The brief's instruction was *do not invent a people the world has never implied*, and the honest
 finding of the research is that **there was nothing left to invent.** Canon names far more Argonian
@@ -69,7 +69,7 @@ line in each entry: the diet, the taboo, the position on the Empire, the positio
 took Imperial names, and the thing each people will not do. CF-034 says in as many words that canon
 gives no tribal politics for 3E 427. That is the invention space, and it is where all the work is.
 
-### Why six, and not twelve
+#### Why six, and not twelve
 
 `W1-23`'s registry report ruled against scattering tribe names as texture: *"four bodies a player
 can tell apart beat nine tribe names they cannot… If tribes are wanted, they need a faction each,
@@ -81,7 +81,7 @@ book does not enumerate the tribes, it says the count is beyond enumeration and 
 So our books say the same. An Agaceph guide who is asked how many peoples there are gives a number
 that does not agree with the Miredancer's number, and neither is corrected.
 
-### The canon names deliberately not used, and why
+#### The canon names deliberately not used, and why
 
 Recording these so the next agent does not read the omission as an oversight.
 
@@ -94,7 +94,7 @@ Recording these so the next agent does not read the omission as an oversight.
 | **Ghost People** (*Veeskhleel*), **Root-House People** (*Tum-Taleel*) | Canon, Murkmire. | Both are *known chiefly by rumour* in their own source; the Drowned Court and the river-bands already carry those two functions. Left on the table on purpose — they are the obvious wave-2 additions. |
 | **Shoss-kaleel**, **Horwalli**, **Orma**, **Yespest** | Canon, one mention each. | One mention in the source is not enough to differentiate on, and differentiating on nothing is how a tribe becomes a hat. |
 
-### The era note, taken seriously
+#### The era note, taken seriously
 
 Four of the six are named in ESO material set in 2E 582 — a hundred and eighty decades before our
 3E 427. Tribes are not institutions and do not need continuity of leadership to persist; what needs
@@ -106,14 +106,14 @@ Their specific 2E chieftains are not. Nothing in this file names a person canon 
 
 ---
 
-## 2. The six, differentiated
+### 2. The six, differentiated
 
 Each entry runs the same five columns, and the five columns are the Ashlander test: **what they eat,
 what they do about the tree, what they do about the Empire, what they think of Argonians with
 Imperial names, and what they will not do.** If two peoples answer any three of those the same way,
 one of them is decoration.
 
-### 2.1 The Agacephs — the Deep Marshes
+#### 2.1 The Agacephs — the Deep Marshes
 
 **Canon** (*The Argonian Account, Book 4*): an interior people of many bright colours and long
 needle-like faces, living near the Hist, "finding little in the outside world worth seeing." They
@@ -133,7 +133,7 @@ came for.
 - **Faces:** the four bodies. The Agacephs are the largest single voice inside the Xul-Aneekh
   consensus and the most reluctant member of it.
 
-### 2.2 The Paatru — the Clay Moor
+#### 2.2 The Paatru — the Clay Moor
 
 **Canon** (*The Argonian Account, Book 4*): "the toad-like Paatru," interior, named among the
 peoples who "would have killed him on the spot."
@@ -159,7 +159,7 @@ the year.
 - **Faces:** nothing. The Paatru are in no body and no consensus, and the Xul-Aneekh count them
   anyway, which the Paatru have not been asked about.
 
-### 2.3 The Sarpa — the Stone Forest
+#### 2.3 The Sarpa — the Stone Forest
 
 **Canon** (*The Argonian Account, Book 4*): "the winged Sarpa," interior, hostile to strangers.
 
@@ -178,7 +178,7 @@ the year.
   claim in this province about the shape of the deep past that is not a guess is a Sarpa claim, and
   the Sarpa are hostile, illiterate by choice, and asked about it roughly once a generation.
 
-### 2.4 The Archein — Blackwood, and the estates east of Gideon
+#### 2.4 The Archein — Blackwood, and the estates east of Gideon
 
 **Canon**, and the most useful thing found in the research. The Pocket Guide 3rd edition: Imperials
 rule the coastal cities "but most have native Argonians as advisors. These Archeins also act as
@@ -210,7 +210,7 @@ in his own yard, and there is no arm's length left anywhere.
   directly, and holds that this distinction is the whole of his honour. It is the most Morrowind
   sentence in the province and it is the one that should make a player put the book down.
 
-### 2.5 The Miredancers — *Gee-Rusleel*, the Eastern Rootlands
+#### 2.5 The Miredancers — *Gee-Rusleel*, the Eastern Rootlands
 
 **Canon** (*Tribes of Murkmire: Miredancers*): the most introspective and most pleasant Argonians the
 surveyor met; artisans in Hist amber and eggshell; peerless navigators and cartographers; obsessive
@@ -238,7 +238,7 @@ Everything in that paragraph is carried forward. What is ours is what the office
   Rootward Tide failing is an argument between institutions everywhere else in this build. Here it is
   a person with a stained mouth walking towards a hole.
 
-### 2.6 The Dead-Water — *Naga-Kur*, the Thornmarsh and the Hive
+#### 2.6 The Dead-Water — *Naga-Kur*, the Thornmarsh and the Hive
 
 **Canon** (*Tribes of Murkmire: The Dead-Water Tribe*): a Naga tribe controlling vast tracts of
 country, greatly feared by the villages around them, who "fight all the days of their lives" and
@@ -262,7 +262,7 @@ guide Reelus explains it, "this lets them fight after death too."
 
 ---
 
-## 3. The structural claim: the Xul-Aneekh is a consensus **of** peoples, not a people
+### 3. The structural claim: the Xul-Aneekh is a consensus **of** peoples, not a people
 
 RI-LOR02 already says the Deep-Kin are "rootkeepers and their war-broods; not a government, a
 consensus." Until now there was nothing for it to be a consensus **of**, so it read as a faction
@@ -292,14 +292,14 @@ should learn by being told no.
 
 ---
 
-## 4. What they disagree about — and the ruling that sorts it
+### 4. What they disagree about — and the ruling that sorts it
 
 Binding, from W1-23, and applied to every candidate below before it was written:
 
 > **A contradiction is a disagreement about what IS THE CASE. A disagreement about what is WORTH
 > DOING is an argument, and the province should be full of them.**
 
-### 4.1 Registered as disputes — six new entries, CF-D022 … CF-D027
+#### 4.1 Registered as disputes — six new entries, CF-D022 … CF-D027
 
 Each one is a question with an answer, on which real shipped people give incompatible answers, none
 corrected. Full schema in `corpus/60-lore/data/canon-facts.json`.
@@ -329,7 +329,7 @@ argued by three peoples each, and — this is the part that matters — **checka
 walks a walkway and looks at what wore it.** A dispute the player can settle for himself is texture.
 A dispute about a date he can never reach is a typo with a schema.
 
-### 4.2 Written as arguments — deliberately **not** registered
+#### 4.2 Written as arguments — deliberately **not** registered
 
 Every one of these was a candidate dispute and was rejected under the ruling. They are written into
 books and dialogue as arguments, with heat, and no registry entry, because there is no fact under
@@ -351,7 +351,7 @@ them.
 
 ---
 
-## 5. The lease, and whose word it is
+### 5. The lease, and whose word it is
 
 The measured ratio was fifty to one and the build's vocabulary was the Provincial Office's. After
 this file the word *lease* is still the most common word in the province for the thing, and three

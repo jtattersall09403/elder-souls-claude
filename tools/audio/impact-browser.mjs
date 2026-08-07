@@ -202,8 +202,198 @@ try {
   };
   console.log(`P2 M3 ladder: ${report.phases.P2_ladder_M3.rows_in_tolerance}/${ladder.length} rows within ±3 dB, worst ${report.phases.P2_ladder_M3.worst_err_db} dB, whiff ${whiffRel && whiffRel.measured_rel_db} dB vs C01`);
   save();
+  // ── P3 ─ consumption (RI-MTH07) ────────────────────────────────────────────────────────────
+  //
+  // "Perturb and watch an entity change behaviour." The behaviour of an audio driver is the
+  // voice it asks for, so the perturbation is the WORLD, not the driver: the same player, the
+  // same input script, the same frame — against enemies made of different stuff, and against an
+  // enemy moved out of reach. If the class does not move when the world moves, nothing in the
+  // running game is reading the material.
+  report.phases.P3_consume = await page.evaluate(({ mats }) => {
+    const H = window.__HARNESS;
+    const runOne = (spawnId, z) => {
+      H.setSeed(1337); H.loadState('arena_duel'); H.stepFrames(4);
+      for (const e of H.listEntities()) if (e.kind === 'enemy') H.despawn(e.eid);
+      // `spawn()` returns the eid as a plain STRING; naming it explicitly removes the guess.
+      const eid = H.spawn(spawnId, 0, z, { as: 'AUD' });
+      H.stepFrames(2);
+      const from = H.audioLog().length;
+      for (let k = 0; k < 8; k++) {
+        H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] }]);
+        H.stepFrames(46);
+        // keep the target pinned: this phase is about MATERIAL, not steering
+        H.setEntityPos(eid, 0, z);
+      }
+      const rows = H.audioLog().slice(from);
+      const classes = {};
+      for (const r of rows) classes[r.class] = (classes[r.class] || 0) + 1;
+      return { spawnId, z, voices: rows.length, classes, materials: [...new Set(rows.map((r) => r.material).filter(Boolean))] };
+    };
+    const out = { in_reach: [], out_of_reach: null };
+    for (const m of mats) { try { out.in_reach.push(runOne(m, 1.4)); } catch (e) { out.in_reach.push({ spawnId: m, error: String(e.message || e) }); } }
+    try { out.out_of_reach = runOne(mats[0], 6.0); } catch (e) { out.out_of_reach = { error: String(e.message || e) }; }
+    return out;
+  }, { mats: ['mat_flesh', 'mat_chitin', 'mat_stone', 'mat_metal'] });
+  {
+    const ir = report.phases.P3_consume.in_reach.filter((r) => !r.error);
+    const distinct = new Set(ir.map((r) => Object.keys(r.classes).filter((c) => c !== 'whiff').sort().join('+')));
+    report.phases.P3_consume.distinct_hit_class_sets = [...distinct];
+    report.phases.P3_consume.material_changes_the_voice = distinct.size > 1;
+    const oor = report.phases.P3_consume.out_of_reach;
+    report.phases.P3_consume.reach_changes_the_voice =
+      !!(oor && oor.classes && Object.keys(oor.classes).length === 1 && oor.classes.whiff);
+  }
+  console.log('P3 consume:', JSON.stringify({
+    sets: report.phases.P3_consume.distinct_hit_class_sets,
+    material_changes_the_voice: report.phases.P3_consume.material_changes_the_voice,
+    reach_changes_the_voice: report.phases.P3_consume.reach_changes_the_voice,
+  }));
+  save();
+
+  // ── P4 ─ M6 spatialisation, WITH A MOVING TARGET ──────────────────────────────────────────
+  //
+  // AGENT-PROTOCOL: "A still target hides every steering defect… A control that cannot exhibit
+  // the failure is not a control." So this runs the SAME script twice: once with the enemy
+  // orbiting the player through the swing arc, once with it parked dead ahead. The still run is
+  // not the measurement — it is the demonstration that the moving run is the one that can fail.
+  //
+  // The bearing is taken from the WORLD (the enemy's own position on the frame the voice was
+  // decided on), never from the audio row, so the correlation is a join between two independent
+  // streams rather than a restatement of one.
+  const panRun = async (moving) => page.evaluate((mv) => {
+    const H = window.__HARNESS;
+    H.setSeed(1337); H.loadState('arena_duel'); H.stepFrames(4);
+    for (const e of H.listEntities()) if (e.kind === 'enemy') H.despawn(e.eid);
+    const eid = H.spawn('mat_flesh', 0, 1.4, { as: 'AUD' });
+    const R = 1.4;
+    const from = H.audioLog().length;
+    const world = [];              // independent stream: where the enemy actually was, per frame
+    let theta = -50;
+    for (let k = 0; k < 26; k++) {
+      H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] }]);
+      for (let f = 0; f < 46; f++) {
+        if (mv) { theta += 0.9; if (theta > 50) theta = -50; }
+        const rad = (theta * Math.PI) / 180;
+        H.setEntityPos(eid, R * Math.sin(rad), R * Math.cos(rad));
+        H.stepFrames(1);
+        const cs = H.getCombatState();
+        world.push({ frame: cs.frame, ex: R * Math.sin(rad), ez: R * Math.cos(rad), px: cs.player.pos[0], pz: cs.player.pos[2], pyaw: cs.player.yaw, theta });
+      }
+    }
+    const rows = H.audioLog().slice(from);
+    return { rows, world, moving: mv };
+  }, moving);
+
+  const pearson = (xs, ys) => {
+    const n = xs.length; if (n < 2) return null;
+    const mx = xs.reduce((a, b) => a + b, 0) / n, my = ys.reduce((a, b) => a + b, 0) / n;
+    let sxy = 0, sxx = 0, syy = 0;
+    for (let i = 0; i < n; i++) { const a = xs[i] - mx, b = ys[i] - my; sxy += a * b; sxx += a * a; syy += b * b; }
+    if (sxx === 0 || syy === 0) return null;     // a constant series has no correlation at all
+    return sxy / Math.sqrt(sxx * syy);
+  };
+  const analysePan = (r) => {
+    const byFrame = new Map(r.world.map((w) => [w.frame, w]));
+    const pts = [];
+    for (const row of r.rows) {
+      if (row.class === 'whiff') continue;             // no victim, no impact point
+      const w = byFrame.get(row.frame);
+      if (!w) continue;
+      let rel = (Math.atan2(w.ex - w.px, w.ez - w.pz) * 180) / Math.PI - w.pyaw;
+      while (rel > 180) rel -= 360;
+      while (rel < -180) rel += 360;
+      pts.push({ frame: row.frame, cls: row.class, pan: row.pan, dist: row.distance_m, bearing_deg: +rel.toFixed(2), sinb: Math.sin((rel * Math.PI) / 180) });
+    }
+    const pans = pts.map((p) => p.pan);
+    return {
+      impacts: pts.length,
+      bearing_spread_deg: pts.length ? +(Math.max(...pts.map((p) => p.bearing_deg)) - Math.min(...pts.map((p) => p.bearing_deg))).toFixed(1) : 0,
+      pan_distinct: new Set(pans.map((p) => p.toFixed(4))).size,
+      pan_nonzero: pans.filter((p) => Math.abs(p) > 1e-6).length,
+      pan_min: pans.length ? Math.min(...pans) : null,
+      pan_max: pans.length ? Math.max(...pans) : null,
+      distance_m_max: pts.length ? Math.max(...pts.map((p) => p.dist)) : null,
+      r_pan_vs_sin_bearing: (() => { const v = pearson(pts.map((p) => p.sinb), pans); return v === null ? null : +v.toFixed(4); })(),
+      sample: pts.slice(0, 8),
+    };
+  };
+  const mvRun = await panRun(true);
+  const stRun = await panRun(false);
+  report.phases.P4_pan_M6 = {
+    moving: analysePan(mvRun),
+    still_control: analysePan(stRun),
+  };
+  {
+    const m = report.phases.P4_pan_M6.moving, s = report.phases.P4_pan_M6.still_control;
+    report.phases.P4_pan_M6.M6 = (m.r_pan_vs_sin_bearing !== null && m.r_pan_vs_sin_bearing >= 0.8) ? 'PASS' : 'FAIL';
+    // The point of the control: with the target parked, pan is a CONSTANT, Pearson r is
+    // undefined, and a panner hard-wired to 0 is indistinguishable from a correct one.
+    report.phases.P4_pan_M6.still_control_is_degenerate =
+      s.pan_distinct <= 1 && s.r_pan_vs_sin_bearing === null;
+  }
+  console.log('P4 M6:', JSON.stringify(report.phases.P4_pan_M6.moving), '\n   still control:', JSON.stringify(report.phases.P4_pan_M6.still_control));
+  save();
+
+  // ── P5 ─ the sabotage, in the browser ─────────────────────────────────────────────────────
+  //
+  // The node probe's `--sabotage anim` turns M1 red against the node arena. That proves the
+  // CHECK works; it does not prove the SHIPPED driver is wired to resolution rather than to the
+  // animation track, because the node arena builds its own driver. `setAudioTriggerSource` is
+  // the same switch thrown on the engine's own instance.
+  report.phases.P5_sabotage = await page.evaluate(() => {
+    const H = window.__HARNESS;
+    const fight = (mode) => {
+      H.setSeed(1337); H.loadState('arena_duel'); H.stepFrames(4);
+      H.setAudioTriggerSource(mode);
+      for (const e of H.listEntities()) if (e.kind === 'enemy') H.despawn(e.eid);
+      const eid = H.spawn('mat_flesh', 0, 1.4, { as: 'AUD' });
+      const from = H.audioLog().length;
+      H.combatTraceStart({});
+      for (let k = 0; k < 10; k++) {
+        H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] }]);
+        H.stepFrames(46);
+        H.setEntityPos(eid, 0, 1.4);
+      }
+      const trace = H.combatTraceDrain(); H.combatTraceStop();
+      const rows = H.audioLog().slice(from);
+      // M1: the offset between the frame the GEOMETRY decided and the frame the voice was
+      // decided on. The two streams are independent; the join is the measurement.
+      const hitFrames = [];
+      for (const t of trace) {
+        const ty = t.type || t.kind || t.t;
+        if (ty === 'hit' || ty === 'HIT' || ty === 'impact' || ty === 'IMPACT') hitFrames.push(t.f);
+      }
+      const offsets = [];
+      for (const r of rows) {
+        if (r.class === 'whiff') continue;
+        let best = null;
+        for (const hf of hitFrames) { const d = Math.abs(hf - r.frame); if (best === null || d < best) best = d; }
+        if (best !== null) offsets.push(best);
+      }
+      offsets.sort((a, b) => a - b);
+      const q = (p) => (offsets.length ? offsets[Math.min(offsets.length - 1, Math.floor(p * offsets.length))] : null);
+      const classes = {}; for (const r of rows) classes[r.class] = (classes[r.class] || 0) + 1;
+      return {
+        mode, voices: rows.length, hit_events: hitFrames.length, joined: offsets.length,
+        offset_p50: q(0.5), offset_p99: q(0.99), offset_max: offsets.length ? offsets[offsets.length - 1] : null,
+        classes,
+        trigger_source: H.audioStats().trigger_source,
+      };
+    };
+    const shipped = fight('resolution');
+    const broken = fight('anim');
+    window.__HARNESS.setAudioTriggerSource('resolution');
+    return { shipped, broken };
+  });
+  {
+    const a = report.phases.P5_sabotage.shipped, b = report.phases.P5_sabotage.broken;
+    report.phases.P5_sabotage.detector_goes_red =
+      !!(a && b && a.offset_p50 === 0 && (b.offset_p50 === null || b.offset_p50 > 1 || b.voices !== a.voices || Object.keys(b.classes).join() !== Object.keys(a.classes).join()));
+  }
+  console.log('P5 sabotage:', JSON.stringify(report.phases.P5_sabotage));
+  save();
 } catch (e) {
-  report.fatal = { where: 'P0-P2', message: String(e && e.message || e), stack: String(e && e.stack || '') };
+  report.fatal = { where: 'phases', message: String(e && e.message || e), stack: String(e && e.stack || '') };
   save();
   console.error('FATAL', e);
 }

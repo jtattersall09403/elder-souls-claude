@@ -139,16 +139,44 @@ export function countSting(t) { return stingKinds(t).length ? 1 : 0; }
 
 // The epigram-echo, measured and REPORTED but never gated — see above. Kept in the tool so the
 // next reader can re-check the falsification instead of taking it on trust.
-export function countEpigramEcho(text) {
+//
+// THE COMPOSITE NUMBER WAS HIDING THREE DIFFERENT FINDINGS AND ONE OF THEM POINTED THE WRONG WAY.
+// Reported as a single rate this sat at 1.04x the reference and looked like a settled non-issue.
+// Split by what the closing sentence actually DOES, measured over the whole of both corpora
+// (ours 67,677 w of dialogue against the reference's 1,855,862 w):
+//
+//     statement   ours 21.87 /10k   reference 18.67   1.17x   <- the epigram proper. At parity.
+//     question    ours  1.33 /10k   reference  4.72   0.28x   <- we do this a QUARTER as often
+//     direction   ours  3.25 /10k   reference  1.08   3.00x   <- and this three times too often
+//
+// So "at parity" is true of the epigram proper and false of the composite. A closing sentence that
+// reuses a word and ends in a question mark — "…who can count and can't be leaned on. Can you
+// count?" — is a speaker recruiting the player, not a writer landing a joke, and Morrowind does it
+// FOUR TIMES more than we do. Rolling it into one number with the epigram would have told the next
+// writer to stop doing the thing this round exists to add. The closing direction is the opposite:
+// a real mild tell, and one this round's own flattening made worse before this split showed it
+// (50-mainline.json reached 9.49 /10k, nearly 9x, from ending too many lines on "Ask at X").
+//
+// All three stay UNGATED. The split is here so the number a reader acts on says which way to move.
+const EPI_IMPERATIVE = /^(ask|go|come|take|tell|look|see|find|bring|keep|leave|walk|read|open|close|buy|sell|pay|count|watch|wait|stay|stop|start|carry|hold|move|send|say|speak|try|use|give|get|put|make|do|don['’]?t|do not|never|let|remember|forget|mind|be|listen|follow|meet|check|write)\b/i;
+
+// Returns '' when the line does not close on an echo at all, else which KIND of close it is.
+export function epigramKind(text) {
   const s = sentences(text);
-  if (s.length < 2) return 0;
+  if (s.length < 2) return '';
   const L = s[s.length - 1].trim();
-  if (words(L) > 8) return 0;
+  if (words(L) > 8) return '';
   const head = s.slice(0, -1).join(' ').toLowerCase();
   const hs = new Set((head.match(/[a-z'’]{3,}/g) || []).filter((w) => !STOP.has(w)));
-  for (const w of (L.toLowerCase().match(/[a-z'’]{3,}/g) || [])) if (!STOP.has(w) && hs.has(w)) return 1;
-  return 0;
+  let echo = false;
+  for (const w of (L.toLowerCase().match(/[a-z'’]{3,}/g) || [])) if (!STOP.has(w) && hs.has(w)) { echo = true; break; }
+  if (!echo) return '';
+  if (L.endsWith('?')) return 'echo_question';
+  if (EPI_IMPERATIVE.test(L)) return 'echo_direction';
+  return 'echo_statement';
 }
+
+export function countEpigramEcho(text) { return epigramKind(text) ? 1 : 0; }
 
 // Sentence-initial `Which` used as a fragment. Round 1 promoted `…, which is X` to `. Which is X.`
 // on nearly every line it touched and manufactured a construction we now use at 11x the reference.
@@ -296,7 +324,7 @@ export function ourText(root = ROOT) {
 // Every rate is per 10,000 words.
 export function scoreDocs(docs) {
   let w = 0;
-  const c = { questions: 0, exclamations: 0, sting: 0, epigram_echo: 0, fragopen: 0, andopen: 0, contractions: 0 };
+  const c = { questions: 0, exclamations: 0, sting: 0, epigram_echo: 0, echo_statement: 0, echo_question: 0, echo_direction: 0, fragopen: 0, andopen: 0, contractions: 0 };
   const tics = {};
   for (const d of docs) {
     const t = d.text;
@@ -304,7 +332,8 @@ export function scoreDocs(docs) {
     c.questions += countQuestions(t);
     c.exclamations += countExclamations(t);
     c.sting += countSting(t);
-    c.epigram_echo += countEpigramEcho(t);
+    const ek = epigramKind(t);
+    if (ek) { c.epigram_echo += 1; c[ek] += 1; }
     c.fragopen += countFragOpen(t);
     c.andopen += countAndOpen(t);
     c.contractions += countContractions(t);
@@ -379,6 +408,16 @@ function selfTest() {
   // the falsification, asserted so nobody silently re-gates it
   t(countEpigramEcho('That is not a mistake. A mistake happens once.') === 1, 'epigram-echo: detected');
   t(countSting('That is not a mistake. A mistake happens once.') === 0, 'epigram-echo is NOT counted as a sting (it is at parity with the reference)');
+
+  // The three echo classes. The split exists because the composite reported 1.04x while one of its
+  // parts was 0.28x and another 3.00x; each assertion below is a case the composite got wrong.
+  t(epigramKind('That is not a mistake. A mistake happens once.') === 'echo_statement', 'echo: a declarative recast is the epigram proper');
+  t(epigramKind('She wants a hand who can count and cannot be leaned on. Can you count?') === 'echo_question', 'echo: a closing QUESTION that reuses a word is a speaker recruiting the player, not an epigram');
+  t(epigramKind('Blackrose lost a blade and Thorn found one. Ask at Thorn hall.') === 'echo_direction', 'echo: a closing IMPERATIVE that reuses a word is a direction, not an epigram');
+  t(epigramKind("They're opening the Ladder and the road is full. Don't walk that road alone.") === 'echo_direction', 'echo: a negative imperative is a direction too');
+  t(epigramKind('He is a bookworm. Try a bookseller.') === '', 'echo: QUIET on real reference prose that repeats no content word');
+  t(epigramKind('One line only.') === '', 'echo: a single sentence cannot close on an echo');
+  t(epigramKind('The tolls are written in the book. The book goes to the Assize once a season and to the table every night.') === '', 'echo: a long closing sentence is not a closing epigram');
 
   t(countFragOpen('Which is deliberate. And which is not.') === 1, 'fragopen: counts a sentence-initial Which');
   t(countFragOpen('Which is it? Which one, citizen?') === 0, 'fragopen: QUIET on an interrogative Which — a character asking the player something is the fix, not the defect');
@@ -518,7 +557,17 @@ async function calibrate() {
     }
     out.registers[r] = bars;
     out.registers[r].reference_words = scoreDocs(ref[r]).words;
-    out.registers[r].epigram_echo_note = `NOT GATED. ours ${O.epigram_echo.toFixed(2)} vs reference ${R.epigram_echo.toFixed(2)} per 10k = ${(O.epigram_echo / (R.epigram_echo || 1)).toFixed(2)}x — at parity, so the epigram is not our tell and gating it would drive a rewrite that moved nothing.`;
+    // UNGATED BUT MEASURED. The composite epigram rate is kept for continuity with the round-2
+    // finding; the three classes under it are what a reader should actually act on, because the
+    // composite averages a class we are BELOW the reference on (the closing question) with one we
+    // are well above (the closing direction) and reports the result as "at parity".
+    out.registers[r].reported = {
+      epigram_echo: R.epigram_echo,
+      echo_statement: R.echo_statement,
+      echo_question: R.echo_question,
+      echo_direction: R.echo_direction,
+    };
+    out.registers[r].epigram_echo_note = `NOT GATED, AND THE COMPOSITE IS MISLEADING ON ITS OWN. ours ${O.epigram_echo.toFixed(2)} vs reference ${R.epigram_echo.toFixed(2)} per 10k = ${(O.epigram_echo / (R.epigram_echo || 1)).toFixed(2)}x. Split by what the closing sentence does: statement ${O.echo_statement.toFixed(2)} vs ${R.echo_statement.toFixed(2)} (${(O.echo_statement / (R.echo_statement || 1)).toFixed(2)}x) — the epigram proper, at parity, so it is not our tell; question ${O.echo_question.toFixed(2)} vs ${R.echo_question.toFixed(2)} (${(O.echo_question / (R.echo_question || 1)).toFixed(2)}x) — a speaker turning the line back on the player, which the reference does MORE than we do and which this round exists to add; direction ${O.echo_direction.toFixed(2)} vs ${R.echo_direction.toFixed(2)} (${(O.echo_direction / (R.echo_direction || 1)).toFixed(2)}x) — closing on "Ask at X", a real mild tell that a flattening pass makes worse if nobody is watching it.`;
   }
   fs.writeFileSync(BARS_FILE, JSON.stringify(out, null, 2) + '\n');
   console.log(`check-prose --calibrate: wrote ${path.relative(ROOT, BARS_FILE)}`);
@@ -556,7 +605,16 @@ async function main() {
       lines.push(`\n${r}: ${total.docs} passages, ${total.words} words`);
       for (const [k, v] of Object.entries(total.rates)) {
         const bar = reg?.[k];
-        lines.push(`  ${k.padEnd(14)} ${v.toFixed(2).padStart(8)} /10k` + (bar ? `   reference ${bar.target.toFixed(2)}  (${(v / (bar.target || 1)).toFixed(2)}x)` : '   [reported, not gated]'));
+        // The ungated echo classes still carry a measured reference rate, recorded by --calibrate.
+        // Printing the bare number for them was the whole problem: a reader cannot act on "3.25"
+        // without knowing the reference is 1.08, and the composite that used to stand in its place
+        // said 1.04x when one of its three parts was 0.28x and another 3.00x.
+        const refd = reg?.reported?.[k];
+        lines.push(`  ${k.padEnd(14)} ${v.toFixed(2).padStart(8)} /10k` + (bar
+          ? `   reference ${bar.target.toFixed(2)}  (${(v / (bar.target || 1)).toFixed(2)}x)`
+          : refd != null
+            ? `   reference ${refd.toFixed(2)}  (${(v / (refd || 1)).toFixed(2)}x)  [reported, not gated]`
+            : '   [reported, not gated]'));
       }
     }
     for (const [f, sc] of byFile(all)) {

@@ -113,6 +113,13 @@ try {
       return { listed, answers, cells, answered: ROOTS.filter((id) => answers[id]).length };
     };
 
+    // LET PRESENCE SETTLE BEFORE ASKING WHO IS IN THE ROOM. `n.visible` is not a property of
+    // the record; `sim/npc.js` derives it from `n.at` against `sim.env.interior` and only
+    // writes it when it CHANGES, so straight after `loadState` every NPC still carries the
+    // spec default of `true` and "is this person reachable" answers yes for everybody. Two
+    // frames is enough for the sim to place them, and it means this probe uses the SHIPPED
+    // presence rule rather than a second copy of it that can drift.
+    H.stepFrames(2);
     const npcs = H.listNPCs();
     const settlement = (E.sim.env && E.sim.env.settlement) || null;
 
@@ -123,7 +130,15 @@ try {
     const actorOf = (eid) => { const n = rec(eid); return n ? (n.actor || null) : null; };
     const pickBy = (pred) => (npcs.find((n) => pred(actorOf(n.eid), n)) || {}).eid || null;
 
-    const subject = pickBy((a) => MUTE_BEFORE.includes(a));
+    // PICK SOMEBODY YOU CAN ACTUALLY WALK TO. The engine's interact reach requires `n.visible`,
+    // and in Stormhold the first previously-mute actor in the list is an apothecary standing
+    // INSIDE `stormhold-house-1` while the player is on the street — 1 m away in plan, 1.4 m
+    // below, and correctly unreachable. C7 read that as "the walked conversation did not open"
+    // and charged the world for behaviour that is right. The brief is walk to a speaker and
+    // ask, so the speaker the whole probe is built on has to be a speaker a body can reach.
+    const reachable = (eid) => { const n = E.sim.findNPC(eid); return !!(n && n.visible); };
+    const subject = pickBy((a, n) => MUTE_BEFORE.includes(a) && reachable(n.eid)) || pickBy((a) => MUTE_BEFORE.includes(a));
+    const subjectReachable = subject ? reachable(subject) : false;
     const other = pickBy((a, n) => MUTE_BEFORE.includes(a) && n.eid !== subject && a !== actorOf(subject));
 
     const A = subject ? askAll(subject) : null;
@@ -271,7 +286,7 @@ try {
     }
 
     return {
-      settlement, npc_count: npcs.length, roots_granted: rootsGranted,
+      settlement, npc_count: npcs.length, roots_granted: rootsGranted, subject_reachable: subjectReachable,
       subject: subject ? { eid: subject, actor: actorOf(subject), ...A } : null,
       other: other ? { eid: other, actor: actorOf(other), ...B } : null,
       gossip_keywords: gossip,
@@ -386,6 +401,7 @@ try {
   say('');
   say('C7 — the conversation a PLAYER opens, by walking and pressing interact');
   const w = r.walked;
+  if (!r.subject_reachable) say(`     NOTE: no previously-mute actor in ${r.state || STATE} is standing where a body can reach them; C7 is running against somebody indoors and is expected to fail honestly.`);
   if (w && w.opened) {
     say(`     opened with ${w.npc} at ${w.reach_m.toFixed(2)} m, ${w.topics.length} topics offered`);
     if (w.npc === (A && A.eid)) pass(`the interact button reached ${w.npc} — the person, not a prop standing near them`);
@@ -397,7 +413,10 @@ try {
     }
     if (w.answered === 9 && same === 9) pass('all nine answered identically to the eid-named conversation — every number above is about the surface a player actually touches');
     else fail(`walked conversation answered ${w.answered}/9 and matched ${same}/9`);
-  } else fail(`the walked conversation did not open: ${w && w.error ? w.error : 'no conversation'}`);
+  } else {
+    if (w && w.why) say(`     why: ${JSON.stringify(w.why)}`);
+    fail(`the walked conversation did not open: ${w && w.error ? w.error : 'no conversation'}`);
+  }
 
   say('');
   say(`${out.passes.length} pass   ${out.failures.length} fail`);

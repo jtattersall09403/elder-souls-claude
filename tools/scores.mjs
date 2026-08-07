@@ -66,6 +66,7 @@ const DOMAIN = {
   'w1-library': 'Lore & the library',
   'w1-prose': 'Dialogue',
   'w1-tools': 'Engine & harness',
+  'w1-factions': 'Quests',
 };
 
 // Validated categorical order (dark steps). Used only by the overlay view.

@@ -215,6 +215,17 @@ try {
     const eng = window.__ENGINE || (window.__HARNESS && window.__HARNESS._engine);
     const H = window.__HARNESS;
     H.loadState('default'); H.setRenderRate(0); H.stepFrames(2);
+    const b0 = H.saveState(); b0.character.souls_held = 400000; H.restoreState(b0); H.stepFrames(1);
+    const list = H.listHearths();
+    const w = (list.hearths || []).find((x) => x.id === 'hearth-archon') || list.hearths[0];
+    // REST FIRST. `openMenu('levelup')` also refuses off a hearth (RI-UIX03 L1), and a refusal
+    // for the wrong reason would score this arm green while proving nothing. Standing at the
+    // basin means the ONLY thing left that can refuse is the vocabulary gate, and the error
+    // text is checked rather than merely the refusal.
+    H.teleport(w.pos[0], w.pos[2]); H.stepFrames(10); H.restAt(w.id); H.stepFrames(2);
+    let openedBefore = null;
+    try { openedBefore = H.openMenu('levelup'); H.closeMenu(); H.stepFrames(2); } catch { openedBefore = false; }
+
     // THE PERTURBATION: `sim/state.js`'s round-2 `makeProgression()` register, written straight
     // over the live one. Nothing else is touched.
     eng.sim.progression.attributes = { vigour: 10, endurance: 20, strength: 12, dexterity: 12, intelligence: 10, faith: 10 };
@@ -225,10 +236,13 @@ try {
     try { H.closeMenu(); } catch { /* nothing to close */ }
     return {
       register_forced_to: Object.keys(eng.sim.progression.attributes).sort(),
+      opened_at_the_same_basin_BEFORE_the_perturbation: !!openedBefore,
       vocabulary_report: rep,
       opened: !!opened, open_error: openError, ui_mode_after_open_attempt: mode,
-      // The gate must refuse. If it opens on a mismatched register, the round-2 defect is live.
-      gate_refused: !opened || mode !== 'levelup',
+      // The gate must refuse, at a hearth, FOR THE VOCABULARY REASON — and it must have opened
+      // at that same basin one statement earlier, or the arm is measuring the hearth gate.
+      gate_refused: !!openedBefore && !opened && mode !== 'levelup'
+        && /speaking different\s+languages/.test(String(openError || '')),
     };
   });
 

@@ -22,7 +22,12 @@
     "game/src/engine.js - loadState blob path derives unconditionally",
     "game/src/ui/system.js - openMenu('levelup') refuses when the two vocabularies disagree",
     "game/src/sim/magic/apply.js - ATTRS read off the live register instead of the stale six",
-    "game/src/render/renderer.js - _drawnGroundY() + the HUM (3 cross-planes, 1.9m) on the bloom; sapwell basins lifted onto the DRAWN ground. COMMITTED in 0b2d6ef."
+    "game/src/render/renderer.js - _drawnGroundY() + the HUM (3 cross-planes, 1.9m) on the bloom; sapwell basins lifted onto the DRAWN ground. COMMITTED in 0b2d6ef.",
+    "tools/journey/world-runs-gate.mjs - NEW. ONE implementation of the world-runs gate (worldRunsGate/gateOrRefuse).",
+    "tools/journey/journey-run.mjs - gate called at THREE sites (boot, before_first_control, legs_<journey>); control_observed now says whether the world was running when it refused; ledger dump prints [FAIL] instead of [OK ] for pass:false.",
+    "tools/journey/jrn06-death.mjs - local gate block replaced by the shared module; M-D8 second death now happens 45 m off the basin (+recovered_between); NEW m_d2b_placement_rules_exercised (real 120 m fall + fog-gate death) and m_d10b_death_legibility_world_caused.",
+    "tools/harness/w1-13-r3-drift.mjs - NEW. Drift with the axis HELD at six wells, T1 (respawn_pos exact) + T2 (no carried momentum), + --stub-traversal-reset.",
+    "tools/harness/w1-13-r3-levelling.mjs - NEW. Three pool arms including a DELETE-THE-FIX arm that restores round 2's applyDerivedPools bail, plus two vocabulary arms."
   ],
   "findings": [
     "ROOT CAUSE 1 (levelling buys nothing): engine.js applyDerivedPools() opens `const ch=this.sim.character; if(!ch) return null;`. character/derive.js's own header DECLARES this as a deliberate W1-07 reconciliation: 'a loadout with no character behind it keeps RI-CMB03's, so every existing W1-09 scenario measures exactly what it measured before.' So it is not an oversight - it is a cross-piece promise. Fixing it by absolute derivation would move arena hp_max 620->300 and focus 94->30 and break cmb-poise.mjs (hard-codes `hpEnd >= 620` as its VACUITY detector) and every W1-09/W1-14 arena calibration.",
@@ -35,8 +40,11 @@
     "BONUS: hazards.js drains dr.attribute (e.g. 10 AGILITY from the droops) and A['agility'] was undefined in the old six-id register, so the affliction drain silently never fired. It can now.",
     "SUCCESSOR NOTE (r3 restart 3): the previous r3's next_step was STALE. The bloodstain renderer fix (_drawnGroundY + hum planes) IS on disk and committed in 0b2d6ef. Levelling+vocabulary work is committed in 6559c58/cdb2938. Working tree was CLEAN at successor start.",
     "M-D8 MECHANISM, read off the r2 journey.json rather than the verdict prose: the sample rows carry `on_surface_stain_count: 1`. THE SECOND BLOOM *IS* CREATED. The verdict's 'none is created' is wrong on mechanism. `stains_after: 0` because the trial damages the player IMMEDIATELY after they wake at the hearth, so the second death happens ON the basin, the bloom is placed at the basin, the respawn puts the body back on the basin, and DeathSystem.tryRecover() drinks it inside the 200-frame window. A 0-soul bloom, recovered at range 0.",
-    "So M-D8's remedy is in the JOURNEY, not the world: the second death must happen somewhere the player is not about to respawn. Recording `recovered_between` so the mechanism is visible if it ever recurs."
+    "So M-D8's remedy is in the JOURNEY, not the world: the second death must happen somewhere the player is not about to respawn. Recording `recovered_between` so the mechanism is visible if it ever recurs.",
+    "M-D10's `max_frames: 0` is arithmetic, not a world property: damagePlayer(1e5) sets HP to 0 on the same frame it IS the last damage, so frames_since_last_damage is 0 by construction. m_d10b drives a 120 m fall where the GROUND does the damage.",
+    "SURFACE_FRAMES = 150 (game/src/sim/death.js:28). The r2 critic's `at_respawn_m` was sampled at deathFrame+201, i.e. **51 frames AFTER the body stood up**, with move:[0,1] still queued and never released. 51 frames x ~0.044 m/frame = 2.26 m; the reported figure was 2.24 m. Its `after_220f_m` is 271 frames of held forward = 9.78 m / 13.97 m = WALKING PACE. So the drift claim needs re-framing, not a fix: measure respawn_pos (the world's own record, written in DeathSystem.respawn()) and control for carried momentum.",
+    "CONTENTION at the code phase: pgrep -c headless_shell = 18, loadavg 11.31. Browser work deferred."
   ],
-  "next_step": "A: fix jrn06 M-D8 trial (2nd death away from the basin) + M-D2/M-D10 reachability; B: central world-runs gate in journey-run.mjs; C: drift with axis HELD; then ONE browser: delete-the-fix on levelling, then the full aggregation.",
+  "next_step": "browser phase when pgrep < 8: (1) w1-13-r3-levelling.mjs, (2) w1-13-r3-drift.mjs, (3) full jrn06-death aggregation. Then data checks, shot, blog line.",
   "notes_for_successor": "Round 2 FAILED 5/10. path_to_ten in corpus/90-verdicts/wave1/W1-13-r2.md is the spec. Items 1,3,4 of path_to_ten are CODE-COMPLETE and UNVERIFIED IN A BROWSER. Do not re-do them; verify them."
 }

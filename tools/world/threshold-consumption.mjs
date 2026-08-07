@@ -191,9 +191,16 @@ function probePush(bf, types) {
 }
 const pushed = probePush(field, solidTypes);
 const hollow = probePush(field, hollowTypes);
+// `solidTypes.length >= 4` is not decoration. The first version of this check took its list of
+// solid types from the same table it was testing, so zeroing every `solid_r` emptied the list and
+// `[].every()` returned true — the sabotage run scored 8/8 against a build where nothing was
+// solid at all. A check that reads its own subject for its own scope can always be made to pass
+// by deleting the subject.
 add('T5 a body walked into a solid marker is pushed back out',
-  pushed.every((r) => r.found && Math.abs(r.distance_from_centre_after_m - r.expected_m) < 0.01), {
-    solid_types: solidTypes, rows: pushed, capsule_r: PR,
+  solidTypes.length >= 4
+  && pushed.every((r) => r.found && Math.abs(r.distance_from_centre_after_m - r.expected_m) < 0.01), {
+    solid_types: solidTypes, solid_types_expected_at_least: 4,
+    rows: pushed, capsule_r: PR,
   });
 add('T5c control — a marker declaring solid_r 0 does not push',
   hollow.every((r) => r.found && r.distance_from_centre_after_m === 0), {

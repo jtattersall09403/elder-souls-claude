@@ -389,8 +389,15 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
     // -------------------------------------------------------------------------------------
     if (want('A5') && baseline) {
       log('A5 regenerating population-posts.json at higher density …');
-      const gen = JSON.parse(execFileSync('node', [BUILDER, '--encounters-per-tm', '1.7', '--write'], { cwd: REPO_ROOT }).toString());
+      // THE FLAG IS SET BEFORE THE MUTATION, NOT AFTER, and the first run of this tool is why.
+      // `restored = false` used to sit on the line below the generator call; the generator wrote
+      // the file and THEN the call threw (it prints "wrote …" ahead of its JSON, so `JSON.parse`
+      // choked), so the flag was still true, the `finally` skipped the restore, and the tool left
+      // a perturbed placement on disk while reporting `posts_file_restored: true`. A cleanup flag
+      // raised after the thing it guards is not a guard.
       restored = false;
+      execFileSync('node', [BUILDER, '--encounters-per-tm', '1.7', '--write'], { cwd: REPO_ROOT });
+      const gen = JSON.parse(fs.readFileSync(POSTS_PATH, 'utf8')).report;
       await handle.close(); handle = null;   // one browser at a time, always
       // A data file only reaches the engine at boot, so this arm needs a fresh page. It takes a
       // SECOND browser SEQUENTIALLY — the first is closed before the second opens, so the

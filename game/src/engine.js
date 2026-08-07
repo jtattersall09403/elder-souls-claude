@@ -5374,6 +5374,35 @@ export class Engine {
     }));
   }
 
+  /**
+   * The border markers — every threshold object and every tier-jump remains, as placed.
+   *
+   * `RI-WLD12` M64 wants something built or grown at the frontier and M68 wants a stranger to be
+   * able to NAME it from a picture. Round 1 placed 217 of them in `borders.json` and drew none, so
+   * this verb reports what is now instanced and collidable rather than what is declared: the `x`,
+   * `z` and `h` here are the numbers `world/province.js` composes its matrices from and the ones
+   * `world/borders.js#resolveMarker` pushes the player out of.
+   *
+   * @param {{near?: [number, number], radius_m?: number, type?: string}} opts
+   */
+  listBorderMarkers(opts = {}) {
+    if (!this.borders) throw new Error('listBorderMarkers(): no border field is installed');
+    const near = Array.isArray(opts.near) ? opts.near : null;
+    const rad = Number(opts.radius_m || 0);
+    const out = [];
+    for (const m of this.borders.markers()) {
+      if (opts.type && m.type !== opts.type) continue;
+      if (near && rad > 0 && Math.hypot(m.x - near[0], m.z - near[1]) > rad) continue;
+      out.push({
+        type: m.type, x: m.x, z: m.z, h: +m.h.toFixed(2), r: +m.r.toFixed(2),
+        solid_r: +m.solid_r.toFixed(2), glow: m.glow, border: m.border,
+        owner: m.owner, remains: m.remains,
+        ground_y: this.field ? +this.field.heightAt(m.x, m.z).toFixed(2) : null,
+      });
+    }
+    return out;
+  }
+
   /** What border, if any, the body is standing in — and how far through it. */
   getBorderAt(x, z) {
     if (!this.borders) throw new Error('getBorderAt(): no border field is installed');

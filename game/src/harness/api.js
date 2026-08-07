@@ -184,6 +184,8 @@ export function installHarness(engine, bootPromise) {
     listBorders() { return engine.listBorders(); },
     /** Which border the body is in, how far through it, and the nine axes' answers there. */
     getBorderAt(x, z) { return engine.getBorderAt(x, z); },
+    /** W1-02 r2 / RI-WLD12 M64+M68. Every border marker as instanced: type, owner, size, solidity. */
+    listBorderMarkers(opts) { return engine.listBorderMarkers(opts || {}); },
     /** Hold the sun still for a comparable screenshot (HARNESS.md §6). Returns the new state. */
     pauseClock(on) { return engine.pauseClock(on === undefined ? true : on); },
     camera(pose) { return engine.camera(pose === undefined ? null : pose); },
