@@ -2,14 +2,24 @@
  "task_id": "critic-w1-13-r2",
  "brief": "critic with fresh context, W1-13 round 2",
  "started": "2026-08-07",
- "state": "writing",
+ "state": "complete",
  "outputs_expected": [
   "corpus/90-verdicts/wave1/W1-13-r2.md",
   "corpus/90-verdicts/wave1/W1-13-r2.json",
   "docs/shots/<dated>.png",
   "reports/blog-feed.jsonl (one appended line)"
  ],
- "outputs_written": [],
+ "outputs_written": [
+  "corpus/90-verdicts/wave1/W1-13-r2.md",
+  "corpus/90-verdicts/wave1/W1-13-r2.json",
+  "docs/shots/2026-08-07-w1-13-r2-levelup-ten-rows-six-attributes.png",
+  "reports/blog-feed.jsonl (one line appended)",
+  "reports/journeys/critic-w1-13-r2-jrn06/ (THE AGGREGATION - journey.json, trace.jsonl)",
+  "tools/harness/critic-w1-13-r2-a.mjs + reports/runs/critic-W1-13-R2/probe-a1.json, probe-a234.json",
+  "tools/harness/critic-w1-13-r2-b.mjs + reports/runs/critic-W1-13-R2/probe-b.json",
+  "tools/harness/critic-w1-13-r2-c.mjs + reports/runs/critic-W1-13-R2/probe-c.json",
+  "tools/harness/critic-w1-13-r2-d.mjs + reports/runs/critic-W1-13-R2/probe-d.json, probe-d23.json, probe-d2b.json"
+ ],
  "findings": [
   "start: pgrep -c headless_shell = 12, loadavg 9.85 -- ABOVE the binding cap of 8. Doing read/analyse phase first per AGENT-PROTOCOL.",
   "READ-PHASE F1 (STRONG, needs live confirm): _spendSouls(attrId) in game/src/engine.js:3345 does prog.attributes[attrId] = (prog.attributes[attrId] || 10) + 1 with NO validation. The level-up screen's row list is game/data/progression/attributes.json (TEN ids: strength endurance agility speed vigour willpower intellect hist-bond personality luck). The DEFAULT character (sim/state.js:214) has SIX and they are Souls names: vigour endurance strength dexterity intelligence faith. So dexterity/intelligence/faith are NOT on the screen and cannot be raised, while 7 of the 10 rows show a constant 10 for an attribute the character does not have, and confirming one MINTS it at 11.",
@@ -32,8 +42,15 @@
   "M-D2 IS STILL A CONSTANT IN THE AGGREGATE: placement_rules {death_point: 20}, max_offset_m 0, mean_offset_m 0. The fall / last-grounded / fog-gate rules the builder fixed and demonstrated in a STANDALONE probe still never fire once in twenty journey deaths. Round 1's '0.000 m describes the probe' criticism is unmoved by the aggregation.",
   "M-D10 IS ALSO A CONSTANT: n 20, max_frames 0 - every one of the twenty deaths is instantaneous because it is damagePlayer(1e5), so 'HP reaches 0 within 12 frames of the last hit' is measuring the harness verb.",
   "A FAILING CHECK IS STILL LOGGED [OK]. put() calls led.ok() unconditionally and only ADDS a separate log('FAIL ...') line. Both failing checks appear in the ledger dump as '[OK ] m_d8_second_death ...' and '[OK ] m_d14_stain_visibility ...'. journey.ok is false, so the run does fail overall, but the per-check surface a human reads says OK for a check that failed.",
-  "PROBE B MEASURED AND FALSIFIABLE (reports/runs/critic-W1-13-R2/probe-b.json), TWO ARMS, ONE BROWSER: arm 'no-character' (the shipped 'default' state, which is what the round-2 builder's own levelling probe used): VIGOUR 10->18 for 5,418 souls, hp_max 620->620; ENDURANCE 20->28 for 11,661 souls, stamina_max 120->120; WILLPOWER for 20,573 souls, focus_max 94->94. sim._poolsDirty stays TRUE forever. arm 'with-character' (setCharacter first): same spends, hp_max 300->508, stamina_max 104->130, focus_max 30->56. THE CONTROL GOES GREEN. The instrument works; the build does not."
+  "PROBE B MEASURED AND FALSIFIABLE (reports/runs/critic-W1-13-R2/probe-b.json), TWO ARMS, ONE BROWSER: arm 'no-character' (the shipped 'default' state, which is what the round-2 builder's own levelling probe used): VIGOUR 10->18 for 5,418 souls, hp_max 620->620; ENDURANCE 20->28 for 11,661 souls, stamina_max 120->120; WILLPOWER for 20,573 souls, focus_max 94->94. sim._poolsDirty stays TRUE forever. arm 'with-character' (setCharacter first): same spends, hp_max 300->508, stamina_max 104->130, focus_max 30->56. THE CONTROL GOES GREEN. The instrument works; the build does not.",
+  "VERDICT: 5/10 FAIL (up from 4). RI-JRN06 78/100 ladder 6; RI-PRG04 5/10 min-over-axes. No hard fails. Named gap GAP-W1-bloodstain-invisible-from-most-bearings.",
+  "GATE FALSIFICATION DONE AND THE GATE IS REAL: C1 armed (screen open, world frozen advanced 0) -> closes it, advanced 5. C2 disarmed (closeMenu stubbed to a no-op returning the mode it failed to close) -> ui_mode_after_close 'inventory', advanced 0, gate_would_refuse TRUE. C3 in combat -> world runs anyway (S14 correct), gate passes. CREDIT to the builder.",
+  "SIBLING SWEEP: 12/12 of {arena_flat, settlement_primary_street, barge-hold} x {inventory, journal, sheet, map} freeze the world and loadState rescues NONE. Only jrn06-death.mjs has a gate.",
+  "DRIFT SETTLED: held-with-reset and held-WITHOUT-reset are identical to the digit (1.57/9.78/8.21 and 2.24/13.97/11.73). traversal.reset() in _afterRespawnPlacement() is INERT. The 0.00 m at 6/6 came from releasing the input.",
+  "CONSUMPTION 2b RE-DERIVED INDEPENDENTLY AND ACCEPTED: repoint fog_gates[].boss at inf_trash in the live world map only -> hp_after_player_death 0, stood_back_up false; shipped -> 412, true. Round 1's coupling-0 rejection overturned on my own measurement.",
+  "FOUR PURSES AND THE SCREEN READS NONE: drawn inventory.gold is '0 gold' in all four conditions (start / setGold(777) / after fencing / after save+load) because engine.js reads (sim.loadout && sim.loadout.gold) || sim.gold || 0 and neither is ever defined. progression 0/777/777/777, stealth.p 400 throughout, magic 0/777/777/777, combat.world 0/0/0/777.",
+  "boot-check PASS before AND after. Final contention: 20 browsers, loadavg 12.34."
  ],
- "next_step": "browser phase: boot-check, then jrn06 aggregation, gate falsification, two-purse drive, drift, consumption re-derive, levelup attribute vocabulary live probe",
- "notes_for_successor": "Attack order from brief: (1) run the jrn06 aggregation the builder could not, (2) audit the journey's own screen-open refusal by breaking it, and check sibling journeys in tools/journey/, (3) sweep for more constant-printed counts, (4) two purses fenceSell->sim.stealth.p.gold vs save sim.progression.gold, (5) respawn drift 0.00m at 6/6 - fix moved body or measurement?, (6) re-derive 2 CONSUMPTION couplings, (7) M-D5 world-side consumer of named-NPC guarantee."
+ "next_step": "none - complete",
+ "notes_for_successor": "The aggregation is DONE and its artifact is at reports/journeys/critic-w1-13-r2-jrn06/journey.json (ok:false, 2 of 37 instruments pass:false). A round-3 builder should start there rather than re-running probes. The two failures are m_d14_stain_visibility (the bloom is not drawn from most bearings - the named gap) and m_d8_second_death (no stain at all on a double death). The levelling finding is in probe-b.json and is a two-arm falsifiable result: applyDerivedPools() bails on !sim.character, so every scenario state levels for free. Note W1-SOULS landed an earn path for souls at ~17:05 the same day; that is orthogonal and does not touch the applyDerivedPools guard."
 }

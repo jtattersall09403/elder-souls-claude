@@ -172,12 +172,24 @@ export function countContractions(t) { return (t.match(CONTRACTION) || []).lengt
 // actor, not a synonym.
 export const TIC_BODY = /\b(any|some|no|every)body\b/gi;
 
-// Filler `eleven`: a countable-looking number in front of something a player cannot count.
-// "eleven chairs of wear on the floor", "asked her eleven times". The load-bearing ones — a count
-// the player can go and verify, or a sum the quests cross-reference — are the point of the world
-// and are left alone, so the pattern is deliberately narrow: `eleven` followed by a unit of TIME
-// or a bare plural of degree, not by a countable object.
-export const TIC_ELEVEN_FILLER = /\beleven\s+(years?|times?|months?|weeks?|days?|seasons?|winters?|summers?|hours?|generations?|chairs? of|kinds? of|sorts? of|ways?)\b/gi;
+// Filler `eleven`: the machine's favourite number standing in for "several".
+//
+// THE FIRST VERSION OF THIS PATTERN INCLUDED `eleven years` AND IT WAS WRONG. The round-1 verdict
+// listed six residual elevens as uncountable filler, two of which were `eleven years ago` (Sedda
+// Vell struck off the roll) and `eleven years of leases` (her day-books). Grepping the tree before
+// rewriting them: that date is cross-referenced **eight times** in
+// `game/data/quests/faction-imperial-assize.json` alone — the signed-out volume, the audit span,
+// the office that never asked for the books back — plus `faction-xul-aneekh.json`'s fourth hollow
+// and `magic-utility.json`'s kiln. It is a plot date a player can check, not filler, and rewriting
+// it would have broken five files to satisfy a tic list.
+//
+// The round-1 builder had already ruled on the general case and the ruling holds: the eleven motif
+// in the main quest is a DESIGN decision for the owner, touching quests, states and a sealed
+// answer, not a prose defect. So this gate stays out of it and matches only `eleven` in front of a
+// noun of DEGREE — a thing there is no way to count and therefore no way to have meant. That
+// leaves `asked her eleven times` and `eleven chairs of wear on the floor` red, which is exactly
+// the set that is genuinely indefensible.
+export const TIC_ELEVEN_FILLER = /\beleven\s+(times?|chairs? of|kinds? of|sorts? of|ways? of|degrees? of|manner)\b/gi;
 
 // The house cadence: 24.83 per 10k against the reference's 0.45. It is also what collided with a
 // sealed answer by chance during round 1 and turned the leak scanner red — the scanner caught our
@@ -354,13 +366,14 @@ function selfTest() {
   t(countTics('Somebody told anybody who would listen.')['-body form'] === 2, 'tic: -body forms red');
   t(countTics('Not one of them would listen.')['-body form'] === undefined, 'tic: -body QUIET on a concrete actor');
   t(countTics('She was asked eleven times.')['filler eleven'] === 1, 'tic: filler eleven red on an uncountable');
+  t(countTics('Struck off the roll eleven years ago.')['filler eleven'] === undefined, 'tic: filler eleven QUIET on a plot date the quests cross-reference eight times');
   t(countTics('Eleven boxes came up the river.')['filler eleven'] === undefined, 'tic: filler eleven QUIET on a countable the player can verify');
   t(countTics('That is why the gate is shut.')['"that is what/why/all"'] === 1, 'tic: house cadence red');
 
   // --- the gate itself, end to end, on synthetic corpora ---
   const defective = Array.from({ length: 40 }, (_, i) => ({
     id: 'd' + i, file: 'synthetic/defective.json',
-    text: `The count was short again this season and the ledger was not corrected, which is how the matter came to the Court. Somebody had been at it for eleven years. Which is deliberate.`,
+    text: `The count was short again this season and the ledger was not corrected, which is how the matter came to the Court. Somebody has been asked eleven times and that is what she will not answer. Which is deliberate.`,
   }));
   // THE CLEAN CONTROL, and the first version of it was wrong in a way worth recording.
   // It was one line repeated forty times — a line that happened to carry an exclamation mark and a

@@ -223,7 +223,14 @@ for (const p of list) {
   // so the axis spread is deliberately wider than the blend width and is reported separately.
   // They are different things: the blend is where the materials interleave, the spread is where
   // the nine axes hand over.
-  const spread_m = hard ? 46 : Math.round(width_m * 0.94);
+  // The HARD spread was 46 m and twelve of the twenty-four borders then failed §2's third bar.
+  // The cause is the item's own method: M65 samples every 2 m, so nine crossovers spread over
+  // 46 m have a mean gap of 5 m that QUANTISES to 2 m or 4 m — inside the 3 m collision window —
+  // however carefully the offsets are chosen. A declared minimum gap has to survive the sampling
+  // grid, so it is now 5.5 m and the HARD spread is 64 m. The visible transition is still the
+  // 8-20 m step `width_m` describes; the spread is where the nine axes hand over, which is a
+  // different thing and is why the two are reported separately.
+  const spread_m = hard ? 64 : Math.round(width_m * 0.94);
   const np = narrowestPoint(p);
 
   const offsets = {};
@@ -248,7 +255,7 @@ for (const p of list) {
   // moves the metres.
   {
     const order = AXES.slice().sort((x, y) => offsets[x] - offsets[y]);
-    const MIN_GAP = 3.2;
+    const MIN_GAP = 5.5;   // survives M65's 2 m sampling grid; see the spread_m note above
     const mid = order.length >> 1;
     for (let i = mid + 1; i < order.length; i++) {
       const gap = offsets[order[i]] - offsets[order[i - 1]];

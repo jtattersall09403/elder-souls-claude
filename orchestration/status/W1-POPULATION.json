@@ -10,7 +10,14 @@
     "reports/blog-feed.jsonl line"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "survey: count entities on disk, find engine consumers (spawnEncounter, absent_when_flag, respawn at hearth)",
+  "findings": [
+    "START CONTENTION: pgrep -c headless_shell = 18, loadavg 8.05 -- at/above the cap of 8. Authoring phase first, no browser.",
+    "SURVEY 1 - THE WHOLE HOSTILE POPULATION OF THE PROVINCE IS TWO ROWS. game/data/world/encounters.json has exactly 2 encounters: dres-raid-party (4 inf_trash + 2 inf_trash net-throwers, absent_when_flag the_sixty_are_protected) and deep-kin-war-brood (3 inf_trash). Nine bodies, all the SAME statblock, and neither has an (x,z). The encounter records carry `regions: [...]` as a LABEL only -- nothing places them.",
+    "SURVEY 2 - WHERE PLACEMENT ACTUALLY HAPPENS: engine.js:761 `for (const e of patch.encounters || []) this.spawnEncounter(e.id, e.x, e.z, e)` inside applyNamedState. So a hostile exists ONLY if a hand-written state file names it with coordinates. Same shape of defect the giver agent found for NPCs: a hand-placed scene is exactly as populated as somebody remembered to type.",
+    "SURVEY 3 - THE STREAM PUMP IS THE RIGHT CONSUMER SLOT. Engine._streamProvince() runs from Engine._afterStep(), which the province-stream builder proved covers EVERY way the world advances (stepFrames, the rAF accumulator, walkRoute/walkPath/travelRide). That is where a population that follows the player belongs.",
+    "SURVEY 4 - RESPAWN IS ALREADY BUILT AND DATA-DRIVEN and must not be broken: game/data/world/respawn.json + game/src/sim/death.js, with engine._classifyOnSpawn() supplying named/unique/boss/merchant/trainer/questActor from three writers (statblock, world map fog gates, spawn opts). sim.npcs is a separate array no respawn path iterates.",
+    "SURVEY 5 - souls are on the statblocks already (W1-SOULS): inf_trash 136, drowned_lesser 50, beast_slitherfang 72, cst_sap_speaker 137, guard_legion 176, drowned_greater 334, champion_hist_marked 2423, 15 props 0. 7 fightable statblocks is the whole roster."
+  ],
+  "next_step": "read regions.json danger_tier, roads.json, pois/settlements/hearths; read _streamProvince; then design the placement model",
   "notes_for_successor": "Do NOT touch quest givers - W1-GIVER-PRESENCE owns those. I own hostiles + encounters."
 }

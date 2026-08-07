@@ -1,18 +1,28 @@
 {
   "task_id": "critic-w1-08-r2",
-  "brief": "critic with fresh context on W1-08 (controls/input) round 2",
+  "brief": "critic with fresh context on W1-08/W1-29 (controls/input) round 2",
   "started": "2026-08-07",
   "state": "researching",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-08-W1-29-r2.md",
     "corpus/90-verdicts/wave1/W1-08-W1-29-r2.json",
-    "docs/shots/<handheld controls shot>.png",
+    "docs/shots/2026-08-07-w1-29-critic-handheld-controls.png",
     "reports/blog-feed.jsonl (one line appended)"
   ],
   "outputs_written": [],
   "findings": [
-    "start-of-run box state: loadavg 11.59 14.12 13.29, pgrep -c headless_shell = 0, nproc 4"
+    "ENVIRONMENT: the working tree at /home/user/elder-souls-claude does NOT boot. boot-check exits 12: first 'weather_change not in the closed vocabulary', then 'TypeError: this._stepAmbience is not a function' — a sibling's W1-22 audio call site landed before its method (uncommitted engine.js edit). Not W1-08's defect. I pinned a git worktree at commit dcf1d36 in the scratchpad, symlinked tools/node_modules, and boot-check PASSES there. Every measurement below is on dcf1d36.",
+    "13 MISSING IDS: all fourteen ids named in the r1 verdict now grep >=1 in tools/journey/input-checks.mjs, each with a real function body plus a --self-test perturbation leg. Not merely 'no longer mentioned'.",
+    "OVERLAY IS DRAWN — re-derived independently, clean ablation, frame PINNED at 24, never stepped between arms, touch enabled by DEVICE CLASS not by setTouchEnabled: desktop-1==desktop-2 (031138a55eb2abf9), handheld-1==handheld-2 (52668bd678cd2a34), BOTH null controls identical; desktop vs handheld 4.702% of pixels differ; delete-the-fix (sever _uiCtx().touch/.rotate) returns the handheld hash to EXACTLY the desktop hash, diff 0.000%; restoring returns it. Coupling 1. My own PNG shows eleven marks and is not blank (409 distinct colours, luma stdev 28.2).",
+    "REGISTER NON-EMPTY: 150 entries / 87 distinct across the 11-state sweep, complete:true, blind:[]. Round 1's 'entries 0 in every reachable state' is fixed.",
+    "REGISTER CAVEAT: by_surface is {menus:150} — ZERO entries on 'dialogue' and ZERO on 'title' across all eleven states including barge-hold/opening and titleShow(). `complete` is derived from INSTRUMENTATION, not observation, so a wrapped-but-never-exercised surface still reports complete:true.",
+    "M-K20 GOES RED ON PURPOSE: uiToast('Press E to open the door') through the SHIPPED toast path lands in the register and my own independent grep hits it. The check can fail.",
+    "M-P20 RE-DERIVED AND WORSE THAN DECLARED: on 844x390 dpr1 handheld the smallest rendered run I measured is 11 CSS px ('LIGHT', 'Spark-Da…') on the *menus/HUD* surface, against the viewport's own min_text_css_px: 18. The builder declared 7px on the dialogue speaker header; the HUD is illegible too and it is on screen all the time.",
+    "BIGGEST GAP — GAMEPAD: the round-2 build fix guards the COMPLETED calibration by pad id but nothing guards the IN-PROGRESS one. _dropPad() never clears this.calibration. Measured on dcf1d36 with my own driver: calibrate a stranger 2 of 6 prompts, unplug -> calibrating stays true with n_pads 0; plug a STANDARD pad -> indices 0,1,2,3 ALL produce NO action at all (dead pad) and its presses are eaten as calibration answers (prompt 3/6 -> 5/6); finishing writes result_id='Xbox 360 Controller (XInput STANDARD GAMEPAD)' carrying the stranger's permutation, after which index 0 fires roll and index 5 fires lock_on. Exactly the symptom the r2 commit message claims to have fixed, reached by an ordinary disconnect.",
+    "GAMEPAD FIX PROVEN BOTH WAYS: my one-line repair (clear an unfinished this.calibration in _dropPad) -> calibrating false after unplug, standard idx0 -> interact, idx5 -> light. Delete-the-fix reproduces the defect exactly.",
+    "S35 SUPPRESSION HOLDS: on 844x390 handheld, world/inventory = 11 controls, map = ['__drawer'] only, journal = ['__drawer'] only, world restored to 11 afterwards. The builder's claim is true.",
+    "CAUTION FOR SUCCESSOR: touchLayout() records use fields `action`,`x`,`y`,`r` — NOT `id`,`cx`,`cy`. My first consumption leg read cx/cy, got undefined, pressed nothing and produced an empty edge list that read exactly like 'the overlay consumes nothing'. Nearly a false finding."
   ],
-  "next_step": "read ARBITRATION.md s3, RI-MTH04, r1 verdict, builder r2 report",
-  "notes_for_successor": ""
+  "next_step": "probe 3: redo CONSUMPTION with action/x/y; check whether touch still works during a stuck calibration; crop the handheld shot for the deliverable",
+  "notes_for_successor": "Pinned worktree: /tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/pinned at dcf1d36 with tools/node_modules symlinked. Probes: tools/harness/critic-w1-08-r2-probe{,2}.mjs inside it. Raw JSON in ../../out/."
 }

@@ -150,21 +150,51 @@ export class BorderField {
   traverse(id, regionIndexAt, lengthM = 400, stepM = 2) {
     const b = this.byId.get(id);
     if (!b) throw new Error(`traverse('${id}'): no such border. ${this.borders.length} are declared.`);
-    // Walk perpendicular to the frontier at the border's narrowest point, which is where §2 puts
-    // the tier crossover and therefore the most interesting place to stand.
-    const at = b.narrowest || { x: b.centroid[0], z: b.centroid[1] };
-    // The perpendicular direction is the one along which the signed distance changes fastest.
-    let bestDir = [1, 0], bestGrad = -Infinity;
-    for (let k = 0; k < 16; k++) {
-      const a = (k / 16) * Math.PI * 2;
-      const dx = Math.cos(a), dz = Math.sin(a);
-      const d0 = this._signed(at.x - dx * 60, at.z - dz * 60, b.index);
-      const d1 = this._signed(at.x + dx * 60, at.z + dz * 60, b.index);
-      if (d0 === null || d1 === null) continue;
-      const g = d1 - d0;
-      if (g > bestGrad) { bestGrad = g; bestDir = [dx, dz]; }
+    // ---- choosing where to stand, and it took a rewrite to get right -------------------------
+    //
+    // The first version anchored the traverse at the border's NARROWEST point — §2's home for the
+    // tier crossover and so, on the face of it, the most interesting place to stand. Run against
+    // the live field it produced `stddev 0, span 0` on three of twenty-four borders: a perfect
+    // texture swap, this item's automatic fail, from a build whose declared offsets were correct.
+    //
+    // The cause is worth recording because it will catch the next person. Outside the signed
+    // distance band `axisRegionIndexAt` falls back to the raster — correctly, because outside a
+    // border you are plainly in one region — so a traverse anchored where the band is THIN leaves
+    // it before the early axes have handed over, and every axis then flips together at the raster
+    // line. The narrowest point is, by definition, exactly where the band is thinnest. The
+    // measurement was reporting the instrument's edge, not the world.
+    //
+    // So: anchor on the boundary cell with the most band either side of it, and take the direction
+    // from the signed distance field's own gradient rather than a 16-way probe.
+    let at = null, atScore = -Infinity, ux = 1, uz = 0;
+    const cands = [];
+    for (let i = 0; i < this.pairU.length; i++) {
+      if (this.pairU[i] !== b.index + 1) continue;
+      const d = this.distI[i] / 10;
+      if (Math.abs(d) > this.cell) continue;               // on the boundary itself
+      const cx = i % this.cols, cy = (i / this.cols) | 0;
+      cands.push([cx, cy]);
     }
-    const [ux, uz] = bestDir;
+    for (const [cx, cy] of cands) {
+      const x = (cx + 0.5) * this.cell, z = (cy + 0.5) * this.cell;
+      const g = this._gradient(x, z, b.index);
+      if (!g) continue;
+      // How far the band reaches along the gradient, in each direction. That reach is the whole
+      // measurable span, so it is exactly what to maximise.
+      let fwd = 0, back = 0;
+      for (let s = this.cell; s <= 240; s += this.cell) { if (this._signed(x + g[0] * s, z + g[1] * s, b.index) === null) break; fwd = s; }
+      for (let s = this.cell; s <= 240; s += this.cell) { if (this._signed(x - g[0] * s, z - g[1] * s, b.index) === null) break; back = s; }
+      const score = Math.min(fwd, back);
+      if (score > atScore) { atScore = score; at = { x, z }; ux = g[0]; uz = g[1]; }
+    }
+    if (!at) {
+      at = b.narrowest || { x: b.centroid[0], z: b.centroid[1] };
+      const g = this._gradient(at.x, at.z, b.index);
+      if (g) { ux = g[0]; uz = g[1]; }
+    }
+    // Never sample beyond where the band reaches: past that the answer is the raster's, and
+    // reporting it as a crossover is reporting the instrument.
+    if (atScore > 0) lengthM = Math.min(lengthM, atScore * 2);
     const n = Math.floor(lengthM / stepM);
     const samples = [];
     for (let i = 0; i <= n; i++) {
@@ -213,5 +243,25 @@ export class BorderField {
     const i = this._cell(x, z);
     if (this.pairU[i] !== borderIndex + 1) return null;
     return this.distI[i] / 10;
+  }
+
+  /**
+   * The unit direction of steepest increase of the signed distance — i.e. the perpendicular to the
+   * frontier, pointing from A into B. Central differences over one cell, falling back to one-sided
+   * differences at the band's edge.
+   */
+  _gradient(x, z, borderIndex) {
+    const h = this.cell;
+    const c = this._signed(x, z, borderIndex);
+    if (c === null) return null;
+    const px = this._signed(x + h, z, borderIndex), mx = this._signed(x - h, z, borderIndex);
+    const pz = this._signed(x, z + h, borderIndex), mz = this._signed(x, z - h, borderIndex);
+    const gx = (px !== null && mx !== null) ? (px - mx) / (2 * h)
+      : px !== null ? (px - c) / h : mx !== null ? (c - mx) / h : 0;
+    const gz = (pz !== null && mz !== null) ? (pz - mz) / (2 * h)
+      : pz !== null ? (pz - c) / h : mz !== null ? (c - mz) / h : 0;
+    const n = Math.hypot(gx, gz);
+    if (n < 1e-6) return null;
+    return [gx / n, gz / n];
   }
 }

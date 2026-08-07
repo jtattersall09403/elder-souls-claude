@@ -2,7 +2,7 @@
   "task_id": "W1-23",
   "title": "Lore: the registry and the province's canon",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "game/data/lore/canon.json (the shipped registry, secret half sealed)",
     "tools/lore/build-canon.mjs (projector: corpus registry -> game data, strips authorial truth to a sha256)",
@@ -13,7 +13,14 @@
     "corpus/60-lore/data/canon-facts.json (new registered disputes from the audit)",
     "reports/lore/W1-23-registry-report.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/lore/canon-census.mjs (RI-LOR06 method 4+5, --self-test 10/10)",
+    "tools/lore/build-canon.mjs (projector, strips authorial truth to sha256, --check)",
+    "game/src/world/canon.js (CanonRegistry: resolve/stanceOf/allows/noteHeard/state + faction id folding)",
+    "game/data/lore/canon.json (generated)",
+    "corpus/60-lore/data/canon-facts.json (54 -> 68 facts, 6 -> 20 disputes, holders/voiced_by/topics/dispute_kind, not_disputes block)",
+    "game/data/dialogue/topics/70-disputes.json (18 position-bearing infos, each tagged cf+pos)"
+  ],
   "findings": [
     "canon-facts.json (54 facts) lives ONLY in corpus/60-lore/data/. NOTHING in game/ reads it. Its only consumers are two critic scripts: corpus/80-methods/canon-check.py and book-stats.py. This is the exact RI-MTH07 consumption failure: 'a registry nothing reads is a document'.",
     "opacity.json (game/data/world/) BY CONTRAST is genuinely consumed: game/src/world/opacity.js OpacityRegister, engine.js throws on dangling anchor at boot, character/converse.js returns registered refusals. That is the model to copy.",
@@ -23,8 +30,14 @@
     "RI-LOR06 Comparison Method 4 sets the bar at '>=8 fully-voiced disputes' and the registry contains SIX disputed facts. The bar is UNREACHABLE BY ARITHMETIC on the current registry: max score 3 of 5 no matter how good the build. Registering the genuine unregistered edges is the only route past it.",
     "Only 11 distinct CF ids are cited anywhere in the shipped tree (CF-042,060,062,C001,C005,C007,D001,D003,D004,D005,D006). The other 43 registry facts have zero shipped citations.",
     "game/data/books/manifest.json DOES NOT EXIST, yet RI-LOR06 Comparison Method 1 runs canon-check.py --books-manifest game/data/books/manifest.json. Phantom path in a gate.",
-    "deep-time.json exists: 8 books, 4,969 words (the Stone Nests trilogy, the tally-stones survey, the Oliis bargain, a Ninth Cohort survey fragment, and the two House-Under-the-Wastes readings)."
+    "deep-time.json exists: 8 books, 4,969 words (the Stone Nests trilogy, the tally-stones survey, the Oliis bargain, a Ninth Cohort survey fragment, and the two House-Under-the-Wastes readings).",
+    "BEFORE (measured by the new census on the untouched build): 0 of 6 disputes fully voiced; 39 of 49 contradiction edges malformed; 27 with no cf at all; 12 citing a registry fact that is not marked disputed (CF-042/060/062/C001/C005/C007 are plain facts with no positions).",
+    "AFTER: 20 of 20 disputes fully voiced (bar >=8), 49 of 49 edges registered, 0 unregistered. 10 of the 49 are RULED NOT DISPUTES.",
+    "THE RULING that does the work: a contradiction is a disagreement about what IS THE CASE; a disagreement about what is WORTH DOING is an argument and does not belong in the registry. Four martial edges are arguments (shield worth carrying / high grip worth the reach / hooked weapon fit for a soldier / shield line in standing water, which is a regulation against a practice).",
+    "ONE EDGE IS MIS-DECLARED: the-sap-and-the-knife <-> what-the-hollow-has-to-trade are ON THE SAME SIDE. Both argue the terms are depth-and-season and that 'whether' is not in them. The real opponent is the keepers, who had no book. Registered as CF-D017 with both texts under position A.",
+    "READING THE BOOKS REVERSED SEVERAL FIRST-PASS ATTRIBUTIONS, and this is the argument for reading them. The Blessings of the Coast AGREES the Legion does not go inland ('This is true, and we say so proudly') - so the dispute is not WHETHER but WHY, which is where the politics live. Prefect Arn's lease book is the DEFENCE, not the critique; the Casebook is the one that notices the consent question. On the Ninth Clause both dialogue voices treat the clause as existing, so both are position A.",
+    "FACTION IDS ARE SPELLED TWO WAYS ON NPC RECORDS: drowned-court 17 / the_drowned_court 11, wet-ledger 23 / the_wet_ledger 6, rootkeepers 22 / the_rootkeepers 4, ninth-cohort 44 / ninth_cohort 1, house_dres 1 / house-dres 1. Any matcher comparing exactly sees a fraction of the population and sees it silently. game/src/world/canon.js#fold() normalises; other pieces should check whether they do."
   ],
-  "next_step": "inspect disputed-subject dialogue topics; then build game/src/world/canon.js + build-canon.mjs",
+  "next_step": "wire engine (_installCanon + loader branch + getCanonState) and converse.js stance gate; then perturbation demo; then checks",
   "notes_for_successor": "Fresh start 2026-08-07. No predecessor status file existed."
 }

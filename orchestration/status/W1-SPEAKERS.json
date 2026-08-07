@@ -4,14 +4,21 @@
   "started": "wave-1",
   "state": "researching",
   "outputs_expected": [
-    "game/data/dialogue/** (root-topic coverage for unanswered actor names)",
-    "fix: latest rumors / latest rumours spelling split",
+    "game/data/dialogue/topics/07-root-coverage.json (new: generic floor + cell tier + self-root actor rows)",
+    "game/src/character/converse.js — read info.cell (currently authored 39x in roots, read by NOTHING)",
+    "fix: latest rumors / latest rumours spelling split (topic-supply.js RUMOUR_TOPIC)",
+    "tools/dialogue/root-coverage.mjs (instrument, must go red when broken)",
     "reports/blog-feed.jsonl (one line)"
   ],
   "outputs_written": [],
   "findings": [
-    "start: pgrep -c headless_shell = 18, loadavg 10.59 - ABOVE the cap of 8, authoring phase first, browser verification deferred"
+    "start: pgrep -c headless_shell = 18, loadavg 10.59 - ABOVE the cap of 8, authoring phase first, browser verification deferred",
+    "ACTOR CENSUS, all 336 records with a `topics` array, counted off game/data/npcs/*.json: townsman 72, villager 37, legionary 31, rootkeeper 30, merchant 29, healer 29, dres-factor 25, clerk 20, innkeeper 19, mudborn 12, fisher 10, town-elder 9, sapcutter 4, outlaw 2, archivist 2, naga-elder 2, mercenary 2, deep-elder 1. EIGHTEEN names.",
+    "THE SIX ARCHETYPES (speakers.json) ARE NOT THE SAME SET AS THE ACTOR NAMES. Of the six -- rootkeeper, magister, sapcutter, archivist, mudborn, legionary -- `magister` HAS ZERO NPC RECORDS. Its province-side counterpart is the actor `dres-factor` (25 records), which answers nothing. So one of the six voices in speakers.json is written for a mouth that does not exist in the world, and the mouth that does exist has no lines. 31+30+12+4+2 = 79 answerable, which is exactly the 79 W1-26 measured.",
+    "THE UNANSWERED ARE ELEVEN NAMES, NOT TEN (the brief says ten): townsman 72, merchant 29, healer 29, dres-factor 25, innkeeper 19, fisher 10, town-elder 9, outlaw 2, naga-elder 2, mercenary 2, deep-elder 1 = 200 exactly. The 200 figure is right; the name count is 11.",
+    "NEW DEFECT, MINE, NOT PREVIOUSLY NAMED: `info.cell` IS READ BY NOTHING. infoAllowed() in converse.js checks requires/forbids/d/knows and never cell; the specificity score is (matchesActor?8)+(requires?4)+dScore+(forbids?0.5) and cell is not in it. 00-roots.json authors `cell` on 39 infos. Consequence measured below: a legionary standing in Thorn answers `specific place` with the STORMHOLD line, because among three legionary infos all scoring 8 the first authored wins. Every settlement-specific root answer in the game is currently delivered in the wrong town to everybody except the town it was written for. This is a model with no reader, RI-MTH07, one layer under the headline gap.",
+    "THE READER ALREADY HAS THE TWO-TIER SHAPE THE FIX NEEDS. converse.js infoFor(): `if (!matchesActor && info.a) continue` -- an info with `a` is locked to that actor; an info with NO `a` is usable by anyone and scores 0 against an actor-match's 8. So the generic tier exists and is EMPTY across all nine roots. The hole is not that the reader cannot express `most people say the same thing and a few say better`; it is that nobody wrote the `most people` half."
   ],
-  "next_step": "read RI-DLG01, RI-DLG05, W1-26-r2 status, W1-PROSE-BLIND-r1, W1-PROSE-R2",
-  "notes_for_successor": ""
+  "next_step": "verify the cell defect through the live reader with a node instrument; then write 07-root-coverage.json",
+  "notes_for_successor": "SHAPE DECIDED (argued in the report): generic floor per root, cell tier for the world-roots, actor rows ONLY on the three SELF-roots (duties, my-trade, background) where the answer is about the speaker. Do NOT write 11 actors x 9 roots -- that is 'everyone has a bespoke line', which closes the number and destroys the contrast the number exists to measure. PROSE: obey tools/check-prose.mjs bars and W1-PROSE-R2's pre-registered EARNED-STING rule (a line may close on a reversal only if it carries a `d` gate AND is the only such info in its topic). Most of what I write must be FLAT: a directions line gives directions. Do not collide with W1-PROSE-R2, which owns 55-utility.json and 50-factions.json."
 }

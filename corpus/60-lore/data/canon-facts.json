@@ -1616,7 +1616,7 @@
           },
           "voiced_by": [
             "book:the-blessings-of-the-coast",
-            "dialogue:slavery#townsman"
+            "dialogue:slavery#clerk"
           ]
         },
         {
@@ -1644,7 +1644,7 @@
           "voiced_by": [
             "book:ledger-and-journal-of-andrel-vorin",
             "book:marginalia-in-a-borrowed-book",
-            "dialogue:the-soul-trade#sapcutter"
+            "dialogue:slavery#dres-factor"
           ]
         }
       ],
@@ -1789,7 +1789,7 @@
           },
           "voiced_by": [
             "book:the-blessings-of-the-coast",
-            "dialogue:the-imperial-claim#archivist"
+            "dialogue:the-imperial-claim#merchant"
           ]
         },
         {
@@ -1898,7 +1898,7 @@
           },
           "voiced_by": [
             "book:a-short-account-of-the-pacification",
-            "dialogue:the-drowning-at-the-ford#archivist"
+            "dialogue:the-weeping-ford#legionary"
           ]
         },
         {
@@ -1944,7 +1944,7 @@
           "voiced_by": [
             "book:the-water-does-not-take-sides",
             "book:the-drowned-ford",
-            "dialogue:the-weeping-ford#mudborn"
+            "dialogue:the-weeping-ford#fisher"
           ]
         },
         {
@@ -1967,7 +1967,7 @@
           },
           "voiced_by": [
             "book:nine-stanzas-upon-the-drowning",
-            "dialogue:what-people-say-happened#mudborn"
+            "dialogue:what-people-say-happened#outlaw"
           ]
         }
       ],
@@ -2023,7 +2023,8 @@
           },
           "voiced_by": [
             "book:for-the-ninth-clause",
-            "dialogue:the-ninth-clause-of-the-drowned-tally#mudborn"
+            "dialogue:the-ninth-clause-of-the-drowned-tally#mudborn",
+            "dialogue:the-ninth-clause-of-the-drowned-tally#archivist"
           ]
         },
         {
@@ -2046,8 +2047,7 @@
           },
           "voiced_by": [
             "book:the-seventh-recension",
-            "book:against-the-ninth-clause",
-            "dialogue:the-ninth-clause-of-the-drowned-tally#archivist"
+            "book:against-the-ninth-clause"
           ]
         }
       ],
@@ -2099,7 +2099,7 @@
           },
           "voiced_by": [
             "book:the-drowned-tally-sixth-volume",
-            "dialogue:the-drowned-tally#archivist"
+            "dialogue:the-count-itself#archivist"
           ]
         },
         {
@@ -2120,7 +2120,7 @@
           },
           "voiced_by": [
             "book:the-drowned-tally-eleventh-volume",
-            "dialogue:the-tally-of-the-dead#mudborn"
+            "dialogue:the-count-itself#mudborn"
           ]
         }
       ],
@@ -2172,7 +2172,8 @@
             ]
           },
           "voiced_by": [
-            "book:the-soulrest-sheet"
+            "book:the-soulrest-sheet",
+            "dialogue:the-empty-boxes#townsman"
           ]
         },
         {
@@ -2185,14 +2186,16 @@
           ],
           "holders": {
             "actors": [
-              "mudborn"
+              "mudborn",
+              "clerk"
             ],
             "factions": [
               "drowned-court"
             ]
           },
           "voiced_by": [
-            "book:the-drowned-tally-eleventh-volume"
+            "book:the-drowned-tally-eleventh-volume",
+            "dialogue:the-empty-boxes#clerk"
           ]
         }
       ],
@@ -2243,7 +2246,7 @@
           },
           "voiced_by": [
             "book:the-stone-nests-i",
-            "dialogue:the-stone-forest#archivist"
+            "dialogue:the-xanmeers#notary"
           ]
         },
         {
@@ -2265,7 +2268,7 @@
           },
           "voiced_by": [
             "book:a-progress-iii",
-            "dialogue:the-xanmeers#mudborn"
+            "dialogue:the-xanmeers#merchant"
           ]
         }
       ],
@@ -2395,7 +2398,7 @@
           "voiced_by": [
             "book:the-sap-and-the-knife",
             "book:what-the-hollow-has-to-trade",
-            "dialogue:the-sap-cutters#sapcutter"
+            "dialogue:the-cutters-terms#sapcutter"
           ]
         },
         {
@@ -2471,7 +2474,8 @@
             ]
           },
           "voiced_by": [
-            "book:the-casebook-i"
+            "book:the-casebook-i",
+            "dialogue:reading-the-count#notary"
           ]
         },
         {
@@ -2491,7 +2495,7 @@
           },
           "voiced_by": [
             "book:on-the-tally-stones",
-            "dialogue:reading-the-count#rootkeeper"
+            "dialogue:reading-the-count#archivist"
           ]
         }
       ],
@@ -2648,7 +2652,8 @@
           "the-buckler-and-the-hand"
         ],
         "on": "whether a shield that cannot parry is worth carrying",
-        "reason": "Worth. Both texts agree on the fact — the great shields of the stone nests cannot turn a blow aside — and disagree about whether that settles the question of carrying one. Neither is wrong about the world."
+        "reason": "Worth. Both texts agree on the fact — the great shields of the stone nests cannot turn a blow aside — and disagree about whether that settles the question of carrying one. Neither is wrong about the world.",
+        "kind": "judgment"
       },
       {
         "books": [
@@ -2656,7 +2661,8 @@
           "on-the-hanging-guard"
         ],
         "on": "whether the high grip on the ricasso is worth the reach it gives up",
-        "reason": "Worth, and an explicit trade: both authors state the same exchange and price it differently. That is two schools, which RI-LOR03 asks for."
+        "reason": "Worth, and an explicit trade: both authors state the same exchange and price it differently. That is two schools, which RI-LOR03 asks for.",
+        "kind": "judgment"
       },
       {
         "books": [
@@ -2664,7 +2670,8 @@
           "a-bill-mans-answer-to-his-betters"
         ],
         "on": "whether a hooked weapon is fit for a soldier",
-        "reason": "Fitness. An uncle and a nephew disagreeing about what a soldier ought to carry. No fact of the province is at stake and the letters are better for it."
+        "reason": "Fitness. An uncle and a nephew disagreeing about what a soldier ought to carry. No fact of the province is at stake and the letters are better for it.",
+        "kind": "judgment"
       },
       {
         "books": [
@@ -2672,7 +2679,17 @@
           "the-serjeants-answer"
         ],
         "on": "whether the shield line may be opened in standing water",
-        "reason": "Not a contradiction at all: it is a regulation against a practice. The Standing Instruction states correctly what the Instruction says; Serjeant Brell states correctly what the men do. Both are true and the gap between them is the subject."
+        "reason": "Not a contradiction at all: it is a regulation against a practice. The Standing Instruction states correctly what the Instruction says; Serjeant Brell states correctly what the men do. Both are true and the gap between them is the subject.",
+        "kind": "judgment"
+      },
+      {
+        "books": [
+          "the-sap-and-the-knife",
+          "what-the-hollow-has-to-trade"
+        ],
+        "on": "whether a well may be cut for sale at all",
+        "kind": "same-side",
+        "reason": "The edge is MIS-DECLARED. Read together, the two texts agree: the cutter's manual says the terms are depth and season and that \"whether\" is not in them, and the hollow with one well and nothing else to trade is arguing the same case from the other end. Neither denies what the other asserts. The real opponent is the keepers, who hold that a silence is not a permission, and who had no book — so the dispute is registered as CF-D017 with BOTH of these texts under position A and the keepers voiced in dialogue."
       }
     ]
   }

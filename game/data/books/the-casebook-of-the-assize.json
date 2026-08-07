@@ -2,12 +2,12 @@
   "schema": "elder-souls/book@2",
   "group": "the-casebook-of-the-assize",
   "owner": "W1-LIBRARY — the in-world library",
-  "note": "W1-LIBRARY round 2. A fourth multi-volume series, written to close a measured hole rather than to decorate: the corpus had NO books between 944 and 1,316 words, so RI-LOR03 step 1's p90 read 1,316 on book-stats.py's floor-index percentile and 1,167 under linear interpolation, and the round-1 critic caught S1b passing by choice of estimator. The estimator is fixed; these are the books that make the real number pass. They also give T4 (diary/letters/ledgers) three entries it was short of and put an Imperial COURT in the library, which the corpus had described from outside (the-lease-and-what-it-costs, the-blessings-of-the-coast, ledger-leaf) and never from the bench. Merrow adjudicates nothing that the library adjudicates elsewhere: he cannot decide the seventeen and says so, which is RI-LOR06's convention rather than an exception to it.",
+  "note": "W1-LIBRARY round 2. A fourth multi-volume series, written to close a measured hole rather than to decorate: the corpus had NO books between 944 and 1,316 words, so RI-LOR03 step 1's p90 read 1,316 on book-stats.py's floor-index percentile and 1,167 under linear interpolation, and the round-1 critic caught S1b passing by choice of estimator. The estimator is fixed; these are the books that make the real number pass. They also give T4 (diary/letters/ledgers) three entries it was short of and put an Imperial COURT in the library, which the corpus had described from outside (the-lease-and-what-it-costs, the-blessings-of-the-coast, ledger-leaf) and never from the bench. Merrow adjudicates nothing that the library adjudicates elsewhere: he cannot decide the seventeen and says so, which is RI-LOR06's convention rather than an exception to it. W1-LIBRARY-MARTIAL: the three volume titles were re-punctuated (comma -> colon after 'Gideon') so that the SERIES name resolves on its own. corpus/60-lore/data/canon-facts.json CF-D009 position B cites 'The Casebook of the Assize at Gideon, Volumes the Second and Third' — a citation to two volumes of one work — and book-stats S4e went red because no single book title matched it. The citation is correct and the library was unciteable as a work; the fix belongs on this side.",
   "books": [
     {
       "id": "the-casebook-i",
       "skill_book": "speechcraft",
-      "title": "The Casebook of the Assize at Gideon, Volume the First: Of the Forms",
+      "title": "The Casebook of the Assize at Gideon: Volume the First, Of the Forms",
       "author": "Justiciar Aulus Merrow, of the Assize at Gideon, in his own hand and not for the Office",
       "kind": "volume",
       "taxon": "T4",
@@ -36,7 +36,7 @@
     },
     {
       "id": "the-casebook-ii",
-      "title": "The Casebook of the Assize at Gideon, Volume the Second: Of the Lease",
+      "title": "The Casebook of the Assize at Gideon: Volume the Second, Of the Lease",
       "author": "Justiciar Aulus Merrow, of the Assize at Gideon",
       "kind": "volume",
       "taxon": "T4",
@@ -66,7 +66,7 @@
     {
       "id": "the-casebook-iii",
       "skill_book": "speechcraft",
-      "title": "The Casebook of the Assize at Gideon, Volume the Third: Of What a Court Can Make Good",
+      "title": "The Casebook of the Assize at Gideon: Volume the Third, Of What a Court Can Make Good",
       "author": "Justiciar Aulus Merrow, lately of the Assize at Gideon, and afterwards of Anvil",
       "kind": "volume",
       "taxon": "T4",
