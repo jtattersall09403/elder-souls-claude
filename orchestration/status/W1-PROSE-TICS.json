@@ -2,7 +2,7 @@
   "task_id": "W1-PROSE-TICS",
   "brief": "inline dispatch: generalise the 'eleven' tic finding across all player-facing text",
   "started": "wave-1",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "tools/prose/tic-detector.mjs",
     "reports/prose-tics/W1-PROSE-TICS-report.md",
@@ -22,7 +22,16 @@
     "reports/prose-tics/rewrites/books-05-round-hundreds.jsonl",
     "reports/prose-tics/rewrites/journal-01-indefinite-person.jsonl",
     "reports/prose-tics/rewrites/journal-02-filler-numbers.jsonl",
-    "reports/prose-tics/after-02.json"
+    "reports/prose-tics/after-02.json",
+    "reports/prose-tics/rewrites/dialogue-01-indefinite-person.jsonl",
+    "reports/prose-tics/rewrites/dialogue-02-filler-elevens.jsonl",
+    "reports/prose-tics/rewrites/sweep-03-npcs-opacity-newbooks.jsonl",
+    "reports/prose-tics/final.json",
+    "reports/prose-tics/W1-PROSE-TICS-report.md",
+    "tools/prose/build-r2-packs.mjs",
+    "reports/packs/prose-tics-r2/ (15 blind trials)",
+    "reports/packs/prose-tics-r2.reveal/mapping.json",
+    "tools/dialogue/gen-greetings.mjs (17 authored fragments rewritten at source)"
   ],
   "findings": [
     "Player-facing text registers found: BOOKS game/data/books/*.json books[].text (37.7k w); DIALOGUE dialogue/topics/*.json topics[].infos[].x (26.8k) + greetings.json pools[].lines[] (20.6k) + greetings/*.json greetings[].x + rumours.json + race_gated[].x + slavery-lines + npcs[].lines.greeting + world mysteries refusals[].x; JOURNAL game/data/quests/*.json quests[].journal[].text (25.0k w); ITEM items[].description + weapons[].line.",
@@ -42,8 +51,14 @@
     "BOOKS round hundreds: 22 of 71 rewritten. The other 49 are load-bearing and enumerated: Blackrose arithmetic 529+411=940 (cross-referenced in quests), Knahaten dates 2E 560-601 (real series lore), ford casualties 151-vs-a-dozen (declared contradiction CF-060), tally-stone 41 notches/374 days, sixth-volume leaf citations, and the four-hundred-year span that is the spine of the chronology. RULE-08 in books is therefore a WORLDBUILDING concentration, not a machine tic: our corpus over-cites its own canonical numbers.",
     "JOURNAL pass: 158 indefinite-person rewrites (incl. one shipped boilerplate entry duplicated on 24 quests) + 22 filler-number rewrites. -body forms 63.29 -> 0.00 per 10k; pooled indefinite person 77.74 -> 14.38 (12.8x -> 2.4x). Teens 127 -> 104 hits.",
     "THE RESIDUAL 'ELEVEN' IN THE JOURNAL IS A DESIGN FACT, NOT A PROSE TIC \u2014 and this is the most interesting thing in the run. After the filler is gone, every remaining eleven is plot arithmetic a player can count: eleven live roots, eleven keepers at eleven wells, eleven burial boxes, eleven steps to the reservoir floor, eleven unwritten porters at eleven gold a week, eleven hundred in the box, 611 leased, 411 on the register, eleven names, eleven leaves in four hundred years. The machine's favourite number did not stay in the prose \u2014 it became the main quest's central motif. Renumbering it is a DESIGN change touching quests, states and a sealed answer, and is out of scope for a prose pass; it is flagged for the owner instead.",
-    "CONCURRENCY: another agent added game/data/books/the-short-forms.json and the-casebook-of-the-assize.json at 14:26 mid-run (books 65 -> 70 docs, 37.9k -> 42.6k words), carrying 5 fresh -body forms. A final sweep is needed at the end and the report must say the corpus moved under the measurement."
+    "CONCURRENCY: another agent added game/data/books/the-short-forms.json and the-casebook-of-the-assize.json at 14:26 mid-run (books 65 -> 70 docs, 37.9k -> 42.6k words), carrying 5 fresh -body forms. A final sweep is needed at the end and the report must say the corpus moved under the measurement.",
+    "DIALOGUE pass: greetings.json is GENERATED \u2014 144 offending lines were fixed by rewriting 15 authored fragments in tools/dialogue/gen-greetings.mjs and regenerating (2 more for filler elevens, 17 total). Plus 239 authored dialogue rewrites and 29 filler-eleven rewrites. -body forms 76.31 -> 0.34 per 10k; pooled indefinite person 86.05 -> 10.83 (2.4x -> 0.3x).",
+    "FINAL: -body forms across the whole shipped corpus 768 -> 2. Books RULE-01 acc 0.782 vs baseline 0.776 (lift +0.006, was +0.137 at W1-LIBRARY r1). Dialogue RULE-01 lift +0.004. Journal RULE-01 lift +0.101 and that residue is plot arithmetic. Books dash FIGURE 1.0x. All constraints re-run: opacity-resolve CLEAN (132,002 strings / 144 n-grams), book-budget D4=31 S8=0, check-data/quests/content clean, boot-check PASS.",
+    "LIVE END-TO-END MUTATION CHECK (not just the self-test): injected 'There were eleven of them and nobody counted twice.' into 6 real shipped books on disk and re-ran the whole pipeline. RULE-01 4.69->6.09 per 10k, presence 12.9%->20.0%, acc 0.782->0.798; RULE-39 0.00->1.41, 0.0%->8.6%, 0.763->0.782. Reverted and verified zero occurrences remain.",
+    "RULE-22 (paired em-dash aside) is the SAME glyph artefact as RULE-21: 25.9x as registered, 0.9x/0.1x/0.2x orthography-normalised. Morrowind uses the parenthetical aside 5-10x MORE than we do in dialogue and journal.",
+    "TOOL BUG FOUND IN MY OWN INSTRUMENT: strip-line-markers.mjs v1 matched an ESCAPED quote inside prose as the start of a JSON value and silently deleted a real inline dash out of marginalia-in-a-borrowed-book. Fixed with a (?<!\\\\) lookbehind, dash restored, named regression test added. A tool that edits shipped prose and is only checked by the number it produces will do this again.",
+    "NOT FIXED, stated in report \u00a79: RULE-36 contraction avoidance is now the LARGEST remaining signal and is bigger than 'eleven' ever was \u2014 our NPCs use contractions at 19.26 per 10k against Morrowind's 327.77 (0.06x) while using 'do not/is not/cannot' at 212.21 against 21.39. Morrowind's NPCs talk; ours read aloud. That is a dialogue-voice pass of its own, not a find-and-replace, because some speakers should be formal."
   ],
-  "next_step": "dialogue: -body 441h/373d, teens 98, round hundreds 55, 'that is what/why' 157; then final sweep over concurrently-added books; then report + r2 packs.",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 round-2 judge to answer reports/packs/prose-tics-r2/ (15 trials, 5 per register). Builder did not answer them; mapping in reports/packs/prose-tics-r2.reveal/.",
+  "notes_for_successor": "Two open pieces of work, both named in report \u00a79: (1) the dialogue contraction pass \u2014 biggest remaining separator at 0.844 balanced accuracy, needs a voice pass that keeps clerks and keepers formal; (2) the 'eleven' motif in the main quest is a DESIGN decision for the owner, not a prose fix \u2014 it touches quests, states, dialogue and a sealed answer. Do not renumber it in a prose pass."
 }

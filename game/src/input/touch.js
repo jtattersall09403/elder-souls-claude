@@ -108,8 +108,8 @@ export class TouchInput {
    * one this rule exists to fix.
    *
    * @type {?string} the reading surface currently up ('map' | 'journal' | 'book'), or null
+   *      — declared in the constructor beside `drawerOpen`, which is this class's style.
    */
-  suppressToDrawer = null;
 
   /** @returns {Array<{action,x,y,r,down}>} laid out in CSS px. The renderer draws exactly this. */
   layout() {
