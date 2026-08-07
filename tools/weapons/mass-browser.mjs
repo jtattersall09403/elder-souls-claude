@@ -140,49 +140,74 @@ try {
       for (const moving of [false, true]) {
         try {
           const r = swing(s.id, moving, true);
-          const { tips, yaws, states } = r;
-          // Peak DRAWN tip speed, in the world frame the player watches.
+          const { tips, yaws, frames } = r;
+          // Per-frame DRAWN tip speed, in the world frame the player watches. `spd[i]` is the
+          // step INTO frame i, so it is indexed alongside frames[]/tips[] with spd[0] = null.
+          const spd = [null];
+          for (let i = 1; i < tips.length; i++) {
+            spd.push(tips[i] && tips[i - 1] ? d3(tips[i], tips[i - 1]) * 60 : null);
+          }
+          // Phase classification from the engine's own move record (see swing()).
+          const mv = frames.find((x) => x.move) || null;
+          const act = [], rec = [];
+          for (let i = 0; i < frames.length; i++) {
+            const F = frames[i];
+            if (!F.move) continue;
+            if (F.af > F.startup && F.af <= F.startup + F.active) act.push(i);
+            else if (F.af > F.startup + F.active) rec.push(i);
+          }
+          const a0 = act.length ? act[0] : null, a1 = act.length ? act[act.length - 1] : null;
+          // §E's peak tip speed is "max over the animation" — the whole clip, so the startup
+          // wander and the recovery are in scope, not only the live window.
           let peak = 0;
-          const spd = [];
-          for (let i = 1; i < tips.length; i++) { const v = d3(tips[i], tips[i - 1]) * 60; spd.push(v); if (v > peak) peak = v; }
-          // The active window, from the fight's own witness rather than from a declaration.
-          const act = [];
-          for (let i = 0; i < states.length; i++) if (states[i].st === 'ATTACK') act.push(i);
-          const a0 = act.length ? act[0] : 0, a1 = act.length ? act[act.length - 1] : 0;
-          // §E follow-through, on the DRAWN tip: the reference direction is the instantaneous
-          // tip direction on the last ATTACK frame, and recovery frames are counted up to the
-          // first reversal. Same rule as tools/weapons/motion-census.mjs.
+          for (const v of spd) if (v !== null && v > peak) peak = v;
+          let peakActive = 0;
+          for (const i of act) if (spd[i] !== null && spd[i] > peakActive) peakActive = spd[i];
+          // §E follow-through, on the DRAWN tip: the reference direction is the INSTANTANEOUS
+          // tip direction on the last active frame (not the mean over the window — on a wide
+          // arc the tangent rotates most of the way round and the mean points somewhere the
+          // tip never goes; that error is recorded in W1-MASS's findings). Recovery frames are
+          // counted up to the first reversal. Same rule as tools/weapons/motion-census.mjs.
           let folN = 0, folD = 0, dirOut = null;
-          if (a1 >= 1 && a1 < tips.length) {
+          if (a1 !== null && a1 >= 1 && tips[a1] && tips[a1 - 1]) {
             const v = [tips[a1][0] - tips[a1 - 1][0], tips[a1][1] - tips[a1 - 1][1], tips[a1][2] - tips[a1 - 1][2]];
             const n = Math.hypot(v[0], v[1], v[2]);
             if (n > 1e-9) dirOut = [v[0] / n, v[1] / n, v[2] / n];
           }
           if (dirOut) {
-            for (let i = a1 + 1; i < tips.length; i++) {
+            let broke = false;
+            for (const i of rec) {
+              if (!tips[i] || !tips[i - 1]) continue;
               const v = [tips[i][0] - tips[i - 1][0], tips[i][1] - tips[i - 1][1], tips[i][2] - tips[i - 1][2]];
               folD++;
-              if (folN === folD - 1 && (v[0] * dirOut[0] + v[1] * dirOut[1] + v[2] * dirOut[2]) > 0) folN++;
+              if (!broke && (v[0] * dirOut[0] + v[1] * dirOut[1] + v[2] * dirOut[2]) > 0) folN++; else broke = true;
             }
           }
           // How much the character TURNED while the blade was live. This is the term the node
           // arena cannot produce and the still target cannot exhibit.
           let yawTravel = 0;
-          for (let i = a0 + 1; i <= a1 && i < yaws.length; i++) {
-            let d = yaws[i] - yaws[i - 1];
-            while (d > 180) d -= 360; while (d < -180) d += 360;
-            yawTravel += Math.abs(d);
+          if (a0 !== null) {
+            for (let i = a0 + 1; i <= a1 && i < yaws.length; i++) {
+              let d = yaws[i] - yaws[i - 1];
+              while (d > 180) d -= 360; while (d < -180) d += 360;
+              yawTravel += Math.abs(d);
+            }
           }
+          const spdA = spd.filter((v) => v !== null);
           out.series.push({
             weapon: s.id, class: s.cls, tier: s.tier, moving,
             frames_sampled: tips.length,
+            move_id: mv ? mv.move : null,
+            declared_f60: mv ? { startup: mv.startup, active: mv.active, recovery: mv.recovery, total: mv.total } : null,
             active_frames_observed: act.length,
+            recovery_frames_observed: rec.length,
             peak_drawn_tip_mps: +peak.toFixed(2),
-            mean_drawn_tip_mps: spd.length ? +(spd.reduce((a, b) => a + b, 0) / spd.length).toFixed(2) : null,
+            peak_drawn_tip_mps_active_window: +peakActive.toFixed(2),
+            mean_drawn_tip_mps: spdA.length ? +(spdA.reduce((a, b) => a + b, 0) / spdA.length).toFixed(2) : null,
             player_yaw_travel_deg_during_active: +yawTravel.toFixed(2),
             follow_through_frac: folD ? +(folN / folD).toFixed(3) : null,
             recovery_frames_counted: folD,
-            recovery_frames_moving: spd.slice(a1).filter((v) => v > 0.05).length,
+            recovery_frames_moving: rec.filter((i) => spd[i] !== null && spd[i] > 0.05).length,
           });
         } catch (e) { out.errors.push(`${s.id} moving=${moving}: ` + String(e && e.message).slice(0, 200)); }
       }
@@ -190,14 +215,27 @@ try {
 
     // ---- P3. the DECLARED side of the consumption test ------------------------------------
     // Paired with the drawn side above. The perturbation is on disk, between runs.
+    // The LIVE side: what the engine actually loaded, read back out of the fight rather than
+    // off disk. `getHitGeometry()` reports the weapon capsule the hit test will sweep, and
+    // getCombatState().player.move reports the frame counts the move is executing. If an
+    // on-disk edit does not reach these, it did not reach the game.
     try {
-      const listed = H.weapons.listWeapons();
-      out.declared = {};
+      out.live = {};
       for (const s of SUBJ) {
-        const rec = listed.find((x) => x.weapon_id === s.id);
-        out.declared[s.id] = rec ? { class: rec.class, reach_m: rec.reach_m } : null;
+        H.setSeed(1337); H.loadState('arena_duel'); H.setLoadout({ weapon: s.id }); H.stepFrames(4);
+        const g = H.getHitGeometry().actors.find((a) => a.id === 'P') || H.getHitGeometry().actors[0];
+        H.renderFrame();
+        const P = H.getDrawnGeometry().actors.find((a) => a.id === 'player');
+        out.live[s.id] = {
+          weapon_loaded: H.getCombatState().player.weapon,
+          weapon_class: H.getCombatState().player.weapon_class,
+          socket_a_dist_m: g ? g.weapon.socket_a : null,
+          socket_b_dist_m: g ? g.weapon.socket_b : null,
+          drawn_length_m: P ? P.drawn_length_m : null,
+          tip_vs_socket_b_mm: P ? P.tip_vs_socket_b_mm : null,
+        };
       }
-    } catch (e) { out.errors.push('declared: ' + String(e && e.message).slice(0, 200)); }
+    } catch (e) { out.errors.push('live: ' + String(e && e.message).slice(0, 200)); }
 
     return out;
   }, SUBJECTS));
@@ -208,10 +246,34 @@ try {
   await handle.close();
 }
 
+// ---- the ON-DISK declaration, paired with the live read above -------------------------------
+// P3's perturbation happens HERE, between two runs of this tool, and this block records which
+// bytes were in place for the run. `peak_tip_speed_mps_implied` is build-movesets' own §E guard
+// (W1-MASS P3): it is written only onto slots already over §E.2's ceiling, so its ABSENCE is
+// the pass condition and its presence is a slot carrying its own indictment.
+report.on_disk = {};
+for (const s of SUBJECTS) {
+  try {
+    const j = JSON.parse(fs.readFileSync(path.resolve('game/data/combat/movesets/' + s.id + '.json'), 'utf8'));
+    const slot = j.slots && j.slots['r2'];
+    report.on_disk[s.id] = {
+      class: j.class, weight_tier: j.weight_tier, reach_m: j.reach_m,
+      r2: slot ? {
+        startup_f60: slot.startup_f, active_f60: slot.active_f, recovery_f60: slot.recovery_f,
+        arc_sweep_deg: slot.arc_sweep_deg, shape: slot.shape,
+        peak_tip_speed_mps_implied: slot.peak_tip_speed_mps_implied === undefined ? null : slot.peak_tip_speed_mps_implied,
+      } : null,
+    };
+  } catch (e) { report.on_disk[s.id] = { error: String(e && e.message).slice(0, 160) }; }
+}
+
 // ---- verdict lines, computed out here so the page stays a pure measurement ------------------
 report.verdict = report.series.map((s) => ({
   weapon: s.weapon, moving: s.moving,
+  ceiling_mps: +(BAND_TOP[s.tier] * 1.25).toFixed(2),
   peak_vs_ceiling: +(s.peak_drawn_tip_mps / (BAND_TOP[s.tier] * 1.25)).toFixed(2),
+  tip_speed_ok: s.peak_drawn_tip_mps <= BAND_TOP[s.tier] * 1.25,
+  follow_min: FOLLOW_MIN[s.tier],
   follow_ok: s.follow_through_frac === null ? null : s.follow_through_frac >= FOLLOW_MIN[s.tier],
 }));
 const still = report.series.filter((s) => !s.moving);
@@ -228,9 +290,18 @@ const outPath = path.join(outDir, `mass-browser-${tag}.json`);
 writeJson(outPath, report);
 console.log(`mass-browser [${tag}] — page errors ${report.page_errors}, boot tip_vs_socket_b_mm ${report.boot && report.boot.tip_vs_socket_b_mm}`);
 for (const s of report.series) {
-  console.log(`  ${s.weapon.padEnd(20)} moving=${String(s.moving).padEnd(5)} peak_drawn ${String(s.peak_drawn_tip_mps).padStart(7)} m/s`
+  const d = s.declared_f60;
+  console.log(`  ${s.weapon.padEnd(20)} moving=${String(s.moving).padEnd(5)} ${String(s.move_id).padEnd(10)}`
+    + ` S/A/R ${d ? d.startup + '/' + d.active + '/' + d.recovery : '-'} f@60`
+    + `  act_obs ${String(s.active_frames_observed).padStart(3)} rec_obs ${String(s.recovery_frames_observed).padStart(3)}`);
+  console.log(`  ${' '.repeat(20)} peak_drawn ${String(s.peak_drawn_tip_mps).padStart(7)} m/s`
     + `  yaw_during_active ${String(s.player_yaw_travel_deg_during_active).padStart(6)} deg`
     + `  follow_frac ${s.follow_through_frac}  (recovery frames moving ${s.recovery_frames_moving}/${s.recovery_frames_counted})`);
+}
+for (const v of report.verdict) {
+  console.log(`  VERDICT ${v.weapon.padEnd(20)} moving=${String(v.moving).padEnd(5)}`
+    + ` tip ${v.tip_speed_ok ? 'PASS' : 'FAIL'} (x${v.peak_vs_ceiling} of ${v.ceiling_mps} m/s)`
+    + `  follow ${v.follow_ok === null ? 'N/A' : v.follow_ok ? 'PASS' : 'FAIL'} (>= ${v.follow_min})`);
 }
 for (const r of report.still_target_understates_peak_by) {
   if (r) console.log(`  STILL-vs-MOVING ${r.weapon}: ${r.still_mps} -> ${r.moving_mps} m/s (x${r.ratio}), yaw ${r.still_yaw_travel_deg} -> ${r.moving_yaw_travel_deg} deg`);

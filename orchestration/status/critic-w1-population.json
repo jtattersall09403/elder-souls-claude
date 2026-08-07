@@ -1,0 +1,21 @@
+{
+  "task_id": "critic-w1-population",
+  "role": "critic",
+  "judges": "W1-POPULATION",
+  "commit_at_start": "8fa946c",
+  "state": "running",
+  "started": "2026-08-07",
+  "next_step": "read RULES/INDEX done; read W1-POPULATION.json, RI-PRG06, RI-AI05, PLAN W1-12/W1-27",
+  "files_touched": [],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-POPULATION-r1.md",
+    "corpus/90-verdicts/wave1/W1-POPULATION-r1.json",
+    "orchestration/status/critic-w1-population.json",
+    "docs/shots/",
+    "reports/blog-feed.jsonl",
+    "tools/harness/critic-w1-population-r1.mjs"
+  ],
+  "notes": [
+    "Browser contention at start: pgrep headless_shell=18, loadavg 12.96 — deferring browser work, doing static reads first (RULES 21)."
+  ]
+}

@@ -4665,6 +4665,10 @@ export class Engine {
       seconds, sampleRate, tod: opts.tod || 'day', weather: opts.weather || 'clear',
       seed: opts.seed === undefined ? 0xa3b1 : opts.seed,
       listener,
+      // `mute: ['L3','L4','R7']` renders the same seed with the event layers absent, so a caller
+      // can subtract and see the events alone at their true rendered level. The bed cancels to
+      // the sample. See `renderBedOffline`'s note and `tools/analysis/ambience-onsets.mjs`.
+      mute: opts.mute,
     });
     const cl = buf.getChannelData(0), cr = buf.getChannelData(1);
     const res = {

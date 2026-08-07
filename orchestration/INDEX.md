@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `273f326`: 445 tools, 153 reference
-items, 21 pieces in flight.
+so it cannot drift. Generated at `8fa946c`: 445 tools, 153 reference
+items, 23 pieces in flight.
 
-Its purpose is to stop 21+ concurrent agents each paying separately to discover the
+Its purpose is to stop 23+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -723,6 +723,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-02` | starting | read RULES.md (done), INDEX.md, orchestration/status/W1-02.json, docs/PLAN.md S3 W1-02 ent | `orchestration/status/critic-w1-02.json` |
+| `critic-w1-population` | running | read RULES/INDEX done; read W1-POPULATION.json, RI-PRG06, RI-AI05, PLAN W1-12/W1-27 | — |
 | `W1-22-r2` | building | build tools/analysis/ambience-onsets.mjs (measures RENDERED event level vs RENDERED bed by | — |
 | `tool-critic-r4` | in-progress (successor #3: re-baselining verdict at HEAD) | re-baseline tree-dependent numbers at 88ee56d; assess r6 status file; re-stamp deliverable | `corpus/80-methods/TOOL-COVERAGE-R4.md` `corpus/80-methods/TOOL-COVERAGE-R4.json` `reports/blog-feed.jsonl` `orchestration/status/tool-critic-r4.json` |
 | `W1-13-r3` | building | Diagnose the three aggregation reds (m_d14 named gap first, then m_d4, then m_d10_d11) and | `orchestration/status/W1-13-r3.json` |
