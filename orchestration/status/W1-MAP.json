@@ -2,7 +2,7 @@
   "task_id": "W1-MAP",
   "brief": "inline (owner overruled S30 via S35): build a discovery map that records where you have been, with no possible quest-marker surface",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "corpus/00-doctrine/AMENDMENT-W1-MAP-01.md (RI-UIX04 JU8 amendment)",
     "game/src/sim/discovery.js (discovery model, in the fixed step)",
@@ -16,14 +16,19 @@
   "outputs_written": [],
   "findings": [
     "ARBITRATION S30 struck, S35 rules: map permitted, records where you HAVE BEEN; every marker prohibition kept. S35 explicitly says whoever builds it owns the RI-UIX04 JU8 amendment.",
-    "RI-UIX04 JU8 = 'No map anywhere (Q7)': pass = `map` unreachable AND non-existent; hard fail = a map exists. Q7 row in §B is 'Any map, minimap, or map page in or reachable from the journal'. Scoring note: Q3/Q6/Q7 hits trigger AR-2.",
+    "RI-UIX04 JU8 = 'No map anywhere (Q7)': pass = `map` unreachable AND non-existent; hard fail = a map exists. Q7 row in \u00a7B is 'Any map, minimap, or map page in or reachable from the journal'. Scoring note: Q3/Q6/Q7 hits trigger AR-2.",
     "game/src/ui/system.js is the whole UI: MODES/OPENABLE closed lists, `open()` THROWS on 'map'|'minimap'|'worldmap', state() reports map_exists:false, navigable() never contains map. Header comment rule 3 is 'THERE IS NO MAP'. This is the file to amend.",
-    "RI-UIX03 §A pause rule: menu pauses OUTSIDE combat, runs at 60Hz INSIDE combat. UISystem.pausesSimulation(inCombat) = mode!=='world' && mode!=='dialogue' && !inCombat — a new 'map' mode inherits the correct rule for free.",
+    "RI-UIX03 \u00a7A pause rule: menu pauses OUTSIDE combat, runs at 60Hz INSIDE combat. UISystem.pausesSimulation(inCombat) = mode!=='world' && mode!=='dialogue' && !inCombat \u2014 a new 'map' mode inherits the correct rule for free.",
     "World data: terrain.json is a 193x222 grid at cell_m=25 over 4825x5540 m, base64 channels (base_dm int16, region uint8, ocean uint8, land bits) decoded by game/src/world/field.js (WorldField). regions.json has 13 regions each with palette_hex. pois.json: 8 settlement + 16 minor-settlement + 10 landmark + 8 waystation = 42 places.",
     "Existing discovery precedent: sim.progression.hearthsDiscovered (array, saved in save/state.js progression.hearths_discovered, written by sim/death.js restAt). sim.env.settlement/.interior written every frame by sim/settlement.js stepSettlement.",
-    "game/src/world/province.js setSignposts() ALREADY cites seam S35 in its header — 'Seam S35 permits a map but confines it to ground the player has already walked, so the map is blank in the one direction the player needs it.' Wayfinding-without-map is already built (signposts).",
-    "AGENT-PROTOCOL: audit the LIVE WORLD after a load, not the blob — a written-never-read field re-serialises and passes forever. Vary WHEN you save, not just the seed."
+    "game/src/world/province.js setSignposts() ALREADY cites seam S35 in its header \u2014 'Seam S35 permits a map but confines it to ground the player has already walked, so the map is blank in the one direction the player needs it.' Wayfinding-without-map is already built (signposts).",
+    "AGENT-PROTOCOL: audit the LIVE WORLD after a load, not the blob \u2014 a written-never-read field re-serialises and passes forever. Vary WHEN you save, not just the seed.",
+    "Q7's TEXT is narrow: 'Any map, minimap, or map page IN OR REACHABLE FROM THE JOURNAL'. The EXISTENCE clause lives only in the JU8 scoring row ('map unreachable AND non-existent') and in method 7's second sentence ('the map must not exist at all') and in the 'how we lose' bullet. So the amendment is SURGICAL: keep Q7, J8, Q8 verbatim; replace only the existence half of JU8 + method 7. Map must still NOT be reachable from the journal \u2014 navigable() in journal mode must never contain 'map'.",
+    "ui/surface.js FORBIDDEN_KINDS already contains 'map','map_pin','quest_marker','waypoint','minimap','objective_tracker'. Do NOT add 'map' as an element kind \u2014 add new kinds (map_terrain/map_place/map_player/map_local) so the forbidden-kind census still reads 0.",
+    "UISurface.el(rec, draw) is the ONLY drawing path and it CLIPS to the declared rect \u2014 you cannot draw undeclared. So the map's census and its pixels cannot disagree.",
+    "pois.json: 42 places with pos[] and kind. terrain.json `sites` carry r_flat / r_falloff \u2014 the WORLD's own definition of each place's extent, so 'personally stood in' = inside the site's own radius, non-arbitrary and drawn from world data.",
+    "terrain grid 193x222 @ 25 m => 42,846 cells; a discovery bitset is 5,356 bytes / ~7.1 KB base64 \u2014 cheap enough to save verbatim."
   ],
-  "next_step": "read save-manifest, check-data/index.json conventions, quest machine API surface (to prove no map call exists), then write the amendment",
+  "next_step": "write corpus/00-doctrine/AMENDMENT-W1-MAP-01.md, then sim/discovery.js",
   "notes_for_successor": "Decision taken: roads are NOT drawn on the map. S35 forbids 'a route, path, trail or line of any kind' and a drawn road is the first thing a hostile critic will call a line. Wayfinding stays with signposts (already in the world)."
 }

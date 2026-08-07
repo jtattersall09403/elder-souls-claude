@@ -606,6 +606,79 @@
           "to": ["the-consensus"]
         }
       ]
+    },
+    {
+      "id": "the-empty-chair",
+      "why": "Q-LEDG-08 seeds this at journal 10. RI-DLG05 A.3: the ceiling quest is the longest one on the line and used to be the only one you could not ask a soul about.",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 50,
+          "x": "The first chair is empty and the table has asked somebody to sit in it, which has not happened in nineteen years. Whoever sits there decides whether the eighth gate at Archon stays in the book. That is the whole of it, and it is enough.",
+          "to": ["the-first-chair", "the-veto-minute"]
+        },
+        {
+          "a": "merchant",
+          "d": 35,
+          "x": "Ask what a chair is worth. Eleven of the Governor's debts, four toll gates and a bond room at Lilmoth. Ask what it costs and nobody will answer you, which should tell you the figure.",
+          "to": ["the-first-chair"]
+        },
+        {
+          "a": "outlaw",
+          "x": "Wuleen-Kus walked up onto the counting floor to watch, first time in nine years. He did not ask for anything. He came to see which of them it was going to be.",
+          "to": ["the-first-chair"]
+        }
+      ]
+    },
+    {
+      "id": "the-head-of-the-assize",
+      "why": "Q-ASSZ-08 seeds this at journal 10.",
+      "infos": [
+        {
+          "a": "legionary",
+          "cell": "gideon",
+          "d": 45,
+          "x": "The Legate went home on the winter packet and the Elder Council has sent nobody. So the province has a court and no head to it, and the seal that closes a finding for good is sitting in a drawer that anybody with a key can open.",
+          "to": ["the-legates-seal", "the-warrant-of-attainder"]
+        },
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 40,
+          "x": "Four findings are open. The lease, the Archon toll book, the two hundred and nine renewals, and the Ledger's eighth chair. A seal shuts any of them where nobody in this province can reopen it.",
+          "to": ["the-legates-seal", "the-lease-vote"]
+        },
+        {
+          "a": "townsman",
+          "x": "Forty times that seal has been used and thirty-nine were somebody covering their own back. I would not want the fortieth on me either way.",
+          "to": ["the-legates-seal"]
+        }
+      ]
+    },
+    {
+      "id": "the-fourth-day",
+      "why": "Q-XULA-08 seeds this at journal 10.",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "cell": "helstrom",
+          "d": 45,
+          "x": "The hollow has been sitting three days and the bands are in off the Rootlands. Ee-Vashum says they are not waiting for a speaker. They are waiting for a question, and the one they have been asking for nine years is the coast.",
+          "to": ["the-speakers-silence", "the-coast-wound"]
+        },
+        {
+          "a": "naga-elder",
+          "d": 40,
+          "x": "If the question stays the coast then the answer stays the cut, and the war-broods will make it inside the year whether the hollow agrees or not. Change the question and you change what they are allowed to do about it.",
+          "to": ["the-speakers-silence", "the-taking-below"]
+        },
+        {
+          "a": "mudborn",
+          "x": "His daughter came up from Gideon for the fourth day. Lukiul, and standing on the rim of a hollow that has argued for nine years about what to do with lukiul.",
+          "to": ["the-speakers-silence"]
+        }
+      ]
     }
   ]
 }

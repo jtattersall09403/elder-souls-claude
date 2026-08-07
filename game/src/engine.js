@@ -363,13 +363,11 @@ export class Engine {
     // a `knowledge_key` no quest asks for is a book that thinks it opens a door that is not
     // there, and it is exactly how this model came to have no reader without anybody noticing.
     // The check runs the other way too, in `tools/check-content.mjs`.
-    // ORCHESTRATOR, 2026-08-07: guarded because the call landed a few minutes before the method
-    // did, and a half-written engine takes down every other agent on the box — all of whom
-    // boot-check before they measure. Remove the guard once `_bookKnowledgeIndex` exists; the
-    // fail-loud behaviour described above belongs INSIDE it, not at the call site.
-    this.questEngine.bookKnowledge = typeof this._bookKnowledgeIndex === 'function'
-      ? this._bookKnowledgeIndex()
-      : {};
+    // ORCHESTRATOR's guard removed 2026-08-07 by W1-LIBRARY round 2: `_bookKnowledgeIndex()`
+    // exists below and returns a Map, so the guard's `{}` fallback was not merely dead, it was
+    // the wrong type for the `.get()` in `QuestEngine.context()`. Dangling keys are reported by
+    // `check-content.mjs` rather than thrown here; see the method's own note for why.
+    this.questEngine.bookKnowledge = this._bookKnowledgeIndex();
     this._assertGiversAreVisibleToRace();
     // W1-19: the authored NPC disposition table, copied into the register the quest gates read.
     // Without this every `giver.disposition_min` in game/data/quests/** is unreachable.

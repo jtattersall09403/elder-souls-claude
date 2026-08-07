@@ -2,7 +2,7 @@
   "task_id": "W1-FACTIONS",
   "brief": "faction questline builder — roster, ranks with real requirements, 3+ questlines to a rank ceiling, mutual exclusion, topic ids that exist",
   "started": "wave-1",
-  "state": "writing",
+  "state": "verifying",
   "outputs_expected": [
     "corpus/30-quests/FACTION-ROSTER-DESIGN.md",
     "game/data/progression/factions.json (expanded)",
@@ -48,6 +48,6 @@
     "topic-supply audit over the whole tree: 34 quest topics EXIST NOWHERE in dialogue/topics/**, and 35 hooks.json entry_topics rows are still SELF-LOOPS (W1-19 repaired only the Q-MAIN rows). None of the 34 or 35 is on the three carried lines. Tool: tools/quests/topic-supply-audit.mjs.",
     "BLOCKING, ANOTHER AGENT: game/data/npcs/pop-*.json (8 files, written 13:51) declare reaction_group RG-COMMON, which is not in progression/race-reactions.json. derivedDisposition() THROWS on it, out of QuestEngine.dispositionView() -> context() -> offers(). questOffers() is dead for the whole build while those files are on disk. 182 records affected."
   ],
-  "next_step": "retry faction-probe once RG-COMMON is fixed; then blog line",
-  "notes_for_successor": ""
+  "next_step": "successor (container restart #2): RG-COMMON alias is IN and questOffers is live again. check-quests now reports the ONE remaining defect — Q-ASSZ-08/Q-LEDG-08/Q-XULA-08 seed no topic (RI-DLG05 A.3). Fix: 3 entry_topics rows + 3 topic bodies. Then faction-probe, boot-check, blog line.",
+  "notes_for_successor": "All three questlines (8/9/8) are ON DISK and complete. check-data PASS, check-content PASS (295 resolutions), check-quests FAILS on exactly the 3 ceiling quests being mute."
 }

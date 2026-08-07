@@ -9,21 +9,32 @@
     "tools/world/build-signposts.mjs",
     "game/src/world/province.js (_signposts renderer consumer)",
     "game/src/engine.js (signReader — interact reads a post)",
-    "game/data/dialogue/topics/*-directions (prose directions, some wrong)",
+    "game/data/dialogue/road-directions.json",
+    "game/src/sim/quest/topic-supply.js (RoadBook — the consumer for road-directions.json)",
     "tools/world/signpost-audit.mjs",
     "docs/shots/*.png",
     "reports/blog-feed.jsonl"
   ],
-  "outputs_written": [],
-  "findings": [
-    "SURVEY F1: game/data/world/roads.json ships 10 legs (25,056.9 m trunk), 9 waystations, 2 named_routes (crossing 6816 m / 56.8 walk-min; long_way 9367.3 m). There are ZERO signposts anywhere in the repo — grep 'signpost' over game/ and tools/ hits only opacity.js's ROUTE enum, one dialogue note, and a pois.json owner string. The L2 layer of RI-WLD06 does not exist at all.",
-    "SURVEY F2: pois.json is STALE against roads.json. pois.json declares 8 waystations with names 'Wayshrine of the Root (Stormhold-Helstrom)', 'Pole Camp', 'Vat-Keeper's Hut', 'Kiln Post'; roads.json's 9 waystations are 'Legion Milepost', 'Ash Shelter', 'Corpse-Lily Shrine' x2, 'Welkynd Shrine', 'Lichen Post', 'Fired-Cold Well', 'Tide-Pole Post', 'Stilt-Rest'. Only 'Tide-Pole Post' and 'Stilt-Rest' agree. build-pois.mjs derives from roads.json, so pois.json was built against an older roads.json and never rebuilt.",
-    "SURVEY F3: roads.json waystations are ORPHAN DATA in the running game. Only tools read them (build-pois, build-hearths, scale-audit). Nothing in game/src places or draws a waystation. Same defect class as the 60 books' topics_taught.",
-    "SURVEY F4: tools/harness/viewpoints-province.json's 17 viewpoints carry anchor: 'region_blackwood' etc. None of those 13 states exist in game/data/states. They are ALSO never read: the file's own consumer, tools/world/province-shots.mjs, calls loadState('default') and ignores anchor entirely; and shoot.mjs would call hOpt('loadState', ...) which swallows the failure AND the file has 0 viewpoints with a `camera` key, so shoot.mjs cannot shoot it at all. The anchors are orphan fields, not missing states.",
-    "SURVEY F5: the renderer consumes roads.json properly — field.setRoads() builds roadSegs/roadGrid/spans, province.js _spans() builds deck slabs, parapets and piers per tile. That is the pattern a signpost consumer must copy: a per-tile procedural build off world data.",
-    "SURVEY F6: the pattern for a READABLE world object already exists — engine.openWrit()/_writSync() pushes a model with a `record: {name, lines}` block into renderer.ui.setModel(). A signpost reader can mirror it exactly, which makes the sign's text DRAWN rather than orphan text (RI-JRN07 §CONSUMPTION item 4).",
-    "MID-RUN CORRECTION: S30 (no map at all) was OVERRULED BY THE OWNER 2026-08-07 and superseded by S35 — there IS a map, confined to a record of ground already walked, with no marker, route line, distance readout, or square for a place never stood in. Four comments I had already written asserting no map exists were corrected (build-signposts.mjs, province.js _signposts, engine.js signRead, field.js setSignposts). NOTHING in this piece was wasted: S35 states outright that wayfinding must still work with the map closed, because a map showing only where you have been cannot get you anywhere new. Signposts, prose directions and steer-by landmarks are unaffected and are still the whole of this piece."
+  "outputs_written": [
+    "game/data/world/signposts.json (32 posts, 68 arms — 3 junction, 20 approach, 9 waystation)",
+    "tools/world/build-signposts.mjs (22 KB generator, derives posts from roads.json)",
+    "game/src/world/province.js#_signposts (per-tile procedural post build)",
+    "game/src/world/field.js#setSignposts + nearestSign (reach lookup)",
+    "game/src/engine.js#signRead + world/signposts.json load branch",
+    "game/src/harness/api.js#listSignposts",
+    "game/data/dialogue/road-directions.json (20 routes, 46 answers: 20 true, 22 vague, 4 wrong)"
   ],
-  "next_step": "write game/data/dialogue/road-directions.json (20 routes, 4 wrong with world-side tells) + RoadBook reader in topic-supply.js + wire into _installTopicSupply",
-  "notes_for_successor": "Phase 1 = authoring, no browser (load was 20.09 at start). Phase 2 = engine journey + capture service. Do NOT land a fail-closed assert before data exists."
+  "findings": [
+    "SUCCESSOR F0 (IMPORTANT — the predecessor's status file UNDERSTATED what is on disk): `outputs_written` was empty, but signposts.json, build-signposts.mjs, the province/field/engine/harness consumers and road-directions.json ALL EXIST and are COMMITTED (signposts landed in 5d74d9b 'Four posts, with times on them'; road-directions.json in 58b6c6e). Do not rebuild any of them. `outputs_written` is now accurate.",
+    "SURVEY F1: game/data/world/roads.json ships 10 legs (25,056.9 m trunk), 9 waystations, 2 named_routes (crossing 6816 m / 56.8 walk-min; long_way 9367.3 m). Before this piece there were ZERO signposts anywhere in the repo — the L2 layer of RI-WLD06 did not exist at all.",
+    "SURVEY F2: pois.json is STALE against roads.json. pois.json declares 8 waystations named 'Wayshrine of the Root (Stormhold-Helstrom)', 'Pole Camp', 'Vat-Keeper's Hut', 'Kiln Post'; roads.json's 9 are 'Legion Milepost', 'Ash Shelter', 'Corpse-Lily Shrine' x2, 'Welkynd Shrine', 'Lichen Post', 'Fired-Cold Well', 'Tide-Pole Post', 'Stilt-Rest'. Only 'Tide-Pole Post' and 'Stilt-Rest' agree. build-pois.mjs derives from roads.json, so pois.json was built against an older roads.json and never rebuilt.",
+    "SURVEY F3: roads.json waystations were ORPHAN DATA in the running game — only tools read them (build-pois, build-hearths, scale-audit); nothing in game/src placed or drew one. The 9 waystation signposts are the first world-side consumer.",
+    "SURVEY F4: tools/harness/viewpoints-province.json's 17 viewpoints carry anchor: 'region_blackwood' etc. None of those 13 states exist in game/data/states. They are ALSO never read: the file's own consumer, tools/world/province-shots.mjs, calls loadState('default') and ignores anchor entirely; shoot.mjs would call hOpt('loadState', ...) which swallows the failure AND the file has 0 viewpoints with a `camera` key, so shoot.mjs cannot shoot it at all. The anchors are orphan fields, not missing states.",
+    "SURVEY F5: the renderer consumes roads.json properly — field.setRoads() builds roadSegs/roadGrid/spans, province.js _spans() builds deck slabs, parapets and piers per tile. That is the pattern the signpost consumer copies.",
+    "SURVEY F6: the pattern for a READABLE world object already existed — engine.openWrit()/_writSync() pushes a model with a `record: {name, lines}` block into renderer.ui.setModel(). signRead mirrors it exactly, which makes the sign's text DRAWN rather than orphan text.",
+    "MID-RUN CORRECTION (carried): S30 (no map at all) was OVERRULED BY THE OWNER 2026-08-07 and superseded by S35 — there IS a map, confined to ground already walked, with no marker, route line, distance readout, or square for a place never stood in. Comments in build-signposts.mjs, province.js, engine.js and field.js were corrected. NOTHING in this piece was wasted: S35 states outright that wayfinding must still work with the map closed.",
+    "SUCCESSOR F7: engine.js:1557 `directionsFor(npcId)` already exists and is consumed by character/converse.js:292 — but it reads ONLY the quest-derived directionsIndex (q.directions on 32 main quests). road-directions.json has NO reader yet. That is the outstanding CONSUMPTION hole for this piece."
+  ],
+  "next_step": "RoadBook class in game/src/sim/quest/topic-supply.js reading data.roadDirections + merge into _installTopicSupply's directionsFor; then tools/world/signpost-audit.mjs (resolve every named place against settlements/ + pois.json, resolve every tell_id); then the 281 m landmark gap; then viewpoints anchors; then the engine journey proof.",
+  "notes_for_successor": "Phase 1 = authoring, no browser. Phase 2 = engine journey + capture service. Do NOT land a fail-closed assert before data exists. Load was 2.71 at successor start — box is quiet."
 }
