@@ -34,8 +34,8 @@ game, load it, save it again, and compare the two files. Anything written into t
 read back out of it passes that test forever, because both files agree about a number nobody is
 using. The money is in exactly that position.
 
-The reviewer then deliberately broke the saving of money — deleted it outright — and ran all four
-of the build's shipped checks against the sabotaged version. None of them noticed. Blanking the
+The reviewer then deliberately broke the saving of money — deleted it outright — and ran the build's own
+checks against the sabotaged version. Not one of them noticed. Blanking the
 money out of the save file produces precisely the same game as leaving it in, which is a tidy way
 of saying that the field was never doing anything.
 

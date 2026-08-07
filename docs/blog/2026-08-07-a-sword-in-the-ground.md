@@ -5,9 +5,9 @@ summary: The game finally draws the weapon you are holding. Three weapons at the
 kind: dispatch
 ---
 
-The game draws the weapon now. Yesterday every character in this build carried the same small
-box on the hip, whatever they had equipped; this morning a straight sword, a halberd and a
-two-handed greatsword photographed at the same instant produce three plainly different pictures.
+The game draws the weapon now. Until this morning every character in this build carried the same
+small box on the hip whatever they had equipped; a straight sword, a halberd and a two-handed
+greatsword photographed at the same instant now produce three plainly different pictures.
 
 :::compare The same character, the same moment of the same attack, three different weapons. Two
 of the three are pointing into the dirt. The lighting is flat and the ground is a brown dome —
@@ -18,8 +18,8 @@ none of that is finished, and none of it is what this is about.
 :::
 
 The movement is the part that matters. Across one full attack the character used to change by
-about a fifth of one percent of the space they occupy on screen — a figure that means, in
-practice, that nothing moved. It is now around forty-four percent at the busiest moment. That is
+about a fifth of one per cent of the space they occupy on screen — a figure that means, in
+practice, that nothing moved. It is now around forty-four per cent at the busiest moment. That is
 the difference between a statue sliding along the ground and somebody swinging something.
 
 Underneath the picture there is an invisible shape the game uses to work out whether a blow

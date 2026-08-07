@@ -162,8 +162,6 @@ for (const [label, names] of [['LOCOMOTION_NAMES', LOCOMOTION_NAMES], ['CORROBOR
 
 export const LOCOMOTION_ACTIONS = new Set(LOCOMOTION_NAMES);
 export const CORROBORATION_REQUIRED_ACTIONS = new Set(CORROBORATION_REQUIRED_NAMES);
-export const FLAG_TOGGLE_ACTIONS = new Set(FLAG_TOGGLE_NAMES);
-export const NO_OP_CAPABLE_ACTIONS = new Set(NO_OP_CAPABLE_NAMES);
 export const CLOSED_ACTION_SET = new Set(ACTIONS);
 
 // An event kind that proves the world changed. C1's five clauses, mapped onto the engine's
@@ -290,7 +288,18 @@ export function analyse(records, fps = 60) {
     if (sawDialogue) dialogueFrames++;
     if (sawMenu) menuFrames++;
     if (sawWorldChange) worldChangeFrames.push(fr);
-    perFrame.push({ fr, sawWorldChange, moving: !!(r.player && r.player.moving) });
+    // C7 IS MEASURED FROM WHERE THE PLAYER WENT, not from the input log.
+    //
+    // TOOL-COVERAGE-R2 §5: round 2 computed traversal_fraction as "excluded inputs over all
+    // inputs". The critic's fixture player walked 2 160 m at 4.5 m/s for a solid hour and C7
+    // read 0. And `player.moving` — the field round 2 read — DOES NOT EXIST: a census of the
+    // 3 780-record trace at reports/journeys/w1-13-jrn06/ finds `pos` and `speed_mps` on every
+    // record and `moving` on none. C9 already refuses to compute proximity from `world/**`
+    // because that would measure the design document; the same instinct applies here.
+    const pl = r.player || {};
+    const pos = Array.isArray(pl.pos) ? pl.pos : null;
+    const speed = Number.isFinite(Number(pl.speed_mps)) ? Number(pl.speed_mps) : null;
+    perFrame.push({ fr, sawWorldChange, pos, speed });
   }
 
   // --- collect, pass 2: which INPUTS satisfy one of C1's five clauses -----------------------
@@ -333,7 +342,32 @@ export function analyse(records, fps = 60) {
 
   const stateChanges = [...new Set([...worldChangeFrames, ...inputStateChangeFrames])].sort((a, b) => a - b);
   const stateChangeSet = new Set(stateChanges);
-  for (const f of perFrame) if (!stateChangeSet.has(f.fr) && f.moving) locomotionOnlyFrames++;
+
+  // "Fraction with locomotion and nothing else" — locomotion observed ENTITY-SIDE.
+  // `speed_mps` when the trace carries it; otherwise the distance the player actually covered
+  // between consecutive records. Neither present -> UNMEASURABLE, never 0.
+  const MOVING_MPS = 0.05;                       // below this the player is standing still
+  const MOVING_M_PER_FRAME = MOVING_MPS / fps;
+  const haveSpeed = perFrame.some((f) => f.speed !== null);
+  const havePos = perFrame.filter((f) => f.pos).length >= 2;
+  const traversalSource = haveSpeed ? 'player.speed_mps' : (havePos ? 'player.pos displacement' : null);
+  let distanceM = 0;
+  if (traversalSource) {
+    for (let i = 0; i < perFrame.length; i++) {
+      const f = perFrame[i];
+      let moving = false;
+      if (haveSpeed && f.speed !== null) moving = f.speed > MOVING_MPS;
+      else if (f.pos && i > 0 && perFrame[i - 1].pos) {
+        const a = perFrame[i - 1].pos, b = f.pos;
+        moving = Math.hypot(b[0] - a[0], (b[2] ?? 0) - (a[2] ?? 0)) > MOVING_M_PER_FRAME;
+      }
+      if (f.pos && i > 0 && perFrame[i - 1].pos) {
+        const a = perFrame[i - 1].pos, b = f.pos;
+        distanceM += Math.hypot(b[0] - a[0], (b[2] ?? 0) - (a[2] ?? 0));
+      }
+      if (moving && !stateChangeSet.has(f.fr)) locomotionOnlyFrames++;
+    }
+  }
 
   // --- C1 / C2: gaps between state-changing moments ---------------------------------------
   const marks = [f0, ...stateChanges, fN];
@@ -371,7 +405,16 @@ export function analyse(records, fps = 60) {
   add('C5', 'combat_fraction', frac(combatFrames), combatFrames / frames.length >= 0.12 && combatFrames / frames.length <= 0.30, '0.12..0.30', '< 0.08 or > 0.45');
   add('C6', 'dialogue_fraction', frac(dialogueFrames), dialogueFrames / frames.length >= 0.10 && dialogueFrames / frames.length <= 0.25, '0.10..0.25', '< 0.05 or > 0.35');
   if (!classificationReliable) add('C7', 'traversal_fraction', null, false, '<= 0.35', '> 0.50', unreliableWhy);
-  else add('C7', 'traversal_fraction', frac(locomotionOnlyFrames), locomotionOnlyFrames / frames.length <= 0.35, '<= 0.35', '> 0.50');
+  else if (!traversalSource) {
+    add('C7', 'traversal_fraction', null, false, '<= 0.35', '> 0.50',
+      'no trace record carries player.speed_mps or a two-record player.pos, so where the player ' +
+      'went cannot be observed. C7 is "the fraction with locomotion and nothing else" and the ' +
+      'input log does not answer it — an hour of walking emits no input_action in this build ' +
+      '(sim/player.js:109 emits one only for attack and roll moves), so counting inputs would ' +
+      'report 0 for a player who crossed the province (TOOL-COVERAGE-R2 §5).');
+  } else {
+    add('C7', 'traversal_fraction', frac(locomotionOnlyFrames), locomotionOnlyFrames / frames.length <= 0.35, '<= 0.35', '> 0.50');
+  }
   add('C8', 'menu_fraction', frac(menuFrames), menuFrames / frames.length <= 0.08, '<= 0.08', '> 0.15');
 
   // --- C9: corridors -------------------------------------------------------------------------
@@ -423,9 +466,11 @@ export function analyse(records, fps = 60) {
     // check it against the set the engine emits rather than take this file's word for it.
     closed_action_set: ACTIONS.slice(),
     locomotion_names: [...LOCOMOTION_ACTIONS].sort(),
-    flag_toggle_names: [...FLAG_TOGGLE_ACTIONS].sort(),
-    no_op_capable_names: [...NO_OP_CAPABLE_ACTIONS].sort(),
+    corroboration_required_names: [...CORROBORATION_REQUIRED_ACTIONS].sort(),
     corroboration_frames: CORROBORATION_FRAMES,
+    traversal_measured_from: traversalSource,
+    player_distance_m: traversalSource ? +distanceM.toFixed(2) : null,
+    locomotion_only_frames: locomotionOnlyFrames,
     // THE AUDIT THAT BITES. An action name the trace carries that the closed set does not
     // contain means the build and this tool disagree about what an action is called — the exact
     // condition round 1's always-empty audit line could not detect.

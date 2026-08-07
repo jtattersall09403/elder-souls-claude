@@ -29,14 +29,22 @@ calibration and reverted it because it cost 40% arc nonconformance; that route i
 
 ## 1a. Re-read every visual verdict taken through a posed camera
 
-`renderer.js` read the player's visibility as the negation of a camera override, so **every
-posed-camera capture in this project hid the player**. The W1-10 round-3 critic's byte-identical
-weapon screenshots contained no character at all — the finding was right, the evidence was of
-something else. Fixed now.
+`renderer.js:424` read the player's visibility as the negation of a camera override, so **a capture
+taken through a placed camera hid the player**. Confirmed by the renderer builder's own pre-fix
+probe (`reports/render/render-probe-prefix.json`: `player_visible: false`, `actors_drawn: 0`).
+Fixed now.
 
-Anything scored on a posed capture — art direction, third-person presentation, blind visual pairs,
-regional distinctness — was measuring a world with no character in it. Re-run rather than assume the
-verdict survives.
+**CORRECTION — I previously wrote here that the W1-10 round-3 critic's byte-identical weapon
+screenshots "contained no character at all". That is false and a blog writer caught it by opening
+the artefacts.** `corpus/90-verdicts/wave1/artifacts/W1-10-r3/frames/cgs_drowned_reaper-f000.png`
+plainly shows the character with the 0.95 m box at the hip, and that critic's capture script
+`kritik3-motion-focused.mjs` contains **no camera override** — those shots came through the ordinary
+follow camera. **The weapons finding stands entirely on its own evidence.**
+
+What actually needs retaking is narrower: **any measurement whose capture placed a camera to
+photograph a character.** Check each candidate's capture script for a `camera(...)` override before
+re-running it — do not re-run the lot on my say-so, and do not assume a verdict is void because it
+is visual.
 
 ## ~~1old. The character and weapon renderer~~ — DONE. Kept for the record.
 

@@ -108,9 +108,13 @@ OPTIONS
   --offer-model M       raw | derived | detect (default). Which disposition model the build's
                         quest-offer path implements. DETECTED from named source anchors and
                         reported; forcing it is how a critic compares the two.
-  --cross-check         boot the game and compare this static walk's per-giver numbers against
-                        the running build's own questOffers()/explainDisposition(). The static
-                        walk is required by RI-MTH06 §A; this is how it stays true to the world.
+  --cross-check         boot the game, drive several signatures through the SHIPPED creation
+                        path, and compare this static walk's arithmetic against
+                        __HARNESS.getGateDispositions() — the numbers canOffer() actually reads —
+                        term by term via explainDisposition(). The static walk is required by
+                        RI-MTH06 §A ("no browser needed... it must stay static so it can run in
+                        CI"); this is how it stays true to the world instead of to the document.
+  --cross-check-signatures a,b  race/upbringing pairs to sweep (default six)
 
 EXIT CODES
   0   >= --target signatures viable AND nothing unmeasurable
@@ -1704,56 +1708,100 @@ async function crossCheck() {
   const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 120000) });
   try {
     await handle.page.evaluate(() => { try { window.__HARNESS.setRenderRate(0); } catch { /* ignore */ } });
-    const ch = await handle.hOpt('getCharacter');
-    const live = await handle.h('questOffers');
-    const list = live.offers || live;
-    const clauses = {};
-    for (const o of (Array.isArray(list) ? list : Object.values(list))) {
-      for (const w of (o && o.why) || []) {
-        const m = /^(\S+) disposition (\d+)\/(\d+)$/.exec(String(w));
-        if (m) clauses[m[1]] = { reads: Number(m[2]), requires: Number(m[3]) };
+    const surface = await handle.page.evaluate(
+      () => Object.keys(window.__HARNESS || {}).filter((k) => typeof window.__HARNESS[k] === 'function'));
+    const needed = ['getGateDispositions', 'explainDisposition', 'setCharacter', 'questOffers'];
+    const missing = needed.filter((m) => !surface.includes(m));
+    if (missing.length) {
+      return { agrees: false, unmeasurable: true, rows: [], disagreements: [],
+        why: `--cross-check needs ${missing.join(', ')} and this build does not expose ${missing.length === 1 ? 'it' : 'them'}. ` +
+             'Reporting that rather than falling back to comparing the static walk with itself.' };
+    }
+
+    // The signatures to sweep. RI-CHR01 §5's four-part signature, driven through the SHIPPED
+    // creation path (`setCharacter` -> `composeCharacter`), not assembled here.
+    const sigsArg = args['cross-check-signatures']
+      ? String(args['cross-check-signatures']).split(',').map((s) => s.trim())
+      : ['dunmer/lukiul', 'dunmer/interior', 'dunmer/foreign-born', 'saxhleel/interior', 'nord/foreign-born', 'imperial/blackrose'];
+    const classId = (data.classes.classes[0] || {}).id;
+    const signId = (data.birthsigns.signs[0] || {}).id;
+
+    const rows = [], disagreements = [], perSignature = [];
+    for (const sig of sigsArg) {
+      const [race, upbringing] = sig.split('/');
+      const live = await handle.page.evaluate((o) => {
+        try {
+          window.__HARNESS.setCharacter({ race: o.race, upbringing: o.upbringing, class: o.classId, birthsign: o.signId });
+        } catch (e) { return { error: String(e && e.message || e) }; }
+        const gate = window.__HARNESS.getGateDispositions();
+        const offers = window.__HARNESS.questOffers();
+        const list = offers.offers || offers;
+        const arr = Array.isArray(list) ? list : Object.values(list);
+        const explain = {};
+        for (const id of o.givers) { try { explain[id] = window.__HARNESS.explainDisposition(id); } catch { explain[id] = null; } }
+        return {
+          gate, explain,
+          offerable: arr.filter((x) => x && x.offerable).length,
+          quests: arr.length,
+          disposition_clauses: arr.flatMap((x) => ((x && x.why) || []).filter((w) => /disposition \d+\/\d+/.test(String(w)))).sort(),
+        };
+      }, { race, upbringing, classId, signId, givers: [...new Set(quests.filter((q) => q.giver && q.giver.disposition_min != null).map((q) => q.giver.npc_id))] });
+
+      if (live.error) { disagreements.push({ signature: sig, error: live.error }); continue; }
+      perSignature.push({
+        signature: sig, offerable: live.offerable, quests: live.quests,
+        disposition_clauses: live.disposition_clauses,
+      });
+
+      for (const q of quests) {
+        if (!(q.giver && q.giver.disposition_min != null)) continue;
+        const id = q.giver.npc_id;
+        const ex = live.explain[id];
+        const engineValue = live.gate[id];
+        if (engineValue === undefined) continue;
+        // The arithmetic agreement check. The tool recomputes the engine's OWN number from the
+        // engine's OWN base and movable total, through the same shipping `derivedDisposition`.
+        // Anything but equality means this static walk has drifted from game/src.
+        const g = resolveGiver(id);
+        const toolValue = (ex && ex.modelled && g.status === 'resolved')
+          ? dispositionCeiling(Number(ex.base) || 0, race, upbringing, signId, g.group)
+          : null;
+        // dispositionCeiling adds MODEL.disposition_other_terms_ceiling; recompute with the
+        // engine's observed other_terms instead so the comparison is like for like.
+        const toolAtEngineTerms = (ex && ex.modelled && g.status === 'resolved')
+          ? derivedDisposition(data, {
+            group: g.group, race, upbringing, birthsign: signId,
+            baseDisposition: Number(ex.base) || 0, otherTerms: Number(ex.other_terms) || 0,
+          }).value
+          : null;
+        const row = {
+          signature: sig, quest: q.id, npc_id: id, requires: q.giver.disposition_min,
+          engine_gate_value: engineValue,
+          engine_terms: ex ? { base: ex.base, race: ex.race_term, upbringing: ex.upbringing_term, birthsign: ex.birthsign_term, other: ex.other_terms, modelled: ex.modelled } : null,
+          tool_same_terms: toolAtEngineTerms,
+          tool_player_optimal_ceiling: toolValue,
+          agrees: toolAtEngineTerms === null ? null : toolAtEngineTerms === engineValue,
+        };
+        rows.push(row);
+        if (row.agrees === false) disagreements.push(row);
       }
     }
-    const explain = {};
-    for (const id of Object.keys(clauses)) explain[id] = await handle.hOpt('explainDisposition', id);
-
-    // The tool's own number for the SAME character the running build is using.
-    const sheetRace = (ch && ch.race) || null;
-    const sheetUp = (ch && ch.upbringing) || null;
-    const sheetSign = (ch && ch.birthsign) || null;
-    const rows = [];
-    for (const q of quests) {
-      if (!(q.giver && q.giver.disposition_min != null)) continue;
-      const reach = achievableDisposition(q.giver.npc_id, q);
-      const g = resolveGiver(q.giver.npc_id);
-      const toolReads = (OFFER_MODEL.model === 'derived' && g.status === 'resolved' && sheetRace)
-        ? dispositionCeiling(SEED_DISPOSITIONS.get(q.giver.npc_id) ?? 0, sheetRace, sheetUp, sheetSign, g.group)
-        : (SEED_DISPOSITIONS.get(q.giver.npc_id) ?? 0);
-      const engineClause = clauses[q.giver.npc_id] || null;
-      rows.push({
-        quest: q.id, npc_id: q.giver.npc_id, requires: q.giver.disposition_min,
-        tool_register: SEED_DISPOSITIONS.get(q.giver.npc_id) ?? 0,
-        tool_best_achievable: reach.value,
-        tool_gate_reads_for_this_character: toolReads,
-        engine_clause: engineClause,
-        engine_explain: explain[q.giver.npc_id] || null,
-        // The clause only appears when the engine REFUSED, so agreement is checked in the
-        // direction the engine actually reports: if the engine refused, the tool must too.
-        agrees: engineClause ? (toolReads < q.giver.disposition_min) : true,
-      });
-    }
-    const disagreements = rows.filter((r) => !r.agrees);
+    const distinct = new Set(perSignature.map((s) => JSON.stringify(s.disposition_clauses))).size;
     return {
-      character: { race: sheetRace, upbringing: sheetUp, birthsign: sheetSign },
-      offer_model_detected: OFFER_MODEL.model,
-      engine_disposition_clauses: clauses,
+      method: 'setCharacter() -> getGateDispositions() / explainDisposition(), the numbers canOffer ' +
+              'actually reads. Nothing about the gate is reconstructed here.',
+      signatures_swept: perSignature,
+      distinct_disposition_clause_sets: distinct,
+      race_sensitive: distinct > 1,
+      rows_compared: rows.length,
       rows,
       disagreements,
       agrees: disagreements.length === 0,
-      note: 'The engine only emits a disposition clause when it REFUSES, so this checks the ' +
-            'direction that matters: every giver the running build refused must also be refused ' +
-            'by the static model for the same character. A disagreement means this file has ' +
-            'drifted from game/src and its verdict may not be scored.',
+      note: 'Agreement is checked on the PERMANENT terms: the tool recomputes the engine\'s own ' +
+            'value from the engine\'s own base and movable total through the same shipping ' +
+            'derivedDisposition(). The static walk additionally applies a player-optimal movable ' +
+            'ceiling (MODEL.disposition_other_terms_ceiling), which is deliberately higher than ' +
+            'a bare character\'s and is reported separately as tool_player_optimal_ceiling.',
     };
   } finally { await handle.close().catch(() => {}); }
 }
@@ -1761,12 +1809,23 @@ async function crossCheck() {
 const rep = report(records, fixture);
 if (args['cross-check']) {
   rep.cross_check = await crossCheck();
-  process.stdout.write(
-    `cross-check against the running build: ${rep.cross_check.agrees ? 'AGREES' : 'DISAGREES'} ` +
-    `(${rep.cross_check.disagreements.length} disagreement(s); offer model ${rep.cross_check.offer_model_detected}; ` +
-    `engine refused ${Object.keys(rep.cross_check.engine_disposition_clauses).length} giver(s))\n`);
-  for (const d of rep.cross_check.disagreements) {
-    process.stdout.write(`  DISAGREE ${d.quest} ${d.npc_id}: engine ${JSON.stringify(d.engine_clause)} vs tool reads ${d.tool_gate_reads_for_this_character}\n`);
+  const cc = rep.cross_check;
+  if (cc.unmeasurable) {
+    process.stdout.write(`cross-check: UNMEASURABLE — ${cc.why}\n`);
+  } else {
+    process.stdout.write(
+      `cross-check against the running gate: ${cc.agrees ? 'AGREES' : 'DISAGREES'} ` +
+      `on ${cc.rows_compared} (signature, giver) pairs; ${cc.disagreements.length} disagreement(s). ` +
+      `The offer path is ${cc.race_sensitive ? 'RACE-SENSITIVE' : 'RACE-INVARIANT'}: ` +
+      `${cc.distinct_disposition_clause_sets} distinct disposition-clause set(s) over ` +
+      `${cc.signatures_swept.length} signatures.\n`);
+    for (const s of cc.signatures_swept) {
+      process.stdout.write(`  ${s.signature.padEnd(24)} ${s.offerable}/${s.quests} offerable, ` +
+        `${s.disposition_clauses.length} disposition clause(s)\n`);
+    }
+    for (const d of cc.disagreements.slice(0, 10)) {
+      process.stdout.write(`  DISAGREE ${d.signature} ${d.npc_id}: engine ${d.engine_gate_value} vs tool ${d.tool_same_terms} (terms ${JSON.stringify(d.engine_terms)})\n`);
+    }
   }
 }
 const outPath = args.out ? path.resolve(String(args.out)) : path.join(REPO_ROOT, 'reports', 'viability.json');
